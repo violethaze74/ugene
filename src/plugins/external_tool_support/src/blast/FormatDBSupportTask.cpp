@@ -23,20 +23,20 @@
 #include "FormatDBSupport.h"
 
 #include <QCoreApplication>
-#include <QtCore/QDir>
+#include <QDir>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/AddDocumentTask.h>
+#include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
-#include <U2Core/MAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
+#include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Formats/ConvertFileTask.h>
 

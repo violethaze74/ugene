@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-MSAImageExportTask::MSAImageExportTask(MSAEditorUI *ui,
+MSAImageExportTask::MSAImageExportTask(MaEditorWgt *ui,
                                        const MSAImageExportSettings &msaSettings,
                                        const ImageExportTaskSettings &settings)
     : ImageExportTask(settings),
@@ -41,7 +41,7 @@ MSAImageExportTask::MSAImageExportTask(MSAEditorUI *ui,
     SAFE_POINT_EXT(ui != NULL, setError(tr("MSA Editor UI is NULL")), );
 }
 
-MSAImageExportToBitmapTask::MSAImageExportToBitmapTask(MSAEditorUI *ui,
+MSAImageExportToBitmapTask::MSAImageExportToBitmapTask(MaEditorWgt *ui,
                                                        const MSAImageExportSettings& msaSettings,
                                                        const ImageExportTaskSettings &settings)
     : MSAImageExportTask(ui,
@@ -54,16 +54,16 @@ void MSAImageExportToBitmapTask::run() {
                    setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("MSAImageExportToBitmapTask")), );
 
     SAFE_POINT_EXT( ui->getEditor() != NULL, setError(L10N::nullPointerError("MSAEditor")), );
-    MAlignmentObject *mObj =  ui->getEditor()->getMSAObject();
-    SAFE_POINT_EXT( mObj != NULL, setError(L10N::nullPointerError("MAlignmentObject")), );
+    MultipleAlignmentObject *mObj =  ui->getEditor()->getMaObject();
+    SAFE_POINT_EXT( mObj != NULL, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
     StateLock *lock = new StateLock();
     mObj->lockState(lock);
 
     bool exportAll = msaSettings.exportAll;
 
-    int ok = exportAll || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
+    int ok = (exportAll && mObj->getLength() > 0 && mObj->getNumRows() > 0) || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
     CHECK_OPERATION( ok, mObj->unlockState(lock));
-    SAFE_POINT_EXT( ok, setError(tr("Nothing to export")), );
+    CHECK_EXT( ok, setError(tr("Nothing to export")), );
 
     QPixmap seqPixmap;
     QPixmap namesPix;
@@ -112,7 +112,7 @@ QPixmap MSAImageExportToBitmapTask::mergePixmaps(const QPixmap &seqPix,
     return pixmap;
 }
 
-MSAImageExportToSvgTask::MSAImageExportToSvgTask(MSAEditorUI *ui,
+MSAImageExportToSvgTask::MSAImageExportToSvgTask(MaEditorWgt *ui,
                                                  const MSAImageExportSettings& msaSettings,
                                                  const ImageExportTaskSettings &settings)
     : MSAImageExportTask(ui,
@@ -124,10 +124,10 @@ void MSAImageExportToSvgTask::run() {
     SAFE_POINT_EXT(settings.isSVGFormat(),
                    setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("MSAImageExportToSvgTask")), );
 
-    MSAEditor* editor = ui->getEditor();
+    MaEditor* editor = ui->getEditor();
     SAFE_POINT_EXT( editor != NULL, setError(L10N::nullPointerError("MSAEditor")), );
-    MAlignmentObject *mObj =  editor->getMSAObject();
-    SAFE_POINT_EXT( mObj != NULL, setError(L10N::nullPointerError("MAlignmentObject")), );
+    MultipleAlignmentObject *mObj =  editor->getMaObject();
+    SAFE_POINT_EXT( mObj != NULL, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
 
     StateLocker stateLocker(mObj);
     Q_UNUSED(stateLocker);
@@ -138,7 +138,7 @@ void MSAImageExportToSvgTask::run() {
     QSvgGenerator generator;
     generator.setFileName(settings.fileName);
 
-    MSAEditorNameList* nameListArea = ui->getEditorNameList();
+    MaEditorNameList* nameListArea = ui->getEditorNameList();
     SAFE_POINT_EXT(nameListArea != NULL, setError(L10N::nullPointerError("MSAEditorNameList")), );
     MSAEditorConsensusArea* consArea = ui->getConsensusArea();
     SAFE_POINT_EXT(consArea != NULL, setError(L10N::nullPointerError("MSAEditorConsensusArea")), );
@@ -178,7 +178,7 @@ void MSAImageExportToSvgTask::run() {
 }
 
 
-MSAImageExportController::MSAImageExportController(MSAEditorUI *ui)
+MSAImageExportController::MSAImageExportController(MaEditorWgt *ui)
     : ImageExportController( ExportImageFormatPolicy( EnableRasterFormats | SupportSvg) ),
       ui(ui)
 {
@@ -193,7 +193,7 @@ MSAImageExportController::~MSAImageExportController() {
 }
 
 void MSAImageExportController::sl_showSelectRegionDialog() {
-    QObjectScopedPointer<SelectSubalignmentDialog> dialog = new SelectSubalignmentDialog(ui, msaSettings.region, msaSettings.seqIdx);
+    QObjectScopedPointer<SelectSubalignmentDialog> dialog = new SelectSubalignmentDialog(ui->getEditor(), msaSettings.region, msaSettings.seqIdx);
     dialog->exec();
     CHECK(!dialog.isNull(), );
 
@@ -232,7 +232,7 @@ void MSAImageExportController::initSettingsWidget() {
     connect(settingsUi->comboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_regionChanged()));
 
     SAFE_POINT( ui->getSequenceArea() != NULL, tr("MSA sequence area is NULL"), );
-    MSAEditorSelection selection = ui->getSequenceArea()->getSelection();
+    MaEditorSelection selection = ui->getSequenceArea()->getSelection();
     CHECK( !selection.isNull(), );
     msaSettings.region = U2Region( selection.x(), selection.width());
     msaSettings.seqIdx.clear();
@@ -293,7 +293,7 @@ const qint64 MaxSvgImageSize = 40000000;
 }
 
 bool MSAImageExportController::fitsInLimits() const {
-    MSAEditor* editor = ui->getEditor();
+    MaEditor* editor = ui->getEditor();
     SAFE_POINT(editor != NULL, L10N::nullPointerError("MSAEditor"), false);
     qint64 imageWidth = (msaSettings.exportAll ? editor->getAlignmentLen() : msaSettings.region.length) * editor->getColumnWidth();
     qint64 imageHeight = (msaSettings.exportAll ? editor->getNumSequences() : msaSettings.seqIdx.size()) * editor->getRowHeight();
@@ -307,7 +307,7 @@ bool MSAImageExportController::fitsInLimits() const {
 }
 
 bool MSAImageExportController::canExportToSvg() const {
-    MSAEditor* editor = ui->getEditor();
+    MaEditor* editor = ui->getEditor();
     SAFE_POINT(editor != NULL, L10N::nullPointerError("MSAEditor"), false);
     int charactersNumber = msaSettings.exportAll ? (editor->getNumSequences() * editor->getAlignmentLen()) : (msaSettings.region.length * msaSettings.seqIdx.size());
     return charactersNumber < MaxSvgCharacters;

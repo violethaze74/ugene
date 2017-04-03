@@ -28,8 +28,6 @@
 
 namespace U2 {
 
-class MAlignment;
-
 class ConsensusModelTypes {
 public:
     static QString M1;
@@ -42,12 +40,12 @@ public:
 class NeighborJoinWidget : public CreatePhyTreeWidget, public Ui_NeighborJoinWidget {
     Q_OBJECT
 public:
-    NeighborJoinWidget(const MAlignment &ma, QWidget *parent = NULL);
+    NeighborJoinWidget(const MultipleSequenceAlignment &ma, QWidget *parent = NULL);
 
     void fillSettings(CreatePhyTreeSettings &settings);
     void storeSettings();
     void restoreDefault();
-    bool checkMemoryEstimation(QString &msg, const MAlignment &msa, const CreatePhyTreeSettings &settings);
+    bool checkMemoryEstimation(QString &msg, const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings);
     bool checkSettings(QString &msg, const CreatePhyTreeSettings &settings);
 
 private slots:
@@ -55,7 +53,7 @@ private slots:
     void sl_onConsensusTypeChanged(const QString &consensusTypeName);
 
 private:
-    void init(const MAlignment &ma);
+    void init(const MultipleSequenceAlignment &ma);
     void connectSignals();
     static int getRandomSeed();
     static bool checkSeed(int seed);

@@ -23,7 +23,7 @@
 #define _U2_MR_BAYES_DIALOG_WIDGET_
 
 #include <U2Core/AppContext.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <U2View/CreatePhyTreeWidget.h>
 
@@ -34,7 +34,7 @@ namespace U2 {
 class MrBayesWidget : public CreatePhyTreeWidget, private Ui_MrBayesDialog {
    Q_OBJECT
 public:
-    MrBayesWidget(const MAlignment &ma, QWidget *parent);
+    MrBayesWidget(const MultipleSequenceAlignment &ma, QWidget *parent);
 
     void fillSettings(CreatePhyTreeSettings& settings);
     void storeSettings();

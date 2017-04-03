@@ -104,6 +104,9 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef& srcSeq, const U2DbiR
     CHECK_OP(os, res);
 
     res = seq;
+    U2TrackModType modType = res.trackModType;
+    res.trackModType = U2TrackModType::NoTrack;
+
     res.id.clear();
     res.length = 0;
 
@@ -128,6 +131,8 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef& srcSeq, const U2DbiR
         CHECK_OP(os, res);
         res.length += currentChunkSize;
     }
+
+    res.trackModType = modType;
     return res;
 }
 
@@ -198,15 +203,15 @@ QList<QByteArray> U2SequenceUtils::extractRegions(const U2EntityRef& seqRef, con
     return res;
 }
 
-U2EntityRef U2SequenceUtils::import(const U2DbiRef& dbiRef, const DNASequence& seq, U2OpStatus& os) {
-    return import(dbiRef, U2ObjectDbi::ROOT_FOLDER, seq, os);
+U2EntityRef U2SequenceUtils::import(U2OpStatus &os, const U2DbiRef &dbiRef, const DNASequence &seq, const U2AlphabetId &alphabetId) {
+    return import(os, dbiRef, U2ObjectDbi::ROOT_FOLDER, seq, alphabetId);
 }
 
-U2EntityRef U2SequenceUtils::import(const U2DbiRef& dbiRef, const QString& folder, const DNASequence& seq, U2OpStatus& os) {
+U2EntityRef U2SequenceUtils::import(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const DNASequence &seq, const U2AlphabetId &alphabetId) {
     U2EntityRef res;
     U2SequenceImporter i;
 
-    i.startSequence(dbiRef, folder, seq.getName(), seq.circular, os);
+    i.startSequence(os, dbiRef, folder, seq.getName(), seq.circular, alphabetId);
     CHECK_OP(os, res);
 
     i.addBlock(seq.constData(), seq.length(), os);
@@ -327,11 +332,12 @@ U2SequenceImporter::~U2SequenceImporter() {
 }
 
 
-void U2SequenceImporter::startSequence(const U2DbiRef& dbiRef,
-                                       const QString& dstFolder,
-                                       const QString& visualName,
+void U2SequenceImporter::startSequence(U2OpStatus &os,
+                                       const U2DbiRef &dbiRef,
+                                       const QString &dstFolder,
+                                       const QString &visualName,
                                        bool circular,
-                                       U2OpStatus& os) {
+                                       const U2AlphabetId &alphabetId) {
     SAFE_POINT(!con.isOpen(), "Connection is already opened!", );
     con.open(dbiRef, true, os);
     CHECK_OP(os, );
@@ -341,7 +347,7 @@ void U2SequenceImporter::startSequence(const U2DbiRef& dbiRef,
     sequence = U2Sequence();
     sequence.visualName = visualName;
     sequence.circular = circular;
-    sequence.alphabet.id = DNAAlphabet_NUCL;
+    sequence.alphabet.id = alphabetId.id;
 
     currentLength = 0;
     isUnfinishedRegion = false;

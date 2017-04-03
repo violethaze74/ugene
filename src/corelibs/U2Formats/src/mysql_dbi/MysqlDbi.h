@@ -22,7 +22,7 @@
 #ifndef _U2_MYSQL_DBI_H_
 #define _U2_MYSQL_DBI_H_
 
-#include <QtCore/QStack>
+#include <QStack>
 
 #include <U2Core/U2AbstractDbi.h>
 #include <U2Core/U2DbiRegistry.h>

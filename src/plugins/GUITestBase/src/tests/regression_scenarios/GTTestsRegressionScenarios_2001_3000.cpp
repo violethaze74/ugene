@@ -34,9 +34,39 @@
 #include <QWebView>
 #include <QWizard>
 
+#include <GTGlobals.h>
+#include <base_dialogs/DefaultDialogFiller.h>
+#include <base_dialogs/GTFileDialog.h>
+#include <base_dialogs/MessageBoxFiller.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTLineEdit.h>
+#include <primitives/GTListWidget.h>
+#include <primitives/GTMenu.h>
+#include <primitives/GTRadioButton.h>
+#include <primitives/GTSlider.h>
+#include <primitives/GTSpinBox.h>
+#include <primitives/GTTabWidget.h>
+#include <primitives/GTTableView.h>
+#include <primitives/GTToolbar.h>
+#include <primitives/GTTreeWidget.h>
+#include <primitives/GTWebView.h>
+#include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
+#include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
+#include <utils/GTThread.h>
+#include <utils/GTUtilsDialog.h>
+#include <utils/GTUtilsToolTip.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ProjectViewModel.h>
 #include <U2Gui/ToolsMenu.h>
@@ -47,7 +77,7 @@
 #include <U2View/AnnotationsTreeView.h>
 #include <U2View/AssemblyNavigationWidget.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTDatabaseConfig.h"
@@ -58,7 +88,6 @@
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
-#include "utils/GTUtilsDialog.h"
 #include "GTUtilsEscClicker.h"
 #include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
@@ -76,38 +105,11 @@
 #include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
-#include "utils/GTUtilsToolTip.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "primitives/GTAction.h"
-#include <primitives/GTCheckBox.h>
-#include "system/GTClipboard.h"
-#include <primitives/GTComboBox.h>
-#include "system/GTFile.h"
-#include <base_dialogs/GTFileDialog.h>
-#include "GTGlobals.h"
-#include <drivers/GTKeyboardDriver.h>
-#include "utils/GTKeyboardUtils.h"
-#include <primitives/GTLineEdit.h>
-#include <primitives/GTListWidget.h>
-#include "primitives/GTMenu.h"
-#include <drivers/GTMouseDriver.h>
-#include <primitives/GTRadioButton.h>
 #include "api/GTSequenceReadingModeDialog.h"
 #include "api/GTSequenceReadingModeDialogUtils.h"
-#include <primitives/GTSlider.h>
-#include <primitives/GTSpinBox.h>
-#include <primitives/GTTabWidget.h>
-#include <primitives/GTTableView.h>
-#include "utils/GTThread.h"
-#include <primitives/GTToolbar.h>
-#include <primitives/GTTreeWidget.h>
-#include <primitives/GTWebView.h>
-#include <primitives/GTWidget.h>
-#include <base_dialogs/DefaultDialogFiller.h>
 #include "runnables/qt/EscapeClicker.h"
-#include <base_dialogs/MessageBoxFiller.h>
-#include "primitives/PopupChooser.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/BuildIndexDialogFiller.h"
@@ -2543,7 +2545,7 @@ GUI_TEST_CLASS_DEFINITION( test_2377 ) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, assemblyReaderName ) );
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile( os, testDir + "_common_data/sambroken_without_reads.sam" );
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, testDir + "_common_data/sam/broken_without_reads.sam" );
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, assemblyWriterName ) );
     GTMouseDriver::click();
@@ -4631,7 +4633,7 @@ GUI_TEST_CLASS_DEFINITION(test_2701) {
 //    3. Select vector format (svg, pdf or ps)
 //    Expected state: Quality tuning slider is not showed.
 
-//    4. Select jpeg format
+//    4. Select jpg format
 //    Expected state: Quality tuning slider is showed.
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "CVU55762.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4650,18 +4652,16 @@ GUI_TEST_CLASS_DEFINITION(test_2701) {
             QComboBox* formatsBox = dialog->findChild<QComboBox*>("formatsBox");
             QWidget* spin = dialog->findChild<QSpinBox*>("qualitySpinBox");
 
-            GTComboBox::setIndexWithText(os, formatsBox, "svg");
+            GTComboBox::setIndexWithText(os, formatsBox, "SVG");
             CHECK_SET_ERR( !spin->isVisible(), "Quality spin box is visible!");
-            GTComboBox::setIndexWithText(os, formatsBox, "pdf");
+            GTComboBox::setIndexWithText(os, formatsBox, "PDF");
             CHECK_SET_ERR( !spin->isVisible(), "Quality spin box is visible!");
-            GTComboBox::setIndexWithText(os, formatsBox, "ps");
+            GTComboBox::setIndexWithText(os, formatsBox, "PS");
             CHECK_SET_ERR( !spin->isVisible(), "Quality spin box is visible!");
 
-            GTComboBox::setIndexWithText(os, formatsBox, "jpg");
+            GTComboBox::setIndexWithText(os, formatsBox, "JPG");
             CHECK_SET_ERR( spin->isVisible(), "Quality spin box not visible!");
-            GTComboBox::setIndexWithText(os, formatsBox, "jpeg");
-            CHECK_SET_ERR( spin->isVisible(), "Quality spin box not visible!");
-
+            
             QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
             CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
             QPushButton* button = box->button(QDialogButtonBox::Cancel);

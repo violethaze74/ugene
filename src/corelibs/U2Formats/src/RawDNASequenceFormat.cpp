@@ -110,7 +110,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef,  QList<GObject*>& object
         if(seq.size()>0 && isStarted == false ){
             QString name = sequenceCounter == 0 ? seqName : seqName + QString("_%1").arg(sequenceCounter);
             isStarted = true;
-            seqImporter.startSequence(dbiRef, folder, name, false, os);
+            seqImporter.startSequence(os, dbiRef, folder, name, false);
         }
         if(isStarted){
             seqImporter.addBlock(seq.data(),seq.size(),os);

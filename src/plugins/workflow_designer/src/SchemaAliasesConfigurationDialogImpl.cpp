@@ -39,7 +39,9 @@ SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl( cons
 : QDialog(p) {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759845");
-
+    
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     QPushButton* cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
     QPushButton* okPushButton = buttonBox->button(QDialogButtonBox::Ok);
 
@@ -62,7 +64,6 @@ SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl( cons
         QListWidgetItem * item = new QListWidgetItem( actor->getLabel() );
         procsListWidget->insertItem( pos, item );
         procListMap.insert( pos, actor->getId() );
-        int pointSz = item->font().pointSize();
     }
 
     connect( procsListWidget, SIGNAL(currentRowChanged( int )), SLOT(sl_procSelected( int )) );

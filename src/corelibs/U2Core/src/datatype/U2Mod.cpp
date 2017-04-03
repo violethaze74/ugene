@@ -42,6 +42,8 @@ const qint64 U2ModType::msaUpdatedGapModel    = 3007;
 const qint64 U2ModType::msaSetNewRowsOrder    = 3008;
 const qint64 U2ModType::msaLengthChanged      = 3009;
 
+const qint64 U2ModType::udrUpdated            = 4001;
+
 
 U2UseCommonUserModStep::U2UseCommonUserModStep(const U2EntityRef &entity, U2OpStatus &os)
 : dbi(NULL), valid(false), con(NULL), masterObjId(entity.entityId)
@@ -82,5 +84,12 @@ U2Dbi * U2UseCommonUserModStep::getDbi() const {
     return dbi;
 }
 
+ModificationAction::ModificationAction(U2AbstractDbi* _dbi, const U2DataId& _masterObjId)
+    : dbi(_dbi),
+      masterObjId(_masterObjId),
+      trackMod(NoTrack)
+{
+    objIds.insert(masterObjId);
+}
 
 } // namespace

@@ -46,7 +46,7 @@
 
 namespace U2{
 
-CreateSubalignmentDialogController::CreateSubalignmentDialogController(MAlignmentObject *_mobj, const QRect& selection, QWidget *p)
+CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleSequenceAlignmentObject *_mobj, const QRect& selection, QWidget *p)
 : QDialog(p), mobj(_mobj), saveController(NULL){
     setupUi(this);
     new HelpButton(this, buttonBox, "19759575");
@@ -96,7 +96,7 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MAlignmen
     endPosBox->setText(QString::number(endPos));
 
     for (int i=0; i<rowNumber; i++) {
-        QCheckBox *cb = new QCheckBox(mobj->getMAlignment().getRow(i).getName(), this);
+        QCheckBox *cb = new QCheckBox(mobj->getMsa()->getMsaRow(i)->getName(), this);
         cb->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
         if ( (i >= startSeq) && (i <= endSeq)) {
             cb->setChecked(true);
@@ -179,7 +179,7 @@ void CreateSubalignmentDialogController::initSaveController() {
     config.parentWidget = this;
 
     DocumentFormatConstraints formatConstraints;
-    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_ALIGNMENT;
+    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     formatConstraints.addFlagToExclude(DocumentFormatFlag_SingleObjectFormat);
     formatConstraints.addFlagToSupport(DocumentFormatFlag_SupportWriting);
 
@@ -255,7 +255,7 @@ void CreateSubalignmentDialogController::selectSeqNames(){
 }
 
 
-CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask( MAlignmentObject* maObj, const CreateSubalignmentSettings& settings )
+CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask( MultipleSequenceAlignmentObject* maObj, const CreateSubalignmentSettings& settings )
 :Task(tr("Create sub-alignment and open view: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE)
 {
     csTask = new CreateSubalignmentTask(maObj, settings);

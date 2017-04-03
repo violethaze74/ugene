@@ -39,7 +39,7 @@ class AlgorithmRealization;
 class DNAAlphabet;
 
 enum AlignmentAlgorithmType {
-    MultipleAlignment,
+    MultipleAlignmentType,
     AddToAlignment,
     PairwiseAlignment
 };

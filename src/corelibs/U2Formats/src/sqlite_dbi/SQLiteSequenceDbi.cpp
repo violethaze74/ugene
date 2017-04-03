@@ -187,9 +187,13 @@ static QList<QByteArray> quantify(const QList<QByteArray>& input) {
 }
 
 void SQLiteSequenceDbi::updateSequenceData(const U2DataId& sequenceId, const U2Region& regionToReplace, const QByteArray& dataToInsert, const QVariantMap &hints, U2OpStatus& os) {
+    updateSequenceData(sequenceId, sequenceId, regionToReplace, dataToInsert, hints, os);
+}
+
+void SQLiteSequenceDbi::updateSequenceData(const U2DataId &masterId, const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
 
-    ModificationAction updateAction(dbi, sequenceId);
+    SQLiteModificationAction updateAction(dbi, masterId);
     updateAction.prepare(os);
     SAFE_POINT_OP(os, );
 
@@ -200,7 +204,7 @@ void SQLiteSequenceDbi::updateSequenceData(const U2DataId& sequenceId, const U2R
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteSequenceDbi::updateSequenceData(ModificationAction& updateAction, const U2DataId& sequenceId, const U2Region& regionToReplace,
+void SQLiteSequenceDbi::updateSequenceData(SQLiteModificationAction& updateAction, const U2DataId& sequenceId, const U2Region& regionToReplace,
     const QByteArray& dataToInsert, const QVariantMap &hints, U2OpStatus& os)
 {
     QByteArray modDetails;

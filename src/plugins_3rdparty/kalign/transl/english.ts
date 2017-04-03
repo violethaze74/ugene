@@ -152,12 +152,12 @@
 <context>
     <name>U2::KalignGObjectRunFromSchemaTask</name>
     <message>
-        <location filename="../src/KalignTask.cpp" line="255"/>
+        <location filename="../src/KalignTask.cpp" line="257"/>
         <source>Workflow wrapper &apos;%1&apos;</source>
         <translation>Workflow wrapper &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/KalignTask.cpp" line="265"/>
+        <location filename="../src/KalignTask.cpp" line="267"/>
         <source>KAlign align &apos;%1&apos;</source>
         <translation>KAlign align &apos;%1&apos;</translation>
     </message>
@@ -165,7 +165,7 @@
 <context>
     <name>U2::KalignGObjectTask</name>
     <message>
-        <location filename="../src/KalignTask.cpp" line="146"/>
+        <location filename="../src/KalignTask.cpp" line="148"/>
         <source>KALIGN align &apos;%1&apos;</source>
         <translation>KALIGN align &apos;%1&apos;</translation>
     </message>
@@ -173,7 +173,7 @@
 <context>
     <name>U2::KalignMSAEditorContext</name>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="154"/>
+        <location filename="../src/KalignPlugin.cpp" line="153"/>
         <source>Align with Kalign...</source>
         <translation>Align with Kalign...</translation>
     </message>
@@ -181,17 +181,17 @@
 <context>
     <name>U2::KalignPlugin</name>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="70"/>
+        <location filename="../src/KalignPlugin.cpp" line="71"/>
         <source>Kalign</source>
         <translation>Kalign</translation>
     </message>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="71"/>
+        <location filename="../src/KalignPlugin.cpp" line="72"/>
         <source>A port of Kalign package for multiple sequence alignment. Check http://msa.sbc.su.se for the original version</source>
         <translation>A port of Kalign package for multiple sequence alignment. Check http://msa.sbc.su.se for the original version</translation>
     </message>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="81"/>
+        <location filename="../src/KalignPlugin.cpp" line="82"/>
         <source>Align with Kalign...</source>
         <translation>Align with Kalign...</translation>
     </message>
@@ -204,17 +204,17 @@
         <translation>KALIGN alignment</translation>
     </message>
     <message>
-        <location filename="../src/KalignTask.cpp" line="91"/>
+        <location filename="../src/KalignTask.cpp" line="93"/>
         <source>Unsupported alphabet: %1</source>
         <translation>Unsupported alphabet: %1</translation>
     </message>
     <message>
-        <location filename="../src/KalignTask.cpp" line="94"/>
+        <location filename="../src/KalignTask.cpp" line="96"/>
         <source>Kalign alignment started</source>
         <translation>Kalign alignment started</translation>
     </message>
     <message>
-        <location filename="../src/KalignTask.cpp" line="99"/>
+        <location filename="../src/KalignTask.cpp" line="101"/>
         <source>Kalign alignment successfully finished</source>
         <translation>Kalign alignment successfully finished</translation>
     </message>
@@ -222,12 +222,12 @@
 <context>
     <name>U2::LocalWorkflow::KalignPrompter</name>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="122"/>
+        <location filename="../src/KalignWorker.cpp" line="121"/>
         <source> from %1</source>
         <translation> from %1</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="124"/>
+        <location filename="../src/KalignWorker.cpp" line="123"/>
         <source>Aligns each MSA supplied &lt;u&gt;%1&lt;/u&gt; with &quot;&lt;u&gt;Kalign&lt;/u&gt;&quot;.</source>
         <translation>Aligns each MSA supplied &lt;u&gt;%1&lt;/u&gt; with &quot;&lt;u&gt;Kalign&lt;/u&gt;&quot;.</translation>
     </message>
@@ -235,82 +235,86 @@
 <context>
     <name>U2::LocalWorkflow::KalignWorker</name>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="58"/>
+        <location filename="../src/KalignWorker.cpp" line="57"/>
         <source>Input MSA</source>
         <translation>Input MSA</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="58"/>
+        <location filename="../src/KalignWorker.cpp" line="57"/>
         <source>Input MSA to process.</source>
         <translation>Input MSA to process.</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="59"/>
+        <location filename="../src/KalignWorker.cpp" line="58"/>
         <source>Kalign result MSA</source>
         <translation>Kalign result MSA</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="60"/>
+        <location filename="../src/KalignWorker.cpp" line="59"/>
         <source>The result of the Kalign alignment.</source>
         <translation>The result of the Kalign alignment.</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="69"/>
+        <location filename="../src/KalignWorker.cpp" line="68"/>
         <source>Gap open penalty</source>
         <translation>Gap open penalty</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="70"/>
+        <location filename="../src/KalignWorker.cpp" line="69"/>
         <source>The penalty for opening/closing a gap. Half the value will be subtracted from the alignment score when opening, and half when closing a gap.</source>
         <translation>The penalty for opening/closing a gap. Half the value will be subtracted from the alignment score when opening, and half when closing a gap.</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="71"/>
+        <location filename="../src/KalignWorker.cpp" line="70"/>
         <source>Gap extension penalty</source>
         <translation>Gap extension penalty</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="72"/>
+        <location filename="../src/KalignWorker.cpp" line="71"/>
         <source>The penalty for extending a gap.</source>
         <translation>The penalty for extending a gap.</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="73"/>
+        <location filename="../src/KalignWorker.cpp" line="72"/>
         <source>Terminal gap penalty</source>
         <translation>Terminal gap penalty</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="74"/>
+        <location filename="../src/KalignWorker.cpp" line="73"/>
         <source>The penalty to extend gaps from the N/C terminal of protein or 5&apos;/3&apos; terminal of nucleotide sequences.</source>
         <translation>The penalty to extend gaps from the N/C terminal of protein or 5&apos;/3&apos; terminal of nucleotide sequences.</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="75"/>
+        <location filename="../src/KalignWorker.cpp" line="74"/>
         <source>Bonus score</source>
         <translation>Bonus score</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="76"/>
+        <location filename="../src/KalignWorker.cpp" line="75"/>
         <source>A bonus score that is added to each pair of aligned residues.</source>
         <translation>A bonus score that is added to each pair of aligned residues.</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="83"/>
+        <location filename="../src/KalignWorker.cpp" line="82"/>
         <source>Align with Kalign</source>
         <translation>Align with Kalign</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="84"/>
-        <source>Aligns multiple sequence alignments (MSAs) supplied with Kalign.&lt;p&gt;Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on &lt;a href=&quot;http://msa.sbc.su.se&quot;&gt;http://msa.sbc.su.se&lt;/a&gt;.</source>
-        <translation>Aligns multiple sequence alignments (MSAs) supplied with Kalign.&lt;p&gt;Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on &lt;a href=&quot;http://msa.sbc.su.se&quot;&gt;http://msa.sbc.su.se&lt;/a&gt;.</translation>
+        <location filename="../src/KalignWorker.cpp" line="83"/>
+        <source>Aligns multiple sequence alignments (MSAs) supplied with Kalign.&lt;p&gt;Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on &lt;a href=&quot;http://msa-&gt;sbc.su.se&quot;&gt;http://msa-&gt;sbc.su.se&lt;/a&gt;.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="160"/>
+        <source>Aligns multiple sequence alignments (MSAs) supplied with Kalign.&lt;p&gt;Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on &lt;a href=&quot;http://msa.sbc.su.se&quot;&gt;http://msa.sbc.su.se&lt;/a&gt;.</source>
+        <translation type="vanished">Aligns multiple sequence alignments (MSAs) supplied with Kalign.&lt;p&gt;Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on &lt;a href=&quot;http://msa.sbc.su.se&quot;&gt;http://msa.sbc.su.se&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../src/KalignWorker.cpp" line="159"/>
         <source>An empty MSA &apos;%1&apos; has been supplied to Kalign.</source>
         <translation>An empty MSA &apos;%1&apos; has been supplied to Kalign.</translation>
     </message>
     <message>
-        <location filename="../src/KalignWorker.cpp" line="188"/>
+        <location filename="../src/KalignWorker.cpp" line="187"/>
         <source>Aligned %1 with Kalign</source>
         <translation>Aligned %1 with Kalign</translation>
     </message>

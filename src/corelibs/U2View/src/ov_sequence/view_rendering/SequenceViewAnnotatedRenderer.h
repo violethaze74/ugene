@@ -72,7 +72,7 @@ protected:
     };
 
 public:
-    SequenceViewAnnotatedRenderer(ADVSequenceObjectContext* ctx);
+    SequenceViewAnnotatedRenderer(SequenceObjectContext* ctx);
 
     virtual qint64 coordToPos(const QPoint& p, const QSize& canvasSize, const U2Region& visibleRange) const = 0;
 

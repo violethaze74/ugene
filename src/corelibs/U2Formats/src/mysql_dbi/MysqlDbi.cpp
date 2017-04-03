@@ -166,6 +166,10 @@ MysqlSequenceDbi* MysqlDbi::getMysqlSequenceDbi() {
     return sequenceDbi;
 }
 
+MysqlUdrDbi* MysqlDbi::getMysqlUdrDbi() {
+    return udrDbi;
+}
+
 MysqlVariantDbi * MysqlDbi::getMysqlVariantDbi() {
     return variantDbi;
 }

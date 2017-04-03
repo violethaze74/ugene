@@ -24,19 +24,20 @@
 
 #include <QWidget>
 
+#include <U2Core/MultipleSequenceAlignment.h>
+
 namespace U2 {
 
-class MSAEditor;
-class MAlignmentObject;
-class MAlignment;
-class MAlignmentModInfo;
-class MSAEditorSequenceArea;
+class MaEditor;
 class MSAEditorOffsetsViewWidget;
+class MaEditorSequenceArea;
+class MaModificationInfo;
+class MultipleSequenceAlignmentObject;
 
 class MSAEditorOffsetsViewController : public QObject {
     Q_OBJECT
 public:
-    MSAEditorOffsetsViewController(QObject* p, MSAEditor* editor, MSAEditorSequenceArea* seqArea);
+    MSAEditorOffsetsViewController(QObject* p, MaEditor* editor, MaEditorSequenceArea* seqArea);
 
     MSAEditorOffsetsViewWidget* getLeftWidget() const;
     MSAEditorOffsetsViewWidget* getRightWidget() const;
@@ -45,18 +46,14 @@ public:
     bool eventFilter(QObject* o, QEvent* e);
 
 private slots:
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&);
-    void sl_startChanged(const QPoint& , const QPoint& );
-    void sl_fontChanged();
-    void sl_modelChanged();
-    void sl_refSeqChanged(qint64);
+    void sl_updateOffsets();
     void sl_showOffsets(bool);
 
 private:
     void updateOffsets();
 
-    MSAEditorSequenceArea*      seqArea;
-    MSAEditor*                  editor;
+    MaEditorSequenceArea*       seqArea;
+    MaEditor*                   editor;
     MSAEditorOffsetsViewWidget* lw;
     MSAEditorOffsetsViewWidget* rw;
     QAction*                    viewAction;
@@ -65,7 +62,7 @@ private:
 class MSAEditorOffsetsViewWidget : public QWidget {
     friend class MSAEditorOffsetsViewController;
 public:
-    MSAEditorOffsetsViewWidget(MSAEditor *editor, MSAEditorSequenceArea *seqArea, bool showStartPos);
+    MSAEditorOffsetsViewWidget(MaEditor *editor, MaEditorSequenceArea *seqArea, bool showStartPos);
 
 protected:
     void paintEvent(QPaintEvent *e);
@@ -77,8 +74,8 @@ protected:
 private:
     int getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const;
 
-    MSAEditorSequenceArea *     seqArea;
-    MSAEditor *                 editor;
+    MaEditorSequenceArea *      seqArea;
+    MaEditor *                  editor;
     bool                        showStartPos;
     bool                        completeRedraw;
     QPixmap                     cachedView;

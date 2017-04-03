@@ -36,7 +36,7 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/DetView.h>
 #include <U2View/MSAEditorTreeViewer.h>
-#include <U2View/MSAGraphOverview.h>
+#include <U2View/MaGraphOverview.h>
 
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
@@ -546,6 +546,7 @@ GUI_TEST_CLASS_DEFINITION(test_5199) {
             GTUtilsTaskTreeView::waitTaskFinished(os);
 
             QTableWidget *resultsTable = GTWidget::findExactWidget<QTableWidget *>(os, "resultsTable", dialog);
+            GTGlobals::sleep();
             CHECK_SET_ERR(NULL != resultsTable, "resultsTable is NULL");
             const int resultsCount = resultsTable->rowCount();
             CHECK_SET_ERR(4 == resultsCount, QString("Unexpected results count: expected %1, got %2").arg(4).arg(resultsCount));
@@ -726,7 +727,7 @@ GUI_TEST_CLASS_DEFINITION(test_5278) {
 
     GTGlobals::sleep();
     QTextEdit *textEdit = dynamic_cast<QTextEdit*>(GTWidget::findWidget(os, "reportTextEdit", GTUtilsMdi::activeWindow(os)));
-    CHECK_SET_ERR(textEdit->toPlainText().contains("1:    From AaaI (940) To AagI (24) - 3446 bp "), "Expected message is not found in the report text");
+    CHECK_SET_ERR(textEdit->toPlainText().contains("1:    From AaaI (944) To AagI (24) - 3442 bp "), "Expected message is not found in the report text");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5295) {
@@ -837,7 +838,7 @@ GUI_TEST_CLASS_DEFINITION(test_5352) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Close without Saving"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
     HIWebElement element = GTUtilsDashboard::findElement(os, "", "BUTTON");
     GTUtilsDashboard::click(os, element);
 
@@ -863,7 +864,7 @@ GUI_TEST_CLASS_DEFINITION(test_5356) {
     GTUtilsWorkflowDesigner::addInputFile(os, "Read FASTQ Files with Reads 1", testDir + "_common_data/regression/5356/reads.fastq");
 
     GTUtilsWorkflowDesigner::click(os, "Cut Adapter");
-    GTUtilsWorkflowDesigner::setParameter(os, "FASTA file with adapters", QDir(testDir + "_common_data/regression/5356/adapter.fa").absolutePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "FASTA file with 3' adapters", QDir(testDir + "_common_data/regression/5356/adapter.fa").absolutePath(), GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Output directory", "Custom", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Custom directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
 
@@ -1234,6 +1235,83 @@ GUI_TEST_CLASS_DEFINITION(test_5499) {
 //    Expected state: the message about "not ABIF format" appears, UGENE doesn't crash.
     GTUtilsLog::checkContainsError(os, logTracer, "Not a valid ABIF file");
     GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5517) {
+    //1. Open sequence
+    //2. Open build dotplot dialog
+    //3. Check both checkboxes direct and invert repeats search
+    //Expected state: UGENE not crashed
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 100, 0, true));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Build dotplot...", GTGlobals::UseMouse);
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5520_1) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "/_common_data/cmdline/external-tool-support/blastall/sars_middle.nhr"));
+            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton"));
+
+            QRadioButton* rbNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable");
+            CHECK_SET_ERR(rbNewTable != NULL, "rbCreateNewTable not found");
+            GTRadioButton::click(os, rbNewTable);
+            GTGlobals::sleep();
+
+            QLineEdit* leTablePath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath");
+            CHECK_SET_ERR(leTablePath != NULL, "leNewTablePath not found");
+            GTLineEdit::setText(os, leTablePath, sandBoxDir + "/test_5520_1.gb");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5520_2) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "/_common_data/cmdline/external-tool-support/blastall/sars_middle.nhr"));
+            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton"));
+
+            QRadioButton* rbNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable");
+            CHECK_SET_ERR(rbNewTable != NULL, "rbCreateNewTable not found");
+            GTRadioButton::click(os, rbNewTable);
+            GTGlobals::sleep();
+
+            QLineEdit* leTablePath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath");
+            CHECK_SET_ERR(leTablePath != NULL, "leNewTablePath not found");
+            GTLineEdit::setText(os, leTablePath, sandBoxDir + "/test_5520_2.gb");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST+...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
 }
 
 } // namespace GUITest_regression_scenarios

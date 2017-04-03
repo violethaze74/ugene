@@ -39,8 +39,8 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/MAlignmentExporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -75,11 +75,11 @@ MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignment
 
     SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into MafftAddToAlignmentTask"), );
 
-    MAlignmentExporter alnExporter;
+    MultipleSequenceAlignmentExporter alnExporter;
     inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
-    int rowNumber = inputMsa.getNumRows();
+    int rowNumber = inputMsa->getNumRows();
     for (int i = 0; i < rowNumber; i++) {
-        inputMsa.renameRow(i, QString::number(i));
+        inputMsa->renameRow(i, QString::number(i));
     }
 }
 
@@ -109,7 +109,7 @@ void MafftAddToAlignmentTask::prepare()
     Document* tempDocument = dfd->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(tmpAddedUrl), stateInfo);
 
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
-    int currentRowNumber = inputMsa.getNumRows();
+    int currentRowNumber = inputMsa->getNumRows();
     foreach(const U2EntityRef& sequenceRef, settings.addedSequencesRefs) {
         uniqueIdsToNames[QString::number(currentRowNumber)] = namesIterator.next();
         U2SequenceObject seqObject(QString::number(currentRowNumber), sequenceRef);
@@ -162,7 +162,7 @@ QList<Task*> MafftAddToAlignmentTask::onSubTaskFinished(Task* subTask) {
         arguments << saveAlignmentDocumentTask->getDocument()->getURLString();
         QString outputUrl = resultFilePath + ".out.fa";
 
-        logParser = new MAFFTLogParser(inputMsa.getNumRows(), 1, outputUrl);
+        logParser = new MAFFTLogParser(inputMsa->getNumRows(), 1, outputUrl);
         mafftTask = new ExternalToolRunTask(ET_MAFFT, arguments, logParser);
         mafftTask->setStandartOutputFile(resultFilePath);
         mafftTask->setSubtaskProgressWeight(65);
@@ -203,7 +203,7 @@ void MafftAddToAlignmentTask::run() {
 
     U2MsaDbi *dbi = modStep->getDbi()->getMsaDbi();
 
-    QStringList rowNames = inputMsa.getRowNames();
+    QStringList rowNames = inputMsa->getRowNames();
 
     int posInMsa = 0;
     int objectsCount = tmpDoc->getObjects().count();
@@ -240,7 +240,7 @@ Task::ReportResult MafftAddToAlignmentTask::report() {
 }
 
 bool MafftAddToAlignmentTask::useMemsaveOption() const {
-    qint64 maxLength = qMax(qint64(inputMsa.getLength()), settings.maxSequenceLength);
+    qint64 maxLength = qMax(qint64(inputMsa->getLength()), settings.maxSequenceLength);
     qint64 memoryInMB = 10 * maxLength * maxLength / 1024 / 1024;
     AppResourcePool* pool = AppContext::getAppSettings()->getAppResourcePool();
     return memoryInMB > qMin(pool->getMaxMemorySizeInMB(), pool->getTotalPhysicalMemory() / 2);

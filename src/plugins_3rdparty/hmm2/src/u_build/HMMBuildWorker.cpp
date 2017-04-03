@@ -1,26 +1,47 @@
-#include "HMMBuildWorker.h"
-#include "HMMIOWorker.h"
-#include "HMMBuildDialogController.h"
-#include "u_calibrate/HMMCalibrateTask.h"
+/**
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * http://ugene.unipro.ru
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
+#include <U2Core/AppContext.h>
+#include <U2Core/FailTask.h>
+#include <U2Core/Log.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/TaskSignalMapper.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Designer/DelegateEditors.h>
+
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/Datatype.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BasePorts.h>
-#include <U2Lang/BaseActorCategories.h>
-#include <U2Designer/DelegateEditors.h>
-#include <U2Lang/CoreLibConstants.h>
 
-#include <U2Core/MAlignment.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/Log.h>
-#include <U2Core/TaskSignalMapper.h>
-#include <U2Core/FailTask.h>
-
-/* TRANSLATOR U2::LocalWorkflow::HMMBuildWorker */
+#include "HMMBuildDialogController.h"
+#include "HMMBuildWorker.h"
+#include "HMMIOWorker.h"
+#include "u_calibrate/HMMCalibrateTask.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -247,9 +268,9 @@ Task* HMMBuildWorker::tick() {
 
             QVariantMap qm = inputMessage.getData().toMap();
             SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-            QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+            QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
             SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-            const MAlignment &msa = msaObj->getMAlignment();
+            const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
             
             Task* t = new HMMBuildTask(cfg, msa);
             connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));

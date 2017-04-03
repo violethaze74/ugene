@@ -62,10 +62,7 @@ QStringList StatisticsWidget::header() {
 }
 
 inline static QString timeStr(qint64 timeMks) {
-    QDateTime t;
-    t.setTimeSpec(Qt::UTC);
-    t.setMSecsSinceEpoch(timeMks / 1000);
-    return t.toString("hh:mm:ss.zzz");
+    return QTime::fromMSecsSinceStartOfDay(timeMks / 1000).toString("hh:mm:ss.zzz");
 }
 
 QList<QStringList> StatisticsWidget::data() {

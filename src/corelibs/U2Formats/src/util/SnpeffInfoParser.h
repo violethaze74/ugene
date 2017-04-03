@@ -31,6 +31,7 @@ class InfoPartParser;
 class U2OpStatus;
 
 class U2FORMATS_EXPORT SnpeffInfoParser : public QObject {
+    Q_OBJECT
 public:
     SnpeffInfoParser();
     ~SnpeffInfoParser();
@@ -52,6 +53,7 @@ private:
 };
 
 class InfoPartParser : public QObject {
+    Q_OBJECT
 public:
     InfoPartParser(const QString &keyWord, bool canStoreMessages = false);
 

@@ -120,7 +120,7 @@ ReadAssemblyProto::ReadAssemblyProto()
     setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::ASSEMBLY);
 
     setDisplayName(ReadAssemblyWorker::tr("Read Assembly"));
-    setDocumentation(ReadAssemblyWorker::tr("Reads assembly from files."));
+    setDocumentation(ReadAssemblyWorker::tr("Reads assembly from files. All assembly file formats supported by UGENE are allowed as input to this element."));
 
     { // ports description
         QMap<Descriptor, DataTypePtr> outTypeMap;

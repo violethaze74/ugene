@@ -224,7 +224,7 @@ void ExtractProductTask::run() {
 
     DNASequence productSequence = getProductSequence();
     CHECK_OP(stateInfo, );
-    U2EntityRef productRef = U2SequenceUtils::import(dbiRef, productSequence, stateInfo);
+    U2EntityRef productRef = U2SequenceUtils::import(stateInfo, dbiRef, productSequence);
     CHECK_OP(stateInfo, );
 
     U2SequenceObject *sequenceObject = new U2SequenceObject(productSequence.getName(), productRef);

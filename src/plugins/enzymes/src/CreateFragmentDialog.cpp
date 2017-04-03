@@ -21,6 +21,7 @@
 
 #include <QDir>
 #include <QMessageBox>
+#include <QPushButton>
 
 #include <U2Algorithm/EnzymeModel.h>
 
@@ -51,6 +52,8 @@ CreateFragmentDialog::CreateFragmentDialog(ADVSequenceObjectContext* ctx,  QWidg
 
     setupUi(this);
     new HelpButton(this, buttonBox, "19759667");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     tabWidget->setCurrentIndex(0);
 
@@ -71,6 +74,8 @@ CreateFragmentDialog::CreateFragmentDialog(U2SequenceObject* obj, const U2Region
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759667");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     seqObj = obj;
 
     QList<GObject*> aObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly,GObjectTypes::ANNOTATION_TABLE);

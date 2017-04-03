@@ -27,18 +27,6 @@
 #include <QTableView>
 #include <QWebElement>
 
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DocumentModel.h>
-
-#include <U2Gui/ToolsMenu.h>
-
-#include <U2View/ADVConstants.h>
-#include <U2View/ADVSequenceObjectContext.h>
-#include <U2View/DetView.h>
-#include <U2View/MSAEditorNameList.h>
-#include <U2View/MSAEditorTreeViewer.h>
-#include <U2View/MSAGraphOverview.h>
-
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -64,6 +52,19 @@
 #include <system/GTFile.h>
 #include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
+
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/ToolsMenu.h>
+
+#include <U2View/ADVConstants.h>
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/DetView.h>
+#include <U2View/MaEditorNameList.h>
+#include <U2View/MSAEditorTreeViewer.h>
+#include <U2View/MaGraphOverview.h>
 
 #include "GTTestsRegressionScenarios_4001_5000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -92,7 +93,6 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-
 #include "runnables/ugene/corelibs/U2Gui/AddNewDocumentDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
@@ -176,7 +176,7 @@ GUI_TEST_CLASS_DEFINITION(test_4007) {
 
 
     GTGlobals::FindOptions murineOptions(false);
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findFirstAnnotation(os, murineOptions) == NULL, "Annotations are connected to murine.gb");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findFirstAnnotation(os, murineOptions) != NULL, "Annotations are connected to murine.gb");
 
     //    Expected state: the file is reloaded, annotations object still have an association only with human_T1 sequence (if annotations object exists and has the same name as before reloading),
     //there is no errors in the log.
@@ -3081,7 +3081,7 @@ GUI_TEST_CLASS_DEFINITION(test_4524) {
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
 
     // Export the msa to SVG.
-    GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, sandBoxDir + "test_4524.svg", "svg", 0));
+    GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, sandBoxDir + "test_4524.svg", "SVG", 0));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export" << "Export as image"));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(10, 10));
     GTMouseDriver::click(Qt::RightButton);
@@ -3187,7 +3187,7 @@ GUI_TEST_CLASS_DEFINITION(test_4587) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4587/", "extended_dna.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::checkObjectTypes(os,
-        QSet<GObjectType>() << GObjectTypes::MULTIPLE_ALIGNMENT,
+        QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
         GTUtilsProjectTreeView::findIndex(os, "Contig1"));
     CHECK_SET_ERR(!l.hasError(), "logfile shouldn't contain errors");
 }
@@ -4157,10 +4157,10 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: "No colors" color scheme is selected, "No highlighting" highlight scheme is selected
+    //    Expected state: "Nucleotide UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "No colors");
+    GTComboBox::checkCurrentValue(os, colorScheme, "Nucleotide UGENE");
     GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
 
     //    4. Undo changes
@@ -4188,10 +4188,10 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: "No colors" color scheme is selected, "No highlighting" highlight scheme is selected
+    //    Expected state: "Amino UGENE" color scheme is selected, "Amino UGENE" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "No colors");
+    GTComboBox::checkCurrentValue(os, colorScheme, "Amino UGENE");
     GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
 
     //    4. Undo changes
@@ -4711,10 +4711,10 @@ GUI_TEST_CLASS_DEFINITION(test_4795) {
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    //    Expected state: "No colors" color scheme is selected, "No highlighting" highlight scheme is selected
+    //    Expected state: "Nucleotide UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "No colors");
+    GTComboBox::checkCurrentValue(os, colorScheme, "Nucleotide UGENE");
     GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
 }
 

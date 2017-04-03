@@ -30,7 +30,7 @@
 namespace U2 {
 
 class MSAEditor;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class PhyTreeGeneratorLauncherTask;
 class Task;
 class GObjectViewWindow;
@@ -69,7 +69,7 @@ private:
     MSAEditorMultiTreeViewer* getMultiTreeViewer() const;
 
     MSAEditor*                    editor;
-    QPointer<MAlignmentObject>   msaObject;
+    QPointer<MultipleSequenceAlignmentObject>   msaObject;
     CreatePhyTreeSettings         settings;
     bool                          addExistingTree;
     PhyTree                       phyTree;

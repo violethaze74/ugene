@@ -29,7 +29,16 @@ namespace U2 {
 
 class U2CORE_EXPORT DNAChromatogram {
 public:
-    DNAChromatogram() : traceLength(0), seqLength(0), hasQV(false) {}
+    enum Trace {
+        Trace_A,
+        Trace_C,
+        Trace_G,
+        Trace_T,
+    };
+
+    DNAChromatogram();
+
+    QString name;
     int traceLength;
     int seqLength;
     QVector<ushort> baseCalls;
@@ -42,6 +51,13 @@ public:
     QVector<char> prob_G;
     QVector<char> prob_T;
     bool hasQV;
+
+    ushort getValue(Trace trace, qint64 position) const;
+
+    bool operator ==(const DNAChromatogram &otherChromatogram) const;
+
+    static const ushort INVALID_VALUE;
+    static const char   DEFAULT_PROBABILITY;
 };
 
 } //namespace

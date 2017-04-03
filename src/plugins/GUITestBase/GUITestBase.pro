@@ -109,6 +109,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins/enzymes/EditFragmentDialogFiller.h \
             src/runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h \
 #   Runnables / UGENE / plugins / external_tools
+            src/runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h \
@@ -221,6 +222,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/project/sequence_exporting/from_project_view/GTTestsFromProjectView.h \
             src/tests/common_scenarios/project/user_locking/GTTestsProjectUserLocking.h \
             src/tests/common_scenarios/repeat_finder/GTTestsRepeatFinder.h \
+            src/tests/common_scenarios/sanger/GTTestsSanger.h \
             src/tests/common_scenarios/sequence_edit/GTTestsSequenceEdit.h \
             src/tests/common_scenarios/sequence_view/GTTestsSequenceView.h \
             src/tests/common_scenarios/shared_database/GTTestsSharedDatabase.h \
@@ -352,6 +354,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins/enzymes/EditFragmentDialogFiller.cpp \
             src/runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.cpp \
 #   Runnables / UGENE / plugins / external_tools
+            src/runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/FormatDBDialogFiller.cpp \
@@ -464,6 +467,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/project/sequence_exporting/from_project_view/GTTestsFromProjectView.cpp \
             src/tests/common_scenarios/project/user_locking/GTTestsProjectUserLocking.cpp \
             src/tests/common_scenarios/repeat_finder/GTTestsRepeatFinder.cpp \
+            src/tests/common_scenarios/sanger/GTTestsSanger.cpp \
             src/tests/common_scenarios/sequence_edit/GTTestsSequenceEdit.cpp \
             src/tests/common_scenarios/sequence_view/GTTestsSequenceView.cpp \
             src/tests/common_scenarios/shared_database/GTTestsSharedDatabase.cpp \

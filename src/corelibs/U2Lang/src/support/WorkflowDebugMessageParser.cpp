@@ -19,8 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Lang/Descriptor.h>
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Lang/BaseSlots.h>
+#include <U2Lang/Descriptor.h>
 #include <U2Lang/WorkflowContext.h>
 #include <U2Lang/WorkflowTransport.h>
 

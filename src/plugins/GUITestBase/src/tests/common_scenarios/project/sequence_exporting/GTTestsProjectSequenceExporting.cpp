@@ -52,7 +52,7 @@
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 
 #include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 #include <U2Core/DocumentModel.h>
 #include <U2View/ADVConstants.h>
 #include <U2Core/AppContext.h>
@@ -83,7 +83,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 #ifdef Q_OS_MAC
     expectedTitle = "proj4 UGENE";
 #else
-    expectedTitle = "proj4 UGENE - [Start Page]";
+    expectedTitle = "proj4 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
 

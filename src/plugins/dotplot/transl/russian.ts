@@ -322,12 +322,22 @@ Select valid file to build dotplot</source>
 <context>
     <name>U2::DotPlotFilterDialog</name>
     <message>
-        <location filename="../src/DotPlotFilterDialog.cpp" line="144"/>
+        <location filename="../src/DotPlotFilterDialog.cpp" line="51"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotFilterDialog.cpp" line="52"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotFilterDialog.cpp" line="145"/>
         <source>Feature names</source>
         <translation>Имена аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.cpp" line="144"/>
+        <location filename="../src/DotPlotFilterDialog.cpp" line="145"/>
         <source>No feature names have been selected. In that case dotplot will be empty. Note, If the feature names list is empty your sequences don&apos;t have annotations. Select some feature names or choose another filtration method</source>
         <translation>Имена аннотаций не были выбраны. В этом случае dotplot будет пустым. Если список аннотаций пустой, то ваши последовательности не содержат аннотации. Выберете несколько имен аннотаций или другой метод фильтрации</translation>
     </message>
@@ -335,7 +345,7 @@ Select valid file to build dotplot</source>
 <context>
     <name>U2::DotPlotFilterTask</name>
     <message>
-        <location filename="../src/DotPlotTasks.cpp" line="319"/>
+        <location filename="../src/DotPlotTasks.cpp" line="323"/>
         <source>Applying filter to dotplot</source>
         <translation>Применение фильтра к dotplot</translation>
     </message>
@@ -645,7 +655,7 @@ Select valid file to build dotplot</source>
         <translation>Неправильный формат файла dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotTasks.h" line="71"/>
+        <location filename="../src/DotPlotTasks.h" line="89"/>
         <source>DotPlot loading</source>
         <translation>Dotplot загружается</translation>
     </message>
@@ -653,7 +663,7 @@ Select valid file to build dotplot</source>
 <context>
     <name>U2::SaveDotPlotTask</name>
     <message>
-        <location filename="../src/DotPlotTasks.h" line="44"/>
+        <location filename="../src/DotPlotTasks.h" line="49"/>
         <source>DotPlot saving</source>
         <translation>Dotplot сохраняется</translation>
     </message>

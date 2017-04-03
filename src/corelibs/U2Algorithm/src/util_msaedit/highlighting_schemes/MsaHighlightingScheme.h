@@ -28,13 +28,13 @@ class QColor;
 
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleAlignmentObject;
 class MsaHighlightingSchemeFactory;
 
 class U2ALGORITHM_EXPORT MsaHighlightingScheme : public QObject {
     Q_OBJECT
 public:
-    MsaHighlightingScheme(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj);
+    MsaHighlightingScheme(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj);
 
     virtual void process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const;
     const MsaHighlightingSchemeFactory * getFactory() const;
@@ -65,7 +65,7 @@ public:
 
 protected:
     const MsaHighlightingSchemeFactory *factory;
-    MAlignmentObject *maObj;
+    MultipleAlignmentObject *maObj;
     bool useDots;
 };
 
@@ -75,10 +75,10 @@ public:
     MsaHighlightingSchemeFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType,
                                  bool refFree = false, bool needThreshold = false);
 
-    virtual MsaHighlightingScheme * create(QObject *parent, MAlignmentObject *maObj) const = 0;
+    virtual MsaHighlightingScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const = 0;
 
     const QString & getId() const;
-    const QString & getName() const;
+    const QString getName(bool nameWithAlphabet = false) const;
     DNAAlphabetType getAlphabetType() const;
     bool isRefFree() const;
     bool isNeedThreshold() const;
@@ -96,6 +96,8 @@ class U2ALGORITHM_EXPORT MsaHighlightingSchemeRegistry : public QObject {
 public:
     MsaHighlightingSchemeRegistry();
     ~MsaHighlightingSchemeRegistry();
+
+    static QStringList getExcludedIdsFromRawAlphabetSchemes();
 
     MsaHighlightingSchemeFactory * getMsaHighlightingSchemeFactoryById(const QString &id) const;
     QList<MsaHighlightingSchemeFactory *> getMsaHighlightingSchemes(DNAAlphabetType alphabetType) const;

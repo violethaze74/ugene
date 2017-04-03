@@ -23,22 +23,17 @@
 #define _U2_MSAEDITOR_MULTI_TREE_VIEWER_H_
 
 #include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#include <QtGui/QToolBar>
-#else
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QToolBar>
-#endif
-#include <QtCore/QString>
+
+#include <QStringList>
+#include <QToolBar>
+#include <QWidget>
+
 #include <U2Core/global.h>
-#include <QtCore/QStringList>
 
 namespace U2 {
 
 class MSAEditor;
 class MsaEditorTreeTabArea;
-class MSALabelWidget;
 class GObjectViewWindow;
 class MsaEditorTreeTab;
 

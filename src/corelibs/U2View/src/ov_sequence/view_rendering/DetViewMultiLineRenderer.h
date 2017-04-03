@@ -33,7 +33,7 @@ class DetViewSingleLineRenderer;
 /************************************************************************/
 class DetViewMultiLineRenderer: public DetViewRenderer {
 public:
-    DetViewMultiLineRenderer(DetView* detView, ADVSequenceObjectContext* ctx);
+    DetViewMultiLineRenderer(DetView* detView, SequenceObjectContext* ctx);
     ~DetViewMultiLineRenderer();
 
     qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const;

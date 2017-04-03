@@ -19,6 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
+#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MSAConsensusUtils.h>
+
 #include <QApplication>
 #include <QClipboard>
 #include <QHelpEvent>
@@ -26,33 +30,52 @@
 #include <QPainter>
 #include <QToolTip>
 
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Settings.h>
-#include <U2Core/MAlignmentObject.h>
-#include <U2Gui/GraphUtils.h>
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/GraphUtils.h>
 #include <U2Gui/OPWidgetFactory.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
-#include <U2Algorithm/MSAConsensusUtils.h>
 
 #include "MSAEditor.h"
+#include "MSAEditorConsensusArea.h"
 #include "MSAEditorSequenceArea.h"
 #include "General/MSAGeneralTabFactory.h"
-
-#include "MSAEditorConsensusArea.h"
 
 namespace U2 {
 
 #define SETTINGS_ROOT QString("msaeditor/")
 
-MSAEditorConsensusArea::MSAEditorConsensusArea(MSAEditorUI *_ui)
-    : editor(_ui->editor), ui(_ui)
+MaEditorConsensusAreaSettings::MaEditorConsensusAreaSettings() {
+    // SANGER_TODO: currently the ruler cannot be drawn above the text - draw methods should be refactored
+    order << MSAEditorConsElement_HISTOGRAM
+          << MSAEditorConsElement_CONSENSUS_TEXT
+          << MSAEditorConsElement_RULER;
+    visibility.insert(MSAEditorConsElement_HISTOGRAM, true);
+    visibility.insert(MSAEditorConsElement_CONSENSUS_TEXT, true);
+    visibility.insert(MSAEditorConsElement_RULER, true);
+}
+
+MaEditorConsensusAreaSettings::MaEditorConsensusAreaSettings(const QList<MaEditorConsElement> &order,
+                                                             const QMap<MaEditorConsElement, bool> &visibility)
+    : order(order),
+      visibility(visibility) {
+}
+
+bool MaEditorConsensusAreaSettings::isVisible(const MaEditorConsElement element) const {
+    return visibility.value(element, false);
+}
+
+MSAEditorConsensusArea::MSAEditorConsensusArea(MaEditorWgt *_ui)
+    : editor(_ui->getEditor()),
+      ui(_ui)
 {
-    assert(editor->getMSAObject());
+    assert(editor->getMaObject());
     completeRedraw = true;
     curPos = -1;
     scribbling = false;
@@ -63,14 +86,14 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MSAEditorUI *_ui)
     parent->setObjectName("parent");
     childObject = new QObject(parent);
 
-    connect(ui->seqArea, SIGNAL(si_startChanged(const QPoint &, const QPoint &)), SLOT(sl_startChanged(const QPoint &, const QPoint &)));
-    connect(ui->seqArea, SIGNAL(si_selectionChanged(const MSAEditorSelection &, const MSAEditorSelection &)),
-        SLOT(sl_selectionChanged(const MSAEditorSelection &, const MSAEditorSelection &)));
-    connect(ui->editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_zoomOperationPerformed(bool)));
-    connect(ui->seqArea->getHBar(), SIGNAL(actionTriggered(int)), SLOT(sl_onScrollBarActionTriggered(int)));
+    connect(ui->getSequenceArea(), SIGNAL(si_startChanged(const QPoint &, const QPoint &)), SLOT(sl_startChanged(const QPoint &, const QPoint &)));
+    connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+        SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
+    connect(ui->getEditor(), SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_zoomOperationPerformed(bool)));
+    connect(ui->getSequenceArea()->getHBar(), SIGNAL(actionTriggered(int)), SLOT(sl_onScrollBarActionTriggered(int)));
 
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MAlignment &, const MAlignmentModInfo &)),
-                                    SLOT(sl_alignmentChanged(const MAlignment &, const MAlignmentModInfo &)));
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)),
+                                    SLOT(sl_alignmentChanged()));
 
     connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView * , QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
@@ -89,11 +112,13 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MSAEditorUI *_ui)
 
     setupFontAndHeight();
 
+    connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(setupFontAndHeight()));
+
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
 
     MSAConsensusAlgorithmFactory* algo = getConsensusAlgorithmFactory();
-    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(NULL, editor->getMSAObject(), algo));
+    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(NULL, editor->getMaObject(), algo));
     connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
     addAction(ui->getCopySelectionAction());
     addAction(ui->getPasteAction());
@@ -112,21 +137,21 @@ QSharedPointer<MSAEditorConsensusCache> MSAEditorConsensusArea::getConsensusCach
 }
 
 void MSAEditorConsensusArea::paintFullConsensus(QPixmap &pixmap) {
-    pixmap = QPixmap(ui->seqArea->getXByColumnNum(ui->editor->getAlignmentLen()), getYRange(MSAEditorConsElement_RULER).startPos);
+    pixmap = QPixmap(ui->getSequenceArea()->getXByColumnNum(ui->getEditor()->getAlignmentLen()), getYRange(MSAEditorConsElement_RULER).startPos);
     QPainter p(&pixmap);
     paintFullConsensus(p);
 }
 
 void MSAEditorConsensusArea::paintFullConsensus(QPainter &p) {
-    p.fillRect(QRect(0, 0, ui->seqArea->getXByColumnNum(ui->editor->getAlignmentLen()), getYRange(MSAEditorConsElement_RULER).startPos), Qt::white);
-    drawConsensus(p, 0, ui->editor->getAlignmentLen() - 1, true);
-    drawHistogram(p, 0, ui->editor->getAlignmentLen() - 1);
+    p.fillRect(QRect(0, 0, ui->getSequenceArea()->getXByColumnNum(ui->getEditor()->getAlignmentLen()), getYRange(MSAEditorConsElement_RULER).startPos), Qt::white);
+    drawConsensus(p, 0, ui->getEditor()->getAlignmentLen() - 1, true);
+    drawHistogram(p, 0, ui->getEditor()->getAlignmentLen() - 1);
 }
 
 void MSAEditorConsensusArea::paintConsenusPart(QPixmap &pixmap, const U2Region &region, const QList<qint64> &seqIdx) {
     CHECK(!region.isEmpty(), );
     CHECK(!seqIdx.isEmpty(), );
-    CHECK(!ui->seqArea->isAlignmentEmpty(), );
+    CHECK(!ui->getSequenceArea()->isAlignmentEmpty(), );
 
     CHECK(editor->getColumnWidth() * region.length < 32768, );
     pixmap = QPixmap(editor->getColumnWidth() * region.length, getYRange(MSAEditorConsElement_RULER).startPos);
@@ -138,20 +163,20 @@ void MSAEditorConsensusArea::paintConsenusPart(QPixmap &pixmap, const U2Region &
 void MSAEditorConsensusArea::paintConsenusPart(QPainter &p, const U2Region &region, const QList<qint64> &seqIdx) {
     CHECK(!region.isEmpty(), );
     CHECK(!seqIdx.isEmpty(), );
-    CHECK(!ui->seqArea->isAlignmentEmpty(), );
+    CHECK(!ui->getSequenceArea()->isAlignmentEmpty(), );
 
     p.fillRect(QRect(0, 0, editor->getColumnWidth() * region.length, getYRange(MSAEditorConsElement_RULER).startPos), Qt::white);
 
     //draw consensus
     p.setPen(Qt::black);
-    QFont f = ui->editor->getFont();
+    QFont f = ui->getEditor()->getFont();
     f.setWeight(QFont::DemiBold);
     p.setFont(f);
 
     MSAConsensusAlgorithm *alg = getConsensusAlgorithm();
     SAFE_POINT(alg != NULL, tr("MSA consensus algorothm is NULL"), );
-    SAFE_POINT(editor->getMSAObject() != NULL, tr("MSA object is NULL"), );
-    const MAlignment &msa = editor->getMSAObject()->getMAlignment();
+    SAFE_POINT(editor->getMaObject() != NULL, tr("MSA object is NULL"), );
+    const MultipleAlignment msa = editor->getMaObject()->getMultipleAlignment();
     for (int pos = 0; pos < region.length; pos++) {
         char c = alg->getConsensusChar(msa, pos + region.startPos, seqIdx.toVector());
         drawConsensusChar(p, pos, 0, c, false, true);
@@ -166,7 +191,7 @@ void MSAEditorConsensusArea::paintConsenusPart(QPainter &p, const U2Region &regi
 
     QBrush brush(c, Qt::Dense4Pattern);
     for (int pos = region.startPos, lastPos = region.endPos() - 1; pos <= lastPos; pos++) {
-        U2Region xr = ui->seqArea->getBaseXRange(pos, region.startPos, true);
+        U2Region xr = ui->getSequenceArea()->getBaseXRange(pos, region.startPos, true);
         int percent = 0;
         alg->getConsensusCharAndScore(msa, pos, percent, seqIdx.toVector());
         percent = qRound(percent * 100. / seqIdx.size() );
@@ -189,10 +214,10 @@ void MSAEditorConsensusArea::paintRulerPart(QPixmap &pixmap, const U2Region &reg
 
 void MSAEditorConsensusArea::paintRulerPart(QPainter &p, const U2Region &region) {
     p.fillRect(QRect(0, 0, editor->getColumnWidth() * region.length, getYRange(MSAEditorConsElement_RULER).length), Qt::white);
-    p.translate(-ui->seqArea->getBaseXRange(region.startPos, region.startPos, true).startPos, -getYRange(MSAEditorConsElement_RULER).startPos);
+    p.translate(-ui->getSequenceArea()->getBaseXRange(region.startPos, region.startPos, true).startPos, -getYRange(MSAEditorConsElement_RULER).startPos);
     drawRuler(p, region.startPos, region.endPos(), true);
     // return back to (0, 0)
-    p.translate(ui->seqArea->getBaseXRange(region.startPos, region.startPos, true).startPos, getYRange(MSAEditorConsElement_RULER).startPos);
+    p.translate(ui->getSequenceArea()->getBaseXRange(region.startPos, region.startPos, true).startPos, getYRange(MSAEditorConsElement_RULER).startPos);
 }
 
 bool MSAEditorConsensusArea::event(QEvent* e) {
@@ -206,10 +231,10 @@ bool MSAEditorConsensusArea::event(QEvent* e) {
             return true;
         }
         case QEvent::FocusIn :
-            ui->seqArea->setFocus(static_cast<QFocusEvent *>(e)->reason());
+            ui->getSequenceArea()->setFocus(static_cast<QFocusEvent *>(e)->reason());
             break;
         case QEvent::Wheel :
-            ui->seqArea->setFocus(Qt::MouseFocusReason);
+            ui->getSequenceArea()->setFocus(Qt::MouseFocusReason);
             break;
         default:
             ; // skip other events
@@ -220,11 +245,11 @@ bool MSAEditorConsensusArea::event(QEvent* e) {
 
 QString MSAEditorConsensusArea::createToolTip(QHelpEvent* he) const {
     int  x = he->pos().x();
-    int pos = ui->seqArea->coordToPos(x);
+    int pos = ui->getSequenceArea()->coordToPos(x);
     QString result;
     if (pos >= 0) {
-        assert(editor->getMSAObject());
-        const MAlignment& ma = editor->getMSAObject()->getMAlignment();
+        assert(editor->getMaObject());
+        const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
         result = MSAConsensusUtils::getConsensusPercentTip(ma, pos, 0, 4);
     }
     return result;
@@ -237,7 +262,7 @@ void MSAEditorConsensusArea::resizeEvent(QResizeEvent *e) {
 
 void MSAEditorConsensusArea::paintEvent(QPaintEvent *e) {
     QSize s = size() * devicePixelRatio();
-    QSize sas = ui->seqArea->size() * devicePixelRatio();
+    QSize sas = ui->getSequenceArea()->size() * devicePixelRatio();
 
     if (sas.width() != s.width()) { //this can happen due to the manual layouting performed by MSAEditor -> just wait for the next resize+paint
         return;
@@ -267,48 +292,54 @@ void MSAEditorConsensusArea::paintEvent(QPaintEvent *e) {
 }
 
 void MSAEditorConsensusArea::drawContent(QPainter& p ) {
-    drawConsensus(p);
-    drawRuler(p);
-    drawHistogram(p);
+    if (drawSettings.isVisible(MSAEditorConsElement_CONSENSUS_TEXT)) {
+        drawConsensus(p);
+    }
+    if (drawSettings.isVisible(MSAEditorConsElement_RULER)) {
+        drawRuler(p);
+    }
+    if (drawSettings.isVisible(MSAEditorConsElement_HISTOGRAM)) {
+        drawHistogram(p);
+    }
 }
 
 void MSAEditorConsensusArea::drawSelection(QPainter& p) {
-    if (ui->seqArea->isAlignmentEmpty()) {
+    if (ui->getSequenceArea()->isAlignmentEmpty()) {
         return;
     }
 
-    QFont f = ui->editor->getFont();
+    QFont f = ui->getEditor()->getFont();
     f.setWeight(QFont::DemiBold);
     p.setFont(f);
 
-    MSAEditorSelection selection = ui->seqArea->getSelection();
-    int startPos = qMax(selection.x(), ui->seqArea->getFirstVisibleBase());
+    MaEditorSelection selection = ui->getSequenceArea()->getSelection();
+    int startPos = qMax(selection.x(), ui->getSequenceArea()->getFirstVisibleBase());
     int endPos = qMin(selection.x() + selection.width() - 1,
-        ui->seqArea->getLastVisibleBase(true));
-    SAFE_POINT(endPos < ui->editor->getAlignmentLen(), "Incorrect selection width!", );
+        ui->getSequenceArea()->getLastVisibleBase(true));
+    SAFE_POINT(endPos < ui->getEditor()->getAlignmentLen(), "Incorrect selection width!", );
     for (int pos = startPos; pos <= endPos; ++pos) {
-        drawConsensusChar(p, pos, ui->seqArea->getFirstVisibleBase(), true);
+        drawConsensusChar(p, pos, ui->getSequenceArea()->getFirstVisibleBase(), true);
     }
 }
 
 void MSAEditorConsensusArea::drawConsensus(QPainter& p) {
-    if (ui->seqArea->isAlignmentEmpty()) {
+    if (ui->getSequenceArea()->isAlignmentEmpty()) {
         return;
     }
-    int startPos = ui->seqArea->getFirstVisibleBase();
-    int lastPos = ui->seqArea->getLastVisibleBase(true);
+    int startPos = ui->getSequenceArea()->getFirstVisibleBase();
+    int lastPos = ui->getSequenceArea()->getLastVisibleBase(true);
     drawConsensus(p, startPos, lastPos);
 }
 
 void MSAEditorConsensusArea::drawConsensus(QPainter &p, int startPos, int lastPos, bool useVirtualCoords) {
-    if (ui->seqArea->isAlignmentEmpty()) {
+    if (ui->getSequenceArea()->isAlignmentEmpty()) {
         return;
     }
 
     //draw consensus
     p.setPen(Qt::black);
 
-    QFont f = ui->editor->getFont();
+    QFont f = ui->getEditor()->getFont();
     f.setWeight(QFont::DemiBold);
     p.setFont(f);
 
@@ -320,7 +351,7 @@ void MSAEditorConsensusArea::drawConsensus(QPainter &p, int startPos, int lastPo
 
 void MSAEditorConsensusArea::drawConsensusChar(QPainter& p, int pos, int firstVisiblePos, bool selected, bool useVirtualCoords) {
     U2Region yRange = getYRange(MSAEditorConsElement_CONSENSUS_TEXT);
-    U2Region xRange = ui->seqArea->getBaseXRange(pos, firstVisiblePos, useVirtualCoords);
+    U2Region xRange = ui->getSequenceArea()->getBaseXRange(pos, firstVisiblePos, useVirtualCoords);
     QRect cr(xRange.startPos, yRange.startPos, xRange.length + 1, yRange.length);
 
     if (selected) {
@@ -337,7 +368,7 @@ void MSAEditorConsensusArea::drawConsensusChar(QPainter& p, int pos, int firstVi
 
 void MSAEditorConsensusArea::drawConsensusChar(QPainter &p, int pos, int firstVisiblePos, char consChar, bool selected, bool useVirtualCoords) {
     U2Region yRange = getYRange(MSAEditorConsElement_CONSENSUS_TEXT);
-    U2Region xRange = ui->seqArea->getBaseXRange(pos, firstVisiblePos, useVirtualCoords);
+    U2Region xRange = ui->getSequenceArea()->getBaseXRange(pos, firstVisiblePos, useVirtualCoords);
     QRect cr(xRange.startPos, yRange.startPos, xRange.length + 1, yRange.length);
 
     if (selected) {
@@ -353,7 +384,7 @@ void MSAEditorConsensusArea::drawConsensusChar(QPainter &p, int pos, int firstVi
 #define RULER_NOTCH_SIZE 3
 
 void MSAEditorConsensusArea::drawRuler(QPainter& p, int start, int end, bool drawFull) {
-    if (ui->seqArea->isAlignmentEmpty()) {
+    if (ui->getSequenceArea()->isAlignmentEmpty()) {
         return;
     }
 
@@ -362,9 +393,9 @@ void MSAEditorConsensusArea::drawRuler(QPainter& p, int start, int end, bool dra
 
     int w = (start == -1 && end == -1) ? width() : (end - start)*ui->getEditor()->getColumnWidth();
     int startPos = (start != -1) ? start
-                                 : ui->seqArea->getFirstVisibleBase();
+                                 : ui->getSequenceArea()->getFirstVisibleBase();
     int lastPos = (end != - 1) ? end - 1
-                               : ui->seqArea->getLastVisibleBase(true);
+                               : ui->getSequenceArea()->getLastVisibleBase(true);
 
     QFontMetrics rfm(rulerFont,this);
     U2Region rr = getYRange(MSAEditorConsElement_RULER);
@@ -372,8 +403,8 @@ void MSAEditorConsensusArea::drawRuler(QPainter& p, int start, int end, bool dra
     int dy = rr.startPos - rrP.endPos();
     rr.length += dy;
     rr.startPos -= dy;
-    U2Region firstBaseXReg = ui->seqArea->getBaseXRange(startPos, startPos, drawFull);
-    U2Region lastBaseXReg = ui->seqArea->getBaseXRange(lastPos, startPos, drawFull);
+    U2Region firstBaseXReg = ui->getSequenceArea()->getBaseXRange(startPos, startPos, drawFull);
+    U2Region lastBaseXReg = ui->getSequenceArea()->getBaseXRange(lastPos, startPos, drawFull);
     int firstLastLen = lastBaseXReg.startPos - firstBaseXReg.startPos;
     int firstXCenter = firstBaseXReg.startPos + firstBaseXReg.length / 2;
     QPoint startPoint(firstXCenter, rr.startPos);
@@ -396,17 +427,17 @@ void MSAEditorConsensusArea::drawRuler(QPainter& p, int start, int end, bool dra
 }
 
 void MSAEditorConsensusArea::drawHistogram(QPainter& p) {
-    if (ui->seqArea->isAlignmentEmpty()) {
+    if (ui->getSequenceArea()->isAlignmentEmpty()) {
         return;
     }
 
-    int firstBase = ui->seqArea->getFirstVisibleBase();
-    int lastBase = ui->seqArea->getLastVisibleBase(true);
+    int firstBase = ui->getSequenceArea()->getFirstVisibleBase();
+    int lastBase = ui->getSequenceArea()->getLastVisibleBase(true);
     drawHistogram(p, firstBase, lastBase);
 }
 
 void MSAEditorConsensusArea::drawHistogram(QPainter &p, int firstBase, int lastBase) {
-    if (ui->seqArea->isAlignmentEmpty()) {
+    if (ui->getSequenceArea()->isAlignmentEmpty()) {
         return;
     }
 
@@ -421,7 +452,7 @@ void MSAEditorConsensusArea::drawHistogram(QPainter &p, int firstBase, int lastB
     QVector<QRect> rects;
 
     for (int pos = firstBase, lastPos = lastBase; pos <= lastPos; pos++) {
-        U2Region xr = ui->seqArea->getBaseXRange(pos, firstBase, true);
+        U2Region xr = ui->getSequenceArea()->getBaseXRange(pos, firstBase, true);
         int percent = consensusCache->getConsensusCharPercent(pos);
         assert(percent >= 0 && percent <= 100);
         int h = qRound(percent * yr.length / 100.0);
@@ -442,22 +473,31 @@ void MSAEditorConsensusArea::drawHistogram(QPainter &p, int firstBase, int lastB
 #endif
 }
 
-U2Region MSAEditorConsensusArea::getYRange(MSAEditorConsElement e) const {
+U2Region MSAEditorConsensusArea::getYRange(MaEditorConsElement e) const {
     U2Region res;
-    switch(e) {
-        case MSAEditorConsElement_HISTOGRAM:
-            res = U2Region(0, 50);
+
+    for (QList<MaEditorConsElement>::iterator it = drawSettings.order.begin(); it != drawSettings.order.end(); it++) {
+        if (*it == e) {
+            res.length = getYRangeLength(e);
             break;
-        case MSAEditorConsElement_CONSENSUS_TEXT:
-            res = U2Region(0, editor->getRowHeight());
-            res.startPos += getYRange(MSAEditorConsElement(e-1)).endPos();
-            break;
-        case MSAEditorConsElement_RULER:
-            res = U2Region(0, rulerFontHeight + 2 * RULER_NOTCH_SIZE + 4);
-            res.startPos += getYRange(MSAEditorConsElement(e - 1)).endPos();
-            break;
+        } else {
+            res.startPos += getYRangeLength(*it) * drawSettings.isVisible(*it);
+        }
     }
     return res;
+}
+
+int MSAEditorConsensusArea::getYRangeLength(MaEditorConsElement e) const {
+    switch(e) {
+        case MSAEditorConsElement_HISTOGRAM:
+            return 50;
+        case MSAEditorConsElement_CONSENSUS_TEXT:
+            return editor->getSequenceRowHeight();
+        case MSAEditorConsElement_RULER:
+            return  rulerFontHeight + 2 * RULER_NOTCH_SIZE + 4;
+    }
+    // SANGER_TODO: remove or add FAIL?
+    return -1;
 }
 
 MSAConsensusAlgorithmFactory* MSAEditorConsensusArea::getConsensusAlgorithmFactory() {
@@ -467,7 +507,7 @@ MSAConsensusAlgorithmFactory* MSAEditorConsensusArea::getConsensusAlgorithmFacto
     QString lastUsedAlgo = AppContext::getSettings()->getValue(lastUsedAlgoKey).toString();
     MSAConsensusAlgorithmFactory* algo = reg->getAlgorithmFactory(lastUsedAlgo);
 
-    const DNAAlphabet* al = editor->getMSAObject()->getAlphabet();
+    const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
     ConsensusAlgorithmFlags alphaFlags = MSAConsensusAlgorithmFactory::getAphabetFlags(al);
     if (algo == NULL || (algo->getFlags() & alphaFlags) != alphaFlags) {
         algo = reg->getAlgorithmFactory(BuiltInConsensusAlgorithms::DEFAULT_ALGO);
@@ -500,7 +540,7 @@ void MSAEditorConsensusArea::sl_startChanged(const QPoint& p, const QPoint& prev
     update();
 }
 
-void MSAEditorConsensusArea::sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&) {
+void MSAEditorConsensusArea::sl_alignmentChanged() {
     updateConsensusAlgorithm();
     completeRedraw = true;
     update();
@@ -508,10 +548,9 @@ void MSAEditorConsensusArea::sl_alignmentChanged(const MAlignment&, const MAlign
 
 void MSAEditorConsensusArea::setupFontAndHeight() {
     rulerFont.setFamily("Arial");
-    rulerFont.setPointSize(qMax(8, int(ui->editor->getFont().pointSize() * 0.7)));
+    rulerFont.setPointSize(qMax(8, int(ui->getEditor()->getFont().pointSize() * 0.7)));
     rulerFontHeight = QFontMetrics(rulerFont,this).height();
     setFixedHeight( getYRange(MSAEditorConsElement_RULER).endPos() + 1);
-
 }
 
 void MSAEditorConsensusArea::sl_zoomOperationPerformed( bool resizeModeChanged )
@@ -524,7 +563,7 @@ void MSAEditorConsensusArea::sl_zoomOperationPerformed( bool resizeModeChanged )
     }
 }
 
-void MSAEditorConsensusArea::sl_selectionChanged(const MSAEditorSelection& current, const MSAEditorSelection& prev) {
+void MSAEditorConsensusArea::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev) {
     // TODO: return if only height of selection changes?
     Q_UNUSED(current);
     Q_UNUSED(prev);
@@ -547,7 +586,9 @@ void MSAEditorConsensusArea::buildMenu(QMenu* m) {
     copyMenu->addAction(copyConsensusAction);
     copyMenu->addAction(copyConsensusWithGapsAction);
 
-    m->addAction(configureConsensusAction);
+    if (qobject_cast<MSAEditor*>(editor) != NULL) {
+        m->addAction(configureConsensusAction);
+    }
 }
 
 void MSAEditorConsensusArea::sl_copyConsensusSequence() {
@@ -577,7 +618,8 @@ void MSAEditorConsensusArea::sl_changeConsensusAlgorithm(const QString& algoId) 
 }
 
 QString MSAEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
-    const DNAAlphabet* al = editor->getMSAObject()->getAlphabet();
+    const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
+    SAFE_POINT(NULL != al, "Alphabet is NULL", "");
     const char* suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic" : "_raw";
     return SETTINGS_ROOT + "_consensus_algorithm_"+ suffix;
 }
@@ -621,6 +663,20 @@ void MSAEditorConsensusArea::setConsensusAlgorithmConsensusThreshold(int val) {
     algo->setThreshold(val);
 }
 
+void MSAEditorConsensusArea::setDrawSettings(const MaEditorConsensusAreaSettings& settings) {
+    drawSettings = settings;
+
+    // update height
+    int minHeight = 0;
+    foreach (const MaEditorConsElement& element, drawSettings.order) {
+        if (drawSettings.isVisible(element)) {
+            minHeight += getYRangeLength(element);
+        }
+    }
+    setMaximumHeight(minHeight);
+    setMinimumHeight(minHeight);
+}
+
 void MSAEditorConsensusArea::sl_onConsensusThresholdChanged(int newValue) {
     Q_UNUSED(newValue);
     completeRedraw = true;
@@ -648,12 +704,12 @@ void MSAEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
     int x = e->x();
     if (e->buttons() & Qt::LeftButton) {
         selecting = true;
-        curPos = ui->seqArea->getColumnNumByX(x, selecting);
+        curPos = ui->getSequenceArea()->getColumnNumByX(x, selecting);
         if (curPos !=-1) {
-            int height = ui->seqArea->getNumDisplayedSequences();
+            int height = ui->getSequenceArea()->getNumDisplayedSequences();
             // select current column
-            MSAEditorSelection selection(curPos, 0, 1, height);
-            ui->seqArea->setSelection(selection);
+            MaEditorSelection selection(curPos, 0, 1, height);
+            ui->getSequenceArea()->setSelection(selection);
             scribbling = true;
         }
     }
@@ -662,9 +718,9 @@ void MSAEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
 
 void MSAEditorConsensusArea::mouseMoveEvent(QMouseEvent *e) {
     if ((e->buttons() & Qt::LeftButton) && scribbling) {
-        int newPos = ui->seqArea->getColumnNumByX(e->x(), selecting);
-        if ( ui->seqArea->isPosInRange(newPos)) {
-            ui->seqArea->updateHBarPosition(newPos, true);
+        int newPos = ui->getSequenceArea()->getColumnNumByX(e->x(), selecting);
+        if ( ui->getSequenceArea()->isPosInRange(newPos)) {
+            ui->getSequenceArea()->updateHBarPosition(newPos, true);
         }
         updateSelection(newPos);
     }
@@ -672,20 +728,20 @@ void MSAEditorConsensusArea::mouseMoveEvent(QMouseEvent *e) {
 }
 
 void MSAEditorConsensusArea::mouseReleaseEvent(QMouseEvent *e) {
-    if (ui->seqArea->isAlignmentEmpty()) {
+    if (ui->getSequenceArea()->isAlignmentEmpty()) {
         QWidget::mouseReleaseEvent(e);
         return;
     }
 
     if (e->button() == Qt::LeftButton) {
-        int newPos = ui->seqArea->getColumnNumByX(e->x(), selecting);
+        int newPos = ui->getSequenceArea()->getColumnNumByX(e->x(), selecting);
         updateSelection(newPos);
         curPos = newPos;
         scribbling = false;
         selecting = false;
     }
 
-    ui->seqArea->getHBar()->setupRepeatAction(QAbstractSlider::SliderNoAction);
+    ui->getSequenceArea()->getHBar()->setupRepeatAction(QAbstractSlider::SliderNoAction);
     QWidget::mouseReleaseEvent(e);
 }
 
@@ -693,17 +749,17 @@ void MSAEditorConsensusArea::updateSelection(int newPos) {
     CHECK(newPos != curPos, );
     CHECK(newPos != -1, );
 
-    int height = ui->seqArea->getNumDisplayedSequences();
+    int height = ui->getSequenceArea()->getNumDisplayedSequences();
     int startPos = qMin(curPos,newPos);
     int width = qAbs(newPos - curPos) + 1;
-    MSAEditorSelection selection(startPos, 0, width, height);
-    ui->seqArea->setSelection(selection);
+    MaEditorSelection selection(startPos, 0, width, height);
+    ui->getSequenceArea()->setSelection(selection);
 }
 
 void MSAEditorConsensusArea::sl_onScrollBarActionTriggered(int scrollAction) {
     if (scribbling && (scrollAction ==  QAbstractSlider::SliderSingleStepAdd || scrollAction == QAbstractSlider::SliderSingleStepSub)) {
         QPoint coord = mapFromGlobal(QCursor::pos());
-        int newPos = ui->seqArea->getColumnNumByX(coord.x(), selecting);
+        int newPos = ui->getSequenceArea()->getColumnNumByX(coord.x(), selecting);
         updateSelection(newPos);
     }
 }

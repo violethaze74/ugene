@@ -19,26 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QFocusEvent>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLineEdit>
-#include <QtGui/QListWidget>
-#include <QtGui/QMessageBox>
-#include <QtGui/QScrollArea>
-#include <QtGui/QScrollBar>
-#include <QtGui/QToolButton>
-#include <QtGui/QVBoxLayout>
-#else
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListWidget>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QScrollBar>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QVBoxLayout>
-#endif
+#include <QFocusEvent>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QMessageBox>
+#include <QScrollArea>
+#include <QScrollBar>
+#include <QToolButton>
+#include <QVBoxLayout>
 
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/WizardController.h>
 

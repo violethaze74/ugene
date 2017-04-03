@@ -72,6 +72,7 @@ public:
     static const U2DataType FilterTableType             = 7;
     static const U2DataType KnownMutationsTrackType     = 8;
     static const U2DataType AnnotationTable             = 10;
+    static const U2DataType Mca                         = 11;
     /** UDR object types 101..199 */
     static const U2DataType Text                        = 101;
     static const U2DataType PhyTree                     = 102;

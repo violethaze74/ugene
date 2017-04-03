@@ -38,6 +38,7 @@ public:
 
 public slots:
     void sl_runWithExtFileSpecify();
+    void sl_runAlign();
 private:
     GObjectViewWindowContext* viewCtx;
     QString lastDBPath;

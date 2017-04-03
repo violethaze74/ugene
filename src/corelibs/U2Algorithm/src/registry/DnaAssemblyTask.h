@@ -22,17 +22,14 @@
 #ifndef _U2_DNA_ASSEMBLY_TASK_H_
 #define _U2_DNA_ASSEMBLY_TASK_H_
 
-#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/DNASequence.h>
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GUrl.h>
-#include <U2Core/MAlignment.h>
-#include <U2Core/Task.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
 class Document;
-
-
 
 class U2ALGORITHM_EXPORT ShortReadSet {
 public:
@@ -51,7 +48,6 @@ public:
     ShortReadSet(const GUrl& _url, LibraryType t, MateOrder m) : url(_url), type(t), order(m) {}
 
 };
-
 
 class U2ALGORITHM_EXPORT DnaAssemblyToRefTaskSettings {
 public:

@@ -205,10 +205,14 @@ static QList<QByteArray> quantify(const QList<QByteArray>& input) {
 }   // unnamed namespace
 
 void MysqlSequenceDbi::updateSequenceData(const U2DataId& sequenceId, const U2Region& regionToReplace, const QByteArray& dataToInsert, const QVariantMap &hints, U2OpStatus& os) {
+    updateSequenceData(sequenceId, sequenceId, regionToReplace, dataToInsert, hints, os);
+}
+
+void MysqlSequenceDbi::updateSequenceData(const U2DataId &masterId, const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
-    MysqlModificationAction updateAction(dbi, sequenceId);
+    MysqlModificationAction updateAction(dbi, masterId);
     updateAction.prepare(os);
     CHECK_OP(os, );
 

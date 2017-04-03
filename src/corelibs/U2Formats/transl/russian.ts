@@ -100,16 +100,9 @@
         <translation>GTF</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="767"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="766"/>
         <source>Unexpected number of modified objects. Expected: 1, actual: %1</source>
         <translation>Unexpected number of modified objects. Expected: 1, actual: %1</translation>
-    </message>
-</context>
-<context>
-    <name>U2</name>
-    <message>
-        <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
-        <translation type="vanished">File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
 </context>
 <context>
@@ -247,12 +240,12 @@
         <translation>Некорректные данные в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="510"/>
+        <location filename="../src/ace/AceFormat.cpp" line="508"/>
         <source>Alphabet unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="536"/>
+        <location filename="../src/ace/AceFormat.cpp" line="534"/>
         <source>File doesn&apos;t contain any msa objects</source>
         <translation>Файл не содержит msa объектов</translation>
     </message>
@@ -1328,7 +1321,7 @@
     <message>
         <location filename="../src/GFFFormat.cpp" line="219"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
-        <translation type="unfinished">File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
+        <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
         <location filename="../src/GFFFormat.cpp" line="265"/>
@@ -1734,13 +1727,13 @@
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="171"/>
-        <location filename="../src/MSFFormat.cpp" line="212"/>
+        <location filename="../src/MSFFormat.cpp" line="170"/>
+        <location filename="../src/MSFFormat.cpp" line="211"/>
         <source>Check sum test failed</source>
         <translation>Проверка контрольной суммы не удалась</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="220"/>
+        <location filename="../src/MSFFormat.cpp" line="219"/>
         <source>Alphabet unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
@@ -1758,7 +1751,7 @@
         <translation>Mega это формат файла программы MEGA</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="315"/>
+        <location filename="../src/MegaFormat.cpp" line="312"/>
         <source>Found sequences of different sizes</source>
         <translation>Обнаружены последовательности разной длины</translation>
     </message>
@@ -1793,56 +1786,56 @@
         <translation>Идентичный символ в первой последовательности</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="297"/>
+        <location filename="../src/MegaFormat.cpp" line="294"/>
         <source>Incorrect order of sequences&apos; names</source>
         <translation>Неправильный порядок имён последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="303"/>
+        <location filename="../src/MegaFormat.cpp" line="300"/>
         <source>Incorrect sequence</source>
         <translation>Incorrect sequence</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="323"/>
+        <location filename="../src/MegaFormat.cpp" line="320"/>
         <source>Alphabet is unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="393"/>
-        <location filename="../src/MegaFormat.cpp" line="405"/>
+        <location filename="../src/MegaFormat.cpp" line="391"/>
+        <location filename="../src/MegaFormat.cpp" line="403"/>
         <source>No header</source>
         <translation>Отсутствует заголовок</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="398"/>
+        <location filename="../src/MegaFormat.cpp" line="396"/>
         <source>No # before header</source>
         <translation>Отсутствует символ &quot;#&quot; перед заголовком</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="410"/>
+        <location filename="../src/MegaFormat.cpp" line="408"/>
         <source>Not MEGA-header</source>
         <translation>Не является заголовком MEGA</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="433"/>
-        <location filename="../src/MegaFormat.cpp" line="444"/>
-        <location filename="../src/MegaFormat.cpp" line="471"/>
+        <location filename="../src/MegaFormat.cpp" line="431"/>
+        <location filename="../src/MegaFormat.cpp" line="442"/>
+        <location filename="../src/MegaFormat.cpp" line="469"/>
         <source>No data in file</source>
         <translation>Отсутствуют данные в файле</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="453"/>
-        <location filename="../src/MegaFormat.cpp" line="459"/>
+        <location filename="../src/MegaFormat.cpp" line="451"/>
+        <location filename="../src/MegaFormat.cpp" line="457"/>
         <source>Incorrect title</source>
         <translation>Неправильный заголовок</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="503"/>
+        <location filename="../src/MegaFormat.cpp" line="501"/>
         <source>Sequence has empty part</source>
         <translation>Часть последовательности пустая</translation>
     </message>
     <message>
-        <location filename="../src/MegaFormat.cpp" line="523"/>
+        <location filename="../src/MegaFormat.cpp" line="521"/>
         <source>Bad symbols in a sequence</source>
         <translation>Некорректные символы в последовательности</translation>
     </message>
@@ -1868,7 +1861,7 @@
         <translation>Nexus формат файла для множественных выравниваний и филогенетических деревьев</translation>
     </message>
     <message>
-        <location filename="../src/NEXUSFormat.cpp" line="695"/>
+        <location filename="../src/NEXUSFormat.cpp" line="693"/>
         <source>#NEXUS header missing</source>
         <translation>Отсутствует заголовок #NEXUS </translation>
     </message>
@@ -1948,17 +1941,17 @@
     <message>
         <location filename="../src/util/PairedFastqComparator.cpp" line="77"/>
         <source>Too much reads without a pair (&gt;%1). Check the input data is set correctly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Too much reads without a pair (&gt;%1). Check the input data is set correctly.</translation>
     </message>
     <message>
         <location filename="../src/util/PairedFastqComparator.cpp" line="125"/>
         <source>The list doesn&apos;t contains the item</source>
-        <translation type="unfinished"></translation>
+        <translation>The list doesn&apos;t contains the item</translation>
     </message>
     <message>
         <location filename="../src/util/PairedFastqComparator.cpp" line="173"/>
         <source>Invalid sequence info</source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid sequence info</translation>
     </message>
 </context>
 <context>
@@ -2114,7 +2107,7 @@
         <translation>Failed to parse SCF file: %1</translation>
     </message>
     <message>
-        <location filename="../src/SCFFormat.cpp" line="1233"/>
+        <location filename="../src/SCFFormat.cpp" line="1235"/>
         <source>Failed to load sequence from SCF file %1</source>
         <translation>Невозможно загрузить последовательность из SCF файла %1</translation>
     </message>
@@ -2161,23 +2154,23 @@
         <translation>одинаковые имена последовательностей в блоке</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="499"/>
+        <location filename="../src/StockholmFormat.cpp" line="498"/>
         <source>invalid file: sequence names are not equal in blocks</source>
         <translation>Непарное имя последовательности в блоке</translation>
     </message>
     <message>
         <location filename="../src/StockholmFormat.cpp" line="493"/>
-        <location filename="../src/StockholmFormat.cpp" line="505"/>
+        <location filename="../src/StockholmFormat.cpp" line="504"/>
         <source>invalid file: sequences in block are not of equal size</source>
         <translation>Блок содержит последовательности разной длины</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="519"/>
+        <location filename="../src/StockholmFormat.cpp" line="518"/>
         <source>invalid file: empty sequence alignment</source>
         <translation>Выравнивание не содержит последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="523"/>
+        <location filename="../src/StockholmFormat.cpp" line="522"/>
         <source>invalid file: unknown alphabet</source>
         <translation>Не удалось установить алфавит</translation>
     </message>
@@ -2355,141 +2348,141 @@
     <message>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="102"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="118"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="216"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="648"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="368"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="217"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="653"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="373"/>
         <source>Msa object not found</source>
         <translation>Объект msa не найден</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="177"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="795"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="835"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="178"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="829"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="869"/>
         <source>Msa row not found</source>
         <translation>Столбец msa не найден</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="600"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="633"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1114"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1123"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="605"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="638"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1120"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1129"/>
         <source>Unexpected modification type &apos;%1&apos;</source>
         <translation>Неожиданный тип модификации &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="670"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="704"/>
         <source>Invalid row position: %1</source>
         <translation>Неправильное расположение столбца: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1044"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1175"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1078"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1209"/>
         <source>An error occurred during updating an alignment alphabet</source>
         <translation>Возникла ошибка во время обновления алфавита выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1062"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1190"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1096"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1224"/>
         <source>An error occurred during reverting adding of rows</source>
         <translation>Возникла ошибка во время отмены добавления столбцов</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1080"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1114"/>
         <source>An error occurred during reverting addition of a row</source>
         <translation>Возникла ошибка во время отмены добавления столбца</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1093"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1210"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1127"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1244"/>
         <source>An error occurred during reverting removing of rows</source>
         <translation>Возникла ошибка во время отмены удаления столбцов</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1106"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1225"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1140"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1259"/>
         <source>An error occurred during reverting removing of a row</source>
         <translation>Возникла ошибка во время отмены удаления столбца</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1120"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1236"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1154"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1270"/>
         <source>An error occurred during updating an alignment gaps</source>
         <translation>Возникла ошибка во время обновления пробелов выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1133"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1246"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1167"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1280"/>
         <source>An error occurred during updating an alignment row order</source>
         <translation>Возникла ошибка во время обновления порядка столбцов</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1147"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1256"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1181"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1290"/>
         <source>An error occurred during updating a row info</source>
         <translation>Возникла ошибка во время обновления информации о столбце</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1162"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1271"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1287"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1297"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1196"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1305"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1326"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1336"/>
         <source>An error occurred during updating an msa length</source>
         <translation>An error occurred during updating an msa length</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1200"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1234"/>
         <source>An error occurred during addition of a row</source>
         <translation>Возникла ошибка во время добавления столбца</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="587"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="586"/>
         <source>Can&apos;t undo an operation for the object</source>
         <translation>Невозможно отменить операцию для объекта</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="650"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="649"/>
         <source>Can&apos;t redo an operation for the object</source>
         <translation>Невозможно передвинуться на одну операцию вперед для объекта</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="792"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="897"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="791"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="896"/>
         <source>Object not found</source>
         <translation>Объект не найден</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="846"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="845"/>
         <source>Folder not found: %1 (canonical: %2)</source>
         <translation>Папка не найдена: %1 (каноническое: %2)</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1027"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1026"/>
         <source>Not an object, id: %1, type: %2</source>
         <translation>Не является объектом, id: %1, тип: %2</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1050"/>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="289"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="290"/>
         <source>Unknown object type! Id: %1, type: %2</source>
         <translation>Unknown object type! Id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1092"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1095"/>
         <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1105"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1111"/>
         <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1136"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1142"/>
         <source>An error occurred during updating an object name</source>
         <translation>An error occurred during updating an object name</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1154"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1160"/>
         <source>An error occurred during updating an object name!</source>
         <translation>An error occurred during updating an object name!</translation>
     </message>
@@ -2682,16 +2675,16 @@
         <translation>An object single modification step not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="520"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="535"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="727"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="525"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="540"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="733"/>
         <source>Msa object not found!</source>
         <translation>Msa object not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="617"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="757"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="795"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="623"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="793"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="831"/>
         <source>Msa row not found!</source>
         <translation>Msa row not found!</translation>
     </message>
@@ -2701,29 +2694,29 @@
         <translation>Not an object! Id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="600"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="601"/>
         <source>Can&apos;t undo an operation for the object!</source>
         <translation>Can&apos;t undo an operation for the object!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="685"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="687"/>
         <source>Can&apos;t redo an operation for the object!</source>
         <translation>Can&apos;t redo an operation for the object!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="857"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="860"/>
         <source>Object not found!</source>
         <translation>Object not found!</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="804"/>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="918"/>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="930"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="803"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="921"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="933"/>
         <source>Object not found.</source>
         <translation>Object not found.</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="967"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="970"/>
         <source>Folder not found: %1</source>
         <translation>Folder not found: %1</translation>
     </message>

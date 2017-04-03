@@ -19,13 +19,15 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Gui/MainWindow.h>
 
 #include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 #include <U2View/MSAEditorOverviewArea.h>
-#include <U2View/MSAGraphOverview.h>
-#include <U2View/MSASimpleOverview.h>
+#include <U2View/MaGraphOverview.h>
+#include <U2View/MaSimpleOverview.h>
 
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
@@ -72,23 +74,23 @@ MSAEditorUI * GTUtilsMsaEditor::getEditorUi(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getGraphOverview"
-MSAGraphOverview * GTUtilsMsaEditor::getGraphOverview(HI::GUITestOpStatus &os) {
+MaGraphOverview * GTUtilsMsaEditor::getGraphOverview(HI::GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
 
-    MSAGraphOverview *result = GTWidget::findExactWidget<MSAGraphOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + QString("_graph"), activeWindow);
-    GT_CHECK_RESULT(NULL != result, "MSAGraphOverview is not found", NULL);
+    MaGraphOverview *result = GTWidget::findExactWidget<MaGraphOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + QString("_graph"), activeWindow);
+    GT_CHECK_RESULT(NULL != result, "MaGraphOverview is not found", NULL);
     return result;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSimpleOverview"
-MSASimpleOverview * GTUtilsMsaEditor::getSimpleOverview(HI::GUITestOpStatus &os) {
+MaSimpleOverview * GTUtilsMsaEditor::getSimpleOverview(HI::GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
 
-    MSASimpleOverview *result = GTWidget::findExactWidget<MSASimpleOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + QString("_simple"), activeWindow);
-    GT_CHECK_RESULT(NULL != result, "MSASimpleOverview is not found", NULL);
+    MaSimpleOverview *result = GTWidget::findExactWidget<MaSimpleOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + QString("_simple"), activeWindow);
+    GT_CHECK_RESULT(NULL != result, "MaSimpleOverview is not found", NULL);
     return result;
 }
 #undef GT_METHOD_NAME
@@ -102,12 +104,12 @@ MSAEditorTreeViewerUI * GTUtilsMsaEditor::getTreeView(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNameListArea"
-MSAEditorNameList * GTUtilsMsaEditor::getNameListArea(HI::GUITestOpStatus &os) {
+MaEditorNameList * GTUtilsMsaEditor::getNameListArea(HI::GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
 
-    MSAEditorNameList *result = GTWidget::findExactWidget<MSAEditorNameList *>(os, "msa_editor_name_list", activeWindow);
-    GT_CHECK_RESULT(NULL != result, "MSAGraphOverview is not found", NULL);
+    MaEditorNameList *result = GTWidget::findExactWidget<MaEditorNameList *>(os, "msa_editor_name_list", activeWindow);
+    GT_CHECK_RESULT(NULL != result, "MaGraphOverview is not found", NULL);
     return result;
 }
 #undef GT_METHOD_NAME
@@ -129,7 +131,7 @@ MSAEditorSequenceArea * GTUtilsMsaEditor::getSequenceArea(HI::GUITestOpStatus &o
 #define GT_METHOD_NAME "getSequenceNameRect"
 QRect GTUtilsMsaEditor::getSequenceNameRect(HI::GUITestOpStatus &os, const QString &sequenceName) {
     Q_UNUSED(os);
-    MSAEditorNameList *nameList = getNameListArea(os);
+    MaEditorNameList *nameList = getNameListArea(os);
     GT_CHECK_RESULT(NULL != nameList, "MSAEditorNameList not found", QRect());
 
     const int rowHeight = GTUtilsMSAEditorSequenceArea::getRowHeight(os);

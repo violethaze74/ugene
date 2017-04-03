@@ -22,7 +22,7 @@
 #include <QColor>
 
 #include <U2Core/FeatureColors.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ColorSchemeUtils.h"
@@ -58,7 +58,7 @@ const QString MsaColorScheme::CUSTOM_AMINO          = "COLOR_SCHEME_CUSTOM_AMINO
 
 const QString MsaColorScheme::EMPTY_RAW             = "COLOR_SCHEME_EMPTY_RAW";
 
-MsaColorScheme::MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj)
+MsaColorScheme::MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : QObject(parent),
       factory(factory),
       maObj(maObj) {
@@ -81,7 +81,14 @@ const QString & MsaColorSchemeFactory::getId() const {
     return id;
 }
 
-const QString & MsaColorSchemeFactory::getName() const {
+const QString MsaColorSchemeFactory::getName(bool nameWithAlphabet) const {
+    if (nameWithAlphabet) {
+        if (alphabetType == DNAAlphabet_NUCL) {
+            return tr("Nucleotide") + " " + name;
+        } else if (alphabetType == DNAAlphabet_AMINO) {
+            return  tr("Amino") + " " + name;
+        }
+    }
     return name;
 }
 
@@ -106,8 +113,27 @@ const QList<MsaColorSchemeCustomFactory *> & MsaColorSchemeRegistry::getCustomCo
     return customColorers;
 }
 
+QStringList MsaColorSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes() {
+    static QStringList res;
+    if (res.isEmpty()) {
+        res << MsaColorScheme::EMPTY_AMINO;
+        res << MsaColorScheme::EMPTY_NUCL;
+    }    
+    return res;
+}
+
 QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaColorSchemes(DNAAlphabetType alphabetType) const {
     QList<MsaColorSchemeFactory *> res;
+    if (alphabetType == DNAAlphabet_RAW) {
+        foreach(MsaColorSchemeFactory *factory, colorers) {
+            QString fId = factory->getId();
+            if (getExcludedIdsFromRawAlphabetSchemes().contains(fId)) {
+                continue;
+            }
+            res.append(factory);
+        }
+        return res;
+    }
     foreach (MsaColorSchemeFactory *factory, colorers) {
         if (factory->getAlphabetType() == alphabetType) {
             res.append(factory);
@@ -227,7 +253,7 @@ void fillLightColorsColorScheme(QVector<QColor> &colorsPerChar) {
     for (int i = 0; i < 256; i++) {
         colorsPerChar[i] = FeatureColors::genLightColor(QString((char)i));
     }
-    colorsPerChar[MAlignment_GapChar] = QColor(); //invalid color -> no color at all
+    colorsPerChar[U2Msa::GAP_CHAR] = QColor(); //invalid color -> no color at all
 }
 
 void addUgeneAmino(QVector<QColor> &colorsPerChar) {

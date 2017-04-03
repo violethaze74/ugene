@@ -63,6 +63,6 @@ private:
     static const QString PER_DOMAIN_HITS_FILENAME;
 };
 
-}   // namespace U2
+} // U2
 
 #endif // _U2_PHMMER_SEARCH_TASK_H_

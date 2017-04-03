@@ -20,12 +20,15 @@
  */
 
 #include <cassert>
-#include <QtCore/QStringList>
+
+#include <QStringList>
+
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/WorkflowUtils.h>
 
-#include "ConfigurationEditor.h"
 #include "Configuration.h"
+#include "ConfigurationEditor.h"
 
 namespace U2 {
 

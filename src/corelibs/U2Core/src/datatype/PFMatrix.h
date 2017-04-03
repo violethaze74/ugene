@@ -24,7 +24,7 @@
 
 #include <U2Core/global.h>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/DNASequence.h>
 
 #include <QtCore/QVarLengthArray>
@@ -70,7 +70,7 @@ public:
     PFMatrix(const QVarLengthArray<int>& data, const PFMatrixType type);
 
     //create matrix from alignment (without gaps)
-    PFMatrix(const MAlignment& data, const PFMatrixType type);
+    PFMatrix(const MultipleSequenceAlignment& data, const PFMatrixType type);
 
     //create matrix from set of sequences with equal length
     PFMatrix(const QList<DNASequence*>& data, const PFMatrixType type);

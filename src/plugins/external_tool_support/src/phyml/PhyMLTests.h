@@ -33,7 +33,7 @@
 namespace U2{
 
 class PhyTreeObject;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 
 class GTest_PhyML : public GTest {
     Q_OBJECT
@@ -51,7 +51,7 @@ private:
     Document* maDoc;
     Document* treeDoc;
     PhyTreeGeneratorLauncherTask* task;
-    MAlignmentObject* input;
+    MultipleSequenceAlignmentObject* input;
     PhyTreeObject* treeObjFromDoc;
     CreatePhyTreeSettings settings;
 };

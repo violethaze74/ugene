@@ -166,24 +166,30 @@ bool SQLiteReadOnlyQuery::step() {
     if (hasError()) {
         return false;
     }
+    bool result = false;
+
     assert(st != NULL);
     if(isReadOnly){
         db->rwLock.lockForRead();
     }else{
         db->rwLock.lockForWrite();
+        db->lock.lock();
     }
 
     int rc = sqlite3_step(st);
     if (rc == SQLITE_DONE || rc == SQLITE_READONLY) {
-        db->rwLock.unlock();
-        return false;
+        result = false;
     } else if (rc == SQLITE_ROW) {
-        db->rwLock.unlock();
-        return true;
+        result = true;
+    } else {
+        setError(U2DbiL10n::tr("Unexpected query result code: %1 (%2)").arg(rc).arg(sqlite3_errmsg(db->handle)));
+        result = false;
     }
-    setError(U2DbiL10n::tr("Unexpected query result code: %1 (%2)").arg(rc).arg(sqlite3_errmsg(db->handle)));
+    if(!isReadOnly) {
+        db->lock.unlock();
+    }
     db->rwLock.unlock();
-    return false;
+    return result;
 }
 
 void SQLiteReadOnlyQuery::ensureDone() {

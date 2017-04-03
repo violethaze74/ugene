@@ -22,7 +22,7 @@
 #ifndef _U2_UNDO_REDO_FRAMEWORK_H_
 #define _U2_UNDO_REDO_FRAMEWORK_H_
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <QtCore/QObject>
 #if (QT_VERSION < 0x050000) //Qt 5
@@ -34,12 +34,12 @@
 
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleAlignmentObject;
 
 class MsaUndoRedoFramework : public QObject {
     Q_OBJECT
 public:
-    MsaUndoRedoFramework(QObject *p, MAlignmentObject* _maObj);
+    MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject* _maObj);
 
     QAction* getUndoAction() const { return undoAction; }
     QAction* getRedoAction() const { return redoAction; }
@@ -55,7 +55,7 @@ private slots:
 private:
     void checkUndoRedoEnabled();
 
-    MAlignmentObject*   maObj;
+    MultipleAlignmentObject*   maObj;
     bool                stateComplete;
 
     QAction*   undoAction;

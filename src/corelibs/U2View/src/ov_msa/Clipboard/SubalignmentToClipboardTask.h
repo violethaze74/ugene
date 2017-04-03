@@ -27,7 +27,7 @@
 #include <U2Core/Task.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/U2Region.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentProviderTask.h>
 
@@ -52,7 +52,7 @@ protected:
 class FormatsMsaClipboardTask : public PrepareMsaClipboardDataTask {
     Q_OBJECT
 public:
-    FormatsMsaClipboardTask(MAlignmentObject *msaObj, const U2Region &window, const QStringList &names, const DocumentFormatId &formatId);
+    FormatsMsaClipboardTask(MultipleSequenceAlignmentObject *msaObj, const U2Region &window, const QStringList &names, const DocumentFormatId &formatId);
 
     void prepare();
     void run();
@@ -63,17 +63,17 @@ protected:
 
 private:
     CreateSubalignmentTask* createSubalignmentTask;
-    MAlignmentObject *msaObj;
+    MultipleSequenceAlignmentObject *msaObj;
     DocumentFormatId formatId;
 };
 
 class RichTextMsaClipboardTask : public PrepareMsaClipboardDataTask {
 public:
-    RichTextMsaClipboardTask(MSAEditor *context, const U2Region &window, const QStringList &names);
+    RichTextMsaClipboardTask(MaEditor *context, const U2Region &window, const QStringList &names);
     void run();
 
 private:
-    MSAEditor *context;
+    MaEditor *context;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -83,7 +83,7 @@ public:
 
 private:
     static U2Region getWindowBySelection(const QRect &selection);
-    static QStringList getNamesBySelection(MSAEditor *context, const QRect &selection);
+    static QStringList getNamesBySelection(MaEditor *context, const QRect &selection);
 };
 
 

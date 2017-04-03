@@ -19,20 +19,12 @@
  * MA 02110-1301, USA.
  */
 
+#include <QApplication>
+#include <QClipboard>
 #include <QDesktopServices>
 #include <QFile>
-
-
-#if (QT_VERSION < 0x050000) //Qt 5
 #include <QMessageBox>
 #include <QWebFrame>
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QMessageBox>
-#include <QtWebKitWidgets/QWebFrame>
-#include <QtWidgets/QApplication>
-#endif
-#include <QClipboard>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>

@@ -19,13 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QStringList>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QCheckBox>
-#else
-#include <QtWidgets/QCheckBox>
-#endif
-#include <QtGui/QKeyEvent>
+#include <QStringList>
+#include <QCheckBox>
+#include <QKeyEvent>
 
 #include "ui_EditBreakpointLabelsDialog.h"
 #include "EditBreakpointLabelsDialog.h"

@@ -22,12 +22,7 @@
 #ifndef _U2_URLLINEEDIT_H_
 #define _U2_URLLINEEDIT_H_
 
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLineEdit>
-#else
-#include <QtWidgets/QLineEdit>
-#endif
+#include <QLineEdit>
 
 #include <U2Core/global.h>
 #include <QtGui>

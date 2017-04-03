@@ -56,6 +56,7 @@ public:
 class U2AssemblyReadsImportInfo {
 public:
     U2AssemblyReadsImportInfo(U2AssemblyReadsImportInfo *parentInfo = NULL) : nReads(0), packed(false), parentInfo(parentInfo) {}
+    virtual ~U2AssemblyReadsImportInfo() {}
 
     /** Number of reads added during import */
     qint64 nReads;

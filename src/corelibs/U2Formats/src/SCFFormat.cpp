@@ -1212,6 +1212,8 @@ bool SCFFormat::loadSCFObjects( IOAdapter* io, DNASequence& dna, DNAChromatogram
         sampleName = url.baseFileName();
     }
 
+    cd.name = sampleName + " chromatogram";
+
     dna.setName(sampleName);
     dna.seq = sequence;
     dna.info.insert(DNAInfo::COMMENT, vals);

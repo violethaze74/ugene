@@ -19,19 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QPainter>
+#include <QFile>
+#include <QPainter>
 
-#include <U2Core/Log.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Log.h>
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Lang/HRSchemaSerializer.h>
-#include <U2Lang/WorkflowUtils.h>
 #include <U2Lang/WorkflowIOTasks.h>
 #include <U2Lang/WorkflowSettings.h>
-#include "WorkflowViewItems.h"
-#include "WorkflowViewController.h"
-#include "SaveSchemaImageUtils.h"
+#include <U2Lang/WorkflowUtils.h>
 
-#include <QtCore/QFile>
+#include "SaveSchemaImageUtils.h"
+#include "WorkflowViewController.h"
+#include "WorkflowViewItems.h"
 
 namespace U2 {
 

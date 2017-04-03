@@ -985,7 +985,6 @@ GUI_TEST_CLASS_DEFINITION(test_0036){
     QScrollBar* ver = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical);
     QScrollBar* hor = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal);
 
-    int initVer = ver->value();
     int initHor = hor->value();
 
     for(int i = 0; i < 3; i++){

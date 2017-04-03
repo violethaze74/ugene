@@ -19,16 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QContextMenuEvent>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QInputDialog>
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QDesktopWidget>
-#include <QtWidgets/QInputDialog>
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QContextMenuEvent>
+#include <QDesktopWidget>
+#include <QInputDialog>
+#include <QMessageBox>
 
 #include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>

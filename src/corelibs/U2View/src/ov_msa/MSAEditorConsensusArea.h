@@ -24,6 +24,7 @@
 
 #include <QWidget>
 
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
 
 #include "MSAEditorConsensusCache.h"
@@ -34,32 +35,45 @@ class QPainter;
 
 namespace U2 {
 
-class MSAEditor;
-class MSAEditorUI;
 class GObjectView;
-class MAlignment;
-class MAlignmentModInfo;
-class MSAEditorSelection;
 class MSAConsensusAlgorithm;
 class MSAConsensusAlgorithmFactory;
+class MaEditor;
+class MaEditorSelection;
+class MaEditorWgt;
+class MaModificationInfo;
 
-enum MSAEditorConsElement {
+enum MaEditorConsElement {
     MSAEditorConsElement_HISTOGRAM,
     MSAEditorConsElement_CONSENSUS_TEXT,
     MSAEditorConsElement_RULER
 };
 
+class MaEditorConsensusAreaSettings {
+public:
+    MaEditorConsensusAreaSettings();
+    MaEditorConsensusAreaSettings(const QList<MaEditorConsElement>& order,
+                                  const QMap<MaEditorConsElement, bool>& visibility);
+    bool isVisible(const MaEditorConsElement element) const;
+
+    QList<MaEditorConsElement> order;
+    QMap<MaEditorConsElement, bool> visibility;
+};
+
 class U2VIEW_EXPORT MSAEditorConsensusArea : public QWidget {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusArea)
+
 public:
-    MSAEditorConsensusArea(MSAEditorUI* ui);
+    MSAEditorConsensusArea(MaEditorWgt* ui);
     ~MSAEditorConsensusArea();
 
     U2Region getRullerLineYRange() const;
 
     void setConsensusAlgorithm(MSAConsensusAlgorithmFactory* algo);
     void setConsensusAlgorithmConsensusThreshold(int val);
+
+    void setDrawSettings(const MaEditorConsensusAreaSettings& settings);
 
     MSAConsensusAlgorithm* getConsensusAlgorithm() const;
 
@@ -88,8 +102,8 @@ signals:
 
 private slots:
     void sl_startChanged(const QPoint&, const QPoint&);
-    void sl_selectionChanged(const MSAEditorSelection& current, const MSAEditorSelection& prev);
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&);
+    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
+    void sl_alignmentChanged();
     void sl_changeConsensusAlgorithm(const QString& algoId);
     void sl_changeConsensusThreshold(int val);
     void sl_onScrollBarActionTriggered( int scrollAction );
@@ -102,6 +116,8 @@ private slots:
     void sl_configureConsensusAction();
     void sl_zoomOperationPerformed(bool resizeModeChanged);
 
+    void setupFontAndHeight();
+
 public:
     void drawContent(QPainter& painter);
 
@@ -112,7 +128,7 @@ private:
     QString getThresholdSettingsKey(const QString& factoryId) const;
 
     void buildMenu(QMenu* m);
-    void setupFontAndHeight();
+
     void updateSelection(int newPos);
 
     void drawConsensus(QPainter& p);
@@ -130,13 +146,14 @@ private:
     void drawSelection(QPainter& p);
 
 
-    U2Region getYRange(MSAEditorConsElement e) const;
+    U2Region getYRange(MaEditorConsElement e) const;
+    int getYRangeLength(MaEditorConsElement e) const;
 
     MSAConsensusAlgorithmFactory* getConsensusAlgorithmFactory();
     void updateConsensusAlgorithm();
 
-    MSAEditor*          editor;
-    const MSAEditorUI*  ui;
+    MaEditor*           editor;
+    MaEditorWgt*        ui;
     QFont               rulerFont;
     int                 rulerFontHeight;
     QAction*            copyConsensusAction;
@@ -147,8 +164,9 @@ private:
 
     QSharedPointer<MSAEditorConsensusCache>    consensusCache;
 
-    bool                completeRedraw;
-    QPixmap*            cachedView;
+    bool                            completeRedraw;
+    mutable MaEditorConsensusAreaSettings   drawSettings;
+    QPixmap*                        cachedView;
 
     QObject *childObject;
 };

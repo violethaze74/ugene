@@ -21,12 +21,12 @@
 
 #include <QPushButton>
 #include <QMessageBox>
-#include <ui_ExportHighlightedDialog.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/HelpButton.h>
@@ -34,10 +34,11 @@
 
 #include "ExportHighlightedDialogController.h"
 #include "ov_msa/MSAEditorSequenceArea.h"
+#include "ui_ExportHighlightedDialog.h"
 
 namespace U2{
 
-ExportHighligtingDialogController::ExportHighligtingDialogController(MSAEditorUI *msaui_, QWidget* p )
+ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt *msaui_, QWidget* p )
     : QDialog(p),
       msaui(msaui_),
       saveController(NULL),
@@ -52,13 +53,13 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MSAEditorUI
     CHECK(AppContext::getAppSettings(), );
     CHECK(AppContext::getAppSettings()->getUserAppsSettings(), );
     CHECK(msaui->getEditor(), );
-    CHECK(msaui->getEditor()->getMSAObject(), );
+    CHECK(msaui->getEditor()->getMaObject(), );
 
     initSaveController();
 
     connect(ui->endPosBox, SIGNAL(valueChanged(int)), SLOT(endPosValueChanged()));
 
-    int alignLength = msaui->getEditor()->getMSAObject()->getLength();
+    int alignLength = msaui->getEditor()->getMaObject()->getLength();
     QRect selection = msaui->getSequenceArea()->getSelection().getRect();
 
     int startPos = -1;
@@ -115,7 +116,7 @@ void ExportHighligtingDialogController::endPosValueChanged(){
 
 void ExportHighligtingDialogController::initSaveController() {
     SaveDocumentControllerConfig config;
-    config.defaultFileName = GUrlUtils::getDefaultDataPath() + "/" + msaui->getEditor()->getMSAObject()->getGObjectName() + "_highlighting.txt";
+    config.defaultFileName = GUrlUtils::getDefaultDataPath() + "/" + msaui->getEditor()->getMaObject()->getGObjectName() + "_highlighting.txt";
     config.defaultFormatId = BaseDocumentFormats::PLAIN_TEXT;
     config.fileDialogButton = ui->fileButton;
     config.fileNameEdit = ui->fileNameEdit;

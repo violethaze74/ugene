@@ -150,4 +150,12 @@ void U2AttributeUtils::copyObjectAttributes(const U2DataId &srcObjId, const U2Da
     }
 }
 
+void U2AttributeUtils::copyObjectAttributes(const U2EntityRef &srcObjRef, const U2EntityRef &dstObjRef, U2OpStatus &os) {
+    DbiConnection srcCon(srcObjRef.dbiRef, os);
+    CHECK_OP(os, );
+    DbiConnection dstCon(dstObjRef.dbiRef, os);
+    CHECK_OP(os, );
+    copyObjectAttributes(srcObjRef.entityId, dstObjRef.entityId, srcCon.dbi->getAttributeDbi(), dstCon.dbi->getAttributeDbi(), os);
+}
+
 }   // namespace U2

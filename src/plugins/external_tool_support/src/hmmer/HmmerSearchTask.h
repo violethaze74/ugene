@@ -23,7 +23,6 @@
 #define _U2_HMMER_SEARCH_TASK_H_
 
 #include <U2Core/ExternalToolRunTask.h>
-
 #include "HmmerSearchSettings.h"
 
 namespace U2 {

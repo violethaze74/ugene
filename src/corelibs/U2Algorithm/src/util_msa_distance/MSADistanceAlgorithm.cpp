@@ -56,14 +56,14 @@ void MSADistanceAlgorithmFactory::resetFlag( DistanceAlgorithmFlag flag ){
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory* _factory, const MAlignment& _ma)
+MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory* _factory, const MultipleSequenceAlignment& _ma)
 : Task(tr("MSA distance algorithm \"%1\" task").arg(_factory->getName()), TaskFlag_None)
 , factory(_factory)
-, ma(_ma)
+, ma(_ma->getCopy())
 , excludeGaps(true)
 , isSimilarity(true)
 {
-    int rowsNumber = ma.getNumRows();
+    int rowsNumber = ma->getNumRows();
     qint64 requiredMemory = sizeof(int) * rowsNumber * rowsNumber / 2 + sizeof(QVarLengthArray<int>) * rowsNumber;
     bool memoryAcquired = memoryLocker.tryAcquire(requiredMemory);
     CHECK_EXT(memoryAcquired, setError(QString("There is not enough memory to calculating distances matrix, required %1 megabytes").arg(requiredMemory / 1024 / 1024)), );
@@ -98,7 +98,7 @@ void MSADistanceAlgorithm::setDistanceValue(int row1, int row2, int distance) {
 }
 
 void MSADistanceAlgorithm::fillTable() {
-    int nSeq = ma.getNumRows();
+    int nSeq = ma->getNumRows();
     for (int i = 0; i < nSeq; i++) {
         for (int j = i; j < nSeq; j++) {
             if (isCanceled()) {
@@ -116,11 +116,10 @@ void MSADistanceAlgorithm::fillTable() {
 MSADistanceMatrix::MSADistanceMatrix(const MSADistanceAlgorithm *algo, bool _usePercents)
 : distanceTable(algo->distanceTable), usePercents(_usePercents), excludeGaps(false) {
     excludeGaps = algo->getExcludeGapsFlag();
-    int nSeq = algo->ma.getNumRows();
-    alignmentLength = algo->ma.getLength();
+    int nSeq = algo->ma->getNumRows();
+    alignmentLength = algo->ma->getLength();
     for (int i = 0; i < nSeq; i++) {
-        const MAlignmentRow& row = algo->ma.getRow(i);
-        seqsUngappedLenghts.append(row.getUngappedLength());
+        seqsUngappedLenghts.append(algo->ma->getMsaRow(i)->getUngappedLength());
     }
 }
 

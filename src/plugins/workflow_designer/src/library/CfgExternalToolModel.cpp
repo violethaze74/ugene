@@ -269,10 +269,10 @@ void CfgExternalToolModel::initFormats() {
     seqRead.supportedObjectTypes += GObjectTypes::SEQUENCE;
 
     DocumentFormatConstraints msaWrite(commonConstraints);
-    msaWrite.supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    msaWrite.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 
     DocumentFormatConstraints msaRead(commonConstraints);
-    msaRead.supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    msaRead.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 
     DocumentFormatConstraints annWrite(commonConstraints);
     annWrite.supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;

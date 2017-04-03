@@ -39,7 +39,7 @@ class KalignDialogController : public QDialog, public Ui_KalignDialog {
     Q_OBJECT
 
 public:
-    KalignDialogController(QWidget* w, const MAlignment& ma, KalignTaskSettings& settings);
+    KalignDialogController(QWidget* w, const MultipleSequenceAlignment& ma, KalignTaskSettings& settings);
     bool translateToAmino();
     QString getTranslationId();
 
@@ -48,7 +48,7 @@ public slots:
 
 private:
     void setupUiExt(); 
-    MAlignment                          ma;
+    MultipleSequenceAlignment                          ma;
     KalignTaskSettings&                 settings;
 };
 

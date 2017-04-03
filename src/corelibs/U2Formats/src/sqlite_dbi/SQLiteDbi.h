@@ -32,18 +32,18 @@ struct sqlite3;
 
 namespace U2 {
 
+class DbRef;
+class SQLiteAssemblyDbi;
+class SQLiteAttributeDbi;
+class SQLiteCrossDatabaseReferenceDbi;
+class SQLiteFeatureDbi;
+class SQLiteModDbi;
+class SQLiteMsaDbi;
 class SQLiteObjectDbi;
 class SQLiteObjectRelationsDbi;
 class SQLiteSequenceDbi;
-class SQLiteMsaDbi;
-class SQLiteAssemblyDbi;
-class SQLiteCrossDatabaseReferenceDbi;
-class SQLiteAttributeDbi;
-class SQLiteVariantDbi;
-class SQLiteFeatureDbi;
-class SQLiteModDbi;
 class SQLiteUdrDbi;
-class DbRef;
+class SQLiteVariantDbi;
 
 /** Name of the init property used to indicate assembly reads storage method for all new assemblies */
 #define SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY "sqlite-assembly-reads-elen-method"

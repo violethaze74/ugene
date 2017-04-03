@@ -27,11 +27,7 @@
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QMenu>
-#endif
+#include <QMenu>
 
 //#include <kalign_local_task/KalignLocalTask.h> //TODO
 

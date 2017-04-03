@@ -27,10 +27,11 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/L10n.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>

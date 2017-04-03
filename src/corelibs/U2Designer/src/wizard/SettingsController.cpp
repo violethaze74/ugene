@@ -19,16 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLineEdit>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QVBoxLayout>
-#else
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QVBoxLayout>
-#endif
+#include <QLineEdit>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>

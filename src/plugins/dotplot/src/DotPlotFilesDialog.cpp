@@ -51,7 +51,7 @@ DotPlotFilesDialog::DotPlotFilesDialog(QWidget *parent)
     connect(mergeFirstCheckBox, SIGNAL(clicked()), SLOT(sl_mergeFirst()));
     connect(mergeSecondCheckBox, SIGNAL(clicked()), SLOT(sl_mergeSecond()));
 
-    filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true).append("\n").append(
+    filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true).append("\n").append(
         DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, false));
 
 }

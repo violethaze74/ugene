@@ -20,7 +20,7 @@ workflow "Remote BLASTing"{
     write-sequence {
         type:write-sequence;
         name:"Write Original Sequence(s) with BLAST Annotations";
-        document-format:Genbank;
+        document-format:genbank;
         url-out {
 var re = /[\\\/]/;
 var tokens = url.toString().split(re);
@@ -43,7 +43,7 @@ url_out = dir + "orig_with_blast.gb"
     write-sequence-1 {
         type:write-sequence;
         name:"Write Homologous Sequences";
-        document-format:Genbank;
+        document-format:genbank;
         url-out {
 var re = /[\\\/]/;
 var tokens = url.toString().split(re);

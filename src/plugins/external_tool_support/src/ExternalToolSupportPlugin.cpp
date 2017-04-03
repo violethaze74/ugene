@@ -34,7 +34,6 @@
 #include <U2Core/DataBaseRegistry.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/MAlignmentObject.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
@@ -48,7 +47,7 @@
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/DnaAssemblyUtils.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>
@@ -58,12 +57,13 @@
 #include "ExternalToolSupportPlugin.h"
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
-#include "R/RSupport.h"
+
 #include "R/RSupport.h"
 #include "bedtools/BedToolsWorkersLibrary.h"
 #include "bedtools/BedtoolsSupport.h"
 #include "bigWigTools/BedGraphToBigWigWorker.h"
 #include "bigWigTools/BigWigSupport.h"
+#include "blast/AlignToReferenceBlastWorker.h"
 #include "blast/BlastAllSupport.h"
 #include "blast/BlastAllWorker.h"
 #include "blast/FormatDBSupport.h"
@@ -108,8 +108,10 @@
 #include "fastqc/FastqcSupport.h"
 #include "fastqc/FastqcWorker.h"
 #include "hmmer/HmmerBuildWorker.h"
+#include "hmmer/HmmerSearchTask.h"
 #include "hmmer/HmmerSearchWorker.h"
 #include "hmmer/HmmerSupport.h"
+#include "hmmer/HmmerTests.h"
 #include "java/JavaSupport.h"
 #include "macs/MACSSupport.h"
 #include "macs/MACSWorker.h"
@@ -463,6 +465,11 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         blastallAction->setObjectName(ToolsMenu::BLAST_SEARCH);
         connect(blastallAction, SIGNAL(triggered()), blastallTool, SLOT(sl_runWithExtFileSpecify()));
 
+        ExternalToolSupportAction* alignToRefBlastAction = new ExternalToolSupportAction(tr("Align Sanger reads to reference..."),
+                                                                                         this, QStringList() << ET_FORMATDB << ET_BLASTALL);
+        alignToRefBlastAction->setObjectName(ToolsMenu::SANGER_ALIGN);
+        connect(alignToRefBlastAction, SIGNAL(triggered(bool)), blastallTool, SLOT(sl_runAlign()));
+
 
         BlastPlusSupportContext* blastPlusViewCtx = new BlastPlusSupportContext(this);
         blastPlusViewCtx->setParent(this);//may be problems???
@@ -488,6 +495,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         cap3Action->setObjectName(ToolsMenu::SANGER_DENOVO);
         connect(cap3Action, SIGNAL(triggered()), cap3Tool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::SANGER_MENU, cap3Action);
+        ToolsMenu::addAction(ToolsMenu::SANGER_MENU, alignToRefBlastAction);
 
         GObjectViewWindowContext* spideyCtx = spideySupport->getViewContext();
         spideyCtx->setParent(this);
@@ -585,6 +593,21 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
             assert(res);
         }
     }
+    {
+
+        GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+        XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+        assert(xmlTestFormat != NULL);
+
+        GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
+        l->qlist = HmmerTests::createTestFactories();
+
+        foreach(XMLTestFactory* f, l->qlist) {
+            bool res = xmlTestFormat->registerTestFactory(f);
+            Q_UNUSED(res);
+            assert(res);
+        }
+    }
 
     etRegistry->setManager(&validationManager);
     validationManager.start();
@@ -613,8 +636,11 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::ClustalWWorkerFactory::init();
     LocalWorkflow::ClustalOWorkerFactory::init();
     LocalWorkflow::MAFFTWorkerFactory::init();
+
+    LocalWorkflow::AlignToReferenceBlastWorkerFactory::init();
     LocalWorkflow::BlastAllWorkerFactory::init();
     LocalWorkflow::BlastPlusWorkerFactory::init();
+
     LocalWorkflow::TCoffeeWorkerFactory::init();
     LocalWorkflow::CuffdiffWorkerFactory::init();
     LocalWorkflow::CufflinksWorkerFactory::init();

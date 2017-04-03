@@ -34,6 +34,7 @@ class U2CORE_EXPORT U2Chromatogram : public U2RawData {
 public:
                         U2Chromatogram();
                         U2Chromatogram(const U2DbiRef &dbiRef);
+                        U2Chromatogram(const U2RawData &rawData);
 
     U2DataType          getType() const;
 };
@@ -50,6 +51,7 @@ public:
                                         const QVariantMap &hintsMap = QVariantMap());
 
     const DNAChromatogram &         getChromatogram() const;
+    void                            setChromatogram(U2OpStatus &os, const DNAChromatogram &chromatogram);
 
     GObject *                       clone(const U2DbiRef &dstRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
 

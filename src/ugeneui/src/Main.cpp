@@ -115,6 +115,7 @@
 #include <U2View/ColorSchemaSettingsController.h>
 #include <U2View/DnaAssemblyUtils.h>
 #include <U2View/FindPatternWidgetFactory.h>
+#include <U2View/McaGeneralTabFactory.h>
 #include <U2View/MSAExportConsensusTabFactory.h>
 #include <U2View/MSAGeneralTabFactory.h>
 #include <U2View/MSAHighlightingTabFactory.h>
@@ -276,6 +277,9 @@ static void initOptionsPanels() {
 
     //Tree View groups
     opWidgetFactoryRegistry->registerFactory(new TreeOptionsWidgetFactory());
+
+    //MCA groups
+    opWidgetFactoryRegistry->registerFactory(new McaGeneralTabFactory());
 }
 
 static void initProjectFilterTaskRegistry() {

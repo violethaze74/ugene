@@ -22,24 +22,25 @@
 #ifndef _U2_MSA_EDITOR_CONSENSUS_CACHE_H_
 #define _U2_MSA_EDITOR_CONSENSUS_CACHE_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QVector>
-#include <QtCore/QBitArray>
+#include <QBitArray>
+#include <QObject>
+#include <QVector>
+
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
-class MAlignmentObject;
-class MAlignment;
-class MAlignmentModInfo;
 class MSAConsensusAlgorithm;
 class MSAConsensusAlgorithmFactory;
+class MaModificationInfo;
+class MultipleAlignmentObject;
 class U2OpStatus;
 
 class MSAEditorConsensusCache : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusCache)
 public:
-    MSAEditorConsensusCache(QObject* p, MAlignmentObject* aliObj, MSAConsensusAlgorithmFactory* algo);
+    MSAEditorConsensusCache(QObject* p, MultipleAlignmentObject* aliObj, MSAConsensusAlgorithmFactory* algo);
     ~MSAEditorConsensusCache();
 
     char getConsensusChar(int pos);
@@ -54,7 +55,7 @@ public:
 
     QByteArray getConsensusLine(bool withGaps);
 private slots:
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&);
+    void sl_alignmentChanged();
     void sl_thresholdChanged(int newValue);
     void sl_invalidateAlignmentObject();
 
@@ -68,11 +69,11 @@ private:
 
     void updateCacheItem(int pos);
 
-    int                     curCacheSize;
-    QVector<CacheItem>      cache;
-    QBitArray               updateMap;
-    MAlignmentObject*       aliObj;
-    MSAConsensusAlgorithm*  algorithm;
+    int                         curCacheSize;
+    QVector<CacheItem>          cache;
+    QBitArray                   updateMap;
+    MultipleAlignmentObject*    aliObj;
+    MSAConsensusAlgorithm*      algorithm;
 };
 
 }//namespace;

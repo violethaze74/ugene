@@ -39,7 +39,7 @@ class QToolButton;
 namespace U2 {
 
 class MSAEditor;
-class MSAEditorSequenceArea;
+class MaEditorSequenceArea;
 
 class U2VIEW_EXPORT MSAHighlightingTab : public QWidget
 {
@@ -59,9 +59,11 @@ private:
     QWidget* createColorGroup();
     QWidget* createHighlightingGroup();
     void initColorCB();
+    void setColorScheme(bool isAlphabetRaw);
+    void setHighlightingScheme(bool isAlphabetRaw);
 
     MSAEditor *msa;
-    MSAEditorSequenceArea *seqArea;
+    MaEditorSequenceArea *seqArea;
     QComboBox *colorScheme;
     QComboBox *highlightingScheme;
     QLabel *hint;

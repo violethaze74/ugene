@@ -75,26 +75,22 @@ Task* SequencesToMSAWorker::tick() {
 void MSAFromSequencesTask::run() {
     CHECK(sequences_.size() > 0, );
     DNASequence seq = sequences_.first();
-    ma.setAlphabet(seq.alphabet);
-
-    U2OpStatus2Log os;
-    ma.addRow(seq.getName(), seq.seq, os);
-    CHECK_OP_EXT(os, setError("An error has occurred during converting an alignment to sequences."),);
+    ma->setAlphabet(seq.alphabet);
+    ma->addRow(seq.getName(), seq.seq);
 
     for (int i=1; i<sequences_.size(); i++) {
         DNASequence sqnc = sequences_.at(i);
-        ma.addRow(sqnc.getName(), sqnc.seq, os);
-        CHECK_OP_EXT(os, setError("An error has occurred during converting an alignment to sequences."),);
+        ma->addRow(sqnc.getName(), sqnc.seq);
     }
 }
 
 void SequencesToMSAWorker::sl_onTaskFinished(Task* t) {
     MSAFromSequencesTask* maTask = qobject_cast<MSAFromSequencesTask*>(t);
-    MAlignment ma = maTask->getResult();
+    MultipleSequenceAlignment ma = maTask->getResult();
 
-    if (!ma.isEmpty()) {
-        if (ma.getName().isEmpty()) {
-            ma.setName("Multiple alignment");
+    if (!ma->isEmpty()) {
+        if (ma->getName().isEmpty()) {
+            ma->setName("Multiple alignment");
         }
 
         SAFE_POINT(NULL != outPort, "NULL outPort!",);

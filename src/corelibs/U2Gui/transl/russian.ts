@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="347"/>
         <source>Save annotation(s) to</source>
-        <translation type="unfinished">Сохранить результат(ы) в</translation>
+        <translation>Сохранить результат(ы) в</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="359"/>
@@ -280,14 +280,6 @@
         <source>Use auto-annotations table</source>
         <translation>Использовать таблицу автоаннотаций</translation>
     </message>
-    <message>
-        <source>Existing table</source>
-        <translation type="vanished">Существующая таблица</translation>
-    </message>
-    <message>
-        <source>Create new table</source>
-        <translation type="vanished">Новая таблица</translation>
-    </message>
 </context>
 <context>
     <name>CreateAnnotationNormalWidget</name>
@@ -302,20 +294,12 @@
         <translation>Выбрать файл для сохранения аннотаций</translation>
     </message>
     <message>
-        <source>Existing table</source>
-        <translation type="vanished">Существующая таблица</translation>
-    </message>
-    <message>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="85"/>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="113"/>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="174"/>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="215"/>
         <source>...</source>
         <translation>...</translation>
-    </message>
-    <message>
-        <source>Create new table</source>
-        <translation type="vanished">Новая таблица</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="68"/>
@@ -406,20 +390,12 @@
         <translation>Выбрать файл для сохранения аннотаций</translation>
     </message>
     <message>
-        <source>Existing table:</source>
-        <translation type="vanished">Существующая таблица:</translation>
-    </message>
-    <message>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="81"/>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="113"/>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="175"/>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="242"/>
         <source>...</source>
         <translation>...</translation>
-    </message>
-    <message>
-        <source>Create new table:</source>
-        <translation type="vanished">Новая таблица:</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="62"/>
@@ -1600,24 +1576,24 @@ To append data to existing file press &apos;Append&apos;.</source>
 <context>
     <name>U2::AddDocumentAndOpenViewTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="332"/>
-        <location filename="../src/OpenViewTask.cpp" line="346"/>
+        <location filename="../src/OpenViewTask.cpp" line="340"/>
+        <location filename="../src/OpenViewTask.cpp" line="354"/>
         <source>Opening view for document: &apos;NONAME&apos;</source>
         <translation>Открытие документа: &apos;NONAME&apos;</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="336"/>
-        <location filename="../src/OpenViewTask.cpp" line="349"/>
+        <location filename="../src/OpenViewTask.cpp" line="344"/>
+        <location filename="../src/OpenViewTask.cpp" line="357"/>
         <source>Opening view for document: %1</source>
         <translation>Открытие документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="338"/>
+        <location filename="../src/OpenViewTask.cpp" line="346"/>
         <source>Provided document is NULL</source>
         <translation>Provided document is NULL</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="351"/>
+        <location filename="../src/OpenViewTask.cpp" line="359"/>
         <source>Document provider is NULL</source>
         <translation>Document provider is NULL</translation>
     </message>
@@ -2471,14 +2447,14 @@ complement(5..15)</translation>
 <context>
     <name>U2::LoadRemoteDocumentAndAddToProjectTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="224"/>
-        <location filename="../src/OpenViewTask.cpp" line="231"/>
-        <location filename="../src/OpenViewTask.cpp" line="238"/>
+        <location filename="../src/OpenViewTask.cpp" line="232"/>
+        <location filename="../src/OpenViewTask.cpp" line="239"/>
+        <location filename="../src/OpenViewTask.cpp" line="246"/>
         <source>Load remote document and add to project</source>
         <translation>Load remote document and add to project</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="283"/>
+        <location filename="../src/OpenViewTask.cpp" line="291"/>
         <source>Cannot find %1 in %2 database</source>
         <translation>Невозможно найти %1 в базе данных %2</translation>
     </message>
@@ -2698,22 +2674,22 @@ complement(5..15)</translation>
 <context>
     <name>U2::ProjectParser10</name>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="351"/>
+        <location filename="../src/ProjectParsing.cpp" line="356"/>
         <source>Can&apos;t find project file: %1, ignoring</source>
         <translation>Невозможно найти файл проекта: %1, игнорируется</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="355"/>
+        <location filename="../src/ProjectParsing.cpp" line="360"/>
         <source>Duplicate document found: %1, ignoring</source>
         <translation>Найдены одинаковые документы: %1, игнорируется</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="360"/>
+        <location filename="../src/ProjectParsing.cpp" line="367"/>
         <source>Database document: %1, ignoring</source>
         <translation>Документ базы данных: %1, игнорируется</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="406"/>
+        <location filename="../src/ProjectParsing.cpp" line="414"/>
         <source>The last loaded state was locked by format</source>
         <translation>Крайнее загруженное состояние было заблокировано форматом</translation>
     </message>
@@ -3087,7 +3063,7 @@ complement(5..15)</translation>
     <message>
         <location filename="../src/util/SearchBox.cpp" line="56"/>
         <source>Search...</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск...</translation>
     </message>
 </context>
 <context>

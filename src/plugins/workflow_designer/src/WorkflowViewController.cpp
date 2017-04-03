@@ -2067,7 +2067,7 @@ void WorkflowView::sl_onSelectionChanged() {
 void WorkflowView::sl_exportScene() {
     propertyEditor->commit();
     QString fileName = GUrlUtils::fixFileName(meta.name);
-    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(sceneView->viewport(), ExportImageDialog::WD, 
+    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(sceneView->viewport(), ExportImageDialog::WD,
                                                                            fileName, ExportImageDialog::SupportScaling,  sceneView->viewport());
     dialog->exec();
 }

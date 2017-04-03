@@ -68,6 +68,7 @@
 #include "tests/common_scenarios/project/sequence_exporting/from_project_view/GTTestsFromProjectView.h"
 #include "tests/common_scenarios/project/user_locking/GTTestsProjectUserLocking.h"
 #include "tests/common_scenarios/repeat_finder/GTTestsRepeatFinder.h"
+#include "tests/common_scenarios/sanger/GTTestsSanger.h"
 #include "tests/common_scenarios/sequence_edit/GTTestsSequenceEdit.h"
 #include "tests/common_scenarios/sequence_view/GTTestsSequenceView.h"
 #include "tests/common_scenarios/shared_database/GTTestsSharedDatabase.h"
@@ -1298,6 +1299,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5469);
     REGISTER_TEST(GUITest_regression_scenarios::test_5499);
 
+    REGISTER_TEST(GUITest_regression_scenarios::test_5517);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_5520_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5520_2);
+
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
     //////////////////////////////////////////////////////////////////////////
@@ -1427,6 +1433,14 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_project_filtering::test_0012);
     REGISTER_TEST(GUITest_common_scenarios_project_filtering::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_project_filtering::test_0014);
+
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/sanger/
+    //////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_sanger::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_sanger::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_sanger::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_sanger::test_0004);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/Sequence view/

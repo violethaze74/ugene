@@ -30,12 +30,12 @@ namespace U2 {
 
 class MSAEditor;
 class MSAEditorConsensusArea;
-class MSAEditorNameList;
+class MaEditorNameList;
 class MSAEditorSequenceArea;
 class MSAEditorTreeViewerUI;
 class MSAEditorUI;
-class MSAGraphOverview;
-class MSASimpleOverview;
+class MaGraphOverview;
+class MaSimpleOverview;
 
 // If you can't find an appropriate method check the GTUtilsMsaEditorSequenceArea class
 class GTUtilsMsaEditor {
@@ -45,10 +45,10 @@ public:
 
     static MSAEditor * getEditor(HI::GUITestOpStatus &os);
     static MSAEditorUI * getEditorUi(HI::GUITestOpStatus &os);
-    static MSAGraphOverview * getGraphOverview(HI::GUITestOpStatus &os);
-    static MSASimpleOverview * getSimpleOverview(HI::GUITestOpStatus &os);
+    static MaGraphOverview * getGraphOverview(HI::GUITestOpStatus &os);
+    static MaSimpleOverview * getSimpleOverview(HI::GUITestOpStatus &os);
     static MSAEditorTreeViewerUI * getTreeView(HI::GUITestOpStatus &os);
-    static MSAEditorNameList * getNameListArea(HI::GUITestOpStatus &os);
+    static MaEditorNameList * getNameListArea(HI::GUITestOpStatus &os);
     static MSAEditorConsensusArea * getConsensusArea(HI::GUITestOpStatus &os);
     static MSAEditorSequenceArea * getSequenceArea(HI::GUITestOpStatus &os);
 

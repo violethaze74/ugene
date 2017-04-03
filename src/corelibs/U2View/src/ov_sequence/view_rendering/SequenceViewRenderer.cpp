@@ -52,7 +52,7 @@ CommonSequenceViewMetrics::CommonSequenceViewMetrics() {
 /************************************************************************/
 /* SequenceViewRenderer */
 /************************************************************************/
-SequenceViewRenderer::SequenceViewRenderer(ADVSequenceObjectContext *ctx)
+SequenceViewRenderer::SequenceViewRenderer(SequenceObjectContext *ctx)
     : ctx(ctx) {
 
 }

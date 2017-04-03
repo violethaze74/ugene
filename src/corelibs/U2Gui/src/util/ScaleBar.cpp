@@ -29,9 +29,9 @@
 
 namespace U2 {
 
-    ScaleBar::ScaleBar(QWidget* parent) : QWidget(parent)    
+    ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent) : QWidget(parent)
     {
-        scaleBar = new QSlider(Qt::Vertical);
+        scaleBar = new QSlider(ori);
         scaleBar->setTracking(true);
         scaleBar->setRange(100,2000);
         scaleBar->setTickPosition(QSlider::TicksLeft);
@@ -56,7 +56,7 @@ namespace U2 {
         connect(plusButton,SIGNAL(clicked()),SLOT(sl_plusButtonClicked()));
 
         //layout
-        QVBoxLayout *zoomLayout = new QVBoxLayout();
+        QBoxLayout *zoomLayout = new QBoxLayout(ori == Qt::Vertical ? QBoxLayout::TopToBottom : QBoxLayout::RightToLeft);
         zoomLayout->addWidget(plusButton);
         zoomLayout->addWidget(scaleBar);
         zoomLayout->addWidget(minusButton);

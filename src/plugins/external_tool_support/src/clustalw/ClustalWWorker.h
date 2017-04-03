@@ -56,7 +56,7 @@ private:
     ClustalWSupportTaskSettings cfg;
 
 private:
-    void send(const MAlignment &msa);
+    void send(const MultipleSequenceAlignment &msa);
 };
 
 class ClustalWWorkerFactory : public DomainFactory {

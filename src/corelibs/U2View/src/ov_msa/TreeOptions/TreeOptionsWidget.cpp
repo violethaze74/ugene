@@ -30,7 +30,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
@@ -395,18 +395,27 @@ AddTreeWidget::AddTreeWidget(MSAEditor* msa)
     buildTreeButton->setFixedWidth(102);
     buttonLayout->addWidget(buildTreeButton);
     buildTreeButton->setObjectName( "BuildTreeButton" );
-
+    
+    buildTreeButton->setDisabled(editor->getNumSequences() < 2);
+    
     mainLayout->addLayout(buttonLayout);
 
     connect(openTreeButton, SIGNAL(clicked()), SLOT(sl_onOpenTreeTriggered()));
     connect(buildTreeButton, SIGNAL(clicked()), SLOT(sl_onBuildTreeTriggered()));
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), 
+            SLOT(sl_msaChanged(const MultipleAlignment&, const MaModificationInfo&)));
 }
+
 void AddTreeWidget::sl_onOpenTreeTriggered() {
     editor->getTreeManager()->openTreeFromFile();
 }
 
 void AddTreeWidget::sl_onBuildTreeTriggered() {
     editor->getTreeManager()->buildTreeWithDialog();
+}
+
+void AddTreeWidget::sl_msaChanged(const MultipleAlignment&, const MaModificationInfo&) {
+    buildTreeButton->setDisabled(editor->getNumSequences() < 2);
 }
 
 }

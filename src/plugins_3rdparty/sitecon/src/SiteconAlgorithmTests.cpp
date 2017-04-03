@@ -31,7 +31,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <QtXml/QDomElement>
 
@@ -91,22 +91,22 @@ void GTest_CalculateACGTContent::prepare(){
         stateInfo.setError(  QString("context not found %1").arg(docName) );
         return;
     }
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     GObject *obj = list.first();
     if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
-    MAlignmentObject *mao = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(mao==NULL){
-        stateInfo.setError(  QString("error can't cast to MAlignmentObject from GObject") );
+        stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
         return;
     }
-    ma = mao->getMAlignment();
+    ma = mao->getMsaCopy();
 }
 
 void GTest_CalculateACGTContent::run() {
@@ -186,29 +186,29 @@ void GTest_CalculateDispersionAndAverage::prepare() {
         stateInfo.setError(  QString("context not found %1").arg(docName) );
         return;
     }
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     GObject *obj = list.first();
     if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
-    MAlignmentObject *mao = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(mao==NULL){
-        stateInfo.setError(  QString("error can't cast to MAlignmentObject from GObject") );
+        stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
         return;
     }
-    ma = mao->getMAlignment();
+    ma = mao->getMsaCopy();
 }
 
 void GTest_CalculateDispersionAndAverage::run() {
     DinucleotitePropertyRegistry di;
     s.props = di.getProperties();
     SiteconAlgorithm::calculateACGTContent(ma, s);
-    s.numSequencesInAlignment = ma.getNumRows();
+    s.numSequencesInAlignment = ma->getNumRows();
     TaskStateInfo stub;
     result = SiteconAlgorithm::calculateDispersionAndAverage(ma, s, stub);
 }
@@ -274,30 +274,30 @@ void GTest_CalculateFirstTypeError::prepare() {
         stateInfo.setError(  QString("context not found %1").arg(docName) );
         return;
     }
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     GObject *obj = list.first();
     if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
-    MAlignmentObject *mao = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(mao==NULL){
-        stateInfo.setError(  QString("error can't cast to MAlignmentObject from GObject") );
+        stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
         return;
     }
-    ma = mao->getMAlignment();
+    ma = mao->getMsaCopy();
 }
 
 void GTest_CalculateFirstTypeError::run() {
     DinucleotitePropertyRegistry di;
     s.props = di.getProperties();
     SiteconAlgorithm::calculateACGTContent(ma, s);
-    s.numSequencesInAlignment = ma.getNumRows();
-    s.windowSize = ma.getLength();
+    s.numSequencesInAlignment = ma->getNumRows();
+    s.windowSize = ma->getLength();
     TaskStateInfo stub;
     result = SiteconAlgorithm::calculateFirstTypeError(ma, s, stub);
 }
@@ -355,30 +355,30 @@ void GTest_CalculateSecondTypeError::prepare() {
         stateInfo.setError(  QString("context not found %1").arg(docName) );
         return;
     }
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     GObject *obj = list.first();
     if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
-    MAlignmentObject *mao = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(mao==NULL){
-        stateInfo.setError(  QString("error can't cast to MAlignmentObject from GObject") );
+        stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
         return;
     }
-    ma = mao->getMAlignment();
+    ma = mao->getMsaCopy();
 }
 
 void GTest_CalculateSecondTypeError::run() {
     DinucleotitePropertyRegistry di;
     s.props = di.getProperties();
     SiteconAlgorithm::calculateACGTContent(ma, s);
-    s.numSequencesInAlignment = ma.getNumRows();
-    s.windowSize = ma.getLength();
+    s.numSequencesInAlignment = ma->getNumRows();
+    s.windowSize = ma->getLength();
     SiteconModel m;
     m.aliURL = (getContext<Document>(this, docName))->getURLString();
     m.modelName = QFileInfo(m.aliURL).baseName();

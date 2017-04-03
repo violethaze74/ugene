@@ -819,12 +819,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::RemoteBLASTPlugin</name>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="62"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="63"/>
         <source>Performs remote database queries: BLAST, CDD, etc...</source>
         <translation>Посылает запрос в удаленную базу данных: BLAST, CDD и т.д...</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="62"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="63"/>
         <source>Remote BLAST</source>
         <translation>Удаленный поиск с помощью BLAST</translation>
     </message>
@@ -859,12 +859,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::RemoteBLASTViewContext</name>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="100"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="101"/>
         <source>Query NCBI BLAST database...</source>
         <translation>Поиск в базе данных NCBI с помощью BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="137"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="138"/>
         <source>Sequence objects is NULL</source>
         <translation>Sequence objects is NULL</translation>
     </message>
