@@ -111,7 +111,7 @@ QList<U2DataId> SQLiteUdrDbi::getObjectRecordIds(const UdrSchema *schema, const 
     QList<U2DataId> result;
     SAFE_POINT_EXT(schema->hasObjectReference(), os.setError("No object reference"), result);
 
-    SQLiteQuery q("SELECT " + UdrSchema::RECORD_ID_FIELD_NAME + " FROM " + tableName(schema->getId()) + " WHERE " + UdrSchema::OBJECT_FIELD_NAME + " = ?1", db, os);
+    SQLiteReadOnlyQuery q("SELECT " + UdrSchema::RECORD_ID_FIELD_NAME + " FROM " + tableName(schema->getId()) + " WHERE " + UdrSchema::OBJECT_FIELD_NAME + " = ?1", db, os);
     q.bindDataId(1, objectId);
 
     while (q.step()) {
@@ -141,7 +141,7 @@ QList<UdrRecord> SQLiteUdrDbi::getRecords(const UdrSchemaId &schemaId, U2OpStatu
     const UdrSchema *schema = udrSchema(schemaId, os);
     CHECK_OP(os, result);
 
-    SQLiteQuery q(selectAllDef(schema, os), db, os);
+    SQLiteReadOnlyQuery q(selectAllDef(schema, os), db, os);
     CHECK_OP(os, result);
 
     while (q.step()) {
@@ -382,7 +382,7 @@ void SQLiteUdrDbi::bindData(const QList<UdrValue> &data, const UdrSchema *schema
     }
 }
 
-void SQLiteUdrDbi::retreiveData(QList<UdrValue> &data, const UdrSchema *schema, SQLiteQuery &q, U2OpStatus &os) {
+void SQLiteUdrDbi::retreiveData(QList<UdrValue> &data, const UdrSchema *schema, SQLiteReadOnlyQuery &q, U2OpStatus &os) {
     QList<int> fields = UdrSchema::notBinary(schema, os);
     CHECK_OP(os, );
 

@@ -164,7 +164,7 @@ public:
     QMap<U2DataId, QStringList>     getAnnotationTablesByFeatureKey(const QStringList &values, U2OpStatus &os);
 
 private:
-    QSharedPointer<SQLiteQuery>     createFeatureQuery(const QString &selectPart, const FeatureQuery &fq, bool useOrder, U2OpStatus &os,
+    QSharedPointer<SQLiteReadOnlyQuery>     createFeatureQuery(const QString &selectPart, const FeatureQuery &fq, bool useOrder, U2OpStatus &os,
                                         SQLiteTransaction *trans = NULL);
 };
 

@@ -121,7 +121,7 @@ void SQLiteModDbi::initSqlSchema(U2OpStatus &os) {
 
 U2SingleModStep SQLiteModDbi::getModStep(const U2DataId &objectId, qint64 trackVersion, U2OpStatus &os) {
     U2SingleModStep res;
-    SQLiteQuery q("SELECT id, object, otype, oextra, version, modType, details, multiStepId FROM SingleModStep WHERE object = ?1 AND version = ?2 ORDER BY id", db, os);
+    SQLiteReadOnlyQuery q("SELECT id, object, otype, oextra, version, modType, details, multiStepId FROM SingleModStep WHERE object = ?1 AND version = ?2 ORDER BY id", db, os);
     SAFE_POINT_OP(os, res);
 
     q.bindDataId(1, objectId);
@@ -143,7 +143,7 @@ U2SingleModStep SQLiteModDbi::getModStep(const U2DataId &objectId, qint64 trackV
 }
 
 qint64 SQLiteModDbi::getNearestUserModStepVersion(const U2DataId &masterObjId, qint64 version, U2OpStatus &os) {
-    SQLiteQuery qVersion("SELECT MAX(version) FROM UserModStep WHERE object = ?1 AND version <= ?2", db, os);
+    SQLiteReadOnlyQuery qVersion("SELECT MAX(version) FROM UserModStep WHERE object = ?1 AND version <= ?2", db, os);
     qVersion.bindDataId(1, masterObjId);
     qVersion.bindInt64(2, version);
 
@@ -175,10 +175,10 @@ QList< QList<U2SingleModStep> > SQLiteModDbi::getModSteps(const U2DataId &master
         return steps;
     }
 
-    SQLiteQuery qMultiStepId("SELECT id FROM MultiModStep WHERE userStepId = ?1", db, os);
+    SQLiteReadOnlyQuery qMultiStepId("SELECT id FROM MultiModStep WHERE userStepId = ?1", db, os);
     qMultiStepId.bindInt64(1, userStepId);
 
-    SQLiteQuery qSingleStep("SELECT id, object, otype, oextra, version, modType, details, multiStepId FROM SingleModStep WHERE multiStepId = ?1", db, os);
+    SQLiteReadOnlyQuery qSingleStep("SELECT id, object, otype, oextra, version, modType, details, multiStepId FROM SingleModStep WHERE multiStepId = ?1", db, os);
     while (qMultiStepId.step()) {
         qint64 multiStepId = qMultiStepId.getInt64(0);
 
@@ -238,7 +238,7 @@ void SQLiteModDbi::removeModsWithGreaterVersion(const U2DataId &masterObjId, qin
 
     // Get user step IDs
     QList<qint64> userStepIds;
-    SQLiteQuery qSelectUserSteps("SELECT id FROM UserModStep WHERE object = ?1 AND version >= ?2", db, os);
+    SQLiteReadOnlyQuery qSelectUserSteps("SELECT id FROM UserModStep WHERE object = ?1 AND version >= ?2", db, os);
     SAFE_POINT_OP(os, );
 
     qSelectUserSteps.bindDataId(1, masterObjId);
@@ -261,7 +261,7 @@ void SQLiteModDbi::removeDuplicateUserStep(const U2DataId &masterObjId, qint64 m
 
     // Get user step IDs
     QList<qint64> userStepIds;
-    SQLiteQuery qSelect("SELECT id FROM UserModStep WHERE object = ?1 AND version = ?2", db, os);
+    SQLiteReadOnlyQuery qSelect("SELECT id FROM UserModStep WHERE object = ?1 AND version = ?2", db, os);
     SAFE_POINT_OP(os, );
 
     qSelect.bindDataId(1, masterObjId);
@@ -296,7 +296,7 @@ void SQLiteModDbi::removeSteps(QList<qint64> userStepIds, U2OpStatus &os) {
 
     // Get multiple steps IDs
     QList<qint64> multiStepIds;
-    SQLiteQuery qSelectMultiSteps("SELECT id FROM MultiModStep WHERE userStepId = ?1", db, os);
+    SQLiteReadOnlyQuery qSelectMultiSteps("SELECT id FROM MultiModStep WHERE userStepId = ?1", db, os);
     SAFE_POINT_OP(os, );
     foreach (qint64 userStepId, userStepIds) {
         qSelectMultiSteps.reset();
@@ -342,7 +342,7 @@ void SQLiteModDbi::removeObjectMods(const U2DataId &objectId, U2OpStatus &os) {
 
     // Get user step IDs
     QList<qint64> userStepIds;
-    SQLiteQuery qSelectUserSteps("SELECT id FROM UserModStep WHERE object = ?1", db, os);
+    SQLiteReadOnlyQuery qSelectUserSteps("SELECT id FROM UserModStep WHERE object = ?1", db, os);
     SAFE_POINT_OP(os, );
 
     qSelectUserSteps.bindDataId(1, objectId);
@@ -413,7 +413,7 @@ void SQLiteModDbi::endCommonUserModStep(const U2DataId &userMasterObjId, U2OpSta
         Q_UNUSED(t);
 
         // Get multiple steps IDs
-        SQLiteQuery qSelectMultiSteps("SELECT id FROM MultiModStep WHERE userStepId = ?1", db, os);
+        SQLiteReadOnlyQuery qSelectMultiSteps("SELECT id FROM MultiModStep WHERE userStepId = ?1", db, os);
         SAFE_POINT_OP(os, );
 
         qSelectMultiSteps.bindInt64(1, userModStepId);
@@ -527,7 +527,7 @@ bool SQLiteModDbi::canUndo(const U2DataId &objectId, U2OpStatus &os) {
     SAFE_POINT_OP(os, false);
 
     // Verify if there are steps
-    SQLiteQuery q("SELECT id FROM UserModStep WHERE object = ?1 AND version < ?2", db, os);
+    SQLiteReadOnlyQuery q("SELECT id FROM UserModStep WHERE object = ?1 AND version < ?2", db, os);
     SAFE_POINT_OP(os, false);
 
     q.bindDataId(1, objectId);
@@ -548,7 +548,7 @@ bool SQLiteModDbi::canRedo(const U2DataId &objectId, U2OpStatus &os) {
     SAFE_POINT_OP(os, false);
 
     // Verify if there are steps
-    SQLiteQuery q("SELECT id FROM UserModStep WHERE object = ?1 AND version >= ?2", db, os);
+    SQLiteReadOnlyQuery q("SELECT id FROM UserModStep WHERE object = ?1 AND version >= ?2", db, os);
     SAFE_POINT_OP(os, false);
 
     q.bindDataId(1, objectId);

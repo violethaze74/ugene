@@ -54,7 +54,7 @@ U2Sequence SQLiteSequenceDbi::getSequenceObject(const U2DataId& sequenceId, U2Op
     CHECK_OP(os, res);
 
     static const QString queryString("SELECT Sequence.length, Sequence.alphabet, Sequence.circular FROM Sequence WHERE Sequence.object = ?1");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadOnlyQuery q(queryString, db, os);
     q.bindDataId(1, sequenceId);
     if (q.step()) {
         res.length = q.getInt64(0);
@@ -76,7 +76,7 @@ QByteArray SQLiteSequenceDbi::getSequenceData(const U2DataId& sequenceId, const 
             res.reserve(region.length);
         }
         // Get all chunks that intersect the region
-        SQLiteQuery q("SELECT sstart, send, data FROM SequenceData WHERE sequence = ?1 "
+        SQLiteReadOnlyQuery q("SELECT sstart, send, data FROM SequenceData WHERE sequence = ?1 "
             "AND  (send >= ?2 AND sstart < ?3) ORDER BY sstart", db, os);
 
         q.bindDataId(1, sequenceId);

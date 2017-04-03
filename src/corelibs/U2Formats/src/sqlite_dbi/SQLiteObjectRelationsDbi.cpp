@@ -60,7 +60,7 @@ QList<U2ObjectRelation> SQLiteObjectRelationsDbi::getObjectRelations( const U2Da
 
     static const QString queryString = "SELECT o.type, o.name, o_r.object, o_r.reference, o_r.role FROM ObjectRelation AS o_r "
         "INNER JOIN Object AS o ON o.id = o_r.reference WHERE o_r.object = ?1";
-    SQLiteQuery q( queryString, db, os );
+    SQLiteReadOnlyQuery q( queryString, db, os );
     CHECK_OP(os, result);
     q.bindDataId( 1, object );
     while ( q.step( ) ) {
@@ -86,7 +86,7 @@ QList<U2DataId> SQLiteObjectRelationsDbi::getReferenceRelatedObjects( const U2Da
 
     static const QString queryString = "SELECT o.id, o.type FROM Object AS o INNER JOIN ObjectRelation AS o_r "
         "ON o.id = o_r.object WHERE o_r.reference = ?1 AND o_r.role = ?2";
-    SQLiteQuery q( queryString, db, os );
+    SQLiteReadOnlyQuery q( queryString, db, os );
     CHECK_OP(os, result);
     q.bindDataId( 1, reference );
     q.bindInt32( 2, relationRole );

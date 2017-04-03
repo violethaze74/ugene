@@ -134,7 +134,7 @@ U2AnnotationTable SQLiteFeatureDbi::getAnnotationTableObject(const U2DataId &tab
 
     DBI_TYPE_CHECK(tableId, U2Type::AnnotationTable, os, result);
 
-    SQLiteQuery q("SELECT rootId, name FROM AnnotationTable, Object WHERE object = ?1 AND id = ?1", db, os);
+    SQLiteReadOnlyQuery q("SELECT rootId, name FROM AnnotationTable, Object WHERE object = ?1 AND id = ?1", db, os);
     q.bindDataId(1, tableId);
     if (q.step()) {
         result.rootFeature = q.getDataId(0, U2Type::Feature);
@@ -162,7 +162,7 @@ U2Feature SQLiteFeatureDbi::getFeature(const U2DataId& featureId, U2OpStatus& os
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, res);
 
     const QString queryString("SELECT " + FDBI_FIELDS + " FROM Feature AS f WHERE id = ?1");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadOnlyQuery q(queryString, db, os);
     q.bindDataId(1, featureId);
     q.execute();
     CHECK_OP(os, res);
@@ -238,7 +238,7 @@ static QString getWhereQueryPartFromType(const QString &featurePlaceholder, cons
     return result;
 }
 
-QSharedPointer<SQLiteQuery> SQLiteFeatureDbi::createFeatureQuery(const QString &selectPart, const FeatureQuery &fq, bool useOrder,
+QSharedPointer<SQLiteReadOnlyQuery> SQLiteFeatureDbi::createFeatureQuery(const QString &selectPart, const FeatureQuery &fq, bool useOrder,
     U2OpStatus &os, SQLiteTransaction *trans)
 {
     QString wherePart;
@@ -407,21 +407,21 @@ QSharedPointer<SQLiteQuery> SQLiteFeatureDbi::createFeatureQuery(const QString &
 }
 
 qint64 SQLiteFeatureDbi::countFeatures(const FeatureQuery &fq, U2OpStatus &os) {
-    QSharedPointer<SQLiteQuery> q(createFeatureQuery("SELECT COUNT(*)", fq, false, os));
+    QSharedPointer<SQLiteReadOnlyQuery> q(createFeatureQuery("SELECT COUNT(*)", fq, false, os));
     CHECK_OP(os, -1);
     return q->selectInt64();
 }
 
 U2DbiIterator<U2Feature>* SQLiteFeatureDbi::getFeatures(const FeatureQuery& fq, U2OpStatus& os) {
-    QSharedPointer<SQLiteQuery> q = createFeatureQuery("SELECT " + FDBI_FIELDS, fq, true, os);
+    QSharedPointer<SQLiteReadOnlyQuery> q = createFeatureQuery("SELECT " + FDBI_FIELDS, fq, true, os);
     CHECK_OP(os, NULL);
-    return new SqlRSIterator<U2Feature>(q, new SqlFeatureRSLoader(), NULL, U2Feature(), os);
+    return new SqlRSROIterator<U2Feature>(q, new SqlFeatureRSLoader(), NULL, U2Feature(), os);
 }
 
 QList<U2FeatureKey> SQLiteFeatureDbi::getFeatureKeys(const U2DataId& featureId, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     static const QString queryString("SELECT name, value FROM FeatureKey WHERE feature = ?1");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadOnlyQuery q(queryString, db, os);
 
     q.bindDataId(1, featureId);
     CHECK_OP(os, QList<U2FeatureKey>());
@@ -609,7 +609,7 @@ bool SQLiteFeatureDbi::getKeyValue(const U2DataId &featureId, U2FeatureKey &key,
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, false);
 
     static const QString queryString("SELECT value FROM FeatureKey WHERE feature = ?1 AND name = ?2");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadOnlyQuery q(queryString, db, os);
     CHECK_OP(os, false);
 
     q.bindDataId(1, featureId);
