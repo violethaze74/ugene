@@ -6220,12 +6220,12 @@ GUI_TEST_CLASS_DEFINITION(test_2972){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. Click the menu Tools -> HMMER tools -> HMM3 -> Search with HMM3 phmmer.
     GTUtilsDialog::waitForDialog(os, new UHMM3PhmmerDialogFiller(os, dataDir + "samples/Newick/COI.nwk"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "HMMER tools" << "Search with HMMER3 phmmer...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "HMMER tools" << "Search with phmmer...");
     GTGlobals::sleep();
 
     CHECK_SET_ERR(l.hasError(), "no error in log");
     QString error = l.getError();
-    QString expectedError = "No dna sequence objects found in document querySeq sequence";
+    QString expectedError = "Task {Search with phmmer} finished with error: Subtask {PHMMER search tool} is failed: PHMMER search tool exited with code 33792";
 
     CHECK_SET_ERR(error.contains(expectedError), "actual error is " + error);
 //    3. Choose the query sequence file: any non-sequence format file (e.g. *.mp3).

@@ -89,9 +89,13 @@ public:
 
     virtual void setModified(bool modified, const QString& modType = QString());
 
-    virtual bool isModificationAllowed(const QString& modType) {Q_UNUSED(modType); return !isStateLocked();}
+    virtual bool isModificationAllowed(const QString& modType);
 
     virtual bool isItemModified() const {return itemIsModified;}
+
+    virtual bool isModificationTracked() const { return trackModifications; }
+
+    virtual void setModificationTrack(bool track);
 
     /** Main thread model object can only be modified in main thread */
     virtual bool isMainThreadModificationOnly() const {return mainThreadModificationOnly;}
@@ -110,6 +114,7 @@ signals:
 protected:
     QList<StateLock*> locks;
     bool itemIsModified;
+    bool trackModifications;
     bool mainThreadModificationOnly;
     int  modificationVersion;
 };
@@ -144,7 +149,7 @@ public:
 
     virtual void setModified(bool modified, const QString& modType = QString());
 
-    virtual bool isTreeItemModified () const {return numModifiedChildren > 0 || itemIsModified;}
+    virtual bool isTreeItemModified () const;
 
     virtual bool hasModifiedChildren() const {return numModifiedChildren != 0;}
 
@@ -161,6 +166,8 @@ public:
     QList<StateLock*> findLocks(StateLockableTreeItemBranchFlags treeFlags, StateLockFlag lockFlag = StateLockFlag_AnyFlags) const;
 
     virtual bool isMainThreadModificationOnly() const;
+
+    virtual void setModificationTrack(bool track);
 
 protected:
     static void setParentStateLockItem_static(StateLockableTreeItem* child, StateLockableTreeItem* newParent) {
