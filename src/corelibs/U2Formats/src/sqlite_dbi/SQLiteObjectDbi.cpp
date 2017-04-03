@@ -639,9 +639,8 @@ void SQLiteObjectDbi::undo(const U2DataId& objId, U2OpStatus& os) {
 
         foreach (U2SingleModStep modStep, multiStepSingleSteps) {
             // Call an appropriate "undo" depending on the object type
-            // TODO: remove McaModType and add ChromatogramModType
-            if (U2ModType::isMcaModType(modStep.modType)) {
-                dbi->getSQLiteMsaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
+            if (U2ModType::isUdrModType(modStep.modType)) {
+                dbi->getSQLiteUdrDbi()->undo(modStep, os);
             } else if (U2ModType::isMsaModType(modStep.modType)) {
                 dbi->getSQLiteMsaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
             } else if (U2ModType::isSequenceModType(modStep.modType)) {
@@ -714,9 +713,8 @@ void SQLiteObjectDbi::redo(const U2DataId& objId, U2OpStatus& os) {
         QSet<U2DataId> objectIds;
 
         foreach (U2SingleModStep modStep, multiStepSingleSteps) {
-            // TODO: remove McaModType and add ChromatogramModType
-            if (U2ModType::isMcaModType(modStep.modType)) {
-                dbi->getSQLiteMsaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
+            if (U2ModType::isUdrModType(modStep.modType)) {
+                dbi->getSQLiteUdrDbi()->redo(modStep, os);
             } else if (U2ModType::isMsaModType(modStep.modType)) {
                 dbi->getSQLiteMsaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
             } else if (U2ModType::isSequenceModType(modStep.modType)) {
@@ -1161,7 +1159,7 @@ void SQLiteModificationAction::complete(U2OpStatus& os) {
     }
 }
 
-SQLiteDbi* SQLiteModificationAction::getDbi() {
+SQLiteDbi* SQLiteModificationAction::getDbi() const {
     return static_cast<SQLiteDbi*>(dbi);
 }
 

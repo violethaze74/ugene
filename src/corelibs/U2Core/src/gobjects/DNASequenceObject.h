@@ -67,7 +67,7 @@ public:
     const DNAAlphabet* getAlphabet() const;
 
     void replaceRegion(const U2Region& region, const DNASequence& seq, U2OpStatus& os);
-    void replaceRegion(const U2EntityRef &masterId, const U2Region &region, const DNASequence &seq, U2OpStatus &os);
+    void replaceRegion(const U2DataId &masterId, const U2Region &region, const DNASequence &seq, U2OpStatus &os);
 
     GObject* clone(const U2DbiRef& ref, U2OpStatus& os, const QVariantMap &hints = QVariantMap()) const;
 

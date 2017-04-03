@@ -117,6 +117,7 @@ U2SequenceObject *ComposeResultSubTask::takeReferenceSequenceObject() {
 
     U2DataId seqId = referenceSequenceObject->getSequenceRef().entityId;
     con->dbi->getObjectDbi()->setTrackModType(seqId, TrackOnUpdate, stateInfo);
+    CHECK_OP(stateInfo, NULL);
 
     referenceSequenceObject = NULL;
     return reference;

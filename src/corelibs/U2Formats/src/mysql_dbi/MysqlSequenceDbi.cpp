@@ -220,7 +220,6 @@ void MysqlSequenceDbi::updateSequenceData(const U2DataId &masterId, const U2Data
     CHECK_OP(os, );
 
     updateAction.complete(os);
-
 }
 
 void MysqlSequenceDbi::updateSequenceData(MysqlModificationAction& updateAction, const U2DataId& sequenceId, const U2Region& regionToReplace,

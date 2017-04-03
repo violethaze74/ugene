@@ -150,6 +150,15 @@ qint64 ChromatogramUtils::getChromatogramLength(U2OpStatus &os, const U2EntityRe
 void ChromatogramUtils::updateChromatogramData(U2OpStatus &os, const U2EntityRef &chromatogramRef, const DNAChromatogram &chromatogram) {
     const QByteArray data = DNAChromatogramSerializer::serialize(chromatogram);
     RawDataUdrSchema::writeContent(data, chromatogramRef, os);
+
+    CHECK_OP(os, );
+}
+
+void ChromatogramUtils::updateChromatogramData(U2OpStatus &os, const U2DataId& masterId,
+                                               const U2EntityRef &chromatogramRef, const DNAChromatogram &chromatogram) {
+    const QByteArray data = DNAChromatogramSerializer::serialize(chromatogram);
+    RawDataUdrSchema::writeContent(masterId, data, chromatogramRef, os);
+
     CHECK_OP(os, );
 }
 

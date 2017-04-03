@@ -130,7 +130,7 @@ void MysqlModificationAction::complete(U2OpStatus& os) {
     }
 }
 
-MysqlDbi* MysqlModificationAction::getDbi() {
+MysqlDbi* MysqlModificationAction::getDbi() const {
     return static_cast<MysqlDbi*>(dbi);
 
 }

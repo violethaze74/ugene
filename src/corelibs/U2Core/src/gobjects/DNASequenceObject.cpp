@@ -204,10 +204,10 @@ bool U2SequenceObject::isValidDbiObject(U2OpStatus &os) {
 }
 
 void U2SequenceObject::replaceRegion(const U2Region& region, const DNASequence& seq, U2OpStatus& os) {
-    replaceRegion(entityRef, region, seq, os);
+    replaceRegion(entityRef.entityId, region, seq, os);
 }
 
-void U2SequenceObject::replaceRegion(const U2EntityRef &masterId, const U2Region &region, const DNASequence &seq, U2OpStatus &os) {
+void U2SequenceObject::replaceRegion(const U2DataId &masterId, const U2Region &region, const DNASequence &seq, U2OpStatus &os) {
     // seq.alphabet == NULL - for tests.
     CHECK_EXT(seq.alphabet == getAlphabet() || seq.seq.isEmpty() || seq.alphabet == NULL,
         os.setError(tr("Modified sequence & region have different alphabet")), );
@@ -215,7 +215,7 @@ void U2SequenceObject::replaceRegion(const U2EntityRef &masterId, const U2Region
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );
     QVariantMap hints;
-    con.dbi->getSequenceDbi()->updateSequenceData(masterId.entityId, entityRef.entityId, region, seq.seq, hints, os);
+    con.dbi->getSequenceDbi()->updateSequenceData(masterId, entityRef.entityId, region, seq.seq, hints, os);
     cachedLength = -1;
     if (region.intersects(cachedLastAccessedRegion.first)) {
         cachedLastAccessedRegion = QPair<U2Region, QByteArray>();
@@ -463,6 +463,7 @@ void U2SequenceObject::updateCachedValues() const {
 
 void U2SequenceObject::forceCachedSequenceUpdate() {
     cachedLastAccessedRegion = QPair<U2Region, QByteArray>();
+    cachedLength = -1;
 }
 
 void U2SequenceObject::setGObjectName(const QString &newName) {

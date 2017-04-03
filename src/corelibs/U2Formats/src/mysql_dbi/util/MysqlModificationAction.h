@@ -56,7 +56,7 @@ public:
     void complete(U2OpStatus& os);
 
 private:
-    MysqlDbi* getDbi();
+    MysqlDbi* getDbi() const;
 };
 
 }   // namespace U2

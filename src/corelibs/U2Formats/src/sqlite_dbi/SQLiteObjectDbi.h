@@ -297,7 +297,7 @@ public:
     void complete(U2OpStatus& os);
 
 private:
-    SQLiteDbi* getDbi();
+    SQLiteDbi* getDbi() const;
 };
 
 class SQLiteObjectDbiUtils {

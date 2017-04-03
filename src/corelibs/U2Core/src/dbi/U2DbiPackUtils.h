@@ -115,6 +115,9 @@ public:
     static QByteArray packAlignmentLength(const qint64 oldLen, const qint64 newLen);
     static bool unpackAlignmentLength(const QByteArray &modDetails, qint64 &oldLen, qint64 &newLen);
 
+    static QByteArray packUdr(const QByteArray& oldData, const QByteArray& newData);
+    static bool unpackUdr(const QByteArray& modDetails, QByteArray& oldData, QByteArray& newData);
+
 private:
     static const char SEP;
     static const char SECOND_SEP;
