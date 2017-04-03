@@ -88,8 +88,8 @@ static void traceQueryDestroy(const QString& q) {
 }
 #endif
 
-SQLiteReadOnlyQuery::SQLiteReadOnlyQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
-: db(d), os(&_os), st(NULL), sql(_sql)/*, locker(&d->lock)*/
+SQLiteReadOnlyQuery::SQLiteReadOnlyQuery(const QString& _sql, DbRef* d, U2OpStatus& _os, bool isReadOnly)
+: db(d), os(&_os), st(NULL), sql(_sql), isReadOnly(isReadOnly)
 {
     prepare();
 
@@ -98,11 +98,9 @@ SQLiteReadOnlyQuery::SQLiteReadOnlyQuery(const QString& _sql, DbRef* d, U2OpStat
 #endif
 }
 
-SQLiteReadOnlyQuery::SQLiteReadOnlyQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
-: db(d), os(&_os), st(NULL), sql(_sql)/*, locker(&d->lock)*/
+SQLiteReadOnlyQuery::SQLiteReadOnlyQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os, bool isReadOnly)
+: db(d), os(&_os), st(NULL), sql(_sql), isReadOnly(isReadOnly)
 {
-    db->runingQueries[sql] = this;
-
     U2DbiUtils::addLimit(sql, offset, count);
     prepare();
 
@@ -132,7 +130,6 @@ void SQLiteReadOnlyQuery::prepare() {
 }
 
 SQLiteReadOnlyQuery::~SQLiteReadOnlyQuery() {
-    db->runingQueries.remove(sql);
     if (st != NULL) {
         int rc = sqlite3_finalize(st);
         if (rc != SQLITE_OK) {
@@ -170,14 +167,22 @@ bool SQLiteReadOnlyQuery::step() {
         return false;
     }
     assert(st != NULL);
+    if(isReadOnly){
+        db->rwLock.lockForRead();
+    }else{
+        db->rwLock.lockForWrite();
+    }
 
     int rc = sqlite3_step(st);
     if (rc == SQLITE_DONE || rc == SQLITE_READONLY) {
+        db->rwLock.unlock();
         return false;
     } else if (rc == SQLITE_ROW) {
+        db->rwLock.unlock();
         return true;
     }
     setError(U2DbiL10n::tr("Unexpected query result code: %1 (%2)").arg(rc).arg(sqlite3_errmsg(db->handle)));
+    db->rwLock.unlock();
     return false;
 }
 
@@ -471,19 +476,14 @@ qint64 SQLiteReadOnlyQuery::getLastRowId() {
 //////////////////////////////////////////////////////////////////////////
 ///SQLiteQuery
 SQLiteQuery::SQLiteQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
-: SQLiteReadOnlyQuery(_sql, d, _os), locker(&d->lock)
+: SQLiteReadOnlyQuery(_sql, d, _os, false)
 {
-    //check readonly queue
-    if(d->runingQueries.size() > 0){
-        qDebug() << "runingQueries.size() == " << d->runingQueries.size();
-    }
 }
 
 SQLiteQuery::SQLiteQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
-: SQLiteReadOnlyQuery(_sql, offset, count, d, _os), locker(&d->lock)
+: SQLiteReadOnlyQuery(_sql, offset, count, d, _os, false)
 {
 }
-
 //////////////////////////////////////////////////////////////////////////
 // SQLite transaction helper
 

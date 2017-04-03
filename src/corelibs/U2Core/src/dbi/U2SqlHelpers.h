@@ -31,6 +31,7 @@
 #include <QtCore/QThread>
 #include <QtCore/QHash>
 #include <QtCore/QSharedPointer>
+#include <QtCore/QReadWriteLock>
 
 struct sqlite3;
 struct sqlite3_stmt;
@@ -47,11 +48,11 @@ public:
 
     sqlite3*                     handle;
     QMutex                       lock;
+    QReadWriteLock               rwLock;
     bool                         useTransaction;
     bool                         useCache;
     QVector<SQLiteTransaction*>  transactionStack;
     QHash<QString, QSharedPointer<SQLiteQuery> > preparedQueries; //shared pointer because a query can be deleted elsewhere
-    QHash<QString, SQLiteReadOnlyQuery* > runingQueries;
 };
 
 class U2CORE_EXPORT SQLiteUtils {
@@ -94,8 +95,8 @@ public:
         It's desirable to release this object as soon as possible because it locks
         the database for concurrent modifications from other threads
     */
-    SQLiteReadOnlyQuery(const QString& sql, DbRef* d, U2OpStatus& os);
-    SQLiteReadOnlyQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
+    SQLiteReadOnlyQuery(const QString& sql, DbRef* d, U2OpStatus& os, bool isReadOnly = true);
+    SQLiteReadOnlyQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os, bool isReadOnly = true);
 
     /** Releases all resources associated with the statement */
     ~SQLiteReadOnlyQuery();
@@ -235,6 +236,7 @@ private:
     U2OpStatus*     os;
     sqlite3_stmt*   st;
     QString         sql;
+    bool            isReadOnly;
 };
 
 class U2CORE_EXPORT SQLiteQuery: public SQLiteReadOnlyQuery  {
@@ -247,8 +249,7 @@ public:
     */
     SQLiteQuery(const QString& sql, DbRef* d, U2OpStatus& os);
     SQLiteQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
-private:
-    QMutexLocker    locker;
+
 };
 
 /** Helper class to mark transaction regions */

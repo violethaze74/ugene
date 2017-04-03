@@ -157,7 +157,7 @@ SQLiteFeatureDbi* SQLiteDbi::getSQLiteFeatureDbi() const {
 }
 
 QString SQLiteDbi::getProperty(const QString& name, const QString& defaultValue, U2OpStatus& os) {
-    SQLiteQuery q("SELECT value FROM Meta WHERE name = ?1", db, os);
+    SQLiteReadOnlyQuery q("SELECT value FROM Meta WHERE name = ?1", db, os);
     q.bindString(1, name);
     bool found = q.step();
     if (os.hasError()) {
