@@ -1113,7 +1113,7 @@ GUI_TEST_CLASS_DEFINITION(test_1061) {
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/murine.gb");
 
     GTUtilsWorkflowDesigner::click(os, GTUtilsWorkflowDesigner::getWorker(os, "Write Sequence"));
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "genbank", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GenBank", GTUtilsWorkflowDesigner::comboValue);
 
     //3. Connect all elements, setup connections, provide any annotated sequence as an input
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"), GTUtilsWorkflowDesigner::getWorker(os, "Sequence Marker"));
@@ -1911,7 +1911,7 @@ GUI_TEST_CLASS_DEFINITION(test_1157) {
     WorkflowProcessItem *writeSequence = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence");
 
     QString resultFilePath = testDir + "_common_data/scenarios/sandbox/test_1157.gb";
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "genbank", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GenBank", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir().absoluteFilePath(resultFilePath), GTUtilsWorkflowDesigner::textValue);
 
     WorkflowProcessItem *callocationSearch = GTUtilsWorkflowDesigner::addElement(os, "Collocation Search");
@@ -3715,7 +3715,7 @@ GUI_TEST_CLASS_DEFINITION(test_1338) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Annotations");
 
     const QString initialText = GTUtilsWorkflowDesigner::getWorkerText(os, "Write Annotations");
-    CHECK_SET_ERR(initialText.contains("genbank"), "Worker item doesn't contain format name");
+    CHECK_SET_ERR(initialText.contains("GenBank"), "Worker item doesn't contain format name");
 
     // 2. Select another document format
     GTUtilsWorkflowDesigner::setParameter(os, "Document format", "gff", GTUtilsWorkflowDesigner::comboValue);

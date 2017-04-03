@@ -55,7 +55,7 @@ path(_path), name(_name), useMethod(method), format(_format), compressFile(compr
         path = QDir::toNativeSeparators(__path);
     }
 
-    comboBoxItems[Genbank] = "Genbank";
+    comboBoxItems[Genbank] = "GenBank";
     comboBoxItems[GFF] = "GFF";
     comboBoxItems[CLUSTALW] = "CLUSTALW";
     comboBoxItems[BAM] = "BAM";

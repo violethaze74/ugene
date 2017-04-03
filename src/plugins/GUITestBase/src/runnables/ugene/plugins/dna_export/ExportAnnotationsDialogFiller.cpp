@@ -53,7 +53,7 @@ void ExportAnnotationsFiller::init(const QString &exportToFile) {
     this->exportToFile = QDir::toNativeSeparators(QDir::cleanPath(QDir::currentPath() + "/" + exportToFile));
 
     comboBoxItems[bed] = "BED";
-    comboBoxItems[genbank] = "Genbank";
+    comboBoxItems[genbank] = "GenBank";
     comboBoxItems[gff] = "GFF";
     comboBoxItems[gtf] = "GTF";
     comboBoxItems[csv] = "CSV";

@@ -2462,7 +2462,7 @@ GUI_TEST_CLASS_DEFINITION(test_3357) {
 GUI_TEST_CLASS_DEFINITION(test_3373) {
 //    1. Launch WD
 //    2. Create the following workflow: "Read Sequence" -> "Reverse Complement" -> "Write Sequence"
-//    3. Set output format "genbank" (to prevent warnings about annotation support) and the "result.gb" output file name
+//    3. Set output format "GenBank" (to prevent warnings about annotation support) and the "result.gb" output file name
 //    4. Set input file "test/_common_data/fasta/seq1.fa"
 //    5. Run the workflow
 //    Expected state: workflow is successfully finished. "result.gb" contains reverse complement sequence for "seq1.fa"
@@ -2483,7 +2483,7 @@ GUI_TEST_CLASS_DEFINITION(test_3373) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, "Write Sequence" ) );
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "genbank", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GenBank", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", "result.gb", GTUtilsWorkflowDesigner::textValue);
     GTWidget::click( os, GTUtilsMdi::activeWindow( os ) );
 
@@ -6005,7 +6005,7 @@ GUI_TEST_CLASS_DEFINITION(test_3960) {
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/3960", "all.gb"));
 
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Genbank"));
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GenBank"));
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge));
 

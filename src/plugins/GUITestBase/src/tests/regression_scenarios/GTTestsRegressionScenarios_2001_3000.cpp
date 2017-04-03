@@ -2920,7 +2920,7 @@ GUI_TEST_CLASS_DEFINITION( test_2406 ) {
 
 //    3. Change the file format to the genbank
 //    Expected: TEST.gb file name appears in the output file name field
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "genbank", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GenBank", GTUtilsWorkflowDesigner::comboValue);
 
     const QString expectedPostValue = "TEST.gb";
     const QString resultPostValue = GTUtilsWorkflowDesigner::getParameter(os, "Output file", true);

@@ -54,7 +54,7 @@ InsertSequenceFiller::InsertSequenceFiller(HI::GUITestOpStatus &_os, const QStri
     }
     documentLocation = QDir::toNativeSeparators(documentLocation);
     comboBoxItems[FASTA] = "FASTA";
-    comboBoxItems[Genbank] = "Genbank";
+    comboBoxItems[Genbank] = "GenBank";
     mergeAnnotations = _mergeAnnotations;
 }
 

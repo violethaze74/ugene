@@ -60,7 +60,7 @@ Filler(_os, "ImportAnnotationsFromCSVDialog"), fileToRead(_fileToRead), resultFi
     comboBoxItems[FPKM] = "FPKM";
     comboBoxItems[GFF] = "GFF";
     comboBoxItems[GTF] = "GTF";
-    comboBoxItems[Genbank] = "Genbank";
+    comboBoxItems[Genbank] = "GenBank";
     comboBoxItems[Swiss_Prot] = "Swiss_Prot";
 }
 #define GT_METHOD_NAME "run"

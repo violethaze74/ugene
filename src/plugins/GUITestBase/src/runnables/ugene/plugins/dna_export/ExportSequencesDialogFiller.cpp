@@ -126,7 +126,7 @@ ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFi
     comboBoxItems[Fasta] = "FASTA";
     comboBoxItems[Fastq] = "FASTQ";
     comboBoxItems[Gff] = "GFF";
-    comboBoxItems[Genbank] = "Genbank";
+    comboBoxItems[Genbank] = "GenBank";
 
     mergeRadioButtons[SaveAsSeparate] = "separateButton";
     mergeRadioButtons[Merge] = "mergeButton";

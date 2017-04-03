@@ -898,7 +898,7 @@ GUI_TEST_CLASS_DEFINITION(test_0659){
 //    Write annotations worker is broken
 //    1. Open WD. Create simple scheme "read sequence"->"Write annotations"
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    2. Set "genbank" as output document format for "Write annotations" worker.
+//    2. Set "GenBank" as output document format for "Write annotations" worker.
     WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
     WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Annotations");
     GTUtilsWorkflowDesigner::connect(os, read, write);
@@ -908,7 +908,7 @@ GUI_TEST_CLASS_DEFINITION(test_0659){
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/sars.gb");
     GTUtilsWorkflowDesigner::click(os, write);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_659", GTUtilsWorkflowDesigner::textValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "genbank", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GenBank", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: annotations has been written in single file
@@ -922,7 +922,7 @@ GUI_TEST_CLASS_DEFINITION(test_0659){
 // check csv format
     GTUtilsWorkflowDesigner::click(os, write);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() +"/test_659_1", GTUtilsWorkflowDesigner::textValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "csv", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "CSV", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: annotations has been written in single file
@@ -1261,8 +1261,8 @@ GUI_TEST_CLASS_DEFINITION(test_0733) {
     //Expected state: {Parameters->Output file} is "%some_path%/result.gb", {Parameters->Document format} is "fasta".
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", "result.gb", GTUtilsWorkflowDesigner::textValue);
 
-    //4. Change {Parameters->Document Format} to "genbank" and press Enter.
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "genbank", GTUtilsWorkflowDesigner::comboValue);
+    //4. Change {Parameters->Document Format} to "GenBank" and press Enter.
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GenBank", GTUtilsWorkflowDesigner::comboValue);
 
     //Expected state: {Parameters->Output file} changes to "%some_path%/result.gb".
     QString url = GTUtilsWorkflowDesigner::getParameter(os, "utput file");
@@ -1496,7 +1496,7 @@ GUI_TEST_CLASS_DEFINITION(test_0776) {
     GTUtilsWorkflowDesigner::connect(os, search, write);
 
     GTUtilsWorkflowDesigner::click(os, write);
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "genbank", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GenBank", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_0776.gb", GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -1563,12 +1563,12 @@ GUI_TEST_CLASS_DEFINITION(test_0779) {
     // The Read sequence element
     // The Write annotations element
     // 2. Connect the elements.
-    // 3. Switch the "File format" property of the Write annotations element from "genbank" (defualt) to "csv".
+    // 3. Switch the "File format" property of the Write annotations element from "GenBank" (defualt) to "csv".
     // 4. Click on the scheme area and you will get the crash.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Annotations");
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "csv", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "CSV", GTUtilsWorkflowDesigner::comboValue);
     GTGlobals::sleep(500);
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"), GTUtilsWorkflowDesigner::getWorker(os, "Write Annotations"));
 
@@ -1644,7 +1644,7 @@ GUI_TEST_CLASS_DEFINITION(test_0792) {
 //    4) Click on appeared item in the file list
     QWidget* datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
     QListWidget* items = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea", datasetWidget);
-    GTListWidget::click(os, items, "Genbank", Qt::RightButton);
+    GTListWidget::click(os, items, "GenBank", Qt::RightButton);
 //    Expected state:
 //        the following widgets appears:
     GTWidget::findExactWidget<QLineEdit*>(os, "includeMaskEdit");
@@ -1659,7 +1659,7 @@ GUI_TEST_CLASS_DEFINITION(test_0798){
 //    1. File -> Open As.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os,
         SequenceReadingModeSelectorDialogFiller::Merge));
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Genbank"));
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GenBank"));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/798", "1.gb"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Open as...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2745,7 +2745,7 @@ GUI_TEST_CLASS_DEFINITION(test_0899){
             //        1) opened dialog have File formats: {FASTA, FASTQ, GFF, Genbank, Vector NTI sequence}
             QComboBox* documentFormatComboBox = GTWidget::findExactWidget<QComboBox*>(os, "documentFormatComboBox", dialog);
             QStringList comboList;
-            comboList<<"FASTA"<<"FASTQ"<<"GFF"<<"Genbank"<<"Vector NTI sequence";
+            comboList<<"FASTA"<<"FASTQ"<<"GFF"<<"GenBank"<<"Vector NTI sequence";
             GTComboBox::checkValuesPresence(os, documentFormatComboBox, comboList);
 
             //        2) region: {whole sequence, visible, custom}
@@ -2754,7 +2754,7 @@ GUI_TEST_CLASS_DEFINITION(test_0899){
             regionComboList<<"Whole sequence"<<"Visible"<<"Custom region";
             GTComboBox::checkValuesPresence(os, region_type_combo, regionComboList);
 
-            GTComboBox::setIndexWithText(os, documentFormatComboBox, "Genbank");
+            GTComboBox::setIndexWithText(os, documentFormatComboBox, "GenBank");
             GTComboBox::setIndexWithText(os, region_type_combo, "Whole sequence");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

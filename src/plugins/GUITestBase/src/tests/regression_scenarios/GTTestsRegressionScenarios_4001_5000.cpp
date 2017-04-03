@@ -2859,7 +2859,7 @@ GUI_TEST_CLASS_DEFINITION(test_4440) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4463) {
-//    1. Open attached file in "Genbank" format
+//    1. Open attached file in "GenBank" format
 //    2. Modify sequence
 //    3. Unload document
 //    Expected state: "Save document" dialog appeared
