@@ -39,7 +39,11 @@ public:
     static DNAChromatogram exportChromatogram(U2OpStatus &os, const U2EntityRef &chromatogramRef);
     static U2Chromatogram getChromatogramDbInfo(U2OpStatus &os, const U2EntityRef &chromatogramRef);
     static qint64 getChromatogramLength(U2OpStatus &os, const U2EntityRef &chromatogramRef);
+
     static void updateChromatogramData(U2OpStatus &os, const U2EntityRef &chromatogramRef, const DNAChromatogram &chromatogram);
+    static void updateChromatogramData(U2OpStatus &os, const U2DataId& masterId,
+                                       const U2EntityRef &chromatogramRef, const DNAChromatogram &chromatogram);
+
     static U2EntityRef getChromatogramIdByRelatedSequenceId(U2OpStatus &os, const U2EntityRef &sequenceRef);
     static QString getChromatogramName(U2OpStatus &os, const U2EntityRef &chromatogramRef);
     static DNAChromatogram reverse(const DNAChromatogram &chromatogram);

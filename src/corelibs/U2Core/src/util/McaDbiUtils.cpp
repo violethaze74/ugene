@@ -117,7 +117,7 @@ void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const Mul
             msaDbi->updateRowContent(mcaRef.entityId, newRow.rowId, rowMemoryData.sequence.seq, rowMemoryData.gapModel, os);
             CHECK_OP(os, );
 
-            ChromatogramUtils::updateChromatogramData(os, U2EntityRef(mcaRef.dbiRef, newRow.chromatogramId), rowMemoryData.chromatogram);
+            ChromatogramUtils::updateChromatogramData(os, mcaRef.entityId, U2EntityRef(mcaRef.dbiRef, newRow.chromatogramId), rowMemoryData.chromatogram);
             CHECK_OP(os, );
         } else {
             // Remove rows that are no more present in the alignment
@@ -276,7 +276,7 @@ void McaDbiUtils::removeRegion(const U2EntityRef &mcaRef, const QList<qint64> &r
 
             DNAChromatogram chrom = ChromatogramUtils::exportChromatogram(os, U2EntityRef(mcaRef.dbiRef, row.chromatogramId));
             ChromatogramUtils::removeBaseCalls(os, chrom, startPosInSeq, endPosInSeq);
-            ChromatogramUtils::updateChromatogramData(os, U2EntityRef(mcaRef.dbiRef, row.chromatogramId), chrom);
+            ChromatogramUtils::updateChromatogramData(os, mcaRef.entityId, U2EntityRef(mcaRef.dbiRef, row.chromatogramId), chrom);
         }
 
         // Calculate the modified row
@@ -323,7 +323,7 @@ void McaDbiUtils::replaceCharacterInRow(const U2EntityRef& mcaRef, qint64 rowId,
         U2OpStatus2Log os;
         DNAChromatogram chrom = ChromatogramUtils::exportChromatogram(os, U2EntityRef(mcaRef.dbiRef, row.chromatogramId));
         ChromatogramUtils::insertBase(chrom, posInSeq, row.gaps, pos);
-        ChromatogramUtils::updateChromatogramData(os, U2EntityRef(mcaRef.dbiRef, row.chromatogramId), chrom);
+        ChromatogramUtils::updateChromatogramData(os, mcaRef.entityId, U2EntityRef(mcaRef.dbiRef, row.chromatogramId), chrom);
         SAFE_POINT_OP(os, );
 
         DNASequenceUtils::insertChars(seq, posInSeq, QByteArray(1, newChar), os);

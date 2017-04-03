@@ -274,9 +274,9 @@ private:
 
     ///////////////////////////////////////////////////////////
     // Methods included into a multi-action
-    void updateRowInfo(ModificationAction &updateAction, const U2DataId &msaId, const U2MsaRow &row, U2OpStatus &os);
-    void updateGapModel(ModificationAction &updateAction, const U2DataId& msaId, qint64 msaRowId, const QList<U2MsaGap>& gapModel, U2OpStatus& os);
-    void updateMsaLength(ModificationAction &updateAction, const U2DataId& msaId, qint64 length, U2OpStatus &os);
+    void updateRowInfo(SQLiteModificationAction &updateAction, const U2DataId &msaId, const U2MsaRow &row, U2OpStatus &os);
+    void updateGapModel(SQLiteModificationAction &updateAction, const U2DataId& msaId, qint64 msaRowId, const QList<U2MsaGap>& gapModel, U2OpStatus& os);
+    void updateMsaLength(SQLiteModificationAction &updateAction, const U2DataId& msaId, qint64 length, U2OpStatus &os);
 };
 
 } //namespace

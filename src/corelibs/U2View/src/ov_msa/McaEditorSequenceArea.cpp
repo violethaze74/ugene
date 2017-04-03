@@ -235,6 +235,9 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
         scaleAction = t->addWidget(scaleBar);
     }
     t->addSeparator();
+
+    t->addAction(ui->getUndoAction());
+    t->addAction(ui->getRedoAction());
 }
 
 void McaEditorSequenceArea::sl_addInsertion() {
@@ -324,7 +327,7 @@ void McaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
         // insert char into the reference
         U2SequenceObject* ref = getEditor()->referenceObj;
         U2Region region = U2Region(selection.x(), 0);
-        ref->replaceRegion(region, DNASequence(QByteArray(1, U2Msa::GAP_CHAR)), os);
+        ref->replaceRegion(maObj->getEntityRef().entityId, region, DNASequence(QByteArray(1, U2Msa::GAP_CHAR)), os);
         SAFE_POINT_OP(os, );
 
         insertionMode = false;

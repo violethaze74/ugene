@@ -639,9 +639,8 @@ void SQLiteObjectDbi::undo(const U2DataId& objId, U2OpStatus& os) {
 
         foreach (U2SingleModStep modStep, multiStepSingleSteps) {
             // Call an appropriate "undo" depending on the object type
-            // TODO: remove McaModType and add ChromatogramModType
-            if (U2ModType::isMcaModType(modStep.modType)) {
-                dbi->getSQLiteMsaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
+            if (U2ModType::isUdrModType(modStep.modType)) {
+                dbi->getSQLiteUdrDbi()->undo(modStep, os);
             } else if (U2ModType::isMsaModType(modStep.modType)) {
                 dbi->getSQLiteMsaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
             } else if (U2ModType::isSequenceModType(modStep.modType)) {
@@ -714,9 +713,8 @@ void SQLiteObjectDbi::redo(const U2DataId& objId, U2OpStatus& os) {
         QSet<U2DataId> objectIds;
 
         foreach (U2SingleModStep modStep, multiStepSingleSteps) {
-            // TODO: remove McaModType and add ChromatogramModType
-            if (U2ModType::isMcaModType(modStep.modType)) {
-                dbi->getSQLiteMsaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
+            if (U2ModType::isUdrModType(modStep.modType)) {
+                dbi->getSQLiteUdrDbi()->redo(modStep, os);
             } else if (U2ModType::isMsaModType(modStep.modType)) {
                 dbi->getSQLiteMsaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
             } else if (U2ModType::isSequenceModType(modStep.modType)) {
@@ -1072,15 +1070,13 @@ void SQLiteCrossDatabaseReferenceDbi::updateCrossReference(const U2CrossDatabase
 }
 
 
-ModificationAction::ModificationAction(SQLiteDbi* _dbi, const U2DataId& _masterObjId)
-    : dbi(_dbi),
-      masterObjId(_masterObjId),
-      trackMod(NoTrack)
+SQLiteModificationAction::SQLiteModificationAction(SQLiteDbi* _dbi, const U2DataId& _masterObjId)
+    : ModificationAction(_dbi, _masterObjId)
 {
-    objIds.insert(masterObjId);
+
 }
 
-U2TrackModType ModificationAction::prepare(U2OpStatus& os) {
+U2TrackModType SQLiteModificationAction::prepare(U2OpStatus& os) {
     trackMod = dbi->getObjectDbi()->getTrackModType(masterObjId, os);
     if (os.hasError()) {
         trackMod = NoTrack;
@@ -1094,17 +1090,17 @@ U2TrackModType ModificationAction::prepare(U2OpStatus& os) {
         // If a user mod step has already been created for this action
         // then it can not be deleted. The version must be incremented.
         // Obsolete duplicate step must be deleted
-        if (dbi->getSQLiteModDbi()->isUserStepStarted(masterObjId)) {
-            dbi->getSQLiteModDbi()->removeDuplicateUserStep(masterObjId, masterObjVersionToTrack, os);
+        if (getDbi()->getSQLiteModDbi()->isUserStepStarted(masterObjId)) {
+            getDbi()->getSQLiteModDbi()->removeDuplicateUserStep(masterObjId, masterObjVersionToTrack, os);
 
             // Increment the object version
             masterObjVersionToTrack++;
         }
 
         // A user pressed "Undo" (maybe several times), did another action => there is no more "Redo" history
-        dbi->getSQLiteModDbi()->removeModsWithGreaterVersion(masterObjId, masterObjVersionToTrack, os);
+        getDbi()->getSQLiteModDbi()->removeModsWithGreaterVersion(masterObjId, masterObjVersionToTrack, os);
         if (os.hasError()) {
-            dbi->getSQLiteModDbi()->cleanUpAllStepsOnError();
+            getDbi()->getSQLiteModDbi()->cleanUpAllStepsOnError();
             return trackMod;
         }
     }
@@ -1112,7 +1108,7 @@ U2TrackModType ModificationAction::prepare(U2OpStatus& os) {
     return trackMod;
 }
 
-void ModificationAction::addModification(const U2DataId& objId, qint64 modType, const QByteArray& modDetails, U2OpStatus& os) {
+void SQLiteModificationAction::addModification(const U2DataId& objId, qint64 modType, const QByteArray& modDetails, U2OpStatus& os) {
     objIds.insert(objId);
 
     if (TrackOnUpdate == trackMod) {
@@ -1121,7 +1117,7 @@ void ModificationAction::addModification(const U2DataId& objId, qint64 modType, 
         qint64 objVersion = dbi->getObjectDbi()->getObjectVersion(objId, os);
         SAFE_POINT_OP(os, );
 
-        if ((objId == masterObjId) && (dbi->getSQLiteModDbi()->isUserStepStarted(masterObjId))) {
+        if ((objId == masterObjId) && (getDbi()->getSQLiteModDbi()->isUserStepStarted(masterObjId))) {
             objVersion++;
         }
 
@@ -1135,22 +1131,22 @@ void ModificationAction::addModification(const U2DataId& objId, qint64 modType, 
     }
 }
 
-void ModificationAction::complete(U2OpStatus& os) {
+void SQLiteModificationAction::complete(U2OpStatus& os) {
     // Save modification tracks, if required
     if (TrackOnUpdate == trackMod) {
         if (0 == singleSteps.size()) {
             // do nothing
         }
         else if (1 == singleSteps.size()) {
-            dbi->getSQLiteModDbi()->createModStep(masterObjId, singleSteps.first(), os);
+            getDbi()->getSQLiteModDbi()->createModStep(masterObjId, singleSteps.first(), os);
             SAFE_POINT_OP(os, );
         }
         else {
-            U2UseCommonMultiModStep multi(dbi, masterObjId, os);
+            U2UseCommonMultiModStep multi(getDbi(), masterObjId, os);
             SAFE_POINT_OP(os, );
 
             foreach (U2SingleModStep singleStep, singleSteps) {
-                dbi->getSQLiteModDbi()->createModStep(masterObjId, singleStep, os);
+                getDbi()->getSQLiteModDbi()->createModStep(masterObjId, singleStep, os);
                 SAFE_POINT_OP(os, );
             }
         }
@@ -1158,11 +1154,14 @@ void ModificationAction::complete(U2OpStatus& os) {
 
     // Increment versions of all objects
     foreach (const U2DataId& objId, objIds) {
-        SQLiteObjectDbi::incrementVersion(objId, dbi->getDbRef(), os);
+        SQLiteObjectDbi::incrementVersion(objId, getDbi()->getDbRef(), os);
         SAFE_POINT_OP(os, );
     }
 }
 
+SQLiteDbi* SQLiteModificationAction::getDbi() const {
+    return static_cast<SQLiteDbi*>(dbi);
+}
 
 /************************************************************************/
 /* SQLiteObjectDbiUtils */
@@ -1172,7 +1171,7 @@ void SQLiteObjectDbiUtils::renameObject(SQLiteDbi *dbi, U2Object &object, const 
     SQLiteTransaction t(dbi->getDbRef(), os);
     Q_UNUSED(t);
 
-    ModificationAction updateAction(dbi, object.id);
+    SQLiteModificationAction updateAction(dbi, object.id);
     updateAction.prepare(os);
     SAFE_POINT_OP(os, );
 
@@ -1184,7 +1183,7 @@ void SQLiteObjectDbiUtils::renameObject(SQLiteDbi *dbi, U2Object &object, const 
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteObjectDbiUtils::renameObject(ModificationAction& updateAction, SQLiteDbi *dbi, U2Object &object, const QString &newName, U2OpStatus &os) {
+void SQLiteObjectDbiUtils::renameObject(SQLiteModificationAction& updateAction, SQLiteDbi *dbi, U2Object &object, const QString &newName, U2OpStatus &os) {
     SAFE_POINT(NULL != dbi, "NULL dbi!", );
     SQLiteTransaction t(dbi->getDbRef(), os);
     Q_UNUSED(t);
