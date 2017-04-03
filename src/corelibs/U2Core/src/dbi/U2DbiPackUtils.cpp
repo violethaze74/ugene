@@ -665,4 +665,22 @@ bool PackUtils::unpackAlignmentLength(const QByteArray &modDetails, qint64 &oldL
     return true;
 }
 
+QByteArray PackUtils::packUdr(const QByteArray& oldData, const QByteArray& newData) {
+    QByteArray result;
+    result += oldData.toHex();
+    result += SEP;
+    result += newData.toHex();
+    return result;
+}
+
+bool PackUtils::unpackUdr(const QByteArray& modDetails, QByteArray& oldData, QByteArray& newData) {
+    QList<QByteArray> tokens = modDetails.split(SEP);
+    SAFE_POINT(tokens.count() == 2, QString("Invalid modDetails, wrong tokens count: %1. Expected - 2.").arg(tokens.size()), false);
+
+    oldData = QByteArray::fromHex(tokens.first());
+    newData = QByteArray::fromHex(tokens.last());
+
+    return true;
+}
+
 } // U2

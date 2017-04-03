@@ -69,6 +69,7 @@ public:
      * Updates the data of the object by provided @objRef.
      */
     static void writeContent(const QByteArray &data, const U2EntityRef &objRef, U2OpStatus &os);
+    static void writeContent(const U2DataId& masterId, const QByteArray &data, const U2EntityRef &objRef, U2OpStatus &os);
 
     /**
      * Returns the data of the object by provided @objRef.

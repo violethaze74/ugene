@@ -1082,9 +1082,8 @@ void MysqlObjectDbi::setVersion(const U2DataId& id, qint64 version, U2OpStatus& 
 }
 
 void MysqlObjectDbi::undoSingleModStep(const U2SingleModStep& modStep, U2OpStatus& os) {
-    // TODO: add chromatogramModType and remove mcaModType
-    if (U2ModType::isMcaModType(modStep.modType)) {
-        dbi->getMysqlMsaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
+    if (U2ModType::isUdrModType(modStep.modType)) {
+        dbi->getMysqlUdrDbi()->undo(modStep, os);
     } else if (U2ModType::isMsaModType(modStep.modType)) {
         dbi->getMysqlMsaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
     } else if (U2ModType::isSequenceModType(modStep.modType)) {
@@ -1098,9 +1097,8 @@ void MysqlObjectDbi::undoSingleModStep(const U2SingleModStep& modStep, U2OpStatu
 }
 
 void MysqlObjectDbi::redoSingleModStep(const U2SingleModStep& modStep, U2OpStatus &os) {
-    // TODO: add chromatogramModType and remove mcaModType
-    if (U2ModType::isMcaModType(modStep.modType)) {
-        dbi->getMysqlMsaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
+    if (U2ModType::isUdrModType(modStep.modType)) {
+        dbi->getMysqlUdrDbi()->redo(modStep, os);
     } else if (U2ModType::isMsaModType(modStep.modType)) {
         dbi->getMysqlMsaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
     } else if (U2ModType::isSequenceModType(modStep.modType)) {
