@@ -54,8 +54,13 @@
 namespace U2 {
 
 WorkflowEditor::WorkflowEditor(WorkflowView *p)
-: QWidget(p), owner(p), custom(NULL),
-customWidget(NULL), subject(NULL), actor(NULL)
+    : QWidget(p),
+      owner(p),
+      custom(NULL),
+      customWidget(NULL),
+      subject(NULL),
+      actor(NULL),
+      onFirstTableShow(true)
 {
     GCOUNTER( cvar, tvar, "WorkflowEditor" );
     setupUi(this);
@@ -91,6 +96,7 @@ customWidget(NULL), subject(NULL), actor(NULL)
     table->verticalHeader()->hide();
     table->verticalHeader()->setDefaultSectionSize(QFontMetrics(QFont()).height() + 6);
     table->setItemDelegate(new SuperDelegate(this));
+    table->installEventFilter(this);
 
     reset();
 
@@ -516,6 +522,11 @@ void WorkflowEditor::restoreState(const QVariant& v) {
 }
 
 bool WorkflowEditor::eventFilter(QObject* object, QEvent* event) {
+    if (event->type() == QEvent::Show && object == table && onFirstTableShow) {
+        // the workaround for correct columns width
+        onFirstTableShow = false;
+        table->horizontalHeader()->resizeSections(QHeaderView::Stretch);
+    }
     if (event->type() == QEvent::Shortcut ||
         event->type() == QEvent::ShortcutOverride)
     {
