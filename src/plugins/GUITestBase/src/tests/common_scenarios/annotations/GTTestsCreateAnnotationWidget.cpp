@@ -2045,7 +2045,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
             clickSelectGroupButton(os, dialog);
 
 //    7. Close the popup menu. Set "NC_001363 annotations 2" in existing tables combobox.
-            setExistingTable(os, dialog, "NC_001363 annotations 2 [2annot_1seq.gb]");
+            setExistingTable(os, dialog, "2annot_1seq.gb [NC_001363 annotations 2]");
 
 //    8. Click "Predefined group names" button.
 //    Expected state: a popup menu contains all groups from the "NC_001363 annotations 2" table.
