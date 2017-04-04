@@ -166,7 +166,7 @@ bool SQLiteReadOnlyQuery::step() {
     if (hasError()) {
         return false;
     }
-    bool result = false;
+    bool isRow = false;
 
     assert(st != NULL);
     if(isReadOnly){
@@ -178,18 +178,18 @@ bool SQLiteReadOnlyQuery::step() {
 
     int rc = sqlite3_step(st);
     if (rc == SQLITE_DONE || rc == SQLITE_READONLY) {
-        result = false;
+        isRow = false;
     } else if (rc == SQLITE_ROW) {
-        result = true;
+        isRow = true;
     } else {
         setError(U2DbiL10n::tr("Unexpected query result code: %1 (%2)").arg(rc).arg(sqlite3_errmsg(db->handle)));
-        result = false;
+        isRow = false;
     }
     if(!isReadOnly) {
         db->lock.unlock();
     }
     db->rwLock.unlock();
-    return result;
+    return isRow;
 }
 
 void SQLiteReadOnlyQuery::ensureDone() {
