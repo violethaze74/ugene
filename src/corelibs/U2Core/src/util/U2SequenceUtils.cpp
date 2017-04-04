@@ -105,7 +105,7 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef& srcSeq, const U2DbiR
 
     res = seq;
     U2TrackModType modType = res.trackModType;
-    res.trackModType = U2TrackModType::NoTrack;
+    res.trackModType = NoTrack;
 
     res.id.clear();
     res.length = 0;

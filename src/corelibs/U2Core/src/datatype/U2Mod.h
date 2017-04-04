@@ -115,7 +115,7 @@ private:
 class U2CORE_EXPORT ModificationAction {
 public:
     ModificationAction(U2AbstractDbi* dbi, const U2DataId& masterObjId);
-    ~ModificationAction() {}
+    virtual ~ModificationAction();
 
     /**
         Verifies if modification tracking is enabled for the object.
