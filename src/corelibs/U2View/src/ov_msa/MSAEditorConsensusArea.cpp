@@ -59,12 +59,15 @@ MaEditorConsensusAreaSettings::MaEditorConsensusAreaSettings() {
     visibility.insert(MSAEditorConsElement_HISTOGRAM, true);
     visibility.insert(MSAEditorConsElement_CONSENSUS_TEXT, true);
     visibility.insert(MSAEditorConsElement_RULER, true);
+    highlightMismatches = false;
 }
 
 MaEditorConsensusAreaSettings::MaEditorConsensusAreaSettings(const QList<MaEditorConsElement> &order,
-                                                             const QMap<MaEditorConsElement, bool> &visibility)
+                                                             const QMap<MaEditorConsElement, bool> &visibility,
+                                                             bool highlightMismatches)
     : order(order),
-      visibility(visibility) {
+      visibility(visibility),
+      highlightMismatches(highlightMismatches) {
 }
 
 bool MaEditorConsensusAreaSettings::isVisible(const MaEditorConsElement element) const {
@@ -124,6 +127,8 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MaEditorWgt *_ui)
     addAction(ui->getPasteAction());
     restoreLastUsedConsensusThreshold();
 
+    mismatchController = QSharedPointer<MaConsensusMismatchController>(new MaConsensusMismatchController(this, consensusCache, editor));
+
     setObjectName("consArea");
 }
 
@@ -134,6 +139,10 @@ MSAEditorConsensusArea::~MSAEditorConsensusArea() {
 
 QSharedPointer<MSAEditorConsensusCache> MSAEditorConsensusArea::getConsensusCache() {
     return consensusCache;
+}
+
+QSharedPointer<MaConsensusMismatchController> MSAEditorConsensusArea::getMismatchController() {
+    return mismatchController;
 }
 
 void MSAEditorConsensusArea::paintFullConsensus(QPixmap &pixmap) {
@@ -361,11 +370,15 @@ void MSAEditorConsensusArea::drawConsensusChar(QPainter& p, int pos, int firstVi
     }
     if (editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent) {
         char c = consensusCache->getConsensusChar(pos);
+        if (drawSettings.highlightMismatches && mismatchController->isMismatch(pos)) {
+            p.fillRect(cr, Qt::red); // TODO_5519: get the color from color scheme
+        }
         p.drawText(cr, Qt::AlignVCenter | Qt::AlignHCenter, QString(c));
         childObject->setObjectName(childObject->objectName()+c);
     }
 }
 
+// TODO_5519: why here are two methods? Refactor and leave only one
 void MSAEditorConsensusArea::drawConsensusChar(QPainter &p, int pos, int firstVisiblePos, char consChar, bool selected, bool useVirtualCoords) {
     U2Region yRange = getYRange(MSAEditorConsElement_CONSENSUS_TEXT);
     U2Region xRange = ui->getSequenceArea()->getBaseXRange(pos, firstVisiblePos, useVirtualCoords);
@@ -377,6 +390,9 @@ void MSAEditorConsensusArea::drawConsensusChar(QPainter &p, int pos, int firstVi
         p.fillRect(cr, color);
     }
     if (editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent) {
+        if (drawSettings.highlightMismatches && mismatchController->isMismatch(pos)) {
+            p.fillRect(cr, Qt::red); // TODO_5519: get the color from color scheme
+        }
         p.drawText(cr, Qt::AlignVCenter | Qt::AlignHCenter, QString(consChar));
     }
 }
@@ -543,6 +559,7 @@ void MSAEditorConsensusArea::sl_startChanged(const QPoint& p, const QPoint& prev
 void MSAEditorConsensusArea::sl_alignmentChanged() {
     updateConsensusAlgorithm();
     completeRedraw = true;
+    emit si_mismatchRedrawRequired();
     update();
 }
 
@@ -650,6 +667,7 @@ void MSAEditorConsensusArea::setConsensusAlgorithm(MSAConsensusAlgorithmFactory*
     connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
     restoreLastUsedConsensusThreshold();
     completeRedraw = true;
+    emit si_mismatchRedrawRequired();
     update();
 }
 
@@ -680,6 +698,7 @@ void MSAEditorConsensusArea::setDrawSettings(const MaEditorConsensusAreaSettings
 void MSAEditorConsensusArea::sl_onConsensusThresholdChanged(int newValue) {
     Q_UNUSED(newValue);
     completeRedraw = true;
+    emit si_mismatchRedrawRequired();
     update();
 }
 

@@ -24,6 +24,8 @@
 
 #include "McaReferenceAreaRenderer.h"
 #include "ov_msa/MaEditor.h"
+#include "ov_msa/MSAEditorConsensusArea.h"
+#include "ov_msa/MSAEditorConsensusCache.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_sequence/ADVSequenceObjectContext.h"
@@ -45,7 +47,7 @@ qint64 McaReferenceAreaRenderer::getMinimumHeight() const {
     return commonMetrics.lineHeight;
 }
 
-float McaReferenceAreaRenderer::posToXCoordF(const qint64 position, const QSize &canvasSize, const U2Region &visibleRange) const {
+float McaReferenceAreaRenderer::posToXCoordF(const qint64 position, const QSize &/*canvasSize*/, const U2Region &visibleRange) const {
     const int baseCenterX = maEditor->getUI()->getSequenceArea()->getXByColumnNum(position - visibleRange.startPos);
     const int columnWidth = maEditor->getColumnWidth();
     return baseCenterX - columnWidth / 2;
@@ -72,14 +74,22 @@ void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize &, const U2
 
     p.setFont(commonMetrics.sequenceFont);
 
+    SAFE_POINT(maEditor->getUI() != NULL, "MaEditorWgt is NULL", );
+    MSAEditorConsensusArea* consArea = maEditor->getUI()->getConsensusArea();
+    SAFE_POINT(consArea != NULL, "MSAEditorConsensusArea is NULL", );
+    QSharedPointer<MaConsensusMismatchController> mismatchController = consArea->getMismatchController();
+    SAFE_POINT(!mismatchController.isNull(), "MaConsensusMismatchController is NULL", );
+
     for (int position = region.startPos; position <= regionEnd; position++) {
         U2Region baseXRange = U2Region(columnWidth * (position - region.startPos), columnWidth);
 
         const int y = commonMetrics.yCharOffset + SELECTION_LINE_WIDTH;
         const int height = commonMetrics.lineHeight - 2 * commonMetrics.yCharOffset - 2 * SELECTION_LINE_WIDTH;
         const char c = seq[(int)(position - region.startPos)];
-
         QRect cr(baseXRange.startPos, y, baseXRange.length + 1, height);
+        if (mismatchController->isMismatch(position)) {
+            p.fillRect(cr, Qt::red);
+        }
         p.drawText(cr, Qt::AlignCenter, QString(c));
     }
 }

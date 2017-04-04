@@ -22,6 +22,7 @@
 #include "McaEditorReferenceArea.h"
 #include "McaEditor.h"
 #include "McaEditorSequenceArea.h"
+#include "MSAEditorConsensusArea.h"
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
@@ -60,6 +61,8 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *p, SequenceObjectCo
     connect(this, SIGNAL(si_selectionChanged()),
             p->getSequenceArea(), SLOT(sl_referenceSelectionChanged()));
     connect(editor, SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_fontChanged(const QFont &)));
+
+    connect(p->getConsensusArea(), SIGNAL(si_mismatchRedrawRequired()), SLOT(completeUpdate()));
 
     sl_fontChanged(editor->getFont());
 }

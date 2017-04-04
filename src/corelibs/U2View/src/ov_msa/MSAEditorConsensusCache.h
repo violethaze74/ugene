@@ -30,6 +30,8 @@
 
 namespace U2 {
 
+class MaEditor;
+
 class MSAConsensusAlgorithm;
 class MSAConsensusAlgorithmFactory;
 class MaModificationInfo;
@@ -54,6 +56,10 @@ public:
     MSAConsensusAlgorithm* getConsensusAlgorithm() const {return algorithm;}
 
     QByteArray getConsensusLine(bool withGaps);
+signals:
+    void si_cachedItemUpdated(int pos, char c);
+    void si_cacheResized(int newSize);
+
 private slots:
     void sl_alignmentChanged();
     void sl_thresholdChanged(int newValue);
@@ -74,6 +80,24 @@ private:
     QBitArray                   updateMap;
     MultipleAlignmentObject*    aliObj;
     MSAConsensusAlgorithm*      algorithm;
+};
+
+class MaConsensusMismatchController : public QObject {
+    Q_OBJECT
+public:
+    MaConsensusMismatchController(QObject* p,
+                                  QSharedPointer<MSAEditorConsensusCache> consCache,
+                                  MaEditor* editor);
+    bool isMismatch(int pos);
+
+private slots:
+    void sl_updateItem(int pos, char c);
+    void sl_resize(int newSize);
+
+private:
+    QBitArray mismatchCache;
+    QSharedPointer<MSAEditorConsensusCache> consCache;
+    MaEditor* editor;
 };
 
 }//namespace;

@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include "MaEditor.h"
 #include "MSAEditorConsensusCache.h"
 
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
@@ -60,6 +61,8 @@ void MSAEditorConsensusCache::sl_alignmentChanged() {
         curCacheSize = aliObj->getLength();
         updateMap.resize(curCacheSize);
         cache.resize(aliObj->getLength());
+
+        emit si_cacheResized(curCacheSize);
     }
     updateMap.fill(false);
 }
@@ -81,6 +84,8 @@ void MSAEditorConsensusCache::updateCacheItem(int pos) {
         ci.topPercent = (char)qRound(count * 100. / nSeq);
         assert(ci.topPercent >=0 && ci.topPercent<=100);
         updateMap.setBit(pos, true);
+
+        emit si_cachedItemUpdated(pos, ci.topChar);
     }
 }
 
@@ -115,6 +120,33 @@ void MSAEditorConsensusCache::sl_thresholdChanged(int newValue) {
 
 void MSAEditorConsensusCache::sl_invalidateAlignmentObject() {
     aliObj = NULL;
+}
+
+//----------------------
+// McaMismatchController
+MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
+                                             QSharedPointer<MSAEditorConsensusCache> consCache,
+                                             MaEditor* editor)
+    : QObject(p),
+      consCache(consCache),
+      editor(editor)
+{
+    mismatchCache = QBitArray(editor->getAlignmentLen(), false);
+    connect(consCache.data(), SIGNAL(si_cachedItemUpdated(int,char)), SLOT(sl_updateItem(int,char)));
+    connect(consCache.data(), SIGNAL(si_cacheResized(int)), SLOT(sl_resize(int)));
+}
+
+bool MaConsensusMismatchController::isMismatch(int pos) {
+    return mismatchCache[pos];
+}
+
+void MaConsensusMismatchController::sl_updateItem(int pos, char c) {
+    mismatchCache[pos] = editor->getReferenceCharAt(pos) != c;
+}
+
+void MaConsensusMismatchController::sl_resize(int newSize) {
+    mismatchCache.resize(newSize);
+    mismatchCache.fill(false);
 }
 
 }//namespace

@@ -29,7 +29,6 @@
 
 namespace U2 {
 
-class MSAEditorConsensusCache;
 class MaGraphCalculationTask;
 
 class MaGraphOverviewDisplaySettings {
