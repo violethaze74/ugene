@@ -95,6 +95,8 @@ private:
     QList<QWidget *> inputPortWidget;
     QList<QWidget *> outputPortWidget;
     int paramHeight, inputHeight, outputHeight;
+
+    bool onFirstTableShow;
 };
 
 class SpecialParametersPanel : public QWidget {
