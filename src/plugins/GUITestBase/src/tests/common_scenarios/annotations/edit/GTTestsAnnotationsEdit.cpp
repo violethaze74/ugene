@@ -56,12 +56,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
-    //     2) UGENE window titled with text "proj2 UGENE"
+    //     2) UGENE window titled with text "UGENE"
     QString expectedTitle;
 #ifdef Q_OS_MAC
     expectedTitle = "proj2 UGENE";
 #else
-    expectedTitle = "proj2 UGENE - [Start Page]";
+    expectedTitle = "-* UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
 
