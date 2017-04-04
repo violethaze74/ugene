@@ -320,6 +320,7 @@ void QDDialog::addAnnotationsWidget() {
     QVBoxLayout* l = new QVBoxLayout();
     l->setMargin(0);
     l->addWidget(caw);
+    l->addStretch(1);
     annotationsWidget->setLayout(l);
     annotationsWidget->setMinimumSize(caw->layout()->minimumSize());
 }
