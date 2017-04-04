@@ -322,7 +322,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 //    3. Click "Export".
 //    4. Fill the dialog:
 //        Export to: "Local file";
-//        Format: "genbank";
+//        Format: "GenBank";
 //        File path: any valid path;
 //    and accept the dialog.
     class ExportToGenbankScenario : public CustomScenario {
@@ -330,7 +330,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
             ExportPrimersDialogFiller::setExportTarget(os, ExportPrimersDialogFiller::LocalFile);
-            ExportPrimersDialogFiller::setFormat(os, "Genbank");
+            ExportPrimersDialogFiller::setFormat(os, "GenBank");
             ExportPrimersDialogFiller::setFilePath(os, sandBoxDir + "pcrlib/test_0007/primers.gb");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }

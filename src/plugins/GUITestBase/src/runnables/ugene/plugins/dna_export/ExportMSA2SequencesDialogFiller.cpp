@@ -54,7 +54,7 @@ useMethod(method) {
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[FASTQ] = "FASTQ";
     comboBoxItems[GFF] = "GFF";
-    comboBoxItems[Genbank] = "Genbank";
+    comboBoxItems[Genbank] = "GenBank";
     comboBoxItems[Swiss_Prot] = "Swiss_Prot";
 
 }

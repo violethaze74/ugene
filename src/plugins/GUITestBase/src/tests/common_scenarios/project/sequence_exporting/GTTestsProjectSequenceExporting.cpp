@@ -323,7 +323,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
             CHECK_SET_ERR(!withAnnotationsBox->isEnabled(), "Export with annotations flag is enabled unexpectedly");
             CHECK_SET_ERR(!withAnnotationsBox->isChecked(), "Export with annotations flag is checked unexpectedly");
 
-            GTComboBox::setIndexWithText(os, formatCombo, "Genbank");
+            GTComboBox::setIndexWithText(os, formatCombo, "GenBank");
             CHECK_SET_ERR(withAnnotationsBox->isEnabled(), "Export with annotations flag is disabled unexpectedly");
             CHECK_SET_ERR(withAnnotationsBox->isChecked(), "Export with annotations flag is unchecked unexpectedly");
 

@@ -2469,7 +2469,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0005){
 
     //set some values
     GTLineEdit::setText(os, pathLe, "some_path");
-    GTComboBox::setIndexWithText(os, formatCb, "Genbank");
+    GTComboBox::setIndexWithText(os, formatCb, "GenBank");
     GTCheckBox::setChecked(os, keepGapsChb, true);
 
     //close and open option panel
@@ -2484,7 +2484,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0005){
     keepGapsChb = GTWidget::findExactWidget<QCheckBox*>(os, "keepGapsChb");
 
     CHECK_SET_ERR(pathLe->text().contains("some_path"), QString("unexpected path: %1").arg(pathLe->text()));
-    CHECK_SET_ERR(formatCb->currentText() == "Genbank", QString("unexpected format: %1").arg(formatCb->currentText()));
+    CHECK_SET_ERR(formatCb->currentText() == "GenBank", QString("unexpected format: %1").arg(formatCb->currentText()));
     CHECK_SET_ERR(keepGapsChb->isChecked(), "keep gaps checkBox is unexpectidly unchecked");
 }
 
