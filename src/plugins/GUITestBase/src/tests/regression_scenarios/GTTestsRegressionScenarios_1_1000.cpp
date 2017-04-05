@@ -1644,7 +1644,7 @@ GUI_TEST_CLASS_DEFINITION(test_0792) {
 //    4) Click on appeared item in the file list
     QWidget* datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
     QListWidget* items = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea", datasetWidget);
-    GTListWidget::click(os, items, "GenBank", Qt::RightButton);
+    GTListWidget::click(os, items, "Genbank", Qt::RightButton);
 //    Expected state:
 //        the following widgets appears:
     GTWidget::findExactWidget<QLineEdit*>(os, "includeMaskEdit");

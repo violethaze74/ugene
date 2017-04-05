@@ -2330,8 +2330,11 @@ GUI_TEST_CLASS_DEFINITION(test_4309_1) {
 
     QComboBox* box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
     CHECK_SET_ERR(box, "QComboBox not found. Widget in this cell might be not QComboBox");
-    CHECK_SET_ERR(GTComboBox::getValues(os, box).contains(BaseDocumentFormats::VECTOR_NTI_SEQUENCE) == false, "Vector NTI format is present in WriteAnnotations worker");
-    CHECK_SET_ERR(GTComboBox::getValues(os, box).contains(BaseDocumentFormats::PLAIN_GENBANK), "Vector NTI format is present in WriteAnnotations worker");
+    QString vectorNtiFormatName = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::VECTOR_NTI_SEQUENCE)->getFormatName();
+    QString genbankFormatName = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK)->getFormatName();
+    QStringList boxData = GTComboBox::getValues(os, box);
+    CHECK_SET_ERR(boxData.contains(vectorNtiFormatName) == false, "Vector NTI format is present in WriteAnnotations worker");
+    CHECK_SET_ERR(boxData.contains(genbankFormatName), "GenBank format isn't present in WriteAnnotations worker");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4323_1) {
