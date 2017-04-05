@@ -92,4 +92,8 @@ ModificationAction::ModificationAction(U2AbstractDbi* _dbi, const U2DataId& _mas
     objIds.insert(masterObjId);
 }
 
+ModificationAction::~ModificationAction() {
+
+}
+
 } // namespace

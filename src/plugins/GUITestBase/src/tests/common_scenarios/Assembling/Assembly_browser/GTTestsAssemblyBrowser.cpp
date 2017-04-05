@@ -918,7 +918,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
 //    2. Rename assembly object
     GTUtilsProjectTreeView::rename(os, "chrM", "new_name");
 //    Check UGENE title
-    GTUtilsApp::checkUGENETitle(os, "-* UGENE - [chrM.sorted.bam [as] new_name]");
+    GTUtilsApp::checkUGENETitle(os, "-* UGENE");
     GTGlobals::sleep(500);
 }
 

@@ -8679,17 +8679,17 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="114"/>
         <source>Specifies a non-default file which contains the list of adapter sequences which will be explicity searched against the library. The file must contain sets of named adapters in the form name[tab]sequence.  Lines prefixed with a hash will be ignored.</source>
-        <translation>Задает файл со списком адаптеров, которые будут найдены в библиотеке.</translation>
+        <translation>добавить произвольный файл со списком адаптеров, для которых будет проведён поиск в данных.</translation>
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="119"/>
         <source>List of contaminants</source>
-        <translation>Список контаминантов</translation>
+        <translation>Список контаминирующих последовательностей</translation>
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="120"/>
         <source>Specifies a non-default file which contains the list of contaminants to screen overrepresented sequences against. The file must contain sets of named contaminants in the form name[tab]sequence.  Lines prefixed with a hash will be ignored.</source>
-        <translation>Задает файл со списком контаминантов.</translation>
+        <translation>добавить произвольный файл со контаминирующих последовательностей, в которых будет проведён поиск сверхпредстваленных последовательностей.</translation>
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="140"/>
@@ -8879,17 +8879,17 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="542"/>
         <source>Scale the coverage by a constant factor.Each coverage value is multiplied by this factor before being reported. Useful for normalizing coverage by, e.g., reads per million (RPM). Default is 1.0; i.e., unscaled. (-scale)</source>
-        <translation>Шкала покрытия. (-scale)</translation>
+        <translation>шкалировать покрытие с учётом постоянного фактора. Каждое значение покрытия будет умножено на этот фактор. Применима для расчёта нормализованного покрытия, например, числа ридов на миллион (RPM). Значение по умолчанию — 1 (без масштабирования). (Параметр -scale)</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="544"/>
         <source>Trackline</source>
-        <translation>Линия следа</translation>
+        <translation>Трэк</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="545"/>
         <source>Adds a UCSC/Genome-Browser track line definition in the first line of the output. (-trackline)</source>
-        <translation>Добавляет линию следа UCSC/Genome-Browser в первую линию выходного файла. (-trackline)</translation>
+        <translation>добавляет определение трэка  UCSC Genome Browser в первую строку выходного файла. (Параметр -trackline)</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="547"/>
