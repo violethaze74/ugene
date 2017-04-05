@@ -53,7 +53,7 @@ void SqliteUpgraderFrom_0_To_1_13::upgrade(U2OpStatus &os) const {
 }
 
 void SqliteUpgraderFrom_0_To_1_13::upgradeObjectDbi(U2OpStatus &os) const {
-    SQLiteQuery q("PRAGMA table_info(Object)", dbi->getDbRef(), os);
+    SQLiteWriteQuery q("PRAGMA table_info(Object)", dbi->getDbRef(), os);
     CHECK_OP(os, );
 
     bool hasModTrack = false;
@@ -66,7 +66,7 @@ void SqliteUpgraderFrom_0_To_1_13::upgradeObjectDbi(U2OpStatus &os) const {
     }
     CHECK(!hasModTrack, );
 
-    SQLiteQuery("ALTER TABLE Object ADD trackMod INTEGER NOT NULL DEFAULT 0", dbi->getDbRef(), os).execute();
+    SQLiteWriteQuery("ALTER TABLE Object ADD trackMod INTEGER NOT NULL DEFAULT 0", dbi->getDbRef(), os).execute();
 }
 
 void SqliteUpgraderFrom_0_To_1_13::upgradeObjectRelationsDbi(U2OpStatus &os) const {
@@ -77,7 +77,7 @@ void SqliteUpgraderFrom_0_To_1_13::upgradeObjectRelationsDbi(U2OpStatus &os) con
 
 void SqliteUpgraderFrom_0_To_1_13::upgradeAssemblyDbi(U2OpStatus &os) const {
     DbRef *db = dbi->getDbRef();
-    SQLiteQuery q("PRAGMA foreign_key_list(Assembly)", db, os);
+    SQLiteWriteQuery q("PRAGMA foreign_key_list(Assembly)", db, os);
     SAFE_POINT_OP(os, );
 
     bool referenceIsObject = false;
@@ -94,13 +94,13 @@ void SqliteUpgraderFrom_0_To_1_13::upgradeAssemblyDbi(U2OpStatus &os) const {
 
     const QString newTableName = "Assembly_new";
 
-    SQLiteQuery(SQLiteAssemblyDbi::getCreateAssemblyTableQuery(newTableName), db, os).execute();
+    SQLiteWriteQuery(SQLiteAssemblyDbi::getCreateAssemblyTableQuery(newTableName), db, os).execute();
     SAFE_POINT_OP(os,);
 
-    SQLiteQuery assemblyFetch("SELECT object, reference, imethod, cmethod, idata, cdata FROM Assembly", db, os);
+    SQLiteWriteQuery assemblyFetch("SELECT object, reference, imethod, cmethod, idata, cdata FROM Assembly", db, os);
     SAFE_POINT_OP(os, );
 
-    SQLiteQuery assemblyInsert(QString("INSERT INTO %1 (object, reference, imethod, cmethod, idata, cdata) VALUES(?1, ?2, ?3, ?4, ?5, ?6)")
+    SQLiteWriteQuery assemblyInsert(QString("INSERT INTO %1 (object, reference, imethod, cmethod, idata, cdata) VALUES(?1, ?2, ?3, ?4, ?5, ?6)")
         .arg(newTableName), db, os);
     SAFE_POINT_OP(os, );
     while (assemblyFetch.step()) {
@@ -121,10 +121,10 @@ void SqliteUpgraderFrom_0_To_1_13::upgradeAssemblyDbi(U2OpStatus &os) const {
         assemblyInsert.reset();
     }
 
-    SQLiteQuery("DROP TABLE Assembly", db, os).execute();
+    SQLiteWriteQuery("DROP TABLE Assembly", db, os).execute();
     SAFE_POINT_OP(os, );
 
-    SQLiteQuery(QString("ALTER TABLE %1 RENAME TO Assembly").arg(newTableName), db, os).execute();
+    SQLiteWriteQuery(QString("ALTER TABLE %1 RENAME TO Assembly").arg(newTableName), db, os).execute();
 }
 
 }   // namespace U2

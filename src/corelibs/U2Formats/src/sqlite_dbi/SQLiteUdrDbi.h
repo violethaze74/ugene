@@ -64,7 +64,7 @@ private:
     static QStringList fieldNames(const UdrSchema *schema, U2OpStatus &os, const QList<int> &nums = QList<int>());
     static QList< QStringList > indexes(const UdrSchema *schema, U2OpStatus &os);
     static void bindData(const QList<UdrValue> &data, const UdrSchema *schema, SQLiteQuery &q, U2OpStatus &os);
-    static void retreiveData(QList<UdrValue> &data, const UdrSchema *schema, SQLiteReadOnlyQuery &q, U2OpStatus &os);
+    static void retreiveData(QList<UdrValue> &data, const UdrSchema *schema, SQLiteQuery &q, U2OpStatus &os);
     static UdrSchema::FieldDesc getBlobField(const UdrSchemaId &schemaId, int fieldNum, U2OpStatus &os);
 };
 

@@ -38,7 +38,7 @@ void SQLiteMsaDbi::initSqlSchema(U2OpStatus& os) {
     }
 
     // MSA object
-    SQLiteQuery("CREATE TABLE Msa (object INTEGER PRIMARY KEY, length INTEGER NOT NULL, "
+    SQLiteWriteQuery("CREATE TABLE Msa (object INTEGER PRIMARY KEY, length INTEGER NOT NULL, "
         "alphabet TEXT NOT NULL, numOfRows INTEGER NOT NULL, "
         "FOREIGN KEY(object) REFERENCES Object(id) ON DELETE CASCADE)", db, os).execute();
 
@@ -50,14 +50,14 @@ void SQLiteMsaDbi::initSqlSchema(U2OpStatus& os) {
      //   gstart   - offset of the first element in the sequence
      //   gend     - offset of the last element in the sequence (non-inclusive)
      //   length   - sequence and gaps length (trailing gap are not taken into account)
-    SQLiteQuery("CREATE TABLE MsaRow (msa INTEGER NOT NULL, rowId INTEGER NOT NULL, sequence INTEGER NOT NULL,"
+    SQLiteWriteQuery("CREATE TABLE MsaRow (msa INTEGER NOT NULL, rowId INTEGER NOT NULL, sequence INTEGER NOT NULL,"
         " pos INTEGER NOT NULL, gstart INTEGER NOT NULL, gend INTEGER NOT NULL, length INTEGER NOT NULL,"
         " PRIMARY KEY(msa, rowId),"
         " FOREIGN KEY(msa) REFERENCES Msa(object) ON DELETE CASCADE, "
         " FOREIGN KEY(sequence) REFERENCES Sequence(object) ON DELETE CASCADE)", db, os).execute();
-    SQLiteQuery("CREATE INDEX MsaRow_msa_rowId ON MsaRow(msa, rowId)", db, os).execute();
-    SQLiteQuery("CREATE INDEX MsaRow_length ON MsaRow(length)", db, os).execute();
-    SQLiteQuery("CREATE INDEX MsaRow_sequence ON MsaRow(sequence)", db, os).execute();
+    SQLiteWriteQuery("CREATE INDEX MsaRow_msa_rowId ON MsaRow(msa, rowId)", db, os).execute();
+    SQLiteWriteQuery("CREATE INDEX MsaRow_length ON MsaRow(length)", db, os).execute();
+    SQLiteWriteQuery("CREATE INDEX MsaRow_sequence ON MsaRow(sequence)", db, os).execute();
 
      // Gap info for a MSA row:
      //   msa       - msa object id
@@ -65,11 +65,11 @@ void SQLiteMsaDbi::initSqlSchema(U2OpStatus& os) {
      //   gapStart  - start of the gap, the coordinate is relative to the gstart coordinate of the row
      //   gapEnd    - end of the gap, the coordinate is relative to the gstart coordinate of the row (non-inclusive)
      // Note! there is invariant: gend - gstart (of the row) == gapEnd - gapStart
-    SQLiteQuery("CREATE TABLE MsaRowGap (msa INTEGER NOT NULL, rowId INTEGER NOT NULL, "
+    SQLiteWriteQuery("CREATE TABLE MsaRowGap (msa INTEGER NOT NULL, rowId INTEGER NOT NULL, "
         "gapStart INTEGER NOT NULL, gapEnd INTEGER NOT NULL, "
         "FOREIGN KEY(msa, rowId) REFERENCES MsaRow(msa, rowId) ON DELETE CASCADE)",
         db, os).execute();
-    SQLiteQuery("CREATE INDEX MsaRowGap_msa_rowId ON MsaRowGap(msa, rowId)", db, os).execute();
+    SQLiteWriteQuery("CREATE INDEX MsaRowGap_msa_rowId ON MsaRowGap(msa, rowId)", db, os).execute();
 }
 
 U2DataId SQLiteMsaDbi::createMsaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, U2OpStatus& os) {
@@ -88,7 +88,7 @@ U2DataId SQLiteMsaDbi::createMsaObject(const QString &folder, const QString &nam
     CHECK_OP(os, U2DataId());
 
     // Create a record in the Msa table
-    SQLiteQuery q("INSERT INTO Msa(object, length, alphabet, numOfRows) VALUES(?1, ?2, ?3, ?4)", db, os);
+    SQLiteWriteQuery q("INSERT INTO Msa(object, length, alphabet, numOfRows) VALUES(?1, ?2, ?3, ?4)", db, os);
     CHECK_OP(os, U2DataId());
 
     q.bindDataId(1, msa.id);
@@ -124,7 +124,7 @@ void SQLiteMsaDbi::updateMsaAlphabet(const U2DataId& msaId, const U2AlphabetId& 
     }
 
     // Update the alphabet
-    SQLiteQuery q("UPDATE Msa SET alphabet = ?1 WHERE object = ?2", db, os);
+    SQLiteWriteQuery q("UPDATE Msa SET alphabet = ?1 WHERE object = ?2", db, os);
     CHECK_OP(os, );
 
     q.bindString(1, alphabet.id);
@@ -146,7 +146,7 @@ void SQLiteMsaDbi::createMsaRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow
     qint64 rowLength = calculateRowLength(msaRow.gend - msaRow.gstart, msaRow.gaps);
 
     // Insert the data
-    SQLiteQuery q("INSERT INTO MsaRow(msa, rowId, sequence, pos, gstart, gend, length)"
+    SQLiteWriteQuery q("INSERT INTO MsaRow(msa, rowId, sequence, pos, gstart, gend, length)"
         " VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7)", db, os);
     CHECK_OP(os, );
 
@@ -352,7 +352,7 @@ void SQLiteMsaDbi::updateRowInfo(SQLiteModificationAction &updateAction, const U
 
 QList<qint64> SQLiteMsaDbi::getRowsOrder(const U2DataId& msaId, U2OpStatus& os) {
     QList<qint64> res;
-    SQLiteReadOnlyQuery q("SELECT rowId FROM MsaRow WHERE msa = ?1 ORDER BY pos", db, os);
+    SQLiteReadQuery q("SELECT rowId FROM MsaRow WHERE msa = ?1 ORDER BY pos", db, os);
     q.bindDataId(1, msaId);
     qint64 rowId;
     while (q.step()) {
@@ -364,7 +364,7 @@ QList<qint64> SQLiteMsaDbi::getRowsOrder(const U2DataId& msaId, U2OpStatus& os) 
 
 U2AlphabetId SQLiteMsaDbi::getMsaAlphabet(const U2DataId& msaId, U2OpStatus& os) {
     QString alphabetName;
-    SQLiteReadOnlyQuery q("SELECT alphabet FROM Msa WHERE object = ?1", db, os);
+    SQLiteReadQuery q("SELECT alphabet FROM Msa WHERE object = ?1", db, os);
     q.bindDataId(1, msaId);
     if (q.step()) {
         alphabetName = q.getString(0);
@@ -504,7 +504,7 @@ void SQLiteMsaDbi::removeMsaRowAndGaps(const U2DataId& msaId, qint64 rowId, bool
 
 void SQLiteMsaDbi::deleteRowsData(const U2DataId& msaId, U2OpStatus& os) {
     static const QString deleteObjStr = "DELETE FROM Object WHERE id IN (SELECT sequence FROM MsaRow WHERE msa = ?1)";
-    SQLiteQuery deleteObjQeury(deleteObjStr, db, os);
+    SQLiteWriteQuery deleteObjQeury(deleteObjStr, db, os);
     deleteObjQeury.bindDataId(1, msaId);
     deleteObjQeury.execute();
 }
@@ -515,7 +515,7 @@ U2Msa SQLiteMsaDbi::getMsaObject(const U2DataId& msaId, U2OpStatus& os) {
 
     SAFE_POINT_OP(os, res);
 
-    SQLiteReadOnlyQuery q("SELECT length, alphabet FROM Msa WHERE object = ?1", db, os);
+    SQLiteReadQuery q("SELECT length, alphabet FROM Msa WHERE object = ?1", db, os);
     q.bindDataId(1, msaId);
     if (q.step())  {
         res.length = q.getInt64(0);
@@ -529,7 +529,7 @@ U2Msa SQLiteMsaDbi::getMsaObject(const U2DataId& msaId, U2OpStatus& os) {
 
 qint64 SQLiteMsaDbi::getNumOfRows(const U2DataId& msaId, U2OpStatus& os) {
     qint64 res = 0;
-    SQLiteReadOnlyQuery q("SELECT numOfRows FROM Msa WHERE object = ?1", db, os);
+    SQLiteReadQuery q("SELECT numOfRows FROM Msa WHERE object = ?1", db, os);
     CHECK_OP(os, res);
 
     q.bindDataId(1, msaId);
@@ -547,7 +547,7 @@ void SQLiteMsaDbi::recalculateRowsPositions(const U2DataId& msaId, U2OpStatus& o
     CHECK_OP(os, );
 
     SQLiteTransaction t(db, os);
-    SQLiteQuery q("UPDATE MsaRow SET pos = ?1 WHERE msa = ?2 AND rowId = ?3", db, os);
+    SQLiteWriteQuery q("UPDATE MsaRow SET pos = ?1 WHERE msa = ?2 AND rowId = ?3", db, os);
     CHECK_OP(os, );
 
     for (int i = 0, n = rows.count(); i < n; ++i) {
@@ -562,7 +562,7 @@ void SQLiteMsaDbi::recalculateRowsPositions(const U2DataId& msaId, U2OpStatus& o
 
 qint64 SQLiteMsaDbi::getMaximumRowId(const U2DataId& msaId, U2OpStatus& os) {
     qint64 maxRowId = 0;
-    SQLiteReadOnlyQuery q("SELECT MAX(rowId) FROM MsaRow WHERE msa = ?1", db, os);
+    SQLiteReadQuery q("SELECT MAX(rowId) FROM MsaRow WHERE msa = ?1", db, os);
     SAFE_POINT_OP(os, 0);
 
     q.bindDataId(1, msaId);
@@ -576,10 +576,10 @@ qint64 SQLiteMsaDbi::getMaximumRowId(const U2DataId& msaId, U2OpStatus& os) {
 
 QList<U2MsaRow> SQLiteMsaDbi::getRows(const U2DataId& msaId, U2OpStatus& os) {
     QList<U2MsaRow> res;
-    SQLiteReadOnlyQuery q("SELECT rowId, sequence, gstart, gend, length FROM MsaRow WHERE msa = ?1 ORDER BY pos", db, os);
+    SQLiteReadQuery q("SELECT rowId, sequence, gstart, gend, length FROM MsaRow WHERE msa = ?1 ORDER BY pos", db, os);
     q.bindDataId(1, msaId);
 
-    SQLiteReadOnlyQuery gapQ("SELECT gapStart, gapEnd FROM MsaRowGap WHERE msa = ?1 AND rowId = ?2 ORDER BY gapStart", db, os);
+    SQLiteReadQuery gapQ("SELECT gapStart, gapEnd FROM MsaRowGap WHERE msa = ?1 AND rowId = ?2 ORDER BY gapStart", db, os);
     while (q.step()) {
         U2MsaRow row;
         row.rowId = q.getInt64(0);
@@ -607,7 +607,7 @@ QList<U2MsaRow> SQLiteMsaDbi::getRows(const U2DataId& msaId, U2OpStatus& os) {
 
 U2MsaRow SQLiteMsaDbi::getRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os) {
     U2MsaRow res;
-    SQLiteReadOnlyQuery q("SELECT sequence, gstart, gend, length FROM MsaRow WHERE msa = ?1 AND rowId = ?2", db, os);
+    SQLiteReadQuery q("SELECT sequence, gstart, gend, length FROM MsaRow WHERE msa = ?1 AND rowId = ?2", db, os);
     SAFE_POINT_OP(os, res);
 
     q.bindDataId(1, msaId);
@@ -624,7 +624,7 @@ U2MsaRow SQLiteMsaDbi::getRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& o
         SAFE_POINT_OP(os, res);
     }
 
-    SQLiteReadOnlyQuery gapQ("SELECT gapStart, gapEnd FROM MsaRowGap WHERE msa = ?1 AND rowId = ?2 ORDER BY gapStart", db, os);
+    SQLiteReadQuery gapQ("SELECT gapStart, gapEnd FROM MsaRowGap WHERE msa = ?1 AND rowId = ?2 ORDER BY gapStart", db, os);
     SAFE_POINT_OP(os, res);
 
     gapQ.bindDataId(1, msaId);
@@ -640,7 +640,7 @@ U2MsaRow SQLiteMsaDbi::getRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& o
 }
 
 void SQLiteMsaDbi::updateNumOfRows(const U2DataId& msaId, qint64 numOfRows, U2OpStatus& os) {
-    SQLiteQuery q("UPDATE Msa SET numOfRows = ?1 WHERE object = ?2", db, os);
+    SQLiteWriteQuery q("UPDATE Msa SET numOfRows = ?1 WHERE object = ?2", db, os);
     SAFE_POINT_OP(os, );
 
     q.bindInt64(1, numOfRows);
@@ -721,7 +721,7 @@ void SQLiteMsaDbi::updateMsaLength(SQLiteModificationAction &updateAction, const
 
 qint64 SQLiteMsaDbi::getMsaLength(const U2DataId& msaId, U2OpStatus& os) {
     qint64 res = 0;
-    SQLiteReadOnlyQuery q("SELECT length FROM Msa WHERE object = ?1", db, os);
+    SQLiteReadQuery q("SELECT length FROM Msa WHERE object = ?1", db, os);
     CHECK_OP(os, res);
 
     q.bindDataId(1, msaId);
@@ -754,7 +754,7 @@ U2DataId SQLiteMsaDbi::createMcaObject(const QString &folder, const QString &nam
     CHECK_OP(os, U2DataId());
 
     // Create a record in the Msa table
-    SQLiteQuery q("INSERT INTO Msa(object, length, alphabet, numOfRows) VALUES(?1, ?2, ?3, ?4)", db, os);
+    SQLiteWriteQuery q("INSERT INTO Msa(object, length, alphabet, numOfRows) VALUES(?1, ?2, ?3, ?4)", db, os);
     CHECK_OP(os, U2DataId());
 
     q.bindDataId(1, mca.id);
@@ -778,7 +778,7 @@ qint64 SQLiteMsaDbi::calculateRowLength(qint64 seqLength, const QList<U2MsaGap>&
 
 qint64 SQLiteMsaDbi::getRowSequenceLength(const U2DataId& msaId, qint64 rowId, U2OpStatus& os) {
     qint64 res = 0;
-    SQLiteReadOnlyQuery q("SELECT gstart, gend FROM MsaRow WHERE msa = ?1 AND rowId = ?2", db, os);
+    SQLiteReadQuery q("SELECT gstart, gend FROM MsaRow WHERE msa = ?1 AND rowId = ?2", db, os);
     CHECK_OP(os, res);
 
     q.bindDataId(1, msaId);
@@ -797,7 +797,7 @@ qint64 SQLiteMsaDbi::getRowSequenceLength(const U2DataId& msaId, qint64 rowId, U
 }
 
 void SQLiteMsaDbi::updateRowLength(const U2DataId& msaId, qint64 rowId, qint64 newLength, U2OpStatus& os) {
-    SQLiteQuery q("UPDATE MsaRow SET length = ?1 WHERE msa = ?2 AND rowId = ?3", db, os);
+    SQLiteWriteQuery q("UPDATE MsaRow SET length = ?1 WHERE msa = ?2 AND rowId = ?3", db, os);
     CHECK_OP(os, );
 
     q.bindInt64(1, newLength);
@@ -808,7 +808,7 @@ void SQLiteMsaDbi::updateRowLength(const U2DataId& msaId, qint64 rowId, qint64 n
 
 void SQLiteMsaDbi::updateMsaLengthCore(const U2DataId &msaId, qint64 length, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
-    SQLiteQuery q("UPDATE Msa SET length = ?1 WHERE object = ?2", db, os);
+    SQLiteWriteQuery q("UPDATE Msa SET length = ?1 WHERE object = ?2", db, os);
     CHECK_OP(os, );
 
     q.bindInt64(1, length);
@@ -818,7 +818,7 @@ void SQLiteMsaDbi::updateMsaLengthCore(const U2DataId &msaId, qint64 length, U2O
 
 U2DataId SQLiteMsaDbi::getSequenceIdByRowId(const U2DataId& msaId, qint64 rowId, U2OpStatus& os) {
     U2DataId res;
-    SQLiteReadOnlyQuery q("SELECT sequence FROM MsaRow WHERE msa = ?1 AND rowId = ?2", db, os);
+    SQLiteReadQuery q("SELECT sequence FROM MsaRow WHERE msa = ?1 AND rowId = ?2", db, os);
     CHECK_OP(os, res);
 
     q.bindDataId(1, msaId);
@@ -862,7 +862,7 @@ QByteArray SQLiteMsaDbi::getRemovedRowDetails(const U2MsaRow& row) {
 }
 
 qint64 SQLiteMsaDbi::getPosInMsa(const U2DataId &msaId, qint64 rowId, U2OpStatus &os) {
-    SQLiteReadOnlyQuery q("SELECT pos FROM MsaRow WHERE msa = ?1 AND rowId = ?2", db, os);
+    SQLiteReadQuery q("SELECT pos FROM MsaRow WHERE msa = ?1 AND rowId = ?2", db, os);
     CHECK_OP(os, -1);
     q.bindDataId(1, msaId);
     q.bindInt64(2, rowId);
@@ -1073,7 +1073,7 @@ void SQLiteMsaDbi::removeRowsCore(const U2DataId &msaId, const QList<qint64> &ro
 
 void SQLiteMsaDbi::setNewRowsOrderCore(const U2DataId &msaId, const QList<qint64> rowIds, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
-    SQLiteQuery q("UPDATE MsaRow SET pos = ?1 WHERE msa = ?2 AND rowId = ?3", db, os);
+    SQLiteWriteQuery q("UPDATE MsaRow SET pos = ?1 WHERE msa = ?2 AND rowId = ?3", db, os);
     CHECK_OP(os, );
 
     for (int i = 0, n = rowIds.count(); i < n; ++i) {
@@ -1087,7 +1087,7 @@ void SQLiteMsaDbi::setNewRowsOrderCore(const U2DataId &msaId, const QList<qint64
 }
 
 void SQLiteMsaDbi::updateRowInfoCore(const U2DataId& msaId, const U2MsaRow& row, U2OpStatus& os) {
-    SQLiteQuery q("UPDATE MsaRow SET sequence = ?1, gstart = ?2, gend = ?3 WHERE msa = ?4 AND rowId = ?5", db, os);
+    SQLiteWriteQuery q("UPDATE MsaRow SET sequence = ?1, gstart = ?2, gend = ?3 WHERE msa = ?4 AND rowId = ?5", db, os);
     SAFE_POINT_OP(os, );
 
     q.bindDataId(1, row.sequenceId);
@@ -1111,7 +1111,7 @@ void SQLiteMsaDbi::undoUpdateMsaAlphabet(const U2DataId& msaId, const QByteArray
     }
 
     // Update the value
-    SQLiteQuery q("UPDATE Msa SET alphabet = ?1 WHERE object = ?2", db, os);
+    SQLiteWriteQuery q("UPDATE Msa SET alphabet = ?1 WHERE object = ?2", db, os);
     CHECK_OP(os, );
 
     q.bindString(1, oldAlphabet.id);
@@ -1129,7 +1129,7 @@ void SQLiteMsaDbi::redoUpdateMsaAlphabet(const U2DataId& msaId, const QByteArray
     }
 
     // Redo the updating
-    SQLiteQuery q("UPDATE Msa SET alphabet = ?1 WHERE object = ?2", db, os);
+    SQLiteWriteQuery q("UPDATE Msa SET alphabet = ?1 WHERE object = ?2", db, os);
     CHECK_OP(os, );
 
     q.bindString(1, newAlphabet.id);

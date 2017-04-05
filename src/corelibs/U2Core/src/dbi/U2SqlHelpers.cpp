@@ -27,8 +27,6 @@
 
 #include <3rdparty/sqlite3/sqlite3.h>
 
-#include <QDebug>
-
 namespace U2 {
 
 static U2DataId     emptyId;
@@ -38,13 +36,13 @@ static QString      emptyString;
 qint64 SQLiteUtils::remove(const QString& table, const QString& field, const U2DataId& id, qint64 expectedRows, DbRef* db, U2OpStatus& os) {
     QMutexLocker m(&db->lock); // lock db in order to retrieve valid row id for insert
 
-    SQLiteQuery q(QString("DELETE FROM %1 WHERE %2 = ?1").arg(table).arg(field), db, os);
+    SQLiteWriteQuery q(QString("DELETE FROM %1 WHERE %2 = ?1").arg(table).arg(field), db, os);
     q.bindDataId(1, id);
     return q.update(expectedRows);
 }
 
 bool SQLiteUtils::isTableExists(const QString& tableName, DbRef* db, U2OpStatus& os) {
-    SQLiteReadOnlyQuery q("SELECT name FROM sqlite_master WHERE type='table' AND name=?1", db, os);
+    SQLiteReadQuery q("SELECT name FROM sqlite_master WHERE type='table' AND name=?1", db, os);
     q.bindString(1, tableName);
     return q.step();
 }
@@ -88,7 +86,7 @@ static void traceQueryDestroy(const QString& q) {
 }
 #endif
 
-SQLiteReadOnlyQuery::SQLiteReadOnlyQuery(const QString& _sql, DbRef* d, U2OpStatus& _os, bool isReadOnly)
+SQLiteQuery::SQLiteQuery(const QString& _sql, DbRef* d, U2OpStatus& _os, bool isReadOnly)
 : db(d), os(&_os), st(NULL), sql(_sql), isReadOnly(isReadOnly)
 {
     prepare();
@@ -98,7 +96,7 @@ SQLiteReadOnlyQuery::SQLiteReadOnlyQuery(const QString& _sql, DbRef* d, U2OpStat
 #endif
 }
 
-SQLiteReadOnlyQuery::SQLiteReadOnlyQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os, bool isReadOnly)
+SQLiteQuery::SQLiteQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os, bool isReadOnly)
 : db(d), os(&_os), st(NULL), sql(_sql), isReadOnly(isReadOnly)
 {
     U2DbiUtils::addLimit(sql, offset, count);
@@ -109,14 +107,14 @@ SQLiteReadOnlyQuery::SQLiteReadOnlyQuery(const QString& _sql, qint64 offset, qin
 #endif
 }
 
-void SQLiteReadOnlyQuery::setError(const QString& err) {
+void SQLiteQuery::setError(const QString& err) {
     ioLog.trace("SQL: error: " + err + " in query: " + sql);
     if (!os->hasError()) {
         os->setError(err);
     }
 }
 
-void SQLiteReadOnlyQuery::prepare() {
+void SQLiteQuery::prepare() {
     if (os->hasError()) {
         return;
     }
@@ -129,7 +127,7 @@ void SQLiteReadOnlyQuery::prepare() {
     assert(st!=NULL);
 }
 
-SQLiteReadOnlyQuery::~SQLiteReadOnlyQuery() {
+SQLiteQuery::~SQLiteQuery() {
     if (st != NULL) {
         int rc = sqlite3_finalize(st);
         if (rc != SQLITE_OK) {
@@ -142,7 +140,7 @@ SQLiteReadOnlyQuery::~SQLiteReadOnlyQuery() {
 #endif
 }
 
-bool SQLiteReadOnlyQuery::reset(bool clearBindings) {
+bool SQLiteQuery::reset(bool clearBindings) {
     if (hasError()) {
         return false;
     }
@@ -162,37 +160,22 @@ bool SQLiteReadOnlyQuery::reset(bool clearBindings) {
     return true;
 }
 
-bool SQLiteReadOnlyQuery::step() {
+bool SQLiteQuery::stepImpl() {
     if (hasError()) {
         return false;
     }
-    bool isRow = false;
-
     assert(st != NULL);
-    if(isReadOnly){
-        db->rwLock.lockForRead();
-    }else{
-        db->rwLock.lockForWrite();
-        db->lock.lock();
-    }
-
     int rc = sqlite3_step(st);
     if (rc == SQLITE_DONE || rc == SQLITE_READONLY) {
-        isRow = false;
+        return false;
     } else if (rc == SQLITE_ROW) {
-        isRow = true;
-    } else {
-        setError(U2DbiL10n::tr("Unexpected query result code: %1 (%2)").arg(rc).arg(sqlite3_errmsg(db->handle)));
-        isRow = false;
+        return true;
     }
-    if(!isReadOnly) {
-        db->lock.unlock();
-    }
-    db->rwLock.unlock();
-    return isRow;
+    setError(U2DbiL10n::tr("Unexpected query result code: %1 (%2)").arg(rc).arg(sqlite3_errmsg(db->handle)));
+    return false;
 }
 
-void SQLiteReadOnlyQuery::ensureDone() {
+void SQLiteQuery::ensureDone() {
     bool done = !step();
     if (!done && !hasError()) {
         setError(U2DbiL10n::tooManyResults());
@@ -200,7 +183,7 @@ void SQLiteReadOnlyQuery::ensureDone() {
     }
 }
 
-void SQLiteReadOnlyQuery::bindNull(int idx) {
+void SQLiteQuery::bindNull(int idx) {
     CHECK(!hasError(), );
     assert(st != NULL);
 
@@ -211,7 +194,7 @@ void SQLiteReadOnlyQuery::bindNull(int idx) {
     }
 }
 
-int SQLiteReadOnlyQuery::getInt32(int column) const {
+int SQLiteQuery::getInt32(int column) const {
     if (hasError()) {
         return -1;
     }
@@ -219,7 +202,7 @@ int SQLiteReadOnlyQuery::getInt32(int column) const {
     return sqlite3_column_int(st, column);
 }
 
-qint64 SQLiteReadOnlyQuery::getInt64(int column) const {
+qint64 SQLiteQuery::getInt64(int column) const {
     if (hasError()) {
         return -1;
     }
@@ -227,7 +210,7 @@ qint64 SQLiteReadOnlyQuery::getInt64(int column) const {
     return sqlite3_column_int64(st, column);
 }
 
-double SQLiteReadOnlyQuery::getDouble(int column) const {
+double SQLiteQuery::getDouble(int column) const {
     if (hasError()) {
         return -1;
     }
@@ -235,7 +218,7 @@ double SQLiteReadOnlyQuery::getDouble(int column) const {
     return sqlite3_column_double(st, column);
 }
 
-U2DataId SQLiteReadOnlyQuery::getDataId(int column, U2DataType type, const QByteArray& dbExtra) const {
+U2DataId SQLiteQuery::getDataId(int column, U2DataType type, const QByteArray& dbExtra) const {
     if (hasError()) {
         return 0;
     }
@@ -244,7 +227,7 @@ U2DataId SQLiteReadOnlyQuery::getDataId(int column, U2DataType type, const QByte
     return res;
 }
 
-U2DataId SQLiteReadOnlyQuery::getDataIdExt(int column) const {
+U2DataId SQLiteQuery::getDataIdExt(int column) const {
     if (hasError()) {
         return emptyId;
     }
@@ -259,7 +242,7 @@ U2DataId SQLiteReadOnlyQuery::getDataIdExt(int column) const {
 }
 
 
-U2DataType SQLiteReadOnlyQuery::getDataType(int column) const {
+U2DataType SQLiteQuery::getDataType(int column) const {
     if (hasError()) {
         return U2Type::Unknown;
     }
@@ -267,7 +250,7 @@ U2DataType SQLiteReadOnlyQuery::getDataType(int column) const {
     return (U2DataType)sqlite3_column_int(st, column);
 }
 
-QString SQLiteReadOnlyQuery::getString(int column) const {
+QString SQLiteQuery::getString(int column) const {
     if (hasError()) {
         return emptyString;
     }
@@ -275,7 +258,7 @@ QString SQLiteReadOnlyQuery::getString(int column) const {
     return QString::fromUtf8((const char*)sqlite3_column_text(st, column));
 }
 
-QByteArray SQLiteReadOnlyQuery::getCString(int column) const {
+QByteArray SQLiteQuery::getCString(int column) const {
     if (hasError()) {
         return emptyBlob;
     }
@@ -283,7 +266,7 @@ QByteArray SQLiteReadOnlyQuery::getCString(int column) const {
     return QByteArray((const char*)sqlite3_column_text(st, column));
 }
 
-QByteArray SQLiteReadOnlyQuery::getBlob(int column) const {
+QByteArray SQLiteQuery::getBlob(int column) const {
     if (hasError()) {
         return emptyBlob;
     }
@@ -297,7 +280,7 @@ QByteArray SQLiteReadOnlyQuery::getBlob(int column) const {
 }
 
 // param binding methods
-void SQLiteReadOnlyQuery::bindDataId(int idx, const U2DataId& val) {
+void SQLiteQuery::bindDataId(int idx, const U2DataId& val) {
     if (!val.isEmpty()) {
         bindInt64(idx, U2DbiUtils::toDbiId(val));
     } else {
@@ -305,11 +288,11 @@ void SQLiteReadOnlyQuery::bindDataId(int idx, const U2DataId& val) {
     }
 }
 
-void SQLiteReadOnlyQuery::bindType(int idx, U2DataType type) {
+void SQLiteQuery::bindType(int idx, U2DataType type) {
     bindInt64(idx, type);
 }
 
-void SQLiteReadOnlyQuery::bindString(int idx, const QString& val) {
+void SQLiteQuery::bindString(int idx, const QString& val) {
     if (hasError()) {
         return;
     }
@@ -323,7 +306,7 @@ void SQLiteReadOnlyQuery::bindString(int idx, const QString& val) {
     }
 }
 
-void SQLiteReadOnlyQuery::bindInt32(int idx, qint32 val) {
+void SQLiteQuery::bindInt32(int idx, qint32 val) {
     if (hasError()) {
         return;
     }
@@ -335,7 +318,7 @@ void SQLiteReadOnlyQuery::bindInt32(int idx, qint32 val) {
     }
 }
 
-void SQLiteReadOnlyQuery::bindDouble(int idx, double val) {
+void SQLiteQuery::bindDouble(int idx, double val) {
     if (hasError()) {
         return;
     }
@@ -347,7 +330,7 @@ void SQLiteReadOnlyQuery::bindDouble(int idx, double val) {
     }
 }
 
-void SQLiteReadOnlyQuery::bindInt64(int idx, qint64 val) {
+void SQLiteQuery::bindInt64(int idx, qint64 val) {
     if (hasError()) {
         return;
     }
@@ -359,7 +342,7 @@ void SQLiteReadOnlyQuery::bindInt64(int idx, qint64 val) {
     }
 }
 
-void SQLiteReadOnlyQuery::bindBool(int idx, bool val) {
+void SQLiteQuery::bindBool(int idx, bool val) {
     if (hasError()) {
         return;
     }
@@ -372,7 +355,7 @@ void SQLiteReadOnlyQuery::bindBool(int idx, bool val) {
     }
 }
 
-void SQLiteReadOnlyQuery::bindBlob(int idx, const QByteArray& blob, bool transient) {
+void SQLiteQuery::bindBlob(int idx, const QByteArray& blob, bool transient) {
     if (hasError()) {
         return;
     }
@@ -389,7 +372,7 @@ void SQLiteReadOnlyQuery::bindBlob(int idx, const QByteArray& blob, bool transie
     }
 }
 
-void SQLiteReadOnlyQuery::bindZeroBlob(int idx, int reservedSize) {
+void SQLiteQuery::bindZeroBlob(int idx, int reservedSize) {
     if (hasError()) {
         return;
     }
@@ -401,11 +384,11 @@ void SQLiteReadOnlyQuery::bindZeroBlob(int idx, int reservedSize) {
     }
 }
 
-void SQLiteReadOnlyQuery::execute() {
+void SQLiteQuery::execute() {
     update(-1);
 }
 
-qint64 SQLiteReadOnlyQuery::update(qint64 expectedRows) {
+qint64 SQLiteQuery::update(qint64 expectedRows) {
     if (step()) {
         qint64 res = getInt64(0);
         if (expectedRows != -1 && expectedRows != res) {
@@ -416,7 +399,7 @@ qint64 SQLiteReadOnlyQuery::update(qint64 expectedRows) {
     return -1;
 }
 
-qint64 SQLiteReadOnlyQuery::insert() {
+qint64 SQLiteQuery::insert() {
     execute();
     if (hasError()) {
         return -1;
@@ -424,7 +407,7 @@ qint64 SQLiteReadOnlyQuery::insert() {
     return getLastRowId();
 }
 
-U2DataId SQLiteReadOnlyQuery::insert(U2DataType type, const QByteArray& dbExtra) {
+U2DataId SQLiteQuery::insert(U2DataType type, const QByteArray& dbExtra) {
     qint64 lastRowId = insert();
     if (hasError()) {
         return emptyId;
@@ -432,21 +415,21 @@ U2DataId SQLiteReadOnlyQuery::insert(U2DataType type, const QByteArray& dbExtra)
     return U2DbiUtils::toU2DataId(lastRowId, type, dbExtra);
 }
 
-qint64 SQLiteReadOnlyQuery::selectInt64() {
+qint64 SQLiteQuery::selectInt64() {
     if (step()) {
         return getInt64(0);
     }
     return -1;
 }
 
-qint64 SQLiteReadOnlyQuery::selectInt64(qint64 defaultValue) {
+qint64 SQLiteQuery::selectInt64(qint64 defaultValue) {
     if (step()) {
         return getInt64(0);
     }
     return defaultValue;
 }
 
-QList<U2DataId> SQLiteReadOnlyQuery::selectDataIds(U2DataType type, const QByteArray& dbExtra) {
+QList<U2DataId> SQLiteQuery::selectDataIds(U2DataType type, const QByteArray& dbExtra) {
     QList<U2DataId> res;
     while(step()) {
         U2DataId id = getDataId(0, type, dbExtra);
@@ -455,7 +438,7 @@ QList<U2DataId> SQLiteReadOnlyQuery::selectDataIds(U2DataType type, const QByteA
     return res;
 }
 
-QList<U2DataId> SQLiteReadOnlyQuery::selectDataIdsExt() {
+QList<U2DataId> SQLiteQuery::selectDataIdsExt() {
     QList<U2DataId> res;
     while(step()) {
         U2DataId id = getDataIdExt(0);
@@ -464,7 +447,7 @@ QList<U2DataId> SQLiteReadOnlyQuery::selectDataIdsExt() {
     return res;
 }
 
-QStringList SQLiteReadOnlyQuery::selectStrings() {
+QStringList SQLiteQuery::selectStrings() {
     QStringList res;
     while (step()) {
         QString text = getString(0);
@@ -474,21 +457,41 @@ QStringList SQLiteReadOnlyQuery::selectStrings() {
 }
 
 
-qint64 SQLiteReadOnlyQuery::getLastRowId() {
+qint64 SQLiteQuery::getLastRowId() {
     qint64 sqliteId = sqlite3_last_insert_rowid(db->handle);
     return sqliteId;
 }
-
 //////////////////////////////////////////////////////////////////////////
-///SQLiteQuery
-SQLiteQuery::SQLiteQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
-: SQLiteReadOnlyQuery(_sql, d, _os, false)
+///SQLiteReadQuery
+SQLiteReadQuery::SQLiteReadQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
+: SQLiteQuery(_sql, d, _os, false)
 {
 }
 
-SQLiteQuery::SQLiteQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
-: SQLiteReadOnlyQuery(_sql, offset, count, d, _os, false)
+SQLiteReadQuery::SQLiteReadQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
+: SQLiteQuery(_sql, offset, count, d, _os, false)
 {
+}
+bool SQLiteReadQuery::step(){
+    QReadLocker locker(&db->rwLock);
+    return stepImpl();
+}
+
+//////////////////////////////////////////////////////////////////////////
+///SQLiteWriteQuery
+SQLiteWriteQuery::SQLiteWriteQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
+: SQLiteQuery(_sql, d, _os, false)
+{
+}
+
+SQLiteWriteQuery::SQLiteWriteQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
+: SQLiteQuery(_sql, offset, count, d, _os, false)
+{
+}
+bool SQLiteWriteQuery::step(){
+    QWriteLocker writeLocker(&db->rwLock);
+    QMutexLocker mutexLocker(&db->lock);
+    return stepImpl();
 }
 //////////////////////////////////////////////////////////////////////////
 // SQLite transaction helper
@@ -567,7 +570,7 @@ QSharedPointer<SQLiteQuery> SQLiteTransaction::getPreparedQuery(const QString &s
         result->reset(false);
         return result;
     }
-    QSharedPointer<SQLiteQuery> result (new SQLiteQuery(sql, d, os));
+    QSharedPointer<SQLiteQuery> result (new SQLiteWriteQuery(sql, d, os));
     CHECK_OP(os, QSharedPointer<SQLiteQuery>());
     if(cacheQueries){
         db->preparedQueries[sql] = result;
@@ -582,7 +585,7 @@ QSharedPointer<SQLiteQuery> SQLiteTransaction::getPreparedQuery(const QString &s
         result->reset(false);
         return result;
     }
-    QSharedPointer<SQLiteQuery> result (new SQLiteQuery(sql, offset, count, d, os));
+    QSharedPointer<SQLiteWriteQuery> result (new SQLiteWriteQuery(sql, offset, count, d, os));
     CHECK_OP(os, QSharedPointer<SQLiteQuery>());
     if(cacheQueries){
         db->preparedQueries[sql] = result;

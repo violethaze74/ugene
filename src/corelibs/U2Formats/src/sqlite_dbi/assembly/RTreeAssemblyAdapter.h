@@ -72,7 +72,7 @@ private:
     DbRef*          db;
     QString         readsTable;
     QString         indexTable;
-    SQLiteQuery*    updateQuery;
+    SQLiteWriteQuery*    updateQuery;
 };
 
 } //namespace

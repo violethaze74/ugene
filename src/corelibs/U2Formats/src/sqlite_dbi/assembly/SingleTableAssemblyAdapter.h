@@ -68,7 +68,7 @@ public:
     qint64 getMaxReadLength() const {return maxReadLength;}
 
 protected:
-    void bindRegion(SQLiteReadOnlyQuery& q, const U2Region& r, bool forCount = false);
+    void bindRegion(SQLiteReadQuery& q, const U2Region& r, bool forCount = false);
 
     SQLiteDbi*  dbi;
     QString     readsTable;
@@ -91,7 +91,7 @@ public:
 private:
     DbRef*          db;
     QString         readsTable;
-    SQLiteQuery*    updateQuery;
+    SQLiteWriteQuery*    updateQuery;
 };
 
 
