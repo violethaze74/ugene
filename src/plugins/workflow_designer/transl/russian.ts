@@ -2270,12 +2270,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="276"/>
         <source>Trim both ends</source>
-        <translation type="unfinished">Подрезание обоих концов</translation>
+        <translation>Обрезка обоих концов</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="277"/>
         <source>Trim the both ends of a read or not. Usually, you need to set &lt;b&gt;True&lt;/b&gt; for &lt;b&gt;Sanger&lt;/b&gt; sequencing and &lt;b&gt;False&lt;/b&gt; for &lt;b&gt;NGS&lt;/b&gt;</source>
-        <translation type="unfinished">Подрезать оба конца рида или нет. Обычно, необходимо установить значение &lt;b&gt;Истина&lt;/b&gt; для &lt;b&gt;Sanger&lt;/b&gt; ридов и &lt;b&gt;Ложь&lt;/b&gt; для &lt;b&gt;NGS&lt;/b&gt;</translation>
+        <translation>обрезать оба конца рида или нет. Для ридов, полученных методом Сенгера, обычно необходимо установить значение &lt;b&gt;Истина&lt;/b&gt;, а для ридов NGS — &lt;b&gt;Ложь&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="292"/>
@@ -2570,7 +2570,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="124"/>
         <source>Filters BAM/SAM files using SAMTools view.</source>
-        <translation>Фильтрует BAM/SAM файлы при помощи SAMTools.</translation>
+        <translation>фильтровать BAM/SAM файлы при помощи команды SAMTools view.</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="128"/>
@@ -2631,12 +2631,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="158"/>
         <source>Region</source>
-        <translation>Регион</translation>
+        <translation>Участок</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="159"/>
         <source>Regions to filter. For BAM output only. chr2 to output the whole chr2. chr2:1000 to output regions of chr 2 starting from 1000. chr2:1000-2000 to ouput regions of chr2 between 1000 and 2000 including the end point. To input multiple regions use the space seprator (e.g. chr1 chr2 chr3:1000-2000).</source>
-        <translation>Регионы для фильтрации. Только для выходных файлов BAM. Например: chr2 - для всего chr2. chr2:1000 - для регионов chr 2 начинающихся с 1000. chr2:1000-2000 - для регионов chr2 между 1000 и 2000 включая конечную точку. Для ввода нескольких регионов используйте пробел (т.е. chr1 chr2 chr3:1000-2000).</translation>
+        <translation>участки для фильтрации. Только в случае выходных файлов в формате BAM. Например, chr2 - для всей chr2. chr2:1000 - для регионов chr 2, начиная с 1000. chr2:1000-2000 - для регионов chr2 между 1000 и 2000, включая конец интервала. Для ввода нескольких участков используйте пробел (напр, chr1 chr2 chr3:1000-2000).</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="162"/>
@@ -2646,7 +2646,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="163"/>
         <source>Minimum MAPQ quality score.</source>
-        <translation>Минимальная оценка качества MAPQ.</translation>
+        <translation>минимальная оценка качества MAPQ.</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="165"/>
@@ -2656,7 +2656,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="166"/>
         <source>Only output alignments with the selected items. Select the items in the combobox to configure bit flag. Do not select the items to avoid filtration by this parameter.</source>
-        <translation>Только выходные выравнивания с выбранными элементами. Выберите элементы для составления флага.</translation>
+        <translation>включить в выходной файл только риды с выбранными характеристиками. Выберите элементы для составления флага. Не выбирайте ничего, если фильтровать риды не нужно (если выбран один параметр, риды будут отфильтрованы по нему).</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="168"/>
@@ -2666,7 +2666,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="169"/>
         <source>Skip alignment with the selected items. Select the items in the combobox to configure bit flag. Do not select the items to avoid filtration by this parameter.</source>
-        <translation>Игнорировать выравнивания с выбранными элементами.</translation>
+        <translation>исключить из выходного файла  риды с выбранными характеристиками. Выберите элементы для составления флага. Не выбирайте ничего, если фильтровать риды не нужно.</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="188"/>
@@ -3636,14 +3636,6 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation type="vanished">Минимальная длина</translation>
     </message>
     <message>
-        <source>Trim both ends</source>
-        <translation type="vanished">Подрезание обоих концов</translation>
-    </message>
-    <message>
-        <source>Trim the both ends of a read or not. Usually, you need to set &lt;b&gt;True&lt;/b&gt; for &lt;b&gt;Sanger&lt;/b&gt; sequencing and &lt;b&gt;False&lt;/b&gt; for &lt;b&gt;NGS&lt;/b&gt;</source>
-        <translation type="vanished">Подрезать оба конца рида или нет. Обычно, необходимо установить значение &lt;b&gt;Истина&lt;/b&gt; для &lt;b&gt;Sanger&lt;/b&gt; ридов и &lt;b&gt;Ложь&lt;/b&gt; для &lt;b&gt;NGS&lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>Custom</source>
         <translation type="vanished">Частная</translation>
     </message>
@@ -4493,12 +4485,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="133"/>
         <source>Trim both ends</source>
-        <translation type="unfinished">Подрезание обоих концов</translation>
+        <translation>Обрезка обоих концов</translation>
     </message>
     <message>
         <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="134"/>
         <source>Trim the both ends of a read or not. Usually, you need to set &lt;b&gt;True&lt;/b&gt; for &lt;b&gt;Sanger&lt;/b&gt; sequencing and &lt;b&gt;False&lt;/b&gt; for &lt;b&gt;NGS&lt;/b&gt;</source>
-        <translation type="unfinished">Подрезать оба конца рида или нет. Обычно, необходимо установить значение &lt;b&gt;Истина&lt;/b&gt; для &lt;b&gt;Sanger&lt;/b&gt; ридов и &lt;b&gt;Ложь&lt;/b&gt; для &lt;b&gt;NGS&lt;/b&gt;</translation>
+        <translation>обрезать оба конца рида или нет. Для ридов, полученных методом Сенгера, обычно необходимо установить значение &lt;b&gt;Истина&lt;/b&gt;, а для ридов NGS — &lt;b&gt;Ложь&lt;/b&gt;.</translation>
     </message>
 </context>
 <context>

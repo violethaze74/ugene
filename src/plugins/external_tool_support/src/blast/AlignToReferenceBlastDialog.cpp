@@ -108,8 +108,8 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
 QStringList AlignToReferenceBlastDialog::lastUsedReadsUrls;
 AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
     : QDialog(parent),
-      savableWidget(this),
-      saveController(NULL)
+      saveController(NULL),
+      savableWidget(this)
 {
     setupUi(this);
 

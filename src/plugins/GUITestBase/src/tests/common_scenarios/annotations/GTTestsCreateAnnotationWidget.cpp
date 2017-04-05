@@ -2045,7 +2045,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
             clickSelectGroupButton(os, dialog);
 
 //    7. Close the popup menu. Set "NC_001363 annotations 2" in existing tables combobox.
-            setExistingTable(os, dialog, "NC_001363 annotations 2 [2annot_1seq.gb]");
+            setExistingTable(os, dialog, "2annot_1seq.gb [NC_001363 annotations 2]");
 
 //    8. Click "Predefined group names" button.
 //    Expected state: a popup menu contains all groups from the "NC_001363 annotations 2" table.
@@ -2158,7 +2158,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
             clickSelectGroupButton(os, dialog);
 
 //    7. Close the popup menu. Set "NC_001363 annotations 2" in existing tables combobox.
-            setExistingTable(os, dialog, "NC_001363 annotations 2 [2annot_1seq.gb]");
+            setExistingTable(os, dialog, "2annot_1seq.gb [NC_001363 annotations 2]");
 
 //    8. Click "Predefined group names" button.
 //    Expected state: a popup menu contains all groups from the "NC_001363 annotations 2" table.
@@ -2183,7 +2183,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     QStringList expectedGroups = QStringList() << "group  (0, 1)"
                                                << "just an annotation  (0, 1)"
                                                << "test_0032  (0, 1)";
-    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "2annot_1seq.gb [NC_001363 annotations 2] *");
+    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 annotations 2 [2annot_1seq.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'")
                   .arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
@@ -2267,7 +2267,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
 //    7. Close the popup menu. Set "NC_001363 annotations 2" in existing tables combobox.
     GTUtilsOptionPanelSequenceView::openSaveAnnotationToShowHideWidget(os);
-    setExistingTable(os, NULL, "NC_001363 annotations 2 [2annot_1seq.gb]");
+    setExistingTable(os, NULL, "2annot_1seq.gb [NC_001363 annotations 2]");
     GTUtilsOptionPanelSequenceView::openSaveAnnotationToShowHideWidget(os, false);
 
 //    8. Click "Predefined group names" button.
@@ -2289,7 +2289,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     expectedGroups = QStringList() << "group  (0, 1)"
                                                << "just an annotation  (0, 1)"
                                                << "test_0033  (0, 1)";
-    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "2annot_1seq.gb [NC_001363 annotations 2] *");
+    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 annotations 2 [2annot_1seq.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'")
                   .arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 

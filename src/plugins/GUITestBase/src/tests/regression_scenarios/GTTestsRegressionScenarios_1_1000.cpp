@@ -1255,7 +1255,7 @@ GUI_TEST_CLASS_DEFINITION(test_0733) {
 
     //Expected state: Property editor appears, {parameters->Document format} is "fasta"
     QString format = GTUtilsWorkflowDesigner::getParameter(os, "Document format");
-    CHECK_SET_ERR("fasta" == format, "Wrong format");
+    CHECK_SET_ERR("FASTA" == format, "Wrong format");
 
     //3. Change {Parameters->Output file} to "result.gb".
     //Expected state: {Parameters->Output file} is "%some_path%/result.gb", {Parameters->Document format} is "fasta".
