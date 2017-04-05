@@ -3718,13 +3718,13 @@ GUI_TEST_CLASS_DEFINITION(test_1338) {
     CHECK_SET_ERR(initialText.contains("GenBank"), "Worker item doesn't contain format name");
 
     // 2. Select another document format
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "gff", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GFF", GTUtilsWorkflowDesigner::comboValue);
     GTGlobals::sleep(500);
 
     // 3. Click on the scene
     // Expected state : the file format is changed in the description of the element
     const QString textAfter = GTUtilsWorkflowDesigner::getWorkerText(os, "Write Annotations");
-    CHECK_SET_ERR(textAfter != initialText && textAfter.contains("gff"), "Worker item didn't change its content");
+    CHECK_SET_ERR(textAfter != initialText && textAfter.contains("GFF"), "Worker item didn't change its content");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1342) {
