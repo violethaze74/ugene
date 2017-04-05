@@ -86,8 +86,8 @@ static void traceQueryDestroy(const QString& q) {
 }
 #endif
 
-SQLiteQuery::SQLiteQuery(const QString& _sql, DbRef* d, U2OpStatus& _os, bool isReadOnly)
-: db(d), os(&_os), st(NULL), sql(_sql), isReadOnly(isReadOnly)
+SQLiteQuery::SQLiteQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
+: db(d), os(&_os), st(NULL), sql(_sql)
 {
     prepare();
 
@@ -96,8 +96,8 @@ SQLiteQuery::SQLiteQuery(const QString& _sql, DbRef* d, U2OpStatus& _os, bool is
 #endif
 }
 
-SQLiteQuery::SQLiteQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os, bool isReadOnly)
-: db(d), os(&_os), st(NULL), sql(_sql), isReadOnly(isReadOnly)
+SQLiteQuery::SQLiteQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
+: db(d), os(&_os), st(NULL), sql(_sql)
 {
     U2DbiUtils::addLimit(sql, offset, count);
     prepare();
@@ -461,17 +461,19 @@ qint64 SQLiteQuery::getLastRowId() {
     qint64 sqliteId = sqlite3_last_insert_rowid(db->handle);
     return sqliteId;
 }
+
 //////////////////////////////////////////////////////////////////////////
 ///SQLiteReadQuery
 SQLiteReadQuery::SQLiteReadQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
-: SQLiteQuery(_sql, d, _os, false)
+: SQLiteQuery(_sql, d, _os)
 {
 }
 
 SQLiteReadQuery::SQLiteReadQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
-: SQLiteQuery(_sql, offset, count, d, _os, false)
+: SQLiteQuery(_sql, offset, count, d, _os)
 {
 }
+
 bool SQLiteReadQuery::step(){
     QReadLocker locker(&db->rwLock);
     return stepImpl();
@@ -480,19 +482,21 @@ bool SQLiteReadQuery::step(){
 //////////////////////////////////////////////////////////////////////////
 ///SQLiteWriteQuery
 SQLiteWriteQuery::SQLiteWriteQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
-: SQLiteQuery(_sql, d, _os, false)
+: SQLiteQuery(_sql, d, _os)
 {
 }
 
 SQLiteWriteQuery::SQLiteWriteQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
-: SQLiteQuery(_sql, offset, count, d, _os, false)
+: SQLiteQuery(_sql, offset, count, d, _os)
 {
 }
+
 bool SQLiteWriteQuery::step(){
     QWriteLocker writeLocker(&db->rwLock);
     QMutexLocker mutexLocker(&db->lock);
     return stepImpl();
 }
+
 //////////////////////////////////////////////////////////////////////////
 // SQLite transaction helper
 

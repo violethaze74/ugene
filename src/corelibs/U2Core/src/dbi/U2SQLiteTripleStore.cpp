@@ -214,7 +214,7 @@ bool U2SQLiteTripleStore::contains(const QString &key, const QString &role, U2Op
 bool U2SQLiteTripleStore::contains(const U2Triplet &value, U2OpStatus &os) const {
     QMutexLocker lock(&db->lock);
     static const QString queryString("SELECT t.id FROM Triplets t WHERE t.key = ?1 AND t.role = ?2 AND t.value = ?3");
-    SQLiteWriteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     q.bindString(1, value.getKey());
     q.bindString(2, value.getRole());
     q.bindString(3, value.getValue());
@@ -230,7 +230,7 @@ bool U2SQLiteTripleStore::contains(const U2Triplet &value, U2OpStatus &os) const
 QString U2SQLiteTripleStore::getValue(const QString &key, const QString &role, U2OpStatus &os) const {
     QMutexLocker lock(&db->lock);
     static const QString queryString("SELECT t.value FROM Triplets t WHERE t.key = ?1 AND t.role = ?2 ORDER BY t.id");
-    SQLiteWriteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     q.bindString(1, key);
     q.bindString(2, role);
 
@@ -244,7 +244,7 @@ QString U2SQLiteTripleStore::getValue(const QString &key, const QString &role, U
 qint64 U2SQLiteTripleStore::getTripletId(const U2Triplet &triplet, bool &found, U2OpStatus &os) const {
     QMutexLocker lock(&db->lock);
     static const QString queryString("SELECT t.id FROM Triplets t WHERE t.key = ?1 AND t.role = ?2 AND t.value = ?3");
-    SQLiteWriteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     q.bindString(1, triplet.getKey());
     q.bindString(2, triplet.getRole());
     q.bindString(3, triplet.getValue());
@@ -282,7 +282,7 @@ void U2SQLiteTripleStore::removeTriplet(qint64 tripletId, U2OpStatus &os) {
 QList<U2Triplet> U2SQLiteTripleStore::getTriplets(U2OpStatus &os) const {
     QMutexLocker lock(&db->lock);
     static const QString queryString("SELECT t.id, t.key, t.role, t.value FROM Triplets t");
-    SQLiteWriteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
 
     QList<U2Triplet> result;
     while (q.step()) {

@@ -97,7 +97,7 @@ void SqliteUpgraderFrom_0_To_1_13::upgradeAssemblyDbi(U2OpStatus &os) const {
     SQLiteWriteQuery(SQLiteAssemblyDbi::getCreateAssemblyTableQuery(newTableName), db, os).execute();
     SAFE_POINT_OP(os,);
 
-    SQLiteWriteQuery assemblyFetch("SELECT object, reference, imethod, cmethod, idata, cdata FROM Assembly", db, os);
+    SQLiteReadQuery assemblyFetch("SELECT object, reference, imethod, cmethod, idata, cdata FROM Assembly", db, os);
     SAFE_POINT_OP(os, );
 
     SQLiteWriteQuery assemblyInsert(QString("INSERT INTO %1 (object, reference, imethod, cmethod, idata, cdata) VALUES(?1, ?2, ?3, ?4, ?5, ?6)")

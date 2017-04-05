@@ -106,7 +106,7 @@ UdrRecord SQLiteUdrDbi::getRecord(const UdrRecordId &recordId, U2OpStatus &os) {
     const UdrSchema *schema = udrSchema(recordId.getSchemaId(), os);
     CHECK_OP(os, result);
 
-    SQLiteWriteQuery q(selectDef(schema, os), db, os);
+    SQLiteReadQuery q(selectDef(schema, os), db, os);
     CHECK_OP(os, result);
 
     q.bindDataId(1, recordId.getRecordId());

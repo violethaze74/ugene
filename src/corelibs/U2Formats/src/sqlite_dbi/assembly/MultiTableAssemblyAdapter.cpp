@@ -535,7 +535,7 @@ void MultiTableAssemblyAdapter::removeReads(const QList<U2DataId>& readIds, U2Op
 
 void MultiTableAssemblyAdapter::dropReadsTables(U2OpStatus &os) {
     // remove prepared queries to finalize them and prevent SQLite errors on table drop
-    db->preparedQueries.clear();//???
+    db->preparedQueries.clear();
 
     foreach (QVector<MTASingleTableAdapter*> adaptersVector, adaptersGrid) {
         foreach (MTASingleTableAdapter* adapter, adaptersVector) {

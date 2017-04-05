@@ -87,7 +87,7 @@ public:
     SQLite query wrapper. Uses prepared statement internally
     An optimized and simplified interface for U2DBI needs.
 */
-class SQLiteQuery  {
+class U2CORE_EXPORT SQLiteQuery  {
 public:
     /**
         Constructs prepared statement for SQLiteDB
@@ -95,8 +95,8 @@ public:
         It's desirable to release this object as soon as possible because it locks
         the database for concurrent modifications from other threads
     */
-    SQLiteQuery(const QString& sql, DbRef* d, U2OpStatus& os, bool isReadOnly = true);
-    SQLiteQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os, bool isReadOnly = true);
+    SQLiteQuery(const QString& sql, DbRef* d, U2OpStatus& os);
+    SQLiteQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
 
     /** Releases all resources associated with the statement */
     virtual ~SQLiteQuery();
@@ -239,7 +239,6 @@ private:
     U2OpStatus*     os;
     sqlite3_stmt*   st;
     QString         sql;
-    bool            isReadOnly;
 };
 
 class U2CORE_EXPORT SQLiteReadQuery : public SQLiteQuery {

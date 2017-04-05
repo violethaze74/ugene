@@ -98,7 +98,7 @@ void SingleTableAssemblyAdapter::dropReadsIndexes(U2OpStatus& os) {
 }
 
 
-void SingleTableAssemblyAdapter::bindRegion(SQLiteReadQuery& q, const U2Region& r, bool forCount) {
+void SingleTableAssemblyAdapter::bindRegion(SQLiteQuery& q, const U2Region& r, bool forCount) {
     if (rangeMode) {
         q.bindInt64(1, r.endPos());
         q.bindInt64(2, r.startPos - maxReadLength);

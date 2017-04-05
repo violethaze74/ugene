@@ -26,8 +26,6 @@
 
 namespace U2 {
 
-class SQLiteWriteQuery;
-
 class SQLiteAttributeDbi : public U2AttributeDbi, public SQLiteChildDBICommon {
 
 public:

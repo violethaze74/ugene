@@ -108,7 +108,7 @@ void ModSQLiteSpecificTestData::getAllSteps(QList<U2SingleModStep>& singleSteps,
     multiSteps.clear();
     userSteps.clear();
 
-    SQLiteWriteQuery qSingle("SELECT id, object, otype, oextra, version, modType, details, multiStepId FROM SingleModStep", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qSingle("SELECT id, object, otype, oextra, version, modType, details, multiStepId FROM SingleModStep", sqliteDbi->getDbRef(), os);
     SAFE_POINT_OP(os, );
     while (qSingle.step()) {
         U2SingleModStep singleStep;
@@ -121,7 +121,7 @@ void ModSQLiteSpecificTestData::getAllSteps(QList<U2SingleModStep>& singleSteps,
         singleSteps.append(singleStep);
     }
 
-    SQLiteWriteQuery qMulti("SELECT id, userStepId FROM MultiModStep", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qMulti("SELECT id, userStepId FROM MultiModStep", sqliteDbi->getDbRef(), os);
     SAFE_POINT_OP(os, );
     while (qMulti.step()) {
         U2MultiModStep4Test multiStep;
@@ -130,7 +130,7 @@ void ModSQLiteSpecificTestData::getAllSteps(QList<U2SingleModStep>& singleSteps,
         multiSteps.append(multiStep);
     }
 
-    SQLiteWriteQuery qUser("SELECT id, object, otype, oextra, version FROM UserModStep", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qUser("SELECT id, object, otype, oextra, version FROM UserModStep", sqliteDbi->getDbRef(), os);
     SAFE_POINT_OP(os, );
     while (qUser.step()) {
         U2UserModStep4Test userStep;
@@ -170,14 +170,14 @@ U2DataId ModSQLiteSpecificTestData::createObject(U2OpStatus& os) {
 }
 
 qint64 ModSQLiteSpecificTestData::getModStepsNum(const U2DataId& objId, U2OpStatus& os) {
-    SQLiteWriteQuery qModSteps("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qModSteps("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qModSteps.bindDataId(1, objId);
     return qModSteps.selectInt64();
 }
 
 U2SingleModStep ModSQLiteSpecificTestData::getLastModStep(const U2DataId& objId, U2OpStatus& os) {
     U2SingleModStep res;
-    SQLiteWriteQuery qModStep("SELECT id, object, otype, oextra, version, modType, details FROM SingleModStep WHERE object = ?1 ORDER BY version DESC LIMIT 1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qModStep("SELECT id, object, otype, oextra, version, modType, details FROM SingleModStep WHERE object = ?1 ORDER BY version DESC LIMIT 1", sqliteDbi->getDbRef(), os);
     CHECK_OP(os, res);
 
     qModStep.bindDataId(1, objId);
@@ -193,7 +193,7 @@ U2SingleModStep ModSQLiteSpecificTestData::getLastModStep(const U2DataId& objId,
 
 QList<U2SingleModStep> ModSQLiteSpecificTestData::getAllModSteps(const U2DataId& objId, U2OpStatus& os) {
     QList<U2SingleModStep> res;
-    SQLiteWriteQuery qModStep("SELECT id, object, otype, oextra, version, modType, details"
+    SQLiteReadQuery qModStep("SELECT id, object, otype, oextra, version, modType, details"
         " FROM SingleModStep WHERE object = ?1 ORDER BY version", sqliteDbi->getDbRef(), os);
     CHECK_OP(os, res);
 
