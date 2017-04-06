@@ -79,15 +79,21 @@ typedef QVarLengthArray<QVarLengthArray<int> > varLengthMatrix;
 class U2ALGORITHM_EXPORT MSADistanceMatrix : public QObject{
     Q_OBJECT
     friend class MSADistanceAlgorithm;
-public:
+private:
     MSADistanceMatrix();
-    bool isEmpty(){ return distanceTable.isEmpty(); }
+    MSADistanceMatrix(QList<MultipleSequenceAlignmentRow> theListOfRows, int _aligmentLength, int rowsNumber);
+
+public:
+    MSADistanceMatrix(const MSADistanceMatrix &copy);
+    MSADistanceMatrix& operator=(const MSADistanceMatrix &second);
+    bool isEmpty(){ return table.isEmpty(); }
+    int getSimilarity(int row1, int row2);
     int getSimilarity(int row1, int row2, bool _usePercents);
-    void showSimilarityInPercents(bool _usePercents) { usePercents = _usePercents; }
-    bool areUsePercents() { return usePercents; }
+    void setPercentSimilarity(bool _usePercents) { usePercents = _usePercents; }
+    bool isPercentSimilarity() { return usePercents; }
 
 protected:
-    varLengthMatrix                             distanceTable;
+    varLengthMatrix                             table;
     bool                                        usePercents;
     bool                                        excludeGaps;
     QVector<int>                                seqsUngappedLenghts;
@@ -102,7 +108,9 @@ public:
 
     int getSimilarity(int row1, int row2, bool usePercents);
 
-    void getMatrix(MSADistanceMatrix& _distanceMatrix, bool _usePercents);
+    void getMatrix(MSADistanceMatrix& _distanceMatrix);
+
+    const MSADistanceMatrix& getMatrix() const;
         
     virtual QString getDescription() const {return factory->getDescription();}
 
@@ -112,7 +120,7 @@ public:
 
     bool isSimilarityMeasure() const {return isSimilarity;}
 
-    void setExcludeGaps(bool _excludeGaps) { excludeGaps = _excludeGaps; distanceMatrix.excludeGaps = _excludeGaps; }
+    void setExcludeGaps(bool _excludeGaps);
 
     MSADistanceAlgorithmFactory* getFactory() const {return factory;}
 
