@@ -29,8 +29,6 @@
 
 namespace U2 {
 
-class SQLiteQuery;
-
 class SQLiteFeatureDbi : public U2FeatureDbi, public SQLiteChildDBICommon {
 public:
 

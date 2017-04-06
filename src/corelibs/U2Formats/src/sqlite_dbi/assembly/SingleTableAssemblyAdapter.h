@@ -91,7 +91,7 @@ public:
 private:
     DbRef*          db;
     QString         readsTable;
-    SQLiteQuery*    updateQuery;
+    SQLiteWriteQuery*    updateQuery;
 };
 
 

@@ -31,12 +31,14 @@
 #include <QtCore/QThread>
 #include <QtCore/QHash>
 #include <QtCore/QSharedPointer>
+#include <QtCore/QReadWriteLock>
 
 struct sqlite3;
 struct sqlite3_stmt;
 
 namespace U2 {
 
+class SQLiteWriteQuery;
 class SQLiteQuery;
 class SQLiteTransaction;
 
@@ -46,6 +48,7 @@ public:
 
     sqlite3*                     handle;
     QMutex                       lock;
+    QReadWriteLock               rwLock;
     bool                         useTransaction;
     bool                         useCache;
     QVector<SQLiteTransaction*>  transactionStack;
@@ -96,7 +99,7 @@ public:
     SQLiteQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
 
     /** Releases all resources associated with the statement */
-    ~SQLiteQuery();
+    virtual ~SQLiteQuery();
 
     //////////////////////////////////////////////////////////////////////////
     // Statement/query state manipulation methods
@@ -108,7 +111,7 @@ public:
         Executes next step of the statement
         Returns true there are more results to fetch and no error occurs
     */
-    bool step();
+    virtual bool step() = 0;
 
     /**
         Ensures that there are no more results in result set
@@ -222,18 +225,48 @@ public:
 
     DbRef*          getDb() const {return db;}
 
+protected:
+    bool stepImpl();
+
+    DbRef*          db;
+
 private:
     /** Returns last insert row*/
     qint64 getLastRowId();
 
     void prepare();
 
-
-    DbRef*          db;
     U2OpStatus*     os;
     sqlite3_stmt*   st;
     QString         sql;
-    QMutexLocker    locker;
+};
+
+class U2CORE_EXPORT SQLiteReadQuery : public SQLiteQuery {
+public:
+    /**
+        Constructs prepared statement for SQLiteDB
+        If failed the error message is written to 'os'
+        It's desirable to release this object as soon as possible because it locks
+        the database for concurrent modifications from other threads
+    */
+    SQLiteReadQuery(const QString& sql, DbRef* d, U2OpStatus& os);
+    SQLiteReadQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
+
+    bool step();
+};
+
+class U2CORE_EXPORT SQLiteWriteQuery : public SQLiteQuery {
+public:
+    /**
+        Constructs prepared statement for SQLiteDB
+        If failed the error message is written to 'os'
+        It's desirable to release this object as soon as possible because it locks
+        the database for concurrent modifications from other threads
+    */
+    SQLiteWriteQuery(const QString& sql, DbRef* d, U2OpStatus& os);
+    SQLiteWriteQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
+
+    bool step();
 };
 
 /** Helper class to mark transaction regions */
@@ -262,29 +295,29 @@ public:
 };
 
 /** Data loader adapter for SqlQueryIterator */
-template <class T> class SqlRSLoader {
+template <class T> class SQLiteResultSetLoader {
 public:
-    virtual ~SqlRSLoader(){}
+    virtual ~SQLiteResultSetLoader(){}
     virtual T load(SQLiteQuery* q) = 0;
 };
 
 /** Filter for SqlRSIterator. Checks if value must be filtered out from the result */
-template <class T> class SqlRSFilter {
+template <class T> class SQLiteResultSetFilter {
 public:
-    virtual ~SqlRSFilter(){}
+    virtual ~SQLiteResultSetFilter(){}
     virtual bool filter(const T&) = 0;
 };
 
 /** SQL query result set iterator */
-template<class T> class SqlRSIterator : public U2DbiIterator<T> {
+template<class T> class SQLiteResultSetIterator : public U2DbiIterator<T> {
 public:
-    SqlRSIterator(QSharedPointer<SQLiteQuery> q, SqlRSLoader<T>* l, SqlRSFilter<T>* f, const T& d, U2OpStatus& o)
+    SQLiteResultSetIterator(QSharedPointer<SQLiteQuery> q, SQLiteResultSetLoader<T>* l, SQLiteResultSetFilter<T>* f, const T& d, U2OpStatus& o)
         : query(q), loader(l), filter(f), defaultValue(d), os(o), endOfStream(false)
     {
         fetchNext();
     }
 
-    virtual ~SqlRSIterator() {
+    virtual ~SQLiteResultSetIterator() {
         delete filter;
         delete loader;
         query.clear();
@@ -324,8 +357,8 @@ private:
     }
 
     QSharedPointer<SQLiteQuery>    query;
-    SqlRSLoader<T>* loader;
-    SqlRSFilter<T>* filter;
+    SQLiteResultSetLoader<T>* loader;
+    SQLiteResultSetFilter<T>* filter;
     T               defaultValue;
     U2OpStatus&     os;
     bool            endOfStream;
@@ -334,9 +367,9 @@ private:
     bool            deleteQuery;
 };
 
-class SqlDataIdRSLoader : public SqlRSLoader<U2DataId> {
+class SQLiteDataIdResultSetLoader : public SQLiteResultSetLoader<U2DataId> {
 public:
-    SqlDataIdRSLoader(U2DataType _type, const QByteArray& _dbExra = QByteArray()) : type(_type), dbExtra(_dbExra){}
+    SQLiteDataIdResultSetLoader(U2DataType _type, const QByteArray& _dbExra = QByteArray()) : type(_type), dbExtra(_dbExra){}
     U2DataId load(SQLiteQuery* q) { return q->getDataId(0, type, dbExtra);}
 
 protected:
@@ -344,9 +377,9 @@ protected:
     QByteArray dbExtra;
 };
 
-class SqlDataIdRSLoaderEx : public SqlRSLoader<U2DataId> {
+class SQLiteDataIdResultSetLoaderEx : public SQLiteResultSetLoader<U2DataId> {
 public:
-    SqlDataIdRSLoaderEx(const QByteArray& _dbExra = QByteArray()) : dbExtra(_dbExra){}
+    SQLiteDataIdResultSetLoaderEx(const QByteArray& _dbExra = QByteArray()) : dbExtra(_dbExra){}
     U2DataId load(SQLiteQuery* q) { return q->getDataId(0, q->getDataType(1), dbExtra);}
 
 protected:

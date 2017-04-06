@@ -26,8 +26,6 @@
 
 namespace U2 {
 
-class SQLiteQuery;
-
 class SQLiteAttributeDbi : public U2AttributeDbi, public SQLiteChildDBICommon {
 
 public:
@@ -103,7 +101,7 @@ private:
 
     QString buildSelectAttributeQuery(const QString& attributeTable);
 
-    void readAttribute(SQLiteQuery &q, U2Attribute& attr);
+    void readAttribute(SQLiteReadQuery &q, U2Attribute& attr);
 };
 
 

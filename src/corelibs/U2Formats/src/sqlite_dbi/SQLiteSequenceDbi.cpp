@@ -34,15 +34,15 @@ SQLiteSequenceDbi::SQLiteSequenceDbi(SQLiteDbi* dbi) : U2SequenceDbi(dbi), SQLit
 
 void SQLiteSequenceDbi::initSqlSchema(U2OpStatus& os) {
     // sequence object
-    SQLiteQuery("CREATE TABLE Sequence (object INTEGER PRIMARY KEY, length INTEGER NOT NULL DEFAULT 0, alphabet TEXT NOT NULL, circular INTEGER NOT NULL DEFAULT 0, "
+    SQLiteWriteQuery("CREATE TABLE Sequence (object INTEGER PRIMARY KEY, length INTEGER NOT NULL DEFAULT 0, alphabet TEXT NOT NULL, circular INTEGER NOT NULL DEFAULT 0, "
                 "FOREIGN KEY(object) REFERENCES Object(id) ON DELETE CASCADE)", db, os).execute();
 
     // part of the sequence, starting with 'sstart'(inclusive) and ending at 'send'(not inclusive)
-    SQLiteQuery("CREATE TABLE SequenceData (sequence INTEGER, sstart INTEGER NOT NULL, send INTEGER NOT NULL, data BLOB NOT NULL, "
+    SQLiteWriteQuery("CREATE TABLE SequenceData (sequence INTEGER, sstart INTEGER NOT NULL, send INTEGER NOT NULL, data BLOB NOT NULL, "
                 "PRIMARY KEY (sequence, sstart, send), "
                 "FOREIGN KEY(sequence) REFERENCES Sequence(object) ON DELETE CASCADE)", db, os).execute();
 
-    SQLiteQuery("CREATE INDEX SequenceData_sequence_send on SequenceData(sequence, send)", db, os).execute();
+    SQLiteWriteQuery("CREATE INDEX SequenceData_sequence_send on SequenceData(sequence, send)", db, os).execute();
 }
 
 U2Sequence SQLiteSequenceDbi::getSequenceObject(const U2DataId& sequenceId, U2OpStatus& os) {
@@ -54,7 +54,7 @@ U2Sequence SQLiteSequenceDbi::getSequenceObject(const U2DataId& sequenceId, U2Op
     CHECK_OP(os, res);
 
     static const QString queryString("SELECT Sequence.length, Sequence.alphabet, Sequence.circular FROM Sequence WHERE Sequence.object = ?1");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     q.bindDataId(1, sequenceId);
     if (q.step()) {
         res.length = q.getInt64(0);
@@ -76,7 +76,7 @@ QByteArray SQLiteSequenceDbi::getSequenceData(const U2DataId& sequenceId, const 
             res.reserve(region.length);
         }
         // Get all chunks that intersect the region
-        SQLiteQuery q("SELECT sstart, send, data FROM SequenceData WHERE sequence = ?1 "
+        SQLiteReadQuery q("SELECT sstart, send, data FROM SequenceData WHERE sequence = ?1 "
             "AND  (send >= ?2 AND sstart < ?3) ORDER BY sstart", db, os);
 
         q.bindDataId(1, sequenceId);
