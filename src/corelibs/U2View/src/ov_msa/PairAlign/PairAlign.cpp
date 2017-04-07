@@ -402,7 +402,7 @@ void PairAlign::sl_distanceCalculated() {
     if (NULL == distanceCalcTask)
         return;
     if (true == distanceCalcTask->isFinished()) {
-        MSADistanceMatrix distanceMatrix = distanceCalcTask->getMatrix();
+        const MSADistanceMatrix& distanceMatrix = distanceCalcTask->getMatrix();
         similarityValueLabel->setText(QString::number(distanceMatrix.getSimilarity(0, 1, true)) + "%");
         similarityWidget->setVisible(true);
         distanceCalcTask = NULL;

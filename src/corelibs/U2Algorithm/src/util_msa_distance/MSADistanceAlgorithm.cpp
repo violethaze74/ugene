@@ -125,11 +125,11 @@ MSADistanceMatrix::MSADistanceMatrix(const MultipleSequenceAlignment& ma, bool _
     }
 }
 
-int  MSADistanceMatrix::getSimilarity(int row1, int row2) {
+int  MSADistanceMatrix::getSimilarity(int row1, int row2) const {
     return getSimilarity(row1, row2, usePercents);
 }
 
-int MSADistanceMatrix::getSimilarity (int refRow, int row, bool _usePercents) {
+int MSADistanceMatrix::getSimilarity (int refRow, int row, bool _usePercents) const {
     if (refRow >= table.size() || row >= table.size()) {
         return -1;
     }

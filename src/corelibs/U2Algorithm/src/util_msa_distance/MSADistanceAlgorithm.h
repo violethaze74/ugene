@@ -84,8 +84,8 @@ private:
 
 public:
     bool isEmpty(){ return table.isEmpty(); }
-    int getSimilarity(int row1, int row2);
-    int getSimilarity(int row1, int row2, bool _usePercents);
+    int getSimilarity(int row1, int row2) const;
+    int getSimilarity(int row1, int row2, bool _usePercents) const;
     void setPercentSimilarity(bool _usePercents) { usePercents = _usePercents; }
     bool isPercentSimilarity() { return usePercents; }
 
