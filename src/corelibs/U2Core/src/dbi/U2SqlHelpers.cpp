@@ -492,8 +492,8 @@ SQLiteWriteQuery::SQLiteWriteQuery(const QString& _sql, qint64 offset, qint64 co
 }
 
 bool SQLiteWriteQuery::step(){
-    QWriteLocker writeLocker(&db->rwLock);
     QMutexLocker mutexLocker(&db->lock);
+    QWriteLocker writeLocker(&db->rwLock);
     return stepImpl();
 }
 
