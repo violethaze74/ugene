@@ -67,7 +67,7 @@ MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory* _factory
     qint64 requiredMemory = sizeof(int) * rowsNumber * rowsNumber / 2 + sizeof(QVarLengthArray<int>) * rowsNumber;
     bool memoryAcquired = memoryLocker.tryAcquire(requiredMemory);
     CHECK_EXT(memoryAcquired, setError(QString("There is not enough memory to calculating distances matrix, required %1 megabytes").arg(requiredMemory / 1024 / 1024)), );
-    distanceMatrix = MSADistanceMatrix(ma->getMsaRows(), ma->getLength(), rowsNumber);
+    distanceMatrix = MSADistanceMatrix(ma, getExcludeGapsFlag(), true);
 }
 
 int MSADistanceAlgorithm::getSimilarity (int row1, int row2, bool _usePercents) {
@@ -75,31 +75,6 @@ int MSADistanceAlgorithm::getSimilarity (int row1, int row2, bool _usePercents) 
     int res = distanceMatrix.getSimilarity(row1, row2, _usePercents);
     lock.unlock();
     return res;
-}
-
-void MSADistanceAlgorithm::getMatrix(MSADistanceMatrix& _distanceMatrix) {
-    _distanceMatrix.table = distanceMatrix.table;
-    _distanceMatrix.usePercents = distanceMatrix.usePercents;
-    _distanceMatrix.excludeGaps = distanceMatrix.excludeGaps;
-    _distanceMatrix.seqsUngappedLenghts = distanceMatrix.seqsUngappedLenghts;
-    _distanceMatrix.alignmentLength = distanceMatrix.alignmentLength;
-}
-
-MSADistanceMatrix::MSADistanceMatrix(const MSADistanceMatrix &copy) {
-    table = copy.table;
-    usePercents = copy.usePercents;
-    excludeGaps = copy.excludeGaps;
-    seqsUngappedLenghts = copy.seqsUngappedLenghts;
-    alignmentLength = copy.alignmentLength;
-}
-
-MSADistanceMatrix& MSADistanceMatrix::operator= (const MSADistanceMatrix &second) {
-    table = second.table;
-    usePercents = second.usePercents;
-    excludeGaps = second.excludeGaps;
-    seqsUngappedLenghts = second.seqsUngappedLenghts;
-    alignmentLength = second.alignmentLength;
-    return (*this);
 }
 
 const MSADistanceMatrix& MSADistanceAlgorithm::getMatrix() const{
@@ -138,13 +113,14 @@ MSADistanceMatrix::MSADistanceMatrix()
 : usePercents(true), excludeGaps(false), alignmentLength(0) {
 }
 
-MSADistanceMatrix::MSADistanceMatrix(QList<MultipleSequenceAlignmentRow> theListOfRows, int _aligmentLength, int rowsNumber)
-: usePercents(true), excludeGaps(false), alignmentLength(_aligmentLength) {
-    table.reserve(rowsNumber);
-    for (int i = 0; i < rowsNumber; i++) {
+MSADistanceMatrix::MSADistanceMatrix(const MultipleSequenceAlignment& ma, bool _excludeGaps, bool _usePercents)
+:alignmentLength(ma->getLength()), excludeGaps(_excludeGaps), usePercents(_usePercents) {
+    int nSeq = ma->getNumRows();
+    table.reserve(nSeq);
+    for (int i = 0; i < nSeq; i++) {
         table.append(QVarLengthArray<int>(i + 1));
         memset(table[i].data(), 0, (i + 1) * sizeof(int));
-        seqsUngappedLenghts.append(theListOfRows[i]->getUngappedLength());
+        seqsUngappedLenghts.append(ma->getMsaRow(i)->getUngappedLength());
     }
 }
 

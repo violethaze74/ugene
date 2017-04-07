@@ -186,15 +186,7 @@ QList<Task*> CreateDistanceMatrixTask::onSubTaskFinished(Task* subTask){
         return res;
     }
     MSADistanceAlgorithm* algo = qobject_cast<MSADistanceAlgorithm*>(subTask);
-    algo->getExcludeGapsFlag();
-    MSADistanceMatrix *matrix = new MSADistanceMatrix(algo->getMatrix());
-    if(NULL != algo) {
-        if(algo->hasError()) {
-            setError(algo->getError());
-            return res;
-        }
-        resMatrix = matrix;
-    }
+    resMatrix = new MSADistanceMatrix(algo->getMatrix());
     return res;
 }
 MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(UpdatedWidgetInterface* _contentWidget)
