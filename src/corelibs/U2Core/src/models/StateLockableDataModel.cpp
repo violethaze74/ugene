@@ -274,7 +274,7 @@ void StateLockableTreeItem::setModified(bool newModifiedState, const QString& mo
 }
 
 bool StateLockableTreeItem::isTreeItemModified () const {
-    return trackModifications && (numModifiedChildren > 0 || itemIsModified);
+    return (numModifiedChildren > 0 || itemIsModified);
 }
 
 void StateLockableTreeItem::increaseNumModifiedChilds(int n) {
