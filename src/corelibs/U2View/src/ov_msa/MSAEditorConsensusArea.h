@@ -53,11 +53,13 @@ class MaEditorConsensusAreaSettings {
 public:
     MaEditorConsensusAreaSettings();
     MaEditorConsensusAreaSettings(const QList<MaEditorConsElement>& order,
-                                  const QMap<MaEditorConsElement, bool>& visibility);
+                                  const QMap<MaEditorConsElement, bool>& visibility,
+                                  bool highlightMismatches);
     bool isVisible(const MaEditorConsElement element) const;
 
-    QList<MaEditorConsElement> order;
+    QList<MaEditorConsElement>      order;
     QMap<MaEditorConsElement, bool> visibility;
+    bool                            highlightMismatches;
 };
 
 class U2VIEW_EXPORT MSAEditorConsensusArea : public QWidget {
@@ -99,6 +101,7 @@ protected:
 signals:
     void si_consensusAlgorithmChanged(const QString& algoId);
     void si_consensusThresholdChanged(int value);
+    void si_mismatchRedrawRequired();
 
 private slots:
     void sl_startChanged(const QPoint&, const QPoint&);
@@ -162,13 +165,12 @@ private:
     int                 curPos;
     bool                scribbling, selecting;
 
-    QSharedPointer<MSAEditorConsensusCache>    consensusCache;
+    QSharedPointer<MSAEditorConsensusCache>         consensusCache;
+    MaConsensusMismatchController*  mismatchController;
 
     bool                            completeRedraw;
     mutable MaEditorConsensusAreaSettings   drawSettings;
     QPixmap*                        cachedView;
-
-    QObject *childObject;
 };
 
 }//namespace

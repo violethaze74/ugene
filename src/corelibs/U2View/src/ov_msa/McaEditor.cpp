@@ -206,6 +206,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
 
     MaEditorConsensusAreaSettings consSettings;
     consSettings.visibility[MSAEditorConsElement_HISTOGRAM] = false;
+    consSettings.highlightMismatches = true;
     consArea->setDrawSettings(consSettings);
 
     MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO);

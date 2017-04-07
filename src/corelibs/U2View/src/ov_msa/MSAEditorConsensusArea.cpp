@@ -22,6 +22,7 @@
 #include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MSAConsensusUtils.h>
+#include <U2Algorithm/MsaColorScheme.h>
 
 #include <QApplication>
 #include <QClipboard>
@@ -59,12 +60,15 @@ MaEditorConsensusAreaSettings::MaEditorConsensusAreaSettings() {
     visibility.insert(MSAEditorConsElement_HISTOGRAM, true);
     visibility.insert(MSAEditorConsElement_CONSENSUS_TEXT, true);
     visibility.insert(MSAEditorConsElement_RULER, true);
+    highlightMismatches = false;
 }
 
 MaEditorConsensusAreaSettings::MaEditorConsensusAreaSettings(const QList<MaEditorConsElement> &order,
-                                                             const QMap<MaEditorConsElement, bool> &visibility)
+                                                             const QMap<MaEditorConsElement, bool> &visibility,
+                                                             bool highlightMismatches)
     : order(order),
-      visibility(visibility) {
+      visibility(visibility),
+      highlightMismatches(highlightMismatches) {
 }
 
 bool MaEditorConsensusAreaSettings::isVisible(const MaEditorConsElement element) const {
@@ -84,7 +88,6 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MaEditorWgt *_ui)
 
     QObject *parent=new QObject(this);
     parent->setObjectName("parent");
-    childObject = new QObject(parent);
 
     connect(ui->getSequenceArea(), SIGNAL(si_startChanged(const QPoint &, const QPoint &)), SLOT(sl_startChanged(const QPoint &, const QPoint &)));
     connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
@@ -124,12 +127,13 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MaEditorWgt *_ui)
     addAction(ui->getPasteAction());
     restoreLastUsedConsensusThreshold();
 
+    mismatchController = new MaConsensusMismatchController(this, consensusCache, editor);
+
     setObjectName("consArea");
 }
 
 MSAEditorConsensusArea::~MSAEditorConsensusArea() {
     delete cachedView;
-    delete childObject;
 }
 
 QSharedPointer<MSAEditorConsensusCache> MSAEditorConsensusArea::getConsensusCache() {
@@ -343,40 +347,34 @@ void MSAEditorConsensusArea::drawConsensus(QPainter &p, int startPos, int lastPo
     f.setWeight(QFont::DemiBold);
     p.setFont(f);
 
-    childObject->setObjectName("");
     for (int pos = startPos; pos <= lastPos; pos++) {
         drawConsensusChar(p, pos, startPos, false, useVirtualCoords);
     }
 }
 
 void MSAEditorConsensusArea::drawConsensusChar(QPainter& p, int pos, int firstVisiblePos, bool selected, bool useVirtualCoords) {
-    U2Region yRange = getYRange(MSAEditorConsElement_CONSENSUS_TEXT);
-    U2Region xRange = ui->getSequenceArea()->getBaseXRange(pos, firstVisiblePos, useVirtualCoords);
-    QRect cr(xRange.startPos, yRange.startPos, xRange.length + 1, yRange.length);
-
-    if (selected) {
-        QColor color(Qt::lightGray);
-        color = color.lighter(115);
-        p.fillRect(cr, color);
-    }
-    if (editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent) {
-        char c = consensusCache->getConsensusChar(pos);
-        p.drawText(cr, Qt::AlignVCenter | Qt::AlignHCenter, QString(c));
-        childObject->setObjectName(childObject->objectName()+c);
-    }
+    char c = consensusCache->getConsensusChar(pos);
+    drawConsensusChar(p, pos, firstVisiblePos, c, selected, useVirtualCoords);
 }
 
 void MSAEditorConsensusArea::drawConsensusChar(QPainter &p, int pos, int firstVisiblePos, char consChar, bool selected, bool useVirtualCoords) {
     U2Region yRange = getYRange(MSAEditorConsElement_CONSENSUS_TEXT);
     U2Region xRange = ui->getSequenceArea()->getBaseXRange(pos, firstVisiblePos, useVirtualCoords);
     QRect cr(xRange.startPos, yRange.startPos, xRange.length + 1, yRange.length);
-
+    MsaColorScheme* scheme = ui->getSequenceArea()->getCurrentColorScheme();
     if (selected) {
         QColor color(Qt::lightGray);
         color = color.lighter(115);
         p.fillRect(cr, color);
     }
     if (editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent) {
+        if (drawSettings.highlightMismatches && mismatchController->isMismatch(pos)) {
+            QColor color = scheme->getColor(0, 0, consChar);
+            if (!color.isValid()) {
+                color = Qt::red; // default mismatch color (in case of gap-mismatch)
+            }
+            p.fillRect(cr, color);
+        }
         p.drawText(cr, Qt::AlignVCenter | Qt::AlignHCenter, QString(consChar));
     }
 }
@@ -543,6 +541,7 @@ void MSAEditorConsensusArea::sl_startChanged(const QPoint& p, const QPoint& prev
 void MSAEditorConsensusArea::sl_alignmentChanged() {
     updateConsensusAlgorithm();
     completeRedraw = true;
+    emit si_mismatchRedrawRequired();
     update();
 }
 
@@ -650,6 +649,7 @@ void MSAEditorConsensusArea::setConsensusAlgorithm(MSAConsensusAlgorithmFactory*
     connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
     restoreLastUsedConsensusThreshold();
     completeRedraw = true;
+    emit si_mismatchRedrawRequired();
     update();
 }
 
@@ -680,6 +680,7 @@ void MSAEditorConsensusArea::setDrawSettings(const MaEditorConsensusAreaSettings
 void MSAEditorConsensusArea::sl_onConsensusThresholdChanged(int newValue) {
     Q_UNUSED(newValue);
     completeRedraw = true;
+    emit si_mismatchRedrawRequired();
     update();
 }
 
