@@ -78,6 +78,7 @@ int MSADistanceAlgorithm::getSimilarity (int row1, int row2, bool _usePercents) 
 }
 
 const MSADistanceMatrix& MSADistanceAlgorithm::getMatrix() const{
+    QMutexLocker locker(&lock);
     return distanceMatrix;
 }
 
@@ -113,8 +114,8 @@ MSADistanceMatrix::MSADistanceMatrix()
 : usePercents(true), excludeGaps(false), alignmentLength(0) {
 }
 
-MSADistanceMatrix::MSADistanceMatrix(bool _excludeGaps, bool _usePercents, const MultipleSequenceAlignment& ma)
-: excludeGaps(_excludeGaps), usePercents(_usePercents), alignmentLength(ma->getLength()) {
+MSADistanceMatrix::MSADistanceMatrix(const MultipleSequenceAlignment& ma, bool _excludeGaps, bool _usePercents)
+: usePercents(_usePercents), excludeGaps(_excludeGaps), alignmentLength(ma->getLength()) {
     int nSeq = ma->getNumRows();
     table.reserve(nSeq);
     for (int i = 0; i < nSeq; i++) {

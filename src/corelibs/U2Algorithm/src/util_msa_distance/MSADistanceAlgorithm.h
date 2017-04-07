@@ -80,7 +80,7 @@ class U2ALGORITHM_EXPORT MSADistanceMatrix {
     friend class MSADistanceAlgorithm;
 private:
     MSADistanceMatrix();
-    MSADistanceMatrix(bool _excludeGaps, bool _usePercents, const MultipleSequenceAlignment& ma);
+    MSADistanceMatrix(const MultipleSequenceAlignment& ma, bool _excludeGaps, bool _usePercents);
 
 public:
     bool isEmpty(){ return table.isEmpty(); }
@@ -132,7 +132,7 @@ protected:
     virtual void fillTable();
     virtual int calculateSimilarity(int , int ){return 0;}
     MultipleSequenceAlignment                   ma;
-    QMutex                                      lock;
+    mutable QMutex                              lock;
     bool                                        excludeGaps;
     bool                                        isSimilarity;
 };
