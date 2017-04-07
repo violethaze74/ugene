@@ -88,7 +88,7 @@ public:
     MaConsensusMismatchController(QObject* p,
                                   QSharedPointer<MSAEditorConsensusCache> consCache,
                                   MaEditor* editor);
-    bool isMismatch(int pos);
+    bool isMismatch(int pos) const;
 
 private slots:
     void sl_updateItem(int pos, char c);

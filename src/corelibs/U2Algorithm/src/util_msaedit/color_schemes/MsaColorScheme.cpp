@@ -118,7 +118,7 @@ QStringList MsaColorSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes() {
     if (res.isEmpty()) {
         res << MsaColorScheme::EMPTY_AMINO;
         res << MsaColorScheme::EMPTY_NUCL;
-    }    
+    }
     return res;
 }
 

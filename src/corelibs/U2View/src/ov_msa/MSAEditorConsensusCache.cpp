@@ -136,11 +136,13 @@ MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
     connect(consCache.data(), SIGNAL(si_cacheResized(int)), SLOT(sl_resize(int)));
 }
 
-bool MaConsensusMismatchController::isMismatch(int pos) {
+bool MaConsensusMismatchController::isMismatch(int pos) const {
+    SAFE_POINT(0 <= pos && pos < mismatchCache.size(), "Invalid pos", false);
     return mismatchCache[pos];
 }
 
 void MaConsensusMismatchController::sl_updateItem(int pos, char c) {
+    SAFE_POINT(0 <= pos && pos < mismatchCache.size(), "Invalid pos", );
     mismatchCache[pos] = editor->getReferenceCharAt(pos) != c;
 }
 

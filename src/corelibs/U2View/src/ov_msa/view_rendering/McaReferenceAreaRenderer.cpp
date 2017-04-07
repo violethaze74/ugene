@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Algorithm/MsaColorScheme.h>
+
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -26,6 +28,7 @@
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/MSAEditorConsensusArea.h"
 #include "ov_msa/MSAEditorConsensusCache.h"
+#include "ov_msa/MSAEditorSequenceArea.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_sequence/ADVSequenceObjectContext.h"
@@ -72,23 +75,23 @@ void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize &, const U2
     int columnWidth = maEditor->getColumnWidth();
     qint64 regionEnd = region.endPos() - (int)(region.endPos() == maEditor->getAlignmentLen());
 
+    p.setPen(Qt::black);
     p.setFont(commonMetrics.sequenceFont);
 
     SAFE_POINT(maEditor->getUI() != NULL, "MaEditorWgt is NULL", );
-    MSAEditorConsensusArea* consArea = maEditor->getUI()->getConsensusArea();
-    SAFE_POINT(consArea != NULL, "MSAEditorConsensusArea is NULL", );
-    QSharedPointer<MaConsensusMismatchController> mismatchController = consArea->getMismatchController();
-    SAFE_POINT(!mismatchController.isNull(), "MaConsensusMismatchController is NULL", );
+    MaEditorSequenceArea* seqArea = maEditor->getUI()->getSequenceArea();
+    SAFE_POINT(seqArea != NULL, "MaEditorSequenceArea is NULL", );
+    MsaColorScheme* scheme = seqArea->getCurrentColorScheme();
+    SAFE_POINT(scheme != NULL, "MsaColorScheme is NULL", );
 
     for (int position = region.startPos; position <= regionEnd; position++) {
         U2Region baseXRange = U2Region(columnWidth * (position - region.startPos), columnWidth);
 
-        const int y = commonMetrics.yCharOffset + SELECTION_LINE_WIDTH;
-        const int height = commonMetrics.lineHeight - 2 * commonMetrics.yCharOffset - 2 * SELECTION_LINE_WIDTH;
         const char c = seq[(int)(position - region.startPos)];
-        QRect cr(baseXRange.startPos, y, baseXRange.length + 1, height);
-        if (mismatchController->isMismatch(position)) {
-            p.fillRect(cr, Qt::red);
+        QRect cr(baseXRange.startPos, 0, baseXRange.length + 1, commonMetrics.lineHeight);
+        QColor color = scheme->getColor(-1, -1, c);
+        if (color.isValid()) {
+            p.fillRect(cr, color);
         }
         p.drawText(cr, Qt::AlignCenter, QString(c));
     }

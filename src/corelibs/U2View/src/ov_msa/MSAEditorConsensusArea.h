@@ -80,7 +80,7 @@ public:
     MSAConsensusAlgorithm* getConsensusAlgorithm() const;
 
     QSharedPointer<MSAEditorConsensusCache> getConsensusCache();
-    QSharedPointer<MaConsensusMismatchController> getMismatchController();
+    QSharedPointer<MaConsensusMismatchController> getMismatchController() const;
 
     void paintFullConsensus(QPixmap &pixmap);
     void paintFullConsensus(QPainter& p);
@@ -172,8 +172,6 @@ private:
     bool                            completeRedraw;
     mutable MaEditorConsensusAreaSettings   drawSettings;
     QPixmap*                        cachedView;
-
-    QObject *childObject;
 };
 
 }//namespace
