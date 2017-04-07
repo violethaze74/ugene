@@ -208,7 +208,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
 
-    GTUtilsMdi::click(os, GTGlobals::Maximize);
+    //GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
@@ -234,7 +234,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
-    GTUtilsMdi::click(os, GTGlobals::Maximize);
+    //GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Show offsets");
@@ -311,7 +311,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
-    GTUtilsMdi::click(os, GTGlobals::Maximize);
+    //GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
@@ -379,7 +379,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_3) {
     GTGlobals::sleep();
     GTGlobals::sleep();
 
-    GTUtilsMdi::click(os, GTGlobals::Maximize);
+    //GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     GTUtilsMSAEditorSequenceArea::checkSorted(os);
@@ -2814,7 +2814,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2_linux){
     qint64 bigSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
     qint64 smallSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
 
-    CHECK_SET_ERR(bigSize==4785325 && smallSize==914927, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
+    CHECK_SET_ERR(bigSize==4785325 && smallSize==914838, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
 //    Expected state: image is exported
 }
 
@@ -3746,16 +3746,22 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
         virtual void run() {
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
-
-            GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "SelectSubalignmentDialog", QDialogButtonBox::Cancel));
+            
             QComboBox* exportType = dialog->findChild<QComboBox*>("comboBox");
             GTComboBox::setIndexWithText(os, exportType, "Custom region", false, GTGlobals::UseKey);
-
+            
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
             GTGlobals::sleep();
-            CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
+
+
+            exportType = dialog->findChild<QComboBox*>("comboBox");
+            QString text = exportType->currentText();
+            CHECK_SET_ERR(text == "Whole alignment", "Wrong combo box text!");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
+
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
