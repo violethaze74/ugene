@@ -38,7 +38,7 @@ class MaModificationInfo;
 class MultipleAlignmentObject;
 class U2OpStatus;
 
-class MSAEditorConsensusCache : public QObject {
+class U2VIEW_EXPORT MSAEditorConsensusCache : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusCache)
 public:

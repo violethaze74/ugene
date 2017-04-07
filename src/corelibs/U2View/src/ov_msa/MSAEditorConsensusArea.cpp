@@ -127,7 +127,7 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MaEditorWgt *_ui)
     addAction(ui->getPasteAction());
     restoreLastUsedConsensusThreshold();
 
-    mismatchController = QSharedPointer<MaConsensusMismatchController>(new MaConsensusMismatchController(this, consensusCache, editor));
+    mismatchController = new MaConsensusMismatchController(this, consensusCache, editor);
 
     setObjectName("consArea");
 }
@@ -138,10 +138,6 @@ MSAEditorConsensusArea::~MSAEditorConsensusArea() {
 
 QSharedPointer<MSAEditorConsensusCache> MSAEditorConsensusArea::getConsensusCache() {
     return consensusCache;
-}
-
-QSharedPointer<MaConsensusMismatchController> MSAEditorConsensusArea::getMismatchController() const {
-    return mismatchController;
 }
 
 void MSAEditorConsensusArea::paintFullConsensus(QPixmap &pixmap) {
@@ -373,7 +369,7 @@ void MSAEditorConsensusArea::drawConsensusChar(QPainter &p, int pos, int firstVi
     }
     if (editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent) {
         if (drawSettings.highlightMismatches && mismatchController->isMismatch(pos)) {
-            QColor color = scheme->getColor(-1, -1, consChar);
+            QColor color = scheme->getColor(0, 0, consChar);
             if (!color.isValid()) {
                 color = Qt::red; // default mismatch color (in case of gap-mismatch)
             }

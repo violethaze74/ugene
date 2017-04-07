@@ -89,7 +89,7 @@ void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize &, const U2
 
         const char c = seq[(int)(position - region.startPos)];
         QRect cr(baseXRange.startPos, 0, baseXRange.length + 1, commonMetrics.lineHeight);
-        QColor color = scheme->getColor(-1, -1, c);
+        QColor color = scheme->getColor(0, 0, c);
         if (color.isValid()) {
             p.fillRect(cr, color);
         }
