@@ -607,7 +607,8 @@ void MSAEditorSequenceArea::sl_saveSequence(){
     }
 
     QString seqName = editor->getMaObject()->getMultipleAlignment()->getRow(seqIndex)->getName();
-    QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController((QWidget*)AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController(editor->getMaObject()->getDocument()->getURL().dirPath(),
+        GUrlUtils::fixFileName(seqName), (QWidget*)AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
     CHECK(!d.isNull(), );
 

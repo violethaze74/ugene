@@ -35,12 +35,14 @@ class SaveDocumentController;
 class ExportMSA2SequencesDialog : public QDialog, private Ui_ExportMSA2SequencesDialog {
     Q_OBJECT
 public:
-    ExportMSA2SequencesDialog(QWidget* p);
+    ExportMSA2SequencesDialog(const QString &defaultDir, const QString &defaultFilename, QWidget* p);
 
     virtual void accept();
 
 public:
     QString             url;
+    QString             defaultDir;
+    QString             defaultFileName;
     DocumentFormatId    format;
     bool                trimGapsFlag;
     bool                addToProjectFlag;
