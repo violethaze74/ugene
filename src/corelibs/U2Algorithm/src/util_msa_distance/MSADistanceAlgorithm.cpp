@@ -67,7 +67,7 @@ MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory* _factory
     qint64 requiredMemory = sizeof(int) * rowsNumber * rowsNumber / 2 + sizeof(QVarLengthArray<int>) * rowsNumber;
     bool memoryAcquired = memoryLocker.tryAcquire(requiredMemory);
     CHECK_EXT(memoryAcquired, setError(QString("There is not enough memory to calculating distances matrix, required %1 megabytes").arg(requiredMemory / 1024 / 1024)), );
-    distanceMatrix = MSADistanceMatrix(ma, getExcludeGapsFlag(), true);
+    distanceMatrix = MSADistanceMatrix(ma, getExcludeGapsFlag(), false);
 }
 
 int MSADistanceAlgorithm::getSimilarity (int row1, int row2, bool _usePercents) {
@@ -113,8 +113,8 @@ MSADistanceMatrix::MSADistanceMatrix()
 : usePercents(true), excludeGaps(false), alignmentLength(0) {
 }
 
-MSADistanceMatrix::MSADistanceMatrix(const MultipleSequenceAlignment& ma, bool _excludeGaps, bool _usePercents)
-:alignmentLength(ma->getLength()), excludeGaps(_excludeGaps), usePercents(_usePercents) {
+MSADistanceMatrix::MSADistanceMatrix(bool _excludeGaps, bool _usePercents, const MultipleSequenceAlignment& ma)
+: excludeGaps(_excludeGaps), usePercents(_usePercents), alignmentLength(ma->getLength()) {
     int nSeq = ma->getNumRows();
     table.reserve(nSeq);
     for (int i = 0; i < nSeq; i++) {

@@ -80,7 +80,7 @@ class U2ALGORITHM_EXPORT MSADistanceMatrix {
     friend class MSADistanceAlgorithm;
 private:
     MSADistanceMatrix();
-    MSADistanceMatrix(const MultipleSequenceAlignment& ma, bool _excludeGaps, bool _usePercents);
+    MSADistanceMatrix(bool _excludeGaps, bool _usePercents, const MultipleSequenceAlignment& ma);
 
 public:
     bool isEmpty(){ return table.isEmpty(); }
