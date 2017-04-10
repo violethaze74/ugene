@@ -20,7 +20,6 @@
  */
 
 #include "MaEditor.h"
-#include "McaEditor.h"
 #include "MSAEditorConsensusCache.h"
 
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
@@ -121,72 +120,6 @@ void MSAEditorConsensusCache::sl_thresholdChanged(int newValue) {
 
 void MSAEditorConsensusCache::sl_invalidateAlignmentObject() {
     aliObj = NULL;
-}
-
-//----------------------
-// McaMismatchController
-MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
-                                             QSharedPointer<MSAEditorConsensusCache> consCache,
-                                             MaEditor* editor)
-    : QObject(p),
-      consCache(consCache),
-      editor(editor),
-      nextMismatch(NULL),
-      prevMismatch(NULL)
-{
-    mismatchCache = QBitArray(editor->getAlignmentLen(), false);
-    connect(consCache.data(), SIGNAL(si_cachedItemUpdated(int,char)), SLOT(sl_updateItem(int,char)));
-    connect(consCache.data(), SIGNAL(si_cacheResized(int)), SLOT(sl_resize(int)));
-
-    nextMismatch = new QAction(tr("Next mismatch"), this);
-    nextMismatch->setObjectName("next_mismatch");
-    connect(nextMismatch, SIGNAL(triggered(bool)), SLOT(sl_next()));
-
-    prevMismatch = new QAction(tr("Previous mismatch"), this);
-    prevMismatch->setObjectName("prev_mismatch");
-    connect(prevMismatch, SIGNAL(triggered(bool)), SLOT(sl_prev()));
-}
-
-bool MaConsensusMismatchController::isMismatch(int pos) const {
-    SAFE_POINT(0 <= pos && pos < mismatchCache.size(), "Invalid pos", false);
-    return mismatchCache[pos];
-}
-
-void MaConsensusMismatchController::sl_updateItem(int pos, char c) {
-    SAFE_POINT(0 <= pos && pos < mismatchCache.size(), "Invalid pos", );
-    mismatchCache[pos] = editor->getReferenceCharAt(pos) != c;
-}
-
-void MaConsensusMismatchController::sl_resize(int newSize) {
-    mismatchCache.resize(newSize);
-    mismatchCache.fill(false);
-}
-
-void MaConsensusMismatchController::sl_next() {
-    const QRect& selection = editor->getCurrentSelection();
-    CHECK(!selection.isEmpty(), );
-    int pos = selection.center().x() + 1;
-
-    while (pos != mismatchCache.size()) {
-        if (mismatchCache[pos] == true) {
-            emit si_selectMismatch(pos);
-            return;
-        }
-        pos++;
-    }
-}
-
-void MaConsensusMismatchController::sl_prev() {
-    const QRect& selection = editor->getCurrentSelection();
-    CHECK(!selection.isEmpty(), );
-    int pos = selection.center().x() + 1;
-    while (pos != -1) {
-        if (mismatchCache[pos] == true) {
-            emit si_selectMismatch(pos);
-            return;
-        }
-        pos--;
-    }
 }
 
 }//namespace

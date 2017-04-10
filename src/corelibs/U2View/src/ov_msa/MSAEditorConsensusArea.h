@@ -27,6 +27,7 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
 
+#include "MaConsensusMismatchController.h"
 #include "MSAEditorConsensusCache.h"
 
 class QHelpEvent;

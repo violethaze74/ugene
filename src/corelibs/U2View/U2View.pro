@@ -57,6 +57,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.h \
+           src/ov_msa/MaConsensusMismatchController.h \
            src/ov_msa/MaEditor.h \
            src/ov_msa/MaEditorFactory.h \
            src/ov_msa/MaEditorNameList.h \
@@ -154,6 +155,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_sequence/SaveGraphCutoffsDialogController.h \
            src/ov_sequence/SaveGraphCutoffsTask.h \
            src/ov_sequence/SearchQualifierDialog.h \
+           src/ov_sequence/SequenceObjectContext.h \
            src/ov_sequence/WindowStepSelectorWidget.h \
            src/ov_sequence/annot_highlight/AnnotHighlightSettings.h \
            src/ov_sequence/annot_highlight/AnnotHighlightTree.h \
@@ -296,6 +298,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.cpp \
+           src/ov_msa/MaConsensusMismatchController.cpp \
            src/ov_msa/MaEditor.cpp \
            src/ov_msa/MaEditorFactory.cpp \
            src/ov_msa/MaEditorNameList.cpp \
@@ -390,6 +393,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_sequence/SaveGraphCutoffsDialogController.cpp \
            src/ov_sequence/SaveGraphCutoffsTask.cpp \
            src/ov_sequence/SearchQualifierDialog.cpp \
+           src/ov_sequence/SequenceObjectContext.cpp \
            src/ov_sequence/WindowStepSelectorWidget.cpp \
            src/ov_sequence/annot_highlight/AnnotHighlightSettings.cpp \
            src/ov_sequence/annot_highlight/AnnotHighlightTree.cpp \
