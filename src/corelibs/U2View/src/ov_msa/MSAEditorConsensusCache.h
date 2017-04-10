@@ -28,6 +28,8 @@
 
 #include <U2Core/MultipleSequenceAlignment.h>
 
+class QAction;
+
 namespace U2 {
 
 class MaEditor;
@@ -90,14 +92,26 @@ public:
                                   MaEditor* editor);
     bool isMismatch(int pos) const;
 
+    QAction* getNextAction() const { return nextMismatch; }
+    QAction* getPrevAction() const { return prevMismatch; }
+
+signals:
+    void si_selectMismatch(int pos);
+
 private slots:
     void sl_updateItem(int pos, char c);
     void sl_resize(int newSize);
+
+    void sl_next();
+    void sl_prev();
 
 private:
     QBitArray mismatchCache;
     QSharedPointer<MSAEditorConsensusCache> consCache;
     MaEditor* editor;
+
+    QAction* nextMismatch;
+    QAction* prevMismatch;
 };
 
 }//namespace;

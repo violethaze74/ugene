@@ -81,6 +81,8 @@ public:
 
     QSharedPointer<MSAEditorConsensusCache> getConsensusCache();
 
+    MaConsensusMismatchController* getMismatchController() { return mismatchController; }
+
     void paintFullConsensus(QPixmap &pixmap);
     void paintFullConsensus(QPainter& p);
 

@@ -580,6 +580,11 @@ void MSAEditorConsensusArea::sl_buildContextMenu(GObjectView* v, QMenu* m) {
 }
 
 void MSAEditorConsensusArea::buildMenu(QMenu* m) {
+    // SANGER_TODO: add menu for mismatch?
+    m->addAction(mismatchController->getNextAction());
+    m->addAction(mismatchController->getPrevAction());
+    m->addSeparator();
+
     QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
     SAFE_POINT(copyMenu != NULL, "copyMenu", );
     copyMenu->addAction(copyConsensusAction);

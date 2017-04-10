@@ -216,6 +216,8 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     QWidget *refName = createHeaderLabelWidget(name, Qt::AlignCenter, refArea);
 
     nameAreaLayout->insertWidget(0, refName);
+
+    connect(consArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
 }
 
 McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
