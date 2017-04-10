@@ -4840,17 +4840,17 @@ GUI_TEST_CLASS_DEFINITION(test_2726) {
 
 GUI_TEST_CLASS_DEFINITION(test_2729) {
 //    1. Open {_common_data/fasta/AMINO.fa}
-//    Expected state: there is a "Graphs" button on the sequence toolbar, it is enabled.
+//    Expected state: there is no a "Graphs" button on the sequence toolbar for amino, it is invisible and disabled.
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "AMINO.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QAbstractButton *graphsButton = GTAction::button(os, "GraphMenuAction", GTUtilsSequenceView::getSeqWidgetByNumber(os));
     CHECK_SET_ERR(NULL != graphsButton, "Graphs button is NULL");
-    CHECK_SET_ERR(graphsButton->isEnabled(), "Graphs button is unexpectedly disabled");
+    CHECK_SET_ERR(!graphsButton->isEnabled(), "Graphs button is unexpectedly enabled");
 
 //    2. Click the "Graphs" button.
 //    Expected state: menu is shown.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()));
-    GTWidget::click(os, graphsButton);
+//    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()));
+//    GTWidget::click(os, graphsButton);
 
     GTGlobals::sleep();
 }
