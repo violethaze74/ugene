@@ -33,6 +33,7 @@
 class QHelpEvent;
 class QMenu;
 class QPainter;
+class QToolBar;
 
 namespace U2 {
 
@@ -116,6 +117,7 @@ private slots:
     void sl_onConsensusThresholdChanged(int newValue);
 
     void sl_buildStaticMenu(GObjectView* v, QMenu* m);
+    void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
     void sl_buildContextMenu(GObjectView* v, QMenu* m);
     void sl_copyConsensusSequence();
     void sl_copyConsensusSequenceWithGaps();

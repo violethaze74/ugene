@@ -37,7 +37,7 @@ class MaConsensusMismatchController : public QObject {
     Q_OBJECT
 public:
     MaConsensusMismatchController(QObject* p,
-                                  QSharedPointer<MSAEditorConsensusCache> consCache,
+                                  const QSharedPointer<MSAEditorConsensusCache>& consCache,
                                   MaEditor* editor);
     bool isMismatch(int pos) const;
 
@@ -55,8 +55,11 @@ private slots:
     void sl_prev();
 
 private:
-    // direction == true --> next following, == false --> prevoius
-    void selectNextMismatch(bool direction);
+    enum NavigationDirection {
+        Forward,
+        Backward
+    };
+    void selectNextMismatch(NavigationDirection direction);
 
 private:
     QBitArray mismatchCache;

@@ -43,6 +43,7 @@
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
 
+#include "McaEditor.h"
 #include "MSAEditor.h"
 #include "MSAEditorConsensusArea.h"
 #include "MSAEditorSequenceArea.h"
@@ -99,6 +100,7 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MaEditorWgt *_ui)
                                     SLOT(sl_alignmentChanged()));
 
     connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
+    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*,QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*,QToolBar*)));
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView * , QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
 
     copyConsensusAction = new QAction(tr("Copy consensus"), this);
@@ -574,17 +576,19 @@ void MSAEditorConsensusArea::sl_buildStaticMenu(GObjectView* v, QMenu* m) {
     buildMenu(m);
 }
 
+void MSAEditorConsensusArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
+    CHECK(qobject_cast<McaEditor*>(editor) != NULL, );
+
+    t->addAction(mismatchController->getPrevAction());
+    t->addAction(mismatchController->getNextAction());
+}
+
 void MSAEditorConsensusArea::sl_buildContextMenu(GObjectView* v, QMenu* m) {
     Q_UNUSED(v);
     buildMenu(m);
 }
 
 void MSAEditorConsensusArea::buildMenu(QMenu* m) {
-    // SANGER_TODO: add menu for mismatch?
-    m->addAction(mismatchController->getNextAction());
-    m->addAction(mismatchController->getPrevAction());
-    m->addSeparator();
-
     QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
     SAFE_POINT(copyMenu != NULL, "copyMenu", );
     copyMenu->addAction(copyConsensusAction);
@@ -593,6 +597,11 @@ void MSAEditorConsensusArea::buildMenu(QMenu* m) {
     if (qobject_cast<MSAEditor*>(editor) != NULL) {
         m->addAction(configureConsensusAction);
     }
+
+    CHECK(qobject_cast<McaEditor*>(editor) != NULL, );
+    m->addAction(mismatchController->getNextAction());
+    m->addAction(mismatchController->getPrevAction());
+    m->addSeparator();
 }
 
 void MSAEditorConsensusArea::sl_copyConsensusSequence() {

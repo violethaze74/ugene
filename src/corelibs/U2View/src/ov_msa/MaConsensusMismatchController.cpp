@@ -32,7 +32,7 @@
 namespace U2 {
 
 MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
-                                             QSharedPointer<MSAEditorConsensusCache> consCache,
+                                             const QSharedPointer<MSAEditorConsensusCache>& consCache,
                                              MaEditor* editor)
     : QObject(p),
       consCache(consCache),
@@ -69,14 +69,14 @@ void MaConsensusMismatchController::sl_resize(int newSize) {
 }
 
 void MaConsensusMismatchController::sl_next() {
-    selectNextMismatch(true);
+    selectNextMismatch(NavigationDirection::Forward);
 }
 
 void MaConsensusMismatchController::sl_prev() {
-    selectNextMismatch(false);
+    selectNextMismatch(NavigationDirection::Backward);
 }
 
-void MaConsensusMismatchController::selectNextMismatch(bool direction) {
+void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direction) {
     McaEditor* mcaEditor = qobject_cast<McaEditor*>(editor);
     CHECK(mcaEditor != NULL, );
 
@@ -86,20 +86,28 @@ void MaConsensusMismatchController::selectNextMismatch(bool direction) {
     if (ctx->getSequenceSelection()->isEmpty()) {
         // find next/prev from visible range
         MaEditorSequenceArea* seqArea = mcaEditor->getUI()->getSequenceArea();
-        pos = seqArea->getFirstVisibleBase();
+        pos = seqArea->getFirstVisibleBase() - 1;
     } else {
         // find next/prev from referenece selection
         DNASequenceSelection* selection = ctx->getSequenceSelection();
         pos = selection->getSelectedRegions().first().startPos;
     }
+    switch (direction) {
+    case NavigationDirection::Forward:
+        CHECK(pos != mismatchCache.size() - 1, );
+        break;
+    default:
+        CHECK(pos != 0, );
+        break;
+    }
     do {
-        direction ? pos++ : pos--;
+        direction == NavigationDirection::Forward ? pos++ : pos--;
         consCache->updateCacheItem(pos);
         if (mismatchCache[pos] == true) {
             emit si_selectMismatch(pos);
             return;
         }
-    } while (direction ? pos != mismatchCache.size() : pos != -1);
+    } while (direction == NavigationDirection::Forward ? pos < mismatchCache.size() - 1: pos != 0);
 }
 
 } // namespace U2
