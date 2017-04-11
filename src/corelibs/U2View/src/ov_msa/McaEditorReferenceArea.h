@@ -40,6 +40,9 @@ public:
 signals:
     void si_selectionChanged();
 
+public slots:
+    void sl_selectMismatch(int pos);
+
 private slots:
     void sl_visibleRangeChanged();
     void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);

@@ -56,7 +56,7 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(McaEd
 void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &p) const {
     McaEditor* editor = getSeqArea()->getEditor();
     SAFE_POINT(editor != NULL, "McaEditor is NULL", );
-    DNASequenceSelection* selection = editor->referenceCtx->getSequenceSelection();
+    DNASequenceSelection* selection = editor->getReferenceContext()->getSequenceSelection();
     SAFE_POINT(selection != NULL, "DNASequenceSelection is NULL", );
     SAFE_POINT(selection->regions.size() <= 1, "Unexpected multiselection",);
     CHECK(!selection->regions.isEmpty(), );

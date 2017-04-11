@@ -21,6 +21,7 @@
 
 #include "McaEditor.h"
 
+#include "MaConsensusMismatchController.h"
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
 #include "McaEditorSequenceArea.h"
@@ -28,9 +29,10 @@
 #include "McaEditorOverviewArea.h"
 #include "MSAEditorConsensusArea.h"
 
+#include "ov_sequence/SequenceObjectContext.h"
+
 #include "view_rendering/MaEditorWgt.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
-#include <U2View/ADVSequenceObjectContext.h>// SANGER_TODO: do not forget to rename the header
 
 #include <QToolBar>
 
@@ -56,13 +58,12 @@ McaEditor::McaEditor(const QString &viewName,
       referenceObj(ref),
       referenceCtx(NULL)
 {
-    showChromatograms = true;
 
     // SANGER_TODO: set new proper icon
     showChromatogramsAction = new QAction(QIcon(":/core/images/graphs.png"), tr("Show/hide chromatogram(s)"), this);
     showChromatogramsAction->setObjectName("chromatograms");
     showChromatogramsAction->setCheckable(true);
-    showChromatogramsAction->setChecked(showChromatograms);
+    showChromatogramsAction->setChecked(true);
     connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
 
     U2OpStatusImpl os;
@@ -112,10 +113,6 @@ int McaEditor::getRowContentIndent(int rowId) const {
     return MaEditor::getRowContentIndent(rowId);
 }
 
-bool McaEditor::getShowChromatogram() const {
-    return showChromatograms;
-}
-
 bool McaEditor::isChromVisible(qint64 rowId) const {
     return chromVisibility[rowId];
 }
@@ -132,6 +129,10 @@ QString McaEditor::getReferenceRowName() const {
 char McaEditor::getReferenceCharAt(int pos) const {
     SAFE_POINT(referenceCache.size() > pos, "Invalid position", '\n');
     return referenceCache[pos];
+}
+
+SequenceObjectContext* McaEditor::getReferenceContext() const {
+    return referenceCtx;
 }
 
 void McaEditor::sl_onContextMenuRequested(const QPoint & pos) {
@@ -161,7 +162,6 @@ void McaEditor::sl_onContextMenuRequested(const QPoint & pos) {
 }
 
 void McaEditor::sl_showHideChromatograms(bool show) {
-    showChromatograms = show;
     foreach (qint64 key, chromVisibility.keys()) {
         chromVisibility[key] = show;
     }
@@ -201,7 +201,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     initActions();
     initWidgets();
 
-    McaEditorReferenceArea* refArea = new McaEditorReferenceArea(this, getEditor()->referenceCtx);
+    McaEditorReferenceArea* refArea = new McaEditorReferenceArea(this, getEditor()->getReferenceContext());
     seqAreaHeaderLayout->insertWidget(0, refArea);
 
     MaEditorConsensusAreaSettings consSettings;
@@ -212,10 +212,12 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO);
     consArea->setConsensusAlgorithm(algoFactory);
 
-    QString name = getEditor()->referenceCtx->getSequenceObject()->getSequenceName();
+    QString name = getEditor()->getReferenceContext()->getSequenceObject()->getSequenceName();
     QWidget *refName = createHeaderLabelWidget(name, Qt::AlignCenter, refArea);
 
     nameAreaLayout->insertWidget(0, refName);
+
+    connect(consArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
 }
 
 McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {

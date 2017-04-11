@@ -67,6 +67,14 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *p, SequenceObjectCo
     sl_fontChanged(editor->getFont());
 }
 
+void McaEditorReferenceArea::sl_selectMismatch(int pos) {
+    MaEditorSequenceArea* seqArea = editor->getUI()->getSequenceArea();
+    if (seqArea->getFirstVisibleBase() > pos || seqArea->getLastVisibleBase(false) < pos) {
+        seqArea->centerPos(pos);
+    }
+    setSelection(U2Region(pos, 1));
+}
+
 void McaEditorReferenceArea::sl_visibleRangeChanged() {
     int start = editor->getUI()->getSequenceArea()->getFirstVisibleBase();
     int len = editor->getUI()->getSequenceArea()->getNumVisibleBases(false);
