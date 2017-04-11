@@ -46,6 +46,7 @@
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
 #include <primitives/GTMenu.h>
@@ -1312,6 +1313,129 @@ GUI_TEST_CLASS_DEFINITION(test_5520_2) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST+...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5562_1) {
+//1. Open File "\samples\CLUSTALW\HIV-1.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//2. Open "Statistics" Options Panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Statistics);
+
+//3. Click ">" button to set Reference sequence
+    GTUtilsOptionPanelMsa::addReference(os, "sf170");
+
+//4. Click check box "Show distance coloumn"
+    //GTWidget::findExactWidget<QComboBox*>(os, "showDistancesColumnCheck");
+    GTCheckBox::setChecked(os, "showDistancesColumnCheck", true);
+
+//5. Set combo box value "Hamming dissimilarity"
+    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox*>(os, "algoComboBox"), "Hamming dissimilarity");    
+
+//6. Set radio button value "Percents"
+    GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "percentsButton"));       
+
+//7. Click check box "Exclude gaps"
+    GTCheckBox::setChecked(os, "excludeGapsCheckBox", true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//Expected state: Percents near: "ug46" is 6%,
+//                               "primer_ed5" is 0%
+//                               "primer_es7" is 1%
+    QString val = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 8);
+    CHECK_SET_ERR("6%" == val, QString("incorrect similarity: expected %1, got %2").arg("6%").arg(val));
+    val = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 19);
+    CHECK_SET_ERR("0%" == val, QString("incorrect similarity: expected %1, got %2").arg("0%").arg(val));
+    val = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 21);
+    CHECK_SET_ERR("1%" == val, QString("incorrect similarity: expected %1, got %2").arg("1%").arg(val));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5562_2) {
+//1. Open File "\samples\CLUSTALW\HIV-1.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//2. Open context menu in sequence area
+//3. Click "Statistick->Generate Distance Matrix"
+    class Scenario : public CustomScenario{
+        void run(HI::GUITestOpStatus &os) {
+            QWidget* dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "dialog not found");
+            //4. Set combo box value "Hamming dissimilarity"
+            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox*>(os, "algoCombo", dialog), "Hamming dissimilarity");
+            //5. Set radio button value "Percents"
+            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "percentsRB", dialog));
+            //6. Click check box "Exclude gaps"
+            GTCheckBox::setChecked(os, "checkBox", true, dialog);
+            //7. Click check box "Save profile to file"
+            GTGroupBox::setChecked(os, "saveBox", dialog);
+            //8. Set radio button value "Hypertext"
+            //9. Set any valid file name
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "fileEdit", dialog), sandBoxDir + "5562_2_HTML.html");
+            //10. Accept the dialog.
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix"));
+    GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, new Scenario));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//Expected state : row "ug46", coloumn "sf170" value 26 % ,
+//                 row "sf170", coloumn "ug46" value 6 % ,
+//                 row "primer_ed31", coloumn "sf170" value 7 %
+//                 row "sf170", coloumn "primer_ed31" value 0 %
+    QByteArray file = GTFile::readAll(os, sandBoxDir + "5562_2_HTML.html");
+    QByteArray find = "ug46</td><td bgcolor=#60ff00>26%</td><td bgcolor=#ff9c00>23%";
+    bool check = file.contains(find);
+    CHECK_SET_ERR(check, QString("incorrect similarity"));
+    find = "21%</td><td bgcolor=#ff5555>6%</td><td bgcolor=#ff9c00>19%";
+    file.contains(find);
+    CHECK_SET_ERR(check, QString("incorrect similarity"));
+    find = "primer_ed31< / td><td bgcolor = #ff5555>7 % < / td><td bgcolor = #ff5555>7 %";
+    file.contains(find);
+    CHECK_SET_ERR(check, QString("incorrect similarity"));
+    find = "0%</td><td bgcolor=#ff5555>0%</td><td bgcolor=#ff5555>1%";
+    file.contains(find);
+    CHECK_SET_ERR(check, QString("incorrect similarity"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5562_3) {
+    //1. Open File "\samples\CLUSTALW\HIV-1.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open context menu in sequence area
+    //3. Click "Statistick->Generate Distance Matrix"
+    class Scenario : public CustomScenario{
+        void run(HI::GUITestOpStatus &os) {
+            QWidget* dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "dialog not found");
+            //4. Set combo box value "Hamming dissimilarity"
+            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox*>(os, "algoCombo", dialog), "Hamming dissimilarity");
+            //5. Set radio button value "Percents"
+            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "percentsRB", dialog));
+            //6. Click check box "Exclude gaps"
+            GTCheckBox::setChecked(os, "checkBox", true, dialog);
+            //7. Click check box "Save profile to file"
+            GTGroupBox::setChecked(os, "saveBox", dialog);
+            //8. Set radio button value "Comma Separated"
+            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "csvRB", dialog));
+            //9. Set any valid file name
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "fileEdit", dialog), sandBoxDir + "5562_3_CSV.csv");
+            //10. Accept the dialog.
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix"));
+    GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, new Scenario));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state : the file should look like a sample file "_common_data/scenarios/_regression/5562/5562.csv"
+    bool check = GTFile::equals(os, testDir + "_common_data/scenarios/_regression/5562/5562.csv", sandBoxDir + "5562_3_CSV.csv");
+    CHECK_SET_ERR(check, QString("files are not equal"));
 }
 
 } // namespace GUITest_regression_scenarios

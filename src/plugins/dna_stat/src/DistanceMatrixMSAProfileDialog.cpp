@@ -275,7 +275,8 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
                 TextUtils::wrapForCSV(name);
                 resultText += name;
                 for (int j = 0; j < s.ma->getNumRows(); j++) {
-                    int val = qRound(algo->getSimilarity(i, j) * (s.usePercents ? (100.0 / s.ma->getLength()) : 1.0));
+                    int val = algo->getSimilarity(i, j, s.usePercents);
+
                     resultText += "," + QString::number(val) + (s.usePercents ? "%" : "");
                     FileAndDirectoryUtils::dumpStringToFile(f, resultText);
                 }
@@ -318,12 +319,7 @@ void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* alg
         resultText += "<tr>";
         resultText += "<td> " + name + "</td>";
         for (int j=0; j < rows.size(); j++) {
-            if(s.usePercents && s.excludeGaps){
-                int len1 = rows.at(i)->getUngappedLength();
-                int len2 = rows.at(j)->getUngappedLength();
-                minLen = qMin(len1, len2);
-            }
-            int val = qRound(algo->getSimilarity(i, j) * (s.usePercents ? (100.0 / minLen) : 1.0));
+            int val = algo->getSimilarity(i, j, s.usePercents);
 
             QString colorStr = "";
             if (i != j) {
