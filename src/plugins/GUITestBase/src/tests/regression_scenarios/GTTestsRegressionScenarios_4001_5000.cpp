@@ -1811,7 +1811,7 @@ GUI_TEST_CLASS_DEFINITION(test_4218) {
     GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Annotations",
-        testDir + "_common_data/NIAID_pipelines/Chip-seq/data_to_compare_with/test_0001/Default_peaks1.bed");
+        testDir + "_common_data/bedtools/introns.bed");
     GTUtilsWorkflowDesigner::click(os, "Write Annotations");
     const QString outputFilePath = QDir(sandBoxDir).absolutePath() +"/out.bed";
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", outputFilePath, GTUtilsWorkflowDesigner::textValue);
@@ -2743,8 +2743,8 @@ GUI_TEST_CLASS_DEFINITION(test_4391) {
     WorkflowProcessItem *cutAdapter = GTUtilsWorkflowDesigner::addElement(os, "Cut Adapter");
     GTUtilsWorkflowDesigner::connect(os, fileList, cutAdapter);
 
-//    2. Set "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq" as input.
-    GTUtilsWorkflowDesigner::addInputFile(os, "File List", testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq");
+//    2. Set "_common_data/fastq/illumina.fastq" as input.
+    GTUtilsWorkflowDesigner::addInputFile(os, "File List", testDir + "_common_data/fastq/illumina.fastq");
 
 //    3. Run the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -4550,10 +4550,10 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_1) {
-    QFile::copy(testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa", sandBoxDir + "regression_test_4784_1.fa");
+    QFile::copy(testDir + "_common_data/fasta/Mycobacterium.fna", sandBoxDir + "regression_test_4784_1.fa");
 
     //1. Click the menu Tools -> BLAST-> BLAST Search...
-    //2. Select "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa" as input file.
+    //2. Select "_common_data/fasta/Mycobacterium,fna" as input file.
     //3. Press "Select a database file".
     //4. Choose "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr".
     //6. Press "Search".
@@ -4575,7 +4575,7 @@ GUI_TEST_CLASS_DEFINITION(test_4784_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_2) {
-    QFile::copy(testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa", sandBoxDir + "regression_test_4784_2.fa");
+    QFile::copy(testDir + "_common_data/fasta/Mycobacterium.fna", sandBoxDir + "regression_test_4784_2.fa");
 
     //1. Open "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa".
     GTFileDialog::openFile(os, sandBoxDir + "regression_test_4784_2.fa");
@@ -4602,7 +4602,7 @@ GUI_TEST_CLASS_DEFINITION(test_4784_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_3) {
-    QFile::copy(testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa", sandBoxDir + "regression_test_4784_3.fa");
+    QFile::copy(testDir + "_common_data/fasta/Mycobacterium.fna", sandBoxDir + "regression_test_4784_3.fa");
 
     //1. Open "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa".
     GTFileDialog::openFile(os, sandBoxDir + "regression_test_4784_3.fa");
@@ -4626,10 +4626,10 @@ GUI_TEST_CLASS_DEFINITION(test_4784_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_4) {
-    QFile::copy(testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa", sandBoxDir + "regression_test_4784_4.fa");
+    QFile::copy(testDir + "_common_data/fasta/Mycobacterium.fna", sandBoxDir + "regression_test_4784_4.fa");
 
     //1. Click the menu Tools -> BLAST-> BLAST+ Search...
-    //2. Select "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa" as input file.
+    //2. Select "_common_data/fasta/Mycobacterium,fna" as input file.
     //3. Press "Select a database file".
     //4. Choose "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr".
     //5. Press "Search".
