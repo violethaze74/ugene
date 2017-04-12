@@ -4721,7 +4721,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064){
     QString val1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     QString val2 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 2);
     CHECK_SET_ERR(val1 == "0%", "1: unexpected valeu1: " + val1);
-    CHECK_SET_ERR(val2 == "19%", "1: unexpected valeu2: " + val2);
+    CHECK_SET_ERR(val2 == "20%", "1: unexpected valeu2: " + val2);
 //    Click "Show distance column". Check state
     GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
     QWidget* column = GTWidget::findWidget(os, "msa_editor_similarity_column");
@@ -4731,7 +4731,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064){
     val1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     val2 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 2);
     CHECK_SET_ERR(val1 == "0%", "2: unexpected valeu1: " + val1);
-    CHECK_SET_ERR(val2 == "19%", "2: unexpected valeu2: " + val2);
+    CHECK_SET_ERR(val2 == "20%", "2: unexpected valeu2: " + val2);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0065){

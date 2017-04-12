@@ -1061,12 +1061,12 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0001){
     CHECK_SET_ERR(!alignButton->isEnabled(), "alignButton is unexpectidly enabled");
 //    4. Add Isophya_altaica_EF540820 sequence
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
-//    Expected state: Similarity label appeared. Similarity is 42%. Align button enabled
+//    Expected state: Similarity label appeared. Similarity is 43%. Align button enabled
     CHECK_SET_ERR(alignButton->isEnabled(), "align button is unexpectibly disabled");
     QLabel* similarityValueLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "similarityValueLabel"));
     CHECK_SET_ERR(similarityValueLabel != NULL, "similarityValueLabel not found");
     QString percent = similarityValueLabel->text();
-    CHECK_SET_ERR(percent == "42%", QString("unexpected percent: %1").arg(percent));
+    CHECK_SET_ERR(percent == "43%", QString("unexpected percent: %1").arg(percent));
 //    (branches: amino, raw alphabets)
 }
 
@@ -2045,7 +2045,7 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0001){
     QString s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     CHECK_SET_ERR(s0 == "0%", QString("Unexpected similarity at line 1: %1").arg(s0));
     QString s1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);
-    CHECK_SET_ERR(s1 == "17%", QString("Unexpected similarity at line 2: %1").arg(s1));
+    CHECK_SET_ERR(s1 == "18%", QString("Unexpected similarity at line 2: %1").arg(s1));
 
 //    6. Check counts mode
     QRadioButton* countsButton = GTWidget::findExactWidget<QRadioButton*>(os, "countsButton");
@@ -2133,7 +2133,7 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0003){
     s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     CHECK_SET_ERR(s0 == "0%", QString("(2)Unexpected similarity at line 1: %1").arg(s0));
     s1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);
-    CHECK_SET_ERR(s1 == "17%", QString("(2)Unexpected similarity at line 2: %1").arg(s1));
+    CHECK_SET_ERR(s1 == "18%", QString("(2)Unexpected similarity at line 2: %1").arg(s1));
 //    6. Press autoUpdate button
     GTWidget::click(os, updateButton);
     GTGlobals::sleep(500);

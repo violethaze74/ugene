@@ -1912,7 +1912,7 @@ GUI_TEST_CLASS_DEFINITION(test_3279){
     QString num1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);
     QString num3 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 3);
     CHECK_SET_ERR(num1 == "19%", "unexpected sumilarity value an line 1: " + num1);
-    CHECK_SET_ERR(num3 == "11%", "unexpected sumilarity value an line 3: " + num3);
+    CHECK_SET_ERR(num3 == "12%", "unexpected sumilarity value an line 3: " + num3);
 //    Current state: the addition column is shown, it contains sequence names.
 
 
