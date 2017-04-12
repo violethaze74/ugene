@@ -51,13 +51,14 @@ public:
     virtual int getRowHeight() const;
     virtual int getRowContentIndent(int rowId) const;
 
-    bool getShowChromatogram() const;
     bool isChromVisible(qint64 rowId) const;
     void toggleChromVisibility(qint64 rowId);
 
     QString getReferenceRowName() const;
 
     char getReferenceCharAt(int pos) const;
+
+    SequenceObjectContext* getReferenceContext() const;
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint & pos);
@@ -66,15 +67,12 @@ protected slots:
 protected:
     QWidget* createWidget();
 
-    // SANGER_TODO: remove the varialbe
-    bool              showChromatograms;
     QAction*          showChromatogramsAction;
 
     QMap<qint64, bool>  chromVisibility;
 
     U2SequenceObject*       referenceObj;
     QByteArray              referenceCache;
-public: // SANGER_TODO: temprorary
     SequenceObjectContext*  referenceCtx;
 };
 

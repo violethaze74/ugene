@@ -27,11 +27,13 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
 
+#include "MaConsensusMismatchController.h"
 #include "MSAEditorConsensusCache.h"
 
 class QHelpEvent;
 class QMenu;
 class QPainter;
+class QToolBar;
 
 namespace U2 {
 
@@ -81,6 +83,8 @@ public:
 
     QSharedPointer<MSAEditorConsensusCache> getConsensusCache();
 
+    MaConsensusMismatchController* getMismatchController() { return mismatchController; }
+
     void paintFullConsensus(QPixmap &pixmap);
     void paintFullConsensus(QPainter& p);
 
@@ -113,6 +117,7 @@ private slots:
     void sl_onConsensusThresholdChanged(int newValue);
 
     void sl_buildStaticMenu(GObjectView* v, QMenu* m);
+    void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
     void sl_buildContextMenu(GObjectView* v, QMenu* m);
     void sl_copyConsensusSequence();
     void sl_copyConsensusSequenceWithGaps();

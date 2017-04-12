@@ -122,34 +122,5 @@ void MSAEditorConsensusCache::sl_invalidateAlignmentObject() {
     aliObj = NULL;
 }
 
-//----------------------
-// McaMismatchController
-MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
-                                             QSharedPointer<MSAEditorConsensusCache> consCache,
-                                             MaEditor* editor)
-    : QObject(p),
-      consCache(consCache),
-      editor(editor)
-{
-    mismatchCache = QBitArray(editor->getAlignmentLen(), false);
-    connect(consCache.data(), SIGNAL(si_cachedItemUpdated(int,char)), SLOT(sl_updateItem(int,char)));
-    connect(consCache.data(), SIGNAL(si_cacheResized(int)), SLOT(sl_resize(int)));
-}
-
-bool MaConsensusMismatchController::isMismatch(int pos) const {
-    SAFE_POINT(0 <= pos && pos < mismatchCache.size(), "Invalid pos", false);
-    return mismatchCache[pos];
-}
-
-void MaConsensusMismatchController::sl_updateItem(int pos, char c) {
-    SAFE_POINT(0 <= pos && pos < mismatchCache.size(), "Invalid pos", );
-    mismatchCache[pos] = editor->getReferenceCharAt(pos) != c;
-}
-
-void MaConsensusMismatchController::sl_resize(int newSize) {
-    mismatchCache.resize(newSize);
-    mismatchCache.fill(false);
-}
-
 }//namespace
 

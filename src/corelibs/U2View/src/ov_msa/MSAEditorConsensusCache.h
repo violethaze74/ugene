@@ -28,6 +28,7 @@
 
 #include <U2Core/MultipleSequenceAlignment.h>
 
+
 namespace U2 {
 
 class MaEditor;
@@ -39,6 +40,7 @@ class MultipleAlignmentObject;
 class U2OpStatus;
 
 class U2VIEW_EXPORT MSAEditorConsensusCache : public QObject {
+    friend class MaConsensusMismatchController;
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusCache)
 public:
@@ -72,7 +74,6 @@ private:
         char    topPercent;
     };
 
-
     void updateCacheItem(int pos);
 
     int                         curCacheSize;
@@ -80,24 +81,6 @@ private:
     QBitArray                   updateMap;
     MultipleAlignmentObject*    aliObj;
     MSAConsensusAlgorithm*      algorithm;
-};
-
-class MaConsensusMismatchController : public QObject {
-    Q_OBJECT
-public:
-    MaConsensusMismatchController(QObject* p,
-                                  QSharedPointer<MSAEditorConsensusCache> consCache,
-                                  MaEditor* editor);
-    bool isMismatch(int pos) const;
-
-private slots:
-    void sl_updateItem(int pos, char c);
-    void sl_resize(int newSize);
-
-private:
-    QBitArray mismatchCache;
-    QSharedPointer<MSAEditorConsensusCache> consCache;
-    MaEditor* editor;
 };
 
 }//namespace;
