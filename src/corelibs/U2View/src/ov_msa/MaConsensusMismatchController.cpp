@@ -69,11 +69,11 @@ void MaConsensusMismatchController::sl_resize(int newSize) {
 }
 
 void MaConsensusMismatchController::sl_next() {
-    selectNextMismatch(NavigationDirection::Forward);
+    selectNextMismatch(Forward);
 }
 
 void MaConsensusMismatchController::sl_prev() {
-    selectNextMismatch(NavigationDirection::Backward);
+    selectNextMismatch(Backward);
 }
 
 void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direction) {
@@ -93,7 +93,7 @@ void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direc
         pos = selection->getSelectedRegions().first().startPos;
     }
     switch (direction) {
-    case NavigationDirection::Forward:
+    case Forward:
         CHECK(pos != mismatchCache.size() - 1, );
         break;
     default:
@@ -101,13 +101,13 @@ void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direc
         break;
     }
     do {
-        direction == NavigationDirection::Forward ? pos++ : pos--;
+        direction == Forward ? pos++ : pos--;
         consCache->updateCacheItem(pos);
         if (mismatchCache[pos] == true) {
             emit si_selectMismatch(pos);
             return;
         }
-    } while (direction == NavigationDirection::Forward ? pos < mismatchCache.size() - 1: pos != 0);
+    } while (direction == Forward ? pos < mismatchCache.size() - 1: pos != 0);
 }
 
 } // namespace U2
