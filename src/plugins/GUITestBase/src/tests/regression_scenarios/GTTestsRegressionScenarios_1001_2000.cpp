@@ -2051,8 +2051,8 @@ GUI_TEST_CLASS_DEFINITION(test_1180) {
 
     //3) Run Bowtie aligning on any data.
     //Expected state: UGENE not crashed.
-    AlignShortReadsFiller::Parameters parameters(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/index/",
-        "chr6.fa",
+    AlignShortReadsFiller::Parameters parameters(testDir + "_common_data/fasta/",
+        "Mycobacterium.fna",
         testDir + "_common_data/e_coli/",
         "e_coli_1000.fastq",
         AlignShortReadsFiller::Parameters::Bowtie);
