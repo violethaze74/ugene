@@ -18,27 +18,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+ 
+#ifndef _U2_GROUPED_COMBOBOX_DELEGATE_H_
+#define _U2_GROUPED_COMBOBOX_DELEGATE_H_
 
-#ifndef _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_GRAYSCALE_H_
-#define _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_GRAYSCALE_H_
+#include <QItemDelegate>
+#include <QPainter>
 
-#include "MsaColorSchemePercentageIdentity.h"
+class QStandardItemModel;
 
 namespace U2 {
 
-class U2ALGORITHM_EXPORT MsaColorSchemePercentageIdententityGrayscale : public MsaColorSchemePercentageIdentity {
+class GroupedComboBoxDelegate : public QItemDelegate {
+Q_OBJECT
 public:
-    MsaColorSchemePercentageIdententityGrayscale(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj);
+    explicit GroupedComboBoxDelegate(QObject *parent = 0);
+
+    static void addParentItem(QStandardItemModel * model, const QString& text);
+    static void addChildItem(QStandardItemModel * model, const QString& text, const QVariant& data);
+protected:
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
+    
+}
 
-class MsaColorSchemePercentageIdententityGrayscaleFactory : public MsaColorSchemeFactory {
-    Q_OBJECT
-public:
-    MsaColorSchemePercentageIdententityGrayscaleFactory(QObject *parent, const QString &id, const QString &name, QList<DNAAlphabetType> &alphabetType);
-
-    MsaColorScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
-};
-
-}   // namespace U2
-
-#endif // _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_GRAYSCALE_H_
+#endif // _U2_GROUPED_COMBOBOX_DELEGATE_H_

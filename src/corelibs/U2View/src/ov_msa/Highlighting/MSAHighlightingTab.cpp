@@ -33,6 +33,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GroupedComboboxDelegate.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
@@ -159,8 +160,8 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     initColorCB();
     sl_sync();
 
-    connect(colorScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
-    connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
+    connect(colorScheme, SIGNAL(currentIndexChanged(int)), SLOT(sl_colorSchemeIndexChanged(int)));
+    connect(highlightingScheme, SIGNAL(currentIndexChanged(int)), SLOT(sl_highlightingSchemeIndexChanged(int)));
     connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_triggerUseDots()));
 
     connect(seqArea, SIGNAL(si_highlightingChanged()), SLOT(sl_sync()));
@@ -181,8 +182,20 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     sl_highlightingParametersChanged();
 }
 
+void MSAHighlightingTab::addColorSchemesByAlphabet(QList<MsaColorSchemeFactory*> colorSchemesFactories, DNAAlphabetType alph) {
+    QList<MsaColorSchemeFactory*> selectedColorSchemesFactories;
+    foreach(MsaColorSchemeFactory *factory, colorSchemesFactories) {
+        if (factory->getSupportedAlphabets().testFlag(alph)) {
+            selectedColorSchemesFactories.append(factory);
+            colorSchemesFactories.removeAll(factory);
+        }
+    }
+}
+
 void MSAHighlightingTab::initColorCB() {
     bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
+    QStandardItemModel *model = new QStandardItemModel;
+
     colorScheme->blockSignals(true);
     highlightingScheme->blockSignals(true);
 
@@ -191,8 +204,16 @@ void MSAHighlightingTab::initColorCB() {
     colorSchemesFactories << msaColorSchemeRegistry->getMsaCustomColorSchemes(msa->getMaObject()->getAlphabet()->getType());
 
     colorScheme->clear();
-    foreach (MsaColorSchemeFactory *factory, colorSchemesFactories) {
-        colorScheme->addItem(factory->getName(isAlphabetRaw));
+    //qSort(colorSchemesFactories.begin(), colorSchemesFactories.end(), MsaColorSchemeFactory::sortByAlphAndName());
+    if (isAlphabetRaw) {
+        QList<MsaColorSchemeFactory *> RawColorSchemesFactories;
+        QList<MsaColorSchemeFactory *> AminoColorSchemesFactories;
+        QList<MsaColorSchemeFactory *> NucleotideColorSchemesFactories;
+        
+    } else {
+        foreach(MsaColorSchemeFactory *factory, colorSchemesFactories) {
+            colorScheme->addItem(factory->getName(isAlphabetRaw), factory->getId());
+        }
     }
 
     MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
@@ -200,8 +221,14 @@ void MSAHighlightingTab::initColorCB() {
 
     highlightingScheme->clear();
     foreach (MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
-        highlightingScheme->addItem(factory->getName(isAlphabetRaw));
+        //highlightingScheme->addItem(factory->getName(isAlphabetRaw), factory->getId());
     }
+
+    colorScheme->setModel(model);
+    colorScheme->setItemDelegate(new GroupedComboBoxDelegate());
+
+    highlightingScheme->setModel(model);
+    highlightingScheme->setItemDelegate(new GroupedComboBoxDelegate);
 
     colorScheme->blockSignals(false);
     highlightingScheme->blockSignals(false);
@@ -307,12 +334,21 @@ void MSAHighlightingTab::sl_highlightingParametersChanged() {
     highlightingSettings.insert(MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME, thresholdSlider->value());
     highlightingSettings.insert(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked());
     s->applySettings(highlightingSettings);
-    seqArea->sl_changeColorSchemeOutside(colorScheme->currentText());
+    //seqArea->sl_changeColorSchemeOutside();
 }
 
 void MSAHighlightingTab::sl_customSchemesListChanged() {
     initColorCB();
     sl_sync();
+}
+
+void MSAHighlightingTab::sl_colorSchemeIndexChanged(int index) {
+    QString id = colorScheme->itemData(index).toString();
+    seqArea->sl_changeColorSchemeOutside(colorScheme->itemData(index).toString());
+}
+
+void MSAHighlightingTab::sl_highlightingSchemeIndexChanged(int index) {
+    seqArea->sl_changeColorSchemeOutside(highlightingScheme->itemData(index).toString());
 }
 
 }//ns

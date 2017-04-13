@@ -35,6 +35,7 @@ class QLabel;
 class QRadioButton;
 class QSlider;
 class QToolButton;
+class MsaColorSchemeFactory;
 
 namespace U2 {
 
@@ -47,13 +48,15 @@ class U2VIEW_EXPORT MSAHighlightingTab : public QWidget
 public:
     MSAHighlightingTab(MSAEditor* msa);
 
-private slots:
+    private slots:
     void sl_sync();
 
     void sl_updateHint();
     void sl_exportHighlightningClicked();
     void sl_highlightingParametersChanged();
     void sl_customSchemesListChanged();
+    void sl_colorSchemeIndexChanged(int index);
+    void sl_highlightingSchemeIndexChanged(int index);
 
 private:
     QWidget* createColorGroup();
@@ -61,6 +64,7 @@ private:
     void initColorCB();
     void setColorScheme(bool isAlphabetRaw);
     void setHighlightingScheme(bool isAlphabetRaw);
+    void addColorSchemesByAlphabet(QList<MsaColorSchemeFactory*> colorSchemesFactories, DNAAlphabetType alph);
 
     MSAEditor *msa;
     MaEditorSequenceArea *seqArea;
