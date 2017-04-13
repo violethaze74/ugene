@@ -159,8 +159,8 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     initColorCB();
     sl_sync();
 
-    connect(colorScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
-    connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
+    connect(colorScheme, SIGNAL(currentIndexChanged(int)), SLOT(sl_colorSchemeIndexChanged(int)));
+    connect(highlightingScheme, SIGNAL(currentIndexChanged(int)), SLOT(sl_highlightingSchemeIndexChanged(int)));
     connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_triggerUseDots()));
 
     connect(seqArea, SIGNAL(si_highlightingChanged()), SLOT(sl_sync()));
@@ -307,12 +307,20 @@ void MSAHighlightingTab::sl_highlightingParametersChanged() {
     highlightingSettings.insert(MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME, thresholdSlider->value());
     highlightingSettings.insert(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked());
     s->applySettings(highlightingSettings);
-    seqArea->sl_changeColorSchemeOutside(colorScheme->currentText());
+    //seqArea->sl_changeColorSchemeOutside();
 }
 
 void MSAHighlightingTab::sl_customSchemesListChanged() {
     initColorCB();
     sl_sync();
+}
+
+void MSAHighlightingTab::sl_colorSchemeIndexChanged(int index) {
+    seqArea->sl_changeColorSchemeOutside(colorScheme->itemData(index).toString());
+}
+
+void MSAHighlightingTab::sl_highlightingSchemeIndexChanged(int index) {
+    seqArea->sl_changeColorSchemeOutside(highlightingScheme->itemData(index).toString());
 }
 
 }//ns

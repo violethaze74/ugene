@@ -54,6 +54,8 @@ private slots:
     void sl_exportHighlightningClicked();
     void sl_highlightingParametersChanged();
     void sl_customSchemesListChanged();
+    void sl_colorSchemeIndexChanged(int index);
+    void sl_highlightingSchemeIndexChanged(int index);
 
 private:
     QWidget* createColorGroup();

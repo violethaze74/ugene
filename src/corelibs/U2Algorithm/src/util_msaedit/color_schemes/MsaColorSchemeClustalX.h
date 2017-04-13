@@ -70,7 +70,7 @@ private:
 class MsaColorSchemeClustalXFactory : public MsaColorSchemeFactory {
     Q_OBJECT
 public:
-    MsaColorSchemeClustalXFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType);
+    MsaColorSchemeClustalXFactory(QObject *parent, const QString &id, const QString &name, QList<DNAAlphabetType> &alphabetType);
 
     MsaColorScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
 };
