@@ -6269,8 +6269,8 @@ GUI_TEST_CLASS_DEFINITION(test_1607) {
     WorkflowProcessItem *writer = GTUtilsWorkflowDesigner::addElement(os, "Write Variations");
     GTUtilsWorkflowDesigner::connect(os, reader, writer);
 
-    //3. Use input file "_common_data/NIAID_pipelines/Call_variants/data_to_compare_with/test_0001/out.vcf"
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read Variations", testDir + "_common_data/NIAID_pipelines/Call_variants/data_to_compare_with/test_0001/out.vcf");
+    //3. Use input file "_common_data/vcf/correct_chr_name.vcf"
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Variations", testDir + "_common_data/vcf/correct_chr_name.vcf");
 
     GTUtilsWorkflowDesigner::click(os, "Write Variations");
     QFile outputFile(sandBoxDir + "out.vcf");
