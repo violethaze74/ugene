@@ -1,4 +1,4 @@
-/**
+﻿/**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
@@ -3751,10 +3751,9 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
             GTComboBox::setIndexWithText(os, exportType, "Custom region", false, GTGlobals::UseKey);
             
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
-            GTGlobals::sleep();
-
-
+            //UGENE-4762 "Select subalignment" dialog can be shown twice when exporting subalignment as image
+            //GTKeyboardDriver::keyClick(Qt::Key_Escape); - second action resolves the problem
+           
             exportType = dialog->findChild<QComboBox*>("comboBox");
             QString text = exportType->currentText();
             CHECK_SET_ERR(text == "Whole alignment", "Wrong combo box text!");
