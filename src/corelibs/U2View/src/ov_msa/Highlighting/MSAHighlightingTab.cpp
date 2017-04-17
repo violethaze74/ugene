@@ -23,6 +23,7 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QRadioButton>
+#include <QStandardItemModel>
 #include <QToolButton>
 #include <QVBoxLayout>
 
@@ -157,6 +158,9 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
         << colorScheme->objectName() << highlightingScheme->objectName());
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 
+    colorScheme->setItemDelegate(new GroupedComboBoxDelegate(colorScheme));
+    highlightingScheme->setItemDelegate(new GroupedComboBoxDelegate(highlightingScheme));
+
     initColorCB();
     sl_sync();
 
@@ -194,7 +198,6 @@ void MSAHighlightingTab::addColorSchemesByAlphabet(QList<MsaColorSchemeFactory*>
 
 void MSAHighlightingTab::initColorCB() {
     bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
-    QStandardItemModel *model = new QStandardItemModel;
 
     colorScheme->blockSignals(true);
     highlightingScheme->blockSignals(true);
@@ -206,13 +209,10 @@ void MSAHighlightingTab::initColorCB() {
     colorScheme->clear();
     //qSort(colorSchemesFactories.begin(), colorSchemesFactories.end(), MsaColorSchemeFactory::sortByAlphAndName());
     if (isAlphabetRaw) {
-        QList<MsaColorSchemeFactory *> RawColorSchemesFactories;
-        QList<MsaColorSchemeFactory *> AminoColorSchemesFactories;
-        QList<MsaColorSchemeFactory *> NucleotideColorSchemesFactories;
-        
+        fillColorCbWithGrouping(colorSchemesFactories);
     } else {
         foreach(MsaColorSchemeFactory *factory, colorSchemesFactories) {
-            colorScheme->addItem(factory->getName(isAlphabetRaw), factory->getId());
+            colorScheme->addItem(factory->getName(), factory->getId());
         }
     }
 
@@ -220,35 +220,77 @@ void MSAHighlightingTab::initColorCB() {
     QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(msa->getMaObject()->getAlphabet()->getType());
 
     highlightingScheme->clear();
-    foreach (MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
-        //highlightingScheme->addItem(factory->getName(isAlphabetRaw), factory->getId());
+    if (isAlphabetRaw) {
+        fillHighlightingCbWithGrouping(highlightingSchemesFactories);
+    } else {
+        foreach(MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
+            highlightingScheme->addItem(factory->getName(), factory->getId());
+        }
     }
-
-    colorScheme->setModel(model);
-    colorScheme->setItemDelegate(new GroupedComboBoxDelegate());
-
-    highlightingScheme->setModel(model);
-    highlightingScheme->setItemDelegate(new GroupedComboBoxDelegate);
 
     colorScheme->blockSignals(false);
     highlightingScheme->blockSignals(false);
 }
 
-void MSAHighlightingTab::setColorScheme(bool isAlphabetRaw) {
-    MsaColorScheme *scheme = seqArea->getCurrentColorScheme();
-    if (isAlphabetRaw && MsaColorSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes().contains(scheme->getFactory()->getId())) {
-        colorScheme->setCurrentIndex(colorScheme->findText(scheme->getFactory()->getName()));
-    } else {
-        colorScheme->setCurrentIndex(colorScheme->findText(scheme->getFactory()->getName(isAlphabetRaw)));
+void MSAHighlightingTab::fillColorCbWithGrouping(QList<MsaColorSchemeFactory *> colorSchemesFactories) {
+    QList<MsaColorSchemeFactory *> rawColorSchemesFactories;
+    QList<MsaColorSchemeFactory *> aminoColorSchemesFactories;
+    QList<MsaColorSchemeFactory *> nucleotideColorSchemesFactories;
+    foreach(MsaColorSchemeFactory *factory, colorSchemesFactories) {
+        if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_RAW)) {
+            rawColorSchemesFactories.append(factory);
+        } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_AMINO)) {
+            aminoColorSchemesFactories.append(factory);
+        } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_NUCL)) {
+            nucleotideColorSchemesFactories.append(factory);
+        }
+    }
+    GroupedComboBoxDelegate *colorSchemeDelegate = qobject_cast<GroupedComboBoxDelegate*>(colorScheme->itemDelegate());
+    QStandardItemModel *colorSchemeModel = qobject_cast<QStandardItemModel*>(colorScheme->model());
+    CHECK(colorSchemeDelegate != NULL, );
+    CHECK(colorSchemeModel != NULL, );
+    colorSchemeDelegate->addParentItem(colorSchemeModel, tr("RAW alphabet"));
+    foreach(MsaColorSchemeFactory *factory, rawColorSchemesFactories) {
+        colorSchemeDelegate->addChildItem(colorSchemeModel, factory->getName(), factory->getId());
+    }
+    colorSchemeDelegate->addParentItem(colorSchemeModel, tr("Amino acid alphabet"));
+    foreach(MsaColorSchemeFactory *factory, aminoColorSchemesFactories) {
+        colorSchemeDelegate->addChildItem(colorSchemeModel, factory->getName(), factory->getId());
+    }
+    colorSchemeDelegate->addParentItem(colorSchemeModel, tr("Nucleotide alphabet"));
+    foreach(MsaColorSchemeFactory *factory, nucleotideColorSchemesFactories) {
+        colorSchemeDelegate->addChildItem(colorSchemeModel, factory->getName(), factory->getId());
     }
 }
 
-void MSAHighlightingTab::setHighlightingScheme(bool isAlphabetRaw) {
-    MsaHighlightingScheme *scheme = seqArea->getCurrentHighlightingScheme();
-    if (isAlphabetRaw && MsaHighlightingSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes().contains(scheme->getFactory()->getId())) {
-        highlightingScheme->setCurrentIndex(highlightingScheme->findText(scheme->getFactory()->getName()));
-    } else {
-        highlightingScheme->setCurrentIndex(highlightingScheme->findText(scheme->getFactory()->getName(isAlphabetRaw)));
+void MSAHighlightingTab::fillHighlightingCbWithGrouping(QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories) {
+    QList<MsaHighlightingSchemeFactory *> rawHighlightSchemesFactories;
+    QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories;
+    QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories;
+    foreach(MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
+        if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_RAW)) {
+            rawHighlightSchemesFactories.append(factory);
+        } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_AMINO)) {
+            aminoHighlightSchemesFactories.append(factory);
+        } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_NUCL)) {
+            nucleotideHighlightSchemesFactories.append(factory);
+        }
+    }
+    GroupedComboBoxDelegate *colorSchemeDelegate = qobject_cast<GroupedComboBoxDelegate*>(colorScheme->itemDelegate());
+    QStandardItemModel *colorSchemeModel = qobject_cast<QStandardItemModel*>(colorScheme->model());
+    CHECK(colorSchemeDelegate != NULL, );
+    CHECK(colorSchemeModel != NULL, );
+    colorSchemeDelegate->addParentItem(colorSchemeModel, tr("RAW alphabet"));
+    foreach(MsaHighlightingSchemeFactory *factory, rawHighlightSchemesFactories) {
+        colorSchemeDelegate->addChildItem(colorSchemeModel, factory->getName(), factory->getId());
+    }
+    colorSchemeDelegate->addParentItem(colorSchemeModel, tr("Amino acid alphabet"));
+    foreach(MsaHighlightingSchemeFactory *factory, aminoHighlightSchemesFactories) {
+        colorSchemeDelegate->addChildItem(colorSchemeModel, factory->getName(), factory->getId());
+    }
+    colorSchemeDelegate->addParentItem(colorSchemeModel, tr("Nucleotide alphabet"));
+    foreach(MsaHighlightingSchemeFactory *factory, nucleotideHighlightSchemesFactories) {
+        colorSchemeDelegate->addChildItem(colorSchemeModel, factory->getName(), factory->getId());
     }
 }
 
@@ -259,7 +301,7 @@ void MSAHighlightingTab::sl_sync() {
     SAFE_POINT(s->getFactory() != NULL, "Current scheme color factory is NULL", );
 
     colorScheme->blockSignals(true);
-    setColorScheme(isAlphabetRaw);
+    colorScheme->setCurrentIndex(colorScheme->findData(s->getFactory()->getId()));
     colorScheme->blockSignals(false);
 
     MsaHighlightingScheme *sh = seqArea->getCurrentHighlightingScheme();
@@ -267,7 +309,7 @@ void MSAHighlightingTab::sl_sync() {
     SAFE_POINT(sh->getFactory() != NULL, "Current highlighting scheme factory is NULL!", );
 
     highlightingScheme->blockSignals(true);
-    setHighlightingScheme(isAlphabetRaw);
+    highlightingScheme->setCurrentIndex(highlightingScheme->findData(sh->getFactory()->getId()));
     highlightingScheme->blockSignals(false);
 
     useDots->blockSignals(true);
@@ -334,7 +376,7 @@ void MSAHighlightingTab::sl_highlightingParametersChanged() {
     highlightingSettings.insert(MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME, thresholdSlider->value());
     highlightingSettings.insert(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked());
     s->applySettings(highlightingSettings);
-    //seqArea->sl_changeColorSchemeOutside();
+    seqArea->sl_changeColorSchemeOutside(colorScheme->currentData().toString());
 }
 
 void MSAHighlightingTab::sl_customSchemesListChanged() {

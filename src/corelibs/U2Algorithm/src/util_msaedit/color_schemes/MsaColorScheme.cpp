@@ -81,14 +81,7 @@ const QString & MsaColorSchemeFactory::getId() const {
     return id;
 }
 
-const QString MsaColorSchemeFactory::getName(bool nameWithAlphabet) const {
-    if (nameWithAlphabet) {
-        if (supportedAlphabets.testFlag(DNAAlphabet_NUCL)) {
-            return tr("Nucleotide") + " " + name;
-        } else if (supportedAlphabets.testFlag(DNAAlphabet_AMINO)) {
-            return  tr("Amino") + " " + name;
-        }
-    }
+const QString MsaColorSchemeFactory::getName() const {
     return name;
 }
 

@@ -62,8 +62,10 @@ private:
     QWidget* createColorGroup();
     QWidget* createHighlightingGroup();
     void initColorCB();
-    void setColorScheme(bool isAlphabetRaw);
-    void setHighlightingScheme(bool isAlphabetRaw);
+
+    void fillColorCbWithGrouping(QList<MsaColorSchemeFactory *> colorSchemesFactories);
+    void fillHighlightingCbWithGrouping(QList<MsaHighlightingSchemeFactory *> colorSchemesFactories);
+
     void addColorSchemesByAlphabet(QList<MsaColorSchemeFactory*> colorSchemesFactories, DNAAlphabetType alph);
 
     MSAEditor *msa;

@@ -25,11 +25,13 @@
 #include <QItemDelegate>
 #include <QPainter>
 
+#include <U2Core/global.h>
+
 class QStandardItemModel;
 
 namespace U2 {
 
-class GroupedComboBoxDelegate : public QItemDelegate {
+class U2GUI_EXPORT GroupedComboBoxDelegate : public QItemDelegate {
 Q_OBJECT
 public:
     explicit GroupedComboBoxDelegate(QObject *parent = 0);
