@@ -3891,11 +3891,11 @@ GUI_TEST_CLASS_DEFINITION( test_2569 ){
 //    3. Set valid input data.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.sorted.bam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/chrM.sorted.bam");
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/cmdline/call-variations/chrM.fa");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    4. Click "External Tools" on the appeared Dashboard.
@@ -4522,11 +4522,11 @@ GUI_TEST_CLASS_DEFINITION( test_2662 ){
 //    3. Set valid input data.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.sorted.bam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/chrM.sorted.bam");
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/cmdline/call-variations/chrM.fa");
 //    4. Start the scheme.
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5531,18 +5531,18 @@ GUI_TEST_CLASS_DEFINITION(test_2887) {
 
 GUI_TEST_CLASS_DEFINITION(test_2891) {
     // 1. Open file "data/samples/workflow_samples/NGS/cistrome/chip_seq.uwl"
-    // 2. Set input file for the "Read Tags" element to "test/_common_data/NIAID_pipelines/Chip-seq/input_data/chr2.bed"
+    // 2. Set input file for the "Read Tags" element to "test/_common_data/bed/valid_input/tophat_output.bed"
     // 3. Press the "Validate workflow" button on the main toolbar
     // Expected state: the message box about workflow errors has appeared. The "Error list" tab has appeared below the workflow
     // 4. Press "OK"
     // Expected state: there is no messages about the "Read tags" element on the "Error list" tab
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, dataDir + "/workflow_samples/NGS/cistrome/", "chip_seq.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::click(os, "Read Tags");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Chip-seq/input_data/chr2.bed");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bed/valid_input/tophat_output.bed");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTWidget::click(os,GTAction::button(os, "Validate workflow"));
@@ -5553,18 +5553,18 @@ GUI_TEST_CLASS_DEFINITION(test_2891) {
 }GUI_TEST_CLASS_DEFINITION(test_2891_1) {
 
     // 1. Open file "data/samples/workflow_samples/NGS/cistrome/chip_seq.uwl"
-    // 2. Set input file for the "Read Tags" element to "test/_common_data/NIAID_pipelines/Chip-seq/input_data/some_image.png"
+    // 2. Set input file for the "Read Tags" element to "test/_common_data/regression/1587/some_image.png"
     // 3. Press the "Validate workflow" button on the main toolbar
     // Expected state: the message box about workflow errors has appeared. The "Error list" tab has appeared below the workflow
     // 4. Press "OK"
     // Expected state: there is a warning about possible incompatibilities of the "Read tags" element on the "Error list" tab
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, dataDir + "/workflow_samples/NGS/cistrome/", "chip_seq.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::click(os, "Read Tags");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Chip-seq/input_data/some_image.png");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/regression/1587/some_image.png");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTWidget::click(os,GTAction::button(os, "Validate workflow"));
