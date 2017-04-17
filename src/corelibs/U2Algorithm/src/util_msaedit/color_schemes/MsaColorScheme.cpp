@@ -81,14 +81,7 @@ const QString & MsaColorSchemeFactory::getId() const {
     return id;
 }
 
-const QString MsaColorSchemeFactory::getName(bool nameWithAlphabet) const {
-    if (nameWithAlphabet) {
-        if (supportedAlphabets.testFlag(DNAAlphabet_NUCL)) {
-            return tr("Nucleotide") + " " + name;
-        } else if (supportedAlphabets.testFlag(DNAAlphabet_AMINO)) {
-            return  tr("Amino") + " " + name;
-        }
-    }
+const QString MsaColorSchemeFactory::getName() const {
     return name;
 }
 
@@ -113,23 +106,8 @@ const QList<MsaColorSchemeCustomFactory *> & MsaColorSchemeRegistry::getCustomCo
     return customColorers;
 }
 
-QStringList MsaColorSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes() {
-    static QStringList res;
-    return res;
-}
-
 QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaColorSchemes(DNAAlphabetType alphabetType) const {
     QList<MsaColorSchemeFactory *> res;
-    if (alphabetType == DNAAlphabet_RAW) {
-        foreach(MsaColorSchemeFactory *factory, colorers) {
-            QString fId = factory->getId();
-            if (getExcludedIdsFromRawAlphabetSchemes().contains(fId)) {
-                continue;
-            }
-            res.append(factory);
-        }
-        return res;
-    }
     foreach (MsaColorSchemeFactory *factory, colorers) {
         if (factory->getSupportedAlphabets().testFlag(alphabetType)) {
             res.append(factory);

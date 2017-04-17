@@ -58,7 +58,7 @@ void GroupedComboBoxDelegate::addParentItem(QStandardItemModel * model, const QS
     item->setFlags(item->flags() & ~(Qt::ItemIsEnabled | Qt::ItemIsSelectable));
     item->setData("parent", Qt::AccessibleDescriptionRole);
     QFont font = item->font();
-    //font.setBold( true );
+    font.setBold( true );
     font.setItalic(true);
     item->setFont(font);
     model->appendRow(item);

@@ -45,20 +45,13 @@ public:
     virtual void applySettings(const QVariantMap &settings);
     virtual QVariantMap getSettings() const;
 
-    static const QString EMPTY_NUCL;
-    static const QString EMPTY_AMINO;
-    static const QString EMPTY_RAW;
-    static const QString AGREEMENTS_NUCL;
-    static const QString AGREEMENTS_AMINO;
-    static const QString DISAGREEMENTS_NUCL;
-    static const QString DISAGREEMENTS_AMINO;
-    static const QString TRANSITIONS_NUCL;
-    static const QString TRANSVERSIONS_NUCL;
-    static const QString GAPS_NUCL;
-    static const QString GAPS_AMINO;
-    static const QString GAPS_RAW;
-    static const QString CONSERVATION_NUCL;
-    static const QString CONSERVATION_AMINO;
+    static const QString EMPTY;
+    static const QString AGREEMENTS;
+    static const QString DISAGREEMENTS;
+    static const QString TRANSITIONS;
+    static const QString TRANSVERSIONS;
+    static const QString GAPS;
+    static const QString CONSERVATION;
 
     static const QString THRESHOLD_PARAMETER_NAME;
     static const QString LESS_THAN_THRESHOLD_PARAMETER_NAME;
@@ -72,23 +65,22 @@ protected:
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeFactory : public QObject {
     Q_OBJECT
 public:
-    MsaHighlightingSchemeFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType,
+    MsaHighlightingSchemeFactory(QObject *parent, const QString &id, const QString &name, QList<DNAAlphabetType> &supportedAlphabetsList,
                                  bool refFree = false, bool needThreshold = false);
 
     virtual MsaHighlightingScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const = 0;
 
     const QString & getId() const;
-    const QString getName(bool nameWithAlphabet = false) const;
-    DNAAlphabetType getAlphabetType() const;
+    const QString getName() const;
     bool isRefFree() const;
     bool isNeedThreshold() const;
-
+    const QFlags<DNAAlphabetType>& getSupportedAlphabets() const;
 private:
     QString         id;
     QString         name;
-    DNAAlphabetType alphabetType;
     bool            refFree;
     bool            needThreshold;
+    QFlags<DNAAlphabetType> supportedAlphabets;
 };
 
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeRegistry : public QObject {
@@ -96,8 +88,6 @@ class U2ALGORITHM_EXPORT MsaHighlightingSchemeRegistry : public QObject {
 public:
     MsaHighlightingSchemeRegistry();
     ~MsaHighlightingSchemeRegistry();
-
-    static QStringList getExcludedIdsFromRawAlphabetSchemes();
 
     MsaHighlightingSchemeFactory * getMsaHighlightingSchemeFactoryById(const QString &id) const;
     QList<MsaHighlightingSchemeFactory *> getMsaHighlightingSchemes(DNAAlphabetType alphabetType) const;
