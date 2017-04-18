@@ -4550,10 +4550,10 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_1) {
-    QFile::copy(testDir + "_common_data/fasta/Mycobacterium.fna", sandBoxDir + "regression_test_4784_1.fa");
+    QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_1.fa");
 
     //1. Click the menu Tools -> BLAST-> BLAST Search...
-    //2. Select "_common_data/fasta/Mycobacterium,fna" as input file.
+    //2. Select "_common_data/fasta/chr6,fa" as input file.
     //3. Press "Select a database file".
     //4. Choose "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr".
     //6. Press "Search".
@@ -4575,9 +4575,9 @@ GUI_TEST_CLASS_DEFINITION(test_4784_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_2) {
-    QFile::copy(testDir + "_common_data/fasta/Mycobacterium.fna", sandBoxDir + "regression_test_4784_2.fa");
+    QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_2.fa");
 
-    //1. Open "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa".
+    //1. Open "_common_data/fasta/chr6.fa".
     GTFileDialog::openFile(os, sandBoxDir + "regression_test_4784_2.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4602,9 +4602,9 @@ GUI_TEST_CLASS_DEFINITION(test_4784_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_3) {
-    QFile::copy(testDir + "_common_data/fasta/Mycobacterium.fna", sandBoxDir + "regression_test_4784_3.fa");
+    QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_3.fa");
 
-    //1. Open "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa".
+    //1. Open "_common_data/fasta/chr6.fa".
     GTFileDialog::openFile(os, sandBoxDir + "regression_test_4784_3.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4626,10 +4626,10 @@ GUI_TEST_CLASS_DEFINITION(test_4784_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_4) {
-    QFile::copy(testDir + "_common_data/fasta/Mycobacterium.fna", sandBoxDir + "regression_test_4784_4.fa");
+    QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_4.fa");
 
     //1. Click the menu Tools -> BLAST-> BLAST+ Search...
-    //2. Select "_common_data/fasta/Mycobacterium,fna" as input file.
+    //2. Select "_common_data/fasta/chr6" as input file.
     //3. Press "Select a database file".
     //4. Choose "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr".
     //5. Press "Search".
