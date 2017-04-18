@@ -133,13 +133,17 @@ MsaHighlightingSchemeFactory * MsaHighlightingSchemeRegistry::getMsaHighlighting
 }
 
 QList<MsaHighlightingSchemeFactory *> MsaHighlightingSchemeRegistry::getMsaHighlightingSchemes(DNAAlphabetType alphabetType) const {
-    QList<MsaHighlightingSchemeFactory *> res;
-    foreach (MsaHighlightingSchemeFactory *factory, schemes) {
-        if (factory->getSupportedAlphabets().testFlag(alphabetType)) {
-            res.append(factory);
+    if(alphabetType == DNAAlphabet_RAW) {
+        return schemes;
+    } else {
+        QList<MsaHighlightingSchemeFactory *> res;
+        foreach(MsaHighlightingSchemeFactory *factory, schemes) {
+            if (factory->getSupportedAlphabets().testFlag(alphabetType)) {
+                res.append(factory);
+            }
         }
+        return res;
     }
-    return res;
 }
 
 }   // namespace U2

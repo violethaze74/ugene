@@ -107,19 +107,23 @@ const QList<MsaColorSchemeCustomFactory *> & MsaColorSchemeRegistry::getCustomCo
 }
 
 QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaColorSchemes(DNAAlphabetType alphabetType) const {
-    QList<MsaColorSchemeFactory *> res;
-    foreach (MsaColorSchemeFactory *factory, colorers) {
-        if (factory->getSupportedAlphabets().testFlag(alphabetType)) {
-            res.append(factory);
+    if (alphabetType == DNAAlphabet_RAW) {
+        return colorers;
+    } else {
+        QList<MsaColorSchemeFactory *> res;
+        foreach(MsaColorSchemeFactory *factory, colorers) {
+            if (factory->getSupportedAlphabets().testFlag(alphabetType)) {
+                res.append(factory);
+            }
         }
+        return res;
     }
-    return res;
 }
 
 QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaCustomColorSchemes(DNAAlphabetType alphabetType) const {
     QList<MsaColorSchemeFactory *> res;
-    foreach (MsaColorSchemeFactory *factory, customColorers) {
-        if (factory->getSupportedAlphabets().testFlag(alphabetType)) {
+    foreach(MsaColorSchemeFactory *factory, customColorers) {
+        if (factory->getSupportedAlphabets().testFlag(alphabetType) || alphabetType == DNAAlphabet_RAW) {
             res.append(factory);
         }
     }

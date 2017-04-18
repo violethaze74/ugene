@@ -309,7 +309,7 @@ protected:
     void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
 
     MsaColorSchemeFactory * getDefaultColorSchemeFactory();
-    virtual void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype, bool isFirstInitialization);
+    virtual void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype);
     void applyColorScheme(const QString &id);
 
     void updateHScrollBar();
