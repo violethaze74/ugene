@@ -111,10 +111,10 @@ const QFlags<DNAAlphabetType>& MsaHighlightingSchemeFactory::getSupportedAlphabe
 
 MsaHighlightingSchemeRegistry::MsaHighlightingSchemeRegistry() {
     schemes.append(new MsaHighlightingSchemeNoColorsFactory(this, MsaHighlightingScheme::EMPTY, tr("No highlighting"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL << DNAAlphabet_AMINO << DNAAlphabet_RAW));
-    schemes.append(new MsaHighlightingSchemeAgreementsFactory(this, MsaHighlightingScheme::AGREEMENTS, tr("Agreements"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL << DNAAlphabet_AMINO));
-    schemes.append(new MsaHighlightingSchemeDisagreementsFactory(this, MsaHighlightingScheme::DISAGREEMENTS, tr("Disagreements"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL << DNAAlphabet_AMINO));
+    schemes.append(new MsaHighlightingSchemeAgreementsFactory(this, MsaHighlightingScheme::AGREEMENTS, tr("Agreements"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL << DNAAlphabet_AMINO << DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeDisagreementsFactory(this, MsaHighlightingScheme::DISAGREEMENTS, tr("Disagreements"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL << DNAAlphabet_AMINO << DNAAlphabet_RAW));
     schemes.append(new MsaHighlightingSchemeGapsFactory(this, MsaHighlightingScheme::GAPS, tr("Gaps"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL << DNAAlphabet_AMINO << DNAAlphabet_RAW));
-    schemes.append(new MsaHighlightingSchemeConservationFactory(this, MsaHighlightingScheme::CONSERVATION, tr("Conservation level"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL << DNAAlphabet_AMINO));
+    schemes.append(new MsaHighlightingSchemeConservationFactory(this, MsaHighlightingScheme::CONSERVATION, tr("Conservation level"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL << DNAAlphabet_AMINO << DNAAlphabet_RAW));
     schemes.append(new MsaHighlightingSchemeTransitionsFactory(this, MsaHighlightingScheme::TRANSITIONS, tr("Transitions"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL));
     schemes.append(new MsaHighlightingSchemeTransversionsFactory(this, MsaHighlightingScheme::TRANSVERSIONS, tr("Transversions"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL));
 }
@@ -133,13 +133,17 @@ MsaHighlightingSchemeFactory * MsaHighlightingSchemeRegistry::getMsaHighlighting
 }
 
 QList<MsaHighlightingSchemeFactory *> MsaHighlightingSchemeRegistry::getMsaHighlightingSchemes(DNAAlphabetType alphabetType) const {
-    QList<MsaHighlightingSchemeFactory *> res;
-    foreach (MsaHighlightingSchemeFactory *factory, schemes) {
-        if (factory->getSupportedAlphabets().testFlag(alphabetType)) {
-            res.append(factory);
+    if(alphabetType == DNAAlphabet_RAW) {
+        return schemes;
+    } else {
+        QList<MsaHighlightingSchemeFactory *> res;
+        foreach(MsaHighlightingSchemeFactory *factory, schemes) {
+            if (factory->getSupportedAlphabets().testFlag(alphabetType)) {
+                res.append(factory);
+            }
         }
+        return res;
     }
-    return res;
 }
 
 }   // namespace U2

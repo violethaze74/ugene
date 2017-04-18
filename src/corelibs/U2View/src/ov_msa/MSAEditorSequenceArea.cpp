@@ -26,6 +26,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QTextStream>
+#include <QWidgetAction>
 
 #include <U2Algorithm/CreateSubalignmentTask.h>
 #include <U2Algorithm/MsaColorScheme.h>
@@ -356,6 +357,20 @@ void MSAEditorSequenceArea::initRenderer() {
     renderer = new SequenceAreaRenderer(this);
 }
 
+void addActionOrTextSeparatorToMenu(QAction* a, QMenu* colorsSchemeMenu) {
+    if (a->text().contains(SECTION_TOKEN)) {
+        QString text = a->text().replace(SECTION_TOKEN, QString());
+        QLabel *pLabel = new QLabel(text);
+        pLabel->setAlignment(Qt::AlignCenter);
+        pLabel->setStyleSheet("font: bold;");
+        QWidgetAction *separator = new QWidgetAction(a);
+        separator->setDefaultWidget(pLabel);
+        colorsSchemeMenu->addAction(separator);
+    } else {
+        colorsSchemeMenu->addAction(a);
+    }
+}
+
 void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     QAction* copyMenuAction = GUIUtils::findAction(m->actions(), MSAE_MENU_LOAD);
     m->insertAction(copyMenuAction, gotoAction);
@@ -394,14 +409,14 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     colorsSchemeMenu->menuAction()->setObjectName("Colors");
     colorsSchemeMenu->setIcon(QIcon(":core/images/color_wheel.png"));
     foreach(QAction* a, colorSchemeMenuActions) {
-        colorsSchemeMenu->addAction(a);
+        addActionOrTextSeparatorToMenu(a, colorsSchemeMenu);
     }
 
     QMenu* customColorSchemaMenu = new QMenu(tr("Custom schemes"), colorsSchemeMenu);
     customColorSchemaMenu->menuAction()->setObjectName("Custom schemes");
 
     foreach(QAction* a, customColorSchemeMenuActions) {
-        customColorSchemaMenu->addAction(a);
+        addActionOrTextSeparatorToMenu(a, customColorSchemaMenu);
     }
 
     if (!customColorSchemeMenuActions.isEmpty()){
@@ -421,7 +436,7 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     highlightSchemeMenu->menuAction()->setObjectName("Highlighting");
 
     foreach(QAction* a, highlightingSchemeMenuActions) {
-        highlightSchemeMenu->addAction(a);
+        addActionOrTextSeparatorToMenu(a, highlightSchemeMenu);
     }
     highlightSchemeMenu->addSeparator();
     highlightSchemeMenu->addAction(useDotsAction);
