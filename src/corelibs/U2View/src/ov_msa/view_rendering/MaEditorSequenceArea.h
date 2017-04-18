@@ -48,6 +48,7 @@ namespace U2 {
 #define SETTINGS_HIGHLIGHT_AMINO    "highlight_amino"
 #define SETTINGS_HIGHLIGHT_RAW      "highlight_raw"
 #define SETTINGS_COPY_FORMATTED "copyformatted"
+#define SECTION_TOKEN         QString("SEPARATOR")
 
 class GScrollBar;
 class MaEditor;
@@ -305,7 +306,14 @@ protected:
     void updateColorAndHighlightSchemes();
 
     void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);
+    void fillColorSchemeMenuActions(QList<QAction*> &actions, QList<MsaColorSchemeFactory*> colorFactories);
+    void createAndFillColorSchemeMenuActions(QList<QAction*> &actions, QList<MsaColorSchemeFactory*> colorFactories);
     void registerCommonColorSchemes();
+
+    void createAndFillHighlightingMenuActions(QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories);
+    void MyMethod(QList<MsaColorSchemeFactory*> colorFactories);
+
+    void fillHighlightingSchemeMenuActions(QList<MsaHighlightingSchemeFactory*> colorFactories);
     void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
 
     MsaColorSchemeFactory * getDefaultColorSchemeFactory();

@@ -67,8 +67,6 @@ private:
     void fillColorCbWithGrouping(QList<MsaColorSchemeFactory *> colorSchemesFactories);
     void fillHighlightingCbWithGrouping(QList<MsaHighlightingSchemeFactory *> colorSchemesFactories);
 
-    void addColorSchemesByAlphabet(QList<MsaColorSchemeFactory*> colorSchemesFactories, DNAAlphabetType alph);
-
     MSAEditor *msa;
     MaEditorSequenceArea *seqArea;
     QComboBox *colorScheme;
