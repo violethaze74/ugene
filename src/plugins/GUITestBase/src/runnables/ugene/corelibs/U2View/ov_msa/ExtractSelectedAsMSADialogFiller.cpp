@@ -70,7 +70,7 @@ void ExtractSelectedAsMSADialogFiller::commonScenario() {
         GTLineEdit::setText(os,toSpin, QString::number(to));
     }
 
-    QLineEdit *filepathEdit=dialog->findChild<QLineEdit*>(2"filepathEdit");
+    QLineEdit *filepathEdit=dialog->findChild<QLineEdit*>("filepathEdit");
     GT_CHECK(filepathEdit!=NULL, "filepathEdit is NULL");
     GTLineEdit::setText(os,filepathEdit,filepath, dontCheckFilepath);
     GTGlobals::sleep(300);
