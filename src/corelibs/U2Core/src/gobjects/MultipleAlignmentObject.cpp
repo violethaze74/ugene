@@ -335,17 +335,13 @@ void MultipleAlignmentObject::insertGap(const U2Region &rows, int pos, int count
     int endSeq = startSeq + rows.length;
 
     QList<qint64> rowIdsToInsert;
-    bool needToAddGap = false;
     for (int i = startSeq; i < endSeq; ++i) {
         qint64 rowId = ma->getRow(i)->getRowId();
         rowIdsToInsert.append(rowId);
-        if ((ma->getRow(i)->getRowLengthWithoutTrailing() == getLength()) && (needToAddGap == false)) {
-            needToAddGap = true;
-        }
     }
 
     U2OpStatus2Log os;
-    getDbiUtilsInsertGap(entityRef, rowIdsToInsert, pos, count, os, needToAddGap);
+    dbiInsertGap(entityRef, rowIdsToInsert, pos, count, os);
     SAFE_POINT_OP(os, );
 
     MaModificationInfo mi;

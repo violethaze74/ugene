@@ -145,8 +145,8 @@ void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QS
     updateCachedMultipleAlignment();
 }
 
-void MultipleSequenceAlignmentObject::getDbiUtilsInsertGap(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os, bool needToAddGap) {
-    MsaDbiUtils::insertGaps(msaRef, rowIds, pos, count, os, needToAddGap);
+void MultipleSequenceAlignmentObject::dbiInsertGap(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os) {
+    MsaDbiUtils::insertGaps(msaRef, rowIds, pos, count, os);
 }
 
 void MultipleSequenceAlignmentObject::deleteColumnWithGaps(U2OpStatus &os, int requiredGapCount) {

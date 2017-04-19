@@ -152,6 +152,8 @@ public:
 
     virtual void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
+    virtual void updateReference();
+
     void cancelSelection();
 
     U2Region getSelectedRows() const;

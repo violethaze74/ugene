@@ -65,6 +65,8 @@ public:
 
     void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
+    virtual void updateReference();
+
 signals:
     void si_clearReferenceSelection();
 

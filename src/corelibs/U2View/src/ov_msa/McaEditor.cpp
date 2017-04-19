@@ -82,7 +82,7 @@ McaEditor::McaEditor(const QString &viewName,
     }
 }
 
-void McaEditor::setReferenceCache(QByteArray& newRefCache) {
+void McaEditor::setReferenceCache(const QByteArray& newRefCache) {
     referenceCache = newRefCache;
 }
 
@@ -200,8 +200,8 @@ QWidget* McaEditor::createWidget() {
     return ui;
 }
 
-U2SequenceObject& McaEditor::getRefereceObj() const {
-    return *referenceObj;
+U2SequenceObject* McaEditor::getRefereceObj() const {
+    return referenceObj;
 }
 
 McaEditorWgt::McaEditorWgt(McaEditor *editor)

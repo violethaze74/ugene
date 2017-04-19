@@ -26,13 +26,14 @@
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
-#include <U2Core/DNASequenceUtils.h>
-#include <U2Core/U2Msa.h>
-#include <U2Core/U2Region.h>
-#include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/DNAAlphabet.h>
-#include <U2View/ADVSequenceObjectContext.h> // SANGER_TODO: rename
+//#include <U2Core/DNASequenceUtils.h>
+//#include <U2Core/U2Msa.h>
+//#include <U2Core/U2Region.h>
+//#include <U2Core/U2OpStatusUtils.h>
+//#include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2View/ADVSequenceObjectContext.h> // SANGER_TODO: rename
 
 namespace U2 {
 
@@ -104,28 +105,11 @@ void McaEditorReferenceArea::sl_fontChanged(const QFont &newFont) {
 
 void McaEditorReferenceArea::sl_update() {
     getSequenceObject()->forceCachedSequenceUpdate();
-    updateReference();
     completeUpdate();
 }
 
 void McaEditorReferenceArea::sl_onSelectionChanged() {
     emit si_selectionChanged();
-}
-
-void McaEditorReferenceArea::updateReference() {
-    qint64 newLength = editor->getMaObject()->getLength();
-    qint64 currentLength = editor->getRefereceObj().getSequenceLength();
-    if (currentLength < newLength) {
-        U2OpStatus2Log os;
-        U2Region tmp(0, currentLength);
-        QByteArray sequence = editor->getRefereceObj().getSequenceData(tmp);
-        QByteArray insert(1, U2Msa::GAP_CHAR);
-        DNASequenceUtils::insertChars(sequence, currentLength, insert, os);
-        const DNAAlphabet* alphabet = editor->getRefereceObj().getAlphabet();
-        DNASequence dNASequence(sequence, alphabet);
-        editor->getRefereceObj().setWholeSequence(dNASequence);
-        editor->setReferenceCache(editor->getRefereceObj().getWholeSequenceData(os));
-    }
 }
 
 } // namespace

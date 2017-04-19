@@ -26,6 +26,7 @@
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -133,6 +134,25 @@ int McaEditorSequenceArea::countHeightForSequences(bool countClipped) const {
         i++;
     }
     return nVisible;
+}
+
+void McaEditorSequenceArea::updateReference() {
+    McaEditor* mcaEditor = getEditor();
+    qint64 newLength = mcaEditor->getMaObject()->getLength();
+    qint64 currentLength = mcaEditor->getRefereceObj()->getSequenceLength();
+    if (currentLength < newLength) {
+        U2OpStatus2Log os;
+      //  U2Region tmp(0, currentLength);
+        DNASequence dnaSequence = mcaEditor->getRefereceObj()->getWholeSequence(os);
+     //   QByteArray sequence = mcaEditor->getRefereceObj()->getSequenceData(tmp);
+        QByteArray insert(1, U2Msa::GAP_CHAR);
+        DNASequenceUtils::insertChars(dnaSequence.seq, currentLength, insert, os);
+        const DNAAlphabet* alphabet = mcaEditor->getRefereceObj()->getAlphabet();
+     //   DNASequence dNASequence(dna, alphabet);
+     //   int test = dNASequence.length();
+        mcaEditor->getRefereceObj()->setWholeSequence(dnaSequence);
+        mcaEditor->setReferenceCache(mcaEditor->getRefereceObj()->getWholeSequenceData(os));
+    }
 }
 
 void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel, bool newHighlightSelection) {
