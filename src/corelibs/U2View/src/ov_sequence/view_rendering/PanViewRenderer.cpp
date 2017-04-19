@@ -148,7 +148,6 @@ void PanViewRenderer::drawSelection(QPainter &p, const QSize &canvasSize, const 
     int hCenter = getContentIndentY(canvasSize, visibleRange);
     p.translate(0, hCenter);
 
-    p.fillRect(0, 0, canvasSize.width(), canvasSize.height(), Qt::white);
     drawSequence(p, canvasSize, visibleRange);
 
     AnnotationDisplaySettings displaySettings;
