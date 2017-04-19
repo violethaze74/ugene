@@ -82,6 +82,10 @@ McaEditor::McaEditor(const QString &viewName,
     }
 }
 
+void McaEditor::setReferenceCache(QByteArray& newRefCache) {
+    referenceCache = newRefCache;
+}
+
 void McaEditor::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(zoomInAction);
     tb->addAction(zoomOutAction);
@@ -194,6 +198,10 @@ QWidget* McaEditor::createWidget() {
     qDeleteAll(filters);
 
     return ui;
+}
+
+U2SequenceObject& McaEditor::getRefereceObj() const {
+    return *referenceObj;
 }
 
 McaEditorWgt::McaEditorWgt(McaEditor *editor)

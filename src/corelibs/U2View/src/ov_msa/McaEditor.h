@@ -50,6 +50,7 @@ public:
 
     virtual int getRowHeight() const;
     virtual int getRowContentIndent(int rowId) const;
+    U2SequenceObject& getRefereceObj() const;
 
     bool isChromVisible(qint64 rowId) const;
     void toggleChromVisibility(qint64 rowId);
@@ -59,6 +60,8 @@ public:
     char getReferenceCharAt(int pos) const;
 
     SequenceObjectContext* getReferenceContext() const;
+
+    void setReferenceCache(QByteArray& neRefCache);
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint & pos);

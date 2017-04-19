@@ -52,6 +52,8 @@ private slots:
     void sl_update();
 
 private:
+    void updateReference();
+
     McaEditor* editor;
     McaReferenceAreaRenderer *renderer;
 };

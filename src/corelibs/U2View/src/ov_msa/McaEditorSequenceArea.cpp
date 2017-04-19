@@ -140,6 +140,7 @@ void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel, bool newH
         // ignore multi-selection
         return;
     }
+
     if (getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(sel.y(), sel.x())) {
         // clear selection
         emit si_clearReferenceSelection();
