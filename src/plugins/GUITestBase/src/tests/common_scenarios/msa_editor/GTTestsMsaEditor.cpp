@@ -4644,17 +4644,17 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
             GTWidget::click(os, GTWidget::findWidget(os, "noneButton", dialog));
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "You must select at least one sequence"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+
 //    Start pos > end pos
-            QSpinBox* startPosBox = GTWidget::findExactWidget<QSpinBox*>(os, "startPosBox", dialog);
-            GTSpinBox::setValue(os, startPosBox, 50, GTGlobals::UseKeyBoard);
-            QSpinBox* endPosBox = GTWidget::findExactWidget<QSpinBox*>(os, "endPosBox", dialog);
-            GTSpinBox::setValue(os, endPosBox, 40, GTGlobals::UseKeyBoard);
+            QLineEdit* startLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "startPosBox", dialog);
+            GTLineEdit::setText(os, startLineEdit, "50");
+            QLineEdit* endLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "endPosBox", dialog);
+            GTLineEdit::setText(os, endLineEdit, "40");
 
 
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Start position must be less than end position!"));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Illegal region!"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-            GTGlobals::sleep(500);
-
+            GTGlobals::sleep(500);      
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
