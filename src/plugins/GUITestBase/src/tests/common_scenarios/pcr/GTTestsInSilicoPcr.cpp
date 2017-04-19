@@ -424,15 +424,15 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //5. Click "Find product(s) anyway".
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);    
 
     //Expected: one product is found.
     CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count");
 
     //6. Choose "Inner" annotation extraction.
     QComboBox *annsComboBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "annsComboBox"));
-    GTComboBox::setCurrentIndex(os, annsComboBox, 0);
-
+    GTComboBox::setCurrentIndex(os, annsComboBox, 1);
+    
     //7. Click "Export product(s)".
     GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -443,7 +443,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //8. Choose "All annotations" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
-    GTComboBox::setCurrentIndex(os, annsComboBox, 1);
+    GTComboBox::setCurrentIndex(os, annsComboBox, 0);
 
     //9. Click "Export product(s)".
     GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
