@@ -1,4 +1,4 @@
-﻿/**
+/**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
@@ -2814,7 +2814,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2_linux){
     qint64 bigSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
     qint64 smallSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
 
-    CHECK_SET_ERR(bigSize==4785325 && smallSize==914838, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
+    CHECK_SET_ERR(bigSize==4785325 && smallSize==914835, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
 //    Expected state: image is exported
 }
 
