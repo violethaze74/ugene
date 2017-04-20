@@ -56,7 +56,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="substitutionModel">
       <attribute name="title">
@@ -330,7 +330,7 @@ Uncheck to get the maximum likelihood estimate.</string>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QRadioButton" name="bootstrapCheckBox">
+        <widget class="QRadioButton" name="bootstrapRadioButton">
          <property name="text">
           <string>Perform bootstrap</string>
          </property>
@@ -564,7 +564,7 @@ Uncheck to get the maximum likelihood estimate.</string>
  <resources/>
  <connections>
   <connection>
-   <sender>bootstrapCheckBox</sender>
+   <sender>bootstrapRadioButton</sender>
    <signal>toggled(bool)</signal>
    <receiver>bootstrapSpinBox</receiver>
    <slot>setEnabled(bool)</slot>
@@ -580,7 +580,7 @@ Uncheck to get the maximum likelihood estimate.</string>
    </hints>
   </connection>
   <connection>
-   <sender>bootstrapCheckBox</sender>
+   <sender>bootstrapRadioButton</sender>
    <signal>toggled(bool)</signal>
    <receiver>fastMethodCombo</receiver>
    <slot>setDisabled(bool)</slot>

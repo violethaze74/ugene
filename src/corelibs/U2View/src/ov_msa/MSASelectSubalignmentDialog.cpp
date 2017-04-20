@@ -66,8 +66,8 @@ SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor *editor, const U2Reg
 }
 
 void SelectSubalignmentDialog::accept() {
-    int start = startPosBox->value() - 1;
-    int end = endPosBox->value() - 1;
+    int start = startLineEdit->value() - 1;
+    int end = endLineEdit->value() - 1;
     int seqLen = editor->getAlignmentLen();
 
     CHECK_EXT( start <= end,
@@ -145,11 +145,11 @@ void SelectSubalignmentDialog::init() {
 #endif
 
 
-    startPosBox->setMaximum(alignLength);
-    endPosBox->setMaximum(alignLength);
+    startLineEdit->setMaximum(alignLength);
+    endLineEdit->setMaximum(alignLength);
 
-    startPosBox->setValue(window.startPos + 1);
-    endPosBox->setValue(window.endPos());
+    startLineEdit->setValue(window.startPos + 1);
+    endLineEdit->setValue(window.endPos());
 
     for (int i = 0; i < rowNumber; i++) {
         QCheckBox *cb = new QCheckBox(mobj->getMultipleAlignment()->getRow(i)->getName(), this);

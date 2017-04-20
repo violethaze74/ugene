@@ -24,7 +24,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="startPosBox">
+      <widget class="QLineEdit" name="startLineEdit">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -53,7 +53,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="endPosBox">
+      <widget class="QLineEdit" name="endLineEdit">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>

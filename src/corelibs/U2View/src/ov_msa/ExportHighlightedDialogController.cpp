@@ -57,7 +57,7 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
 
     initSaveController();
 
-    connect(ui->endPosBox, SIGNAL(valueChanged(int)), SLOT(endPosValueChanged()));
+    connect(ui->endLineEdit, SIGNAL(valueChanged(int)), SLOT(endPosValueChanged()));
 
     int alignLength = msaui->getEditor()->getMaObject()->getLength();
     QRect selection = msaui->getSequenceArea()->getSelection().getRect();
@@ -72,22 +72,22 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
         endPos = selection.x() + selection.width();
     }
 
-    ui->startPosBox->setMaximum(endPos);
-    ui->endPosBox->setMaximum(alignLength);
+    ui->startLineEdit->setMaximum(endPos);
+    ui->endLineEdit->setMaximum(alignLength);
 
-    ui->startPosBox->setMinimum(1);
-    ui->endPosBox->setMinimum(2);
+    ui->startLineEdit->setMinimum(1);
+    ui->endLineEdit->setMinimum(2);
 
-    ui->startPosBox->setValue(startPos);
-    ui->endPosBox->setValue(endPos);
+    ui->startLineEdit->setValue(startPos);
+    ui->endLineEdit->setValue(endPos);
 }
 ExportHighligtingDialogController::~ExportHighligtingDialogController(){
     delete ui;
 }
 
 void ExportHighligtingDialogController::accept(){
-    startPos = ui->startPosBox->value();
-    endPos = ui->endPosBox->value();
+    startPos = ui->startLineEdit->value();
+    endPos = ui->endLineEdit->value();
     if(ui->oneIndexRB->isChecked()){
         startingIndex = 1;
     }else{
@@ -111,7 +111,7 @@ void ExportHighligtingDialogController::lockKeepGaps(){
 }
 
 void ExportHighligtingDialogController::endPosValueChanged(){
-    ui->startPosBox->setMaximum(ui->endPosBox->value() - 1);
+    ui->startLineEdit->setMaximum(ui->endLineEdit->value() - 1);
 }
 
 void ExportHighligtingDialogController::initSaveController() {

@@ -53,15 +53,15 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Extract"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    startPosBox->setValidator(new QIntValidator(1, mobj->getLength(), startPosBox));
-    endPosBox->setValidator(new QIntValidator(1, mobj->getLength(), endPosBox));
+	startLineEdit->setValidator(new QIntValidator(1, mobj->getLength(), startLineEdit));
+	endLineEdit->setValidator(new QIntValidator(1, mobj->getLength(), endLineEdit));
     
     connect(allButton, SIGNAL(clicked()), SLOT(sl_allButtonClicked()));
     connect(noneButton, SIGNAL(clicked()), SLOT(sl_noneButtonClicked()));
     connect(invertButton, SIGNAL(clicked()), SLOT(sl_invertButtonClicked()));
 
-    connect(startPosBox, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
-    connect(endPosBox, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
+	connect(startLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
+	connect(endLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
     
     
     int rowNumber = mobj->getNumRows();
@@ -92,8 +92,8 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
         startPos = selection.x() + 1;
         endPos = selection.x() + selection.width();
     }
-    startPosBox->setText(QString::number(startPos));
-    endPosBox->setText(QString::number(endPos));
+	startLineEdit->setText(QString::number(startPos));
+	endLineEdit->setText(QString::number(endPos));
 
     for (int i=0; i<rowNumber; i++) {
         QCheckBox *cb = new QCheckBox(mobj->getMsa()->getMsaRow(i)->getName(), this);
@@ -150,22 +150,22 @@ void CreateSubalignmentDialogController::sl_noneButtonClicked(){
 }
 
 void CreateSubalignmentDialogController::sl_regionChanged() {
-    int start = startPosBox->text().toInt();
-    int end = endPosBox->text().toInt();
+    int start = startLineEdit->text().toInt();
+    int end = endLineEdit->text().toInt();
 
     QPalette happyP = filepathEdit->palette();
-    startPosBox->setPalette(happyP);
-    endPosBox->setPalette(happyP);
+    startLineEdit->setPalette(happyP);
+    endLineEdit->setPalette(happyP);
     
     if (start <= 0) {
-        QPalette p = startPosBox->palette();
+        QPalette p = startLineEdit->palette();
         p.setColor(QPalette::Base, QColor(255,200,200));
-        startPosBox->setPalette(p);
+        startLineEdit->setPalette(p);
     }
     if (end <= start || end > mobj->getLength()) {
-        QPalette p = endPosBox->palette();
+        QPalette p = endLineEdit->palette();
         p.setColor(QPalette::Base, QColor(255,200,200));
-        endPosBox->setPalette(p);
+        endLineEdit->setPalette(p);
     }
 }
 
@@ -211,8 +211,8 @@ void CreateSubalignmentDialogController::accept(){
     }
 
     // '-1' because in memory positions start from 0 not 1
-    int start = startPosBox->text().toInt() - 1;
-    int end = endPosBox->text().toInt() - 1;
+    int start = startLineEdit->text().toInt() - 1;
+    int end = endLineEdit->text().toInt() - 1;
     int seqLen = mobj->getLength();
 
     if( start > end ) {

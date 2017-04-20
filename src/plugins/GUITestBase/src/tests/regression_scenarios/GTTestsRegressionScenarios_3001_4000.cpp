@@ -2978,11 +2978,11 @@ GUI_TEST_CLASS_DEFINITION(test_3451) {
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR( dialog, "activeModalWidget is NULL");
 
-            QSpinBox *startPos = dialog->findChild<QSpinBox*>("startPosBox");
-            CHECK_SET_ERR( startPos != NULL, "startPosBox is NULL");
+            QSpinBox *startPos = dialog->findChild<QSpinBox*>("startLineEdit");
+            CHECK_SET_ERR( startPos != NULL, "startLineEdit is NULL");
 
-            QSpinBox *endPos = dialog->findChild<QSpinBox*>("endPosBox");
-            CHECK_SET_ERR( endPos != NULL, "endPosBox is NULL");
+            QSpinBox *endPos = dialog->findChild<QSpinBox*>("endLineEdit");
+            CHECK_SET_ERR( endPos != NULL, "endLineEdit is NULL");
 
             GTSpinBox::checkLimits(os, startPos, 1, 603);
             GTSpinBox::checkLimits(os, endPos, 2, 604);

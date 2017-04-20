@@ -3839,18 +3839,18 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
             QPushButton* ok = box->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(ok !=NULL, "ok button is NULL");
 
-            QSpinBox* startPosBox = dialog->findChild<QSpinBox*>("startPosBox");
-            CHECK_SET_ERR(startPosBox != NULL, "startPosBox is NULL");
-            GTSpinBox::setValue(os, startPosBox, 10);
+            QSpinBox* startLineEdit = dialog->findChild<QSpinBox*>("startLineEdit");
+            CHECK_SET_ERR(startLineEdit != NULL, "startLineEdit is NULL");
+            GTSpinBox::setValue(os, startLineEdit, 10);
 
-            QSpinBox* endPosBox = dialog->findChild<QSpinBox*>("endPosBox");
-            CHECK_SET_ERR(endPosBox != NULL, "endPoxBox is NULL");
-            GTSpinBox::setValue(os, endPosBox, 5);
+            QSpinBox* endLineEdit = dialog->findChild<QSpinBox*>("endLineEdit");
+            CHECK_SET_ERR(endLineEdit != NULL, "endPoxBox is NULL");
+            GTSpinBox::setValue(os, endLineEdit, 5);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
             GTWidget::click(os, ok);
 
-            GTSpinBox::setValue(os, endPosBox, 15);
+            GTSpinBox::setValue(os, endLineEdit, 15);
 
             QWidget *noneButton = dialog->findChild<QWidget*>("noneButton");
             CHECK_SET_ERR(noneButton != NULL, "noneButton is NULL");
@@ -4646,9 +4646,9 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
 //    Start pos > end pos
-            QLineEdit* startLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "startPosBox", dialog);
+            QLineEdit* startLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "startLineEdit", dialog);
             GTLineEdit::setText(os, startLineEdit, "50");
-            QLineEdit* endLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "endPosBox", dialog);
+            QLineEdit* endLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "endLineEdit", dialog);
             GTLineEdit::setText(os, endLineEdit, "40");
 
 
