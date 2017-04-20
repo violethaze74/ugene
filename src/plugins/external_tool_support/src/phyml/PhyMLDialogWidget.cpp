@@ -119,7 +119,7 @@ void PhyMlWidget::createWidgetsControllers() {
     gammaEstimationController->addDependentParameter(ParameterDependence(gammaController, true));
 
     //Bootstrap replicates number
-    InputWidgetController* bootstrapCheckBoxController = widgetControllers.addWidgetController(bootstrapCheckBox, PhyMlSettingsPreffixes::UseBootstrap, "");
+    InputWidgetController* bootstrapCheckBoxController = widgetControllers.addWidgetController(bootstrapRadioButton, PhyMlSettingsPreffixes::UseBootstrap, "");
     InputWidgetController* bootstrapController = widgetControllers.addWidgetController(bootstrapSpinBox, PhyMlSettingsPreffixes::BootstrapReplicatesNumber, "-b");
     bootstrapCheckBoxController->addDependentParameter(ParameterDependence(bootstrapController , true));
 
@@ -197,7 +197,7 @@ void PhyMlWidget::sl_checkSubModelType(const QString& newModel){
 
 void PhyMlWidget::fillSettings(CreatePhyTreeSettings& settings){
     settings.extToolArguments = generatePhyMlSettingsScript();
-    settings.bootstrap = bootstrapCheckBox->isChecked();
+    settings.bootstrap = bootstrapRadioButton->isChecked();
     displayOptions->fillSettings(settings);
 }
 
