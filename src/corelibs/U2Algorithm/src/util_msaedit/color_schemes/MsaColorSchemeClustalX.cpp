@@ -251,7 +251,7 @@ void MsaColorSchemeClustalX::setColorIdx(int seq, int pos, int colorIdx) const {
     colorsCache[cacheIdx] = val;
 }
 
-MsaColorSchemeClustalXFactory::MsaColorSchemeClustalXFactory(QObject *parent, const QString &id, const QString &name, QList<DNAAlphabetType> &alphabetType)
+MsaColorSchemeClustalXFactory::MsaColorSchemeClustalXFactory(QObject *parent, const QString &id, const QString &name, AlphabetFlags &alphabetType)
     : MsaColorSchemeFactory(parent, id, name, alphabetType)
 {
 

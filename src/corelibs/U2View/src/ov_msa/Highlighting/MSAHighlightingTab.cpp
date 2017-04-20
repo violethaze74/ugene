@@ -193,8 +193,7 @@ void MSAHighlightingTab::initColorCB() {
     highlightingScheme->blockSignals(true);
 
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QList<MsaColorSchemeFactory *> colorSchemesFactories = msaColorSchemeRegistry->getMsaColorSchemes(msa->getMaObject()->getAlphabet()->getType());
-    colorSchemesFactories << msaColorSchemeRegistry->getMsaCustomColorSchemes(msa->getMaObject()->getAlphabet()->getType());
+    QList<MsaColorSchemeFactory *> colorSchemesFactories = msaColorSchemeRegistry->getAllMsaColorSchemes(msa->getMaObject()->getAlphabet()->getType());
 
     colorScheme->clear();
     if (isAlphabetRaw) {
@@ -226,11 +225,11 @@ void MSAHighlightingTab::fillColorCbWithGrouping(QList<MsaColorSchemeFactory *> 
     QList<MsaColorSchemeFactory *> aminoColorSchemesFactories;
     QList<MsaColorSchemeFactory *> nucleotideColorSchemesFactories;
     foreach(MsaColorSchemeFactory *factory, colorSchemesFactories) {
-        if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_RAW)) {
+        if (factory->isAlphabetFit(DNAAlphabet_RAW)) {
             rawColorSchemesFactories.append(factory);
-        } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_AMINO)) {
+        } else if (factory->isAlphabetFit(DNAAlphabet_AMINO)) {
             aminoColorSchemesFactories.append(factory);
-        } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_NUCL)) {
+        } else if (factory->isAlphabetFit(DNAAlphabet_NUCL)) {
             nucleotideColorSchemesFactories.append(factory);
         }
     }
@@ -258,15 +257,15 @@ void MSAHighlightingTab::fillHighlightingCbWithGrouping(QList<MsaHighlightingSch
     QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories;
     QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories;
     foreach(MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
-        if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_AMINO) &&
-            factory->getSupportedAlphabets().testFlag(DNAAlphabet_NUCL) &&
-            factory->getSupportedAlphabets().testFlag(DNAAlphabet_RAW)) {
+        if (factory->isAlphabetFit(DNAAlphabet_AMINO) &&
+            factory->isAlphabetFit(DNAAlphabet_NUCL) &&
+            factory->isAlphabetFit(DNAAlphabet_RAW)) {
             commonHighlightSchemesFactories.append(factory);
-        } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_RAW)) {
+        } else if (factory->isAlphabetFit(DNAAlphabet_RAW)) {
             rawHighlightSchemesFactories.append(factory);
-        } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_AMINO)) {
+        } else if (factory->isAlphabetFit(DNAAlphabet_AMINO)) {
             aminoHighlightSchemesFactories.append(factory);
-        } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_NUCL)) {
+        } else if (factory->isAlphabetFit(DNAAlphabet_NUCL)) {
             nucleotideHighlightSchemesFactories.append(factory);
         }
     }

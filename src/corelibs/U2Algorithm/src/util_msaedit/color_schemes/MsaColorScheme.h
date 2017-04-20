@@ -80,20 +80,20 @@ protected:
 class U2ALGORITHM_EXPORT MsaColorSchemeFactory : public QObject {
     Q_OBJECT
 public:
-    MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, QList<DNAAlphabetType> &supportedAlphabetsList);
+    MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
     virtual MsaColorScheme * create(QObject *p, MultipleAlignmentObject *obj) const = 0;
 
     const QString & getId() const;
     const QString getName() const;
 
-    const QFlags<DNAAlphabetType>& getSupportedAlphabets() const;
+    bool isAlphabetFit(DNAAlphabetType alphabet) const;
 signals:
     void si_factoryChanged();
 
 protected:
     QString         id;
     QString         name;
-    QFlags<DNAAlphabetType> supportedAlphabets;
+    AlphabetFlags supportedAlphabets;
 };
 
 class U2ALGORITHM_EXPORT MsaColorSchemeRegistry : public QObject {
@@ -105,6 +105,7 @@ public:
     const QList<MsaColorSchemeFactory *> & getMsaColorSchemes() const;
     const QList<MsaColorSchemeCustomFactory *> &getCustomColorSchemes() const;
 
+    QList<MsaColorSchemeFactory *> getAllMsaColorSchemes(DNAAlphabetType alp) const;
     QList<MsaColorSchemeFactory *> getMsaColorSchemes(DNAAlphabetType alp) const;
     QList<MsaColorSchemeFactory *> getMsaCustomColorSchemes(DNAAlphabetType alphabetType) const;
 

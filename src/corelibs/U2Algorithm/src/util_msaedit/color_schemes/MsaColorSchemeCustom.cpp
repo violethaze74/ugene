@@ -28,7 +28,7 @@
 namespace U2 {
 
 MsaColorSchemeCustomFactory::MsaColorSchemeCustomFactory(QObject *parent, const ColorSchemeData &scheme)
-    : MsaColorSchemeFactory(parent, scheme.name, scheme.name, QList<DNAAlphabetType>() << scheme.type),
+    : MsaColorSchemeFactory(parent, scheme.name, scheme.name, AlphabetFlags() | scheme.type | DNAAlphabet_RAW),
       colorsPerChar(colorMapToColorVector(scheme.alpColors))
 {
 
@@ -41,7 +41,7 @@ MsaColorScheme * MsaColorSchemeCustomFactory::create(QObject *parent, MultipleAl
 bool MsaColorSchemeCustomFactory::isEqualTo(const ColorSchemeData &scheme) const {
     bool result = true;
     result &= getName() == scheme.name;
-    result &= getSupportedAlphabets().testFlag(scheme.type);
+    result &= isAlphabetFit(scheme.type);
     result &= colorsPerChar == colorMapToColorVector(scheme.alpColors);
     return result;
 }

@@ -4640,10 +4640,10 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "You must select at least one sequence"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 //    Start pos > end pos
-            QSpinBox* startPosBox = GTWidget::findExactWidget<QSpinBox*>(os, "startPosBox", dialog);
-            GTSpinBox::setValue(os, startPosBox, 50, GTGlobals::UseKeyBoard);
-            QSpinBox* endPosBox = GTWidget::findExactWidget<QSpinBox*>(os, "endPosBox", dialog);
-            GTSpinBox::setValue(os, endPosBox, 40, GTGlobals::UseKeyBoard);
+            QLineEdit* startPosBox = GTWidget::findExactWidget<QLineEdit*>(os, "startPosBox", dialog);
+            GTLineEdit::setText(os, startPosBox, "50");
+            QLineEdit* endPosBox = GTWidget::findExactWidget<QLineEdit*>(os, "endPosBox", dialog);
+            GTLineEdit::setText(os, endPosBox, "40");
 
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Start position must be less than end position!"));

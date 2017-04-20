@@ -944,8 +944,8 @@ bool MaEditorSequenceArea::getUseDotsCheckedState() const {
     return useDotsAction->isChecked();
 }
 
-void MaEditorSequenceArea::sl_changeColorSchemeOutside(const QString &name) {
-    QAction* a = GUIUtils::findActionByData(QList<QAction*>() << colorSchemeMenuActions << customColorSchemeMenuActions << highlightingSchemeMenuActions, name);
+void MaEditorSequenceArea::sl_changeColorSchemeOutside(const QString &id) {
+    QAction* a = GUIUtils::findActionByData(QList<QAction*>() << colorSchemeMenuActions << customColorSchemeMenuActions << highlightingSchemeMenuActions, id);
     if (a != NULL) {
         a->trigger();
     }
@@ -1126,16 +1126,16 @@ void MaEditorSequenceArea::sl_changeHighlightScheme(){
     foreach(QAction* action, highlightingSchemeMenuActions) {
         action->setChecked(action == a);
     }
-    if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_RAW)) {
+    if (factory->isAlphabetFit(DNAAlphabet_RAW)) {
         AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_RAW, id);
     }
-    if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_NUCL)) {
+    if (factory->isAlphabetFit(DNAAlphabet_NUCL)) {
         AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_NUCL, id);
     }
-    if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_AMINO)) {
+    if (factory->isAlphabetFit(DNAAlphabet_AMINO)) {
         AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_AMINO, id);
     }
-    if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_UNDEFINED)) {
+    if (factory->isAlphabetFit(DNAAlphabet_UNDEFINED)) {
         FAIL(tr("Unknown alphabet"), );
     }
 
@@ -1740,17 +1740,17 @@ void MaEditorSequenceArea::fillColorSchemeMenuActions(QList<QAction*> &actions, 
     }
 }
 
-void MaEditorSequenceArea::createAndFillColorSchemeMenuActions(QList<QAction*> &actions, QList<MsaColorSchemeFactory*> colorFactories) {
+void MaEditorSequenceArea::createAndFillColorSchemeMenuActions(QList<QAction*> &actions, const QList<MsaColorSchemeFactory*> &colorFactories) {
     if (editor->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW) {
         QList<MsaColorSchemeFactory *> rawColorSchemesFactories;
         QList<MsaColorSchemeFactory *> aminoColorSchemesFactories;
         QList<MsaColorSchemeFactory *> nucleotideColorSchemesFactories;
         foreach(MsaColorSchemeFactory *factory, colorFactories) {
-            if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_RAW)) {
+            if (factory->isAlphabetFit(DNAAlphabet_RAW)) {
                 rawColorSchemesFactories.append(factory);
-            } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_AMINO)) {
+            } else if (factory->isAlphabetFit(DNAAlphabet_AMINO)) {
                 aminoColorSchemesFactories.append(factory);
-            } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_NUCL)) {
+            } else if (factory->isAlphabetFit(DNAAlphabet_NUCL)) {
                 nucleotideColorSchemesFactories.append(factory);
             }
         }
@@ -1788,15 +1788,15 @@ void MaEditorSequenceArea::createAndFillHighlightingMenuActions(QList<MsaHighlig
         QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories;
         QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories;
         foreach(MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
-            if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_AMINO) &&
-                factory->getSupportedAlphabets().testFlag(DNAAlphabet_NUCL) &&
-                factory->getSupportedAlphabets().testFlag(DNAAlphabet_RAW)) {
+            if (factory->isAlphabetFit(DNAAlphabet_AMINO) &&
+                factory->isAlphabetFit(DNAAlphabet_NUCL) &&
+                factory->isAlphabetFit(DNAAlphabet_RAW)) {
                 commonHighlightSchemesFactories.append(factory);
-            } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_RAW)) {
+            } else if (factory->isAlphabetFit(DNAAlphabet_RAW)) {
                 rawHighlightSchemesFactories.append(factory);
-            } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_AMINO)) {
+            } else if (factory->isAlphabetFit(DNAAlphabet_AMINO)) {
                 aminoHighlightSchemesFactories.append(factory);
-            } else if (factory->getSupportedAlphabets().testFlag(DNAAlphabet_NUCL)) {
+            } else if (factory->isAlphabetFit(DNAAlphabet_NUCL)) {
                 nucleotideHighlightSchemesFactories.append(factory);
             }
         }
@@ -1822,8 +1822,8 @@ void MaEditorSequenceArea::createAndFillHighlightingMenuActions(QList<MsaHighlig
     }
 }
 
-void MaEditorSequenceArea::fillHighlightingSchemeMenuActions(QList<MsaHighlightingSchemeFactory*> colorFactories) {
-    foreach(MsaHighlightingSchemeFactory *factory, colorFactories) {
+void MaEditorSequenceArea::fillHighlightingSchemeMenuActions(const QList<MsaHighlightingSchemeFactory*> &highlightingSchemeFactories) {
+    foreach(MsaHighlightingSchemeFactory *factory, highlightingSchemeFactories) {
         QString name = factory->getName();
         QAction *action = new QAction(name, this);
         action->setObjectName(name);
@@ -1889,10 +1889,10 @@ void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hs
         break;
     }
 
-    if (colorScheme != NULL && (colorScheme->getFactory()->getSupportedAlphabets().testFlag(atype) || atype == DNAAlphabet_RAW)) {
+    if (colorScheme != NULL && (colorScheme->getFactory()->isAlphabetFit(atype) || atype == DNAAlphabet_RAW)) {
         csid = colorScheme->getFactory()->getId();
     }
-    if (highlightingScheme != NULL && (highlightingScheme->getFactory()->getSupportedAlphabets().testFlag(atype) || atype == DNAAlphabet_RAW)) {
+    if (highlightingScheme != NULL && (highlightingScheme->getFactory()->isAlphabetFit(atype) || atype == DNAAlphabet_RAW)) {
         hsid = highlightingScheme->getFactory()->getId();
     }
 }

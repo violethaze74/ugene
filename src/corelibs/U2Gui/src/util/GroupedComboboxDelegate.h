@@ -32,7 +32,7 @@ class QStandardItemModel;
 namespace U2 {
 
 class U2GUI_EXPORT GroupedComboBoxDelegate : public QItemDelegate {
-Q_OBJECT
+    Q_OBJECT
 public:
     explicit GroupedComboBoxDelegate(QObject *parent = 0);
 

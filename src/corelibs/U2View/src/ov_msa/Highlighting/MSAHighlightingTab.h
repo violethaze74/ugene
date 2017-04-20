@@ -35,13 +35,13 @@ class QLabel;
 class QRadioButton;
 class QSlider;
 class QToolButton;
-class MsaColorSchemeFactory;
-class MsaHighlightingSchemeFactory;
 
 namespace U2 {
 
 class MSAEditor;
+class MsaColorSchemeFactory;
 class MaEditorSequenceArea;
+class MsaHighlightingSchemeFactory;
 
 class U2VIEW_EXPORT MSAHighlightingTab : public QWidget
 {
@@ -49,7 +49,7 @@ class U2VIEW_EXPORT MSAHighlightingTab : public QWidget
 public:
     MSAHighlightingTab(MSAEditor* msa);
 
-    private slots:
+private slots:
     void sl_sync();
 
     void sl_updateHint();

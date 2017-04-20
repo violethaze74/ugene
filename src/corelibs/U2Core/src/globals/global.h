@@ -147,4 +147,7 @@ enum DNAAlphabetType {
     DNAAlphabet_AMINO   = 0x4
 };
 
+Q_DECLARE_FLAGS(AlphabetFlags, DNAAlphabetType);
+Q_DECLARE_OPERATORS_FOR_FLAGS(AlphabetFlags);
+
 #endif

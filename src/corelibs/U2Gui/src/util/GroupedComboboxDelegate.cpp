@@ -48,8 +48,9 @@ void GroupedComboBoxDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 
 QSize GroupedComboBoxDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
     QString type = index.data(Qt::AccessibleDescriptionRole).toString();
-    if(type == QLatin1String("separator"))
+    if (type == QLatin1String("separator")) {
         return QSize(0, 10);
+    }
     return QItemDelegate::sizeHint( option, index );
 }
 

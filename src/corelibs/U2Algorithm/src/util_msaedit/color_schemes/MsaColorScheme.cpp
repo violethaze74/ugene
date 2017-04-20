@@ -67,14 +67,11 @@ const MsaColorSchemeFactory * MsaColorScheme::getFactory() const {
     return factory;
 }
 
-MsaColorSchemeFactory::MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, QList<DNAAlphabetType> &supportedAlphabetsList)
+MsaColorSchemeFactory::MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
     : QObject(parent),
       id(id),
-      name(name) {
-    foreach(DNAAlphabetType alType, supportedAlphabetsList) {
-        supportedAlphabets |= alType;
-    }
-
+      name(name),
+      supportedAlphabets(supportedAlphabets){
 }
 
 const QString & MsaColorSchemeFactory::getId() const {
@@ -85,8 +82,8 @@ const QString MsaColorSchemeFactory::getName() const {
     return name;
 }
 
-const QFlags<DNAAlphabetType>& MsaColorSchemeFactory::getSupportedAlphabets() const {
-    return supportedAlphabets;
+bool MsaColorSchemeFactory::isAlphabetFit(DNAAlphabetType alphabet) const {
+    return supportedAlphabets.testFlag(alphabet);
 }
 
 MsaColorSchemeRegistry::MsaColorSchemeRegistry() {
@@ -106,13 +103,17 @@ const QList<MsaColorSchemeCustomFactory *> & MsaColorSchemeRegistry::getCustomCo
     return customColorers;
 }
 
+QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getAllMsaColorSchemes(DNAAlphabetType alp) const {
+    return QList<MsaColorSchemeFactory *>() << getMsaColorSchemes(alp) << getMsaCustomColorSchemes(alp);
+}
+
 QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaColorSchemes(DNAAlphabetType alphabetType) const {
     if (alphabetType == DNAAlphabet_RAW) {
         return colorers;
     } else {
         QList<MsaColorSchemeFactory *> res;
         foreach(MsaColorSchemeFactory *factory, colorers) {
-            if (factory->getSupportedAlphabets().testFlag(alphabetType)) {
+            if (factory->isAlphabetFit(alphabetType)) {
                 res.append(factory);
             }
         }
@@ -123,7 +124,7 @@ QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaColorSchemes(DNAAlp
 QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaCustomColorSchemes(DNAAlphabetType alphabetType) const {
     QList<MsaColorSchemeFactory *> res;
     foreach(MsaColorSchemeFactory *factory, customColorers) {
-        if (factory->getSupportedAlphabets().testFlag(alphabetType) || alphabetType == DNAAlphabet_RAW) {
+        if (factory->isAlphabetFit(alphabetType)) {
             res.append(factory);
         }
     }
@@ -479,58 +480,58 @@ void MsaColorSchemeRegistry::initBuiltInSchemes() {
 
     //nucleic
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
-    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::EMPTY, tr("No colors"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL << DNAAlphabet_AMINO << DNAAlphabet_RAW, colorsPerChar));
+    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::EMPTY, tr("No colors"), AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW, colorsPerChar));
 
     fillLightColorsColorScheme(colorsPerChar);
     addUgeneNucleotide(colorsPerChar);
-    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::UGENE_NUCL, U2_APP_TITLE, QList<DNAAlphabetType>() << DNAAlphabet_NUCL, colorsPerChar));
+    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::UGENE_NUCL, U2_APP_TITLE, AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_RAW, colorsPerChar));
 
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
     addJalviewNucleotide(colorsPerChar);
-    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::JALVIEW_NUCL, tr("Jalview"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL, colorsPerChar));
+    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::JALVIEW_NUCL, tr("Jalview"), AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_RAW, colorsPerChar));
 
-    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdentityFactory(this, MsaColorScheme::IDENTPERC_NUCL, tr("Percentage Identity"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL));
-    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityGrayscaleFactory(this, MsaColorScheme::IDENTPERC_NUCL_GRAY, tr("Percentage Identity (gray)"), QList<DNAAlphabetType>() << DNAAlphabet_NUCL));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdentityFactory(this, MsaColorScheme::IDENTPERC_NUCL, tr("Percentage Identity"), AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_RAW));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityGrayscaleFactory(this, MsaColorScheme::IDENTPERC_NUCL_GRAY, tr("Percentage Identity (gray)"), AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_RAW));
 
     //amino
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
 
     fillLightColorsColorScheme(colorsPerChar);
     addUgeneAmino(colorsPerChar);
-    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::UGENE_AMINO, U2_APP_TITLE, QList<DNAAlphabetType>() << DNAAlphabet_AMINO, colorsPerChar));
+    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::UGENE_AMINO, U2_APP_TITLE, AlphabetFlags() | DNAAlphabet_AMINO | DNAAlphabet_RAW, colorsPerChar));
 
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
     addZappoAmino(colorsPerChar);
-    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::ZAPPO_AMINO, tr("Zappo"), QList<DNAAlphabetType>() << DNAAlphabet_AMINO, colorsPerChar));
+    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::ZAPPO_AMINO, tr("Zappo"), AlphabetFlags() | DNAAlphabet_AMINO | DNAAlphabet_RAW, colorsPerChar));
 
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
     addTailorAmino(colorsPerChar);
-    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::TAILOR_AMINO, tr("Tailor"), QList<DNAAlphabetType>() << DNAAlphabet_AMINO, colorsPerChar));
+    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::TAILOR_AMINO, tr("Tailor"), AlphabetFlags() | DNAAlphabet_AMINO | DNAAlphabet_RAW, colorsPerChar));
 
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
     addHydroAmino(colorsPerChar);
-    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::HYDRO_AMINO, tr("Hydrophobicity"), QList<DNAAlphabetType>() << DNAAlphabet_AMINO, colorsPerChar));
+    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::HYDRO_AMINO, tr("Hydrophobicity"), AlphabetFlags() | DNAAlphabet_AMINO | DNAAlphabet_RAW, colorsPerChar));
 
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
     addHelixAmino(colorsPerChar);
-    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::HELIX_AMINO, tr("Helix propensity"), QList<DNAAlphabetType>() << DNAAlphabet_AMINO, colorsPerChar));
+    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::HELIX_AMINO, tr("Helix propensity"), AlphabetFlags() | DNAAlphabet_AMINO | DNAAlphabet_RAW, colorsPerChar));
 
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
     addStrandAmino(colorsPerChar);
-    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::STRAND_AMINO, tr("Strand propensity"), QList<DNAAlphabetType>() << DNAAlphabet_AMINO, colorsPerChar));
+    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::STRAND_AMINO, tr("Strand propensity"), AlphabetFlags() | DNAAlphabet_AMINO | DNAAlphabet_RAW, colorsPerChar));
 
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
     addTurnAmino(colorsPerChar);
-    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::TURN_AMINO, tr("Turn propensity"), QList<DNAAlphabetType>() << DNAAlphabet_AMINO, colorsPerChar));
+    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::TURN_AMINO, tr("Turn propensity"), AlphabetFlags() | DNAAlphabet_AMINO | DNAAlphabet_RAW, colorsPerChar));
 
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
     addBuriedAmino(colorsPerChar);
-    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::BURIED_AMINO, tr("Buried index"), QList<DNAAlphabetType>() << DNAAlphabet_AMINO, colorsPerChar));
+    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::BURIED_AMINO, tr("Buried index"), AlphabetFlags() | DNAAlphabet_AMINO | DNAAlphabet_RAW, colorsPerChar));
 
-    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdentityFactory(this, MsaColorScheme::IDENTPERC_AMINO, tr("Percentage Identity"), QList<DNAAlphabetType>() << DNAAlphabet_AMINO));
-    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityGrayscaleFactory(this, MsaColorScheme::IDENTPERC_AMINO_GRAY, tr("Percentage Identity (gray)"), QList<DNAAlphabetType>() << DNAAlphabet_AMINO));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdentityFactory(this, MsaColorScheme::IDENTPERC_AMINO, tr("Percentage Identity"), AlphabetFlags() | DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityGrayscaleFactory(this, MsaColorScheme::IDENTPERC_AMINO_GRAY, tr("Percentage Identity (gray)"), AlphabetFlags() | DNAAlphabet_AMINO | DNAAlphabet_RAW));
 
-    addMsaColorSchemeFactory(new MsaColorSchemeClustalXFactory(this, MsaColorScheme::CLUSTALX_AMINO, tr("Clustal X"), QList<DNAAlphabetType>() << DNAAlphabet_AMINO));
+    addMsaColorSchemeFactory(new MsaColorSchemeClustalXFactory(this, MsaColorScheme::CLUSTALX_AMINO, tr("Clustal X"), AlphabetFlags() | DNAAlphabet_AMINO | DNAAlphabet_RAW));
 }
 
 void MsaColorSchemeRegistry::initCustomSchema(){
@@ -540,8 +541,8 @@ void MsaColorSchemeRegistry::initCustomSchema(){
 }
 
 ColorSchemeData::ColorSchemeData() :
-    type(DNAAlphabet_RAW),
-    defaultAlpType(false)
+    defaultAlpType(false),
+    type(DNAAlphabet_RAW)
 {
 
 }

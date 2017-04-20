@@ -208,7 +208,7 @@ public:
 
 
 public slots:
-    void sl_changeColorSchemeOutside(const QString &name);
+    void sl_changeColorSchemeOutside(const QString &id);
     void sl_changeCopyFormat(const QString& alg);
     void sl_changeColorScheme();
     void sl_delCurrentSelection();
@@ -307,13 +307,10 @@ protected:
 
     void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);
     void fillColorSchemeMenuActions(QList<QAction*> &actions, QList<MsaColorSchemeFactory*> colorFactories);
-    void createAndFillColorSchemeMenuActions(QList<QAction*> &actions, QList<MsaColorSchemeFactory*> colorFactories);
+    void createAndFillColorSchemeMenuActions(QList<QAction*> &actions, const QList<MsaColorSchemeFactory*> &colorFactories);
     void registerCommonColorSchemes();
-
     void createAndFillHighlightingMenuActions(QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories);
-    void MyMethod(QList<MsaColorSchemeFactory*> colorFactories);
-
-    void fillHighlightingSchemeMenuActions(QList<MsaHighlightingSchemeFactory*> colorFactories);
+    void fillHighlightingSchemeMenuActions(const QList<MsaHighlightingSchemeFactory*> &highlightingSchemeFactories);
     void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
 
     MsaColorSchemeFactory * getDefaultColorSchemeFactory();
