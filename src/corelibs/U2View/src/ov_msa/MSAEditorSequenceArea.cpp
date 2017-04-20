@@ -80,6 +80,7 @@
 #include "MSAEditor.h"
 #include "MaEditorNameList.h"
 #include "MSAEditorSequenceArea.h"
+#include "Highlighting/MSASchemesMenuBuilder.h"
 
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "Clipboard/SubalignmentToClipboardTask.h"
@@ -357,20 +358,6 @@ void MSAEditorSequenceArea::initRenderer() {
     renderer = new SequenceAreaRenderer(this);
 }
 
-void addActionOrTextSeparatorToMenu(QAction* a, QMenu* colorsSchemeMenu) {
-    if (a->text().contains(SECTION_TOKEN)) {
-        QString text = a->text().replace(SECTION_TOKEN, QString());
-        QLabel *pLabel = new QLabel(text);
-        pLabel->setAlignment(Qt::AlignCenter);
-        pLabel->setStyleSheet("font: bold;");
-        QWidgetAction *separator = new QWidgetAction(a);
-        separator->setDefaultWidget(pLabel);
-        colorsSchemeMenu->addAction(separator);
-    } else {
-        colorsSchemeMenu->addAction(a);
-    }
-}
-
 void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     QAction* copyMenuAction = GUIUtils::findAction(m->actions(), MSAE_MENU_LOAD);
     m->insertAction(copyMenuAction, gotoAction);
@@ -409,14 +396,14 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     colorsSchemeMenu->menuAction()->setObjectName("Colors");
     colorsSchemeMenu->setIcon(QIcon(":core/images/color_wheel.png"));
     foreach(QAction* a, colorSchemeMenuActions) {
-        addActionOrTextSeparatorToMenu(a, colorsSchemeMenu);
+        MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, colorsSchemeMenu);
     }
 
     QMenu* customColorSchemaMenu = new QMenu(tr("Custom schemes"), colorsSchemeMenu);
     customColorSchemaMenu->menuAction()->setObjectName("Custom schemes");
 
     foreach(QAction* a, customColorSchemeMenuActions) {
-        addActionOrTextSeparatorToMenu(a, customColorSchemaMenu);
+        MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, customColorSchemaMenu);
     }
 
     if (!customColorSchemeMenuActions.isEmpty()){
@@ -436,7 +423,7 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     highlightSchemeMenu->menuAction()->setObjectName("Highlighting");
 
     foreach(QAction* a, highlightingSchemeMenuActions) {
-        addActionOrTextSeparatorToMenu(a, highlightSchemeMenu);
+        MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, highlightSchemeMenu);
     }
     highlightSchemeMenu->addSeparator();
     highlightSchemeMenu->addAction(useDotsAction);

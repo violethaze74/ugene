@@ -54,9 +54,12 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/General/McaGeneralTabFactory.h \
            src/ov_msa/General/MSAGeneralTab.h \
            src/ov_msa/General/MSAGeneralTabFactory.h \
+           src/ov_msa/Highlighting/MSAColorComboboxController.h \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.h \
+           src/ov_msa/Highlighting/MSAHighlightingComboboxController.h \
+           src/ov_msa/Highlighting/MsaSchemesMenuBuilder.h \
            src/ov_msa/MaEditor.h \
            src/ov_msa/MaEditorFactory.h \
            src/ov_msa/MaEditorNameList.h \
@@ -293,9 +296,12 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/General/McaGeneralTabFactory.cpp \
            src/ov_msa/General/MSAGeneralTab.cpp \
            src/ov_msa/General/MSAGeneralTabFactory.cpp \
+           src/ov_msa/Highlighting/MSAColorComboboxController.cpp \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.cpp \
+           src/ov_msa/Highlighting/MSAHighlightingComboboxController.cpp \
+           src/ov_msa/Highlighting/MsaSchemesMenuBuilder.cpp \
            src/ov_msa/MaEditor.cpp \
            src/ov_msa/MaEditorFactory.cpp \
            src/ov_msa/MaEditorNameList.cpp \

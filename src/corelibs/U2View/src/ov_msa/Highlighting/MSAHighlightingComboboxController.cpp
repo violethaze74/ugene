@@ -1,0 +1,108 @@
+/**
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
+ 
+#include "MSAHighlightingComboboxController.h"
+
+#include <QStandardItemModel>
+
+#include <U2Algorithm/MsaHighlightingScheme.h>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
+
+#include <U2Gui/GroupedComboboxDelegate.h>
+
+#include <U2View/MSAEditor.h>
+
+namespace U2 {
+
+MSAHighlightingComboboxController::MSAHighlightingComboboxController(MSAEditor *msa, QWidget *parent) : QComboBox(parent),
+    msa(msa) {
+    setItemDelegate(new GroupedComboBoxDelegate(this));
+    init();
+    connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_indexChanged(int)));
+}
+
+void MSAHighlightingComboboxController::sl_indexChanged(int index) {
+    emit si_schemeChanged(itemData(index).toString());
+}
+
+void MSAHighlightingComboboxController::init() {
+    bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
+
+    blockSignals(true);
+
+    MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
+    QList<MsaHighlightingSchemeFactory*> HighlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(msa->getMaObject()->getAlphabet()->getType());
+
+    clear();
+    if (isAlphabetRaw) {
+        fillHighlightingCbWithGrouping(HighlightingSchemesFactories);
+    } else {
+        foreach(MsaHighlightingSchemeFactory *factory, HighlightingSchemesFactories) {
+            addItem(factory->getName(), factory->getId());
+        }
+    }
+    blockSignals(false);
+}
+
+void MSAHighlightingComboboxController::fillHighlightingCbWithGrouping(const QList<MsaHighlightingSchemeFactory *> &highlightingSchemesFactories) {
+    QList<MsaHighlightingSchemeFactory *> commonHighlightSchemesFactories;
+    QList<MsaHighlightingSchemeFactory *> rawHighlightSchemesFactories;
+    QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories;
+    QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories;
+    foreach(MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
+        if (factory->isAlphabetFit(DNAAlphabet_AMINO) &&
+            factory->isAlphabetFit(DNAAlphabet_NUCL) &&
+            factory->isAlphabetFit(DNAAlphabet_RAW)) {
+            commonHighlightSchemesFactories.append(factory);
+        } else if (factory->isAlphabetFit(DNAAlphabet_RAW)) {
+            rawHighlightSchemesFactories.append(factory);
+        } else if (factory->isAlphabetFit(DNAAlphabet_AMINO)) {
+            aminoHighlightSchemesFactories.append(factory);
+        } else if (factory->isAlphabetFit(DNAAlphabet_NUCL)) {
+            nucleotideHighlightSchemesFactories.append(factory);
+        }
+    }
+
+    foreach(MsaHighlightingSchemeFactory *factory, commonHighlightSchemesFactories) {
+        addItem(factory->getName(), factory->getId());
+    }
+    createAndFillGroup(rawHighlightSchemesFactories, tr("RAW alphabet"));
+    createAndFillGroup(aminoHighlightSchemesFactories, tr("Amino acid alphabet"));
+    createAndFillGroup(nucleotideHighlightSchemesFactories, tr("Nucleotide alphabet"));
+}
+
+void MSAHighlightingComboboxController::createAndFillGroup(QList<MsaHighlightingSchemeFactory *> rawHighlightingSchemesFactories, const QString& groupName) {
+    if (rawHighlightingSchemesFactories.isEmpty()) {
+        return;
+    }
+    GroupedComboBoxDelegate *highlightingSchemeDelegate = qobject_cast<GroupedComboBoxDelegate*>(itemDelegate());
+    QStandardItemModel *highlightingSchemeModel = qobject_cast<QStandardItemModel*>(model());
+    CHECK(highlightingSchemeDelegate != NULL, );
+    CHECK(highlightingSchemeModel != NULL, );
+    highlightingSchemeDelegate->addParentItem(highlightingSchemeModel, groupName);
+    foreach(MsaHighlightingSchemeFactory *factory, rawHighlightingSchemesFactories) {
+        highlightingSchemeDelegate->addChildItem(highlightingSchemeModel, factory->getName(), factory->getId());
+    }
+}
+
+};

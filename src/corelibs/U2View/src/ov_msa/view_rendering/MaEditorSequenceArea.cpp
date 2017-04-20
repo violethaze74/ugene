@@ -22,6 +22,7 @@
 #include "MaEditorSequenceArea.h"
 
 #include "MaEditorWgt.h"
+#include "../Highlighting/MSASchemesMenuBuilder.h"
 #include "SequenceAreaRenderer.h"
 #include "../MaEditor.h"
 #include "../MSACollapsibleModel.h"
@@ -1074,7 +1075,8 @@ void MaEditorSequenceArea::sl_registerCustomColorSchemes() {
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
     QList<MsaColorSchemeFactory *> customFactories = msaColorSchemeRegistry->getMsaCustomColorSchemes(editor->getMaObject()->getAlphabet()->getType());
     
-    createAndFillColorSchemeMenuActions(customColorSchemeMenuActions, customFactories);
+    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(customColorSchemeMenuActions, customFactories, 
+        getEditor()->getMaObject()->getAlphabet()->getType(), this);
 }
 
 void MaEditorSequenceArea::sl_colorSchemeFactoryUpdated() {
@@ -1728,49 +1730,6 @@ void MaEditorSequenceArea::initColorSchemes(MsaColorSchemeFactory *defaultColorS
     applyColorScheme(defaultColorSchemeFactory->getId());
 }
 
-void MaEditorSequenceArea::fillColorSchemeMenuActions(QList<QAction*> &actions, QList<MsaColorSchemeFactory*> colorFactories) {
-    foreach(MsaColorSchemeFactory *factory, colorFactories) {
-        QString name = factory->getName();
-        QAction *action = new QAction(name, this);
-        action->setObjectName(name);
-        action->setCheckable(true);
-        action->setData(factory->getId());
-        connect(action, SIGNAL(triggered()), SLOT(sl_changeColorScheme()));
-        actions.append(action);
-    }
-}
-
-void MaEditorSequenceArea::createAndFillColorSchemeMenuActions(QList<QAction*> &actions, const QList<MsaColorSchemeFactory*> &colorFactories) {
-    if (editor->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW) {
-        QList<MsaColorSchemeFactory *> rawColorSchemesFactories;
-        QList<MsaColorSchemeFactory *> aminoColorSchemesFactories;
-        QList<MsaColorSchemeFactory *> nucleotideColorSchemesFactories;
-        foreach(MsaColorSchemeFactory *factory, colorFactories) {
-            if (factory->isAlphabetFit(DNAAlphabet_RAW)) {
-                rawColorSchemesFactories.append(factory);
-            } else if (factory->isAlphabetFit(DNAAlphabet_AMINO)) {
-                aminoColorSchemesFactories.append(factory);
-            } else if (factory->isAlphabetFit(DNAAlphabet_NUCL)) {
-                nucleotideColorSchemesFactories.append(factory);
-            }
-        }
-        if (!rawColorSchemesFactories.isEmpty()) {
-            actions.append(new QAction(SECTION_TOKEN + tr("RAW alphabet"), this));
-            fillColorSchemeMenuActions(actions, rawColorSchemesFactories);
-        }
-        if (!aminoColorSchemesFactories.isEmpty()) {
-            actions.append(new QAction(SECTION_TOKEN + tr("Amino alphabet"), this));
-            fillColorSchemeMenuActions(actions, aminoColorSchemesFactories);
-        }
-        if (!nucleotideColorSchemesFactories.isEmpty()) {
-            actions.append(new QAction(SECTION_TOKEN + tr("Nucleotide alphabet"), this));
-            fillColorSchemeMenuActions(actions, nucleotideColorSchemesFactories);
-        }
-    } else {
-        fillColorSchemeMenuActions(actions, colorFactories);
-    }
-}
-
 void MaEditorSequenceArea::registerCommonColorSchemes() {
     qDeleteAll(colorSchemeMenuActions);
     colorSchemeMenuActions.clear();
@@ -1778,60 +1737,8 @@ void MaEditorSequenceArea::registerCommonColorSchemes() {
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
     QList<MsaColorSchemeFactory*> colorFactories = msaColorSchemeRegistry->getMsaColorSchemes(editor->getMaObject()->getAlphabet()->getType());
 
-    createAndFillColorSchemeMenuActions(colorSchemeMenuActions, colorFactories);
-}
-
-void MaEditorSequenceArea::createAndFillHighlightingMenuActions(QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories) {
-    if (editor->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW) {
-        QList<MsaHighlightingSchemeFactory *> commonHighlightSchemesFactories;
-        QList<MsaHighlightingSchemeFactory *> rawHighlightSchemesFactories;
-        QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories;
-        QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories;
-        foreach(MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
-            if (factory->isAlphabetFit(DNAAlphabet_AMINO) &&
-                factory->isAlphabetFit(DNAAlphabet_NUCL) &&
-                factory->isAlphabetFit(DNAAlphabet_RAW)) {
-                commonHighlightSchemesFactories.append(factory);
-            } else if (factory->isAlphabetFit(DNAAlphabet_RAW)) {
-                rawHighlightSchemesFactories.append(factory);
-            } else if (factory->isAlphabetFit(DNAAlphabet_AMINO)) {
-                aminoHighlightSchemesFactories.append(factory);
-            } else if (factory->isAlphabetFit(DNAAlphabet_NUCL)) {
-                nucleotideHighlightSchemesFactories.append(factory);
-            }
-        }
-
-        fillHighlightingSchemeMenuActions(commonHighlightSchemesFactories);
-
-        if (!rawHighlightSchemesFactories.isEmpty()) {
-            highlightingSchemeMenuActions.append(new QAction(SECTION_TOKEN + tr("RAW alphabet"), this));
-            fillHighlightingSchemeMenuActions(rawHighlightSchemesFactories);
-        }
-
-        if (!aminoHighlightSchemesFactories.isEmpty()) {
-            highlightingSchemeMenuActions.append(new QAction(SECTION_TOKEN + tr("Amino acid alphabet"), this));
-            fillHighlightingSchemeMenuActions(aminoHighlightSchemesFactories);
-        }
-
-        if (!nucleotideHighlightSchemesFactories.isEmpty()) {
-            highlightingSchemeMenuActions.append(new QAction(SECTION_TOKEN + tr("Nucleotide alphabet"), this));
-            fillHighlightingSchemeMenuActions(nucleotideHighlightSchemesFactories);
-        }
-    } else {
-        fillHighlightingSchemeMenuActions(highlightingSchemesFactories);
-    }
-}
-
-void MaEditorSequenceArea::fillHighlightingSchemeMenuActions(const QList<MsaHighlightingSchemeFactory*> &highlightingSchemeFactories) {
-    foreach(MsaHighlightingSchemeFactory *factory, highlightingSchemeFactories) {
-        QString name = factory->getName();
-        QAction *action = new QAction(name, this);
-        action->setObjectName(name);
-        action->setCheckable(true);
-        action->setData(factory->getId());
-        connect(action, SIGNAL(triggered()), SLOT(sl_changeHighlightScheme()));
-        highlightingSchemeMenuActions.append(action);
-    }
+    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(colorSchemeMenuActions, colorFactories,
+        getEditor()->getMaObject()->getAlphabet()->getType(), this);
 }
 
 void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype) {
@@ -1847,7 +1754,8 @@ void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* hs
     MsaHighlightingSchemeRegistry* hsr = AppContext::getMsaHighlightingSchemeRegistry();
     QList<MsaHighlightingSchemeFactory*> highFactories = hsr->getMsaHighlightingSchemes(atype);
 
-    createAndFillHighlightingMenuActions(highFactories);
+    MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(highlightingSchemeMenuActions, highFactories,
+        getEditor()->getMaObject()->getAlphabet()->getType(), this);
 }
 
 MsaColorSchemeFactory * MaEditorSequenceArea::getDefaultColorSchemeFactory() {

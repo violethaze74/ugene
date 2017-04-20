@@ -42,6 +42,8 @@ class MSAEditor;
 class MsaColorSchemeFactory;
 class MaEditorSequenceArea;
 class MsaHighlightingSchemeFactory;
+class MSAColorComboboxController;
+class MSAHighlightingComboboxController;
 
 class U2VIEW_EXPORT MSAHighlightingTab : public QWidget
 {
@@ -56,21 +58,15 @@ private slots:
     void sl_exportHighlightningClicked();
     void sl_highlightingParametersChanged();
     void sl_customSchemesListChanged();
-    void sl_colorSchemeIndexChanged(int index);
-    void sl_highlightingSchemeIndexChanged(int index);
 
 private:
     QWidget* createColorGroup();
     QWidget* createHighlightingGroup();
-    void initColorCB();
-
-    void fillColorCbWithGrouping(QList<MsaColorSchemeFactory *> colorSchemesFactories);
-    void fillHighlightingCbWithGrouping(QList<MsaHighlightingSchemeFactory *> colorSchemesFactories);
 
     MSAEditor *msa;
     MaEditorSequenceArea *seqArea;
-    QComboBox *colorScheme;
-    QComboBox *highlightingScheme;
+    MSAColorComboboxController *colorScheme;
+    MSAHighlightingComboboxController *highlightingScheme;
     QLabel *hint;
     QCheckBox *useDots;
     QToolButton *exportHighlightning;
