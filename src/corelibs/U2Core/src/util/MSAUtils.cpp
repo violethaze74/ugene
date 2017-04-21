@@ -364,7 +364,7 @@ U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDb
         }
     }
 
-    if (tailGapsIndex < oldSeqData.length() - 1) {
+    if (tailGapsIndex < oldSeqData.length()) {
         oldSeqData.chop(oldSeqData.length() - tailGapsIndex);
     }
 
