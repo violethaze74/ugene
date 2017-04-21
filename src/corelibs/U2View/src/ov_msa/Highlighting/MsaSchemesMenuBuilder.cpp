@@ -46,9 +46,9 @@ void MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(QList<QAction*> 
             FAIL("Unknown color scheme type", );
         }
 
-        QList<MsaColorSchemeFactory *> rawColorSchemesFactories = factories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
-        QList<MsaColorSchemeFactory *> aminoColorSchemesFactories = factories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO];
-        QList<MsaColorSchemeFactory *> nucleotideColorSchemesFactories = factories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_NUCL];
+        QList<MsaColorSchemeFactory *> rawColorSchemesFactories = factories[DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
+        QList<MsaColorSchemeFactory *> aminoColorSchemesFactories = factories[DNAAlphabet_RAW | DNAAlphabet_AMINO];
+        QList<MsaColorSchemeFactory *> nucleotideColorSchemesFactories = factories[DNAAlphabet_RAW | DNAAlphabet_NUCL];
         
         fillColorMenuSectionForCurrentAlphabet(rawColorSchemesFactories, actions, tr("RAW alphabet"), actionsParent);
         fillColorMenuSectionForCurrentAlphabet(aminoColorSchemesFactories, actions, tr("Amino alphabet"), actionsParent);
@@ -71,10 +71,10 @@ void MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(QList<QAction*>
 
     if (alphabet == DNAAlphabet_RAW) {
         QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > highlightingSchemesFactories = msaHighlightingSchemeRegistry->getAllHighlightingSchemesGrouped();
-        QList<MsaHighlightingSchemeFactory *> commonHighlightSchemesFactories = highlightingSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
-        QList<MsaHighlightingSchemeFactory *> rawHighlightSchemesFactories = highlightingSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_RAW];
-        QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories = highlightingSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO];
-        QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories = highlightingSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_NUCL];
+        QList<MsaHighlightingSchemeFactory *> commonHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
+        QList<MsaHighlightingSchemeFactory *> rawHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_RAW];
+        QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO];
+        QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_NUCL];
 
         fillHighlightingSchemeMenuActions(actions, commonHighlightSchemesFactories, actionsParent);
 

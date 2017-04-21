@@ -112,13 +112,13 @@ const AlphabetFlags MsaHighlightingSchemeFactory::getSupportedAlphabets() const 
 }
 
 MsaHighlightingSchemeRegistry::MsaHighlightingSchemeRegistry() {
-    schemes.append(new MsaHighlightingSchemeNoColorsFactory(this, MsaHighlightingScheme::EMPTY, tr("No highlighting"), AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
-    schemes.append(new MsaHighlightingSchemeAgreementsFactory(this, MsaHighlightingScheme::AGREEMENTS, tr("Agreements"), AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
-    schemes.append(new MsaHighlightingSchemeDisagreementsFactory(this, MsaHighlightingScheme::DISAGREEMENTS, tr("Disagreements"), AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
-    schemes.append(new MsaHighlightingSchemeGapsFactory(this, MsaHighlightingScheme::GAPS, tr("Gaps"), AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
-    schemes.append(new MsaHighlightingSchemeConservationFactory(this, MsaHighlightingScheme::CONSERVATION, tr("Conservation level"), AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
-    schemes.append(new MsaHighlightingSchemeTransitionsFactory(this, MsaHighlightingScheme::TRANSITIONS, tr("Transitions"), AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_RAW));
-    schemes.append(new MsaHighlightingSchemeTransversionsFactory(this, MsaHighlightingScheme::TRANSVERSIONS, tr("Transversions"), AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeNoColorsFactory(this, MsaHighlightingScheme::EMPTY, tr("No highlighting"), DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeAgreementsFactory(this, MsaHighlightingScheme::AGREEMENTS, tr("Agreements"), DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeDisagreementsFactory(this, MsaHighlightingScheme::DISAGREEMENTS, tr("Disagreements"), DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeGapsFactory(this, MsaHighlightingScheme::GAPS, tr("Gaps"), DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeConservationFactory(this, MsaHighlightingScheme::CONSERVATION, tr("Conservation level"), DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeTransitionsFactory(this, MsaHighlightingScheme::TRANSITIONS, tr("Transitions"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeTransversionsFactory(this, MsaHighlightingScheme::TRANSVERSIONS, tr("Transversions"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
 }
 
 MsaHighlightingSchemeRegistry::~MsaHighlightingSchemeRegistry() {

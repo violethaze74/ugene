@@ -68,9 +68,9 @@ void MSAColorComboboxController::fillColorCbWithGrouping() {
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
     QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > colorSchemesFactories = msaColorSchemeRegistry->getAllMsaColorSchemesGrouped();
 
-    QList<MsaColorSchemeFactory *> rawColorSchemesFactories = colorSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
-    QList<MsaColorSchemeFactory *> aminoColorSchemesFactories = colorSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO];
-    QList<MsaColorSchemeFactory *> nucleotideColorSchemesFactories = colorSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_NUCL];
+    QList<MsaColorSchemeFactory *> rawColorSchemesFactories = colorSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
+    QList<MsaColorSchemeFactory *> aminoColorSchemesFactories = colorSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO];
+    QList<MsaColorSchemeFactory *> nucleotideColorSchemesFactories = colorSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_NUCL];
 
     createAndFillGroup(rawColorSchemesFactories, tr("RAW alphabet"));
     createAndFillGroup(aminoColorSchemesFactories, tr("Amino acid alphabet"));
