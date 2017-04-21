@@ -287,20 +287,24 @@ void McaDbiUtils::removeRegion(const U2EntityRef &mcaRef, const QList<qint64> &r
     }
 }
 
-qint64 McaDbiUtils::quanityOfGaps(const MultipleAlignment& ma, const QList<qint64>& rowIds, const qint64& length, const qint64& count, U2OpStatus& os) {
-    qint64 enlargeAlignmentLength = 0;
-    foreach(qint64 id, rowIds) {
-        qint64 tempEnlargeAlihnmentCount = 0;
-        for (int i = 0; i < count; i++) {
-            if ((ma->getRowByRowId(id, os)->getRowLengthWithoutTrailing() >= length) && (enlargeAlignmentLength == false)) {
-                tempEnlargeAlihnmentCount++;
-            }
-        }
-        if (tempEnlargeAlihnmentCount > enlargeAlignmentLength) {
-            enlargeAlignmentLength = tempEnlargeAlihnmentCount;
-        }
-    }
-    return enlargeAlignmentLength;
+//qint64 McaDbiUtils::quanityOfGaps(const MultipleAlignment& ma, const QList<qint64>& rowIds, const qint64& length, const qint64& count, U2OpStatus& os) {
+//    qint64 enlargeAlignmentLength = 0;
+//    foreach(qint64 id, rowIds) {
+//        qint64 tempEnlargeAlihnmentCount = 0;
+//        for (int i = 0; i < count; i++) {
+//            if ((ma->getRowByRowId(id, os)->getRowLengthWithoutTrailing() + i >= length) && (enlargeAlignmentLength == false)) {
+//                tempEnlargeAlihnmentCount++;
+//            }
+//        }
+//        if (tempEnlargeAlihnmentCount > enlargeAlignmentLength) {
+//            enlargeAlignmentLength = tempEnlargeAlihnmentCount;
+//        }
+//    }
+//    return enlargeAlignmentLength;
+//}
+
+void McaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os, qint64 enlargeAlignmentLength) {
+    MsaDbiUtils::insertGaps(msaRef, rowIds, pos, count, os, enlargeAlignmentLength);
 }
 
 void McaDbiUtils::replaceCharacterInRow(const U2EntityRef& mcaRef, qint64 rowId, qint64 pos, char newChar, U2OpStatus& os) {

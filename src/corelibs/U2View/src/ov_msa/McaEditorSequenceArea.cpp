@@ -78,7 +78,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     scaleBar->setValue(r->getScaleBarValue());
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_setRenderAreaHeight(int)));
     McaEditor* mcaEditor = getEditor();
-    connect(this, SIGNAL(si_lengthWasChanged(QByteArray)), mcaEditor, SLOT(mcaEditor->sl_updateReferenceCache(QByteArray)));
+    connect(this, SIGNAL(si_lengthWasChanged(U2OpStatus)), mcaEditor, SLOT(sl_updateReferenceCache(U2OpStatus)));
 
     updateColorAndHighlightSchemes();
     updateActions();
@@ -138,7 +138,7 @@ int McaEditorSequenceArea::countHeightForSequences(bool countClipped) const {
     return nVisible;
 }
 
-void McaEditorSequenceArea::insertGapToReference(U2OpStatus& os) {
+void McaEditorSequenceArea::adjustReferenceLength(U2OpStatus& os) {
     McaEditor* mcaEditor = getEditor();
     qint64 newLength = mcaEditor->getMaObject()->getLength();
     qint64 currentLength = mcaEditor->getRefereceObj()->getSequenceLength();
@@ -147,7 +147,7 @@ void McaEditorSequenceArea::insertGapToReference(U2OpStatus& os) {
         QByteArray insert(newLength - currentLength, U2Msa::GAP_CHAR);
         DNASequenceUtils::insertChars(dnaSequence.seq, currentLength, insert, os);
         mcaEditor->getRefereceObj()->setWholeSequence(dnaSequence);
-        emit si_lengthWasChanged(mcaEditor->getRefereceObj()->getWholeSequenceData(os));
+        emit si_lengthWasChanged(os);
     }
 }
 

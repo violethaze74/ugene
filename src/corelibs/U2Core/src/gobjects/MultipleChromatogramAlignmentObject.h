@@ -64,6 +64,7 @@ private:
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
                              int startPos, int nBases);
     virtual void dbiInsertGap(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os);
+    qint64 quantityOfGaps(const QList<qint64>& rowIds, const qint64& length, const qint64& count, U2OpStatus& os);
 
 };
 

@@ -82,8 +82,8 @@ McaEditor::McaEditor(const QString &viewName,
     }
 }
 
-void McaEditor::sl_updateReferenceCache(const QByteArray& newRefCache) {
-    referenceCache = newRefCache;
+void McaEditor::sl_updateReferenceCache(U2OpStatus& os) {
+    referenceCache = getRefereceObj()->getWholeSequenceData(os);
 }
 
 void McaEditor::buildStaticToolbar(QToolBar* tb) {
