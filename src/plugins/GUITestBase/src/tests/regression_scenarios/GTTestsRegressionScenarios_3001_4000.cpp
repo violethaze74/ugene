@@ -4202,7 +4202,7 @@ GUI_TEST_CLASS_DEFINITION(test_3629) {
     GTUtilsProjectTreeView::doubleClickItem(os, "human_T1.fa");
     GTThread::waitForMainThread();
     QList<QTreeWidgetItem*> list = GTUtilsAnnotationsTreeView::findItems(os, "misc_feature", GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(list.isEmpty(), QString("%1 annotation(s) unexpectidly found").arg(list.isEmpty()));
+    CHECK_SET_ERR(list.isEmpty(), QString("%1 annotation(s) unexpectidly found").arg(list.count()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3645) {
