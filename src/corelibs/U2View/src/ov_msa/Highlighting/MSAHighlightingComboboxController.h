@@ -42,7 +42,7 @@ signals:
 private slots:
     void sl_indexChanged(int index);
 private:
-    void fillHighlightingCbWithGrouping(const QList<MsaHighlightingSchemeFactory *> &colorSchemesFactories);
+    void fillHighlightingCbWithGrouping();
     void createAndFillGroup(QList<MsaHighlightingSchemeFactory *> rawColorSchemesFactories, const QString& groupName);
 
     MSAEditor *msa;

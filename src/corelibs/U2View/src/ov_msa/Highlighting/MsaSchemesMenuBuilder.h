@@ -37,18 +37,25 @@ class MsaHighlightingSchemeFactory;
 class MsaSchemesMenuBuilder : QObject {
     Q_OBJECT
 public:
+    enum ColorSchemeType {
+        Common,
+        Custom
+    };
+
     MsaSchemesMenuBuilder(): QObject() {};
 
-    static void createAndFillColorSchemeMenuActions(QList<QAction*> &actions, const QList<MsaColorSchemeFactory*> &colorFactories, 
-        DNAAlphabetType alphabet, QObject *actionsParent);
-    static void createAndFillHighlightingMenuActions(QList<QAction*> &actions, QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories,
-        DNAAlphabetType alphabet, QObject *actionsParent);
-    
+    static void createAndFillColorSchemeMenuActions(QList<QAction*> &actions, ColorSchemeType type, DNAAlphabetType alphabet, QObject *actionsParent);
+
+    static void createAndFillHighlightingMenuActions(QList<QAction*> &actions, DNAAlphabetType alphabet, QObject *actionsParent);
+
     static void addActionOrTextSeparatorToMenu(QAction* a, QMenu* colorsSchemeMenu);
 
 private:
     static void fillColorSchemeMenuActions(QList<QAction*> &actions, QList<MsaColorSchemeFactory*> colorFactories, QObject *actionsParent);
     static void fillHighlightingSchemeMenuActions(QList<QAction*> &actions, const QList<MsaHighlightingSchemeFactory*> &highlightingSchemeFactories, QObject *actionsParent);
+    
+    static void fillColorMenuSectionForCurrentAlphabet(QList<MsaColorSchemeFactory *> &colorSchemesFactories, QList<QAction *> &actions, const QString& alphName, QObject * actionsParent);
+    static void fillHighlightingMenuSectionForCurrentAlphabet(QList<MsaHighlightingSchemeFactory *> &highlightSchemesFactories, QList<QAction *> &actions, const QString&, QObject * actionsParent);
 };
 
 }

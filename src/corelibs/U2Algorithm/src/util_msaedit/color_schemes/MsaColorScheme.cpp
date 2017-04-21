@@ -86,6 +86,10 @@ bool MsaColorSchemeFactory::isAlphabetFit(DNAAlphabetType alphabet) const {
     return supportedAlphabets.testFlag(alphabet);
 }
 
+const AlphabetFlags MsaColorSchemeFactory::getSupportedAlphabets() const {
+    return supportedAlphabets;
+}
+
 MsaColorSchemeRegistry::MsaColorSchemeRegistry() {
     initBuiltInSchemes();
     initCustomSchema();
@@ -129,6 +133,32 @@ QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaCustomColorSchemes(
         }
     }
     return res;
+}
+
+QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > MsaColorSchemeRegistry::getAllMsaColorSchemesGrouped() const {
+    QList<MsaColorSchemeFactory *> allSchemes;
+    allSchemes << colorers << getMsaCustomColorSchemes(DNAAlphabet_RAW);
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > result;
+    foreach(MsaColorSchemeFactory *factory, allSchemes) {
+        result[factory->getSupportedAlphabets()].append(factory);
+    }
+    return result;
+}
+
+QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > MsaColorSchemeRegistry::getMsaColorSchemesGrouped() const {
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > result;
+    foreach(MsaColorSchemeFactory *factory, colorers) {
+        result[factory->getSupportedAlphabets()].append(factory);
+    }
+    return result;
+}
+
+QMap<AlphabetFlags, QList<MsaColorSchemeFactory *> > MsaColorSchemeRegistry::getMsaCustomColorSchemesGrouped() const {
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory *> > result;
+    foreach(MsaColorSchemeFactory *factory, customColorers) {
+        result[factory->getSupportedAlphabets()].append(factory);
+    }
+    return result;
 }
 
 MsaColorSchemeCustomFactory * MsaColorSchemeRegistry::getMsaCustomColorSchemeFactoryById(const QString &id) const {

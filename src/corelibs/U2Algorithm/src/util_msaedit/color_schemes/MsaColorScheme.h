@@ -87,6 +87,7 @@ public:
     const QString getName() const;
 
     bool isAlphabetFit(DNAAlphabetType alphabet) const;
+    const AlphabetFlags getSupportedAlphabets() const;
 signals:
     void si_factoryChanged();
 
@@ -108,6 +109,10 @@ public:
     QList<MsaColorSchemeFactory *> getAllMsaColorSchemes(DNAAlphabetType alp) const;
     QList<MsaColorSchemeFactory *> getMsaColorSchemes(DNAAlphabetType alp) const;
     QList<MsaColorSchemeFactory *> getMsaCustomColorSchemes(DNAAlphabetType alphabetType) const;
+
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > getAllMsaColorSchemesGrouped() const;
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > getMsaColorSchemesGrouped() const;
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory *> > getMsaCustomColorSchemesGrouped() const;
 
     MsaColorSchemeCustomFactory * getMsaCustomColorSchemeFactoryById(const QString &id) const;
     MsaColorSchemeFactory * getMsaColorSchemeFactoryById(const QString &id) const;

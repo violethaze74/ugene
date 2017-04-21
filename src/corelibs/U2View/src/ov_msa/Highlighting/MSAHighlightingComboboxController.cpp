@@ -49,14 +49,12 @@ void MSAHighlightingComboboxController::init() {
     bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
 
     blockSignals(true);
-
-    MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
-    QList<MsaHighlightingSchemeFactory*> HighlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(msa->getMaObject()->getAlphabet()->getType());
-
     clear();
     if (isAlphabetRaw) {
-        fillHighlightingCbWithGrouping(HighlightingSchemesFactories);
+        fillHighlightingCbWithGrouping();
     } else {
+        MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
+        QList<MsaHighlightingSchemeFactory*> HighlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(msa->getMaObject()->getAlphabet()->getType());
         foreach(MsaHighlightingSchemeFactory *factory, HighlightingSchemesFactories) {
             addItem(factory->getName(), factory->getId());
         }
@@ -64,24 +62,15 @@ void MSAHighlightingComboboxController::init() {
     blockSignals(false);
 }
 
-void MSAHighlightingComboboxController::fillHighlightingCbWithGrouping(const QList<MsaHighlightingSchemeFactory *> &highlightingSchemesFactories) {
-    QList<MsaHighlightingSchemeFactory *> commonHighlightSchemesFactories;
-    QList<MsaHighlightingSchemeFactory *> rawHighlightSchemesFactories;
-    QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories;
-    QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories;
-    foreach(MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
-        if (factory->isAlphabetFit(DNAAlphabet_AMINO) &&
-            factory->isAlphabetFit(DNAAlphabet_NUCL) &&
-            factory->isAlphabetFit(DNAAlphabet_RAW)) {
-            commonHighlightSchemesFactories.append(factory);
-        } else if (factory->isAlphabetFit(DNAAlphabet_RAW)) {
-            rawHighlightSchemesFactories.append(factory);
-        } else if (factory->isAlphabetFit(DNAAlphabet_AMINO)) {
-            aminoHighlightSchemesFactories.append(factory);
-        } else if (factory->isAlphabetFit(DNAAlphabet_NUCL)) {
-            nucleotideHighlightSchemesFactories.append(factory);
-        }
-    }
+void MSAHighlightingComboboxController::fillHighlightingCbWithGrouping() {
+
+    MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
+    QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > highlightingSchemesFactories = msaHighlightingSchemeRegistry->getAllHighlightingSchemesGrouped();
+
+    QList<MsaHighlightingSchemeFactory *> commonHighlightSchemesFactories = highlightingSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
+    QList<MsaHighlightingSchemeFactory *> rawHighlightSchemesFactories = highlightingSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_RAW];
+    QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories = highlightingSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO];
+    QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories = highlightingSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_NUCL];
 
     foreach(MsaHighlightingSchemeFactory *factory, commonHighlightSchemesFactories) {
         addItem(factory->getName(), factory->getId());

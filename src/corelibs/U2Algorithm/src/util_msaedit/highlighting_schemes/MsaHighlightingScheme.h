@@ -75,6 +75,7 @@ public:
     bool isRefFree() const;
     bool isNeedThreshold() const;
     bool isAlphabetFit(DNAAlphabetType alphabet) const;
+    const AlphabetFlags getSupportedAlphabets() const;
 private:
     QString         id;
     QString         name;
@@ -91,7 +92,7 @@ public:
 
     MsaHighlightingSchemeFactory * getMsaHighlightingSchemeFactoryById(const QString &id) const;
     QList<MsaHighlightingSchemeFactory *> getMsaHighlightingSchemes(DNAAlphabetType alphabetType) const;
-
+    QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > getAllHighlightingSchemesGrouped() const;
 private:
     QList<MsaHighlightingSchemeFactory *> schemes;
 };

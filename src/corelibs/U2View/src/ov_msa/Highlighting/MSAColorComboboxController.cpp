@@ -55,7 +55,7 @@ void MSAColorComboboxController::init() {
 
     clear();
     if (isAlphabetRaw) {
-        fillColorCbWithGrouping(colorSchemesFactories);
+        fillColorCbWithGrouping();
     } else {
         foreach(MsaColorSchemeFactory *factory, colorSchemesFactories) {
             addItem(factory->getName(), factory->getId());
@@ -64,19 +64,13 @@ void MSAColorComboboxController::init() {
     blockSignals(false);
 }
 
-void MSAColorComboboxController::fillColorCbWithGrouping(const QList<MsaColorSchemeFactory *> &colorSchemesFactories) {
-    QList<MsaColorSchemeFactory *> rawColorSchemesFactories;
-    QList<MsaColorSchemeFactory *> aminoColorSchemesFactories;
-    QList<MsaColorSchemeFactory *> nucleotideColorSchemesFactories;
-    foreach(MsaColorSchemeFactory *factory, colorSchemesFactories) {
-        if (factory->isAlphabetFit(DNAAlphabet_RAW)) {
-            rawColorSchemesFactories.append(factory);
-        } else if (factory->isAlphabetFit(DNAAlphabet_AMINO)) {
-            aminoColorSchemesFactories.append(factory);
-        } else if (factory->isAlphabetFit(DNAAlphabet_NUCL)) {
-            nucleotideColorSchemesFactories.append(factory);
-        }
-    }
+void MSAColorComboboxController::fillColorCbWithGrouping() {
+    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > colorSchemesFactories = msaColorSchemeRegistry->getAllMsaColorSchemesGrouped();
+
+    QList<MsaColorSchemeFactory *> rawColorSchemesFactories = colorSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
+    QList<MsaColorSchemeFactory *> aminoColorSchemesFactories = colorSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO];
+    QList<MsaColorSchemeFactory *> nucleotideColorSchemesFactories = colorSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_NUCL];
 
     createAndFillGroup(rawColorSchemesFactories, tr("RAW alphabet"));
     createAndFillGroup(aminoColorSchemesFactories, tr("Amino acid alphabet"));

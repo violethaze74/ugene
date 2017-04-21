@@ -44,7 +44,7 @@ private slots:
     void sl_indexChanged(int index);
 
 private:
-    void fillColorCbWithGrouping(const QList<MsaColorSchemeFactory *> &colorSchemesFactories);
+    void fillColorCbWithGrouping();
     void createAndFillGroup(QList<MsaColorSchemeFactory *> rawColorSchemesFactories, const QString& groupName);
 
     MSAEditor *msa;

@@ -107,6 +107,10 @@ bool MsaHighlightingSchemeFactory::isAlphabetFit(DNAAlphabetType alphabet) const
     return supportedAlphabets.testFlag(alphabet);
 }
 
+const AlphabetFlags MsaHighlightingSchemeFactory::getSupportedAlphabets() const {
+    return supportedAlphabets;
+}
+
 MsaHighlightingSchemeRegistry::MsaHighlightingSchemeRegistry() {
     schemes.append(new MsaHighlightingSchemeNoColorsFactory(this, MsaHighlightingScheme::EMPTY, tr("No highlighting"), AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
     schemes.append(new MsaHighlightingSchemeAgreementsFactory(this, MsaHighlightingScheme::AGREEMENTS, tr("Agreements"), AlphabetFlags() | DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
@@ -138,6 +142,14 @@ QList<MsaHighlightingSchemeFactory *> MsaHighlightingSchemeRegistry::getMsaHighl
         }
     }
     return res;
+}
+
+QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > MsaHighlightingSchemeRegistry::getAllHighlightingSchemesGrouped() const {
+    QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > result;
+    foreach(MsaHighlightingSchemeFactory *factory, schemes) {
+        result[factory->getSupportedAlphabets()].append(factory);
+    }
+    return result;
 }
 
 }   // namespace U2

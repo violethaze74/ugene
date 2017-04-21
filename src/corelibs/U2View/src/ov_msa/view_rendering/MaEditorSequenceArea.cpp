@@ -1072,11 +1072,8 @@ void MaEditorSequenceArea::sl_useDots(){
 void MaEditorSequenceArea::sl_registerCustomColorSchemes() {
     deleteOldCustomSchemes();
 
-    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QList<MsaColorSchemeFactory *> customFactories = msaColorSchemeRegistry->getMsaCustomColorSchemes(editor->getMaObject()->getAlphabet()->getType());
-    
-    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(customColorSchemeMenuActions, customFactories, 
-        getEditor()->getMaObject()->getAlphabet()->getType(), this);
+    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(customColorSchemeMenuActions, MsaSchemesMenuBuilder::Custom, getEditor()->getMaObject()->getAlphabet()->getType(), 
+        this);
 }
 
 void MaEditorSequenceArea::sl_colorSchemeFactoryUpdated() {
@@ -1734,11 +1731,7 @@ void MaEditorSequenceArea::registerCommonColorSchemes() {
     qDeleteAll(colorSchemeMenuActions);
     colorSchemeMenuActions.clear();
 
-    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QList<MsaColorSchemeFactory*> colorFactories = msaColorSchemeRegistry->getMsaColorSchemes(editor->getMaObject()->getAlphabet()->getType());
-
-    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(colorSchemeMenuActions, colorFactories,
-        getEditor()->getMaObject()->getAlphabet()->getType(), this);
+    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(colorSchemeMenuActions, MsaSchemesMenuBuilder::Common, getEditor()->getMaObject()->getAlphabet()->getType(), this);
 }
 
 void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype) {
@@ -1751,11 +1744,11 @@ void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* hs
 
     highlightingScheme = hsf->create(this, maObj);
 
-    MsaHighlightingSchemeRegistry* hsr = AppContext::getMsaHighlightingSchemeRegistry();
-    QList<MsaHighlightingSchemeFactory*> highFactories = hsr->getMsaHighlightingSchemes(atype);
-
-    MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(highlightingSchemeMenuActions, highFactories,
-        getEditor()->getMaObject()->getAlphabet()->getType(), this);
+    MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(highlightingSchemeMenuActions, getEditor()->getMaObject()->getAlphabet()->getType(), this);
+    QList<QAction *> tmpActions = QList<QAction *>() << highlightingSchemeMenuActions;
+    foreach(QAction *action, tmpActions) {
+        action->setChecked(action->data() == hsf->getId());
+    }
 }
 
 MsaColorSchemeFactory * MaEditorSequenceArea::getDefaultColorSchemeFactory() {

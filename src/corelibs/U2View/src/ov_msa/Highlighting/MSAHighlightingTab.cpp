@@ -163,17 +163,17 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
 
     sl_sync();
 
-    connect(colorScheme, SIGNAL(si_schemeChanged(const QString &newScheme)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &newScheme)));
-    connect(highlightingScheme, SIGNAL(si_schemeChanged(const QString &newScheme)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &newScheme)));
+    connect(colorScheme, SIGNAL(si_schemeChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
+    connect(highlightingScheme, SIGNAL(si_schemeChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
     connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_triggerUseDots()));
 
     connect(seqArea, SIGNAL(si_highlightingChanged()), SLOT(sl_sync()));
 
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_customSchemesListChanged()));
+    connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_refreshSchemes()));
 
     connect(m, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateHint()));
-    connect(m->getMaObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet *)), SLOT(sl_customSchemesListChanged()));
+    connect(m->getMaObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet *)), SLOT(sl_refreshSchemes()));
 
     connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateHint()));
     connect(exportHighlightning, SIGNAL(clicked()), SLOT(sl_exportHighlightningClicked()));
@@ -270,8 +270,9 @@ void MSAHighlightingTab::sl_highlightingParametersChanged() {
     seqArea->sl_changeColorSchemeOutside(colorScheme->currentData().toString());
 }
 
-void MSAHighlightingTab::sl_customSchemesListChanged() {
+void MSAHighlightingTab::sl_refreshSchemes() {
     colorScheme->init();
+    highlightingScheme->init();
     sl_sync();
 }
 

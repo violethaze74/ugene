@@ -28,78 +28,61 @@
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
 
-void MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(QList<QAction*> &actions, const QList<MsaColorSchemeFactory*> &colorFactories, 
-    DNAAlphabetType alphabet, QObject *actionsParent) {
+void MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(QList<QAction*> &actions, ColorSchemeType type, DNAAlphabetType alphabet, QObject *actionsParent) {
+    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
+
     if (alphabet == DNAAlphabet_RAW) {
-        QList<MsaColorSchemeFactory *> rawColorSchemesFactories;
-        QList<MsaColorSchemeFactory *> aminoColorSchemesFactories;
-        QList<MsaColorSchemeFactory *> nucleotideColorSchemesFactories;
-        foreach(MsaColorSchemeFactory *factory, colorFactories) {
-            if (factory->isAlphabetFit(DNAAlphabet_RAW)) {
-                rawColorSchemesFactories.append(factory);
-            } else if (factory->isAlphabetFit(DNAAlphabet_AMINO)) {
-                aminoColorSchemesFactories.append(factory);
-            } else if (factory->isAlphabetFit(DNAAlphabet_NUCL)) {
-                nucleotideColorSchemesFactories.append(factory);
-            }
+        QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > factories;
+        if (type == Common) {
+            factories = msaColorSchemeRegistry->getMsaColorSchemesGrouped();
+        } else if (type == Custom) {
+            factories = msaColorSchemeRegistry->getMsaCustomColorSchemesGrouped();
+        } else {
+            FAIL("Unknown color scheme type", );
         }
-        if (!rawColorSchemesFactories.isEmpty()) {
-            actions.append(new QAction(SECTION_TOKEN + tr("RAW alphabet"), actionsParent));
-            fillColorSchemeMenuActions(actions, rawColorSchemesFactories, actionsParent);
-        }
-        if (!aminoColorSchemesFactories.isEmpty()) {
-            actions.append(new QAction(SECTION_TOKEN + tr("Amino alphabet"), actionsParent));
-            fillColorSchemeMenuActions(actions, aminoColorSchemesFactories, actionsParent);
-        }
-        if (!nucleotideColorSchemesFactories.isEmpty()) {
-            actions.append(new QAction(SECTION_TOKEN + tr("Nucleotide alphabet"), actionsParent));
-            fillColorSchemeMenuActions(actions, nucleotideColorSchemesFactories, actionsParent);
-        }
+
+        QList<MsaColorSchemeFactory *> rawColorSchemesFactories = factories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
+        QList<MsaColorSchemeFactory *> aminoColorSchemesFactories = factories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO];
+        QList<MsaColorSchemeFactory *> nucleotideColorSchemesFactories = factories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_NUCL];
+        
+        fillColorMenuSectionForCurrentAlphabet(rawColorSchemesFactories, actions, tr("RAW alphabet"), actionsParent);
+        fillColorMenuSectionForCurrentAlphabet(aminoColorSchemesFactories, actions, tr("Amino alphabet"), actionsParent);
+        fillColorMenuSectionForCurrentAlphabet(nucleotideColorSchemesFactories, actions, tr("Nucleotide alphabet"), actionsParent);
     } else {
-        fillColorSchemeMenuActions(actions, colorFactories, actionsParent);
+        QList<MsaColorSchemeFactory*> factories;
+        if (type == Common) {
+            factories = msaColorSchemeRegistry->getMsaColorSchemes(alphabet);
+        } else if (type == Custom) {
+            factories = msaColorSchemeRegistry->getMsaCustomColorSchemes(alphabet);
+        } else {
+            FAIL("Unknown color scheme type", );
+        }
+        fillColorSchemeMenuActions(actions, factories, actionsParent);
     }
 }
 
-void MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(QList<QAction*> &actions, QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories,
-    DNAAlphabetType alphabet, QObject *actionsParent) {
+void MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(QList<QAction*> &actions, DNAAlphabetType alphabet, QObject *actionsParent) {
+    MsaHighlightingSchemeRegistry* msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
+
     if (alphabet == DNAAlphabet_RAW) {
-        QList<MsaHighlightingSchemeFactory *> commonHighlightSchemesFactories;
-        QList<MsaHighlightingSchemeFactory *> rawHighlightSchemesFactories;
-        QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories;
-        QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories;
-        foreach(MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
-            if (factory->isAlphabetFit(DNAAlphabet_AMINO) &&
-                factory->isAlphabetFit(DNAAlphabet_NUCL) &&
-                factory->isAlphabetFit(DNAAlphabet_RAW)) {
-                commonHighlightSchemesFactories.append(factory);
-            } else if (factory->isAlphabetFit(DNAAlphabet_RAW)) {
-                rawHighlightSchemesFactories.append(factory);
-            } else if (factory->isAlphabetFit(DNAAlphabet_AMINO)) {
-                aminoHighlightSchemesFactories.append(factory);
-            } else if (factory->isAlphabetFit(DNAAlphabet_NUCL)) {
-                nucleotideHighlightSchemesFactories.append(factory);
-            }
-        }
+        QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > highlightingSchemesFactories = msaHighlightingSchemeRegistry->getAllHighlightingSchemesGrouped();
+        QList<MsaHighlightingSchemeFactory *> commonHighlightSchemesFactories = highlightingSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
+        QList<MsaHighlightingSchemeFactory *> rawHighlightSchemesFactories = highlightingSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_RAW];
+        QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories = highlightingSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_AMINO];
+        QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories = highlightingSchemesFactories[AlphabetFlags() |= DNAAlphabet_RAW | DNAAlphabet_NUCL];
 
         fillHighlightingSchemeMenuActions(actions, commonHighlightSchemesFactories, actionsParent);
 
-        if (!rawHighlightSchemesFactories.isEmpty()) {
-            actions.append(new QAction(SECTION_TOKEN + tr("RAW alphabet"), actionsParent));
-            fillHighlightingSchemeMenuActions(actions, rawHighlightSchemesFactories, actionsParent);
-        }
-
-        if (!aminoHighlightSchemesFactories.isEmpty()) {
-            actions.append(new QAction(SECTION_TOKEN + tr("Amino acid alphabet"), actionsParent));
-            fillHighlightingSchemeMenuActions(actions, aminoHighlightSchemesFactories, actionsParent);
-        }
-
-        if (!nucleotideHighlightSchemesFactories.isEmpty()) {
-            actions.append(new QAction(SECTION_TOKEN + tr("Nucleotide alphabet"), actionsParent));
-            fillHighlightingSchemeMenuActions(actions, nucleotideHighlightSchemesFactories, actionsParent);
-        }
+        fillHighlightingMenuSectionForCurrentAlphabet(rawHighlightSchemesFactories, actions, tr("RAW alphabet"), actionsParent);
+        fillHighlightingMenuSectionForCurrentAlphabet(aminoHighlightSchemesFactories, actions, tr("Amino acid alphabet"), actionsParent);
+        fillHighlightingMenuSectionForCurrentAlphabet(nucleotideHighlightSchemesFactories, actions, tr("Nucleotide alphabet"), actionsParent);
     } else {
+        QList<MsaHighlightingSchemeFactory*> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(alphabet);
         fillHighlightingSchemeMenuActions(actions, highlightingSchemesFactories, actionsParent);
     }
 }
@@ -141,5 +124,20 @@ void MsaSchemesMenuBuilder::fillHighlightingSchemeMenuActions(QList<QAction*> &a
         actions.append(action);
     }
 }
+
+void MsaSchemesMenuBuilder::fillColorMenuSectionForCurrentAlphabet(QList<MsaColorSchemeFactory *> &colorSchemesFactories, QList<QAction *> &actions, const QString& alphName, QObject * actionsParent) {
+    if (!colorSchemesFactories.isEmpty()) {
+        actions.append(new QAction(SECTION_TOKEN + alphName, actionsParent));
+        fillColorSchemeMenuActions(actions, colorSchemesFactories, actionsParent);
+    }
+}
+
+void MsaSchemesMenuBuilder::fillHighlightingMenuSectionForCurrentAlphabet(QList<MsaHighlightingSchemeFactory *> &highlightSchemesFactories, QList<QAction *> &actions, const QString& alphabet, QObject * actionsParent) {
+    if (!highlightSchemesFactories.isEmpty()) {
+        actions.append(new QAction(SECTION_TOKEN + alphabet, actionsParent));
+        fillHighlightingSchemeMenuActions(actions, highlightSchemesFactories, actionsParent);
+    }
+}
+
 
 }
