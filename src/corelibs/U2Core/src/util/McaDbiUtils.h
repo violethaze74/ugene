@@ -27,6 +27,7 @@
 
 namespace U2 {
 
+class MultipleAlignment;
 class MultipleChromatogramAlignment;
 class U2EntityRef;
 class U2McaRow;
@@ -39,6 +40,7 @@ public:
     static void addRows(U2OpStatus &os, const U2EntityRef &mcaRef, QList<U2McaRow> &rows);
     static QList<U2McaRow> getMcaRows(U2OpStatus &os, const U2EntityRef &mcaRef);
     static U2McaRow getMcaRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId);
+    static qint64 quanityOfGaps(const MultipleAlignment& ma, const QList<qint64>& rowIds, const qint64& length, const qint64& count, U2OpStatus& os);
 
     static void removeRow(const U2EntityRef& mcaRef, qint64 rowId, U2OpStatus& os);
     static void removeRegion(const U2EntityRef& mcaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os);

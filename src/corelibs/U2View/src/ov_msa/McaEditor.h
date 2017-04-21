@@ -61,11 +61,12 @@ public:
 
     SequenceObjectContext* getReferenceContext() const;
 
-    void setReferenceCache(const QByteArray& neRefCache);
+ //   void setReferenceCache(const QByteArray& neRefCache);
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint & pos);
     void sl_showHideChromatograms(bool show);
+    void sl_updateReferenceCache(const QByteArray & newReferenceCache);
 
 protected:
     QWidget* createWidget();

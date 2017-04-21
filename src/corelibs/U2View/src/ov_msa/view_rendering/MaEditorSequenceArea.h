@@ -152,7 +152,7 @@ public:
 
     virtual void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
-    virtual void updateReference();
+    virtual void insertGapToReference(U2OpStatus& os);
 
     void cancelSelection();
 

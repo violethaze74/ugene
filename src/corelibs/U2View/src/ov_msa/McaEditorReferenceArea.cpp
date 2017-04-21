@@ -26,11 +26,6 @@
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
-//#include <U2Core/DNASequenceUtils.h>
-//#include <U2Core/U2Msa.h>
-//#include <U2Core/U2Region.h>
-//#include <U2Core/U2OpStatusUtils.h>
-//#include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/ADVSequenceObjectContext.h> // SANGER_TODO: rename

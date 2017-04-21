@@ -917,7 +917,10 @@ void MsaDbiUtils::updateRowContent(const U2EntityRef& msaRef, qint64 rowId,
     msaDbi->updateRowContent(msaRef.entityId, rowId, seqBytes, gaps, os);
 }
 
-void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os, bool enlargeAlignmentLength) {
+void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os, qint64 enlargeAlignmentLength) {
+    if (enlargeAlignmentLength == -1) {
+        enlargeAlignmentLength = count;
+    }
     // Prepare the connection
     DbiConnection con(msaRef.dbiRef, os);
     CHECK_OP(os, );
@@ -973,8 +976,8 @@ void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& row
         CHECK_OP(os, );
     }
 
-    if (enlargeAlignmentLength) {
-        msaDbi->updateMsaLength(msaRef.entityId, msaObj.length + count, os);
+    if (enlargeAlignmentLength != 0) {
+        msaDbi->updateMsaLength(msaRef.entityId, msaObj.length + enlargeAlignmentLength, os);
     }
 }
 

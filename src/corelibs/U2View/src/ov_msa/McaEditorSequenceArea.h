@@ -65,10 +65,11 @@ public:
 
     void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
-    virtual void updateReference();
+    virtual void insertGapToReference(U2OpStatus& os);
 
 signals:
     void si_clearReferenceSelection();
+    void si_lengthWasChanged(const QByteArray& newRefCache);
 
 public slots:
     void sl_referenceSelectionChanged();

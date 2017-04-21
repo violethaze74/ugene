@@ -121,8 +121,9 @@ public:
      * Parameter 'rowIds' must contain valid IDs of the alignment rows in the database!
      * Parameter 'pos' must be >=0 and < the alignment length.
      * Parameter 'count' must be > 0.
+     * Parameter 'enlargeAlignmentLength' must be >=0, if it is equal '-1' it must be initialized by 'count'
      */
-    static void insertGaps(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os, bool enlargeAlignmentLength = true);
+    static void insertGaps(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os, qint64 enlargeAlignmentLength = -1);
 
     /**
      * Removes a region from an alignment.

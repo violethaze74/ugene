@@ -77,6 +77,8 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     scaleBar->setValue(r->getScaleBarValue());
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_setRenderAreaHeight(int)));
+    McaEditor* mcaEditor = getEditor();
+    connect(this, SIGNAL(si_lengthWasChanged(QByteArray)), mcaEditor, SLOT(mcaEditor->sl_updateReferenceCache(QByteArray)));
 
     updateColorAndHighlightSchemes();
     updateActions();
@@ -136,22 +138,16 @@ int McaEditorSequenceArea::countHeightForSequences(bool countClipped) const {
     return nVisible;
 }
 
-void McaEditorSequenceArea::updateReference() {
+void McaEditorSequenceArea::insertGapToReference(U2OpStatus& os) {
     McaEditor* mcaEditor = getEditor();
     qint64 newLength = mcaEditor->getMaObject()->getLength();
     qint64 currentLength = mcaEditor->getRefereceObj()->getSequenceLength();
     if (currentLength < newLength) {
-        U2OpStatus2Log os;
-      //  U2Region tmp(0, currentLength);
         DNASequence dnaSequence = mcaEditor->getRefereceObj()->getWholeSequence(os);
-     //   QByteArray sequence = mcaEditor->getRefereceObj()->getSequenceData(tmp);
-        QByteArray insert(1, U2Msa::GAP_CHAR);
+        QByteArray insert(newLength - currentLength, U2Msa::GAP_CHAR);
         DNASequenceUtils::insertChars(dnaSequence.seq, currentLength, insert, os);
-        const DNAAlphabet* alphabet = mcaEditor->getRefereceObj()->getAlphabet();
-     //   DNASequence dNASequence(dna, alphabet);
-     //   int test = dNASequence.length();
         mcaEditor->getRefereceObj()->setWholeSequence(dnaSequence);
-        mcaEditor->setReferenceCache(mcaEditor->getRefereceObj()->getWholeSequenceData(os));
+        emit si_lengthWasChanged(mcaEditor->getRefereceObj()->getWholeSequenceData(os));
     }
 }
 

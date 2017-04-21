@@ -82,7 +82,7 @@ McaEditor::McaEditor(const QString &viewName,
     }
 }
 
-void McaEditor::setReferenceCache(const QByteArray& newRefCache) {
+void McaEditor::sl_updateReferenceCache(const QByteArray& newRefCache) {
     referenceCache = newRefCache;
 }
 

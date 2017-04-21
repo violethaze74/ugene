@@ -1570,13 +1570,13 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
 
     const int removedRegionWidth = (-1 == countOfGaps) ? selection.width() : countOfGaps;
     const U2Region& sequences = getSelectedRows();
-    maObj->insertGap(sequences,  selection.x() , removedRegionWidth);
-    updateReference();
+    maObj->insertGap(sequences, selection.x(), removedRegionWidth);
+    insertGapToReference(os);
     moveSelection(removedRegionWidth, 0, true);
 }
 
-void MaEditorSequenceArea::updateReference() {
-
+void MaEditorSequenceArea::insertGapToReference(U2OpStatus& os) {
+    
 }
 
 void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {

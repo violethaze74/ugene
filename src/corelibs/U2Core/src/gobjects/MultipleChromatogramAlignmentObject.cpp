@@ -84,14 +84,8 @@ const MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentObject::getM
 }
 
 void MultipleChromatogramAlignmentObject::dbiInsertGap(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os) {
-    bool enlargeAligmentLength = false;
-    const MultipleAlignment &ma = getMultipleAlignment();
-    for (const auto id : rowIds) {
-        if ((ma->getRowByRowId(id, os)->getRowLengthWithoutTrailing() == getLength()) && (enlargeAligmentLength == false)) {
-            enlargeAligmentLength = true;
-        }
-    }
-    MsaDbiUtils::insertGaps(msaRef, rowIds, pos, count, os, enlargeAligmentLength);
+    qint64 enlargeAlignmentLength = McaDbiUtils::quanityOfGaps(getMultipleAlignment(), rowIds, getLength(), count, os);
+    MsaDbiUtils::insertGaps(msaRef, rowIds, pos, count, os, enlargeAlignmentLength);
 }
 
 void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int rowIndex, char newChar) {
