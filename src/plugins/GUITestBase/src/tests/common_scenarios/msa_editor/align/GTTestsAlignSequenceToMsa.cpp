@@ -351,6 +351,118 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3, "Incorrect sequences count");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0011) {
+//    Adding and aligning with MAFFT a sequence, which is longer than an alignment.
+
+//    1. Open "_common_data/scenarios/msa/ma.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Ensure that MAFFT tool is set.
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Align with MAFFT..."));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align");
+
+//    3. Click "Align sequence to this alignment" button on the toolbar.
+//    4. Select "_common_data/scenarios/msa/add_and_align_1.fa" in the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_1.fa"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+
+//    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row.
+    const QStringList expectedMsaData = QStringList() << "----TAAGACTTCTAA------------"
+                                                      << "----TAAGCTTACTAA------------"
+                                                      << "----TTAGTTTATTAA------------"
+                                                      << "----TCAGTCTATTAA------------"
+                                                      << "----TCAGTTTATTAA------------"
+                                                      << "----TTAGTCTACTAA------------"
+                                                      << "----TCAGATTATTAA------------"
+                                                      << "----TTAGATTGCTAA------------"
+                                                      << "----TTAGATTATTAA------------"
+                                                      << "----TAAGTCTATTAA------------"
+                                                      << "----TTAGCTTATTAA------------"
+                                                      << "----TTAGCTTATTAA------------"
+                                                      << "----TTAGCTTATTAA------------"
+                                                      << "----TAAGTCTTTTAA------------"
+                                                      << "----TAAGTCTTTTAA------------"
+                                                      << "----TAAGTCTTTTAA------------"
+                                                      << "----TAAGAATAATTA------------"
+                                                      << "----TAAGCCTTTTAA------------"
+                                                      << "GCGCTAAGCCTTTTAAGCGCGCGCGCGC";
+    const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0012) {
+//    Adding and aligning with MAFFT a sequence, which can be aligned with an alignment shifting
+
+//    1. Open "_common_data/scenarios/msa/ma.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Ensure that MAFFT tool is set.
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Align with MAFFT..."));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align");
+
+//    3. Click "Align sequence to this alignment" button on the toolbar.
+//    4. Select "_common_data/scenarios/msa/add_and_align_2.fa" in the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_2.fa"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+
+//    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row.
+    const QStringList expectedMsaData = QStringList() << "------TAAGACTTCTAA"
+                                                      << "------TAAGCTTACTAA"
+                                                      << "------TTAGTTTATTAA"
+                                                      << "------TCAGTCTATTAA"
+                                                      << "------TCAGTTTATTAA"
+                                                      << "------TTAGTCTACTAA"
+                                                      << "------TCAGATTATTAA"
+                                                      << "------TTAGATTGCTAA"
+                                                      << "------TTAGATTATTAA"
+                                                      << "------TAAGTCTATTAA"
+                                                      << "------TTAGCTTATTAA"
+                                                      << "------TTAGCTTATTAA"
+                                                      << "------TTAGCTTATTAA"
+                                                      << "------TAAGTCTTTTAA"
+                                                      << "------TAAGTCTTTTAA"
+                                                      << "------TAAGTCTTTTAA"
+                                                      << "------TAAGAATAATTA"
+                                                      << "------TAAGCCTTTTAA"
+                                                      << "GCGCGCTAAGCC------";
+    const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0013) {
+//    Adding and aligning with MAFFT a sequence to an alignment with columns of gaps
+
+//    1. Open "_common_data/scenarios/msa/ma2_gap_8_col.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Ensure that MAFFT tool is set.
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Align with MAFFT..."));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align");
+
+//    3. Click "Align sequence to this alignment" button on the toolbar.
+//    4. Select "_common_data/scenarios/msa/add_and_align_1.fa" in the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_1.fa"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+
+//    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row, columns with gaps were removed
+    const QStringList expectedMsaData = QStringList() << "-----AAGCTTCTTTTAA----------"
+                                                      << "-----AAGTTACTAA-------------"
+                                                      << "-----TAG---TTATTAA----------"
+                                                      << "-----AAGC---TATTAA----------"
+                                                      << "-----TAGTTATTAA-------------"
+                                                      << "-----TAGTTATTAA-------------"
+                                                      << "-----TAGTTATTAA-------------"
+                                                      << "-----AAGCTTT---TAA----------"
+                                                      << "-----A--AGAATAATTA----------"
+                                                      << "-----AAGCTTTTAA-------------"
+                                                      << "GCGCTAAGCCTTTTAAGCGCGCGCGCGC";
+    const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
+}
+
 } // namespace
 } // namespace U2
 

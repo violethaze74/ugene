@@ -33,6 +33,8 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
 
 #include "GTUtilsMdi.h"
@@ -243,6 +245,21 @@ void GTUtilsMsaEditor::toggleCollapsingGroup(HI::GUITestOpStatus &os, const QStr
 int GTUtilsMsaEditor::getSequencesCount(HI::GUITestOpStatus &os) {
     QWidget *statusWidget = GTWidget::findWidget(os, "msa_editor_status_bar");
     return GTMSAEditorStatusWidget::getSequencesCount(os, statusWidget);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getWholeData"
+QStringList GTUtilsMsaEditor::getWholeData(GUITestOpStatus &os) {
+    const QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    GT_CHECK_RESULT(!names.isEmpty(), "The name list is empty", QStringList());
+
+    clickSequenceName(os, names.first());
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    clickSequenceName(os, names.last());
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    GTKeyboardUtils::copy(os);
+    return GTClipboard::text(os).split('\n');
 }
 #undef GT_METHOD_NAME
 

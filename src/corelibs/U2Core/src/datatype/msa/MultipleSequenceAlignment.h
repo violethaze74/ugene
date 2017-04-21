@@ -33,7 +33,6 @@ class MultipleSequenceAlignmentData;
 class U2Region;
 
 #define MA_OBJECT_NAME QString("Multiple alignment")
-#define MSA_TailedGapsPattern "\\-+$"
 
 class U2CORE_EXPORT MultipleSequenceAlignment : public MultipleAlignment {
 public:

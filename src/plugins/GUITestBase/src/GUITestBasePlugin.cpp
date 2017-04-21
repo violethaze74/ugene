@@ -1876,8 +1876,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0082);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0083);
 
-
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_fake);
+
     /////////////////////////////////////////////////////////////////////////
     // Common align sequences to an alignment
     /////////////////////////////////////////////////////////////////////////
@@ -1891,10 +1891,13 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0008);
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0010);
+    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0011);
+    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0012);
+    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0013);
+
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/colors
     /////////////////////////////////////////////////////////////////////////
-
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0003);

@@ -356,8 +356,15 @@ U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDb
     row.rowId = -1; // set the ID automatically
 
     QByteArray oldSeqData = dnaSeq.seq;
-    int tailGapsIndex = QRegExp(MSA_TailedGapsPattern).indexIn(oldSeqData);
-    if (tailGapsIndex >= 0) {
+    int tailGapsIndex = 0;
+    for (tailGapsIndex = oldSeqData.length() - 1; tailGapsIndex >= 0; tailGapsIndex--) {
+        if (U2Msa::GAP_CHAR != oldSeqData[tailGapsIndex]) {
+            tailGapsIndex++;
+            break;
+        }
+    }
+
+    if (tailGapsIndex < oldSeqData.length()) {
         oldSeqData.chop(oldSeqData.length() - tailGapsIndex);
     }
 

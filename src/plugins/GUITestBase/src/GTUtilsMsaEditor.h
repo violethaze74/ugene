@@ -69,6 +69,7 @@ public:
     static bool isSequenceCollapsed(HI::GUITestOpStatus &os, const QString &seqName);
 
     static int getSequencesCount(HI::GUITestOpStatus &os);
+    static QStringList getWholeData(HI::GUITestOpStatus &os);
 
     static void undo(HI::GUITestOpStatus &os);
     static void redo(HI::GUITestOpStatus &os);
