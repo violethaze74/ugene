@@ -6225,7 +6225,11 @@ GUI_TEST_CLASS_DEFINITION(test_2972){
 
     CHECK_SET_ERR(l.hasError(), "no error in log");
     QString error = l.getError();
+#ifdef Q_OS_WIN
     QString expectedError = "Task {Search with phmmer} finished with error: Subtask {PHMMER search tool} is failed: PHMMER search tool exited with code 33792";
+#else
+    QString expectedError = "is empty or misformatted";
+#endif
 
     CHECK_SET_ERR(error.contains(expectedError), "actual error is " + error);
 //    3. Choose the query sequence file: any non-sequence format file (e.g. *.mp3).
