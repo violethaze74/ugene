@@ -32,10 +32,10 @@ class MSAEditor;
 class MsaColorSchemeFactory;
 class GroupedComboBoxDelegate;
 
-class MSAColorComboboxController : public QComboBox {
+class MsaColorComboboxController : public QComboBox {
     Q_OBJECT
 public:
-    MSAColorComboboxController(MSAEditor *msa, QWidget *parent = NULL);
+    MsaColorComboboxController(MSAEditor *msa, QWidget *parent = NULL);
     void init();
 signals:
     void si_schemeChanged(const QString &newScheme);

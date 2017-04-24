@@ -34,18 +34,18 @@
 
 namespace U2 {
 
-MSAHighlightingComboboxController::MSAHighlightingComboboxController(MSAEditor *msa, QWidget *parent) : QComboBox(parent),
+MsaHighlightingComboboxController::MsaHighlightingComboboxController(MSAEditor *msa, QWidget *parent) : QComboBox(parent),
     msa(msa) {
     setItemDelegate(new GroupedComboBoxDelegate(this));
     init();
     connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_indexChanged(int)));
 }
 
-void MSAHighlightingComboboxController::sl_indexChanged(int index) {
+void MsaHighlightingComboboxController::sl_indexChanged(int index) {
     emit si_schemeChanged(itemData(index).toString());
 }
 
-void MSAHighlightingComboboxController::init() {
+void MsaHighlightingComboboxController::init() {
     bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
 
     blockSignals(true);
@@ -62,7 +62,7 @@ void MSAHighlightingComboboxController::init() {
     blockSignals(false);
 }
 
-void MSAHighlightingComboboxController::fillHighlightingCbWithGrouping() {
+void MsaHighlightingComboboxController::fillHighlightingCbWithGrouping() {
 
     MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
     QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > highlightingSchemesFactories = msaHighlightingSchemeRegistry->getAllHighlightingSchemesGrouped();
@@ -80,7 +80,7 @@ void MSAHighlightingComboboxController::fillHighlightingCbWithGrouping() {
     createAndFillGroup(nucleotideHighlightSchemesFactories, tr("Nucleotide alphabet"));
 }
 
-void MSAHighlightingComboboxController::createAndFillGroup(QList<MsaHighlightingSchemeFactory *> rawHighlightingSchemesFactories, const QString& groupName) {
+void MsaHighlightingComboboxController::createAndFillGroup(QList<MsaHighlightingSchemeFactory *> rawHighlightingSchemesFactories, const QString& groupName) {
     if (rawHighlightingSchemesFactories.isEmpty()) {
         return;
     }

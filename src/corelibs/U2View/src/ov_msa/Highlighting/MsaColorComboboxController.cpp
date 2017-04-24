@@ -34,18 +34,18 @@
 
 namespace U2 {
 
-MSAColorComboboxController::MSAColorComboboxController(MSAEditor *msa, QWidget *parent) : QComboBox(parent),
+MsaColorComboboxController::MsaColorComboboxController(MSAEditor *msa, QWidget *parent) : QComboBox(parent),
     msa(msa) {
     setItemDelegate(new GroupedComboBoxDelegate(this));
     init();
     connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_indexChanged(int)));
 }
 
-void MSAColorComboboxController::sl_indexChanged(int index) {
+void MsaColorComboboxController::sl_indexChanged(int index) {
     emit si_schemeChanged(itemData(index).toString());
 }
 
-void MSAColorComboboxController::init() {
+void MsaColorComboboxController::init() {
     bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
 
     blockSignals(true);
@@ -64,7 +64,7 @@ void MSAColorComboboxController::init() {
     blockSignals(false);
 }
 
-void MSAColorComboboxController::fillColorCbWithGrouping() {
+void MsaColorComboboxController::fillColorCbWithGrouping() {
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
     QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > colorSchemesFactories = msaColorSchemeRegistry->getAllMsaColorSchemesGrouped();
 
@@ -77,7 +77,7 @@ void MSAColorComboboxController::fillColorCbWithGrouping() {
     createAndFillGroup(nucleotideColorSchemesFactories, tr("Nucleotide alphabet"));
 }
 
-void MSAColorComboboxController::createAndFillGroup(QList<MsaColorSchemeFactory *> rawColorSchemesFactories, const QString& groupName) {
+void MsaColorComboboxController::createAndFillGroup(QList<MsaColorSchemeFactory *> rawColorSchemesFactories, const QString& groupName) {
     GroupedComboBoxDelegate *colorSchemeDelegate = qobject_cast<GroupedComboBoxDelegate*>(itemDelegate());
     QStandardItemModel *colorSchemeModel = qobject_cast<QStandardItemModel*>(model());
     CHECK(colorSchemeDelegate != NULL, );

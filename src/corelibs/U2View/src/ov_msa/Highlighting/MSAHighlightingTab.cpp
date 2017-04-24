@@ -72,7 +72,7 @@ QWidget* MSAHighlightingTab::createColorGroup() {
     QWidget * group = new QWidget(this);
 
     QVBoxLayout * layout = initVBoxLayout(group);
-    colorScheme = new MSAColorComboboxController(msa, this);
+    colorScheme = new MsaColorComboboxController(msa, this);
     colorScheme->setObjectName("colorScheme");
     colorScheme->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
 
@@ -87,7 +87,7 @@ QWidget* MSAHighlightingTab::createHighlightingGroup() {
     QWidget * group = new QWidget(this);
 
     QVBoxLayout * layout = initVBoxLayout(group);
-    highlightingScheme = new MSAHighlightingComboboxController(msa, this);
+    highlightingScheme = new MsaHighlightingComboboxController(msa, this);
     highlightingScheme->setObjectName("highlightingScheme");
 
     hint = new QLabel("");
