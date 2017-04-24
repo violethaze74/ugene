@@ -46,7 +46,7 @@ void MsaHighlightingSchemeGaps::process(const char refChar, char &seqChar, QColo
     MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
-MsaHighlightingSchemeGapsFactory::MsaHighlightingSchemeGapsFactory(QObject *parent, const QString &id, const QString &name, AlphabetFlags &supportedAlphabets)
+MsaHighlightingSchemeGapsFactory::MsaHighlightingSchemeGapsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
     : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets, true)
 {
 

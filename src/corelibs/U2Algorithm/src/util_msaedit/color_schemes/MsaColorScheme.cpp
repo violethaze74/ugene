@@ -67,7 +67,7 @@ const MsaColorSchemeFactory * MsaColorScheme::getFactory() const {
     return factory;
 }
 
-MsaColorSchemeFactory::MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+MsaColorSchemeFactory::MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, const const AlphabetFlags &supportedAlphabets)
     : QObject(parent),
       id(id),
       name(name),
@@ -82,7 +82,7 @@ const QString MsaColorSchemeFactory::getName() const {
     return name;
 }
 
-bool MsaColorSchemeFactory::isAlphabetFit(DNAAlphabetType alphabet) const {
+bool MsaColorSchemeFactory::isAlphabetFit(const DNAAlphabetType& alphabet) const {
     return supportedAlphabets.testFlag(alphabet);
 }
 
@@ -112,17 +112,13 @@ QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getAllMsaColorSchemes(DNA
 }
 
 QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaColorSchemes(DNAAlphabetType alphabetType) const {
-    if (alphabetType == DNAAlphabet_RAW) {
-        return colorers;
-    } else {
-        QList<MsaColorSchemeFactory *> res;
-        foreach(MsaColorSchemeFactory *factory, colorers) {
-            if (factory->isAlphabetFit(alphabetType)) {
-                res.append(factory);
-            }
+    QList<MsaColorSchemeFactory *> res;
+    foreach(MsaColorSchemeFactory *factory, colorers) {
+        if (factory->isAlphabetFit(alphabetType)) {
+            res.append(factory);
         }
-        return res;
     }
+    return res;
 }
 
 QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaCustomColorSchemes(DNAAlphabetType alphabetType) const {
@@ -135,9 +131,17 @@ QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaCustomColorSchemes(
     return res;
 }
 
+QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::customSchemesToCommon() const {
+    QList<MsaColorSchemeFactory *> res;
+    foreach(MsaColorSchemeFactory *factory, customColorers) {
+        res.append(factory);
+    }
+    return res;
+}
+
 QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > MsaColorSchemeRegistry::getAllMsaColorSchemesGrouped() const {
     QList<MsaColorSchemeFactory *> allSchemes;
-    allSchemes << colorers << getMsaCustomColorSchemes(DNAAlphabet_RAW);
+    allSchemes << colorers << customSchemesToCommon();
     QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > result;
     foreach(MsaColorSchemeFactory *factory, allSchemes) {
         result[factory->getSupportedAlphabets()].append(factory);

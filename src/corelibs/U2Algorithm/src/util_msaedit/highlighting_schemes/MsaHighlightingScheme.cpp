@@ -78,7 +78,7 @@ QVariantMap MsaHighlightingScheme::getSettings() const {
     return QVariantMap();
 }
 
-MsaHighlightingSchemeFactory::MsaHighlightingSchemeFactory(QObject *parent, const QString &id, const QString &name, AlphabetFlags &supportedAlphabets, bool refFree, bool needThreshold)
+MsaHighlightingSchemeFactory::MsaHighlightingSchemeFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets, bool refFree, bool needThreshold)
     : QObject(parent),
       id(id),
       name(name),
@@ -91,7 +91,7 @@ const QString & MsaHighlightingSchemeFactory::getId() const {
     return id;
 }
 
-const QString MsaHighlightingSchemeFactory::getName() const {
+const QString& MsaHighlightingSchemeFactory::getName() const {
     return name;
 }
 
@@ -107,7 +107,8 @@ bool MsaHighlightingSchemeFactory::isAlphabetFit(DNAAlphabetType alphabet) const
     return supportedAlphabets.testFlag(alphabet);
 }
 
-const AlphabetFlags MsaHighlightingSchemeFactory::getSupportedAlphabets() const {
+const AlphabetFlags& MsaHighlightingSchemeFactory::getSupportedAlphabets() const
+{
     return supportedAlphabets;
 }
 

@@ -34,7 +34,7 @@ void MsaHighlightingSchemeNoColors::process(const char refChar, char &seqChar, Q
     MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
-MsaHighlightingSchemeNoColorsFactory::MsaHighlightingSchemeNoColorsFactory(QObject *parent, const QString &id, const QString &name, AlphabetFlags &supportedAlphabets)
+MsaHighlightingSchemeNoColorsFactory::MsaHighlightingSchemeNoColorsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
     : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets, true)
 {
 

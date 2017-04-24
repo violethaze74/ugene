@@ -60,7 +60,7 @@ void MsaHighlightingSchemeTransitions::process(const char refChar, char &seqChar
     MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
-MsaHighlightingSchemeTransitionsFactory::MsaHighlightingSchemeTransitionsFactory(QObject *parent, const QString &id, const QString &name, AlphabetFlags &supportedAlphabets)
+MsaHighlightingSchemeTransitionsFactory::MsaHighlightingSchemeTransitionsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
     : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets)
 {
 

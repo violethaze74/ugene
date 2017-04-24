@@ -86,7 +86,7 @@ public:
     const QString & getId() const;
     const QString getName() const;
 
-    bool isAlphabetFit(DNAAlphabetType alphabet) const;
+    bool isAlphabetFit(const DNAAlphabetType& alphabet) const;
     const AlphabetFlags getSupportedAlphabets() const;
 signals:
     void si_factoryChanged();
@@ -124,6 +124,7 @@ private slots:
     void sl_onCustomSettingsChanged();
 
 private:
+    QList<MsaColorSchemeFactory *> customSchemesToCommon() const;
     void addCustomScheme(const ColorSchemeData& scheme);
     void addMsaColorSchemeFactory(MsaColorSchemeFactory *commonFactory);
     void addMsaCustomColorSchemeFactory(MsaColorSchemeCustomFactory *customFactory);

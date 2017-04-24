@@ -65,17 +65,17 @@ protected:
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeFactory : public QObject {
     Q_OBJECT
 public:
-    MsaHighlightingSchemeFactory(QObject *parent, const QString &id, const QString &name, AlphabetFlags &supportedAlphabets,
+    MsaHighlightingSchemeFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets,
                                  bool refFree = false, bool needThreshold = false);
 
     virtual MsaHighlightingScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const = 0;
 
     const QString & getId() const;
-    const QString getName() const;
+    const QString& getName() const;
     bool isRefFree() const;
     bool isNeedThreshold() const;
     bool isAlphabetFit(DNAAlphabetType alphabet) const;
-    const AlphabetFlags getSupportedAlphabets() const;
+    const AlphabetFlags& getSupportedAlphabets() const;
 private:
     QString         id;
     QString         name;
