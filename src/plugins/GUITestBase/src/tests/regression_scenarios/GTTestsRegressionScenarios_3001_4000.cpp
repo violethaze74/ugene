@@ -5019,7 +5019,7 @@ GUI_TEST_CLASS_DEFINITION(test_3773) {
 GUI_TEST_CLASS_DEFINITION(test_3773_1) {
     class OkClicker : public Filler {
     public:
-        OkClicker(HI::GUITestOpStatus& _os) : Filler(_os, "UHMM3BuildDialog"){}
+        OkClicker(HI::GUITestOpStatus& _os) : Filler(_os, "HmmerBuildDialog"){}
         virtual void run() {
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK(dialog, );
