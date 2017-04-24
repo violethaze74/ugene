@@ -78,7 +78,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     scaleBar->setValue(r->getScaleBarValue());
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_setRenderAreaHeight(int)));
     McaEditor* mcaEditor = getEditor();
-    connect(this, SIGNAL(si_lengthWasChanged(U2OpStatus)), mcaEditor, SLOT(sl_updateReferenceCache(U2OpStatus)));
+    connect(this, SIGNAL(si_lengthWasChanged()), mcaEditor, SLOT(sl_updateReferenceCache()));
 
     updateColorAndHighlightSchemes();
     updateActions();
@@ -147,7 +147,7 @@ void McaEditorSequenceArea::adjustReferenceLength(U2OpStatus& os) {
         QByteArray insert(newLength - currentLength, U2Msa::GAP_CHAR);
         DNASequenceUtils::insertChars(dnaSequence.seq, currentLength, insert, os);
         mcaEditor->getRefereceObj()->setWholeSequence(dnaSequence);
-        emit si_lengthWasChanged(os);
+        emit si_lengthWasChanged();
     }
 }
 

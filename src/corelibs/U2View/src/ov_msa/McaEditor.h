@@ -64,7 +64,7 @@ public:
 protected slots:
     void sl_onContextMenuRequested(const QPoint & pos);
     void sl_showHideChromatograms(bool show);
-    void sl_updateReferenceCache(U2OpStatus& os);
+    void sl_updateReferenceCache();
 
 protected:
     QWidget* createWidget();

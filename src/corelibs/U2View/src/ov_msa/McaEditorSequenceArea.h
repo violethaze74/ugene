@@ -69,7 +69,7 @@ public:
 
 signals:
     void si_clearReferenceSelection();
-    void si_lengthWasChanged(U2OpStatus& os);
+    void si_lengthWasChanged();
 
 public slots:
     void sl_referenceSelectionChanged();
