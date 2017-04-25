@@ -67,7 +67,7 @@ const MsaColorSchemeFactory * MsaColorScheme::getFactory() const {
     return factory;
 }
 
-MsaColorSchemeFactory::MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, const const AlphabetFlags &supportedAlphabets)
+MsaColorSchemeFactory::MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
     : QObject(parent),
       id(id),
       name(name),

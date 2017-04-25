@@ -28,24 +28,24 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 
-#include <U2Gui/GroupedComboboxDelegate.h>
+#include <U2Gui/GroupedComboBoxDelegate.h>
 
 #include <U2View/MSAEditor.h>
 
 namespace U2 {
 
-MsaHighlightingComboboxController::MsaHighlightingComboboxController(MSAEditor *msa, QWidget *parent) : QComboBox(parent),
+MsaHighlightingComboBoxController::MsaHighlightingComboBoxController(MSAEditor *msa, QWidget *parent) : QComboBox(parent),
     msa(msa) {
     setItemDelegate(new GroupedComboBoxDelegate(this));
     init();
     connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_indexChanged(int)));
 }
 
-void MsaHighlightingComboboxController::sl_indexChanged(int index) {
+void MsaHighlightingComboBoxController::sl_indexChanged(int index) {
     emit si_schemeChanged(itemData(index).toString());
 }
 
-void MsaHighlightingComboboxController::init() {
+void MsaHighlightingComboBoxController::init() {
     bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
 
     blockSignals(true);
@@ -62,7 +62,7 @@ void MsaHighlightingComboboxController::init() {
     blockSignals(false);
 }
 
-void MsaHighlightingComboboxController::fillHighlightingCbWithGrouping() {
+void MsaHighlightingComboBoxController::fillHighlightingCbWithGrouping() {
 
     MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
     QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > highlightingSchemesFactories = msaHighlightingSchemeRegistry->getAllHighlightingSchemesGrouped();
@@ -80,7 +80,7 @@ void MsaHighlightingComboboxController::fillHighlightingCbWithGrouping() {
     createAndFillGroup(nucleotideHighlightSchemesFactories, tr("Nucleotide alphabet"));
 }
 
-void MsaHighlightingComboboxController::createAndFillGroup(QList<MsaHighlightingSchemeFactory *> rawHighlightingSchemesFactories, const QString& groupName) {
+void MsaHighlightingComboBoxController::createAndFillGroup(QList<MsaHighlightingSchemeFactory *> rawHighlightingSchemesFactories, const QString& groupName) {
     if (rawHighlightingSchemesFactories.isEmpty()) {
         return;
     }

@@ -1769,8 +1769,6 @@ MsaColorSchemeFactory * MaEditorSequenceArea::getDefaultColorSchemeFactory() {
 
 void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype) {
     Settings* s = AppContext::getSettings();
-    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
     switch (atype) {
     case DNAAlphabet_RAW:
         csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, MsaColorScheme::EMPTY).toString();

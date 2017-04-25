@@ -398,6 +398,7 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     foreach(QAction* a, colorSchemeMenuActions) {
         MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, colorsSchemeMenu);
     }
+    colorsSchemeMenu->addSeparator();
 
     QMenu* customColorSchemaMenu = new QMenu(tr("Custom schemes"), colorsSchemeMenu);
     customColorSchemaMenu->menuAction()->setObjectName("Custom schemes");

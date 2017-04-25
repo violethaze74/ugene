@@ -34,7 +34,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/GroupedComboboxDelegate.h>
+#include <U2Gui/GroupedComboBoxDelegate.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
@@ -72,7 +72,7 @@ QWidget* MSAHighlightingTab::createColorGroup() {
     QWidget * group = new QWidget(this);
 
     QVBoxLayout * layout = initVBoxLayout(group);
-    colorScheme = new MsaColorComboboxController(msa, this);
+    colorScheme = new MsaColorComboBoxController(msa, this);
     colorScheme->setObjectName("colorScheme");
     colorScheme->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
 
@@ -87,7 +87,7 @@ QWidget* MSAHighlightingTab::createHighlightingGroup() {
     QWidget * group = new QWidget(this);
 
     QVBoxLayout * layout = initVBoxLayout(group);
-    highlightingScheme = new MsaHighlightingComboboxController(msa, this);
+    highlightingScheme = new MsaHighlightingComboBoxController(msa, this);
     highlightingScheme->setObjectName("highlightingScheme");
 
     hint = new QLabel("");

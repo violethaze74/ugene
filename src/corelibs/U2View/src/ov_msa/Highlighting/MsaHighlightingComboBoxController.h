@@ -32,10 +32,10 @@ class MSAEditor;
 class MsaHighlightingSchemeFactory;
 class GroupedComboBoxDelegate;
 
-class MsaHighlightingComboboxController : public QComboBox {
+class MsaHighlightingComboBoxController : public QComboBox {
     Q_OBJECT
 public:
-    MsaHighlightingComboboxController(MSAEditor *msa, QWidget *parent = NULL);
+    MsaHighlightingComboBoxController(MSAEditor *msa, QWidget *parent = NULL);
     void init();
 signals:
     void si_schemeChanged(const QString &newScheme);

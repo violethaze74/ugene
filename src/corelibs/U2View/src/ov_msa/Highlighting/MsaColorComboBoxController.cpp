@@ -28,24 +28,24 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 
-#include <U2Gui/GroupedComboboxDelegate.h>
+#include <U2Gui/GroupedComboBoxDelegate.h>
 
 #include <U2View/MSAEditor.h>
 
 namespace U2 {
 
-MsaColorComboboxController::MsaColorComboboxController(MSAEditor *msa, QWidget *parent) : QComboBox(parent),
+MsaColorComboBoxController::MsaColorComboBoxController(MSAEditor *msa, QWidget *parent) : QComboBox(parent),
     msa(msa) {
     setItemDelegate(new GroupedComboBoxDelegate(this));
     init();
     connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_indexChanged(int)));
 }
 
-void MsaColorComboboxController::sl_indexChanged(int index) {
+void MsaColorComboBoxController::sl_indexChanged(int index) {
     emit si_schemeChanged(itemData(index).toString());
 }
 
-void MsaColorComboboxController::init() {
+void MsaColorComboBoxController::init() {
     bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
 
     blockSignals(true);
@@ -64,7 +64,7 @@ void MsaColorComboboxController::init() {
     blockSignals(false);
 }
 
-void MsaColorComboboxController::fillColorCbWithGrouping() {
+void MsaColorComboBoxController::fillColorCbWithGrouping() {
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
     QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > colorSchemesFactories = msaColorSchemeRegistry->getAllMsaColorSchemesGrouped();
 
@@ -77,7 +77,7 @@ void MsaColorComboboxController::fillColorCbWithGrouping() {
     createAndFillGroup(nucleotideColorSchemesFactories, tr("Nucleotide alphabet"));
 }
 
-void MsaColorComboboxController::createAndFillGroup(QList<MsaColorSchemeFactory *> rawColorSchemesFactories, const QString& groupName) {
+void MsaColorComboBoxController::createAndFillGroup(QList<MsaColorSchemeFactory *> rawColorSchemesFactories, const QString& groupName) {
     GroupedComboBoxDelegate *colorSchemeDelegate = qobject_cast<GroupedComboBoxDelegate*>(itemDelegate());
     QStandardItemModel *colorSchemeModel = qobject_cast<QStandardItemModel*>(model());
     CHECK(colorSchemeDelegate != NULL, );
