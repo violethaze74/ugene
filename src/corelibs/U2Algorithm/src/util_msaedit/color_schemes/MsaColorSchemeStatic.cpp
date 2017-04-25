@@ -34,8 +34,8 @@ QColor MsaColorSchemeStatic::getColor(int /*seq*/, int /*pos*/, char c) const {
     return colorsPerChar[(quint8)c];
 }
 
-MsaColorSchemeStaticFactory::MsaColorSchemeStaticFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType, const QVector<QColor> &colorsPerChar)
-    : MsaColorSchemeFactory(parent, id, name, alphabetType),
+MsaColorSchemeStaticFactory::MsaColorSchemeStaticFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets, const QVector<QColor> &colorsPerChar)
+    : MsaColorSchemeFactory(parent, id, name, supportedAlphabets),
       colorsPerChar(colorsPerChar)
 {
 

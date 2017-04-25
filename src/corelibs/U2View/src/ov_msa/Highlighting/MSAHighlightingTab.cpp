@@ -23,6 +23,7 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QRadioButton>
+#include <QStandardItemModel>
 #include <QToolButton>
 #include <QVBoxLayout>
 
@@ -33,13 +34,17 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GroupedComboboxDelegate.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
+#include "MSAColorComboboxController.h"
+#include "MSAHighlightingComboboxController.h"
 #include "MSAHighlightingTab.h"
+
 
 namespace U2 {
 
@@ -63,11 +68,11 @@ static inline QHBoxLayout * initHBoxLayout(QWidget * w) {
     return layout;
 }
 
-QWidget* MSAHighlightingTab::createColorGroup(){
+QWidget* MSAHighlightingTab::createColorGroup() {
     QWidget * group = new QWidget(this);
 
     QVBoxLayout * layout = initVBoxLayout(group);
-    colorScheme = new QComboBox();
+    colorScheme = new MsaColorComboboxController(msa, this);
     colorScheme->setObjectName("colorScheme");
     colorScheme->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
 
@@ -82,7 +87,7 @@ QWidget* MSAHighlightingTab::createHighlightingGroup() {
     QWidget * group = new QWidget(this);
 
     QVBoxLayout * layout = initVBoxLayout(group);
-    highlightingScheme = new QComboBox();
+    highlightingScheme = new MsaHighlightingComboboxController(msa, this);
     highlightingScheme->setObjectName("highlightingScheme");
 
     hint = new QLabel("");
@@ -156,20 +161,19 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
         << colorScheme->objectName() << highlightingScheme->objectName());
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 
-    initColorCB();
     sl_sync();
 
-    connect(colorScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
-    connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
+    connect(colorScheme, SIGNAL(si_schemeChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
+    connect(highlightingScheme, SIGNAL(si_schemeChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
     connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_triggerUseDots()));
 
     connect(seqArea, SIGNAL(si_highlightingChanged()), SLOT(sl_sync()));
 
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_customSchemesListChanged()));
+    connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_refreshSchemes()));
 
     connect(m, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateHint()));
-    connect(m->getMaObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet *)), SLOT(sl_customSchemesListChanged()));
+    connect(m->getMaObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet *)), SLOT(sl_refreshSchemes()));
 
     connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateHint()));
     connect(exportHighlightning, SIGNAL(clicked()), SLOT(sl_exportHighlightningClicked()));
@@ -181,50 +185,6 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     sl_highlightingParametersChanged();
 }
 
-void MSAHighlightingTab::initColorCB() {
-    bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
-    colorScheme->blockSignals(true);
-    highlightingScheme->blockSignals(true);
-
-    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QList<MsaColorSchemeFactory *> colorSchemesFactories = msaColorSchemeRegistry->getMsaColorSchemes(msa->getMaObject()->getAlphabet()->getType());
-    colorSchemesFactories << msaColorSchemeRegistry->getMsaCustomColorSchemes(msa->getMaObject()->getAlphabet()->getType());
-
-    colorScheme->clear();
-    foreach (MsaColorSchemeFactory *factory, colorSchemesFactories) {
-        colorScheme->addItem(factory->getName(isAlphabetRaw));
-    }
-
-    MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
-    QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(msa->getMaObject()->getAlphabet()->getType());
-
-    highlightingScheme->clear();
-    foreach (MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
-        highlightingScheme->addItem(factory->getName(isAlphabetRaw));
-    }
-
-    colorScheme->blockSignals(false);
-    highlightingScheme->blockSignals(false);
-}
-
-void MSAHighlightingTab::setColorScheme(bool isAlphabetRaw) {
-    MsaColorScheme *scheme = seqArea->getCurrentColorScheme();
-    if (isAlphabetRaw && MsaColorSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes().contains(scheme->getFactory()->getId())) {
-        colorScheme->setCurrentIndex(colorScheme->findText(scheme->getFactory()->getName()));
-    } else {
-        colorScheme->setCurrentIndex(colorScheme->findText(scheme->getFactory()->getName(isAlphabetRaw)));
-    }
-}
-
-void MSAHighlightingTab::setHighlightingScheme(bool isAlphabetRaw) {
-    MsaHighlightingScheme *scheme = seqArea->getCurrentHighlightingScheme();
-    if (isAlphabetRaw && MsaHighlightingSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes().contains(scheme->getFactory()->getId())) {
-        highlightingScheme->setCurrentIndex(highlightingScheme->findText(scheme->getFactory()->getName()));
-    } else {
-        highlightingScheme->setCurrentIndex(highlightingScheme->findText(scheme->getFactory()->getName(isAlphabetRaw)));
-    }
-}
-
 void MSAHighlightingTab::sl_sync() {
     bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
     MsaColorScheme *s = seqArea->getCurrentColorScheme();
@@ -232,7 +192,7 @@ void MSAHighlightingTab::sl_sync() {
     SAFE_POINT(s->getFactory() != NULL, "Current scheme color factory is NULL", );
 
     colorScheme->blockSignals(true);
-    setColorScheme(isAlphabetRaw);
+    colorScheme->setCurrentIndex(colorScheme->findData(s->getFactory()->getId()));
     colorScheme->blockSignals(false);
 
     MsaHighlightingScheme *sh = seqArea->getCurrentHighlightingScheme();
@@ -240,7 +200,7 @@ void MSAHighlightingTab::sl_sync() {
     SAFE_POINT(sh->getFactory() != NULL, "Current highlighting scheme factory is NULL!", );
 
     highlightingScheme->blockSignals(true);
-    setHighlightingScheme(isAlphabetRaw);
+    highlightingScheme->setCurrentIndex(highlightingScheme->findData(sh->getFactory()->getId()));
     highlightingScheme->blockSignals(false);
 
     useDots->blockSignals(true);
@@ -307,11 +267,12 @@ void MSAHighlightingTab::sl_highlightingParametersChanged() {
     highlightingSettings.insert(MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME, thresholdSlider->value());
     highlightingSettings.insert(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked());
     s->applySettings(highlightingSettings);
-    seqArea->sl_changeColorSchemeOutside(colorScheme->currentText());
+    seqArea->sl_changeColorSchemeOutside(colorScheme->currentData().toString());
 }
 
-void MSAHighlightingTab::sl_customSchemesListChanged() {
-    initColorCB();
+void MSAHighlightingTab::sl_refreshSchemes() {
+    colorScheme->init();
+    highlightingScheme->init();
     sl_sync();
 }
 

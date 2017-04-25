@@ -18,31 +18,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+ 
+#ifndef _U2_GROUPED_COMBOBOX_DELEGATE_H_
+#define _U2_GROUPED_COMBOBOX_DELEGATE_H_
 
-#ifndef _U2_MSA_HIGHLIGHTING_SCHEME_GAPS_H_
-#define _U2_MSA_HIGHLIGHTING_SCHEME_GAPS_H_
+#include <QItemDelegate>
+#include <QPainter>
 
-#include "MsaHighlightingScheme.h"
+#include <U2Core/global.h>
+
+class QStandardItemModel;
 
 namespace U2 {
 
-class MsaHighlightingSchemeGaps : public MsaHighlightingScheme {
+class U2GUI_EXPORT GroupedComboBoxDelegate : public QItemDelegate {
     Q_OBJECT
 public:
-    MsaHighlightingSchemeGaps(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj);
+    explicit GroupedComboBoxDelegate(QObject *parent = 0);
 
-    void process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const;
-
-    static const QColor gapColor;
+    static void addParentItem(QStandardItemModel * model, const QString& text);
+    static void addChildItem(QStandardItemModel * model, const QString& text, const QVariant& data);
+protected:
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
+    
+}
 
-class U2ALGORITHM_EXPORT MsaHighlightingSchemeGapsFactory : public MsaHighlightingSchemeFactory {
-public:
-    MsaHighlightingSchemeGapsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
-
-    MsaHighlightingScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
-};
-
-}   // namespace U2
-
-#endif // _U2_MSA_HIGHLIGHTING_SCHEME_GAPS_H_
+#endif // _U2_GROUPED_COMBOBOX_DELEGATE_H_

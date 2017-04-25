@@ -43,6 +43,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/ColorSchemaDialogController.h \
            src/ov_msa/ColorSchemaSettingsController.h \
            src/ov_msa/Common/RefSeqCommonWidget.h \
+           src/ov_msa/MaConsensusMismatchController.h \
            src/ov_msa/CreateSubalignmentDialogController.h \
            src/ov_msa/DeleteGapsDialog.h \
            src/ov_msa/Export/MSAImageExportTask.h \
@@ -54,9 +55,13 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/General/McaGeneralTabFactory.h \
            src/ov_msa/General/MSAGeneralTab.h \
            src/ov_msa/General/MSAGeneralTabFactory.h \
+           src/ov_msa/Highlighting/MsaColorComboboxController.h \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.h \
+
+           src/ov_msa/Highlighting/MsaHighlightingComboboxController.h \
+           src/ov_msa/Highlighting/MsaSchemesMenuBuilder.h \
            src/ov_msa/MaConsensusMismatchController.h \
            src/ov_msa/MaEditor.h \
            src/ov_msa/MaEditorFactory.h \
@@ -295,9 +300,12 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/General/McaGeneralTabFactory.cpp \
            src/ov_msa/General/MSAGeneralTab.cpp \
            src/ov_msa/General/MSAGeneralTabFactory.cpp \
+           src/ov_msa/Highlighting/MsaColorComboboxController.cpp \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.cpp \
+           src/ov_msa/Highlighting/MsaHighlightingComboboxController.cpp \
+           src/ov_msa/Highlighting/MsaSchemesMenuBuilder.cpp \
            src/ov_msa/MaConsensusMismatchController.cpp \
            src/ov_msa/MaEditor.cpp \
            src/ov_msa/MaEditorFactory.cpp \

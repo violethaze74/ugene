@@ -285,9 +285,9 @@ void McaEditorSequenceArea::buildMenu(QMenu *m) {
 }
 
 void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid,
-                                                       DNAAlphabetType, bool) {
+                                                       DNAAlphabetType atype) {
     csid = MsaColorScheme::UGENE_NUCL;
-    hsid = MsaHighlightingScheme::DISAGREEMENTS_NUCL;
+    hsid = MsaHighlightingScheme::DISAGREEMENTS;
 }
 
 QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionName) {

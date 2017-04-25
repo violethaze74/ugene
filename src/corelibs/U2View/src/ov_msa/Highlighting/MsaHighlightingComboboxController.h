@@ -18,27 +18,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+ 
+#ifndef _U2_MSA_HIGHLIGHTING_COMBO_BOX_CONTROLLER_H_
+#define _U2_MSA_HIGHLIGHTING_COMBO_BOX_CONTROLLER_H_
 
-#ifndef _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_GRAYSCALE_H_
-#define _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_GRAYSCALE_H_
+#include <QComboBox>
 
-#include "MsaColorSchemePercentageIdentity.h"
+class QStandardItemModel;
 
 namespace U2 {
 
-class U2ALGORITHM_EXPORT MsaColorSchemePercentageIdententityGrayscale : public MsaColorSchemePercentageIdentity {
-public:
-    MsaColorSchemePercentageIdententityGrayscale(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj);
-};
+class MSAEditor;
+class MsaHighlightingSchemeFactory;
+class GroupedComboBoxDelegate;
 
-class MsaColorSchemePercentageIdententityGrayscaleFactory : public MsaColorSchemeFactory {
+class MsaHighlightingComboboxController : public QComboBox {
     Q_OBJECT
 public:
-    MsaColorSchemePercentageIdententityGrayscaleFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &alphabetType);
+    MsaHighlightingComboboxController(MSAEditor *msa, QWidget *parent = NULL);
+    void init();
+signals:
+    void si_schemeChanged(const QString &newScheme);
+private slots:
+    void sl_indexChanged(int index);
+private:
+    void fillHighlightingCbWithGrouping();
+    void createAndFillGroup(QList<MsaHighlightingSchemeFactory *> rawColorSchemesFactories, const QString& groupName);
 
-    MsaColorScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
+    MSAEditor *msa;
 };
 
-}   // namespace U2
+}
 
-#endif // _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_GRAYSCALE_H_
+#endif

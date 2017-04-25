@@ -36,7 +36,7 @@ public:
 
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeDisagreementsFactory : public MsaHighlightingSchemeFactory {
 public:
-    MsaHighlightingSchemeDisagreementsFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType);
+    MsaHighlightingSchemeDisagreementsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
 
     MsaHighlightingScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
 };

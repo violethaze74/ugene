@@ -90,8 +90,8 @@ void MsaHighlightingSchemeConservation::calculateStatisticForColumn(int refCharC
     msaCharCountMap[refCharColumn] = columnStatistic;
 }
 
-MsaHighlightingSchemeConservationFactory::MsaHighlightingSchemeConservationFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType)
-    : MsaHighlightingSchemeFactory(parent, id, name, alphabetType, true, true)
+MsaHighlightingSchemeConservationFactory::MsaHighlightingSchemeConservationFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+    : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets, true, true)
 {
 
 }

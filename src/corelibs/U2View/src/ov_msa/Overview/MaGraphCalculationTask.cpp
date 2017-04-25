@@ -263,11 +263,11 @@ int MaHighlightingOverviewCalculationTask::getGraphValue(int pos) const {
 }
 
 bool MaHighlightingOverviewCalculationTask::isGapScheme(const QString &schemeId) {
-    return (schemeId == MsaHighlightingScheme::GAPS_AMINO || schemeId == MsaHighlightingScheme::GAPS_NUCL);
+    return (schemeId == MsaHighlightingScheme::GAPS);
 }
 
 bool MaHighlightingOverviewCalculationTask::isEmptyScheme(const QString &schemeId) {
-    return (schemeId == MsaHighlightingScheme::EMPTY_AMINO || schemeId == MsaHighlightingScheme::EMPTY_NUCL);
+    return (schemeId == MsaHighlightingScheme::EMPTY);
 }
 
 bool MaHighlightingOverviewCalculationTask::isCellHighlighted(int seq, int pos) const {

@@ -207,7 +207,7 @@ public:
 
 
 public slots:
-    void sl_changeColorSchemeOutside(const QString &name);
+    void sl_changeColorSchemeOutside(const QString &id);
     void sl_changeCopyFormat(const QString& alg);
     void sl_changeColorScheme();
     void sl_delCurrentSelection();
@@ -305,11 +305,13 @@ protected:
     void updateColorAndHighlightSchemes();
 
     void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);
+   
     void registerCommonColorSchemes();
+    
     void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
 
     MsaColorSchemeFactory * getDefaultColorSchemeFactory();
-    virtual void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype, bool isFirstInitialization);
+    virtual void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype);
     void applyColorScheme(const QString &id);
 
     void updateHScrollBar();

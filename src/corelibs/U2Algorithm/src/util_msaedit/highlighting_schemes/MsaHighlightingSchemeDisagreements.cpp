@@ -40,10 +40,8 @@ void MsaHighlightingSchemeDisagreements::process(const char refChar, char &seqCh
 }
 
 
-MsaHighlightingSchemeDisagreementsFactory::MsaHighlightingSchemeDisagreementsFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType)
-    : MsaHighlightingSchemeFactory(parent, id, name, alphabetType)
-{
-
+MsaHighlightingSchemeDisagreementsFactory::MsaHighlightingSchemeDisagreementsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+    : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
 MsaHighlightingScheme * MsaHighlightingSchemeDisagreementsFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
