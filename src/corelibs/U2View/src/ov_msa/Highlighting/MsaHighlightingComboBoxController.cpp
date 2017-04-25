@@ -55,6 +55,9 @@ void MsaHighlightingComboBoxController::init() {
     } else {
         MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
         QList<MsaHighlightingSchemeFactory*> HighlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(msa->getMaObject()->getAlphabet()->getType());
+        MsaHighlightingSchemeFactory* nohighlightingFactory = msaHighlightingSchemeRegistry->getMsaHighlightingSchemeFactoryById(MsaHighlightingScheme::EMPTY);
+        HighlightingSchemesFactories.removeAll(nohighlightingFactory);
+        HighlightingSchemesFactories.prepend(nohighlightingFactory);
         foreach(MsaHighlightingSchemeFactory *factory, HighlightingSchemesFactories) {
             addItem(factory->getName(), factory->getId());
         }
@@ -66,11 +69,15 @@ void MsaHighlightingComboBoxController::fillHighlightingCbWithGrouping() {
 
     MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
     QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > highlightingSchemesFactories = msaHighlightingSchemeRegistry->getAllHighlightingSchemesGrouped();
+    MsaHighlightingSchemeFactory* nohighlightingFactory = msaHighlightingSchemeRegistry->getMsaHighlightingSchemeFactoryById(MsaHighlightingScheme::EMPTY);
 
     QList<MsaHighlightingSchemeFactory *> commonHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
     QList<MsaHighlightingSchemeFactory *> rawHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_RAW];
     QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO];
     QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_NUCL];
+
+    commonHighlightSchemesFactories.removeAll(nohighlightingFactory);
+    commonHighlightSchemesFactories.prepend(nohighlightingFactory);
 
     foreach(MsaHighlightingSchemeFactory *factory, commonHighlightSchemesFactories) {
         addItem(factory->getName(), factory->getId());
