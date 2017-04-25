@@ -149,18 +149,6 @@ void McaEditorSequenceArea::adjustReferenceLength(U2OpStatus& os) {
         mcaEditor->getRefereceObj()->setWholeSequence(dnaSequence);
         emit si_lengthWasChanged();
     }
-    if (currentLength > newLength) {
-        DNASequence dnaSequence = mcaEditor->getRefereceObj()->getWholeSequence(os);
-        for (int i = 0; i < currentLength - newLength; i++) {
-            if (mcaEditor->getReferenceCharAt(currentLength) != U2Msa::GAP_CHAR) {
-                break;
-            }
-            DNASequenceUtils::removeChars(dnaSequence.seq, currentLength - 1, currentLength, os);
-            currentLength--;
-        }
-        mcaEditor->getRefereceObj()->setWholeSequence(dnaSequence);
-        emit si_lengthWasChanged();
-    }
 }
 
 void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel, bool newHighlightSelection) {

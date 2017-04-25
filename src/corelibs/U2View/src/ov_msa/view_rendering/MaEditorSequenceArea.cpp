@@ -655,7 +655,6 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
 
     const U2Region& sel = getSelectedRows();
     maObj->removeRegion(selection.x(), sel.startPos, selection.width(), sel.length, true);
-    adjustReferenceLength(os);
     if (selection.height() == 1 && selection.width() == 1) {
         if (isInRange(selection.topLeft())) {
             return;
