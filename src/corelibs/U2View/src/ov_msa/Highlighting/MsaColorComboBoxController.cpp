@@ -19,7 +19,7 @@
 * MA 02110-1301, USA.
 */
 
-#include "MSAColorComboboxController.h"
+#include "MsaColorComboBoxController.h"
 
 #include <QStandardItemModel>
 

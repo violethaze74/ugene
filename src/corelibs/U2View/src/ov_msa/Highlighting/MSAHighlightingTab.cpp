@@ -41,8 +41,8 @@
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
-#include "MSAColorComboboxController.h"
-#include "MSAHighlightingComboboxController.h"
+#include "MsaColorComboBoxController.h"
+#include "MsaHighlightingComboBoxController.h"
 #include "MSAHighlightingTab.h"
 
 

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
  
-#include "MSAHighlightingComboboxController.h"
+#include "MsaHighlightingComboBoxController.h"
 
 #include <QStandardItemModel>
 
