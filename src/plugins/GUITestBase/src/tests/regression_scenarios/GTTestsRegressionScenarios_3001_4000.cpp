@@ -5007,8 +5007,10 @@ GUI_TEST_CLASS_DEFINITION(test_3773) {
  *   Expected state: Log not have errors
 */
     GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Plain text"));
     GTFileDialog::openFile(os, dataDir + "samples/HMM", "aligment15900.hmm");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTGlobals::sleep(200);
     GTUtilsProjectTreeView::click(os, "aligment15900.hmm");
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
