@@ -22,7 +22,7 @@
 #include "MaEditorSequenceArea.h"
 
 #include "MaEditorWgt.h"
-#include "../Highlighting/MSASchemesMenuBuilder.h"
+#include "../Highlighting/MsaSchemesMenuBuilder.h"
 #include "SequenceAreaRenderer.h"
 #include "../MaEditor.h"
 #include "../MSACollapsibleModel.h"

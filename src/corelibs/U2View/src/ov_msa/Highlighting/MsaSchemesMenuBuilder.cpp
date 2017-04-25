@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSASchemesMenuBuilder.h"
+#include "MsaSchemesMenuBuilder.h"
 
 #include <QLabel>
 #include <QWidgetAction>

@@ -80,7 +80,7 @@
 #include "MSAEditor.h"
 #include "MaEditorNameList.h"
 #include "MSAEditorSequenceArea.h"
-#include "Highlighting/MSASchemesMenuBuilder.h"
+#include "Highlighting/MsaSchemesMenuBuilder.h"
 
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "Clipboard/SubalignmentToClipboardTask.h"
