@@ -51,10 +51,12 @@ void MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(QList<QAction*> 
         QList<MsaColorSchemeFactory *> aminoColorSchemesFactories = factories[DNAAlphabet_RAW | DNAAlphabet_AMINO];
         QList<MsaColorSchemeFactory *> nucleotideColorSchemesFactories = factories[DNAAlphabet_RAW | DNAAlphabet_NUCL];
 
-        rawColorSchemesFactories.removeAll(noColorsFactory);
-        rawColorSchemesFactories.prepend(noColorsFactory);
-        
-        fillColorMenuSectionForCurrentAlphabet(rawColorSchemesFactories, actions, tr("RAW alphabet"), actionsParent);
+        if (type == Common) {
+            rawColorSchemesFactories.removeAll(noColorsFactory);
+            rawColorSchemesFactories.prepend(noColorsFactory);
+        }
+
+        fillColorMenuSectionForCurrentAlphabet(rawColorSchemesFactories, actions, tr("All alphabets"), actionsParent);
         fillColorMenuSectionForCurrentAlphabet(aminoColorSchemesFactories, actions, tr("Amino acid alphabet"), actionsParent);
         fillColorMenuSectionForCurrentAlphabet(nucleotideColorSchemesFactories, actions, tr("Nucleotide alphabet"), actionsParent);
     } else {
@@ -79,15 +81,13 @@ void MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(QList<QAction*>
     if (alphabet == DNAAlphabet_RAW) {
         QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > highlightingSchemesFactories = msaHighlightingSchemeRegistry->getAllHighlightingSchemesGrouped();
         QList<MsaHighlightingSchemeFactory *> commonHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
-        QList<MsaHighlightingSchemeFactory *> rawHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_RAW];
         QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO];
         QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_NUCL];
 
         commonHighlightSchemesFactories.removeAll(nohighlightingFactory);
         commonHighlightSchemesFactories.prepend(nohighlightingFactory);
-        fillHighlightingSchemeMenuActions(actions, commonHighlightSchemesFactories, actionsParent);
 
-        fillHighlightingMenuSectionForCurrentAlphabet(rawHighlightSchemesFactories, actions, tr("RAW alphabet"), actionsParent);
+        fillHighlightingMenuSectionForCurrentAlphabet(commonHighlightSchemesFactories, actions, tr("All alphabets"), actionsParent);
         fillHighlightingMenuSectionForCurrentAlphabet(aminoHighlightSchemesFactories, actions, tr("Amino acid alphabet"), actionsParent);
         fillHighlightingMenuSectionForCurrentAlphabet(nucleotideHighlightSchemesFactories, actions, tr("Nucleotide alphabet"), actionsParent);
     } else {

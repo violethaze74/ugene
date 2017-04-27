@@ -72,17 +72,13 @@ void MsaHighlightingComboBoxController::fillHighlightingCbWithGrouping() {
     MsaHighlightingSchemeFactory* nohighlightingFactory = msaHighlightingSchemeRegistry->getMsaHighlightingSchemeFactoryById(MsaHighlightingScheme::EMPTY);
 
     QList<MsaHighlightingSchemeFactory *> commonHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
-    QList<MsaHighlightingSchemeFactory *> rawHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_RAW];
     QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO];
     QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_NUCL];
 
     commonHighlightSchemesFactories.removeAll(nohighlightingFactory);
     commonHighlightSchemesFactories.prepend(nohighlightingFactory);
 
-    foreach(MsaHighlightingSchemeFactory *factory, commonHighlightSchemesFactories) {
-        addItem(factory->getName(), factory->getId());
-    }
-    createAndFillGroup(rawHighlightSchemesFactories, tr("RAW alphabet"));
+    createAndFillGroup(commonHighlightSchemesFactories, tr("All alphabets"));
     createAndFillGroup(aminoHighlightSchemesFactories, tr("Amino acid alphabet"));
     createAndFillGroup(nucleotideHighlightSchemesFactories, tr("Nucleotide alphabet"));
 }

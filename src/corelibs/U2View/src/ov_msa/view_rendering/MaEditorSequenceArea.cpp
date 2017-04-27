@@ -1697,19 +1697,17 @@ void MaEditorSequenceArea::updateColorAndHighlightSchemes() {
     if (!al){
         return;
     }
-    DNAAlphabetType atype = al->getType();
+
     MsaColorSchemeRegistry* csr = AppContext::getMsaColorSchemeRegistry();
     MsaHighlightingSchemeRegistry* hsr = AppContext::getMsaHighlightingSchemeRegistry();
 
     QString csid;
     QString hsid;
-    getColorAndHighlightingIds(csid, hsid, atype);
+    getColorAndHighlightingIds(csid, hsid);
     MsaColorSchemeFactory* csf = csr->getMsaColorSchemeFactoryById(csid);
-    SAFE_POINT(csf != NULL, "Color scheme factory is NULL", );
     MsaHighlightingSchemeFactory* hsf = hsr->getMsaHighlightingSchemeFactoryById(hsid);
-    SAFE_POINT(hsf != NULL, "Highlighting scheme factory is NULL", );
     initColorSchemes(csf);
-    initHighlightSchemes(hsf, atype);
+    initHighlightSchemes(hsf);
 }
 
 void MaEditorSequenceArea::initColorSchemes(MsaColorSchemeFactory *defaultColorSchemeFactory) {
@@ -1734,7 +1732,8 @@ void MaEditorSequenceArea::registerCommonColorSchemes() {
     MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(colorSchemeMenuActions, MsaSchemesMenuBuilder::Common, getEditor()->getMaObject()->getAlphabet()->getType(), this);
 }
 
-void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype) {
+void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* hsf) {
+    DNAAlphabetType atype = editor->getMaObject()->getAlphabet()->getType();
     qDeleteAll(highlightingSchemeMenuActions);
     highlightingSchemeMenuActions.clear();
     SAFE_POINT(hsf != NULL, "Highlight scheme factory is NULL", );
@@ -1751,7 +1750,7 @@ void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* hs
     }
 }
 
-MsaColorSchemeFactory * MaEditorSequenceArea::getDefaultColorSchemeFactory() {
+MsaColorSchemeFactory * MaEditorSequenceArea::getDefaultColorSchemeFactory() const {
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
 
     switch (editor->getMaObject()->getAlphabet()->getType()) {
@@ -1767,12 +1766,19 @@ MsaColorSchemeFactory * MaEditorSequenceArea::getDefaultColorSchemeFactory() {
     return NULL;
 }
 
-void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype) {
+MsaHighlightingSchemeFactory* MaEditorSequenceArea::getDefaultHighlightingSchemeFactory() const {
+    MsaHighlightingSchemeRegistry *hsr = AppContext::getMsaHighlightingSchemeRegistry();
+    MsaHighlightingSchemeFactory *hsf = hsr->getMsaHighlightingSchemeFactoryById(MsaHighlightingScheme::EMPTY);
+    return hsf;
+}
+
+void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid) {
+    DNAAlphabetType atype = getEditor()->getMaObject()->getAlphabet()->getType();
     Settings* s = AppContext::getSettings();
     switch (atype) {
     case DNAAlphabet_RAW:
         csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, MsaColorScheme::EMPTY).toString();
-        hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_NUCL, MsaHighlightingScheme::EMPTY).toString();
+        hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_RAW, MsaHighlightingScheme::EMPTY).toString();
         break;
     case DNAAlphabet_NUCL:
         csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
@@ -1788,10 +1794,23 @@ void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hs
         break;
     }
 
-    if (colorScheme != NULL && (colorScheme->getFactory()->isAlphabetFit(atype) || atype == DNAAlphabet_RAW)) {
+    MsaColorSchemeRegistry* csr = AppContext::getMsaColorSchemeRegistry();
+    MsaHighlightingSchemeRegistry* hsr = AppContext::getMsaHighlightingSchemeRegistry();
+
+    MsaColorSchemeFactory* csf = csr->getMsaColorSchemeFactoryById(csid);
+    if (csf == NULL) {
+        csid = getDefaultColorSchemeFactory()->getId();
+    }
+    MsaHighlightingSchemeFactory* hsf = hsr->getMsaHighlightingSchemeFactoryById(hsid);
+    if (hsf == NULL) {
+        hsid = getDefaultHighlightingSchemeFactory()->getId();
+    }
+    
+
+    if (colorScheme != NULL && colorScheme->getFactory()->isAlphabetFit(atype)) {
         csid = colorScheme->getFactory()->getId();
     }
-    if (highlightingScheme != NULL && (highlightingScheme->getFactory()->isAlphabetFit(atype) || atype == DNAAlphabet_RAW)) {
+    if (highlightingScheme != NULL && highlightingScheme->getFactory()->isAlphabetFit(atype)) {
         hsid = highlightingScheme->getFactory()->getId();
     }
 }

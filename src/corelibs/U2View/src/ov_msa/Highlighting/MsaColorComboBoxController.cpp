@@ -79,7 +79,7 @@ void MsaColorComboBoxController::fillColorCbWithGrouping() {
     rawColorSchemesFactories.removeAll(noColorsFactory);
     rawColorSchemesFactories.prepend(noColorsFactory);
 
-    createAndFillGroup(rawColorSchemesFactories, tr("RAW alphabet"));
+    createAndFillGroup(rawColorSchemesFactories, tr("All alphabets"));
     createAndFillGroup(aminoColorSchemesFactories, tr("Amino acid alphabet"));
     createAndFillGroup(nucleotideColorSchemesFactories, tr("Nucleotide alphabet"));
 }
