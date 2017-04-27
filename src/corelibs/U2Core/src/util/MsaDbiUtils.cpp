@@ -918,7 +918,7 @@ void MsaDbiUtils::updateRowContent(const U2EntityRef& msaRef, qint64 rowId,
 }
 
 void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os, qint64 enlargeAlignmentLength) {
-    if (enlargeAlignmentLength == -1) {
+    if (enlargeAlignmentLength < 0) {
         enlargeAlignmentLength = count;
     }
     // Prepare the connection

@@ -1573,6 +1573,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     const U2Region& sequences = getSelectedRows();
     maObj->insertGap(sequences, selection.x(), removedRegionWidth);
     adjustReferenceLength(os);
+    CHECK_OP(os,);
     moveSelection(removedRegionWidth, 0, true);
 }
 

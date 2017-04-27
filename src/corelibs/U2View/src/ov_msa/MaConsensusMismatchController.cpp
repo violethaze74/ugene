@@ -56,6 +56,7 @@ MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
 bool MaConsensusMismatchController::isMismatch(int pos) const {
     SAFE_POINT(0 <= pos && pos < mismatchCache.size(), "Invalid pos", false);
     return mismatchCache[pos];
+    return false;
 }
 
 void MaConsensusMismatchController::sl_updateItem(int pos, char c) {

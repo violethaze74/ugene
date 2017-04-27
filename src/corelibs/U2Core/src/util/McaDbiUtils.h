@@ -27,7 +27,6 @@
 
 namespace U2 {
 
-class MultipleAlignment;
 class MultipleChromatogramAlignment;
 class U2EntityRef;
 class U2McaRow;

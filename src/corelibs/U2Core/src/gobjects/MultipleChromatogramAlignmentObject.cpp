@@ -92,7 +92,7 @@ qint64 MultipleChromatogramAlignmentObject::quantityOfGaps(const QList<qint64>& 
     qint64 enlargeAlignmentLength = 0;
     const MultipleAlignment &ma = getMultipleAlignment();
     foreach(qint64 id, rowIds) {
-            enlargeAlignmentLength = qMax(enlargeAlignmentLength, ma->getRowByRowId(id, os)->getRowLengthWithoutTrailing() + count);
+        enlargeAlignmentLength = qMax(enlargeAlignmentLength, ma->getRowByRowId(id, os)->getRowLengthWithoutTrailing() + count);
     }
     if (enlargeAlignmentLength >= length) {
         enlargeAlignmentLength -= length;

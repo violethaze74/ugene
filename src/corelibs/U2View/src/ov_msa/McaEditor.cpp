@@ -82,7 +82,7 @@ McaEditor::McaEditor(const QString &viewName,
     }
 }
 
-void McaEditor::sl_updateReferenceCache() {
+void McaEditor::sl_referenceChanged() {
      U2OpStatus2Log os;
     referenceCache = getRefereceObj()->getWholeSequenceData(os);
 }
