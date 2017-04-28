@@ -93,6 +93,7 @@ QStrStrMap initInvalidFormatIdsMap() {
     invalidIds2trueIds.insert("PHYLIP-Sequential", BaseDocumentFormats::PHYLIP_SEQUENTIAL);
     invalidIds2trueIds.insert("MMDB", BaseDocumentFormats::PLAIN_ASN);
     invalidIds2trueIds.insert("EMBL", BaseDocumentFormats::PLAIN_EMBL);
+    invalidIds2trueIds.insert("Genbank", BaseDocumentFormats::PLAIN_GENBANK);
     invalidIds2trueIds.insert("GenBank", BaseDocumentFormats::PLAIN_GENBANK);
     invalidIds2trueIds.insert("PDB", BaseDocumentFormats::PLAIN_PDB);
     invalidIds2trueIds.insert("Swiss-Prot", BaseDocumentFormats::PLAIN_SWISS_PROT);
