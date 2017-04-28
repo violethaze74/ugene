@@ -36,8 +36,7 @@
 namespace U2 {
 
 McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb)
-    : MaEditorSequenceArea(ui, hb, vb),
-      insertionMode(false) {
+    : MaEditorSequenceArea(ui, hb, vb) {
     initRenderer();
 
     // TEST - remove the variable after fix
@@ -241,8 +240,7 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
 }
 
 void McaEditorSequenceArea::sl_addInsertion() {
-    msaMode = EditCharacterMode;
-    insertionMode = true;
+    msaMode = InsertCharMode;
 
     editModeAnimationTimer.start(500);
     highlightCurrentSelection();
@@ -300,10 +298,8 @@ QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionNam
     return showTraceAction;
 }
 
-void McaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
-    if (!insertionMode) {
-        MaEditorSequenceArea::processCharacterInEditMode(newCharacter);
-    } else {
+void McaEditorSequenceArea::insertChar(char newCharacter) {
+        CHECK(msaMode == InsertCharMode, );
         CHECK(getEditor() != NULL, );
         CHECK(!selection.isNull(), );
 
@@ -330,9 +326,7 @@ void McaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
         ref->replaceRegion(maObj->getEntityRef().entityId, region, DNASequence(QByteArray(1, U2Msa::GAP_CHAR)), os);
         SAFE_POINT_OP(os, );
 
-        insertionMode = false;
         exitFromEditCharacterMode();
-    }
 }
 
 } // namespace

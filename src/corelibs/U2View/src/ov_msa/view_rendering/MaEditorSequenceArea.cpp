@@ -1144,7 +1144,7 @@ void MaEditorSequenceArea::sl_changeHighlightScheme(){
 }
 
 void MaEditorSequenceArea::sl_replaceSelectedCharacter() {
-    msaMode = EditCharacterMode;
+    msaMode = ReplaceCharMode;
     editModeAnimationTimer.start(500);
     highlightCurrentSelection();
 }
@@ -1299,7 +1299,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
     }
 
     int key = e->key();
-    if (msaMode == EditCharacterMode) {
+    if (msaMode != ViewMode) {
         processCharacterInEditMode(e);
         return;
     }
@@ -1928,6 +1928,16 @@ void MaEditorSequenceArea::processCharacterInEditMode(QKeyEvent *e) {
 }
 
 void MaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
+    if (msaMode == ReplaceCharMode) {
+        replaceChar(newCharacter);
+    }
+    if (msaMode == InsertCharMode) {
+        insertChar(newCharacter);
+    }
+}
+
+void MaEditorSequenceArea::replaceChar(char newCharacter) {
+    CHECK(msaMode == ReplaceCharMode, );
     CHECK(getEditor() != NULL, );
     if (selection.isNull()) {
         return;
@@ -1952,9 +1962,8 @@ void MaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
     exitFromEditCharacterMode();
 }
 
-
 void MaEditorSequenceArea::exitFromEditCharacterMode() {
-    if (msaMode == EditCharacterMode) {
+    if (msaMode != ViewMode) {
         editModeAnimationTimer.stop();
         highlightSelection = false;
         selectionColor = Qt::black;
