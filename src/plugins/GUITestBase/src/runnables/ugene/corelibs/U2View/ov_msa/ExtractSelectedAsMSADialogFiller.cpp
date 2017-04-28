@@ -59,13 +59,13 @@ void ExtractSelectedAsMSADialogFiller::commonScenario() {
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
     if(from){
-        QLineEdit *fromSpin = dialog->findChild<QLineEdit*>("startPosBox");
+        QLineEdit *fromSpin = dialog->findChild<QLineEdit*>("startLineEdit");
         GT_CHECK(fromSpin!=NULL, "fromSpin is NULL")
         GTLineEdit::setText(os, fromSpin, QString::number(from));
     }
 
     if(to){
-        QLineEdit *toSpin = dialog->findChild<QLineEdit*>("endPosBox");
+        QLineEdit *toSpin = dialog->findChild<QLineEdit*>("endLineEdit");
         GT_CHECK(toSpin!=NULL, "toSpin is NULL")
         GTLineEdit::setText(os,toSpin, QString::number(to));
     }
