@@ -992,15 +992,15 @@ void MaEditorSequenceArea::sl_buildContextMenu(GObjectView*, QMenu* m) {
     buildMenu(m);
 }
 
-void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &) {
+void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &modInfo) {
     exitFromEditCharacterMode();
     int nSeq = editor->getNumSequences();
     int aliLen = editor->getAlignmentLen();
-    //! SANGER_TODO
-//    if (ui->isCollapsibleMode()) {
-//        nSeq = getNumDisplayedSequences();
-//        updateCollapsedGroups(modInfo);
-//    }
+
+    if (ui->isCollapsibleMode()) {
+        nSeq = getNumDisplayedSequences();
+        updateCollapsedGroups(modInfo);
+    }
 
     editor->updateReference();
 
@@ -1072,7 +1072,7 @@ void MaEditorSequenceArea::sl_useDots(){
 void MaEditorSequenceArea::sl_registerCustomColorSchemes() {
     deleteOldCustomSchemes();
 
-    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(customColorSchemeMenuActions, MsaSchemesMenuBuilder::Custom, getEditor()->getMaObject()->getAlphabet()->getType(), 
+    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(customColorSchemeMenuActions, MsaSchemesMenuBuilder::Custom, getEditor()->getMaObject()->getAlphabet()->getType(),
         this);
 }
 
