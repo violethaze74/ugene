@@ -305,9 +305,9 @@ protected:
     void updateColorAndHighlightSchemes();
 
     void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);
-   
+
     void registerCommonColorSchemes();
-    
+
     void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
 
     MsaColorSchemeFactory * getDefaultColorSchemeFactory();
@@ -324,6 +324,8 @@ protected:
     void exitFromEditCharacterMode();
 
     void deleteOldCustomSchemes();
+
+    virtual void updateCollapsedGroups(const MaModificationInfo&) {}
 
 protected:
     enum MaMode {
