@@ -208,7 +208,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
 
-    GTUtilsMdi::click(os, GTGlobals::Maximize);
+    // GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
@@ -234,7 +234,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
-    GTUtilsMdi::click(os, GTGlobals::Maximize);
+    //GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Show offsets");
@@ -311,7 +311,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
-    GTUtilsMdi::click(os, GTGlobals::Maximize);
+    //GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
@@ -379,7 +379,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_3) {
     GTGlobals::sleep();
     GTGlobals::sleep();
 
-    GTUtilsMdi::click(os, GTGlobals::Maximize);
+    //GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     GTUtilsMSAEditorSequenceArea::checkSorted(os);
@@ -2814,7 +2814,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2_linux){
     qint64 bigSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
     qint64 smallSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
 
-    CHECK_SET_ERR(bigSize==4785325 && smallSize==914927, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
+    CHECK_SET_ERR(bigSize==4785325 && smallSize>914000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
 //    Expected state: image is exported
 }
 
@@ -4640,13 +4640,14 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "You must select at least one sequence"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 //    Start pos > end pos
-            QLineEdit* startPosBox = GTWidget::findExactWidget<QLineEdit*>(os, "startPosBox", dialog);
-            GTLineEdit::setText(os, startPosBox, "50");
-            QLineEdit* endPosBox = GTWidget::findExactWidget<QLineEdit*>(os, "endPosBox", dialog);
-            GTLineEdit::setText(os, endPosBox, "40");
+           
+            QLineEdit* startLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "startLineEdit", dialog);
+            GTLineEdit::setText(os, startLineEdit, "50");
+            QLineEdit* endLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "endLineEdit", dialog);
+            GTLineEdit::setText(os, endLineEdit, "40");
 
 
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Start position must be less than end position!"));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Illegal region!"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTGlobals::sleep(500);
 
@@ -4715,7 +4716,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064){
     QString val1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     QString val2 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 2);
     CHECK_SET_ERR(val1 == "0%", "1: unexpected valeu1: " + val1);
-    CHECK_SET_ERR(val2 == "19%", "1: unexpected valeu2: " + val2);
+    CHECK_SET_ERR(val2 == "20%", "1: unexpected valeu2: " + val2);
 //    Click "Show distance column". Check state
     GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
     QWidget* column = GTWidget::findWidget(os, "msa_editor_similarity_column");
@@ -4725,7 +4726,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064){
     val1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     val2 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 2);
     CHECK_SET_ERR(val1 == "0%", "2: unexpected valeu1: " + val1);
-    CHECK_SET_ERR(val2 == "19%", "2: unexpected valeu2: " + val2);
+    CHECK_SET_ERR(val2 == "20%", "2: unexpected valeu2: " + val2);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0065){
