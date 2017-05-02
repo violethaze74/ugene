@@ -4163,7 +4163,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE");
+    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
     GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
 
     //    4. Undo changes
@@ -4194,7 +4194,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     //    Expected state: "UGENE" color scheme is selected, "UGENE" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE");
+    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
     GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
 
     //    4. Undo changes
@@ -4717,7 +4717,7 @@ GUI_TEST_CLASS_DEFINITION(test_4795) {
     //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE");
+    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
     GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
 }
 
