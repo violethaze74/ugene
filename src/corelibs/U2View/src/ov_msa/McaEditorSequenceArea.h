@@ -29,6 +29,7 @@
 namespace U2 {
 
 class McaEditor;
+class SequenceObjectContext;
 
 class ChromatogramViewSettings {
 public:
@@ -69,7 +70,6 @@ public:
 
 signals:
     void si_clearReferenceSelection();
-    void si_lengthWasChanged();
 
 public slots:
     void sl_referenceSelectionChanged();

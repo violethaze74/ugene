@@ -1577,10 +1577,6 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     moveSelection(removedRegionWidth, 0, true);
 }
 
-void MaEditorSequenceArea::adjustReferenceLength(U2OpStatus& os) {
-    
-}
-
 void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     const MaEditorSelection selectionBackup = selection;
     // check if selection exists

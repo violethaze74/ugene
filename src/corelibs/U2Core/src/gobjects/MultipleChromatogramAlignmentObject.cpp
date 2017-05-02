@@ -83,23 +83,8 @@ const MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentObject::getM
     return getRow(row).dynamicCast<MultipleChromatogramAlignmentRow>();
 }
 
-void MultipleChromatogramAlignmentObject::dbiInsertGap(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os) {
-    qint64 enlargeAlignmentLength = quantityOfGaps(rowIds, getLength(), count, os);
-    McaDbiUtils::insertGaps(msaRef, rowIds, pos, count, os, enlargeAlignmentLength);
-}
-
-qint64 MultipleChromatogramAlignmentObject::quantityOfGaps(const QList<qint64>& rowIds, const qint64& length, const qint64& count, U2OpStatus& os) {
-    qint64 enlargeAlignmentLength = 0;
-    const MultipleAlignment &ma = getMultipleAlignment();
-    foreach(qint64 id, rowIds) {
-        enlargeAlignmentLength = qMax(enlargeAlignmentLength, ma->getRowByRowId(id, os)->getRowLengthWithoutTrailing() + count);
-    }
-    if (enlargeAlignmentLength >= length) {
-        enlargeAlignmentLength -= length;
-    } else {
-        enlargeAlignmentLength = 0;
-    }
-    return enlargeAlignmentLength;
+void MultipleChromatogramAlignmentObject::dbiInsertGap(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, bool collapseTrailingGaps, U2OpStatus& os) {
+    McaDbiUtils::insertGaps(msaRef, rowIds, pos, count, os, collapseTrailingGaps);
 }
 
 void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int rowIndex, char newChar) {
@@ -113,7 +98,7 @@ void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int row
         McaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
     } else {
         McaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
-        MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
+        MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os, true);
     }
     SAFE_POINT_OP(os, );
 
@@ -136,6 +121,10 @@ void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int row
     }
 
     updateCachedMultipleAlignment(mi);
+}
+
+void MultipleChromatogramAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps) {
+    MultipleAlignmentObject::insertGap(rows, pos, nGaps, true);
 }
 
 void MultipleChromatogramAlignmentObject::insertCharacter(int rowIndex, int pos, char newChar) {

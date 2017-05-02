@@ -125,6 +125,10 @@ U2MsaMapGapModel MultipleSequenceAlignmentObject::getGapModel() const {
     return rowsGapModel;
 }
 
+void MultipleSequenceAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps) {
+    MultipleAlignmentObject::insertGap(rows, pos, nGaps, false);
+}
+
 void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QString> &rowNames) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     const MultipleSequenceAlignment &ma = getMultipleAlignment();
@@ -145,8 +149,9 @@ void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QS
     updateCachedMultipleAlignment();
 }
 
-void MultipleSequenceAlignmentObject::dbiInsertGap(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os) {
-    MsaDbiUtils::insertGaps(msaRef, rowIds, pos, count, os);
+void MultipleSequenceAlignmentObject::dbiInsertGap(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, bool collapseTrailingGaps, U2OpStatus& os) {
+    MsaDbiUtils::insertGaps(msaRef, rowIds, pos, count, os, collapseTrailingGaps);
+
 }
 
 void MultipleSequenceAlignmentObject::deleteColumnWithGaps(U2OpStatus &os, int requiredGapCount) {
@@ -238,7 +243,7 @@ void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowInde
         MsaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
     } else {
         MsaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
-        MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
+        MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os, false);
     }
     SAFE_POINT_OP(os, );
 

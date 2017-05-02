@@ -287,8 +287,8 @@ void McaDbiUtils::removeRegion(const U2EntityRef &mcaRef, const QList<qint64> &r
     }
 }
 
-void McaDbiUtils::insertGaps(const U2EntityRef& mcaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os, qint64 enlargeAlignmentLength) {
-    MsaDbiUtils::insertGaps(mcaRef, rowIds, pos, count, os, enlargeAlignmentLength);
+void McaDbiUtils::insertGaps(const U2EntityRef& mcaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os, bool collapseTrailingGaps) {
+    MsaDbiUtils::insertGaps(mcaRef, rowIds, pos, count, os, collapseTrailingGaps);
 }
 
 void McaDbiUtils::replaceCharacterInRow(const U2EntityRef& mcaRef, qint64 rowId, qint64 pos, char newChar, U2OpStatus& os) {

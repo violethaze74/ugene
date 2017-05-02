@@ -110,7 +110,7 @@ public:
 
     virtual void replaceCharacter(int startPos, int rowIndex, char newChar) = 0;
     /** Methods that modify the gap model only */
-    void insertGap(const U2Region &rows, int pos, int nGaps);
+    virtual void insertGap(const U2Region &rows, int pos, int nGaps) = 0;
 
     /** Method that affect the whole alignment, including sequences
      */
@@ -162,6 +162,7 @@ protected:
     virtual void removeRowPrivate(U2OpStatus &os, const U2EntityRef &maRef, qint64 rowId) = 0;
     virtual void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
                                      int startPos, int nBases) = 0;
+    void insertGap(const U2Region &rows, int pos, int nGaps, bool collapseTrailingGaps);
 
 
     MultipleAlignment cachedMa;
@@ -171,7 +172,7 @@ protected:
 private:
     void loadDataCore(U2OpStatus &os);
 
-    virtual void dbiInsertGap(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os) = 0;
+    virtual void dbiInsertGap(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, bool collapseTrailingGaps, U2OpStatus& os) = 0;
 
     /**
      * Returns maximum count of subsequent gap columns in the region that starts from column

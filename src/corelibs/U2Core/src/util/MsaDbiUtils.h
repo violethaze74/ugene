@@ -123,7 +123,7 @@ public:
      * Parameter 'count' must be > 0.
      * Parameter 'enlargeAlignmentLength' is a value, indicating how many gaps to insert to the Reference. It can be >= 0, but if it is equal -1, it will be initialized by 'count'
      */
-    static void insertGaps(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os, qint64 enlargeAlignmentLength = -1);
+    static void insertGaps(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os, bool collapseTrailingGaps);
 
     /**
      * Removes a region from an alignment.

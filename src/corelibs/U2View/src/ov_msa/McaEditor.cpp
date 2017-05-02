@@ -75,16 +75,11 @@ McaEditor::McaEditor(const QString &viewName,
         objects.append(referenceObj);
         onObjectAdded(referenceObj);
         // SANGER_TODO: probably can be big
-        referenceCache = referenceObj->getWholeSequenceData(os);
+        //referenceCache = referenceObj->getWholeSequenceData(os);
         referenceCtx = new SequenceObjectContext(referenceObj, this);
     } else {
         FAIL("Trying to open McaEditor without a reference", );
     }
-}
-
-void McaEditor::sl_referenceChanged() {
-     U2OpStatus2Log os;
-    referenceCache = getRefereceObj()->getWholeSequenceData(os);
 }
 
 void McaEditor::buildStaticToolbar(QToolBar* tb) {
@@ -132,8 +127,9 @@ QString McaEditor::getReferenceRowName() const {
 }
 
 char McaEditor::getReferenceCharAt(int pos) const {
-    SAFE_POINT(referenceCache.size() > pos, "Invalid position", '\n');
-    return referenceCache[pos];
+    U2OpStatus2Log os;
+    SAFE_POINT(referenceObj->getWholeSequenceData(os).size() > pos, "Invalid position", '\n');
+    return referenceObj->getWholeSequenceData(os)[pos];
 }
 
 SequenceObjectContext* McaEditor::getReferenceContext() const {
@@ -199,10 +195,6 @@ QWidget* McaEditor::createWidget() {
     qDeleteAll(filters);
 
     return ui;
-}
-
-U2SequenceObject* McaEditor::getRefereceObj() const {
-    return referenceObj;
 }
 
 McaEditorWgt::McaEditorWgt(McaEditor *editor)
