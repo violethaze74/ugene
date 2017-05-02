@@ -4807,13 +4807,16 @@ GUI_TEST_CLASS_DEFINITION(test_3744) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
     GTGlobals::sleep(500);
+   
+    GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Regular expression");
 
-    QComboBox* algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
-    GTComboBox::setIndexWithText(os, algorithmBox, "Regular expression");
-
-    GTKeyboardDriver::keySequence("ACT.G");
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "ACG.T", true);
+    GTGlobals::sleep(200);
 
     QWidget* createButton = GTWidget::findWidget(os, "getAnnotationsPushButton");
+
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "", true);
+
     CHECK_SET_ERR(!createButton->isEnabled(), "prevPushButton is unexpectidly enabled")
 
 
