@@ -35,8 +35,8 @@ QString MSAConsensusAlgorithmFactoryClustal::getName() const {
 }
 
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleAlignment&, QObject* p) {
-    return new MSAConsensusAlgorithmClustal(this, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
+    return new MSAConsensusAlgorithmClustal(this, ignoreTrailingLeadingGaps, p);
 }
 
 //////////////////////////////////////////////////////////////////////////

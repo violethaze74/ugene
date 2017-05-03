@@ -46,8 +46,8 @@ QString MSAConsensusAlgorithmFactoryLevitsky::getName() const  {
     return tr("Levitsky");
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MultipleAlignment& ma, QObject* p) {
-    return new MSAConsensusAlgorithmLevitsky(this, ma, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p) {
+    return new MSAConsensusAlgorithmLevitsky(this, ma, ignoreTrailingLeadingGaps, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -117,8 +117,8 @@ static void registerHit(int* data, char c) {
     }
 }
 
-MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma,  QObject* p)
-: MSAConsensusAlgorithm(f, p)
+MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p)
+: MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p)
 {
     globalFreqs.resize(256);
     memset(globalFreqs.data(), 0, globalFreqs.size() * 4);

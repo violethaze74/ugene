@@ -64,14 +64,6 @@ MaEditorConsensusAreaSettings::MaEditorConsensusAreaSettings() {
     highlightMismatches = false;
 }
 
-MaEditorConsensusAreaSettings::MaEditorConsensusAreaSettings(const QList<MaEditorConsElement> &order,
-                                                             const QMap<MaEditorConsElement, bool> &visibility,
-                                                             bool highlightMismatches)
-    : order(order),
-      visibility(visibility),
-      highlightMismatches(highlightMismatches) {
-}
-
 bool MaEditorConsensusAreaSettings::isVisible(const MaEditorConsElement element) const {
     return visibility.value(element, false);
 }

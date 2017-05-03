@@ -33,7 +33,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryDefault: public MSAConsensu
 public:
     MSAConsensusAlgorithmFactoryDefault(QObject* p = NULL);
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, QObject* parent);
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent);
 
     virtual QString getDescription() const;
 
@@ -54,8 +54,8 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmDefault : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmDefault(MSAConsensusAlgorithmFactoryDefault* f, QObject* p = NULL)
-        : MSAConsensusAlgorithm(f, p){}
+    MSAConsensusAlgorithmDefault(MSAConsensusAlgorithmFactoryDefault* f, bool ignoreTrailingLeadingGaps, QObject* p = NULL)
+        : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {}
 
     virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<qint64> seqIdx = QVector<qint64>()) const {
         int countStub = 0;

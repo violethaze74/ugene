@@ -51,10 +51,10 @@ ConsensusAlgorithmFlags MSAConsensusAlgorithmFactory::getAphabetFlags(const DNAA
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _factory, QObject* p)
+MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _factory, bool ignoreTrailingLeadingGaps, QObject* p)
     : QObject(p), factory(_factory),
       threshold(0),
-      ignoreTrailingAndLeadingGaps(true) {
+      ignoreTrailingAndLeadingGaps(ignoreTrailingLeadingGaps) {
 
 }
 

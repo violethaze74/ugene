@@ -45,8 +45,8 @@ QString MSAConsensusAlgorithmFactoryStrict::getName() const  {
     return tr("Strict");
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MultipleAlignment&, QObject* p) {
-    return new MSAConsensusAlgorithmStrict(this, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
+    return new MSAConsensusAlgorithmStrict(this, ignoreTrailingLeadingGaps, p);
 }
 
 //////////////////////////////////////////////////////////////////////////

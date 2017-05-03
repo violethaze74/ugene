@@ -47,7 +47,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactory : public QObject {
 public:
     MSAConsensusAlgorithmFactory(const QString& algoId, ConsensusAlgorithmFlags flags, QObject* p = NULL);
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, QObject* parent = NULL) = 0;
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps = false, QObject* parent = NULL) = 0;
 
     QString getId() const {return algorithmId;}
 
@@ -81,7 +81,7 @@ private:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithm : public QObject {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory, QObject* p = NULL);
+    MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory, bool ignoreTrailingLeadingGaps, QObject* p = NULL);
 
     /**
         Returns consensus char and score for the given row

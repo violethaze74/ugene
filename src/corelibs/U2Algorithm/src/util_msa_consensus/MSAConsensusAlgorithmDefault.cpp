@@ -42,8 +42,8 @@ QString MSAConsensusAlgorithmFactoryDefault::getName() const {
 }
 
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleAlignment&, QObject* p) {
-    return new MSAConsensusAlgorithmDefault(this, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
+    return new MSAConsensusAlgorithmDefault(this, ignoreTrailingLeadingGaps, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
