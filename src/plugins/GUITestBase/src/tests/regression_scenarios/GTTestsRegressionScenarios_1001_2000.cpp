@@ -7283,24 +7283,19 @@ GUI_TEST_CLASS_DEFINITION( test_1688 ) {
 
 GUI_TEST_CLASS_DEFINITION(test_1693) {
 //    1. Open WD.
-//    2. Launch tuxedo pipeline.
+//    2. Launch tuxedo pipeline. Not actually need 'Tuxedo pipeline', so 'Remote BLASTing' are used.
 //    3. Try to open any other sample while pipeline is running.
 //    Expected state: UGENE doesn't crash.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::addSample(os, "Remote BLASTing");
+    GTGlobals::sleep();
 
-    QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index/"));
-    map.insert("Bowtie index basename", "NC_010473");
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
-                                                                   "Full"<<"Single-end"));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QList<QStringList>()<<(QStringList()<<testDir +
-                                                      "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq1/exp_1_1.fastq")<<
-                                                      (QStringList()<<testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq2/exp_2_1.fastq"), map));
-    GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
-    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::samples);
+    GTUtilsWorkflowDesigner::click(os, "Read Sequence(s)");
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dataDir + "samples/FASTA/human_T1.fa" );
+
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
-    GTGlobals::sleep();
+    GTGlobals::sleep(500);
     const int tasksCount = GTUtilsTaskTreeView::getTopLevelTasksCount(os);
     CHECK_SET_ERR(1 == tasksCount, QString("An unexpected top level tasks count: expect %1, got %2. Workflow didn't launch?").arg(1).arg(tasksCount));
 
@@ -7308,6 +7303,7 @@ GUI_TEST_CLASS_DEFINITION(test_1693) {
     QWidget *samplesWidget = GTWidget::findWidget(os, "samples");
     CHECK_SET_ERR(NULL != samplesWidget, "Samples widget is NULL");
     CHECK_SET_ERR(!samplesWidget->isEnabled(), "Samples widget is unexpectedly enabled");
+    GTUtilsTask::cancelTask(os, "Execute workflow");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1700) {
