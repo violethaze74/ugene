@@ -86,6 +86,8 @@ public:
     MultipleAlignmentRowData();
     MultipleAlignmentRowData(const DNASequence &sequence, const QList<U2MsaGap> &gaps);
 
+    bool isTrailingOrLeadingGap(qint64 position) const;
+
     virtual ~MultipleAlignmentRowData();
 
     /** Returns the list of gaps for the row */
@@ -107,6 +109,7 @@ public:
 
     virtual qint64 getRowLengthWithoutTrailing() const = 0;
     virtual qint64 getCoreStart() const = 0;
+    virtual int getCoreEnd() const = 0;
     virtual qint64 getCoreLength() const = 0;
     virtual qint64 getBaseCount(qint64 beforePosition) const = 0;
 

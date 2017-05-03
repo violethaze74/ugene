@@ -66,6 +66,14 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(const DNASequence &sequence, 
 
 }
 
+bool MultipleAlignmentRowData::isTrailingOrLeadingGap(qint64 position) const {
+    CHECK(isGap(position), false);
+    if (position < getCoreStart() || position > getCoreEnd() - 1) {
+        return true;
+    }
+    return false;
+}
+
 MultipleAlignmentRowData::~MultipleAlignmentRowData() {
 
 }
