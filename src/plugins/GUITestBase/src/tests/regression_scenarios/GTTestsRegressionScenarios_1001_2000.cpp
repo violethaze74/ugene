@@ -6727,15 +6727,16 @@ GUI_TEST_CLASS_DEFINITION(test_1662){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Add sample: Multiple dataset tuxedo: Single-end
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index/"));
-    map.insert("Bowtie index basename", "NC_010473");
+    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+    map.insert("Bowtie index basename", "e_coli");
+    map.insert("Bowtie version", "Bowtie1");
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
                                                                    "Full"<<"Single-end"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QList<QStringList>()<<(QStringList()<<
-                                                       testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq1/exp_1_1.fastq"<<
-                                                       testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq1/exp_1_2.fastq")<<
-                                                      (QStringList()<<testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq2/exp_2_1.fastq"<<
-                                                       testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq2/exp_2_2.fastq"), map));
+                                                       testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq"<<
+                                                       testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq")<<
+                                                      (QStringList()<<testDir + "_common_data/e_coli/e_coli_reads/e_coli_2_1.fastq"<<
+                                                       testDir + "_common_data/e_coli/e_coli_reads/e_coli_2_2.fastq"), map));
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
 //    3. Click {show wizard} toolbar button
 //    4. Add several files to each dataset. Fill other fields with proper data

@@ -527,7 +527,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1658);
     REGISTER_TEST(GUITest_regression_scenarios::test_1660);
     REGISTER_TEST(GUITest_regression_scenarios::test_1661);
-    REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_1662, "mem");
+    REGISTER_TEST(GUITest_regression_scenarios::test_1662);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1664);
     REGISTER_TEST(GUITest_regression_scenarios::test_1668);
     REGISTER_TEST(GUITest_regression_scenarios::test_1672);
