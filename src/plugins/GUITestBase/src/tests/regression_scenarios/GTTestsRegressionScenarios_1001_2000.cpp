@@ -7963,13 +7963,13 @@ GUI_TEST_CLASS_DEFINITION(test_1771){
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
-            //    3. Set bowtie index and a known transcript file.(_common_data/NIAID_pipelines/tuxedo)
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/index/chr6.1.ebwt"));
+            //    3. Set bowtie index and a known transcript file.
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/bowtie/index/e_coli.1.ebwt"));
             GTWidget::click(os, GTWidget::findButtonByText(os, "Select\nbowtie index file", dialog));
 
             QString name = GTUtilsWizard::getParameter(os, "Bowtie index basename").toString();
             QString version = GTUtilsWizard::getParameter(os, "Bowtie version").toString();
-            CHECK_SET_ERR(name == "chr6", "unexpected name: " + name);
+            CHECK_SET_ERR(name == "e_coli", "unexpected name: " + name);
             CHECK_SET_ERR(version == "Bowtie1", "unexpected bowtie version: " + version);
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
@@ -7983,7 +7983,7 @@ GUI_TEST_CLASS_DEFINITION(test_1771){
 //    3. Select some configuration
 //    Expected state: wizard appeared
 //    4. go to "tophat settings" page. click button "Select bowtie index file"
-//    5. select file _common_data/NIAID_pipelines/tuxedo_pipeline/data/index/chr6.1.ebwt
+//    5. select file _common_data/bowtie/index/e_coli.1.ebwt
 //    Expected state: bowtie index basename is set to "chr6", bowtie version is set to "bowtie1"
 }
 
