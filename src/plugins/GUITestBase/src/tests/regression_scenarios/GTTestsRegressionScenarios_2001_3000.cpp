@@ -1506,11 +1506,11 @@ GUI_TEST_CLASS_DEFINITION( test_2192 ){
 //    3. Set valid input data.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.sorted.bam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/chrM.sorted.bam");
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/cmdline/call-variations/chrM.fa");
 //    4. Start the scheme.
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
