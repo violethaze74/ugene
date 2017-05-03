@@ -6967,7 +6967,7 @@ GUI_TEST_CLASS_DEFINITION(test_1677){
             QWizard* wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
 
-            GTUtilsDialog::waitForDialog(os, new customFileDialog_1681(os, testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq1/exp_1_1.fastq"));
+            GTUtilsDialog::waitForDialog(os, new customFileDialog_1681(os, testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq"));
             QList<QWidget* > list = wizard->currentPage()->findChildren<QWidget*>("addFileButton");
             foreach (QWidget* w, list) {
                 if(w->isVisible()){
@@ -6977,9 +6977,10 @@ GUI_TEST_CLASS_DEFINITION(test_1677){
             }
 
             QMap<QString, QVariant> map;
-            map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index/"));
-            map.insert("Bowtie index basename", "NC_010473");
-            map.insert("Input transcripts annotations", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/accepted_hits.bam"));
+            map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+            map.insert("Bowtie index basename", "e_coli");
+            map.insert("Bowtie version", "Bowtie1");
+            map.insert("Input transcripts annotations", QDir().absoluteFilePath(testDir + "_common_data/e_coli/e_coli_1000.gff"));
             GTUtilsWizard::setAllParameters(os, map);
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
@@ -6993,8 +6994,8 @@ GUI_TEST_CLASS_DEFINITION(test_1677){
     GTGlobals::sleep();
 //    3. Press {show widget} toolbutton
 //    Expected state: wizard appears
-//    4. Add file {test/_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq1/exp_1_1.fastq} to {First short  reads files} window
-//    Expected state:Adding exp_1_2.fastq offer has appeared
+//    4. Add file {test/_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq} to {First short  reads files} window
+//    Expected state:Adding e_coli_1_2.fastq offer has appeared
 
 //    5. Fill all other fields with proper values except second dataset. Press {finish} at the end
 //    6. Press {validate schema} toolbar button
@@ -8569,14 +8570,15 @@ GUI_TEST_CLASS_DEFINITION( test_1946 ){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Add tuxedo scheme from samples
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index/"));
-    map.insert("Bowtie index basename", "NC_010473");
-    map.insert("Input transcripts annotations", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/accepted_hits.bam"));
+    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+    map.insert("Bowtie index basename", "e_coli");
+    map.insert("Bowtie version", "Bowtie1");
+    map.insert("Input transcripts annotations", QDir().absoluteFilePath(testDir + "_common_data/e_coli/e_coli_1000.gff"));
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
                                                                    "No-new-transcripts"<<"Single-end"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QList<QStringList>()<<(QStringList()<<testDir +
-                                                      "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq1/exp_1_1.fastq")<<
-                                                      (QStringList()<<testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq2/exp_2_1.fastq"), map));
+                                                      "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq")<<
+                                                      (QStringList()<<testDir + "_common_data/e_coli/e_coli_reads/e_coli_2_1.fastq"), map));
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
 //    3. fill all needed parameters and run schema
     GTUtilsWorkflowDesigner::runWorkflow(os);

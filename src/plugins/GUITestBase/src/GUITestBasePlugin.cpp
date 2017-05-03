@@ -592,7 +592,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1919);
     REGISTER_TEST(GUITest_regression_scenarios::test_1921);
     REGISTER_TEST(GUITest_regression_scenarios::test_1924);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1946);
+    //REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1946);
+    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1946, "Not finished. Requires large data.");
     REGISTER_TEST(GUITest_regression_scenarios::test_1984);
     REGISTER_TEST(GUITest_regression_scenarios::test_1986);
 
