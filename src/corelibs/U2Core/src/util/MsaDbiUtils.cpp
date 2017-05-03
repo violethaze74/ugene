@@ -980,6 +980,7 @@ void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& row
         }
         if (msaObj.length < enlargeAlignmentLength) {
             msaDbi->updateMsaLength(msaRef.entityId, enlargeAlignmentLength, os);
+            CHECK_OP(os, );
         }
     }
 }

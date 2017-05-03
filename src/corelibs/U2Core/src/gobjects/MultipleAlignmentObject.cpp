@@ -22,7 +22,6 @@
 #include <U2Core/DbiConnection.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
-#include <U2Core/McaDbiUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>

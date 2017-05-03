@@ -78,7 +78,6 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     scaleBar->setValue(r->getScaleBarValue());
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_setRenderAreaHeight(int)));
-    McaEditor* mcaEditor = getEditor();
 
     updateColorAndHighlightSchemes();
     updateActions();
