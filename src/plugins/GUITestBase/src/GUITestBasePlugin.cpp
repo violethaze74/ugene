@@ -527,7 +527,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1658);
     REGISTER_TEST(GUITest_regression_scenarios::test_1660);
     REGISTER_TEST(GUITest_regression_scenarios::test_1661);
-    REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_1662, "mem");
+    REGISTER_TEST(GUITest_regression_scenarios::test_1662);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1664);
     REGISTER_TEST(GUITest_regression_scenarios::test_1668);
     REGISTER_TEST(GUITest_regression_scenarios::test_1672);
@@ -592,7 +592,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1919);
     REGISTER_TEST(GUITest_regression_scenarios::test_1921);
     REGISTER_TEST(GUITest_regression_scenarios::test_1924);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1946);
+    //REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1946);
+    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1946, "Not finished. Requires large data.");
     REGISTER_TEST(GUITest_regression_scenarios::test_1984);
     REGISTER_TEST(GUITest_regression_scenarios::test_1986);
 
@@ -2496,19 +2497,19 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Workflow designer
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0002)//,"no such scheme on windows");
-        REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0002_1)//,"no such scheme on windows");
-        REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0003);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0005)//,"no such scheme on windows");
-        REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006);//"no such scheme on windows, https://ugene.net/tracker/browse/UGENE-2738 on mac");
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006_1);//"no such scheme on windows, https://ugene.net/tracker/browse/UGENE-2738 on mac");
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0007);//"no such scheme on windows, https://ugene.net/tracker/browse/UGENE-2738 on mac");
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0009)//*,"no such scheme on windows");
-        REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0010)//,"no such scheme on windows");
-        REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0013);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0002)
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0002_1)
+    REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0003);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0005)
+    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006);
+    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006_1);
+    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0007);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0009)
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0010)
+    REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0017);
-    //REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0018);
+
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0058);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0059);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0060);
@@ -2547,6 +2548,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/NIAID_pipelines
     /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_NIAID_pipelines::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_NIAID_pipelines::test_0002);
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Tree viewer
