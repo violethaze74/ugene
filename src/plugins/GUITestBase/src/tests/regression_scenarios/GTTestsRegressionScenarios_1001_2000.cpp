@@ -5890,19 +5890,18 @@ GUI_TEST_CLASS_DEFINITION(test_1587) {
 GUI_TEST_CLASS_DEFINITION(test_1588) {
 //    1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    2. Launch tuxedo pipeline with valid data(get from _common_data/NIAID_pipelines/tuxedo_pipeline/data)
+//    2. Launch tuxedo pipeline with valid data
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/index/"));
-    map.insert("Bowtie index basename", "chr6");
+    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+    map.insert("Bowtie index basename", "e_coli");
     map.insert("Bowtie version", "Bowtie1");
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
                                                                    "Single-sample"<<"Single-end"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QStringList()<<testDir +
-                                                      "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq", map));
+                                                      "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq", map));
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
 //    3. Wait for finishing
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    //GTGlobals::sleep(5000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    4. Go to dashboard, click "External tools" button
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
@@ -5922,12 +5921,6 @@ GUI_TEST_CLASS_DEFINITION(test_1588) {
     GTUtilsDashboard::findElement(os, "tophat-2.0.8b", "SPAN", false);
 #endif
     GTUtilsDashboard::findElement(os, "Beginning TopHat run", "LI", false);
-
-
-
-//    GTMouseDriver::moveTo(dashboard->mapToGlobal(result.geometry().center()));
-//    GTMouseDriver::click();
-    GTGlobals::sleep(5000);
 }
 
 GUI_TEST_CLASS_DEFINITION( test_1594 ) {
