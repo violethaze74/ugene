@@ -38,8 +38,7 @@
 namespace U2 {
 
 McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb)
-    : MaEditorSequenceArea(ui, hb, vb),
-      insertionMode(false) {
+    : MaEditorSequenceArea(ui, hb, vb) {
     initRenderer();
 
     // TEST - remove the variable after fix
@@ -85,13 +84,27 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
 
 U2Region McaEditorSequenceArea::getSequenceYRange(int seq, int firstVisibleRow, bool useVirtualCoords) const {
     int start = 0;
-    for (int i = firstVisibleRow; i < seq; i++) {
+
+    // temporarry fix -- should be rewritten according to the solution of UGENE-5479 (smooth scrolling)
+    bool positiveDirection = seq > firstVisibleRow;
+    int i = firstVisibleRow;
+    while (i != seq) {
         if (getEditor()->isChromVisible(i)) {
             start += editor->getRowHeight();
         } else {
             start += editor->getSequenceRowHeight();
         }
+
+        if (positiveDirection ) {
+            i++;
+        } else {
+            i--;
+        }
     }
+    if (!positiveDirection ) {
+        start *= -1;
+    }
+
     U2Region res(start, getEditor()->isChromVisible(seq) ? editor->getRowHeight() : editor->getSequenceRowHeight());
     if (!useVirtualCoords) {
         int h = height();
@@ -120,7 +133,7 @@ U2Region McaEditorSequenceArea::getSequenceYRange(int startSeq, int count) const
             len += editor->getSequenceRowHeight();
         }
     }
-    U2Region res(MaEditorSequenceArea::getSequenceYRange(startSeq, false).startPos, len);
+    U2Region res(MaEditorSequenceArea::getSequenceYRange(startSeq, true).startPos, len);
     return res;
 }
 
@@ -257,8 +270,7 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
 }
 
 void McaEditorSequenceArea::sl_addInsertion() {
-    msaMode = EditCharacterMode;
-    insertionMode = true;
+    msaMode = InsertCharMode;
 
     editModeAnimationTimer.start(500);
     highlightCurrentSelection();
@@ -316,10 +328,8 @@ QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionNam
     return showTraceAction;
 }
 
-void McaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
-    if (!insertionMode) {
-        MaEditorSequenceArea::processCharacterInEditMode(newCharacter);
-    } else {
+void McaEditorSequenceArea::insertChar(char newCharacter) {
+        CHECK(msaMode == InsertCharMode, );
         CHECK(getEditor() != NULL, );
         CHECK(!selection.isNull(), );
 
@@ -346,9 +356,7 @@ void McaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
         ref->replaceRegion(maObj->getEntityRef().entityId, region, DNASequence(QByteArray(1, U2Msa::GAP_CHAR)), os);
         SAFE_POINT_OP(os, );
 
-        insertionMode = false;
         exitFromEditCharacterMode();
-    }
 }
 
 } // namespace
