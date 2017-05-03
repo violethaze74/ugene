@@ -7074,14 +7074,15 @@ GUI_TEST_CLASS_DEFINITION(test_1681){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Add sample: Multiple dataset tuxedo: Single-end
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index/"));
-    map.insert("Bowtie index basename", "NC_010473");
-    map.insert("Input transcripts annotations", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/accepted_hits.bam"));
+    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index"));
+    map.insert("Bowtie index basename", "e_coli");
+    map.insert("Bowtie version", "Bowtie1");
+    map.insert("Input transcripts annotations", QDir().absoluteFilePath(testDir + "_common_data/e_coli/e_coli_1000.gff"));
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
                                                                    "No-new-transcripts"<<"Single-end"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QList<QStringList>()<<(QStringList()<<testDir +
-                                                      "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq1/exp_1_1.fastq")<<
-                                                      (QStringList()<<testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq2/exp_2_1.fastq"), map));
+                                                      "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq")<<
+                                                      (QStringList()<<testDir + "_common_data/e_coli/e_coli_reads/e_coli_2_1.fastq"), map));
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
 //    3. Click {show wizard} toolbar button
 //    4. Fill wizard with proper data
@@ -7091,6 +7092,10 @@ GUI_TEST_CLASS_DEFINITION(test_1681){
 
 //    5. Run schema
 //    Expected state: Pipeline executed without errors
+    GTLogTracer l;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::check(os, l);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1681_1) {
@@ -7109,7 +7114,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_1) {
             QWizard* wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
 
-            GTUtilsDialog::waitForDialog(os, new customFileDialog_1681(os, testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq1/exp_1_1.fastq"));
+            GTUtilsDialog::waitForDialog(os, new customFileDialog_1681(os, testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq"));
             QList<QWidget* > list = wizard->currentPage()->findChildren<QWidget*>("addFileButton");
             foreach (QWidget* w, list) {
                 if(w->isVisible()){
@@ -7122,7 +7127,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_1) {
             CHECK_SET_ERR(tabWidget != NULL, "tabWidget not found");
             GTTabWidget::setCurrentIndex(os, tabWidget, 1);
 
-            GTUtilsDialog::waitForDialog(os, new customFileDialog_1681(os, testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq2/exp_2_1.fastq"));
+            GTUtilsDialog::waitForDialog(os, new customFileDialog_1681(os, testDir + "_common_data/e_coli/e_coli_reads/e_coli_2_1.fastq"));
             list = wizard->currentPage()->findChildren<QWidget*>("addFileButton");
             foreach (QWidget* w, list) {
                 if(w->isVisible()){
@@ -7132,9 +7137,10 @@ GUI_TEST_CLASS_DEFINITION(test_1681_1) {
             }
 
             QMap<QString, QVariant> map;
-            map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index/"));
-            map.insert("Bowtie index basename", "NC_010473");
-            map.insert("Input transcripts annotations", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/accepted_hits.bam"));
+            map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+            map.insert("Bowtie index basename", "e_coli");
+            map.insert("Bowtie version", "Bowtie1");
+            map.insert("Input transcripts annotations", QDir().absoluteFilePath(testDir + "_common_data/e_coli/e_coli_1000.gff"));
             GTUtilsWizard::setAllParameters(os, map);
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
@@ -7153,6 +7159,10 @@ GUI_TEST_CLASS_DEFINITION(test_1681_1) {
     GTGlobals::sleep();
 //    5. Run schema
 //    Expected state: Pipeline executed without errors
+    GTLogTracer l;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::check(os, l);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1681_2){
@@ -7160,12 +7170,13 @@ GUI_TEST_CLASS_DEFINITION(test_1681_2){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Add sample: Single dataset tuxedo: Single-end
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index/"));
-    map.insert("Bowtie index basename", "NC_010473");
+    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+    map.insert("Bowtie index basename", "e_coli");
+    map.insert("Bowtie version", "Bowtie1");
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
                                                                    "Single-sample"<<"Single-end"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard",QStringList()<<testDir +
-                                                      "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq1/exp_1_1.fastq", map));
+                                                      "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq", map));
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
 //    3. Click {show wizard} toolbar button
 //    4. Fill wizard with proper data
@@ -7175,6 +7186,10 @@ GUI_TEST_CLASS_DEFINITION(test_1681_2){
 
 //    5. Run schema
 //    Expected state: Pipeline executed without errors
+    GTLogTracer l;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::check(os, l);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1681_3) {
@@ -7190,7 +7205,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_3) {
             QWizard* wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
 
-            GTUtilsDialog::waitForDialog(os, new customFileDialog_1681(os, testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/fastq1/exp_1_1.fastq"));
+            GTUtilsDialog::waitForDialog(os, new customFileDialog_1681(os, testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq"));
             QList<QWidget* > list = wizard->currentPage()->findChildren<QWidget*>("addFileButton");
             foreach (QWidget* w, list) {
                 if(w->isVisible()){
@@ -7200,8 +7215,9 @@ GUI_TEST_CLASS_DEFINITION(test_1681_3) {
             }
 
             QMap<QString, QVariant> map;
-            map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index/"));
-            map.insert("Bowtie index basename", "NC_010473");
+            map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+            map.insert("Bowtie index basename", "e_coli");
+            map.insert("Bowtie version", "Bowtie1");
             GTUtilsWizard::setAllParameters(os, map);
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
@@ -7220,6 +7236,10 @@ GUI_TEST_CLASS_DEFINITION(test_1681_3) {
     GTGlobals::sleep();
 //    5. Run schema
 //    Expected state: Pipeline executed without errors
+    GTLogTracer l;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::check(os, l);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1686){
