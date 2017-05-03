@@ -53,7 +53,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmClustal : public MSAConsensusAlgor
 public:
     MSAConsensusAlgorithmClustal(MSAConsensusAlgorithmFactoryClustal* f, QObject* p = NULL) : MSAConsensusAlgorithm(f, p){}
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column, const QVector<qint64> &seqIdx = QVector<qint64>()) const;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<qint64> seqIdx = QVector<qint64>()) const;
 };
 
 }//namespace

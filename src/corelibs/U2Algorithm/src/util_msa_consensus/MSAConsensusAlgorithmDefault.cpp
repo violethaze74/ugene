@@ -49,7 +49,9 @@ MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(cons
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment& msa, int pos, int& cnt, const QVector<qint64> &seqIdx) const {
+char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment& msa, int pos, int& cnt, QVector<qint64> seqIdx) const {
+    CHECK(filterIdx(seqIdx, msa, pos), '\0');
+
     //TODO: use var-length array!
     QVector<QPair<int, char> > freqs(32);
     int ch = U2Msa::GAP_CHAR;

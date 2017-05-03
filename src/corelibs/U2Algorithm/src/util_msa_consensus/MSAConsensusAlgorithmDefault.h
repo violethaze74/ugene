@@ -57,12 +57,12 @@ public:
     MSAConsensusAlgorithmDefault(MSAConsensusAlgorithmFactoryDefault* f, QObject* p = NULL)
         : MSAConsensusAlgorithm(f, p){}
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column, const QVector<qint64> &seqIdx) const {
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<qint64> seqIdx = QVector<qint64>()) const {
         int countStub = 0;
         return getConsensusCharAndScore(ma, column, countStub, seqIdx);
     }
 
-    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, const QVector<qint64> &seqIdx = QVector<qint64>()) const;
+    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<qint64> seqIdx = QVector<qint64>()) const;
 };
 
 }//namespace

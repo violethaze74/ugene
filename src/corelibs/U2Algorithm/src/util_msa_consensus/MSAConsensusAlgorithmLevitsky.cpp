@@ -134,7 +134,9 @@ MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorit
 }
 
 
-char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma, int column, const QVector<qint64> &seqIdx) const {
+char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma, int column, QVector<qint64> seqIdx) const {
+    CHECK(filterIdx(seqIdx, ma, column), '\0');
+
     // count local freqs first
     QVarLengthArray<int> localFreqs(256);
     memset(localFreqs.data(), 0, localFreqs.size() * 4);

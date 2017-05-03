@@ -359,16 +359,21 @@ void MSAEditorConsensusArea::drawConsensusChar(QPainter& p, int pos, int firstVi
     drawConsensusChar(p, pos, firstVisiblePos, c, selected, useVirtualCoords);
 }
 
+bool isValidConsChar(char ch) {
+    return ch != '\0';
+}
+
 void MSAEditorConsensusArea::drawConsensusChar(QPainter &p, int pos, int firstVisiblePos, char consChar, bool selected, bool useVirtualCoords) {
     U2Region yRange = getYRange(MSAEditorConsElement_CONSENSUS_TEXT);
     U2Region xRange = ui->getSequenceArea()->getBaseXRange(pos, firstVisiblePos, useVirtualCoords);
     QRect cr(xRange.startPos, yRange.startPos, xRange.length + 1, yRange.length);
-    MsaColorScheme* scheme = ui->getSequenceArea()->getCurrentColorScheme();
     if (selected) {
         QColor color(Qt::lightGray);
         color = color.lighter(115);
         p.fillRect(cr, color);
     }
+    CHECK(isValidConsChar(consChar), );
+    MsaColorScheme* scheme = ui->getSequenceArea()->getCurrentColorScheme();
     if (editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent) {
         if (drawSettings.highlightMismatches && mismatchController->isMismatch(pos)) {
             QColor color = scheme->getColor(0, 0, consChar);

@@ -24,6 +24,7 @@
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/U2OpStatusUtils.h>
 
 #include <QVector>
 
@@ -51,12 +52,14 @@ ConsensusAlgorithmFlags MSAConsensusAlgorithmFactory::getAphabetFlags(const DNAA
 // Algorithm
 
 MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _factory, QObject* p)
-: QObject(p), factory(_factory) , threshold(0)
-{
+    : QObject(p), factory(_factory),
+      threshold(0),
+      ignoreTrailingAndLeadingGaps(true) {
+
 }
 
 char MSAConsensusAlgorithm::getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score,
-                                                     const QVector<qint64>& seqIdx) const {
+                                                     QVector<qint64> seqIdx) const {
     char consensusChar = getConsensusChar(ma, column, seqIdx);
 
     //now compute score using most freq character
@@ -75,6 +78,25 @@ void MSAConsensusAlgorithm::setThreshold(int val) {
     }
     threshold = newThreshold;
     emit si_thresholdChanged(newThreshold);
+}
+
+bool MSAConsensusAlgorithm::filterIdx(QVector<qint64> &seqIdx, const MultipleAlignment& ma, const int pos) const {
+    CHECK(ignoreTrailingAndLeadingGaps, true);
+
+    QVector<qint64> tmp;
+    int nSeq = seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size();
+    for (qint64 seq = 0; seq < nSeq; seq++) {
+        qint64 rowNum = seqIdx.isEmpty() ? seq : seqIdx[ seq ];
+        const MultipleAlignmentRow& row = ma->getRow(rowNum);
+        if (row->isTrailingOrLeadingGap(pos)) {
+            continue;
+        }
+        tmp << rowNum;
+    }
+    if (tmp.size() != nSeq) {
+        seqIdx = tmp;
+    }
+    return !tmp.isEmpty();
 }
 
 } //namespace
