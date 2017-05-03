@@ -5692,11 +5692,11 @@ GUI_TEST_CLASS_DEFINITION(test_2899){
                 GTUtilsWizard::clickButton(os, GTUtilsWizard::Back);
             }
 
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index/NC_010473.1.bt2"));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/bowtie2/index/human_T1_cutted.2.bt2")); //NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index/NC_010473.1.bt2
             GTWidget::click(os, GTWidget::findButtonByText(os, "Select\nbowtie index file", dialog));
             //    Expected state: index is set if it is valid (file has valid extension), no crash
-            bool basename = GTUtilsWizard::getParameter(os, "Bowtie index basename").toString() == "NC_010473";
-            bool dir = GTUtilsWizard::getParameter(os, "Bowtie index directory").toString().contains("_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index");
+            bool basename = GTUtilsWizard::getParameter(os, "Bowtie index basename").toString() == "human_T1_cutted"; //NC_010473
+            bool dir = GTUtilsWizard::getParameter(os, "Bowtie index directory").toString().contains("_common_data/bowtie2/index"); //_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index
             CHECK_SET_ERR(basename, "unexpected basename");
             CHECK_SET_ERR(dir, "unexpected dir");
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
