@@ -83,10 +83,6 @@ const MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentObject::getM
     return getRow(row).dynamicCast<MultipleChromatogramAlignmentRow>();
 }
 
-void MultipleChromatogramAlignmentObject::dbiInsertGap(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, bool collapseTrailingGaps, U2OpStatus& os) {
-    McaDbiUtils::insertGaps(msaRef, rowIds, pos, count, os, collapseTrailingGaps);
-}
-
 void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int rowIndex, char newChar) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     const MultipleAlignment msa = getMultipleAlignment();

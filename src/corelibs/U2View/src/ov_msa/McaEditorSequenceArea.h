@@ -29,7 +29,6 @@
 namespace U2 {
 
 class McaEditor;
-class SequenceObjectContext;
 
 class ChromatogramViewSettings {
 public:

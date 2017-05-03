@@ -172,8 +172,6 @@ protected:
 private:
     void loadDataCore(U2OpStatus &os);
 
-    virtual void dbiInsertGap(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, bool collapseTrailingGaps, U2OpStatus& os) = 0;
-
     /**
      * Returns maximum count of subsequent gap columns in the region that starts from column
      * with @pos number, has width of @maxGaps and includes the rows specified by @rows.

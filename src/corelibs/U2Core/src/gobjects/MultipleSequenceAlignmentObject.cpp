@@ -149,11 +149,6 @@ void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QS
     updateCachedMultipleAlignment();
 }
 
-void MultipleSequenceAlignmentObject::dbiInsertGap(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, bool collapseTrailingGaps, U2OpStatus& os) {
-    MsaDbiUtils::insertGaps(msaRef, rowIds, pos, count, os, collapseTrailingGaps);
-
-}
-
 void MultipleSequenceAlignmentObject::deleteColumnWithGaps(U2OpStatus &os, int requiredGapCount) {
     QList<qint64> colsForDelete = getColumnsWithGaps(requiredGapCount);
     if (getLength() == colsForDelete.count()) {

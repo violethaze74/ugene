@@ -22,6 +22,7 @@
 #include <U2Core/DbiConnection.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
+#include <U2Core/McaDbiUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
@@ -341,7 +342,7 @@ void MultipleAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps
     }
 
     U2OpStatus2Log os;
-    dbiInsertGap(entityRef, rowIdsToInsert, pos, nGaps, collapseTrailingGaps, os);
+    McaDbiUtils::insertGaps(entityRef, rowIdsToInsert, pos, nGaps, os, collapseTrailingGaps);
     SAFE_POINT_OP(os, );
 
     MaModificationInfo mi;
