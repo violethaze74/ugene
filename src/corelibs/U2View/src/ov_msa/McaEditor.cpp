@@ -127,7 +127,7 @@ QString McaEditor::getReferenceRowName() const {
 
 char McaEditor::getReferenceCharAt(int pos) const {
     U2OpStatus2Log os;
-    SAFE_POINT(referenceObj->getWholeSequenceData(os).size() > pos, "Invalid position", '\n');
+    SAFE_POINT(referenceObj->getSequenceLength() > pos, "Invalid position", '\n');
     return referenceObj->getSequenceData(U2Region(pos, 1), os).at(0);
 }
 

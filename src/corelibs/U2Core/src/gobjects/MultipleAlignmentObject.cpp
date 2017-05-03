@@ -342,7 +342,7 @@ void MultipleAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps
     }
 
     U2OpStatus2Log os;
-    McaDbiUtils::insertGaps(entityRef, rowIdsToInsert, pos, nGaps, os, collapseTrailingGaps);
+    MsaDbiUtils::insertGaps(entityRef, rowIdsToInsert, pos, nGaps, os, collapseTrailingGaps);
     SAFE_POINT_OP(os, );
 
     MaModificationInfo mi;
