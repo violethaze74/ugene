@@ -917,7 +917,7 @@ void MsaDbiUtils::updateRowContent(const U2EntityRef& msaRef, qint64 rowId,
     msaDbi->updateRowContent(msaRef.entityId, rowId, seqBytes, gaps, os);
 }
 
-void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os) {
+void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os, bool collapseTrailingGaps) {
     // Prepare the connection
     DbiConnection con(msaRef.dbiRef, os);
     CHECK_OP(os, );
@@ -972,7 +972,17 @@ void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& row
         msaDbi->updateGapModel(msaRef.entityId, row.rowId, row.gaps, os);
         CHECK_OP(os, );
     }
-    msaDbi->updateMsaLength(msaRef.entityId, msaObj.length + count, os);
+
+    if (collapseTrailingGaps) {
+        qint64 enlargeAlignmentLength = 0;
+        foreach(qint64 rowId, rowIds) {
+            enlargeAlignmentLength = qMax(enlargeAlignmentLength, msaDbi->getRow(msaRef.entityId, rowId, os).length);
+        }
+        if (msaObj.length < enlargeAlignmentLength) {
+            msaDbi->updateMsaLength(msaRef.entityId, enlargeAlignmentLength, os);
+            CHECK_OP(os, );
+        }
+    }
 }
 
 void MsaDbiUtils::removeRegion(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os) {

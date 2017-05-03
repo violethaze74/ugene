@@ -75,6 +75,8 @@ private:
     void removeRowPrivate(U2OpStatus &os, const U2EntityRef &msaRef, qint64 rowId);
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
                              int startPos, int nBases);
+    virtual void insertGap(const U2Region &rows, int pos, int nGaps);
+
 };
 
 }   // namespace U2

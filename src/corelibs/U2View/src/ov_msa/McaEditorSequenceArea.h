@@ -65,6 +65,8 @@ public:
 
     void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
+    virtual void adjustReferenceLength(U2OpStatus& os);
+
 signals:
     void si_clearReferenceSelection();
 

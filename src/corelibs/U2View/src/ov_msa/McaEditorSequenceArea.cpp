@@ -20,12 +20,14 @@
  */
 
 #include "McaEditorSequenceArea.h"
+#include "ov_sequence/SequenceObjectContext.h"
 
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -135,11 +137,25 @@ int McaEditorSequenceArea::countHeightForSequences(bool countClipped) const {
     return nVisible;
 }
 
+void McaEditorSequenceArea::adjustReferenceLength(U2OpStatus& os) {
+    McaEditor* mcaEditor = getEditor();
+    qint64 newLength = mcaEditor->getMaObject()->getLength(); 
+    qint64 currentLength = mcaEditor->getReferenceContext()->getSequenceLength();
+    if (newLength > currentLength) {
+        U2DataId id = mcaEditor->getMaObject()->getEntityRef().entityId;
+        U2Region region(currentLength, 0);
+        QByteArray insert(newLength - currentLength, U2Msa::GAP_CHAR);
+        DNASequence seq(insert);
+        mcaEditor->getReferenceContext()->getSequenceObject()->replaceRegion(id, region, seq, os);
+    }
+}
+
 void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel, bool newHighlightSelection) {
     if (sel.height() > 1 || sel.width() > 1) {
         // ignore multi-selection
         return;
     }
+
     if (getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(sel.y(), sel.x())) {
         // clear selection
         emit si_clearReferenceSelection();

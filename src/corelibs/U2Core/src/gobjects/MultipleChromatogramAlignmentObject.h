@@ -59,10 +59,11 @@ private:
     void loadAlignment(U2OpStatus &os);
     void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds);
     void updateDatabase(U2OpStatus &os, const MultipleAlignment &ma);
-
     void removeRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId);
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
                              int startPos, int nBases);
+    virtual void insertGap(const U2Region &rows, int pos, int nGaps);
+
 };
 
 }   // namespace U2
