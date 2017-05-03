@@ -31,7 +31,6 @@ namespace GUITest_common_scenarios_workflow_designer {
 #undef GUI_TEST_SUITE
 #define GUI_TEST_SUITE "GUITest_common_scenarios_workflow_designer"
 
-GUI_TEST_CLASS_DECLARATION(test_0001)
 GUI_TEST_CLASS_DECLARATION(test_0002)
 GUI_TEST_CLASS_DECLARATION(test_0002_1)
 GUI_TEST_CLASS_DECLARATION(test_0003)

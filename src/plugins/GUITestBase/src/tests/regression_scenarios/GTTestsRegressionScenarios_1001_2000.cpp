@@ -5938,7 +5938,7 @@ GUI_TEST_CLASS_DEFINITION( test_1594 ) {
     GTUtilsWorkflowDesigner::connect(os, read, write);
 //    2. Set the input annotations file: "_common_data/bed/valid_input/Treatment_tags.bed".
     GTUtilsWorkflowDesigner::click(os, read);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Chip-seq/input_data/chr4.bed");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bed/valid_input/Treatment_tags.bed");
 //    3. Set the correct output directory for the MACS element.
     GTUtilsWorkflowDesigner::click(os, write);
     GTUtilsWorkflowDesigner::setParameter(os, "Output directory", QDir().absoluteFilePath(sandBoxDir + "test_1594"), GTUtilsWorkflowDesigner::textValue);
@@ -7695,7 +7695,7 @@ GUI_TEST_CLASS_DEFINITION(test_1734){
 //    3. Open wizard. Try to add several bams on the first page
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Call Variants Wizard", new custom()));
     GTWidget::click(os, GTAction::button(os, "Show wizard"));
-//    Expected state: adding several bams is enebled
+//    Expected state: adding several bams is allowed
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1735){
