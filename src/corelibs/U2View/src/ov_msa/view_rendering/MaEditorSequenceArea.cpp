@@ -1928,10 +1928,11 @@ void MaEditorSequenceArea::processCharacterInEditMode(QKeyEvent *e) {
 }
 
 void MaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
-    if (msaMode == ReplaceCharMode) {
+    switch (msaMode) {
+    case ReplaceCharMode:
         replaceChar(newCharacter);
-    }
-    if (msaMode == InsertCharMode) {
+        break;
+    case InsertCharMode:
         insertChar(newCharacter);
     }
 }
