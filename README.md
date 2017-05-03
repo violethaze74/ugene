@@ -30,6 +30,8 @@ To build with nmake.exe:
 1. `qmake -r ugene.pro`
 2. run `nmake`, `nmake debug` or `nmake release` to build UGENE
 
+Also you need to add "libeay.dll" and "ssleay.dll" from OpenSSL ToolKit to "../ugene/src/_debug" folder
+
 ### For *nix users:
 
 0. installation paths may be set up in ugene_globals.pri
