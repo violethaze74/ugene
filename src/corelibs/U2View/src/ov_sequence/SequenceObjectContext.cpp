@@ -119,7 +119,6 @@ void SequenceObjectContext::guessAminoTT(const AnnotationTableObject *ao) {
     }
 }
 
-
 qint64 SequenceObjectContext::getSequenceLength() const {
     return seqObj->getSequenceLength();
 }
@@ -218,8 +217,6 @@ void SequenceObjectContext::sl_onAnnotationRelationChange() {
 
     if (!obj->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
         disconnect(obj, SIGNAL(si_relationChanged()), this, SLOT(sl_onAnnotationRelationChange()));
-        //!!!! do not forget to switch it on
-//        view->removeObject(obj);
     }
 }
 
