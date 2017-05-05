@@ -54,9 +54,7 @@ enum MaEditorConsElement {
 class MaEditorConsensusAreaSettings {
 public:
     MaEditorConsensusAreaSettings();
-    MaEditorConsensusAreaSettings(const QList<MaEditorConsElement>& order,
-                                  const QMap<MaEditorConsElement, bool>& visibility,
-                                  bool highlightMismatches);
+
     bool isVisible(const MaEditorConsElement element) const;
 
     QList<MaEditorConsElement>      order;

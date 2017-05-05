@@ -35,14 +35,16 @@ QString MSAConsensusAlgorithmFactoryClustal::getName() const {
 }
 
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleAlignment&, QObject* p) {
-    return new MSAConsensusAlgorithmClustal(this, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
+    return new MSAConsensusAlgorithmClustal(this, ignoreTrailingLeadingGaps, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
 //Algorithm
 
-char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment& ma, int pos, const QVector<qint64> &seqIdx) const {
+char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment& ma, int pos, QVector<qint64> seqIdx) const {
+    CHECK(filterIdx(seqIdx, ma, pos), INVALID_CONS_CHAR);
+
     if (!ma->getAlphabet()->isAmino()) {
         // for nucleic alphabet work as strict algorithm but use ' ' as default
         char  defChar = ' ';
