@@ -977,11 +977,15 @@ void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& row
         qint64 enlargeAlignmentLength = 0;
         foreach(qint64 rowId, rowIds) {
             enlargeAlignmentLength = qMax(enlargeAlignmentLength, msaDbi->getRow(msaRef.entityId, rowId, os).length);
+            CHECK_OP(os, );
         }
         if (msaObj.length < enlargeAlignmentLength) {
             msaDbi->updateMsaLength(msaRef.entityId, enlargeAlignmentLength, os);
             CHECK_OP(os, );
         }
+    } else {
+        msaDbi->updateMsaLength(msaRef.entityId, msaObj.length + count, os);
+        CHECK_OP(os, );
     }
 }
 
