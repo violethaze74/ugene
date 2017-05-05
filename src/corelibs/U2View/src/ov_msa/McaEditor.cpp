@@ -75,7 +75,6 @@ McaEditor::McaEditor(const QString &viewName,
         objects.append(referenceObj);
         onObjectAdded(referenceObj);
         // SANGER_TODO: probably can be big
-        referenceCache = referenceObj->getWholeSequenceData(os);
         referenceCtx = new SequenceObjectContext(referenceObj, this);
     } else {
         FAIL("Trying to open McaEditor without a reference", );
@@ -127,8 +126,11 @@ QString McaEditor::getReferenceRowName() const {
 }
 
 char McaEditor::getReferenceCharAt(int pos) const {
-    SAFE_POINT(referenceCache.size() > pos, "Invalid position", '\n');
-    return referenceCache[pos];
+    U2OpStatus2Log os;
+    SAFE_POINT(referenceObj->getSequenceLength() > pos, "Invalid position", '\n');
+    QByteArray seqData = referenceObj->getSequenceData(U2Region(pos, 1), os);
+    CHECK_OP(os, U2Msa::GAP_CHAR);
+    return seqData.isEmpty() ? U2Msa::GAP_CHAR : seqData.at(0);
 }
 
 SequenceObjectContext* McaEditor::getReferenceContext() const {

@@ -80,17 +80,24 @@ void SequenceAreaRenderer::drawSelection(QPainter &p) const {
     QPen pen(seqAreaWgt->highlightSelection || seqAreaWgt->hasFocus()
              ? seqAreaWgt->selectionColor
              : Qt::gray);
-    if (seqAreaWgt->msaMode != MaEditorSequenceArea::EditCharacterMode) {
+    if (seqAreaWgt->msaMode == MaEditorSequenceArea::ViewMode) {
         pen.setStyle(Qt::DashLine);
     }
     pen.setWidth(seqAreaWgt->highlightSelection ? 2 : 1);
     p.setPen(pen);
     if (yRange.startPos > 0) {
-        p.drawRect(xRange.startPos, yRange.startPos, xRange.length*selection.width(), yRange.length);
+        switch (seqAreaWgt->msaMode) {
+        case MaEditorSequenceArea::ViewMode:
+        case MaEditorSequenceArea::ReplaceCharMode:
+            p.drawRect(xRange.startPos, yRange.startPos, xRange.length*selection.width(), yRange.length);
+            break;
+        case MaEditorSequenceArea::InsertCharMode:
+            p.drawLine(xRange.startPos, yRange.startPos, xRange.startPos, yRange.startPos + yRange.length);
+        }
     }
     else {
         qint64 regionHeight = yRange.length + yRange.startPos + 1;
-        if(regionHeight <= 0) {
+        if (regionHeight <= 0) {
             return;
         }
         p.drawRect(xRange.startPos, -1, xRange.length*selection.width(), regionHeight);

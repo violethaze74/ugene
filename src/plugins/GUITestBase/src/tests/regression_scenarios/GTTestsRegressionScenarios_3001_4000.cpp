@@ -2715,28 +2715,20 @@ GUI_TEST_CLASS_DEFINITION(test_3402){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3414){
-//check time on dashboard
-//    1. Open WD
+/*  check time on dashboard
+ *  1. Open WD
+ *  2. Select "Remote BLASTing" sample
+ *  3. Set input file samples/FASTA/human_T1.fa
+ *  4. Execute workflow
+ *  5. Check elapsed time
+ * */
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    2. Select "tuxedo" sample
-//    3. Set proper input data(_common_data/NIAID_pipelines/tuxedo).
-    QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/index"));
-    map.insert("Bowtie index basename", "chr6");
-    map.insert("Bowtie version", "Bowtie1");
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QList<QStringList>()<<(QStringList()<<
-                                                     testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq"),
-                                                      map));
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
-                                                                   "Single-sample"<<"Single-end"));
-    GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
+    GTUtilsWorkflowDesigner::addSample(os, "Remote BLASTing");
     GTGlobals::sleep();
 
-    GTUtilsWorkflowDesigner::click(os, "Assemble Transcripts with Cufflinks");
-    GTKeyboardDriver::keyClick( Qt::Key_Delete);
-    GTGlobals::sleep(200);
+    GTUtilsWorkflowDesigner::click(os, "Read Sequence(s)");
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dataDir + "samples/FASTA/human_T1.fa" );
 
-    //    Launch pipeline
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(1000);
     HIWebElement initEl = GTUtilsDashboard::findElement(os, "00:00:0", "SPAN");
@@ -2745,6 +2737,7 @@ GUI_TEST_CLASS_DEFINITION(test_3414){
     HIWebElement finalEl = GTUtilsDashboard::findElement(os, "00:00:0", "SPAN");
     QString s1 = finalEl.toPlainText();
     CHECK_SET_ERR(s!=s1, "timer not changed");
+    GTUtilsTask::cancelTask(os, "Execute workflow");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3428){
@@ -4807,13 +4800,16 @@ GUI_TEST_CLASS_DEFINITION(test_3744) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
     GTGlobals::sleep(500);
+   
+    GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Regular expression");
 
-    QComboBox* algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
-    GTComboBox::setIndexWithText(os, algorithmBox, "Regular expression");
-
-    GTKeyboardDriver::keySequence("ACT.G");
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "ACG.T", true);
+    GTGlobals::sleep(200);
 
     QWidget* createButton = GTWidget::findWidget(os, "getAnnotationsPushButton");
+
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "", true);
+
     CHECK_SET_ERR(!createButton->isEnabled(), "prevPushButton is unexpectidly enabled")
 
 

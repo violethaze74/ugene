@@ -152,6 +152,8 @@ public:
 
     virtual void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
+    virtual void adjustReferenceLength(U2OpStatus& os) {}
+
     void cancelSelection();
 
     U2Region getSelectedRows() const;
@@ -320,7 +322,9 @@ protected:
     bool checkState() const;
 
     void processCharacterInEditMode(QKeyEvent *e);
-    virtual void processCharacterInEditMode(char newCharacter);
+    void processCharacterInEditMode(char newCharacter);
+    void replaceChar(char newCharacter);
+    virtual void insertChar(char ) {}
     void exitFromEditCharacterMode();
 
     void deleteOldCustomSchemes();
@@ -330,7 +334,8 @@ protected:
 protected:
     enum MaMode {
         ViewMode,
-        EditCharacterMode
+        ReplaceCharMode,
+        InsertCharMode
     };
 
     MaEditor*       editor;

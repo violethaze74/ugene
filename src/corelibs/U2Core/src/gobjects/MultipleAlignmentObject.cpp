@@ -328,7 +328,7 @@ void MultipleAlignmentObject::sortRowsByList(const QStringList &order) {
     updateCachedMultipleAlignment(mi);
 }
 
-void MultipleAlignmentObject::insertGap(const U2Region &rows, int pos, int count) {
+void MultipleAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps, bool collapseTrailingGaps) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     const MultipleAlignment &ma = getMultipleAlignment();
     int startSeq = rows.startPos;
@@ -341,7 +341,7 @@ void MultipleAlignmentObject::insertGap(const U2Region &rows, int pos, int count
     }
 
     U2OpStatus2Log os;
-    MsaDbiUtils::insertGaps(entityRef, rowIdsToInsert, pos, count, os);
+    MsaDbiUtils::insertGaps(entityRef, rowIdsToInsert, pos, nGaps, os, collapseTrailingGaps);
     SAFE_POINT_OP(os, );
 
     MaModificationInfo mi;

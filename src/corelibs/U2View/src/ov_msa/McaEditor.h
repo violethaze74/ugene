@@ -72,7 +72,6 @@ protected:
     QMap<qint64, bool>  chromVisibility;
 
     U2SequenceObject*       referenceObj;
-    QByteArray              referenceCache;
     SequenceObjectContext*  referenceCtx;
 };
 

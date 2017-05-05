@@ -125,6 +125,10 @@ U2MsaMapGapModel MultipleSequenceAlignmentObject::getGapModel() const {
     return rowsGapModel;
 }
 
+void MultipleSequenceAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps) {
+    MultipleAlignmentObject::insertGap(rows, pos, nGaps, false);
+}
+
 void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QString> &rowNames) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     const MultipleSequenceAlignment &ma = getMultipleAlignment();
@@ -234,7 +238,7 @@ void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowInde
         MsaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
     } else {
         MsaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
-        MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
+        MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os, false);
     }
     SAFE_POINT_OP(os, );
 

@@ -571,7 +571,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     GTUtilsProjectTreeView::click(os, "chrM.fa");
 
     //6. Click "Set reference sequence".
-    //7. Choose the file "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq".
+    //7. Choose the file "assembly_test_0018.fa" from sanbox.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir + "assembly_test_0018.fa"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
 
