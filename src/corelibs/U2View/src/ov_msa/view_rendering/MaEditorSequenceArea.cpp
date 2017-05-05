@@ -1235,7 +1235,10 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
                 setCursorPos(q);
             }
             rubberBand->setGeometry(QRect(origin, QSize()));
-            rubberBand->show();
+            bool isMSAEditor = qobject_cast<MSAEditor*> (getEditor()) != NULL;
+            if (isMSAEditor) {
+                rubberBand->show();
+            }
             cancelSelection();
         }
     }
