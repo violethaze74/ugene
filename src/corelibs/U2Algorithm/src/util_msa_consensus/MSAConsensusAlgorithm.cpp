@@ -51,6 +51,7 @@ ConsensusAlgorithmFlags MSAConsensusAlgorithmFactory::getAphabetFlags(const DNAA
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
+char MSAConsensusAlgorithm::INVALID_CONS_CHAR = '\0';
 MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _factory, bool ignoreTrailingLeadingGaps, QObject* p)
     : QObject(p), factory(_factory),
       threshold(0),
@@ -85,8 +86,8 @@ bool MSAConsensusAlgorithm::filterIdx(QVector<qint64> &seqIdx, const MultipleAli
 
     QVector<qint64> tmp;
     int nSeq = seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size();
-    for (qint64 seq = 0; seq < nSeq; seq++) {
-        qint64 rowNum = seqIdx.isEmpty() ? seq : seqIdx[ seq ];
+    for (int seq = 0; seq < nSeq; seq++) {
+        int rowNum = seqIdx.isEmpty() ? seq : seqIdx[ seq ];
         const MultipleAlignmentRow& row = ma->getRow(rowNum);
         if (row->isTrailingOrLeadingGap(pos)) {
             continue;

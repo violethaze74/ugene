@@ -26,6 +26,8 @@
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_sequence/SequenceObjectContext.h"
 
+#include <U2Algorithm/MSAConsensusAlgorithm.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceSelection.h>
 
@@ -62,7 +64,7 @@ bool MaConsensusMismatchController::isMismatch(int pos) const {
 
 void MaConsensusMismatchController::sl_updateItem(int pos, char c) {
     SAFE_POINT(0 <= pos && pos < mismatchCache.size(), "Invalid pos", );
-    mismatchCache[pos] = editor->getReferenceCharAt(pos) != c;
+    mismatchCache[pos] = c != MSAConsensusAlgorithm::INVALID_CONS_CHAR && editor->getReferenceCharAt(pos) != c;
 }
 
 void MaConsensusMismatchController::sl_resize(int newSize) {

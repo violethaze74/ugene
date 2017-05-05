@@ -50,7 +50,7 @@ MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(cons
 // Algorithm
 
 char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment& msa, int pos, int& cnt, QVector<qint64> seqIdx) const {
-    CHECK(filterIdx(seqIdx, msa, pos), '\0');
+    CHECK(filterIdx(seqIdx, msa, pos), INVALID_CONS_CHAR);
 
     //TODO: use var-length array!
     QVector<QPair<int, char> > freqs(32);

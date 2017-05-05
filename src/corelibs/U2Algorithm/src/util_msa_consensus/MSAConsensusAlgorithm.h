@@ -114,6 +114,8 @@ public:
 
     MSAConsensusAlgorithmFactory* getFactory() const {return factory;}
 
+    static char INVALID_CONS_CHAR;
+
 signals:
     void si_thresholdChanged(int);
 

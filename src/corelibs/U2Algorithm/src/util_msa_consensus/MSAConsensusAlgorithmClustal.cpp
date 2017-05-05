@@ -43,7 +43,7 @@ MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(cons
 //Algorithm
 
 char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment& ma, int pos, QVector<qint64> seqIdx) const {
-    CHECK(filterIdx(seqIdx, ma, pos), '\0');
+    CHECK(filterIdx(seqIdx, ma, pos), INVALID_CONS_CHAR);
 
     if (!ma->getAlphabet()->isAmino()) {
         // for nucleic alphabet work as strict algorithm but use ' ' as default

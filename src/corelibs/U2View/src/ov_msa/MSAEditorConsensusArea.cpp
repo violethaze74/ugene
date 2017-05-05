@@ -352,7 +352,7 @@ void MSAEditorConsensusArea::drawConsensusChar(QPainter& p, int pos, int firstVi
 }
 
 bool isValidConsChar(char ch) {
-    return ch != '\0';
+    return ch != MSAConsensusAlgorithm::INVALID_CONS_CHAR;
 }
 
 void MSAEditorConsensusArea::drawConsensusChar(QPainter &p, int pos, int firstVisiblePos, char consChar, bool selected, bool useVirtualCoords) {
