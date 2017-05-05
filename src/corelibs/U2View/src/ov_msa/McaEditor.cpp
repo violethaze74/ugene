@@ -34,6 +34,7 @@
 #include "view_rendering/MaEditorWgt.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
+#include <QApplication>
 #include <QToolBar>
 
 #include <U2Core/AppContext.h>
@@ -203,7 +204,8 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     initActions();
     initWidgets();
 
-    McaEditorReferenceArea* refArea = new McaEditorReferenceArea(this, getEditor()->getReferenceContext());
+    refArea = new McaEditorReferenceArea(this, getEditor()->getReferenceContext());
+    refArea->installEventFilter(this);
     seqAreaHeaderLayout->insertWidget(0, refArea);
 
     MaEditorConsensusAreaSettings consSettings;
@@ -224,6 +226,17 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
 
 McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
     return qobject_cast<McaEditorSequenceArea*>(seqArea);
+}
+
+bool McaEditorWgt::eventFilter(QObject *watched, QEvent *event) {
+    if (watched == refArea) {
+        QApplication::sendEvent(seqArea, event);
+        if (event->type() == QEvent::KeyPress) {
+            return true;
+        }
+        return false;
+    }
+    return MaEditorWgt::eventFilter(watched, event);
 }
 
 void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
