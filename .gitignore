@@ -41,3 +41,6 @@ Makefile.Debug
 
 # QtCreator files
 ugene.pro.user
+
+# CLion build dir
+cmake-build-*
