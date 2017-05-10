@@ -76,7 +76,9 @@ private slots:
 	void sl_updateWindowMenu();
 	void sl_onSubWindowActivated(QMdiSubWindow *);
     void sl_updateWindowLayout();
-	
+	void sl_setWindowLayoutToMultiDoc();
+	void sl_setWindowLayoutToTabbed();
+
 private:
 	MDIItem* getMDIItem(int id) const;
 	MDIItem* getMDIItem(MWMDIWindow* w) const;
@@ -104,6 +106,9 @@ private:
 	QAction* nextAct;
 	QAction* previousAct;
 	QAction* separatorAct;
+    QMenu*   windowLayout;
+    QAction* multipleDocsAct;
+    QAction* tabbedDocsAct;
 
 	QSignalMapper*  windowMapper;
 	bool            defaultIsMaximized;

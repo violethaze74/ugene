@@ -126,9 +126,7 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
 void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
     UserApplicationsSettingsPageState* state = qobject_cast<UserApplicationsSettingsPageState*>(s);
     enableStatisticsEdit->setChecked(state->enableStatistics);
-    tabbedButton->setChecked(state->tabbedWindowLayout);
-    mdiButton->setChecked(!state->tabbedWindowLayout);
-    
+
     int idx = langCombo->findData(state->translFile);
     if (idx < 0) {
         idx = langCombo->count();
@@ -158,7 +156,6 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageWidget::getState(QString& /
     state->askToSaveProject = askToSaveProject->itemData(askToSaveProject->currentIndex()).toInt();
     state->style = styleCombo->currentText();
     state->enableStatistics = enableStatisticsEdit->isChecked();
-    state->tabbedWindowLayout = tabbedButton->isChecked();
     state->resetSettings = resetSettingsBox->isChecked();
     state->updatesEnabled = updatesCheckBox->isChecked();
 
