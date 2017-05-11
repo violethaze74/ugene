@@ -8475,7 +8475,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="77"/>
         <source>Removes adapter sequences %1.</source>
-        <translation>Удаоляет переходные последовательности %1.</translation>
+        <translation>Удаляет переходные последовательности %1.</translation>
     </message>
 </context>
 <context>
