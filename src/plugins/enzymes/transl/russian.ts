@@ -657,13 +657,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/CreateFragmentDialog.cpp" line="55"/>
         <location filename="../src/CreateFragmentDialog.cpp" line="77"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/CreateFragmentDialog.cpp" line="56"/>
         <location filename="../src/CreateFragmentDialog.cpp" line="78"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/CreateFragmentDialog.cpp" line="106"/>

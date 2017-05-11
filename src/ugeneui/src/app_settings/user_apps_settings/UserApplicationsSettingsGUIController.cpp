@@ -93,7 +93,7 @@ void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState* 
     st->setOpenLastProjectAtStartup(state->openLastProjectFlag);
     st->setAskToSaveProject(state->askToSaveProject);
     st->setEnableCollectingStatistics(state->enableStatistics);
-    st->setTabbedWindowLayout(state->tabbedWindowLayout);
+    //st->setTabbedWindowLayout(state->tabbedWindowLayout);
     st->setResetSettings(state->resetSettings);
     st->setUpdatesEnabled(state->updatesEnabled);
 

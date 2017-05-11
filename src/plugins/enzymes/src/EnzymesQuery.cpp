@@ -146,6 +146,8 @@ EnzymesSelectorDialog::EnzymesSelectorDialog(EnzymesSelectorDialogHandler* paren
 : factory(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759658");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     QVBoxLayout* vl = new QVBoxLayout();
     enzSel = new EnzymesSelectorWidget();
