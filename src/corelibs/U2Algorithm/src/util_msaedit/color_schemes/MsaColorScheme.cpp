@@ -82,7 +82,7 @@ const QString MsaColorSchemeFactory::getName() const {
     return name;
 }
 
-bool MsaColorSchemeFactory::isAlphabetFit(const DNAAlphabetType& alphabet) const {
+bool MsaColorSchemeFactory::isAlphabetSupported(const DNAAlphabetType& alphabet) const {
     return supportedAlphabets.testFlag(alphabet);
 }
 
@@ -99,7 +99,7 @@ MsaColorSchemeRegistry::~MsaColorSchemeRegistry(){
     deleteOldCustomFactories();
 }
 
-const QList<MsaColorSchemeFactory *> & MsaColorSchemeRegistry::getMsaColorSchemes() const {
+const QList<MsaColorSchemeFactory *> & MsaColorSchemeRegistry::getSchemes() const {
     return colorers;
 }
 
@@ -107,24 +107,24 @@ const QList<MsaColorSchemeCustomFactory *> & MsaColorSchemeRegistry::getCustomCo
     return customColorers;
 }
 
-QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getAllMsaColorSchemes(DNAAlphabetType alp) const {
-    return QList<MsaColorSchemeFactory *>() << getMsaColorSchemes(alp) << getMsaCustomColorSchemes(alp);
+QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getAllSchemes(DNAAlphabetType alphabet) const {
+    return QList<MsaColorSchemeFactory *>() << getSchemes(alphabet) << getCustomSchemes(alphabet);
 }
 
-QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaColorSchemes(DNAAlphabetType alphabetType) const {
+QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getSchemes(DNAAlphabetType alphabetType) const {
     QList<MsaColorSchemeFactory *> res;
     foreach(MsaColorSchemeFactory *factory, colorers) {
-        if (factory->isAlphabetFit(alphabetType)) {
+        if (factory->isAlphabetSupported(alphabetType)) {
             res.append(factory);
         }
     }
     return res;
 }
 
-QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaCustomColorSchemes(DNAAlphabetType alphabetType) const {
+QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getCustomSchemes(DNAAlphabetType alphabetType) const {
     QList<MsaColorSchemeFactory *> res;
     foreach(MsaColorSchemeFactory *factory, customColorers) {
-        if (factory->isAlphabetFit(alphabetType)) {
+        if (factory->isAlphabetSupported(alphabetType)) {
             res.append(factory);
         }
     }
@@ -139,7 +139,7 @@ QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::customSchemesToCommon() c
     return res;
 }
 
-QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > MsaColorSchemeRegistry::getAllMsaColorSchemesGrouped() const {
+QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > MsaColorSchemeRegistry::getAllSchemesGrouped() const {
     QList<MsaColorSchemeFactory *> allSchemes;
     allSchemes << colorers << customSchemesToCommon();
     QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > result;
@@ -149,7 +149,7 @@ QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > MsaColorSchemeRegistry::getA
     return result;
 }
 
-QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > MsaColorSchemeRegistry::getMsaColorSchemesGrouped() const {
+QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > MsaColorSchemeRegistry::getSchemesGrouped() const {
     QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > result;
     foreach(MsaColorSchemeFactory *factory, colorers) {
         result[factory->getSupportedAlphabets()].append(factory);
@@ -157,7 +157,7 @@ QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > MsaColorSchemeRegistry::getM
     return result;
 }
 
-QMap<AlphabetFlags, QList<MsaColorSchemeFactory *> > MsaColorSchemeRegistry::getMsaCustomColorSchemesGrouped() const {
+QMap<AlphabetFlags, QList<MsaColorSchemeFactory *> > MsaColorSchemeRegistry::getCustomSchemesGrouped() const {
     QMap<AlphabetFlags, QList<MsaColorSchemeFactory *> > result;
     foreach(MsaColorSchemeFactory *factory, customColorers) {
         result[factory->getSupportedAlphabets()].append(factory);
@@ -165,7 +165,7 @@ QMap<AlphabetFlags, QList<MsaColorSchemeFactory *> > MsaColorSchemeRegistry::get
     return result;
 }
 
-MsaColorSchemeCustomFactory * MsaColorSchemeRegistry::getMsaCustomColorSchemeFactoryById(const QString &id) const {
+MsaColorSchemeCustomFactory * MsaColorSchemeRegistry::getCustomSchemeFactoryById(const QString &id) const {
     foreach (MsaColorSchemeCustomFactory *customFactory, customColorers) {
         if (customFactory->getId() == id) {
             return customFactory;
@@ -175,14 +175,18 @@ MsaColorSchemeCustomFactory * MsaColorSchemeRegistry::getMsaCustomColorSchemeFac
     return NULL;
 }
 
-MsaColorSchemeFactory * MsaColorSchemeRegistry::getMsaColorSchemeFactoryById(const QString& id) const {
+MsaColorSchemeFactory * MsaColorSchemeRegistry::getSchemeFactoryById(const QString& id) const {
     foreach (MsaColorSchemeFactory *commonFactory, colorers) {
         if (commonFactory->getId() == id) {
             return commonFactory;
         }
     }
 
-    return getMsaCustomColorSchemeFactoryById(id);
+    return getCustomSchemeFactoryById(id);
+}
+
+MsaColorSchemeFactory * MsaColorSchemeRegistry::getEmptySchemeFactory() const {
+    return getSchemeFactoryById(MsaColorScheme::EMPTY);
 }
 
 void MsaColorSchemeRegistry::addCustomScheme(const ColorSchemeData &scheme) {
@@ -198,13 +202,13 @@ bool compareNames(const MsaColorSchemeFactory* a1, const MsaColorSchemeFactory* 
 }
 
 void MsaColorSchemeRegistry::addMsaColorSchemeFactory(MsaColorSchemeFactory *commonFactory) {
-    assert(getMsaColorSchemeFactoryById(commonFactory->getId()) == NULL);
+    assert(getSchemeFactoryById(commonFactory->getId()) == NULL);
     colorers.append(commonFactory);
     qStableSort(colorers.begin(), colorers.end(), compareNames);
 }
 
 void MsaColorSchemeRegistry::addMsaCustomColorSchemeFactory(MsaColorSchemeCustomFactory *customFactory) {
-    assert(getMsaColorSchemeFactoryById(customFactory->getId()) == NULL);
+    assert(getSchemeFactoryById(customFactory->getId()) == NULL);
     customColorers.append(customFactory);
     qStableSort(colorers.begin(), colorers.end(), compareNames);
 }
@@ -214,7 +218,7 @@ void MsaColorSchemeRegistry::sl_onCustomSettingsChanged() {
 
     QList<MsaColorSchemeCustomFactory *> factoriesToRemove = customColorers;
     foreach (const ColorSchemeData &scheme, ColorSchemeUtils::getSchemas()) {
-        MsaColorSchemeCustomFactory *customSchemeFactory = getMsaCustomColorSchemeFactoryById(scheme.name);
+        MsaColorSchemeCustomFactory *customSchemeFactory = getCustomSchemeFactoryById(scheme.name);
         if (NULL == customSchemeFactory) {
             addCustomScheme(scheme);
             schemesListChanged |= true;

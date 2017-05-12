@@ -45,7 +45,6 @@
 #include "MsaHighlightingComboBoxController.h"
 #include "MSAHighlightingTab.h"
 
-
 namespace U2 {
 
 static const int ITEMS_SPACING = 6;

@@ -51,13 +51,13 @@ void MsaColorComboBoxController::init() {
     blockSignals(true);
 
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QList<MsaColorSchemeFactory*> colorSchemesFactories = msaColorSchemeRegistry->getAllMsaColorSchemes(msa->getMaObject()->getAlphabet()->getType());
+    QList<MsaColorSchemeFactory*> colorSchemesFactories = msaColorSchemeRegistry->getAllSchemes(msa->getMaObject()->getAlphabet()->getType());
 
     clear();
     if (isAlphabetRaw) {
         fillColorCbWithGrouping();
     } else {
-        MsaColorSchemeFactory *noColorsFactory = msaColorSchemeRegistry->getMsaColorSchemeFactoryById(MsaColorScheme::EMPTY);
+        MsaColorSchemeFactory *noColorsFactory = msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::EMPTY);
         colorSchemesFactories.removeAll(noColorsFactory);
         colorSchemesFactories.prepend(noColorsFactory);
         foreach(MsaColorSchemeFactory *factory, colorSchemesFactories) {
@@ -69,8 +69,8 @@ void MsaColorComboBoxController::init() {
 
 void MsaColorComboBoxController::fillColorCbWithGrouping() {
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > colorSchemesFactories = msaColorSchemeRegistry->getAllMsaColorSchemesGrouped();
-    MsaColorSchemeFactory *noColorsFactory = msaColorSchemeRegistry->getMsaColorSchemeFactoryById(MsaColorScheme::EMPTY);
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > colorSchemesFactories = msaColorSchemeRegistry->getAllSchemesGrouped();
+    MsaColorSchemeFactory *noColorsFactory = msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::EMPTY);
 
     QList<MsaColorSchemeFactory *> rawColorSchemesFactories = colorSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
     QList<MsaColorSchemeFactory *> aminoColorSchemesFactories = colorSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO];

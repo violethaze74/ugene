@@ -60,6 +60,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/Highlighting/MSAHighlightingTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.h \
            src/ov_msa/Highlighting/MsaHighlightingComboBoxController.h \
+           src/ov_msa/Highlighting/MsaSchemeComboBoxController.h \
            src/ov_msa/Highlighting/MsaSchemesMenuBuilder.h \
            src/ov_msa/MaConsensusMismatchController.h \
            src/ov_msa/MaEditor.h \

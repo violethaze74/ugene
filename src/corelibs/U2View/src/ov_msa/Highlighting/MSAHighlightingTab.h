@@ -39,9 +39,7 @@ class QToolButton;
 namespace U2 {
 
 class MSAEditor;
-class MsaColorSchemeFactory;
 class MaEditorSequenceArea;
-class MsaHighlightingSchemeFactory;
 class MsaColorComboBoxController;
 class MsaHighlightingComboBoxController;
 

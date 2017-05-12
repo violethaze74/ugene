@@ -54,8 +54,9 @@ void MsaHighlightingComboBoxController::init() {
         fillHighlightingCbWithGrouping();
     } else {
         MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
-        QList<MsaHighlightingSchemeFactory*> HighlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(msa->getMaObject()->getAlphabet()->getType());
-        MsaHighlightingSchemeFactory* nohighlightingFactory = msaHighlightingSchemeRegistry->getMsaHighlightingSchemeFactoryById(MsaHighlightingScheme::EMPTY);
+        CHECK(msaHighlightingSchemeRegistry != NULL, );
+        QList<MsaHighlightingSchemeFactory*> HighlightingSchemesFactories = msaHighlightingSchemeRegistry->getSchemes(msa->getMaObject()->getAlphabet()->getType());
+        MsaHighlightingSchemeFactory* nohighlightingFactory = msaHighlightingSchemeRegistry->getSchemeFactoryById(MsaHighlightingScheme::EMPTY);
         HighlightingSchemesFactories.removeAll(nohighlightingFactory);
         HighlightingSchemesFactories.prepend(nohighlightingFactory);
         foreach(MsaHighlightingSchemeFactory *factory, HighlightingSchemesFactories) {
@@ -68,8 +69,8 @@ void MsaHighlightingComboBoxController::init() {
 void MsaHighlightingComboBoxController::fillHighlightingCbWithGrouping() {
 
     MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
-    QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > highlightingSchemesFactories = msaHighlightingSchemeRegistry->getAllHighlightingSchemesGrouped();
-    MsaHighlightingSchemeFactory* nohighlightingFactory = msaHighlightingSchemeRegistry->getMsaHighlightingSchemeFactoryById(MsaHighlightingScheme::EMPTY);
+    QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > highlightingSchemesFactories = msaHighlightingSchemeRegistry->getAllSchemesGrouped();
+    MsaHighlightingSchemeFactory* nohighlightingFactory = msaHighlightingSchemeRegistry->getSchemeFactoryById(MsaHighlightingScheme::EMPTY);
 
     QList<MsaHighlightingSchemeFactory *> commonHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
     QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO];
