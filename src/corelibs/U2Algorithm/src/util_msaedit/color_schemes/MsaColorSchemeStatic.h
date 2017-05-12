@@ -43,7 +43,7 @@ private:
 class MsaColorSchemeStaticFactory : public MsaColorSchemeFactory {
     Q_OBJECT
 public:
-    MsaColorSchemeStaticFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &alphabetType, const QVector<QColor> &colorsPerChar);
+    MsaColorSchemeStaticFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets, const QVector<QColor> &colorsPerChar);
 
     MsaColorScheme * create(QObject* parent, MultipleAlignmentObject * maObj) const;
 

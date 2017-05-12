@@ -34,7 +34,7 @@ public:
 class MsaColorSchemePercentageIdententityGrayscaleFactory : public MsaColorSchemeFactory {
     Q_OBJECT
 public:
-    MsaColorSchemePercentageIdententityGrayscaleFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &alphabetType);
+    MsaColorSchemePercentageIdententityGrayscaleFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
 
     MsaColorScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
 };

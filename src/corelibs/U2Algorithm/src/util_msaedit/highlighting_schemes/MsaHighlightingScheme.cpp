@@ -103,8 +103,8 @@ bool MsaHighlightingSchemeFactory::isNeedThreshold() const {
     return needThreshold;
 }
 
-bool MsaHighlightingSchemeFactory::isAlphabetFit(DNAAlphabetType alphabet) const {
-    return supportedAlphabets.testFlag(alphabet);
+bool MsaHighlightingSchemeFactory::isAlphabetTypeSupported(DNAAlphabetType alphabetType) const {
+    return supportedAlphabets.testFlag(alphabetType);
 }
 
 const AlphabetFlags& MsaHighlightingSchemeFactory::getSupportedAlphabets() const
@@ -126,7 +126,7 @@ MsaHighlightingSchemeRegistry::~MsaHighlightingSchemeRegistry() {
     qDeleteAll(schemes);
 }
 
-MsaHighlightingSchemeFactory * MsaHighlightingSchemeRegistry::getMsaHighlightingSchemeFactoryById(const QString& id) const {
+MsaHighlightingSchemeFactory * MsaHighlightingSchemeRegistry::getSchemeFactoryById(const QString& id) const {
     foreach (MsaHighlightingSchemeFactory *factory, schemes) {
         if (factory->getId() == id) {
             return factory;
@@ -135,17 +135,21 @@ MsaHighlightingSchemeFactory * MsaHighlightingSchemeRegistry::getMsaHighlighting
     return NULL;
 }
 
-QList<MsaHighlightingSchemeFactory *> MsaHighlightingSchemeRegistry::getMsaHighlightingSchemes(DNAAlphabetType alphabetType) const {
+MsaHighlightingSchemeFactory * MsaHighlightingSchemeRegistry::getEmptySchemeFactory() const {
+    return getSchemeFactoryById(MsaHighlightingScheme::EMPTY);
+}
+
+QList<MsaHighlightingSchemeFactory *> MsaHighlightingSchemeRegistry::getAllSchemes(DNAAlphabetType alphabetType) const {
     QList<MsaHighlightingSchemeFactory *> res;
     foreach(MsaHighlightingSchemeFactory *factory, schemes) {
-        if (factory->isAlphabetFit(alphabetType)) {
+        if (factory->isAlphabetTypeSupported(alphabetType)) {
             res.append(factory);
         }
     }
     return res;
 }
 
-QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > MsaHighlightingSchemeRegistry::getAllHighlightingSchemesGrouped() const {
+QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > MsaHighlightingSchemeRegistry::getAllSchemesGrouped() const {
     QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > result;
     foreach(MsaHighlightingSchemeFactory *factory, schemes) {
         result[factory->getSupportedAlphabets()].append(factory);
