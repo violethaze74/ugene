@@ -109,7 +109,7 @@ public:
 
 protected:
     void runStep();
-    int getMaxQualityValue();
+    DNAQualityType detectQualityType();
     QStringList getParameters(U2OpStatus& os);
 };
 

@@ -235,13 +235,13 @@ void U2SequenceUtils::setQuality(const U2EntityRef& entityRef, const DNAQuality&
     QList<U2DataId> idQualList=con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId,DNAInfo::FASTQ_QUAL_CODES,os);
     CHECK_OP(os, );
     if(!idQualList.isEmpty()){
-        con.dbi->getAttributeDbi()->removeObjectAttributes(idQualList.first(),os);
+        con.dbi->getAttributeDbi()->removeAttributes(idQualList,os);
         CHECK_OP(os, );
     }
     QList<U2DataId> idQualTypeList=con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId,DNAInfo::FASTQ_QUAL_TYPE,os);
     CHECK_OP(os, );
     if(!idQualTypeList.isEmpty()){
-        con.dbi->getAttributeDbi()->removeObjectAttributes(idQualTypeList.first(),os);
+        con.dbi->getAttributeDbi()->removeAttributes(idQualTypeList,os);
         CHECK_OP(os, );
     }
 
