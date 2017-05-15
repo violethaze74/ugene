@@ -49,10 +49,10 @@ void test1(HI::GUITestOpStatus &os, QString s="") {
 //1. Open Query Designer
     GTUtilsQueryDesigner::openQueryDesigner(os);
 
-    QString array[] = {"CDD", "Base Content","HMM2","HMM3","ORF"};
+    QString array[] = {"CDD", "Base Content","HMM2","ORF"};
     QPoint p;
 //2. Add any algorithm to the scheme
-    for(int i=0;i<5; i++){
+    for(int i=0;i<4; i++){
 //3. Reduce any elements size by dragging its right corner as far to the left as possible
 //  (or a bit less than as far as possible)
     if (s=="arr"){
@@ -98,7 +98,7 @@ void test1(HI::GUITestOpStatus &os, QString s="") {
     QList<QGraphicsItem *> items = sceneView->items();
     CHECK_SET_ERR(items.size() == 2, "Delete shortcut is not working");//2 - is equal empty scene
     }
-//5. repeat from step 2 (do 5 iterations)
+//5. repeat from step 2 (do 4 iterations)
 //Expected state: UGENE not crashes.
 }
 GUI_TEST_CLASS_DEFINITION(test_0001){
