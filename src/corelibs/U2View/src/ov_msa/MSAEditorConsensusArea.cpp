@@ -716,13 +716,19 @@ void MSAEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
     int x = e->x();
     if (e->buttons() & Qt::LeftButton) {
         selecting = true;
+        int lastPos = curPos;
         curPos = ui->getSequenceArea()->getColumnNumByX(x, selecting);
-        if (curPos !=-1) {
+        if (curPos != -1) {
             int height = ui->getSequenceArea()->getNumDisplayedSequences();
             // select current column
-            MaEditorSelection selection(curPos, 0, 1, height);
-            ui->getSequenceArea()->setSelection(selection);
-            scribbling = true;
+            if ((Qt::ShiftModifier == e->modifiers()) && (lastPos != -1)) {
+                MaEditorSelection selection(qMin(lastPos, curPos), 0, abs(curPos - lastPos) + 1, height);
+                ui->getSequenceArea()->setSelection(selection);
+            } else {
+                MaEditorSelection selection(curPos, 0, 1, height);
+                ui->getSequenceArea()->setSelection(selection);
+                scribbling = true;
+            }
         }
     }
     QWidget::mousePressEvent(e);
