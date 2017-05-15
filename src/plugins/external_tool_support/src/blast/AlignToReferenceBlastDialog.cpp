@@ -227,12 +227,12 @@ void AlignToReferenceBlastDialog::sl_removeRead() {
 
 void AlignToReferenceBlastDialog::sl_referenceChanged(const QString &newRef) {
     QFileInfo outFileFi(outputLineEdit->text());
-    if (!nameFitsToDefaultPattern(outFileFi.fileName())) {
+    if (!fitsDefaultPattern(outFileFi.fileName())) {
         return;
     }
     
     QFileInfo referenceFileInfo(newRef);
-    QString newOutFileName = referenceFileInfo.baseName() + "_sanger_reads_alignment.ugenedb";
+    QString newOutFileName = referenceFileInfo.baseName() + "_" + defaultOutputName;
     outputLineEdit->setText(outFileFi.dir().absolutePath() + "/" + newOutFileName);
 }
 
@@ -243,7 +243,7 @@ void AlignToReferenceBlastDialog::connectSlots() {
     connect(referenceLineEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_referenceChanged(const QString &)));
 }
 
-bool AlignToReferenceBlastDialog::nameFitsToDefaultPattern(const QString &name) const {
+bool AlignToReferenceBlastDialog::fitsDefaultPattern(const QString &name) const {
     if (name.endsWith(defaultOutputName)) {
         return true;
     }

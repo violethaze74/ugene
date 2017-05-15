@@ -93,7 +93,7 @@ private slots:
 private:
     void initSaveController();
     void connectSlots();
-    bool nameFitsToDefaultPattern(const QString &name) const;
+    bool fitsDefaultPattern(const QString &name) const;
 
     SaveDocumentController *saveController;
     AlignToReferenceBlastCmdlineTask::Settings settings;
