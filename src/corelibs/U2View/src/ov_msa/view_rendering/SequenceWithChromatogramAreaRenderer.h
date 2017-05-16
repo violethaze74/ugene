@@ -37,6 +37,7 @@ public:
     SequenceWithChromatogramAreaRenderer(McaEditorSequenceArea* seqAreaWgt);
 
     void drawReferenceSelection(QPainter &p) const;
+    void drawNameListSelection(QPainter &p) const;
 
     void setAreaHeight(int h);
 

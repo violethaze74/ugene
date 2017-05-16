@@ -152,7 +152,7 @@ int McaEditorSequenceArea::countHeightForSequences(bool countClipped) const {
 
 void McaEditorSequenceArea::adjustReferenceLength(U2OpStatus& os) {
     McaEditor* mcaEditor = getEditor();
-    qint64 newLength = mcaEditor->getMaObject()->getLength(); 
+    qint64 newLength = mcaEditor->getMaObject()->getLength();
     qint64 currentLength = mcaEditor->getReferenceContext()->getSequenceLength();
     if (newLength > currentLength) {
         U2DataId id = mcaEditor->getMaObject()->getEntityRef().entityId;
@@ -203,7 +203,7 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     setSelection(newSelection);
 }
 
-void McaEditorSequenceArea::sl_referenceSelectionChanged() {
+void McaEditorSequenceArea::sl_backgroundSelectionChanged() {
     update();
 }
 
@@ -295,6 +295,7 @@ void McaEditorSequenceArea::drawBackground(QPainter& p) {
     SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     SAFE_POINT(r != NULL, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
     r->drawReferenceSelection(p);
+    r->drawNameListSelection(p);
 }
 
 void McaEditorSequenceArea::buildMenu(QMenu *m) {

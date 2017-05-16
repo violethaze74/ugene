@@ -60,7 +60,7 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *p, SequenceObjectCo
         SLOT(sl_onSelectionChanged()));
 
     connect(this, SIGNAL(si_selectionChanged()),
-            p->getSequenceArea(), SLOT(sl_referenceSelectionChanged()));
+            p->getSequenceArea(), SLOT(sl_backgroundSelectionChanged()));
     connect(editor, SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_fontChanged(const QFont &)));
 
     connect(p->getConsensusArea(), SIGNAL(si_mismatchRedrawRequired()), SLOT(completeUpdate()));

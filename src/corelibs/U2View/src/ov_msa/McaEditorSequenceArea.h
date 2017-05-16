@@ -71,7 +71,7 @@ signals:
     void si_clearReferenceSelection();
 
 public slots:
-    void sl_referenceSelectionChanged();
+    void sl_backgroundSelectionChanged();
 
 private slots:
     void sl_showHideTrace();
