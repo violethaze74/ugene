@@ -74,6 +74,8 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     removeSequenceAction->setObjectName("Remove sequence");
     connect(removeSequenceAction, SIGNAL(triggered()), SLOT(sl_removeSequence()));
     addAction(removeSequenceAction);
+    removeSequenceAction->setShortcut(QKeySequence::Delete);
+    removeSequenceAction->setShortcutContext(Qt::WidgetShortcut);
 
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView* , QMenu*)), SLOT(sl_buildContextMenu(GObjectView*, QMenu*)));
     if (editor->getMaObject()) {
@@ -222,17 +224,13 @@ void MaEditorNameList::sl_buildContextMenu(GObjectView* v, QMenu* m) {
 }
 
 void MaEditorNameList::buildMenu(QMenu* m) {
-    if (qobject_cast<MSAEditor*>(editor) == NULL) {
-        return;
-    }
     QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != NULL, "editMenu not found", );
 
     editMenu->insertAction(editMenu->actions().last(), removeSequenceAction);
 
-    if (!rect().contains(mapFromGlobal(QCursor::pos()))) {
-        return;
-    }
+    CHECK(qobject_cast<MSAEditor*>(editor) != NULL, );
+    CHECK(rect().contains(mapFromGlobal(QCursor::pos())), );
 
     QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
     SAFE_POINT(copyMenu != NULL, "copyMenu not found", );
@@ -279,12 +277,10 @@ void MaEditorNameList::sl_nameBarMoved(int) {
 }
 
 void MaEditorNameList::sl_removeSequence() {
-    int width = editor->getAlignmentLen();
-    // should be changed in UGENE-5537
-    MaEditorSelection oldSelection = ui->getSequenceArea()->getSelection();
-    MaEditorSelection selection(0, oldSelection.y(), width, oldSelection.height());
-    ui->getSequenceArea()->setSelection(selection);
-    ui->getSequenceArea()->sl_delCurrentSelection();
+    CHECK(!getSelection().isEmpty() && getSelection().length == 1, );
+
+    MultipleAlignmentObject* maObj = editor->getMaObject();
+    maObj->removeRow(getSelection().startPos);
 }
 
 void MaEditorNameList::sl_selectReferenceSequence() {
@@ -847,18 +843,14 @@ void MaEditorNameList::sl_onScrollBarActionTriggered(int scrollAction)
     }
 }
 
-void MaEditorNameList::sl_editSequenceName()
-{
+void MaEditorNameList::sl_editSequenceName() {
     MultipleAlignmentObject* maObj = editor->getMaObject();
-    if (maObj->isStateLocked()) {
-        return;
-    }
+    CHECK(!maObj->isStateLocked(), );
 
     bool ok = false;
     int n = getSelectedRow();
-    if (n<0) {
-        return;
-    }
+    CHECK(n >= 0, );
+
     QString curName =  maObj->getMultipleAlignment()->getRow(n)->getName();
     QString newName = QInputDialog::getText(this, tr("Rename"),
             tr("New sequence name:"), QLineEdit::Normal, curName, &ok);
@@ -876,14 +868,12 @@ void MaEditorNameList::mouseDoubleClickEvent(QMouseEvent *e) {
 }
 
 void MaEditorNameList::moveSelectedRegion(int shift) {
-    if (shift == 0) {
-        return;
-    }
+    CHECK(shift != 0, );
 
-    // should be changed in UGENE-5537
-    int numRowsInSelection = ui->getSequenceArea()->getSelection().height();
-    int firstRowInSelection = ui->getSequenceArea()->getSelection().y();
-    int lastRowInSelection = firstRowInSelection + numRowsInSelection - 1;
+    U2Region selection = getSelection();
+    int numRowsInSelection = selection.length;
+    int firstRowInSelection = selection.startPos;
+    int lastRowInSelection = selection.endPos() - 1;
 
     // "out-of-range" checks
     if ((shift > 0 && lastRowInSelection + shift >= editor->getNumSequences())
@@ -898,9 +888,7 @@ void MaEditorNameList::moveSelectedRegion(int shift) {
         maObj->moveRowsBlock(firstRowInSelection, numRowsInSelection, shift);
         curSeq += shift;
         startSelectingSeq = curSeq;
-        int selectionStart = firstRowInSelection + shift;
-        MaEditorSelection selection(0, selectionStart, editor->getAlignmentLen(), numRowsInSelection);
-        ui->getSequenceArea()->setSelection(selection);
+        setSelection(firstRowInSelection + shift, numRowsInSelection);
     }
 }
 
@@ -956,6 +944,7 @@ void McaEditorNameList::setSelection(int startSeq, int count) {
     localSelection = U2Region(startSeq, count);
     completeRedraw = true;
     update();
+    updateActions();
     emit si_selectionChanged();
 }
 
