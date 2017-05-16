@@ -88,16 +88,19 @@ private slots:
     void sl_setReference();
     void sl_addRead();
     void sl_removeRead();
+    void sl_referenceChanged(const QString &);
 
 private:
-    void connectSlots();
     void initSaveController();
+    void connectSlots();
+    bool fitsDefaultPattern(const QString &name) const;
 
     SaveDocumentController *saveController;
     AlignToReferenceBlastCmdlineTask::Settings settings;
     U2SavableWidget savableWidget;
 
     static QStringList lastUsedReadsUrls;
+    static const QString defaultOutputName;
 };
 
 } // namespace

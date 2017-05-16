@@ -3323,7 +3323,8 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
 //    2. Close sequence view with murine.gb.
 //    Expected state: there is the "murine.gb" document in the project view, no views are opened.
     GTUtilsMdi::click(os, GTGlobals::Close);
-    Sleep(1000);
+    GTGlobals::sleep(1000);
+
     sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 

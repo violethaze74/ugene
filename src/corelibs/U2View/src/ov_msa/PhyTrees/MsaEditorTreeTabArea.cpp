@@ -97,6 +97,7 @@ void MsaEditorTreeTab::deleteTree(int index) {
     msa->getMaObject()->removeObjectRelation(GObjectRelation(treeRef, ObjectRole_PhylogeneticTree));
 
     removeTab(index);
+    delete win;
     emit si_tabsCountChanged(count());
 }
 

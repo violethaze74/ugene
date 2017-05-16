@@ -22,17 +22,29 @@
 #include "ADVSequenceObjectContext.h"
 #include "AnnotatedDNAView.h"
 
+#include <U2Core/AnnotationTableObject.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
 ADVSequenceObjectContext::ADVSequenceObjectContext(AnnotatedDNAView* v, U2SequenceObject* obj)
     : SequenceObjectContext(obj, v),
       view(v) {
-
 }
 
 AnnotationSelection* ADVSequenceObjectContext::getAnnotationsSelection() const {
     return view->getAnnotationsSelection();
+}
+
+void ADVSequenceObjectContext::sl_onAnnotationRelationChange() {
+    AnnotationTableObject* obj = qobject_cast<AnnotationTableObject*>(sender());
+    SAFE_POINT(obj != NULL, tr("Incorrect signal sender!"), );
+
+    if (!obj->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
+        disconnect(obj, SIGNAL(si_relationChanged()), this, SLOT(sl_onAnnotationRelationChange()));
+        view->removeObject(obj);
+    }
 }
 
 } // namespace U2
