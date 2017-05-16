@@ -1438,6 +1438,35 @@ GUI_TEST_CLASS_DEFINITION(test_5562_3) {
     CHECK_SET_ERR(check, QString("files are not equal"));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5588) {
+    //1. Open File "/samples/CLUSTALW/HIV-1.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Select a 6th column with a mouse click to the consensus area
+    GTUtilsMsaEditor::clickColumn(os, 5);
+    //3. Press the Shift key
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    //4. Select a 15th column with a mouse click to the consensus area
+    GTUtilsMsaEditor::clickColumn(os, 14);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    //Expected state : All columns between 6th and 15th clicks are selected
+    QRect rect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(rect == QRect(QPoint(5, 0), QPoint(14, 24)), QString("Incorrect selected area, %1, %2, %3, %4")
+        .arg(rect.topLeft().x()).arg(rect.topLeft().y()).arg(rect.bottomRight().x()).arg(rect.bottomRight().y()));
+
+    //5. Select a 30th column with a mouse click to the consensus area
+    GTUtilsMsaEditor::clickColumn(os, 29);
+    //6. Press the Shift key
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    //7. Select a 12th column with a mouse click to the consensus area
+    GTUtilsMsaEditor::clickColumn(os, 11);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    // Expected state : All columns between 12th and 30th clicks are selected
+    rect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(rect == QRect(QPoint(11, 0), QPoint(29, 24)), QString("Incorrect selected area, %1, %2, %3, %4")
+        .arg(rect.topLeft().x()).arg(rect.topLeft().y()).arg(rect.bottomRight().x()).arg(rect.bottomRight().y()));
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
