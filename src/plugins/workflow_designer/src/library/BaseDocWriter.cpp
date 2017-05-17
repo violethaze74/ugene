@@ -234,7 +234,7 @@ void BaseDocWriter::openAdapter(IOAdapter *io, const QString &aUrl, const SaveDo
         if (!info.dir().exists()) {
             bool created = info.dir().mkpath(info.dir().absolutePath());
             if (!created) {
-                os.setError(tr("Can not create directory: %1").arg(info.dir().absolutePath()));
+                os.setError(tr("Can not create folder: %1").arg(info.dir().absolutePath()));
             }
         }
     }

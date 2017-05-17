@@ -69,7 +69,7 @@ TCoffeeSupport::TCoffeeSupport(const QString& name, const QString& path) : Exter
 }
 
 void TCoffeeSupport::sl_runWithExtFileSpecify(){
-    //Check that T-Coffee and tempory directory path defined
+    //Check that T-Coffee and tempory folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -150,7 +150,7 @@ void TCoffeeSupportContext::buildMenu(GObjectView* view, QMenu* m) {
 }
 
 void TCoffeeSupportContext::sl_align_with_TCoffee() {
-    //Check that T-Coffee and temporary directory path defined
+    //Check that T-Coffee and temporary folder path defined
     if (AppContext::getExternalToolRegistry()->getByName(ET_TCOFFEE)->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(ET_TCOFFEE);

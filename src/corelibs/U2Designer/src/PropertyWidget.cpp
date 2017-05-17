@@ -311,7 +311,7 @@ void ComboBoxWithUrlWidget::sl_browse(){
 
     QString name;
     if (isPath){
-        lod.dir = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a directory"), lastDir);
+        lod.dir = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder"), lastDir);
         if (!name.isEmpty()) {
             setValue(name);
         }

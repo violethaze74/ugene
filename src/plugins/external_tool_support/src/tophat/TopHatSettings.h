@@ -80,7 +80,7 @@ public:
     QString             bowtiePath;
     QString             samtoolsPath;
     QString             sample;
-    /** Working directory for the TopHat tool */
+    /** Working folder for the TopHat tool */
     QString             outDir;
 
     TopHatInputData     data;

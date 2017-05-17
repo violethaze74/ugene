@@ -4499,7 +4499,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new customAppSettingsFiller()));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
-//    Select some color scheme directory. Check state
+//    Select some color scheme folder. Check state
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "GUITest_common_scenarios_msa_editor_test_0060", NewColorSchemeCreator::nucl));
@@ -4520,7 +4520,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
 
             QLineEdit* colorsDirEdit = GTWidget::findExactWidget<QLineEdit*>(os, "colorsDirEdit", dialog);
             QString path = colorsDirEdit->text();
-            CHECK_SET_ERR(path.contains("_common_data/scenarios/sandbox"), "unexpected color directory: " + path);
+            CHECK_SET_ERR(path.contains("_common_data/scenarios/sandbox"), "unexpected color folder: " + path);
 
             GTGlobals::sleep(500);
 
@@ -4530,7 +4530,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new customAppSettingsFiller1()));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
-//    Select some color scheme directory. Check state
+//    Select some color scheme folder. Check state
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 }
 
@@ -4614,10 +4614,10 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
 //    Check wrong parameters:
 //    Dir to save does not exists
             GTLineEdit::setText(os, filepathEdit, sandBoxDir + "some_dir/subalignment.aln");
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Directory to save does not exist"));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Folder to save does not exist"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTGlobals::sleep(500);
-//    No permission  to write to directory
+//    No permission  to write to folder
             GTLineEdit::setText(os, filepathEdit, sandBoxDir + "read_only_dir/subalignment.aln");
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "No write permission to "));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

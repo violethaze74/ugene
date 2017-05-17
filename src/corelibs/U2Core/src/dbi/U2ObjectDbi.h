@@ -186,7 +186,7 @@ public:
         Otherwise, moves the specified objects between the specified folders, omitting duplicates.
 
         'saveFromFolder' parameter specifies whether the 'fromFolder' path has to be stored
-        for further usage. For instance, when the object is moved to the recycle bin its previous directory
+        for further usage. For instance, when the object is moved to the recycle bin its previous folder
         is needed in order to restore the object afterwards.
 
         Requires: U2DbiFeature_ChangeFolders feature support

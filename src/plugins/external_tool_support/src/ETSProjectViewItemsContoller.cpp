@@ -88,7 +88,7 @@ void ETSProjectViewItemsContoller::sl_runFormatDBOnSelection(){
     ExternalToolSupportAction* s = qobject_cast<ExternalToolSupportAction*>(sender());
     assert(s != NULL);
     assert((s->getToolNames().contains(ET_FORMATDB))||(s->getToolNames().contains(ET_MAKEBLASTDB)));
-    //Check that formatDB and temporary directory path defined
+    //Check that formatDB and temporary folder path defined
     if (AppContext::getExternalToolRegistry()->getByName(s->getToolNames().at(0))->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         if(s->getToolNames().at(0) == ET_FORMATDB){

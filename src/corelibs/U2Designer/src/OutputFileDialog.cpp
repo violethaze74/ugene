@@ -53,7 +53,7 @@ OutputFileDialog::OutputFileDialog(RunFileSystem *_rfs, bool _saveDir, Completio
 
     if (saveDir) {
         nameWidget->setVisible(false);
-        setWindowTitle(tr("Save a directory"));
+        setWindowTitle(tr("Save a folder"));
     } else {
         setWindowTitle(tr("Save a file"));
         if (NULL != filler) {

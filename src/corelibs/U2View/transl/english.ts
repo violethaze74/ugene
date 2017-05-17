@@ -236,8 +236,8 @@ Probably the data is too big.</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui" line="35"/>
-        <source>Directory to save color scheme:</source>
-        <translation>Directory to save color scheme:</translation>
+        <source>Folder to save color scheme:</source>
+        <translation>Folder to save color scheme:</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/ColorSchemaSettingsWidget.ui" line="47"/>
@@ -829,8 +829,8 @@ Probably the data is too big.</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="82"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="93"/>
@@ -1876,8 +1876,8 @@ Double-click to collapse the branch</translation>
     </message>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="576"/>
-        <source>Alignment files directory path</source>
-        <translation>Alignment files directory path</translation>
+        <source>Alignment files folder path</source>
+        <translation>Alignment files folder path</translation>
     </message>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="611"/>
@@ -3615,8 +3615,8 @@ You don&apos;t have enough rights to change file</translation>
     <name>U2::ColorSchemaSettingsPageWidget</name>
     <message>
         <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="370"/>
-        <source>Choose Directory</source>
-        <translation>Choose Directory</translation>
+        <source>Choose Folder</source>
+        <translation>Choose Folder</translation>
     </message>
 </context>
 <context>
@@ -3842,13 +3842,13 @@ You don&apos;t have enough rights to change file</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/CreateSubalignmentDialogController.cpp" line="193"/>
-        <source>Directory to save does not exist</source>
-        <translation>Directory to save does not exist</translation>
+        <source>Folder to save does not exist</source>
+        <translation>Folder to save does not exist</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/CreateSubalignmentDialogController.cpp" line="197"/>
-        <source>No write permission to &apos;%1&apos; directory</source>
-        <translation>No write permission to &apos;%1&apos; directory</translation>
+        <source>No write permission to &apos;%1&apos; folder</source>
+        <translation>No write permission to &apos;%1&apos; folder</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/CreateSubalignmentDialogController.cpp" line="201"/>
@@ -4899,8 +4899,8 @@ Please, check external tools in the settings.</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="211"/>
-        <source>Result assembly directory is not set!</source>
-        <translation>Result assembly directory is not set!</translation>
+        <source>Result assembly folder is not set!</source>
+        <translation>Result assembly folder is not set!</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="217"/>
@@ -4925,15 +4925,15 @@ Please, check external tools in the settings.</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="274"/>
-        <source>Unable to create output directory for result assembly.
-Directory Path: %1</source>
-        <translation>Unable to create output directory for result assembly.
-Directory Path: %1</translation>
+        <source>Unable to create output folder for result assembly.
+Folder Path: %1</source>
+        <translation>Unable to create output folder for result assembly.
+Folder Path: %1</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="339"/>
-        <source>Select output directory</source>
-        <translation>Select output directory</translation>
+        <source>Select output folder</source>
+        <translation>Select output folder</translation>
     </message>
 </context>
 <context>

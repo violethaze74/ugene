@@ -483,7 +483,7 @@ URLContainer * HRSchemaSerializer::parseDirectoryUrl(Tokenizer &tokenizer) {
 
         return new DirUrlContainer(path, incFilter, excFilter, recursive);
     } else {
-        throw ReadFailed(tr("Directory url definition: '%1' or '%2' are expected, '%3' is found")
+        throw ReadFailed(tr("folder url definition: '%1' or '%2' are expected, '%3' is found")
             .arg(Constants::BLOCK_START).arg(Constants::EQUALS_SIGN).arg(sign));
     }
 }

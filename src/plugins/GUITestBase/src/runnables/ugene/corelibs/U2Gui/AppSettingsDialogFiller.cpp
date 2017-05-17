@@ -62,7 +62,7 @@ QMap<AppSettingsDialogFiller::Tabs, QString> AppSettingsDialogFiller::initMap(){
         result.insert(Resourses, "  Resources");
         result.insert(Network, "  Network");
         result.insert(FileFormat, "  File Format");
-        result.insert(Directories, "  Directories");
+        result.insert(Directories, "  Folders");
         result.insert(Logging, "  Logging");
         result.insert(AlignmentColorScheme, "  Alignment Color Scheme");
         result.insert(GenomeAligner, "  Genome Aligner");

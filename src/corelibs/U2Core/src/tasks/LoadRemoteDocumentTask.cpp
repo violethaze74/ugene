@@ -93,7 +93,7 @@ void BaseLoadRemoteDocumentTask::prepare(){
     }
 
     if (!prepareDownloadDirectory(fullPath)) {
-        setError(QString("Directory %1 does not exist").arg(fullPath));
+        setError(QString("Folder %1 does not exist").arg(fullPath));
         return;
     }
 
@@ -109,7 +109,7 @@ Task::ReportResult BaseLoadRemoteDocumentTask::report()
 bool BaseLoadRemoteDocumentTask::prepareDownloadDirectory( QString &path ){
     if (!QDir(path).exists()) {
         if (path == getDefaultDownloadDirectory()) {
-            // Creating default directory if it doesn't exist
+            // Creating default folder if it doesn't exist
             if (!QDir().mkpath(path)) {
                 return false;
             }

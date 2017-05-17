@@ -103,7 +103,7 @@ FormatDBSupport::FormatDBSupport(const QString& name, const QString& path) : Ext
 }
 
 void FormatDBSupport::sl_runWithExtFileSpecify(){
-    //Check that formatDB or makeblastdb and tempory directory path defined
+    //Check that formatDB or makeblastdb and tempory folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         if(name == ET_FORMATDB){

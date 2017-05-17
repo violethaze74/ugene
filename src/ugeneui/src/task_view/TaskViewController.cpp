@@ -510,7 +510,7 @@ QAction * TVReportWindow::createOpenAction(const QString &name, const QString &u
 QAction * TVReportWindow::createDirAction(const QString &url, QObject *parent) {
     QFileInfo info(url);
     return createOpenAction(
-        tr("Open containing directory"),
+        tr("Open containing folder"),
         info.dir().absolutePath(),
         parent,
         ":ugene/images/project_open.png");

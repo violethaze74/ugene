@@ -882,7 +882,7 @@ void ProjectDialogController::keyPressEvent(QKeyEvent* event) {
 }
 
 void ProjectDialogController::sl_folderSelectClicked() {
-    QString folder = U2FileDialog::getExistingDirectory(this, tr("Choose directory"), projectFolderEdit->text());
+    QString folder = U2FileDialog::getExistingDirectory(this, tr("Choose folder"), projectFolderEdit->text());
     if (folder.isEmpty()) return;
     projectFolderEdit->setText(folder);
     updateState();

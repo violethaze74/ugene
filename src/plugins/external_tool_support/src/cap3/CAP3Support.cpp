@@ -73,7 +73,7 @@ CAP3Support::CAP3Support(const QString& name, const QString& path) : ExternalToo
 }
 
 void CAP3Support::sl_runWithExtFileSpecify(){
-    //Check that CAP3 and temporary directory path defined
+    //Check that CAP3 and temporary folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);

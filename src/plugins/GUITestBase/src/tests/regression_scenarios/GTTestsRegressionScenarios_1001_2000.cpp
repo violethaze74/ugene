@@ -695,7 +695,7 @@ GUI_TEST_CLASS_DEFINITION(test_1022) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1029) {
-//    1. Open all files from "samples/genbank/" directory in separate mode
+//    1. Open all files from "samples/genbank/" folder in separate mode
 //    2. Close all views except one
 //    3. Add other sequences to existing view using "add to view" from project context menu
 //    4. Close all opened circular views with buttons on sequence view toolbar
@@ -1205,7 +1205,7 @@ GUI_TEST_CLASS_DEFINITION(test_1065_1) {
 //        {reference sequence}		_common_data/scenarios/_regression/1065/e_coli_1000.fa
 //        {Index file name}		_tmp/e_coli_1000
 //    Click the "Start" button.
-//    Expected state: task completes successfully, there are six files in the _tmp directory:
+//    Expected state: task completes successfully, there are six files in the _tmp folder:
 //    e_coli_1000.1.ebwt
 //    e_coli_1000.2.ebwt
 //    e_coli_1000.3.ebwt
@@ -3503,9 +3503,9 @@ GUI_TEST_CLASS_DEFINITION(test_1319_1){
 //    3) Click the element.
     GTUtilsWorkflowDesigner::click(os, item);
 //    Expected state: bottom datasets panel is visible.
-//    4) Add directory as input files.
+//    4) Add folder as input files.
     GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/FASTA");
-//    Expected state: the element's doc has the blue link to this directory.
+//    Expected state: the element's doc has the blue link to this folder.
 //    6) Right click on the link.
     GTUtilsWorkflowDesigner::clickLink(os, "Read Sequence", Qt::RightButton);
 //    Expected state: a context menu not showed.
@@ -3903,9 +3903,9 @@ GUI_TEST_CLASS_DEFINITION(test_1364) {
 //    Expected: Bottom datasets panel appears.
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
 //    4. Click "Add file" button.
-//    Expected: The file dialog appears with some directory A.
+//    Expected: The file dialog appears with some folder A.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir+"samples/FASTA/human_T1.fa"));
-//    5. Choose some file from some directory B (A != B) and click "Open".
+//    5. Choose some file from some folder B (A != B) and click "Open".
     GTWidget::click(os, GTWidget::findWidget(os, "addFileButton"));
 //    6. Click "Add file" button again.
     class customFileDialog : public CustomScenario {
@@ -3921,7 +3921,7 @@ GUI_TEST_CLASS_DEFINITION(test_1364) {
             GTWidget::click(os, GTWidget::findButtonByText(os, "Cancel", dialog));
         }
     };
-//    Expected: The file dialog opens with the directory B.
+//    Expected: The file dialog opens with the folder B.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, new customFileDialog()));
     GTWidget::click(os, GTWidget::findWidget(os, "addFileButton"));
 }
@@ -5893,7 +5893,7 @@ GUI_TEST_CLASS_DEFINITION(test_1588) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Launch tuxedo pipeline with valid data
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+    map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
     map.insert("Bowtie index basename", "e_coli");
     map.insert("Bowtie version", "Bowtie1");
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
@@ -5933,9 +5933,9 @@ GUI_TEST_CLASS_DEFINITION( test_1594 ) {
 //    2. Set the input annotations file: "_common_data/bed/valid_input/Treatment_tags.bed".
     GTUtilsWorkflowDesigner::click(os, read);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bed/valid_input/Treatment_tags.bed");
-//    3. Set the correct output directory for the MACS element.
+//    3. Set the correct output folder for the MACS element.
     GTUtilsWorkflowDesigner::click(os, write);
-    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", QDir().absoluteFilePath(sandBoxDir + "test_1594"), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", QDir().absoluteFilePath(sandBoxDir + "test_1594"), GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setTableValue(os, "Treatment features", 3, GTUtilsWorkflowDesigner::comboValue,
                                            GTUtilsWorkflowDesigner::getInputPortsTable(os, 0));
     GTUtilsWorkflowDesigner::click(os, read);
@@ -6659,7 +6659,7 @@ GUI_TEST_CLASS_DEFINITION( test_1658 ){
     GTGlobals::sleep(5000);
 //    Expected state: Warning dialog appears
 
-//    7. Press "No to all" button or press "Yes" and save it in another directory
+//    7. Press "No to all" button or press "Yes" and save it in another folder
 
 //    8. Make double click on "COI.aln" item in project view
     GTUtilsProjectTreeView::doubleClickItem(os, "COI.aln");
@@ -6728,7 +6728,7 @@ GUI_TEST_CLASS_DEFINITION(test_1662){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Add sample: Multiple dataset tuxedo: Single-end
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+    map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
     map.insert("Bowtie index basename", "e_coli");
     map.insert("Bowtie version", "Bowtie1");
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
@@ -6972,7 +6972,7 @@ GUI_TEST_CLASS_DEFINITION(test_1677){
             }
 
             QMap<QString, QVariant> map;
-            map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+            map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
             map.insert("Bowtie index basename", "e_coli");
             map.insert("Bowtie version", "Bowtie1");
             map.insert("Input transcripts annotations", QDir().absoluteFilePath(testDir + "_common_data/e_coli/e_coli_1000.gff"));
@@ -7070,7 +7070,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Add sample: Multiple dataset tuxedo: Single-end
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index"));
+    map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index"));
     map.insert("Bowtie index basename", "e_coli");
     map.insert("Bowtie version", "Bowtie1");
     map.insert("Input transcripts annotations", QDir().absoluteFilePath(testDir + "_common_data/e_coli/e_coli_1000.gff"));
@@ -7133,7 +7133,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_1) {
             }
 
             QMap<QString, QVariant> map;
-            map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+            map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
             map.insert("Bowtie index basename", "e_coli");
             map.insert("Bowtie version", "Bowtie1");
             map.insert("Input transcripts annotations", QDir().absoluteFilePath(testDir + "_common_data/e_coli/e_coli_1000.gff"));
@@ -7166,7 +7166,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_2){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Add sample: Single dataset tuxedo: Single-end
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+    map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
     map.insert("Bowtie index basename", "e_coli");
     map.insert("Bowtie version", "Bowtie1");
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
@@ -7211,7 +7211,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_3) {
             }
 
             QMap<QString, QVariant> map;
-            map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+            map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
             map.insert("Bowtie index basename", "e_coli");
             map.insert("Bowtie version", "Bowtie1");
             GTUtilsWizard::setAllParameters(os, map);
@@ -7661,7 +7661,7 @@ GUI_TEST_CLASS_DEFINITION(test_1733){
     // 2) Open Workflow Designer
     // 3) Open Call Variant Pipeline scheme from the samples
     // 4) Try to specify parameters (using wizard or wd standard interface) with files
-    // (for example specify any of file from "data/samples/Genbank" directory as "Bed or position list file" on page #2 of wizard )
+    // (for example specify any of file from "data/samples/Genbank" folder as "Bed or position list file" on page #2 of wizard )
     // Expected state: UGENE doesn't ask to specify folder
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
@@ -7850,7 +7850,7 @@ GUI_TEST_CLASS_DEFINITION(test_1759){
 
 //    3. Press the "Next" button
 
-//    Expected state: the "TopHat input" groupbox contains the following fields: "Bowtie index directory",
+//    Expected state: the "TopHat input" groupbox contains the following fields: "Bowtie index folder",
 //    "Bowtie index basename", "Bowtie version".
 
 //    4. Repeat 2nd and 3rd steps for all the versions of the Tuxedo pipeline
@@ -8184,8 +8184,8 @@ GUI_TEST_CLASS_DEFINITION(test_1834) {
     //4. Set the "Document format" parameter of the "File Format Conversion" element to "mega".
     GTUtilsWorkflowDesigner::click(os, "File Format Conversion");
     GTUtilsWorkflowDesigner::setParameter(os, "Document format", "mega", GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
-    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", 0, GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
-    GTUtilsWorkflowDesigner::setParameter(os, "Custom directory", QDir().absoluteFilePath(sandBoxDir + "regression_1834"), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", 0, GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
+    GTUtilsWorkflowDesigner::setParameter(os, "Custom folder", QDir().absoluteFilePath(sandBoxDir + "regression_1834"), GTUtilsWorkflowDesigner::textValue);
 
     //5. Run the scheme.
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
@@ -8471,8 +8471,8 @@ GUI_TEST_CLASS_DEFINITION(test_1918) {
     GTUtilsWorkflowDesigner::click(os, "File Format Conversion");
     GTUtilsWorkflowDesigner::setParameter(os, "Document format", "nexus", GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
     GTUtilsWorkflowDesigner::setParameter(os, "Excluded formats", QStringList("clustal"), GTUtilsWorkflowDesigner::ComboChecks);
-    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", 0, GTUtilsWorkflowDesigner::comboValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Custom directory", QDir().absoluteFilePath(sandBoxDir + "regression_1918")
+    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", 0, GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Custom folder", QDir().absoluteFilePath(sandBoxDir + "regression_1918")
                                           , GTUtilsWorkflowDesigner::textValue);
 
     //6. Run the scheme.
@@ -8565,7 +8565,7 @@ GUI_TEST_CLASS_DEFINITION( test_1946 ){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Add tuxedo scheme from samples
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+    map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
     map.insert("Bowtie index basename", "e_coli");
     map.insert("Bowtie version", "Bowtie1");
     map.insert("Input transcripts annotations", QDir().absoluteFilePath(testDir + "_common_data/e_coli/e_coli_1000.gff"));

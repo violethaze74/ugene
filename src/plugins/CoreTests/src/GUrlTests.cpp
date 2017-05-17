@@ -84,7 +84,7 @@ Task::ReportResult GTest_CreateTmpDir::report() {
     if (!exists) {
         bool created = tmpDir.mkdir(url);
         if (!created) {
-            setError("Can not create a directory: " + url);
+            setError("Can not create a folder: " + url);
         }
     }
     return ReportResult_Finished;

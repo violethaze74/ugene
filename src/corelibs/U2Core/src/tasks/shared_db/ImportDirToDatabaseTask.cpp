@@ -33,14 +33,14 @@
 namespace U2 {
 
 ImportDirToDatabaseTask::ImportDirToDatabaseTask(const QString &srcUrl, const U2DbiRef &dstDbiRef, const QString &dstFolder, const ImportToDatabaseOptions &options) :
-    Task(tr("Import directory %1 to the database").arg(QFileInfo(srcUrl).fileName()), TaskFlag_NoRun),
+    Task(tr("Import folder %1 to the database").arg(QFileInfo(srcUrl).fileName()), TaskFlag_NoRun),
     srcUrl(srcUrl),
     dstDbiRef(dstDbiRef),
     dstFolder(dstFolder),
     options(options)
 {
     GCOUNTER(cvar, tvar, "ImportDirToDatabaseTask");
-    CHECK_EXT(QFileInfo(srcUrl).isDir(), setError(tr("It is not a directory: ") + srcUrl), );
+    CHECK_EXT(QFileInfo(srcUrl).isDir(), setError(tr("It is not a folder: ") + srcUrl), );
     CHECK_EXT(dstDbiRef.isValid(), setError(tr("Invalid database reference")), );
 
     setMaxParallelSubtasks(1);

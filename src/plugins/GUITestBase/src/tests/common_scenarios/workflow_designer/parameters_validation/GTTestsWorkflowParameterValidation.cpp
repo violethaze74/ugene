@@ -67,7 +67,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/align.aln");
 
-    // 4. Move this file somewhere from its directory
+    // 4. Move this file somewhere from its folder
     class RenameHelper {
     public:
         RenameHelper(const QString &url, HI::GUITestOpStatus &os)
@@ -102,7 +102,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
 }
 
 GUI_TEST_CLASS_DEFINITION( test_0002 ) {
-//    Workflow dataset input directory validation
+//    Workflow dataset input folder validation
 //    1. Open WD sample "Align Sequences with MUSCLE"
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
@@ -122,12 +122,12 @@ GUI_TEST_CLASS_DEFINITION( test_0002 ) {
     CHECK_SET_ERR(activeWindow, "Active window wasn't found");
     GTWidget::click(os, activeWindow);
 
-//    3. Create a new empty directory somewhere (e.g. in the "test/_tmp" directory)
+//    3. Create a new empty folder somewhere (e.g. in the "test/_tmp" folder)
     QDir outputDir(testDir + "_common_data/scenarios/sandbox/wd_pv_0002_out/1/2/3/4/");
     bool success = outputDir.mkpath(outputDir.absolutePath());
-    CHECK_SET_ERR(success, QString("Can't create a new directory: '%1'").arg(outputDir.absolutePath()));
+    CHECK_SET_ERR(success, QString("Can't create a new folder: '%1'").arg(outputDir.absolutePath()));
 
-//    4. Add that directory as input in WD
+//    4. Add that folder as input in WD
     QPoint readAlignmentCenter = GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment");
     GTMouseDriver::moveTo(readAlignmentCenter);
     GTMouseDriver::click();
@@ -135,7 +135,7 @@ GUI_TEST_CLASS_DEFINITION( test_0002 ) {
     GTGlobals::sleep(2000);
     GTWidget::click(os, activeWindow);
 
-//    5. Delete this directory
+//    5. Delete this folder
     QString s = outputDir.absolutePath();
     GTFile::removeDir(s);
     outputDir.rmpath(outputDir.absolutePath());
@@ -148,8 +148,8 @@ GUI_TEST_CLASS_DEFINITION( test_0002 ) {
     GTWidget::click(os, validateButton);
     GTGlobals::sleep(2000);
 
-//    Expected state: The "Directory not found" error has appeared in the "Error list"
-    GTUtilsWorkflowDesigner::checkErrorList(os, "Read alignment: Directory not found:");
+//    Expected state: The "folder not found" error has appeared in the "Error list"
+    GTUtilsWorkflowDesigner::checkErrorList(os, "Read alignment: folder not found:");
 }
 
 GUI_TEST_CLASS_DEFINITION( test_0003 ) {
@@ -207,7 +207,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005){
     GTLogTracer l;
     QDir d(testDir + "_common_data/scenarios/sandbox/permDir");
     bool sucsess = d.mkpath(d.absolutePath());
-    CHECK_SET_ERR(sucsess,QString("Can't create a new directory: '%1'").arg(d.absolutePath()));
+    CHECK_SET_ERR(sucsess,QString("Can't create a new folder: '%1'").arg(d.absolutePath()));
     // 1. Open WD sample "Align Sequences with MUSCLE
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
@@ -252,12 +252,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005){
     res =  dir.setPermissions(p);
     CHECK_SET_ERR(res, "Not good test");
     int i = GTUtilsWorkflowDesigner::checkErrorList(os, "Can't access output file path:");
-    CHECK_SET_ERR(i==1, "There are no error messages about write access in WD directory");
+    CHECK_SET_ERR(i==1, "There are no error messages about write access in WD folder");
 }
 
 
 GUI_TEST_CLASS_DEFINITION( test_0006 ) {
-    //Workflow worker directory parameter validation
+    //Workflow worker folder parameter validation
     //1. Create the following workflow { Read Sequence -> CD Search -> Write Sequence }
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
@@ -289,11 +289,11 @@ GUI_TEST_CLASS_DEFINITION( test_0006 ) {
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile( os, testDir + "_common_data/fasta/fa1.fa" );
 
-    //4. Create an empty directory somewhere (e.g. in the "test/_tmp" directory)
+    //4. Create an empty folder somewhere (e.g. in the "test/_tmp" folder)
     QDir newDir(testDir);
     newDir.mkdir("_empty_tmp");
 
-    //5. Set the path to this directory as the "Database directory" parameter of the "CD Search" worker
+    //5. Set the path to this folder as the "Database folder" parameter of the "CD Search" worker
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, "CD Search" ) );
     GTMouseDriver::click();
     GTMouseDriver::moveTo(GTTableView::getCellPosition( os, table, 1, 2 ) );
@@ -301,7 +301,7 @@ GUI_TEST_CLASS_DEFINITION( test_0006 ) {
     GTKeyboardDriver::keySequence(testDir + "_empty_tmp");
     GTWidget::click( os, GTUtilsMdi::activeWindow( os ) );
 
-    //6. Remove this directory
+    //6. Remove this folder
     newDir.rmdir("_empty_tmp");
 
     //7. In WD press the "Validate" button
@@ -311,7 +311,7 @@ GUI_TEST_CLASS_DEFINITION( test_0006 ) {
     GTGlobals::sleep( 200 );
 
     //Expected state: The "File not found" error has appeared in the "Error list"
-    GTUtilsWorkflowDesigner::checkErrorList( os, "Directory not found" );
+    GTUtilsWorkflowDesigner::checkErrorList( os, "Folder not found" );
 }
 
 } // namespace GUITest_common_scenarios_workflow_designer

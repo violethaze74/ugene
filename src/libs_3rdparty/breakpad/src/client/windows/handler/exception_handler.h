@@ -388,7 +388,7 @@ class Q_DECL_EXPORT ExceptionHandler{
 
   scoped_ptr<CrashGenerationClient> crash_generation_client_;
 
-  // The directory in which a minidump will be written, set by the dump_path
+  // The folder in which a minidump will be written, set by the dump_path
   // argument to the constructor, or set_dump_path.
   wstring dump_path_;
 

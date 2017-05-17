@@ -1373,23 +1373,23 @@ The session database file is removed after closing of UGENE.</source>
     <name>U2::ExternalToolSupportUtils</name>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="350"/>
-        <source>Can not remove temporary directory: path is empty.</source>
-        <translation>Невозможно удалить временную директорию: пустой путь.</translation>
+        <source>Can not remove temporary folder: path is empty.</source>
+        <translation>Невозможно удалить временную папку: пустой путь.</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="356"/>
-        <source>Can not remove files from temporary directory.</source>
-        <translation>Невозможно удалить файлы из временной директории.</translation>
+        <source>Can not remove files from temporary folder.</source>
+        <translation>Невозможно удалить файлы из временной папку.</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="361"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Невозможно удалить директорию для временных файлов.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Невозможно удалить папку для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="374"/>
-        <source>Can not create directory for temporary files: %1</source>
-        <translation>Невозможно создать директорию для временных файлов: %1</translation>
+        <source>Can not create folder for temporary files: %1</source>
+        <translation>Невозможно создать папку для временных файлов: %1</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="405"/>
@@ -1408,8 +1408,8 @@ The session database file is removed after closing of UGENE.</source>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="469"/>
-        <source>Working directory is &quot;%1&quot;</source>
-        <translation>Рабочая директория &quot;%1&quot;</translation>
+        <source>Working folder is &quot;%1&quot;</source>
+        <translation>Рабочая папка &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="478"/>
@@ -1547,18 +1547,18 @@ The session database file is removed after closing of UGENE.</source>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="290"/>
-        <source>Directory is not specified</source>
-        <translation>Директория не указана</translation>
+        <source>Folder is not specified</source>
+        <translation>Папка не указана</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="295"/>
-        <source>Directory can&apos;t be created: %1</source>
-        <translation>Невозможно создать директорию: %1</translation>
+        <source>Folder can&apos;t be created: %1</source>
+        <translation>Невозможно создать папку: %1</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="300"/>
-        <source>Directory can&apos;t be read: %1</source>
-        <translation>Файлы директории %1 невозможно открыть на чтение</translation>
+        <source>Folder can&apos;t be read: %1</source>
+        <translation>Файлы папки %1 невозможно открыть на чтение</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="342"/>
@@ -1567,13 +1567,13 @@ The session database file is removed after closing of UGENE.</source>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="345"/>
-        <source>Directory path instead of file path</source>
-        <translation>Путь до директории вместо пути до файла</translation>
+        <source>Folder path instead of file path</source>
+        <translation>Путь до папки вместо пути до файла</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="403"/>
-        <source>Can not create a directory: %1</source>
-        <translation>Невозможно создать директорию: %1</translation>
+        <source>Can not create a folder: %1</source>
+        <translation>Невозможно создать папку: %1</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="453"/>
@@ -1582,13 +1582,13 @@ The session database file is removed after closing of UGENE.</source>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="462"/>
-        <source>Can not create a directory [%1].</source>
-        <translation>Can not create a directory [%1].</translation>
+        <source>Can not create a folder [%1].</source>
+        <translation>Can not create a folder [%1].</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="467"/>
-        <source>%1 is a directory [%2].</source>
-        <translation>%1 is a directory [%2].</translation>
+        <source>%1 is a folder [%2].</source>
+        <translation>%1 is a folder [%2].</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.h" line="133"/>
@@ -1632,13 +1632,13 @@ The session database file is removed after closing of UGENE.</source>
     <name>U2::ImportDirToDatabaseTask</name>
     <message>
         <location filename="../src/tasks/shared_db/ImportDirToDatabaseTask.cpp" line="36"/>
-        <source>Import directory %1 to the database</source>
-        <translation>Импорт директории %1 в базу данных</translation>
+        <source>Import folder %1 to the database</source>
+        <translation>Импорт папки %1 в базу данных</translation>
     </message>
     <message>
         <location filename="../src/tasks/shared_db/ImportDirToDatabaseTask.cpp" line="43"/>
-        <source>It is not a directory: </source>
-        <translation>Это не является директорией: </translation>
+        <source>It is not a folder: </source>
+        <translation>Это не является папкой: </translation>
     </message>
     <message>
         <location filename="../src/tasks/shared_db/ImportDirToDatabaseTask.cpp" line="44"/>
@@ -1875,18 +1875,18 @@ The session database file is removed after closing of UGENE.</source>
     </message>
     <message>
         <location filename="../src/globals/L10n.h" line="53"/>
-        <source>Directory not found: &apos;%1&apos;</source>
-        <translation>Директория не найдена: &apos;%1&apos;</translation>
+        <source>Folder not found: &apos;%1&apos;</source>
+        <translation>Папка не найдена: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/globals/L10n.h" line="54"/>
-        <source>Error opening directory: &apos;%1&apos;</source>
-        <translation>Ошибка открытия директории: &apos;%1&apos;</translation>
+        <source>Error opening folder: &apos;%1&apos;</source>
+        <translation>Ошибка открытия папки: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/globals/L10n.h" line="55"/>
-        <source>&apos;%1&apos; is not a directory</source>
-        <translation>&apos;%1&apos; это не директория</translation>
+        <source>&apos;%1&apos; is not a folder</source>
+        <translation>&apos;%1&apos; это не папка</translation>
     </message>
     <message>
         <location filename="../src/globals/L10n.h" line="58"/>
@@ -2670,7 +2670,7 @@ UGENE содержит несохраненные изменения.</translati
     <message>
         <location filename="../src/globals/UserApplicationsSettings.cpp" line="71"/>
         <source>Cleaning temp dir: %1</source>
-        <translation>Очистка временной директории: %1</translation>
+        <translation>Очистка временной папки: %1</translation>
     </message>
 </context>
 <context>

@@ -438,7 +438,7 @@ void GTest_PDBFormatStressTest::init(XMLTestFormat *tf, const QDomElement& el) {
     QFileInfoList fileList  = dir.entryInfoList();
 
     if (fileList.empty()) {
-        stateInfo.setError(QString("Directory %1 is_empty").arg(dirName));
+        stateInfo.setError(QString("Folder %1 is_empty").arg(dirName));
         return;
     }
 
@@ -502,7 +502,7 @@ void GTest_ASNFormatStressTest::init(XMLTestFormat *tf, const QDomElement& el) {
     QFileInfoList fileList  = dir.entryInfoList();
 
     if (fileList.empty()) {
-        stateInfo.setError(QString("Directory %1 is_empty").arg(dirName));
+        stateInfo.setError(QString("Folder %1 is_empty").arg(dirName));
         return;
     }
 

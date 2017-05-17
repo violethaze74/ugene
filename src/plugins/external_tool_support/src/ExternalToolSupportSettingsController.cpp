@@ -540,7 +540,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolKitPath(){
     LastUsedDirHelper lod("toolkit path");
     QString dir;
 
-    lod.url = dir = U2FileDialog::getExistingDirectory(this, tr("Choose Directory With Executables"), lod.dir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    lod.url = dir = U2FileDialog::getExistingDirectory(this, tr("Choose Folder With Executables"), lod.dir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!dir.isEmpty()) {
         assert(treeWidget->selectedItems().isEmpty() == 0);
         QString toolKitName = treeWidget->selectedItems().first()->text(0);
@@ -595,7 +595,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
     LastUsedDirHelper lod("toolpack path");
     QString dirPath;
     bool isPathValid = false;
-    lod.url = dirPath = U2FileDialog::getExistingDirectory(this, tr("Choose Directory With External Tools Pack"), lod.dir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    lod.url = dirPath = U2FileDialog::getExistingDirectory(this, tr("Choose Folder With External Tools Pack"), lod.dir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
     if (!dirPath.isEmpty()) {
         QDir dir = QDir(dirPath);
@@ -648,7 +648,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
 
         if (!isPathValid) {
             QMessageBox::warning(this, L10N::warningTitle(),
-                                            tr("Not a valid external tools directory"),
+                                            tr("Not a valid external tools folder"),
                                             QMessageBox::Ok);
         }
         if (!toolNames.isEmpty()) {

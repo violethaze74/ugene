@@ -276,8 +276,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/CreateScriptBlockDialog.ui" line="164"/>
-        <source>Error occured while saving new actor. Can&apos;t write to current directory. Choose another directory for store user&apos;s elements</source>
-        <translation>Error occured while saving new actor. Can&apos;t write to current directory. Choose another directory for store user&apos;s elements</translation>
+        <source>Error occured while saving new actor. Can&apos;t write to current folder. Choose another folder for store user&apos;s elements</source>
+        <translation>Error occured while saving new actor. Can&apos;t write to current folder. Choose another folder for store user&apos;s elements</translation>
     </message>
     <message>
         <location filename="../src/CreateScriptBlockDialog.ui" line="182"/>
@@ -339,18 +339,18 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="80"/>
-        <source>UGENE directory</source>
-        <translation>UGENE directory</translation>
+        <source>UGENE folder</source>
+        <translation>UGENE folder</translation>
     </message>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="93"/>
-        <source>Destination directory</source>
-        <translation>Destination directory</translation>
+        <source>Destination folder</source>
+        <translation>Destination folder</translation>
     </message>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="106"/>
-        <source>Galaxy directory</source>
-        <translation>Galaxy directory</translation>
+        <source>Galaxy folder</source>
+        <translation>Galaxy folder</translation>
     </message>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="119"/>
@@ -563,8 +563,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="909"/>
-        <source>Can not create the directory: </source>
-        <translation>Can not create the directory: </translation>
+        <source>Can not create the folder: </source>
+        <translation>Can not create the folder: </translation>
     </message>
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="915"/>
@@ -677,13 +677,13 @@ p, li { white-space: pre-wrap; }
     <name>StartupDialog</name>
     <message>
         <location filename="../src/StartupDialog.ui" line="14"/>
-        <source>Choose Output Directory</source>
-        <translation>Choose Output Directory</translation>
+        <source>Choose Output Folder</source>
+        <translation>Choose Output Folder</translation>
     </message>
     <message>
         <location filename="../src/StartupDialog.ui" line="20"/>
-        <source>Output Directory</source>
-        <translation>Output Directory</translation>
+        <source>Output Folder</source>
+        <translation>Output Folder</translation>
     </message>
     <message>
         <location filename="../src/StartupDialog.ui" line="33"/>
@@ -1021,8 +1021,8 @@ You could also reset the dialog to the initial state.</translation>
     </message>
     <message>
         <location filename="../src/DashboardsManagerDialog.cpp" line="62"/>
-        <source>Directory</source>
-        <translation>Directory</translation>
+        <source>Folder</source>
+        <translation>Folder</translation>
     </message>
     <message>
         <location filename="../src/DashboardsManagerDialog.cpp" line="181"/>
@@ -1422,8 +1422,8 @@ You could also reset the dialog to the initial state.</translation>
     </message>
     <message>
         <location filename="../src/library/BaseDocWriter.cpp" line="237"/>
-        <source>Can not create directory: %1</source>
-        <translation>Can not create directory: %1</translation>
+        <source>Can not create folder: %1</source>
+        <translation>Can not create folder: %1</translation>
     </message>
     <message>
         <location filename="../src/library/BaseDocWriter.cpp" line="265"/>
@@ -1475,8 +1475,8 @@ You could also reset the dialog to the initial state.</translation>
     </message>
     <message>
         <location filename="../src/library/WriteAssemblyWorkers.cpp" line="187"/>
-        <source>Build BAM index for the target BAM file. The file .bai will be created in the same directory.</source>
-        <translation>Build BAM index for the target BAM file. The file .bai will be created in the same directory.</translation>
+        <source>Build BAM index for the target BAM file. The file .bai will be created in the same folder.</source>
+        <translation>Build BAM index for the target BAM file. The file .bai will be created in the same folder.</translation>
     </message>
 </context>
 <context>
@@ -1550,23 +1550,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="104"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="105"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="109"/>
-        <source>Custom directory</source>
-        <translation>Custom directory</translation>
+        <source>Custom folder</source>
+        <translation>Custom folder</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="110"/>
-        <source>Select the custom output directory.</source>
-        <translation>Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="112"/>
@@ -1680,13 +1680,13 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/CDSearchWorker.cpp" line="80"/>
-        <source>Database directory</source>
-        <translation>Database directory</translation>
+        <source>Database folder</source>
+        <translation>Database folder</translation>
     </message>
     <message>
         <location filename="../src/library/CDSearchWorker.cpp" line="81"/>
-        <source>Specifies database directory for local search.</source>
-        <translation>Specifies database directory for local search.</translation>
+        <source>Specifies database folder for local search.</source>
+        <translation>Specifies database folder for local search.</translation>
     </message>
     <message>
         <location filename="../src/library/CDSearchWorker.cpp" line="91"/>
@@ -1764,23 +1764,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="139"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="140"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="144"/>
-        <source>Custom directory</source>
-        <translation>Custom directory</translation>
+        <source>Custom folder</source>
+        <translation>Custom folder</translation>
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="145"/>
-        <source>Select the custom output directory.</source>
-        <translation>Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="167"/>
@@ -1804,8 +1804,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="277"/>
-        <source>Convert Format: result directory is empty, default workflow directory is used</source>
-        <translation>Convert Format: result directory is empty, default workflow directory is used</translation>
+        <source>Convert Format: result folder is empty, default workflow folder is used</source>
+        <translation>Convert Format: result folder is empty, default workflow folder is used</translation>
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="330"/>
@@ -2415,23 +2415,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="259"/>
-        <source>Output directory</source>
-        <translation type="unfinished">Output directory</translation>
+        <source>Output folder</source>
+        <translation type="unfinished">Output folder</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="260"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation type="unfinished">Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation type="unfinished">Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="264"/>
-        <source>Custom directory</source>
-        <translation type="unfinished">Custom directory</translation>
+        <source>Custom folder</source>
+        <translation type="unfinished">Custom folder</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="265"/>
-        <source>Select the custom output directory.</source>
-        <translation type="unfinished">Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation type="unfinished">Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="267"/>
@@ -2511,8 +2511,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <name>U2::LocalWorkflow::FetchSequenceByIdFromAnnotationWorker</name>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="416"/>
-        <source>Cannot create directory &apos;%1&apos;</source>
-        <translation>Cannot create directory &apos;%1&apos;</translation>
+        <source>Cannot create folder &apos;%1&apos;</source>
+        <translation>Cannot create folder &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="470"/>
@@ -2786,23 +2786,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="144"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="145"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="149"/>
-        <source>Custom directory</source>
-        <translation>Custom directory</translation>
+        <source>Custom folder</source>
+        <translation>Custom folder</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="150"/>
-        <source>Select the custom output directory.</source>
-        <translation>Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="152"/>
@@ -3134,8 +3134,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/GetFileListWorker.cpp" line="110"/>
-        <source>Produces URL(s) to files from specified directories.</source>
-        <translation>Produces URL(s) to files from specified directories.</translation>
+        <source>Produces URL(s) to files from specified folders.</source>
+        <translation>Produces URL(s) to files from specified folders.</translation>
     </message>
     <message>
         <location filename="../src/library/GetFileListWorker.cpp" line="109"/>
@@ -3464,23 +3464,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/MergeBamWorker.cpp" line="106"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/library/MergeBamWorker.cpp" line="107"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/library/MergeBamWorker.cpp" line="111"/>
-        <source>Custom directory</source>
-        <translation>Custom directory</translation>
+        <source>Custom folder</source>
+        <translation>Custom folder</translation>
     </message>
     <message>
         <location filename="../src/library/MergeBamWorker.cpp" line="112"/>
-        <source>Select the custom output directory.</source>
-        <translation>Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/library/MergeBamWorker.cpp" line="114"/>
@@ -3565,23 +3565,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="484"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="485"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="489"/>
-        <source>Custom directory</source>
-        <translation>Custom directory</translation>
+        <source>Custom folder</source>
+        <translation>Custom folder</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="490"/>
-        <source>Select the custom output directory.</source>
-        <translation>Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="492"/>
@@ -3800,20 +3800,20 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation type="vanished">Output FASTQ files</translation>
     </message>
     <message>
-        <source>Output directory</source>
-        <translation type="vanished">Output directory</translation>
+        <source>Output folder</source>
+        <translation type="vanished">Output folder</translation>
     </message>
     <message>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation type="vanished">Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation type="vanished">Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
-        <source>Custom directory</source>
-        <translation type="vanished">Custom directory</translation>
+        <source>Custom folder</source>
+        <translation type="vanished">Custom folder</translation>
     </message>
     <message>
-        <source>Select the custom output directory.</source>
-        <translation type="vanished">Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation type="vanished">Select the custom output folder.</translation>
     </message>
     <message>
         <source>Output file name</source>
@@ -4180,8 +4180,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="96"/>
-        <source>Save result to &lt;u&gt;%1&lt;/u&gt; directory.</source>
-        <translation>Save result to &lt;u&gt;%1&lt;/u&gt; directory.</translation>
+        <source>Save result to &lt;u&gt;%1&lt;/u&gt; folder.</source>
+        <translation>Save result to &lt;u&gt;%1&lt;/u&gt; folder.</translation>
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="98"/>
@@ -4190,8 +4190,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="144"/>
-        <source>Cannot create directory &apos;%1&apos;</source>
-        <translation>Cannot create directory &apos;%1&apos;</translation>
+        <source>Cannot create folder &apos;%1&apos;</source>
+        <translation>Cannot create folder &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="176"/>
@@ -4257,14 +4257,14 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="342"/>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="554"/>
-        <source>Save file to directory</source>
-        <translation>Save file to directory</translation>
+        <source>Save file to folder</source>
+        <translation>Save file to folder</translation>
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="343"/>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="555"/>
-        <source>The directory to store sequence files loaded from a database.</source>
-        <translation>The directory to store sequence files loaded from a database.</translation>
+        <source>The folder to store sequence files loaded from a database.</source>
+        <translation>The folder to store sequence files loaded from a database.</translation>
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="559"/>
@@ -4415,23 +4415,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="108"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="109"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="113"/>
-        <source>Custom directory</source>
-        <translation>Custom directory</translation>
+        <source>Custom folder</source>
+        <translation>Custom folder</translation>
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="114"/>
-        <source>Select the custom output directory.</source>
-        <translation>Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="116"/>
@@ -4498,8 +4498,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="305"/>
-        <source>Directory does not exist: </source>
-        <translation>Directory does not exist: </translation>
+        <source>Folder does not exist: </source>
+        <translation>Folder does not exist: </translation>
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="339"/>
@@ -4526,8 +4526,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/SortBamWorker.cpp" line="274"/>
-        <source>Directory does not exist: </source>
-        <translation>Directory does not exist: </translation>
+        <source>Folder does not exist: </source>
+        <translation>Folder does not exist: </translation>
     </message>
 </context>
 <context>
@@ -4544,8 +4544,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="383"/>
-        <source>Directory does not exist: </source>
-        <translation>Directory does not exist: </translation>
+        <source>Folder does not exist: </source>
+        <translation>Folder does not exist: </translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="420"/>
@@ -4948,23 +4948,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/SortBamWorker.cpp" line="106"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/library/SortBamWorker.cpp" line="107"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/library/SortBamWorker.cpp" line="111"/>
-        <source>Custom directory</source>
-        <translation>Custom directory</translation>
+        <source>Custom folder</source>
+        <translation>Custom folder</translation>
     </message>
     <message>
         <location filename="../src/library/SortBamWorker.cpp" line="112"/>
-        <source>Select the custom output directory.</source>
-        <translation>Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/library/SortBamWorker.cpp" line="114"/>
@@ -5479,8 +5479,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <name>U2::StartupDialog</name>
     <message>
         <location filename="../src/StartupDialog.cpp" line="65"/>
-        <source>You have no write access to the directory. Please choose another one.</source>
-        <translation>You have no write access to the directory. Please choose another one.</translation>
+        <source>You have no write access to the folder. Please choose another one.</source>
+        <translation>You have no write access to the folder. Please choose another one.</translation>
     </message>
 </context>
 <context>
@@ -5639,18 +5639,18 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <name>U2::Workflow::GalaxyConfigConfigurationDialogImpl</name>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialogImpl.cpp" line="51"/>
-        <source>Set UGENE directory</source>
-        <translation>Set UGENE directory</translation>
+        <source>Set UGENE folder</source>
+        <translation>Set UGENE folder</translation>
     </message>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialogImpl.cpp" line="58"/>
-        <source>Set Galaxy directory</source>
-        <translation>Set Galaxy directory</translation>
+        <source>Set Galaxy folder</source>
+        <translation>Set Galaxy folder</translation>
     </message>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialogImpl.cpp" line="65"/>
-        <source>Set destination directory</source>
-        <translation>Set destination directory</translation>
+        <source>Set destination folder</source>
+        <translation>Set destination folder</translation>
     </message>
 </context>
 <context>
@@ -6799,23 +6799,23 @@ Do you want to save changes?</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="124"/>
-        <source>Use directory for output files</source>
-        <translation>Use directory for output files</translation>
+        <source>Use folder for output files</source>
+        <translation>Use folder for output files</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="145"/>
-        <source>Directory for custom elements with scripts</source>
-        <translation>Directory for custom elements with scripts</translation>
+        <source>Folder for custom elements with scripts</source>
+        <translation>Folder for custom elements with scripts</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="166"/>
-        <source>Directory for custom elements with command line tools</source>
-        <translation>Directory for custom elements with command line tools</translation>
+        <source>Folder for custom elements with command line tools</source>
+        <translation>Folder for custom elements with command line tools</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="187"/>
-        <source>Directory for included schema elements</source>
-        <translation>Directory for included schema elements</translation>
+        <source>Folder for included schema elements</source>
+        <translation>Folder for included schema elements</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="33"/>
@@ -6839,8 +6839,8 @@ Do you want to save changes?</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="118"/>
-        <source>Directories</source>
-        <translation>Directories</translation>
+        <source>Folders</source>
+        <translation>Folders</translation>
     </message>
 </context>
 <context>

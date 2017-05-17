@@ -208,7 +208,7 @@ void GenomeAssemblyDialog::accept() {
 
     if (resultDirNameEdit->text().isEmpty() ) {
         QMessageBox::information(this, tr("Genome Assembly"),
-            tr("Result assembly directory is not set!") );
+            tr("Result assembly folder is not set!") );
         validated = false;
     } else {
         if(GenomeAssemblyUtils::hasRightReads(libraryComboBox->currentText())){
@@ -271,7 +271,7 @@ void GenomeAssemblyDialog::accept() {
             if (!d.exists()) {
                 if (!d.mkdir(outputDirUrl)) {
                     QMessageBox::information(this, tr("Genome Assembly"),
-                        tr("Unable to create output directory for result assembly.\r\nDirectory Path: %1").arg(outputDirUrl));
+                        tr("Unable to create output folder for result assembly.\r\nDirectory Path: %1").arg(outputDirUrl));
                 }
             }
             QDialog::accept();
@@ -336,7 +336,7 @@ void GenomeAssemblyDialog::sl_onRemoveShortReadsButtonClicked() {
 void GenomeAssemblyDialog::sl_onOutDirButtonClicked(){
     LastUsedDirHelper lod("assemblyRes");
 
-    lod.url = U2FileDialog::getExistingDirectory(this, tr("Select output directory"), lod.dir);
+    lod.url = U2FileDialog::getExistingDirectory(this, tr("Select output folder"), lod.dir);
     if (lod.url.isEmpty()) {
         return;
     }

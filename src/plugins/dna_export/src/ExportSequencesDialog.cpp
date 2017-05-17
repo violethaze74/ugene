@@ -208,7 +208,7 @@ void ExportSequencesDialog::updateModel() {
     file = saveController->getSaveFileName();
     QFileInfo fi(file);
     if( fi.isRelative() ) {
-        // save it in root sequence directory
+        // save it in root sequence folder
         file = QFileInfo(defaultFileName).absoluteDir().absolutePath() + "/" + file;
     }
     sequenceName = ( customSeqNameBox->isChecked( ) ) ? sequenceNameEdit->text( ) : QString( );

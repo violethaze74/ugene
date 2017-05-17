@@ -60,7 +60,7 @@ extern const qint32 STRING_HAS_NO_KEY_MESSAGE;
 const quint8 COUNT_OF_TEMPLATE_BUTTONS_IN_ROW = 2;
 const char * RUN_BUTTON_ANNOT_RESULT_LABEL = "Search";
 const char * RUN_BUTTON_MA_RESULT_LABEL = "Align";
-const char * RESULT_DIR_NOT_FOUND_MESSAGE = "Directory you have chosen for alignment files does not exist";
+const char * RESULT_DIR_NOT_FOUND_MESSAGE = "Folder you have chosen for alignment files does not exist";
 const QString DEFAULT_PATTERN_SEQUENCE_NAME = "P";
 const QChar DEFAULT_SHORTHANDS_SEPARATOR = '_';
 

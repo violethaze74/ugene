@@ -281,8 +281,8 @@ int BaseShortReadsAlignerWorkerFactory::getThreadsCount(){
 void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates) {
     {
         Descriptor outDir(OUTPUT_DIR,
-            BaseShortReadsAlignerWorker::tr("Output directory"),
-            BaseShortReadsAlignerWorker::tr("Directory to save output files."));
+            BaseShortReadsAlignerWorker::tr("Output folder"),
+            BaseShortReadsAlignerWorker::tr("Folder to save output files."));
 
         Descriptor refGenome(REFERENCE_GENOME,
             BaseShortReadsAlignerWorker::tr("Reference genome"),

@@ -72,7 +72,7 @@ void BedGraphToBigWigTask::prepare(){
 
     const QDir outDir = QFileInfo(settings.outDir).absoluteDir();
     if (!outDir.exists()) {
-        setError("Directory does not exist: " + outDir.absolutePath());
+        setError("Folder does not exist: " + outDir.absolutePath());
         return ;
     }
 

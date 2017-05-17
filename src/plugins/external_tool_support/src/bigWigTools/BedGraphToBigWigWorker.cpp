@@ -117,13 +117,13 @@ void BedGraphToBigWigFactory::init() {
     QList<Attribute*> a;
     {
 
-        Descriptor outDir(BedGraphToBigWigWorker::OUT_MODE_ID, BedGraphToBigWigWorker::tr("Output directory"),
-            BedGraphToBigWigWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(BedGraphToBigWigWorker::OUT_MODE_ID, BedGraphToBigWigWorker::tr("Output folder"),
+            BedGraphToBigWigWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(BedGraphToBigWigWorker::CUSTOM_DIR_ID, BedGraphToBigWigWorker::tr("Custom directory"),
-            BedGraphToBigWigWorker::tr("Select the custom output directory."));
+        Descriptor customDir(BedGraphToBigWigWorker::CUSTOM_DIR_ID, BedGraphToBigWigWorker::tr("Custom folder"),
+            BedGraphToBigWigWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BedGraphToBigWigWorker::OUT_NAME_ID, BedGraphToBigWigWorker::tr("Output name"),
             BedGraphToBigWigWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first BAM file with an extention."));

@@ -226,8 +226,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/CreateScriptBlockDialog.ui" line="164"/>
-        <source>Error occured while saving new actor. Can&apos;t write to current directory. Choose another directory for store user&apos;s elements</source>
-        <translation>Произошла ошибка во время сохранения нового актера. Невозможно записать в текущем каталоге. Выберите другой каталог</translation>
+        <source>Error occured while saving new actor. Can&apos;t write to current folder. Choose another folder for store user&apos;s elements</source>
+        <translation>Произошла ошибка во время сохранения нового актера. Невозможно записать в текущей папке. Выберите другую папку</translation>
     </message>
     <message>
         <location filename="../src/CreateScriptBlockDialog.ui" line="182"/>
@@ -289,18 +289,18 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="80"/>
-        <source>UGENE directory</source>
-        <translation>Каталог UGENE</translation>
+        <source>UGENE folder</source>
+        <translation>Папка UGENE</translation>
     </message>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="93"/>
-        <source>Destination directory</source>
-        <translation>Расположение каталога</translation>
+        <source>Destination folder</source>
+        <translation>Расположение папки</translation>
     </message>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="106"/>
-        <source>Galaxy directory</source>
-        <translation>Каталог Galaxy</translation>
+        <source>Galaxy folder</source>
+        <translation>Папка Galaxy</translation>
     </message>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="119"/>
@@ -513,8 +513,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="909"/>
-        <source>Can not create the directory: </source>
-        <translation>Невозможно создать директорию:</translation>
+        <source>Can not create the folder: </source>
+        <translation>Невозможно создать папку:</translation>
     </message>
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="915"/>
@@ -627,13 +627,13 @@ p, li { white-space: pre-wrap; }
     <name>StartupDialog</name>
     <message>
         <location filename="../src/StartupDialog.ui" line="14"/>
-        <source>Choose Output Directory</source>
-        <translation>Выбор директории для сохранения выходных данных</translation>
+        <source>Choose Output Folder</source>
+        <translation>Выбор папки для сохранения выходных данных</translation>
     </message>
     <message>
         <location filename="../src/StartupDialog.ui" line="20"/>
-        <source>Output Directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output Folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/StartupDialog.ui" line="33"/>
@@ -971,8 +971,8 @@ You could also reset the dialog to the initial state.</source>
     </message>
     <message>
         <location filename="../src/DashboardsManagerDialog.cpp" line="62"/>
-        <source>Directory</source>
-        <translation>Директория</translation>
+        <source>Folder</source>
+        <translation>Папка</translation>
     </message>
     <message>
         <location filename="../src/DashboardsManagerDialog.cpp" line="181"/>
@@ -1372,8 +1372,8 @@ You could also reset the dialog to the initial state.</source>
     </message>
     <message>
         <location filename="../src/library/BaseDocWriter.cpp" line="237"/>
-        <source>Can not create directory: %1</source>
-        <translation>Невозможно создать директорию: %1</translation>
+        <source>Can not create folder: %1</source>
+        <translation>Невозможно создать папку: %1</translation>
     </message>
     <message>
         <location filename="../src/library/BaseDocWriter.cpp" line="265"/>
@@ -1425,8 +1425,8 @@ You could also reset the dialog to the initial state.</source>
     </message>
     <message>
         <location filename="../src/library/WriteAssemblyWorkers.cpp" line="187"/>
-        <source>Build BAM index for the target BAM file. The file .bai will be created in the same directory.</source>
-        <translation>построение индекса для BAM-файла. Файл с расширением .bai будет создан в той же директории.</translation>
+        <source>Build BAM index for the target BAM file. The file .bai will be created in the same folder.</source>
+        <translation>построение индекса для BAM-файла. Файл с расширением .bai будет создан в той же папке.</translation>
     </message>
 </context>
 <context>
@@ -1500,23 +1500,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="104"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="105"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="109"/>
-        <source>Custom directory</source>
-        <translation>Частная директория</translation>
+        <source>Custom folder</source>
+        <translation>Частная папка</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="110"/>
-        <source>Select the custom output directory.</source>
-        <translation>Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="112"/>
@@ -1626,13 +1626,13 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/CDSearchWorker.cpp" line="80"/>
-        <source>Database directory</source>
-        <translation>Директория базы данных</translation>
+        <source>Database folder</source>
+        <translation>Папка базы данных</translation>
     </message>
     <message>
         <location filename="../src/library/CDSearchWorker.cpp" line="81"/>
-        <source>Specifies database directory for local search.</source>
-        <translation>Устанавливает директорию базы данных для локального поиска.</translation>
+        <source>Specifies database folder for local search.</source>
+        <translation>Устанавливает папку базы данных для локального поиска.</translation>
     </message>
     <message>
         <location filename="../src/library/CDSearchWorker.cpp" line="91"/>
@@ -1710,23 +1710,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="139"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="140"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="144"/>
-        <source>Custom directory</source>
-        <translation>Частная директория</translation>
+        <source>Custom folder</source>
+        <translation>Частная папка</translation>
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="145"/>
-        <source>Select the custom output directory.</source>
-        <translation>Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="167"/>
@@ -1750,8 +1750,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="277"/>
-        <source>Convert Format: result directory is empty, default workflow directory is used</source>
-        <translation>Convert Format: result directory is empty, default workflow directory is used</translation>
+        <source>Convert Format: result folder is empty, default workflow folder is used</source>
+        <translation>Convert Format: result folder is empty, default workflow folder is used</translation>
     </message>
     <message>
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="330"/>
@@ -2219,23 +2219,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="259"/>
-        <source>Output directory</source>
-        <translation type="unfinished">Выходная директория</translation>
+        <source>Output folder</source>
+        <translation type="unfinished">Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="260"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation type="unfinished">выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation type="unfinished">выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="264"/>
-        <source>Custom directory</source>
-        <translation type="unfinished">Частная директория</translation>
+        <source>Custom folder</source>
+        <translation type="unfinished">Частная папка</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="265"/>
-        <source>Select the custom output directory.</source>
-        <translation type="unfinished">Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation type="unfinished">Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="267"/>
@@ -2315,8 +2315,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <name>U2::LocalWorkflow::FetchSequenceByIdFromAnnotationWorker</name>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="416"/>
-        <source>Cannot create directory &apos;%1&apos;</source>
-        <translation>Не удается создать директорию &apos;%1&apos;</translation>
+        <source>Cannot create folder &apos;%1&apos;</source>
+        <translation>Не удается создать папку &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="470"/>
@@ -2590,23 +2590,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="144"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="145"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="149"/>
-        <source>Custom directory</source>
-        <translation>Частная директория</translation>
+        <source>Custom folder</source>
+        <translation>Частная папка</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="150"/>
-        <source>Select the custom output directory.</source>
-        <translation>Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="152"/>
@@ -2938,8 +2938,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/GetFileListWorker.cpp" line="110"/>
-        <source>Produces URL(s) to files from specified directories.</source>
-        <translation>этот элемент производит пути до файлов из указанных директорий.</translation>
+        <source>Produces URL(s) to files from specified folders.</source>
+        <translation>этот элемент производит пути до файлов из указанных папок.</translation>
     </message>
     <message>
         <location filename="../src/library/GetFileListWorker.cpp" line="109"/>
@@ -3268,23 +3268,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/MergeBamWorker.cpp" line="106"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/library/MergeBamWorker.cpp" line="107"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/library/MergeBamWorker.cpp" line="111"/>
-        <source>Custom directory</source>
-        <translation>Частная директория</translation>
+        <source>Custom folder</source>
+        <translation>Частная папка</translation>
     </message>
     <message>
         <location filename="../src/library/MergeBamWorker.cpp" line="112"/>
-        <source>Select the custom output directory.</source>
-        <translation>Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/library/MergeBamWorker.cpp" line="114"/>
@@ -3369,23 +3369,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="484"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="485"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="489"/>
-        <source>Custom directory</source>
-        <translation>Частная директория</translation>
+        <source>Custom folder</source>
+        <translation>Частная папка</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="490"/>
-        <source>Select the custom output directory.</source>
-        <translation>Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/library/FASTQWorkersLibrary.cpp" line="492"/>
@@ -3604,20 +3604,20 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation type="vanished">Выхордные FASTQ файлы</translation>
     </message>
     <message>
-        <source>Output directory</source>
-        <translation type="vanished">Выходная директория</translation>
+        <source>Output folder</source>
+        <translation type="vanished">Выходная папка</translation>
     </message>
     <message>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation type="vanished">выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation type="vanished">выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
-        <source>Custom directory</source>
-        <translation type="vanished">Частная директория</translation>
+        <source>Custom folder</source>
+        <translation type="vanished">Частная папка</translation>
     </message>
     <message>
-        <source>Select the custom output directory.</source>
-        <translation type="vanished">Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation type="vanished">Укажите частную выходную папку.</translation>
     </message>
     <message>
         <source>Output file name</source>
@@ -3968,8 +3968,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="96"/>
-        <source>Save result to &lt;u&gt;%1&lt;/u&gt; directory.</source>
-        <translation>Сохранить результат в директорию &lt;u&gt;%1&lt;/u&gt;.</translation>
+        <source>Save result to &lt;u&gt;%1&lt;/u&gt; folder.</source>
+        <translation>Сохранить результат в папку &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="98"/>
@@ -3978,8 +3978,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="144"/>
-        <source>Cannot create directory &apos;%1&apos;</source>
-        <translation>Не удается создать директорию &apos;%1&apos;</translation>
+        <source>Cannot create folder &apos;%1&apos;</source>
+        <translation>Не удается создать папку &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="176"/>
@@ -4046,14 +4046,14 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="342"/>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="554"/>
-        <source>Save file to directory</source>
-        <translation>Сохранить в директорию</translation>
+        <source>Save file to folder</source>
+        <translation>Сохранить в папку</translation>
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="343"/>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="555"/>
-        <source>The directory to store sequence files loaded from a database.</source>
-        <translation>Директория, в которую будут сохранены файлы, загруженные из базы данных.</translation>
+        <source>The folder to store sequence files loaded from a database.</source>
+        <translation>Папка, в которую будут сохранены файлы, загруженные из базы данных.</translation>
     </message>
     <message>
         <location filename="../src/library/RemoteDBFetcherWorker.cpp" line="559"/>
@@ -4204,23 +4204,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="108"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="109"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="113"/>
-        <source>Custom directory</source>
-        <translation>Частная директория</translation>
+        <source>Custom folder</source>
+        <translation>Частная папка</translation>
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="114"/>
-        <source>Select the custom output directory.</source>
-        <translation>Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="116"/>
@@ -4287,8 +4287,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="305"/>
-        <source>Directory does not exist: </source>
-        <translation>Directory does not exist: </translation>
+        <source>Folder does not exist: </source>
+        <translation>Folder does not exist: </translation>
     </message>
     <message>
         <location filename="../src/library/RmdupBamWorker.cpp" line="339"/>
@@ -4315,8 +4315,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/SortBamWorker.cpp" line="274"/>
-        <source>Directory does not exist: </source>
-        <translation>Directory does not exist: </translation>
+        <source>Folder does not exist: </source>
+        <translation>Folder does not exist: </translation>
     </message>
 </context>
 <context>
@@ -4333,8 +4333,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="383"/>
-        <source>Directory does not exist: </source>
-        <translation>Directory does not exist: </translation>
+        <source>Folder does not exist: </source>
+        <translation>Folder does not exist: </translation>
     </message>
     <message>
         <location filename="../src/library/FilterBamWorker.cpp" line="420"/>
@@ -4737,23 +4737,23 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/SortBamWorker.cpp" line="106"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/library/SortBamWorker.cpp" line="107"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/library/SortBamWorker.cpp" line="111"/>
-        <source>Custom directory</source>
-        <translation>Частная директория</translation>
+        <source>Custom folder</source>
+        <translation>Частная папка</translation>
     </message>
     <message>
         <location filename="../src/library/SortBamWorker.cpp" line="112"/>
-        <source>Select the custom output directory.</source>
-        <translation>Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/library/SortBamWorker.cpp" line="114"/>
@@ -5268,8 +5268,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <name>U2::StartupDialog</name>
     <message>
         <location filename="../src/StartupDialog.cpp" line="65"/>
-        <source>You have no write access to the directory. Please choose another one.</source>
-        <translation>Вы не имеете прав на запись в директорию. Выберите другую директорию.</translation>
+        <source>You have no write access to the folder. Please choose another one.</source>
+        <translation>Вы не имеете прав на запись в папку. Выберите другую папку.</translation>
     </message>
 </context>
 <context>
@@ -5429,18 +5429,18 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <name>U2::Workflow::GalaxyConfigConfigurationDialogImpl</name>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialogImpl.cpp" line="51"/>
-        <source>Set UGENE directory</source>
-        <translation>Установить директорию UGENE</translation>
+        <source>Set UGENE folder</source>
+        <translation>Установить папку UGENE</translation>
     </message>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialogImpl.cpp" line="58"/>
-        <source>Set Galaxy directory</source>
-        <translation>Установить директорию Galaxy</translation>
+        <source>Set Galaxy folder</source>
+        <translation>Установить папку Galaxy</translation>
     </message>
     <message>
         <location filename="../src/GalaxyConfigConfigurationDialogImpl.cpp" line="65"/>
-        <source>Set destination directory</source>
-        <translation>Установить директорию назначения</translation>
+        <source>Set destination folder</source>
+        <translation>Установить папку назначения</translation>
     </message>
 </context>
 <context>
@@ -6580,23 +6580,23 @@ Do you want to save changes?</source>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="124"/>
-        <source>Use directory for output files</source>
-        <translation>Использовать директорию для выходных файлов</translation>
+        <source>Use folder for output files</source>
+        <translation>Использовать папку для выходных файлов</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="145"/>
-        <source>Directory for custom elements with scripts</source>
-        <translation>Директория для элементов пользователя со скриптами</translation>
+        <source>Folder for custom elements with scripts</source>
+        <translation>Папка для элементов пользователя со скриптами</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="166"/>
-        <source>Directory for custom elements with command line tools</source>
-        <translation>Директория для элементов пользователя с внешними утилитами</translation>
+        <source>Folder for custom elements with command line tools</source>
+        <translation>Папка для элементов пользователя с внешними утилитами</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="187"/>
-        <source>Directory for included schema elements</source>
-        <translation>Директория для включенных элементов схемы</translation>
+        <source>Folder for included schema elements</source>
+        <translation>Папка для включенных элементов схемы</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="26"/>
@@ -6610,8 +6610,8 @@ Do you want to save changes?</source>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="118"/>
-        <source>Directories</source>
-        <translation>Директории</translation>
+        <source>Folders</source>
+        <translation>Папки</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="33"/>

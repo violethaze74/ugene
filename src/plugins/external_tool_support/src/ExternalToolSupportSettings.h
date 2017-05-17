@@ -58,7 +58,7 @@ private:
     static int prevNumberExternalTools;
 };
 
-/**Helper class that iterates through subdirectories up to given deep level*/
+/**Helper class that iterates through subfolders up to given deep level*/
 class LimitedDirIterator{
 public:
     //deepLevel = 0 - returns only the root dir

@@ -74,7 +74,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 //    2. Fill the dialog:
 //        Resource ID: NC_017775
 //        Database: NCBI GenBank (DNA sequence)
-//        Save to directory: any valid path
+//        Save to folder: any valid path
 //        Force download the appropriate sequence: unchecked
 //    and accept it.
 //    Expected state: after the downloading task finish a new document appears in the project, it contains an annotation table only.
@@ -104,7 +104,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 //    2. Fill the dialog:
 //        Resource ID: NC_017775
 //        Database: NCBI GenBank (DNA sequence)
-//        Save to directory: any valid path
+//        Save to folder: any valid path
 //        Force download the appropriate sequence: checked
 //    and accept it.
 //    Expected state: after the downloading task finish a new document appears in the project, it contains both a sequence and an annotation table.
@@ -133,7 +133,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 //    2. Fill the dialog:
 //        Resource ID: NC_017775
 //        Database: NCBI protein sequence database
-//        Save to directory: any valid path
+//        Save to folder: any valid path
 //        Force download the appropriate sequence: unchecked
 //    and accept it.
 //    Expected state: after the downloading task finish a new document appears in the project, it contains an annotation table only.
@@ -163,7 +163,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 //    2. Fill the dialog:
 //        Resource ID: NC_017775
 //        Database: NCBI protein sequence database
-//        Save to directory: any valid path
+//        Save to folder: any valid path
 //        Force download the appropriate sequence: checked
 //    and accept it.
 //    Expected state: after the downloading task finish a new document appears in the project, it contains both a sequence and an annotation table.
@@ -299,7 +299,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 //        Read resource ID(s) from source: required, "List of IDs";
 //        Resource ID(s): required, visible;
 //        File with resource IDs: invisible;
-//        Save file to directory: required.
+//        Save file to folder: required.
 
 //    2. Set parameter "Read resource ID(s) from source" to "File with IDs".
 //    Expected state:
@@ -317,7 +317,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterRequired(os, "Database"), "The 'Database' parameter is not required unexpectedly");
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterRequired(os, "Read resource ID(s) from source"), "The 'Read resource ID(s) from source' parameter is not required unexpectedly");
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterRequired(os, "Resource ID(s)"), "The 'Resource ID(s)' parameter is not required unexpectedly");
-    CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterRequired(os, "Save file to directory"), "The 'Save file to directory' parameter is not required unexpectedly");
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterRequired(os, "Save file to folder"), "The 'Save file to folder' parameter is not required unexpectedly");
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterVisible(os, "Resource ID(s)"), "The 'Resource ID(s)' parameter is not visible unexpectedly");
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isParameterVisible(os, "File with resource IDs"), "The 'File with resource IDs' parameter is visible unexpectedly");
 

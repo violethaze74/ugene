@@ -113,13 +113,13 @@ void CutAdaptFastqWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, CutAdaptFastqWorker::tr("Output directory"),
-            CutAdaptFastqWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, CutAdaptFastqWorker::tr("Output folder"),
+            CutAdaptFastqWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, CutAdaptFastqWorker::tr("Custom directory"),
-            CutAdaptFastqWorker::tr("Select the custom output directory."));
+        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, CutAdaptFastqWorker::tr("Custom folder"),
+            CutAdaptFastqWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, CutAdaptFastqWorker::tr("Output file name"),
             CutAdaptFastqWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));

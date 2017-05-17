@@ -159,7 +159,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003){
     GTWidget::click(os,GTAction::button(os,"Run workflow"));
 
     GTGlobals::sleep();
-//    2. If you don't want result file (T1.gb) in UGENE run directory, change this property in write genbank worker.Run schema.
+//    2. If you don't want result file (T1.gb) in UGENE run folder, change this property in write genbank worker.Run schema.
 //    Expected state: T1.gb file is saved to your disc
     GTFileDialog::openFile(os,testDir + "_common_data/scenarios/sandbox/","T1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -422,9 +422,9 @@ GUI_TEST_CLASS_DEFINITION(test_0017){
     //1. Open Workflow Designer
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Workflow Designer...");
 
-    //2. Write the path to the directory which does not exist(in the StartupDialogFiller).
+    //2. Write the path to the folder which does not exist(in the StartupDialogFiller).
     //3. Click OK(in the StartupDialogFiller).
-    CHECK_SET_ERR(!l.hasError(), "There are error messages about write access in WD directory");
+    CHECK_SET_ERR(!l.hasError(), "There are error messages about write access in WD folder");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0058){

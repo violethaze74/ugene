@@ -104,7 +104,7 @@ void TestFramework::setTRHelpSections() {
 
     CMDLineHelpProvider *testReport = new CMDLineHelpProvider(
         CMDLineCoreOptions::TEST_REPORT,
-        GTestFormatRegistry::tr("Sets the directory for the test report."),
+        GTestFormatRegistry::tr("Sets the folder for the test report."),
         "", // No full description
         "<path_to_dir>");
 

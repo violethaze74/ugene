@@ -267,7 +267,7 @@ void TestViewController::addTestSuite(GTestSuite* ts) {
         excludedSorted.insert(dynamic_cast<GTestRef*>(iter.key())->getShortName(), dynamic_cast<GTestRef*>(iter.key()) );
     }
     foreach(GTestRef* t, excludedSorted.values()) {
-        QString firstDirName=t->getShortName().section('/', 0 , 0 );//find first directory name
+        QString firstDirName=t->getShortName().section('/', 0 , 0 );//find first folder name
         if(t->getShortName()==firstDirName){
             addTest(tsi, t, ts->getExcludedTests().value(t));
         } else {
@@ -284,7 +284,7 @@ void TestViewController::addTestSuite(GTestSuite* ts) {
     }
     //add to tree Tests to run
     foreach(GTestRef* t, ts->getTests()) {
-        QString firstDirName=t->getShortName().section('/', 0 , 0 );//find first directory name
+        QString firstDirName=t->getShortName().section('/', 0 , 0 );//find first folder name
         if (t->getShortName()==firstDirName){
             addTest(tsi, t,"");
         } else {

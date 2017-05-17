@@ -229,7 +229,7 @@ void SetLogFile()
 	strcpy(g_strListFileName, strFileName);
 	}
 
-// Get filename, stripping any extension and directory parts.
+// Get filename, stripping any extension and folder parts.
 void NameFromPath(const char szPath[], char szName[], unsigned uBytes)
 	{
 	if (0 == uBytes)

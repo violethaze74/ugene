@@ -157,7 +157,7 @@ static void setDataSearchPaths() {
     QStringList dataSearchPaths;
     const static char * RELATIVE_DATA_DIR = "/data";
     const static char * RELATIVE_DEV_DATA_DIR = "/../../data";
-    //on windows data is normally located in the application directory
+    //on windows data is normally located in the application folder
     QString appDirPath = AppContext::getWorkingDirectoryPath();
 
     if( QDir(appDirPath+RELATIVE_DATA_DIR).exists() ) {
@@ -168,7 +168,7 @@ static void setDataSearchPaths() {
     }
 
 #if (defined(Q_OS_UNIX)) && defined( UGENE_DATA_DIR )
-    //using directory which is set during installation process on linux
+    //using folder which is set during installation process on linux
     QString ugene_data_dir( UGENE_DATA_DIR );
     if( QDir(ugene_data_dir).exists() ) {
         dataSearchPaths.push_back( QString(UGENE_DATA_DIR) );

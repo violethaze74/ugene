@@ -184,7 +184,7 @@ void URLLineEdit::browse(bool addFiles) {
     if(isPath || multi){
         QStringList lst;
         if (isPath) {
-            QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a directory"), lastDir);
+            QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder"), lastDir);
             lst << dir;
         } else {
             lst = U2FileDialog::getOpenFileNames(NULL, tr("Select file(s)"), lastDir, FileFilter);

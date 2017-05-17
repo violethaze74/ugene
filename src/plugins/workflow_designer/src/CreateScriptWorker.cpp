@@ -596,7 +596,7 @@ void CreateScriptElementDialog::changeDirectoryForActors() {
 
         QDir dir(url);
         if(!dir.exists()) {
-            //coreLog.info(tr("There isn't directory with users workflow elements"));
+            //coreLog.info(tr("There isn't folder with users workflow elements"));
             return;
         }
         dir.setNameFilters(QStringList() << "*.usa");

@@ -105,13 +105,13 @@ void RmdupBamWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor outDir(OUT_MODE_ID, RmdupBamWorker::tr("Output directory"),
-            RmdupBamWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(OUT_MODE_ID, RmdupBamWorker::tr("Output folder"),
+            RmdupBamWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(CUSTOM_DIR_ID, RmdupBamWorker::tr("Custom directory"),
-            RmdupBamWorker::tr("Select the custom output directory."));
+        Descriptor customDir(CUSTOM_DIR_ID, RmdupBamWorker::tr("Custom folder"),
+            RmdupBamWorker::tr("Select the custom output folder."));
 
         Descriptor outName(OUT_NAME_ID, RmdupBamWorker::tr("Output BAM name"),
             RmdupBamWorker::tr("A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .nodup.bam extention."));
@@ -302,7 +302,7 @@ void SamtoolsRmdupTask::prepare(){
 
     const QDir outDir = QFileInfo(settings.outDir).absoluteDir();
     if (!outDir.exists()) {
-        setError(tr("Directory does not exist: ") + outDir.absolutePath());
+        setError(tr("Folder does not exist: ") + outDir.absolutePath());
         return ;
     }
 

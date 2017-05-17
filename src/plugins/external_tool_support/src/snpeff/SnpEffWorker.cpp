@@ -116,13 +116,13 @@ void SnpEffFactory::init() {
     QList<Attribute*> a;
     {
 
-        Descriptor outDir(SnpEffWorker::OUT_MODE_ID, SnpEffWorker::tr("Output directory"),
-            SnpEffWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(SnpEffWorker::OUT_MODE_ID, SnpEffWorker::tr("Output folder"),
+            SnpEffWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(SnpEffWorker::CUSTOM_DIR_ID, SnpEffWorker::tr("Custom directory"),
-            SnpEffWorker::tr("Select the custom output directory."));
+        Descriptor customDir(SnpEffWorker::CUSTOM_DIR_ID, SnpEffWorker::tr("Custom folder"),
+            SnpEffWorker::tr("Select the custom output folder."));
 
         Descriptor inpFormat(SnpEffWorker::INPUT_FORMAT, SnpEffWorker::tr("Input format"),
             SnpEffWorker::tr("Select the input format of variations."));

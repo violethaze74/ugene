@@ -140,8 +140,8 @@ void CufflinksWorkerFactory::init()
 
     // Define parameters of the element
     Descriptor outDir(OUT_DIR,
-        CufflinksWorker::tr("Output directory"),
-        CufflinksWorker::tr("The base name of output directory. It could be modified with a suffix."));
+        CufflinksWorker::tr("Output folder"),
+        CufflinksWorker::tr("The base name of output folder. It could be modified with a suffix."));
 
     Descriptor refAnnotation(REF_ANNOTATION,
         CufflinksWorker::tr("Reference annotation"),
@@ -207,8 +207,8 @@ void CufflinksWorkerFactory::init()
         CufflinksWorker::tr("The path to the Cufflinks external tool in UGENE."));
 
     Descriptor tmpDir(TMP_DIR_PATH,
-        CufflinksWorker::tr("Temporary directory"),
-        CufflinksWorker::tr("The directory for temporary files."));
+        CufflinksWorker::tr("Temporary folder"),
+        CufflinksWorker::tr("The folder for temporary files."));
 
     attributes << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, "");
     attributes << new Attribute(refAnnotation, BaseTypes::STRING_TYPE(), false, QVariant(""));

@@ -1478,13 +1478,13 @@
     <name>U2::GetSequenceByIdDialog</name>
     <message>
         <location filename="../src/GetSequenceByIdDialog.cpp" line="55"/>
-        <source>Select directory to save</source>
-        <translation>Select directory to save</translation>
+        <source>Select folder to save</source>
+        <translation>Select folder to save</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.cpp" line="70"/>
-        <source>Directory doesn&apos;t exist. Do you want to create it?</source>
-        <translation>Directory doesn&apos;t exist. Do you want to create it?</translation>
+        <source>Folder doesn&apos;t exist. Do you want to create it?</source>
+        <translation>Folder doesn&apos;t exist. Do you want to create it?</translation>
     </message>
 </context>
 <context>
@@ -2066,8 +2066,8 @@ NCBI Genbank by their GI identifier</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="48"/>
-        <source>Save to directory:</source>
-        <translation>Save to directory:</translation>
+        <source>Save to folder:</source>
+        <translation>Save to folder:</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="58"/>

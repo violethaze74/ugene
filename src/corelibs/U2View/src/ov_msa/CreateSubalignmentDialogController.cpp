@@ -190,11 +190,11 @@ void CreateSubalignmentDialogController::accept(){
     QFileInfo fi(saveController->getSaveFileName());
     QDir dirToSave(fi.dir());
     if (!dirToSave.exists()){
-        QMessageBox::critical(this, this->windowTitle(), tr("Directory to save does not exist"));
+        QMessageBox::critical(this, this->windowTitle(), tr("Folder to save does not exist"));
         return;
     }
     if (!TmpDirChecker::checkWritePermissions(dirToSave.absolutePath())) {
-        QMessageBox::critical(this, this->windowTitle(), tr("No write permission to '%1' directory").arg(dirToSave.absolutePath()));
+        QMessageBox::critical(this, this->windowTitle(), tr("No write permission to '%1' folder").arg(dirToSave.absolutePath()));
         return;
     }
     if(saveController->getSaveFileName().isEmpty()){

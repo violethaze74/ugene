@@ -102,13 +102,13 @@ void FastQCFactory::init() {
     QList<Attribute*> a;
     {
 
-        Descriptor outDir(FastQCWorker::OUT_MODE_ID, FastQCWorker::tr("Output directory"),
-            FastQCWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(FastQCWorker::OUT_MODE_ID, FastQCWorker::tr("Output folder"),
+            FastQCWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(FastQCWorker::CUSTOM_DIR_ID, FastQCWorker::tr("Custom directory"),
-            FastQCWorker::tr("Select the custom output directory."));
+        Descriptor customDir(FastQCWorker::CUSTOM_DIR_ID, FastQCWorker::tr("Custom folder"),
+            FastQCWorker::tr("Select the custom output folder."));
 
         Descriptor adapters(FastQCWorker::ADAPTERS, FastQCWorker::tr("List of adapters"),
             FastQCWorker::tr("Specifies a non-default file which contains the list of adapter sequences which will be explicity searched against "

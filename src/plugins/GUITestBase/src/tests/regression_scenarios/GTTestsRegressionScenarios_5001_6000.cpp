@@ -866,8 +866,8 @@ GUI_TEST_CLASS_DEFINITION(test_5356) {
 
     GTUtilsWorkflowDesigner::click(os, "Cut Adapter");
     GTUtilsWorkflowDesigner::setParameter(os, "FASTA file with 3' adapters", QDir(testDir + "_common_data/regression/5356/adapter.fa").absolutePath(), GTUtilsWorkflowDesigner::textValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", "Custom", GTUtilsWorkflowDesigner::comboValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Custom directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", "Custom", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Custom folder", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1086,7 +1086,7 @@ GUI_TEST_CLASS_DEFINITION(test_5371) {
 
 GUI_TEST_CLASS_DEFINITION(test_5412) {
 //    1. Open "/_common_data/reads/wrong_order/align_bwa_mem.uwl"
-//    2. Set input data: e_coli_mess_1.fastq nd e_coli_mess_2.fastq (the directory from step 1)
+//    2. Set input data: e_coli_mess_1.fastq nd e_coli_mess_2.fastq (the folder from step 1)
 //    3. Reference: "/_common_data/e_coli/NC_008253.fa"
 //    4. Set requiered output parameters
 //    5. Set "Filter unpaired reads" to false
@@ -1105,7 +1105,7 @@ GUI_TEST_CLASS_DEFINITION(test_5412) {
     GTUtilsWorkflowDesigner::addInputFile(os, "File List 2", testDir + "/_common_data/reads/wrong_order/e_coli_mess_2.fastq");
 
     GTUtilsWorkflowDesigner::click(os, "Align Reads with BWA MEM");
-    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file name", "test_5412", GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", testDir + "/_common_data/e_coli/NC_008253.fa", GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Filter unpaired reads", false, GTUtilsWorkflowDesigner::comboValue);

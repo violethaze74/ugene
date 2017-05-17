@@ -100,7 +100,7 @@ void FormatDBSupportRunDialog::sl_onBrowseInputDir(){
     LastUsedDirHelper lod("");
 
     QString name;
-    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a directory with input files"), lod.dir);
+    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder with input files"), lod.dir);
     if (!name.isEmpty()) {
         inputDirLineEdit->setText(name);
     }
@@ -108,10 +108,10 @@ void FormatDBSupportRunDialog::sl_onBrowseInputDir(){
 }
 
 void FormatDBSupportRunDialog::sl_onBrowseDatabasePath(){
-    LastUsedDirHelper lod("Database Directory");
+    LastUsedDirHelper lod("Database folder");
 
     QString name;
-    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a directory to save database files"), lod.dir);
+    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder to save database files"), lod.dir);
     if (!name.isEmpty()) {
         databasePathLineEdit->setText(name);
     }

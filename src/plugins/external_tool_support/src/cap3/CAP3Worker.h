@@ -64,7 +64,7 @@ private:
     /** Use data filled by a user to init the CAP3 settings */
     void initSettings();
 
-    /** Init external tool and temporary directory paths */
+    /** Init external tool and temporary folder paths */
     void initPaths();
 
     /**

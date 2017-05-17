@@ -138,7 +138,7 @@ void EditSequenceDialogController::accept(){
         QFileInfo fi(url);
         QDir dirToSave(fi.dir());
         if (!dirToSave.exists()){
-            QMessageBox::critical(this, this->windowTitle(), tr("Directory to save is not exists"));
+            QMessageBox::critical(this, this->windowTitle(), tr("Folder to save is not exists"));
             return;
         }
         if(url.isEmpty()){

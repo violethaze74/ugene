@@ -77,8 +77,8 @@ void MAFFTWorkerFactory::init() {
                    MAFFTWorker::tr("Maximum number of iterative refinement."));
     Descriptor etp(EXT_TOOL_PATH, MAFFTWorker::tr("Tool Path"),
                    MAFFTWorker::tr("External tool path."));
-    Descriptor tdp(TMP_DIR_PATH, MAFFTWorker::tr("Temporary directory"),
-                   MAFFTWorker::tr("Directory for temporary files."));
+    Descriptor tdp(TMP_DIR_PATH, MAFFTWorker::tr("Temporary folder"),
+                   MAFFTWorker::tr("Folder for temporary files."));
 
     a << new Attribute(gop, BaseTypes::NUM_TYPE(), false, QVariant(1.53));
     a << new Attribute(gep, BaseTypes::NUM_TYPE(), false, QVariant(0.00));

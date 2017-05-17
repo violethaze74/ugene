@@ -538,8 +538,8 @@
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="79"/>
-        <source>Save to directory:</source>
-        <translation>Save to directory:</translation>
+        <source>Save to folder:</source>
+        <translation>Save to folder:</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="104"/>
@@ -865,8 +865,8 @@
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="40"/>
-        <source>Process directories recursively</source>
-        <translation>Process directories recursively</translation>
+        <source>Process folders recursively</source>
+        <translation>Process folders recursively</translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="47"/>
@@ -1539,8 +1539,8 @@ Close it or choose different file</translation>
     </message>
     <message>
         <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="92"/>
-        <source>Destination directory &apos;%1&apos; is not writable, please choose different destination URL</source>
-        <translation>Destination directory &apos;%1&apos; is not writable, please choose different destination URL</translation>
+        <source>Destination folder &apos;%1&apos; is not writable, please choose different destination URL</source>
+        <translation>Destination folder &apos;%1&apos; is not writable, please choose different destination URL</translation>
     </message>
     <message>
         <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="100"/>
@@ -1873,8 +1873,8 @@ complement(5..15)</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="127"/>
-        <source>Select directory to save</source>
-        <translation>Select directory to save</translation>
+        <source>Select folder to save</source>
+        <translation>Select folder to save</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="168"/>
@@ -1883,8 +1883,8 @@ complement(5..15)</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="174"/>
-        <source>No directory selected for saving file!</source>
-        <translation>No directory selected for saving file!</translation>
+        <source>No folder selected for saving file!</source>
+        <translation>No folder selected for saving file!</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="206"/>
@@ -1984,8 +1984,8 @@ complement(5..15)</translation>
     </message>
     <message>
         <location filename="../src/util/EditSequenceDialogController.cpp" line="141"/>
-        <source>Directory to save is not exists</source>
-        <translation>Directory to save is not exists</translation>
+        <source>Folder to save is not exists</source>
+        <translation>Folder to save is not exists</translation>
     </message>
     <message>
         <location filename="../src/util/EditSequenceDialogController.cpp" line="145"/>
@@ -2419,8 +2419,8 @@ complement(5..15)</translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="601"/>
-        <source>The directory will be processed recursively</source>
-        <translation>The directory will be processed recursively</translation>
+        <source>The folder will be processed recursively</source>
+        <translation>The folder will be processed recursively</translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="605"/>
@@ -2626,8 +2626,8 @@ complement(5..15)</translation>
     <name>U2::PasteUrlsTask</name>
     <message>
         <location filename="../src/PasteController.cpp" line="178"/>
-        <source>Pasting of directories is not supported:</source>
-        <translation>Pasting of directories is not supported:</translation>
+        <source>Pasting of folders is not supported:</source>
+        <translation>Pasting of folders is not supported:</translation>
     </message>
 </context>
 <context>

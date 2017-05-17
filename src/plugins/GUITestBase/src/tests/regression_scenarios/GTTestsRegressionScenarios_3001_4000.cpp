@@ -3796,7 +3796,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3589) {
-    // 0. Copy "data/samples/Assembly/chrM.sam" to a new directory to avoid UGENE conversion cache.
+    // 0. Copy "data/samples/Assembly/chrM.sam" to a new folder to avoid UGENE conversion cache.
     // 1. Create a workflow: Read assembly.
     // 2. Set an input file: that copied chrM.sam.
     // 3. Run the workflow.
@@ -5917,7 +5917,7 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
     GTUtilsWorkflowDesigner::click(os, "Align reads with BWA MEM");
     GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", sandBoxDir + "test_3950.fa", GTUtilsWorkflowDesigner::textValue);
     QDir sandBox;
-    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", sandBox.absoluteFilePath(sandBoxDir), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", sandBox.absoluteFilePath(sandBoxDir), GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os, 480000);

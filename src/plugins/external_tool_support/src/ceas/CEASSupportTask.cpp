@@ -113,7 +113,7 @@ void CEASSupportTask::cleanup() {
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            //stateInfo.setError(tr("Subdir for temporary files exists. Can not remove this directory."));
+            //stateInfo.setError(tr("Subdir for temporary files exists. Can not remove this folder."));
             //return;
         }
     }

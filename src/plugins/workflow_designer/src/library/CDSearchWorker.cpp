@@ -77,8 +77,8 @@ void CDSearchWorkerFactory::init() {
         Descriptor ed(EVALUE_ATTR, CDSearchWorker::tr("Expect value"),
             CDSearchWorker::tr("Modifies the <a href=\"http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#expect\">E-value</a> threshold used for filtering results. False positive results should be very rare with the default setting of 0.01 (use a more conservative, i.e. lower setting for more reliable results), results with E-values in the range of 1 and above should be considered putative false positives.")
            );
-        Descriptor pd(DB_PATH_ATTR, CDSearchWorker::tr("Database directory"),
-            CDSearchWorker::tr("Specifies database directory for local search.")
+        Descriptor pd(DB_PATH_ATTR, CDSearchWorker::tr("Database folder"),
+            CDSearchWorker::tr("Specifies database folder for local search.")
            );
 
         a << new Attribute(nd, BaseTypes::STRING_TYPE(), true, "CDD result");
@@ -117,7 +117,7 @@ void CDSearchWorkerFactory::init() {
     }
 
     {
-        delegates[DB_PATH_ATTR] = new URLDelegate("", "Database Directory", false, true, false);
+        delegates[DB_PATH_ATTR] = new URLDelegate("", "Database Folder", false, true, false);
     }
 
     proto->setPrompter(new CDSearchPrompter());

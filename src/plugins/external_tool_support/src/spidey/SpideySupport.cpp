@@ -135,7 +135,7 @@ void SpideySupportContext::sl_align_with_Spidey() {
 
     QWidget* parent = QApplication::activeWindow();
 
-    //Check that Spidey and tempory directory path defined
+    //Check that Spidey and tempory folder path defined
     if (AppContext::getExternalToolRegistry()->getByName(ET_SPIDEY)->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(parent);
         msgBox->setWindowTitle(ET_SPIDEY);

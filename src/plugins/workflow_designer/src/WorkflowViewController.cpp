@@ -906,7 +906,7 @@ namespace {
         if (!dir.exists()) {
             bool created = dir.mkpath(dir.absolutePath());
             if (!created) {
-                os.setError(QObject::tr("Can not create the directory: ") + dir.absolutePath());
+                os.setError(QObject::tr("Can not create the folder: ") + dir.absolutePath());
                 return "";
             }
         }

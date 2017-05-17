@@ -55,7 +55,7 @@ const QString DOWNLOAD_REMOTE_FILE_DOMAIN = "DownloadRemoteFileDialog";
 
 void GetSequenceByIdDialog::sl_saveFilenameButtonClicked() {
     LastUsedDirHelper lod(DOWNLOAD_REMOTE_FILE_DOMAIN);
-    QString dirName = U2FileDialog::getExistingDirectory(this, tr("Select directory to save"), lod.dir);
+    QString dirName = U2FileDialog::getExistingDirectory(this, tr("Select folder to save"), lod.dir);
     if(!dirName.isEmpty()) {
         directoryEdit->setText(dirName);
         dir = dirName;
@@ -70,7 +70,7 @@ void GetSequenceByIdDialog::accept() {
     QDir downloadDir(dir);
     if (!downloadDir.exists()) {
         if (QMessageBox::Yes == QMessageBox::question(this,
-            windowTitle(), tr("Directory doesn't exist. Do you want to create it?"),
+            windowTitle(), tr("Folder doesn't exist. Do you want to create it?"),
             QMessageBox::Yes, QMessageBox::No))
         {
             downloadDir.mkpath(dir);

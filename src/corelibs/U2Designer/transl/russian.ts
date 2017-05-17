@@ -58,13 +58,13 @@ this merge sequence slot:</source>
     <name>CreateDirectoryDialog</name>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="14"/>
-        <source>Create a directory</source>
-        <translation>Создание директории</translation>
+        <source>Create a folder</source>
+        <translation>Создание папки</translation>
     </message>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="43"/>
-        <source>Parent directory:</source>
-        <translation>Родительская директория:</translation>
+        <source>Parent folder:</source>
+        <translation>Родительская папка:</translation>
     </message>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="63"/>
@@ -86,8 +86,8 @@ this merge sequence slot:</source>
     </message>
     <message>
         <location filename="../src/DatasetWidget.ui" line="62"/>
-        <source>Add directory</source>
-        <translation>Добавить директорию</translation>
+        <source>Add folder</source>
+        <translation>Добавить папку</translation>
     </message>
     <message>
         <location filename="../src/DatasetWidget.ui" line="84"/>
@@ -443,13 +443,13 @@ this merge sequence slot:</source>
     <name>OutputFileDialog</name>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="14"/>
-        <source>Save file/directory</source>
-        <translation>Сохранить файл/директорию</translation>
+        <source>Save file/folder</source>
+        <translation>Сохранить файл/папку</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="31"/>
-        <source>Create directory</source>
-        <translation>Создать директорию</translation>
+        <source>Create folder</source>
+        <translation>Создать папку</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="63"/>
@@ -459,8 +459,8 @@ this merge sequence slot:</source>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="126"/>
-        <source>Directory:</source>
-        <translation>Директория:</translation>
+        <source>Folder:</source>
+        <translation>Папка:</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="146"/>
@@ -524,7 +524,7 @@ this merge sequence slot:</source>
         <location filename="../src/OutputFileDialog.cpp" line="170"/>
         <location filename="../src/OutputFileDialog.cpp" line="217"/>
         <source>Workflow-run output</source>
-        <translation>Выходная директория схемы</translation>
+        <translation>Выходная папка схемы</translation>
     </message>
     <message>
         <location filename="../src/wizard/SelectorActors.cpp" line="43"/>
@@ -563,12 +563,12 @@ this merge sequence slot:</source>
     </message>
     <message>
         <location filename="../src/support/OutputDirectoryWidget.cpp" line="39"/>
-        <source>The Workflow Output Directory is a common directory that is used to store all output files in the Workflow Designer. A separate subdirectory of the directory is created for each run of a workflow.
+        <source>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subfolder of the folder is created for each run of a workflow.
 
-Set up the directory:</source>
-        <translation>Выходная директория для схемы это общая директория, которая используется для сохранения всех выходных файлов в дизайнере вычислительных схем. Для каждого запуска схемы будет создана отдельная директория.
+Set up the folder:</source>
+        <translation>Выходная папка для схемы это общая папка, которая используется для сохранения всех выходных файлов в дизайнере вычислительных схем. Для каждого запуска схемы будет создана отдельная папка.
 
-Установить директорию:</translation>
+Установить папку:</translation>
     </message>
 </context>
 <context>
@@ -713,8 +713,8 @@ bowtie index file</source>
     <name>U2::ComboBoxWithUrlWidget</name>
     <message>
         <location filename="../src/PropertyWidget.cpp" line="314"/>
-        <source>Select a directory</source>
-        <translation>Укажите директорию</translation>
+        <source>Select a folder</source>
+        <translation>Укажите папку</translation>
     </message>
     <message>
         <location filename="../src/PropertyWidget.cpp" line="319"/>
@@ -770,8 +770,8 @@ bowtie index file</source>
     </message>
     <message>
         <location filename="../src/dashboard/Dashboard.cpp" line="198"/>
-        <source>Can not create a directory: </source>
-        <translation>Невозможно создать директорию: </translation>
+        <source>Can not create a folder: </source>
+        <translation>Невозможно создать папку: </translation>
     </message>
     <message>
         <location filename="../src/dashboard/Dashboard.cpp" line="213"/>
@@ -1119,8 +1119,8 @@ bowtie index file</source>
     <name>U2::OutputDirectoryWidget</name>
     <message>
         <location filename="../src/support/OutputDirectoryWidget.cpp" line="71"/>
-        <source>Select a directory</source>
-        <translation>Укажите директорию</translation>
+        <source>Select a folder</source>
+        <translation>Укажите папку</translation>
     </message>
 </context>
 <context>
@@ -1137,8 +1137,8 @@ bowtie index file</source>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.cpp" line="56"/>
-        <source>Save a directory</source>
-        <translation>Сохранить директорию</translation>
+        <source>Save a folder</source>
+        <translation>Сохранить папку</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.cpp" line="58"/>
@@ -1160,8 +1160,8 @@ bowtie index file</source>
     </message>
     <message>
         <location filename="../src/dashboard/OutputFilesWidget.cpp" line="87"/>
-        <source>Open containing directory</source>
-        <translation>Открыть содержащую директорию</translation>
+        <source>Open containing folder</source>
+        <translation>Открыть содержащую папку</translation>
     </message>
     <message>
         <source>Open by operating system</source>
@@ -1326,8 +1326,8 @@ bowtie index file</source>
     <name>U2::ScanDashboardsDirTask</name>
     <message>
         <location filename="../src/dashboard/Dashboard.cpp" line="417"/>
-        <source>Scan dashboards directory</source>
-        <translation>Сканирование каталога панели</translation>
+        <source>Scan dashboards folder</source>
+        <translation>Сканирование папки панели</translation>
     </message>
 </context>
 <context>
@@ -1441,8 +1441,8 @@ bowtie index file</source>
     <name>U2::URLLineEdit</name>
     <message>
         <location filename="../src/support/URLLineEdit.cpp" line="187"/>
-        <source>Select a directory</source>
-        <translation>Укажите директорию</translation>
+        <source>Select a folder</source>
+        <translation>Укажите папку</translation>
     </message>
     <message>
         <location filename="../src/support/URLLineEdit.cpp" line="205"/>
@@ -1461,8 +1461,8 @@ bowtie index file</source>
     <name>U2::URLListController</name>
     <message>
         <location filename="../src/DatasetsController.cpp" line="769"/>
-        <source>This file or directory does not exist: %1</source>
-        <translation>Этот файл или директория не существует: %1</translation>
+        <source>This file or folder does not exist: %1</source>
+        <translation>Этот файл или папка не существует: %1</translation>
     </message>
 </context>
 <context>
@@ -1475,8 +1475,8 @@ bowtie index file</source>
     </message>
     <message>
         <location filename="../src/DatasetWidget.cpp" line="121"/>
-        <source>Select a directory</source>
-        <translation>Укажите директорию</translation>
+        <source>Select a folder</source>
+        <translation>Укажите папку</translation>
     </message>
     <message>
         <location filename="../src/DatasetWidget.cpp" line="189"/>

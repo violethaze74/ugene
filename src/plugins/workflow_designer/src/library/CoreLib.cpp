@@ -335,7 +335,7 @@ void CoreLib::initUsersWorkers() {
 
     QDir dir(path);
     if(!dir.exists()) {
-        //log.info(tr("There isn't directory with users workflow elements"));
+        //log.info(tr("There isn't folder with users workflow elements"));
         return;
     }
     dir.setNameFilters(QStringList() << "*.usa"); //think about file extension // Answer: Ok :)

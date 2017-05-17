@@ -485,12 +485,12 @@ void GTest_ExportProject::prepare(){
     QDir qd(url);
     if(qd.exists(url)){
         if(!removeDir(qd)){
-            stateInfo.setError(tr("GTest_ExportProject::prepare unable to clean directory for exporting"));
+            stateInfo.setError(tr("GTest_ExportProject::prepare unable to clean folder for exporting"));
             return;
         }
     }   
     if(!qd.mkpath(url)){
-        stateInfo.setError(tr("GTest_ExportProject::prepare unable to create directory for exporting"));
+        stateInfo.setError(tr("GTest_ExportProject::prepare unable to create folder for exporting"));
         return;
     }
     exportTask = new ExportProjectTask(url, "");

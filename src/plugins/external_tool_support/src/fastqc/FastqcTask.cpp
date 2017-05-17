@@ -98,7 +98,7 @@ void FastQCTask::prepare(){
 
     const QDir outDir = QFileInfo(settings.outDir).absoluteDir();
     if (!outDir.exists()) {
-        setError(tr("Directory does not exist: %1").arg(outDir.absolutePath()));
+        setError(tr("Folder does not exist: %1").arg(outDir.absolutePath()));
         return ;
     }
 

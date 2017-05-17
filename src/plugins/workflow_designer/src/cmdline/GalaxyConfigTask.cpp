@@ -132,7 +132,7 @@ void GalaxyConfigTask::prepare() {
     tryToAppendSlash( destinationPath );
 
     if( galaxyPath.isEmpty() && !getGalaxyPath() ) {
-        coreLog.info( "Galaxy directory is not found" );
+        coreLog.info( "Galaxy folder is not found" );
     }
 
     fillGObjectTypeMap();
@@ -159,7 +159,7 @@ void GalaxyConfigTask::tryToFindInPath( const QString &objectName, QString &obje
     QString pathVariable = qgetenv("PATH").constData();
     const int objectNamePosition = pathVariable.indexOf( objectName );
     if( objectNamePosition == SUBSTRING_NOT_FOUND ) {
-        coreLog.info( QString("Path to %1 directory is not found in PATH variable").arg(objectName) );
+        coreLog.info( QString("Path to %1 folder is not found in PATH variable").arg(objectName) );
         return;
     }
     int currPos = objectNamePosition;
@@ -186,7 +186,7 @@ void GalaxyConfigTask::tryToFindByLocate( const QString &objectName, QString &ob
 
     QFile file( fileName );
     if( !file.open(QIODevice::ReadOnly ) ) {
-        coreLog.info( QString("Can not read %1_path.txt file to get path to %1 directory. Check user privileges").arg(objectName) );
+        coreLog.info( QString("Can not read %1_path.txt file to get path to %1 folder. Check user privileges").arg(objectName) );
         return;
     }
     QTextStream inFile(&file);
@@ -195,7 +195,7 @@ void GalaxyConfigTask::tryToFindByLocate( const QString &objectName, QString &ob
 
     QFile::remove( fileName );
     if( !objectPath.length() ) {
-        coreLog.info( QString("Path to %1 directory is not found by \"locate\" command").arg(objectName) );
+        coreLog.info( QString("Path to %1 folder is not found by \"locate\" command").arg(objectName) );
         return;
     }
 
@@ -208,7 +208,7 @@ bool GalaxyConfigTask::fileExists( const QString &objectPath, const QString &suf
         if( QFile::exists( fullPath ) ) {
             return true;
         }
-        coreLog.info( QString("Galaxy directory does not contain %1 file").arg(suffix) );
+        coreLog.info( QString("Galaxy folder does not contain %1 file").arg(suffix) );
     }
     return false;
 }
@@ -893,7 +893,7 @@ bool GalaxyConfigTask::tryToCopySchemeConfigFile() {
     }
     QFileInfo destinationDirInfo( destinationPath );
     if( !destinationDirInfo.isWritable() ) {
-        stateInfo.setError( QString("Directory %1 is not writable by this user").arg(destinationPath) );
+        stateInfo.setError( QString("Folder %1 is not writable by this user").arg(destinationPath) );
         return false;
     }
 
@@ -951,13 +951,13 @@ bool GalaxyConfigTask::prepareToolDirectory() {
     if( !directory.exists() ) {
         bool created = directory.mkdir( pathToCopy );
         if( !created ) {
-            stateInfo.setError( QString("Can not create %1 directory. Check user privileges").arg(pathToCopy) );
+            stateInfo.setError( QString("Can not create %1 folder. Check user privileges").arg(pathToCopy) );
             return false;
         }
     }
     QFileInfo copyPathDirectory( pathToCopy );
     if( !copyPathDirectory.isWritable() ) {
-        stateInfo.setError( QString("Directory %1 is not writable by this user").arg(pathToCopy) );
+        stateInfo.setError( QString("Folder %1 is not writable by this user").arg(pathToCopy) );
         return false;
     }
 

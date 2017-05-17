@@ -1937,8 +1937,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="68"/>
-        <source>Or select directory with input files:</source>
-        <translation>Or select directory with input files:</translation>
+        <source>Or select folder with input files:</source>
+        <translation>Or select folder with input files:</translation>
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="105"/>
@@ -3215,13 +3215,13 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     </message>
     <message>
         <location filename="../src/blast/BlastAllSupportTask.cpp" line="81"/>
-        <source>Subdirectory for temporary files exists. Can not remove this directory.</source>
-        <translation>Subdirectory for temporary files exists. Can not remove this directory.</translation>
+        <source>Subfolder for temporary files exists. Can not remove this folder.</source>
+        <translation>Subfolder for temporary files exists. Can not remove this folder.</translation>
     </message>
     <message>
         <location filename="../src/blast/BlastAllSupportTask.cpp" line="86"/>
-        <source>Can not create directory for temporary files.</source>
-        <translation>Can not create directory for temporary files.</translation>
+        <source>Can not create folder for temporary files.</source>
+        <translation>Can not create folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/blast/BlastAllSupportTask.cpp" line="99"/>
@@ -3240,8 +3240,8 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     </message>
     <message>
         <location filename="../src/blast/BlastAllSupportTask.cpp" line="258"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/blast/BlastAllSupportTask.cpp" line="293"/>
@@ -3446,13 +3446,13 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="93"/>
-        <source>Subdirectory for temporary files exists. Can not remove this directory.</source>
-        <translation>Subdirectory for temporary files exists. Can not remove this directory.</translation>
+        <source>Subfolder for temporary files exists. Can not remove this folder.</source>
+        <translation>Subfolder for temporary files exists. Can not remove this folder.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="98"/>
-        <source>Can not create directory for temporary files.</source>
-        <translation>Can not create directory for temporary files.</translation>
+        <source>Can not create folder for temporary files.</source>
+        <translation>Can not create folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="111"/>
@@ -3477,8 +3477,8 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="203"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="244"/>
@@ -4108,13 +4108,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="127"/>
-        <source>Subdirectory for temporary files exists. Can not remove this directory.</source>
-        <translation>Subdirectory for temporary files exists. Can not remove this directory.</translation>
+        <source>Subfolder for temporary files exists. Can not remove this folder.</source>
+        <translation>Subfolder for temporary files exists. Can not remove this folder.</translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="132"/>
-        <source>Can not create directory for temporary files.</source>
-        <translation>Can not create directory for temporary files.</translation>
+        <source>Can not create folder for temporary files.</source>
+        <translation>Can not create folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="179"/>
@@ -4143,8 +4143,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="293"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
 </context>
 <context>
@@ -4287,8 +4287,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWSupportTask.cpp" line="310"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
 </context>
 <context>
@@ -4394,7 +4394,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/hmmer/ConvertAlignment2StockholmTask.cpp" line="102"/>
-        <source>Cannot create a directory for temporary files.</source>
+        <source>Cannot create a folder for temporary files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4738,13 +4738,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/ExternalToolSupportL10N.h" line="38"/>
-        <source>The subdirectory for temporary files &apos;%1&apos; already exists. Can not remove this directory!</source>
-        <translation>The subdirectory for temporary files &apos;%1&apos; already exists. Can not remove this directory!</translation>
+        <source>The subfolder for temporary files &apos;%1&apos; already exists. Can not remove this folder!</source>
+        <translation>The subfolder for temporary files &apos;%1&apos; already exists. Can not remove this folder!</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportL10N.h" line="43"/>
-        <source>Can not create a subdirectory for temporary files &apos;%1&apos;!</source>
-        <translation>Can not create a subdirectory for temporary files &apos;%1&apos;!</translation>
+        <source>Can not create a subfolder for temporary files &apos;%1&apos;!</source>
+        <translation>Can not create a subfolder for temporary files &apos;%1&apos;!</translation>
     </message>
 </context>
 <context>
@@ -4838,18 +4838,18 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/ExternalToolSupportSettingsController.cpp" line="543"/>
-        <source>Choose Directory With Executables</source>
-        <translation>Choose Directory With Executables</translation>
+        <source>Choose Folder With Executables</source>
+        <translation>Choose Folder With Executables</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportSettingsController.cpp" line="598"/>
-        <source>Choose Directory With External Tools Pack</source>
-        <translation>Choose Directory With External Tools Pack</translation>
+        <source>Choose Folder With External Tools Pack</source>
+        <translation>Choose Folder With External Tools Pack</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportSettingsController.cpp" line="651"/>
-        <source>Not a valid external tools directory</source>
-        <translation>Not a valid external tools directory</translation>
+        <source>Not a valid external tools folder</source>
+        <translation>Not a valid external tools folder</translation>
     </message>
 </context>
 <context>
@@ -4923,7 +4923,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/fastqc/FastqcTask.cpp" line="101"/>
-        <source>Directory does not exist: %1</source>
+        <source>Folder does not exist: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4980,13 +4980,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="103"/>
-        <source>Select a directory with input files</source>
-        <translation>Select a directory with input files</translation>
+        <source>Select a folder with input files</source>
+        <translation>Select a folder with input files</translation>
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="114"/>
-        <source>Select a directory to save database files</source>
-        <translation>Select a directory to save database files</translation>
+        <source>Select a folder to save database files</source>
+        <translation>Select a folder to save database files</translation>
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="126"/>
@@ -5010,7 +5010,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportTask.cpp" line="146"/>
-        <source>Cannot create temp directory</source>
+        <source>Cannot create temp folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5040,8 +5040,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportTask.cpp" line="95"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportTask.cpp" line="112"/>
@@ -5268,7 +5268,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="105"/>
-        <source>Cannot create a directory for temporary files.</source>
+        <source>Cannot create a folder for temporary files.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5473,7 +5473,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/hmmer/HmmerSearchTask.cpp" line="147"/>
-        <source>Cannot create a directory for temporary files.</source>
+        <source>Cannot create a folder for temporary files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5668,13 +5668,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="284"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="285"/>
-        <source>Directory to save output files.</source>
-        <translation>Directory to save output files.</translation>
+        <source>Folder to save output files.</source>
+        <translation>Folder to save output files.</translation>
     </message>
     <message>
         <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="288"/>
@@ -5821,23 +5821,23 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="120"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="121"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="125"/>
-        <source>Custom directory</source>
-        <translation>Custom directory</translation>
+        <source>Custom folder</source>
+        <translation>Custom folder</translation>
     </message>
     <message>
         <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="126"/>
-        <source>Select the custom output directory.</source>
-        <translation>Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="128"/>
@@ -6094,13 +6094,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast/BlastAllWorker.cpp" line="112"/>
-        <source>Temporary directory</source>
-        <translation>Temporary directory</translation>
+        <source>Temporary folder</source>
+        <translation>Temporary folder</translation>
     </message>
     <message>
         <location filename="../src/blast/BlastAllWorker.cpp" line="113"/>
-        <source>Directory for temporary files.</source>
-        <translation>Directory for temporary files.</translation>
+        <source>Folder for temporary files.</source>
+        <translation>Folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/blast/BlastAllWorker.cpp" line="115"/>
@@ -6305,13 +6305,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="110"/>
-        <source>Temporary directory</source>
-        <translation>Temporary directory</translation>
+        <source>Temporary folder</source>
+        <translation>Temporary folder</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="111"/>
-        <source>Directory for temporary files.</source>
-        <translation>Directory for temporary files.</translation>
+        <source>Folder for temporary files.</source>
+        <translation>Folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="112"/>
@@ -7320,13 +7320,13 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/cap3/CAP3Worker.cpp" line="236"/>
-        <source>Temporary directory</source>
-        <translation>Temporary directory</translation>
+        <source>Temporary folder</source>
+        <translation>Temporary folder</translation>
     </message>
     <message>
         <location filename="../src/cap3/CAP3Worker.cpp" line="237"/>
-        <source>The directory for temporary files.</source>
-        <translation>The directory for temporary files.</translation>
+        <source>The folder for temporary files.</source>
+        <translation>The folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/cap3/CAP3Worker.cpp" line="378"/>
@@ -7582,13 +7582,13 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOWorker.cpp" line="85"/>
-        <source>Temporary directory</source>
-        <translation>Temporary directory</translation>
+        <source>Temporary folder</source>
+        <translation>Temporary folder</translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOWorker.cpp" line="86"/>
-        <source>Directory to store temporary files.</source>
-        <translation>Directory to store temporary files.</translation>
+        <source>Folder to store temporary files.</source>
+        <translation>Folder to store temporary files.</translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOWorker.cpp" line="96"/>
@@ -7743,8 +7743,8 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWWorker.cpp" line="118"/>
-        <source>Directory to store temporary files.</source>
-        <translation>Directory to store temporary files.</translation>
+        <source>Folder to store temporary files.</source>
+        <translation>Folder to store temporary files.</translation>
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWWorker.cpp" line="133"/>
@@ -7758,8 +7758,8 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWWorker.cpp" line="117"/>
-        <source>Temporary directory</source>
-        <translation>Temporary directory</translation>
+        <source>Temporary folder</source>
+        <translation>Temporary folder</translation>
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWWorker.cpp" line="100"/>
@@ -7791,8 +7791,8 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="224"/>
-        <source> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; directory</source>
-        <translation> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; directory</translation>
+        <source> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; folder</source>
+        <translation> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; folder</translation>
     </message>
 </context>
 <context>
@@ -7819,13 +7819,13 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="155"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="156"/>
-        <source>The directory to store Conduct GO results.</source>
-        <translation>The directory to store Conduct GO results.</translation>
+        <source>The folder to store Conduct GO results.</source>
+        <translation>The folder to store Conduct GO results.</translation>
     </message>
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="158"/>
@@ -7940,8 +7940,8 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/conservation_plot/ConservationPlotWorker.cpp" line="209"/>
-        <source>The directory to store phastcons scores (--phasdb).</source>
-        <translation>The directory to store phastcons scores (--phasdb).</translation>
+        <source>The folder to store phastcons scores (--phasdb).</source>
+        <translation>The folder to store phastcons scores (--phasdb).</translation>
     </message>
     <message>
         <location filename="../src/conservation_plot/ConservationPlotWorker.cpp" line="211"/>
@@ -8003,13 +8003,13 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="107"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="108"/>
-        <source>The base name of output directory. It could be modified with a suffix.</source>
-        <translation>The base name of output directory. It could be modified with a suffix.</translation>
+        <source>The base name of output folder. It could be modified with a suffix.</source>
+        <translation>The base name of output folder. It could be modified with a suffix.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="111"/>
@@ -8137,13 +8137,13 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="185"/>
-        <source>Temporary directory</source>
-        <translation>Temporary directory</translation>
+        <source>Temporary folder</source>
+        <translation>Temporary folder</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="186"/>
-        <source>The directory for temporary files.</source>
-        <translation>The directory for temporary files.</translation>
+        <source>The folder for temporary files.</source>
+        <translation>The folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="206"/>
@@ -8235,13 +8235,13 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="143"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="144"/>
-        <source>The base name of output directory. It could be modified with a suffix.</source>
-        <translation>The base name of output directory. It could be modified with a suffix.</translation>
+        <source>The base name of output folder. It could be modified with a suffix.</source>
+        <translation>The base name of output folder. It could be modified with a suffix.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="147"/>
@@ -8339,13 +8339,13 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="210"/>
-        <source>Temporary directory</source>
-        <translation>Temporary directory</translation>
+        <source>Temporary folder</source>
+        <translation>Temporary folder</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="211"/>
-        <source>The directory for temporary files.</source>
-        <translation>The directory for temporary files.</translation>
+        <source>The folder for temporary files.</source>
+        <translation>The folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="339"/>
@@ -8367,13 +8367,13 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="74"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="75"/>
-        <source>The base name of output directory. It could be modified with a suffix.</source>
-        <translation>The base name of output directory. It could be modified with a suffix.</translation>
+        <source>The base name of output folder. It could be modified with a suffix.</source>
+        <translation>The base name of output folder. It could be modified with a suffix.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="78"/>
@@ -8427,13 +8427,13 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="102"/>
-        <source>Temporary directory</source>
-        <translation>Temporary directory</translation>
+        <source>Temporary folder</source>
+        <translation>Temporary folder</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="103"/>
-        <source>The directory for temporary files.</source>
-        <translation>The directory for temporary files.</translation>
+        <source>The folder for temporary files.</source>
+        <translation>The folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="117"/>
@@ -8522,23 +8522,23 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="116"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="117"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="121"/>
-        <source>Custom directory</source>
-        <translation>Custom directory</translation>
+        <source>Custom folder</source>
+        <translation>Custom folder</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="122"/>
-        <source>Select the custom output directory.</source>
-        <translation>Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="124"/>
@@ -8650,23 +8650,23 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="105"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="106"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="110"/>
-        <source>Custom directory</source>
-        <translation>Custom directory</translation>
+        <source>Custom folder</source>
+        <translation>Custom folder</translation>
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="111"/>
-        <source>Select the custom output directory.</source>
-        <translation>Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="113"/>
@@ -8764,23 +8764,23 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="499"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="500"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="504"/>
-        <source>Custom directory</source>
-        <translation>Custom directory</translation>
+        <source>Custom folder</source>
+        <translation>Custom folder</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="505"/>
-        <source>Select the custom output directory.</source>
-        <translation>Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="507"/>
@@ -9163,8 +9163,8 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="585"/>
-        <source> Outputs all files to &lt;u&gt;%1&lt;/u&gt; directory</source>
-        <translation> Outputs all files to &lt;u&gt;%1&lt;/u&gt; directory</translation>
+        <source> Outputs all files to &lt;u&gt;%1&lt;/u&gt; folder</source>
+        <translation> Outputs all files to &lt;u&gt;%1&lt;/u&gt; folder</translation>
     </message>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="587"/>
@@ -9261,13 +9261,13 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="318"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="319"/>
-        <source>Directory to save MACS output files.</source>
-        <translation>Directory to save MACS output files.</translation>
+        <source>Folder to save MACS output files.</source>
+        <translation>Folder to save MACS output files.</translation>
     </message>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="321"/>
@@ -9586,8 +9586,8 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTWorker.cpp" line="81"/>
-        <source>Directory for temporary files.</source>
-        <translation>Directory for temporary files.</translation>
+        <source>Folder for temporary files.</source>
+        <translation>Folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTWorker.cpp" line="174"/>
@@ -9606,8 +9606,8 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTWorker.cpp" line="80"/>
-        <source>Temporary directory</source>
-        <translation>Temporary directory</translation>
+        <source>Temporary folder</source>
+        <translation>Temporary folder</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTWorker.cpp" line="89"/>
@@ -9808,8 +9808,8 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/seqpos/SeqPosWorker.cpp" line="367"/>
-        <source> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; directory</source>
-        <translation> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; directory</translation>
+        <source> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; folder</source>
+        <translation> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; folder</translation>
     </message>
 </context>
 <context>
@@ -9837,13 +9837,13 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/seqpos/SeqPosWorker.cpp" line="247"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/seqpos/SeqPosWorker.cpp" line="248"/>
-        <source>The directory to store seqpos results.</source>
-        <translation>The directory to store seqpos results.</translation>
+        <source>The folder to store seqpos results.</source>
+        <translation>The folder to store seqpos results.</translation>
     </message>
     <message>
         <location filename="../src/seqpos/SeqPosWorker.cpp" line="250"/>
@@ -9986,23 +9986,23 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="111"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="112"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="116"/>
-        <source>Custom directory</source>
-        <translation>Custom directory</translation>
+        <source>Custom folder</source>
+        <translation>Custom folder</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="117"/>
-        <source>Select the custom output directory.</source>
-        <translation>Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="119"/>
@@ -10197,23 +10197,23 @@ Path for %1 tool is not selected.</source>
     </message>
     <message>
         <location filename="../src/snpeff/SnpEffWorker.cpp" line="119"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/snpeff/SnpEffWorker.cpp" line="120"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</translation>
     </message>
     <message>
         <location filename="../src/snpeff/SnpEffWorker.cpp" line="124"/>
-        <source>Custom directory</source>
-        <translation>Custom directory</translation>
+        <source>Custom folder</source>
+        <translation>Custom folder</translation>
     </message>
     <message>
         <location filename="../src/snpeff/SnpEffWorker.cpp" line="125"/>
-        <source>Select the custom output directory.</source>
-        <translation>Select the custom output directory.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Select the custom output folder.</translation>
     </message>
     <message>
         <location filename="../src/snpeff/SnpEffWorker.cpp" line="127"/>
@@ -10383,13 +10383,13 @@ Path for %1 tool is not selected.</source>
     </message>
     <message>
         <location filename="../src/spades/SpadesWorker.cpp" line="265"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/spades/SpadesWorker.cpp" line="266"/>
-        <source>Directory to save Spades output files.</source>
-        <translation>Directory to save Spades output files.</translation>
+        <source>Folder to save Spades output files.</source>
+        <translation>Folder to save Spades output files.</translation>
     </message>
     <message>
         <location filename="../src/spades/SpadesWorker.cpp" line="269"/>
@@ -10529,8 +10529,8 @@ Path for %1 tool is not selected.</source>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="81"/>
-        <source>Directory for temporary file.s</source>
-        <translation>Directory for temporary files</translation>
+        <source>Folder for temporary file.s</source>
+        <translation>Folder for temporary files</translation>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="172"/>
@@ -10539,8 +10539,8 @@ Path for %1 tool is not selected.</source>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="80"/>
-        <source>Temporary directory</source>
-        <translation>Temporary directory</translation>
+        <source>Temporary folder</source>
+        <translation>Temporary folder</translation>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="89"/>
@@ -10670,13 +10670,13 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="192"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="193"/>
-        <source>The base name of output directory. It could be modified with a suffix.</source>
-        <translation>The base name of output directory. It could be modified with a suffix.</translation>
+        <source>The base name of output folder. It could be modified with a suffix.</source>
+        <translation>The base name of output folder. It could be modified with a suffix.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="196"/>
@@ -10690,13 +10690,13 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="200"/>
-        <source>Bowtie index directory</source>
-        <translation>Bowtie index directory</translation>
+        <source>Bowtie index folder</source>
+        <translation>Bowtie index folder</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="201"/>
-        <source>The directory with the Bowtie index for the reference sequence.</source>
-        <translation>The directory with the Bowtie index for the reference sequence.</translation>
+        <source>The folder with the Bowtie index for the reference sequence.</source>
+        <translation>The folder with the Bowtie index for the reference sequence.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="209"/>
@@ -10930,13 +10930,13 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="348"/>
-        <source>Temporary directory</source>
-        <translation>Temporary directory</translation>
+        <source>Temporary folder</source>
+        <translation>Temporary folder</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="349"/>
-        <source>The directory for temporary files.</source>
-        <translation>The directory for temporary files.</translation>
+        <source>The folder for temporary files.</source>
+        <translation>The folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="396"/>
@@ -11112,13 +11112,13 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupportTask.cpp" line="127"/>
-        <source>Subdir for temporary files exists. Can not remove this directory.</source>
-        <translation>Subdir for temporary files exists. Can not remove this directory.</translation>
+        <source>Subdir for temporary files exists. Can not remove this folder.</source>
+        <translation>Subdir for temporary files exists. Can not remove this folder.</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupportTask.cpp" line="132"/>
-        <source>Can not create directory for temporary files.</source>
-        <translation>Can not create directory for temporary files.</translation>
+        <source>Can not create folder for temporary files.</source>
+        <translation>Can not create folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupportTask.cpp" line="145"/>
@@ -11158,8 +11158,8 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupportTask.cpp" line="296"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
 </context>
 <context>
@@ -11432,7 +11432,7 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     </message>
     <message>
         <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="150"/>
-        <source>Cannot create a directory for temporary files.</source>
+        <source>Cannot create a folder for temporary files.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -11851,8 +11851,8 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     <name>U2::SpadesTask</name>
     <message>
         <location filename="../src/spades/SpadesTask.cpp" line="61"/>
-        <source>Directory does not exist: </source>
-        <translation>Directory does not exist: </translation>
+        <source>Folder does not exist: </source>
+        <translation>Folder does not exist: </translation>
     </message>
 </context>
 <context>
@@ -11998,13 +11998,13 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="132"/>
-        <source>Subdir for temporary files exists. Can not remove this directory.</source>
-        <translation>Subdir for temporary files exists. Can not remove this directory.</translation>
+        <source>Subdir for temporary files exists. Can not remove this folder.</source>
+        <translation>Subdir for temporary files exists. Can not remove this folder.</translation>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="137"/>
-        <source>Can not create directory for temporary files.</source>
-        <translation>Can not create directory for temporary files.</translation>
+        <source>Can not create folder for temporary files.</source>
+        <translation>Can not create folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="182"/>
@@ -12033,8 +12033,8 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="291"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
 </context>
 <context>
@@ -12191,13 +12191,13 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     </message>
     <message>
         <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="56"/>
-        <source>Temporary directory is not set!</source>
-        <translation>Temporary directory is not set!</translation>
+        <source>Temporary folder is not set!</source>
+        <translation>Temporary folder is not set!</translation>
     </message>
     <message>
         <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="61"/>
-        <source>Can not create directory for temporary files.</source>
-        <translation>Can not create directory for temporary files.</translation>
+        <source>Can not create folder for temporary files.</source>
+        <translation>Can not create folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="65"/>

@@ -35,12 +35,12 @@ class ExternalToolSupportL10N : public QObject
     Q_OBJECT
 public:
     static QString errorRemovingTmpSubdir(QString subdirName) {
-        return ExternalToolSupportPlugin::tr("The subdirectory for temporary files '%1' already exists."
-                " Can not remove this directory!").arg(subdirName);
+        return ExternalToolSupportPlugin::tr("The subfolder for temporary files '%1' already exists."
+                " Can not remove this folder!").arg(subdirName);
     }
 
     static QString errorCreatingTmpSubrir(QString subdirName) {
-        return ExternalToolSupportPlugin::tr("Can not create a subdirectory for temporary files '%1'!").arg(subdirName);
+        return ExternalToolSupportPlugin::tr("Can not create a subfolder for temporary files '%1'!").arg(subdirName);
     }
 };
 

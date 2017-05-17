@@ -69,8 +69,8 @@
     </message>
     <message>
         <location filename="../src/GTestFrameworkComponents.cpp" line="107"/>
-        <source>Sets the directory for the test report.</source>
-        <translation>Sets the directory for the test report.</translation>
+        <source>Sets the folder for the test report.</source>
+        <translation>Sets the folder for the test report.</translation>
     </message>
     <message>
         <location filename="../src/GTestFrameworkComponents.cpp" line="113"/>

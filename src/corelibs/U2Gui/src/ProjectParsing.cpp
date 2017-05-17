@@ -209,7 +209,7 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus& ts, Project* project,
     QByteArray rawData = xmlDoc.toByteArray();
     //  printf(">>%s", xmlDoc.toString().toStdString().c_str());
 
-    //check that project directory exists
+    //check that project folder exists
     if (!projectDir.exists()) {
         QDir root;
         root.mkpath(projectDir.absolutePath());

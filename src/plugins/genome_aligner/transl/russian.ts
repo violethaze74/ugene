@@ -160,8 +160,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="545"/>
-        <source>Directory for index files:</source>
-        <translation>Директория для индексных файлов:</translation>
+        <source>Folder for index files:</source>
+        <translation>Папка для индексных файлов:</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="201"/>
@@ -203,8 +203,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="513"/>
-        <source>You can choose a temporary directory for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary directory.</source>
-        <translation>Вы можете задать временную директорию для сохранения индексных файлов для референса, которые будут построены в процессе выравнивания. Если необходимо запустить этот алгоритм снова с той же референсной последовательностью и с тем же параметром разбиения, вы можете использовать этот индексный файл, который будет сохранен во временной директории.</translation>
+        <source>You can choose a temporary folder for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary folder.</source>
+        <translation>Вы можете задать временную папку для сохранения индексных файлов для референса, которые будут построены в процессе выравнивания. Если необходимо запустить этот алгоритм снова с той же референсной последовательностью и с тем же параметром разбиения, вы можете использовать этот индексный файл, который будет сохранен во временной папки.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="535"/>
@@ -235,12 +235,12 @@ p, li { white-space: pre-wrap; }
         <translation>Настройки</translation>
     </message>
     <message>
-        <source>Directories</source>
-        <translation type="vanished">Директории</translation>
+        <source>Folders</source>
+        <translation type="vanished">Папки</translation>
     </message>
     <message>
-        <source>Directory for built indexes</source>
-        <translation type="vanished">Директория для сохранения индекса</translation>
+        <source>Folder for built indexes</source>
+        <translation type="vanished">Папка для сохранения индекса</translation>
     </message>
 </context>
 <context>
@@ -307,10 +307,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="185"/>
-        <source>  --%1    Path to prebuilt index (base file name or with .idx extension). If not set, index is searched in system temporary directory. If --build-index option is applied, index will be saved to specified path.
+        <source>  --%1    Path to prebuilt index (base file name or with .idx extension). If not set, index is searched in system temporary folder. If --build-index option is applied, index will be saved to specified path.
 
 </source>
-        <translation>  --%1    Путь до индекса (только имя или с расширением .idx). Если не задан, будет произведен поиск индекса во временной директории. Если --build-index опция применена, индекс будет сохранен в указанное место.
+        <translation>  --%1    Путь до индекса (только имя или с расширением .idx). Если не задан, будет произведен поиск индекса во временной папки. Если --build-index опция применена, индекс будет сохранен в указанное место.
 
 </translation>
     </message>
@@ -474,19 +474,19 @@ ugene --genome-aligner --reference=/path/to/ref --short-reads=/path/to/reads --r
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettingsWidget.cpp" line="164"/>
-        <source>The index directory has already contain the prebuilt index. But its reference fragmentation parameter is %1 and it doesn&apos;t equal to the parameter you have chosen (%2).
+        <source>The index folder has already contain the prebuilt index. But its reference fragmentation parameter is %1 and it doesn&apos;t equal to the parameter you have chosen (%2).
 
 Press &quot;Ok&quot; to delete this index file and create a new during the aligning.
-Press &quot;Cancel&quot; to change this parameter or the index directory.</source>
-        <translation>Индексная директория уже содержит индекс. Но параметр разбиения %1 и это не совпадает с параметром, который задан (%2).
+Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
+        <translation>Индексная папка уже содержит индекс. Но параметр разбиения %1 и это не совпадает с параметром, который задан (%2).
 
 Нажмите &quot;ОК&quot; чтобы удалить этот индексный файл и создать новый в процессе выравнивания.
-Нажмите &quot;Отмена&quot; чтобы изменить параметр или индексную директорию.</translation>
+Нажмите &quot;Отмена&quot; чтобы изменить параметр или индексную папку.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettingsWidget.cpp" line="180"/>
-        <source>Set index files directory</source>
-        <translation>Выбрать индексную директорию</translation>
+        <source>Set index files folder</source>
+        <translation>Выбрать индексную папку</translation>
     </message>
 </context>
 <context>
@@ -751,13 +751,13 @@ Press &quot;Cancel&quot; to change this parameter or the index directory.</sourc
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="294"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="295"/>
-        <source>Directory to save UGENE genome aligner output files.</source>
-        <translation>Директория для сохранения выходных файлов модуля сборки контигов.</translation>
+        <source>Folder to save UGENE genome aligner output files.</source>
+        <translation>Папка для сохранения выходных файлов модуля сборки контигов.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="298"/>
