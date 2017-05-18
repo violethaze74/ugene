@@ -2648,7 +2648,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2){//DIFFERENCE: Line label is tested
 //Expected state: Statistics "Pos" in right bottom is "Pos 3/14"
 
 //3. Insert 3 gaps to first three positoons in "Phaneroptera_falcata"
-    GTUtilsMSAEditorSequenceArea::selectArea(os,QPoint(-5,0),QPoint(-5,4));
+    GTUtilsMSAEditorSequenceArea::selectArea(os,QPoint(-5,3),QPoint(-5,7));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
 //4. Select char at 4 position in "Phaneroptera_falcata"(A)
@@ -4639,7 +4639,7 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "You must select at least one sequence"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 //    Start pos > end pos
-           
+
             QLineEdit* startLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "startLineEdit", dialog);
             GTLineEdit::setText(os, startLineEdit, "50");
             QLineEdit* endLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "endLineEdit", dialog);
