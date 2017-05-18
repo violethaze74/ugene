@@ -74,8 +74,6 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     removeSequenceAction->setObjectName("Remove sequence");
     connect(removeSequenceAction, SIGNAL(triggered()), SLOT(sl_removeSequence()));
     addAction(removeSequenceAction);
-    removeSequenceAction->setShortcut(QKeySequence::Delete);
-    removeSequenceAction->setShortcutContext(Qt::WidgetShortcut);
 
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView* , QMenu*)), SLOT(sl_buildContextMenu(GObjectView*, QMenu*)));
     if (editor->getMaObject()) {
@@ -277,10 +275,13 @@ void MaEditorNameList::sl_nameBarMoved(int) {
 }
 
 void MaEditorNameList::sl_removeSequence() {
-    CHECK(!getSelection().isEmpty() && getSelection().length == 1, );
+    U2Region sel = getSelection();
+    CHECK(!sel.isEmpty(), );
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
-    maObj->removeRow(getSelection().startPos);
+    CHECK(maObj->getNumRows() > sel.length, );
+    setSelection(0, 0);
+    maObj->removeRegion(0, sel.startPos, maObj->getLength(), sel.length, true);
 }
 
 void MaEditorNameList::sl_selectReferenceSequence() {
@@ -391,6 +392,9 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         ui->getSequenceArea()->cancelSelection();
         curSeq = 0;
         startSelectingSeq = 0;
+        break;
+    case Qt::Key_Delete:
+        sl_removeSequence();
         break;
     }
     QWidget::keyPressEvent(e);
@@ -528,6 +532,8 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
 
             emit si_stopMsaChanging(true);
         } else {
+            ui->getSequenceArea()->setSelection(MaEditorSelection());
+
             int firstVisibleRow = ui->getSequenceArea()->getFirstVisibleSequence();
             int lastVisibleRow = ui->getSequenceArea()->getNumVisibleSequences(true) + firstVisibleRow - 1;
             bool selectionContainsSeqs = (startSelectingSeq <= lastVisibleRow || newSeq <= lastVisibleRow);
@@ -939,8 +945,6 @@ U2Region McaEditorNameList::getSelection() const {
 }
 
 void McaEditorNameList::setSelection(int startSeq, int count) {
-    CHECK(localSelection != U2Region(startSeq, count), );
-
     localSelection = U2Region(startSeq, count);
     completeRedraw = true;
     update();
