@@ -995,17 +995,17 @@
         <translation>Trim</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="43"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="45"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="44"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="46"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="54"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="56"/>
         <source>File name is empty!</source>
         <translation>File name is empty!</translation>
     </message>
@@ -1477,12 +1477,22 @@
 <context>
     <name>U2::GetSequenceByIdDialog</name>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.cpp" line="55"/>
+        <location filename="../src/GetSequenceByIdDialog.cpp" line="45"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/GetSequenceByIdDialog.cpp" line="46"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/GetSequenceByIdDialog.cpp" line="58"/>
         <source>Select folder to save</source>
         <translation>Select folder to save</translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.cpp" line="70"/>
+        <location filename="../src/GetSequenceByIdDialog.cpp" line="73"/>
         <source>Folder doesn&apos;t exist. Do you want to create it?</source>
         <translation>Folder doesn&apos;t exist. Do you want to create it?</translation>
     </message>
@@ -2066,8 +2076,12 @@ NCBI Genbank by their GI identifier</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="48"/>
+        <source>Save to directory:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Save to folder:</source>
-        <translation>Save to folder:</translation>
+        <translation type="vanished">Save to folder:</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="58"/>

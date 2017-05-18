@@ -537,9 +537,13 @@
         <translation>База данных:</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="79"/>
         <source>Save to folder:</source>
-        <translation>Сохранить в папку:</translation>
+        <translation type="vanished">Сохранить в папку:</translation>
+    </message>
+    <message>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="79"/>
+        <source>Save to directory:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="104"/>
@@ -864,9 +868,13 @@
         <translation>Параметры файлов и папок</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="40"/>
         <source>Process folders recursively</source>
-        <translation>Обработать папки рекурсивно</translation>
+        <translation type="vanished">Обработать папки рекурсивно</translation>
+    </message>
+    <message>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="40"/>
+        <source>Process directories recursively</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="47"/>

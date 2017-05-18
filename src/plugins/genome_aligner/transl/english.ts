@@ -159,9 +159,18 @@ p, li { white-space: pre-wrap; }
         <translation>Index memory usage size:</translation>
     </message>
     <message>
+        <location filename="../src/GenomeAlignerSettings.ui" line="513"/>
+        <source>You can choose a temporary directory for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="545"/>
+        <source>Directory for index files:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Folder for index files:</source>
-        <translation>Folder for index files:</translation>
+        <translation type="vanished">Folder for index files:</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="201"/>
@@ -202,9 +211,8 @@ p, li { white-space: pre-wrap; }
                  amount of memory used during the alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="513"/>
         <source>You can choose a temporary folder for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary folder.</source>
-        <translation>You can choose a temporary folder for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary folder.</translation>
+        <translation type="vanished">You can choose a temporary folder for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary folder.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="535"/>

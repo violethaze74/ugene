@@ -91,12 +91,12 @@
         <translation>Unsupported object type: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="410"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="415"/>
         <source>Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty.</source>
         <translation>Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty.</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="565"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="570"/>
         <source>Invalid number of symbols: %1</source>
         <translation>Invalid number of symbols: %1</translation>
     </message>
@@ -1255,7 +1255,7 @@ The session database file is removed after closing of UGENE.</translation>
         <translation>ugenedb is a internal UGENE database file format</translation>
     </message>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="152"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="153"/>
         <source>Invalid destination database reference</source>
         <translation>Invalid destination database reference</translation>
     </message>
@@ -1279,27 +1279,27 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="550"/>
+        <location filename="../src/models/DocumentModel.cpp" line="553"/>
         <source>Document is not loaded</source>
         <translation>Document is not loaded</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="563"/>
+        <location filename="../src/models/DocumentModel.cpp" line="566"/>
         <source>IO adapter does not support write operation</source>
         <translation>IO adapter does not support write operation</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="569"/>
+        <location filename="../src/models/DocumentModel.cpp" line="572"/>
         <source>No write support for document format</source>
         <translation>No write support for document format</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="639"/>
+        <location filename="../src/models/DocumentModel.cpp" line="642"/>
         <source>Locked by user</source>
         <translation>Locked by user</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="663"/>
+        <location filename="../src/models/DocumentModel.cpp" line="666"/>
         <source>Lock is NULL</source>
         <translation>Lock is NULL</translation>
     </message>
@@ -1307,8 +1307,8 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::DocumentFormat</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="125"/>
-        <location filename="../src/models/DocumentModel.cpp" line="130"/>
+        <location filename="../src/models/DocumentModel.cpp" line="127"/>
+        <location filename="../src/models/DocumentModel.cpp" line="132"/>
         <source>Writing is not supported for this format (%1). Feel free to send a feature request though.</source>
         <translation>Writing is not supported for this format (%1). Feel free to send a feature request though.</translation>
     </message>
@@ -2182,7 +2182,7 @@ The session database file is removed after closing of UGENE.</translation>
         <translation>Failed to insert gaps into an alignment!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1090"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1104"/>
         <source>Failed to crop an alignment!</source>
         <translation>Failed to crop an alignment!</translation>
     </message>
@@ -2543,48 +2543,48 @@ UGENE contains unsaved modifications.</translation>
         <translation>Found more results than expected!</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="175"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="174"/>
         <source>Unexpected query result code: %1 (%2)</source>
         <translation>Unexpected query result code: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="193"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="192"/>
         <source>Error binding NULL value! Query: &apos;%1&apos;, idx: %2</source>
         <translation>Error binding NULL value! Query: &apos;%1&apos;, idx: %2</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="305"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="304"/>
         <source>Error binding text value! Query: &apos;%1&apos;, idx: %2, value: &apos;%3&apos;</source>
         <translation>Error binding text value! Query: &apos;%1&apos;, idx: %2, value: &apos;%3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="317"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="316"/>
         <source>Error binding int32 value! Query: &apos;%1&apos;, idx: %2, value: %3</source>
         <translation>Error binding int32 value! Query: &apos;%1&apos;, idx: %2, value: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="329"/>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="341"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="328"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="340"/>
         <source>Error binding int64 value! Query: &apos;%1&apos;, idx: %2, value: %3</source>
         <translation>Error binding int64 value! Query: &apos;%1&apos;, idx: %2, value: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="354"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="353"/>
         <source>Error binding boolean value! Query: &apos;%1&apos;, idx: %2, value: %3</source>
         <translation>Error binding boolean value! Query: &apos;%1&apos;, idx: %2, value: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="371"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="370"/>
         <source>Error binding blob value! Query: &apos;%1&apos;, idx: %2, size: %3</source>
         <translation>Error binding blob value! Query: &apos;%1&apos;, idx: %2, size: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="383"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="382"/>
         <source>Error binding blob value! Query: &apos;%1&apos;, idx: %2</source>
         <translation>Error binding blob value! Query: &apos;%1&apos;, idx: %2</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="396"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="395"/>
         <source>Unexpected row count! Query: &apos;%1&apos;, rows: %2</source>
         <translation>Unexpected row count! Query: &apos;%1&apos;, rows: %2</translation>
     </message>
@@ -2637,7 +2637,7 @@ UGENE contains unsaved modifications.</translation>
         <translation>Internal error, sequence alphabet id &apos;%1&apos; is invalid</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/DNASequenceObject.cpp" line="209"/>
+        <location filename="../src/gobjects/DNASequenceObject.cpp" line="213"/>
         <source>Modified sequence &amp; region have different alphabet</source>
         <translation>Modified sequence &amp; region have different alphabet</translation>
     </message>
@@ -2651,13 +2651,13 @@ UGENE contains unsaved modifications.</translation>
     </message>
     <message>
         <location filename="../src/util/U2SequenceUtils.cpp" line="102"/>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="115"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="118"/>
         <source>Invalid sequence DBI</source>
         <translation>Invalid sequence DBI</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="375"/>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="554"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="380"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="559"/>
         <source>Failed to derive sequence alphabet!</source>
         <translation>Failed to derive sequence alphabet!</translation>
     </message>
@@ -2681,7 +2681,7 @@ UGENE contains unsaved modifications.</translation>
 <context>
     <name>U2SequenceImporter</name>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="296"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="301"/>
         <source>Sequence was not imported. Probably, this is because the sequence is empty.</source>
         <translation>Sequence was not imported. Probably, this is because the sequence is empty.</translation>
     </message>

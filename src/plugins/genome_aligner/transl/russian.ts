@@ -159,9 +159,18 @@ p, li { white-space: pre-wrap; }
         <translation>Использование памяти для индекса:</translation>
     </message>
     <message>
+        <location filename="../src/GenomeAlignerSettings.ui" line="513"/>
+        <source>You can choose a temporary directory for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="545"/>
+        <source>Directory for index files:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Folder for index files:</source>
-        <translation>Папка для индексных файлов:</translation>
+        <translation type="vanished">Папка для индексных файлов:</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="201"/>
@@ -202,9 +211,8 @@ p, li { white-space: pre-wrap; }
              количество памяти, используемое для выравнивания.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="513"/>
         <source>You can choose a temporary folder for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary folder.</source>
-        <translation>Вы можете задать временную папку для сохранения индексных файлов для референса, которые будут построены в процессе выравнивания. Если необходимо запустить этот алгоритм снова с той же референсной последовательностью и с тем же параметром разбиения, вы можете использовать этот индексный файл, который будет сохранен во временной папки.</translation>
+        <translation type="vanished">Вы можете задать временную папку для сохранения индексных файлов для референса, которые будут построены в процессе выравнивания. Если необходимо запустить этот алгоритм снова с той же референсной последовательностью и с тем же параметром разбиения, вы можете использовать этот индексный файл, который будет сохранен во временной папки.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="535"/>

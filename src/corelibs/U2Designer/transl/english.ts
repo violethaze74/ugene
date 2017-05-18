@@ -57,14 +57,22 @@ this merge sequence slot:</translation>
 <context>
     <name>CreateDirectoryDialog</name>
     <message>
-        <location filename="../src/CreateDirectoryDialog.ui" line="14"/>
         <source>Create a folder</source>
-        <translation>Create a folder</translation>
+        <translation type="vanished">Create a folder</translation>
+    </message>
+    <message>
+        <source>Parent folder:</source>
+        <translation type="vanished">Parent folder:</translation>
+    </message>
+    <message>
+        <location filename="../src/CreateDirectoryDialog.ui" line="14"/>
+        <source>Create a directory</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="43"/>
-        <source>Parent folder:</source>
-        <translation>Parent folder:</translation>
+        <source>Parent directory:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="63"/>
@@ -85,9 +93,13 @@ this merge sequence slot:</translation>
         <translation>Add file(s)</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="62"/>
         <source>Add folder</source>
-        <translation>Add folder</translation>
+        <translation type="vanished">Add folder</translation>
+    </message>
+    <message>
+        <location filename="../src/DatasetWidget.ui" line="62"/>
+        <source>Add directory</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/DatasetWidget.ui" line="84"/>
@@ -442,14 +454,22 @@ this merge sequence slot:</translation>
 <context>
     <name>OutputFileDialog</name>
     <message>
-        <location filename="../src/OutputFileDialog.ui" line="14"/>
         <source>Save file/folder</source>
-        <translation>Save file/folder</translation>
+        <translation type="vanished">Save file/folder</translation>
+    </message>
+    <message>
+        <source>Create folder</source>
+        <translation type="vanished">Create folder</translation>
+    </message>
+    <message>
+        <location filename="../src/OutputFileDialog.ui" line="14"/>
+        <source>Save file/directory</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="31"/>
-        <source>Create folder</source>
-        <translation>Create folder</translation>
+        <source>Create directory</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="63"/>
@@ -459,8 +479,12 @@ this merge sequence slot:</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="126"/>
+        <source>Directory:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Folder:</source>
-        <translation>Folder:</translation>
+        <translation type="vanished">Folder:</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="146"/>
@@ -562,13 +586,19 @@ this merge sequence slot:</translation>
         <translation>The page is broken. Please, close the wizard and report us the error: ugene@unipro.ru</translation>
     </message>
     <message>
-        <location filename="../src/support/OutputDirectoryWidget.cpp" line="39"/>
         <source>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subfolder of the folder is created for each run of a workflow.
 
 Set up the folder:</source>
-        <translation>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subfolder of the folder is created for each run of a workflow.
+        <translation type="vanished">The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subfolder of the folder is created for each run of a workflow.
 
 Set up the folder:</translation>
+    </message>
+    <message>
+        <location filename="../src/support/OutputDirectoryWidget.cpp" line="39"/>
+        <source>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subdirectory of the folder is created for each run of a workflow.
+
+Set up the folder:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

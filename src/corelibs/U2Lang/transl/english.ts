@@ -757,6 +757,11 @@
         <translation>Database select definition: &apos;%1&apos; is expected, &apos;%2&apos; is found</translation>
     </message>
     <message>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="486"/>
+        <source>folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="494"/>
         <source>Element name cannot contain whitespaces: &apos;%1&apos;</source>
         <translation>Element name cannot contain whitespaces: &apos;%1&apos;</translation>
@@ -1066,9 +1071,8 @@
         <translation>Url definition does not contain dataset name</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="486"/>
         <source>Folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</source>
-        <translation>Folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</translation>
+        <translation type="vanished">Folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</translation>
     </message>
     <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="826"/>

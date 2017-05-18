@@ -57,14 +57,22 @@ this merge sequence slot:</source>
 <context>
     <name>CreateDirectoryDialog</name>
     <message>
-        <location filename="../src/CreateDirectoryDialog.ui" line="14"/>
         <source>Create a folder</source>
-        <translation>Создание папки</translation>
+        <translation type="vanished">Создание папки</translation>
+    </message>
+    <message>
+        <source>Parent folder:</source>
+        <translation type="vanished">Родительская папка:</translation>
+    </message>
+    <message>
+        <location filename="../src/CreateDirectoryDialog.ui" line="14"/>
+        <source>Create a directory</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="43"/>
-        <source>Parent folder:</source>
-        <translation>Родительская папка:</translation>
+        <source>Parent directory:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="63"/>
@@ -85,9 +93,13 @@ this merge sequence slot:</source>
         <translation>Добавить файл(ы)</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="62"/>
         <source>Add folder</source>
-        <translation>Добавить папку</translation>
+        <translation type="vanished">Добавить папку</translation>
+    </message>
+    <message>
+        <location filename="../src/DatasetWidget.ui" line="62"/>
+        <source>Add directory</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/DatasetWidget.ui" line="84"/>
@@ -442,14 +454,22 @@ this merge sequence slot:</source>
 <context>
     <name>OutputFileDialog</name>
     <message>
-        <location filename="../src/OutputFileDialog.ui" line="14"/>
         <source>Save file/folder</source>
-        <translation>Сохранить файл/папку</translation>
+        <translation type="vanished">Сохранить файл/папку</translation>
+    </message>
+    <message>
+        <source>Create folder</source>
+        <translation type="vanished">Создать папку</translation>
+    </message>
+    <message>
+        <location filename="../src/OutputFileDialog.ui" line="14"/>
+        <source>Save file/directory</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="31"/>
-        <source>Create folder</source>
-        <translation>Создать папку</translation>
+        <source>Create directory</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="63"/>
@@ -459,8 +479,12 @@ this merge sequence slot:</source>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="126"/>
+        <source>Directory:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Folder:</source>
-        <translation>Папка:</translation>
+        <translation type="vanished">Папка:</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="146"/>
@@ -562,13 +586,19 @@ this merge sequence slot:</source>
         <translation>Произошла ошибка. Пожалуйста закройте визард и сообщите об ошибке по адресу: ugene@unipro.ru</translation>
     </message>
     <message>
-        <location filename="../src/support/OutputDirectoryWidget.cpp" line="39"/>
         <source>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subfolder of the folder is created for each run of a workflow.
 
 Set up the folder:</source>
-        <translation>Выходная папка для схемы это общая папка, которая используется для сохранения всех выходных файлов в дизайнере вычислительных схем. Для каждого запуска схемы будет создана отдельная папка.
+        <translation type="vanished">Выходная папка для схемы это общая папка, которая используется для сохранения всех выходных файлов в дизайнере вычислительных схем. Для каждого запуска схемы будет создана отдельная папка.
 
 Установить папку:</translation>
+    </message>
+    <message>
+        <location filename="../src/support/OutputDirectoryWidget.cpp" line="39"/>
+        <source>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subdirectory of the folder is created for each run of a workflow.
+
+Set up the folder:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -699,37 +699,47 @@ Choose another region.</translation>
 <context>
     <name>U2::DigestSequenceDialog</name>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="124"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="63"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/DigestSequenceDialog.cpp" line="64"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/DigestSequenceDialog.cpp" line="126"/>
         <source>No enzymes are selected! Please select enzymes.</source>
         <translation>No enzymes are selected! Please select enzymes.</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="130"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="132"/>
         <source>Cannot load enzymes library</source>
         <translation>Cannot load enzymes library</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="148"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="150"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="148"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="150"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="248"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="250"/>
         <source> : %1 cut(s)</source>
         <translation> : %1 cut(s)</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="332"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="334"/>
         <source>Auto-annotations update task is NULL.</source>
         <translation>Auto-annotations update task is NULL.</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="354"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="356"/>
         <source>Select annotations</source>
         <translation>Select annotations</translation>
     </message>
@@ -780,42 +790,52 @@ Choose another region.</translation>
 <context>
     <name>U2::EditFragmentDialog</name>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="137"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="53"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/EditFragmentDialog.cpp" line="54"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/EditFragmentDialog.cpp" line="139"/>
         <source>Left overhang is empty. Please enter the overhang or set blunt left end.</source>
         <translation>Left overhang is empty. Please enter the overhang or set blunt left end.</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="141"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="143"/>
         <source>Invalid left overhang: unsupported alphabet!</source>
         <translation>Invalid left overhang: unsupported alphabet!</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="161"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="163"/>
         <source>Right overhang is empty. Please enter the overhang or set blunt right end.</source>
         <translation>Right overhang is empty. Please enter the overhang or set blunt right end.</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="165"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="167"/>
         <source>Invalid right overhang: unsupported alphabet!</source>
         <translation>Invalid right overhang: unsupported alphabet!</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="186"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="188"/>
         <source> (INVERTED)</source>
         <translation> (INVERTED)</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="188"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="190"/>
         <source>Fragment of %1%2&lt;br&gt;</source>
         <translation>Fragment of %1%2&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="203"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="205"/>
         <source>&lt;tr&gt; &lt;td align=&quot;center&quot;&gt; 5&apos; &lt;/td&gt;&lt;td&gt;&lt;/td&gt; &lt;td align=&quot;center&quot;&gt; 3&apos; &lt;/td&gt; &lt;/tr&gt;</source>
         <translation>&lt;tr&gt; &lt;td align=&quot;center&quot;&gt; 5&apos; &lt;/td&gt;&lt;td&gt;&lt;/td&gt; &lt;td align=&quot;center&quot;&gt; 3&apos; &lt;/td&gt; &lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="209"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="211"/>
         <source>&lt;tr&gt; &lt;td align=&quot;center&quot;&gt; 3&apos; &lt;/td&gt;&lt;td&gt;&lt;/td&gt; &lt;td align=&quot;center&quot;&gt; 5&apos; &lt;/td&gt; &lt;/tr&gt;</source>
         <translation>&lt;tr&gt; &lt;td align=&quot;center&quot;&gt; 3&apos; &lt;/td&gt;&lt;td&gt;&lt;/td&gt; &lt;td align=&quot;center&quot;&gt; 5&apos; &lt;/td&gt; &lt;/tr&gt;</translation>
     </message>
@@ -948,6 +968,19 @@ To start ligation create a project or open an existing.</translation>
     </message>
 </context>
 <context>
+    <name>U2::EnzymesSelectorDialog</name>
+    <message>
+        <location filename="../src/EnzymesQuery.cpp" line="149"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/EnzymesQuery.cpp" line="150"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+</context>
+<context>
     <name>U2::EnzymesSelectorWidget</name>
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="153"/>
@@ -1061,27 +1094,37 @@ To start ligation create a project or open an existing.</translation>
 <context>
     <name>U2::FindEnzymesDialog</name>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="550"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="520"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="521"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="552"/>
         <source>Total number of enzymes: %1, selected %2</source>
         <translation>Total number of enzymes: %1, selected %2</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="557"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="559"/>
         <source>Invalid &apos;Search&apos; region!</source>
         <translation>Invalid &apos;Search&apos; region!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="566"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="568"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="587"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="589"/>
         <source>Error!</source>
         <translation>Error!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="587"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="589"/>
         <source>Minimum hit value must be lesser or equal then maximum!</source>
         <translation>Minimum hit value must be lesser or equal then maximum!</translation>
     </message>

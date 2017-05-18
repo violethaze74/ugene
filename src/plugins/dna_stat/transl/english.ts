@@ -438,17 +438,17 @@
         <translation>Can&apos;t open file for write: %1</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="303"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="304"/>
         <source>There is not enough groups to create distance matrix!</source>
         <translation>There is not enough groups to create distance matrix!</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="357"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="353"/>
         <source>Distance matrix</source>
         <translation>Distance matrix</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="357"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="353"/>
         <source>Distance matrix for %1</source>
         <translation>Distance matrix for %1</translation>
     </message>

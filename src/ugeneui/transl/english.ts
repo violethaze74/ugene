@@ -829,9 +829,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DirectoriesSettingsPageController</name>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="49"/>
         <source>Folders</source>
-        <translation>Folders</translation>
+        <translation type="vanished">Folders</translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="49"/>
+        <source>Directories</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="88"/>
@@ -843,13 +847,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DirectoriesSettingsPageWidget</name>
     <message>
+        <source>Choose folder</source>
+        <translation type="vanished">Choose folder</translation>
+    </message>
+    <message>
         <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="142"/>
         <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="152"/>
         <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="162"/>
         <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="172"/>
         <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="186"/>
-        <source>Choose folder</source>
-        <translation>Choose folder</translation>
+        <source>Choose Folder</source>
+        <translation type="unfinished">Choose Folder</translation>
     </message>
 </context>
 <context>
@@ -1211,24 +1219,40 @@ Note that reloading may cause closing of some views associated with objects from
     <message>
         <location filename="../src/main_window/MDIManagerImpl.cpp" line="84"/>
         <location filename="../src/main_window/MDIManagerImpl.cpp" line="86"/>
+        <source>Window layout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="88"/>
+        <source>Multiple documents</source>
+        <translation type="unfinished">Multiple documents</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="91"/>
+        <source>Tabbed documents</source>
+        <translation type="unfinished">Tabbed documents</translation>
+    </message>
+    <message>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="94"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="96"/>
         <source>Tile windows</source>
         <translation>Tile windows</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="89"/>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="91"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="99"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="101"/>
         <source>Cascade windows</source>
         <translation>Cascade windows</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="111"/>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="113"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="121"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="123"/>
         <source>Next window</source>
         <translation>Next window</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="117"/>
-        <location filename="../src/main_window/MDIManagerImpl.cpp" line="119"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="127"/>
+        <location filename="../src/main_window/MDIManagerImpl.cpp" line="129"/>
         <source>Previous window</source>
         <translation>Previous window</translation>
     </message>
@@ -2362,28 +2386,28 @@ Would you like to download and install it?</source>
 <context>
     <name>U2::UserApplicationsSettingsPageWidget</name>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="135"/>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="181"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="133"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="178"/>
         <source>Custom translation [%1]</source>
         <translation>Custom translation [%1]</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="145"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="143"/>
         <source>Ask to save new project on exit</source>
         <translation>Ask to save new project on exit</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="146"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="144"/>
         <source>Don&apos;t save new project on exit</source>
         <translation>Don&apos;t save new project on exit</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="147"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="145"/>
         <source>Always save new project on exit</source>
         <translation>Always save new project on exit</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="169"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp" line="166"/>
         <source>Select translation file</source>
         <translation>Select translation file</translation>
     </message>
@@ -2463,57 +2487,54 @@ Would you like to download and install it?</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="63"/>
         <source>Window Layout</source>
-        <translation>Window Layout</translation>
+        <translation type="vanished">Window Layout</translation>
+    </message>
+    <message>
+        <source>Multiple documents</source>
+        <translation type="vanished">Multiple documents</translation>
+    </message>
+    <message>
+        <source>Tabbed documents</source>
+        <translation type="vanished">Tabbed documents</translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="69"/>
-        <source>Multiple documents</source>
-        <translation>Multiple documents</translation>
-    </message>
-    <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="79"/>
-        <source>Tabbed documents</source>
-        <translation>Tabbed documents</translation>
-    </message>
-    <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="98"/>
         <source>Open last project at startup</source>
         <translation>Open last project at startup</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="92"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="63"/>
         <source>Project</source>
         <translation>Project</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="128"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="99"/>
         <source>Statistical reports</source>
         <translation>Statistical reports</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="134"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="105"/>
         <source>Enable statistical reports collecting</source>
         <translation>Enable statistical reports collecting</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="144"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="115"/>
         <source>Updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="150"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="121"/>
         <source>Check for updates when UGENE starts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="160"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="131"/>
         <source>Default settings</source>
         <translation>Default settings</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="166"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="137"/>
         <source>Reset settings to default on the next run</source>
         <translation>Reset settings to default on the next run</translation>
     </message>

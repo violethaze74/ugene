@@ -537,9 +537,13 @@
         <translation>Database:</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="79"/>
         <source>Save to folder:</source>
-        <translation>Save to folder:</translation>
+        <translation type="vanished">Save to folder:</translation>
+    </message>
+    <message>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="79"/>
+        <source>Save to directory:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="104"/>
@@ -864,9 +868,13 @@
         <translation>Files and folders options</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="40"/>
         <source>Process folders recursively</source>
-        <translation>Process folders recursively</translation>
+        <translation type="vanished">Process folders recursively</translation>
+    </message>
+    <message>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="40"/>
+        <source>Process directories recursively</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="47"/>
