@@ -726,23 +726,6 @@ GUI_TEST_CLASS_DEFINITION(test_0043){
     GTUtilsProjectTreeView::findIndex(os, "Tree");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0044){
-    GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check document which format cant be saved by UGENE
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
-
-    GTUtilsProjectTreeView::click(os, "COI.aln");
-    QString fileContent = readFileToStr(dataDir + "samples/HMM/aligment15900.hmm");
-    GTClipboard::setText(os, fileContent);
-
-    GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
-    GTGlobals::sleep();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProjectTreeView::findIndex(os, "aligment15900");
-
-    GTUtilsProjectTreeView::itemModificationCheck(os, GTUtilsProjectTreeView::findIndex(os, "clipboard.hmm"), false);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_0045){
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
     //check document which format cant be saved by UGENE
