@@ -866,8 +866,8 @@ GUI_TEST_CLASS_DEFINITION(test_5356) {
 
     GTUtilsWorkflowDesigner::click(os, "Cut Adapter");
     GTUtilsWorkflowDesigner::setParameter(os, "FASTA file with 3' adapters", QDir(testDir + "_common_data/regression/5356/adapter.fa").absolutePath(), GTUtilsWorkflowDesigner::textValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", "Custom", GTUtilsWorkflowDesigner::comboValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Custom directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", "Custom", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Custom folder", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1086,7 +1086,7 @@ GUI_TEST_CLASS_DEFINITION(test_5371) {
 
 GUI_TEST_CLASS_DEFINITION(test_5412) {
 //    1. Open "/_common_data/reads/wrong_order/align_bwa_mem.uwl"
-//    2. Set input data: e_coli_mess_1.fastq nd e_coli_mess_2.fastq (the directory from step 1)
+//    2. Set input data: e_coli_mess_1.fastq nd e_coli_mess_2.fastq (the folder from step 1)
 //    3. Reference: "/_common_data/e_coli/NC_008253.fa"
 //    4. Set requiered output parameters
 //    5. Set "Filter unpaired reads" to false
@@ -1105,7 +1105,7 @@ GUI_TEST_CLASS_DEFINITION(test_5412) {
     GTUtilsWorkflowDesigner::addInputFile(os, "File List 2", testDir + "/_common_data/reads/wrong_order/e_coli_mess_2.fastq");
 
     GTUtilsWorkflowDesigner::click(os, "Align Reads with BWA MEM");
-    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file name", "test_5412", GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", testDir + "/_common_data/e_coli/NC_008253.fa", GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Filter unpaired reads", false, GTUtilsWorkflowDesigner::comboValue);
@@ -1436,6 +1436,35 @@ GUI_TEST_CLASS_DEFINITION(test_5562_3) {
     //Expected state : the file should look like a sample file "_common_data/scenarios/_regression/5562/5562.csv"
     bool check = GTFile::equals(os, testDir + "_common_data/scenarios/_regression/5562/5562.csv", sandBoxDir + "5562_3_CSV.csv");
     CHECK_SET_ERR(check, QString("files are not equal"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5588) {
+    //1. Open File "/samples/CLUSTALW/HIV-1.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Select a 6th column with a mouse click to the consensus area
+    GTUtilsMsaEditor::clickColumn(os, 5);
+    //3. Press the Shift key
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    //4. Select a 15th column with a mouse click to the consensus area
+    GTUtilsMsaEditor::clickColumn(os, 14);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    //Expected state : All columns between 6th and 15th clicks are selected
+    QRect rect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(rect == QRect(QPoint(5, 0), QPoint(14, 24)), QString("Incorrect selected area, %1, %2, %3, %4")
+        .arg(rect.topLeft().x()).arg(rect.topLeft().y()).arg(rect.bottomRight().x()).arg(rect.bottomRight().y()));
+
+    //5. Select a 30th column with a mouse click to the consensus area
+    GTUtilsMsaEditor::clickColumn(os, 29);
+    //6. Press the Shift key
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    //7. Select a 12th column with a mouse click to the consensus area
+    GTUtilsMsaEditor::clickColumn(os, 11);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    // Expected state : All columns between 12th and 30th clicks are selected
+    rect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(rect == QRect(QPoint(11, 0), QPoint(29, 24)), QString("Incorrect selected area, %1, %2, %3, %4")
+        .arg(rect.topLeft().x()).arg(rect.topLeft().y()).arg(rect.bottomRight().x()).arg(rect.bottomRight().y()));
 }
 
 } // namespace GUITest_regression_scenarios

@@ -113,7 +113,7 @@ BlastAllSupport::BlastAllSupport(const QString& name, const QString& path) : Ext
 }
 
 void BlastAllSupport::sl_runWithExtFileSpecify(){
-    //Check that blastall and tempory directory path defined
+    //Check that blastall and tempory folder path defined
     checkExtToolsPath(QStringList() << ET_BLASTALL);
 
     if (path.isEmpty()){
@@ -182,7 +182,7 @@ void BlastAllSupportContext::buildMenu(GObjectView* view, QMenu* m) {
 }
 
 void BlastAllSupportContext::sl_showDialog() {
-    //Checking the BlastAll path and temporary directory path are defined
+    //Checking the BlastAll path and temporary folder path are defined
     checkExtToolsPath(QStringList() << ET_BLASTALL);
 
     if (AppContext::getExternalToolRegistry()->getByName(ET_BLASTALL)->getPath().isEmpty()){

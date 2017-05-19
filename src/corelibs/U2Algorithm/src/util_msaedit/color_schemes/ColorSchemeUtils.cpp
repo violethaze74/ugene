@@ -82,7 +82,7 @@ bool ColorSchemeUtils::getSchemaColors(ColorSchemeData &customScheme) {
     QString dirPath = getColorsDir();
     QDir dir(dirPath);
     if (!dir.exists()) {
-        coreLog.info(QString("%1: no such directory").arg(dirPath));
+        coreLog.info(QString("%1: no such folder").arg(dirPath));
         return false;
     }
 

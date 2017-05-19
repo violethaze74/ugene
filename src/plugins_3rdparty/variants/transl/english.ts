@@ -663,8 +663,8 @@
     </message>
     <message>
         <location filename="../src/AssemblySamtoolsMpileup.cpp" line="186"/>
-        <source>Can not create the directory: </source>
-        <translation>Can not create the directory: </translation>
+        <source>Can not create the folder: </source>
+        <translation>Can not create the folder: </translation>
     </message>
     <message>
         <location filename="../src/AssemblySamtoolsMpileup.cpp" line="241"/>

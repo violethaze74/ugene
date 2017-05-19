@@ -262,8 +262,8 @@ void SpadesWorkerFactory::init() {
      QList<Attribute*> attrs;
      {
          Descriptor outDir(OUTPUT_DIR,
-             SpadesWorker::tr("Output directory"),
-             SpadesWorker::tr("Directory to save Spades output files."));
+             SpadesWorker::tr("Output folder"),
+             SpadesWorker::tr("Folder to save Spades output files."));
 
          Descriptor threads(SpadesTask::OPTION_THREADS,
              SpadesWorker::tr("Number of threads"),

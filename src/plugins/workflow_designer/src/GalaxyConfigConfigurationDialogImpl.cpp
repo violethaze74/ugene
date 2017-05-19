@@ -33,8 +33,8 @@ GalaxyConfigConfigurationDialogImpl::GalaxyConfigConfigurationDialogImpl( const 
     setupUi(this);
 
     ugenePathLineEdit->setText( QApplication::applicationDirPath() );
-    galaxyPathLineEdit->setText( "Set Galaxy directory" );
-    destinationPathLineEdit->setText( "Set destination directory" );
+    galaxyPathLineEdit->setText( "Set Galaxy folder" );
+    destinationPathLineEdit->setText( "Set destination folder" );
 
     connect( cancelPushButton, SIGNAL(clicked()), SLOT( reject() ) );
     connect( createPushButton, SIGNAL(clicked()), SLOT( accept() ) );
@@ -48,21 +48,21 @@ GalaxyConfigConfigurationDialogImpl::GalaxyConfigConfigurationDialogImpl( const 
 }
 
 void GalaxyConfigConfigurationDialogImpl::sl_ugeneToolButtonClicked( ) {
-    QString newDirectoryPath = U2FileDialog::getExistingDirectory(this, tr( "Set UGENE directory" ), ugenePathLineEdit->text() );
+    QString newDirectoryPath = U2FileDialog::getExistingDirectory(this, tr( "Set UGENE folder" ), ugenePathLineEdit->text() );
     if( !newDirectoryPath.isEmpty() ) {
         ugenePathLineEdit->setText( newDirectoryPath );
     }
 }
 
 void GalaxyConfigConfigurationDialogImpl::sl_galaxyToolButtonClicked( ) {
-    QString newDirectoryPath = U2FileDialog::getExistingDirectory(this, tr( "Set Galaxy directory" ), galaxyPathLineEdit->text() );
+    QString newDirectoryPath = U2FileDialog::getExistingDirectory(this, tr( "Set Galaxy folder" ), galaxyPathLineEdit->text() );
     if( !newDirectoryPath.isEmpty() ) {
         galaxyPathLineEdit->setText( newDirectoryPath );
     }
 }
 
 void GalaxyConfigConfigurationDialogImpl::sl_destinationToolButtonClicked( ) {
-    QString newDirectoryPath = U2FileDialog::getExistingDirectory(this, tr( "Set destination directory" ), destinationPathLineEdit->text() );
+    QString newDirectoryPath = U2FileDialog::getExistingDirectory(this, tr( "Set destination folder" ), destinationPathLineEdit->text() );
     if( !newDirectoryPath.isEmpty() ) {
         destinationPathLineEdit->setText( newDirectoryPath );
     }

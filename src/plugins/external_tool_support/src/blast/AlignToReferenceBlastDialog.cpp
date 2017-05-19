@@ -25,6 +25,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CmdlineInOutTaskRunner.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/U2SafePoints.h>
@@ -106,6 +107,8 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
 }
 
 QStringList AlignToReferenceBlastDialog::lastUsedReadsUrls;
+const QString AlignToReferenceBlastDialog::defaultOutputName("sanger_reads_alignment.ugenedb");
+
 AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
     : QDialog(parent),
       saveController(NULL),
@@ -135,7 +138,7 @@ void AlignToReferenceBlastDialog::initSaveController() {
     conf.formatCombo = NULL;
     conf.parentWidget = this;
     conf.saveTitle = tr("Select Output File...");
-    conf.defaultFileName = "result.ugenedb";
+    conf.defaultFileName = GUrlUtils::getDefaultDataPath() + "/" + defaultOutputName;
 
     const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::UGENEDB;
     saveController = new SaveDocumentController(conf, formats, this);
@@ -222,10 +225,29 @@ void AlignToReferenceBlastDialog::sl_removeRead() {
 }
 
 
+void AlignToReferenceBlastDialog::sl_referenceChanged(const QString &newRef) {
+    QFileInfo outFileFi(outputLineEdit->text());
+    if (!fitsDefaultPattern(outFileFi.fileName())) {
+        return;
+    }
+    
+    QFileInfo referenceFileInfo(newRef);
+    QString newOutFileName = referenceFileInfo.baseName() + "_" + defaultOutputName;
+    outputLineEdit->setText(outFileFi.dir().absolutePath() + "/" + newOutFileName);
+}
+
 void AlignToReferenceBlastDialog::connectSlots() {
     connect(setReferenceButton, SIGNAL(clicked(bool)), SLOT(sl_setReference()));
     connect(addReadButton, SIGNAL(clicked(bool)), SLOT(sl_addRead()));
     connect(removeReadButton, SIGNAL(clicked(bool)), SLOT(sl_removeRead()));
+    connect(referenceLineEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_referenceChanged(const QString &)));
+}
+
+bool AlignToReferenceBlastDialog::fitsDefaultPattern(const QString &name) const {
+    if (name.endsWith(defaultOutputName)) {
+        return true;
+    }
+    return false;
 }
 
 } // namespace

@@ -457,7 +457,7 @@ The default is instead to generate sequences with a variety of different lengths
         <location filename="../src/u_build/HMMBuildDialogController.cpp" line="56"/>
         <location filename="../src/u_build/HMMBuildDialogController.cpp" line="164"/>
         <source>Close</source>
-        <translation>Close</translation>
+        <translation type="unfinished">Отмена</translation>
     </message>
     <message>
         <location filename="../src/u_build/HMMBuildDialogController.cpp" line="77"/>

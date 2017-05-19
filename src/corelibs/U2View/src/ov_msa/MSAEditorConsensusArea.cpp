@@ -64,14 +64,6 @@ MaEditorConsensusAreaSettings::MaEditorConsensusAreaSettings() {
     highlightMismatches = false;
 }
 
-MaEditorConsensusAreaSettings::MaEditorConsensusAreaSettings(const QList<MaEditorConsElement> &order,
-                                                             const QMap<MaEditorConsElement, bool> &visibility,
-                                                             bool highlightMismatches)
-    : order(order),
-      visibility(visibility),
-      highlightMismatches(highlightMismatches) {
-}
-
 bool MaEditorConsensusAreaSettings::isVisible(const MaEditorConsElement element) const {
     return visibility.value(element, false);
 }
@@ -359,16 +351,21 @@ void MSAEditorConsensusArea::drawConsensusChar(QPainter& p, int pos, int firstVi
     drawConsensusChar(p, pos, firstVisiblePos, c, selected, useVirtualCoords);
 }
 
+bool isValidConsChar(char ch) {
+    return ch != MSAConsensusAlgorithm::INVALID_CONS_CHAR;
+}
+
 void MSAEditorConsensusArea::drawConsensusChar(QPainter &p, int pos, int firstVisiblePos, char consChar, bool selected, bool useVirtualCoords) {
     U2Region yRange = getYRange(MSAEditorConsElement_CONSENSUS_TEXT);
     U2Region xRange = ui->getSequenceArea()->getBaseXRange(pos, firstVisiblePos, useVirtualCoords);
     QRect cr(xRange.startPos, yRange.startPos, xRange.length + 1, yRange.length);
-    MsaColorScheme* scheme = ui->getSequenceArea()->getCurrentColorScheme();
     if (selected) {
         QColor color(Qt::lightGray);
         color = color.lighter(115);
         p.fillRect(cr, color);
     }
+    CHECK(isValidConsChar(consChar), );
+    MsaColorScheme* scheme = ui->getSequenceArea()->getCurrentColorScheme();
     if (editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent) {
         if (drawSettings.highlightMismatches && mismatchController->isMismatch(pos)) {
             QColor color = scheme->getColor(0, 0, consChar);
@@ -719,13 +716,19 @@ void MSAEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
     int x = e->x();
     if (e->buttons() & Qt::LeftButton) {
         selecting = true;
+        int lastPos = curPos;
         curPos = ui->getSequenceArea()->getColumnNumByX(x, selecting);
-        if (curPos !=-1) {
+        if (curPos != -1) {
             int height = ui->getSequenceArea()->getNumDisplayedSequences();
             // select current column
-            MaEditorSelection selection(curPos, 0, 1, height);
-            ui->getSequenceArea()->setSelection(selection);
-            scribbling = true;
+            if ((Qt::ShiftModifier == e->modifiers()) && (lastPos != -1)) {
+                MaEditorSelection selection(qMin(lastPos, curPos), 0, abs(curPos - lastPos) + 1, height);
+                ui->getSequenceArea()->setSelection(selection);
+            } else {
+                MaEditorSelection selection(curPos, 0, 1, height);
+                ui->getSequenceArea()->setSelection(selection);
+                scribbling = true;
+            }
         }
     }
     QWidget::mousePressEvent(e);

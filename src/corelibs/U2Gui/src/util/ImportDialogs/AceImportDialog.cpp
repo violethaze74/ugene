@@ -89,7 +89,7 @@ bool AceImportDialog::isValid() {
     QFileInfo destinationDir(QFileInfo(destUrl.getURLString()).path());
     if (!destinationDir.isWritable()) {
         leDest->setFocus(Qt::OtherFocusReason);
-        QMessageBox::critical(this, windowTitle(), tr("Destination directory '%1' is not writable, "\
+        QMessageBox::critical(this, windowTitle(), tr("Destination folder '%1' is not writable, "\
                                                       "please choose different destination URL")
                               .arg(destinationDir.absoluteFilePath()));
         return false;

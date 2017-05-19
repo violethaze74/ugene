@@ -119,11 +119,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006){
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
 
     QString expectedTitle;
-#ifdef Q_OS_MAC
     expectedTitle = "proj1 UGENE";
-#else
-    expectedTitle = "proj1 UGENE - [Start Page]";
-#endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
 }
 
@@ -142,6 +138,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008){
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);
 //    Close Start page
     GTUtilsMdi::click(os, GTGlobals::Close);
+    GTGlobals::sleep();
     QWidget* window = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false));
     CHECK_SET_ERR(window == NULL, "start page was not closed");
 //    Repeat step 2

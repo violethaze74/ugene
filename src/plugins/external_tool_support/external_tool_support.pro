@@ -210,7 +210,7 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/tcoffee/TCoffeeSupportRunDialog.ui \
          src/snpeff/SnpEffDatabaseDialog.ui \
          src/spades/SpadesSettings.ui \
-         src/utils/AlignToReferenceBlastDialog.ui \
+         src/blast/AlignToReferenceBlastDialog.ui \
          src/utils/BlastAllSupportDialog.ui \
          src/utils/BlastDBSelectorWidget.ui
 

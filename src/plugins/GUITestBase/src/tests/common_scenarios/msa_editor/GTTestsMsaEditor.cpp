@@ -208,7 +208,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
 
-    GTUtilsMdi::click(os, GTGlobals::Maximize);
+    // GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
@@ -234,7 +234,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
-    GTUtilsMdi::click(os, GTGlobals::Maximize);
+    //GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Show offsets");
@@ -311,7 +311,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
-    GTUtilsMdi::click(os, GTGlobals::Maximize);
+    //GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
@@ -379,7 +379,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_3) {
     GTGlobals::sleep();
     GTGlobals::sleep();
 
-    GTUtilsMdi::click(os, GTGlobals::Maximize);
+    //GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     GTUtilsMSAEditorSequenceArea::checkSorted(os);
@@ -2647,8 +2647,9 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2){//DIFFERENCE: Line label is tested
     CHECK_SET_ERR(lineLabel->text()=="Ln 1 / 10", "Expected text: Ln 1 / 10. Found: " + lineLabel->text());
 //Expected state: Statistics "Pos" in right bottom is "Pos 3/14"
 
-//3. Insert 3 gaps to first three positoons in "Phaneroptera_falcata"
-    GTUtilsMSAEditorSequenceArea::selectArea(os,QPoint(-5,0),QPoint(-5,4));
+//3. Select and delete 5 lines 
+    GTUtilsMSAEditorSequenceArea::selectArea(os,QPoint(-5,3),QPoint(-5,7));
+    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
 //4. Select char at 4 position in "Phaneroptera_falcata"(A)
@@ -2814,7 +2815,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2_linux){
     qint64 bigSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
     qint64 smallSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
 
-    CHECK_SET_ERR(bigSize==4785325 && smallSize==914927, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
+    CHECK_SET_ERR(bigSize==4785325 && smallSize>914000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
 //    Expected state: image is exported
 }
 
@@ -3834,19 +3835,18 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
             QPushButton* ok = box->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(ok !=NULL, "ok button is NULL");
 
-            QSpinBox* startPosBox = dialog->findChild<QSpinBox*>("startPosBox");
-            CHECK_SET_ERR(startPosBox != NULL, "startPosBox is NULL");
-            GTSpinBox::setValue(os, startPosBox, 10);
+            QSpinBox* startLineEdit = dialog->findChild<QSpinBox*>("startLineEdit");
+            CHECK_SET_ERR(startLineEdit != NULL, "startLineEdit is NULL");
+            GTSpinBox::setValue(os, startLineEdit, 10);
 
-            QSpinBox* endPosBox = dialog->findChild<QSpinBox*>("endPosBox");
-            CHECK_SET_ERR(endPosBox != NULL, "endPoxBox is NULL");
-            GTSpinBox::setValue(os, endPosBox, 5);
+            QSpinBox* endLineEdit = dialog->findChild<QSpinBox*>("endLineEdit");
+            CHECK_SET_ERR(endLineEdit != NULL, "endLineEdit is NULL");
+            GTSpinBox::setValue(os, endLineEdit, 5);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
             GTWidget::click(os, ok);
 
-            GTSpinBox::setValue(os, endPosBox, 15);
-
+            GTSpinBox::setValue(os, endLineEdit, 15);
             QWidget *noneButton = dialog->findChild<QWidget*>("noneButton");
             CHECK_SET_ERR(noneButton != NULL, "noneButton is NULL");
             GTWidget::click(os, noneButton);
@@ -4500,7 +4500,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new customAppSettingsFiller()));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
-//    Select some color scheme directory. Check state
+//    Select some color scheme folder. Check state
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "GUITest_common_scenarios_msa_editor_test_0060", NewColorSchemeCreator::nucl));
@@ -4521,7 +4521,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
 
             QLineEdit* colorsDirEdit = GTWidget::findExactWidget<QLineEdit*>(os, "colorsDirEdit", dialog);
             QString path = colorsDirEdit->text();
-            CHECK_SET_ERR(path.contains("_common_data/scenarios/sandbox"), "unexpected color directory: " + path);
+            CHECK_SET_ERR(path.contains("_common_data/scenarios/sandbox"), "unexpected color folder: " + path);
 
             GTGlobals::sleep(500);
 
@@ -4531,7 +4531,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new customAppSettingsFiller1()));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
-//    Select some color scheme directory. Check state
+//    Select some color scheme folder. Check state
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 }
 
@@ -4615,10 +4615,10 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
 //    Check wrong parameters:
 //    Dir to save does not exists
             GTLineEdit::setText(os, filepathEdit, sandBoxDir + "some_dir/subalignment.aln");
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Directory to save does not exist"));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Folder to save does not exist"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTGlobals::sleep(500);
-//    No permission  to write to directory
+//    No permission  to write to folder
             GTLineEdit::setText(os, filepathEdit, sandBoxDir + "read_only_dir/subalignment.aln");
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "No write permission to "));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -4640,13 +4640,14 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "You must select at least one sequence"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 //    Start pos > end pos
-            QLineEdit* startPosBox = GTWidget::findExactWidget<QLineEdit*>(os, "startPosBox", dialog);
-            GTLineEdit::setText(os, startPosBox, "50");
-            QLineEdit* endPosBox = GTWidget::findExactWidget<QLineEdit*>(os, "endPosBox", dialog);
-            GTLineEdit::setText(os, endPosBox, "40");
+
+            QLineEdit* startLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "startLineEdit", dialog);
+            GTLineEdit::setText(os, startLineEdit, "50");
+            QLineEdit* endLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "endLineEdit", dialog);
+            GTLineEdit::setText(os, endLineEdit, "40");
 
 
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Start position must be less than end position!"));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Illegal region!"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTGlobals::sleep(500);
 
@@ -4715,7 +4716,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064){
     QString val1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     QString val2 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 2);
     CHECK_SET_ERR(val1 == "0%", "1: unexpected valeu1: " + val1);
-    CHECK_SET_ERR(val2 == "19%", "1: unexpected valeu2: " + val2);
+    CHECK_SET_ERR(val2 == "20%", "1: unexpected valeu2: " + val2);
 //    Click "Show distance column". Check state
     GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
     QWidget* column = GTWidget::findWidget(os, "msa_editor_similarity_column");
@@ -4725,7 +4726,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064){
     val1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     val2 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 2);
     CHECK_SET_ERR(val1 == "0%", "2: unexpected valeu1: " + val1);
-    CHECK_SET_ERR(val2 == "19%", "2: unexpected valeu2: " + val2);
+    CHECK_SET_ERR(val2 == "20%", "2: unexpected valeu2: " + val2);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0065){

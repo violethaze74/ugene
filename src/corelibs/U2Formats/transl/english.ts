@@ -70,7 +70,7 @@
         <translation>Can&apos;t open file with given url: %1.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="476"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="480"/>
         <source>Invalid database user permissions set, so UGENE unable to use this database. Connect to your system administrator to fix the issue.</source>
         <translation>Invalid database user permissions set, so UGENE unable to use this database. Connect to your system administrator to fix the issue.</translation>
     </message>
@@ -1545,9 +1545,13 @@
 <context>
     <name>U2::GenbankPlainTextFormat</name>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="47"/>
         <source>Genbank</source>
-        <translation>Genbank</translation>
+        <translation type="vanished">Genbank</translation>
+    </message>
+    <message>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="47"/>
+        <source>GenBank</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/GenbankPlainTextFormat.cpp" line="49"/>
@@ -1944,12 +1948,11 @@
         <translation>Too much reads without a pair (&gt;%1). Check the input data is set correctly.</translation>
     </message>
     <message>
-        <location filename="../src/util/PairedFastqComparator.cpp" line="125"/>
         <source>The list doesn&apos;t contains the item</source>
-        <translation>The list doesn&apos;t contains the item</translation>
+        <translation type="vanished">The list doesn&apos;t contains the item</translation>
     </message>
     <message>
-        <location filename="../src/util/PairedFastqComparator.cpp" line="173"/>
+        <location filename="../src/util/PairedFastqComparator.cpp" line="172"/>
         <source>Invalid sequence info</source>
         <translation>Invalid sequence info</translation>
     </message>
@@ -2253,49 +2256,49 @@
         <translation>Required attribute is not found</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="268"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="272"/>
         <source>Database url is incorrect</source>
         <translation>Database url is incorrect</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="274"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="278"/>
         <source>User login is not specified</source>
         <translation>User login is not specified</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="280"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="284"/>
         <source>Host is not specified</source>
         <translation>Host is not specified</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="286"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="290"/>
         <source>Database name is not specified</source>
         <translation>Database name is not specified</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="302"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="306"/>
         <source>Error opening MySQL database: %1</source>
         <translation>Error opening MySQL database: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="383"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="387"/>
         <source>Not a %1 MySQL database: %2, %3</source>
         <translation>Not a %1 MySQL database: %2, %3</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="389"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="393"/>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="275"/>
         <source>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</source>
         <translation>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="492"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="496"/>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="330"/>
         <source>Illegal database state: %1</source>
         <translation>Illegal database state: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="523"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="527"/>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="412"/>
         <source>Can&apos;t synchronize database state</source>
         <translation>Can&apos;t synchronize database state</translation>
@@ -2364,8 +2367,8 @@
     <message>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="605"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="638"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1120"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1129"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1118"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1127"/>
         <source>Unexpected modification type &apos;%1&apos;</source>
         <translation>Unexpected modification type &apos;%1&apos;</translation>
     </message>
@@ -2467,22 +2470,22 @@
         <translation>Unknown object type! Id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1095"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1094"/>
         <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1111"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1109"/>
         <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1142"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1140"/>
         <source>An error occurred during updating an object name</source>
         <translation>An error occurred during updating an object name</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1160"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1158"/>
         <source>An error occurred during updating an object name!</source>
         <translation>An error occurred during updating an object name!</translation>
     </message>
@@ -2502,12 +2505,12 @@
         <translation>An exception was thrown during reading sequence data from dbi</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="387"/>
+        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="391"/>
         <source>An error occurred during reverting replacing sequence data</source>
         <translation>An error occurred during reverting replacing sequence data</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="402"/>
+        <location filename="../src/mysql_dbi/MysqlSequenceDbi.cpp" line="406"/>
         <source>An error occurred during replacing sequence data</source>
         <translation>An error occurred during replacing sequence data</translation>
     </message>
@@ -2699,24 +2702,24 @@
         <translation>Can&apos;t undo an operation for the object!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="687"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="686"/>
         <source>Can&apos;t redo an operation for the object!</source>
         <translation>Can&apos;t redo an operation for the object!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="860"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="858"/>
         <source>Object not found!</source>
         <translation>Object not found!</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="803"/>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="921"/>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="933"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="919"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="931"/>
         <source>Object not found.</source>
         <translation>Object not found.</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="970"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="968"/>
         <source>Folder not found: %1</source>
         <translation>Folder not found: %1</translation>
     </message>
@@ -2735,6 +2738,14 @@
         <location filename="../src/sqlite_dbi/assembly/RTreeAssemblyAdapter.cpp" line="68"/>
         <source>Error during RTree index creation: %1! Check if SQLite library has RTree index support!</source>
         <translation>Error during RTree index creation: %1! Check if SQLite library has RTree index support!</translation>
+    </message>
+    <message>
+        <location filename="../src/mysql_dbi/MysqlUdrDbi.cpp" line="63"/>
+        <location filename="../src/mysql_dbi/MysqlUdrDbi.cpp" line="77"/>
+        <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="56"/>
+        <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="67"/>
+        <source>An error occurred during updating UDR</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

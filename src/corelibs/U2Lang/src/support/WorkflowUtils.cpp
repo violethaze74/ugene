@@ -1151,7 +1151,7 @@ bool WorkflowUtils::validateInputDbFolders(QString urls, ProblemList &problemLis
 }
 
 /**
- * Input @dirAbsPath must be an absolute path to a directory (or empty).
+ * Input @dirAbsPath must be an absolute path to a folder (or empty).
  * The method returns "true" if it is possible to create a file in it.
  */
 static bool canWriteToPath(QString dirAbsPath) {
@@ -1161,10 +1161,10 @@ static bool canWriteToPath(QString dirAbsPath) {
     QFileInfo fi(dirAbsPath);
     SAFE_POINT(fi.dir().isAbsolute(), "Not an absolute path!", false);
 
-    // Find out the directory that exists
+    // Find out the folder that exists
     QDir existenDir(dirAbsPath);
     while (!existenDir.exists()) {
-        // Get upper directory
+        // Get upper folder
         QString dirPath = existenDir.path();
         QString dirName = existenDir.dirName();
         dirPath.remove(// remove dir name and slash (if any) from the path
@@ -1176,8 +1176,8 @@ static bool canWriteToPath(QString dirAbsPath) {
         existenDir.setPath(dirPath);
     }
 
-    // Attempts to write a file to the directory.
-    // This assumes possibility to create any sub-directory, file, etc.
+    // Attempts to write a file to the folder.
+    // This assumes possibility to create any sub-folder, file, etc.
     QFile file(existenDir.filePath("testWriteAccess.txt"));
     if (!file.open(QIODevice::WriteOnly)) {
         return false;
@@ -1221,7 +1221,7 @@ bool WorkflowUtils::validateOutputDir(const QString &url, ProblemList &problemLi
         return true;
     }
     else {
-        problemList << Problem(tr("Can't output directory path: '%1', check permissions").arg(url));
+        problemList << Problem(tr("Can't output folder path: '%1', check permissions").arg(url));
         return false;
     }
 }

@@ -1433,7 +1433,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010){
 //    5. Select some existing read-only file as output
     QString s = sandBoxDir + dirName;
     bool ok = QDir().mkpath(s);
-    CHECK_SET_ERR(ok, "subdirectory not created");
+    CHECK_SET_ERR(ok, "subfolder not created");
 
     GTFile::setReadOnly(os, s);
 
@@ -1974,7 +1974,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003){
 //    3. Select some existing read-only file as output
     QString s = sandBoxDir + dirName;
     bool ok = QDir().mkpath(s);
-    CHECK_SET_ERR(ok, "subdirectory not created");
+    CHECK_SET_ERR(ok, "subfolder not created");
     GTFile::setReadOnly(os, s);
 
     setConsensusOutputPath(os, sandBoxDir + dirName + '/' + fileName);

@@ -26,8 +26,12 @@
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_sequence/SequenceObjectContext.h"
 
+#include <U2Algorithm/MSAConsensusAlgorithm.h>
+
+#include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceSelection.h>
 
+#include <U2Gui/Notification.h>
 
 namespace U2 {
 
@@ -60,7 +64,7 @@ bool MaConsensusMismatchController::isMismatch(int pos) const {
 
 void MaConsensusMismatchController::sl_updateItem(int pos, char c) {
     SAFE_POINT(0 <= pos && pos < mismatchCache.size(), "Invalid pos", );
-    mismatchCache[pos] = editor->getReferenceCharAt(pos) != c;
+    mismatchCache[pos] = c != MSAConsensusAlgorithm::INVALID_CONS_CHAR && editor->getReferenceCharAt(pos) != c;
 }
 
 void MaConsensusMismatchController::sl_resize(int newSize) {
@@ -81,33 +85,47 @@ void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direc
     CHECK(mcaEditor != NULL, );
 
     SequenceObjectContext* ctx = mcaEditor->getReferenceContext();
-    int pos = -1;
+    int initialPos = -1;
 
     if (ctx->getSequenceSelection()->isEmpty()) {
         // find next/prev from visible range
         MaEditorSequenceArea* seqArea = mcaEditor->getUI()->getSequenceArea();
-        pos = seqArea->getFirstVisibleBase() - 1;
+        initialPos = seqArea->getFirstVisibleBase() != 0
+                ? seqArea->getFirstVisibleBase() - 1
+                : mismatchCache.size() - 1;
     } else {
         // find next/prev from referenece selection
         DNASequenceSelection* selection = ctx->getSequenceSelection();
-        pos = selection->getSelectedRegions().first().startPos;
+        initialPos = selection->getSelectedRegions().first().startPos;
     }
-    switch (direction) {
-    case Forward:
-        CHECK(pos != mismatchCache.size() - 1, );
-        break;
-    default:
-        CHECK(pos != 0, );
-        break;
-    }
+
+    int pos = initialPos;
     do {
-        direction == Forward ? pos++ : pos--;
+        switch (direction) {
+        case Forward:
+            pos++;
+            if (pos == mismatchCache.size()) {
+                pos = 0;
+            }
+            break;
+        default:
+            pos--;
+            if (pos == -1) {
+                pos = mismatchCache.size() - 1;
+            }
+            break;
+        }
         consCache->updateCacheItem(pos);
         if (mismatchCache[pos] == true) {
             emit si_selectMismatch(pos);
             return;
         }
-    } while (direction == Forward ? pos < mismatchCache.size() - 1: pos != 0);
+    } while (pos != initialPos);
+
+    // no mismatches - show notification
+    const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
+    CHECK(notificationStack != NULL, );
+    notificationStack->addNotification(tr("No mismatch found"), Info_Not);
 }
 
 } // namespace U2

@@ -73,13 +73,13 @@ private:
     virtual void drawRuler(GraphUtils::RulerConfig c,  QPainter& p, const U2Region &visibleRange, int firstCharCenter, int firstLastWidth);
     void drawCustomRulers(GraphUtils::RulerConfig c,  QPainter& p, const U2Region &visibleRange,
                           int firstCharCenter, int lastCharCenter,
-                          int width, int predefinedY = -1, bool ignoreVisbileRange = false);
+                          int width, int predefinedY = -1, bool ignoreVisibleRange = false);
 
     const QString getText(const PVRowData * rData) const;
 
     static const int RULER_NOTCH_SIZE;
-    static const int MAX_VISIBLE_ROWS;
-    static const int MAX_VISIBLE_ROWS_ON_START;
+//    static const int MAX_VISIBLE_ROWS;
+//    static const int MAX_VISIBLE_ROWS_ON_START;
     static const int LINE_TEXT_OFFSET;
 };
 

@@ -42,14 +42,16 @@ QString MSAConsensusAlgorithmFactoryDefault::getName() const {
 }
 
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleAlignment&, QObject* p) {
-    return new MSAConsensusAlgorithmDefault(this, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
+    return new MSAConsensusAlgorithmDefault(this, ignoreTrailingLeadingGaps, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment& msa, int pos, int& cnt, const QVector<qint64> &seqIdx) const {
+char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment& msa, int pos, int& cnt, QVector<qint64> seqIdx) const {
+    CHECK(filterIdx(seqIdx, msa, pos), INVALID_CONS_CHAR);
+
     //TODO: use var-length array!
     QVector<QPair<int, char> > freqs(32);
     int ch = U2Msa::GAP_CHAR;

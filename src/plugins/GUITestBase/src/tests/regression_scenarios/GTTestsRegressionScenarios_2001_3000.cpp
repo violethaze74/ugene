@@ -912,7 +912,7 @@ GUI_TEST_CLASS_DEFINITION( test_2089 )
     GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os, "!@#$%^&*()_+\";:?/", false));
 
     // 2. Open WD
-    // 3. Set any folder without write access as workflow output directory. Click OK.
+    // 3. Set any folder without write access as workflow output folder. Click OK.
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Workflow Designer...");
     GTGlobals::sleep();
 }
@@ -1506,11 +1506,11 @@ GUI_TEST_CLASS_DEFINITION( test_2192 ){
 //    3. Set valid input data.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.sorted.bam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/chrM.sorted.bam");
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/cmdline/call-variations/chrM.fa");
 //    4. Start the scheme.
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1543,10 +1543,10 @@ GUI_TEST_CLASS_DEFINITION( test_2202 )
 //    1. Open Workflow Designer first time (e.g. remove UGENE.ini before it).
 //    Expected: the dialog appears.
 
-//    2. Write the path to the directory which does not exist.
+//    2. Write the path to the folder which does not exist.
 
 //    3. Click OK.
-//    Expected: the directory is created, there are no error messages about write access.
+//    Expected: the folder is created, there are no error messages about write access.
 
     QDir workflowOutputDir(testDir + "_common_data/scenarios/sandbox/regression_test_2202/1/2/3/4/");
     CHECK_SET_ERR(!workflowOutputDir.exists(), "Dir already exists");
@@ -1732,7 +1732,7 @@ GUI_TEST_CLASS_DEFINITION( test_2268 ) {
     toolDir.cdUp();
 #endif
 
-//    1. Forbid write access to the t-coffee directory (chmod 555 %t-coffee-dir%).
+//    1. Forbid write access to the t-coffee folder (chmod 555 %t-coffee-dir%).
     // Permissions will be returned to the original state, if UGENE won't crash.
     GTFile::setReadOnly(os, toolDir.path());
 
@@ -3371,7 +3371,7 @@ GUI_TEST_CLASS_DEFINITION( test_2475 ) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Find Splice Junctions with TopHat"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setParameter(os, "Bowtie index directory", testDir + "_common_data/bowtie2/index", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Bowtie index folder", testDir + "_common_data/bowtie2/index", GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Bowtie index basename", "human_T1_cutted", GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
@@ -3866,11 +3866,11 @@ GUI_TEST_CLASS_DEFINITION( test_2568 ){
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.fa"));
             QWidget* browse = GTWidget::findWidget(os, "browseButton", GTWidget::findWidget(os, "Reference sequence file labeledWidget", dialog));
             GTWidget::click(os, browse);
-            //    Expected: the file is chosen. (The file's directory is DIR)
+            //    Expected: the file is chosen. (The file's folder is DIR)
 
             //    5. Click to browse a BAM/SAM file
 
-            //    Expected: the open file dialog is opened with the directory DIR
+            //    Expected: the open file dialog is opened with the folder DIR
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, new customFileDialog()));
             GTWidget::click(os, GTWidget::findWidget(os, "addFileButton"));
 
@@ -4301,10 +4301,10 @@ GUI_TEST_CLASS_DEFINITION(test_2632){
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
-            //    3. Set bowtie index and a known transcript file.(_common_data/NIAID_pipelines/tuxedo)
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/index/chr6.1.ebwt"));
+            //    3. Set bowtie index and a known transcript file.
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/bowtie/index/e_coli.1.ebwt"));
             GTWidget::click(os, GTWidget::findButtonByText(os, "Select\nbowtie index file", dialog));
-            GTUtilsWizard::setParameter(os, "Known transcript file", QVariant(QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/hg19_chr6_refFlat_noRandomHapUn.gtf")));
+            GTUtilsWizard::setParameter(os, "Known transcript file", QVariant(QDir().absoluteFilePath(testDir + "_common_data/gtf/valid.gtf")));
 
             //    4. Revern to first page, then click next again
             //    UGENE crashes
@@ -4325,13 +4325,13 @@ GUI_TEST_CLASS_DEFINITION(test_2638){
 //    1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Select "tuxedo" sample
-//    3. Set proper input data(_common_data/NIAID_pipelines/tuxedo).
+//    3. Set proper input data.
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/index"));
-    map.insert("Bowtie index basename", "chr6");
+    map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index"));
+    map.insert("Bowtie index basename", "e_coli");
     map.insert("Bowtie version", "Bowtie1");
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QList<QStringList>()<<(QStringList()<<
-                                                     testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq"),
+                                                     testDir + "_common_data/e_coli/e_coli_1000.fastq"),
                                                       map));
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
                                                                    "Single-sample"<<"Single-end"));
@@ -4352,7 +4352,7 @@ GUI_TEST_CLASS_DEFINITION(test_2638){
     GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "Find Splice Junctions with TopHat", "LI"));
     GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "index", "BUTTON"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-//    Expected state: "Bowtie index directory" parameter's value is folder, it is not tried to be opened bu UGENE when clicking
+//    Expected state: "Bowtie index folder" parameter's value is folder, it is not tried to be opened bu UGENE when clicking
     QString finalTitle = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(initTitle == finalTitle, "New window was opened unexpectidly: " + finalTitle);
 }
@@ -4378,7 +4378,7 @@ GUI_TEST_CLASS_DEFINITION(test_2640){
 //    1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Select "tuxedo" sample
-//    3. Set proper input data(_common_data/NIAID_pipelines/tuxedo).
+//    3. Set proper input data
     QString expected;
 #ifdef Q_OS_MAC
     expected = "tophat-2.0.9/tophat -p 94 --output-dir";
@@ -4387,11 +4387,11 @@ GUI_TEST_CLASS_DEFINITION(test_2640){
 #endif
     GTLogTracer l(expected);
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/index"));
-    map.insert("Bowtie index basename", "chr6");
+    map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index"));
+    map.insert("Bowtie index basename", "e_coli");
     map.insert("Bowtie version", "Bowtie1");
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QList<QStringList>()<<(QStringList()<<
-                                                     testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq"),
+                                                     testDir + "_common_data/e_coli/e_coli_1000.fastq"),
                                                       map));
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
                                                                    "Single-sample"<<"Single-end"));
@@ -4803,7 +4803,7 @@ GUI_TEST_CLASS_DEFINITION(test_2721){
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-        //Expected state: wizard appeared - on the first page "Cistrome data directory" is set to "data/cistrome".
+        //Expected state: wizard appeared - on the first page "Cistrome data folder" is set to "data/cistrome".
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog!=NULL, "activeModalWidget is NULL");
 
@@ -5001,7 +5001,7 @@ GUI_TEST_CLASS_DEFINITION(test_2761_2) {
             customFiller(HI::GUITestOpStatus &os): ExtractSelectedAsMSADialogFiller(os,testDir + "_common_data/scenarios/sandbox/test_2761_2/2761.aln",
                                                            QStringList() << "Bicolorana_bicolor_EF540830" << "Roeseliana_roeseli"){}
             void run(){
-                GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Directory to save does not exist"));
+                GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Folder to save does not exist"));
                 ExtractSelectedAsMSADialogFiller::run();
                 GTGlobals::sleep(1000);
                 GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
@@ -5692,11 +5692,11 @@ GUI_TEST_CLASS_DEFINITION(test_2899){
                 GTUtilsWizard::clickButton(os, GTUtilsWizard::Back);
             }
 
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index/NC_010473.1.bt2"));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/bowtie2/index/human_T1_cutted.2.bt2"));
             GTWidget::click(os, GTWidget::findButtonByText(os, "Select\nbowtie index file", dialog));
             //    Expected state: index is set if it is valid (file has valid extension), no crash
-            bool basename = GTUtilsWizard::getParameter(os, "Bowtie index basename").toString() == "NC_010473";
-            bool dir = GTUtilsWizard::getParameter(os, "Bowtie index directory").toString().contains("_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index");
+            bool basename = GTUtilsWizard::getParameter(os, "Bowtie index basename").toString() == "human_T1_cutted";
+            bool dir = GTUtilsWizard::getParameter(os, "Bowtie index folder").toString().contains("_common_data/bowtie2/index");
             CHECK_SET_ERR(basename, "unexpected basename");
             CHECK_SET_ERR(dir, "unexpected dir");
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);

@@ -74,6 +74,10 @@ MSAEditorStatusWidget::MSAEditorStatusWidget(MultipleAlignmentObject* mobj, MaEd
     posLabel->setObjectName("Position");
     posLabel->setAlignment(Qt::AlignCenter);
 
+    selectionLabel = new QLabel();
+    selectionLabel->setObjectName("Selection");
+    selectionLabel->setAlignment(Qt::AlignCenter);
+
     lockLabel = new QLabel();
 
     QHBoxLayout* l = new QHBoxLayout();
@@ -87,6 +91,7 @@ MSAEditorStatusWidget::MSAEditorStatusWidget(MultipleAlignmentObject* mobj, MaEd
     l->addWidget(linesLabel);
     l->addWidget(colsLabel);
     l->addWidget(posLabel);
+    l->addWidget(selectionLabel);
     l->addWidget(lockLabel);
     setLayout(l);
 
@@ -142,6 +147,26 @@ void MSAEditorStatusWidget::updateCoords() {
     posLabel->setText(ptext);
     posLabel->setToolTip(tr("Position %1 of %2").arg(pp.first).arg(pp.second));
     posLabel->setMinimumWidth(10 + fm.width(ppattern.arg(pp.second).arg(pp.second)));
+
+    QString selectionPattern = QString(tr("Sel %1"));
+    QString selectionToolTipPattern = tr("Selection width and height are %1");
+    MaEditorSelection selection = seqArea->getSelection();
+    QString selSize;
+    QString noneSelection = tr("none");
+    if (selection.isNull()) {
+        selSize = noneSelection;
+    } else {
+        selSize = QString::number(selection.width()) + "x" + QString::number(selection.height());
+    }
+
+    selectionLabel->setText(selectionPattern.arg(selSize));
+    selectionLabel->setToolTip(selectionToolTipPattern.arg(selSize));
+    MaEditor *editor = seqArea->getEditor();
+    CHECK(editor != NULL, );
+    int maxSelLength = fm.width(selectionToolTipPattern.arg(QString::number(editor->getAlignmentLen()) + " and " + 
+        QString::number(editor->getNumSequences())));
+    int nonSelLength = fm.width(selectionToolTipPattern.arg(noneSelection));
+    selectionLabel->setMinimumWidth(10 + qMax(maxSelLength, nonSelLength));
 }
 
 bool MSAEditorStatusWidget::eventFilter(QObject*, QEvent* ev) {

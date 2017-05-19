@@ -183,7 +183,7 @@ void SamtoolsMpileupTask::prepare(){
     if (!outDir.exists()) {
         const bool created = outDir.mkpath(outDir.absolutePath());
         if (!created) {
-            setError(tr("Can not create the directory: ") + outDir.absolutePath());
+            setError(tr("Can not create the folder: ") + outDir.absolutePath());
         }
     }
 }

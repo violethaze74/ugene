@@ -81,6 +81,16 @@ void MWMDIManagerImpl::prepareGUI() {
     closeAllAct->setStatusTip(tr("Close all windows"));
     connect(closeAllAct, SIGNAL(triggered()), mdiArea, SLOT(closeAllSubWindows()));
 
+    windowLayout = new QMenu(tr("Window layout"));
+    windowLayout->setObjectName("Window layout");
+    windowLayout->setStatusTip(tr("Window layout"));
+
+    multipleDocsAct = new QAction(tr("Multiple documents"), this);
+    connect(multipleDocsAct, SIGNAL(triggered()), SLOT(sl_setWindowLayoutToMultiDoc()));
+
+    tabbedDocsAct = new QAction(tr("Tabbed documents"), this);
+    connect(tabbedDocsAct, SIGNAL(triggered()), SLOT(sl_setWindowLayoutToTabbed()));
+
     tileAct = new QAction(QIcon(":ugene/images/window_tile.png"), tr("Tile windows"), this);
     tileAct->setObjectName("Tile windows");
     tileAct->setStatusTip(tr("Tile windows"));
@@ -188,8 +198,12 @@ void MWMDIManagerImpl::updateActions() {
 void MWMDIManagerImpl::sl_updateWindowMenu() {
     QMenu* windowMenu = mw->getTopLevelMenu(MWMENU_WINDOW);
     windowMenu->clear();//TODO: avoid cleaning 3rd party actions
+    windowMenu->addMenu(windowLayout);
+    windowLayout->addAction(multipleDocsAct);
+    windowLayout->addAction(tabbedDocsAct);
     windowMenu->addAction(closeAct);
     windowMenu->addAction(closeAllAct);
+
     if (mdiArea->viewMode() == QMdiArea::SubWindowView) {
         windowMenu->addSeparator();
         windowMenu->addAction(tileAct);
@@ -422,6 +436,18 @@ void MWMDIManagerImpl::sl_updateWindowLayout() {
     } else {
         mdiArea->setViewMode(QMdiArea::SubWindowView);
     }
+}
+
+void MWMDIManagerImpl::sl_setWindowLayoutToMultiDoc() {
+    UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
+    st->setTabbedWindowLayout(false);
+    sl_updateWindowLayout();
+}
+
+void MWMDIManagerImpl::sl_setWindowLayoutToTabbed() {
+    UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
+    st->setTabbedWindowLayout(true);
+    sl_updateWindowLayout();
 }
 
 }//namespace

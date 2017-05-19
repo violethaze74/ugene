@@ -31,33 +31,24 @@
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/AppSettings.h>
 #include <U2Core/AutoAnnotationsSupport.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/ClipboardController.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/Log.h>
 #include <U2Core/ModifySequenceObjectTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/RemoveAnnotationsTask.h>
 #include <U2Core/ReverseSequenceTask.h>
 #include <U2Core/SelectionUtils.h>
 #include <U2Core/SequenceUtils.h>
-#include <U2Core/Task.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
-#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/CreateObjectRelationDialogController.h>
 #include <U2Gui/DialogUtils.h>
@@ -78,9 +69,7 @@
 #include "ADVConstants.h"
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
-#include "ADVSplitWidget.h"
 #include "ADVSyncViewManager.h"
-#include "ADVUtils.h"
 #include "AnnotatedDNAView.h"
 #include "AnnotatedDNAViewFactory.h"
 #include "AnnotatedDNAViewState.h"
@@ -1313,7 +1302,7 @@ void AnnotatedDNAView::sl_sequenceModifyTaskStateChanged() {
             if (regions.count() == 1) {
                 const U2Region r = regions.first();
                 foreach (ADVSequenceWidget *w, seqCtx->getSequenceWidgets()) {
-                    w->centerPosition(r.startPos);
+                    w->centerPosition((int) r.startPos);
                 }
             }
         }
@@ -1391,11 +1380,11 @@ void AnnotatedDNAView::sl_pasteFinished(Task* _pasteTask){
 }
 
 void AnnotatedDNAView::onObjectRenamed(GObject* obj, const QString& oldName) {
-    // 1. update title
-    OpenAnnotatedDNAViewTask::updateTitle(this);
-
-    // 2. update components
     if (obj->getGObjectType() == GObjectTypes::SEQUENCE) {
+        // 1. update title
+        OpenAnnotatedDNAViewTask::updateTitle(this);
+
+        // 2. update components
         U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
         ADVSequenceObjectContext* ctx = getSequenceContext(seqObj);
         foreach(ADVSequenceWidget* w, ctx->getSequenceWidgets()) {
@@ -1422,11 +1411,7 @@ void AnnotatedDNAView::sl_selectionChanged() {
     DNASequenceSelection* selection = qobject_cast<DNASequenceSelection*>(sender());
     CHECK(selection != NULL && seqCtx->getSequenceGObject() == selection->getSequenceObject(), );
 
-    if (!seqCtx->getSequenceSelection()->isEmpty()) {
-        replaceSequencePart->setEnabled(true);
-    } else {
-        replaceSequencePart->setEnabled(false);
-    }
+    replaceSequencePart->setEnabled(!seqCtx->getSequenceSelection()->isEmpty());
 }
 
 void AnnotatedDNAView::sl_aminoTranslationChanged() {

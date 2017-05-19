@@ -619,7 +619,7 @@ BOOL StackWalker::LoadModules() {
 
         const size_t nTempLen = 1024;
         char szTemp[nTempLen];
-        // Now add the current directory:
+        // Now add the current folder:
         if (GetCurrentDirectoryA(nTempLen, szTemp) > 0) {
             szTemp[nTempLen-1] = 0;
             strcat_s(szSymPath, nSymPathLen, szTemp);
@@ -655,7 +655,7 @@ BOOL StackWalker::LoadModules() {
             szTemp[nTempLen-1] = 0;
             strcat_s(szSymPath, nSymPathLen, szTemp);
             strcat_s(szSymPath, nSymPathLen, ";");
-            // also add the "system32"-directory:
+            // also add the "system32"-folder:
             strcat_s(szTemp, nTempLen, "\\system32");
             strcat_s(szSymPath, nSymPathLen, szTemp);
             strcat_s(szSymPath, nSymPathLen, ";");

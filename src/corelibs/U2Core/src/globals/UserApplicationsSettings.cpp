@@ -220,7 +220,7 @@ QString UserAppsSettings::createCurrentProcessTemporarySubDir(U2OpStatus &os, co
     if (!baseDir.exists()) {
         bool created = baseDir.mkpath(baseDir.absolutePath());
         if (!created) {
-            os.setError(QString("Can not create the directory: %1").arg(baseDir.absolutePath()));
+            os.setError(QString("Can not create the folder: %1").arg(baseDir.absolutePath()));
             return "";
         }
     }
@@ -238,7 +238,7 @@ QString UserAppsSettings::createCurrentProcessTemporarySubDir(U2OpStatus &os, co
         idx++;
 
         if (idx > MAX_ATTEMPTS) {
-            os.setError(QString("Can not create a sub-directory in: %1").arg(baseDir.absolutePath()));
+            os.setError(QString("Can not create a sub-folder in: %1").arg(baseDir.absolutePath()));
             return "";
         }
     } while (!created);

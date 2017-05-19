@@ -161,9 +161,9 @@ bool GenomeAlignerSettingsWidget::isIndexOk(const GUrl &refName, QString &error)
         if (index.seqPartSize == partSlider->value()) {
             return true;
         }
-        error = tr("The index directory has already contain the prebuilt index. But its reference fragmentation parameter is %1 and it doesn't equal to \
+        error = tr("The index folder has already contain the prebuilt index. But its reference fragmentation parameter is %1 and it doesn't equal to \
 the parameter you have chosen (%2).\n\nPress \"Ok\" to delete this index file and create a new during the aligning.\nPress \"Cancel\" to change this parameter \
-or the index directory.").arg(index.seqPartSize).arg(partSlider->value());
+or the index folder.").arg(index.seqPartSize).arg(partSlider->value());
         return false;
     } else {
         if (!res || refName.lastFileSuffix() != GenomeAlignerIndex::HEADER_EXTENSION) {
@@ -177,7 +177,7 @@ or the index directory.").arg(index.seqPartSize).arg(partSlider->value());
 void GenomeAlignerSettingsWidget::sl_onSetIndexDirButtonClicked() {
     LastUsedDirHelper lod;
 
-    lod.url = U2FileDialog::getExistingDirectory(this, tr("Set index files directory"), indexDirEdit->text());
+    lod.url = U2FileDialog::getExistingDirectory(this, tr("Set index files folder"), indexDirEdit->text());
     if (!lod.url.isEmpty()) {
         GUrl result = lod.url;
         indexDirEdit->setText(result.getURLString());

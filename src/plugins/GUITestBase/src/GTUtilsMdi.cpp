@@ -58,9 +58,13 @@ void GTUtilsMdi::click(HI::GUITestOpStatus &os, GTGlobals::WindowAction action) 
 #ifndef Q_OS_MAC
 	switch (action) {
 	case GTGlobals::Close: {
-		GTKeyboardDriver::keyPress(Qt::Key_Control);
+#ifdef Q_OS_LINUX
+        GTMenu::clickMainMenuItem(os, QStringList() << "Window" << "Close active view");
+#else
+        GTKeyboardDriver::keyPress(Qt::Key_Control);
 		GTKeyboardDriver::keyClick(Qt::Key_F4);
 		GTKeyboardDriver::keyRelease(Qt::Key_Control);
+#endif
 		break;
 	}
 	default:

@@ -90,7 +90,7 @@ public:
     virtual void accept(URLContainerVisitor *visitor);
 
     /**
-    * Validates filtered files inside the directory
+    * Validates filtered files inside the folder
     * are present and accessible for reading.
     */
     virtual bool validateUrl(ProblemList &problemList);

@@ -70,7 +70,7 @@ BlastDbCmdSupport::BlastDbCmdSupport(const QString& path) : ExternalTool(ET_BLAS
 }
 
 void BlastDbCmdSupport::sl_runWithExtFileSpecify(){
-    //Check that BlastDBCmd directory path defined
+    //Check that BlastDBCmd folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle("BLAST+ " +name);

@@ -20,7 +20,8 @@
  */
 
 #include "SequenceWithChromatogramAreaRenderer.h"
-#include "../McaEditorSequenceArea.h"
+#include "ov_msa/McaEditorSequenceArea.h"
+#include "ov_msa/MaEditorNameList.h"
 
 #include <U2Algorithm/MsaHighlightingScheme.h>
 #include <U2Algorithm/MsaColorScheme.h>
@@ -72,6 +73,25 @@ void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &p) c
     p.fillRect(xRange.startPos, 0,
                xRange.length * region.length, seqAreaWgt->height(),
                color);
+    p.restore();
+}
+
+void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter &p) const {
+    McaEditor* editor = getSeqArea()->getEditor();
+    SAFE_POINT(editor != NULL, "McaEditor is NULL", );
+    SAFE_POINT(editor->getUI() != NULL, "McaEditor UI is NULL", );
+
+    MaEditorNameList* nameList = editor->getUI()->getEditorNameList();
+    SAFE_POINT(nameList != NULL, "MaEditorNameList is NULL", );
+    U2Region selection = nameList->getSelection();
+    CHECK(!selection.isEmpty(), );
+    U2Region selectionPxl = seqAreaWgt->getSequenceYRange(selection.startPos, (int)selection.length);
+    p.save();
+    // SANGER_TODO: color can be const -- for consensus and here
+    QColor color(Qt::lightGray);
+    color = color.lighter(115);
+    color.setAlpha(127);
+    p.fillRect(0, selectionPxl.startPos, seqAreaWgt->width(), selectionPxl.length, color);
     p.restore();
 }
 

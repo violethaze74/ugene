@@ -131,7 +131,7 @@ void DownloadRemoteFileDialogFiller::setDatabase(const QVariant &actionData) {
 #define GT_METHOD_NAME "enterSaveToDirectoryPath"
 void DownloadRemoteFileDialogFiller::enterSaveToDirectoryPath(const QVariant &actionData) {
     CHECK_OP(os, );
-    GT_CHECK(actionData.canConvert<QString>(), "Can't get directory path from the action data");
+    GT_CHECK(actionData.canConvert<QString>(), "Can't get folder path from the action data");
     GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "saveFilenameLineEdit", dialog), actionData.toString());
 }
 #undef GT_METHOD_NAME
@@ -139,7 +139,7 @@ void DownloadRemoteFileDialogFiller::enterSaveToDirectoryPath(const QVariant &ac
 #define GT_METHOD_NAME "selectSaveToDirectoryPath"
 void DownloadRemoteFileDialogFiller::selectSaveToDirectoryPath(const QVariant &actionData) {
     CHECK_OP(os, );
-    GT_CHECK(actionData.canConvert<QString>(), "Can't get directory path from the action data");
+    GT_CHECK(actionData.canConvert<QString>(), "Can't get folder path from the action data");
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, QFileInfo(actionData.toString()).absoluteDir().absolutePath(), "", GTFileDialogUtils::Choose));
     GTWidget::click(os, GTWidget::findWidget(os, "saveFilenameToolButton", dialog));
 }

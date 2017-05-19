@@ -182,7 +182,7 @@ bool WorkflowContext::initWorkingDir() {
         WorkflowContextCMDLine::saveRunInfo(workingDir());
     }
     monitor->setOutputDir(workingDir());
-    coreLog.details("Workflow output directory is: " + workingDir());
+    coreLog.details("Workflow output folder is: " + workingDir());
     return true;
 }
 
@@ -190,7 +190,7 @@ bool WorkflowContext::initWorkingDir() {
 /* WorkflowContextCMDLine */
 /************************************************************************/
 QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus &os) {
-    // 1. Detect directory
+    // 1. Detect folder
     QString root;
     if (useOutputDir()) {
         root = WorkflowSettings::getWorkflowOutputDirectory();
@@ -198,12 +198,12 @@ QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus &os) {
         root = QDir::currentPath();
     }
 
-    // 2. Create directory if it does not exist
+    // 2. Create folder if it does not exist
     QDir rootDir(root);
     if (!rootDir.exists()) {
         bool created = rootDir.mkpath(rootDir.absolutePath());
         if (!created) {
-            os.setError(QObject::tr("Can not create directory: ") + root);
+            os.setError(QObject::tr("Can not create folder: ") + root);
             return "";
         }
     }
@@ -212,7 +212,7 @@ QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus &os) {
 
 QString WorkflowContextCMDLine::createSubDirectoryForRun(const QString &root, U2OpStatus &os) {
     QDir rootDir(root);
-    // 1. Find free sub-directory name
+    // 1. Find free sub-folder name
     QString baseDirName = QDateTime::currentDateTime().toString("yyyy.MM.dd_hh-mm");
     QString dirName = baseDirName;
     {
@@ -223,10 +223,10 @@ QString WorkflowContextCMDLine::createSubDirectoryForRun(const QString &root, U2
         }
     }
 
-    // 2. Try to create the sub-directory
+    // 2. Try to create the sub-folder
     bool created = rootDir.mkdir(dirName);
     if (!created) {
-        os.setError(QObject::tr("Can not create directory %1 in the directory %2")
+        os.setError(QObject::tr("Can not create folder %1 in the folder %2")
             .arg(dirName).arg(rootDir.absolutePath()));
         return "";
     }

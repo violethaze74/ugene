@@ -70,7 +70,7 @@ ClustalOSupport::ClustalOSupport(const QString& name, const QString& path) : Ext
 }
 
 void ClustalOSupport::sl_runWithExtFileSpecify(){
-    //Check that Clustal and tempory directory path defined
+    //Check that Clustal and tempory folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -150,7 +150,7 @@ void ClustalOSupportContext::buildMenu(GObjectView* view, QMenu* m) {
 }
 
 void ClustalOSupportContext::sl_align_with_ClustalO() {
-    //Check that Clustal and tempory directory path defined
+    //Check that Clustal and tempory folder path defined
     if (AppContext::getExternalToolRegistry()->getByName(ET_CLUSTALO)->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(ET_CLUSTALO);

@@ -141,13 +141,13 @@ void FilterBamWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor outDir(OUT_MODE_ID, FilterBamWorker::tr("Output directory"),
-            FilterBamWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(OUT_MODE_ID, FilterBamWorker::tr("Output folder"),
+            FilterBamWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(CUSTOM_DIR_ID, FilterBamWorker::tr("Custom directory"),
-            FilterBamWorker::tr("Select the custom output directory."));
+        Descriptor customDir(CUSTOM_DIR_ID, FilterBamWorker::tr("Custom folder"),
+            FilterBamWorker::tr("Select the custom output folder."));
 
         Descriptor outName(OUT_NAME_ID, FilterBamWorker::tr("Output name"),
             FilterBamWorker::tr("A name of an output BAM/SAM file. If default of empty value is provided the output name is the name of the first BAM/SAM file with .filtered extention."));
@@ -380,7 +380,7 @@ void SamtoolsViewFilterTask::prepare(){
 
     const QDir outDir = QFileInfo(settings.outDir).absoluteDir();
     if (!outDir.exists()) {
-        setError(tr("Directory does not exist: ") + outDir.absolutePath());
+        setError(tr("Folder does not exist: ") + outDir.absolutePath());
         return ;
     }
 

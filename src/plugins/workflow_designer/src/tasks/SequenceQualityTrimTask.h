@@ -55,7 +55,7 @@ private:
     void cloneSequence();
     void cloneChromatogram();
     void restoreRelation();
-    U2Region trimSequnce();
+    U2Region trimSequence();
     void trimChromatogram(const U2Region &regionToCrop);
 
     const SequenceQualityTrimTaskSettings settings;

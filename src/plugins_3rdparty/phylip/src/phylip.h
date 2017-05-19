@@ -240,7 +240,7 @@ void phyFillScreenColor(void);
 #include <math.h>
 #include <ctype.h>
 
-/* directory delimiters */
+/* folder delimiters */
 #ifdef MAC
 #define DELIMITER ':'
 #else

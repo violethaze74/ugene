@@ -59,7 +59,7 @@ DashboardsManagerDialog::DashboardsManagerDialog(ScanDashboardsDirTask *_task, Q
 
 void DashboardsManagerDialog::setupList() {
     QStringList header;
-    header << tr("Name") << tr("Directory");
+    header << tr("Name") << tr("Folder");
     listWidget->setHeaderLabels(header);
 #if (QT_VERSION < 0x050000) //Qt 5
     listWidget->header()->setMovable(false);

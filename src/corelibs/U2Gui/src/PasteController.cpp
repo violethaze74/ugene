@@ -175,7 +175,7 @@ PasteUrlsTask::PasteUrlsTask(const QList<QUrl> &toPasteUrls, bool addToProject)
     }
 
     if (!dirs.isEmpty()) {
-        setError(tr("Pasting of directories is not supported:") + "\n" + joinDirs(dirs, "\n"));
+        setError(tr("Pasting of folders is not supported:") + "\n" + joinDirs(dirs, "\n"));
         return;
     }
     CHECK(!urls.isEmpty(), );

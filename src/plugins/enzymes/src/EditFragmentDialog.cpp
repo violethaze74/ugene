@@ -50,6 +50,8 @@ EditFragmentDialog::EditFragmentDialog( DNAFragment& fragment, QWidget* p )
 
     setupUi(this);
     new HelpButton(this, buttonBox, "19759673");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     connect(lBluntButton, SIGNAL(toggled(bool)), SLOT(sl_onLeftBluntButtonToogled(bool)));
     connect(rBluntButton, SIGNAL(toggled(bool)), SLOT(sl_onRightBluntButtonToggled(bool)));

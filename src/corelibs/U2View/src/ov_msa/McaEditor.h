@@ -30,6 +30,7 @@
 
 namespace U2 {
 
+class McaEditorReferenceArea;
 class McaEditorSequenceArea;
 class SequenceObjectContext;
 class U2SequenceObject;
@@ -72,7 +73,6 @@ protected:
     QMap<qint64, bool>  chromVisibility;
 
     U2SequenceObject*       referenceObj;
-    QByteArray              referenceCache;
     SequenceObjectContext*  referenceCtx;
 };
 
@@ -84,10 +84,15 @@ public:
     McaEditor* getEditor() const { return qobject_cast<McaEditor* >(editor); }
     McaEditorSequenceArea* getSequenceArea() const;
 
+    bool eventFilter(QObject *watched, QEvent *event);
+
 protected:
     void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
     void initOverviewArea();
     void initNameList(QScrollBar* nhBar);
+
+private:
+    McaEditorReferenceArea* refArea;
 };
 
 } // namespace

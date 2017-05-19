@@ -253,7 +253,7 @@ FSItem * RunFileSystem::createPath(const QStringList &path, U2OpStatus &os) {
         }
         pathStr += "/" + dirName;
         if (!item->isDir()) {
-            os.setError(pathStr + " is a file, not a directory");
+            os.setError(pathStr + " is a file, not a folder");
             return root;
         }
         current = item;

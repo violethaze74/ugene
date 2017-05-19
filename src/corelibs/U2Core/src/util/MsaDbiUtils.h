@@ -122,7 +122,7 @@ public:
      * Parameter 'pos' must be >=0 and < the alignment length.
      * Parameter 'count' must be > 0.
      */
-    static void insertGaps(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os);
+    static void insertGaps(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os, bool collapseTrailingGaps);
 
     /**
      * Removes a region from an alignment.

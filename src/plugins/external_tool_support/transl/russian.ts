@@ -4,88 +4,88 @@
 <context>
     <name>AlignToReferenceBlastDialog</name>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="14"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="14"/>
         <source>Align Sanger Reads to Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="20"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="20"/>
         <source>Input data</source>
         <translation type="unfinished">Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="26"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="26"/>
         <source>Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="38"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="38"/>
         <source>File path to the reference sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="45"/>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="183"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="45"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="183"/>
         <source>...</source>
         <translation type="unfinished">...</translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="54"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="54"/>
         <source>Reads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="79"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="79"/>
         <source>Add</source>
         <translation type="unfinished">Добавить</translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="86"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="86"/>
         <source>Remove</source>
         <translation type="unfinished">Удалить</translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="98"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="98"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="124"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="124"/>
         <source>Quality threshold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="131"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="131"/>
         <source>Min read length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="138"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="138"/>
         <source>Trim both ends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="145"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="145"/>
         <source>Min read identity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="152"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="152"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="168"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="168"/>
         <source>Result alignment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="176"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="176"/>
         <source>Path to the result file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="192"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="192"/>
         <source>Add to project</source>
         <translation type="unfinished">Добавить в проект</translation>
     </message>
@@ -1512,7 +1512,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Допустимы последовательности в форматах FASTA или FASTQ. &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Значения качества для последовательностей в формате FASTA будут записаны в соответствующий файл. Этот файл будет сохранен в ту же директорию, что и оригинальные последовательности и будет назван как файл FASTA, но с другим расширением: &lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;.qual&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Значения качества для последовательностей в формате FASTA будут записаны в соответствующий файл. Этот файл будет сохранен в ту же папку, что и оригинальные последовательности и будет назван как файл FASTA, но с другим расширением: &lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;.qual&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/cap3/CAP3SupportDialog.ui" line="54"/>
@@ -1933,9 +1933,13 @@ p, li { white-space: pre-wrap; }
         <translation>...</translation>
     </message>
     <message>
+        <source>Or select folder with input files:</source>
+        <translation type="vanished">Или выберите папку со входными файлами:</translation>
+    </message>
+    <message>
         <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="68"/>
         <source>Or select directory with input files:</source>
-        <translation>Или выберите директорию со входными файлами:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="105"/>
@@ -2997,7 +3001,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::AlignToReferenceBlastCmdlineTask</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="53"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="59"/>
         <source>Align to reference workflow wrapper</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3005,50 +3009,50 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::AlignToReferenceBlastDialog</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="112"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="121"/>
         <source>Align</source>
         <translation type="unfinished">Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="113"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="122"/>
         <source>Cancel</source>
         <translation type="unfinished">Отмена</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="129"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="136"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="156"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="140"/>
+        <source>Select Output File...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="153"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="160"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="180"/>
         <source>Error</source>
         <translation type="unfinished">Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="130"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="154"/>
         <source>Reference sequence is not set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="137"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="161"/>
         <source>No reads provided.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="157"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="181"/>
         <source>Output file is not set.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="170"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="194"/>
         <source>Open Reference Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="181"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="205"/>
         <source>Select File(s) with Read(s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="206"/>
-        <source>Select Output File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3210,14 +3214,18 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation>A problem occurred during doing BLAST. The sequence is no more available.</translation>
     </message>
     <message>
+        <source>Subfolder for temporary files exists. Can not remove this folder.</source>
+        <translation type="vanished">Subfolder for temporary files exists. Can not remove this folder.</translation>
+    </message>
+    <message>
         <location filename="../src/blast/BlastAllSupportTask.cpp" line="81"/>
-        <source>Subdirectory for temporary files exists. Can not remove this directory.</source>
-        <translation>Subdirectory for temporary files exists. Can not remove this directory.</translation>
+        <source>Subdirectory for temporary files exists. Can not remove this folder.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/blast/BlastAllSupportTask.cpp" line="86"/>
-        <source>Can not create directory for temporary files.</source>
-        <translation>Не удаётся создать директорию для временных файлов.</translation>
+        <source>Can not create folder for temporary files.</source>
+        <translation>Не удаётся создать папку для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/blast/BlastAllSupportTask.cpp" line="99"/>
@@ -3236,8 +3244,8 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     </message>
     <message>
         <location filename="../src/blast/BlastAllSupportTask.cpp" line="258"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/blast/BlastAllSupportTask.cpp" line="293"/>
@@ -3442,13 +3450,13 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="93"/>
-        <source>Subdirectory for temporary files exists. Can not remove this directory.</source>
-        <translation>Subdirectory for temporary files exists. Can not remove this directory.</translation>
+        <source>Subfolder for temporary files exists. Can not remove this folder.</source>
+        <translation>Subfolder for temporary files exists. Can not remove this folder.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="98"/>
-        <source>Can not create directory for temporary files.</source>
-        <translation>Не удаётся создать директорию для временных файлов.</translation>
+        <source>Can not create folder for temporary files.</source>
+        <translation>Не удаётся создать папку для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="111"/>
@@ -3473,8 +3481,8 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="203"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="244"/>
@@ -4104,13 +4112,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="127"/>
-        <source>Subdirectory for temporary files exists. Can not remove this directory.</source>
-        <translation>Subdirectory for temporary files exists. Can not remove this directory.</translation>
+        <source>Subfolder for temporary files exists. Can not remove this folder.</source>
+        <translation>Subfolder for temporary files exists. Can not remove this folder.</translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="132"/>
-        <source>Can not create directory for temporary files.</source>
-        <translation>Не удаётся создать директорию для временных файлов.</translation>
+        <source>Can not create folder for temporary files.</source>
+        <translation>Не удаётся создать папку для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="179"/>
@@ -4139,8 +4147,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportTask.cpp" line="293"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
 </context>
 <context>
@@ -4283,8 +4291,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWSupportTask.cpp" line="310"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
 </context>
 <context>
@@ -4390,7 +4398,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/hmmer/ConvertAlignment2StockholmTask.cpp" line="102"/>
-        <source>Cannot create a directory for temporary files.</source>
+        <source>Cannot create a folder for temporary files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4734,13 +4742,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/ExternalToolSupportL10N.h" line="38"/>
-        <source>The subdirectory for temporary files &apos;%1&apos; already exists. Can not remove this directory!</source>
-        <translation>The subdirectory for temporary files &apos;%1&apos; already exists. Can not remove this directory!</translation>
+        <source>The subfolder for temporary files &apos;%1&apos; already exists. Can not remove this folder!</source>
+        <translation>The subfolder for temporary files &apos;%1&apos; already exists. Can not remove this folder!</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportL10N.h" line="43"/>
-        <source>Can not create a subdirectory for temporary files &apos;%1&apos;!</source>
-        <translation>Не удаётся создать директорию для временных файлов &apos;%1&apos;!</translation>
+        <source>Can not create a subfolder for temporary files &apos;%1&apos;!</source>
+        <translation>Не удаётся создать папку для временных файлов &apos;%1&apos;!</translation>
     </message>
 </context>
 <context>
@@ -4834,18 +4842,18 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/ExternalToolSupportSettingsController.cpp" line="543"/>
-        <source>Choose Directory With Executables</source>
+        <source>Choose Folder With Executables</source>
         <translation>Выберите папку с исполняемыми файлами</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportSettingsController.cpp" line="598"/>
-        <source>Choose Directory With External Tools Pack</source>
+        <source>Choose Folder With External Tools Pack</source>
         <translation>Выберите папку пакетом внешних инструментов</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportSettingsController.cpp" line="651"/>
-        <source>Not a valid external tools directory</source>
-        <translation>Нет подходящей директории внешних инструментов</translation>
+        <source>Not a valid external tools folder</source>
+        <translation>Нет подходящей папки внешних инструментов</translation>
     </message>
 </context>
 <context>
@@ -4919,7 +4927,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/fastqc/FastqcTask.cpp" line="101"/>
-        <source>Directory does not exist: %1</source>
+        <source>Folder does not exist: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4976,13 +4984,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="103"/>
-        <source>Select a directory with input files</source>
-        <translation>Выберите директорию со входным файлом</translation>
+        <source>Select a folder with input files</source>
+        <translation>Выберите папку со входным файлом</translation>
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="114"/>
-        <source>Select a directory to save database files</source>
-        <translation>Выберите директорию для сохранения базы данных</translation>
+        <source>Select a folder to save database files</source>
+        <translation>Выберите папку для сохранения базы данных</translation>
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportRunDialog.cpp" line="126"/>
@@ -5006,7 +5014,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportTask.cpp" line="146"/>
-        <source>Cannot create temp directory</source>
+        <source>Cannot create temp folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5036,8 +5044,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportTask.cpp" line="95"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportTask.cpp" line="112"/>
@@ -5264,7 +5272,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="105"/>
-        <source>Cannot create a directory for temporary files.</source>
+        <source>Cannot create a folder for temporary files.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5469,7 +5477,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/hmmer/HmmerSearchTask.cpp" line="147"/>
-        <source>Cannot create a directory for temporary files.</source>
+        <source>Cannot create a folder for temporary files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5664,13 +5672,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="284"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="285"/>
-        <source>Directory to save output files.</source>
-        <translation>Директория для сохранения выходных файлов.</translation>
+        <source>Folder to save output files.</source>
+        <translation>Папка для сохранения выходных файлов.</translation>
     </message>
     <message>
         <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="288"/>
@@ -5817,23 +5825,23 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="120"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="121"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="125"/>
-        <source>Custom directory</source>
-        <translation>Частная директория</translation>
+        <source>Custom folder</source>
+        <translation>Частная папка</translation>
     </message>
     <message>
         <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="126"/>
-        <source>Select the custom output directory.</source>
-        <translation>Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="128"/>
@@ -6090,13 +6098,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast/BlastAllWorker.cpp" line="112"/>
-        <source>Temporary directory</source>
-        <translation>Временная директория</translation>
+        <source>Temporary folder</source>
+        <translation>Временная папка</translation>
     </message>
     <message>
         <location filename="../src/blast/BlastAllWorker.cpp" line="113"/>
-        <source>Directory for temporary files.</source>
-        <translation>Директория для временных файлов.</translation>
+        <source>Folder for temporary files.</source>
+        <translation>Папка для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/blast/BlastAllWorker.cpp" line="115"/>
@@ -6256,8 +6264,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="110"/>
-        <source>Temporary directory</source>
-        <translation>Временная директория</translation>
+        <source>Temporary folder</source>
+        <translation>Временная папка</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="112"/>
@@ -6331,8 +6339,8 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="111"/>
-        <source>Directory for temporary files.</source>
-        <translation>Директория для временных файлов.</translation>
+        <source>Folder for temporary files.</source>
+        <translation>Папка для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="117"/>
@@ -7331,13 +7339,13 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/cap3/CAP3Worker.cpp" line="236"/>
-        <source>Temporary directory</source>
-        <translation>Временная директория</translation>
+        <source>Temporary folder</source>
+        <translation>Временная папка</translation>
     </message>
     <message>
         <location filename="../src/cap3/CAP3Worker.cpp" line="237"/>
-        <source>The directory for temporary files.</source>
-        <translation>Директория для временных файлов.</translation>
+        <source>The folder for temporary files.</source>
+        <translation>Папка для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/cap3/CAP3Worker.cpp" line="378"/>
@@ -7593,13 +7601,13 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOWorker.cpp" line="85"/>
-        <source>Temporary directory</source>
-        <translation>Временная директория</translation>
+        <source>Temporary folder</source>
+        <translation>Временная папка</translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOWorker.cpp" line="86"/>
-        <source>Directory to store temporary files.</source>
-        <translation>Директория для временных файлов.</translation>
+        <source>Folder to store temporary files.</source>
+        <translation>Папка для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOWorker.cpp" line="96"/>
@@ -7754,8 +7762,8 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWWorker.cpp" line="118"/>
-        <source>Directory to store temporary files.</source>
-        <translation>Директория для временных файлов.</translation>
+        <source>Folder to store temporary files.</source>
+        <translation>Папка для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWWorker.cpp" line="133"/>
@@ -7769,8 +7777,8 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWWorker.cpp" line="117"/>
-        <source>Temporary directory</source>
-        <translation>Временная директория</translation>
+        <source>Temporary folder</source>
+        <translation>Временная папка</translation>
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWWorker.cpp" line="100"/>
@@ -7802,7 +7810,7 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="224"/>
-        <source> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; directory</source>
+        <source> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; folder</source>
         <translation>Записывает все выходные файлы в &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
 </context>
@@ -7830,13 +7838,13 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="155"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="156"/>
-        <source>The directory to store Conduct GO results.</source>
-        <translation>директория для сохранения выходных Conduct GO файлов.</translation>
+        <source>The folder to store Conduct GO results.</source>
+        <translation>Папка для сохранения выходных Conduct GO файлов.</translation>
     </message>
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="158"/>
@@ -7951,8 +7959,8 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/conservation_plot/ConservationPlotWorker.cpp" line="209"/>
-        <source>The directory to store phastcons scores (--phasdb).</source>
-        <translation>Директория для сохранения оценок (--phasdb).</translation>
+        <source>The folder to store phastcons scores (--phasdb).</source>
+        <translation>Папка для сохранения оценок (--phasdb).</translation>
     </message>
     <message>
         <location filename="../src/conservation_plot/ConservationPlotWorker.cpp" line="211"/>
@@ -8014,13 +8022,13 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="107"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="108"/>
-        <source>The base name of output directory. It could be modified with a suffix.</source>
-        <translation>Базовое имя для выходной директории.</translation>
+        <source>The base name of output folder. It could be modified with a suffix.</source>
+        <translation>Базовое имя для выходной папки.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="111"/>
@@ -8144,13 +8152,13 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="185"/>
-        <source>Temporary directory</source>
-        <translation>Временная директория</translation>
+        <source>Temporary folder</source>
+        <translation>Временная папка</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="186"/>
-        <source>The directory for temporary files.</source>
-        <translation>Директория для временных файлов.</translation>
+        <source>The folder for temporary files.</source>
+        <translation>Папка для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="206"/>
@@ -8242,13 +8250,13 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="143"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="144"/>
-        <source>The base name of output directory. It could be modified with a suffix.</source>
-        <translation>базовое имя для выходной директории.</translation>
+        <source>The base name of output folder. It could be modified with a suffix.</source>
+        <translation>базовое имя для выходной папки.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="147"/>
@@ -8342,13 +8350,13 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="210"/>
-        <source>Temporary directory</source>
-        <translation>Временная директория</translation>
+        <source>Temporary folder</source>
+        <translation>Временная папка</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="211"/>
-        <source>The directory for temporary files.</source>
-        <translation>Директория для временных файлов.</translation>
+        <source>The folder for temporary files.</source>
+        <translation>Папка для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="339"/>
@@ -8370,13 +8378,13 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="74"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="75"/>
-        <source>The base name of output directory. It could be modified with a suffix.</source>
-        <translation>Базовое имя для выходной директории.</translation>
+        <source>The base name of output folder. It could be modified with a suffix.</source>
+        <translation>Базовое имя для выходной папки.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="78"/>
@@ -8430,13 +8438,13 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="102"/>
-        <source>Temporary directory</source>
-        <translation>Временная директория</translation>
+        <source>Temporary folder</source>
+        <translation>Временная папка</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="103"/>
-        <source>The directory for temporary files.</source>
-        <translation>Директория для временных файлов.</translation>
+        <source>The folder for temporary files.</source>
+        <translation>Папка для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="117"/>
@@ -8475,7 +8483,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="77"/>
         <source>Removes adapter sequences %1.</source>
-        <translation>Удаоляет переходные последовательности %1.</translation>
+        <translation>Удаляет переходные последовательности %1.</translation>
     </message>
 </context>
 <context>
@@ -8525,23 +8533,23 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="116"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="117"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="121"/>
-        <source>Custom directory</source>
-        <translation>Частная директория</translation>
+        <source>Custom folder</source>
+        <translation>Частная папка</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="122"/>
-        <source>Select the custom output directory.</source>
-        <translation>Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="124"/>
@@ -8653,23 +8661,23 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="105"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="106"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="110"/>
-        <source>Custom directory</source>
-        <translation>Частная директория</translation>
+        <source>Custom folder</source>
+        <translation>Частная папка</translation>
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="111"/>
-        <source>Select the custom output directory.</source>
-        <translation>Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/fastqc/FastqcWorker.cpp" line="113"/>
@@ -8767,23 +8775,23 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="499"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="500"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="504"/>
-        <source>Custom directory</source>
-        <translation>Частная директория</translation>
+        <source>Custom folder</source>
+        <translation>Частная папка</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="505"/>
-        <source>Select the custom output directory.</source>
-        <translation>Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="507"/>
@@ -9166,7 +9174,7 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="585"/>
-        <source> Outputs all files to &lt;u&gt;%1&lt;/u&gt; directory</source>
+        <source> Outputs all files to &lt;u&gt;%1&lt;/u&gt; folder</source>
         <translation> Сохраняет все выходные файлы в&lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
@@ -9264,13 +9272,13 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="318"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="319"/>
-        <source>Directory to save MACS output files.</source>
-        <translation>Директория для сохранения выходных файлов MACS.</translation>
+        <source>Folder to save MACS output files.</source>
+        <translation>Папка для сохранения выходных файлов MACS.</translation>
     </message>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="321"/>
@@ -9582,8 +9590,8 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/mafft/MAFFTWorker.cpp" line="81"/>
-        <source>Directory for temporary files.</source>
-        <translation>Директория для временных файлов.</translation>
+        <source>Folder for temporary files.</source>
+        <translation>Папка для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTWorker.cpp" line="174"/>
@@ -9602,8 +9610,8 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/mafft/MAFFTWorker.cpp" line="80"/>
-        <source>Temporary directory</source>
-        <translation>Временная директория</translation>
+        <source>Temporary folder</source>
+        <translation>Временная папка</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTWorker.cpp" line="89"/>
@@ -9804,7 +9812,7 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/seqpos/SeqPosWorker.cpp" line="367"/>
-        <source> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; directory</source>
+        <source> Outputs all result files to &lt;u&gt;%1&lt;/u&gt; folder</source>
         <translation>Записывает все выходные файлы в &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
 </context>
@@ -9833,13 +9841,13 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/seqpos/SeqPosWorker.cpp" line="247"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/seqpos/SeqPosWorker.cpp" line="248"/>
-        <source>The directory to store seqpos results.</source>
-        <translation>Директория для сохранения результатов seqpos.</translation>
+        <source>The folder to store seqpos results.</source>
+        <translation>Папка для сохранения результатов seqpos.</translation>
     </message>
     <message>
         <location filename="../src/seqpos/SeqPosWorker.cpp" line="250"/>
@@ -9982,23 +9990,23 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="111"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="112"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="116"/>
-        <source>Custom directory</source>
-        <translation>Частная директория</translation>
+        <source>Custom folder</source>
+        <translation>Частная папка</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="117"/>
-        <source>Select the custom output directory.</source>
-        <translation>Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="119"/>
@@ -10190,23 +10198,23 @@ Path for %1 tool is not selected.</source>
     </message>
     <message>
         <location filename="../src/snpeff/SnpEffWorker.cpp" line="119"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/snpeff/SnpEffWorker.cpp" line="120"/>
-        <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
-        <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
+        <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
+        <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
         <location filename="../src/snpeff/SnpEffWorker.cpp" line="124"/>
-        <source>Custom directory</source>
-        <translation>Частная директория</translation>
+        <source>Custom folder</source>
+        <translation>Частная папка</translation>
     </message>
     <message>
         <location filename="../src/snpeff/SnpEffWorker.cpp" line="125"/>
-        <source>Select the custom output directory.</source>
-        <translation>Укажите частную выходную директорию.</translation>
+        <source>Select the custom output folder.</source>
+        <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
         <location filename="../src/snpeff/SnpEffWorker.cpp" line="127"/>
@@ -10376,13 +10384,17 @@ Path for %1 tool is not selected.</source>
     </message>
     <message>
         <location filename="../src/spades/SpadesWorker.cpp" line="265"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/spades/SpadesWorker.cpp" line="266"/>
-        <source>Directory to save Spades output files.</source>
-        <translation>Директория для сохранения выходных файлов Spades.</translation>
+        <source>Folder to save Spades output files.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>folder to save Spades output files.</source>
+        <translation type="vanished">Папка для сохранения выходных файлов Spades.</translation>
     </message>
     <message>
         <location filename="../src/spades/SpadesWorker.cpp" line="269"/>
@@ -10521,9 +10533,8 @@ Path for %1 tool is not selected.</source>
         <translation>Путь до внешнего инструмента.</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="81"/>
-        <source>Directory for temporary file.s</source>
-        <translation>Директория для временных файлов</translation>
+        <source>Folder for temporary file.s</source>
+        <translation type="vanished">Папка для временных файлов</translation>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="172"/>
@@ -10532,8 +10543,13 @@ Path for %1 tool is not selected.</source>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="80"/>
-        <source>Temporary directory</source>
-        <translation>Временная директория</translation>
+        <source>Temporary folder</source>
+        <translation>Временная папка</translation>
+    </message>
+    <message>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="81"/>
+        <source>folder for temporary file.s</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="89"/>
@@ -10662,13 +10678,13 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="192"/>
-        <source>Output directory</source>
-        <translation>Выходная директория</translation>
+        <source>Output folder</source>
+        <translation>Выходная папка</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="193"/>
-        <source>The base name of output directory. It could be modified with a suffix.</source>
-        <translation>Базовое имя для выходной директории.</translation>
+        <source>The base name of output folder. It could be modified with a suffix.</source>
+        <translation>Базовое имя для выходной папки.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="196"/>
@@ -10682,13 +10698,13 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="200"/>
-        <source>Bowtie index directory</source>
-        <translation>Директория для индекса Bowtie</translation>
+        <source>Bowtie index folder</source>
+        <translation>Папка для индекса Bowtie</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="201"/>
-        <source>The directory with the Bowtie index for the reference sequence.</source>
-        <translation>директория, в которой расположен с индексом Bowtie для референсной последовательности.</translation>
+        <source>The folder with the Bowtie index for the reference sequence.</source>
+        <translation>папка, в которой расположен индекс Bowtie для референсной последовательности.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="209"/>
@@ -10922,13 +10938,13 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="348"/>
-        <source>Temporary directory</source>
-        <translation>Временная директория</translation>
+        <source>Temporary folder</source>
+        <translation>Временная папка</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="349"/>
-        <source>The directory for temporary files.</source>
-        <translation>Директория для временных файлов.</translation>
+        <source>The folder for temporary files.</source>
+        <translation>Папка для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="396"/>
@@ -11104,13 +11120,13 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupportTask.cpp" line="127"/>
-        <source>Subdir for temporary files exists. Can not remove this directory.</source>
-        <translation>Subdir for temporary files exists. Can not remove this directory.</translation>
+        <source>Subdir for temporary files exists. Can not remove this folder.</source>
+        <translation>Subdir for temporary files exists. Can not remove this folder.</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupportTask.cpp" line="132"/>
-        <source>Can not create directory for temporary files.</source>
-        <translation>Не удаётся создать директорию для временных файлов.</translation>
+        <source>Can not create folder for temporary files.</source>
+        <translation>Не удаётся создать папку для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupportTask.cpp" line="145"/>
@@ -11150,8 +11166,8 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupportTask.cpp" line="296"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
 </context>
 <context>
@@ -11229,7 +11245,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>Loading output file &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="232"/>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="233"/>
+        <source>Row for updating doesn&apos;t found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mafft/MafftAddToAlignmentTask.cpp" line="246"/>
         <source>MAFFT alignment successfully finished</source>
         <translation>MAFFT alignment successfully finished</translation>
     </message>
@@ -11424,7 +11445,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
     <message>
         <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="150"/>
-        <source>Cannot create a directory for temporary files.</source>
+        <source>Cannot create a folder for temporary files.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -11843,8 +11864,8 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <name>U2::SpadesTask</name>
     <message>
         <location filename="../src/spades/SpadesTask.cpp" line="61"/>
-        <source>Directory does not exist: </source>
-        <translation>Directory does not exist: </translation>
+        <source>Folder does not exist: </source>
+        <translation>Folder does not exist: </translation>
     </message>
 </context>
 <context>
@@ -11990,13 +12011,13 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="132"/>
-        <source>Subdir for temporary files exists. Can not remove this directory.</source>
-        <translation>Subdir for temporary files exists. Can not remove this directory.</translation>
+        <source>Subdir for temporary files exists. Can not remove this folder.</source>
+        <translation>Subdir for temporary files exists. Can not remove this folder.</translation>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="137"/>
-        <source>Can not create directory for temporary files.</source>
-        <translation>Не удаётся создать директорию для временных файлов.</translation>
+        <source>Can not create folder for temporary files.</source>
+        <translation>Не удаётся создать папку для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="182"/>
@@ -12025,8 +12046,8 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="291"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
 </context>
 <context>
@@ -12183,13 +12204,13 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
     <message>
         <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="56"/>
-        <source>Temporary directory is not set!</source>
-        <translation>Temporary directory is not set!</translation>
+        <source>Temporary folder is not set!</source>
+        <translation>Temporary folder is not set!</translation>
     </message>
     <message>
         <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="61"/>
-        <source>Can not create directory for temporary files.</source>
-        <translation>Не удаётся создать директорию для временных файлов.</translation>
+        <source>Can not create folder for temporary files.</source>
+        <translation>Не удаётся создать папку для временных файлов.</translation>
     </message>
     <message>
         <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="65"/>
@@ -12261,12 +12282,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubTask.cpp" line="177"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubTask.cpp" line="186"/>
         <source>No read satisfy minimum identity criteria.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubTask.cpp" line="264"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubTask.cpp" line="273"/>
         <source>The related chromatogram not found</source>
         <translation type="unfinished"></translation>
     </message>

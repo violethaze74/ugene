@@ -88,7 +88,7 @@ void ExportProjectDialogController::accept(){
 
 void ExportProjectDialogController::sl_onBrowseButton(){
 	LastUsedDirHelper h;
-	QString folder = U2FileDialog::getExistingDirectory(this, tr("Choose Directory"), h.dir);
+	QString folder = U2FileDialog::getExistingDirectory(this, tr("Choose Folder"), h.dir);
     if (folder.isEmpty()) {
         return;
     }

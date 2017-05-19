@@ -107,7 +107,7 @@ void ClustalOSupportTask::prepare(){
     }
 
     //Add new subdir for temporary files
-    //Directory name is ExternalToolName + CurrentDate + CurrentTime
+    //Folder name is ExternalToolName + CurrentDate + CurrentTime
 
     QString tmpDirName = "ClustalO_"+QString::number(this->getTaskId())+"_"+
                          QDate::currentDate().toString("dd.MM.yyyy")+"_"+
@@ -124,12 +124,12 @@ void ClustalOSupportTask::prepare(){
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Subdirectory for temporary files exists. Can not remove this directory."));
+            stateInfo.setError(tr("Subfolder for temporary files exists. Can not remove this folder."));
             return;
         }
     }
     if(!tmpDir.mkpath(tmpDirPath)){
-        stateInfo.setError(tr("Can not create directory for temporary files."));
+        stateInfo.setError(tr("Can not create folder for temporary files."));
         return;
     }
 
@@ -290,7 +290,7 @@ Task::ReportResult ClustalOSupportTask::report(){
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Can not remove directory for temporary files."));
+            stateInfo.setError(tr("Can not remove folder for temporary files."));
             emit si_stateChanged();
         }
     }

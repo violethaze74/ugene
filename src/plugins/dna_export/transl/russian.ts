@@ -995,17 +995,17 @@
         <translation>Удалять</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="43"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="45"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="44"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="46"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="54"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="56"/>
         <source>File name is empty!</source>
         <translation>Не указано имя файла!</translation>
     </message>
@@ -1477,14 +1477,24 @@
 <context>
     <name>U2::GetSequenceByIdDialog</name>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.cpp" line="55"/>
-        <source>Select directory to save</source>
+        <location filename="../src/GetSequenceByIdDialog.cpp" line="45"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/GetSequenceByIdDialog.cpp" line="46"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/GetSequenceByIdDialog.cpp" line="58"/>
+        <source>Select folder to save</source>
         <translation>Папка для сохранения</translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.cpp" line="70"/>
-        <source>Directory doesn&apos;t exist. Do you want to create it?</source>
-        <translation>Директории не существует. Создать ее?</translation>
+        <location filename="../src/GetSequenceByIdDialog.cpp" line="73"/>
+        <source>Folder doesn&apos;t exist. Do you want to create it?</source>
+        <translation>Папки не существует. Создать ее?</translation>
     </message>
 </context>
 <context>
@@ -2065,7 +2075,11 @@ NCBI Genbank by their GI identifier
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="48"/>
         <source>Save to directory:</source>
-        <translation>Сохранить в:</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save to folder:</source>
+        <translation type="vanished">Сохранить в:</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="58"/>

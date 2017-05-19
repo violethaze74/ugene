@@ -1229,7 +1229,7 @@ GUI_TEST_CLASS_DEFINITION(test_0729){
     GTUtilsWorkflowDesigner::click(os, item);
 //    Expected state: Dataset view opened
     GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/FASTA");
-//    4) Click "Add directory", select data/samples/Genbank
+//    4) Click "Add folder", select data/samples/Genbank
     QListWidget* itemsArea = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea");
     GTListWidget::click(os, itemsArea, "FASTA", Qt::RightButton);
 //    5) Click on appeared item in the file list
@@ -1639,7 +1639,7 @@ GUI_TEST_CLASS_DEFINITION(test_0792) {
     GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
 //    Expected state: Dataset view opened
 
-//    3) Click "Add directory", select data/samples/Genbank
+//    3) Click "Add folder", select data/samples/Genbank
     GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/Genbank");
 //    4) Click on appeared item in the file list
     QWidget* datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
@@ -3084,7 +3084,7 @@ GUI_TEST_CLASS_DEFINITION(test_0952) {
     //1. Start UGENE.
     //2. Press "Ctrl+O" or "Open" button on the main toolbar.
     //Expected state: "Select files to open..." dialog appears.
-    //3. Explore to the directory "data/samples/Genbank", then choose "CVU55762.gb" and "murine.gb" using Ctrl key
+    //3. Explore to the folder "data/samples/Genbank", then choose "CVU55762.gb" and "murine.gb" using Ctrl key
     //and press "Open" button.
     //Expected state: "Multiple sequence reading mode" dialog appears.
     //4. Set radio button "Merge sequence mode", set "New document name" if you need, then press "OK".

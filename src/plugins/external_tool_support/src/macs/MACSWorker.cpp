@@ -315,8 +315,8 @@ void MACSWorkerFactory::init() {
      QList<Attribute*> attrs;
      {
          Descriptor outDir(OUTPUT_DIR,
-             MACSWorker::tr("Output directory"),
-             MACSWorker::tr("Directory to save MACS output files."));
+             MACSWorker::tr("Output folder"),
+             MACSWorker::tr("Folder to save MACS output files."));
          Descriptor fileNames(FILE_NAMES,
              MACSWorker::tr("Name"),
              MACSWorker::tr("The name string of the experiment. MACS will use this string NAME"
@@ -582,7 +582,7 @@ QString MACSPrompter::composeRichDoc() {
 
     res.append(tr(" to call peaks."));
 
-    res.append(tr(" Outputs all files to <u>%1</u> directory").arg(dir));
+    res.append(tr(" Outputs all files to <u>%1</u> folder").arg(dir));
     if (getParameter(WIGGLE_OUTPUT).toBool()){
         res.append(tr(" and pileup with <u>%1</u> span").arg(wiggleSpan));
     }

@@ -42,7 +42,7 @@ public:
 
     QString                     defaultFileName;    // filename set by default
     DocumentFormatId            defaultFormatId;    // format selected by default
-    QString                     defaultDomain;      // domain for the last directory
+    QString                     defaultDomain;      // domain for the last folder
 
     QString                     saveTitle;          // a title for save file dialog
     QWidget*                    parentWidget;       // parent widget for file dialog

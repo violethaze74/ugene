@@ -127,11 +127,11 @@ public:
     static bool checkSharedDbConnection(const QString &fullDbUrl);
 
     /**
-     * Validation of input files/directories.
+     * Validation of input files/folders.
      * Empty input string is considered valid.
      * Otherwise, the input string is split into separate URL(s) by ';'.
      * For each input file: the URL must exist, be a file and have permissions to read from it.
-     * For each input directory: the URL must exist and be a directory.
+     * For each input folder: the URL must exist and be a folder.
      * For each object from a database: DB URL must be available, object must exist
      * For each folder from a database: DB URL must be available, folder must exist
      */
@@ -142,10 +142,10 @@ public:
     static bool validateInputDbFolders(QString urls, ProblemList &problemList);
 
     /**
-     * Validation of output file/directory.
+     * Validation of output file/folder.
      * Empty URL is considered valid.
      * For output URL it is verified that it is accessible for
-     * writing (the path can be absolute or relative to the Workflow Output Directory).
+     * writing (the path can be absolute or relative to the Workflow Output Folder).
      */
     static bool validateOutputFile(const QString &url, ProblemList &problemList);
     static bool validateOutputDir(const QString &url, ProblemList &problemList);
@@ -155,7 +155,7 @@ public:
 
     /**
      * Validates input files in datasets are present and readable (i.e.
-     * filtered files in input directories are verified).
+     * filtered files in input folders are verified).
      */
     static bool validateDatasets(const QList<Dataset> &sets, ProblemList &problemList);
 

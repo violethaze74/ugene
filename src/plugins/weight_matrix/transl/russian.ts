@@ -987,7 +987,7 @@ Maybe model data is not enough for selected algorithm</translation>
     </message>
     <message>
         <location filename="../src/PWMSearchDialogController.cpp" line="435"/>
-        <source>Select directory with frequency or weight matrices</source>
+        <source>Select folder with frequency or weight matrices</source>
         <translation>Выберите папку с частотными или весовыми матрицами</translation>
     </message>
     <message>

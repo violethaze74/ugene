@@ -143,7 +143,7 @@ U2SCRIPT_EXPORT void saveObjectsToFile( UgeneDbHandle *objects, int objectCount,
         QCoreApplication::applicationDirPath( ) + "/" + QString( url ) );
     U2OpStatusImpl stateInfo;
     adoptedUrl =  GUrlUtils::prepareFileLocation( adoptedUrl.getURLString( ), stateInfo );
-    CHECK_OP_EXT( stateInfo, coreLog.error( QString( "Could not prepare directory"
+    CHECK_OP_EXT( stateInfo, coreLog.error( QString( "Could not prepare folder"
         " according to supplied path \"%1\"" ).arg( url ) ), );
     Document *doc = docFormat->createNewLoadedDocument( IOAdapterUtils::get(
         BaseIOAdapters::LOCAL_FILE ), adoptedUrl, stateInfo );

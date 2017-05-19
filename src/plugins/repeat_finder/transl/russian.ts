@@ -71,54 +71,54 @@
         <translation>Макс дистанция между повторами</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="350"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="363"/>
         <source>Advanced</source>
         <translation>Дополнительные настройки</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="356"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="369"/>
         <source>Advanced parameters</source>
         <translation>Дополнительные параметры</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="362"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="375"/>
         <source>Custom algorithm</source>
         <translation>Выбранный алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="389"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="402"/>
         <source>Search only for repeats that lie inside of an annotated region</source>
         <translation>Искать только те повторы, что лежат внутри аннотированного региона</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="438"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="451"/>
         <source>Search only for repeats that have an annotated region inside</source>
         <translation>Искать только те повторы, что содержат аннотированный регион</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="487"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="500"/>
         <source>Filter repeats that have an annotated region inside</source>
         <translation>Исключить из поиска повторы, содержащие аннотированный регион</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="596"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="609"/>
         <source>Nested repeats filter algorithm</source>
         <translation>Алгоритм исключения вложенных повторов</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="556"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="569"/>
         <source>Exclude tandems areas</source>
         <translation>Исключить тандемные области</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="431"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="480"/>
-        <location filename="../src/FindRepeatsDialog.ui" line="529"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="444"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="493"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="542"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.ui" line="536"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="549"/>
         <source>Search for inverted repeats</source>
         <translation>Искать инвертированные повторы</translation>
     </message>
@@ -162,22 +162,22 @@
         <translation>Макс период</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="195"/>
+        <location filename="../src/FindTandemsDialog.ui" line="208"/>
         <source>Advanced</source>
         <translation>Дополнительные настройки</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="201"/>
+        <location filename="../src/FindTandemsDialog.ui" line="214"/>
         <source>Advanced parameters</source>
         <translation>Дополнительные параметры</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="283"/>
+        <location filename="../src/FindTandemsDialog.ui" line="296"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="240"/>
+        <location filename="../src/FindTandemsDialog.ui" line="253"/>
         <source>Minimum tandem size</source>
         <translation>Минимальный размер тандема</translation>
     </message>
@@ -187,17 +187,17 @@
         <translation>Поиск тандемов</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="303"/>
+        <location filename="../src/FindTandemsDialog.ui" line="316"/>
         <source>Minimum repeat count</source>
         <translation>Минимальное число повторений</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="220"/>
+        <location filename="../src/FindTandemsDialog.ui" line="233"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="233"/>
+        <location filename="../src/FindTandemsDialog.ui" line="246"/>
         <source>Show overlapped tandems</source>
         <translation>Показать перекрывающиеся тандемы</translation>
     </message>

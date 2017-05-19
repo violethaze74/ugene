@@ -57,14 +57,22 @@ this merge sequence slot:</translation>
 <context>
     <name>CreateDirectoryDialog</name>
     <message>
+        <source>Create a folder</source>
+        <translation type="vanished">Create a folder</translation>
+    </message>
+    <message>
+        <source>Parent folder:</source>
+        <translation type="vanished">Parent folder:</translation>
+    </message>
+    <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="14"/>
         <source>Create a directory</source>
-        <translation>Create a directory</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="43"/>
         <source>Parent directory:</source>
-        <translation>Parent directory:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="63"/>
@@ -85,9 +93,13 @@ this merge sequence slot:</translation>
         <translation>Add file(s)</translation>
     </message>
     <message>
+        <source>Add folder</source>
+        <translation type="vanished">Add folder</translation>
+    </message>
+    <message>
         <location filename="../src/DatasetWidget.ui" line="62"/>
         <source>Add directory</source>
-        <translation>Add directory</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/DatasetWidget.ui" line="84"/>
@@ -442,14 +454,22 @@ this merge sequence slot:</translation>
 <context>
     <name>OutputFileDialog</name>
     <message>
+        <source>Save file/folder</source>
+        <translation type="vanished">Save file/folder</translation>
+    </message>
+    <message>
+        <source>Create folder</source>
+        <translation type="vanished">Create folder</translation>
+    </message>
+    <message>
         <location filename="../src/OutputFileDialog.ui" line="14"/>
         <source>Save file/directory</source>
-        <translation>Save file/directory</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="31"/>
         <source>Create directory</source>
-        <translation>Create directory</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="63"/>
@@ -460,7 +480,11 @@ this merge sequence slot:</translation>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="126"/>
         <source>Directory:</source>
-        <translation>Directory:</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Folder:</source>
+        <translation type="vanished">Folder:</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="146"/>
@@ -562,13 +586,19 @@ this merge sequence slot:</translation>
         <translation>The page is broken. Please, close the wizard and report us the error: ugene@unipro.ru</translation>
     </message>
     <message>
+        <source>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subfolder of the folder is created for each run of a workflow.
+
+Set up the folder:</source>
+        <translation type="vanished">The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subfolder of the folder is created for each run of a workflow.
+
+Set up the folder:</translation>
+    </message>
+    <message>
         <location filename="../src/support/OutputDirectoryWidget.cpp" line="39"/>
-        <source>The Workflow Output Directory is a common directory that is used to store all output files in the Workflow Designer. A separate subdirectory of the directory is created for each run of a workflow.
+        <source>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subdirectory of the folder is created for each run of a workflow.
 
-Set up the directory:</source>
-        <translation>The Workflow Output Directory is a common directory that is used to store all output files in the Workflow Designer. A separate subdirectory of the directory is created for each run of a workflow.
-
-Set up the directory:</translation>
+Set up the folder:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -713,8 +743,8 @@ bowtie index file</translation>
     <name>U2::ComboBoxWithUrlWidget</name>
     <message>
         <location filename="../src/PropertyWidget.cpp" line="314"/>
-        <source>Select a directory</source>
-        <translation>Select a directory</translation>
+        <source>Select a folder</source>
+        <translation>Select a folder</translation>
     </message>
     <message>
         <location filename="../src/PropertyWidget.cpp" line="319"/>
@@ -770,8 +800,8 @@ bowtie index file</translation>
     </message>
     <message>
         <location filename="../src/dashboard/Dashboard.cpp" line="198"/>
-        <source>Can not create a directory: </source>
-        <translation>Can not create a directory: </translation>
+        <source>Can not create a folder: </source>
+        <translation>Can not create a folder: </translation>
     </message>
     <message>
         <location filename="../src/dashboard/Dashboard.cpp" line="213"/>
@@ -1119,8 +1149,8 @@ bowtie index file</translation>
     <name>U2::OutputDirectoryWidget</name>
     <message>
         <location filename="../src/support/OutputDirectoryWidget.cpp" line="71"/>
-        <source>Select a directory</source>
-        <translation>Select a directory</translation>
+        <source>Select a folder</source>
+        <translation>Select a folder</translation>
     </message>
 </context>
 <context>
@@ -1137,8 +1167,8 @@ bowtie index file</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.cpp" line="56"/>
-        <source>Save a directory</source>
-        <translation>Save a directory</translation>
+        <source>Save a folder</source>
+        <translation>Save a folder</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.cpp" line="58"/>
@@ -1160,8 +1190,8 @@ bowtie index file</translation>
     </message>
     <message>
         <location filename="../src/dashboard/OutputFilesWidget.cpp" line="87"/>
-        <source>Open containing directory</source>
-        <translation>Open containing directory</translation>
+        <source>Open containing folder</source>
+        <translation>Open containing folder</translation>
     </message>
     <message>
         <source>Open by operating system</source>
@@ -1326,8 +1356,8 @@ bowtie index file</translation>
     <name>U2::ScanDashboardsDirTask</name>
     <message>
         <location filename="../src/dashboard/Dashboard.cpp" line="417"/>
-        <source>Scan dashboards directory</source>
-        <translation>Scan dashboards directory</translation>
+        <source>Scan dashboards folder</source>
+        <translation>Scan dashboards folder</translation>
     </message>
 </context>
 <context>
@@ -1440,8 +1470,8 @@ bowtie index file</translation>
     <name>U2::URLLineEdit</name>
     <message>
         <location filename="../src/support/URLLineEdit.cpp" line="187"/>
-        <source>Select a directory</source>
-        <translation>Select a directory</translation>
+        <source>Select a folder</source>
+        <translation>Select a folder</translation>
     </message>
     <message>
         <location filename="../src/support/URLLineEdit.cpp" line="190"/>
@@ -1460,8 +1490,8 @@ bowtie index file</translation>
     <name>U2::URLListController</name>
     <message>
         <location filename="../src/DatasetsController.cpp" line="769"/>
-        <source>This file or directory does not exist: %1</source>
-        <translation>This file or directory does not exist: %1</translation>
+        <source>This file or folder does not exist: %1</source>
+        <translation>This file or folder does not exist: %1</translation>
     </message>
 </context>
 <context>
@@ -1474,8 +1504,8 @@ bowtie index file</translation>
     </message>
     <message>
         <location filename="../src/DatasetWidget.cpp" line="121"/>
-        <source>Select a directory</source>
-        <translation>Select a directory</translation>
+        <source>Select a folder</source>
+        <translation>Select a folder</translation>
     </message>
     <message>
         <location filename="../src/DatasetWidget.cpp" line="189"/>

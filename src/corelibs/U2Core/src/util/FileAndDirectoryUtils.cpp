@@ -55,7 +55,7 @@ QString FileAndDirectoryUtils::createWorkingDir(const QString &fileUrl, int dirM
                 result += "/";
             }
         } else {
-            algoLog.error("Result directory is empty, default workflow directory is used");
+            algoLog.error("Result folder is empty, default workflow folder is used");
             useInternal = true;
         }
     } else {

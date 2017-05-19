@@ -65,11 +65,13 @@ public:
 
     void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
+    virtual void adjustReferenceLength(U2OpStatus& os);
+
 signals:
     void si_clearReferenceSelection();
 
 public slots:
-    void sl_referenceSelectionChanged();
+    void sl_backgroundSelectionChanged();
 
 private slots:
     void sl_showHideTrace();
@@ -91,7 +93,7 @@ private:
 
     QAction* createToggleTraceAction(const QString& actionName);
 
-    void processCharacterInEditMode(char newCharacter);
+    void insertChar(char newCharacter);
 
 private:
     ChromatogramViewSettings    settings;
@@ -103,8 +105,6 @@ private:
     QAction*    scaleAction;
 
     QAction*    insertAction;
-
-    bool        insertionMode;
 };
 
 

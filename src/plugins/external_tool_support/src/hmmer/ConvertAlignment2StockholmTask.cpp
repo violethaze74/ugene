@@ -99,7 +99,7 @@ void ConvertAlignment2Stockholm::prepareResultUrl() {
         CHECK_OP(stateInfo, );
     }
     if (!tempDir.mkpath(workingDir)){
-        setError(tr("Cannot create a directory for temporary files."));
+        setError(tr("Cannot create a folder for temporary files."));
         return;
     }
 }

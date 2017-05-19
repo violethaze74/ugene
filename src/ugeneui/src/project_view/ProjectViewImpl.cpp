@@ -159,7 +159,7 @@ void DocumentUpdater::update() {
         if (!fileCheckAllowedByHints) {
             continue;
         }
-        if (!doc->isModified() && !fi.exists()) { // file was removed from its directory
+        if (!doc->isModified() && !fi.exists()) { // file was removed from its folder
             removedDocs.append(doc);
         }
 
@@ -211,7 +211,7 @@ void removeDocFromProject(Project *proj, Document *doc) {
 
 bool DocumentUpdater::makeDecision(Document *doc, QListIterator<Document*> &iter) {
     QMessageBox::StandardButton btn = QMessageBox::question(AppContext::getMainWindow()->getQMainWindow(),
-        tr(NOTIFICATION_TITLE), tr("The document '%1' was removed from its original directory. Do you wish to save it? "
+        tr(NOTIFICATION_TITLE), tr("The document '%1' was removed from its original folder. Do you wish to save it? "
         "Otherwise, it will be removed from the current project.").arg(doc->getName()),
         QMessageBox::Yes | QMessageBox::No | QMessageBox::NoToAll);
 
@@ -276,9 +276,9 @@ void DocumentUpdater::notifyUserAndProcessRemovedDocuments(const QList<Document 
     if (!dbiDocs.isEmpty()) {
         const bool severalDocRemoved = dbiDocs.size() > 1;
         const QString warningMessageText = severalDocRemoved
-            ? tr("Several documents were removed from their original directories. Therefore, they will be deleted from the current project. "
+            ? tr("Several documents were removed from their original folders. Therefore, they will be deleted from the current project. "
                 "Find the full list below.")
-            : tr("The document '%1' was removed from its original directory. Therefore, it will be deleted from the current project.")
+            : tr("The document '%1' was removed from its original folder. Therefore, it will be deleted from the current project.")
                 .arg(dbiDocs.first()->getName());
 
         QObjectScopedPointer<QMessageBox> warningBox = new QMessageBox(dynamic_cast<QWidget *>(AppContext::getMainWindow()));

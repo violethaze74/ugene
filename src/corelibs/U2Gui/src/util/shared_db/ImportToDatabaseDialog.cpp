@@ -598,7 +598,7 @@ void ImportToDatabaseDialog::setFolderTooltip(QTreeWidgetItem *item) {
               "\n";
 
     if (currentOptions.processFoldersRecursively) {
-        tooltip += "\n" + tr("The directory will be processed recursively");
+        tooltip += "\n" + tr("The folder will be processed recursively");
     }
 
     if (currentOptions.createSubfolderForEachFile) {

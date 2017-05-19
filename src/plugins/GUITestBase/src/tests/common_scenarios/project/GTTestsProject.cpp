@@ -97,7 +97,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 // Expected state: "Export Project" dialog has appeared
 //
 // 3. Fill the next field in dialog:
-//     {Destination Directory} _common_data/scenarios/sandbox
+//     {Destination folder} _common_data/scenarios/sandbox
 // 4. Click OK button
     GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir+"_common_data/scenarios/sandbox"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Export project...");

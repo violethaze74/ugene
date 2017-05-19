@@ -43,7 +43,7 @@ extern "C" {
  *
  * If returning value is not U2_OK the environment is not affected by the invocation.
  *
- * If the `workingDirectoryPath` is valid but the directory contains no UGENE binaries
+ * If the `workingDirectoryPath` is valid but the folder contains no UGENE binaries
  * then UGENE plugins is not found. But the Workflow Designer computational elements
  * are defined in plugins, so the computational schemes do not pass the validation
  * since they use undefined elements.

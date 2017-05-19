@@ -101,13 +101,13 @@ void CASAVAFilterWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, CASAVAFilterWorker::tr("Output directory"),
-            CASAVAFilterWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, CASAVAFilterWorker::tr("Output folder"),
+            CASAVAFilterWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, CASAVAFilterWorker::tr("Custom directory"),
-            CASAVAFilterWorker::tr("Select the custom output directory."));
+        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, CASAVAFilterWorker::tr("Custom folder"),
+            CASAVAFilterWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, CASAVAFilterWorker::tr("Output file name"),
             CASAVAFilterWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));
@@ -256,13 +256,13 @@ void FastqQualityTrimWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, FastqQualityTrimWorker::tr("Output directory"),
-            FastqQualityTrimWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, FastqQualityTrimWorker::tr("Output folder"),
+            FastqQualityTrimWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, FastqQualityTrimWorker::tr("Custom directory"),
-            FastqQualityTrimWorker::tr("Select the custom output directory."));
+        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, FastqQualityTrimWorker::tr("Custom folder"),
+            FastqQualityTrimWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, FastqQualityTrimWorker::tr("Output file name"),
             FastqQualityTrimWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));
@@ -366,14 +366,15 @@ FastqQualityTrimTask::FastqQualityTrimTask(const BaseNGSSetting &settings)
 //  I - Illumina 1.3+ Phred+64,  raw reads typically (0, 40)
 //  J - Illumina 1.5+ Phred+64,  raw reads typically (3, 40) with 0=unused, 1=unused, 2=Read Segment Quality Control Indicator (bold)
 //  L - Illumina 1.8+ Phred+33,  raw reads typically (0, 41)
-int FastqQualityTrimTask::getMaxQualityValue(){
+DNAQualityType FastqQualityTrimTask::detectQualityType(){
     int maxValue = 33;
+    int minValue = 126;
     FASTQIterator iter_qual(settings.inputUrl, stateInfo);
-    CHECK(!stateInfo.hasError(), -1);
+    CHECK(!stateInfo.hasError(), DNAQualityType_Sanger);
 
     int counter = 0;
     while (iter_qual.hasNext()) {
-        CHECK(!stateInfo.isCoR(), -1);
+        CHECK(!stateInfo.isCoR(), DNAQualityType_Sanger);
 
         if (counter > 1000) {   // check only first 1000 reads in file
             break;
@@ -386,11 +387,12 @@ int FastqQualityTrimTask::getMaxQualityValue(){
         } else {
             for (int pos = 0; pos <= seqLen - 1; pos++) {
                 maxValue = qMax(static_cast<int>(dna.quality.qualCodes.at(pos)), maxValue);
+                minValue = qMin(static_cast<int>(dna.quality.qualCodes.at(pos)), minValue);
             }
         }
         counter++;
     }
-    return maxValue;
+    return DNAQuality::detectTypeByMinMaxQualityValues(minValue, maxValue);
 }
 
 void FastqQualityTrimTask::runStep(){
@@ -402,8 +404,8 @@ void FastqQualityTrimTask::runStep(){
     int quality = settings.customParameters.value(QUALITY_ID, 20).toInt();
     int minLen = settings.customParameters.value(LEN_ID, 0).toInt();
     bool bothEnds = settings.customParameters.value(BOTH_ID, false).toInt();
-    int maxQualityValue = getMaxQualityValue();
-    CHECK(maxQualityValue != -1, );
+    DNAQualityType qualityType = detectQualityType();
+    CHECK_OP(stateInfo, );
 
     FASTQIterator iter(settings.inputUrl, stateInfo);
     CHECK_OP(stateInfo, );
@@ -414,7 +416,7 @@ void FastqQualityTrimTask::runStep(){
         DNASequence dna = iter.next();
         const int initialLength = dna.length();
 
-        dna.quality.type = DNAQuality::detectTypeByMaxQualityValue(maxQualityValue);
+        dna.quality.type = qualityType;
 
         const U2Region acceptedRegion = DNASequenceUtils::trimByQuality(dna, quality, minLen, bothEnds);
 
@@ -481,13 +483,13 @@ void MergeFastqWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, MergeFastqWorker::tr("Output directory"),
-            MergeFastqWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, MergeFastqWorker::tr("Output folder"),
+            MergeFastqWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, MergeFastqWorker::tr("Custom directory"),
-            MergeFastqWorker::tr("Select the custom output directory."));
+        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, MergeFastqWorker::tr("Custom folder"),
+            MergeFastqWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, MergeFastqWorker::tr("Output file name"),
             MergeFastqWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));

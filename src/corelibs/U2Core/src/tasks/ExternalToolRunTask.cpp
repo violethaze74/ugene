@@ -347,18 +347,18 @@ void ExternalToolLogParser::setLastError(const QString &value) {
 //ExternalToolSupportUtils
 void ExternalToolSupportUtils::removeTmpDir( const QString& tmpDirUrl, U2OpStatus& os) {
     if (tmpDirUrl.isEmpty()) {
-        os.setError(tr("Can not remove temporary directory: path is empty."));
+        os.setError(tr("Can not remove temporary folder: path is empty."));
         return;
     }
     QDir tmpDir(tmpDirUrl);
     foreach(const QString& file, tmpDir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries)){
         if (!tmpDir.remove(file)) {
-            os.setError(tr("Can not remove files from temporary directory."));
+            os.setError(tr("Can not remove files from temporary folder."));
             return;
         }
     }
     if (!tmpDir.rmdir(tmpDir.absolutePath())){
-        os.setError(tr("Can not remove directory for temporary files."));
+        os.setError(tr("Can not remove folder for temporary files."));
     }
 }
 
@@ -371,7 +371,7 @@ QString ExternalToolSupportUtils::createTmpDir(const QString &prePath, const QSt
 
         if (!tmpDir.exists()) {
             if (!QDir().mkpath(tmpDirPath)) {
-                os.setError(tr("Can not create directory for temporary files: %1").arg(tmpDirPath));
+                os.setError(tr("Can not create folder for temporary files: %1").arg(tmpDirPath));
             }
             return tmpDir.absolutePath();
         }
@@ -466,7 +466,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolName, con
     result.process->setProcessEnvironment(processEnvironment);
     if (!workingDirectory.isEmpty()){
         result.process->setWorkingDirectory(workingDirectory);
-        algoLog.details(tr("Working directory is \"%1\"").arg(result.process->workingDirectory()));
+        algoLog.details(tr("Working folder is \"%1\"").arg(result.process->workingDirectory()));
     }
 
     // QProcess wraps arguments that contain spaces in quotes automatically.

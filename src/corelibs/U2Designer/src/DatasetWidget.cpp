@@ -118,7 +118,7 @@ void URLListWidget::sl_addFileButton() {
 
 void URLListWidget::sl_addDirButton() {
     LastUsedDirHelper lod;
-    QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a directory"), lod.dir);
+    QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder"), lod.dir);
     if (!dir.isEmpty()) {
         lod.dir = dir;
         addUrl(dir);

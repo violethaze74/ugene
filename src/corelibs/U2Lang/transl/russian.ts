@@ -396,13 +396,13 @@
     </message>
     <message>
         <location filename="../src/model/WorkflowContext.cpp" line="206"/>
-        <source>Can not create directory: </source>
-        <translation>Невозможно создать директорию: </translation>
+        <source>Can not create folder: </source>
+        <translation>Невозможно создать папку: </translation>
     </message>
     <message>
         <location filename="../src/model/WorkflowContext.cpp" line="229"/>
-        <source>Can not create directory %1 in the directory %2</source>
-        <translation>Can not create directory %1 in the directory %2</translation>
+        <source>Can not create folder %1 in the folder %2</source>
+        <translation>Can not create folder %1 in the folder %2</translation>
     </message>
     <message>
         <location filename="../src/support/AttributeInfo.cpp" line="43"/>
@@ -757,6 +757,11 @@
         <translation>Database select definition: &apos;%1&apos; is expected, &apos;%2&apos; is found</translation>
     </message>
     <message>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="486"/>
+        <source>folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="494"/>
         <source>Element name cannot contain whitespaces: &apos;%1&apos;</source>
         <translation>Имя элемента не может содержать пробелы: &apos;%1&apos;</translation>
@@ -1066,9 +1071,8 @@
         <translation>Url definition does not contain dataset name</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="486"/>
-        <source>Directory url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</source>
-        <translation>Directory url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</translation>
+        <source>Folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</source>
+        <translation type="vanished">Folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</translation>
     </message>
     <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="826"/>
@@ -1185,8 +1189,8 @@
     </message>
     <message>
         <location filename="../src/support/BaseNGSWorker.cpp" line="213"/>
-        <source>Directory does not exist: </source>
-        <translation>Директория не существует: </translation>
+        <source>Folder does not exist: </source>
+        <translation>Папка не существует: </translation>
     </message>
 </context>
 <context>
@@ -1388,7 +1392,7 @@
     <message>
         <location filename="../src/model/RunFileSystem.cpp" line="152"/>
         <source>Workflow-run output</source>
-        <translation>Выходная директория для запуска схемы</translation>
+        <translation>Выходная папка для запуска схемы</translation>
     </message>
 </context>
 <context>
@@ -2109,8 +2113,8 @@
     </message>
     <message>
         <location filename="../src/support/WorkflowUtils.cpp" line="1224"/>
-        <source>Can&apos;t output directory path: &apos;%1&apos;, check permissions</source>
-        <translation>Can&apos;t output directory path: &apos;%1&apos;, check permissions</translation>
+        <source>Can&apos;t output folder path: &apos;%1&apos;, check permissions</source>
+        <translation>Can&apos;t output folder path: &apos;%1&apos;, check permissions</translation>
     </message>
     <message>
         <location filename="../src/support/WorkflowUtils.cpp" line="1243"/>

@@ -94,7 +94,7 @@ void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int row
         McaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
     } else {
         McaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
-        MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
+        MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os, true);
     }
     SAFE_POINT_OP(os, );
 
@@ -117,6 +117,10 @@ void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int row
     }
 
     updateCachedMultipleAlignment(mi);
+}
+
+void MultipleChromatogramAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps) {
+    MultipleAlignmentObject::insertGap(rows, pos, nGaps, true);
 }
 
 void MultipleChromatogramAlignmentObject::insertCharacter(int rowIndex, int pos, char newChar) {

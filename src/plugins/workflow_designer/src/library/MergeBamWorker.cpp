@@ -103,13 +103,13 @@ void MergeBamWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor outDir(OUT_MODE_ID, MergeBamWorker::tr("Output directory"),
-            MergeBamWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(OUT_MODE_ID, MergeBamWorker::tr("Output folder"),
+            MergeBamWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(CUSTOM_DIR_ID, MergeBamWorker::tr("Custom directory"),
-            MergeBamWorker::tr("Select the custom output directory."));
+        Descriptor customDir(CUSTOM_DIR_ID, MergeBamWorker::tr("Custom folder"),
+            MergeBamWorker::tr("Select the custom output folder."));
 
         Descriptor outName(OUT_NAME_ID, MergeBamWorker::tr("Output BAM name"),
             MergeBamWorker::tr("A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .merged.bam extention."));

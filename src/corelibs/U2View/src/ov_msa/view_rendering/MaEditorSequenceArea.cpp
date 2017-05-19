@@ -656,7 +656,6 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
 
     const U2Region& sel = getSelectedRows();
     maObj->removeRegion(selection.x(), sel.startPos, selection.width(), sel.length, true);
-
     if (selection.height() == 1 && selection.width() == 1) {
         if (isInRange(selection.topLeft())) {
             return;
@@ -695,6 +694,8 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
             {
                 setFirstVisibleBase(startPos + resultShift);
             }
+            U2OpStatus2Log os;
+            adjustReferenceLength(os);
             return true;
         } else {
             return false;
@@ -992,15 +993,15 @@ void MaEditorSequenceArea::sl_buildContextMenu(GObjectView*, QMenu* m) {
     buildMenu(m);
 }
 
-void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &) {
+void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &modInfo) {
     exitFromEditCharacterMode();
     int nSeq = editor->getNumSequences();
     int aliLen = editor->getAlignmentLen();
-    //! SANGER_TODO
-//    if (ui->isCollapsibleMode()) {
-//        nSeq = getNumDisplayedSequences();
-//        updateCollapsedGroups(modInfo);
-//    }
+
+    if (ui->isCollapsibleMode()) {
+        nSeq = getNumDisplayedSequences();
+        updateCollapsedGroups(modInfo);
+    }
 
     editor->updateReference();
 
@@ -1072,7 +1073,7 @@ void MaEditorSequenceArea::sl_useDots(){
 void MaEditorSequenceArea::sl_registerCustomColorSchemes() {
     deleteOldCustomSchemes();
 
-    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(customColorSchemeMenuActions, MsaSchemesMenuBuilder::Custom, getEditor()->getMaObject()->getAlphabet()->getType(), 
+    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(customColorSchemeMenuActions, MsaSchemesMenuBuilder::Custom, getEditor()->getMaObject()->getAlphabet()->getType(),
         this);
 }
 
@@ -1144,7 +1145,7 @@ void MaEditorSequenceArea::sl_changeHighlightScheme(){
 }
 
 void MaEditorSequenceArea::sl_replaceSelectedCharacter() {
-    msaMode = EditCharacterMode;
+    msaMode = ReplaceCharMode;
     editModeAnimationTimer.start(500);
     highlightCurrentSelection();
 }
@@ -1234,7 +1235,10 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
                 setCursorPos(q);
             }
             rubberBand->setGeometry(QRect(origin, QSize()));
-            rubberBand->show();
+            bool isMSAEditor = qobject_cast<MSAEditor*> (getEditor()) != NULL;
+            if (isMSAEditor) {
+                rubberBand->show();
+            }
             cancelSelection();
         }
     }
@@ -1299,7 +1303,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
     }
 
     int key = e->key();
-    if (msaMode == EditCharacterMode) {
+    if (msaMode != ViewMode) {
         processCharacterInEditMode(e);
         return;
     }
@@ -1558,7 +1562,9 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
 
     const int removedRegionWidth = (-1 == countOfGaps) ? selection.width() : countOfGaps;
     const U2Region& sequences = getSelectedRows();
-    maObj->insertGap(sequences,  selection.x() , removedRegionWidth);
+    maObj->insertGap(sequences, selection.x(), removedRegionWidth);
+    adjustReferenceLength(os);
+    CHECK_OP(os,);
     moveSelection(removedRegionWidth, 0, true);
 }
 
@@ -1946,6 +1952,17 @@ void MaEditorSequenceArea::processCharacterInEditMode(QKeyEvent *e) {
 }
 
 void MaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
+    switch (msaMode) {
+    case ReplaceCharMode:
+        replaceChar(newCharacter);
+        break;
+    case InsertCharMode:
+        insertChar(newCharacter);
+    }
+}
+
+void MaEditorSequenceArea::replaceChar(char newCharacter) {
+    CHECK(msaMode == ReplaceCharMode, );
     CHECK(getEditor() != NULL, );
     if (selection.isNull()) {
         return;
@@ -1970,9 +1987,8 @@ void MaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
     exitFromEditCharacterMode();
 }
 
-
 void MaEditorSequenceArea::exitFromEditCharacterMode() {
-    if (msaMode == EditCharacterMode) {
+    if (msaMode != ViewMode) {
         editModeAnimationTimer.stop();
         highlightSelection = false;
         selectionColor = Qt::black;

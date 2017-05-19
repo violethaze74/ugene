@@ -291,8 +291,8 @@ void GenomeAlignerWorkerFactory::init() {
     {
 
         Descriptor outDir(OUTPUT_DIR,
-            GenomeAlignerWorker::tr("Output directory"),
-            GenomeAlignerWorker::tr("Directory to save UGENE genome aligner output files."));
+            GenomeAlignerWorker::tr("Output folder"),
+            GenomeAlignerWorker::tr("Folder to save UGENE genome aligner output files."));
 
         Descriptor outName(OUTPUT_NAME,
             GenomeAlignerWorker::tr("Output file name"),

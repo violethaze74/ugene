@@ -124,7 +124,7 @@ const QString DOWNLOAD_REMOTE_FILE_DOMAIN = "DownloadRemoteFileDialog";
 
 void DownloadRemoteFileDialog::sl_saveFilenameButtonClicked() {
     LastUsedDirHelper lod(DOWNLOAD_REMOTE_FILE_DOMAIN);
-    QString filename = U2FileDialog::getExistingDirectory(this, tr("Select directory to save"), lod.dir);
+    QString filename = U2FileDialog::getExistingDirectory(this, tr("Select folder to save"), lod.dir);
     if(!filename.isEmpty()) {
         ui->saveFilenameLineEdit->setText(filename);
         lod.url = filename;
@@ -171,7 +171,7 @@ void DownloadRemoteFileDialog::accept()
     }
     QString fullPath = getFullpath();
     if( ui->saveFilenameLineEdit->text().isEmpty() ) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("No directory selected for saving file!"));
+        QMessageBox::critical(this, L10N::errorTitle(), tr("No folder selected for saving file!"));
         ui->saveFilenameLineEdit->setFocus();
         return;
     }

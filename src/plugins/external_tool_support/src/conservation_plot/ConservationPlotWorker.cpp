@@ -206,7 +206,7 @@ void ConservationPlotWorkerFactory::init() {
              ConservationPlotWorker::tr("Label of data in the figure (--bed-label)."));
          Descriptor assemblyVersion(ASSEMBLY_VER,
              ConservationPlotWorker::tr("Assembly version"),
-             ConservationPlotWorker::tr("The directory to store phastcons scores (--phasdb)."));
+             ConservationPlotWorker::tr("The folder to store phastcons scores (--phasdb)."));
          Descriptor windowSizeDescr(WINDOW_S,
              ConservationPlotWorker::tr("Window width"),
              ConservationPlotWorker::tr("Window width centered at middle of regions (-w)."));
