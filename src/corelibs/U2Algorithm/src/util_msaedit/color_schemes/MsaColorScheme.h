@@ -86,7 +86,7 @@ public:
     const QString & getId() const;
     const QString getName() const;
 
-    bool isAlphabetFit(const DNAAlphabetType& alphabet) const;
+    bool isAlphabetTypeSupported(const DNAAlphabetType& alphabetType) const;
     const AlphabetFlags getSupportedAlphabets() const;
 signals:
     void si_factoryChanged();
@@ -103,19 +103,20 @@ public:
     MsaColorSchemeRegistry();
     ~MsaColorSchemeRegistry();
 
-    const QList<MsaColorSchemeFactory *> & getMsaColorSchemes() const;
+    const QList<MsaColorSchemeFactory *> & getSchemes() const;
     const QList<MsaColorSchemeCustomFactory *> &getCustomColorSchemes() const;
 
-    QList<MsaColorSchemeFactory *> getAllMsaColorSchemes(DNAAlphabetType alp) const;
-    QList<MsaColorSchemeFactory *> getMsaColorSchemes(DNAAlphabetType alp) const;
-    QList<MsaColorSchemeFactory *> getMsaCustomColorSchemes(DNAAlphabetType alphabetType) const;
+    QList<MsaColorSchemeFactory *> getAllSchemes(DNAAlphabetType alphabetType) const;
+    QList<MsaColorSchemeFactory *> getSchemes(DNAAlphabetType alphabetType) const;
+    QList<MsaColorSchemeFactory *> getCustomSchemes(DNAAlphabetType alphabetType) const;
 
-    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > getAllMsaColorSchemesGrouped() const;
-    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > getMsaColorSchemesGrouped() const;
-    QMap<AlphabetFlags, QList<MsaColorSchemeFactory *> > getMsaCustomColorSchemesGrouped() const;
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > getAllSchemesGrouped() const;
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > getSchemesGrouped() const;
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory *> > getCustomSchemesGrouped() const;
 
-    MsaColorSchemeCustomFactory * getMsaCustomColorSchemeFactoryById(const QString &id) const;
-    MsaColorSchemeFactory * getMsaColorSchemeFactoryById(const QString &id) const;
+    MsaColorSchemeCustomFactory * getCustomSchemeFactoryById(const QString &id) const;
+    MsaColorSchemeFactory * getSchemeFactoryById(const QString &id) const;
+    MsaColorSchemeFactory * getEmptySchemeFactory() const;
 
 signals:
     void si_customSettingsChanged();

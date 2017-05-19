@@ -55,11 +55,10 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/General/McaGeneralTabFactory.h \
            src/ov_msa/General/MSAGeneralTab.h \
            src/ov_msa/General/MSAGeneralTabFactory.h \
-           src/ov_msa/Highlighting/MsaColorComboBoxController.h \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.h \
-           src/ov_msa/Highlighting/MsaHighlightingComboBoxController.h \
+           src/ov_msa/Highlighting/MsaSchemeComboBoxController.h \
            src/ov_msa/Highlighting/MsaSchemesMenuBuilder.h \
            src/ov_msa/MaConsensusMismatchController.h \
            src/ov_msa/MaEditor.h \
@@ -299,11 +298,9 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/General/McaGeneralTabFactory.cpp \
            src/ov_msa/General/MSAGeneralTab.cpp \
            src/ov_msa/General/MSAGeneralTabFactory.cpp \
-           src/ov_msa/Highlighting/MsaColorComboBoxController.cpp \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.cpp \
-           src/ov_msa/Highlighting/MsaHighlightingComboBoxController.cpp \
            src/ov_msa/Highlighting/MsaSchemesMenuBuilder.cpp \
            src/ov_msa/MaConsensusMismatchController.cpp \
            src/ov_msa/MaEditor.cpp \

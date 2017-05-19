@@ -41,7 +41,7 @@ MsaColorScheme * MsaColorSchemeCustomFactory::create(QObject *parent, MultipleAl
 bool MsaColorSchemeCustomFactory::isEqualTo(const ColorSchemeData &scheme) const {
     bool result = true;
     result &= getName() == scheme.name;
-    result &= isAlphabetFit(scheme.type);
+    result &= isAlphabetTypeSupported(scheme.type);
     result &= colorsPerChar == colorMapToColorVector(scheme.alpColors);
     return result;
 }
