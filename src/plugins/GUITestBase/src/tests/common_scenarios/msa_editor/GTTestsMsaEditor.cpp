@@ -2647,8 +2647,9 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2){//DIFFERENCE: Line label is tested
     CHECK_SET_ERR(lineLabel->text()=="Ln 1 / 10", "Expected text: Ln 1 / 10. Found: " + lineLabel->text());
 //Expected state: Statistics "Pos" in right bottom is "Pos 3/14"
 
-//3. Insert 3 gaps to first three positoons in "Phaneroptera_falcata"
+//3. Select and delete 5 lines 
     GTUtilsMSAEditorSequenceArea::selectArea(os,QPoint(-5,3),QPoint(-5,7));
+    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
 //4. Select char at 4 position in "Phaneroptera_falcata"(A)
