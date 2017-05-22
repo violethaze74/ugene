@@ -85,10 +85,15 @@ void MWMDIManagerImpl::prepareGUI() {
     windowLayout->setObjectName("Window layout");
     windowLayout->setStatusTip(tr("Window layout"));
 
+    bool tabbedLayout = AppContext::getAppSettings()->getUserAppsSettings()->tabbedWindowLayout();
     multipleDocsAct = new QAction(tr("Multiple documents"), this);
+    multipleDocsAct->setCheckable(true);
+    multipleDocsAct->setChecked(!tabbedLayout);
     connect(multipleDocsAct, SIGNAL(triggered()), SLOT(sl_setWindowLayoutToMultiDoc()));
 
     tabbedDocsAct = new QAction(tr("Tabbed documents"), this);
+    tabbedDocsAct->setCheckable(true);
+    tabbedDocsAct->setChecked(tabbedLayout);
     connect(tabbedDocsAct, SIGNAL(triggered()), SLOT(sl_setWindowLayoutToTabbed()));
 
     tileAct = new QAction(QIcon(":ugene/images/window_tile.png"), tr("Tile windows"), this);
@@ -324,8 +329,7 @@ MDIItem* MWMDIManagerImpl::getMDIItem(QMdiSubWindow* qw) const {
 
 void MWMDIManagerImpl::activateWindow(MWMDIWindow* w)  {
     MDIItem* i = getMDIItem(w);
-    assert(i);
-    if (i==0) {
+    if (i == NULL) {
         return;
     }
     AppContext::setActiveWindowName(w->windowTitle());
@@ -431,11 +435,10 @@ MWMDIWindow* MWMDIManagerImpl::getActiveWindow() const {
 }
 
 void MWMDIManagerImpl::sl_updateWindowLayout() {
-    if (AppContext::getAppSettings()->getUserAppsSettings()->tabbedWindowLayout()) {
-        mdiArea->setViewMode(QMdiArea::TabbedView);
-    } else {
-        mdiArea->setViewMode(QMdiArea::SubWindowView);
-    }
+    bool tabbed = AppContext::getAppSettings()->getUserAppsSettings()->tabbedWindowLayout();
+    mdiArea->setViewMode(tabbed? QMdiArea::TabbedView : QMdiArea::SubWindowView);
+    multipleDocsAct->setChecked(!tabbed);
+    tabbedDocsAct->setChecked(tabbed);
 }
 
 void MWMDIManagerImpl::sl_setWindowLayoutToMultiDoc() {
