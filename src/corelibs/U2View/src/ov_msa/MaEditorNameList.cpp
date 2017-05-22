@@ -25,6 +25,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 
+#include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -280,8 +281,16 @@ void MaEditorNameList::sl_removeSequence() {
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
     CHECK(maObj->getNumRows() > sel.length, );
+
+    U2OpStatusImpl os;
+    U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
+    Q_UNUSED(userModStep);
+    SAFE_POINT_OP(os, );
+
     setSelection(0, 0);
-    maObj->removeRegion(0, sel.startPos, maObj->getLength(), sel.length, true);
+
+    U2Region mappedSelection = ui->getCollapseModel()->mapSelectionRegionToRows(sel);
+    maObj->removeRegion(0, mappedSelection.startPos, maObj->getLength(), mappedSelection.length, true);
 }
 
 void MaEditorNameList::sl_selectReferenceSequence() {
