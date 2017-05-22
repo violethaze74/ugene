@@ -21,6 +21,7 @@
 
 #include <QApplication>
 #include <QMainWindow>
+#include <QMdiArea>
 #include <QMdiSubWindow>
 #include <QMenu>
 
@@ -170,15 +171,21 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
     QWidget *mdiWindow = NULL;
     GTGlobals::FindOptions options(false);
 
+    bool tabbedView = isTabbedLayout(os);
+
     while (NULL != (mdiWindow = GTUtilsMdi::activeWindow(os, options))) {
         GT_CHECK(prevWindow != mdiWindow, "Can't close MDI window");
         prevWindow = mdiWindow;
 
         GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
 
-        const QPoint closeButtonPos = GTWidget::getWidgetGlobalTopLeftPoint(os, mdiWindow) + QPoint(10, 5);
-        GTMouseDriver::moveTo(closeButtonPos);
-        GTMouseDriver::click();
+        if (!tabbedView) {
+            const QPoint closeButtonPos = GTWidget::getWidgetGlobalTopLeftPoint(os, mdiWindow) + QPoint(10, 5);
+            GTMouseDriver::moveTo(closeButtonPos);
+            GTMouseDriver::click();
+        } else {
+            GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Close active view");
+        }
         GTGlobals::sleep(100);
         GTThread::waitForMainThread();
     }
@@ -206,6 +213,16 @@ void GTUtilsMdi::waitWindowOpened(HI::GUITestOpStatus &os, const QString &window
     if (!found) {
         os.setError(QString("Cannot find MDI window with part of name '%1', timeout").arg(windowNamePart));
     }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isTabbedLayout"
+bool GTUtilsMdi::isTabbedLayout(HI::GUITestOpStatus &os) {
+    MainWindow* mainWindow = AppContext::getMainWindow();
+    GT_CHECK_RESULT(mainWindow != NULL, "MainWindow == NULL", NULL);
+    QMdiArea *mdiArea = GTWidget::findExactWidget<QMdiArea *>(os, "MDI_Area", mainWindow->getQMainWindow());
+    GT_CHECK_RESULT(mdiArea != NULL, "mdiArea == NULL", NULL);
+    return mdiArea->viewMode() == QMdiArea::TabbedView;
 }
 #undef GT_METHOD_NAME
 

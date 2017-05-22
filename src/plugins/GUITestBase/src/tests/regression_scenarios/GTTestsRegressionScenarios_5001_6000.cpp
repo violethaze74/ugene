@@ -68,6 +68,7 @@
 #include "GTTestsRegressionScenarios_5001_6000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
+#include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
@@ -674,6 +675,28 @@ GUI_TEST_CLASS_DEFINITION(test_5249) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(!l.hasError(), "Error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5252) {
+//    1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open an additional view for the sequence.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view" << "Open new view: Sequence View"));
+    GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: there are two bookmarks: "murine [s] NC_001363" and "murine [s] NC_001363 2".
+    GTUtilsBookmarksTreeView::findItem(os, "murine [s] NC_001363");
+    GTUtilsBookmarksTreeView::findItem(os, "murine [s] NC_001363 2");
+
+//    3. Rename the annotation table object.
+    GTUtilsProjectTreeView::rename(os, "NC_001363 features", "test_5252");
+
+//    Expected state: bookmarks are not renamed.
+    GTUtilsBookmarksTreeView::findItem(os, "murine [s] NC_001363");
+    GTUtilsBookmarksTreeView::findItem(os, "murine [s] NC_001363 2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5268) {
