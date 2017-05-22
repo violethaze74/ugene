@@ -22,15 +22,17 @@
 #ifndef _U2_MSA_COMBO_BOX_CONTROLLER_H_
 #define _U2_MSA_COMBO_BOX_CONTROLLER_H_
 
+#include <U2Core/DNAAlphabet.h>
+
 #include <U2Gui/GroupedComboBoxDelegate.h>
+
+#include <U2View/MSAEditor.h>
 
 #include <QComboBox>
 
 class QStandardItemModel;
 
 namespace U2 {
-
-class MSAEditor;
 
 class ComboBoxSignalHandler : public QObject {
     Q_OBJECT
@@ -45,7 +47,7 @@ public:
     }
 signals:
     void si_dataChanged(const QString &newScheme);
-private slots:
+    private slots:
     void sl_indexChanged(int index) {
         emit si_dataChanged(comboBox->itemData(index).toString());
     }
@@ -75,7 +77,9 @@ MsaSchemeComboBoxController<Factory, Registry>::MsaSchemeComboBoxController(MSAE
 
 template <class Factory, class Registry>
 void MsaSchemeComboBoxController<Factory, Registry>::init() {
-    CHECK(registry != NULL, );
+    if (registry == NULL) {
+        return;
+    }
 
     bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
 
@@ -84,8 +88,9 @@ void MsaSchemeComboBoxController<Factory, Registry>::init() {
     if (isAlphabetRaw) {
         fillCbWithGrouping();
     } else {
-        CHECK(msa->getMaObject(), );
-        CHECK(msa->getMaObject()->getAlphabet(), );
+        if (msa->getMaObject() == NULL || msa->getMaObject()->getAlphabet() == NULL) {
+            return;
+        }
         DNAAlphabetType alphabetType = msa->getMaObject()->getAlphabet()->getType();
         QList<Factory *> schemesFactories = registry->getAllSchemes(alphabetType);
         Factory* emptySchemeFactory = registry->getEmptySchemeFactory();
@@ -122,11 +127,14 @@ void MsaSchemeComboBoxController<Factory, Registry>::fillCbWithGrouping() {
 
 template <class Factory, class Registry>
 void MsaSchemeComboBoxController<Factory, Registry>::createAndFillGroup(QList<Factory *> rawSchemesFactories, const QString& groupName) {
-    CHECK(!rawSchemesFactories.isEmpty(), );
+    if (rawSchemesFactories.isEmpty()) {
+        return;
+    }
     GroupedComboBoxDelegate *schemeDelegate = qobject_cast<GroupedComboBoxDelegate*>(comboBox->itemDelegate());
     QStandardItemModel *schemeModel = qobject_cast<QStandardItemModel*>(comboBox->model());
-    CHECK(schemeDelegate != NULL, );
-    CHECK(schemeModel != NULL, );
+    if (schemeDelegate == NULL || schemeModel == NULL) {
+        return;
+    }
     schemeDelegate->addParentItem(schemeModel, groupName);
     foreach(Factory *factory, rawSchemesFactories) {
         schemeDelegate->addChildItem(schemeModel, factory->getName(), factory->getId());
