@@ -79,7 +79,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h \
-            src/runnables/ugene/plugins_3rdparty/hmm3/UHMM3SearchDialogFiller.h \
+            src/runnables/ugene/plugins_3rdparty/hmm3/HmmerSearchDialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h \
@@ -324,7 +324,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.cpp \
-            src/runnables/ugene/plugins_3rdparty/hmm3/UHMM3SearchDialogFiller.cpp \
+            src/runnables/ugene/plugins_3rdparty/hmm3/HmmerSearchDialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.cpp \

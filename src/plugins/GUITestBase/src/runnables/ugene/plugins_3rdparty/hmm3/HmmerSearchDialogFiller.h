@@ -20,17 +20,17 @@
  */
 
 
-#ifndef _U2_UHMM3_SEARCH_DIALOG_FILLER_H_
-#define _U2_UHMM3_SEARCH_DIALOG_FILLER_H_
+#ifndef _U2_HMMER_SEARCH_DIALOG_FILLER_H_
+#define _U2_HMMER_SEARCH_DIALOG_FILLER_H_
 
 #include "utils/GTUtilsDialog.h"
 namespace U2 {
 using namespace HI;
 
-class UHMM3SearchDialogFiller : public Filler
+class HmmerSearchDialogFiller : public Filler
 {
 public:
-    UHMM3SearchDialogFiller(HI::GUITestOpStatus &os, QString _profile, QString _newFilePath): Filler(os, "UHMM3SearchDialog"),
+    HmmerSearchDialogFiller(HI::GUITestOpStatus &os, QString _profile, QString _newFilePath): Filler(os, "HmmerSearchDialog"),
     profile(_profile),
     newFilePath(_newFilePath){}
     virtual void commonScenario();

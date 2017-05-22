@@ -183,7 +183,7 @@
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3SearchDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/hmm3/HmmerSearchDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
@@ -7421,7 +7421,7 @@ GUI_TEST_CLASS_DEFINITION( test_1704 ){
     GTFileDialog::openFile( os, testDir + "_common_data/regression/1704", "lrr_test_new.gb" );
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. Find HMM3 signals with _common_data\_regession\1704\LRR_4.hmm model
-    GTUtilsDialog::waitForDialog(os, new UHMM3SearchDialogFiller(os, testDir + "_common_data/regression/1704/LRR_4.hmm",
+    GTUtilsDialog::waitForDialog(os, new HmmerSearchDialogFiller(os, testDir + "_common_data/regression/1704/LRR_4.hmm",
                                                                  sandBoxDir + "1704.gb"));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find HMM signals with HMMER3...");
