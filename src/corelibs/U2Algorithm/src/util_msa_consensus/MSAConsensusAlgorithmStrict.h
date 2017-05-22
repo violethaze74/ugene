@@ -55,7 +55,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmStrict : public MSAConsensusAlgori
 public:
     MSAConsensusAlgorithmStrict(MSAConsensusAlgorithmFactoryStrict* f, QObject* p = NULL) : MSAConsensusAlgorithm(f, p){}
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column, const QVector<qint64> &seqIdx = QVector<qint64>()) const;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, const QVector<int> &seqIdx = QVector<int>()) const;
 };
 
 

@@ -73,6 +73,18 @@ int MaEditorSelection::height() const {
     return selArea.height();
 }
 
+int MaEditorSelection::bottom() const {
+    return selArea.bottom();
+}
+
+U2Region MaEditorSelection::getXRegion() const {
+    return U2Region(selArea.x(), selArea.width());
+}
+
+U2Region MaEditorSelection::getYRegion() const {
+    return U2Region(selArea.y(), selArea.height());
+}
+
 bool MaEditorSelection::operator==(const MaEditorSelection& other) const {
     return selArea == other.selArea;
 }

@@ -62,7 +62,6 @@ private:
     void moveVisibleRange(QPoint pos);
 
     void recalculateSelection();
-    void recalculateScale();
 
 private:
     mutable QPixmap cachedMSAOverview;

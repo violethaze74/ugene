@@ -56,7 +56,7 @@ MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _fact
 }
 
 char MSAConsensusAlgorithm::getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score,
-                                                     const QVector<qint64>& seqIdx) const {
+                                                     const QVector<int> &seqIdx) const {
     char consensusChar = getConsensusChar(ma, column, seqIdx);
 
     //now compute score using most freq character

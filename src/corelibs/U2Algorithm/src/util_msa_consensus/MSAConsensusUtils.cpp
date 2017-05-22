@@ -124,7 +124,7 @@ void MSAConsensusUtils::unpackConsensusCharsFromInt(quint32 val, char* charVal, 
 }
 
 uchar MSAConsensusUtils::getColumnFreqs(const MultipleAlignment& ma, int pos, QVector<int>& freqsByChar,
-                                        int& nonGapChars, const QVector<qint64>& seqIdx) {
+                                        int& nonGapChars, const QVector<int>& seqIdx) {
     assert(freqsByChar.size() == 256);
     freqsByChar.fill(0);
     nonGapChars = 0;

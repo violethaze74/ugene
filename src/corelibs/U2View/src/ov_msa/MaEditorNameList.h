@@ -49,8 +49,13 @@ public:
     MaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
     virtual ~MaEditorNameList();
 
-    void drawNames( QPixmap &p, const QList<qint64>& seqIdx, bool drawSelection = false);
-    void drawNames(QPainter& p, const QList<qint64>& seqIdx, bool drawSelection = false);
+    QSize getCanvasSize(const QList<int> &seqIdx) const;
+
+    void drawNames(QPixmap &pixmap, const QList<int> &seqIdx, bool drawSelection = false);
+    void drawNames(QPainter &painter, const QList<int> &seqIdx, bool drawSelection = false);
+
+protected slots:
+    void sl_completeRedraw();
 
 private slots:
     virtual void sl_buildStaticMenu(GObjectView* v, QMenu* m);
@@ -61,18 +66,12 @@ private slots:
     void sl_removeSequence();
     void sl_selectReferenceSequence();
     void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
-    void sl_onScrollBarActionTriggered( int scrollAction );
-    void sl_referenceSeqChanged(qint64);
-
-    void sl_startChanged(const QPoint& p, const QPoint& prev);
     void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
-
-    void sl_nameBarMoved(int n);
+    void sl_vScrollBarActionPerfermed();
     void sl_completeUpdate();
-
     void sl_onGroupColorsChanged(const GroupColorSchema&);
+
 protected:
-    void updateContent();
     virtual void updateScrollBar();
 
 protected:
@@ -101,11 +100,11 @@ public:
 
 signals:
     void si_sequenceNameChanged(QString prevName, QString newName);
-    void si_startMsaChanging();
-    void si_stopMsaChanging(bool modified);
+    void si_startMaChanging();
+    void si_stopMaChanging(bool modified);
 
 protected:
-    bool isRowInSelection(int row);
+    bool isRowInSelection(int row) const;
     void updateActions();
     void buildMenu(QMenu* m);
     void updateSelection(int newSeqNum);
@@ -113,12 +112,12 @@ protected:
     void drawAll();
 
     void drawSelection(QPainter& p);
-    void drawSequenceItem(QPainter& p, const QString& text, const U2Region& yRange, bool selected, bool isReference);
-    virtual void drawSequenceItem(QPainter& p, int row, int firstVisibleRow, const QString& text, bool selected);
+    void drawSequenceItem(QPainter &painter, const QString &text, const U2Region &yRange, bool selected, bool isReference);
+    virtual void drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool selected);
 
-    void drawCollapsibileSequenceItem(QPainter &p, const QString &name, const QRect& rect,
+    void drawCollapsibileSequenceItem(QPainter &painter, const QString &name, const QRect &rect,
                                       bool selected, bool collapsed, bool isReference);
-    void drawChildSequenceItem(QPainter &p, const QString &name, const QRect& rect,
+    void drawChildSequenceItem(QPainter &painter, const QString &name, const QRect &rect,
                                         bool selected, bool isReference);
 
     // SANGER_TODO: drawSequenceItem should use these methods
@@ -135,9 +134,9 @@ protected:
     QObject*            labels; // used in GUI tests
     MaEditorWgt*        ui;
     QScrollBar*         nhBar;
-    int                 curSeq;
-    int                 startSelectingSeq;
-    QPoint              origin;
+    int                 curRowNumber;
+    int                 startSelectingRowNumber;
+    QPoint              selectionStartPoint;
     bool                scribbling;
     bool                shifting;
     bool                singleSelecting;
@@ -161,7 +160,7 @@ public:
     McaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
 
 protected:
-    void drawSequenceItem(QPainter& p, int row, int firstVisibleRow, const QString& text, bool selected);
+    void drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool selected);
 
 private:
     McaEditor* getEditor() const;

@@ -29,7 +29,6 @@ namespace U2 {
 class MaEditorWgt;
 class MultipleAlignmentObject;
 
-
 class SNPSettings {
 public:
     SNPSettings();
@@ -72,7 +71,6 @@ public:
 
     const QRect& getCurrentSelection() const;
 
-    virtual int getRowHeight() const;
     virtual int getRowContentIndent(int rowId) const;
     int getSequenceRowHeight() const; // SANGER_TODO: order the methods
 

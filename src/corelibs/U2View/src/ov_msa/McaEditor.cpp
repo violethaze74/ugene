@@ -22,12 +22,14 @@
 #include "McaEditor.h"
 
 #include "MaConsensusMismatchController.h"
+#include "MaEditorConsensusAreaSettings.h"
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
 #include "McaEditorSequenceArea.h"
 #include "McaEditorReferenceArea.h"
 #include "McaEditorOverviewArea.h"
 #include "MSAEditorConsensusArea.h"
+#include "helpers/McaRowHeightController.h"
 
 #include "ov_sequence/SequenceObjectContext.h"
 
@@ -66,15 +68,11 @@ McaEditor::McaEditor(const QString &viewName,
     showChromatogramsAction->setChecked(true);
     connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
 
-    U2OpStatusImpl os;
-    foreach (const MultipleChromatogramAlignmentRow& row, obj->getMca()->getMcaRows()) {
-        chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), true);
-    }
-
     if (ref) {
         objects.append(referenceObj);
         onObjectAdded(referenceObj);
         // SANGER_TODO: probably can be big
+        U2OpStatus2Log os;
         referenceCache = referenceObj->getWholeSequenceData(os);
         referenceCtx = new SequenceObjectContext(referenceObj, this);
     } else {
@@ -101,25 +99,19 @@ void McaEditor::buildStaticMenu(QMenu* m) {
 //    MaEditor::buildStaticMenu(m);
 }
 
-int McaEditor::getRowHeight() const {
-    QFontMetrics fm(font, ui);
-    return (fm.height() + SequenceWithChromatogramAreaRenderer::CHROMATOGRAM_MAX_HEIGHT)* zoomMult;
-}
-
 int McaEditor::getRowContentIndent(int rowId) const {
-    if (chromVisibility[rowId]) {
+    if (isChromVisible(rowId)) {
         return SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS / 2;
     }
     return MaEditor::getRowContentIndent(rowId);
 }
 
 bool McaEditor::isChromVisible(qint64 rowId) const {
-    return chromVisibility[rowId];
+    return isChromVisible(getMaObject()->getRowPosById(rowId));
 }
 
-void McaEditor::toggleChromVisibility(qint64 rowId) {
-    chromVisibility[rowId] = !chromVisibility[rowId];
-    emit si_completeUpdate();
+bool McaEditor::isChromVisible(int rowIndex) const {
+    return !ui->getCollapseModel()->isItemCollapsed(rowIndex);
 }
 
 QString McaEditor::getReferenceRowName() const {
@@ -162,10 +154,7 @@ void McaEditor::sl_onContextMenuRequested(const QPoint & pos) {
 }
 
 void McaEditor::sl_showHideChromatograms(bool show) {
-    foreach (qint64 key, chromVisibility.keys()) {
-        chromVisibility[key] = show;
-    }
-
+    ui->getCollapseModel()->collapseAll(!show);
     emit si_completeUpdate();
 }
 
@@ -197,7 +186,10 @@ QWidget* McaEditor::createWidget() {
 }
 
 McaEditorWgt::McaEditorWgt(McaEditor *editor)
-    : MaEditorWgt(editor) {
+    : MaEditorWgt(editor)
+{
+    rowHeightController = new McaRowHeightController(this);
+
     initActions();
     initWidgets();
 
@@ -205,7 +197,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     seqAreaHeaderLayout->insertWidget(0, refArea);
 
     MaEditorConsensusAreaSettings consSettings;
-    consSettings.visibility[MSAEditorConsElement_HISTOGRAM] = false;
+    consSettings.visibleElements = MSAEditorConsElement_CONSENSUS_TEXT | MSAEditorConsElement_RULER;
     consSettings.highlightMismatches = true;
     consArea->setDrawSettings(consSettings);
 
@@ -216,6 +208,16 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     QWidget *refName = createHeaderLabelWidget(name, Qt::AlignCenter, refArea);
 
     nameAreaLayout->insertWidget(0, refName);
+
+    QVector<U2Region> itemRegions;
+    for (int i = 0; i < editor->getNumSequences(); i++) {
+        itemRegions << U2Region(i, 1);
+    }
+
+    collapseModel->setTrivialGroupsPolicy(MSACollapsibleItemModel::Allow);
+    collapseModel->reset(itemRegions);
+    collapseModel->collapseAll(false);
+    collapsibleMode = true;
 
     connect(consArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
 }

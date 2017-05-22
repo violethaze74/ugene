@@ -32,8 +32,11 @@
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
-#include "MaSimpleOverview.h"
 #include "MaGraphCalculationTask.h"
+#include "MaSimpleOverview.h"
+#include "ov_msa/helpers/BaseWidthController.h"
+#include "ov_msa/helpers/RowHeightController.h"
+#include "ov_msa/helpers/ScrollController.h"
 
 namespace U2 {
 
@@ -79,8 +82,7 @@ void MaSimpleOverview::sl_selectionChanged() {
 void MaSimpleOverview::sl_redraw() {
     redrawMSAOverview = true;
     redrawSelection = true;
-
-    update();
+    MaOverview::sl_redraw();
 }
 
 void MaSimpleOverview::sl_highlightingChanged() {
@@ -149,17 +151,14 @@ void MaSimpleOverview::drawOverview(QPainter &p) {
     U2OpStatusImpl os;
     for (int seq = 0; seq < editor->getNumSequences(); seq++) {
         for (int pos = 0; pos < editor->getAlignmentLen(); pos++) {
+            U2Region yRange = ui->getRowHeightController()->getRowGlobalRange(seq);
+            U2Region xRange = ui->getBaseWidthController()->getBaseGlobalRange(pos);
+
             QRect rect;
-            rect.setY( qRound( stepY * (double)seq ) );
-            rect.setX( qRound( stepX * (double)pos ) );
-
-            int prev = qRound( stepY * (double)seq );
-            int next = qRound( stepY * (double)(seq + 1) );
-            rect.setHeight( next - prev );
-
-            prev = qRound( stepX * (double)pos );
-            next = qRound( stepX * (double)(pos + 1) );
-            rect.setWidth( next - prev );
+            rect.setX(qRound(xRange.startPos / stepX));
+            rect.setY(qRound(yRange.startPos / stepY));
+            rect.setWidth(qRound(xRange.length / stepX));
+            rect.setHeight(qRound(yRange.length / stepY));
 
             QColor color = sequenceArea->getCurrentColorScheme()->getColor(seq, pos, mAlignmentObj->charAt(seq, pos));
             if (MaHighlightingOverviewCalculationTask::isGapScheme(highlightingSchemeId)) {
@@ -193,12 +192,13 @@ void MaSimpleOverview::drawVisibleRange(QPainter &p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
-        stepX = width() / (double)editor->getAlignmentLen();
+        const QPoint screenPosition = editor->getUI()->getScrollController()->getScreenPosition();
+        const QSize screenSize = editor->getUI()->getSequenceArea()->size();
 
-        cachedVisibleRange.setX(qRound(stepX * sequenceArea->getFirstVisibleBase()));
-        cachedVisibleRange.setWidth(qRound(stepX * (sequenceArea->getLastVisibleBase(true) - sequenceArea->getFirstVisibleBase() + 1)));
-        cachedVisibleRange.setY(qRound(stepY * sequenceArea->getFirstVisibleSequence()));
-        cachedVisibleRange.setHeight(qRound(stepY * (sequenceArea->getLastVisibleSequence(true) - sequenceArea->getFirstVisibleSequence() + 1)));
+        cachedVisibleRange.setX(qRound(screenPosition.x() / stepX));
+        cachedVisibleRange.setWidth(qRound(screenSize.width() / stepX));
+        cachedVisibleRange.setY(qRound(screenPosition.y() / stepY));
+        cachedVisibleRange.setHeight(qRound(screenSize.height() / stepY));
 
         if (cachedVisibleRange.width() < VISIBLE_RANGE_CRITICAL_SIZE || cachedVisibleRange.height() < VISIBLE_RANGE_CRITICAL_SIZE) {
             p.setPen(Qt::red);
@@ -214,32 +214,16 @@ void MaSimpleOverview::drawSelection(QPainter &p) {
 }
 
 void MaSimpleOverview::moveVisibleRange(QPoint _pos) {
-    const QRect& overviewRect = rect();
     QRect newVisibleRange(cachedVisibleRange);
-    newVisibleRange.moveLeft(_pos.x() - (double)cachedVisibleRange.width() / 2 );
+    const int newPosX = qBound((cachedVisibleRange.width()) / 2, _pos.x(), width() - (cachedVisibleRange.width() - 1 ) / 2);
+    const int newPosY = qBound((cachedVisibleRange.height()) / 2, _pos.y(), height() - (cachedVisibleRange.height() - 1 ) / 2);
+    const QPoint newPos(newPosX, newPosY);
+    newVisibleRange.moveCenter(newPos);
 
-    newVisibleRange.moveTop(_pos.y() - (double)cachedVisibleRange.height() / 2 );
-
-    if (!overviewRect.contains(newVisibleRange)) {
-        // fit in overview horizontally
-        if (newVisibleRange.x() < 0) {
-            newVisibleRange.moveLeft(0);
-        } else if (newVisibleRange.topRight().x() > overviewRect.width()) {
-            newVisibleRange.moveRight(overviewRect.width());
-        }
-
-        // fit in overview vertically
-        if (newVisibleRange.y() < 0) {
-            newVisibleRange.moveTop(0);
-        } else if (newVisibleRange.bottomRight().y() > overviewRect.height()) {
-            newVisibleRange.moveBottom(overviewRect.height());
-        }
-    }
-
-    int pos = qRound( newVisibleRange.x() / stepX );
-    sequenceArea->setFirstVisibleBase(pos);
-    pos = qRound( newVisibleRange.y() / stepY );
-    sequenceArea->setFirstVisibleSequence(pos);
+    const int newHScrollBarValue = newVisibleRange.x() * stepX;
+    ui->getScrollController()->setHScrollbarValue(newHScrollBarValue);
+    const int newVScrollBarValue = newVisibleRange.y() * stepY;
+    ui->getScrollController()->setVScrollbarValue(newVScrollBarValue);
 }
 
 void MaSimpleOverview::recalculateSelection() {
@@ -247,17 +231,15 @@ void MaSimpleOverview::recalculateSelection() {
 
     const MaEditorSelection& selection = sequenceArea->getSelection();
 
-    cachedSelection.setX( qRound( selection.x() * stepX ) );
-    cachedSelection.setY( qRound( selection.y() * stepY ) );
+    const U2Region selectionBasesRegion = ui->getBaseWidthController()->getBasesGlobalRange(selection.x(), selection.width());
+    const U2Region selectionRowsRegion = ui->getRowHeightController()->getRowsGlobalRange(selection.y(), selection.height());
+
+    cachedSelection.setX(qRound(selectionBasesRegion.startPos / stepX));
+    cachedSelection.setY(qRound(selectionRowsRegion.startPos / stepY));
 
     //(!) [(a - b)*c] != [a*c] - [b*c]
-    cachedSelection.setWidth( qRound(stepX * (selection.x() + selection.width())) - qRound(stepX * selection.x()));
-    cachedSelection.setHeight( qRound(stepY * (selection.y() + selection.height())) - qRound(stepY * selection.y()));
-}
-
-void MaSimpleOverview::recalculateScale() {
-    stepX = width() / (double)editor->getAlignmentLen();
-    stepY = height() / (double)editor->getNumSequences();
+    cachedSelection.setWidth(qRound((selectionBasesRegion.startPos + selectionBasesRegion.length) / stepX) - qRound(selectionBasesRegion.startPos / stepX));
+    cachedSelection.setHeight(qRound((selectionRowsRegion.startPos + selectionRowsRegion.length) / stepY) - qRound(selectionRowsRegion.startPos / stepY));
 }
 
 } // namespace

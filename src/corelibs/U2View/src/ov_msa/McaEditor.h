@@ -48,11 +48,10 @@ public:
 
     virtual void buildStaticMenu(QMenu* m);
 
-    virtual int getRowHeight() const;
     virtual int getRowContentIndent(int rowId) const;
 
     bool isChromVisible(qint64 rowId) const;
-    void toggleChromVisibility(qint64 rowId);
+    bool isChromVisible(int rowIndex) const;
 
     QString getReferenceRowName() const;
 
@@ -68,8 +67,6 @@ protected:
     QWidget* createWidget();
 
     QAction*          showChromatogramsAction;
-
-    QMap<qint64, bool>  chromVisibility;
 
     U2SequenceObject*       referenceObj;
     QByteArray              referenceCache;

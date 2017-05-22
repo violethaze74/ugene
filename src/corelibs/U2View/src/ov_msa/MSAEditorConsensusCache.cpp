@@ -56,6 +56,17 @@ void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory
     updateMap.fill(false);
 }
 
+QByteArray MSAEditorConsensusCache::getConsensusLine(const U2Region &region, bool withGaps) {
+    QByteArray res;
+    for (int i = static_cast<int>(region.startPos), n = static_cast<int>(region.endPos()); i < n; i++) {
+        char c = getConsensusChar(i);
+        if (c != U2Msa::GAP_CHAR || withGaps) {
+            res.append(c);
+        }
+    }
+    return res;
+}
+
 void MSAEditorConsensusCache::sl_alignmentChanged() {
     if(curCacheSize != aliObj->getLength()) {
         curCacheSize = aliObj->getLength();
@@ -101,16 +112,18 @@ int MSAEditorConsensusCache::getConsensusCharPercent(int pos) {
     return ci.topPercent;
 }
 
-QByteArray MSAEditorConsensusCache::getConsensusLine(bool withGaps) {
-    QByteArray res;
-    const MultipleAlignment ma = aliObj->getMultipleAlignment();
-    for (int i = 0, n = ma->getLength(); i < n; i++) {
-        char c = getConsensusChar(i);
-        if (c!=U2Msa::GAP_CHAR || withGaps) {
-            res.append(c);
-        }
+QList<int> MSAEditorConsensusCache::getConsensusPercents(const U2Region &region) {
+    QList<int> percents;
+    for (qint64 column = region.startPos; column < region.endPos(); column++) {
+        percents << getConsensusCharPercent(static_cast<int>(column));
     }
-    return res;
+    return percents;
+}
+
+QByteArray MSAEditorConsensusCache::getConsensusLine(bool withGaps) {
+    const MultipleAlignment ma = aliObj->getMultipleAlignment();
+    const U2Region region(0, ma->getLength());
+    return getConsensusLine(region, withGaps);
 }
 
 void MSAEditorConsensusCache::sl_thresholdChanged(int newValue) {

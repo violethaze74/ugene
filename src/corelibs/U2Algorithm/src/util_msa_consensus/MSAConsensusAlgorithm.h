@@ -88,9 +88,9 @@ public:
         Score is a number: [0, num] sequences. Usually is means count of the char in the row
         Note that consensus character may be out of the to MSA alphabet symbols range
     */
-    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, const QVector<qint64> &seqIdx = QVector<qint64>()) const;
+    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, const QVector<int> &seqIdx = QVector<int>()) const;
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column, const QVector<qint64> &seqIdx = QVector<qint64>()) const = 0;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, const QVector<int> &seqIdx = QVector<int>()) const = 0;
 
     virtual QString getDescription() const {return factory->getDescription();}
 

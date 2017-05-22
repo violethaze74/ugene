@@ -37,6 +37,7 @@
 
 #include "MaGraphCalculationTask.h"
 #include "MaGraphOverview.h"
+#include "ov_msa/helpers/ScrollController.h"
 
 namespace U2 {
 
@@ -72,9 +73,9 @@ MaGraphOverview::MaGraphOverview(MaEditorWgt *ui)
     connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
                                     SLOT(sl_drawGraph()));
 
-    connect(ui, SIGNAL(si_startMsaChanging()),
+    connect(ui, SIGNAL(si_startMaChanging()),
                 SLOT(sl_blockRendering()));
-    connect(ui, SIGNAL(si_stopMsaChanging(bool)),
+    connect(ui, SIGNAL(si_stopMaChanging(bool)),
                 SLOT(sl_unblockRendering(bool)));
 
     sl_drawGraph();
@@ -89,7 +90,7 @@ void MaGraphOverview::cancelRendering() {
 
 void MaGraphOverview::sl_redraw() {
     redrawGraph = true;
-    update();
+    MaOverview::sl_redraw();
 }
 
 void MaGraphOverview::paintEvent(QPaintEvent *e) {
@@ -141,15 +142,15 @@ void MaGraphOverview::drawVisibleRange(QPainter &p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
-        stepX = width() / (double)editor->getAlignmentLen();
+        recalculateScale();
+
+        const int screenPositionX = editor->getUI()->getScrollController()->getScreenPosition().x();
+        const qint64 screenWidth = editor->getUI()->getSequenceArea()->width();
 
         cachedVisibleRange.setY(0);
         cachedVisibleRange.setHeight(FIXED_HEIGHT);
-
-        double consStep = editor->getAlignmentLen() / (double)(width());
-
-        cachedVisibleRange.setX(qRound(sequenceArea->getFirstVisibleBase() / consStep));
-        cachedVisibleRange.setWidth(qRound((sequenceArea->getLastVisibleBase(true) - sequenceArea->getFirstVisibleBase() + 1) / consStep));
+        cachedVisibleRange.setX(qRound(screenPositionX / stepX));
+        cachedVisibleRange.setWidth(qRound(screenWidth / stepX));
 
         if (cachedVisibleRange.width() == 0) {
             cachedVisibleRange.setWidth(1);
@@ -342,21 +343,14 @@ void MaGraphOverview::drawOverview(QPainter &p) {
 }
 
 void MaGraphOverview::moveVisibleRange(QPoint _pos) {
-    const QRect& overviewRect = rect();
     QRect newVisibleRange(cachedVisibleRange);
-    newVisibleRange.moveLeft(_pos.x() - static_cast<double>(cachedVisibleRange.width()) / 2 );
+    const QPoint newPos(qBound((cachedVisibleRange.width() - 1) / 2, _pos.x(), width() - (cachedVisibleRange.width() - 1 ) / 2), height() / 2);
 
-    if (!overviewRect.contains(newVisibleRange)) {
-        if (newVisibleRange.x() < 0) {
-            newVisibleRange.moveLeft(0);
-        } else if (newVisibleRange.topRight().x() > overviewRect.width()) {
-            newVisibleRange.moveRight(overviewRect.width());
-        }
-    }
+    newVisibleRange.moveCenter(newPos);
 
-    int pos = newVisibleRange.x() / stepX;
-    CHECK(editor->getAlignmentLen() > pos, );
-    sequenceArea->setFirstVisibleBase(pos);
+    const int newScrollBarValue = newVisibleRange.x() * stepX;
+    ui->getScrollController()->setHScrollbarValue(newScrollBarValue);
+
     update();
 }
 

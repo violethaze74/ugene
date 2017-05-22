@@ -23,12 +23,13 @@
 #include <QSvgGenerator>
 
 #include <U2Core/L10n.h>
-
 #include <U2Core/QObjectScopedPointer.h>
 
 #include "MSAImageExportTask.h"
 #include "ui_MSAExportSettings.h"
-#include "../MSASelectSubalignmentDialog.h"
+#include "ov_msa/MSASelectSubalignmentDialog.h"
+#include "ov_msa/helpers/BaseWidthController.h"
+#include "ov_msa/helpers/RowHeightController.h"
 
 namespace U2 {
 
@@ -37,8 +38,49 @@ MSAImageExportTask::MSAImageExportTask(MaEditorWgt *ui,
                                        const ImageExportTaskSettings &settings)
     : ImageExportTask(settings),
       ui(ui),
-      msaSettings(msaSettings) {
+      msaSettings(msaSettings)
+{
     SAFE_POINT_EXT(ui != NULL, setError(tr("MSA Editor UI is NULL")), );
+}
+
+void MSAImageExportTask::paintSequencesNames(QPainter &painter) {
+    CHECK(msaSettings.includeSeqNames, );
+    MaEditorNameList *namesArea = ui->getEditorNameList();
+    SAFE_POINT_EXT(ui->getEditor() != NULL, setError(tr("MSA Editor is NULL")), );
+    namesArea->drawNames(painter, msaSettings.seqIdx);
+}
+
+void MSAImageExportTask::paintConsensus(QPainter &painter) {
+    CHECK(msaSettings.includeConsensus || msaSettings.includeRuler, );
+    MSAEditorConsensusArea *consensusArea = ui->getConsensusArea();
+    SAFE_POINT_EXT(consensusArea != NULL, setError(tr("MSA Consensus area is NULL")), );
+
+    MaEditorConsensusAreaSettings consensusSettings = consensusArea->getDrawSettings();
+    consensusSettings.visibleElements = MaEditorConsElements();
+    if (msaSettings.includeConsensus) {
+        consensusSettings.visibleElements |= MSAEditorConsElement_CONSENSUS_TEXT | MSAEditorConsElement_HISTOGRAM;
+    }
+    if (msaSettings.includeRuler) {
+        consensusSettings.visibleElements |= MSAEditorConsElement_RULER;
+    }
+
+    consensusArea->drawContent(painter, msaSettings.seqIdx, msaSettings.region, consensusSettings);
+}
+
+void MSAImageExportTask::paintRuler(QPainter &painter) {
+    CHECK(msaSettings.includeRuler, );
+    MSAEditorConsensusArea* consensusArea = ui->getConsensusArea();
+    SAFE_POINT_EXT(consensusArea != NULL, setError(tr("MSA Consensus area is NULL")), );
+
+    MaEditorConsensusAreaSettings consensusSettings = consensusArea->getDrawSettings();
+    consensusSettings.visibleElements = MSAEditorConsElement_RULER;
+
+    consensusArea->drawContent(painter, msaSettings.seqIdx, msaSettings.region, consensusSettings);
+}
+
+bool MSAImageExportTask::paintContent(QPainter &painter) {
+    MaEditorSequenceArea* seqArea = ui->getSequenceArea();
+    return seqArea->drawContent(painter, msaSettings.region, msaSettings.seqIdx, 0, 0);
 }
 
 MSAImageExportToBitmapTask::MSAImageExportToBitmapTask(MaEditorWgt *ui,
@@ -61,52 +103,78 @@ void MSAImageExportToBitmapTask::run() {
 
     bool exportAll = msaSettings.exportAll;
 
-    int ok = (exportAll && mObj->getLength() > 0 && mObj->getNumRows() > 0) || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
+    bool ok = (exportAll && mObj->getLength() > 0 && mObj->getNumRows() > 0) || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
     CHECK_OPERATION( ok, mObj->unlockState(lock));
     CHECK_EXT( ok, setError(tr("Nothing to export")), );
 
-    QPixmap seqPixmap;
-    QPixmap namesPix;
-    QPixmap consPix;
-    QPixmap rulerPix;
+    if (exportAll) {
+        msaSettings.region = U2Region(0, mObj->getLength());
+        QList<int> seqIdx;
+        for (int i = 0; i < mObj->getNumRows(); i++) {
+            seqIdx << i;
+        }
+        msaSettings.seqIdx = seqIdx;
+    }
 
-    ok = paintContent(seqPixmap);
-    CHECK_OPERATION( ok, mObj->unlockState(lock));
-    CHECK_EXT( ok, setError(tr("Alignment is too big. ") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
+    MaEditorConsElements visibleConsensusElements;
+    if (msaSettings.includeConsensus) {
+        visibleConsensusElements |= MSAEditorConsElement_HISTOGRAM | MSAEditorConsElement_CONSENSUS_TEXT;
+    }
+    if (msaSettings.includeRuler) {
+        visibleConsensusElements |= MSAEditorConsElement_RULER;
+    }
 
-    paintSeqNames(namesPix);
-    paintConsensus(consPix);
-    paintRuler(rulerPix);
+    QPixmap sequencesPixmap(ui->getSequenceArea()->getCanvasSize(msaSettings.seqIdx, msaSettings.region));
+    QPixmap namesPixmap = msaSettings.includeSeqNames ? QPixmap(ui->getEditorNameList()->getCanvasSize(msaSettings.seqIdx)) : QPixmap();
+    QPixmap consensusPixmap = visibleConsensusElements ? QPixmap(ui->getConsensusArea()->getCanvasSize(msaSettings.region, visibleConsensusElements)) : QPixmap();
+
+    sequencesPixmap.fill(Qt::white);
+    namesPixmap.fill(Qt::white);
+    consensusPixmap.fill(Qt::white);
+
+    QPainter sequencesPainter(&sequencesPixmap);
+    QPainter namesPainter;
+    if (msaSettings.includeSeqNames) {
+        namesPainter.begin(&namesPixmap);
+    }
+    QPainter consensusPainter;
+    if (visibleConsensusElements) {
+        consensusPainter.begin(&consensusPixmap);
+    }
+
+    ok = paintContent(sequencesPainter);
+    CHECK_OPERATION(ok, mObj->unlockState(lock));
+    CHECK_EXT(ok, setError(tr("Alignment is too big. ") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
+
+    paintSequencesNames(namesPainter);
+    paintConsensus(consensusPainter);
     mObj->unlockState(lock);
 
-    QPixmap pixmap = mergePixmaps(seqPixmap, namesPix, consPix, rulerPix);
+    QPixmap pixmap = mergePixmaps(sequencesPixmap, namesPixmap, consensusPixmap);
     CHECK_EXT( !pixmap.isNull(),
                setError(tr("Alignment is too big. ") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
     CHECK_EXT( pixmap.save(settings.fileName, qPrintable(settings.format), settings.imageQuality),
                setError(tr("Cannot save the file. ") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
 }
 
-QPixmap MSAImageExportToBitmapTask::mergePixmaps(const QPixmap &seqPix,
-                                              const QPixmap &namesPix,
-                                              const QPixmap &consPix,
-                                              const QPixmap &rulerPix)
+QPixmap MSAImageExportToBitmapTask::mergePixmaps(const QPixmap &sequencesPixmap,
+                                                 const QPixmap &namesPixmap,
+                                                 const QPixmap &consensusPixmap)
 {
-    CHECK( namesPix.width() + seqPix.width() < IMAGE_SIZE_LIMIT &&
-           consPix.height() + rulerPix.height() + seqPix.height() < IMAGE_SIZE_LIMIT, QPixmap());
-    QPixmap pixmap = QPixmap(namesPix.width() + seqPix.width(),
-                             consPix.height() + rulerPix.height() + seqPix.height());
+    CHECK( namesPixmap.width() + sequencesPixmap.width() < IMAGE_SIZE_LIMIT &&
+           consensusPixmap.height() + + sequencesPixmap.height() < IMAGE_SIZE_LIMIT, QPixmap());
+    QPixmap pixmap = QPixmap(namesPixmap.width() + sequencesPixmap.width(),
+                             consensusPixmap.height() + sequencesPixmap.height());
 
     pixmap.fill(Qt::white);
     QPainter p(&pixmap);
 
-    p.translate(namesPix.width(), 0);
-    p.drawPixmap(consPix.rect(), consPix);
-    p.translate(0, consPix.height());
-    p.drawPixmap(rulerPix.rect(), rulerPix);
-    p.translate(-namesPix.width(), rulerPix.height());
-    p.drawPixmap(namesPix.rect(), namesPix);
-    p.translate(namesPix.width(), 0);
-    p.drawPixmap(seqPix.rect(), seqPix);
+    p.translate(namesPixmap.width(), 0);
+    p.drawPixmap(consensusPixmap.rect(), consensusPixmap);
+    p.translate(-namesPixmap.width(), consensusPixmap.height());
+    p.drawPixmap(namesPixmap.rect(), namesPixmap);
+    p.translate(namesPixmap.width(), 0);
+    p.drawPixmap(sequencesPixmap.rect(), sequencesPixmap);
     p.end();
 
     return pixmap;
@@ -143,19 +211,25 @@ void MSAImageExportToSvgTask::run() {
     MSAEditorConsensusArea* consArea = ui->getConsensusArea();
     SAFE_POINT_EXT(consArea != NULL, setError(L10N::nullPointerError("MSAEditorConsensusArea")), );
 
-    int namesWidth = nameListArea->width();
-    int consHeight = consArea->getRullerLineYRange().startPos;
-    int rulerHeight = consArea->getRullerLineYRange().length;
+    MaEditorConsElements visibleConsensusElements;
+    if (msaSettings.includeConsensus) {
+        visibleConsensusElements |= MSAEditorConsElement_CONSENSUS_TEXT | MSAEditorConsElement_HISTOGRAM;
+    }
+    if (msaSettings.includeRuler) {
+        visibleConsensusElements |= MSAEditorConsElement_RULER;
+    }
 
-    int w = msaSettings.includeSeqNames * namesWidth +
+    const int namesWidth = nameListArea->width();
+    const int consensusHeight = consArea->getCanvasSize(msaSettings.region, visibleConsensusElements).height();
+
+    const int width = msaSettings.includeSeqNames * namesWidth +
             editor->getColumnWidth() * (msaSettings.exportAll ? editor->getAlignmentLen() : msaSettings.region.length);
-    int h = msaSettings.includeConsensus * consHeight +
-            msaSettings.includeRuler * rulerHeight +
-            editor->getRowHeight() * (msaSettings.exportAll ? editor->getNumSequences() : msaSettings.seqIdx.size());
-    SAFE_POINT_EXT(qMax(w, h) < IMAGE_SIZE_LIMIT, setError(tr("The image size is too big.") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
+    const int height = msaSettings.includeConsensus * consensusHeight +
+            (msaSettings.exportAll ? ui->getRowHeightController()->getTotalAlignmentHeight() : ui->getRowHeightController()->getRowsHeight(msaSettings.seqIdx));
+    SAFE_POINT_EXT(qMax(width, height) < IMAGE_SIZE_LIMIT, setError(tr("The image size is too big.") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
 
-    generator.setSize(QSize(w, h));
-    generator.setViewBox(QRect(0, 0, w, h));
+    generator.setSize(QSize(width, height));
+    generator.setViewBox(QRect(0, 0, width, height));
     generator.setTitle(tr("SVG %1").arg(mObj->getGObjectName()));
     generator.setDescription(tr("SVG image of multiple alignment created by Unipro UGENE"));
 
@@ -164,19 +238,16 @@ void MSAImageExportToSvgTask::run() {
 
     if ((msaSettings.includeConsensus || msaSettings.includeRuler) && (msaSettings.includeSeqNames)) {
         // fill an empty space in top left corner with white color
-        p.fillRect(QRect(0, 0, namesWidth, msaSettings.includeConsensus * consHeight + msaSettings.includeRuler * rulerHeight), Qt::white);
+        p.fillRect(QRect(0, 0, namesWidth, msaSettings.includeConsensus * consensusHeight), Qt::white);
     }
-    p.translate( msaSettings.includeSeqNames * namesWidth, 0);
+    p.translate(msaSettings.includeSeqNames * namesWidth, 0);
     paintConsensus(p);
-    p.translate( 0, msaSettings.includeConsensus * consHeight );
-    paintRuler(p);
-    p.translate( -1 * msaSettings.includeSeqNames * namesWidth, msaSettings.includeRuler * rulerHeight);
-    paintSeqNames(p);
-    p.translate( msaSettings.includeSeqNames * namesWidth, 0);
+    p.translate(-1 * msaSettings.includeSeqNames * namesWidth, msaSettings.includeConsensus * consensusHeight);
+    paintSequencesNames(p);
+    p.translate(msaSettings.includeSeqNames * namesWidth, 0);
     paintContent(p);
     p.end();
 }
-
 
 MSAImageExportController::MSAImageExportController(MaEditorWgt *ui)
     : ImageExportController( ExportImageFormatPolicy( EnableRasterFormats | SupportSvg) ),
@@ -296,7 +367,7 @@ bool MSAImageExportController::fitsInLimits() const {
     MaEditor* editor = ui->getEditor();
     SAFE_POINT(editor != NULL, L10N::nullPointerError("MSAEditor"), false);
     qint64 imageWidth = (msaSettings.exportAll ? editor->getAlignmentLen() : msaSettings.region.length) * editor->getColumnWidth();
-    qint64 imageHeight = (msaSettings.exportAll ? editor->getNumSequences() : msaSettings.seqIdx.size()) * editor->getRowHeight();
+    qint64 imageHeight = msaSettings.exportAll ? ui->getRowHeightController()->getTotalAlignmentHeight() : ui->getRowHeightController()->getRowsHeight(msaSettings.seqIdx);
     if (imageWidth > IMAGE_SIZE_LIMIT || imageHeight > IMAGE_SIZE_LIMIT) {
         return false;
     }

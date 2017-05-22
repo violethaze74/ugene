@@ -174,16 +174,15 @@ void MSAEditorStatusWidget::sl_findNext( ) {
         pat = pat.toUpper( );
     }
     const int aliLen = msa->getLength( );
-    const int nSeq = seqArea->getNumDisplayedSequences( );
+    const int nSeq = seqArea->getNumDisplayableSequences( );
     QPoint selectionTopLeft = seqArea->getSelection( ).topLeft( );
 
     if ( selectionTopLeft == lastSearchPos ) {
         selectionTopLeft.setX( selectionTopLeft.x( ) + 1 );
     }
     for (int s = selectionTopLeft.y(); s < nSeq; s++) {
-        const U2Region rowsAtPosition = seqArea->getRowsAt( s );
-        SAFE_POINT( 0 <= rowsAtPosition.startPos, "Invalid row number!", );
-        const MultipleAlignmentRow row = msa->getRow( rowsAtPosition.startPos );
+        const int rowIndex = seqArea->getEditor()->getUI()->getCollapseModel()->mapToRow(s);
+        const MultipleAlignmentRow row = msa->getRow(rowIndex);
         // if s == pos.y -> search from the current base, otherwise search from the seq start
         int p = ( s == selectionTopLeft.y( ) ) ? selectionTopLeft.x( ) : 0;
         for ( ; p < ( aliLen - pat.length( ) + 1 ); p++ ) {
@@ -192,9 +191,9 @@ void MSAEditorStatusWidget::sl_findNext( ) {
             if ( U2Msa::GAP_CHAR != c && MSAUtils::equalsIgnoreGaps(row, p, pat, selLength) ) {
                 // select the result now
                 MaEditorSelection sel( p, s, selLength, 1 );
-                seqArea->setSelection( sel, true );
-                seqArea->centerPos( sel.topLeft( ) );
-                lastSearchPos = seqArea->getSelection( ).topLeft( );
+                seqArea->setSelection(sel, true);
+                seqArea->centerPos(sel.topLeft());
+                lastSearchPos = seqArea->getSelection().topLeft();
                 return;
             }
         }
@@ -220,9 +219,8 @@ void MSAEditorStatusWidget::sl_findPrev( ) {
         pos.setX( pos.x( ) - 1 );
     }
     for ( int s = pos.y( ); 0 <= s; s-- ) {
-        const U2Region rowsAtPosition = seqArea->getRowsAt( s );
-        SAFE_POINT( 0 <= rowsAtPosition.startPos, "Invalid row number!", );
-        const MultipleAlignmentRow row = msa->getRow( rowsAtPosition.startPos );
+        const int rowIndex = seqArea->getEditor()->getUI()->getCollapseModel()->mapToRow(s);
+        const MultipleAlignmentRow row = msa->getRow(rowIndex);
         //if s == pos.y -> search from the current base, otherwise search from the seq end
         int p = ( s == pos.y( ) ? pos.x( ) : ( aliLen - pat.length( ) + 1) );
         while ( 0 <= p ) {

@@ -29,6 +29,7 @@
 namespace U2 {
 
 class MaEditor;
+class MaEditorWgt;
 class MSAEditorOffsetsViewWidget;
 class MaEditorSequenceArea;
 class MaModificationInfo;
@@ -37,7 +38,7 @@ class MultipleSequenceAlignmentObject;
 class MSAEditorOffsetsViewController : public QObject {
     Q_OBJECT
 public:
-    MSAEditorOffsetsViewController(QObject* p, MaEditor* editor, MaEditorSequenceArea* seqArea);
+    MSAEditorOffsetsViewController(MaEditorWgt *maEditorUi, MaEditor* editor, MaEditorSequenceArea* seqArea);
 
     MSAEditorOffsetsViewWidget* getLeftWidget() const;
     MSAEditorOffsetsViewWidget* getRightWidget() const;
@@ -60,9 +61,13 @@ private:
 };
 
 class MSAEditorOffsetsViewWidget : public QWidget {
+    Q_OBJECT
     friend class MSAEditorOffsetsViewController;
 public:
-    MSAEditorOffsetsViewWidget(MaEditor *editor, MaEditorSequenceArea *seqArea, bool showStartPos);
+    MSAEditorOffsetsViewWidget(MaEditorWgt *maEditorUi, MaEditor *editor, MaEditorSequenceArea *seqArea, bool showStartPos);
+
+private slots:
+    void sl_completeRedraw();
 
 protected:
     void paintEvent(QPaintEvent *e);

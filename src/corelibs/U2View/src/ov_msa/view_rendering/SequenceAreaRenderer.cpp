@@ -19,139 +19,127 @@
  * MA 02110-1301, USA.
  */
 
-#include "SequenceAreaRenderer.h"
+#include <QPainter>
 
 #include <U2Algorithm/MsaHighlightingScheme.h>
 #include <U2Algorithm/MsaColorScheme.h>
 
 #include <U2Core/U2OpStatusUtils.h>
 
-#include <QPainter>
+#include "SequenceAreaRenderer.h"
+#include "ov_msa/helpers/BaseWidthController.h"
+#include "ov_msa/helpers/DrawHelper.h"
+#include "ov_msa/helpers/RowHeightController.h"
+#include "ov_msa/helpers/ScrollController.h"
 
 namespace U2 {
 
-SequenceAreaRenderer::SequenceAreaRenderer(MaEditorSequenceArea *seqAreaWgt)
+SequenceAreaRenderer::SequenceAreaRenderer(MaEditorWgt *ui, MaEditorSequenceArea *seqAreaWgt)
     : QObject(seqAreaWgt),
+      ui(ui),
       seqAreaWgt(seqAreaWgt),
       drawLeadingAndTrailingGaps(true) {
 }
 
-bool SequenceAreaRenderer::drawContent(QPainter &p, const U2Region &region, const QList<qint64> &seqIdx)  const {
+bool SequenceAreaRenderer::drawContent(QPainter &painter, const U2Region &region, const QList<int> &seqIdx, int xStart, int yStart)  const {
     CHECK(!region.isEmpty(), false);
     CHECK(!seqIdx.isEmpty(), false);
 
     MsaHighlightingScheme* highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
     MaEditor* editor = seqAreaWgt->getEditor();
 
-    p.setPen(Qt::black);
-    p.setFont(editor->getFont());
+    painter.setPen(Qt::black);
+    painter.setFont(editor->getFont());
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
     SAFE_POINT(maObj != NULL, tr("Alignment object is NULL"), false);
-    const MultipleAlignment msa = maObj->getMultipleAlignment();
+    const MultipleAlignment ma = maObj->getMultipleAlignment();
 
     //Use dots to draw regions, which are similar to reference sequence
     highlightingScheme->setUseDots(seqAreaWgt->getUseDotsCheckedState());
 
-    U2Region baseYRange = U2Region(0, editor->getSequenceRowHeight());
-
     int rowHeight = 0;
-    for (qint64 iSeq = 0; iSeq < seqIdx.size(); iSeq++) {
-        qint64 seq = seqIdx[iSeq];
-
-        rowHeight = drawRow(p, msa, seq, region, baseYRange.startPos);
-        CHECK(rowHeight, false);
-
-        baseYRange.startPos += rowHeight;
+    foreach (const int rowIndex, seqIdx) {
+        rowHeight = drawRow(painter, ma, rowIndex, region, xStart, yStart);
+        yStart += ui->getRowHeightController()->getRowHeight(rowIndex);
     }
 
     return true;
 }
 
-void SequenceAreaRenderer::drawSelection(QPainter &p) const {
-    MaEditorSelection selection = seqAreaWgt->getSelection();;
+void SequenceAreaRenderer::drawSelection(QPainter &painter) const {
+    MaEditorSelection selection = seqAreaWgt->getSelection();
 
-    int x = selection.x();
-    int y = selection.y();
-
-    U2Region xRange = seqAreaWgt->getBaseXRange(x, true);
-    U2Region yRange = seqAreaWgt->getSequenceYRange(y, selection.height());
+    const QRect selectionRect = ui->getDrawHelper()->getSelectionScreenRect(selection);
 
     QPen pen(seqAreaWgt->highlightSelection || seqAreaWgt->hasFocus()
              ? seqAreaWgt->selectionColor
              : Qt::gray);
-    if (seqAreaWgt->msaMode != MaEditorSequenceArea::EditCharacterMode) {
+    if (seqAreaWgt->maMode != MaEditorSequenceArea::EditCharacterMode) {
         pen.setStyle(Qt::DashLine);
     }
     pen.setWidth(seqAreaWgt->highlightSelection ? 2 : 1);
-    p.setPen(pen);
-    if (yRange.startPos > 0) {
-        p.drawRect(xRange.startPos, yRange.startPos, xRange.length*selection.width(), yRange.length);
-    }
-    else {
-        qint64 regionHeight = yRange.length + yRange.startPos + 1;
-        if(regionHeight <= 0) {
-            return;
-        }
-        p.drawRect(xRange.startPos, -1, xRange.length*selection.width(), regionHeight);
-    }
+    painter.setPen(pen);
 
+    painter.drawRect(selectionRect);
 }
 
-void SequenceAreaRenderer::drawFocus(QPainter &p) const {
+void SequenceAreaRenderer::drawFocus(QPainter &painter) const {
     if (seqAreaWgt->hasFocus()) {
-        p.setPen(QPen(Qt::black, 1, Qt::DotLine));
-        p.drawRect(0, 0, seqAreaWgt->width() - 1, seqAreaWgt->height() - 1);
+        painter.setPen(QPen(Qt::black, 1, Qt::DotLine));
+        painter.drawRect(0, 0, seqAreaWgt->width() - 1, seqAreaWgt->height() - 1);
     }
 }
 
-int SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) const {
+int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma, int rowIndex, const U2Region &region, int xStart, int yStart) const {
     // SANGER_TODO: deal with frequent handlign of editor or h/color schemes through the editor etc.
     // move to class parameter
     MsaHighlightingScheme* highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
     highlightingScheme->setUseDots(seqAreaWgt->getUseDotsCheckedState());
 
     MaEditor* editor = seqAreaWgt->getEditor();
-    int columnWidth = editor->getColumnWidth();
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
     bool isResizeMode = editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent;
 
     U2OpStatusImpl os;
-    const int refSeq = msa->getRowIndexByRowId(editor->getReferenceRowId(), os);
+    const int refSeq = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
     QString refSeqName = editor->getReferenceRowName();
 
     qint64 regionEnd = region.endPos() - (int)(region.endPos() == editor->getAlignmentLen());
-    MultipleAlignmentRow row = msa->getRow(seq);
-    int rowHeight = editor->getSequenceRowHeight();
+    MultipleAlignmentRow row = ma->getRow(rowIndex);
+    const int rowHeight = ui->getRowHeightController()->getSequenceHeight();
+    const int baseWidth = ui->getBaseWidthController()->getBaseWidth();
     for (int pos = region.startPos; pos <= regionEnd; pos++) {
         if (!drawLeadingAndTrailingGaps
                 && (pos < row->getCoreStart() || pos > row->getCoreStart() + row->getCoreLength() - 1)) {
+            xStart += baseWidth;
             continue;
         }
 
-        U2Region baseXRange = U2Region(columnWidth * (pos - region.startPos), columnWidth);
-        QRect cr(baseXRange.startPos, yStart, baseXRange.length + 1, rowHeight);
-        char c = msa->charAt(seq, pos);
+        const QRect charRect(xStart, yStart, baseWidth, rowHeight);
+        char c = ma->charAt(rowIndex, pos);
 
         bool highlight = false;
-        QColor color = seqAreaWgt->getCurrentColorScheme()->getColor(seq, pos, c); //! SANGER_TODO: add NULL checks or do smt with the infrastructure
+        QColor color = seqAreaWgt->getCurrentColorScheme()->getColor(rowIndex, pos, c); //! SANGER_TODO: add NULL checks or do smt with the infrastructure
         if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
             const char refChar = '\n';
-            highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-        } else if (seq == refSeq || refSeqName.isEmpty()) {
+            highlightingScheme->process(refChar, c, color, highlight, pos, rowIndex);
+        } else if (rowIndex == refSeq || refSeqName.isEmpty()) {
             highlight = true;
         } else {
             const char refChar = editor->getReferenceCharAt(pos);
-            highlightingScheme->process(refChar, c, color, highlight, pos, seq);
+            highlightingScheme->process(refChar, c, color, highlight, pos, rowIndex);
         }
 
         if (color.isValid() && highlight) {
-            p.fillRect(cr, color);
+            painter.fillRect(charRect, color);
         }
         if (isResizeMode) {
-            p.drawText(cr, Qt::AlignCenter, QString(c));
+            painter.drawText(charRect, Qt::AlignCenter, QString(c));
         }
+
+        xStart += baseWidth;
     }
     return rowHeight;
 }

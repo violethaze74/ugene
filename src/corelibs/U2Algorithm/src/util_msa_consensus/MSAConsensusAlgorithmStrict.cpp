@@ -52,7 +52,7 @@ MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleAlignment& ma, int column, const QVector<qint64> &seqIdx) const {
+char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleAlignment& ma, int column, const QVector<int> &seqIdx) const {
     QVector<int> freqsByChar(256, 0);
     int nonGaps = 0;
     uchar topChar = MSAConsensusUtils::getColumnFreqs(ma, column, freqsByChar, nonGaps, seqIdx);

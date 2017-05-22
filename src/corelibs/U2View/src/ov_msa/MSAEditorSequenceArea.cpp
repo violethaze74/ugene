@@ -76,12 +76,13 @@
 
 #include "ColorSchemaSettingsController.h"
 #include "CreateSubalignmentDialogController.h"
-#include "MSAEditor.h"
 #include "MaEditorNameList.h"
+#include "MSAEditor.h"
 #include "MSAEditorSequenceArea.h"
 
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "Clipboard/SubalignmentToClipboardTask.h"
+#include "helpers/ScrollController.h"
 #include "Highlighting/MSAHighlightingTabFactory.h"
 #include "view_rendering/SequenceAreaRenderer.h"
 
@@ -172,12 +173,12 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(editor->getMaObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(editor->getMaObject(), SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_updateCollapsingMode()));
 
-    connect(this,   SIGNAL(si_startMsaChanging()),
-            ui,     SIGNAL(si_startMsaChanging()));
-    connect(this,   SIGNAL(si_stopMsaChanging(bool)),
-            ui,     SIGNAL(si_stopMsaChanging(bool)));
+    connect(this,   SIGNAL(si_startMaChanging()),
+            ui,     SIGNAL(si_startMaChanging()));
+    connect(this,   SIGNAL(si_stopMaChanging(bool)),
+            ui,     SIGNAL(si_stopMaChanging(bool)));
 
-    connect(ui->getCollapseModel(), SIGNAL(toggled()), SLOT(sl_modelChanged()));
+    connect(ui->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_modelChanged()));
     connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_fontChanged(QFont)));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeUpdate()));
 
@@ -189,6 +190,10 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
 
     updateColorAndHighlightSchemes();
     updateActions();
+}
+
+MSAEditor *MSAEditorSequenceArea::getEditor() const {
+    return qobject_cast<MSAEditor*>(editor);
 }
 
 QStringList MSAEditorSequenceArea::getAvailableHighlightingSchemes() const{
@@ -232,8 +237,6 @@ void MSAEditorSequenceArea::updateActions() {
     reverseAction->setEnabled(canEditSelectedArea);
     complementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());
     removeAllGapsAction->setEnabled(canEditAlignment);
-
-    assert(checkState());
 }
 
 void MSAEditorSequenceArea::focusInEvent(QFocusEvent* fe) {
@@ -248,32 +251,17 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent* fe) {
 }
 
 void MSAEditorSequenceArea::moveCursor(int dx, int dy) {
-    QPoint p = cursorPos + QPoint(dx, dy);
-    if (!isInRange(p)) {
-        return;
-    }
+    const QPoint newCursorPos = cursorPos + QPoint(dx, dy);
+    CHECK(isInRange(newCursorPos), );
 
     // Move only one cell selection?
     // TODO: consider selection movement
-    int sz = selection.width()*selection.height();
-    if (sz != 1) {
-        return;
-    }
+    const int selectionSize = selection.width() * selection.height();
+    CHECK(selectionSize == 1, );
 
-    if (!isVisible(p, false)) {
-        if (isVisible(cursorPos, true)) {
-            if (dx != 0) {
-                setFirstVisibleBase(startPos + dx);
-            }
-            if (dy!=0) {
-                setFirstVisibleSequence(getFirstVisibleSequence()+dy);
-            }
-        } else {
-            setFirstVisibleBase(p.x());
-            setFirstVisibleSequence(p.y());
-        }
-    }
-    setCursorPos(p);
+    ui->getScrollController()->scrollToPoint(newCursorPos, size());
+    setCursorPos(newCursorPos);
+
     // SANGER_TODO: why is it under comment
     //setSelection(MSAEditorSelection(p, 1,1));
 }
@@ -353,7 +341,7 @@ void MSAEditorSequenceArea::sl_showCustomSettings(){
 }
 
 void MSAEditorSequenceArea::initRenderer() {
-    renderer = new SequenceAreaRenderer(this);
+    renderer = new SequenceAreaRenderer(ui, this);
 }
 
 void MSAEditorSequenceArea::buildMenu(QMenu* m) {
@@ -511,9 +499,9 @@ void MSAEditorSequenceArea::sl_goto() {
     dlg->exec();
 }
 
-void MSAEditorSequenceArea::sl_onPosChangeRequest(int pos) {
-    centerPos(pos-1);
-    setSelection(MaEditorSelection(pos-1,selection.y(),1,1));
+void MSAEditorSequenceArea::sl_onPosChangeRequest(int position) {
+    ui->getScrollController()->centerBase(position, width());
+    setSelection(MaEditorSelection(position-1, selection.y(), 1, 1));
 }
 
 void MSAEditorSequenceArea::sl_lockedStateChanged() {
@@ -550,34 +538,9 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
 
     SAFE_POINT_OP(os, );
 
-    setFirstVisibleBase(0);
-    setFirstVisibleSequence(0);
+    ui->getScrollController()->setFirstVisibleBase(0);
+    ui->getScrollController()->setFirstVisibleRowByNumber(0);
     SAFE_POINT_OP(os, );
-}
-
-void MSAEditorSequenceArea::sl_modelChanged() {
-    MSACollapsibleItemModel *collapsibleModel = ui->getCollapseModel();
-    SAFE_POINT(NULL != collapsibleModel, tr("NULL collapsible model!"), );
-
-    if (collapsibleModel->isEmpty()) {
-        collapseModeSwitchAction->setChecked(false);
-        collapseModeUpdateAction->setEnabled(false);
-    }
-
-    int startToLast = getNumDisplayedSequences() - getFirstVisibleSequence();
-    int availableNum = countHeightForSequences(false);
-    if (startToLast < availableNum) {
-        int newStartSeq = qMax(0, startSeq - availableNum + startToLast);
-        if (startSeq != newStartSeq) {
-            setFirstVisibleSequence(newStartSeq);
-            return;
-        }
-    }
-    updateSelection();
-
-    completeRedraw = true;
-    updateVScrollBar();
-    update();
 }
 
 void MSAEditorSequenceArea::sl_createSubaligniment(){
@@ -666,6 +629,18 @@ void MSAEditorSequenceArea::sl_saveSequence(){
         t->addFlag(SaveDoc_DestroyAfter);
     }
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
+}
+
+void MSAEditorSequenceArea::sl_modelChanged() {
+    MSACollapsibleItemModel *collapsibleModel = ui->getCollapseModel();
+    SAFE_POINT(NULL != collapsibleModel, "NULL collapsible model", );
+
+    if (collapsibleModel->isEmpty()) {
+        collapseModeSwitchAction->setChecked(false);
+        collapseModeUpdateAction->setEnabled(false);
+    }
+
+    MaEditorSequenceArea::sl_modelChanged();
 }
 
 void MSAEditorSequenceArea::sl_copyCurrentSelection()
@@ -820,8 +795,7 @@ void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
     GCOUNTER(cvar, tvar, "Switch collapsing mode");
 
     MultipleSequenceAlignmentObject* msaObject = getEditor()->getMaObject();
-    int prevNumVisibleSequences = getNumVisibleSequences(false);
-    if (msaObject == NULL  || msaObject->isStateLocked()) {
+    if (msaObject == NULL || msaObject->isStateLocked()) {
         if (collapseModeSwitchAction->isChecked()) {
             collapseModeSwitchAction->setChecked(false);
             collapseModeUpdateAction->setEnabled(false);
@@ -830,24 +804,17 @@ void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
     }
 
     ui->setCollapsibleMode(enabled);
+    collapseModeUpdateAction->setEnabled(enabled);
     if (enabled) {
-        collapseModeUpdateAction->setEnabled(true);
         sl_updateCollapsingMode();
-    }
-    else {
-        collapseModeUpdateAction->setEnabled(false);
-
+    } else {
         MSACollapsibleItemModel *collapsibleModel = ui->getCollapseModel();
         SAFE_POINT(NULL != collapsibleModel, tr("NULL collapsible model!"), );
         collapsibleModel->reset();
     }
 
     updateSelection();
-    updateVScrollBar();
-    int emptyRowsCount = prevNumVisibleSequences - getNumVisibleSequences(false);
-    if(emptyRowsCount > 0) {
-        setFirstVisibleSequence(qMax(getFirstVisibleSequence() - emptyRowsCount, 0));
-    }
+    ui->getScrollController()->updateVerticalScrollBar();
 }
 
 void MSAEditorSequenceArea::sl_updateCollapsingMode() {
@@ -1033,7 +1000,7 @@ void MSAEditorSequenceArea::sl_setCollapsingRegions(const QList<QStringList>& co
     MaModificationInfo mi;
     msaObject->updateCachedMultipleAlignment(mi);
 
-    updateVScrollBar();
+    ui->getScrollController()->updateVerticalScrollBar();
 }
 
 ExportHighligtningTask::ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditorSequenceArea *msaese_)
