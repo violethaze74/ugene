@@ -163,9 +163,9 @@ void MSAEditorStatusWidget::updateCoords() {
     selectionLabel->setToolTip(selectionToolTipPattern.arg(selSize));
     MaEditor *editor = seqArea->getEditor();
     CHECK(editor != NULL, );
-    int maxSelLength = fm.width(selectionToolTipPattern.arg(QString::number(editor->getAlignmentLen()) + " and " + 
+    int maxSelLength = fm.width(selectionPattern.arg(QString::number(editor->getAlignmentLen()) + "x" +
         QString::number(editor->getNumSequences())));
-    int nonSelLength = fm.width(selectionToolTipPattern.arg(noneSelection));
+    int nonSelLength = fm.width(selectionPattern.arg(noneSelection));
     selectionLabel->setMinimumWidth(10 + qMax(maxSelLength, nonSelLength));
 }
 
