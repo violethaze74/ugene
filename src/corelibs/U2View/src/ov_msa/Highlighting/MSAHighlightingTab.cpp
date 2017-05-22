@@ -182,7 +182,6 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
 }
 
 void MSAHighlightingTab::sl_sync() {
-    bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
     MsaColorScheme *s = seqArea->getCurrentColorScheme();
     SAFE_POINT(s != NULL, "Current scheme is NULL", );
     SAFE_POINT(s->getFactory() != NULL, "Current scheme color factory is NULL", );

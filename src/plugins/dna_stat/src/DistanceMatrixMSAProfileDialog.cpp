@@ -298,7 +298,6 @@ void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* alg
     int maxVal = s.usePercents ? 100 : s.ma->getLength();
     QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
     bool isSimilarity = algo->isSimilarityMeasure();
-    int minLen = s.ma->getLength();
 
     if(rows.size() < 2) {
         resultText += "<tr><td><b>"+tr("There is not enough groups to create distance matrix!") + "</td></tr>\n";

@@ -1958,6 +1958,10 @@ void MaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
         break;
     case InsertCharMode:
         insertChar(newCharacter);
+    case ViewMode:
+    default:
+        // do nothing
+        ;
     }
 }
 

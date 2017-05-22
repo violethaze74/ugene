@@ -23,6 +23,7 @@
 #define _U2_MSA_COMBO_BOX_CONTROLLER_H_
 
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GroupedComboBoxDelegate.h>
 
@@ -47,7 +48,7 @@ public:
     }
 signals:
     void si_dataChanged(const QString &newScheme);
-    private slots:
+private slots:
     void sl_indexChanged(int index) {
         emit si_dataChanged(comboBox->itemData(index).toString());
     }
@@ -77,9 +78,7 @@ MsaSchemeComboBoxController<Factory, Registry>::MsaSchemeComboBoxController(MSAE
 
 template <class Factory, class Registry>
 void MsaSchemeComboBoxController<Factory, Registry>::init() {
-    if (registry == NULL) {
-        return;
-    }
+    CHECK(registry != NULL, );
 
     bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
 
@@ -88,9 +87,8 @@ void MsaSchemeComboBoxController<Factory, Registry>::init() {
     if (isAlphabetRaw) {
         fillCbWithGrouping();
     } else {
-        if (msa->getMaObject() == NULL || msa->getMaObject()->getAlphabet() == NULL) {
-            return;
-        }
+        CHECK(msa->getMaObject(), );
+        CHECK(msa->getMaObject()->getAlphabet(), );
         DNAAlphabetType alphabetType = msa->getMaObject()->getAlphabet()->getType();
         QList<Factory *> schemesFactories = registry->getAllSchemes(alphabetType);
         Factory* emptySchemeFactory = registry->getEmptySchemeFactory();
@@ -127,14 +125,11 @@ void MsaSchemeComboBoxController<Factory, Registry>::fillCbWithGrouping() {
 
 template <class Factory, class Registry>
 void MsaSchemeComboBoxController<Factory, Registry>::createAndFillGroup(QList<Factory *> rawSchemesFactories, const QString& groupName) {
-    if (rawSchemesFactories.isEmpty()) {
-        return;
-    }
+    CHECK(!rawSchemesFactories.isEmpty(), );
     GroupedComboBoxDelegate *schemeDelegate = qobject_cast<GroupedComboBoxDelegate*>(comboBox->itemDelegate());
     QStandardItemModel *schemeModel = qobject_cast<QStandardItemModel*>(comboBox->model());
-    if (schemeDelegate == NULL || schemeModel == NULL) {
-        return;
-    }
+    CHECK(schemeDelegate != NULL, );
+    CHECK(schemeModel != NULL, );
     schemeDelegate->addParentItem(schemeModel, groupName);
     foreach(Factory *factory, rawSchemesFactories) {
         schemeDelegate->addChildItem(schemeModel, factory->getName(), factory->getId());

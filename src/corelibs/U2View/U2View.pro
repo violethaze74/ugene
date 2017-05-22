@@ -43,7 +43,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/ColorSchemaDialogController.h \
            src/ov_msa/ColorSchemaSettingsController.h \
            src/ov_msa/Common/RefSeqCommonWidget.h \
-           src/ov_msa/MaConsensusMismatchController.h \
            src/ov_msa/CreateSubalignmentDialogController.h \
            src/ov_msa/DeleteGapsDialog.h \
            src/ov_msa/Export/MSAImageExportTask.h \

@@ -313,8 +313,7 @@ void McaEditorSequenceArea::buildMenu(QMenu *m) {
     editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
 }
 
-void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid,
-                                                       DNAAlphabetType atype) {
+void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid) {
     csid = MsaColorScheme::UGENE_NUCL;
     hsid = MsaHighlightingScheme::DISAGREEMENTS;
 }
