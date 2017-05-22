@@ -358,6 +358,10 @@ int main(int argc, char **argv)
     fixMacFonts();
 #endif
 
+#if (QT_VERSION >= 0x050400)
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+#endif
+
     //QApplication app(argc, argv);
     GApplication app(argc, argv);
 

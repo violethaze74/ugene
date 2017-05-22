@@ -89,7 +89,7 @@ private:
 
     void buildMenu(QMenu* m);
 
-    void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype);
+    void getColorAndHighlightingIds(QString &csid, QString &hsid);
 
     QAction* createToggleTraceAction(const QString& actionName);
 
