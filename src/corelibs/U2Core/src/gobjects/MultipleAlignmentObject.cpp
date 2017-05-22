@@ -154,7 +154,7 @@ int MultipleAlignmentObject::getRowPosById(qint64 rowId) const {
 void MultipleAlignmentObject::removeRow(int rowIdx) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
-    const MultipleSequenceAlignment &ma = getMultipleAlignment();
+    const MultipleAlignment &ma = getMultipleAlignment();
     SAFE_POINT(rowIdx >= 0 && rowIdx < ma->getNumRows(), "Invalid row index", );
     qint64 rowId = ma->getRow(rowIdx)->getRowId();
 
