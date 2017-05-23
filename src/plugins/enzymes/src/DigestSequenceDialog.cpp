@@ -196,7 +196,7 @@ void DigestSequenceDialog::addAnnotationWidget()
     acm.data->name = ANNOTATION_GROUP_FRAGMENTS;
     ac = new CreateAnnotationWidgetController(acm, this);
     QWidget* caw = ac->getWidget();
-    QVBoxLayout* l = new QVBoxLayout(this);
+    QVBoxLayout* l = new QVBoxLayout();
     l->setMargin(0);
     l->addWidget(caw);
     l->addStretch(1);
