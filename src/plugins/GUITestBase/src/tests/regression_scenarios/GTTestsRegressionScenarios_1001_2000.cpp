@@ -3037,23 +3037,7 @@ GUI_TEST_CLASS_DEFINITION(test_1266) {
 
 GUI_TEST_CLASS_DEFINITION(test_1274){
 //    1. Select "Tabbed documents" mode in the Application Settings.
-    class TabbedDoc : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
-            QWidget* tabbedMode = GTWidget::findWidget(os, "tabbedButton");
-            CHECK_SET_ERR(tabbedMode != NULL, "No tubbedButton");
-            GTWidget::click(os, tabbedMode);
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-
-
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new TabbedDoc()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Window" << "Window layout" << "Tabbed documents");
 
 //    2. Open a document
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
@@ -3070,20 +3054,7 @@ GUI_TEST_CLASS_DEFINITION(test_1273) {
 
     //2) Switch the windows layout to the tabbed documents mode
     //(Settings -> Preferences -> General -> Windows Layout -> Tabbed documents -> OK)
-    class Scenario : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus &os) {
-            QList<QRadioButton*> buttons = GTRadioButton::getAllButtonsByText(os, "Tabbed documents", QApplication::activeModalWidget());
-            foreach (QRadioButton *tabbedMode, buttons) {
-                GTRadioButton::click(os, tabbedMode);
-                break;
-            }
-            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Ok);
-        }
-    };
-
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Scenario()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Window" << "Window layout" << "Tabbed documents");
 
     //Expected: the name of the sequence view tab starts with "JQ040024.1", but not with "JQ040024".
     QTabBar *tabs = AppContext::getMainWindow()->getQMainWindow()->findChild<QTabBar*>("");
@@ -3139,24 +3110,7 @@ GUI_TEST_CLASS_DEFINITION(test_1289) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    class TabbedDoc : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
-            QWidget* tabbedMode = GTWidget::findWidget(os, "tabbedButton");
-            CHECK_SET_ERR(tabbedMode != NULL, "No tubbedButton");
-            GTWidget::click(os, tabbedMode);
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-
-    GTLogTracer l;
-
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new TabbedDoc()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Window" << "Window layout" << "Tabbed documents");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1295) {
