@@ -56,10 +56,14 @@ public:
     double getMax() const;
     bool getState() const;
 
+private slots:
+    void sl_valueChanged(const QString &);
+    
 private:
     QGroupBox* minmaxGroup;
     QDoubleSpinBox* minBox;
     QDoubleSpinBox* maxBox;
+    QPalette normalPalette;
 };
 
 class U2VIEW_EXPORT WindowStepSelectorDialog : public QDialog {
