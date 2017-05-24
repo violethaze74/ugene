@@ -1521,7 +1521,7 @@ GUI_TEST_CLASS_DEFINITION(test_3229){
     QString s = table.toInnerXml();
     int i = s.count("test.fa");
 
-    CHECK_SET_ERR( i==4, "unexpected table content: " + s);
+    CHECK_SET_ERR( i==3, "unexpected table content: " + s);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3245) {
