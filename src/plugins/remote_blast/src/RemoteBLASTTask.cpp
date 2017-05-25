@@ -56,12 +56,12 @@ Task(tr("RemoteBLASTTask"), TaskFlags_NR_FOSCOE), offsInGlobalSeq(_qoffs), aobj(
 QList<Task*> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
 
-    if(subTask->hasError() && subTask == queryTask) {
+    if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
         return res;
     }
 
-    if (hasError() || isCanceled()) {
+    if (isCanceled()) {
         return res;
     }
 
@@ -69,39 +69,44 @@ QList<Task*> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task* subTask) {
         stateInfo.setError( tr("The object was removed\n"));
         return res;
     }
-    if (subTask == queryTask) {
-        //shift annotations according to offset first
+    
+    if (subTask != queryTask) {
+        return res;
+    }
 
-        RemoteBLASTTask * rrTask = qobject_cast<RemoteBLASTTask *>(queryTask);
-        SAFE_POINT(NULL != rrTask, "Invalid remote BLAST task!", res);
-        QList<SharedAnnotationData> anns = rrTask->getResultedAnnotations();
+    // Query was finished
+    
+    RemoteBLASTTask * rrTask = qobject_cast<RemoteBLASTTask *>(queryTask);
+    SAFE_POINT(NULL != rrTask, "Invalid remote BLAST task!", res);
+    QList<SharedAnnotationData> anns = rrTask->getResultedAnnotations();
+    if (anns.isEmpty()) {
+        return res;
+    }
 
-        if(!anns.isEmpty()) {
-            if(!url.isEmpty()) {
-                Document *d = AppContext::getProject()->findDocumentByURL(url);
-                if(d==NULL) {
-                    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-                    DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
-                    d = df->createNewLoadedDocument(iof, url, stateInfo);
-                    CHECK_OP(stateInfo, res);
-                    d->addObject(aobj);
-                    AppContext::getProject()->addDocument(d);
-                } else {
-                    setError(tr("File %1 already exists").arg(url));
-                    return res;
-                }
-            }
-            QList<SharedAnnotationData> annotations;
-            for(QMutableListIterator<SharedAnnotationData> it_ad(anns); it_ad.hasNext();) {
-                SharedAnnotationData &ad = it_ad.next();
-                U2Region::shift(offsInGlobalSeq, ad->location->regions);
-                annotations << ad;
-            }
-            U1AnnotationUtils::addDescriptionQualifier(annotations, annDescription);
-
-            res.append(new CreateAnnotationsTask(aobj, annotations, group));
+    if (aobj->getDocument() == NULL && !url.isEmpty()) { // create new document if object has no document and url is not empty
+        Document *d = AppContext::getProject()->findDocumentByURL(url);
+        if (d == NULL) {
+            IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+            DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
+            d = df->createNewLoadedDocument(iof, url, stateInfo);
+            CHECK_OP(stateInfo, res);
+            d->addObject(aobj);
+            AppContext::getProject()->addDocument(d);
+        } else {
+            setError(tr("File %1 already exists").arg(url));
+            return res;
         }
     }
+    
+    // Add annotations to aobj: shift annotations according to offset first
+    QList<SharedAnnotationData> annotations;
+    for (QMutableListIterator<SharedAnnotationData> it_ad(anns); it_ad.hasNext();) {
+        SharedAnnotationData &ad = it_ad.next();
+        U2Region::shift(offsInGlobalSeq, ad->location->regions);
+        annotations << ad;
+    }
+    U1AnnotationUtils::addDescriptionQualifier(annotations, annDescription);
+    res << new CreateAnnotationsTask(aobj, annotations, group);
     return res;
 }
 

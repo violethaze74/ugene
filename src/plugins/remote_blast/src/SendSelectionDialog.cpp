@@ -205,23 +205,7 @@ const CreateAnnotationModel *SendSelectionDialog::getModel() const {
 }
 
 AnnotationTableObject * SendSelectionDialog::getAnnotationObject() const {
-    if(ca_c->isNewObject()) {
-        U2OpStatusImpl os;
-        const U2DbiRef dbiRef = AppContext::getDbiRegistry( )->getSessionTmpDbiRef( os );
-        SAFE_POINT_OP( os, NULL );
-        AnnotationTableObject *aobj = new AnnotationTableObject( "Annotations", dbiRef );
-        aobj->addObjectRelation(GObjectRelation(ca_c->getModel().sequenceObjectRef, ObjectRole_Sequence));
-        return aobj;
-    }
-    else {
-        bool objectPrepared = ca_c->prepareAnnotationObject();
-        if (!objectPrepared){
-            QMessageBox::warning(NULL, tr("Error"), tr("Cannot create an annotation object. Please check settings"));
-            return NULL;
-        }
-        return ca_c->getModel().getAnnotationObject();
-    }
-
+    return ca_c->getModel().getAnnotationObject();
 }
 
 QString SendSelectionDialog::getUrl() const{
