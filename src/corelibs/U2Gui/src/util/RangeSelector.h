@@ -64,7 +64,7 @@ private slots:
     void sl_onMinButtonClicked(bool);
     void sl_onMaxButtonClicked(bool);
     void sl_onReturnPressed();
-
+    
 private:
     void init();
     void exec();
@@ -79,6 +79,7 @@ private:
     QToolButton*        minButton;
     QToolButton*        maxButton;
     QLabel*             rangeLabel;
+    
 
 //     QLabel*             multiRangeLabel;
 //     QLineEdit*          multiRangeEdit;
@@ -108,6 +109,7 @@ private:
     int                 seqLen;
     QVector<U2Region>   selectedRanges;
     bool                isCircular;
+    QPalette            normalPalette;
 
     Ui_RangeSelectionDialog* ui;
 
@@ -117,6 +119,8 @@ protected slots:
     void sl_minButton();
     void sl_maxButton();
     void sl_returnPressed();
+    void sl_textEdited(const QString &);
+    
 };
 
 }//namespace
