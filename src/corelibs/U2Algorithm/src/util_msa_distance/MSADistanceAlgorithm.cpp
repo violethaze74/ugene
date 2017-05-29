@@ -1,4 +1,4 @@
-/**
+﻿/**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
  * http://ugene.net
@@ -67,33 +67,26 @@ MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory* _factory
     qint64 requiredMemory = sizeof(int) * rowsNumber * rowsNumber / 2 + sizeof(QVarLengthArray<int>) * rowsNumber;
     bool memoryAcquired = memoryLocker.tryAcquire(requiredMemory);
     CHECK_EXT(memoryAcquired, setError(QString("There is not enough memory to calculating distances matrix, required %1 megabytes").arg(requiredMemory / 1024 / 1024)), );
-    distanceTable.reserve(rowsNumber);
-    for (int i = 0; i < rowsNumber; i++) {
-        if (isCanceled()) {
-            break;
-        }
-        distanceTable.append(QVarLengthArray<int>(i + 1));
-        memset(distanceTable[i].data(), 0, (i + 1) * sizeof(int));
-    }
+    distanceMatrix = MSADistanceMatrix(ma, getExcludeGapsFlag(), false);
 }
 
-int MSADistanceAlgorithm::getSimilarity(int row1, int row2) {
+int MSADistanceAlgorithm::getSimilarity (int row1, int row2, bool _usePercents) {
     lock.lock();
-    int res = 0;
-    if(row2 > row1) {
-        res = distanceTable[row2][row1];
-    } else {
-        res = distanceTable[row1][row2];
-    }
+    int res = distanceMatrix.getSimilarity(row1, row2, _usePercents);
     lock.unlock();
     return res;
 }
 
+const MSADistanceMatrix& MSADistanceAlgorithm::getMatrix() const{
+    QMutexLocker locker(&lock);
+    return distanceMatrix;
+}
+
 void MSADistanceAlgorithm::setDistanceValue(int row1, int row2, int distance) {
-    if(row2 > row1) {
-        distanceTable[row2][row1] = distance;
+    if (row2 > row1) {
+        distanceMatrix.table[row2][row1] = distance;
     } else {
-        distanceTable[row1][row2] = distance;
+        distanceMatrix.table[row1][row2] = distance;
     }
 }
 
@@ -112,35 +105,46 @@ void MSADistanceAlgorithm::fillTable() {
     }
 }
 
+void MSADistanceAlgorithm::setExcludeGaps(bool _excludeGaps) {
+    excludeGaps = _excludeGaps;
+    distanceMatrix.excludeGaps = _excludeGaps;
+}
 
-MSADistanceMatrix::MSADistanceMatrix(const MSADistanceAlgorithm *algo, bool _usePercents)
-: distanceTable(algo->distanceTable), usePercents(_usePercents), excludeGaps(false) {
-    excludeGaps = algo->getExcludeGapsFlag();
-    int nSeq = algo->ma.getNumRows();
-    alignmentLength = algo->ma.getLength();
+MSADistanceMatrix::MSADistanceMatrix()
+: usePercents(true), excludeGaps(false), alignmentLength(0) {
+}
+
+MSADistanceMatrix::MSADistanceMatrix(const MAlignment &ma, bool _excludeGaps, bool _usePercents)
+: usePercents(_usePercents), excludeGaps(_excludeGaps), alignmentLength(ma.getLength()) {
+    int nSeq = ma.getNumRows();
+    table.reserve(nSeq);
     for (int i = 0; i < nSeq; i++) {
-        const MAlignmentRow& row = algo->ma.getRow(i);
-        seqsUngappedLenghts.append(row.getUngappedLength());
+        table.append(QVarLengthArray<int>(i + 1));
+        memset(table[i].data(), 0, (i + 1) * sizeof(int));
+        seqsUngappedLenghts.append(ma.getRow(i).getUngappedLength());
     }
 }
 
-int MSADistanceMatrix::getSimilarity(int refRow, int row) {
-    if (refRow >= distanceTable.size() || row >= distanceTable.size()) {
+int  MSADistanceMatrix::getSimilarity(int row1, int row2) const {
+    return getSimilarity(row1, row2, usePercents);
+}
+
+int MSADistanceMatrix::getSimilarity (int refRow, int row, bool _usePercents) const {
+    if (refRow >= table.size() || row >= table.size()) {
         return -1;
     }
-    if(usePercents) {
+    if (_usePercents) {
         int refSeqLength = excludeGaps ? seqsUngappedLenghts.at(refRow) : alignmentLength;
-        if(refRow > row) {
-            return distanceTable[refRow][row] * 100 / refSeqLength;
+        if (refRow > row) {
+            return qRound((double)table[refRow][row] * 100 / refSeqLength);
         } else {
-            return distanceTable[row][refRow] * 100 / refSeqLength;
+            return qRound((double)table[row][refRow] * 100 / refSeqLength);
         }
-    }
-    else {
-        if(refRow > row) {
-            return distanceTable[refRow][row];
+    } else {
+        if (refRow > row) {
+            return table[refRow][row];
         } else {
-            return distanceTable[row][refRow];
+            return table[row][refRow];
         }
     }
 }
