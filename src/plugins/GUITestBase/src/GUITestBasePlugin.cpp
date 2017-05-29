@@ -1896,6 +1896,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0011);
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0012);
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0013);
+    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0014);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/colors

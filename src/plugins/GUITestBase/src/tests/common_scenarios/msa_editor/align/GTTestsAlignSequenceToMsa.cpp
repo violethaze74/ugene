@@ -18,24 +18,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#include "GTTestsAlignSequenceToMsa.h"
-#include <drivers/GTMouseDriver.h>
-#include <drivers/GTKeyboardDriver.h>
-#include "utils/GTKeyboardUtils.h"
-#include <primitives/GTWidget.h>
+
+#include <GTGlobals.h>
 #include <base_dialogs/GTFileDialog.h>
-#include "primitives/GTMenu.h"
-#include <primitives/GTTreeWidget.h>
-#include <primitives/GTSpinBox.h>
-#include "GTGlobals.h"
-#include "system/GTClipboard.h"
-#include "primitives/GTAction.h"
-#include <primitives/GTTreeWidget.h>
-#include <primitives/GTToolbar.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
-#include <primitives/GTCheckBox.h>
-#include "utils/GTUtilsDialog.h"
+#include <primitives/GTMenu.h>
+#include <primitives/GTSpinBox.h>
+#include <primitives/GTToolbar.h>
+#include <primitives/GTTreeWidget.h>
+#include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
+#include <utils/GTKeyboardUtils.h>
+#include <utils/GTUtilsDialog.h>
+
+#include <U2View/MSAEditor.h>
+#include <U2View/MSAEditorSequenceArea.h>
+
+#include "GTTestsAlignSequenceToMsa.h"
 #include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -43,12 +48,9 @@
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "primitives/PopupChooser.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/util/RenameSequenceFiller.h"
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorSequenceArea.h>
+#include "runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.h"
 
 namespace U2 {
 namespace GUITest_common_scenarios_align_sequences_to_msa{
@@ -463,6 +465,37 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0014) {
+//    Adding and aligning with MAFFT should remove all columns of gaps from the source msa before the aligning, also it should be trimmed after the aligning.
+
+//    1. Open "_common_data/scenarios/msa/ma2_gap_8_col.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Ensure that MAFFT tool is set.
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Align with MAFFT..."));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align");
+
+//    3. Click "Align sequence to this alignment" button on the toolbar.
+//    4. Select "_common_data/scenarios/msa/add_and_align_3.fa" in the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_3.fa"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+
+//    Expected state: an additional row appeared in the alignment, the forth column doesn't consist only of gaps, there are no columns of gaps even in the end of the alignment.
+    const QStringList expectedMsaData = QStringList() << "AAGCTTCTTTTAA"
+                                                      << "AAGTTACTAA---"
+                                                      << "TAG---TTATTAA"
+                                                      << "AAGC---TATTAA"
+                                                      << "TAGTTATTAA---"
+                                                      << "TAGTTATTAA---"
+                                                      << "TAGTTATTAA---"
+                                                      << "AAGCTTT---TAA"
+                                                      << "A--AGAATAATTA"
+                                                      << "AAGCTTTTAA---"
+                                                      << "A--AGAATA----";
+    const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
+}
+
 } // namespace
 } // namespace U2
-
