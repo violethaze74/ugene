@@ -648,13 +648,20 @@ void MSAEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
     int x = e->x();
     if (e->buttons() & Qt::LeftButton) {
         selecting = true;
+        int lastPos = curPos;
         curPos = ui->seqArea->getColumnNumByX(x, selecting);
-        if (curPos !=-1) {
+        if (curPos != -1) {
             int height = ui->seqArea->getNumDisplayedSequences();
             // select current column
-            MSAEditorSelection selection(curPos, 0, 1, height);
-            ui->seqArea->setSelection(selection);
-            scribbling = true;
+            if ((Qt::ShiftModifier == e->modifiers()) && (lastPos != -1)) {
+                MSAEditorSelection selection(qMin(lastPos, curPos), 0, abs(curPos - lastPos) + 1, height);
+                ui->seqArea->setSelection(selection);
+                curPos = lastPos;
+            } else {
+                MSAEditorSelection selection(curPos, 0, 1, height);
+                ui->seqArea->setSelection(selection);
+                scribbling = true;
+            }
         }
     }
     QWidget::mousePressEvent(e);
@@ -680,7 +687,6 @@ void MSAEditorConsensusArea::mouseReleaseEvent(QMouseEvent *e) {
     if (e->button() == Qt::LeftButton) {
         int newPos = ui->seqArea->getColumnNumByX(e->x(), selecting);
         updateSelection(newPos);
-        curPos = newPos;
         scribbling = false;
         selecting = false;
     }
