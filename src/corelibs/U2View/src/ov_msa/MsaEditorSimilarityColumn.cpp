@@ -71,10 +71,10 @@ QString MsaEditorSimilarityColumn::getTextForRow( int s ) {
     U2OpStatusImpl os;
     const int refSequenceIndex = ma.getRowIndexByRowId(referenceRowId, os);
     CHECK_OP(os, QString());
-
+    
     int sim = matrix->getSimilarity(refSequenceIndex, s);
     CHECK(-1 != sim, tr("-"));
-    const QString units = matrix->areUsePercents() ? "%" : "";
+    const QString units = matrix->isPercentSimilarity() ? "%" : "";
     return QString("%1").arg(sim) + units;
 }
 
@@ -101,7 +101,7 @@ void MsaEditorSimilarityColumn::setSettings(const UpdatedWidgetSettings* _settin
     }
     if(curSettings.usePercents != set->usePercents) {
         if(NULL != matrix) {
-            matrix->showSimilarityInPercents(set->usePercents);
+            matrix->setPercentSimilarity(set->usePercents);
             updateContent();
         }
         curSettings.usePercents = set->usePercents;
@@ -148,7 +148,7 @@ void MsaEditorSimilarityColumn::sl_createMatrixTaskFinished(Task* t) {
         }
         matrix = task->getResult();
         if(NULL != matrix) {
-            matrix->showSimilarityInPercents(newSettings.usePercents);
+            matrix->setPercentSimilarity(newSettings.usePercents);
         }
     }
     updateContent();
@@ -187,14 +187,7 @@ QList<Task*> CreateDistanceMatrixTask::onSubTaskFinished(Task* subTask){
         return res;
     }
     MSADistanceAlgorithm* algo = qobject_cast<MSADistanceAlgorithm*>(subTask);
-    MSADistanceMatrix *matrix = new MSADistanceMatrix(algo, s.usePercents && s.excludeGaps);
-    if(NULL != algo) {
-        if(algo->hasError()) {
-            setError(algo->getError());
-            return res;
-        }
-        resMatrix = matrix;
-    }
+    resMatrix = new MSADistanceMatrix(algo->getMatrix());
     return res;
 }
 MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(UpdatedWidgetInterface* _contentWidget)
@@ -279,5 +272,3 @@ void MsaEditorAlignmentDependentWidget::sl_onFontChanged(const QFont& font) {
 }
 
 } //namespace
-
-
