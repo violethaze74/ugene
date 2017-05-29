@@ -35,12 +35,14 @@ class SaveDocumentController;
 class SaveSelectedSequenceFromMSADialogController : public QDialog {
     Q_OBJECT
 public:
-    SaveSelectedSequenceFromMSADialogController(QWidget* p);
+    SaveSelectedSequenceFromMSADialogController(const QString& defaultDir, const QString& defaultFileName, QWidget* p);
     ~SaveSelectedSequenceFromMSADialogController();
 
     virtual void accept();
 
     QString             url;
+    QString             defaultDir;
+    QString             defaultFileName;
     DocumentFormatId    format;
     bool                trimGapsFlag;
     bool                addToProjectFlag;
