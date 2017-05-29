@@ -122,7 +122,6 @@ void PairedFastqComparator::compare(U2OpStatus &os) {
 
 void PairedFastqComparator::dropUntilItem(U2OpStatus& os, QList<FastqSequenceInfo>& list, const FastqSequenceInfo& untilItem) {
     CHECK(!list.isEmpty(), );
-    SAFE_POINT_EXT(list.contains(untilItem), os.setError(tr("The list doesn't contains the item")), );
 
     FastqSequenceInfo item;
     do {
