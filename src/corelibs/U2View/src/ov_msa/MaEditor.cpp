@@ -344,7 +344,7 @@ void MaEditor::sl_saveAlignmentAs(){
 void MaEditor::sl_changeFont() {
     bool ok = false;
     // QFontDialog::DontUseNativeDialog - no color selector, affects only Mac OS
-    QFont f = QFontDialog::getFont(&ok, font, widget, tr("Select font for alignment"), QFontDialog::DontUseNativeDialog);
+    QFont f = QFontDialog::getFont(&ok, font, widget, tr("Characters Font"), QFontDialog::DontUseNativeDialog);
     if (!ok) {
         return;
     }
