@@ -76,6 +76,7 @@ private:
     QLabel*                     colsLabel;
     QLabel*                     lockLabel;
     QLabel*                     posLabel;
+    QLabel*                     selectionLabel;
     QPoint                      lastSearchPos;
     QAction*                    findAction;
 

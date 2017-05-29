@@ -442,6 +442,10 @@ void MSAEditorSequenceArea::setCopyFormatedAlgorithmId(const QString& algoId){
     AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, algoId);
 }
 
+MSAEditor *MSAEditorSequenceArea::getEditor() const {
+    return editor;
+}
+
 bool MSAEditorSequenceArea::hasAminoAlphabet() {
     MAlignmentObject* maObj = editor->getMSAObject();
     SAFE_POINT(NULL != maObj, tr("MAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()"), false);
