@@ -275,6 +275,8 @@ public:
     QString getCopyFormatedAlgorithmId() const;
     void setCopyFormatedAlgorithmId(const QString& algoId);
 
+    MSAEditor *getEditor() const;
+
 private:
     // emulating cursor mode with
 
