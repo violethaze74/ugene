@@ -47,7 +47,7 @@ REGISTER_TYPE(ANNOTATION_TABLE,     "OT_ANNOTATIONS",   GObject::tr("Annotation"
 REGISTER_TYPE(VARIANT_TRACK,        "OT_VARIATIONS",    GObject::tr("Variation"),       GObject::tr("Variations"),     "v");
 REGISTER_TYPE(CHROMATOGRAM,         "OT_CHROMATOGRAM",  GObject::tr("Chromatogram"),    GObject::tr("Chromatograms"),  "c");
 // SANGER_TODO: icons!!
-REGISTER_TYPE_EX(MULTIPLE_CHROMATOGRAM_ALIGNMENT,   "OT_MCA",    GObject::tr("Alignment"),       GObject::tr("Alignments"),     "ca",     ":core/images/msa.png",         ":core/images/ro_msa.png");
+REGISTER_TYPE_EX(MULTIPLE_CHROMATOGRAM_ALIGNMENT,   "OT_MCA",    GObject::tr("Alignment"),       GObject::tr("Alignments"),     "mc",     ":core/images/msa.png",         ":core/images/ro_msa.png");
 REGISTER_TYPE_EX(MULTIPLE_SEQUENCE_ALIGNMENT,   "OT_MSA",        GObject::tr("Alignment"),       GObject::tr("Alignments"),     "m",     ":core/images/msa.png",         ":core/images/ro_msa.png");
 REGISTER_TYPE_EX(PHYLOGENETIC_TREE, "OT_PTREE",         GObject::tr("Tree"),            GObject::tr("Trees"),          "tr",    ":core/images/tree.png",        ":core/images/ro_tree.png");
 REGISTER_TYPE_EX(BIOSTRUCTURE_3D,   "OT_BIOSTRUCT3D",   GObject::tr("3D model"),        GObject::tr("3D models"),      "3d",    ":core/images/biostruct3d.png", ":core/images/ro_biostruct3d.png");
