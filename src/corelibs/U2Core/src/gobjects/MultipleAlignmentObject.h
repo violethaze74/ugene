@@ -28,8 +28,6 @@
 
 namespace U2 {
 
-const int GAP_COLUMN_ONLY = -1;
-
 #define MOBJECT_MIN_FONT_SIZE 8
 #define MOBJECT_MAX_FONT_SIZE 18
 #define MOBJECT_MIN_COLUMN_WIDTH 1
@@ -166,8 +164,6 @@ protected:
 
 
     MultipleAlignment cachedMa;
-
-    static const int GAP_COLUMN_ONLY;
 
 private:
     void loadDataCore(U2OpStatus &os);
