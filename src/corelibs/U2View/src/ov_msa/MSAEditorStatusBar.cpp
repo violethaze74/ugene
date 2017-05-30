@@ -91,8 +91,9 @@ MSAEditorStatusWidget::MSAEditorStatusWidget(MultipleAlignmentObject* mobj, MaEd
     l->addWidget(linesLabel);
     l->addWidget(colsLabel);
     l->addWidget(posLabel);
-    if (qobject_cast<MSAEditor*>(seqArea->getEditor()) != NULL) {
-        l->addWidget(selectionLabel);
+    l->addWidget(selectionLabel);
+    if (qobject_cast<MSAEditor*>(seqArea->getEditor()) == NULL) {
+        selectionLabel->hide();
     }
     l->addWidget(lockLabel);
     setLayout(l);
