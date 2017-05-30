@@ -83,6 +83,11 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
     cachedView = new QPixmap();
     completeRedraw = true;
 
+    useDotsAction = new QAction(QString(tr("Use dots")), this);
+    useDotsAction->setCheckable(true);
+    useDotsAction->setChecked(false);
+    connect(useDotsAction, SIGNAL(triggered()), SLOT(sl_useDots()));
+
     replaceCharacterAction = new QAction(tr("Replace selected character"), this);
     replaceCharacterAction->setObjectName("replace_selected_character");
     replaceCharacterAction->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_R));
@@ -1073,8 +1078,9 @@ void MaEditorSequenceArea::sl_useDots(){
 void MaEditorSequenceArea::sl_registerCustomColorSchemes() {
     deleteOldCustomSchemes();
 
-    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(customColorSchemeMenuActions, MsaSchemesMenuBuilder::Custom, getEditor()->getMaObject()->getAlphabet()->getType(),
-        this);
+    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(customColorSchemeMenuActions,
+                                                               MsaSchemesMenuBuilder::Custom, getEditor()->getMaObject()->getAlphabet()->getType(),
+                                                               this);
 }
 
 void MaEditorSequenceArea::sl_colorSchemeFactoryUpdated() {
@@ -1723,11 +1729,6 @@ void MaEditorSequenceArea::initColorSchemes(MsaColorSchemeFactory *defaultColorS
     registerCommonColorSchemes();
     sl_registerCustomColorSchemes();
 
-    useDotsAction = new QAction(QString(tr("Use dots")), this);
-    useDotsAction->setCheckable(true);
-    useDotsAction->setChecked(false);
-    connect(useDotsAction, SIGNAL(triggered()), SLOT(sl_useDots()));
-
     applyColorScheme(defaultColorSchemeFactory->getId());
 }
 
@@ -1744,9 +1745,13 @@ void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* hs
     SAFE_POINT(hsf != NULL, "Highlight scheme factory is NULL", );
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
+    QVariantMap settings = highlightingScheme != NULL
+            ? highlightingScheme->getSettings()
+            : QVariantMap();
     delete highlightingScheme;
 
     highlightingScheme = hsf->create(this, maObj);
+    highlightingScheme->applySettings(settings);
 
     MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(highlightingSchemeMenuActions, getEditor()->getMaObject()->getAlphabet()->getType(), this);
     QList<QAction *> tmpActions = QList<QAction *>() << highlightingSchemeMenuActions;
@@ -1810,7 +1815,7 @@ void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hs
     if (hsf == NULL) {
         hsid = getDefaultHighlightingSchemeFactory()->getId();
     }
-    
+
 
     if (colorScheme != NULL && colorScheme->getFactory()->isAlphabetTypeSupported(atype)) {
         csid = colorScheme->getFactory()->getId();

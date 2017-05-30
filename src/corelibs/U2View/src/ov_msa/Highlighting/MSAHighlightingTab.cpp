@@ -154,7 +154,10 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
 
     seqArea = msa->getUI()->getSequenceArea();
 
-    savableTab.disableSavingForWidgets(QStringList() << thresholdSlider->objectName() << highlightingSchemeController->getComboBox()->objectName() << colorSchemeController->getComboBox()->objectName());
+    savableTab.disableSavingForWidgets(QStringList()
+                                       << thresholdSlider->objectName()
+                                       << highlightingSchemeController->getComboBox()->objectName()
+                                       << colorSchemeController->getComboBox()->objectName());
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 
     sl_sync();
