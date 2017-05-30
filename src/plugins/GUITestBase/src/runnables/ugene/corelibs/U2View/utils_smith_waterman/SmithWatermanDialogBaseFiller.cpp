@@ -168,7 +168,7 @@ void SmithWatermanDialogFiller::commonScenario() {
         GTComboBox::setCurrentIndex(os, comboRealization, swRealizationIndex);
 
         QComboBox * comboResultFilter = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "comboResultFilter", dialog));
-        GTComboBox::setCurrentIndex(os, comboResultFilter, RESULT_INTERSECTION_FILTER_INDEX);
+		GTComboBox::setIndexWithText(os, comboResultFilter, "filter-intersections");
 
         QSpinBox * spinScorePercent = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "spinScorePercent", dialog));
         GTSpinBox::setValue(os, spinScorePercent, RESULT_SCORE_PERCENTAGE, GTGlobals::UseKeyBoard);
