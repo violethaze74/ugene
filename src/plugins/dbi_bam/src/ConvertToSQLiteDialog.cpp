@@ -114,6 +114,13 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl& _sourceUrl, BAMInfo& _b
     ui.sourceUrlView->setText(QDir::cleanPath(sourceUrl.getURLString()));
     okButton->setFocus();
     connect(ui.tableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), SLOT(sl_assemblyCheckChanged(QTableWidgetItem*)));
+
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+    adjustSize();
+    if (ui.tableWidget->isHidden()) {
+        setFixedHeight(height());
+    }
+    setMinimumWidth(600);
 }
 
 void ConvertToSQLiteDialog::hideReferenceUrl() {
