@@ -259,19 +259,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "revcompl.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Show offsets");
-    GTGlobals::sleep();
-    GTGlobals::sleep();
 
     bool offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
     CHECK_SET_ERR(offsetsVisible == false, "Offsets are visible");
 
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTGlobals::sleep();
+    GTGlobals::sleep(1000);
 
     mdiWindow = GTUtilsMdi::activeWindow(os, false);
     CHECK_SET_ERR(mdiWindow == NULL, "There is an MDI window");
@@ -402,7 +399,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003_4) {
     GTGlobals::sleep();
 
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep();
+    GTGlobals::sleep();
 #ifdef Q_OS_MAC
     GTMouseDriver::click();
     GTGlobals::sleep(1000);
@@ -4315,6 +4313,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
                                                   << "export sequences as alignment"));
     GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
+    GTGlobals::sleep();
     GTGlobals::sleep();
 //    "Use Genbank "SOURCE" tags..." checkbox
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
