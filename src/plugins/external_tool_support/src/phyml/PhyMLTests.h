@@ -26,9 +26,9 @@
 #include <U2Core/GObject.h>
 #include <U2Algorithm/PhyTreeGeneratorTask.h>
 
-#include <QtXml/QDomElement>
-#include <QtCore/QFileInfo>
-#include <QtCore/QList>
+#include <QDomElement>
+#include <QFileInfo>
+#include <QList>
 
 namespace U2{
 

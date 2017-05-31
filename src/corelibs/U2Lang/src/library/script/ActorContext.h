@@ -24,8 +24,6 @@
 
 #include <U2Lang/LocalDomain.h>
 
-#include <QtScript>
-
 namespace U2 {
 using namespace Workflow;
 namespace LocalWorkflow {

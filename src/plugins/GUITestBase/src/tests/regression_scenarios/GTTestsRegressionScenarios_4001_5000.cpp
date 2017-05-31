@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QClipboard>
 #include <QFile>
 #include <QGroupBox>
 #include <QListWidget>

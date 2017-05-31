@@ -22,12 +22,7 @@
 #ifndef _U2_TABLE_VIEW_TAB_KEY_H_
 #define _U2_TABLE_VIEW_TAB_KEY_H_
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTableView>
-#else
-#include <QtWidgets/QTableView>
-#endif
+#include <QTableView>
 
 namespace U2 {
 class TableViewTabKey : public QTableView

@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDebug>
 #include <QScopedPointer>
 
 #include <U2Algorithm/FindAlgorithmTask.h>

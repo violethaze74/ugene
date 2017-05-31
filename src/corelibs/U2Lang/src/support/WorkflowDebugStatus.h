@@ -22,7 +22,7 @@
 #ifndef _U2_WORKFLOW_DEBUG_STATUS_H_
 #define _U2_WORKFLOW_DEBUG_STATUS_H_
 
-#include <QtCore/QObject>
+#include <QObject>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/WorkflowContext.h>

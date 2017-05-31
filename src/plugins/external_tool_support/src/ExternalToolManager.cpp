@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QEventLoop>
-#include <QtCore/QSet>
+#include <QEventLoop>
+#include <QSet>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/PluginModel.h>

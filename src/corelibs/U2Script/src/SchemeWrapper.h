@@ -22,8 +22,8 @@
 #ifndef _SCHEME_WRAPPER_H_
 #define _SCHEME_WRAPPER_H_
 
-#include <QtCore/QMap>
-#include <QtCore/QString>
+#include <QMap>
+#include <QString>
 
 #include "globals.h"
 

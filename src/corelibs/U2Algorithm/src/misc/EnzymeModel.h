@@ -22,10 +22,10 @@
 #ifndef _U2_ENZYME_MODEL_H_
 #define _U2_ENZYME_MODEL_H_
 
-#include <QtCore/QSharedData>
-#include <QtCore/QSharedDataPointer>
-#include <QtCore/QString>
-#include <QtCore/QByteArray>
+#include <QSharedData>
+#include <QSharedDataPointer>
+#include <QString>
+#include <QByteArray>
 
 #include <U2Core/global.h>
 

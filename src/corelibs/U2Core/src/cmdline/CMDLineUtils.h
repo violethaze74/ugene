@@ -22,8 +22,8 @@
 #ifndef _U2_CMDLINE_UTILS_H_
 #define _U2_CMDLINE_UTILS_H_
 
-#include <QtCore/QString>
-#include <QtCore/QList>
+#include <QString>
+#include <QList>
 
 #include <U2Core/CMDLineRegistry.h>
 

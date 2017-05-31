@@ -25,7 +25,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2AlphabetUtils.h>
 
-#include <QtCore/QDir>
+#include <QDir>
 
 namespace U2 {
 

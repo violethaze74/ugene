@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 
 #include "RPSBlastSupportTask.h"
 #include "BlastPlusSupport.h"

@@ -18,7 +18,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/BaseDocumentFormats.h>

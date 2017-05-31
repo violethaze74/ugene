@@ -29,6 +29,7 @@
 #include <QProgressBar>
 #include <QPushButton>
 #include <QTableWidget>
+#include <QThreadPool>
 #include <QWebElement>
 #include <QWebFrame>
 #include <QWebView>

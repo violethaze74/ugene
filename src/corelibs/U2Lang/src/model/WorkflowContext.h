@@ -22,7 +22,7 @@
 #ifndef _U2_WORKFLOW_CONTEXT_H_
 #define _U2_WORKFLOW_CONTEXT_H_
 
-#include <QtCore/QMutex>
+#include <QMutex>
 
 #include <U2Core/AppFileStorage.h>
 

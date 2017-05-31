@@ -24,7 +24,7 @@
 
 #include <U2Core/IOAdapter.h>
 
-#include <QtCore/QBuffer>
+#include <QBuffer>
 
 namespace U2 {
 

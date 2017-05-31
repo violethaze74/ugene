@@ -22,6 +22,8 @@
 #ifndef _U2_MSA_HIGHLIGHTING_SCHEME_H_
 #define _U2_MSA_HIGHLIGHTING_SCHEME_H_
 
+#include <QObject>
+
 #include <U2Core/global.h>
 
 class QColor;

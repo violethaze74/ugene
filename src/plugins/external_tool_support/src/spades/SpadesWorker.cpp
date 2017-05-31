@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedPointer>
+#include <QScopedPointer>
 
 #include <U2Algorithm/GenomeAssemblyMultiTask.h>
 

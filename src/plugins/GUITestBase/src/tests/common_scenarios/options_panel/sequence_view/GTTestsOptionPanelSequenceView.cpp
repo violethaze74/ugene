@@ -20,13 +20,8 @@
  */
 
 #include <QTableWidget>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QMainWindow>
-#else
-#include <QtWidgets/QGraphicsItem>
-#include <QtWidgets/QMainWindow>
-#endif
+#include <QGraphicsItem>
+#include <QMainWindow>
 
 #include "GTTestsOptionPanelSequenceView.h"
 

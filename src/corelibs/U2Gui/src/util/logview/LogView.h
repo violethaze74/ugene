@@ -24,20 +24,13 @@
 
 #include <LogSettings.h>
 
-#include <QtCore/QHash>
-#include <QtCore/QRegExp>
-#include <QtCore/QTimer>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLineEdit>
-#include <QtGui/QPlainTextEdit>
-#include <QtGui/QShortcut>
-#else
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QPlainTextEdit>
-#include <QtWidgets/QShortcut>
-#endif
-
-#include <QtGui/QSyntaxHighlighter>
+#include <QHash>
+#include <QRegExp>
+#include <QTimer>
+#include <QLineEdit>
+#include <QPlainTextEdit>
+#include <QShortcut>
+#include <QSyntaxHighlighter>
 
 namespace U2 {
 

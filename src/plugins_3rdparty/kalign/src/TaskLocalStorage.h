@@ -22,7 +22,7 @@
 #ifndef _KALIGN_TASK_LOCAL_STORAGE_
 #define _KALIGN_TASK_LOCAL_STORAGE_
 
-#include <QtCore/QThreadStorage>
+#include <QThreadStorage>
 
 class KalignContext;
 

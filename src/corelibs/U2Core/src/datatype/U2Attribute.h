@@ -25,8 +25,8 @@
 #include <U2Core/U2Type.h>
 #include <U2Core/U2Region.h>
 
-#include <QtCore/QDateTime>
-#include <QtCore/QVector>
+#include <QDateTime>
+#include <QVector>
 
 namespace U2 {
 

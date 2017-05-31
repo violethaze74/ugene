@@ -19,16 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtXml/qdom.h>
+#include <QDomElement>
 
 #include <U2Core/Log.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/Schema.h>
-#include <U2Lang/IntegralBusModel.h>
-#include <U2Lang/CoreLibConstants.h>
-
 #include <U2Core/QVariantUtils.h>
+
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/CoreLibConstants.h>
+#include <U2Lang/IntegralBusModel.h>
+#include <U2Lang/Schema.h>
+#include <U2Lang/WorkflowEnv.h>
+
 #include "SchemaSerializer.h"
 
 //Q_DECLARE_METATYPE(U2::Workflow::CfgMap)

@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QVariant>
+
 #include "BaseAttributes.h"
 
 static const QString URL_LOCATION_ATTR_ID("url_location");

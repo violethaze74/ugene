@@ -19,11 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/qglobal.h>
-
 #include <QApplication>
 #include <QComboBox>
-
 
 #include <U2Test/UGUITest.h>
 

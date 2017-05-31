@@ -22,10 +22,10 @@
 #ifndef _DATABASE_REGISTRY_
 #define _DATABASE_REGISTRY_
 
-#include <QtCore/QMap>
-#include <QtCore/QString>
-#include <QtCore/QList>
-#include <QtCore/QObject>
+#include <QMap>
+#include <QString>
+#include <QList>
+#include <QObject>
 
 #include <U2Core/global.h>
 #include <U2Core/AnnotationData.h>

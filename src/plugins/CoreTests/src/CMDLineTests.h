@@ -22,7 +22,7 @@
 #ifndef _U2_CMDLINE_TESTS_H_
 #define _U2_CMDLINE_TESTS_H_
 
-#include <QtCore/QProcess>
+#include <QProcess>
 #include <U2Test/XMLTestUtils.h>
 
 namespace U2 {

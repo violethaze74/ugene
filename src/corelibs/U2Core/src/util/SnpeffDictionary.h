@@ -22,6 +22,8 @@
 #ifndef _U2_SNPEFF_DICTIONARY_H_
 #define _U2_SNPEFF_DICTIONARY_H_
 
+#include <QMap>
+
 #include <U2Core/global.h>
 
 namespace U2 {

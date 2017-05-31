@@ -26,7 +26,7 @@
 #include <U2Core/AnnotationData.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QList>
+#include <QList>
 
 namespace U2 {
 

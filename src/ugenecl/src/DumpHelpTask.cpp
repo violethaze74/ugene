@@ -26,7 +26,7 @@
 #include "windows.h"
 #endif
 
-#include <QtCore/QDir>
+#include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Version.h>

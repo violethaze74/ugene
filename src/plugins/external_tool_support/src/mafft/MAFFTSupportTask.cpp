@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QCoreApplication>
+#include <QDir>
 
 #include "MAFFTSupportTask.h"
 #include "MAFFTSupport.h"

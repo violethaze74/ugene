@@ -19,9 +19,7 @@
 * MA 02110-1301, USA.
 */
 
-
-#include "ScriptEngineUtils.h"
-#include "SequencePrototype.h"
+#include <QFileInfo>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -30,8 +28,8 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MSAUtils.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -39,7 +37,9 @@
 #include <U2Lang/DbiDataStorage.h>
 #include <U2Lang/WorkflowScriptEngine.h>
 
+#include "ScriptEngineUtils.h"
 #include "ScriptLibrary.h"
+#include "SequencePrototype.h"
 
 namespace U2 {
 

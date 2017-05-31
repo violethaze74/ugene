@@ -19,12 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFileInfo>
-#include <QtCore/QScopedPointer>
-#include <QtCore/QThread>
+#include <QCoreApplication>
+#include <QFileInfo>
+#include <QScopedPointer>
+#include <QThread>
 
-#include <QtScript/QScriptEngine>
+#include <QScriptEngine>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>

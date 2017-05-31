@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/qglobal.h>
+#include <qglobal.h>
 #ifdef Q_OS_WIN
 #include <conio.h>
 #endif

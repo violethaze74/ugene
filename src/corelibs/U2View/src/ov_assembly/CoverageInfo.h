@@ -27,8 +27,8 @@
 #include <U2Core/BackgroundTaskRunner.h>
 #include <U2Core/U2Region.h>
 
-#include <QtCore/QVector>
-#include <QtCore/QSharedPointer>
+#include <QVector>
+#include <QSharedPointer>
 
 
 namespace U2 {

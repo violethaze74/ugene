@@ -24,17 +24,11 @@
 
 #include <U2Core/global.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
-#include <QtGui/QTreeWidgetItem>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QTreeWidgetItem>
-#endif
+#include <QAction>
+#include <QMenu>
+#include <QTreeWidgetItem>
 
-#include <QtCore/QList>
+#include <QList>
 #include "U2FileDialog.h"
 
 namespace U2 {

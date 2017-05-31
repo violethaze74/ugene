@@ -24,7 +24,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 
-#include <QtCore/QString>
+#include <QString>
 
 namespace U2 {
 

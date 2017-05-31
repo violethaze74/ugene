@@ -34,8 +34,7 @@
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Gui/DialogUtils.h>
 
-#include <QtCore/QtAlgorithms>
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 
 namespace U2 {
 

@@ -32,23 +32,13 @@
 
 #include <U2Core/Log.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QListWidget>
-#include <QtGui/QToolButton>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QComboBox>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QAbstractButton>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QListWidget>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QTreeWidget>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QAbstractButton>
-#endif
+#include <QApplication>
+#include <QListWidget>
+#include <QToolButton>
+#include <QTreeWidget>
+#include <QComboBox>
+#include <QDialogButtonBox>
+#include <QAbstractButton>
 
 #include <QTextBrowser>
 

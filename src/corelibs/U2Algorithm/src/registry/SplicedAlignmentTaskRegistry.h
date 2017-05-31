@@ -22,9 +22,10 @@
 #ifndef _U2_SPLICED_ALIGNMENT_TASK_REGISTRY_H_
 #define _U2_SPLICED_ALIGNMENT_TASK_REGISTRY_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QMutex>
-#include <QtCore/QString>
+#include <QMap>
+#include <QMutex>
+#include <QObject>
+#include <QString>
 
 #include <U2Core/global.h>
 
@@ -46,9 +47,8 @@ public:
 private:
     QMutex mutex;
     QMap<QString, SplicedAlignmentTaskFactory*> algMap;
-    Q_DISABLE_COPY(SplicedAlignmentTaskRegistry);
+    Q_DISABLE_COPY(SplicedAlignmentTaskRegistry)
 };
-
 
 } // namespace
 

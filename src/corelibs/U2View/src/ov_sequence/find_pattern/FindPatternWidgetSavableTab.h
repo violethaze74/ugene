@@ -22,7 +22,7 @@
 #ifndef _U2_FIND_PATTERN_SAVABLE_TAB_H_
 #define _U2_FIND_PATTERN_SAVABLE_TAB_H_
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 #include <U2Gui/U2SavableWidget.h>
 

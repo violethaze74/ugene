@@ -22,17 +22,12 @@
 #ifndef _U2_CREATE_RULER_DIALOG_CONTROLLER_H_
 #define _U2_CREATE_RULER_DIALOG_CONTROLLER_H_
 
-
 #include <ui_CreateRulerDialog.h>
 
 #include <U2Core/U2Region.h>
 
-#include <QtCore/QSet>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDialog>
-#else
-#include <QtWidgets/QDialog>
-#endif
+#include <QSet>
+#include <QDialog>
 
 namespace U2 {
 

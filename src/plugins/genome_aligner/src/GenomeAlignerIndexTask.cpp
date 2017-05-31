@@ -28,7 +28,6 @@
 #include <U2Algorithm/OpenCLGpuRegistry.h>
 #include "U2Formats/StreamSequenceReader.h"
 #include <QtEndian>
-#include <QtGlobal>
 #include "GenomeAlignerIndex.h"
 
 #include "GenomeAlignerIndexTask.h"

@@ -22,7 +22,7 @@
 #ifndef _U2_GUI_DATABASE_CONFIG_H_
 #define _U2_GUI_DATABASE_CONFIG_H_
 
-#include <QtCore/QString>
+#include <QString>
 
 namespace U2 {
 

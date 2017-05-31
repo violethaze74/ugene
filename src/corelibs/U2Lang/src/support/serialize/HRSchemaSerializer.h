@@ -22,10 +22,10 @@
 #ifndef _U2_WORKFLOW_HR_SCHEMA_SERIALIZER_H_
 #define _U2_WORKFLOW_HR_SCHEMA_SERIALIZER_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QByteArray>
+#include <QObject>
+#include <QString>
+#include <QStringList>
+#include <QByteArray>
 #include <U2Core/global.h>
 #include <U2Lang/Aliasing.h>
 #include <U2Lang/Dataset.h>

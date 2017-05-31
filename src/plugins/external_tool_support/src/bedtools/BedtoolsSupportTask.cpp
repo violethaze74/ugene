@@ -28,7 +28,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/ExternalToolRunTask.h>
 
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 
 namespace U2 {
 

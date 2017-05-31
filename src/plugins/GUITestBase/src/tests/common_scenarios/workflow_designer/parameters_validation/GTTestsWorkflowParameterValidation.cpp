@@ -37,7 +37,7 @@
 #include <U2Gui/ToolsMenu.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QDir>
+#include <QDir>
 
 
 

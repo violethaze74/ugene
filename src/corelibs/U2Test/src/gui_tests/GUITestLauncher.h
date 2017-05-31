@@ -26,7 +26,7 @@
 #include <U2Core/Task.h>
 #include <U2Core/MultiTask.h>
 #include <U2Gui/MainWindow.h>
-#include <QtCore/QProcessEnvironment>
+#include <QProcessEnvironment>
 #include <core/GUITest.h>
 
 namespace U2 {

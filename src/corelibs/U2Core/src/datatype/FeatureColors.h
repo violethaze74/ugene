@@ -24,7 +24,7 @@
 
 #include <U2Core/global.h>
 
-#include <QtGui/QColor>
+#include <QColor>
 
 namespace U2 {
 

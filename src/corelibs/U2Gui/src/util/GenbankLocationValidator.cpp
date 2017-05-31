@@ -19,14 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
-#else
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QPushButton>
-#endif
+#include <QLineEdit>
+#include <QPushButton>
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/Log.h>

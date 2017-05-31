@@ -22,7 +22,7 @@
 #ifndef _U2_BAM_INDEX_H_
 #define _U2_BAM_INDEX_H_
 
-#include <QtCore/QList>
+#include <QList>
 #include "VirtualOffset.h"
 
 namespace U2 {

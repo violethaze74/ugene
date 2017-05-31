@@ -23,6 +23,7 @@
 #define _U2_INVESTIGATION_DATA_MODEL_H_
 
 #include <QAbstractTableModel>
+#include <QBitArray>
 
 #include <U2Lang/Port.h>
 #include <U2Lang/WorkflowInvestigationData.h>

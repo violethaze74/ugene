@@ -19,11 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include "SnpEffDatabaseDelegate.h"
-#include "SnpEffDatabaseListModel.h"
-#include "SnpEffSupport.h"
-
-#include "ExternalToolSupportSettingsController.h"
+#include <QLayout>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QSortFilterProxyModel>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -31,9 +30,10 @@
 #include <U2Gui/AppSettingsGUI.h>
 #include <U2Gui/HelpButton.h>
 
-#include <QPushButton>
-#include <QMessageBox>
-#include <QLayout>
+#include "ExternalToolSupportSettingsController.h"
+#include "SnpEffDatabaseDelegate.h"
+#include "SnpEffDatabaseListModel.h"
+#include "SnpEffSupport.h"
 
 namespace U2 {
 namespace LocalWorkflow {

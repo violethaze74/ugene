@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
+#include <QDir>
+#include <QFileInfo>
 
 #include <U2Core/Counter.h>
 #include <U2Core/U2DbiUtils.h>

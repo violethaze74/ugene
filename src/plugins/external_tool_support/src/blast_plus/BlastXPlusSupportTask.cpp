@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFileInfo>
-#include <QtXml/QDomDocument>
+#include <QFileInfo>
+#include <QDomDocument>
 
 #include "BlastXPlusSupportTask.h"
 #include "BlastPlusSupport.h"

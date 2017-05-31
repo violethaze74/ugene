@@ -24,13 +24,8 @@
 
 #include <U2Core/global.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QSlider>
-#include <QtGui/QToolButton>
-#else
-#include <QtWidgets/QSlider>
-#include <QtWidgets/QToolButton>
-#endif
+#include <QSlider>
+#include <QToolButton>
 
 namespace U2 {
 

@@ -22,9 +22,11 @@
 #ifndef _U2_TEST_SCRIPT_WRAPPER_H_
 #define _U2_TEST_SCRIPT_WRAPPER_H_
 
-#include <QtScript>
-#include <QTest>
 #include <QObject>
+#include <QScriptValue>
+#include <QTest>
+
+class QScriptContext;
 
 namespace U2 {
 

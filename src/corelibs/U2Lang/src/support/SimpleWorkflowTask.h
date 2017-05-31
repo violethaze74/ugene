@@ -25,11 +25,13 @@
 #ifndef _SIMPLE_WORKFLOW_TASK_H_
 #define _SIMPLE_WORKFLOW_TASK_H_
 
-#include <U2Core/Task.h>
+#include <QTemporaryFile>
+
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentProviderTask.h>
-#include <U2Core/SaveDocumentTask.h>
 #include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/SaveDocumentTask.h>
+#include <U2Core/Task.h>
 
 #include <U2Lang/Schema.h>
 #include <U2Lang/WorkflowIOTasks.h>

@@ -22,14 +22,8 @@
 #ifndef __U2_ASSEMBLY_READS_AREA_HINT_H__
 #define __U2_ASSEMBLY_READS_AREA_HINT_H__
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QFrame>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QFrame>
-#endif
+#include <QLabel>
+#include <QFrame>
 
 #include <U2Core/U2Assembly.h>
 

@@ -23,9 +23,9 @@
 #include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/SimpleWorkflowTask.h>
 
-#include <QtCore/QVariant>
-#include <QtCore/QString>
-#include <QtCore/QRegExp>
+#include <QVariant>
+#include <QString>
+#include <QRegExp>
 
 namespace U2 {
 

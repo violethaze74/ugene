@@ -46,7 +46,7 @@
 
 #include "AlignSequencesToAlignmentTask.h"
 
-#include <QtCore/QDir>
+#include <QDir>
 #include <QMessageBox>
 
 namespace U2 {

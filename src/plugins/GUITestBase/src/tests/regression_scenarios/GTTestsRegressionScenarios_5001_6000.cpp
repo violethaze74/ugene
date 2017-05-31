@@ -20,6 +20,7 @@
  */
 
 #include <QApplication>
+#include <QDir>
 #include <QFile>
 #include <QListWidget>
 #include <QPlainTextEdit>

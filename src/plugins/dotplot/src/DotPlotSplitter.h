@@ -25,7 +25,7 @@
 
 #include <U2View/ADVSplitWidget.h>
 
-#include <QtGui/QIcon>
+#include <QIcon>
 
 class QMenu;
 class QToolButton;

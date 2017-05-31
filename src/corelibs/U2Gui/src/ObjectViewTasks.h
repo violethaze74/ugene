@@ -26,7 +26,7 @@
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Core/GObjectReference.h>
 
-#include <QtCore/QPointer>
+#include <QPointer>
 
 namespace U2 {
 

@@ -35,11 +35,7 @@
 
 #include <U2Algorithm/ORFAlgorithmTask.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
+#include <QApplication>
 
 namespace U2 {
 

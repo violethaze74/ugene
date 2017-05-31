@@ -28,7 +28,7 @@
 #include <U2Core/AnnotationData.h>
 #include <U2Core/SequenceWalkerTask.h>
 
-#include <QtCore/QMutex>
+#include <QMutex>
 
 namespace U2 {
 

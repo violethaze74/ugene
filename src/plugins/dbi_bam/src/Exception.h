@@ -22,7 +22,7 @@
 #ifndef _U2_BAM_EXCEPTION_H_
 #define _U2_BAM_EXCEPTION_H_
 
-#include <QtCore/QString>
+#include <QString>
 
 namespace U2 {
 namespace BAM {

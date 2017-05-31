@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QTextStream>
+#include <QTextStream>
 
 #include <U2Core/TextUtils.h>
 #include <U2Core/DNATranslation.h>

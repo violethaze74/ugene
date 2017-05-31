@@ -22,6 +22,8 @@
 #ifndef _U2_CONVERT_SNPEFF_VARIATIONS_TO_ANNOTATIONS_TASK_H_
 #define _U2_CONVERT_SNPEFF_VARIATIONS_TO_ANNOTATIONS_TASK_H_
 
+#include <QMap>
+
 #include <U2Core/AnnotationData.h>
 #include <U2Core/Task.h>
 

@@ -52,15 +52,15 @@
 #ifndef _STACK_WALKER_H_
 #define _STACK_WALKER_H_
 
-#include <QtCore/qglobal.h>
+#include <qglobal.h>
 
 #if defined (Q_OS_WIN)
 
 #include <windows.h>
 #include <wtypes.h>
 
-#include <QtCore/QString>
-#include <QtCore/QMap>
+#include <QString>
+#include <QMap>
 
 namespace U2 {
 

@@ -22,6 +22,8 @@
 #ifndef _U2_MSA_HIGHLIGHTING_SCHEME_CONSERVATION_H_
 #define _U2_MSA_HIGHLIGHTING_SCHEME_CONSERVATION_H_
 
+#include <QMap>
+
 #include "MsaHighlightingScheme.h"
 
 namespace U2 {

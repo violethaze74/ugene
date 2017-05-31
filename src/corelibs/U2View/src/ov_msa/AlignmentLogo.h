@@ -27,13 +27,8 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MultipleAlignmentInfo.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMainWindow>
-#include <QtGui/QGraphicsItem>
-#else
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QGraphicsItem>
-#endif
+#include <QMainWindow>
+#include <QGraphicsItem>
 
 namespace U2 {
 

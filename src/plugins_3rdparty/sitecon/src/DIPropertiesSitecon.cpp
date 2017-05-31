@@ -21,7 +21,7 @@
 
 #include "DIPropertiesSitecon.h"
 
-#include <QtCore/QStringList>
+#include <QStringList>
 #include <algorithm>
 #include <math.h>
 

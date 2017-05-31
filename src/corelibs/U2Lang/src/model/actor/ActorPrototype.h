@@ -25,7 +25,7 @@
 #include <U2Lang/Descriptor.h>
 #include <U2Lang/Port.h>
 
-#include <QtCore/QMimeData>
+#include <QMimeData>
 
 namespace U2 {
     class Attribute;

@@ -26,17 +26,11 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
 
-#include <QtGui/QPainter>
-#include <QtGui/QBrush>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QStyle>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QStyle>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QPainter>
+#include <QBrush>
+#include <QStyle>
+#include <QHBoxLayout>
+#include <QMessageBox>
 #include <assert.h>
 
 namespace U2 {

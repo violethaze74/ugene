@@ -22,6 +22,8 @@
 #ifndef _U2_APP_GLOBAL_OBJECT_H_
 #define _U2_APP_GLOBAL_OBJECT_H_
 
+#include <QObject>
+
 #include <U2Core/global.h>
 #include <U2Core/Identifiable.h>
 

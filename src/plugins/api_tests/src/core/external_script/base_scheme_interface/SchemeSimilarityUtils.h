@@ -22,7 +22,7 @@
 #ifndef _U2_SCHEME_SIMILARITY_UTILS_H_
 #define _U2_SCHEME_SIMILARITY_UTILS_H_
 
-#include <QtCore/QFile>
+#include <QFile>
 #include <U2Core/U2OpStatus.h>
 #include <U2Script/U2Script.h>
 

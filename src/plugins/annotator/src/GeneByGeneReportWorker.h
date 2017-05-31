@@ -28,8 +28,8 @@
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
-#include <QtCore/QMap>
-#include <QtCore/QList>
+#include <QMap>
+#include <QList>
 
 namespace U2 {
 namespace LocalWorkflow {

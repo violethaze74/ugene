@@ -19,24 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#include "GraphicsUnrootedBranchItem.h"
-#include "GraphicsRectangularBranchItem.h"
-#include "GraphicsButtonItem.h"
-#include "TreeViewerUtils.h"
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QPainter>
+#include <QPen>
+#include <QStack>
+#include <QtMath>
 
-#include <QtGui/QPainter>
-#include <QtGui/QPen>
-#include <QtCore/QStack>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsView>
-#else
-#include <QtWidgets/QGraphicsScene>
-#include <QtWidgets/QGraphicsView>
-#endif
-#include <U2Core/PhyTreeObject.h>
 #include <U2Core/AppContext.h>
-#include <qmath.h>
+#include <U2Core/PhyTreeObject.h>
+
+#include "GraphicsButtonItem.h"
+#include "GraphicsRectangularBranchItem.h"
+#include "GraphicsUnrootedBranchItem.h"
+#include "TreeViewerUtils.h"
 
 namespace U2 {
 

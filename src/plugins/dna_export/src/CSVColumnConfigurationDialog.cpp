@@ -26,11 +26,7 @@
 #include <U2Gui/HelpButton.h>
 #include <QPushButton>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QMessageBox>
 
 namespace U2 {
 

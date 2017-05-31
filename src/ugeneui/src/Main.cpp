@@ -20,9 +20,11 @@
  */
 
 #include <QApplication>
-#include <QStyleFactory>
-#include <QMessageBox>
+#include <QDesktopWidget>
 #include <QIcon>
+#include <QMessageBox>
+#include <QStyleFactory>
+#include <QTranslator>
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/AssemblyConsensusAlgorithmRegistry.h>

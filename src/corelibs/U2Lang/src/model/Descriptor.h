@@ -23,11 +23,11 @@
 #define _U2_DESC_H_
 
 #include <U2Core/global.h>
-#include <QtCore/QMap>
-#include <QtCore/QString>
-#include <QtCore/QMetaType>
+#include <QMap>
+#include <QString>
+#include <QMetaType>
 
-#include <QtGui/QIcon>
+#include <QIcon>
 
 namespace U2 {
 

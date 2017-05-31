@@ -22,6 +22,8 @@
 #ifndef _U2_MULTIPLE_ALIGNMENT_H_
 #define _U2_MULTIPLE_ALIGNMENT_H_
 
+#include <QVariantMap>
+
 #include <U2Core/U2Region.h>
 
 #include "MultipleAlignmentRow.h"

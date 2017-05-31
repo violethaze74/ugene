@@ -28,19 +28,11 @@
 #include <U2Core/Log.h>
 #include <U2Core/AppContext.h>
 
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QLabel>
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QMenu>
-#endif
-
-#include <QtGui/QPainter>
-#include <QtGui/QMouseEvent>
+#include <QApplication>
+#include <QLabel>
+#include <QMenu>
+#include <QPainter>
+#include <QMouseEvent>
 
 #include <math.h>
 

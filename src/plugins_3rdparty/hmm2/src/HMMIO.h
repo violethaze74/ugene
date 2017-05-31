@@ -25,8 +25,8 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/Task.h>
 
-#include <QtCore/QObject>
-#include <QtCore/QString>
+#include <QObject>
+#include <QString>
 
 struct plan7_s;
 struct msa_struct;

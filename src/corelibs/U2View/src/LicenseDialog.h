@@ -25,11 +25,7 @@
 #include <U2Core/GUrl.h>
 #include <U2Core/PluginModel.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDialog>
-#else
-#include <QtWidgets/QDialog>
-#endif
+#include <QDialog>
 
 #include <ui_LicenseDialog.h>
 

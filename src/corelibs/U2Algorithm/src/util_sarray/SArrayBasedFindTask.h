@@ -27,7 +27,7 @@
 
 #include <U2Algorithm/BitsTable.h>
 
-#include <QtCore/QMutex>
+#include <QMutex>
 
 namespace U2 {
 

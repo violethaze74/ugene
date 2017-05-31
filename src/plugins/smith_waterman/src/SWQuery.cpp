@@ -36,8 +36,6 @@
 #include <U2Lang/ConfigurationEditor.h>
 #include <U2Lang/BaseTypes.h>
 
-#include <QtCore/qmath.h>
-
 namespace U2 {
 
 static const QString PATTERN_ATTR("pattern");

@@ -22,7 +22,7 @@
 #ifndef _U2_CSV_COLUMN_CONFIGURATION_H_
 #define _U2_CSV_COLUMN_CONFIGURATION_H_
 
-#include <QtCore/QString>
+#include <QString>
 
 namespace U2 {
 

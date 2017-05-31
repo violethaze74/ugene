@@ -21,9 +21,9 @@
 
 #include "GlassView.h"
 
-#include <QtCore/QEvent>
-#include <QtGui/QResizeEvent>
-#include <QtGui/QPainter>
+#include <QEvent>
+#include <QResizeEvent>
+#include <QPainter>
 
 namespace U2 {
 

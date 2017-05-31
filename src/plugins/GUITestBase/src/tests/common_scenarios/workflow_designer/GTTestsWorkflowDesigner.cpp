@@ -21,10 +21,12 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QDir>
 #include <QFileInfo>
 #include <QGraphicsItem>
 #include <QGraphicsView>
 #include <QProcess>
+#include <QScreen>
 #include <QTextEdit>
 
 #include <GTGlobals.h>
@@ -243,11 +245,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007){
     QPoint p(GTUtilsWorkflowDesigner::getItemLeft(os,"Read Alignment")+20,
              GTUtilsWorkflowDesigner::getItemTop(os,"Read Alignment")+20);
 
-#if (QT_VERSION < 0x050000) // deprecated method
-    QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
-#else
     QPixmap pixmap = QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId());
-#endif
     QImage img = pixmap.toImage();
     QRgb rgb = img.pixel(p);
     QColor c(rgb);

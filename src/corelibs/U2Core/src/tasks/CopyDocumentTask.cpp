@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFileInfo>
+#include <QCoreApplication>
+#include <QFileInfo>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AssemblyObject.h>

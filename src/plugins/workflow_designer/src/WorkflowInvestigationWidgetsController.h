@@ -22,8 +22,8 @@
 #ifndef _U2_WORKFLOW_INVESTIGATION_WIDGETS_CONTROLLER_H_
 #define _U2_WORKFLOW_INVESTIGATION_WIDGETS_CONTROLLER_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QMap>
+#include <QObject>
+#include <QMap>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/WorkflowInvestigationData.h>

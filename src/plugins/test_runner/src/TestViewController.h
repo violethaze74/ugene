@@ -26,14 +26,9 @@
 #include <ui_TestView.h>
 #include <U2Core/CMDLineRegistry.h>
 
-#include <QtCore/QTime>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTreeWidgetItem>
-#include <QtGui/QMainWindow>
-#else
-#include <QtWidgets/QTreeWidgetItem>
-#include <QtWidgets/QMainWindow>
-#endif
+#include <QTime>
+#include <QTreeWidgetItem>
+#include <QMainWindow>
 
 namespace U2 {
 

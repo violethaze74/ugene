@@ -22,8 +22,8 @@
 #ifndef _U2_WORKFLOW_TRANSPORT_H_
 #define _U2_WORKFLOW_TRANSPORT_H_
 
-#include <QtCore/QVariant>
-#include <QtCore/QQueue>
+#include <QVariant>
+#include <QQueue>
 
 #include <U2Lang/Datatype.h>
 

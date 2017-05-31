@@ -25,8 +25,8 @@
 #include "U2Core/global.h"
 #include <U2Core/Settings.h>
 
-#include <QtCore/QSettings>
-#include <QtCore/QMutex>
+#include <QSettings>
+#include <QMutex>
 
 namespace U2 {
 

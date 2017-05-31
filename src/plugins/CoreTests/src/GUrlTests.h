@@ -23,7 +23,7 @@
 #define _U2_GURL_TESTS_H_
 
 #include <U2Test/XMLTestUtils.h>
-#include <QtXml/QDomElement>
+#include <QDomElement>
 
 namespace U2 {
 

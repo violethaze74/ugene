@@ -31,7 +31,7 @@
 
 #include "SWAlgorithmTask.h"
 
-#include <QtCore/QByteArray>
+#include <QByteArray>
 
 
 namespace U2 {

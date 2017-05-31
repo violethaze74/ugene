@@ -24,11 +24,7 @@
 
 #include "utils/GTUtilsDialog.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QSpinBox>
-#else
-#include <QtWidgets/QSpinBox>
-#endif
+#include <QSpinBox>
 
 namespace U2 {
 using namespace HI;

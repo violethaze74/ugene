@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
+#include <QCoreApplication>
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2DbiUtils.h>

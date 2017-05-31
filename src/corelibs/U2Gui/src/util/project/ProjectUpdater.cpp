@@ -41,17 +41,10 @@ ProjectUpdater::ProjectUpdater()
 }
 
 void ProjectUpdater::run() {
-#if (QT_VERSION < 0x050000) //Qt 5
-    while (0 == stopped) {
-        readData();
-        msleep(U2ObjectDbi::OBJECT_ACCESS_UPDATE_INTERVAL);
-    }
-#else
     while (0 == stopped.loadAcquire()) {
         readData();
         msleep(U2ObjectDbi::OBJECT_ACCESS_UPDATE_INTERVAL);
     }
-#endif
 }
 
 void ProjectUpdater::stop() {

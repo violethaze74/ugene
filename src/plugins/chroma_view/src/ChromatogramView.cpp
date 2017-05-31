@@ -19,42 +19,42 @@
  * MA 02110-1301, USA.
  */
 
-#include "ChromatogramView.h"
+#include <QMessageBox>
 
-#include <U2Core/GObject.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/ProjectModel.h>
+#include <U2Core/DNAChromatogram.h>
+#include <U2Core/DNAChromatogramObject.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNASequenceSelection.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/DocumentUtils.h>
+#include <U2Core/GObject.h>
+#include <U2Core/GObjectTypes.h>
+#include <U2Core/GObjectUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
+#include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
-#include <U2Core/GUrlUtils.h>
-#include <U2Core/DocumentUtils.h>
+#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/DNAChromatogram.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/DNAChromatogramObject.h>
-#include <U2Core/GObjectUtils.h>
 
-#include <U2Core/DNASequenceSelection.h>
+#include <U2Gui/AddNewDocumentDialogController.h>
+#include <U2Gui/GScrollBar.h>
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
+#include <U2Gui/ProjectTreeController.h>
+#include <U2Gui/ProjectTreeItemSelectorDialog.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 
-#include <U2Gui/GScrollBar.h>
-#include <U2Gui/GUIUtils.h>
-#include <U2Gui/AddNewDocumentDialogController.h>
-#include <U2Gui/ProjectTreeController.h>
-#include <U2Gui/ProjectTreeItemSelectorDialog.h>
-#include <U2Core/TaskSignalMapper.h>
-#include <U2Core/LoadDocumentTask.h>
-
+#include "ChromatogramView.h"
 
 namespace U2 {
 

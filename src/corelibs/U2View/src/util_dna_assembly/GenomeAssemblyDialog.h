@@ -24,13 +24,9 @@
 
 #include <U2Core/GUrl.h>
 
-#include <QtCore/QVariant>
-#include <QtCore/QStringList>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#else
-#include <QtWidgets/QWidget>
-#endif
+#include <QVariant>
+#include <QStringList>
+#include <QWidget>
 
 #include <ui_GenomeAssemblyDialog.h>
 

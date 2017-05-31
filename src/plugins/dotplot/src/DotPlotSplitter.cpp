@@ -29,9 +29,9 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QString>
-#include <QtCore/QPair>
-#include <QtCore/QSet>
+#include <QString>
+#include <QPair>
+#include <QSet>
 
 #include <QAction>
 #include <QVBoxLayout>

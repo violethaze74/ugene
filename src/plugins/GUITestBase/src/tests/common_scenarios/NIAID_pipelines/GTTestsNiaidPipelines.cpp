@@ -43,20 +43,12 @@
 #include <U2Core/AppContext.h>
 #include <U2Gui/ToolsMenu.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QWizard>
-#include <QtGui/QLineEdit>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QGraphicsItem>
-#include <QtWidgets/QWizard>
-#include <QtWidgets/QLineEdit>
-#endif
+#include <QApplication>
+#include <QGraphicsItem>
+#include <QWizard>
+#include <QLineEdit>
 
 #include <QProcess>
-
 
 namespace U2 {
 

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QMutexLocker>
+#include <QMutexLocker>
 
 #include <U2Lang/Attribute.h>
 #include <U2Lang/WorkflowBreakpointSharedInfo.h>

@@ -19,14 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedPointer>
-#include <QtCore/QDir>
-#include <QtCore/QUrl>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QListWidgetItem>
-#else
-#include <QtWidgets/QListWidgetItem>
-#endif
+#include <QScopedPointer>
+#include <QDir>
+#include <QUrl>
+#include <QListWidgetItem>
 
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>

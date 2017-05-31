@@ -34,7 +34,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SequenceUtils.h>
 
-#include <QtCore/QListIterator>
+#include <QListIterator>
 
 namespace U2 {
 

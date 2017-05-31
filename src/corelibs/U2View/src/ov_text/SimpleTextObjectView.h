@@ -26,11 +26,7 @@
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Core/TextSelection.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPlainTextEdit>
-#else
-#include <QtWidgets/QPlainTextEdit>
-#endif
+#include <QPlainTextEdit>
 
 namespace U2 {
 

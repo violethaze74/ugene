@@ -26,7 +26,7 @@
 
 #include <U2Core/IOAdapter.h>
 
-#include <QtXml/QDomElement>
+#include <QDomElement>
 
 namespace U2 {
 

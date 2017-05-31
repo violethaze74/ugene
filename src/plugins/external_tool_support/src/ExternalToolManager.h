@@ -22,8 +22,8 @@
 #ifndef _U2_EXTERNAL_TOOL_VALIDATION_MANAGER_H_
 #define _U2_EXTERNAL_TOOL_VALIDATION_MANAGER_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QEventLoop>
+#include <QObject>
+#include <QEventLoop>
 
 #include <U2Core/global.h>
 #include <U2Core/ExternalToolRegistry.h>

@@ -22,8 +22,10 @@
 #ifndef _U2_POSITION_WEIGHT_MATRIX_H_
 #define _U2_POSITION_WEIGHT_MATRIX_H_
 
+#include <QMap>
+#include <QVarLengthArray>
+
 #include <U2Core/global.h>
-#include <QtCore/QVarLengthArray>
 
 namespace U2 {
 //Type of Weight matrix

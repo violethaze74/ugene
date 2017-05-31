@@ -23,7 +23,7 @@
 
 #include <U2View/MSAEditor.h>
 
-#include <QtGui/QPainter>
+#include <QPainter>
 #include <QHBoxLayout>
 #include "U2Core/MultipleSequenceAlignment.h"
 #include "U2Core/DNAAlphabet.h"

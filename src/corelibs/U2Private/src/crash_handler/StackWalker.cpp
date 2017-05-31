@@ -62,8 +62,8 @@
 #include <fstream>
 
 #include <dbghelp.h>
-#include <QtCore/QFile>
-#include <QtCore/QStringList>
+#include <QFile>
+#include <QStringList>
 
 #define USED_CONTEXT_FLAGS CONTEXT_ALL
 

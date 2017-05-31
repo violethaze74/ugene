@@ -19,11 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2View/MaEditorFactory.h>
+#include <QDir>
+
 #include <U2View/AnnotatedDNAViewFactory.h>
+#include <U2View/MaEditorFactory.h>
+
+#include <GTGlobals.h>
+#include <base_dialogs/GTFileDialog.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTMenu.h>
+#include <primitives/GTTreeWidget.h>
+#include <utils/GTUtilsApp.h>
+#include <utils/GTUtilsToolTip.h>
 
 #include "GTTestsProjectRemoteRequest.h"
-#include "utils/GTUtilsApp.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -32,15 +42,8 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "utils/GTUtilsToolTip.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include <base_dialogs/GTFileDialog.h>
-#include "GTGlobals.h"
-#include <drivers/GTKeyboardDriver.h>
-#include "primitives/GTMenu.h"
-#include <drivers/GTMouseDriver.h>
 #include "api/GTSequenceReadingModeDialogUtils.h"
-#include <primitives/GTTreeWidget.h>
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/ugeneui/NCBISearchDialogFiller.h"
 

@@ -22,13 +22,13 @@
 #ifndef _U2_EXTERNAL_TOOL_SUPPORT_SETTINGS_H_
 #define _U2_EXTERNAL_TOOL_SUPPORT_SETTINGS_H_
 
-#include <QtCore/QString>
-#include <QtCore/QObject>
-#include <QtGui/QFont>
+#include <QString>
+#include <QObject>
+#include <QFont>
 
 #include <U2Core/global.h>
-#include <QtCore/QDirIterator>
-#include <QtCore/QQueue>
+#include <QDirIterator>
+#include <QQueue>
 
 namespace U2 {
 

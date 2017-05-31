@@ -21,6 +21,7 @@
 
 #include <QClipboard>
 #include <QDesktopServices>
+#include <QMainWindow>
 #include <QMessageBox>
 #include <QTimer>
 #include <QUrl>

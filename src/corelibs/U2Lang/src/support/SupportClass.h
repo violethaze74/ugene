@@ -22,9 +22,10 @@
 #ifndef _U2_SUPPORT_CLASS_H_
 #define _U2_SUPPORT_CLASS_H_
 
-#include <U2Core/global.h>
+#include <QMetaType>
+#include <QString>
 
-#include <QtCore/QString>
+#include <U2Core/global.h>
 
 namespace U2 {
 
@@ -53,6 +54,6 @@ public:
 
 }   // namespace U2
 
-Q_DECLARE_METATYPE( U2::Problem )
+Q_DECLARE_METATYPE(U2::Problem)
 
 #endif // _U2_SUPPORT_CLASS_H_

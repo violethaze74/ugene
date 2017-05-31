@@ -24,8 +24,8 @@
 #include <U2Core/FormatUtils.h>
 
 #include <math.h>
-#include <QtCore/QVector>
-#include <QtGui/QColor>
+#include <QVector>
+#include <QColor>
 
 namespace U2 {
 

@@ -22,13 +22,13 @@
 #ifndef _U2_RESOURCE_TRACKER_H_
 #define _U2_RESOURCE_TRACKER_H_
 
+#include <QList>
+#include <QMap>
+#include <QObject>
+
 #include <U2Core/global.h>
 
-#include <QtCore/QList>
-#include <QtCore/QMap>
-
 namespace U2 {
-
 
 class Task;
 

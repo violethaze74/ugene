@@ -22,11 +22,12 @@
 #ifndef _U2_WORKFLOW_UTILS_H_
 #define _U2_WORKFLOW_UTILS_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QVariant>
+#include <QObject>
+#include <QProcess>
+#include <QVariant>
+
 #include <U2Lang/Dataset.h>
 #include <U2Lang/Descriptor.h>
-#include <U2Lang/ActorModel.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/Schema.h>
 #include <U2Lang/SupportClass.h>
@@ -36,6 +37,7 @@
 class QListWidgetItem;
 
 namespace U2 {
+
 class Descriptor;
 class DocumentFormat;
 class Folder;
@@ -240,4 +242,3 @@ protected:
 }//namespace
 
 #endif
-

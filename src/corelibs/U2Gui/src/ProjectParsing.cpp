@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <qdom.h>
 #include <QDir>
+#include <QDomDocument>
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>

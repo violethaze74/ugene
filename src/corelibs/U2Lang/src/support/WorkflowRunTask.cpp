@@ -20,15 +20,18 @@
  */
 
 #include <QCoreApplication>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/U2SafePoints.h>
+
 #include <U2Lang/HRSchemaSerializer.h>
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowDebugMessageParser.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
+#include "WorkflowDebugStatus.h"
 #include "WorkflowRunTask.h"
 
 namespace U2 {
@@ -57,7 +60,9 @@ WorkflowRunTask::WorkflowRunTask(const Schema& sh, const QMap<ActorId, ActorId>&
     TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_OnlyNotificationReport), rmap(remap), flows(sh.getFlows())
 {
     GCOUNTER( cvar, tvar, "WorkflowRunTask" );
-    Q_ASSERT(NULL != debugInfo);
+    if (NULL == debugInfo) {
+        debugInfo = new WorkflowDebugStatus;
+    }
     if (NULL == debugInfo->parent()) {
         debugInfo->setParent(this);
     }

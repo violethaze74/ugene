@@ -22,7 +22,8 @@
 #ifndef _U2_WIDGET_STATE_STORAGE_H_
 #define _U2_WIDGET_STATE_STORAGE_H_
 
-#include <QtCore/QMultiMap>
+#include <QMultiMap>
+#include <QVariantMap>
 
 #include <U2Core/global.h>
 

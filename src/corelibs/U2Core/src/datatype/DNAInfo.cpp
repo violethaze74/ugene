@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QVariantMap>
+
 #include "DNAInfo.h"
 
 namespace U2 {

@@ -23,18 +23,12 @@
 #include "GraphicsButtonItem.h"
 #include "TreeViewerUtils.h"
 
-#include <QtGui/QPainter>
-#include <QtGui/QPen>
-#include <QtCore/QStack>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsView>
-#include <QtGui/QGraphicsSceneMouseEvent>
-#else
-#include <QtWidgets/QGraphicsScene>
-#include <QtWidgets/QGraphicsView>
-#include <QtWidgets/QGraphicsSceneMouseEvent>
-#endif
+#include <QPainter>
+#include <QPen>
+#include <QStack>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsSceneMouseEvent>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/AppContext.h>
 

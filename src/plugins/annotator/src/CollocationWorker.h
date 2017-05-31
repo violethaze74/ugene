@@ -22,7 +22,7 @@
 #ifndef _U2_ANNOTATOR_WORKER_H_
 #define _U2_ANNOTATOR_WORKER_H_
 
-#include <QtCore/QSet>
+#include <QSet>
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>

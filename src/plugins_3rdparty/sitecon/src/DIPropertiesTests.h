@@ -25,7 +25,7 @@
 #include "DIPropertiesSitecon.h"
 #include <U2Test/XMLTestUtils.h>
 #include <U2Core/GObject.h>
-#include <QtXml/QDomElement>
+#include <QDomElement>
 
 namespace U2 {
 

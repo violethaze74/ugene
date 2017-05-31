@@ -23,7 +23,7 @@
 #include <U2Core/Counter.h>
 #include <U2Algorithm/BinaryFindOpenCL.h>
 #include <U2Algorithm/SyncSort.h>
-#include <QtCore/QFile>
+#include <QFile>
 #include <QtEndian>
 #include "GenomeAlignerFindTask.h"
 #include "GenomeAlignerTask.h"

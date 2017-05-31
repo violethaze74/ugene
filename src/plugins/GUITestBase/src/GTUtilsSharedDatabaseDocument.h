@@ -22,7 +22,7 @@
 #ifndef _U2_GUI_SHARED_DATABASE_DOCUMENT_UTILS_H_
 #define _U2_GUI_SHARED_DATABASE_DOCUMENT_UTILS_H_
 
-#include <QtCore/QModelIndex>
+#include <QModelIndex>
 
 #include "GTGlobals.h"
 

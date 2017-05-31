@@ -30,7 +30,7 @@
 #include <U2Lang/WorkflowUtils.h>
 
 
-#include <QtGui/QRegExpValidator>
+#include <QRegExpValidator>
 
 
 namespace U2 {
@@ -47,11 +47,7 @@ QueryEditor::QueryEditor(QWidget* parent/* =0 */) : QWidget(parent), current(NUL
 
     cfgModel = new QueryProcCfgModel(this);
     table->setModel(cfgModel);
-#if (QT_VERSION < 0x050000)
-    table->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-#else
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-#endif
     table->horizontalHeader()->setStretchLastSection(true);
     table->verticalHeader()->hide();
     table->verticalHeader()->setDefaultSectionSize(QFontMetrics(QFont()).height() + 6);

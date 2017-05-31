@@ -32,8 +32,8 @@
 #include <U2Core/U2Sequence.h>
 #include <U2Core/GUrl.h>
 
-#include <QtCore/QHash>
-#include <QtCore/QSet>
+#include <QHash>
+#include <QSet>
 
 class QMutex;
 

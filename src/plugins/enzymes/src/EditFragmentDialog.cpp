@@ -19,13 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QMessageBox>
-#endif
-#include <QtCore/QDir>
+#include <QMessageBox>
+#include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNATranslation.h>

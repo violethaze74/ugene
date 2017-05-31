@@ -6,8 +6,8 @@ struct alphabet_s;
 struct histogram_s;
 
 #include <float.h>
-#include <QtCore/QMutex>
-#include <QtCore/QVector>
+#include <QMutex>
+#include <QVector>
 
 namespace U2 {
 

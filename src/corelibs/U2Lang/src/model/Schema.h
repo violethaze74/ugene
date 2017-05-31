@@ -22,11 +22,12 @@
 #ifndef _U2_WORKFLOW_ITERATION_H_
 #define _U2_WORKFLOW_ITERATION_H_
 
+#include <QFont>
+#include <QPair>
+
 #include <U2Lang/Aliasing.h>
 #include <U2Lang/Attribute.h>
 #include <U2Lang/PortMapping.h>
-
-#include <QtCore/QPair>
 
 typedef QPair<U2::ActorId,QString> IterationCfgKey;
 typedef QMap<IterationCfgKey, QVariant> IterationCfg;

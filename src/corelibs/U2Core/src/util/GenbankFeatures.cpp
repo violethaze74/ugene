@@ -21,9 +21,9 @@
 
 #include "GenbankFeatures.h"
 
-#include <QtCore/QHash>
-#include <QtCore/QMutex>
-#include <QtCore/QMutexLocker>
+#include <QHash>
+#include <QMutex>
+#include <QMutexLocker>
 
 #include <U2Core/FeatureColors.h>
 

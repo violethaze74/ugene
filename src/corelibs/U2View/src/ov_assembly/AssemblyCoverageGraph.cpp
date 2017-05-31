@@ -23,8 +23,8 @@
 #include "AssemblyBrowser.h"
 
 #include <U2Core/U2SafePoints.h>
-#include <QtGui/QPainter>
-#include <QtGui/QMouseEvent>
+#include <QPainter>
+#include <QMouseEvent>
 
 
 namespace U2 {

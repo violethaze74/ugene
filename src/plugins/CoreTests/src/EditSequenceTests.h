@@ -30,7 +30,7 @@
 
 #include <U2Test/XMLTestUtils.h>
 
-#include <QtXml/QDomElement>
+#include <QDomElement>
 
 #include <U2Core/ModifySequenceObjectTask.h>
 

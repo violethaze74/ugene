@@ -22,7 +22,7 @@
 #ifndef _REMOTE_QUERY_CONSTS_
 #define _REMOTE_QUERY_CONSTS_
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 namespace U2 {
 

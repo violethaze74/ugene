@@ -25,7 +25,6 @@
 #include <QLineEdit>
 
 #include <U2Core/global.h>
-#include <QtGui>
 #include <QObject>
 
 namespace U2 {

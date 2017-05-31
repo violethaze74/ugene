@@ -26,9 +26,9 @@
 
 #include <U2Core/Task.h>
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
-#include <QtCore/QSet>
+#include <QObject>
+#include <QList>
+#include <QSet>
 
 namespace U2 {
 

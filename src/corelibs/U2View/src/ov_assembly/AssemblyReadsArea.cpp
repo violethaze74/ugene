@@ -29,7 +29,7 @@
 #include <QResizeEvent>
 #include <QVBoxLayout>
 #include <QWheelEvent>
-#include <QtGui/QClipboard>
+#include <QClipboard>
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>

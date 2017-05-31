@@ -22,7 +22,7 @@
 #ifndef __COVERED_REGIONS_MANAGER_H__
 #define __COVERED_REGIONS_MANAGER_H__
 
-#include <QtCore/QVector>
+#include <QVector>
 #include "CoverageInfo.h"
 
 namespace U2 {

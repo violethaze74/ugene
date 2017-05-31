@@ -22,7 +22,7 @@
 #ifndef _U2_DOCUMENT_UTILS_H_
 #define _U2_DOCUMENT_UTILS_H_
 
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <U2Core/global.h>
 

@@ -19,30 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#include "ExternalToolSupportSettingsController.h"
-#include "ExternalToolSupportSettings.h"
-#include "utils/ExternalToolValidateTask.h"
+#include <QMessageBox>
+#include <QToolButton>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/ScriptingToolRegistry.h>
-#include <U2Core/MultiTask.h>
 #include <U2Core/L10n.h>
+#include <U2Core/MultiTask.h>
+#include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/GUIUtils.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QtGui>
-#else
-#include <QtWidgets/QtWidgets>
-#endif
-
-#include <blast/BlastAllSupport.h>
-#include <blast/FormatDBSupport.h>
-#include <blast_plus/BlastPlusSupport.h>
-
-
+#include "ExternalToolSupportSettings.h"
+#include "ExternalToolSupportSettingsController.h"
+#include "blast/BlastAllSupport.h"
+#include "blast/FormatDBSupport.h"
+#include "blast_plus/BlastPlusSupport.h"
+#include "utils/ExternalToolValidateTask.h"
 
 namespace U2 {
 

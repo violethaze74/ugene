@@ -22,8 +22,8 @@
 #ifndef _U2_SAVABLE_WIDGET_H_
 #define _U2_SAVABLE_WIDGET_H_
 
-#include <QtCore/QSet>
-#include <QtCore/QVariant>
+#include <QSet>
+#include <QVariant>
 
 #include <U2Core/global.h>
 

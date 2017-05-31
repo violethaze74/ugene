@@ -22,10 +22,8 @@
 #ifndef _U2_PASSWORD_STORAGE_H_
 #define _U2_PASSWORD_STORAGE_H_
 
-#include <QtCore/QMap>
-#include <QtCore/QString>
-
-#include <U2Core/global.h>
+#include <QMap>
+#include <QString>
 
 namespace U2 {
 

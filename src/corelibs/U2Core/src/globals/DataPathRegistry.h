@@ -24,8 +24,8 @@
 
 #include <U2Core/global.h>
 
-#include <QtCore/QMap>
-#include <QtCore/QDir>
+#include <QMap>
+#include <QDir>
 
 namespace U2 {
 

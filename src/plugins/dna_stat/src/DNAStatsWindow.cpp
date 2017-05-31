@@ -25,18 +25,11 @@
 #include "DNAStatsWindow.h"
 #include "DNAStatProfileTask.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QDoubleSpinBox>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QDoubleSpinBox>
-#endif
-#include <QtGui/QContextMenuEvent>
+#include <QLabel>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QDoubleSpinBox>
+#include <QContextMenuEvent>
 
 namespace U2 {
 

@@ -22,6 +22,8 @@
 #ifndef _U2_SNPEFF_INFO_PARSER_H_
 #define _U2_SNPEFF_INFO_PARSER_H_
 
+#include <QMap>
+
 #include <U2Core/AnnotationData.h>
 
 namespace U2 {

@@ -24,21 +24,12 @@
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QAbstractButton>
-#include <QtGui/QCheckBox>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QSpinBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QAbstractButton>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QSpinBox>
-#endif
+#include <QApplication>
+#include <QPushButton>
+#include <QAbstractButton>
+#include <QCheckBox>
+#include <QDialogButtonBox>
+#include <QSpinBox>
 
 namespace U2 {
 

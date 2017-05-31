@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+
 #include <base_dialogs/MessageBoxFiller.h>
 #include "GTTestsAnnotationsImport.h"
 #include <drivers/GTMouseDriver.h>
@@ -36,7 +37,6 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsSequenceView.h"
-//#include <QtGui/QApplication>
 #include "primitives/PopupChooser.h"
 #include "runnables/ugene/plugins/dna_export/ImportAnnotationsToCsvFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"

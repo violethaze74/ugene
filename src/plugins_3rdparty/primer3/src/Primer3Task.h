@@ -22,7 +22,7 @@
 #ifndef _PRIMER3_TASK_H_
 #define _PRIMER3_TASK_H_
 
-#include <QtCore/QScopedPointer>
+#include <QScopedPointer>
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/Task.h>

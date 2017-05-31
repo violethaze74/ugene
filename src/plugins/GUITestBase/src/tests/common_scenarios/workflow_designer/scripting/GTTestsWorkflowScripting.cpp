@@ -57,14 +57,9 @@
 
 #include <U2Lang/WorkflowSettings.h>
 
-#include <QtCore/QProcess>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTextEdit>
-#include <QtGui/QGraphicsItem>
-#else
-#include <QtWidgets/QTextEdit>
-#include <QtWidgets/QGraphicsItem>
-#endif
+#include <QProcess>
+#include <QTextEdit>
+#include <QGraphicsItem>
 
 namespace U2 {
 namespace GUITest_common_scenarios_workflow_scripting {

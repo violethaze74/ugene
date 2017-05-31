@@ -22,7 +22,7 @@
 #ifndef _U2_GENBANK_LOCATION_VALIDATOR_PARSER_H
 #define _U2_GENBANK_LOCATION_VALIDATOR_PARSER_H
 
-#include <QtGui/QValidator>
+#include <QValidator>
 
 class QLineEdit;
 class QPushButton;

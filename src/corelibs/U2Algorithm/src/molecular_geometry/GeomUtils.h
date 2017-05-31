@@ -22,7 +22,9 @@
 #ifndef _U2_GEOM_UTILS_H_
 #define _U2_GEOM_UTILS_H_
 
-#include <QtCore/QVector>
+#include <QScopedPointer>
+#include <QVector>
+
 #include <U2Core/Vector3D.h>
 
 namespace U2 {
@@ -30,7 +32,6 @@ namespace U2 {
 const float PI = 3.14159265f;
 const float Rad2Deg = 57.2957795f;
 const float Deg2Rad = 0.017453293f;
-
 
 struct U2ALGORITHM_EXPORT Face {
     Face() {}

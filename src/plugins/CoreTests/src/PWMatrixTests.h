@@ -24,7 +24,7 @@
 
 #include <U2Test/XMLTestUtils.h>
 
-#include <QtXml/QDomElement>
+#include <QDomElement>
 
 #include <U2Core/PFMatrix.h>
 #include <U2Core/PWMatrix.h>

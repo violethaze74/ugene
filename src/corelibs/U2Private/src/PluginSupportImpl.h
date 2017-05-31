@@ -26,11 +26,11 @@
 #include <U2Core/PluginModel.h>
 #include <U2Core/Task.h>
 
-#include <QtCore/QLibrary>
-#include <QtCore/QDir>
+#include <QLibrary>
+#include <QDir>
 
 #include "PluginDescriptor.h"
-#include <QtCore/QProcess>
+#include <QProcess>
 
 namespace U2 {
 

@@ -22,7 +22,7 @@
 #ifndef _U2_NEXUS_PARSER_H_
 #define _U2_NEXUS_PARSER_H_
 
-#include <QtCore/QTextStream>
+#include <QTextStream>
 
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Task.h>

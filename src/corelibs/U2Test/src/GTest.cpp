@@ -19,17 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTest.h"
-
 #include <assert.h>
+
+#include <QDir>
+#include <QDomDocument>
+#include <QFile>
+#include <QMap>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QFile>
-#include <QMap>
-
+#include "GTest.h"
 
 namespace U2 {
 

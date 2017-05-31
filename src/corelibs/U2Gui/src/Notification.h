@@ -27,39 +27,24 @@
 #include "NotificationWidget.h"
 #include "NotificationsTypes.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QDialog>
-#include <QtGui/QTextEdit>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QCheckBox>
-#include <QtGui/QLayout>
-#include <QtGui/QMainWindow>
-#include <QtGui/QScrollArea>
-#include <QtGui/QToolTip>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QDialog>
-#include <QtWidgets/QTextEdit>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QLayout>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QToolTip>
-#endif
-#include <QtGui/QMouseEvent>
-#include <QtGui/QHelpEvent>
+#include <QAction>
+#include <QLabel>
+#include <QPushButton>
+#include <QDialog>
+#include <QTextEdit>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QCheckBox>
+#include <QLayout>
+#include <QMainWindow>
+#include <QScrollArea>
+#include <QToolTip>
+#include <QMouseEvent>
+#include <QHelpEvent>
 
 
-#include <QtCore/QPoint>
-#include <QtCore/QTimer>
+#include <QPoint>
+#include <QTimer>
 
 namespace U2 {
 

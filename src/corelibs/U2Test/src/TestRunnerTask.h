@@ -24,8 +24,8 @@
 
 #include <U2Core/Task.h>
 
-#include <QtCore/QList>
-#include <QtCore/QMap>
+#include <QList>
+#include <QMap>
 
 namespace U2 {
 

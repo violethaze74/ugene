@@ -23,7 +23,7 @@
 
 #include <U2Core/DNATranslation.h>
 
-#include <QtCore/QMutex>
+#include <QMutex>
 
 namespace U2 {
 

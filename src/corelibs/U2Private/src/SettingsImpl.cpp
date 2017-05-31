@@ -27,8 +27,8 @@
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CMDLineCoreOptions.h>
 
-#include <QtCore/QDir>
-#include <QtCore/QProcess>
+#include <QDir>
+#include <QProcess>
 
 namespace U2 {
 

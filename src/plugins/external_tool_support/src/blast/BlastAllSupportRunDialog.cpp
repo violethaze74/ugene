@@ -48,13 +48,8 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QToolButton>
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QToolButton>
+#include <QMessageBox>
 
 #include "BlastAllSupportRunDialog.h"
 

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QVariant>
+#include <QVariant>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Lang/WorkflowContext.h>

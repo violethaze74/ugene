@@ -20,23 +20,23 @@
  */
 
 #include <QApplication>
+#include <QDir>
+#include <QFileInfoList>
 
 #include <U2Gui/ToolsMenu.h>
 
-#include <primitives/GTComboBox.h>
-#include "primitives/GTMenu.h"
-#include "system/GTFile.h"
-#include <primitives/GTWidget.h>
-
-#include "GTUtilsLog.h"
-#include "GTUtilsTaskTreeView.h"
-
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/MessageBoxFiller.h>
-#include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
+#include <primitives/GTComboBox.h>
+#include <primitives/GTMenu.h>
+#include <primitives/GTWidget.h>
+#include <system/GTFile.h>
 
 #include "GTTestsIndexReuse.h"
+#include "GTUtilsLog.h"
+#include "GTUtilsTaskTreeView.h"
+#include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 
 namespace U2 {
 namespace GUITest_index_reuse {

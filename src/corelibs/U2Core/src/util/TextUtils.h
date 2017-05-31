@@ -24,10 +24,10 @@
 
 #include <U2Core/global.h>
 
-#include <QtCore/QBitArray>
-#include <QtCore/QSet>
-#include <QtCore/QVector>
-#include <QtCore/QStringList>
+#include <QBitArray>
+#include <QSet>
+#include <QVector>
+#include <QStringList>
 #include <assert.h>
 
 namespace U2 {

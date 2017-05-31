@@ -20,6 +20,7 @@
  */
 
 #include <QDir>
+#include <QtMath>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>

@@ -22,7 +22,7 @@
 #ifndef _UGENEM_UTILS_H_
 #define _UGENEM_UTILS_H_
 
-#include <QtCore/QString>
+#include <QString>
 
 /**
  * The methods can be used only if QCoreApplication has instance

@@ -32,9 +32,9 @@
 #include <U2Core/Log.h>
 #include <U2Core/AppResources.h>
 
-#include <QtCore/QMutex>
-#include <QtCore/QMutexLocker>
-#include <QtCore/QSemaphore>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QSemaphore>
 
 #include <limits>
 #include "muscle/scorehistory.h"

@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
+#include <QDir>
+#include <QFileInfo>
 
 #include "DownloadRemoteFileDialogFiller.h"
 #include <primitives/GTCheckBox.h>
@@ -31,19 +31,11 @@
 #include <primitives/GTWidget.h>
 #include <U2Core/U2SafePoints.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QComboBox>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QListWidget>
-#include <QtGui/QPushButton>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QListWidget>
-#include <QtWidgets/QPushButton>
-#endif
+#include <QApplication>
+#include <QComboBox>
+#include <QDialogButtonBox>
+#include <QListWidget>
+#include <QPushButton>
 
 namespace U2 {
 

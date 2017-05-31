@@ -34,7 +34,7 @@
 #include <U2Gui/DialogUtils.h>
 #include <U2Core/Settings.h>
 
-#include <QtCore/QDir>
+#include <QDir>
 
 namespace U2 {
 

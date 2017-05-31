@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QCoreApplication>
+#include <QDir>
 
-#include <QtXml/QDomDocument>
+#include <QDomDocument>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>

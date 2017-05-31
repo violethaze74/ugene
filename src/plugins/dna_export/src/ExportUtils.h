@@ -22,6 +22,8 @@
 #ifndef _U2_EXPORT_UTILS_H_
 #define _U2_EXPORT_UTILS_H_
 
+#include <QObject>
+
 #include <U2Core/global.h>
 
 namespace U2 {

@@ -22,8 +22,6 @@
 #ifndef _U2_BREAKPOINT_EQUAL_HIT_COUNTER_H_
 #define _U2_BREAKPOINT_EQUAL_HIT_COUNTER_H_
 
-#include <QtGlobal>
-
 #include "BaseBreakpointHitCounter.h"
 
 namespace U2 {

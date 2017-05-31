@@ -29,7 +29,7 @@
 
 #include <U2Core/MultipleSequenceAlignment.h>
 
-#include <QtGui/QPolygonF>
+#include <QPolygonF>
 
 namespace U2 {
 

@@ -27,7 +27,7 @@
 #include <U2Core/NetworkConfiguration.h>
 #include <U2Gui/AppSettingsGUI.h>
 
-#include <QtCore/QUrl>
+#include <QUrl>
 
 namespace U2 {
 

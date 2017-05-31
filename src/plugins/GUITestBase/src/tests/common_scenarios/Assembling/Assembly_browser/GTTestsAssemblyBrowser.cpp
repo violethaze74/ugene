@@ -20,6 +20,7 @@
  */
 
 #include <QApplication>
+#include <QDir>
 #include <QTableView>
 
 #include <U2Core/GUrlUtils.h>
