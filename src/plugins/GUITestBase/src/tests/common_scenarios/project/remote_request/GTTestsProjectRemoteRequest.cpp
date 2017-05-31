@@ -127,65 +127,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDocument::checkDocument(os, "NC_017775.gb", AnnotatedDNAViewFactory::ID);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0005) {
-//    1. Select {File -> Access remote database} menu item in the main menu.
-
-//    2. Fill the dialog:
-//        Resource ID: NC_017775
-//        Database: NCBI protein sequence database
-//        Save to folder: any valid path
-//        Force download the appropriate sequence: unchecked
-//    and accept it.
-//    Expected state: after the downloading task finish a new document appears in the project, it contains an annotation table only.
-
-    QDir().mkpath(sandBoxDir + "remote_request/test_0005");
-    QList<DownloadRemoteFileDialogFiller::Action> actions;
-
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << "NC_017775");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "NCBI protein sequence database");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "remote_request/test_0005");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetForceSequenceDownload, false);
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
-
-    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
-    GTGlobals::sleep();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    QSet<GObjectType> acceptableTypes;
-    acceptableTypes.insert(GObjectTypes::ANNOTATION_TABLE);
-    GTUtilsProjectTreeView::checkObjectTypes(os, acceptableTypes, GTUtilsProjectTreeView::findIndex(os, "NC_017775.gb"));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0006) {
-//    1. Select {File -> Access remote database} menu item in the main menu.
-
-//    2. Fill the dialog:
-//        Resource ID: NC_017775
-//        Database: NCBI protein sequence database
-//        Save to folder: any valid path
-//        Force download the appropriate sequence: checked
-//    and accept it.
-//    Expected state: after the downloading task finish a new document appears in the project, it contains both a sequence and an annotation table.
-
-    QDir().mkpath(sandBoxDir + "remote_request/test_0006");
-    QList<DownloadRemoteFileDialogFiller::Action> actions;
-
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << "NC_017775");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "NCBI protein sequence database");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "remote_request/test_0006");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetForceSequenceDownload, true);
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
-
-    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
-    GTGlobals::sleep();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsDocument::isDocumentLoaded(os, "NC_017775.gb");
-    GTUtilsDocument::checkDocument(os, "NC_017775.gb", AnnotatedDNAViewFactory::ID);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_0007) {
 //    1. Select {File -> Access remote database} menu item in the main menu.
 
