@@ -97,9 +97,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                 GTGlobals::sleep();
             }
 
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     private:
