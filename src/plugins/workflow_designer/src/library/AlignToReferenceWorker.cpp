@@ -611,6 +611,9 @@ void KAlignSubTask::createAlignment() {
     QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
     CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), );
 
+    CHECK_EXT(refObject->getAlphabet()->isDNA(), setError(tr("Reference sequence contains non-DNA symbols")), );
+    CHECK_EXT(readObject->getAlphabet()->isDNA(), setError(tr("Read sequence '%1' contains non-DNA symbols").arg(readObject->getSequenceName())), );
+
     MAlignment alignment("msa", refObject->getAlphabet());
     QByteArray refData = refObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
@@ -620,6 +623,10 @@ void KAlignSubTask::createAlignment() {
     CHECK_OP(stateInfo, );
     alignment.addRow(readObject->getSequenceName(), readData, stateInfo);
     CHECK_OP(stateInfo, );
+
+    SAFE_POINT_EXT(alignment.getAlphabet()->isDNA(), setError(QString("A read-reference alignment alphabet is not DNA: "
+                                                                      "read name '%1', read alphabet '%2', reference alphabet '%3', alignment alphabet '%4'")
+                   .arg(readObject->getSequenceName()).arg(readObject->getAlphabet()->getName()).arg(refObject->getAlphabet()->getName()).arg(alignment.getAlphabet()->getName())), );
 
     QScopedPointer<MAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
     CHECK_OP(stateInfo, );
