@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>480</width>
-    <height>233</height>
+    <height>252</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -128,6 +128,16 @@
       <widget class="QComboBox" name="formatBox"/>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="chbAddToProjectCheck">
+     <property name="text">
+      <string>Add to project</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="chbForceDownloadSequence">
