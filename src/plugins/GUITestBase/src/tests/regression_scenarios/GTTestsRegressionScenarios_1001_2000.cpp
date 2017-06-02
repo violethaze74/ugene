@@ -1667,13 +1667,13 @@ GUI_TEST_CLASS_DEFINITION(test_1122){
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/scenarios/CAP3/xyz.fa"
                                                                  << testDir + "_common_data/scenarios/CAP3/xyz.qual",
                                                                  sandBoxDir + "test_1122_1"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Contig assembly with CAP3...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and de novo assembly (with CAP3)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/scenarios/CAP3/xyz.fastq",
                                                                  sandBoxDir + "test_1122_2"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Contig assembly with CAP3...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and de novo assembly (with CAP3)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "test_1122_1.ace", sandBoxDir + "test_1122_2.ace"), "Files are not equal");
@@ -1696,7 +1696,7 @@ GUI_TEST_CLASS_DEFINITION(test_1123){
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/abif/19_022.ab1"
         << testDir + "_common_data/abif/39_034.ab1",
         sandBoxDir + "1123_abi.cap.ace"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Contig assembly with CAP3...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and de novo assembly (with CAP3)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 
@@ -1717,7 +1717,7 @@ GUI_TEST_CLASS_DEFINITION(test_1123_1){
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/scf/Sequence A.scf"
         << testDir + "_common_data/scf/Sequence A.scf",
         sandBoxDir + "1123_scf.cap.ace"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Contig assembly with CAP3...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" <<"Reads quality control and de novo assembly (with CAP3)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -1742,7 +1742,7 @@ GUI_TEST_CLASS_DEFINITION(test_1124){
         }
     };
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, new Scenario()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Contig assembly with CAP3...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and de novo assembly (with CAP3)...");
     GTGlobals::sleep();
 }
 

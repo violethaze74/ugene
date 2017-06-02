@@ -2023,7 +2023,7 @@ GUI_TEST_CLASS_DEFINITION(test_0830) {
         << testDir + "_common_data/scenarios/CAP3/region2.fa"
         << testDir + "_common_data/scenarios/CAP3/region4.fa",
         outUrl));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Contig assembly with CAP3...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and de novo assembly (with CAP3)...");
 
     //3) wait for task error, ensure that no output files are in the project
     GTUtilsTaskTreeView::waitTaskFinished(os);
