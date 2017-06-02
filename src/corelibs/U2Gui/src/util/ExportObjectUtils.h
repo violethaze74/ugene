@@ -39,7 +39,7 @@ public:
     static void     exportAnnotations(const AnnotationTableObject *aObj, const GUrl &dstUrl);
     static void     exportObject2Document(GObject *object, const QString &url = QString(), bool tracePath = true);
     static void     export2Document(const QObjectScopedPointer<ExportDocumentDialogController> &dialog, bool tracePath = true);
-    static Task *   saveAnnotationsTask(const QString &filepath, const DocumentFormatId & format, const QList<Annotation *> &annList);
+    static Task *   saveAnnotationsTask(const QString &filepath, const DocumentFormatId & format, const QList<Annotation *> &annList, bool addToProject);
 };
 
 } // namespace U2

@@ -80,22 +80,27 @@ void ExportAnnotationsDialog::initSaveController(const QString &filename) {
     connect(saveController, SIGNAL(si_formatChanged(const QString &)), SLOT(sl_formatChanged(const QString &)));
 }
 
-QString ExportAnnotationsDialog::filePath( ) const {
+QString ExportAnnotationsDialog::filePath() const {
     return saveController->getSaveFileName();
 }
 
-bool ExportAnnotationsDialog::exportSequence( ) const {
-    return ui->exportSequenceCheck->isChecked( );
+bool ExportAnnotationsDialog::exportSequence() const {
+    return ui->exportSequenceCheck->isChecked();
 }
 
-bool ExportAnnotationsDialog::exportSequenceNames( ) const {
-    return ui->exportSequenceNameCheck->isChecked( );
+bool ExportAnnotationsDialog::exportSequenceNames() const {
+    return ui->exportSequenceNameCheck->isChecked();
+}
+
+bool ExportAnnotationsDialog::addToProject() const {
+    return ui->addToProjectCheck->isChecked();
 }
 
 void ExportAnnotationsDialog::sl_formatChanged(const QString &newFormatId) {
     const bool isCsvFormat = (CSV_FORMAT_ID == newFormatId);
     ui->exportSequenceCheck->setEnabled(isCsvFormat);
     ui->exportSequenceNameCheck->setEnabled(isCsvFormat);
+    ui->addToProjectCheck->setEnabled(!isCsvFormat);
 }
 
 QString ExportAnnotationsDialog::fileFormat( ) const {
