@@ -303,7 +303,7 @@ void MultipleRangeSelector::accept(){
             return;
         }
         int v2 = ui->endEdit->text().toInt(&ok);
-        if (!ok || v2 < v1 || v2 > seqLen) {
+        if (!ok || (v2 < v1 && !isCircular) || v2 > seqLen) {
             return;
         }    
         QDialog::accept();
@@ -326,7 +326,7 @@ void MultipleRangeSelector::sl_textEdited(const QString &) {
     int min = ui->startEdit->text().toInt();
     int max = ui->endEdit->text().toInt();
     QPalette p = normalPalette;
-    if (min > max) {
+    if (min > max && !isCircular) {
         p.setColor(QPalette::Base, QColor(255,200,200));
         ui->buttonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
     } else {
