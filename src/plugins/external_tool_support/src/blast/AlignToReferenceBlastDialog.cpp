@@ -58,7 +58,7 @@ const QString AlignToReferenceBlastCmdlineTask::REF_ARG = "reference";
 const QString AlignToReferenceBlastCmdlineTask::RESULT_ALIGNMENT_ARG = "result-url";
 
 AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Settings &settings)
-    : Task(tr("Align to reference workflow wrapper"), TaskFlags_NR_FOSE_COSC),
+    : Task(tr("Align to reference workflow wrapper"), TaskFlags_NR_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText),
       settings(settings),
       cmdlineTask(NULL),
       loadRef(NULL)
@@ -83,27 +83,14 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
     QList<Task*> result;
     CHECK(subTask != NULL, result);
     CHECK(!subTask->isCanceled() && !subTask->hasError(), result);
-
-    if (subTask == cmdlineTask && settings.addResultToProject) {
-        // add load document task
-        FormatDetectionConfig config;
-        QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.outAlignment, config);
-        CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError(tr("wrong output format")), result);
-
-        DocumentFormat *format = formats.first().format;
-        CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT), setError(tr("wrong output format")), result);
-
-        LoadDocumentTask *loadTask= new LoadDocumentTask(format->getFormatId(),
-                                                         settings.outAlignment, AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.outAlignment)));
-        AddDocumentAndOpenViewTask *openTask = new AddDocumentAndOpenViewTask(loadTask);
-        AppContext::getTaskScheduler()->registerTopLevelTask(openTask);
-    } else if (loadRef == subTask) {
+    if (loadRef == subTask) {
         CHECK_EXT(loadRef->getDocument(false) != NULL, setError(tr("Loaded reference document is NULL")), result);
-        CHECK_EXT(!loadRef->getDocument(false)->findGObjectByType(GObjectTypes::SEQUENCE).isEmpty(), setError(tr("No sqeuence objects in reference document")), result);
+        CHECK_EXT(!loadRef->getDocument(false)->findGObjectByType(GObjectTypes::SEQUENCE).isEmpty(), setError(tr("No sequence objects in reference document")), result);
+        CHECK_EXT(loadRef->getDocument(false)->findGObjectByType(GObjectTypes::SEQUENCE).size() == 1, setError(tr("'%1' has invalid data. Input a file with a single reference sequence.").arg(settings.referenceUrl)), result);
         GObject *firtsSequenceObject = loadRef->getDocument(false)->findGObjectByType(GObjectTypes::SEQUENCE).first();
         U2SequenceObject* so = qobject_cast<U2SequenceObject*>(firtsSequenceObject);
         CHECK_EXT(so != NULL, setError(tr("Unable to cast gobject to sequence object")), result);
-        CHECK_EXT(!so->getAlphabet()->isDNA(), setError(tr("The align task failed: the input reference sequence 'ref_name' contains characters that don't belong to DNA alphabet.")), result);
+        CHECK_EXT(!so->getAlphabet()->isDNA(), setError(tr("The input reference sequence '%1' contains characters that don't belong to DNA alphabet.").arg(so->getSequenceName())), result);
 
         CmdlineInOutTaskConfig config;
 
@@ -121,6 +108,19 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
 
         cmdlineTask = new CmdlineInOutTaskRunner(config);
         result.append(cmdlineTask);
+    } else if (subTask == cmdlineTask && settings.addResultToProject) {
+        // add load document task
+        FormatDetectionConfig config;
+        QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.outAlignment, config);
+        CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError(tr("wrong output format")), result);
+
+        DocumentFormat *format = formats.first().format;
+        CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT), setError(tr("wrong output format")), result);
+
+        LoadDocumentTask *loadTask= new LoadDocumentTask(format->getFormatId(),
+                                                         settings.outAlignment, AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.outAlignment)));
+        AddDocumentAndOpenViewTask *openTask = new AddDocumentAndOpenViewTask(loadTask);
+        AppContext::getTaskScheduler()->registerTopLevelTask(openTask);
     }
 
     return result;
