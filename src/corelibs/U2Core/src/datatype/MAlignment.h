@@ -196,6 +196,8 @@ public:
 
     inline static qint64 invalidRowId() { return -1; }
 
+    bool isGap(int position) const;
+
 private:
     /** Do NOT create a row without an alignment! */
     MAlignmentRow(MAlignment* al = NULL);
@@ -534,6 +536,8 @@ public:
 
     /** Arranges rows in lists order*/
     bool sortRowsByList(const QStringList& order);
+
+    bool isGap(int row, int column) const;
 
 private:
     /** Create a new row (sequence + gap model) from the bytes */
