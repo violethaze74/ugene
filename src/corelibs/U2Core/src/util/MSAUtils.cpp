@@ -419,4 +419,39 @@ bool MSAUtils::restoreRowNames(MAlignment &ma, const QStringList &names) {
     return true;
 }
 
-}//namespace
+QList<U2Region> MSAUtils::getColumnsWithGaps(const MAlignment &msa, int requiredGapsCount) {
+    const int length = msa.getLength();
+    if (-1 == requiredGapsCount) {
+        requiredGapsCount = msa.getNumRows();
+    }
+
+    QList<U2Region> regionsToDelete;
+    for (int columnNumber = 0; columnNumber < length; columnNumber++) {
+        int gapCount = 0;
+        for (int j = 0; j < msa.getNumRows(); j++) {
+            if (msa.isGap(j, columnNumber)) {
+                gapCount++;
+            }
+        }
+
+        if (gapCount >= requiredGapsCount) {
+            if (!regionsToDelete.isEmpty() && regionsToDelete.last().endPos() == static_cast<qint64>(columnNumber)) {
+                regionsToDelete.last().length++;
+            } else {
+                regionsToDelete << U2Region(columnNumber, 1);
+            }
+        }
+    }
+
+    return regionsToDelete;
+}
+
+void MSAUtils::removeColumnsWithGaps(MAlignment &msa, int requiredGapsCount) {
+    GTIMER(c, t, "MSAUtils::removeColumnsWithGaps");
+    const QList<U2Region> regionsToDelete = getColumnsWithGaps(msa, requiredGapsCount);
+    for (int i = regionsToDelete.size() - 1; i >= 0; i--) {
+        msa.removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, msa.getNumRows(), true);
+    }
+}
+
+}   // namespace U2
