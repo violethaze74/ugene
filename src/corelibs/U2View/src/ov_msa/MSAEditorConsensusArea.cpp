@@ -656,6 +656,7 @@ void MSAEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
             if ((Qt::ShiftModifier == e->modifiers()) && (lastPos != -1)) {
                 MSAEditorSelection selection(qMin(lastPos, curPos), 0, abs(curPos - lastPos) + 1, height);
                 ui->seqArea->setSelection(selection);
+                curPos = lastPos;
             } else {
                 MSAEditorSelection selection(curPos, 0, 1, height);
                 ui->seqArea->setSelection(selection);
@@ -686,7 +687,6 @@ void MSAEditorConsensusArea::mouseReleaseEvent(QMouseEvent *e) {
     if (e->button() == Qt::LeftButton) {
         int newPos = ui->seqArea->getColumnNumByX(e->x(), selecting);
         updateSelection(newPos);
-        curPos = newPos;
         scribbling = false;
         selecting = false;
     }
