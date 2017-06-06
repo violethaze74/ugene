@@ -119,7 +119,7 @@ public:
 
 private:
     static GrouperSlotAction parseAction(Tokenizer &tokenizer);
-    static QList<Dataset> parseUrlAttribute(const QString attrId, QList<StringPair> &blockPairs);
+    static QList<Dataset> parseUrlAttribute(const QString attrId, QList<StrStrPair> &blockPairs);
     static void deprecatedUrlAttribute(Actor *proc, const QString &urls);
     static URLContainer * parseDirectoryUrl(Tokenizer &tokenizer);
     static URLContainer * parseDbSelectUrl(Tokenizer &tokenizer);

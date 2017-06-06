@@ -123,7 +123,7 @@ public:
         const IntegralBusPort* vport = static_cast<const IntegralBusPort*>(cfg);
         assert(vport);
 
-        QStrStrMap bm = vport->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<QStrStrMap>();
+        StrStrMap bm = vport->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
         QMapIterator<QString,QString> it(bm);
         while (it.hasNext()){
             it.next();

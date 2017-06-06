@@ -79,8 +79,8 @@ QStringList ImportDirToDatabaseTask::getImportedFiles() const {
     return importedFiles;
 }
 
-QStrStrMap ImportDirToDatabaseTask::getSkippedFiles() const {
-    QStrStrMap skippedFiles;
+StrStrMap ImportDirToDatabaseTask::getSkippedFiles() const {
+    StrStrMap skippedFiles;
     CHECK(isFinished(), skippedFiles);
 
     foreach (ImportDirToDatabaseTask* importSubdirTask, importSubdirsTasks) {

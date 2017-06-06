@@ -45,7 +45,7 @@ public:
     static QString getCmdlineUgenePath();
 
 private:
-    static void setCMDLineParams( QList<StringPair> & to );
+    static void setCMDLineParams( QList<StrStrPair> & to );
 
 }; // CMDLineRegistryUtils
 

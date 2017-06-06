@@ -141,11 +141,11 @@ void DotPlotSplitter::removeView(DotPlotWidget* view) {
     checkLockButtonState();
 }
 
-typedef QPair<QString,QString> QStringPair;
+typedef QPair<QString,QString> QStrStrPair;
 
 void DotPlotSplitter::checkLockButtonState() {
 
-    QSet<QStringPair> dotPlots;
+    QSet<QStrStrPair> dotPlots;
 
     bool enableLockButton = false;
 
@@ -157,7 +157,7 @@ void DotPlotSplitter::checkLockButtonState() {
 
         if (!nameX.isEmpty() && !nameY.isEmpty()) {
 
-            QStringPair p;
+            QStrStrPair p;
             p.first = nameX;
             p.second = nameY;
 

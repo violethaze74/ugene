@@ -44,7 +44,7 @@ private:
     static QByteArray serialize(const QString &password);
     static QString deserialize(const QByteArray &data);
 
-    QStrStrMap registry;
+    StrStrMap registry;
 
     static const QString SETTINGS_PATH;
 };

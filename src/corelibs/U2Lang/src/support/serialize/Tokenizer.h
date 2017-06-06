@@ -60,8 +60,8 @@ public:
     QMap<QString, QString> equalPairs;
     QMap<QString, QString> blockPairs;
 
-    QList<StringPair> equalPairsList;
-    QList<StringPair> blockPairsList;
+    QList<StrStrPair> equalPairsList;
+    QList<StrStrPair> blockPairsList;
 
     static QPair<QString, QString> parseOneEqual(Tokenizer &tokenizer);
     static QString skipBlock(Tokenizer &tokenizer);

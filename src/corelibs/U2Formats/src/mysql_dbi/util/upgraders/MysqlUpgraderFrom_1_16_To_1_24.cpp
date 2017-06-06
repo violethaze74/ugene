@@ -68,7 +68,7 @@ void MysqlUpgraderFrom_1_16_To_1_24::upgradeVariantDbi(U2OpStatus &os) const {
 namespace {
 
 QString convertInfo(const QString &additionalInfo, const QStringList &header) {
-    QStrStrMap convertedInfoMap;
+    StrStrMap convertedInfoMap;
     CHECK(!additionalInfo.isEmpty(), QString());
     QStringList splittedInfo = additionalInfo.split("\t", QString::SkipEmptyParts);
     CHECK(!splittedInfo.isEmpty(), QString());

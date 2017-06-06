@@ -542,7 +542,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolKitPath(){
         assert(listOfItems.length() != 0);
 
         QStringList toolNames;
-        QStrStrMap toolPaths;
+        StrStrMap toolPaths;
         foreach (QTreeWidgetItem* item, listOfItems) {
             if (!externalToolsItems.values().contains(item)) {
                 continue;
@@ -596,7 +596,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
         QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("" , Qt::MatchContains | Qt::MatchRecursive);
         assert(listOfItems.length() != 0);
         QStringList toolNames;
-        QStrStrMap toolPaths;
+        StrStrMap toolPaths;
 
         foreach (ExternalTool* et, AppContext::getExternalToolRegistry()->getAllEntries()) {
             if (et->isModule()) {

@@ -176,7 +176,7 @@ bool validateParameters(const Schema &schema, ProblemList &infoList) {
 
 bool validateExternalTools(Actor *a, ProblemList &infoList) {
     bool good = true;
-    QStrStrMap tools = a->getProto()->getExternalTools();
+    StrStrMap tools = a->getProto()->getExternalTools();
     foreach (const QString &toolId, tools.keys()) {
         Attribute *attr = a->getParameter(tools[toolId]);
         ExternalTool *tool = AppContext::getExternalToolRegistry()->getByName(toolId);
@@ -395,7 +395,7 @@ QList<Descriptor> WorkflowUtils::findMatchingCandidates(DataTypePtr from, DataTy
 }
 
 Descriptor WorkflowUtils::getCurrentMatchingDescriptor(const QList<Descriptor> & candidates, DataTypePtr to,
-                                                       const Descriptor & key, const QStrStrMap & bindings) {
+                                                       const Descriptor & key, const StrStrMap & bindings) {
     DataTypePtr elementDatatype = to->getDatatypeByDescriptor(key);
     if (elementDatatype->isList()) {
         QString currentVal = bindings.value(key.getId());
@@ -702,7 +702,7 @@ bool WorkflowUtils::validateSchemaForIncluding(const Schema &s, QString &error) 
     return true;
 }
 
-void WorkflowUtils::extractPathsFromBindings(QStrStrMap &busMap, SlotPathMap &pathMap) {
+void WorkflowUtils::extractPathsFromBindings(StrStrMap &busMap, SlotPathMap &pathMap) {
     QString srcId;
     QStringList path;
     foreach (const QString &dest, busMap.keys()) {
@@ -718,7 +718,7 @@ void WorkflowUtils::extractPathsFromBindings(QStrStrMap &busMap, SlotPathMap &pa
     }
 }
 
-void WorkflowUtils::applyPathsToBusMap(QStrStrMap &busMap, const SlotPathMap &pathMap) {
+void WorkflowUtils::applyPathsToBusMap(StrStrMap &busMap, const SlotPathMap &pathMap) {
     foreach (const QString &dest, busMap.keys()) {
         QStringList newSrcs;
 

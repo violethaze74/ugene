@@ -47,12 +47,12 @@ public:
     virtual void stop();
 
     virtual void check(const QString& toolName, const QString& toolPath, ExternalToolValidationListener* listener);
-    virtual void check(const QStringList& toolNames, const QStrStrMap& toolPaths, ExternalToolValidationListener* listener);
+    virtual void check(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener);
 
     virtual void validate(const QString& toolName, ExternalToolValidationListener* listener = NULL);
     virtual void validate(const QString& toolName, const QString& path, ExternalToolValidationListener* listener = NULL);
     virtual void validate(const QStringList& toolNames, ExternalToolValidationListener* listener = NULL);
-    virtual void validate(const QStringList& toolNames, const QStrStrMap& toolPaths, ExternalToolValidationListener* listener = NULL);
+    virtual void validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = NULL);
 
     virtual bool isValid(const QString& toolName) const;
     virtual ExternalToolState getToolState(const QString& toolName) const;
@@ -72,7 +72,7 @@ private:
     void checkStartupTasksState();
     QString addTool(ExternalTool* tool);
     bool dependenciesAreOk(const QString& toolName);
-    void validateTools(const QStrStrMap& toolPaths = QStrStrMap(), ExternalToolValidationListener* listener = NULL);
+    void validateTools(const StrStrMap& toolPaths = StrStrMap(), ExternalToolValidationListener* listener = NULL);
     void searchTools();
     void setToolPath(const QString& toolName, const QString& toolPath);
     void setToolValid(const QString& toolName, bool isValid);
@@ -80,7 +80,7 @@ private:
     ExternalToolRegistry* etRegistry;
     QList<QString> validateList;
     QList<QString> searchList;
-    QStrStrMap dependencies;    // master - vassal
+    StrStrMap dependencies;    // master - vassal
     QMap<QString, ExternalToolState> toolStates;
     QMap<ExternalToolsValidateTask*, ExternalToolValidationListener*> listeners;
     bool startupChecks;

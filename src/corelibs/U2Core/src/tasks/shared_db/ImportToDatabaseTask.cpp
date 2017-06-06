@@ -219,7 +219,7 @@ QString ImportToDatabaseTask::sayAboutSkippedDirs() const {
     QString result;
 
     foreach (ImportDirToDatabaseTask* dirSubtask, dirSubtasks) {
-        const QStrStrMap skippedFiles = dirSubtask->getSkippedFiles();
+        const StrStrMap skippedFiles = dirSubtask->getSkippedFiles();
         foreach (const QString& skippedFile, skippedFiles.keys()) {
             result += skippedFile + ": " + skippedFiles[skippedFile] + "<br>";
         }

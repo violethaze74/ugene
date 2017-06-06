@@ -70,7 +70,7 @@ public:
     static QList<Descriptor> findMatchingCandidates(DataTypePtr from, DataTypePtr to, const Descriptor & key);
     static QList<Descriptor> findMatchingCandidates(DataTypePtr from, DataTypePtr elementDatatype);
     static Descriptor getCurrentMatchingDescriptor(const QList<Descriptor> & candidates, DataTypePtr to, const Descriptor & key,
-        const QStrStrMap & bindings);
+        const StrStrMap & bindings);
     static DataTypePtr getToDatatypeForBusport(IntegralBusPort * p);
     static DataTypePtr getFromDatatypeForBusport(IntegralBusPort * p, DataTypePtr to);
 
@@ -93,9 +93,9 @@ public:
 
     static bool validateSchemaForIncluding(const Schema &s, QString &error);
 
-    static void extractPathsFromBindings(QStrStrMap &busMap, SlotPathMap &pathMap);
+    static void extractPathsFromBindings(StrStrMap &busMap, SlotPathMap &pathMap);
 
-    static void applyPathsToBusMap(QStrStrMap &busMap, const SlotPathMap &pathMap);
+    static void applyPathsToBusMap(StrStrMap &busMap, const SlotPathMap &pathMap);
 
     static bool startExternalProcess(QProcess *process, const QString &program, const QStringList &arguments);
 

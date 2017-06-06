@@ -69,7 +69,7 @@ void IntegralBusType::remapSlotString(QString &slotStr, const QMap<ActorId, Acto
     }
 }
 
-void IntegralBusType::remap(QStrStrMap& busMap, const QMap<ActorId, ActorId>& m) {
+void IntegralBusType::remap(StrStrMap& busMap, const QMap<ActorId, ActorId>& m) {
     foreach(QString key, busMap.uniqueKeys()) {
         QStringList newValList;
         foreach(QString val, busMap.value(key).split(";")) {

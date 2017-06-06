@@ -65,7 +65,7 @@ void ExternalToolManagerImpl::innerStart() {
     ExternalToolSupportSettings::getExternalTools();
 
     QList<ExternalTool*> toolsList = etRegistry->getAllEntries();
-    QStrStrMap toolPaths;
+    StrStrMap toolPaths;
     foreach (ExternalTool* tool, toolsList) {
         SAFE_POINT(tool, "Tool is NULL", );
         QString toolPath = addTool(tool);
@@ -93,12 +93,12 @@ void ExternalToolManagerImpl::stop() {
 }
 
 void ExternalToolManagerImpl::check(const QString& toolName, const QString& toolPath, ExternalToolValidationListener* listener) {
-    QStrStrMap toolPaths;
+    StrStrMap toolPaths;
     toolPaths.insert(toolName, toolPath);
     check(QStringList() << toolName, toolPaths, listener);
 }
 
-void ExternalToolManagerImpl::check(const QStringList& toolNames, const QStrStrMap& toolPaths, ExternalToolValidationListener* listener) {
+void ExternalToolManagerImpl::check(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener) {
     SAFE_POINT(etRegistry, "The external tool registry is NULL", );
     SAFE_POINT(listener, "Listener is NULL", );
 
@@ -132,16 +132,16 @@ void ExternalToolManagerImpl::validate(const QString& toolName, ExternalToolVali
 }
 
 void ExternalToolManagerImpl::validate(const QString& toolName, const QString& path, ExternalToolValidationListener* listener) {
-    QStrStrMap toolPaths;
+    StrStrMap toolPaths;
     toolPaths.insert(toolName, path);
     validate(QStringList() << toolName, toolPaths, listener);
 }
 
 void ExternalToolManagerImpl::validate(const QStringList& toolNames, ExternalToolValidationListener* listener) {
-    validate(toolNames, QStrStrMap(), listener);
+    validate(toolNames, StrStrMap(), listener);
 }
 
-void ExternalToolManagerImpl::validate(const QStringList& toolNames, const QStrStrMap& toolPaths, ExternalToolValidationListener* listener) {
+void ExternalToolManagerImpl::validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener) {
     SAFE_POINT(etRegistry, "The external tool registry is NULL", );
 
     foreach (const QString& toolName, toolNames) {
@@ -299,7 +299,7 @@ void ExternalToolManagerImpl::sl_toolValidationStatusChanged(bool isValid) {
         toolStates.insert(tool->getName(), NotValid);
     }
 
-    QStrStrMap toolPaths;
+    StrStrMap toolPaths;
     foreach (const QString& vassalName, dependencies.values(tool->getName())) {
         ExternalTool* vassalTool = etRegistry->getByName(vassalName);
         SAFE_POINT(vassalTool, QString("An external tool '%1' isn't found in the registry").arg(vassalName), );
@@ -335,7 +335,7 @@ bool ExternalToolManagerImpl::dependenciesAreOk(const QString& toolName) {
     return result;
 }
 
-void ExternalToolManagerImpl::validateTools(const QStrStrMap& toolPaths, ExternalToolValidationListener* listener) {
+void ExternalToolManagerImpl::validateTools(const StrStrMap& toolPaths, ExternalToolValidationListener* listener) {
     QList<Task*> taskList;
 
     foreach (QString toolName, validateList) {

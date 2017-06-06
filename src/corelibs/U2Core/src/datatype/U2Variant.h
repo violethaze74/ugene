@@ -74,7 +74,7 @@ public:
     QByteArray  refData;
     QByteArray  obsData;
     QString     publicId;
-    QStrStrMap  additionalInfo;
+    StrStrMap  additionalInfo;
 
     static const QString VCF4_QUAL;
     static const QString VCF4_FILTER;

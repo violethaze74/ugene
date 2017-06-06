@@ -169,7 +169,7 @@ ExternalToolValidation DefaultExternalToolValidations::pythonValidation(){
     QStringList pythonArgs;
     pythonArgs << "--version";
     QString pmsg = "Python";
-    QStrStrMap perrMsgs;
+    StrStrMap perrMsgs;
     perrMsgs.insert(ExternalToolValidation::DEFAULT_DESCR_KEY, "Python 2 required for this tool. Please install Python or set your PATH variable if you have it installed.");
 
     ExternalToolValidation pythonValidation("", pythonExecutable, pythonArgs, pmsg, perrMsgs);
@@ -181,7 +181,7 @@ ExternalToolValidation DefaultExternalToolValidations::rValidation(){
     QStringList rArgs;
     rArgs << "--version";
     QString rmsg = "R";
-    QStrStrMap rerrMsgs;
+    StrStrMap rerrMsgs;
     rerrMsgs.insert(ExternalToolValidation::DEFAULT_DESCR_KEY, "R Script required for this tool. Please install R Script or set your PATH variable if you have it installed.");
 
     ExternalToolValidation rValidation("", rExecutable, rArgs, rmsg, rerrMsgs);

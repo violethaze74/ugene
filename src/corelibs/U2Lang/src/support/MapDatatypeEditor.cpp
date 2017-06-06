@@ -151,7 +151,7 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
 }
 
 QMap<QString, QString> MapDatatypeEditor::getBindingsMap() {
-    QMap<QString, QString> bindingsMap = cfg->getParameter(propertyName)->getAttributeValueWithoutScript<QStrStrMap>();
+    QMap<QString, QString> bindingsMap = cfg->getParameter(propertyName)->getAttributeValueWithoutScript<StrStrMap>();
     return bindingsMap;
 }
 
@@ -199,7 +199,7 @@ void MapDatatypeEditor::commit() {
             map[key] = val;
         }
     }
-    cfg->setParameter(propertyName, qVariantFromValue<QStrStrMap>(map));
+    cfg->setParameter(propertyName, qVariantFromValue<StrStrMap>(map));
     sl_showDoc();
 }
 
@@ -258,13 +258,13 @@ void BusPortEditor::commit() {
             busMap[key] = srcs.join(";");
         }
     }
-    cfg->setParameter(IntegralBusPort::BUS_MAP_ATTR_ID, qVariantFromValue<QStrStrMap>(busMap));
+    cfg->setParameter(IntegralBusPort::BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
     cfg->setParameter(IntegralBusPort::PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(pathMap));
     sl_showDoc();
 }
 
 QMap<QString, QString> BusPortEditor::getBindingsMap() {
-    QMap<QString, QString> bindingsMap = cfg->getParameter(propertyName)->getAttributeValueWithoutScript<QStrStrMap>();
+    QMap<QString, QString> bindingsMap = cfg->getParameter(propertyName)->getAttributeValueWithoutScript<StrStrMap>();
     SlotPathMap pathMap = cfg->getParameter(IntegralBusPort::PATHS_ATTR_ID)->getAttributeValueWithoutScript<SlotPathMap>();
     WorkflowUtils::applyPathsToBusMap(bindingsMap, pathMap);
 

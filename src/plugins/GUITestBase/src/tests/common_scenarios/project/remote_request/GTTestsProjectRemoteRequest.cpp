@@ -231,7 +231,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QList<NcbiSearchDialogFiller::Action> searchActions;
     QList<DownloadRemoteFileDialogFiller::Action> downloadActions;
 
-    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, qVariantFromValue(intStringPair(0, "human")));
+    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, qVariantFromValue(intStrStrPair(0, "human")));
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetDatabase, "nucleotide");
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickSearch, "");
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::WaitTasksFinish, "");
@@ -269,7 +269,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     QList<NcbiSearchDialogFiller::Action> searchActions;
     QList<DownloadRemoteFileDialogFiller::Action> downloadActions;
 
-    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, qVariantFromValue(intStringPair(0, "human")));
+    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, qVariantFromValue(intStrStrPair(0, "human")));
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetDatabase, "protein");
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickSearch, "");
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::WaitTasksFinish, "");
