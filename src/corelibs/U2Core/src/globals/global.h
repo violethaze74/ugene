@@ -22,13 +22,13 @@
 #ifndef _U2_COREAPI_H_
 #define _U2_COREAPI_H_
 
-#include <U2Core/U2IdTypes.h>
-
-#include <QtCore/qglobal.h>
-#include <QtCore/QVariantMap>
-#include <QtCore/QObject>
-
 #include <assert.h>
+
+#include <QObject>
+#include <QVariantMap>
+#include <QtGlobal>
+
+#include <U2Core/U2IdTypes.h>
 
 #ifdef _DEBUG
 #   define U2_PRODUCT_NAME      "UGENED"
