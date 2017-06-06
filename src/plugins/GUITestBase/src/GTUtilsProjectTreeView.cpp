@@ -218,6 +218,18 @@ void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString& itemN
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "callContextMenu"
+void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus &os, const QString &itemName) {
+    click(os, itemName, Qt::RightButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getTreeWidget"
+void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus &os, const QString &itemName, const QString &parentName) {
+    click(os, itemName, parentName, Qt::RightButton);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getTreeWidget"
 QTreeView* GTUtilsProjectTreeView::getTreeView(HI::GUITestOpStatus &os) {
 
