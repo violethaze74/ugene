@@ -198,8 +198,23 @@ void DownloadRemoteFileDialog::accept()
     hints.insert(FORCE_DOWNLOAD_SEQUENCE_HINT, ui->chbForceDownloadSequence->isVisible() && ui->chbForceDownloadSequence->isChecked());
 
     int taskCount = 0;
+    bool addToProject = ui->chbAddToProjectCheck->isChecked();
+    if (addToProject && resIds.size() >= 100) {
+        QString message =  tr("There are more than 100 files found for download.\nAre you sure you want to open all of them?");
+        int button = QMessageBox::question(QApplication::activeWindow(), tr("Warning"), message, 
+                                           tr("Cancel"), tr("Open anyway"), tr("Don't open"));
+        if (button == 0) {
+            return; // return to dialog
+        } else if (button == 2) {
+            addToProject = false;
+        }
+    }
     foreach (const QString &resId, resIds) {
-        tasks.append(new LoadRemoteDocumentAndAddToProjectTask(resId, dbId, fullPath, fileFormat, hints, taskCount < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS));
+        LoadRemoteDocumentMode mode = LoadRemoteDocumentMode_LoadOnly;
+        if (addToProject) {
+            mode = taskCount < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS ? LoadRemoteDocumentMode_OpenView : LoadRemoteDocumentMode_AddToProject;
+        }
+        tasks.append(new LoadRemoteDocumentAndAddToProjectTask(resId, dbId, fullPath, fileFormat, hints, mode));
         taskCount++;
     }
 

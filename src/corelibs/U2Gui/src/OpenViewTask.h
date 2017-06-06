@@ -48,16 +48,23 @@ private:
     LoadUnloadedDocumentTask* loadUnloadedTask;
 };
 
+enum LoadRemoteDocumentMode {
+    LoadRemoteDocumentMode_LoadOnly = 1,
+    LoadRemoteDocumentMode_AddToProject = 2,
+    LoadRemoteDocumentMode_OpenView = 3
+};
+
 class U2GUI_EXPORT LoadRemoteDocumentAndAddToProjectTask : public Task {
     Q_OBJECT
 public:
+  
     LoadRemoteDocumentAndAddToProjectTask(const QString& accId, const QString& dbName);
     LoadRemoteDocumentAndAddToProjectTask(const QString& accId,
                                       const QString& dbName,
                                       const QString& fullpath,
                                       const QString& format = QString(),
                                       const QVariantMap& hints = QVariantMap(),
-                                      bool openView = true);
+                                      LoadRemoteDocumentMode mode = LoadRemoteDocumentMode_OpenView);
     LoadRemoteDocumentAndAddToProjectTask(const GUrl& url);
     virtual void prepare();
 protected:
@@ -69,7 +76,7 @@ private:
     QString     fullpath;
     GUrl        docUrl;
     QVariantMap hints;
-    bool        openView;
+    LoadRemoteDocumentMode mode;
     LoadRemoteDocumentTask* loadRemoteDocTask;
 };
 
