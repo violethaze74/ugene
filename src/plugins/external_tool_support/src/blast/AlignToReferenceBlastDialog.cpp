@@ -90,7 +90,7 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
         GObject *firtsSequenceObject = loadRef->getDocument(false)->findGObjectByType(GObjectTypes::SEQUENCE).first();
         U2SequenceObject* so = qobject_cast<U2SequenceObject*>(firtsSequenceObject);
         CHECK_EXT(so != NULL, setError(tr("Unable to cast gobject to sequence object")), result);
-        CHECK_EXT(!so->getAlphabet()->isDNA(), setError(tr("The input reference sequence '%1' contains characters that don't belong to DNA alphabet.").arg(so->getSequenceName())), result);
+        CHECK_EXT(so->getAlphabet()->isDNA(), setError(tr("The input reference sequence '%1' contains characters that don't belong to DNA alphabet.").arg(so->getSequenceName())), result);
 
         CmdlineInOutTaskConfig config;
 
