@@ -61,8 +61,6 @@ void MaSavedState::setState(const MultipleAlignment &ma) {
     lastState = new MultipleAlignment(ma->getCopy());
 }
 
-const int MultipleAlignmentObject::GAP_COLUMN_ONLY = -1;
-
 MultipleAlignmentObject::MultipleAlignmentObject(const QString &gobjectType,
                                                  const QString &name,
                                                  const U2EntityRef &maRef,

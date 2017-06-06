@@ -77,9 +77,11 @@ public:
       *   2) Row name 'i' will be renamed to 'names[i]' value;
       **/
     static bool restoreRowNames(MultipleSequenceAlignment& ma, const QStringList& names);
+
+    static QList<U2Region> getColumnsWithGaps(const MultipleAlignment &ma, int requiredGapsCount = -1);
+    static void removeColumnsWithGaps(MultipleSequenceAlignment &msa, int requiredGapsCount = -1);
 };
 
-
-}//namespace
+}   // namespace U2
 
 #endif
