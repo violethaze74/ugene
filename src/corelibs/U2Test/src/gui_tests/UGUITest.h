@@ -3,7 +3,7 @@
 
 #include <U2Core/global.h>
 
-#include <QtCore/QTimer>
+#include <QTimer>
 #include <GTGlobals.h>
 #include <core/GUITestOpStatus.h>
 #include <core/GUITest.h>

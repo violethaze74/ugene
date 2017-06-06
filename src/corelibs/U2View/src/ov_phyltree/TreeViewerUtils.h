@@ -22,7 +22,7 @@
 #ifndef _TREE_VIEWER_UTILS_H_
 #define _TREE_VIEWER_UTILS_H_
 
-#include <QtGui/QFont>
+#include <QFont>
 
 namespace U2 {
 

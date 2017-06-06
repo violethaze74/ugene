@@ -22,9 +22,10 @@
 #ifndef _U2_COUNTER_H_
 #define _U2_COUNTER_H_
 
-#include <U2Core/global.h>
+#include <QList>
+#include <QObject>
 
-#include <QtCore/QList>
+#include <U2Core/global.h>
 
 namespace U2 {
 

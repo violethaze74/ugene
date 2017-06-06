@@ -22,7 +22,7 @@
 #include "ui_NewBreakpointDialog.h"
 #include "NewBreakpointDialog.h"
 #include <U2Gui/HelpButton.h>
-#include <QtWidgets/QPushButton>
+#include <QPushButton>
 
 namespace U2 {
 

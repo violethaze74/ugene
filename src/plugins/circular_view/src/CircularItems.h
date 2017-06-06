@@ -22,12 +22,8 @@
 #ifndef _CIRCULAR_ITEMS_H_
 #define _CIRCULAR_ITEMS_H_
 
-#include <QtGui/QFont>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsPathItem>
-#else
-#include <QtWidgets/QGraphicsPathItem>
-#endif
+#include <QFont>
+#include <QGraphicsPathItem>
 
 #include <U2Core/Annotation.h>
 

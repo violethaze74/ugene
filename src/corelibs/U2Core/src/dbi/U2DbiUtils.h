@@ -167,8 +167,8 @@ public:
     static QString packStringList(const QStringList &list);
     static QStringList unpackStringList(const QString &string);
 
-    static QString packMap(const QStrStrMap &map);
-    static QStrStrMap unpackMap(const QString &string);
+    static QString packMap(const StrStrMap &map);
+    static StrStrMap unpackMap(const QString &string);
 
     static const QString PUBLIC_DATABASE_NAME;
     static const QString PUBLIC_DATABASE_URL;

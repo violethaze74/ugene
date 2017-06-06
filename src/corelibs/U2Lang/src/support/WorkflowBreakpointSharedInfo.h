@@ -22,9 +22,8 @@
 #ifndef _U2_WORKFLOW_BREAKPOINT_HIT_COUNTER_SHARED_INFO_H_
 #define _U2_WORKFLOW_BREAKPOINT_HIT_COUNTER_SHARED_INFO_H_
 
-#include <QtCore/QtGlobal>
-#include <QtCore/QMap>
-#include <QtCore/QString>
+#include <QMap>
+#include <QString>
 
 #include <U2Core/global.h>
 #include <U2Lang/Attribute.h>

@@ -26,7 +26,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Gui/ObjectViewModel.h>
 
-#include <QtCore/QSet>
+#include <QSet>
 
 
 namespace U2 {

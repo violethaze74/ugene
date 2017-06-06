@@ -24,6 +24,8 @@
 
 #include "../GTest.h"
 
+class QDomElement;
+
 namespace U2 {
 
 class XMLTestFormat;

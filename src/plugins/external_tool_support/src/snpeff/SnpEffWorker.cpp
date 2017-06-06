@@ -326,7 +326,7 @@ void SnpEffWorker::sendResult(const QString &url) {
     outputUrlPort->put(message);
 }
 
-const QStrStrMap SnpEffLogProcessor::wellKnownMessages = SnpEffLogProcessor::initWellKnownMessages();
+const StrStrMap SnpEffLogProcessor::wellKnownMessages = SnpEffLogProcessor::initWellKnownMessages();
 const QMap<QString, QRegExp> SnpEffLogProcessor::messageCatchers = SnpEffLogProcessor::initWellKnownCatchers();
 
 SnpEffLogProcessor::SnpEffLogProcessor(WorkflowMonitor *monitor, const QString &actor) :
@@ -351,7 +351,7 @@ void SnpEffLogProcessor::addNotification(const QString &key, int count) {
     monitor->addError(warningMessage, actor, Problem::U2_WARNING);
 }
 
-QStrStrMap SnpEffLogProcessor::initWellKnownMessages() {
+StrStrMap SnpEffLogProcessor::initWellKnownMessages() {
     return SnpeffDictionary::messageDescriptions;
 }
 

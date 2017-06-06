@@ -21,7 +21,7 @@
 
 #include "ToolBarManager.h"
 
-#include <QtCore/QEvent>
+#include <QEvent>
 
 namespace U2 {
 

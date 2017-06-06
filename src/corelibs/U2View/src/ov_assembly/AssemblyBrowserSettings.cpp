@@ -21,7 +21,7 @@
 
 #include "AssemblyBrowserSettings.h"
 
-#include <QtCore/QString>
+#include <QString>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>

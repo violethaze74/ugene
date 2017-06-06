@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
+#include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineRegistry.h>
@@ -61,9 +61,9 @@ namespace U2 {
 
     // parse options
 
-    QList<StringPair> options = AppContext::getCMDLineRegistry()->getParameters();
+    QList<StrStrPair> options = AppContext::getCMDLineRegistry()->getParameters();
 
-    foreach (const StringPair& opt, options ) {
+    foreach (const StrStrPair& opt, options ) {
         if (opt.first == OPTION_INDEX_PATH  ) {
             indexPath = opt.second;
         }else if (opt.first == OPTION_BUILD_INDEX ) {

@@ -6,7 +6,7 @@
 
 #include <U2Core/Counter.h>
 
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 
 namespace U2 {
 

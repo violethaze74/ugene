@@ -19,16 +19,19 @@
 * MA 02110-1301, USA.
 */
 
-#include "HmmerSearchTaskTest.h"
-
-#include "HmmerSearchTask.h"
-#include "../utils/OutputCollector.h"
+#include <QDebug>
+#include <QDomElement>
+#include <QFile>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
+
+#include "HmmerSearchTaskTest.h"
+#include "HmmerSearchTask.h"
+#include "utils/OutputCollector.h"
 
 namespace U2 {
 

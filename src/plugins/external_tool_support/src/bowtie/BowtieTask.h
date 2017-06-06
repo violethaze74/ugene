@@ -25,7 +25,7 @@
 #include <U2Algorithm/DnaAssemblyTask.h>
 #include <U2Core/ExternalToolRunTask.h>
 
-#include <QtCore/QTemporaryFile>
+#include <QTemporaryFile>
 
 namespace U2 {
 

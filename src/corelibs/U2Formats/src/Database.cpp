@@ -28,7 +28,7 @@
 #include <U2Core/U2Type.h>
 #include <U2Formats/SQLiteDbi.h>
 
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 
 namespace U2 {
 

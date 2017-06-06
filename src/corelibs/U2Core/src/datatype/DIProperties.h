@@ -22,13 +22,14 @@
 #ifndef _U2_DI_PROPERTIES_H_
 #define _U2_DI_PROPERTIES_H_
 
-#include <U2Core/global.h>
-
-#include <QtCore/QMap>
-#include <QtCore/QList>
-#include <QtCore/QString>
-
 #include <assert.h>
+
+#include <QList>
+#include <QMap>
+#include <QObject>
+#include <QString>
+
+#include <U2Core/global.h>
 
 namespace U2 {
 

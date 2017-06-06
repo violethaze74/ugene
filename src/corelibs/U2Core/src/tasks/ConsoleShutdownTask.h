@@ -22,7 +22,7 @@
 #ifndef _U2_CONSOLE_SHUTDOWN_TASK_H_
 #define _U2_CONSOLE_SHUTDOWN_TASK_H_
 
-#include <QtCore/QCoreApplication>
+#include <QCoreApplication>
 #include <U2Core/Task.h>
 
 namespace U2 {

@@ -21,7 +21,6 @@
 
 #include <algorithm>
 #include <functional>
-#include <QtCore/QtAlgorithms>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>

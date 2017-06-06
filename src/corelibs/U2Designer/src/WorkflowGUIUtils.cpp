@@ -23,12 +23,12 @@
 
 #include <U2Lang/Descriptor.h>
 
-#include <QtGui/QPainter>
-#include <QtGui/QPalette>
-#include <QtGui/QTextDocument>
-#include <QtGui/QAbstractTextDocumentLayout>
+#include <QPainter>
+#include <QPalette>
+#include <QTextDocument>
+#include <QAbstractTextDocumentLayout>
 
-#include <QtCore/QUrl>
+#include <QUrl>
 
 
 namespace U2 {

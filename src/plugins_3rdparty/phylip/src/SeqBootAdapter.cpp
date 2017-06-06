@@ -28,9 +28,9 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 
-#include <QtCore/QByteArray>
-#include <QtCore/QSharedData>
-#include <QtCore/QTime>
+#include <QByteArray>
+#include <QSharedData>
+#include <QTime>
 
 #include <iostream>
 #include <float.h>

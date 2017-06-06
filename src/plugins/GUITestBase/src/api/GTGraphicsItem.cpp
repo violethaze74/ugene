@@ -20,12 +20,7 @@
  */
 
 #include "api/GTGraphicsItem.h"
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsView>
-#else
-#include <QtWidgets/QGraphicsView>
-#endif
-
+#include <QGraphicsView>
 
 namespace U2 {
 #define GT_CLASS_NAME "GTGraphicsItem"

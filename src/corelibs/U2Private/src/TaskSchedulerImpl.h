@@ -25,10 +25,11 @@
 #include <U2Core/global.h>
 #include <U2Core/Task.h>
 
-#include <QtCore/QThread>
-#include <QtCore/QTimer>
-#include <QtCore/QMutex>
-#include <QtCore/QWaitCondition>
+#include <QThread>
+#include <QTimer>
+#include <QMap>
+#include <QMutex>
+#include <QWaitCondition>
 
 namespace U2 {
 

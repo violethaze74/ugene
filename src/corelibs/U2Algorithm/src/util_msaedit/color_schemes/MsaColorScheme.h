@@ -23,6 +23,8 @@
 #define _U2_MSA_COLOR_SCHEME_H_
 
 #include <QColor>
+#include <QMap>
+
 #include <U2Core/global.h>
 
 namespace U2 {

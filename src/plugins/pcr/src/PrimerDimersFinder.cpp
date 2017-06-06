@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QMap>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/TextUtils.h>

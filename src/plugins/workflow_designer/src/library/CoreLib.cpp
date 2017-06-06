@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <qdom.h>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>

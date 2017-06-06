@@ -22,7 +22,7 @@
 #ifndef _U2_MYSQL_ASSEMBLY_MULTI_TABLE_DBI_H_
 #define _U2_MYSQL_ASSEMBLY_MULTI_TABLE_DBI_H_
 
-#include <QtCore/QReadWriteLock>
+#include <QReadWriteLock>
 
 #include <U2Core/U2SqlHelpers.h>
 

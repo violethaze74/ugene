@@ -22,8 +22,8 @@
 #ifndef _U2_GENOME_ALIGNER_TASK_H_
 #define _U2_GENOME_ALIGNER_TASK_H_
 
-#include <QtCore/QSharedPointer>
-#include <QtCore/QTemporaryFile>
+#include <QSharedPointer>
+#include <QTemporaryFile>
 
 #include <U2Algorithm/DnaAssemblyTask.h>
 #include <U2Formats/StreamSequenceReader.h>

@@ -19,18 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-
 #include "ConvertAceToSqliteDialogFiller.h"
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDialogButtonBox>
-#endif
+#include <QApplication>
+#include <QDialogButtonBox>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTWidget.h>
 #include <base_dialogs/MessageBoxFiller.h>
+
 namespace U2{
 using namespace HI;
 

@@ -27,8 +27,8 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Test/GTest.h>
 
-#include <QtCore/QThread>
-#include <QtCore/QProcess>
+#include <QThread>
+#include <QProcess>
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
 #include <stdio.h>

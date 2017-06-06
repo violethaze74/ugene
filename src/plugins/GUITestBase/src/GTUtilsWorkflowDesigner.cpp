@@ -21,6 +21,7 @@
 
 #include <QApplication>
 #include <QDialogButtonBox>
+#include <QFileInfo>
 #include <QGraphicsView>
 #include <QListWidget>
 #include <QMainWindow>

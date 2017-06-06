@@ -22,11 +22,13 @@
 #ifndef _WORKFLOW_SCRIPT_FUNC_H_
 #define _WORKFLOW_SCRIPT_FUNC_H_
 
+#include <QScriptValue>
+
 #include <U2Core/global.h>
 
 #include <U2Lang/DbiDataHandler.h>
 
-#include <QtScript>
+class QScriptContext;
 
 namespace U2 {
 

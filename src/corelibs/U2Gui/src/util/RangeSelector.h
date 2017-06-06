@@ -22,22 +22,13 @@
 #ifndef _U2_RANGE_SELECTOR_H_
 #define _U2_RANGE_SELECTOR_H_ 
 
-
-
 #include <U2Core/global.h>
 #include <U2Core/U2Region.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QToolButton>
-#include <QtGui/QDialog>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QDialog>
-#endif
+#include <QLabel>
+#include <QLineEdit>
+#include <QToolButton>
+#include <QDialog>
 
 class Ui_RangeSelectionDialog;
 

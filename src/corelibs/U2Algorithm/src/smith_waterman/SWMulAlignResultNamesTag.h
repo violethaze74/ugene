@@ -24,8 +24,8 @@
 
 #include <U2Algorithm/SmithWatermanResult.h>
 
-#include <QtCore/QString>
-#include <QtCore/QVariant>
+#include <QString>
+#include <QVariant>
 
 namespace U2 {
 

@@ -28,7 +28,7 @@
 #include <U2Lang/Configuration.h>
 #include <U2Lang/WorkflowUtils.h>
 
-#include <QtCore/QAbstractTableModel>
+#include <QAbstractTableModel>
 
 
 namespace U2 {

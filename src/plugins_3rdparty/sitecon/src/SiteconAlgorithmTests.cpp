@@ -19,22 +19,22 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDomElement>
+#include <QFileInfo>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObjectTypes.h>
+#include <U2Core/GObjectUtils.h>
+#include <U2Core/IOAdapter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
+
 #include "SiteconAlgorithmTests.h"
 #include "DIPropertiesSitecon.h"
 #include "SiteconIO.h"
-
-#include <U2Core/DocumentModel.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/IOAdapter.h>
-#include <U2Core/U2SafePoints.h>
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObjectUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
-
-#include <QtXml/QDomElement>
-
 
 /* TRANSLATOR U2::GTest */
 

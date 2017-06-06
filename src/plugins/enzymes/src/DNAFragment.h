@@ -22,7 +22,7 @@
 #ifndef _U2_DNA_FRAGMENT_H_
 #define _U2_DNA_FRAGMENT_H_
 
-#include <QtCore/QList>
+#include <QList>
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/U2Region.h>

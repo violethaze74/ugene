@@ -56,9 +56,7 @@ public:
 
     void crop(const U2Region &window, const QSet<QString> &rowNames);
 
-    void deleteColumnWithGaps(U2OpStatus &os, int requiredGapCount);
-    void deleteColumnWithGaps(int requiredGapCount = GAP_COLUMN_ONLY);
-    QList<qint64> getColumnsWithGaps(int requiredGapCount = GAP_COLUMN_ONLY) const;
+    void deleteColumnWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
 
     /** Methods to work with rows */
     void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel);

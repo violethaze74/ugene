@@ -24,7 +24,7 @@
 
 #include <U2Core/DocumentModel.h>
 
-#include <QtWidgets/QDialog>
+#include <QDialog>
 
 namespace U2 {
 

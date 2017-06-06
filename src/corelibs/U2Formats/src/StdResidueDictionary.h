@@ -22,9 +22,9 @@
 #ifndef _U2_STD_RESIDUE_DICTIONARY_H_
 #define _U2_STD_RESIDUE_DICTIONARY_H_
 
-#include <QtCore/QByteArray>
-#include <QtCore/QHash>
-#include <QtCore/QMutex>
+#include <QByteArray>
+#include <QHash>
+#include <QMutex>
 
 namespace U2 {
 

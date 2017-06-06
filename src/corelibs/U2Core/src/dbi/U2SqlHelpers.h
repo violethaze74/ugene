@@ -25,13 +25,13 @@
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2Type.h>
 
-#include <QtCore/QMutex>
-#include <QtCore/QStringList>
-#include <QtCore/QVector>
-#include <QtCore/QThread>
-#include <QtCore/QHash>
-#include <QtCore/QSharedPointer>
-#include <QtCore/QReadWriteLock>
+#include <QMutex>
+#include <QStringList>
+#include <QVector>
+#include <QThread>
+#include <QHash>
+#include <QSharedPointer>
+#include <QReadWriteLock>
 
 struct sqlite3;
 struct sqlite3_stmt;

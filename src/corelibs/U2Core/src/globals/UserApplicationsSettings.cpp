@@ -159,12 +159,7 @@ void UserAppsSettings::setRecentlyDownloadedFileNames(const QStringList& fileNam
 }
 
 QString UserAppsSettings::getUserTemporaryDirPath() const {
-#if (QT_VERSION >= 0x050000)
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + TEMPORARY_DIR, QStandardPaths::writableLocation(QStandardPaths::TempLocation)).toString();
-#else
-    return AppContext::getSettings()->getValue(SETTINGS_ROOT + TEMPORARY_DIR, QDesktopServices::storageLocation(QDesktopServices::TempLocation)).toString();
-#endif
-
 }
 
 void UserAppsSettings::setUserTemporaryDirPath(const QString& newPath) {

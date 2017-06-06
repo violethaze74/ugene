@@ -22,10 +22,9 @@
 #ifndef _U2_TOKENIZER_H_
 #define _U2_TOKENIZER_H_
 
-#include <U2Core/global.h>
+#include <QTextStream>
 
-#include <QtCore/QTextStream>
-#include <QtCore/QStringList>
+#include <U2Core/global.h>
 
 namespace U2 {
 namespace WorkflowSerialize {
@@ -61,8 +60,8 @@ public:
     QMap<QString, QString> equalPairs;
     QMap<QString, QString> blockPairs;
 
-    QList<StringPair> equalPairsList;
-    QList<StringPair> blockPairsList;
+    QList<StrStrPair> equalPairsList;
+    QList<StrStrPair> blockPairsList;
 
     static QPair<QString, QString> parseOneEqual(Tokenizer &tokenizer);
     static QString skipBlock(Tokenizer &tokenizer);

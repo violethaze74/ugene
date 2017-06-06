@@ -4,9 +4,7 @@ UGENE_RELATIVE_DESTDIR = ''
 MODULE_ID=U2View
 include( ../../ugene_lib_common.pri )
 
-QT += xml svg webkit
-greaterThan(QT_MAJOR_VERSION, 4): QT -= webkit
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webkitwidgets printsupport
+QT += xml svg widgets webkitwidgets printsupport
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2VIEW_DLL
 LIBS += -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Gui
 

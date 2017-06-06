@@ -22,16 +22,15 @@
 #ifndef _U2_NETWORK_CONFIGURATION_H_
 #define _U2_NETWORK_CONFIGURATION_H_
 
+#include <QMap>
+#include <QNetworkProxy>
+#include <QStringList>
 
-#include <QtNetwork/QNetworkProxy>
-#include <QtCore/QStringList>
-#include <QtCore/QMap>
 #include <U2Core/global.h>
 
 #ifndef QT_NO_OPENSSL
-#include <QtNetwork/QSslConfiguration>
+#include <QSslConfiguration>
 #endif
-
 
 namespace U2
 {

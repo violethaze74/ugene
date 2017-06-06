@@ -24,7 +24,7 @@
 
 #include "uhmmsearch.h"
 #include "HMMIO.h"
-#include <QtCore/QMutex>
+#include <QMutex>
 #include <U2Core/U2Region.h>
 #include <U2Core/Task.h>
 #include <U2Core/DNASequence.h>

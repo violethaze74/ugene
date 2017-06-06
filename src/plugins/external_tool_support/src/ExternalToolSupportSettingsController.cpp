@@ -19,30 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#include "ExternalToolSupportSettingsController.h"
-#include "ExternalToolSupportSettings.h"
-#include "utils/ExternalToolValidateTask.h"
+#include <QMessageBox>
+#include <QToolButton>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/ScriptingToolRegistry.h>
-#include <U2Core/MultiTask.h>
 #include <U2Core/L10n.h>
+#include <U2Core/MultiTask.h>
+#include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/GUIUtils.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QtGui>
-#else
-#include <QtWidgets/QtWidgets>
-#endif
-
-#include <blast/BlastAllSupport.h>
-#include <blast/FormatDBSupport.h>
-#include <blast_plus/BlastPlusSupport.h>
-
-
+#include "ExternalToolSupportSettings.h"
+#include "ExternalToolSupportSettingsController.h"
+#include "blast/BlastAllSupport.h"
+#include "blast/FormatDBSupport.h"
+#include "blast_plus/BlastPlusSupport.h"
+#include "utils/ExternalToolValidateTask.h"
 
 namespace U2 {
 
@@ -548,7 +542,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolKitPath(){
         assert(listOfItems.length() != 0);
 
         QStringList toolNames;
-        QStrStrMap toolPaths;
+        StrStrMap toolPaths;
         foreach (QTreeWidgetItem* item, listOfItems) {
             if (!externalToolsItems.values().contains(item)) {
                 continue;
@@ -602,7 +596,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
         QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("" , Qt::MatchContains | Qt::MatchRecursive);
         assert(listOfItems.length() != 0);
         QStringList toolNames;
-        QStrStrMap toolPaths;
+        StrStrMap toolPaths;
 
         foreach (ExternalTool* et, AppContext::getExternalToolRegistry()->getAllEntries()) {
             if (et->isModule()) {

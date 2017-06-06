@@ -22,7 +22,9 @@
 #ifndef _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_REGISTRY_H_
 #define _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_REGISTRY_H_
 
+#include <QMap>
 #include <QObject>
+
 #include <U2Core/global.h>
 
 namespace U2 {

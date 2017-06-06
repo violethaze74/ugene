@@ -26,7 +26,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2SafePoints.h>
-#include <QtCore/QDir>
+#include <QDir>
 
 
 namespace U2 {

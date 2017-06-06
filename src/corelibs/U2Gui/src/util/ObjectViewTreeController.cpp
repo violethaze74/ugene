@@ -27,12 +27,8 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QEvent>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QMenu>
-#endif
+#include <QEvent>
+#include <QMenu>
 
 //TODO:
 // track factory registry and show only the states with factories available

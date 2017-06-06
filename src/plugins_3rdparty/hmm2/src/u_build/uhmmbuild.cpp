@@ -4,9 +4,9 @@
 
 #include <U2Core/Task.h>
 
-#include <QtCore/QByteArray>
-#include <QtCore/QVector>
-#include <QtCore/QFile>
+#include <QByteArray>
+#include <QVector>
+#include <QFile>
 
 
 namespace U2 {

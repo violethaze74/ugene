@@ -21,7 +21,7 @@
 
 #include "ScriptTask.h"
 
-#include <QtScript/QScriptEngine>
+#include <QScriptEngine>
 
 namespace U2 {
 

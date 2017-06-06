@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtScript/QScriptEngine>
+#include <QScriptEngine>
 
 #include <U2Core/AppContext.h>
 #include "ProjectModel.h"

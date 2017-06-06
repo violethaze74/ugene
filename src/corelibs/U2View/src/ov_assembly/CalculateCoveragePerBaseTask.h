@@ -22,6 +22,8 @@
 #ifndef _U2_CALCULATE_COVERAGE_PER_BASE_TASK_H_
 #define _U2_CALCULATE_COVERAGE_PER_BASE_TASK_H_
 
+#include <QMap>
+
 #include <U2Core/U2Assembly.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Type.h>

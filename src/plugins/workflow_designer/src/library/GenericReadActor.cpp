@@ -42,7 +42,7 @@
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 #include <limits.h>
 
 /* TRANSLATOR U2::Workflow::SeqReadPrompter */

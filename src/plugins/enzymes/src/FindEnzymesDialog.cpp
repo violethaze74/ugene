@@ -47,9 +47,9 @@
 
 #include <U2Formats/GenbankLocationParser.h>
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
-#include <QtCore/QTextStream>
+#include <QCoreApplication>
+#include <QDir>
+#include <QTextStream>
 #include <QVBoxLayout>
 #include <QTreeWidget>
 #include <QMessageBox>

@@ -22,9 +22,10 @@
 #ifndef _U2_SCRIPTING_TOOL_REGISTRY_H
 #define _U2_SCRIPTING_TOOL_REGISTRY_H
 
-#include <U2Core/global.h>
+#include <QMap>
+#include <QStringList>
 
-#include <QtCore/QStringList>
+#include <U2Core/global.h>
 
 namespace U2 {
 

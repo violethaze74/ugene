@@ -22,6 +22,8 @@
 #ifndef _U2_WELCOME_PAGE_CONTROLLER_H_
 #define _U2_WELCOME_PAGE_CONTROLLER_H_
 
+#include <QObject>
+
 #include <U2Core/U2OpStatus.h>
 
 namespace U2 {

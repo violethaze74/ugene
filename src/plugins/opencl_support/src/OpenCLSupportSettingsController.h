@@ -22,14 +22,9 @@
 #ifndef __OPENCL_SUPPORT_SETTINGS_CONTROLLER__
 #define __OPENCL_SUPPORT_SETTINGS_CONTROLLER__
 
-#include <QtCore/QVector>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QCheckBox>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QCheckBox>
-#endif
+#include <QVector>
+#include <QLabel>
+#include <QCheckBox>
 
 #include <U2Gui/AppSettingsGUI.h>
 

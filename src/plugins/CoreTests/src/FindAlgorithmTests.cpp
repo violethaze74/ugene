@@ -19,11 +19,13 @@
 * MA 02110-1301, USA.
 */
 
-#include "FindAlgorithmTests.h"
+#include <QDomElement>
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
+
+#include "FindAlgorithmTests.h"
 
 namespace U2 {
 

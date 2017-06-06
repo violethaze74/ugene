@@ -22,8 +22,8 @@
 #ifndef _U2_WORKFLOW_SAVE_SCHEMA_IMAGE_UTILS_H_
 #define _U2_WORKFLOW_SAVE_SCHEMA_IMAGE_UTILS_H_
 
-#include <QtGui/QPixmap>
-#include <QtXml/QDomDocument>
+#include <QPixmap>
+#include <QDomDocument>
 
 #include <U2Core/Task.h>
 #include <U2Lang/Schema.h>

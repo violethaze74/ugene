@@ -22,7 +22,7 @@
 #ifndef _U2_CLONE_OBJECT_TASK_H_
 #define _U2_CLONE_OBJECT_TASK_H_
 
-#include <QtCore/QPointer>
+#include <QPointer>
 
 #include <U2Core/Task.h>
 #include <U2Core/U2Type.h>

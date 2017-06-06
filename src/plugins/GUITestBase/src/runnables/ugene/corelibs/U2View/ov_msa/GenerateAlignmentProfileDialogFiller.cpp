@@ -26,23 +26,12 @@
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTGroupBox.h>
 
-
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QCheckBox>
-#include <QtGui/QRadioButton>
-#include <QtGui/QGroupBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QRadioButton>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QPushButton>
-#endif
+#include <QApplication>
+#include <QCheckBox>
+#include <QRadioButton>
+#include <QGroupBox>
+#include <QDialogButtonBox>
+#include <QPushButton>
 
 namespace U2 {
 

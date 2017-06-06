@@ -24,7 +24,7 @@
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
-#include <QtGui/QMouseEvent>
+#include <QMouseEvent>
 #include <QPainter>
 
 namespace U2 {

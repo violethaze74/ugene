@@ -25,7 +25,7 @@
 #include <U2Core/Settings.h>
 #include <U2Core/CMDLineRegistry.h>
 
-#include <QtGui/QColor>
+#include <QColor>
 
 #define SETTINGS_ROOT QString("log_settings/")
 

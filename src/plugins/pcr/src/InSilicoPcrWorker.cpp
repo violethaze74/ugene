@@ -19,6 +19,8 @@
 * MA 02110-1301, USA.
 */
 
+#include <QTextStream>
+
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -38,10 +40,9 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
+#include "InSilicoPcrWorker.h"
 #include "InSilicoPcrWorkflowTask.h"
 #include "PrimersGrouperWorker.h"
-
-#include "InSilicoPcrWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {

@@ -22,7 +22,7 @@
 #ifndef _U2_TEXT_CONVERSION_UTILS_H_
 #define _U2_TEXT_CONVERSION_UTILS_H_
 
-#include <QtCore/QString>
+#include <QString>
 
 #include "globals.h"
 

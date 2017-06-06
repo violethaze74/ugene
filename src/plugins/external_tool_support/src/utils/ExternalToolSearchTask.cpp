@@ -19,9 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
-#include <QtCore/QProcessEnvironment>
+#include <QCoreApplication>
+#include <QDir>
+#include <QProcessEnvironment>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>

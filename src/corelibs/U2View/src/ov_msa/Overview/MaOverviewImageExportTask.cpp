@@ -19,14 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QPainter>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QCheckBox>
-#include <QtGui/QVBoxLayout>
-#else
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QVBoxLayout>
-#endif
+#include <QPainter>
+#include <QCheckBox>
+#include <QVBoxLayout>
 
 #include "MaOverviewImageExportTask.h"
 #include "MaSimpleOverview.h"

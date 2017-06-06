@@ -25,7 +25,7 @@
 #include <ui_AppSettingsDialog.h>
 
 #include <QTreeWidgetItem>
-#include <QtCore/QTimerEvent>
+#include <QTimerEvent>
 
 class AppSettingsDialogTree;
 

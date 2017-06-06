@@ -19,14 +19,15 @@
  * MA 02110-1301, USA.
  */
 
-#include "SMatrixTests.h"
+#include <QDomElement>
 
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/AppContext.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/SMatrix.h>
 
+#include "SMatrixTests.h"
 
 namespace U2 {
 

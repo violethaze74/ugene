@@ -25,7 +25,7 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/U2Type.h>
 
-#include <QtCore/QDataStream>
+#include <QDataStream>
 
 namespace U2 {
 

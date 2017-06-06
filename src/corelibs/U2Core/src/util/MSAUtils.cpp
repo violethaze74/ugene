@@ -34,7 +34,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SequenceUtils.h>
 
-#include <QtCore/QListIterator>
+#include <QListIterator>
 
 namespace U2 {
 
@@ -417,4 +417,39 @@ bool MSAUtils::restoreRowNames(MultipleSequenceAlignment &ma, const QStringList 
     return true;
 }
 
-}//namespace
+QList<U2Region> MSAUtils::getColumnsWithGaps(const MultipleAlignment &ma, int requiredGapsCount) {
+    const int length = ma->getLength();
+    if (-1 == requiredGapsCount) {
+        requiredGapsCount = ma->getNumRows();
+    }
+
+    QList<U2Region> regionsToDelete;
+    for (int columnNumber = 0; columnNumber < length; columnNumber++) {
+        int gapCount = 0;
+        for (int j = 0; j < ma->getNumRows(); j++) {
+            if (ma->isGap(j, columnNumber)) {
+                gapCount++;
+            }
+        }
+
+        if (gapCount >= requiredGapsCount) {
+            if (!regionsToDelete.isEmpty() && regionsToDelete.last().endPos() == static_cast<qint64>(columnNumber)) {
+                regionsToDelete.last().length++;
+            } else {
+                regionsToDelete << U2Region(columnNumber, 1);
+            }
+        }
+    }
+
+    return regionsToDelete;
+}
+
+void MSAUtils::removeColumnsWithGaps(MultipleSequenceAlignment &msa, int requiredGapsCount) {
+    GTIMER(c, t, "MSAUtils::removeColumnsWithGaps");
+    const QList<U2Region> regionsToDelete = getColumnsWithGaps(msa, requiredGapsCount);
+    for (int i = regionsToDelete.size() - 1; i >= 0; i--) {
+        msa->removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, msa->getNumRows(), true);
+    }
+}
+
+}   // namespace U2

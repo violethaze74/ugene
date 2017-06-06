@@ -24,9 +24,9 @@
 
 #include <hmmer2/funcs.h>
 
-#include <QtCore/QThreadStorage>
-#include <QtCore/QHash>
-#include <QtCore/QMutex>
+#include <QThreadStorage>
+#include <QHash>
+#include <QMutex>
 
 namespace U2 {
 

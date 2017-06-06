@@ -45,9 +45,9 @@
 #include <U2Algorithm/SmithWatermanResult.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
 
-#include <QtCore/QMutexLocker>
-#include <QtCore/QMap>
-#include <QtCore/QVariant>
+#include <QMutexLocker>
+#include <QMap>
+#include <QVariant>
 
 using namespace std;
 

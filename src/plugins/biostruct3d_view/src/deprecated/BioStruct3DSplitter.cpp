@@ -19,14 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QDesktopServices>
-#include <QtGui/QDragEnterEvent>
-#include <QtGui/QDropEvent>
-#include <QtGui/QPixmap>
+#include <QDesktopServices>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QPixmap>
 
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
-#include <QtCore/QUrl>
+#include <QFile>
+#include <QTextStream>
+#include <QUrl>
 
 #include <QCheckBox>
 #include <QHBoxLayout>

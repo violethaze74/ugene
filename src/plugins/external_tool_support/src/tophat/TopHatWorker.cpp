@@ -769,7 +769,7 @@ QString DatasetData::getCurrentSample() const {
 /* Validators */
 /************************************************************************/
 bool InputSlotsValidator::validate(const IntegralBusPort *port, ProblemList &problemList) const {
-    QStrStrMap bm = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<QStrStrMap>();
+    StrStrMap bm = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
     bool data = isBinded(bm, IN_DATA_SLOT_ID);
     bool pairedData = isBinded(bm, PAIRED_IN_DATA_SLOT_ID);
     bool url = isBinded(bm, IN_URL_SLOT_ID);

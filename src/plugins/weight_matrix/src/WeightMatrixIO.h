@@ -22,8 +22,8 @@
 #ifndef _U2_WEIGHT_MATRIX_IO_H_
 #define _U2_WEIGHT_MATRIX_IO_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QString>
+#include <QObject>
+#include <QString>
 
 #include <U2Core/Task.h>
 

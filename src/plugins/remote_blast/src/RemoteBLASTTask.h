@@ -22,11 +22,14 @@
 #ifndef _U2_REMOTE_QUERY_TASK_H_
 #define _U2_REMOTE_QUERY_TASK_H_
 
-#include <U2Core/Task.h>
-#include <U2Core/AnnotationData.h>
-#include <U2Core/DNATranslation.h>
+#include <QPointer>
+#include <QTimer>
 
 #include <U2Algorithm/CDSearchTaskFactory.h>
+
+#include <U2Core/AnnotationData.h>
+#include <U2Core/DNATranslation.h>
+#include <U2Core/Task.h>
 
 #include "HttpRequest.h"
 

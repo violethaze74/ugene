@@ -27,7 +27,7 @@
 
 #include <U2Core/U2SqlHelpers.h>
 
-#include <QtCore/QReadWriteLock>
+#include <QReadWriteLock>
 
 namespace U2 {
 

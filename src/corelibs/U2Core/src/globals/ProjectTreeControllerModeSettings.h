@@ -22,9 +22,9 @@
 #ifndef _U2_PROJECT_TREE_CONTROLLER_MODE_SETTINGS_H_
 #define _U2_PROJECT_TREE_CONTROLLER_MODE_SETTINGS_H_
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
-#include <QtGui/QFont>
+#include <QFont>
 
 #include <U2Core/GObject.h>
 

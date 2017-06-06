@@ -29,16 +29,10 @@
 #include <U2Core/U2Region.h>
 #include <U2Core/AnnotationData.h>
 
-#include <QtCore/QTimer>
-#include <QtCore/QMutex>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDialog>
-#include <QtGui/QToolButton>
-#else
-#include <QtWidgets/QDialog>
-#include <QtWidgets/QToolButton>
-#endif
-
+#include <QTimer>
+#include <QMutex>
+#include <QDialog>
+#include <QToolButton>
 
 namespace U2 {
 

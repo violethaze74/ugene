@@ -24,7 +24,7 @@
 
 #include "SArrayIndex.h"
 #include <U2Core/global.h>
-#include <QtCore/QFile>
+#include <QFile>
 
 namespace U2 {
 

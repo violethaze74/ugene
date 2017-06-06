@@ -24,12 +24,8 @@
 
 #include <U2Core/DocumentModel.h>
 
-#include <QtCore/QObject>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QComboBox>
-#else
-#include <QtWidgets/QComboBox>
-#endif
+#include <QObject>
+#include <QComboBox>
 
 namespace U2 {
 

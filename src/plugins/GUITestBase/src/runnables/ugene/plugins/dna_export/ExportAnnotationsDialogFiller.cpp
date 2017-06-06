@@ -36,17 +36,41 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportAnnotationsFiller"
 ExportAnnotationsFiller::ExportAnnotationsFiller(const QString &exportToFile, fileFormat format, HI::GUITestOpStatus &os)
-: Filler(os, "U2__ExportAnnotationsDialog"), softMode(true), format(format), saveSequencesUnderAnnotations(false), saveSequenceNames(false), useMethod(GTGlobals::UseMouse)
+    : Filler(os, "U2__ExportAnnotationsDialog"),
+      softMode(true), format(format),
+      saveSequencesUnderAnnotations(false),
+      saveSequenceNames(false),
+      useMethod(GTGlobals::UseMouse)
 {
     init(exportToFile);
 }
 
 
-ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &_os, const QString &_exportToFile, fileFormat _format, bool _saveSequencesUnderAnnotations,
-    bool _saveSequenceNames, GTGlobals::UseMethod method):
-Filler(_os, "U2__ExportAnnotationsDialog"), softMode(false), format(_format), saveSequencesUnderAnnotations(_saveSequencesUnderAnnotations), saveSequenceNames(_saveSequenceNames), useMethod(method)
+ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &_os,
+                                                 const QString &_exportToFile,
+                                                 fileFormat _format,
+                                                 bool _saveSequencesUnderAnnotations,
+                                                 bool _saveSequenceNames,
+                                                 GTGlobals::UseMethod method)
+    : Filler(_os, "U2__ExportAnnotationsDialog"),
+      softMode(false),
+      format(_format),
+      saveSequencesUnderAnnotations(_saveSequencesUnderAnnotations),
+      saveSequenceNames(_saveSequenceNames),
+      useMethod(method)
 {
     init(_exportToFile);
+}
+
+ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+    : Filler(os, "U2__ExportAnnotationsDialog", scenario),
+      softMode(false),
+      format(genbank),
+      saveSequencesUnderAnnotations(false),
+      saveSequenceNames(false),
+      useMethod(GTGlobals::UseMouse)
+{
+
 }
 
 void ExportAnnotationsFiller::init(const QString &exportToFile) {

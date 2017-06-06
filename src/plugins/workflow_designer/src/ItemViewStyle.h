@@ -22,16 +22,10 @@
 #ifndef _U2_WORKFLOW_ITEM_STYLE_H_
 #define _U2_WORKFLOW_ITEM_STYLE_H_
 
-#include <QtGui/QTextDocument>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsItem>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QGraphicsScene>
-#include <QtWidgets/QGraphicsItem>
-#endif
+#include <QTextDocument>
+#include <QAction>
+#include <QGraphicsScene>
+#include <QGraphicsItem>
 
 class QDomElement;
 

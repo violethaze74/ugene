@@ -20,17 +20,9 @@
  */
 
 #include <QToolButton>
-
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QGroupBox>
-#include <QtGui/QComboBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QComboBox>
-#endif
+#include <QApplication>
+#include <QGroupBox>
+#include <QComboBox>
 
 #include <primitives/GTWidget.h>
 #include <primitives/GTSpinBox.h>

@@ -30,20 +30,12 @@
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/PairwiseAlignmentTask.h>
 
-#include <QtCore/QStringList>
-#include <QtCore/QVariant>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
-#include <QtGui/QGroupBox>
-#include <QtGui/QFormLayout>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLayout>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QFormLayout>
-#endif
+#include <QStringList>
+#include <QVariant>
+#include <QLabel>
+#include <QLayout>
+#include <QGroupBox>
+#include <QFormLayout>
 
 namespace U2 {
 

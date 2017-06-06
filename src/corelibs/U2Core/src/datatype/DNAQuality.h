@@ -24,8 +24,8 @@
 
 #include <U2Core/global.h>
 
-#include <QtCore/QByteArray>
-#include <QtCore/QStringList>
+#include <QByteArray>
+#include <QStringList>
 
 namespace U2 {
 

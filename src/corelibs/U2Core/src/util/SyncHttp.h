@@ -22,11 +22,11 @@
 #ifndef __SYNC_HTTP_H__
 #define __SYNC_HTTP_H__
 
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QNetworkProxy>
-#include <QtNetwork/QAuthenticator>
-#include <QtCore/QEventLoop>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkProxy>
+#include <QAuthenticator>
+#include <QEventLoop>
 
 #include <U2Core/global.h>
 #include <U2Core/U2OpStatus.h>

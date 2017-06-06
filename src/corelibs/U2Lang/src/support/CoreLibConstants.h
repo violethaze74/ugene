@@ -22,7 +22,7 @@
 #ifndef _U2_WORKFLOW_CORE_LIB_CONSTANTS_H_
 #define _U2_WORKFLOW_CORE_LIB_CONSTANTS_H_
 
-#include <QtCore/QString>
+#include <QString>
 #include <U2Core/global.h>
 
 namespace U2 {

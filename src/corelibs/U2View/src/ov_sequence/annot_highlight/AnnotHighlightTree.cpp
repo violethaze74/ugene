@@ -19,12 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include "AnnotHighlightTree.h"
-#include "AnnotHighlightTreeItem.h"
+#include <QColorDialog>
+#include <QHeaderView>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "AnnotHighlightTree.h"
+#include "AnnotHighlightTreeItem.h"
 
 namespace U2 {
 
@@ -54,11 +56,7 @@ AnnotHighlightTree::AnnotHighlightTree()
     header()->resizeSection(COL_NUM_ANNOT_NAME, ANNOT_COLUMN_WIDTH);
     header()->resizeSection(COL_NUM_COLOR, COLOR_COLUMN_WIDTH);
     header()->setStretchLastSection(false);
-#if (QT_VERSION < 0x050000) // Qt 5
-    header()->setResizeMode(0, QHeaderView::Stretch);
-#else
     header()->setSectionResizeMode(0, QHeaderView::Stretch);
-#endif
 
     setStyleSheet("QTreeWidget#OP_ANNOT_HIGHLIGHT_TREE { "
         "border-style: solid;"

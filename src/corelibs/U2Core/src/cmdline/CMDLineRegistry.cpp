@@ -72,7 +72,7 @@ CMDLineRegistry::CMDLineRegistry(const QStringList& arguments) {
     int sz = arguments.size();
     for( int i = 0; i < sz; i++ ) {
         const QString& argument = arguments.at( i );
-        StringPair pair;
+        StrStrPair pair;
         if ( !tryParseDoubleDashParameter(argument, pair.first, pair.second) ) {
             QString nextArgument;
             if (i < sz - 1) {
@@ -99,13 +99,13 @@ CMDLineRegistry::~CMDLineRegistry() {
     qDeleteAll( helpProviders );
 }
 
-const QList<StringPair> & CMDLineRegistry::getParameters() const {
+const QList<StrStrPair> & CMDLineRegistry::getParameters() const {
     return params;
 }
 
 QStringList CMDLineRegistry::getOrderedParameterNames() const {
     QStringList res;
-    QList<StringPair>::const_iterator it = params.constBegin();
+    QList<StrStrPair>::const_iterator it = params.constBegin();
     while( it != params.constEnd() ) {
         res << it->first;
         ++it;
@@ -116,7 +116,7 @@ QStringList CMDLineRegistry::getOrderedParameterNames() const {
 bool CMDLineRegistry::hasParameter( const QString & paramName, int startWithIdx ) const {
     int sz = params.size();
     for( int i = qMax(0, startWithIdx); i < sz; ++i ) {
-        const StringPair& param = params[i];
+        const StrStrPair& param = params[i];
         if( param.first == paramName ) {
             return true;
         }
@@ -127,7 +127,7 @@ bool CMDLineRegistry::hasParameter( const QString & paramName, int startWithIdx 
 QString CMDLineRegistry::getParameterValue( const QString & paramName, int startWithIdx ) const {
     int sz = params.size();
     for( int i = qMax(0, startWithIdx); i < sz; ++i ) {
-        const StringPair& param = params[i];
+        const StrStrPair& param = params[i];
         if( param.first == paramName ) {
             return param.second;
         }

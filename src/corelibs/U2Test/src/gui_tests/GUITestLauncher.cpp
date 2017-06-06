@@ -21,7 +21,9 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QDir>
 #include <QMap>
+#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineCoreOptions.h>

@@ -25,11 +25,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Gui/MainWindow.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QMenu>
-#endif
+#include <QMenu>
 
 namespace U2 {
 

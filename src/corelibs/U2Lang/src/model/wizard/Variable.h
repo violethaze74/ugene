@@ -22,7 +22,8 @@
 #ifndef _U2_VARIABLE_H_
 #define _U2_VARIABLE_H_
 
-#include <U2Core/global.h>
+#include <QMap>
+
 #include <U2Core/U2OpStatus.h>
 
 namespace U2 {

@@ -22,12 +22,7 @@
 #ifndef _U2_QD_GROUPS_EDITOR_H_
 #define _U2_QD_GROUPS_EDITOR_H_
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTreeWidget>
-#else
-#include <QtWidgets/QTreeWidget>
-#endif
+#include <QTreeWidget>
 
 namespace U2 {
 

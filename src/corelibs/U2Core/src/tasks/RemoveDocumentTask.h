@@ -25,7 +25,7 @@
 
 #include <U2Core/Task.h>
 
-#include <QtCore/QPointer>
+#include <QPointer>
 
 namespace U2 {
 

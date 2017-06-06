@@ -22,9 +22,10 @@
 #ifndef _EDIT_BREAKPOINT_LABELS_DIALOG_H_
 #define _EDIT_BREAKPOINT_LABELS_DIALOG_H_
 
-#include <U2Core/global.h>
-#include <QtWidgets/QDialog>
+#include <QDialog>
+#include <QMap>
 
+#include <U2Core/global.h>
 
 class QKeyEvent;
 class Ui_EditBreakpointLabelsDialog;

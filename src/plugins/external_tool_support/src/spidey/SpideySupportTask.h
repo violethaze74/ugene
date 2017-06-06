@@ -22,8 +22,8 @@
 #ifndef _U2_SPIDEY_SUPPORT_TASK_H_
 #define _U2_SPIDEY_SUPPORT_TASK_H_
 
-#include <QtCore/QFile>
-#include <QtCore/QStringList>
+#include <QFile>
+#include <QStringList>
 
 #include <U2Formats/StreamSequenceReader.h>
 #include <U2Formats/StreamSequenceWriter.h>

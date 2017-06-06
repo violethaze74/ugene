@@ -26,7 +26,7 @@
 
 #include <U2Core/global.h>
 
-#include <QtCore/QMutex>
+#include <QMutex>
 
 
 namespace U2 {

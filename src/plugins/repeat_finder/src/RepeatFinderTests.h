@@ -36,7 +36,7 @@
 #include <U2Algorithm/RepeatFinderSettings.h>
 
 
-#include <QtXml/QDomElement>
+#include <QDomElement>
 
 
 namespace U2 {

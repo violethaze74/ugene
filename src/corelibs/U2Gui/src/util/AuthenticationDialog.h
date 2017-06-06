@@ -23,11 +23,7 @@
 #define _U2_AUTHENTIFICATION_DIALOG_H_
 
 #include <U2Core/global.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDialog>
-#else
-#include <QtWidgets/QDialog>
-#endif
+#include <QDialog>
 
 class Ui_AuthenticationDialog;
 

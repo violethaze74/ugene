@@ -19,10 +19,15 @@
  * MA 02110-1301, USA.
  */
 
-#include "XMLTestUtils.h"
+#include <QDir>
+#include <QDomElement>
+#include <QFile>
+#include <QFileInfo>
 
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2SafePoints.h>
+
+#include "XMLTestUtils.h"
 
 namespace U2 {
 

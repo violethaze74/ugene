@@ -24,10 +24,10 @@
 
 #include <U2Core/global.h>
 
-#include <QtCore/QMetaType>
-#include <QtCore/QMutex>
-#include <QtCore/QTime>
-#include <QtCore/QStringList>
+#include <QMetaType>
+#include <QMutex>
+#include <QTime>
+#include <QStringList>
 
 namespace U2 {
 

@@ -22,14 +22,15 @@
 #include <QLayout>
 #include <QListView>
 #include <QMessageBox>
+#include <QStandardItemModel>
 
 #include <U2Core/L10n.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/EditConnectionDialog.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2Lang/SchemaConfig.h>

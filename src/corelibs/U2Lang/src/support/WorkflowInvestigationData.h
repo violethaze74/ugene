@@ -22,9 +22,9 @@
 #ifndef _U2_WORKFLOW_INVESTIGATION_DATA_H_
 #define _U2_WORKFLOW_INVESTIGATION_DATA_H_
 
-#include <QtCore/QMap>
-#include <QtCore/QQueue>
-#include <QtCore/QString>
+#include <QMap>
+#include <QQueue>
+#include <QString>
 
 namespace U2 {
 

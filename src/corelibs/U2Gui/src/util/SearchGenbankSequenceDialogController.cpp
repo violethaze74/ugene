@@ -67,12 +67,7 @@ SearchGenbankSequenceDialogController::SearchGenbankSequenceDialogController(QWi
         SLOT( sl_taskStateChanged( Task * ) ) );
 
     ui->treeWidget->header()->setStretchLastSection(false);
-#if (QT_VERSION < 0x050000) //Qt 5
-    ui->treeWidget->header()->setResizeMode(1, QHeaderView::Stretch);
-#else
     ui->treeWidget->header()->setSectionResizeMode(1, QHeaderView::Stretch);
-#endif
-
 }
 
 SearchGenbankSequenceDialogController::~SearchGenbankSequenceDialogController()

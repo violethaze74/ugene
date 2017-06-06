@@ -32,7 +32,7 @@
 #include <U2Algorithm/SmithWatermanResult.h>
 #include <U2Core/SequenceWalkerTask.h>
 
-#include <QtCore/QHash>
+#include <QHash>
 
 static const char * ANNOTATION_RESULT_VIEW = "Annotations";
 static const char * MULTIPLE_ALIGNMENT_RESULT_VIEW = "Multiple alignment";

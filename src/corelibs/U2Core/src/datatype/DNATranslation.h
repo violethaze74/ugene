@@ -23,7 +23,7 @@
 #define _U2_DNA_TRANSLATION_H_
 
 #include <U2Core/global.h>
-#include <QtCore/QStringList>
+#include <QStringList>
 
 namespace U2 {
 

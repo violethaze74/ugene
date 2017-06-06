@@ -24,7 +24,7 @@
 
 #include <U2Core/IOAdapter.h>
 
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 
 namespace U2 {
 

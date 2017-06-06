@@ -21,7 +21,7 @@
 
 #include "SWResultFilterRegistry.h"
 
-#include <QtCore/QMutexLocker>
+#include <QMutexLocker>
 
 
 namespace U2 {

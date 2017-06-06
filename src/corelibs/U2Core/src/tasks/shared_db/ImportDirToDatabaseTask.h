@@ -40,7 +40,7 @@ public:
     void prepare();
 
     QStringList getImportedFiles() const;
-    QStrStrMap getSkippedFiles() const;
+    StrStrMap getSkippedFiles() const;
 
 private:
     QString srcUrl;

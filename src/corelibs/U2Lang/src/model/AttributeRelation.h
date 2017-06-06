@@ -22,6 +22,8 @@
 #ifndef _U2_ATTRIBUTE_RELATION_H_
 #define _U2_ATTRIBUTE_RELATION_H_
 
+#include <QVariant>
+
 #include <U2Core/global.h>
 
 namespace U2 {

@@ -22,8 +22,8 @@
 #ifndef _U2_SW_RESULT_FILTER_REGISTRY_H_
 #define _U2_SW_RESULT_FILTER_REGISTRY_H_
 
-#include <QtCore/QStringList>
-#include <QtCore/QMutex>
+#include <QStringList>
+#include <QMutex>
 
 #include <U2Algorithm/SmithWatermanResultFilters.h>
 

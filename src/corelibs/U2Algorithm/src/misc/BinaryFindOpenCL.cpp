@@ -29,9 +29,9 @@
 
 #include <U2Algorithm/OpenCLUtils.h>
 
-#include <QtCore/QString>
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
+#include <QString>
+#include <QFile>
+#include <QTextStream>
 
 #include <ctime>
 #include <math.h>

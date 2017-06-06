@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QFontDatabase>
+#include <QFontDatabase>
 
 #include <U2Core/U2SafePoints.h>
 

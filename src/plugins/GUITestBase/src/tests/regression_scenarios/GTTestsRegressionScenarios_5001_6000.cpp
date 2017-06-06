@@ -20,6 +20,7 @@
  */
 
 #include <QApplication>
+#include <QDir>
 #include <QFile>
 #include <QListWidget>
 #include <QPlainTextEdit>
@@ -93,12 +94,14 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
+#include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
@@ -1213,6 +1216,155 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
     GTUtilsDialog::waitForDialog(os, new SpadesDialogSettingsChecker(os, "Paired-end (Interlaced)", "Single Cell", "Error correction only", "aaaaa", 1, 228));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Genome de novo assembly...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5447_1) {
+//    1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open the context menu on the "NC_001363 features" object in the project view.
+//    3. Select "Export/Import" -> "Export annotations..." menu item.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
+
+//    Expected state: an "Export Annotations" dialog opens, "GenBank" format is selected, there is an "Add to project" checkbox, it is enabled and checked.
+            GTComboBox::checkCurrentValue(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "GenBank");
+
+            QCheckBox *addToProjectCheck = GTWidget::findExactWidget<QCheckBox *>(os, "addToProjectCheck", dialog);
+            CHECK_SET_ERR(NULL != addToProjectCheck, "addToProjectCheck is NULL");
+            CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
+            CHECK_SET_ERR(addToProjectCheck->isEnabled(), "addToProjectCheck is not enabled");
+            CHECK_SET_ERR(addToProjectCheck->isChecked(), "addToProjectCheck is not checked by default");
+
+//    4. Set a valid result file path, accept the dialog.
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog), sandBoxDir + "test_5447_1.gb");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export annotations..."));
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, new Scenario()));
+    GTUtilsProjectTreeView::callContextMenu(os, "NC_001363 features", "murine.gb");
+
+//    Expected state: the annotations were exported, a new document with an annotations table object was added to the project.
+    const qint64 fileSize = GTFile::getSize(os, sandBoxDir + "test_5447_1.gb");
+    CHECK_SET_ERR(0 != fileSize, "Result file is empty");
+
+    const QModelIndex annotationsTableObjectIndex = GTUtilsProjectTreeView::findIndex(os, "NC_001363 features", GTUtilsProjectTreeView::findIndex(os, "test_5447_1.gb"));
+    CHECK_SET_ERR(annotationsTableObjectIndex.isValid(), "Annotation object not found");
+
+//    5. Add the object to the "murine.gb" sequence.
+    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
+    GTUtilsProjectTreeView::dragAndDrop(os, annotationsTableObjectIndex, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+
+//    Expected state: all annotations are doubled.
+    const QStringList oldGroups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 features [murine.gb]");
+    const QStringList newGroups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 features [test_5447_1.gb]");
+    bool oldCommentGroupExists = false;
+    foreach (const QString &oldGroup, oldGroups) {
+        if (oldGroup == "comment  (0, 1)") {
+            oldCommentGroupExists = true;
+            continue;
+        }
+        CHECK_SET_ERR(newGroups.contains(oldGroup), QString("'%1' group from the original file is not present in a new file").arg(oldGroup));
+    }
+    CHECK_SET_ERR(oldGroups.size() - (oldCommentGroupExists ? 1 : 0) == newGroups.size(),
+                  QString("Groups count from the original file is not equal to a groups count in a new file (%1 and %2").arg(oldGroups.size()).arg(newGroups.size()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5447_2) {
+//    1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open the context menu on the "NC_001363 features" object in the project view.
+//    3. Select "Export/Import" -> "Export annotations..." menu item.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
+
+//    Expected state: an "Export Annotations" dialog opens, "GenBank" format is selected, there is an "Add to project" checkbox, it is enabled and checked.
+            GTComboBox::checkCurrentValue(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "GenBank");
+
+            QCheckBox *addToProjectCheck = GTWidget::findExactWidget<QCheckBox *>(os, "addToProjectCheck", dialog);
+            CHECK_SET_ERR(NULL != addToProjectCheck, "addToProjectCheck is NULL");
+            CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
+            CHECK_SET_ERR(addToProjectCheck->isEnabled(), "addToProjectCheck is not enabled");
+            CHECK_SET_ERR(addToProjectCheck->isChecked(), "addToProjectCheck is not checked by default");
+
+//    4. Select "CSV" format.
+//    Expected state: a "CSV" format is selected, the "Add to project" checkbox is disabled.
+            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "CSV");
+            CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
+            CHECK_SET_ERR(!addToProjectCheck->isEnabled(), "addToProjectCheck is unexpectedly enabled");
+
+//    5. Set a valid result file path, accept the dialog.
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog), sandBoxDir + "test_5447_2.csv");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export annotations..."));
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, new Scenario()));
+    GTUtilsProjectTreeView::callContextMenu(os, "NC_001363 features", "murine.gb");
+
+//    Expected state: the annotations were exported, there are no new documents in the project.
+    const qint64 fileSize = GTFile::getSize(os, sandBoxDir + "test_5447_2.csv");
+    CHECK_SET_ERR(0 != fileSize, "Result file is empty");
+
+    const bool newDocumentExists = GTUtilsProjectTreeView::checkItem(os, "test_5447_2.csv", GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(!newDocumentExists, "New document unexpectedly exists");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5447_3) {
+//    1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open the context menu on the "NC_001363 features" object in the project view.
+//    3. Select "Export/Import" -> "Export annotations..." menu item.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
+
+//    Expected state: an "Export Annotations" dialog opens, "GenBank" format is selected, there is an "Add to project" checkbox, it is enabled and checked.
+            GTComboBox::checkCurrentValue(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "GenBank");
+
+            QCheckBox *addToProjectCheck = GTWidget::findExactWidget<QCheckBox *>(os, "addToProjectCheck", dialog);
+            CHECK_SET_ERR(NULL != addToProjectCheck, "addToProjectCheck is NULL");
+            CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
+            CHECK_SET_ERR(addToProjectCheck->isEnabled(), "addToProjectCheck is not enabled");
+            CHECK_SET_ERR(addToProjectCheck->isChecked(), "addToProjectCheck is not checked by default");
+
+//    4. Select each format.
+//    Expected state: the "Add to project" checkbox becomes disabled only for CSV format.
+            const QStringList formats = GTComboBox::getValues(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog));
+            foreach (const QString &format, formats) {
+                GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), format);
+                CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
+                CHECK_SET_ERR(addToProjectCheck->isEnabled() != (format == "CSV"), QString("addToProjectCheck is unexpectedly enabled for format '%1'").arg(format));
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export annotations..."));
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, new Scenario()));
+    GTUtilsProjectTreeView::callContextMenu(os, "NC_001363 features", "murine.gb");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5469) {

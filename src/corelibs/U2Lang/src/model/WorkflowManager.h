@@ -22,20 +22,20 @@
 #ifndef _U2_WORKFLOW_MNGR_H_
 #define _U2_WORKFLOW_MNGR_H_
 
-#include <U2Lang/ActorModel.h>
+#include <assert.h>
+
+#include <QList>
+#include <QMap>
+#include <QObject>
+#include <QString>
+#include <QVariant>
+
+#include <U2Lang/Schema.h>
 #include <U2Lang/WorkflowContext.h>
 #include <U2Lang/WorkflowTransport.h>
-#include <U2Lang/Schema.h>
 
-#include <U2Core/Task.h>
 #include <U2Core/IdRegistry.h>
-
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QObject>
-#include <QtCore/QString>
-#include <QtCore/QVariant>
-#include <assert.h>
+#include <U2Core/Task.h>
 
 namespace U2 {
 

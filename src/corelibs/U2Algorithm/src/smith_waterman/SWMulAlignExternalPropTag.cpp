@@ -21,8 +21,8 @@
 
 #include "SWMulAlignExternalPropTag.h"
 
-#include <QtCore/QDate>
-#include <QtCore/QTime>
+#include <QDate>
+#include <QTime>
 
 const QString timeFormat = "hh.mm.ss";
 

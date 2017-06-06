@@ -26,7 +26,7 @@
 #include <U2Core/FeatureColors.h>
 #include <U2Core/AnnotationTableObject.h>
 
-#include <QtCore/QSet>
+#include <QSet>
 
 namespace U2 {
 

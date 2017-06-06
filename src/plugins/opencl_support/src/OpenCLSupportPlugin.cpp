@@ -21,7 +21,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <QtCore/QLibrary>
+#include <QLibrary>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>

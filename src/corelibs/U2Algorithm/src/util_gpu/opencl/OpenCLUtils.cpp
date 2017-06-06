@@ -23,8 +23,8 @@
 
 #include "OpenCLUtils.h"
 
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
+#include <QFile>
+#include <QTextStream>
 #include <U2Core/GAutoDeleteList.h>
 
 #include <U2Core/Log.h>

@@ -19,38 +19,39 @@
  * MA 02110-1301, USA.
  */
 
-#include "MuscleTask.h"
-#include "MuscleParallel.h"
-#include "MuscleAdapter.h"
-#include "MuscleConstants.h"
-#include "TaskLocalStorage.h"
+#include <QFileInfo>
 
+#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/AppSettings.h>
 #include <U2Core/AppResources.h>
-#include <U2Core/StateLockableDataModel.h>
-#include <U2Core/TaskWatchdog.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/ProjectModel.h>
-#include <U2Core/AddDocumentTask.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/DocumentUtils.h>
+#include <U2Core/IOAdapter.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/DocumentUtils.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/U2SafePoints.h>
+#include <U2Core/ProjectModel.h>
+#include <U2Core/StateLockableDataModel.h>
+#include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2Mod.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
-#include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/SimpleWorkflowTask.h>
+#include <U2Lang/WorkflowSettings.h>
 
 #include <U2Gui/OpenViewTask.h>
 
+#include "MuscleAdapter.h"
+#include "MuscleConstants.h"
+#include "MuscleParallel.h"
+#include "MuscleTask.h"
+#include "TaskLocalStorage.h"
 #include "muscle/muscle.h"
 #include "muscle/muscle_context.h"
 

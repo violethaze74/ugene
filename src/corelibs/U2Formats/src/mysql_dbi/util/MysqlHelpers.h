@@ -26,7 +26,7 @@
 #include <U2Core/U2SqlHelpers.h>
 #include <U2Core/U2Type.h>
 
-#include <QtSql/QSqlQuery>
+#include <QSqlQuery>
 
 namespace U2 {
 

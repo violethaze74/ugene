@@ -30,7 +30,7 @@
 
 #include <U2Gui/RegionSelector.h>
 
-#include <QtXml/QDomDocument>
+#include <QDomDocument>
 #include <QPrinter>
 #include <QSvgGenerator>
 

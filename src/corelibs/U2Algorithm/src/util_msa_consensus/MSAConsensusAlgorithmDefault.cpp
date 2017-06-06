@@ -22,7 +22,7 @@
 #include "MSAConsensusAlgorithmDefault.h"
 
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <QtCore/QVector>
+#include <QVector>
 
 namespace U2 {
 

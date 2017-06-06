@@ -19,21 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QClipboard>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QPlainTextEdit>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QMainWindow>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QPlainTextEdit>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QMainWindow>
-#endif
+#include <QClipboard>
+#include <QApplication>
+#include <QPushButton>
+#include <QPlainTextEdit>
+#include <QDialogButtonBox>
+#include <QMainWindow>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/U1AnnotationUtils.h>

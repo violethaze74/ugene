@@ -32,9 +32,9 @@
 #include <algorithm>
 #include <cctype>
 
-#include <QtCore/QVector>
-#include <QtCore/QMutex>
-#include <QtCore/QMutexLocker>
+#include <QVector>
+#include <QMutex>
+#include <QMutexLocker>
 
 extern "C" {
 #include "kalign2/kalign2.h"

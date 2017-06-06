@@ -26,11 +26,10 @@
 #include <U2Core/Log.h>
 #include <U2Core/Task.h>
 
-#include <QtCore/QString>
-#include <QtCore/QList>
-#include <QtCore/QObject>
-#include <QtCore/QMap>
-#include <QtXml/QtXml>
+#include <QString>
+#include <QList>
+#include <QObject>
+#include <QMap>
 
 namespace U2 {
 

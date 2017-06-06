@@ -22,7 +22,7 @@
 #ifndef _U2_SUPPORTSTRUCTURES_H_
 #define _U2_SUPPORTSTRUCTURES_H_
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 #include <U2Core/global.h>
 

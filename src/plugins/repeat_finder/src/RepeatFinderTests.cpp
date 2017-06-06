@@ -19,20 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#include "RepeatFinderTests.h"
+#include <QFile>
 
-#include "FindRepeatsTask.h"
-#include "RF_SArray_TandemFinder.h"
-#include <U2Core/DNAAlphabet.h>
+#include <U2Algorithm/SArrayBasedFindTask.h>
+#include <U2Algorithm/SArrayIndex.h>
+
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/U2SafePoints.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
-#include <U2Algorithm/SArrayIndex.h>
-#include <U2Algorithm/SArrayBasedFindTask.h>
+#include "RepeatFinderTests.h"
+#include "FindRepeatsTask.h"
+#include "RF_SArray_TandemFinder.h"
 
 namespace U2 {
 

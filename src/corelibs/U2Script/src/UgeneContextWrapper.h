@@ -22,7 +22,7 @@
 #ifndef _UGENE_CONTEXT_WRAPPER_H_
 #define _UGENE_CONTEXT_WRAPPER_H_
 
-#include <QtCore/QCoreApplication>
+#include <QCoreApplication>
 
 namespace U2 {
 

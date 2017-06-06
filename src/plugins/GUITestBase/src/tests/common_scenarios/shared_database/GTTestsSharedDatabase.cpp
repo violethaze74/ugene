@@ -20,11 +20,14 @@
  */
 
 #include <QApplication>
+#include <QDir>
+#include <QFileInfo>
 #include <QTreeWidgetItem>
 #include <QListWidget>
 
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
+#include <core/GUITest.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTLineEdit.h>
@@ -39,8 +42,6 @@
 #include <U2Core/ImportToDatabaseOptions.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
-
-#include <core/GUITest.h>
 
 #include <U2View/AnnotationsTreeView.h>
 

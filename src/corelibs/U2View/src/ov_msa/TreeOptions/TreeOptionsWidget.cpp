@@ -21,12 +21,8 @@
 
 #include <QColorDialog>
 #include <QMainWindow>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QPlastiqueStyle>
-#else
 #include <QProxyStyle>
 #include <QStyleFactory>
-#endif
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
@@ -101,11 +97,7 @@ TreeOptionsWidget::~TreeOptionsWidget()
 }
 
 void TreeOptionsWidget::initColorButtonsStyle() {
-#if (QT_VERSION < 0x050000) //Qt 5
-    QStyle *buttonStyle = new QPlastiqueStyle;
-#else
     QStyle *buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
-#endif
     buttonStyle->setParent(this);
     labelsColorButton->setStyle(buttonStyle);
     branchesColorButton->setStyle(buttonStyle);

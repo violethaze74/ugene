@@ -25,7 +25,7 @@
 #include <U2Core/U2Type.h>
 #include <U2Core/U2Region.h>
 
-#include <QtCore/QSharedData>
+#include <QSharedData>
 
 
 namespace U2 {

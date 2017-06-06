@@ -26,17 +26,10 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTCheckBox.h>
 
-#include <QtCore/QDir>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QPushButton>
-#endif
-
+#include <QDir>
+#include <QApplication>
+#include <QDialogButtonBox>
+#include <QPushButton>
 
 namespace U2 {
 

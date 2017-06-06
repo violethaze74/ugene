@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+#include <QScriptContext>
+#include <QScriptEngine>
+
 #include "GTestScriptWrapper.h"
 
 namespace U2 {

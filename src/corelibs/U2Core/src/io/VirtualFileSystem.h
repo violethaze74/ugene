@@ -26,10 +26,10 @@
 #include <U2Core/global.h>
 
 
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QByteArray>
-#include <QtCore/QMap>
+#include <QString>
+#include <QStringList>
+#include <QByteArray>
+#include <QMap>
 
 namespace U2 {
 

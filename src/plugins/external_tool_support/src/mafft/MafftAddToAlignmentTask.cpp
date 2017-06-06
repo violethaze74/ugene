@@ -19,42 +19,41 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QCoreApplication>
+#include <QDir>
 #include <QTemporaryFile>
 
-#include "MAFFTSupport.h"
-#include "MAFFTSupportTask.h"
-#include "MafftAddToAlignmentTask.h"
+#include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
+#include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
 
+#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GObjectUtils.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
-#include <U2Core/ProjectModel.h>
+#include <U2Core/MSAUtils.h>
+#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MSAUtils.h>
-#include <U2Core/IOAdapterUtils.h>
-#include <U2Core/U2SafePoints.h>
-#include <U2Core/AddDocumentTask.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/U2SafePoints.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
-
-#include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
-#include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
+#include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/OpenViewTask.h>
+
+#include "MAFFTSupport.h"
+#include "MAFFTSupportTask.h"
+#include "MafftAddToAlignmentTask.h"
 
 namespace U2 {
 
@@ -96,9 +95,10 @@ static QString generateTmpFileUrl(const QString &filePathAndPattern) {
     return result;
 }
 
-void MafftAddToAlignmentTask::prepare()
-{
+void MafftAddToAlignmentTask::prepare() {
     algoLog.info(tr("Align sequences to an existing alignment by MAFFT started"));
+
+    MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getNumRows());
 
     tmpDirUrl = ExternalToolSupportUtils::createTmpDir("add_to_alignment", stateInfo);
 
@@ -197,7 +197,7 @@ void MafftAddToAlignmentTask::run() {
     CHECK_OP(stateInfo, );
     tpm = Progress_Manual;
     SAFE_POINT(loadTmpDocumentTask != NULL, QString("Load task is NULL"), );
-    tmpDoc = QSharedPointer<Document>(loadTmpDocumentTask->takeDocument());
+    tmpDoc = QSharedPointer<Document>(loadTmpDocumentTask->takeDocument(false));
     SAFE_POINT(tmpDoc != NULL, QString("output document '%1' not loaded").arg(tmpDoc->getURLString()), );
     SAFE_POINT(tmpDoc->getObjects().length()!=0, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), );
 
@@ -239,6 +239,9 @@ void MafftAddToAlignmentTask::run() {
         }
         posInMsa++;
     }
+
+    MsaDbiUtils::trim(settings.msaRef, stateInfo);
+    CHECK_OP(stateInfo, );
 
     if (hasError()) {
         return;

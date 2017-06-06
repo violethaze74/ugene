@@ -23,7 +23,7 @@
 #define TMPDIRCHECKER_H
 
 #include <U2Core/Task.h>
-#include <QtCore/QDir>
+#include <QDir>
 
 namespace U2 {
 

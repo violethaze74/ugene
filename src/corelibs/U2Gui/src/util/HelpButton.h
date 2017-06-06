@@ -21,19 +21,13 @@
 #ifndef _U2_HELP_BUTTON_H_
 #define _U2_HELP_BUTTON_H_
 
-#include <QtCore/QString>
+#include <QAbstractButton>
+#include <QDialogButtonBox>
+#include <QMap>
+#include <QString>
+#include <QWidget>
 
 #include <U2Core/global.h>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QAbstractButton>
-#else
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QAbstractButton>
-#endif
 
 class QComboBox;
 

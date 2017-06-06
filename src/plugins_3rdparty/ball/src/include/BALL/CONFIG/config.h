@@ -4,7 +4,7 @@
 #ifndef BALL_CONFIG_CONFIG_H
 #define BALL_CONFIG_CONFIG_H
 
-#include <QtCore/QtGlobal>
+#include <QtGlobal>
 
 #ifdef _WINDOWS
 typedef signed char             int8_t;

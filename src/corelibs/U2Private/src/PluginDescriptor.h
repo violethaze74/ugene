@@ -22,6 +22,8 @@
 #ifndef _U2_PLUGINDESCRIPTOR_H_
 #define _U2_PLUGINDESCRIPTOR_H_
 
+#include <QObject>
+
 #include <U2Core/global.h>
 #include <U2Core/Version.h>
 #include <U2Core/GUrl.h>
@@ -90,7 +92,7 @@ public:
 class U2PRIVATE_EXPORT PluginDescriptorHelper: public QObject {
     Q_OBJECT
 private:
-    PluginDescriptorHelper() {};
+    PluginDescriptorHelper() {}
 public:
     static PluginDesc readPluginDescriptor(const QString& url, QString& error);
 

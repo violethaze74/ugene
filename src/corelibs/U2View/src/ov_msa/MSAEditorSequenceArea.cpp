@@ -472,7 +472,7 @@ void MSAEditorSequenceArea::sl_delCol() {
         cancelShiftTracking();
 
         MultipleSequenceAlignmentObject* msaObj = getEditor()->getMaObject();
-        int gapCount = GAP_COLUMN_ONLY;
+        int gapCount = 0;
         switch(deleteMode) {
         case DeleteByAbsoluteVal:
             gapCount = value;
@@ -486,21 +486,17 @@ void MSAEditorSequenceArea::sl_delCol() {
             break;
         }
         case DeleteAll:
-            gapCount = GAP_COLUMN_ONLY;
+            gapCount = msaObj->getNumRows();
             break;
         default:
             FAIL("Unknown delete mode", );
         }
 
-        QList<qint64> columnsToDelete = msaObj->getColumnsWithGaps(gapCount);
-        if (columnsToDelete.isEmpty()) {
-            return;
-        }
         U2OpStatus2Log os;
         U2UseCommonUserModStep userModStep(msaObj->getEntityRef(), os);
         Q_UNUSED(userModStep);
         SAFE_POINT_OP(os, );
-        msaObj->deleteColumnWithGaps(gapCount);
+        msaObj->deleteColumnWithGaps(os, gapCount);
     }
 }
 

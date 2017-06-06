@@ -31,7 +31,7 @@
 #include <QStack>
 #include <QSvgGenerator>
 #include <QVBoxLayout>
-#include <QtXml/QtXml>
+#include <QtMath>
 
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 
@@ -43,6 +43,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/PhyTree.h>
 #include <U2Core/ProjectModel.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
@@ -50,10 +51,11 @@
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/OrderedToolbar.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
-#include <U2Core/QObjectScopedPointer.h>
+#include <U2Gui/OrderedToolbar.h>
+
+#include <U2View/MSAEditorTreeViewer.h>
 
 #include "CreateBranchesTask.h"
 #include "CreateCircularBranchesTask.h"
@@ -71,8 +73,6 @@
 #include "phyltree/CreatePhyTreeDialogController.h"
 #include "phyltree/TextSettingsDialog.h"
 #include "phyltree/TreeSettingsDialog.h"
-
-#include <U2View/MSAEditorTreeViewer.h>
 
 namespace U2 {
 

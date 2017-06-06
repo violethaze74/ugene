@@ -19,14 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include "DockManagerImpl.h"
-#include "DockWidgetPainter.h"
-#include "MainWindowImpl.h"
-
-#include <task_view/TaskStatusBar.h>
+#include <QDockWidget>
+#include <QToolBar>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
+
+#include "DockManagerImpl.h"
+#include "DockWidgetPainter.h"
+#include "MainWindowImpl.h"
+#include "task_view/TaskStatusBar.h"
 
 namespace U2 {
 

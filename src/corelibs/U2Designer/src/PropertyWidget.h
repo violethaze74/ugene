@@ -34,6 +34,9 @@
 
 #include <U2Designer/URLLineEdit.h>
 
+class QStandardItem;
+class QStandardItemModel;
+
 namespace U2 {
 
 /************************************************************************/

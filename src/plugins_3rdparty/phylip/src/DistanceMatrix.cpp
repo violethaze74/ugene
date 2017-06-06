@@ -23,7 +23,7 @@
 #include "U2Core/global.h"
 #include <U2Core/DNAAlphabet.h>
 
-#include <QtCore/QSharedData>
+#include <QSharedData>
 
 #include "dnadist.h"
 #include "protdist.h"

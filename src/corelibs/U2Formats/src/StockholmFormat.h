@@ -22,7 +22,7 @@
 #ifndef _U2_STOCKHOLM_FORMAT_H_
 #define _U2_STOCKHOLM_FORMAT_H_
 
-#include <QtCore/QByteArray>
+#include <QByteArray>
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>

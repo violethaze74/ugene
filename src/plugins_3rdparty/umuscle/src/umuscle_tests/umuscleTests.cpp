@@ -19,30 +19,28 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDir>
+#include <QtMath>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObjectTypes.h>
+#include <U2Core/IOAdapter.h>
+#include <U2Core/IOAdapterUtils.h>
+#include <U2Core/LoadDocumentTask.h>
+#include <U2Core/Log.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/SaveDocumentTask.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
+
 #include "umuscleTests.h"
 #include "MuscleConstants.h"
 #include "MuscleTask.h"
 #include "MuscleParallel.h"
-
-#include <U2Core/LoadDocumentTask.h>
-#include <U2Core/SaveDocumentTask.h>
-
-#include <U2Core/DocumentModel.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
-#include <U2Core/Log.h>
-
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/DNASequenceObject.h>
-
-#include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/U2SafePoints.h>
-
-#include <QtCore/QDir>
 
 /* TRANSLATOR U2::GTest*/
 
@@ -609,7 +607,7 @@ void GTest_Muscle_Load_Align_QScore::run() {
         return;
     }
 
-    bool match = fabsl (this->qscore - qscore) < dqscore;
+    bool match = fabsl(this->qscore - qscore) < dqscore;
 
     if(!match) stateInfo.setError(  QString("qscore not matched: %1, expected %2").arg(qscore).arg(this->qscore));
 }

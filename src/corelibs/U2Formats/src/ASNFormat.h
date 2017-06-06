@@ -25,8 +25,8 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/BioStruct3D.h>
-#include <QtCore/QSharedDataPointer>
-#include <QtCore/QStack>
+#include <QSharedDataPointer>
+#include <QStack>
 
 #include "StdResidueDictionary.h"
 

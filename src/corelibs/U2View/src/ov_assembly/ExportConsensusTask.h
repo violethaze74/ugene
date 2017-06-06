@@ -24,7 +24,7 @@
 
 #include "AssemblyConsensusTask.h"
 
-#include <QtCore/QQueue>
+#include <QQueue>
 
 #include <U2Core/DocumentProviderTask.h>
 #include <U2Core/U2SequenceUtils.h>

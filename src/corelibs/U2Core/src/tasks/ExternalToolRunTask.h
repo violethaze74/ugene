@@ -25,7 +25,7 @@
 #include <U2Core/AnnotationData.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/Task.h>
-#include <QtCore/QProcess>
+#include <QProcess>
 
 
 namespace U2 {

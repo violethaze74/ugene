@@ -105,8 +105,8 @@ private:
 
 }   // namespace U2
 
-typedef QPair<int, QString> intStringPair;
-Q_DECLARE_METATYPE(intStringPair)
+typedef QPair<int, QString> intStrStrPair;
+Q_DECLARE_METATYPE(intStrStrPair)
 Q_DECLARE_METATYPE(QList<int>)
 
 #endif // _U2_NCBI_SEARCH_DIALOG_FILLER_H_

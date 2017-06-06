@@ -25,9 +25,9 @@
 #include <U2Core/global.h>
 #include <U2Core/SMatrix.h>
 
-#include <QtCore/QMutex>
-#include <QtCore/QMap>
-#include <QtCore/QStringList>
+#include <QMutex>
+#include <QMap>
+#include <QStringList>
 
 namespace U2 {
 

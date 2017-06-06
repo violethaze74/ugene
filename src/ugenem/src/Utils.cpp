@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFile>
-#include <QtCore/QProcess>
-#include <QtCore/QStringList>
+#include <QCoreApplication>
+#include <QFile>
+#include <QProcess>
+#include <QStringList>
 
 #include "Utils.h"
 

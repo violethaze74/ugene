@@ -20,15 +20,9 @@
  */
 
 #include "AliasesDialogFiller.h"
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QTableWidget>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QTableWidget>
-#endif
+#include <QApplication>
+#include <QPushButton>
+#include <QTableWidget>
 
 #include <primitives/GTWidget.h>
 #include <primitives/GTTableView.h>

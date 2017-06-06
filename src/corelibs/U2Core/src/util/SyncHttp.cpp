@@ -21,8 +21,8 @@
 
 #include "util/SyncHttp.h"
 #include <U2Core/U2SafePoints.h>
-#include <QtNetwork/QNetworkRequest>
-#include <QtCore/QTimer>
+#include <QNetworkRequest>
+#include <QTimer>
 
 namespace U2 {
 

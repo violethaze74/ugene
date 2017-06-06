@@ -20,6 +20,7 @@
  */
 
 #include <QCoreApplication>
+#include <QTranslator>
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/AssemblyConsensusAlgorithmRegistry.h>
@@ -41,7 +42,6 @@
 #include <U2Algorithm/StructuralAlignmentAlgorithmRegistry.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
 
-#include "U2Core/TmpDirChecker.h"
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppFileStorage.h>
 #include <U2Core/CMDLineCoreOptions.h>
@@ -63,6 +63,7 @@
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/TaskStarter.h>
 #include <U2Core/Timer.h>
+#include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/UdrSchemaRegistry.h>
