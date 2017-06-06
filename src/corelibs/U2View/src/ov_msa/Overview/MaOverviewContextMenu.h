@@ -22,15 +22,9 @@
 #ifndef _U2_MSA_OVERVIEW_CONTEXT_MENU_H_
 #define _U2_MSA_OVERVIEW_CONTEXT_MENU_H_
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QMenu>
-#endif
+#include <QMenu>
 
 #include "MaGraphOverview.h"
-
 
 namespace U2 {
 

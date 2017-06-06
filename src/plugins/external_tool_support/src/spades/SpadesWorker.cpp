@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedPointer>
+#include <QScopedPointer>
 
 #include <U2Algorithm/GenomeAssemblyMultiTask.h>
 
@@ -184,7 +184,7 @@ class SpadesInputSlotsValidator : public PortValidator {
 
     bool validate(const IntegralBusPort *port, ProblemList &problemList) const {
         QVariant busMap = port->getParameter(Workflow::IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributePureValue();
-        bool data = isBinded(busMap.value<QStrStrMap>(), READS_URL_SLOT_ID);
+        bool data = isBinded(busMap.value<StrStrMap>(), READS_URL_SLOT_ID);
         if (!data){
             QString dataName = slotName(port, READS_URL_SLOT_ID);
             problemList.append(Problem(IntegralBusPort::tr("The slot must be not empty: '%1'").arg(dataName)));
@@ -192,8 +192,8 @@ class SpadesInputSlotsValidator : public PortValidator {
         }
 
 
-        QString slot1Val = busMap.value<QStrStrMap>().value(READS_URL_SLOT_ID);
-        QString slot2Val = busMap.value<QStrStrMap>().value(READS_PAIRED_URL_SLOT_ID);
+        QString slot1Val = busMap.value<StrStrMap>().value(READS_URL_SLOT_ID);
+        QString slot2Val = busMap.value<StrStrMap>().value(READS_PAIRED_URL_SLOT_ID);
         U2OpStatusImpl os;
         const QList<IntegralBusSlot>& slots1 = IntegralBusSlot::listFromString(slot1Val, os);
         const QList<IntegralBusSlot>& slots2 = IntegralBusSlot::listFromString(slot2Val, os);

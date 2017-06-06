@@ -22,7 +22,7 @@
 #ifndef _U2_BREAKPOINT_CONDITION_CHECKER_H_
 #define _U2_BREAKPOINT_CONDITION_CHECKER_H_
 
-#include <QtCore/QMutex>
+#include <QMutex>
 
 #include <U2Lang/WorkflowContext.h>
 

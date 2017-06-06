@@ -29,8 +29,8 @@
 #include <U2Core/U2FeatureDbi.h>
 #include <U2Core/DNATranslation.h>
 
-#include <QtCore/QByteArray>
-#include <QtCore/QVector>
+#include <QByteArray>
+#include <QVector>
 
 namespace U2 {
 

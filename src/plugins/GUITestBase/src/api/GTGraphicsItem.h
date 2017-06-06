@@ -24,11 +24,7 @@
 
 #include <U2Core/U2OpStatus.h>
 #include "GTGlobals.h"
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsItem>
-#else
-#include <QtWidgets/QGraphicsItem>
-#endif
+#include <QGraphicsItem>
 
 namespace U2 {
 using namespace HI;

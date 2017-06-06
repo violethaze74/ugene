@@ -25,17 +25,10 @@
 #include <U2Lang/ActorModel.h>
 #include "U2Lang/LocalDomain.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QWidget>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsItem>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QGraphicsScene>
-#include <QtWidgets/QGraphicsItem>
-#endif
+#include <QAction>
+#include <QWidget>
+#include <QGraphicsScene>
+#include <QGraphicsItem>
 
 class QDomElement;
 

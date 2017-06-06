@@ -19,14 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#include "TestRunnerTask.h"
+#include <QDir>
+#include <QFileInfo>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
 #include <U2Core/Timer.h>
+
 #include <U2Test/GTestFrameworkComponents.h>
 #include <U2Test/GTest.h>
-#include <QtCore/QtAlgorithms>
+
+#include "TestRunnerTask.h"
 
 namespace U2 {
 

@@ -24,7 +24,7 @@
 
 #include <U2Core/Task.h>
 #include <U2Algorithm/BitsTable.h>
-#include <QtCore/QFile>
+#include <QFile>
 #include "GenomeAlignerIndexPart.h"
 #include "GenomeAlignerSettingsWidget.h"
 #include "GenomeAlignerFindTask.h"

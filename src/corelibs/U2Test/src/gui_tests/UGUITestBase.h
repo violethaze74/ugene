@@ -10,7 +10,6 @@
 #include <U2Gui/MainWindow.h>
 #include <U2View/ADVSingleSequenceWidget.h>
 
-#include <QtGui>
 #include <U2Test/UGUITest.h>
 
 namespace U2 {

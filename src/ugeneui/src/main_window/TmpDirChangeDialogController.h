@@ -24,14 +24,8 @@
 
 #include <ui_TmpDirChangeDialog.h>
 
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QDialog>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QDialog>
-#endif
+#include <QLabel>
+#include <QDialog>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>

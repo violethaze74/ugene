@@ -28,7 +28,7 @@
 #include <U2Lang/WorkflowDebugStatus.h>
 #include <ui_WorkflowEditorWidget.h>
 
-#include <QtGui/QShortcutEvent>
+#include <QShortcutEvent>
 
 class QSortFilterProxyModel;
 

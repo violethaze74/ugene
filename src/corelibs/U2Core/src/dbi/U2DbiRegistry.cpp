@@ -35,9 +35,9 @@
 
 #include <U2Formats/MysqlDbiUtils.h>
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFile>
-#include <QtCore/QThread>
+#include <QCoreApplication>
+#include <QFile>
+#include <QThread>
 
 namespace U2 {
 

@@ -24,13 +24,8 @@
 #include <U2Lang/ActorModel.h>
 #include "SchemaAliasesConfigurationDialogImpl.h"
 #include <U2Gui/HelpButton.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#else
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QHeaderView>
-#endif
-
+#include <QPushButton>
+#include <QHeaderView>
 
 namespace U2 {
 namespace Workflow {
@@ -50,12 +45,7 @@ SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl( cons
 
     okPushButton->setDefault(true);
     paramAliasesTableWidget->verticalHeader()->hide();
-
-#if (QT_VERSION < 0x050000) //Qt 5
-    paramAliasesTableWidget->horizontalHeader()->setClickable(false);
-#else
     paramAliasesTableWidget->horizontalHeader()->setSectionsClickable(false);
-#endif
     paramAliasesTableWidget->horizontalHeader()->setStretchLastSection( true );
 
     foreach( Actor * actor, schema.getProcesses() ) {

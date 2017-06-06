@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDomElement>
+#include <QTextStream>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 
@@ -98,11 +101,7 @@ void UnitTestSuite::prepare() {
     tests_run();
 }
 void UnitTestSuite::test_run(const QString& testName) {
-#if (QT_VERSION < 0x050000) //Qt 5
-    UnitTest* t = (UnitTest*)QMetaType::construct(QMetaType::type(testName.toStdString().c_str()));
-#else
     UnitTest* t = (UnitTest*)QMetaType::create(QMetaType::type(testName.toStdString().c_str()));
-#endif
     if (t != NULL) {
         t->SetUp();
         t->Test();

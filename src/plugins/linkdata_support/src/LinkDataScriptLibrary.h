@@ -21,9 +21,12 @@
 #ifndef _U2_LINKDATA_SCRIPT_LIBRARY_H_
 #define _U2_LINKDATA_SCRIPT_LIBRARY_H_
 
-#include <QtScript>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QAuthenticator>
+#include <QAuthenticator>
+#include <QNetworkAccessManager>
+#include <QScriptValue>
+
+class QEventLoop;
+class QScriptContext;
 
 namespace U2 {
 

@@ -22,7 +22,7 @@
 #ifndef _U2_CUSTOM_PATTERN_ANNOTATION_TASK_H_
 #define _U2_CUSTOM_PATTERN_ANNOTATION_TASK_H_
 
-#include <QtCore/QSharedPointer>
+#include <QSharedPointer>
 
 #include <U2Algorithm/SArrayBasedFindTask.h>
 #include <U2Algorithm/SArrayIndex.h>

@@ -22,7 +22,7 @@
 #ifndef _WORKFLOW_ELEMENT_FACADE_H_
 #define _WORKFLOW_ELEMENT_FACADE_H_
 
-#include <QtCore/QString>
+#include <QString>
 
 #include "globals.h"
 

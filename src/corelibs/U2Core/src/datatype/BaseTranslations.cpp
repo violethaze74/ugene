@@ -27,10 +27,10 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
 
-#include <QtCore/QDir>
-#include <QtCore/QTextStream>
+#include <QDir>
+#include <QTextStream>
 
-#include <QtCore/QXmlStreamReader>
+#include <QXmlStreamReader>
 
 namespace U2 {
 

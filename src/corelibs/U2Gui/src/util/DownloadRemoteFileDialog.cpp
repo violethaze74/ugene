@@ -19,17 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
-#include <QtXml/QXmlInputSource>
+#include <QXmlInputSource>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QMessageBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>

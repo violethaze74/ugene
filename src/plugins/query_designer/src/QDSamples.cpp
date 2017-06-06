@@ -26,9 +26,9 @@
 
 #include <U2Designer/WorkflowGUIUtils.h>
 
-#include <QtCore/QDir>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QTextDocument>
+#include <QDir>
+#include <QMouseEvent>
+#include <QTextDocument>
 
 
 Q_DECLARE_METATYPE(QTextDocument*);

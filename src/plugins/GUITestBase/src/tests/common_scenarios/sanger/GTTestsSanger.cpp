@@ -19,22 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/qglobal.h>
-
 #include <QApplication>
 #include <QCheckBox>
+#include <QFileInfo>
 #include <QLineEdit>
 #include <QSpinBox>
 
-#include "GTTestsSanger.h"
-#include "GTUtilsLog.h"
-#include "GTUtilsTaskTreeView.h"
-#include "GTUtilsProject.h"
-#include "GTUtilsProjectTreeView.h"
-
-#include <base_dialogs/MessageBoxFiller.h>
 #include <base_dialogs/GTFileDialog.h>
-
+#include <base_dialogs/MessageBoxFiller.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
@@ -42,8 +34,11 @@
 #include <primitives/GTWidget.h>
 
 #include "../../../runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
-
-
+#include "GTTestsSanger.h"
+#include "GTUtilsLog.h"
+#include "GTUtilsProject.h"
+#include "GTUtilsProjectTreeView.h"
+#include "GTUtilsTaskTreeView.h"
 
 namespace U2 {
 

@@ -19,20 +19,21 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDir>
+#include <QDomElement>
+
+#include <U2Algorithm/DnaAssemblyMultiTask.h>
+#include <U2Algorithm/DnaAssemblyTask.h>
+
 #include <U2Core/AppContext.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 
-#include <U2Formats/SAMFormat.h>
 #include <U2Formats/BAMUtils.h>
-
-
-#include <U2Algorithm/DnaAssemblyTask.h>
-#include <U2Algorithm/DnaAssemblyMultiTask.h>
+#include <U2Formats/SAMFormat.h>
 
 #include <U2View/DnaAssemblyUtils.h>
-
 
 #include "DnaAssemblyTests.h"
 

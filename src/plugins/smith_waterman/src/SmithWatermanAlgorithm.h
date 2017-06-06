@@ -27,8 +27,8 @@
 #include <U2Core/SMatrix.h>
 #include <U2Algorithm/SmithWatermanSettings.h>
 
-#include <QtCore/QVector>
-#include <QtCore/QByteArray>
+#include <QVector>
+#include <QByteArray>
 
 namespace U2 {
 

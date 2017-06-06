@@ -20,7 +20,7 @@
  */
 
 
-#include <QtCore/QEventLoop>
+#include <QEventLoop>
 
 #include <U2Core/Log.h>
 

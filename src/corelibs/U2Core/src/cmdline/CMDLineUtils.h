@@ -22,8 +22,8 @@
 #ifndef _U2_CMDLINE_UTILS_H_
 #define _U2_CMDLINE_UTILS_H_
 
-#include <QtCore/QString>
-#include <QtCore/QList>
+#include <QString>
+#include <QList>
 
 #include <U2Core/CMDLineRegistry.h>
 
@@ -45,7 +45,7 @@ public:
     static QString getCmdlineUgenePath();
 
 private:
-    static void setCMDLineParams( QList<StringPair> & to );
+    static void setCMDLineParams( QList<StrStrPair> & to );
 
 }; // CMDLineRegistryUtils
 

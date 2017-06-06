@@ -22,8 +22,8 @@
 #ifndef _U2_AUTO_ANNOTATIONS_SUPPORT_H_
 #define _U2_AUTO_ANNOTATIONS_SUPPORT_H_
 
-#include <QtCore/QMutex>
-#include <QtCore/QSet>
+#include <QMutex>
+#include <QSet>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/Task.h>

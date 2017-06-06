@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QTextStream>
+#include <QFileInfo>
+#include <QTextStream>
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GObjectTypes.h>

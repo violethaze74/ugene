@@ -26,17 +26,10 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTWidget.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QTreeWidget>
-#endif
+#include <QApplication>
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <QTreeWidget>
 
 namespace U2 {
 using namespace HI;

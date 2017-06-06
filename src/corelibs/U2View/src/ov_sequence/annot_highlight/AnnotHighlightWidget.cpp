@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QPushButton>
+
 #include "AnnotHighlightWidget.h"
 
 #include <U2Core/AnnotationSelection.h>

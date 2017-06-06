@@ -24,13 +24,8 @@
 
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
-#include <QtCore/QObject>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#else
-#include <QtWidgets/QAction>
-#endif
-
+#include <QObject>
+#include <QAction>
 
 namespace U2 {
 

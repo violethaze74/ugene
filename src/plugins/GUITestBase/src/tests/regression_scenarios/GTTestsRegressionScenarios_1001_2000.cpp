@@ -28,6 +28,7 @@
 #include <QPlainTextEdit>
 #include <QProgressBar>
 #include <QPushButton>
+#include <QStandardItemModel>
 #include <QTableWidget>
 #include <QWebElement>
 #include <QWebFrame>

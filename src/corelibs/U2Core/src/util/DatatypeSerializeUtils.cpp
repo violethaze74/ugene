@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QBitArray>
-#include <QtCore/QHash>
-#include <QtCore/QStack>
-#include <QtCore/QtEndian>
+#include <QBitArray>
+#include <QHash>
+#include <QStack>
+#include <QtEndian>
 
 #include <U2Core/StringAdapter.h>
 #include <U2Core/TextUtils.h>

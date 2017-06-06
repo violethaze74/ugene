@@ -24,10 +24,10 @@
 
 #include <U2Core/U2FeatureType.h>
 
-#include <QtCore/QMultiMap>
-#include <QtCore/QVector>
-#include <QtCore/QMutex>
-#include <QtGui/QColor>
+#include <QMultiMap>
+#include <QVector>
+#include <QMutex>
+#include <QColor>
 
 namespace U2 {
 

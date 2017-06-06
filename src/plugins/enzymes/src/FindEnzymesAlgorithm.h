@@ -34,8 +34,8 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/AppContext.h>
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
+#include <QObject>
+#include <QList>
 
 namespace U2 {
 

@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDir>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/PasswordStorage.h>
 #include <U2Core/Settings.h>

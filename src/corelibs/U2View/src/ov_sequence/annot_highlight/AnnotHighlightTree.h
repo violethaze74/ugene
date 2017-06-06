@@ -22,12 +22,7 @@
 #ifndef _U2_ANNOT_HIGHLIGHT_TREE_H_
 #define _U2_ANNOT_HIGHLIGHT_TREE_H_
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QtGui>
-#else
-#include <QtWidgets/QtWidgets>
-#endif
+#include <QTreeWidget>
 
 namespace U2 {
 

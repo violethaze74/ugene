@@ -22,7 +22,7 @@
 #ifndef _U2_IMPORT_TO_DATABASE_DIALOG_FILLER_H_
 #define _U2_IMPORT_TO_DATABASE_DIALOG_FILLER_H_
 
-#include <QtCore/QPointer>
+#include <QPointer>
 
 #include "utils/GTUtilsDialog.h"
 

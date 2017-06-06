@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QTextStream>
+
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>

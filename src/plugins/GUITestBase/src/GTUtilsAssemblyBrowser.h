@@ -22,7 +22,6 @@
 #ifndef _U2_GT_UTILS_ASSEMBLY_BROWSER_H_
 #define _U2_GT_UTILS_ASSEMBLY_BROWSER_H_
 
-#include <QtGlobal>
 #include <QModelIndex>
 #include <GTGlobals.h>
 

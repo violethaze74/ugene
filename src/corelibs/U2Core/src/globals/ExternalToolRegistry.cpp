@@ -41,6 +41,10 @@ ExternalTool::ExternalTool(QString _name, QString _path) : name(_name), path(_pa
 ExternalTool::~ExternalTool() {
 }
 
+const QVariantMap &ExternalTool::getAdditionalInfo() const {
+    return additionalInfo;
+}
+
 void ExternalTool::setPath(const QString& _path) {
     if (path!=_path) {
         path=_path;
@@ -53,6 +57,10 @@ void ExternalTool::setValid(bool _isValid){
 }
 void ExternalTool::setVersion(const QString& _version) {
     version=_version;
+}
+
+void ExternalTool::setAdditionalInfo(const QVariantMap &newAdditionalInfo) {
+    additionalInfo = newAdditionalInfo;
 }
 
 ExternalToolValidation ExternalTool::getToolValidation() {
@@ -161,7 +169,7 @@ ExternalToolValidation DefaultExternalToolValidations::pythonValidation(){
     QStringList pythonArgs;
     pythonArgs << "--version";
     QString pmsg = "Python";
-    QStrStrMap perrMsgs;
+    StrStrMap perrMsgs;
     perrMsgs.insert(ExternalToolValidation::DEFAULT_DESCR_KEY, "Python 2 required for this tool. Please install Python or set your PATH variable if you have it installed.");
 
     ExternalToolValidation pythonValidation("", pythonExecutable, pythonArgs, pmsg, perrMsgs);
@@ -173,7 +181,7 @@ ExternalToolValidation DefaultExternalToolValidations::rValidation(){
     QStringList rArgs;
     rArgs << "--version";
     QString rmsg = "R";
-    QStrStrMap rerrMsgs;
+    StrStrMap rerrMsgs;
     rerrMsgs.insert(ExternalToolValidation::DEFAULT_DESCR_KEY, "R Script required for this tool. Please install R Script or set your PATH variable if you have it installed.");
 
     ExternalToolValidation rValidation("", rExecutable, rArgs, rmsg, rerrMsgs);

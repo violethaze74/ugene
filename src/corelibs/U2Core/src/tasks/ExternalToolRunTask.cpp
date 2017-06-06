@@ -35,8 +35,8 @@
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QDir>
-#include <QtCore/QCoreApplication>
+#include <QDir>
+#include <QCoreApplication>
 
 #ifdef Q_OS_WIN
 #include <windows.h>

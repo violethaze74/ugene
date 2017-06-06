@@ -22,7 +22,6 @@
 #ifndef _U2_MSA_UPDATED_WIDGET_INTERFACE_H_
 #define _U2_MSA_UPDATED_WIDGET_INTERFACE_H_
 
-#include <qglobal.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include "MSAEditor.h"
 

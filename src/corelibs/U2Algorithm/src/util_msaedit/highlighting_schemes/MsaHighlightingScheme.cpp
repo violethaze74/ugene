@@ -20,6 +20,7 @@
  */
 
 #include <QColor>
+#include <QVariantMap>
 
 #include "MsaHighlightingScheme.h"
 #include "MsaHighlightingSchemeAgreements.h"

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
+#include <QDir>
 
 #include "FastqcSupport.h"
 #include "FastqcTask.h"

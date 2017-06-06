@@ -28,13 +28,8 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/HelpButton.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#include <QtGui/QToolButton>
-#else
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QToolButton>
-#endif
+#include <QPushButton>
+#include <QToolButton>
 
 namespace U2 {
 

@@ -22,7 +22,7 @@
 #ifndef _U2_GORIV_ALG_TASK_H_
 #define _U2_GORIV_ALG_TASK_H_
 
-#include <QtCore/QMutex>
+#include <QMutex>
 #include <U2Algorithm/SecStructPredictTask.h>
 
 

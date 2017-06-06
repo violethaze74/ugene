@@ -31,8 +31,8 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/L10n.h>
 
-#include <QtCore/QVector>
-#include <QtCore/QCoreApplication>
+#include <QVector>
+#include <QCoreApplication>
 
 /* TRANSLATOR U2::TaskSchedulerImpl */
 

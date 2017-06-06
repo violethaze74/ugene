@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
@@ -101,10 +101,10 @@ WorkflowRunFromCMDLineBase::~WorkflowRunFromCMDLineBase() {
 static void setSchemaCMDLineOptions( Schema * schema, int optionsStartAtIdx ) {
     assert( schema != NULL && optionsStartAtIdx > 0 );
 
-    QList<StringPair> parameters = AppContext::getCMDLineRegistry()->getParameters();
+    QList<StrStrPair> parameters = AppContext::getCMDLineRegistry()->getParameters();
     int sz = parameters.size();
     for( int i = optionsStartAtIdx; i < sz; ++i ) {
-        const StringPair & param = parameters.at(i);
+        const StrStrPair & param = parameters.at(i);
         if( param.first.isEmpty() ) { // TODO: unnamed parameters not supported yet
             continue;
         }

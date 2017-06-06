@@ -22,8 +22,8 @@
 #ifndef _U2_PROJECTUPDATER_H_
 #define _U2_PROJECTUPDATER_H_
 
-#include <QtCore/QThread>
-#include <QtCore/QMutex>
+#include <QThread>
+#include <QMutex>
 
 #include <U2Core/U2Type.h>
 

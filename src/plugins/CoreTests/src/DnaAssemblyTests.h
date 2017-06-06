@@ -22,7 +22,7 @@
 #ifndef _U2_DNA_ASSEMBLY_TESTS_H_
 #define _U2_DNA_ASSEMBLY_TESTS_H_
 
-#include <QtCore/QList>
+#include <QList>
 
 #include <U2Test/XMLTestUtils.h>
 #include <U2Core/GUrl.h>

@@ -19,16 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-#include "LinkDataScriptLibrary.h"
+#include <QEventLoop>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 
-#include <U2Core/Log.h>
-#include <U2Core/NetworkConfiguration.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/Log.h>
+#include <U2Core/NetworkConfiguration.h>
+
 #include <U2Lang/WorkflowScriptEngine.h>
 
-#include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
+#include "LinkDataScriptLibrary.h"
 
 namespace U2 {
 

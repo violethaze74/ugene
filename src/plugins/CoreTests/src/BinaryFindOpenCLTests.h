@@ -24,7 +24,7 @@
 
 #ifdef OPENCL_SUPPORT
 
-#include <QtCore/QVector>
+#include <QVector>
 
 #include <U2Algorithm/BinaryFindOpenCL.h>
 

@@ -19,20 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/GObject.h>
+#include <QTemporaryFile>
+
 #include <U2Core/AppContext.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNATranslation.h>
+#include <U2Core/DocumentUtils.h>
+#include <U2Core/GObject.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/DNATranslation.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/GUrlUtils.h>
-#include <U2Core/DocumentUtils.h>
-
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
-#include "ImportQualityScoresTask.h"
 #include "DNAExportPluginTests.h"
+#include "ImportQualityScoresTask.h"
 
 namespace U2 {
 

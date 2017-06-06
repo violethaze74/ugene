@@ -283,11 +283,9 @@ QStringList ImportToDatabaseDialog::getFilesToImport() {
 
     QFileDialog::Options additionalOptions;
     Q_UNUSED(additionalOptions);
-#if defined(Q_OS_MAC) || (QT_VERSION >= 0x050000)
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         additionalOptions = QFileDialog::DontUseNativeDialog;
     }
-#endif
 
     const QStringList fileList = U2FileDialog::getOpenFileNames(this,
                                                                tr("Select files to import"),

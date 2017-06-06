@@ -28,8 +28,6 @@
 #include "DbiClassPrototype.h"
 
 #include <QObject>
-#include <QtScript>
-
 namespace U2 {
 
 /************************************************************************/

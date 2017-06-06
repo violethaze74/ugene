@@ -28,7 +28,7 @@
 
 #include <U2Core/DNASequenceObject.h>
 
-#include <QtCore/QFile>
+#include <QFile>
 
 namespace U2 {
 

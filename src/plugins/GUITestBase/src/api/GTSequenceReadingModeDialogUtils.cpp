@@ -26,19 +26,11 @@
 #include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTWidget.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QWidget>
+#include <QApplication>
+#include <QWidget>
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QPushButton>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QPushButton>
-#endif
 #include <primitives/GTRadioButton.h>
 
 #define SEPARATE_MODE "separateMode"

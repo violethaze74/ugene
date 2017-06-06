@@ -22,8 +22,8 @@
 #ifndef _U2_MSAEDITOR_TREE_MANAGER_H_
 #define _U2_MSAEDITOR_TREE_MANAGER_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
+#include <QObject>
+#include <QPointer>
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 #include <U2Core/PhyTree.h>
 

@@ -21,7 +21,7 @@ win32-msvc2013 {
     LIBS += -lzlib
 }
 
-QT += sql
+QT += sql widgets
 
 # Force re-linking when lib changes
 unix:POST_TARGETDEPS += ../../_release/libsamtools.a

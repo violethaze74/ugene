@@ -25,7 +25,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/U2SequenceUtils.h>

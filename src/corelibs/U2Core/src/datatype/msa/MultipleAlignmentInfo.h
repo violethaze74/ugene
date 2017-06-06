@@ -23,6 +23,7 @@
 #define _U2_MULTIPLE_ALIGNMENT_INFO_H_
 
 #include <QString>
+#include <QVariantMap>
 
 #include <U2Core/global.h>
 

@@ -24,7 +24,7 @@
 
 #include <U2Test/XMLTestUtils.h>
 #include <U2Core/GObject.h>
-#include <QtXml/QDomElement>
+#include <QDomElement>
 #include <U2Core/U2Region.h>
 #include <U2View/AnnotatedDNAView.h>
 #include <U2Algorithm/ORFAlgorithmTask.h>

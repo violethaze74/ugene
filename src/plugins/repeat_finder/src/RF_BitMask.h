@@ -20,9 +20,8 @@
  */
 
 #include <cstdlib>
-#include <qglobal.h>
 #include <cstring>
-#include <QtCore/QString>
+#include <QString>
 #include <U2Core/Log.h>
 
 // Attention! Works correctly only on little-endian systems!

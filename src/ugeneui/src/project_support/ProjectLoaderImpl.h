@@ -30,12 +30,6 @@
 #include <U2Gui/WelcomePageAction.h>
 #include <assert.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QtGui>
-#else
-#include <QtWidgets/QtWidgets>
-#endif
-
 namespace U2 {
 
 #define SETTINGS_DIR QString("project_loader/")

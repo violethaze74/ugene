@@ -179,7 +179,7 @@ QList<GenbankPlainTextFormat::StrPair> VectorNtiSequenceFormat::processCommentKe
 }
 
 void VectorNtiSequenceFormat::createCommentAnnotation(const QStringList &comments, int sequenceLength, AnnotationTableObject *annTable) const {
-    const QStrStrMap parsedComments = parseComments(comments);
+    const StrStrMap parsedComments = parseComments(comments);
     CHECK(!parsedComments.isEmpty(), );
 
     SharedAnnotationData f(new AnnotationData);
@@ -217,9 +217,9 @@ QString VectorNtiSequenceFormat::getFeatureTypeString(U2FeatureType featureType,
     }
 }
 
-QStrStrMap VectorNtiSequenceFormat::parseComments(const QStringList &comments) const {
+StrStrMap VectorNtiSequenceFormat::parseComments(const QStringList &comments) const {
     // TODO: not all comment keys are precessed
-    QStrStrMap result;
+    StrStrMap result;
     int commentsCounter = 1;
 
     foreach (const QString &comment, comments) {
@@ -390,7 +390,7 @@ void VectorNtiSequenceFormat::prepareQualifiersToWrite(QMap<AnnotationGroup *, Q
 
 const QString VectorNtiSequenceFormat::vntiCreationDateKey = "VNTDATE";
 const QString VectorNtiSequenceFormat::vntiModificationDateKey = "VNTDBDATE";
-const QStrStrMap VectorNtiSequenceFormat::vntiMetaKeys = VectorNtiSequenceFormat::initVntiMetaKeys();
+const StrStrMap VectorNtiSequenceFormat::vntiMetaKeys = VectorNtiSequenceFormat::initVntiMetaKeys();
 const QMap<U2FeatureType, VectorNtiSequenceFormat::VntiDnaFeatureTypes> VectorNtiSequenceFormat::dnaFeatureTypesMap
     = VectorNtiSequenceFormat::initDnaFeatureTypesMap();
 const QMap<U2FeatureType, VectorNtiSequenceFormat::VntiProteinFeatureTypes> VectorNtiSequenceFormat::proteinFeatureTypesMap
@@ -404,8 +404,8 @@ const QString VectorNtiSequenceFormat::DEFAULT_FEATURE_TYPE_NAME
 const QString VectorNtiSequenceFormat::QUALIFIER_LABEL = "label";
 const QString VectorNtiSequenceFormat::VNTIFKEY_QUALIFIER_NAME = "vntifkey";
 
-QStrStrMap VectorNtiSequenceFormat::initVntiMetaKeys() {
-    QStrStrMap vntiMetaKeys;
+StrStrMap VectorNtiSequenceFormat::initVntiMetaKeys() {
+    StrStrMap vntiMetaKeys;
     vntiMetaKeys["LSOWNER"]                 = "Owner";
     vntiMetaKeys["VNTNAME"]                 = "Object name";
     vntiMetaKeys["VNTAUTHORNAME"]           = "Author name";

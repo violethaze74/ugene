@@ -22,8 +22,8 @@
 #ifndef _U2_INPUT_WIDGETS_CONTROLLERS_H
 #define _U2_INPUT_WIDGETS_CONTROLLERS_H
 
-#include <QtCore/QStringList>
-#include <QtCore/QVariant>
+#include <QStringList>
+#include <QVariant>
 
 #include <U2Core/global.h>
 

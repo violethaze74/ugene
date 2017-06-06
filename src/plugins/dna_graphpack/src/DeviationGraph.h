@@ -26,14 +26,10 @@
 
 #include <U2View/GSequenceGraphView.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#else
-#include <QtWidgets/QAction>
-#endif
-#include <QtCore/QList>
-#include <QtCore/QBitArray>
-#include <QtCore/QPair>
+#include <QAction>
+#include <QList>
+#include <QBitArray>
+#include <QPair>
 
 namespace U2 {
 

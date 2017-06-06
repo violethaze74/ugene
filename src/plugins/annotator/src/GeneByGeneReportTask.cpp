@@ -25,8 +25,8 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Counter.h>
 
-#include <QtCore/QFile>
-#include <QtCore/QSet>
+#include <QFile>
+#include <QSet>
 
 namespace U2 {
 //////////////////////////////////////////////////////////////////////////

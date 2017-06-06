@@ -23,11 +23,7 @@
 #define _U2_TREE_WIDGET_UTILS_H_
 
 #include <U2Core/global.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTreeWidget>
-#else
-#include <QtWidgets/QTreeWidget>
-#endif
+#include <QTreeWidget>
 
 namespace U2{
 

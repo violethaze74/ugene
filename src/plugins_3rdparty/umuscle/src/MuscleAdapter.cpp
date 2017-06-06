@@ -33,7 +33,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <algorithm>
-#include <QtCore/QVector>
+#include <QVector>
 
 
 namespace U2 {

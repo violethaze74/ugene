@@ -24,19 +24,11 @@
 #include <primitives/GTWidget.h>
 #include <primitives/GTCheckBox.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QComboBox>
-#include <QtGui/QCheckBox>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QDialogButtonBox>
-#endif
+#include <QApplication>
+#include <QPushButton>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QDialogButtonBox>
 
 namespace U2 {
 

@@ -22,6 +22,8 @@
 #ifndef _U2_DNA_SEQUENCE_H_
 #define _U2_DNA_SEQUENCE_H_
 
+#include <QVariantMap>
+
 #include "DNAInfo.h"
 #include "DNAQuality.h"
 

@@ -22,7 +22,7 @@
 #ifndef _U2_DNA_STAT_PROFILE_TASK_H_
 #define _U2_DNA_STAT_PROFILE_TASK_H_
 
-#include <QtCore/QVector>
+#include <QVector>
 #include <U2Core/Task.h>
 
 namespace U2 {

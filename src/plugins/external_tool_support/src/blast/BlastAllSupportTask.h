@@ -38,8 +38,8 @@
 
 #include "utils/BlastTaskSettings.h"
 
-#include <QtXml/QDomNode>
-#include <QtXml/QDomDocument>
+#include <QDomNode>
+#include <QDomDocument>
 
 namespace U2 {
 

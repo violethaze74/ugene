@@ -34,14 +34,8 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/FailTask.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
-
-#include <QtCore/QFileInfo>
-
+#include <QApplication>
+#include <QFileInfo>
 
 namespace U2 {
 

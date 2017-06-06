@@ -26,7 +26,7 @@
 #undef DELETE
 #endif
 
-#include <QtCore/QFlags>
+#include <QFlags>
 
 #include "utils/GTUtilsDialog.h"
 #include <base_dialogs/GTFileDialog.h>

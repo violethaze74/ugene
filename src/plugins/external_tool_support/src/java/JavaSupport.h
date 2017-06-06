@@ -43,7 +43,12 @@ private slots:
     void sl_toolValidationStatusChanged(bool isValid);
 
 private:
-    Architecture architecture;
+    static QString architecture2string(Architecture architecture);
+    static Architecture string2architecture(const QString &string);
+
+    static const QString ARCHITECTURE;
+    static const QString ARCHITECTURE_X32;
+    static const QString ARCHITECTURE_X64;
 };
 
 } // U2

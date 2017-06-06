@@ -22,6 +22,8 @@
 #ifndef _U2_IOADAPTER_H_
 #define _U2_IOADAPTER_H_
 
+#include <QObject>
+
 #include <U2Core/global.h>
 #include <U2Core/GUrl.h>
 
@@ -51,8 +53,6 @@ public:
     virtual TriState isResourceAvailable(const GUrl& url) const = 0;
 
 };
-
-
 
 class U2CORE_EXPORT IOAdapter : public QObject {
     Q_OBJECT

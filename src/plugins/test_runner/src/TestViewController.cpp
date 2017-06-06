@@ -20,6 +20,7 @@
  */
 
 #include <QDialogButtonBox>
+#include <QDomDocument>
 #include <QFormLayout>
 #include <QHBoxLayout>
 #include <QLineEdit>
@@ -33,10 +34,10 @@
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Log.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2Test/GTest.h>

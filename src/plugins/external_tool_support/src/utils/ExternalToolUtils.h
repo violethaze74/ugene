@@ -22,7 +22,7 @@
 #ifndef _U2_EXTERNAL_TOOL_UTILS_H_
 #define _U2_EXTERNAL_TOOL_UTILS_H_
 
-#include <QtCore/QString>
+#include <QString>
 
 namespace U2 {
 

@@ -47,7 +47,7 @@ public:
     CMDLineRegistry(const QStringList& arguments);
     virtual ~CMDLineRegistry();
 
-    const QList<StringPair> & getParameters() const;
+    const QList<StrStrPair> & getParameters() const;
     // as they were in cmdline. Empty keys also here
     QStringList getOrderedParameterNames() const;
 
@@ -62,7 +62,7 @@ public:
     const QList<CMDLineHelpProvider* >& listCMDLineHelpProviders() const { return helpProviders; }
 
 private:
-    QList<StringPair>                   params; // pairs (paramName, paramValue) ordered as in the cmdline
+    QList<StrStrPair>                   params; // pairs (paramName, paramValue) ordered as in the cmdline
     QList<CMDLineHelpProvider* >        helpProviders; // sorted by section name
 
 }; // CMDLineRegistry

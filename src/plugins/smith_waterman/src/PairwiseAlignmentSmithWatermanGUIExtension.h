@@ -27,17 +27,10 @@
 
 #include <U2View/AlignmentAlgorithmGUIExtension.h>
 
-#include <QtCore/QVariantMap>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#include <QtGui/QComboBox>
-#include <QtGui/QDoubleSpinBox>
-#else
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QDoubleSpinBox>
-#endif
+#include <QVariantMap>
+#include <QWidget>
+#include <QComboBox>
+#include <QDoubleSpinBox>
 
 namespace U2 {
 

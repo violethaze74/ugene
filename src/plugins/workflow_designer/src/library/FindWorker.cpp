@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDebug>
 #include <QScopedPointer>
 
 #include <U2Algorithm/FindAlgorithmTask.h>
@@ -106,7 +107,7 @@ private:
         Workflow::Port* p = a->getPort(BasePorts::IN_SEQ_PORT_ID());
         SAFE_POINT(NULL != p, "NULL port", false);
         QVariant busMap = p->getParameter(Workflow::IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributePureValue();
-        QString slotValue = busMap.value<QStrStrMap>().value(BaseSlots::TEXT_SLOT().getId());
+        QString slotValue = busMap.value<StrStrMap>().value(BaseSlots::TEXT_SLOT().getId());
         return !slotValue.isEmpty();
     }
 };

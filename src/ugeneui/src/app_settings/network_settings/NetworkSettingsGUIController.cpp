@@ -20,7 +20,7 @@
  */
 
 #include "NetworkSettingsGUIController.h"
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>

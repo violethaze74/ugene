@@ -25,7 +25,7 @@
 #include "MSAConsensusAlgorithm.h"
 #include "BuiltInConsensusAlgorithms.h"
 
-#include <QtCore/QVarLengthArray>
+#include <QVarLengthArray>
 
 namespace U2 {
 

@@ -22,7 +22,7 @@
 #ifndef __U2_WORKFLOW_BASE_PORTS_H_
 #define __U2_WORKFLOW_BASE_PORTS_H_
 
-#include <QtCore/QString>
+#include <QString>
 #include <U2Core/global.h>
 
 namespace U2 {

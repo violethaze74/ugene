@@ -154,7 +154,7 @@ void ActorPrototype::addExternalTool(const QString &toolId, const QString &param
     externalTools[toolId] = paramId;
 }
 
-const QStrStrMap & ActorPrototype::getExternalTools() const {
+const StrStrMap & ActorPrototype::getExternalTools() const {
     return externalTools;
 }
 

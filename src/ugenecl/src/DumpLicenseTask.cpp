@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineRegistry.h>

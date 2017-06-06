@@ -22,12 +22,7 @@
 #ifndef _U2_OVERVIEW_H_
 #define _U2_OVERVIEW_H_
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QToolButton>
-#else
-#include <QtWidgets/QToolButton>
-#endif
+#include <QToolButton>
 
 #include <U2Core/Annotation.h>
 #include <U2Core/AnnotationGroup.h>

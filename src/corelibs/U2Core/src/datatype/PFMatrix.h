@@ -27,9 +27,9 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/DNASequence.h>
 
-#include <QtCore/QVarLengthArray>
-#include <QtCore/QList>
-#include <QtCore/QMap>
+#include <QVarLengthArray>
+#include <QList>
+#include <QMap>
 
 namespace U2 {
 

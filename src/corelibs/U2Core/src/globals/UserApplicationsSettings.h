@@ -22,6 +22,8 @@
 #ifndef _U2_USER_APPLICATIONS_SETTINGS_H_
 #define _U2_USER_APPLICATIONS_SETTINGS_H_
 
+#include <QObject>
+
 #include <U2Core/global.h>
 #include <U2Core/U2OpStatus.h>
 

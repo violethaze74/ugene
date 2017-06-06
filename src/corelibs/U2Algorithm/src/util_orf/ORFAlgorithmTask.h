@@ -28,7 +28,7 @@
 
 #include "ORFFinder.h"
 
-#include <QtCore/QMutex>
+#include <QMutex>
 
 namespace U2 {
 

@@ -22,7 +22,7 @@
 #ifndef __SHTIRLITZ_H__
 #define __SHTIRLITZ_H__
 
-#include <QtCore/QUuid>
+#include <QUuid>
 #include <U2Core/Task.h>
 
 namespace U2{

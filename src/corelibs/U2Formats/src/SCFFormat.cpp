@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
-#include <QtCore/QVarLengthArray>
+#include <QFile>
+#include <QVarLengthArray>
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNAChromatogramObject.h>

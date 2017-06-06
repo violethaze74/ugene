@@ -24,8 +24,8 @@
 
 #include <U2Lang/QDConstraint.h>
 
-#include <QtCore/QPair>
-#include <QtCore/QString>
+#include <QPair>
+#include <QString>
 
 
 namespace U2 {

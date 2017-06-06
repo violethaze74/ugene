@@ -22,15 +22,9 @@
 #ifndef _U2_DIGEST_SEQUENCE_DIALOG_H_
 #define _U2_DIGEST_SEQUENCE_DIALOG_H_
 
-#include <QtCore/QTimer>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTreeWidget>
-#include <QtGui/QTreeWidgetItem>
-#else
-#include <QtWidgets/QTreeWidget>
-#include <QtWidgets/QTreeWidgetItem>
-#endif
+#include <QTimer>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 
 #include <U2Algorithm/EnzymeModel.h>
 

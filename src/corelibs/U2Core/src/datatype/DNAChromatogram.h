@@ -22,7 +22,7 @@
 #ifndef _U2_DNA_CHROMATOGRAM_H_
 #define _U2_DNA_CHROMATOGRAM_H_
 
-#include <QtCore/QVector>
+#include <QVector>
 #include <U2Core/global.h>
 
 namespace U2 {

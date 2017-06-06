@@ -22,7 +22,7 @@
 #ifndef _U2_ORF_MARKER_TASK_H_
 #define _U2_ORF_MARKER_TASK_H_
 
-#include <QtCore/QPointer>
+#include <QPointer>
 
 #include <U2Algorithm/ORFAlgorithmTask.h>
 #include <U2Core/AutoAnnotationsSupport.h>

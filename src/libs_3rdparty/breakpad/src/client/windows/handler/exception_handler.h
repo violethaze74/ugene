@@ -69,8 +69,6 @@
 #include <string>
 #include <vector>
 
-#include <qglobal.h>
-
 #include "client/windows/common/ipc_protocol.h"
 #include "client/windows/crash_generation/crash_generation_client.h"
 #include "common/scoped_ptr.h"

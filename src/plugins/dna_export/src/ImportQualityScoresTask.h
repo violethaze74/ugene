@@ -22,10 +22,11 @@
 #ifndef _U2_IMPORT_QUALITY_SCORES_TASK_H_
 #define _U2_IMPORT_QUALITY_SCORES_TASK_H_
 
-#include <U2Core/Task.h>
-#include <U2Core/DNAQuality.h>
+#include <QMap>
+#include <QPointer>
 
-#include <QtCore/QPointer>
+#include <U2Core/DNAQuality.h>
+#include <U2Core/Task.h>
 
 namespace U2 {
 
@@ -41,7 +42,6 @@ public:
     QString             dstFileName;
 
 };
-
 
 class ReadQualityScoresTask : public Task {
     Q_OBJECT

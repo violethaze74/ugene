@@ -22,8 +22,8 @@
 #ifndef _U2_BIOSTRUCT3D_TUBE_RENDERER_H_
 #define _U2_BIOSTRUCT3D_TUBE_RENDERER_H_
 
-#include <QtCore/QSharedDataPointer>
-#include <QtCore/QVector>
+#include <QSharedDataPointer>
+#include <QVector>
 #include <U2Core/BioStruct3D.h>
 
 #include "BioStruct3DGLRender.h"

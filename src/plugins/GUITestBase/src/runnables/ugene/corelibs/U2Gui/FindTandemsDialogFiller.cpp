@@ -24,17 +24,10 @@
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTLineEdit.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QAbstractButton>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QPushButton>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QAbstractButton>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QPushButton>
-#endif
+#include <QApplication>
+#include <QAbstractButton>
+#include <QDialogButtonBox>
+#include <QPushButton>
 
 namespace U2 {
 

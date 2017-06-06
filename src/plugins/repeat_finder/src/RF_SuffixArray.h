@@ -23,7 +23,6 @@
 #define _RF_SUFFIX_ARRAY_H_
 
 #include "RF_BitMask.h"
-#include <QtCore/QtGlobal>
 #include <ctime>
 
 // Attention! Currently constructs suffix array sorted by prefix up to 32 symbols in length

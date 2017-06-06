@@ -24,7 +24,7 @@
 
 #include <U2Core/U2Sequence.h>
 #include <U2Core/U2Range.h>
-#include <QtCore/QSharedData>
+#include <QSharedData>
 
 
 namespace U2 {

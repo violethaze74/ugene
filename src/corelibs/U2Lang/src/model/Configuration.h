@@ -22,11 +22,12 @@
 #ifndef _U2_WORKFLOW_CONFIGURATION_H_
 #define _U2_WORKFLOW_CONFIGURATION_H_
 
+#include "Attribute.h"
 #include "ConfigurationValidator.h"
-#include "ConfigurationEditor.h"
 
 namespace U2 {
 
+class ConfigurationEditor;
 
 /**
  * Set of named attributes

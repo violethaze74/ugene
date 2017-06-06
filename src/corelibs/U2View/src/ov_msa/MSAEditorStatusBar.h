@@ -22,9 +22,9 @@
 #ifndef _U2_MSA_EDITOR_STATUS_BAR_H_
 #define _U2_MSA_EDITOR_STATUS_BAR_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QVector>
-#include <QtCore/QEvent>
+#include <QObject>
+#include <QVector>
+#include <QEvent>
 
 #include <QLabel>
 #include <QLineEdit>

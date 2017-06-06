@@ -216,11 +216,7 @@ WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry* reg, QW
     setMouseTracking(true);
     setColumnCount(1);
     header()->hide();
-#if (QT_VERSION < 0x050000) //Qt 5
-    header()->setResizeMode(QHeaderView::Stretch);
-#else
     header()->setSectionResizeMode(QHeaderView::Stretch);
-#endif
 
     //setTextElideMode (Qt::ElideMiddle);
     setContent(reg);

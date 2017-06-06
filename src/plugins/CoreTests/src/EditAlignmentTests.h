@@ -28,7 +28,7 @@
 #include <U2Test/GTest.h>
 #include <U2Test/XMLTestUtils.h>
 
-#include <QtXml/QDomElement>
+#include <QDomElement>
 
 #include <U2Algorithm/CreateSubalignmentTask.h>
 

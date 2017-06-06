@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QBuffer>
+#include <QBuffer>
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNAInfo.h>

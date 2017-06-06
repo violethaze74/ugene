@@ -27,15 +27,9 @@
 
 #include "GTUtilsTaskTreeView.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QDialogButtonBox>
-#endif
+#include <QApplication>
+#include <QPushButton>
+#include <QDialogButtonBox>
 
 namespace U2 {
 

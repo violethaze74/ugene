@@ -23,7 +23,7 @@
 
 #include <U2Core/TextUtils.h>
 #include <U2Core/DNAAlphabet.h>
-#include <QtCore/QDateTime>
+#include <QDateTime>
 
 namespace U2 {
 

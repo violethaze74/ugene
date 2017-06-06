@@ -24,11 +24,7 @@
 #include <U2Core/Counter.h>
 #include <U2Core/Timer.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QVBoxLayout>
-#else
-#include <QtWidgets/QVBoxLayout>
-#endif
+#include <QVBoxLayout>
 
 #ifdef Q_OS_LINUX
 #include <stdio.h>

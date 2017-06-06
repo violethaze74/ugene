@@ -22,11 +22,12 @@
 #ifndef _U2_WORKFLOW_UTILS_H_
 #define _U2_WORKFLOW_UTILS_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QVariant>
+#include <QObject>
+#include <QProcess>
+#include <QVariant>
+
 #include <U2Lang/Dataset.h>
 #include <U2Lang/Descriptor.h>
-#include <U2Lang/ActorModel.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/Schema.h>
 #include <U2Lang/SupportClass.h>
@@ -36,6 +37,7 @@
 class QListWidgetItem;
 
 namespace U2 {
+
 class Descriptor;
 class DocumentFormat;
 class Folder;
@@ -68,7 +70,7 @@ public:
     static QList<Descriptor> findMatchingCandidates(DataTypePtr from, DataTypePtr to, const Descriptor & key);
     static QList<Descriptor> findMatchingCandidates(DataTypePtr from, DataTypePtr elementDatatype);
     static Descriptor getCurrentMatchingDescriptor(const QList<Descriptor> & candidates, DataTypePtr to, const Descriptor & key,
-        const QStrStrMap & bindings);
+        const StrStrMap & bindings);
     static DataTypePtr getToDatatypeForBusport(IntegralBusPort * p);
     static DataTypePtr getFromDatatypeForBusport(IntegralBusPort * p, DataTypePtr to);
 
@@ -91,9 +93,9 @@ public:
 
     static bool validateSchemaForIncluding(const Schema &s, QString &error);
 
-    static void extractPathsFromBindings(QStrStrMap &busMap, SlotPathMap &pathMap);
+    static void extractPathsFromBindings(StrStrMap &busMap, SlotPathMap &pathMap);
 
-    static void applyPathsToBusMap(QStrStrMap &busMap, const SlotPathMap &pathMap);
+    static void applyPathsToBusMap(StrStrMap &busMap, const SlotPathMap &pathMap);
 
     static bool startExternalProcess(QProcess *process, const QString &program, const QStringList &arguments);
 
@@ -240,4 +242,3 @@ protected:
 }//namespace
 
 #endif
-

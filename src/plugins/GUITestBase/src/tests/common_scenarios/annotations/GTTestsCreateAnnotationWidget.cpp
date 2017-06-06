@@ -21,32 +21,34 @@
 
 #include <QApplication>
 #include <QAbstractItemModel>
+#include <QDir>
 #include <QListWidget>
 #include <QTreeView>
 
-#include "GTTestsCreateAnnotationWidget.h"
-#include "GTUtilsAnnotationsTreeView.h"
-#include "utils/GTUtilsDialog.h"
-#include "GTUtilsMdi.h"
-#include "GTUtilsOptionPanelSequenceView.h"
-#include "GTUtilsProjectTreeView.h"
-#include "GTUtilsTaskTreeView.h"
+#include <base_dialogs/GTFileDialog.h>
+#include <base_dialogs/MessageBoxFiller.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
-#include <base_dialogs/GTFileDialog.h>
-#include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
-#include "primitives/GTMenu.h"
-#include <drivers/GTMouseDriver.h>
+#include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
+#include <utils/GTUtilsDialog.h>
+
+#include "GTTestsCreateAnnotationWidget.h"
+#include "GTUtilsAnnotationsTreeView.h"
+#include "GTUtilsMdi.h"
+#include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsProjectTreeView.h"
+#include "GTUtilsTaskTreeView.h"
 #include "runnables/qt/EscapeClicker.h"
-#include <base_dialogs/MessageBoxFiller.h>
-#include "primitives/PopupChooser.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"

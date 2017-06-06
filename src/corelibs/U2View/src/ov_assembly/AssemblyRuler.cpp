@@ -22,9 +22,9 @@
 
 #include <math.h>
 
-#include <QtCore/QLine>
-#include <QtGui/QPainter>
-#include <QtGui/QMouseEvent>
+#include <QLine>
+#include <QPainter>
+#include <QMouseEvent>
 
 #include <U2Core/FormatUtils.h>
 

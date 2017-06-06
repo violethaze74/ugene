@@ -25,7 +25,7 @@
 #include <U2Core/GUrl.h>
 #include <ui_BuildIndexFromRefDialog.h>
 
-#include <QtCore/QVariant>
+#include <QVariant>
 
 namespace U2 {
 

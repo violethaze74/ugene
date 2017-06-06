@@ -21,8 +21,8 @@
 
 #include "AssemblyReferenceArea.h"
 
-#include <QtGui/QPainter>
-#include <QtGui/QMouseEvent>
+#include <QPainter>
+#include <QMouseEvent>
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 

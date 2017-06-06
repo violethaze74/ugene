@@ -31,7 +31,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Core/TextUtils.h>
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <math.h>
 

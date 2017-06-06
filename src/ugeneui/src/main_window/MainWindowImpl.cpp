@@ -27,7 +27,9 @@
 #include <algorithm>
 
 #include <QAction>
+#include <QDesktopServices>
 #include <QFont>
+#include <QMessageBox>
 #include <QPainter>
 #include <QPixmap>
 #include <QToolBar>
@@ -39,6 +41,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/ProjectModel.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Task.h>
 #include <U2Core/TmpDirChecker.h>
@@ -47,7 +50,6 @@
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/ObjectViewModel.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include "AboutDialogController.h"
 #include "CheckUpdatesTask.h"
@@ -58,8 +60,8 @@
 #include "ShutdownTask.h"
 #include "TmpDirChangeDialogController.h"
 #include "ToolBarManager.h"
-#include "update/UgeneUpdater.h"
 #include "shtirlitz/Shtirlitz.h"
+#include "update/UgeneUpdater.h"
 
 namespace U2 {
 

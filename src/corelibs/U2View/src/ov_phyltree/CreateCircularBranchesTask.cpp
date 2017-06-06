@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QStack>
+#include <QStack>
 
 #include "CreateCircularBranchesTask.h"
 #include "GraphicsCircularBranchItem.h"

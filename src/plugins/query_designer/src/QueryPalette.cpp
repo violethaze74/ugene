@@ -144,11 +144,7 @@ QueryPalette::QueryPalette(QWidget* parent/* =NULL */)
     setRootIsDecorated(false);
     setColumnCount(1);
     header()->hide();
-#if (QT_VERSION < 0x050000)
-    header()->setResizeMode(QHeaderView::Stretch);
-#else
     header()->setSectionResizeMode(QHeaderView::Stretch);
-#endif
     setMouseTracking(true);
     setContent();
     setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored));

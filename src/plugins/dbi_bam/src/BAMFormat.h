@@ -26,7 +26,7 @@
 #include <U2Core/GUrl.h>
 #include <U2Core/U2FormatCheckResult.h>
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 
 namespace U2 {

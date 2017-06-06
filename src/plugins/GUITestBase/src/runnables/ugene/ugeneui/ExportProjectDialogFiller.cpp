@@ -23,17 +23,10 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTWidget.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QAbstractButton>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QAbstractButton>
-#include <QtWidgets/QDialogButtonBox>
-#endif
+#include <QApplication>
+#include <QPushButton>
+#include <QAbstractButton>
+#include <QDialogButtonBox>
 
 namespace U2 {
 using namespace HI;

@@ -22,9 +22,9 @@
 #ifndef _U2_BIOSTRUCT3D_MOLECULAR_SURFACE_H_
 #define _U2_BIOSTRUCT3D_MOLECULAR_SURFACE_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QVector>
-#include <QtCore/QString>
+#include <QObject>
+#include <QVector>
+#include <QString>
 #include <limits>
 
 #include <U2Core/Task.h>

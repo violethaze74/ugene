@@ -1,9 +1,9 @@
 #ifndef SSPRED_AVPRED_H
 #define SSPRED_AVPRED_H
 
-#include <QtCore/QVector>
-#include <QtCore/QByteArray>
-#include <QtCore/QStringList>
+#include <QVector>
+#include <QByteArray>
+#include <QStringList>
 
 #include "ssdefs.h"
 

@@ -22,7 +22,7 @@
 #ifndef _U2_FILES_ITERATOR_
 #define _U2_FILES_ITERATOR_
 
-#include <QtCore/QDir>
+#include <QDir>
 
 #include <U2Core/global.h>
 

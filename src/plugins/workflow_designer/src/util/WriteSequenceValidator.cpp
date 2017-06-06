@@ -69,7 +69,7 @@ bool WriteSequenceValidator::isAnnotationsBinded(const Actor *actor) const {
     SAFE_POINT(NULL != p, "NULL port", false);
     Attribute *attr = p->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID);
     SAFE_POINT(NULL != attr, "NULL busmap attribute", false);
-    QStrStrMap busMap = attr->getAttributeValueWithoutScript<QStrStrMap>();
+    StrStrMap busMap = attr->getAttributeValueWithoutScript<StrStrMap>();
     QString bindData = busMap.value(BaseSlots::ANNOTATION_TABLE_SLOT().getId(), "");
     return !bindData.isEmpty();
 }

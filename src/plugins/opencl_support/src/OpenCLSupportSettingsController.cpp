@@ -19,16 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
-#include <QtGui/QCheckBox>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLayout>
-#include <QtWidgets/QCheckBox>
-#endif
+#include <QLabel>
+#include <QLayout>
+#include <QCheckBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Algorithm/OpenCLGpuRegistry.h>

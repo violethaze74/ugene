@@ -37,8 +37,8 @@ namespace Workflow {
  */
 class U2LANG_EXPORT BusMap {
 public:
-    BusMap(const QStrStrMap &busMap, const QMap<QString, QStringList> &listMap, const SlotPathMap &paths);
-    BusMap(const QStrStrMap &busMap, bool breaksDataflow, const QString &actorId);
+    BusMap(const StrStrMap &busMap, const QMap<QString, QStringList> &listMap, const SlotPathMap &paths);
+    BusMap(const StrStrMap &busMap, bool breaksDataflow, const QString &actorId);
 
     Message takeMessageMap(CommunicationChannel *ch, QVariantMap &context);
     Message lookMessageMap(CommunicationChannel *ch);
@@ -50,7 +50,7 @@ public:
 private:
     bool input;
 
-    QStrStrMap busMap;
+    StrStrMap busMap;
     QMap<QString, QStringList> listMap;
     SlotPathMap paths;
 

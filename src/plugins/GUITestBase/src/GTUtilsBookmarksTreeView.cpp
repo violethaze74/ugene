@@ -19,14 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include "qglobal.h"
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMainWindow>
-#include <QtGui/QTreeWidget>
-#else
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QTreeWidget>
-#endif
+#include <QMainWindow>
+#include <QTreeWidget>
 
 #include <U2Core/ProjectModel.h>
 

@@ -26,7 +26,7 @@
 
 #include "OpenCLHelper.h"
 
-#include <QtCore/QString>
+#include <QString>
 
 namespace U2 {
 

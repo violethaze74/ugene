@@ -19,9 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include "LoadRemoteDocumentTests.h"
+#include <QDomElement>
 
 #include <U2Core/LoadRemoteDocumentTask.h>
+
+#include "LoadRemoteDocumentTests.h"
 
 #define DB_ATTR "database"
 #define DOC_ID_ATTR "document_id"

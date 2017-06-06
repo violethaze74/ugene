@@ -36,7 +36,7 @@
 #include <QSplitter>
 
 #ifdef Q_OS_UNIX
-#include <QtCore/QTimer>
+#include <QTimer>
 #endif // Q_OS_UNIX
 
 

@@ -24,9 +24,9 @@
 
 #include <U2Core/Log.h>
 
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
-#include <QtCore/QReadWriteLock>
+#include <QFile>
+#include <QFileInfo>
+#include <QReadWriteLock>
 
 namespace U2 {
 

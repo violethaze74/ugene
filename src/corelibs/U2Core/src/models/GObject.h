@@ -22,9 +22,9 @@
 #ifndef _U2_GOBJECT_H_
 #define _U2_GOBJECT_H_
 
-#include <QtCore/QMimeData>
-#include <QtCore/QMutex>
-#include <QtCore/QPointer>
+#include <QMimeData>
+#include <QMutex>
+#include <QPointer>
 
 #include <U2Core/global.h>
 #include "StateLockableDataModel.h"

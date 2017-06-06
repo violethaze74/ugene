@@ -22,7 +22,7 @@
 #ifndef _UMUSCLE_TASK_LOCAL_STORAGE_
 #define _UMUSCLE_TASK_LOCAL_STORAGE_
 
-#include <QtCore/QThreadStorage>
+#include <QThreadStorage>
 
 class MuscleContext;
 

@@ -19,14 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-#include "PluginViewerController.h"
+#include <QMessageBox>
 
 #include <U2Core/AppContext.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Task.h>
+
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
+
 #include <PluginDescriptor.h>
+
+#include "PluginViewerController.h"
 
 namespace U2 {
 

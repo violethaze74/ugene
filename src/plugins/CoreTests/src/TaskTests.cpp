@@ -19,10 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include "TaskTests.h"
+#include <QThread>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Task.h>
+
+#include "TaskTests.h"
 
 namespace U2 {
 

@@ -22,9 +22,9 @@
 #ifndef _U2_FEATURE_H_
 #define _U2_FEATURE_H_
 
-#include <QtCore/QSharedData>
-#include <QtCore/QStringList>
-#include <QtCore/QVector>
+#include <QSharedData>
+#include <QStringList>
+#include <QVector>
 
 #include <U2Core/U2FeatureType.h>
 #include <U2Core/U2Region.h>

@@ -21,13 +21,8 @@
 
 #include "TCoffeeDailogFiller.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDialogButtonBox>
-#endif
+#include <QApplication>
+#include <QDialogButtonBox>
 
 #include <primitives/GTWidget.h>
 #include <primitives/GTCheckBox.h>

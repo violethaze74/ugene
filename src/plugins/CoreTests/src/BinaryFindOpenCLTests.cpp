@@ -21,11 +21,12 @@
 
 #ifdef OPENCL_SUPPORT
 
-#include "BinaryFindOpenCLTests.h"
+#include <QDomElement>
+#include <QStringList>
 
 #include <U2Core/AppContext.h>
 
-#include <QtCore/QStringList>
+#include "BinaryFindOpenCLTests.h"
 
 namespace U2 {
 

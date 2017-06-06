@@ -19,14 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include "QDScheme.h"
-#include "QDConstraint.h"
-
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/Log.h>
 
 #include <U2Lang/SupportClass.h>
 
+#include "ConfigurationEditor.h"
+#include "QDConstraint.h"
+#include "QDScheme.h"
 
 namespace U2 {
 
@@ -851,6 +851,11 @@ QDAttributeValueMapper::ValueType QDAttributeValueMapper::getType(const QString&
     else {
         return UNKNOWN_TYPE;
     }
+}
+
+QDActorPrototype::~QDActorPrototype() {
+    qDeleteAll(attributes);
+    delete editor;
 }
 
 }//namespace

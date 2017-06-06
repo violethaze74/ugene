@@ -19,19 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include "AnnotatorTests.h"
+#include <QDir>
 #include <QStringList>
 
-#include <U2Core/DNASequence.h>
-
-#include <U2Core/DocumentModel.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/GObject.h>
 #include <U2Core/AnnotationTableObject.h>
-#include <U2Core/GObjectTypes.h>
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNASequence.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObject.h>
+#include <U2Core/GObjectTypes.h>
 #include <U2Core/U2OpStatusUtils.h>
+
 #include <U2Test/GTestFrameworkComponents.h>
+
+#include "AnnotatorTests.h"
 
 /* TRANSLATOR U2::GTest */
 

@@ -29,7 +29,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Core/DocumentModel.h>
-#include <QtCore/QDir>
+#include <QDir>
 
 namespace U2 {
 

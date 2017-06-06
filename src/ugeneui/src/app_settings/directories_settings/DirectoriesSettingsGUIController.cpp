@@ -19,15 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QStyleFactory>
-#else
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QStyleFactory>
-#endif
+#include <QFile>
+#include <QDialogButtonBox>
+#include <QStyleFactory>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>

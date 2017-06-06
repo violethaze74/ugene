@@ -37,7 +37,7 @@
 #include <U2Formats/BAMUtils.h>
 #include <U2Formats/SAMFormat.h>
 
-#include <QtCore/QSharedPointer>
+#include <QSharedPointer>
 
 #include "ConvertAssemblyToSamTask.h"
 

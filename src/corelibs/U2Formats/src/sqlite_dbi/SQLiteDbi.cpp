@@ -39,7 +39,7 @@
 #include <U2Core/Version.h>
 #include <U2Core/GUrl.h>
 
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <3rdparty/sqlite3/sqlite3.h>
 

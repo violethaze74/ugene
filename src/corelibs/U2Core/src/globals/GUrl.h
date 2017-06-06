@@ -22,6 +22,8 @@
 #ifndef _U2_GURL_H_
 #define _U2_GURL_H_
 
+#include <QMetaType>
+
 #include <U2Core/global.h>
 
 namespace U2 {

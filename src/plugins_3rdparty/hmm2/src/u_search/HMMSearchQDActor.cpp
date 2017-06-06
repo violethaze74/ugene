@@ -19,15 +19,17 @@
  * MA 02110-1301, USA.
  */
 
+#include <math.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
-
 #include <U2Designer/DelegateEditors.h>
+
+#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/BaseTypes.h>
 

@@ -30,7 +30,7 @@
 #include <U2Core/DNASequence.h>
 #include <U2Core/AnnotationData.h>
 
-#include <QtCore/QMutex>
+#include <QMutex>
 
 namespace U2 {
 

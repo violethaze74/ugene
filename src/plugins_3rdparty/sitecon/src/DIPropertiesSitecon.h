@@ -22,9 +22,9 @@
 #ifndef _U2_DI_PROPERTIES_SITECON_H_
 #define _U2_DI_PROPERTIES_SITECON_H_
 
-#include <QtCore/QMap>
-#include <QtCore/QList>
-#include <QtCore/QString>
+#include <QMap>
+#include <QList>
+#include <QString>
 
 #include <U2Core/DIProperties.h>
 

@@ -24,9 +24,9 @@
 
 #include <assert.h>
 
-#include <QtCore/QSharedPointer>
-#include <QtCore/QByteArray>
-#include <QtCore/QListIterator>
+#include <QSharedPointer>
+#include <QByteArray>
+#include <QListIterator>
 #include <U2Core/U2Dbi.h>
 #include <U2Core/U2Assembly.h>
 #include <U2Core/AssemblyObject.h>

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtSql/QSqlError>
+#include <QSqlError>
 
 #include <U2Core/Log.h>
 #include <U2Core/U2DbiUtils.h>

@@ -26,8 +26,8 @@
 #include <U2Core/GObjectReference.h>
 #include <U2Core/DocumentProviderTask.h>
 
-#include <QtCore/QPointer>
-#include <QtCore/QVariantMap>
+#include <QPointer>
+#include <QVariantMap>
 
 namespace U2 {
 

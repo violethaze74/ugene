@@ -21,7 +21,7 @@
 
 #include <U2Algorithm/SecStructPredictTask.h>
 #include "SecStructPredictAlgRegistry.h"
-#include <QtCore/QStringList>
+#include <QStringList>
 
 namespace U2 {
 

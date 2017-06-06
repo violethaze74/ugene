@@ -19,27 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#include "SiteconIO.h"
-#include "DIPropertiesSitecon.h"
-#include "SiteconMath.h"
-#include "SiteconPlugin.h"
+#include <QFile>
+#include <QFileInfo>
+#include <QTextStream>
+#include <QVector>
+#include <QtMath>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-
-#include <U2Core/TextUtils.h>
 #include <U2Core/SaveDocumentTask.h>
+#include <U2Core/TextUtils.h>
 
 #include <U2Gui/DialogUtils.h>
 
-#include <QtCore/QVector>
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
-#include <QtCore/QTextStream>
-#include <QtCore/qmath.h>
+#include "DIPropertiesSitecon.h"
+#include "SiteconIO.h"
+#include "SiteconMath.h"
+#include "SiteconPlugin.h"
 
 /* TRANSLATOR U2::IOAdapter */
 

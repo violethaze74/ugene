@@ -22,6 +22,8 @@
 #ifndef _U2_RAW_DATA_CHECK_H_
 #define _U2_RAW_DATA_CHECK_H_
 
+#include <QVariantMap>
+
 namespace U2 {
 
 // Result of the format detection algorithm

@@ -2,7 +2,7 @@
 #define _U2_UHMM_SEARCH_H_
 
 #include <U2Core/U2Region.h>
-#include <QtCore/QObject>
+#include <QObject>
 #include <float.h>
 
 struct plan7_s;

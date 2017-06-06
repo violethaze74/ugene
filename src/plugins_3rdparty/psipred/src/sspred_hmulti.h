@@ -1,8 +1,8 @@
 #ifndef SSPRED_HMULTI_H
 #define SSPRED_HMULTI_H
 
-#include <QtCore/QVector>
-#include <QtCore/QByteArray>
+#include <QVector>
+#include <QByteArray>
 #include "ssdefs.h"
 
 class QTemporaryFile;

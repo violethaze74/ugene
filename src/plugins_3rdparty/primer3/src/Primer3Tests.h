@@ -25,7 +25,7 @@
 #include <U2Core/global.h>
 #include <U2Test/XMLTestUtils.h>
 #include <U2Core/GObject.h>
-#include <QtXml/QDomElement>
+#include <QDomElement>
 #include "Primer3Task.h"
 
 namespace U2 {

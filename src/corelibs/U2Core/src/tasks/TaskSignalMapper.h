@@ -22,7 +22,7 @@
 #ifndef _U2_TASK_MAPPER_H_
 #define _U2_TASK_MAPPER_H_
 
-#include <QtCore/QObject>
+#include <QObject>
 
 #include <U2Core/global.h>
 

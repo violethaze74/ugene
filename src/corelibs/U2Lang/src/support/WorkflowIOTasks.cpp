@@ -19,9 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
-#include <QtXml/QDomDocument>
+#include <QFile>
+#include <QTextStream>
+#include <QDomDocument>
 
 #include <U2Core/Log.h>
 #include <U2Core/L10n.h>

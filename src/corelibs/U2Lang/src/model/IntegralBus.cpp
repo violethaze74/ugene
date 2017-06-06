@@ -39,12 +39,12 @@ namespace Workflow {
 static const QString PATH_SEPARATOR = QString(">");
 static const QString PATH_LIST_SEPARATOR = QString(",");
 
-BusMap::BusMap(const QStrStrMap &busMap, const QMap<QString, QStringList> &listMap, const SlotPathMap &paths)
+BusMap::BusMap(const StrStrMap &busMap, const QMap<QString, QStringList> &listMap, const SlotPathMap &paths)
 : input(true), busMap(busMap), listMap(listMap), paths(paths)
 {
 }
 
-BusMap::BusMap(const QStrStrMap &busMap, bool breaksDataflow, const QString &actorId)
+BusMap::BusMap(const StrStrMap &busMap, bool breaksDataflow, const QString &actorId)
 : input(false), busMap(busMap), breaksDataflow(breaksDataflow), actorId(actorId)
 {
 }
@@ -182,8 +182,8 @@ QVariantMap BusMap::composeMessageMap(const Message &m, const QVariantMap &conte
 /* IntegralBus */
 /************************************************************************/
 
-static QMap<QString, QStringList> getListMappings(const QStrStrMap& busMap, const SlotPathMap &pathMap, const Port* p) {
-    QStrStrMap bm = busMap;
+static QMap<QString, QStringList> getListMappings(const StrStrMap& busMap, const SlotPathMap &pathMap, const Port* p) {
+    StrStrMap bm = busMap;
     WorkflowUtils::applyPathsToBusMap(bm, pathMap);
     assert(p->isInput());
     DataTypePtr dt = p->getType();
@@ -215,7 +215,7 @@ IntegralBus::IntegralBus(Port* p)
             return;
         }
 
-        QStrStrMap map = a->getAttributeValueWithoutScript<QStrStrMap>();
+        StrStrMap map = a->getAttributeValueWithoutScript<StrStrMap>();
         if (map.isEmpty()) {
             ActorPrototype *proto = p->owner()->getProto();
             assert(proto->isAllowsEmptyPorts());
@@ -232,7 +232,7 @@ IntegralBus::IntegralBus(Port* p)
         QMap<QString, QStringList> listMap = getListMappings(map, pathMap, p);
         busMap = new BusMap(map, listMap, pathMap);
     } else { // p is output
-        QStrStrMap map;
+        StrStrMap map;
         IntegralBusPort* bp = qobject_cast<IntegralBusPort*>(p);
         DataTypePtr t = bp ? bp->getOwnType() : p->getType();
         if (t->isMap()) {

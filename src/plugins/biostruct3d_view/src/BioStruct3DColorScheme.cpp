@@ -31,8 +31,7 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectUtils.h>
 
-#include <QtCore/QObject>
-#include <QtAlgorithms>
+#include <QObject>
 
 namespace U2 {
 

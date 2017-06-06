@@ -24,7 +24,7 @@
 
 #include <U2Core/Matrix44.h>
 
-#include <QtCore/QVariantList>
+#include <QVariantList>
 
 class QOpenGLWidget;
 

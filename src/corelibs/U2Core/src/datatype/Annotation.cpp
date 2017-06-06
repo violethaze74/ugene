@@ -521,11 +521,7 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
             } else {
                 tip += "<br>";
             }
-#if (QT_VERSION >= 0x050000)
             tip += "<b>" + q.name.toHtmlEscaped() + "</b> = " + val.toHtmlEscaped();
-#else
-            tip += "<b>" + Qt::escape(q.name) + "</b> = " + Qt::escape(val);
-#endif
         }
         tip += "</nobr>";
     }
@@ -599,24 +595,14 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
             tip += "<br>";
         }
         SAFE_POINT(!seqVal.isEmpty(), "Empty sequence detected!", QString());
-#if (QT_VERSION >= 0x050000)
         tip += "<nobr><b>" + QObject::tr("Sequence") + "</b> = " + seqVal.toHtmlEscaped()
             + "</nobr>";
-#else
-        tip += "<nobr><b>" + QObject::tr("Sequence") + "</b> = " + Qt::escape(seqVal)
-            + "</nobr>";
-#endif
         rows++;
 
         if (rows <= maxRows && NULL != aminoTT) {
             tip += "<br>";
-#if (QT_VERSION >= 0x050000)
             tip += "<nobr><b>" + QObject::tr("Translation") + "</b> = "
                 + aminoVal.toHtmlEscaped() + "</nobr>";
-#else
-            tip += "<nobr><b>" + QObject::tr("Translation") + "</b> = " + Qt::escape(aminoVal)
-                + "</nobr>";
-#endif
         }
     }
     return tip;

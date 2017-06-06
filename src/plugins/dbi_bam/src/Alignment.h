@@ -24,10 +24,10 @@
 
 #include <U2Core/U2Assembly.h>
 
-#include <QtCore/QFlags>
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QVariant>
+#include <QFlags>
+#include <QList>
+#include <QMap>
+#include <QVariant>
 
 namespace U2 {
 namespace BAM {

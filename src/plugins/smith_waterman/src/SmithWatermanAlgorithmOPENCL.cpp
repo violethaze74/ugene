@@ -28,9 +28,9 @@
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QString>
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
+#include <QString>
+#include <QFile>
+#include <QTextStream>
 
 #include <U2Algorithm/OpenCLUtils.h>
 #include <U2Algorithm/OpenCLHelper.h>

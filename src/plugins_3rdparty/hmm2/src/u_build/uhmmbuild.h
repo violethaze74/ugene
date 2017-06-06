@@ -4,8 +4,8 @@
 struct plan7_s;
 struct msa_struct;
 
-#include <QtCore/QString>
-#include <QtCore/QObject>
+#include <QString>
+#include <QObject>
 
 namespace U2 {
 

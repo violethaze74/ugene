@@ -46,6 +46,7 @@ namespace U2 {
 #define PREFIX_EXTERNAL_TOOL_PATH SETTINGS + "exToolPath"
 #define PREFIX_EXTERNAL_TOOL_IS_VALID SETTINGS + "exToolIsValid"
 #define PREFIX_EXTERNAL_TOOL_VERSION SETTINGS + "exToolVersion"
+#define PREFIX_EXTERNAL_TOOL_ADDITIONAL_INFO SETTINGS + "exToolAdditionalInfo"
 #define TEMPORY_DIRECTORY SETTINGS + "temporyDirectory"
 
 Watcher* const ExternalToolSupportSettings::watcher = new Watcher;
@@ -65,8 +66,9 @@ bool ExternalToolSupportSettings::getExternalTools() {
     int numberExternalTools=getNumberExternalTools();
     QString name;
     QString path;
-    bool isValid;
+    bool isValid = false;
     QString version;
+    QVariantMap additionalInfo;
     for(int i=0; i<numberExternalTools;i++){
         name=AppContext::getSettings()->getValue(PREFIX_EXTERNAL_TOOL_NAME + QString::number(i), QVariant(""), true).toString();
         path=AppContext::getSettings()->getValue(PREFIX_EXTERNAL_TOOL_PATH + QString::number(i), QVariant(""), true).toString();
@@ -76,10 +78,12 @@ bool ExternalToolSupportSettings::getExternalTools() {
         }
         isValid=AppContext::getSettings()->getValue(PREFIX_EXTERNAL_TOOL_IS_VALID + QString::number(i), QVariant(false), true).toBool();
         version=AppContext::getSettings()->getValue(PREFIX_EXTERNAL_TOOL_VERSION + QString::number(i), QVariant("unknown"), true).toString();
+        additionalInfo = AppContext::getSettings()->getValue(PREFIX_EXTERNAL_TOOL_ADDITIONAL_INFO + QString::number(i), QVariantMap(), true).toMap();
         if(AppContext::getExternalToolRegistry()->getByName(name) != NULL){
             AppContext::getExternalToolRegistry()->getByName(name)->setPath(path);
             AppContext::getExternalToolRegistry()->getByName(name)->setVersion(version);
             AppContext::getExternalToolRegistry()->getByName(name)->setValid(isValid);
+            AppContext::getExternalToolRegistry()->getByName(name)->setAdditionalInfo(additionalInfo);
         }
     }
     prevNumberExternalTools = numberExternalTools;
@@ -93,8 +97,9 @@ void ExternalToolSupportSettings::setExternalTools() {
     setNumberExternalTools(numberExternalTools);
     QString name;
     QString path;
-    bool isValid;
+    bool isValid = false;
     QString version;
+    QVariantMap additionalInfo;
     int numberIterations=numberExternalTools >= prevNumberExternalTools ? numberExternalTools : prevNumberExternalTools;
     for(int i=0; i<numberIterations;i++){
         if(i<numberExternalTools){
@@ -102,15 +107,18 @@ void ExternalToolSupportSettings::setExternalTools() {
             path = ExternalToolList.at(i)->getPath();
             isValid = ExternalToolList.at(i)->isValid();
             version = ExternalToolList.at(i)->getVersion();
+            additionalInfo = ExternalToolList.at(i)->getAdditionalInfo();
             AppContext::getSettings()->setValue(PREFIX_EXTERNAL_TOOL_NAME + QString::number(i), name, true);
             AppContext::getSettings()->setValue(PREFIX_EXTERNAL_TOOL_PATH + QString::number(i), path, true);
             AppContext::getSettings()->setValue(PREFIX_EXTERNAL_TOOL_IS_VALID + QString::number(i), isValid, true);
             AppContext::getSettings()->setValue(PREFIX_EXTERNAL_TOOL_VERSION + QString::number(i), version, true);
+            AppContext::getSettings()->setValue(PREFIX_EXTERNAL_TOOL_ADDITIONAL_INFO + QString::number(i), additionalInfo, true);
         }else{
             AppContext::getSettings()->remove(PREFIX_EXTERNAL_TOOL_NAME + QString::number(i));
             AppContext::getSettings()->remove(PREFIX_EXTERNAL_TOOL_PATH + QString::number(i));
             AppContext::getSettings()->remove(PREFIX_EXTERNAL_TOOL_IS_VALID + QString::number(i));
             AppContext::getSettings()->remove(PREFIX_EXTERNAL_TOOL_VERSION + QString::number(i));
+            AppContext::getSettings()->remove(PREFIX_EXTERNAL_TOOL_ADDITIONAL_INFO + QString::number(i));
         }
     }
     prevNumberExternalTools = numberExternalTools;

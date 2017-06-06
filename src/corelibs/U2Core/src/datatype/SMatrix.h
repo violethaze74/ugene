@@ -25,7 +25,7 @@
 #include <U2Core/global.h>
 #include <U2Core/DNAAlphabet.h>
 
-#include <QtCore/QVarLengthArray>
+#include <QVarLengthArray>
 
 namespace U2 {
 

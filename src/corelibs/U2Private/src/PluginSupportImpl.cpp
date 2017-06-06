@@ -30,10 +30,10 @@
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QLibrary>
-#include <QtCore/QDir>
-#include <QtCore/QSet>
+#include <QCoreApplication>
+#include <QLibrary>
+#include <QDir>
+#include <QSet>
 
 #include <U2Gui/MainWindow.h>
 

@@ -21,7 +21,7 @@
 
 #include <math.h>
 
-#include <QtCore/QTextStream>
+#include <QTextStream>
 
 #include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>

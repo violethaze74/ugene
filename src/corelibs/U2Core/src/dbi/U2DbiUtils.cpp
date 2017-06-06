@@ -302,7 +302,7 @@ QStringList U2DbiUtils::unpackStringList(const QString &string) {
     return unpackedList;
 }
 
-QString U2DbiUtils::packMap(const QStrStrMap &map) {
+QString U2DbiUtils::packMap(const StrStrMap &map) {
     QString string;
     foreach (const QString &key, map.keys()) {
         string += wrapString(escapeCharacters(key)) + PAIR_CONNECTOR + wrapString(escapeCharacters(map[key])) + MAP_SEPARATOR;
@@ -311,8 +311,8 @@ QString U2DbiUtils::packMap(const QStrStrMap &map) {
     return string;
 }
 
-QStrStrMap U2DbiUtils::unpackMap(const QString &string) {
-    QStrStrMap map;
+StrStrMap U2DbiUtils::unpackMap(const QString &string) {
+    StrStrMap map;
     foreach (const QString &pair, string.split(mapSeparatorRegExp, QString::SkipEmptyParts)) {
         const QStringList splittedPair = pair.split(pairSeparatorRegExp, QString::SkipEmptyParts);
         Q_ASSERT(splittedPair.size() <= 2);

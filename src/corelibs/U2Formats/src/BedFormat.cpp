@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedArrayPointer>
-#include <QtCore/QScopedPointer>
+#include <QScopedArrayPointer>
+#include <QScopedPointer>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AnnotationTableObject.h>

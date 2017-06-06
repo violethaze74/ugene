@@ -24,7 +24,6 @@
 
 #include <U2Core/CmdlineTaskRunner.h>
 #include <U2Lang/WorkflowManager.h>
-#include <U2Lang/WorkflowDebugStatus.h>
 
 namespace U2 {
 
@@ -71,7 +70,7 @@ class U2LANG_EXPORT WorkflowRunTask : public WorkflowAbstractRunner {
     Q_OBJECT
 public:
     WorkflowRunTask(const Schema&, const ActorMap& rmap = ActorMap(),
-        WorkflowDebugStatus *debugInfo = new WorkflowDebugStatus());
+        WorkflowDebugStatus *debugInfo = NULL);
     virtual QList<WorkerState> getState(Actor*);
     virtual int getMsgNum(const Link*);
     virtual int getMsgPassed(const Link*);

@@ -24,9 +24,9 @@
 
 #include <cassert>
 
-#include <QtCore/QVariant>
-#include <QtScript/QScriptValue>
-#include <QtScript/QScriptEngine>
+#include <QVariant>
+#include <QScriptValue>
+#include <QScriptEngine>
 
 #include <U2Core/Task.h>
 #include <U2Core/ScriptTask.h>

@@ -19,17 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
-
-#include <QtGui/QMouseEvent>
-
-#include <QtScript/QScriptEngine>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QFile>
+#include <QMouseEvent>
+#include <QScriptEngine>
+#include <QMessageBox>
 
 #include <U2Core/L10n.h>
 

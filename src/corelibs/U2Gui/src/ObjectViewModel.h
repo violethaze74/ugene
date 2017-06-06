@@ -25,15 +25,10 @@
 #include <U2Core/SelectionModel.h>
 #include "MainWindow.h"
 
-#include <QtCore/QMap>
-#include <QtCore/QVariantMap>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenu>
-#endif
+#include <QMap>
+#include <QVariantMap>
+#include <QAction>
+#include <QMenu>
 
 namespace U2 {
 

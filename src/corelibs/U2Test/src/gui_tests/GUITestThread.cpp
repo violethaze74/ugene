@@ -21,17 +21,19 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
-
+#include <QDir>
 #include <QGuiApplication>
+#include <QScreen>
+
+#include <core/GUITest.h>
+#include <core/GUITestOpStatus.h>
+#include <core/MainThreadRunnable.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "core/MainThreadRunnable.h"
-
-#include <core/GUITest.h>
 #include "UGUITestBase.h"
-#include <core/GUITestOpStatus.h>
 #include "GUITestService.h"
 #include "GUITestTeamcityLogger.h"
 #include "GUITestThread.h"

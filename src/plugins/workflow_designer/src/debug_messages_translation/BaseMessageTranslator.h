@@ -22,8 +22,8 @@
 #ifndef _U2_BASE_MESSAGE_TRANSLATOR_H_
 #define _U2_BASE_MESSAGE_TRANSLATOR_H_
 
-#include <QtCore/QString>
-#include <QtCore/QVariant>
+#include <QString>
+#include <QVariant>
 
 namespace U2 {
 

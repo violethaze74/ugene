@@ -269,7 +269,7 @@ void WizardWidgetParser::visit(WidgetsArea *wa) {
     getTitle(wa);
     getLabelSize(wa);
 
-    foreach (const StringPair &pair, pairs.blockPairsList) {
+    foreach (const StrStrPair &pair, pairs.blockPairsList) {
         WizardWidgetParser wParser(pair.first, pair.second, actorMap, vars, os);
         QScopedPointer<WizardWidget> w(createWidget(pair.first));
         CHECK_OP(os, );
@@ -314,7 +314,7 @@ void WizardWidgetParser::visit(ElementSelectorWidget *esw) {
         esw->setLabel(pairs.equalPairs[AttributeInfo::LABEL]);
     }
     ActorPrototype *srcProto = actorMap[actorId]->getProto();
-    foreach (const StringPair &pair, pairs.blockPairsList) {
+    foreach (const StrStrPair &pair, pairs.blockPairsList) {
         if (pair.first != HRWizardParser::VALUE) {
             os.setError(HRWizardParser::tr("Unknown block name in element selector definition: %1").arg(pair.first));
             return;
@@ -329,7 +329,7 @@ void WizardWidgetParser::visit(ElementSelectorWidget *esw) {
 
 void WizardWidgetParser::visit(PairedReadsWidget *dsw) {
     pairs = ParsedPairs(data, 0);
-    foreach (const StringPair &p, pairs.blockPairsList) {
+    foreach (const StrStrPair &p, pairs.blockPairsList) {
         dsw->addInfo(parseInfo(p.first, p.second));
         CHECK_OP(os, );
     }
@@ -337,7 +337,7 @@ void WizardWidgetParser::visit(PairedReadsWidget *dsw) {
 
 void WizardWidgetParser::visit(UrlAndDatasetWidget *ldsw) {
     pairs = ParsedPairs(data, 0);
-    foreach (const StringPair &p, pairs.blockPairsList) {
+    foreach (const StrStrPair &p, pairs.blockPairsList) {
         ldsw->addInfo(parseInfo(p.first, p.second));
         CHECK_OP(os, );
     }
@@ -379,7 +379,7 @@ void WizardWidgetParser::visit(RadioWidget *rw) {
 
     rw->setVar(pairs.equalPairs[HRWizardParser::ID]);
     Variable v(rw->var());
-    foreach (const StringPair &p, pairs.blockPairsList) {
+    foreach (const StrStrPair &p, pairs.blockPairsList) {
         if (p.first == HRWizardParser::VALUE) {
             RadioWidget::Value value = parseValue(p.second, os);
             CHECK_OP(os, );
@@ -472,7 +472,7 @@ SelectorValue WizardWidgetParser::parseSelectorValue(ActorPrototype *srcProto, c
         }
         return result;
     }
-    foreach (const StringPair &pair, pairs.blockPairsList) {
+    foreach (const StrStrPair &pair, pairs.blockPairsList) {
         if (pair.first != HRWizardParser::PORT_MAPPING) {
             os.setError(HRWizardParser::tr("Unknown block name in selector value definition: %1").arg(pair.first));
             return result;
@@ -497,7 +497,7 @@ PortMapping WizardWidgetParser::parsePortMapping(const QString &mappingDef) {
     QString srcPortId = pairs.equalPairs[HRWizardParser::SRC_PORT];
     QString dstPortId = pairs.equalPairs[HRWizardParser::DST_PORT];
     PortMapping result(srcPortId, dstPortId);
-    foreach (const StringPair &pair, pairs.blockPairsList) {
+    foreach (const StrStrPair &pair, pairs.blockPairsList) {
         if (pair.first != HRWizardParser::SLOTS_MAPPRING) {
             os.setError(HRWizardParser::tr("Unknown block name in port mapping definition: %1").arg(pair.first));
             return result;
@@ -510,7 +510,7 @@ PortMapping WizardWidgetParser::parsePortMapping(const QString &mappingDef) {
 
 void WizardWidgetParser::parseSlotsMapping(PortMapping &pm, const QString &mappingDef) {
     ParsedPairs pairs(mappingDef, 0);
-    foreach (const StringPair &pair, pairs.equalPairsList) {
+    foreach (const StrStrPair &pair, pairs.equalPairsList) {
         QString srcSlotId = pair.first;
         QString dstSlotId = pair.second;
         pm.addSlotMapping(SlotMapping(srcSlotId, dstSlotId));
@@ -599,7 +599,7 @@ PageContentParser::PageContentParser(ParsedPairs &pairs,
 }
 
 void PageContentParser::visit(DefaultPageContent *content) {
-    foreach (const StringPair &pair, pairs.blockPairsList) {
+    foreach (const StrStrPair &pair, pairs.blockPairsList) {
         WizardWidgetParser wParser(pair.first, pair.second, actorMap, vars, os);
         if (LogoWidget::ID == pair.first) {
             content->getLogoArea()->accept(&wParser);

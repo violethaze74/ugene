@@ -54,7 +54,7 @@
 
 #include <U2Formats/DocumentFormatUtils.h>
 
-#include <QtCore/QSet>
+#include <QSet>
 
 namespace U2 {
 

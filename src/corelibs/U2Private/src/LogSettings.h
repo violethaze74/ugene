@@ -26,7 +26,7 @@
 #include <U2Core/Log.h>
 #include <U2Core/AppContext.h>
 
-#include <QtCore/QHash>
+#include <QHash>
 
 namespace U2 {
 

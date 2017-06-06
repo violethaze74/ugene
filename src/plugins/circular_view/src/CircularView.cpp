@@ -21,8 +21,8 @@
 
 #include <math.h>
 
-#include <QtGui/QFontMetrics>
-#include <QtGui/QPainter>
+#include <QFontMetrics>
+#include <QPainter>
 
 #include <QApplication>
 #include <QDialog>

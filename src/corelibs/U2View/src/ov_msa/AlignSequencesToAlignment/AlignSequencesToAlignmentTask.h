@@ -31,7 +31,7 @@
 #include <U2Core/DocumentProviderTask.h>
 #include <U2Core/U2AlphabetUtils.h>
 
-#include <QtCore/QPointer>
+#include <QPointer>
 
 #include <U2Algorithm/AlignSequencesToAlignmentTaskSettings.h>
 

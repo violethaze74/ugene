@@ -30,7 +30,7 @@ namespace U2 {
 * CMDLineRegistryUtils
 ***************************************************/
 int CMDLineRegistryUtils::getParameterIndex( const QString & paramName, int startWith ) {
-    QList<StringPair> params;
+    QList<StrStrPair> params;
     setCMDLineParams( params );
     int sz = params.size();
     for( int i = qMax( 0, startWith ); i < sz; ++i ) {
@@ -42,7 +42,7 @@ int CMDLineRegistryUtils::getParameterIndex( const QString & paramName, int star
 }
 
 QStringList CMDLineRegistryUtils::getParameterValues( const QString & paramName, int startWith ) {
-    QList<StringPair> params;
+    QList<StrStrPair> params;
     setCMDLineParams( params );
     QStringList res;
     int sz = params.size();
@@ -71,12 +71,12 @@ QStringList CMDLineRegistryUtils::getParameterValuesByWords( const QString & par
 }
 
 QStringList CMDLineRegistryUtils::getPureValues( int startWithIdx ) {
-    QList<StringPair> params;
+    QList<StrStrPair> params;
     setCMDLineParams( params );
     QStringList res;
     int sz = params.size();
     for( int i = qMax( 0, startWithIdx ); i < sz; ++i ) {
-        const StringPair & currentPair = params[i];
+        const StrStrPair & currentPair = params[i];
         if( currentPair.first.isEmpty() ) {
             res << currentPair.second;
         } else {
@@ -115,7 +115,7 @@ QString CMDLineRegistryUtils::getCmdlineUgenePath() {
     return "";
 }
 
-void CMDLineRegistryUtils::setCMDLineParams( QList<StringPair> & to ) {
+void CMDLineRegistryUtils::setCMDLineParams( QList<StrStrPair> & to ) {
     CMDLineRegistry * cmdlineRegistry = AppContext::getCMDLineRegistry();
     if( cmdlineRegistry != NULL ) {
         to = cmdlineRegistry->getParameters();

@@ -22,8 +22,8 @@
 #ifndef _U2_MOLECULAR_SURFACE_RENDERER_H_
 #define _U2_MOLECULAR_SURFACE_RENDERER_H_
 
-#include <QtCore/QString>
-#include <QtCore/QMap>
+#include <QString>
+#include <QMap>
 
 namespace U2 {
 

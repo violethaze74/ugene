@@ -24,7 +24,7 @@
 
 #ifdef OPENCL_SUPPORT
 
-#include <QtCore/QHash>
+#include <QHash>
 
 #include <U2Algorithm/OpenCLHelper.h>
 #include <U2Core/global.h>

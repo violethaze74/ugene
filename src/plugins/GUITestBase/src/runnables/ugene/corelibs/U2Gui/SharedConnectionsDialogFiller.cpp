@@ -19,18 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QComboBox>
-#include <QtGui/QGroupBox>
-#include <QtGui/QListWidget>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QListWidget>
-#endif
+#include <QApplication>
+#include <QComboBox>
+#include <QGroupBox>
+#include <QListWidget>
 
 #include <U2Core/U2IdTypes.h>
 #include <U2Core/U2SafePoints.h>

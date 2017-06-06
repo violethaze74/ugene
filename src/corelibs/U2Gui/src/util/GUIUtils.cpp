@@ -32,17 +32,12 @@
 #include <U2Gui/AppSettingsGUI.h>
 #include <U2Gui/MainWindow.h>
 
-#include <QtCore/QFile>
-#include <QtCore/QProcess>
+#include <QFile>
+#include <QProcess>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QMessageBox>
-#endif
-#include <QtGui/QPainter>
+#include <QApplication>
+#include <QMessageBox>
+#include <QPainter>
 
 #include <QUrl>
 #include <QDesktopServices>

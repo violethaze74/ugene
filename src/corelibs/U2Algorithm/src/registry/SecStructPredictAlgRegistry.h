@@ -23,9 +23,10 @@
 #define _U2_SEC_STRUCT_PREDICT_ALG_REGISTRY_H_
 
 #include <QList>
-#include <QString>
+#include <QMap>
 #include <QMutex>
 #include <QObject>
+#include <QString>
 
 #include <U2Core/global.h>
 

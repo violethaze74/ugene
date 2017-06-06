@@ -24,7 +24,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QFile>
+#include <QFile>
 
 
 namespace U2 {

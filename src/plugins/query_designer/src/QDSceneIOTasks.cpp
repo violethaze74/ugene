@@ -32,7 +32,7 @@
 
 #include <U2Core/QVariantUtils.h>
 
-#include <QtCore/QFile>
+#include <QFile>
 
 namespace U2 {
 

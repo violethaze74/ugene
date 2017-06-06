@@ -21,7 +21,7 @@
 
 #include <cassert>
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 #include <U2Lang/HRSchemaSerializer.h>
 #include <U2Lang/WorkflowUtils.h>

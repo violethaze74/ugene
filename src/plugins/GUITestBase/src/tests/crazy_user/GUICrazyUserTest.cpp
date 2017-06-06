@@ -26,11 +26,7 @@
 #include <base_dialogs/GTFileDialog.h>
 #include "GTRandomGUIActionFactory.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
+#include <QApplication>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {

@@ -23,7 +23,7 @@
 #define _NEW_BREAKPOINT_DIALOG_H_
 
 #include <U2Core/global.h>
-#include <QtWidgets/QDialog>
+#include <QDialog>
 
 class Ui_NewBreakpointDialog;
 

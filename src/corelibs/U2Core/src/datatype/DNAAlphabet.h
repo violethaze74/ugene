@@ -25,7 +25,7 @@
 #include <U2Core/global.h>
 #include <U2Core/U2Region.h>
 
-#include <QtCore/QBitArray>
+#include <QBitArray>
 namespace U2 {
 
 class U2CORE_EXPORT BaseDNAAlphabetIds : public QObject {

@@ -20,6 +20,7 @@
  */
 
 #include <QApplication>
+#include <QDir>
 #include <QGraphicsItem>
 #include <QMainWindow>
 

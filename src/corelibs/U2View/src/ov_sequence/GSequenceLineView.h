@@ -26,16 +26,16 @@
 
 #include <U2Gui/WidgetWithLocalToolbar.h>
 
-#include <QtCore/QFlag>
+#include <QFlag>
 #include <QHBoxLayout>
 #include <QMenu>
 #include <QWidget>
 #include <QToolButton>
 
-#include <QtGui/QMouseEvent>
-#include <QtGui/QWheelEvent>
-#include <QtGui/QFocusEvent>
-#include <QtGui/QPainter>
+#include <QMouseEvent>
+#include <QWheelEvent>
+#include <QFocusEvent>
+#include <QPainter>
 
 
 namespace U2 {

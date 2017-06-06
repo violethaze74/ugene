@@ -27,19 +27,14 @@
 #include <U2Core/Log.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QCoreApplication>
+#include <QDir>
 
 #include <U2Lang/BaseTypes.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QInputDialog>
-#else
-#include <QtWidgets/QInputDialog>
-#endif
+#include <QInputDialog>
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
-
 
 namespace U2 {
 

@@ -22,11 +22,13 @@
 #ifndef _U2_IMPORT_ANNOTATIONS_FROM_CSV_TASK_H_
 #define _U2_IMPORT_ANNOTATIONS_FROM_CSV_TASK_H_
 
+#include <QMap>
+#include <QPointer>
+
 #include <U2Core/Task.h>
 #include <U2Core/AnnotationData.h>
-#include "CSVColumnConfiguration.h"
 
-#include <QtCore/QPointer>
+#include "CSVColumnConfiguration.h"
 
 namespace U2 {
 
