@@ -41,6 +41,10 @@ ExternalTool::ExternalTool(QString _name, QString _path) : name(_name), path(_pa
 ExternalTool::~ExternalTool() {
 }
 
+const QVariantMap &ExternalTool::getAdditionalInfo() const {
+    return additionalInfo;
+}
+
 void ExternalTool::setPath(const QString& _path) {
     if (path!=_path) {
         path=_path;
@@ -53,6 +57,10 @@ void ExternalTool::setValid(bool _isValid){
 }
 void ExternalTool::setVersion(const QString& _version) {
     version=_version;
+}
+
+void ExternalTool::setAdditionalInfo(const QVariantMap &newAdditionalInfo) {
+    additionalInfo = newAdditionalInfo;
 }
 
 ExternalToolValidation ExternalTool::getToolValidation() {
