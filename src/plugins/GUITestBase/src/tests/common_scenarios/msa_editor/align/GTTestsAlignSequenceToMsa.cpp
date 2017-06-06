@@ -496,7 +496,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
                                                       << "A--AGAATAATTA"
                                                       << "AAGCTTTTAA---"
                                                       << "A--AGAATA----";
-    const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+	GTUtilsTaskTreeView::waitTaskFinished(os);
+	const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
 }
 
