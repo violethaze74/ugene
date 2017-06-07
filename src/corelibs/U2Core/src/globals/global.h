@@ -141,9 +141,13 @@ enum UnloadedObjectFilter { //used as a separate type but not 'bool' to improve 
 }
 
 enum DNAAlphabetType {
-    DNAAlphabet_RAW,
-    DNAAlphabet_NUCL,
-    DNAAlphabet_AMINO
+    DNAAlphabet_UNDEFINED = 0,
+    DNAAlphabet_RAW = 1 << 1,
+    DNAAlphabet_NUCL = 1 << 2,
+    DNAAlphabet_AMINO = 1 << 3
 };
+
+Q_DECLARE_FLAGS(DNAAlphabetTypes, DNAAlphabetType)
+Q_DECLARE_OPERATORS_FOR_FLAGS(DNAAlphabetTypes)
 
 #endif

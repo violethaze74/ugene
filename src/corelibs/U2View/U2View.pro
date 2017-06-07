@@ -54,6 +54,8 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.h \
+           src/ov_msa/Highlighting/MsaSchemeComboBoxController.h \
+           src/ov_msa/Highlighting/MsaSchemesMenuBuilder.h \
            src/ov_msa/MSACollapsibleModel.h \
            src/ov_msa/MSAEditor.h \
            src/ov_msa/MSAEditorConsensusArea.h \
@@ -185,6 +187,7 @@ HEADERS += src/LicenseDialog.h \
            src/util_smith_waterman/SmithWatermanDialog.h \
            src/util_smith_waterman/SmithWatermanDialogImpl.h \
            src/util_smith_waterman/SubstMatrixDialog.h
+
 FORMS += src/ov_assembly/ExportConsensusDialog.ui \
          src/ov_assembly/ExportCoverageDialog.ui \
          src/ov_assembly/ExportReadsDialog.ui \
@@ -223,6 +226,7 @@ FORMS += src/ov_assembly/ExportConsensusDialog.ui \
          src/util_sec_struct_predict/SecStructDialog.ui \
          src/util_smith_waterman/SmithWatermanDialogBase.ui \
          src/util_smith_waterman/SubstMatrixDialogBase.ui
+
 SOURCES += src/LicenseDialog.cpp \
            src/UndoRedoFramework.cpp \
            src/WebWindow.cpp \
@@ -274,6 +278,8 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.cpp \
+           src/ov_msa/Highlighting/MsaSchemeComboBoxController.cpp \
+           src/ov_msa/Highlighting/MsaSchemesMenuBuilder.cpp \
            src/ov_msa/MSACollapsibleModel.cpp \
            src/ov_msa/MSAEditor.cpp \
            src/ov_msa/MSAEditorConsensusArea.cpp \
@@ -400,5 +406,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/util_sec_struct_predict/SecStructPredictUtils.cpp \
            src/util_smith_waterman/SmithWatermanDialog.cpp \
            src/util_smith_waterman/SubstMatrixDialog.cpp
+
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

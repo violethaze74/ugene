@@ -36,7 +36,7 @@ public:
     ColorSchemeData();
 
     QString name;
-    DNAAlphabetType type;
+    DNAAlphabetType alphabetType;
     bool defaultAlpType;
     QMap<char, QColor> alpColors;
 };
@@ -51,14 +51,14 @@ public:
 
     const MsaColorSchemeFactory * getFactory() const;
 
-    static const QString EMPTY_NUCL;
+    static const QString EMPTY;
+
     static const QString UGENE_NUCL;
     static const QString JALVIEW_NUCL;
     static const QString IDENTPERC_NUCL;
     static const QString IDENTPERC_NUCL_GRAY;
     static const QString CUSTOM_NUCL;
 
-    static const QString EMPTY_AMINO;
     static const QString UGENE_AMINO;
     static const QString ZAPPO_AMINO;
     static const QString TAILOR_AMINO;
@@ -72,8 +72,6 @@ public:
     static const QString CLUSTALX_AMINO;
     static const QString CUSTOM_AMINO;
 
-    static const QString EMPTY_RAW;
-
 protected:
     const MsaColorSchemeFactory * factory;
     MAlignmentObject *      maObj;
@@ -82,12 +80,13 @@ protected:
 class U2ALGORITHM_EXPORT MsaColorSchemeFactory : public QObject {
     Q_OBJECT
 public:
-    MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType);
+    MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes);
     virtual MsaColorScheme * create(QObject *p, MAlignmentObject *obj) const = 0;
 
     const QString & getId() const;
     const QString & getName() const;
-    DNAAlphabetType getAlphabetType() const;
+    bool isAlphabetTypeSupported(DNAAlphabetType alphabetType) const;
+    const DNAAlphabetTypes &getAlphabetTypes() const;
 
 signals:
     void si_factoryChanged();
@@ -95,7 +94,7 @@ signals:
 protected:
     QString         id;
     QString         name;
-    DNAAlphabetType alphabetType;
+    DNAAlphabetTypes alphabetTypes;
 };
 
 class U2ALGORITHM_EXPORT MsaColorSchemeRegistry : public QObject {
@@ -104,14 +103,20 @@ public:
     MsaColorSchemeRegistry();
     ~MsaColorSchemeRegistry();
 
-    const QList<MsaColorSchemeFactory *> & getMsaColorSchemes() const;
-    const QList<MsaColorSchemeCustomFactory *> &getCustomColorSchemes() const;
+    const QList<MsaColorSchemeFactory *> &getCommonSchemes() const;
+    const QList<MsaColorSchemeCustomFactory *> &getCustomSchemes() const;
 
-    QList<MsaColorSchemeFactory *> getMsaColorSchemes(DNAAlphabetType alphabetType) const;
-    QList<MsaColorSchemeFactory *> getMsaCustomColorSchemes(DNAAlphabetType alphabetType) const;
+    QList<MsaColorSchemeFactory *> getSchemes(DNAAlphabetType alphabetType) const;
+    QList<MsaColorSchemeFactory *> getCommonSchemes(DNAAlphabetType alphabetType) const;
+    QList<MsaColorSchemeFactory *> getCustomSchemes(DNAAlphabetType alphabetType) const;
 
-    MsaColorSchemeCustomFactory * getMsaCustomColorSchemeFactoryById(const QString &id) const;
-    MsaColorSchemeFactory * getMsaColorSchemeFactoryById(const QString &id) const;
+    QMap<DNAAlphabetTypes, QList<MsaColorSchemeFactory *> > getSchemesGrouped() const;
+    QMap<DNAAlphabetTypes, QList<MsaColorSchemeFactory *> > getCommonSchemesGrouped() const;
+    QMap<DNAAlphabetTypes, QList<MsaColorSchemeFactory *> > getCustomSchemesGrouped() const;
+
+    MsaColorSchemeCustomFactory * getCustomSchemeFactoryById(const QString &id) const;
+    MsaColorSchemeFactory * getSchemeFactoryById(const QString &id) const;
+    MsaColorSchemeFactory * getEmptySchemeFactory() const;
 
 signals:
     void si_customSettingsChanged();

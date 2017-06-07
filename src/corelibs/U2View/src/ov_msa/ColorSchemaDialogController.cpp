@@ -308,7 +308,7 @@ void CreateColorSchemaDialog::sl_createSchema(){
     }
 
     newSchema->name = schemeName->text();
-    newSchema->type = type;
+    newSchema->alphabetType = type;
     newSchema->defaultAlpType = defaultAlpType;
 
     QMapIterator<char, QColor> it(alpColors);
