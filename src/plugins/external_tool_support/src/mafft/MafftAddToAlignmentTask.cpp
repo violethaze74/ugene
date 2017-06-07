@@ -210,17 +210,33 @@ void MafftAddToAlignmentTask::run() {
 
     dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
     CHECK_OP(stateInfo, );
+
+    QMap<QString, qint64> uniqueNamesToIds;
+    foreach (const MAlignmentRow& refRow, inputMsa.getRows()) {
+        uniqueNamesToIds[refRow.getName()] = refRow.getRowId();
+    }
+
     foreach(GObject* object, tmpDoc->getObjects()) {
         if (hasError() || isCanceled()) {
             return;
         }
         stateInfo.setProgress(70 + 30 * posInMsa / objectsCount);
         U2SequenceObject* sequenceObject = qobject_cast<U2SequenceObject*>(object);
-        if(!rowNames.contains(sequenceObject->getSequenceName())) {
+        if(!rowNames.contains(sequenceObject->getSequenceName())) { //inserting new rows
             sequenceObject->setGObjectName(uniqueIdsToNames[sequenceObject->getGObjectName()]);
             SAFE_POINT(sequenceObject != NULL, "U2SequenceObject is null", );
             U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
             dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
+            CHECK_OP(stateInfo, );
+        }else{ //maybe need add leading gaps to original rows
+            U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
+            qint64 rowId = uniqueNamesToIds.value(sequenceObject->getSequenceName(), -1);
+            if (rowId == -1){
+                stateInfo.setError(tr("Row for updating doesn't found"));
+                CHECK_OP(stateInfo, );
+            }
+
+            dbi->updateGapModel(settings.msaRef.entityId, rowId, row.gaps, stateInfo);
             CHECK_OP(stateInfo, );
         }
         posInMsa++;
