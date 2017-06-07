@@ -39,7 +39,7 @@ QString getTestDir(){
         if (!QFileInfo(testDir).exists()) {
             coreLog.error(QString("UGENE_TESTS_PATH is defined, but doesn't exist: '%1'").arg(testDir));
         } else {
-            return testDir;
+            return testDir + (testDir.endsWith("/") ? "" : "/");
         }
     }
 
