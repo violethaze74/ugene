@@ -1376,15 +1376,10 @@ GUI_TEST_CLASS_DEFINITION(test_5469) {
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsProjectTreeView::click(os, "NC_004718");
-    QWidget* seqView = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    CHECK_SET_ERR(seqView != NULL, "Fail to get sequence view");
-    QPoint p = GTWidget::getWidgetCenter(os, seqView);
-    p.setX(p.x() + 1);
-    p.setY(p.y() + 1);
-    GTMouseDriver::dragAndDrop(GTMouseDriver::getMousePosition(), p);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Add to view" << "Add to view: murine [s] NC_001363"));
+        GTUtilsProjectTreeView::click(os, "NC_004718", Qt::RightButton);
+        GTGlobals::sleep();
 
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
