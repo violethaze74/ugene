@@ -51,11 +51,7 @@ float infinity() {
 }
 
 bool isfin(float x) {
-#if __cplusplus <= 199711L
     return !qIsNaN(x) && qIsInf(x);
-#else
-    return !std::isnan(x) && !std::isinf(x);
-#endif
 }
 
 #ifdef _WINDOWS
