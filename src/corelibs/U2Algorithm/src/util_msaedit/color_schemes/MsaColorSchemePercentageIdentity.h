@@ -54,7 +54,7 @@ protected:
 class MsaColorSchemePercentageIdentityFactory : public MsaColorSchemeFactory {
     Q_OBJECT
 public:
-    MsaColorSchemePercentageIdentityFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType);
+    MsaColorSchemePercentageIdentityFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes);
 
     MsaColorScheme * create(QObject *parent, MAlignmentObject *maObj) const;
 };

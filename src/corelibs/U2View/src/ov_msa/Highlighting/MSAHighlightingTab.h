@@ -22,11 +22,12 @@
 #ifndef _U2_MSA_HIGHLIGHTING_TAB_H_
 #define _U2_MSA_HIGHLIGHTING_TAB_H_
 
-#include "MsaHighlightingSavableTab.h"
-
 #include <QWidget>
 
 #include <U2Gui/U2SavableWidget.h>
+
+#include "MsaHighlightingSavableTab.h"
+#include "MsaSchemeComboBoxController.h"
 
 class QCheckBox;
 class QComboBox;
@@ -38,8 +39,12 @@ class QToolButton;
 
 namespace U2 {
 
+class MsaColorSchemeFactory;
+class MsaColorSchemeRegistry;
 class MSAEditor;
 class MSAEditorSequenceArea;
+class MsaHighlightingSchemeFactory;
+class MsaHighlightingSchemeRegistry;
 
 class U2VIEW_EXPORT MSAHighlightingTab : public QWidget
 {
@@ -53,17 +58,16 @@ private slots:
     void sl_updateHint();
     void sl_exportHighlightningClicked();
     void sl_highlightingParametersChanged();
-    void sl_customSchemesListChanged();
+    void sl_refreshSchemes();
 
 private:
     QWidget* createColorGroup();
     QWidget* createHighlightingGroup();
-    void initColorCB();
 
     MSAEditor *msa;
     MSAEditorSequenceArea *seqArea;
-    QComboBox *colorScheme;
-    QComboBox *highlightingScheme;
+    MsaSchemeComboBoxController<MsaColorSchemeFactory, MsaColorSchemeRegistry> *colorSchemeController;
+    MsaSchemeComboBoxController<MsaHighlightingSchemeFactory, MsaHighlightingSchemeRegistry> *highlightingSchemeController;
     QLabel *hint;
     QCheckBox *useDots;
     QToolButton *exportHighlightning;

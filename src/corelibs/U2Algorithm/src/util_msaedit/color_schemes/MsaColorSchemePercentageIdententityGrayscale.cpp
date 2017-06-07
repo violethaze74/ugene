@@ -31,8 +31,8 @@ MsaColorSchemePercentageIdententityGrayscale::MsaColorSchemePercentageIdententit
     colorsByRange[2] = QColor("#CCCCCC");
 }
 
-MsaColorSchemePercentageIdententityGrayscaleFactory::MsaColorSchemePercentageIdententityGrayscaleFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType)
-    : MsaColorSchemeFactory(parent, id, name, alphabetType)
+MsaColorSchemePercentageIdententityGrayscaleFactory::MsaColorSchemePercentageIdententityGrayscaleFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes)
+    : MsaColorSchemeFactory(parent, id, name, alphabetTypes)
 {
 
 }

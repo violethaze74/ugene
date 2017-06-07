@@ -72,7 +72,7 @@ static void setSchemaColors(const ColorSchemeData& customSchema){
 
     const QMap<char, QColor> & alphColors = customSchema.alpColors;
     const QString& file  = customSchema.name + ColorSchemeUtils::COLOR_SCHEME_NAME_FILTERS;
-    DNAAlphabetType type = customSchema.type;
+    DNAAlphabetType type = customSchema.alphabetType;
     bool defaultType = customSchema.defaultAlpType;
 
     QString keyword(type == DNAAlphabet_AMINO ? ColorSchemeUtils::COLOR_SCHEME_AMINO_KEYWORD : (defaultType ? ColorSchemeUtils::COLOR_SCHEME_NUCL_DEFAULT_KEYWORD : ColorSchemeUtils::COLOR_SCHEME_NUCL_EXTENDED_KEYWORD));
