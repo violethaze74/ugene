@@ -170,12 +170,14 @@ void CreateAnnotationWidgetController::commonWidgetUpdate(const CreateAnnotation
         w->setLocation(model.data->location);
     }
 
-    if (model.defaultIsNewDoc || w->isExistingTablesListEmpty()) {
+    if (model.defaultIsNewDoc && w->isExistingTablesListEmpty()) {
         w->setExistingTableOptionEnable(false);
         w->selectNewTableOption();
-    }
-    else {
+    } else {
         w->setExistingTableOptionEnable(true);
+        if (model.defaultIsNewDoc) {
+            w->selectNewTableOption();
+        }
     }
 
     w->setAnnotationTableOptionVisible(!model.hideAnnotationTableOption);

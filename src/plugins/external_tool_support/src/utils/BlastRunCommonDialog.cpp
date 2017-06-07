@@ -34,7 +34,6 @@
 #include <U2Core/MultiTask.h>
 #include <U2Core/ProjectModel.h>
 
-#include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/HelpButton.h>
 
 #include "blast/BlastAllWorker.h"
