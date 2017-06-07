@@ -174,9 +174,9 @@ void RichTextMsaClipboardTask::run(){
             s->getValue(MOBJECT_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString()
           : s->getValue(MOBJECT_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
 
-    MsaColorSchemeFactory* csf = csr->getMsaColorSchemeFactoryById(csid);
+    MsaColorSchemeFactory* csf = csr->getSchemeFactoryById(csid);
     if (csf == NULL) {
-        csf = csr->getMsaColorSchemeFactoryById(atype == DNAAlphabet_AMINO ? MsaColorScheme::UGENE_AMINO : MsaColorScheme::UGENE_NUCL);
+        csf = csr->getSchemeFactoryById(atype == DNAAlphabet_AMINO ? MsaColorScheme::UGENE_AMINO : MsaColorScheme::UGENE_NUCL);
     }
     SAFE_POINT(csf!=NULL, "RTFMSA entry storing: NULL MsaColorSchemeFactory object", );
     MsaColorScheme* colorScheme = csf->create(this, obj);

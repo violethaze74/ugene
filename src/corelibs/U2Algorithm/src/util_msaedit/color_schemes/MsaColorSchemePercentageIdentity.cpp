@@ -81,8 +81,8 @@ void MsaColorSchemePercentageIdentity::updateCache() const {
     cacheVersion = objVersion;
 }
 
-MsaColorSchemePercentageIdentityFactory::MsaColorSchemePercentageIdentityFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType)
-    : MsaColorSchemeFactory(parent, id, name, alphabetType)
+MsaColorSchemePercentageIdentityFactory::MsaColorSchemePercentageIdentityFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes)
+    : MsaColorSchemeFactory(parent, id, name, alphabetTypes)
 {
 
 }
