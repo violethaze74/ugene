@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/MuscleAlignDialog.ui" line="28"/>
         <source>Input and output</source>
-        <translation type="unfinished"></translation>
+        <translation>Входные и выходные данные</translation>
     </message>
     <message>
         <location filename="../src/MuscleAlignDialog.ui" line="36"/>
