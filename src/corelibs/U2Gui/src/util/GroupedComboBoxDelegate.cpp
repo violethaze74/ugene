@@ -48,8 +48,9 @@ void GroupedComboBoxDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 
 QSize GroupedComboBoxDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
     QString type = index.data(Qt::AccessibleDescriptionRole).toString();
-    if(type == QLatin1String("separator"))
+    if (type == QLatin1String("separator")) {
         return QSize(0, 10);
+    }
     return QItemDelegate::sizeHint( option, index );
 }
 
@@ -58,7 +59,7 @@ void GroupedComboBoxDelegate::addParentItem(QStandardItemModel * model, const QS
     item->setFlags(item->flags() & ~(Qt::ItemIsEnabled | Qt::ItemIsSelectable));
     item->setData("parent", Qt::AccessibleDescriptionRole);
     QFont font = item->font();
-    //font.setBold( true );
+    font.setBold( true );
     font.setItalic(true);
     item->setFont(font);
     model->appendRow(item);

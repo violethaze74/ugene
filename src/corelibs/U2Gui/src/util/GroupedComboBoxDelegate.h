@@ -18,19 +18,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
- 
+
 #ifndef _U2_GROUPED_COMBOBOX_DELEGATE_H_
 #define _U2_GROUPED_COMBOBOX_DELEGATE_H_
 
 #include <QItemDelegate>
 #include <QPainter>
 
+#include <U2Core/global.h>
+
 class QStandardItemModel;
 
 namespace U2 {
 
-class GroupedComboBoxDelegate : public QItemDelegate {
-Q_OBJECT
+class U2GUI_EXPORT GroupedComboBoxDelegate : public QItemDelegate {
+    Q_OBJECT
 public:
     explicit GroupedComboBoxDelegate(QObject *parent = 0);
 
@@ -40,7 +42,7 @@ protected:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
-    
+
 }
 
 #endif // _U2_GROUPED_COMBOBOX_DELEGATE_H_
