@@ -1,4 +1,4 @@
-/**
+ /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.unipro.ru
@@ -45,14 +45,14 @@ MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
       prevMismatch(NULL)
 {
     mismatchCache = QBitArray(editor->getAlignmentLen(), false);
-    connect(consCache.data(), SIGNAL(si_cachedItemUpdated(int,char)), SLOT(sl_updateItem(int,char)));
+    connect(consCache.data(), SIGNAL(si_cachedItemUpdated(int, char)), SLOT(sl_updateItem(int, char)));
     connect(consCache.data(), SIGNAL(si_cacheResized(int)), SLOT(sl_resize(int)));
 
-    nextMismatch = new QAction(tr("Next mismatch"), this);
+    nextMismatch = new QAction(tr("Jump to next variation"), this);
     nextMismatch->setObjectName("next_mismatch");
     connect(nextMismatch, SIGNAL(triggered(bool)), SLOT(sl_next()));
 
-    prevMismatch = new QAction(tr("Previous mismatch"), this);
+    prevMismatch = new QAction(tr("Jump to previous variation"), this);
     prevMismatch->setObjectName("prev_mismatch");
     connect(prevMismatch, SIGNAL(triggered(bool)), SLOT(sl_prev()));
 }
@@ -125,7 +125,7 @@ void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direc
     // no mismatches - show notification
     const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
     CHECK(notificationStack != NULL, );
-    notificationStack->addNotification(tr("No mismatch found"), Info_Not);
+    notificationStack->addNotification(tr("There are no variations in the consensus sequence."), Info_Not);
 }
 
 } // namespace U2
