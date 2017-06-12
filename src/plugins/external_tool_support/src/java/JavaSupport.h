@@ -43,6 +43,8 @@ private slots:
     void sl_toolValidationStatusChanged(bool isValid);
 
 private:
+    void setAdditionalInfo(const QVariantMap &newAdditionalInfo);
+
     static QString architecture2string(Architecture architecture);
     static Architecture string2architecture(const QString &string);
 
