@@ -88,7 +88,7 @@ public:
     void setPath(const QString& _path);
     void setValid(bool _isValid);
     void setVersion(const QString& _version);
-    void setAdditionalInfo(const QVariantMap &additionalInfo);
+    virtual void setAdditionalInfo(const QVariantMap &additionalInfo);
 
     bool isValid() const { return isValidTool; }
     bool isMuted() const;

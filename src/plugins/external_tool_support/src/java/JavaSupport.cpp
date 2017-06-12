@@ -65,6 +65,7 @@ void JavaSupport::getAdditionalParameters(const QString& output) {
         architecture = x64;
     }
     additionalInfo.insert(ARCHITECTURE, architecture2string(architecture));
+    coreLog.details(tr("Java architecture: %1").arg(architecture2string(architecture)));
 }
 
 JavaSupport::Architecture JavaSupport::getArchitecture() const {
@@ -74,6 +75,11 @@ JavaSupport::Architecture JavaSupport::getArchitecture() const {
 void JavaSupport::sl_toolValidationStatusChanged(bool isValid) {
     Q_UNUSED(isValid);
     ScriptingTool::onPathChanged(this, QStringList() << "-jar");
+}
+
+void JavaSupport::setAdditionalInfo(const QVariantMap &newAdditionalInfo) {
+    ExternalTool::setAdditionalInfo(newAdditionalInfo);
+    coreLog.details(tr("Java architecture: %1").arg(architecture2string(getArchitecture())));
 }
 
 QString JavaSupport::architecture2string(Architecture architecture) {
