@@ -55,6 +55,9 @@ public:
     virtual ~MsaEditorSimilarityColumn();
 
     void setSettings(const UpdatedWidgetSettings* _settings);
+    
+    void cancelPendingTasks();
+    
     const UpdatedWidgetSettings& getSettings() const {return curSettings;}
     QWidget* getWidget(){return this;}
     void updateWidget(){updateDistanceMatrix();}
@@ -114,6 +117,7 @@ public:
     MsaEditorAlignmentDependentWidget(UpdatedWidgetInterface* _contentWidget);
 
     void setSettings(const UpdatedWidgetSettings* _settings);
+    void cancelPendingTasks();
     const DataState& getDataState() const{return state;}
     const UpdatedWidgetSettings* getSettings() const {return settings;}
 

@@ -634,6 +634,7 @@ void MSAEditorUI::showSimilarity() {
 void MSAEditorUI::hideSimilarity() {
     if(NULL != similarityStatistics) {
         similarityStatistics->hide();
+        similarityStatistics->cancelPendingTasks();
     }
 }
 
