@@ -147,7 +147,7 @@ void MinMaxSelectorWidget::sl_valueChanged(const QString &) {
     double min = minBox->value();
     double max = maxBox->value();
     QPalette p = normalPalette;
-    if (min > max) {
+    if (min >= max) {
         p.setColor(QPalette::Base, QColor(255,200,200));
     } 
     ((MinMaxDoubleSpinBox*)minBox)->getLineEdit()->setPalette(p);
