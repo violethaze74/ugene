@@ -361,8 +361,16 @@ QVector<U2Region> MultipleRangeSelector::getSelectedRegions(){
         int en = ui->endEdit->text().toInt(&ok);
         assert(ok);
 
-        U2Region r(st-1, en - st + 1);
-        currentRegions.append(r);
+        if (isCircular && st >= en ) {
+            if (st == en) {
+                currentRegions.append(U2Region(0, seqLen));
+            } else {
+                currentRegions.append(U2Region(0, en));
+                currentRegions.append(U2Region(st - 1, seqLen - st + 1));
+            }
+        } else {
+            currentRegions.append(U2Region(st - 1, en - st + 1));
+        }
 
     }else{
         QByteArray locEditText = ui->multipleRegionEdit->text().toLatin1();
