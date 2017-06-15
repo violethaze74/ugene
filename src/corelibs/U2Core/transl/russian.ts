@@ -64,14 +64,12 @@
         <translation>Загруженные последовательности имеют разные алфавиты. Поэтому создано несколько объектов типа последовательность для каждого алфавита. Все последовательности одного объекта имеют одинаковый афлфавит и последовательности из разных объектов имеют разные алфавиты.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="603"/>
-        <location filename="../src/datatype/Annotation.cpp" line="606"/>
+        <location filename="../src/datatype/Annotation.cpp" line="598"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="614"/>
-        <location filename="../src/datatype/Annotation.cpp" line="617"/>
+        <location filename="../src/datatype/Annotation.cpp" line="604"/>
         <source>Translation</source>
         <translation>Трансляция</translation>
     </message>
@@ -1599,7 +1597,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::GzippedHttpFileAdapterFactory</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="52"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="51"/>
         <source>HTTP GZIP adaptor</source>
         <translation>HTTP GZIP адаптер</translation>
     </message>
@@ -1615,7 +1613,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::HttpFileAdapter</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="110"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="109"/>
         <source>Incorrect url string has been passed to HttpFileAdapter::open()</source>
         <translation>Неправильная строка адреса была передана в HttpFileAdapter::open()</translation>
     </message>
@@ -1623,7 +1621,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::HttpFileAdapterFactory</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="43"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="42"/>
         <source>HTTP file</source>
         <translation>HTTP адаптер</translation>
     </message>

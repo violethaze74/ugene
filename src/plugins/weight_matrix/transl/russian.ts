@@ -220,7 +220,7 @@
         <translation>Статус</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="188"/>
+        <location filename="../src/WMQuery.cpp" line="183"/>
         <location filename="../src/WeightMatrixSearchWorker.cpp" line="82"/>
         <source>Minimum score to detect transcription factor binding site</source>
         <translation>Минимальный скор распознавания сайта связывания транскрипционного фактора</translation>
@@ -229,27 +229,27 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/WMQuery.cpp" line="186"/>
+        <location filename="../src/WMQuery.cpp" line="181"/>
         <source>Searches the sequence for transcription factor binding sites significantly similar to the specified weight matrix.</source>
         <translation>Ищет последовательность для сайтов связывания транскрипционного фактора в соответствии с указанной весовой матрицей.</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="185"/>
+        <location filename="../src/WMQuery.cpp" line="180"/>
         <source>Weight Matrix</source>
         <translation>Весовая матрица</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="188"/>
+        <location filename="../src/WMQuery.cpp" line="183"/>
         <source>Min score</source>
         <translation>Мин. скор</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="189"/>
+        <location filename="../src/WMQuery.cpp" line="184"/>
         <source>Matrix</source>
         <translation>Матрица</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="189"/>
+        <location filename="../src/WMQuery.cpp" line="184"/>
         <source>Path to profile</source>
         <translation>Путь до матрицы</translation>
     </message>
@@ -681,8 +681,8 @@
 <context>
     <name>U2::MatrixViewController</name>
     <message>
-        <location filename="../src/ViewMatrixDialogController.cpp" line="201"/>
-        <location filename="../src/ViewMatrixDialogController.cpp" line="209"/>
+        <location filename="../src/ViewMatrixDialogController.cpp" line="194"/>
+        <location filename="../src/ViewMatrixDialogController.cpp" line="202"/>
         <source>Matrix viewer</source>
         <translation>Просмотр матрицы</translation>
     </message>
@@ -912,12 +912,12 @@ Do you want to write over this file?</source>
 <context>
     <name>U2::PWMJASPARDialogController</name>
     <message>
-        <location filename="../src/PWMJASPARDialogController.cpp" line="42"/>
+        <location filename="../src/PWMJASPARDialogController.cpp" line="37"/>
         <source>Select</source>
         <translation>Выбрать</translation>
     </message>
     <message>
-        <location filename="../src/PWMJASPARDialogController.cpp" line="43"/>
+        <location filename="../src/PWMJASPARDialogController.cpp" line="38"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1135,27 +1135,27 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::QDWMActor</name>
     <message>
-        <location filename="../src/WMQuery.cpp" line="113"/>
+        <location filename="../src/WMQuery.cpp" line="108"/>
         <source>both strands</source>
         <translation>все</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="114"/>
+        <location filename="../src/WMQuery.cpp" line="109"/>
         <source>direct strand</source>
         <translation>только прямые</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="115"/>
+        <location filename="../src/WMQuery.cpp" line="110"/>
         <source>complement strand</source>
         <translation>только комплементарные</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="126"/>
+        <location filename="../src/WMQuery.cpp" line="121"/>
         <source>Searches TFBS with all profiles from &lt;u&gt;%1&lt;/u&gt; &lt;br&gt; Recognizes sites with &lt;u&gt;similarity %2&lt;/u&gt;, processes &lt;u&gt;%3&lt;/u&gt;.</source>
         <translation>Ищет сайты связывания транскрипционных факторов (ССТФ) со всеми профайлами &lt;u&gt;%1&lt;/u&gt; &lt;br&gt;. Распознаёт сайты со &lt;u&gt;схожестью %2&lt;/u&gt;, рассматривает &lt;u&gt;%3&lt;/u&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/WMQuery.cpp" line="155"/>
+        <location filename="../src/WMQuery.cpp" line="150"/>
         <source>%1: sequence should be nucleic.</source>
         <translation>%1: последовательность должна быть нуклеотидной.</translation>
     </message>
@@ -1163,8 +1163,8 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::ViewMatrixDialogController</name>
     <message>
-        <location filename="../src/ViewMatrixDialogController.cpp" line="171"/>
-        <location filename="../src/ViewMatrixDialogController.cpp" line="185"/>
+        <location filename="../src/ViewMatrixDialogController.cpp" line="164"/>
+        <location filename="../src/ViewMatrixDialogController.cpp" line="178"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
@@ -1172,7 +1172,7 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::WMQDTask</name>
     <message>
-        <location filename="../src/WMQuery.cpp" line="53"/>
+        <location filename="../src/WMQuery.cpp" line="48"/>
         <source>Weight matrix query</source>
         <translation>Запрос весовой матрицы</translation>
     </message>
@@ -1188,40 +1188,40 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::WeightMatrixIO</name>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="58"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="54"/>
         <source>Frequency and weight matrices</source>
         <translation>Частотные и весовые матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="62"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="58"/>
         <source>Frequency matrices</source>
         <translation>Частотные матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="66"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="62"/>
         <source>Weight matrices</source>
         <translation>Весовые матрицы</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="118"/>
-        <location filename="../src/WeightMatrixIO.cpp" line="225"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="114"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="221"/>
         <source>Error parsing settings line %1</source>
         <translation>Ошибка при чтении строки %1</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="126"/>
-        <location filename="../src/WeightMatrixIO.cpp" line="234"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="122"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="230"/>
         <source>Error parsing value %1</source>
         <translation>Ошибка при чтении значения %1</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="130"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="126"/>
         <source>Unexpected negative frequency value %1</source>
         <translation>Отрицательное значение частоты: %1</translation>
     </message>
     <message>
-        <location filename="../src/WeightMatrixIO.cpp" line="144"/>
-        <location filename="../src/WeightMatrixIO.cpp" line="247"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="140"/>
+        <location filename="../src/WeightMatrixIO.cpp" line="243"/>
         <source>Incorrect size of weight matrix: %1</source>
         <translation>Неправильный размер весовой матрицы: %1</translation>
     </message>

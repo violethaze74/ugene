@@ -120,6 +120,8 @@ bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl>& _urls, QVariantMa
     setModal(true);
     setupUi(this);
     new HelpButton(this, buttonBox, "19759480");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     // doesn't matter from what position, because excluded fileName all path of documents are the same
     CHECK(!urls.isEmpty(), false);

@@ -21,6 +21,7 @@
 
 #include <QMessageBox>
 #include <QMouseEvent>
+#include <QPushButton>
 
 #include <U2Core/DocumentImport.h>
 #include <U2Core/TextUtils.h>
@@ -60,6 +61,8 @@ DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatD
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759416");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     setObjectName("DocumentFormatSelectorDialog");
 }
@@ -108,7 +111,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, QByteArray& 
         label->installEventFilter(new LabelClickProvider(label, rb));
 
         QToolButton* moreButton = new QToolButton();
-        moreButton->setText("more..");
+        moreButton->setText(tr("more.."));
         moreButton->setEnabled(!r.getFormatDescriptionText().isEmpty());
         d->moreButtons << moreButton;
         QObject::connect(moreButton, SIGNAL(clicked()), d.data(), SLOT(sl_moreFormatInfo()));

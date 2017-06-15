@@ -26,12 +26,17 @@ p, li { white-space: pre-wrap; }
              amount of memory used during the alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/BuildSuffixArraySettings.ui" line="103"/>
+        <location filename="../src/BuildSuffixArraySettings.ui" line="92"/>
+        <source>Resources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/BuildSuffixArraySettings.ui" line="109"/>
         <source>Total memory usage:</source>
         <translation>Total memory usage:</translation>
     </message>
     <message>
-        <location filename="../src/BuildSuffixArraySettings.ui" line="130"/>
+        <location filename="../src/BuildSuffixArraySettings.ui" line="145"/>
         <source>System memory size:</source>
         <translation>System memory size:</translation>
     </message>
@@ -407,13 +412,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::GenomeAlignerIndexTask</name>
     <message>
-        <location filename="../src/GenomeAlignerIndexTask.cpp" line="90"/>
-        <location filename="../src/GenomeAlignerIndexTask.cpp" line="136"/>
+        <location filename="../src/GenomeAlignerIndexTask.cpp" line="89"/>
+        <location filename="../src/GenomeAlignerIndexTask.cpp" line="135"/>
         <source>File %1 is not found. Try to create index another time.</source>
         <translation>File %1 is not found. Try to create index another time.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerIndexTask.cpp" line="183"/>
+        <location filename="../src/GenomeAlignerIndexTask.cpp" line="182"/>
         <source>Can not init short reads loader. %1</source>
         <translation>Can not init short reads loader. %1</translation>
     </message>

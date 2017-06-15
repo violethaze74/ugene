@@ -407,37 +407,37 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDElement</name>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="371"/>
+        <location filename="../src/QueryViewItems.cpp" line="362"/>
         <source>Set order</source>
         <translation>Задать порядок</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="390"/>
+        <location filename="../src/QueryViewItems.cpp" line="381"/>
         <source>Remove from group</source>
         <translation>Удалить из группы</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="392"/>
+        <location filename="../src/QueryViewItems.cpp" line="383"/>
         <source>Add to group</source>
         <translation>Добавить к группе</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="398"/>
+        <location filename="../src/QueryViewItems.cpp" line="389"/>
         <source>Up</source>
         <translation>Повысить</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="399"/>
+        <location filename="../src/QueryViewItems.cpp" line="390"/>
         <source>Down</source>
         <translation>Понизить</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="410"/>
+        <location filename="../src/QueryViewItems.cpp" line="401"/>
         <source>Add &apos;%1&apos; to group</source>
         <translation>Добавить &apos;%1&apos; к группе</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="411"/>
+        <location filename="../src/QueryViewItems.cpp" line="402"/>
         <source>Group:</source>
         <translation>Группа:</translation>
     </message>
@@ -757,7 +757,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDRulerItem</name>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="1238"/>
+        <location filename="../src/QueryViewItems.cpp" line="1229"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>
@@ -897,36 +897,36 @@ p, li { white-space: pre-wrap; }
         <translation>Любое</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditor.cpp" line="116"/>
+        <location filename="../src/QueryEditor.cpp" line="112"/>
         <source>Select an element to inspect.</source>
         <translation>Выберите элемент для просмотра или редактирования.</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditor.cpp" line="123"/>
-        <location filename="../src/QueryEditor.cpp" line="173"/>
+        <location filename="../src/QueryEditor.cpp" line="119"/>
+        <location filename="../src/QueryEditor.cpp" line="169"/>
         <source>Element Name</source>
         <translation>Имя элемента</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditor.cpp" line="125"/>
-        <location filename="../src/QueryEditor.cpp" line="175"/>
+        <location filename="../src/QueryEditor.cpp" line="121"/>
+        <location filename="../src/QueryEditor.cpp" line="171"/>
         <source>Annotate As</source>
         <translation>Аннотации</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditor.cpp" line="127"/>
-        <location filename="../src/QueryEditor.cpp" line="177"/>
+        <location filename="../src/QueryEditor.cpp" line="123"/>
+        <location filename="../src/QueryEditor.cpp" line="173"/>
         <source>Direction</source>
         <translation>Направление</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditor.cpp" line="161"/>
+        <location filename="../src/QueryEditor.cpp" line="157"/>
         <source>To configure the constraint element parameters go to the &quot;Parameters&quot; area below.</source>
         <translation>Параметры элемента можно отредактировать в таблице, расположенной ниже.</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditor.cpp" line="139"/>
-        <location filename="../src/QueryEditor.cpp" line="194"/>
+        <location filename="../src/QueryEditor.cpp" line="135"/>
+        <location filename="../src/QueryEditor.cpp" line="190"/>
         <source>To configure the algorithm element parameters go to the &quot;Parameters&quot; area below.</source>
         <translation>Параметры элемента можно отредактировать в таблице, расположенной ниже.</translation>
     </message>
@@ -934,12 +934,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QueryPalette</name>
     <message>
-        <location filename="../src/QueryPalette.cpp" line="159"/>
+        <location filename="../src/QueryPalette.cpp" line="155"/>
         <source>Algorithms</source>
         <translation>Алгоритмы</translation>
     </message>
     <message>
-        <location filename="../src/QueryPalette.cpp" line="175"/>
+        <location filename="../src/QueryPalette.cpp" line="171"/>
         <source>Constraints</source>
         <translation>Условия</translation>
     </message>

@@ -269,17 +269,17 @@
         <translation>Exception during script execution! Line: %1, error: %2</translation>
     </message>
     <message>
-        <location filename="../src/model/GrouperOutSlot.cpp" line="155"/>
+        <location filename="../src/model/GrouperOutSlot.cpp" line="157"/>
         <source>By value</source>
         <translation>By value</translation>
     </message>
     <message>
-        <location filename="../src/model/GrouperOutSlot.cpp" line="159"/>
+        <location filename="../src/model/GrouperOutSlot.cpp" line="161"/>
         <source>By name</source>
         <translation>By name</translation>
     </message>
     <message>
-        <location filename="../src/model/GrouperOutSlot.cpp" line="163"/>
+        <location filename="../src/model/GrouperOutSlot.cpp" line="165"/>
         <source>By id</source>
         <translation>By id</translation>
     </message>
@@ -395,12 +395,12 @@
         <translation>NULL parameters area</translation>
     </message>
     <message>
-        <location filename="../src/model/WorkflowContext.cpp" line="206"/>
+        <location filename="../src/model/WorkflowContext.cpp" line="205"/>
         <source>Can not create folder: </source>
         <translation>Can not create folder: </translation>
     </message>
     <message>
-        <location filename="../src/model/WorkflowContext.cpp" line="229"/>
+        <location filename="../src/model/WorkflowContext.cpp" line="228"/>
         <source>Can not create folder %1 in the folder %2</source>
         <translation>Can not create folder %1 in the folder %2</translation>
     </message>
@@ -415,7 +415,7 @@
         <translation>Actor &apos;%1&apos; does not have this parameter: %2</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="348"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="328"/>
         <source>Additional</source>
         <translation>Additional</translation>
     </message>
@@ -435,27 +435,27 @@
         <translation>The variable is already defined: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="259"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="255"/>
         <source>Empty script text</source>
         <translation>Empty script text</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="267"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="263"/>
         <source>Script syntax check failed! Line: %1, error: %2</source>
         <translation>Script syntax check failed! Line: %1, error: %2</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="291"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="287"/>
         <source>The workflow contains a cycle</source>
         <translation>The workflow contains a cycle</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="385"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="381"/>
         <source>&lt;empty&gt;</source>
         <translation>&lt;empty&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="385"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="381"/>
         <source>Default value</source>
         <translation>Default value</translation>
     </message>
@@ -485,17 +485,17 @@
         <translation>Unknown actor ID: </translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/Constants.cpp" line="32"/>
+        <location filename="../src/support/serialize/Constants.cpp" line="34"/>
         <source>Error: unknown exception caught</source>
         <translation>Error: unknown exception caught</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/Constants.cpp" line="45"/>
+        <location filename="../src/support/serialize/Constants.cpp" line="47"/>
         <source>Undefined construct at &apos;%1 %2&apos;</source>
         <translation>Undefined construct at &apos;%1 %2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/Constants.cpp" line="63"/>
+        <location filename="../src/support/serialize/Constants.cpp" line="65"/>
         <source>Undefined block in .meta: &apos;%1&apos;</source>
         <translation>Undefined block in .meta: &apos;%1&apos;</translation>
     </message>
@@ -678,22 +678,22 @@
 <context>
     <name>U2::DescriptorListEditorDelegate</name>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="407"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="387"/>
         <source>&lt;empty&gt;</source>
         <translation>&lt;empty&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="407"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="387"/>
         <source>Default value</source>
         <translation>Default value</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="411"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="391"/>
         <source>&lt;List of values&gt;</source>
         <translation>&lt;List of values&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="411"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="391"/>
         <source>List of values</source>
         <translation>List of values</translation>
     </message>
@@ -1196,17 +1196,17 @@
 <context>
     <name>U2::MapDatatypeEditor</name>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="91"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="76"/>
         <source>Slots</source>
         <translation>Slots</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="91"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="76"/>
         <source>Data source</source>
         <translation>Data source</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="187"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="167"/>
         <source>The input slot &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;is bound to&lt;br&gt;the bus slot &lt;b&gt;%2&lt;/b&gt;</source>
         <translation>The input slot &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;is bound to&lt;br&gt;the bus slot &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
@@ -1362,19 +1362,19 @@
 <context>
     <name>U2::PrompterBaseImpl</name>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1350"/>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1370"/>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1407"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1346"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1366"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1403"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1353"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1349"/>
         <source>the list of files</source>
         <translation>the list of files</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1385"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1381"/>
         <source>file(s) alongside of input sources of &lt;u&gt;%1&lt;/u&gt;</source>
         <translation>file(s) alongside of input sources of &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
@@ -1390,7 +1390,7 @@
 <context>
     <name>U2::RunFileSystem</name>
     <message>
-        <location filename="../src/model/RunFileSystem.cpp" line="152"/>
+        <location filename="../src/model/RunFileSystem.cpp" line="154"/>
         <source>Workflow-run output</source>
         <translation>Workflow-run output</translation>
     </message>
@@ -1557,147 +1557,147 @@
 <context>
     <name>U2::Workflow::BaseAttributes</name>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="44"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="46"/>
         <source>Input file(s)</source>
         <translation>Input file(s)</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="44"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="46"/>
         <source>Semicolon-separated list of paths to the input files.</source>
         <translation>Semicolon-separated list of paths to the input files.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="48"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="50"/>
         <source>Output file</source>
         <translation>Output file</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="48"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="50"/>
         <source>Location of output data file. If this attribute is set, slot &quot;Location&quot; in port will not be used.</source>
         <translation>Location of output data file. If this attribute is set, slot &quot;Location&quot; in port will not be used.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="53"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="55"/>
         <source>Output file suffix</source>
         <translation>Output file suffix</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="53"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="55"/>
         <source>This suffix will be used for generating the output file name.</source>
         <translation>This suffix will be used for generating the output file name.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="57"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="59"/>
         <source>Located on</source>
         <translation>Located on</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="57"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="59"/>
         <source>Machine file(s) are located on</source>
         <translation>Machine file(s) are located on</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="61"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="63"/>
         <source>Data storage</source>
         <translation>Data storage</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="61"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="63"/>
         <source>Place to store workflow results</source>
         <translation>Place to store workflow results</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="82"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="84"/>
         <source>Database</source>
         <translation>Database</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="82"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="84"/>
         <source>The URL or name of a shared UGENE database</source>
         <translation>The URL or name of a shared UGENE database</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="86"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="88"/>
         <source>Output path</source>
         <translation>Output path</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="86"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="88"/>
         <source>Location of output objects in a shared database</source>
         <translation>Location of output objects in a shared database</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="90"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="92"/>
         <source>Document format</source>
         <translation>Document format</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="90"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="92"/>
         <source>Document format of output file.</source>
         <translation>Document format of output file.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="94"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="96"/>
         <source>Accumulate objects</source>
         <translation>Accumulate objects</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="95"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="97"/>
         <source>Accumulate all incoming data in one file or create separate files for each input.In the latter case, an incremental numerical suffix is added to the file name.</source>
         <translation>Accumulate all incoming data in one file or create separate files for each input.In the latter case, an incremental numerical suffix is added to the file name.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="100"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="102"/>
         <source>Split sequence</source>
         <translation>Split sequence</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="100"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="102"/>
         <source>Split each incoming sequence on several parts.</source>
         <translation>Split each incoming sequence on several parts.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="104"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="106"/>
         <source>Read by lines</source>
         <translation>Read by lines</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="104"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="106"/>
         <source>Reads the input file line by line.</source>
         <translation>Reads the input file line by line.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="108"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="110"/>
         <source>Existing file</source>
         <translation>Existing file</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="108"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="110"/>
         <source>If a target file already exists, you can specify how it should be handled: either overwritten, renamed or appended (if supported by file format). If Rename option is chosen existing file will be renamed.</source>
         <translation>If a target file already exists, you can specify how it should be handled: either overwritten, renamed or appended (if supported by file format). If Rename option is chosen existing file will be renamed.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="114"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="116"/>
         <source>Search in</source>
         <translation>Search in</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="114"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="116"/>
         <source>Which strands should be searched: direct, complement or both.</source>
         <translation>Which strands should be searched: direct, complement or both.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="134"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="136"/>
         <source>both strands</source>
         <translation>both strands</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="135"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="137"/>
         <source>direct strand</source>
         <translation>direct strand</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="136"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="138"/>
         <source>complementary strand</source>
         <translation>complementary strand</translation>
     </message>
@@ -1796,19 +1796,19 @@
 <context>
     <name>U2::Workflow::IntegralBusPort</name>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="436"/>
-        <location filename="../src/model/IntegralBusModel.cpp" line="470"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="434"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="468"/>
         <source>No input data supplied</source>
         <translation>No input data supplied</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="484"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="482"/>
         <source>Empty input slot: %1</source>
         <translation>Empty input slot: %1</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="487"/>
-        <location filename="../src/model/IntegralBusModel.cpp" line="501"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="485"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="499"/>
         <source>Bad slot binding: %1 to %2</source>
         <translation>Bad slot binding: %1 to %2</translation>
     </message>
@@ -1834,33 +1834,33 @@
 <context>
     <name>U2::Workflow::SchemaSerializer</name>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="250"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="251"/>
         <source>no metadata</source>
         <translation>no metadata</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="318"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="319"/>
         <source>Invalid content: duplicate process %1</source>
         <translation>Invalid content: duplicate process %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="325"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="326"/>
         <source>Invalid content: unknown process type %1</source>
         <translation>Invalid content: unknown process type %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="356"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="357"/>
         <source>Invalid content: unknown port %1 requested for %2</source>
         <translation>Invalid content: unknown port %1 requested for %2</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="385"/>
-        <location filename="../src/support/SchemaSerializer.cpp" line="392"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="386"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="393"/>
         <source>Invalid content: no such process %1 to bind</source>
         <translation>Invalid content: no such process %1 to bind</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="404"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="405"/>
         <source>Invalid content: cannot bind [%1 : %2] to [%3 : %4]</source>
         <translation>Invalid content: cannot bind [%1 : %2] to [%3 : %4]</translation>
     </message>
@@ -1876,42 +1876,42 @@
 <context>
     <name>U2::WorkflowIterationRunTask</name>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="138"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="143"/>
         <source>Workflow run</source>
         <translation>Workflow run</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="154"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="159"/>
         <source>Unknown domain %1</source>
         <translation>Unknown domain %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="204"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="209"/>
         <source>Failed to preprocess the workflow. Some of included files are broken</source>
         <translation>Failed to preprocess the workflow. Some of included files are broken</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="212"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="217"/>
         <source>Failed to create worker %1 %2 in domain %3</source>
         <translation>Failed to create worker %1 %2 in domain %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="220"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="225"/>
         <source>Failed to create connection %1 %2 in domain %3</source>
         <translation>Failed to create connection %1 %2 in domain %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="233"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="238"/>
         <source>Failed to create a workflow context</source>
         <translation>Failed to create a workflow context</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="295"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="300"/>
         <source>No workers are ready, while not all workers are done. Workflow is broken?</source>
         <translation>No workers are ready, while not all workers are done. Workflow is broken?</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="239"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="244"/>
         <source>Failed to create scheduler in domain %1</source>
         <translation>Failed to create scheduler in domain %1</translation>
     </message>
@@ -1927,7 +1927,7 @@
 <context>
     <name>U2::WorkflowRunTask</name>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="56"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="59"/>
         <source>Execute workflow</source>
         <translation>Execute workflow</translation>
     </message>
@@ -2024,7 +2024,7 @@
 <context>
     <name>U2::WorkflowSettings</name>
     <message>
-        <location filename="../src/support/WorkflowSettings.cpp" line="259"/>
+        <location filename="../src/support/WorkflowSettings.cpp" line="253"/>
         <source>Command line UGENE path not found, a possibility to run in separate process will be disabled</source>
         <translation>Command line UGENE path not found, a possibility to run in separate process will be disabled</translation>
     </message>
@@ -2037,92 +2037,92 @@
         <translation>Required parameter is not set: %1</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="549"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="547"/>
         <source>Either parameter &apos;%1&apos; or input slot &apos;%2&apos; must be set</source>
         <translation>Either parameter &apos;%1&apos; or input slot &apos;%2&apos; must be set</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="353"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="349"/>
         <source> (use --%1 option)</source>
         <translation> (use --%1 option)</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="407"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="403"/>
         <source>&lt;List of values&gt;</source>
         <translation>&lt;List of values&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="407"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="403"/>
         <source>List of values</source>
         <translation>List of values</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="570"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="566"/>
         <source>%1 actors in workflow have &apos;%2&apos; alias</source>
         <translation>%1 actors in workflow have &apos;%2&apos; alias</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="641"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="637"/>
         <source>The %1 element is a %2. Sorry, but current version of UGENE doesn&apos;t support of filters and groupers in the includes.</source>
         <translation>The %1 element is a %2. Sorry, but current version of UGENE doesn&apos;t support of filters and groupers in the includes.</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="649"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="645"/>
         <source>filter</source>
         <translation>filter</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="651"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="647"/>
         <source>grouper</source>
         <translation>grouper</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="659"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="655"/>
         <source>The workflow has not any aliased ports</source>
         <translation>The workflow has not any aliased ports</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="676"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="672"/>
         <source>The aliased port %1.%2 has no aliased slots</source>
         <translation>The aliased port %1.%2 has no aliased slots</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="685"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="681"/>
         <source>The free port %1.%2 is not aliased</source>
         <translation>The free port %1.%2 is not aliased</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="698"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="694"/>
         <source>The required parameter %1.%2 is empty and not aliased</source>
         <translation>The required parameter %1.%2 is empty and not aliased</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="886"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="882"/>
         <source>External tool &quot;%1&quot; is not set. You can set it in Settings -&gt; Preferences -&gt; External Tools</source>
         <translation>External tool &quot;%1&quot; is not set. You can set it in Settings -&gt; Preferences -&gt; External Tools</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="890"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="886"/>
         <source>External tool &quot;%1&quot; is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected</source>
         <translation>External tool &quot;%1&quot; is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1205"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1201"/>
         <source>Can&apos;t access output file path: &apos;%1&apos;</source>
         <translation>Can&apos;t access output file path: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1224"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1220"/>
         <source>Can&apos;t output folder path: &apos;%1&apos;, check permissions</source>
         <translation>Can&apos;t output folder path: &apos;%1&apos;, check permissions</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1243"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1239"/>
         <source>Empty shared database URL specified</source>
         <translation>Empty shared database URL specified</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1315"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1311"/>
         <source>Wrong samples map string</source>
         <translation>Wrong samples map string</translation>
     </message>

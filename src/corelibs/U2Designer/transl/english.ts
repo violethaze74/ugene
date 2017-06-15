@@ -721,12 +721,12 @@ bowtie index file</translation>
 <context>
     <name>U2::ComboBoxWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="178"/>
+        <location filename="../src/PropertyWidget.cpp" line="179"/>
         <source>False</source>
         <translation>False</translation>
     </message>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="179"/>
+        <location filename="../src/PropertyWidget.cpp" line="180"/>
         <source>True</source>
         <translation>True</translation>
     </message>
@@ -734,7 +734,7 @@ bowtie index file</translation>
 <context>
     <name>U2::ComboBoxWithDbUrlWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="339"/>
+        <location filename="../src/PropertyWidget.cpp" line="340"/>
         <source>Add New Connection</source>
         <translation>Add New Connection</translation>
     </message>
@@ -742,12 +742,12 @@ bowtie index file</translation>
 <context>
     <name>U2::ComboBoxWithUrlWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="314"/>
+        <location filename="../src/PropertyWidget.cpp" line="315"/>
         <source>Select a folder</source>
         <translation>Select a folder</translation>
     </message>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="319"/>
+        <location filename="../src/PropertyWidget.cpp" line="320"/>
         <source>Select a file</source>
         <translation>Select a file</translation>
     </message>
@@ -768,43 +768,43 @@ bowtie index file</translation>
 <context>
     <name>U2::Dashboard</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="162"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="164"/>
         <source>Output Files</source>
         <translation>Output Files</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="163"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="165"/>
         <source>Workflow Task</source>
         <translation>Workflow Task</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="164"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="166"/>
         <source>Common Statistics</source>
         <translation>Common Statistics</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="171"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="173"/>
         <source>Parameters</source>
         <translation>Parameters</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="248"/>
-        <location filename="../src/dashboard/Dashboard.cpp" line="256"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="250"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="258"/>
         <source>External Tools</source>
         <translation>External Tools</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="188"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="190"/>
         <source>Problems</source>
         <translation>Problems</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="198"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="200"/>
         <source>Can not create a folder: </source>
         <translation>Can not create a folder: </translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="213"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="215"/>
         <source>Can not open a file for writing: </source>
         <translation>Can not open a file for writing: </translation>
     </message>
@@ -1049,12 +1049,12 @@ bowtie index file</translation>
 <context>
     <name>U2::JavascriptAgent</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="388"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="390"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="388"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="390"/>
         <source>The file does not exist</source>
         <translation>The file does not exist</translation>
     </message>
@@ -1309,7 +1309,7 @@ bowtie index file</translation>
 <context>
     <name>U2::RemoveDashboardsTask</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="463"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="465"/>
         <source>Remove dashboards</source>
         <translation>Remove dashboards</translation>
     </message>
@@ -1355,7 +1355,7 @@ bowtie index file</translation>
 <context>
     <name>U2::ScanDashboardsDirTask</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="417"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="419"/>
         <source>Scan dashboards folder</source>
         <translation>Scan dashboards folder</translation>
     </message>
@@ -1497,18 +1497,18 @@ bowtie index file</translation>
 <context>
     <name>U2::URLListWidget</name>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="109"/>
-        <location filename="../src/DatasetWidget.cpp" line="112"/>
+        <location filename="../src/DatasetWidget.cpp" line="108"/>
+        <location filename="../src/DatasetWidget.cpp" line="110"/>
         <source>Select file</source>
         <translation>Select file</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="121"/>
+        <location filename="../src/DatasetWidget.cpp" line="120"/>
         <source>Select a folder</source>
         <translation>Select a folder</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="189"/>
+        <location filename="../src/DatasetWidget.cpp" line="188"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
@@ -1516,7 +1516,7 @@ bowtie index file</translation>
 <context>
     <name>U2::URLWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="502"/>
+        <location filename="../src/PropertyWidget.cpp" line="503"/>
         <source>add</source>
         <translation>add</translation>
     </message>

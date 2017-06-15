@@ -339,7 +339,7 @@
 <context>
     <name>U2::DNAStatsWindow</name>
     <message>
-        <location filename="../src/DNAStatsWindow.cpp" line="44"/>
+        <location filename="../src/DNAStatsWindow.cpp" line="37"/>
         <source>Statistics for %1</source>
         <translation>Statistics for %1</translation>
     </message>
@@ -438,17 +438,17 @@
         <translation>Can&apos;t open file for write: %1</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="304"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="303"/>
         <source>There is not enough groups to create distance matrix!</source>
         <translation>There is not enough groups to create distance matrix!</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="353"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="352"/>
         <source>Distance matrix</source>
         <translation>Distance matrix</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="353"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="352"/>
         <source>Distance matrix for %1</source>
         <translation>Distance matrix for %1</translation>
     </message>

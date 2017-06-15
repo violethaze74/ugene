@@ -4,7 +4,7 @@
 <context>
     <name>U2::ChromaViewAction</name>
     <message>
-        <location filename="../src/ChromaViewPlugin.cpp" line="150"/>
+        <location filename="../src/ChromaViewPlugin.cpp" line="145"/>
         <source>Show chromatogram</source>
         <translation>Show chromatogram</translation>
     </message>
@@ -12,12 +12,12 @@
 <context>
     <name>U2::ChromaViewPlugin</name>
     <message>
-        <location filename="../src/ChromaViewPlugin.cpp" line="62"/>
+        <location filename="../src/ChromaViewPlugin.cpp" line="57"/>
         <source>Chromatogram View</source>
         <translation>Chromatogram View</translation>
     </message>
     <message>
-        <location filename="../src/ChromaViewPlugin.cpp" line="62"/>
+        <location filename="../src/ChromaViewPlugin.cpp" line="57"/>
         <source>Chromatograms visualization</source>
         <translation>Chromatograms visualization</translation>
     </message>

@@ -809,6 +809,9 @@ void CreateSequenceWelcomePageAction::perform() {
 SaveProjectDialogController::SaveProjectDialogController(QWidget *w) : QDialog(w) {
     setupUi(this);
     setModal(true);
+    buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Yes"));
+    buttonBox->button(QDialogButtonBox::No)->setText(tr("No"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));    
 
     connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(sl_clicked(QAbstractButton *)));
 }
