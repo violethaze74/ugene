@@ -4720,7 +4720,7 @@ GUI_TEST_CLASS_DEFINITION(test_4795) {
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
     GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
+    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4803_1) {
