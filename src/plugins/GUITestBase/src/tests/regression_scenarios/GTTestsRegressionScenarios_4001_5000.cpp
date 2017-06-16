@@ -4165,8 +4165,8 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
     GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
-
+    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
+ 
     //    4. Undo changes
     GTUtilsMsaEditor::undo(os);
     GTGlobals::sleep(500);
@@ -4177,6 +4177,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
     GTComboBox::checkCurrentValue(os, colorScheme, "UGENE");
     GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4719_2) {
@@ -4196,7 +4197,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
     GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
+    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
 
     //    4. Undo changes
     GTUtilsMsaEditor::undo(os);
