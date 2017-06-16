@@ -636,6 +636,7 @@ GUI_TEST_CLASS_DEFINITION( test_2026 ) {
     }
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTGlobals::sleep(3000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: 5 sequences are selected
     CHECK_SET_ERR( 5 == GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os),
@@ -6262,7 +6263,7 @@ GUI_TEST_CLASS_DEFINITION(test_2981) {
 //    2. Click a "Build Tree" button on the main toolbar.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_3276_COI.wnk", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
-    GTGlobals::sleep(1000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: a "Build Phyligenetic Tree" dialog appears.
 
 //    3. Set any acceptable path and build a tree with default parameters.
