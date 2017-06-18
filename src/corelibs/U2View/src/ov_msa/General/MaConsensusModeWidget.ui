@@ -69,6 +69,12 @@
      </item>
      <item>
       <widget class="QSpinBox" name="thresholdSpinBox">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
