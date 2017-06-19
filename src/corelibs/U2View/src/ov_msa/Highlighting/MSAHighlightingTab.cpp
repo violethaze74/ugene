@@ -238,7 +238,7 @@ void MSAHighlightingTab::sl_updateHint() {
     if (U2MsaRow::INVALID_ROW_ID == msa->getReferenceRowId()
         && !seqArea->getCurrentHighlightingScheme()->getFactory()->isRefFree())
     {
-        hint->setText(tr("Hint: select a reference above"));
+        hint->setText(tr("Info: set a reference sequence."));
         hint->setStyleSheet(
             "color: green;"
             "font: bold;");
@@ -247,6 +247,10 @@ void MSAHighlightingTab::sl_updateHint() {
     }
     hint->setText("");
     if(s->getFactory()->isRefFree()){
+        hint->setText(tr("Info: export is not available for the selected highlighting."));
+        hint->setStyleSheet(
+            "color: green;"
+            "font: bold;");
         exportHighlightning->setDisabled(true);
     }else{
         exportHighlightning->setEnabled(true);
