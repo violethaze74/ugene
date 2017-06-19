@@ -6227,7 +6227,7 @@ GUI_TEST_CLASS_DEFINITION(test_2972){
     CHECK_SET_ERR(l.hasError(), "no error in log");
     QString error = l.getError();
 #ifdef Q_OS_WIN
-    QString expectedError = "Task {Search with phmmer} finished with error: Subtask {PHMMER search tool} is failed: PHMMER search tool exited with code 33792";
+    QString expectedError = "Task {Search with phmmer} finished with error: Subtask {PHMMER search tool} is failed";
 #else
     QString expectedError = "is empty or misformatted";
 #endif
