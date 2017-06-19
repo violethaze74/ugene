@@ -640,7 +640,7 @@ GUI_TEST_CLASS_DEFINITION( test_2026 ) {
 
     // Expected state: 5 sequences are selected
     CHECK_SET_ERR( 5 == GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os),
-        "Unexpected number of selected sequences");
+		QString("Unexpected number of selected sequences1. Got %1, Expected %2").arg(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os)).arg(5));
     CHECK_SET_ERR( GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Montana_montana")),
         "Expected sequence is not selected");
     CHECK_SET_ERR( GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Zychia_baranovi")),
@@ -652,10 +652,11 @@ GUI_TEST_CLASS_DEFINITION( test_2026 ) {
     GTGlobals::sleep( 500 );
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTGlobals::sleep(3000);
+	GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: 6 sequences selected
     CHECK_SET_ERR( 6 == GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os),
-        "Unexpected number of selected sequences");
+		QString("Unexpected number of selected sequences2. Got %1, Expected %2").arg(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os)).arg(6));
     CHECK_SET_ERR( GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Montana_montana")),
         "Expected sequence is not selected");
     CHECK_SET_ERR( GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Zychia_baranovi")),
