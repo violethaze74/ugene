@@ -26,8 +26,9 @@
 #include <U2Algorithm/MsaHighlightingScheme.h>
 #include <U2Algorithm/MsaColorScheme.h>
 
-#include <U2View/ADVSequenceObjectContext.h> // SANGER_TODO: don't forget to order the include
 #include <U2Core/DNASequenceSelection.h>
+
+#include <U2View/SequenceObjectContext.h>
 
 #include <QPainter>
 

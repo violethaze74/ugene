@@ -28,7 +28,7 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2View/ADVSequenceObjectContext.h> // SANGER_TODO: rename
+#include <U2View/SequenceObjectContext.h>
 
 namespace U2 {
 
