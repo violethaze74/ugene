@@ -44,7 +44,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     multipleRange = QString();
 }
 
-SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os) : Filler(_os, "RangeSelectionDialog")
+SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, CustomScenario* scenario) : Filler(_os, "RangeSelectionDialog", scenario)
 {
     rangeType = Single;
     selectAll = true;

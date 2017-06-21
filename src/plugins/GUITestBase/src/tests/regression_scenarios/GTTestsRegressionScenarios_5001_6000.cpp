@@ -97,6 +97,7 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
@@ -1388,6 +1389,38 @@ GUI_TEST_CLASS_DEFINITION(test_5469) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size() == 2, "Wrong number of selected annotations");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5495) {
+    //1) Open samples/FASTA/human_T1.fa
+        GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    //2) Select 100..10 region of the sequence
+        class Scenario : public CustomScenario {
+        public:
+            void run(HI::GUITestOpStatus &os) {
+                QWidget *dialog = QApplication::activeModalWidget();
+                
+                QLineEdit *startEdit = dialog->findChild<QLineEdit*>("startEdit");
+                QLineEdit *endEdit = dialog->findChild<QLineEdit*>("endEdit");
+                CHECK_SET_ERR(startEdit != NULL, "QLineEdit \"startEdit\" not found");
+                CHECK_SET_ERR(endEdit != NULL, "QLineEdit \"endEdit\" not found");
+                
+                GTLineEdit::setText(os, startEdit, QString::number(321));
+                GTLineEdit::setText(os, endEdit, QString::number(123));
+                                
+                QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox"));
+                QPushButton* goButton = box->button(QDialogButtonBox::Ok);
+                CHECK_SET_ERR(goButton!= NULL, "Go button not found");
+                CHECK_SET_ERR(!goButton->isEnabled(), "Go button is enabled");
+                
+                GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            }
+        };
+        GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, new Scenario));
+        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));
+        GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));               
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5499) {
