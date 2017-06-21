@@ -6195,7 +6195,7 @@ GUI_TEST_CLASS_DEFINITION( test_1606 ) {
 //    Expected state: UGENE doesn't crash on closing.
     GTLogTracer l;
 
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, true, false,
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, true, true, false,
                                                                         sandBoxDir));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);

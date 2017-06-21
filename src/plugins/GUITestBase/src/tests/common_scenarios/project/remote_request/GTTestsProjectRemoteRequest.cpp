@@ -271,5 +271,45 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterVisible(os, "File with resource IDs"), "The 'File with resource IDs' parameter is not visible unexpectedly");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0011) {
+    
+    //    1.  File->Access remote database...
+    //    2.  Fill    "Resource ID": 1ezg
+    //                "Database": PDB
+    //                "Add to project": true
+    //        Open.
+    //    3.  Expected state: 1ezg appears in a project view. 
+
+        GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, true, true, false,
+                                                                            sandBoxDir));
+        GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
+        
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+        GTGlobals::sleep(20000);
+        GTUtilsDocument::isDocumentLoaded(os, "1ezg.pdb");
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0012) {
+    //    1.  File->Access remote database...
+    //    2.  Fill    "Resource ID": 1ezg
+    //                "Database": PDB
+    //                "Add to project": false
+    //        Open.
+    //    3.  Expected state: 1ezg doesn't appear in a project view. 
+
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, false, true, false, sandBoxDir));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
+    
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1CRN", 3, true, true, false, sandBoxDir));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
+
+    GTGlobals::sleep(10000);//some time needed for request
+    GTUtilsDocument::isDocumentLoaded(os, "1CRN.pdb");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!GTUtilsProjectTreeView::checkItem(os, "1ezg.pdb"), "Object shound not be in the project");
+}
+
 } // namespace
 } // namespace U2

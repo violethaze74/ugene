@@ -1573,6 +1573,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0008);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0010);
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0011);
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0012);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/toggle view/
