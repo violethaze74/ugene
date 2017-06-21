@@ -65,6 +65,7 @@
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaGraphOverview.h>
+#include <U2View/ScrollController.h>
 
 #include "GTTestsRegressionScenarios_4001_5000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -1029,9 +1030,8 @@ GUI_TEST_CLASS_DEFINITION(test_4106){
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    MSAEditorSequenceArea* msaEdistorSequenceAres = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-
-    int endPos = msaEdistorSequenceAres->getLastVisibleSequence(false);
+    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getLastVisibleRowNumber(msaEdistorSequenceArea->height());
 
     GTUtilsMSAEditorSequenceArea::click( os, QPoint( -5, endPos-1 ) );
     GTGlobals::sleep(200);
@@ -2081,9 +2081,8 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    MSAEditorSequenceArea* msaEdistorSequenceAres = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-
-    int endPos = msaEdistorSequenceAres->getLastVisibleSequence(false);
+    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getLastVisibleRowNumber(msaEdistorSequenceArea->height());
 
     GTUtilsMSAEditorSequenceArea::click( os, QPoint( -5, endPos-1 ) );
     GTGlobals::sleep(200);
@@ -2103,8 +2102,10 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( 0, endPos-1, 1234, 4 ) );
 
-    CHECK_SET_ERR(msaEdistorSequenceAres->getFirstVisibleSequence() == 1, "MSA not scrolled");
+    const int firstVisibleSequence = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getFirstVisibleRowNumber(false);
+    CHECK_SET_ERR(firstVisibleSequence == 1, "MSA not scrolled");
 }
+
 GUI_TEST_CLASS_DEFINITION(test_4295) {
 /* 1. Open Workflow Designer
  * 2. Add elements Read File List and Write Plain Text

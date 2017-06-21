@@ -31,7 +31,7 @@ class MaEditorSelection;
 class MSACollapsibleItemModel;
 class ScrollController;
 
-class DrawHelper {
+class U2VIEW_EXPORT DrawHelper {
 public:
     DrawHelper(MaEditorWgt *maEditorWgt);
 

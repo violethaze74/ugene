@@ -47,6 +47,14 @@ int BaseWidthController::getBaseGlobalOffset(int position) const {
     return getBaseWidth() * position;
 }
 
+int BaseWidthController::getBaseScreenOffset(int position) const {
+    return getBaseGlobalOffset(position) - ui->getScrollController()->getScreenPosition().x();
+}
+
+int BaseWidthController::getBaseScreenCenter(int position) const {
+    return getBaseScreenOffset(position) + getBaseWidth() / 2;
+}
+
 int BaseWidthController::getBaseWidth() const {
     return maEditor->getColumnWidth();
 }

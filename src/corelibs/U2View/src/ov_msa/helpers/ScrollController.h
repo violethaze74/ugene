@@ -32,7 +32,7 @@ class MaEditorSelection;
 class MaEditorWgt;
 class MSACollapsibleItemModel;
 
-class ScrollController : public QObject {
+class U2VIEW_EXPORT ScrollController : public QObject {
     Q_OBJECT
 public:
     enum Direction {

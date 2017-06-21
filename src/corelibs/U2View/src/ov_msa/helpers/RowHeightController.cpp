@@ -42,6 +42,10 @@ int RowHeightController::getRowScreenOffsetByNumber(int rowNumber) const {
     return getRowScreenOffset(ui->getCollapseModel()->mapToRow(rowNumber));
 }
 
+int RowHeightController::getRowScreenCenterByNumber(int rowNumber) const {
+    return getRowScreenOffsetByNumber(rowNumber) + getRowHeightByNumber(rowNumber) / 2;
+}
+
 int RowHeightController::getRowGlobalOffset(int rowIndex) const {
     int rowOffset = 0;
     for (int i = 0; i < rowIndex; i++) {

@@ -30,7 +30,7 @@ class MaEditor;
 class MaEditorWgt;
 class U2Region;
 
-class BaseWidthController : public QObject {
+class U2VIEW_EXPORT BaseWidthController : public QObject {
     Q_OBJECT
 public:
     BaseWidthController(MaEditorWgt *ui);
@@ -39,6 +39,8 @@ public:
     int getFirstVisibleBaseScreenOffset(bool countClipped) const;
 
     int getBaseGlobalOffset(int position) const;
+    int getBaseScreenOffset(int position) const;
+    int getBaseScreenCenter(int position) const;
 
     int getBaseWidth() const;
     int getBasesWidth(int count) const;

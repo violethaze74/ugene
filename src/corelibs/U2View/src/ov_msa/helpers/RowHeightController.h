@@ -28,13 +28,15 @@ namespace U2 {
 
 class MaEditorWgt;
 
-class RowHeightController : public QObject{
+class U2VIEW_EXPORT RowHeightController : public QObject{
     Q_OBJECT
 public:
     RowHeightController(MaEditorWgt *ui);
 
     int getRowScreenOffset(int rowIndex) const;
     int getRowScreenOffsetByNumber(int rowNumber) const;
+
+    int getRowScreenCenterByNumber(int rowNumber) const;
 
     int getRowGlobalOffset(int rowIndex) const;
     int getRowGlobalOffset(int rowIndex, const QList<int> &rowIndexes) const;

@@ -2082,7 +2082,7 @@ GUI_TEST_CLASS_DEFINITION( test_2285 ){
     CHECK_SET_ERR(visableNamesNum == 17,
                   QString("unexpected visable sequences number. Expected 17, actual: %1").arg(visableNamesNum));
 //    3. Expand the collapsed group ("Mecopoda_elongata__Ishigaki__J" is the head sequence).
-    GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Mecopoda_elongata__Ishigaki__J");
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Mecopoda_elongata__Ishigaki__J");
     GTGlobals::sleep(1000);
 
 //    4. Set the cursor to the 14 line (the "Mecopoda_elongata__Ishigaki__J" sequence), 45 base.
