@@ -749,8 +749,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::selectItems(os, annList);
 
-    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_3.gtf",
-                                                                 ExportAnnotationsFiller::gtf, os));
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0010_3.gtf", 
+                                                                 ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
@@ -1004,8 +1004,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
 
     GTUtilsAnnotationsTreeView::selectItems(os, annList);
 
-    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0012_3.gtf",
-                                                                 ExportAnnotationsFiller::gtf, os));
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0012_3.gtf",
+                                                                 ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();

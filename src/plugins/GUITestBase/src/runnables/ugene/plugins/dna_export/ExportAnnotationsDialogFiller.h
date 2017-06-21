@@ -41,6 +41,7 @@ public:
     ExportAnnotationsFiller(HI::GUITestOpStatus &_os,
                             const QString &_exportToFile,
                             fileFormat _format,
+                            bool _addToProject = false,
                             bool _saveSequencesUnderAnnotations = true,
                             bool _saveSequenceNames = true,
                             GTGlobals::UseMethod method = GTGlobals::UseMouse);
@@ -55,6 +56,7 @@ private:
     QString exportToFile;
     fileFormat format;
     QMap<fileFormat, QString> comboBoxItems;
+    bool addToProject;
     bool saveSequencesUnderAnnotations;
     bool saveSequenceNames;
 

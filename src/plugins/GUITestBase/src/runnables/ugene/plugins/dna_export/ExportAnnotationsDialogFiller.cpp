@@ -49,12 +49,14 @@ ExportAnnotationsFiller::ExportAnnotationsFiller(const QString &exportToFile, fi
 ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &_os,
                                                  const QString &_exportToFile,
                                                  fileFormat _format,
+                                                 bool _addToProject,
                                                  bool _saveSequencesUnderAnnotations,
                                                  bool _saveSequenceNames,
                                                  GTGlobals::UseMethod method)
     : Filler(_os, "U2__ExportAnnotationsDialog"),
       softMode(false),
       format(_format),
+      addToProject(_addToProject),
       saveSequencesUnderAnnotations(_saveSequencesUnderAnnotations),
       saveSequenceNames(_saveSequenceNames),
       useMethod(method)
@@ -100,6 +102,11 @@ void ExportAnnotationsFiller::commonScenario()
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
     if (comboBox->currentIndex() != index){
         GTComboBox::setCurrentIndex(os, comboBox, index, true, useMethod);
+    }
+    if (!addToProject){
+        QCheckBox *addToProjectButton = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjectCheck"));
+        GT_CHECK(addToProjectButton != NULL, "Check box not found");
+        GTCheckBox::setChecked(os, addToProjectButton, false);
     }
 
     if (!softMode) {
