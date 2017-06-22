@@ -3318,6 +3318,68 @@ GUI_TEST_CLASS_DEFINITION(test_4588_2) {
     GTMouseDriver::click(Qt::RightButton);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4591) {
+    
+    //1. Open a circular sequence of length N.
+    GTFileDialog::openFile(os, dataDir  + "samples/Genbank/NC_014267.1.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    SelectSequenceRegionDialogFiller* filler = new SelectSequenceRegionDialogFiller(os, 140425, 2);
+    filler->setCircular(true);
+    GTUtilsDialog::waitForDialog(os, filler);
+    GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
+    //2. Open "Region selection" dialog {Ctrl+a} fill it with next data:
+    //        {Single range selection} checked
+    //        {Region:} 140425..2
+    
+    //3. Press 'Go' button
+    //Expected state: this regions are selected on the view
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ADV_MENU_COPY<<"Copy sequence"));
+    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
+    GTGlobals::sleep(500);
+    QString text = GTClipboard::text(os);
+    CHECK_SET_ERR(text == "ATTG", "unexpected selection: " + text);
+}
+      
+      
+GUI_TEST_CLASS_DEFINITION(test_4591_1) {
+    //1) Open samples/FASTA/human_T1.fa
+        GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    //2) Select 100..10 region of the sequence
+        class Scenario : public CustomScenario {
+        public:
+            void run(HI::GUITestOpStatus &os) {
+                QWidget *dialog = QApplication::activeModalWidget();
+                
+                QLineEdit *startEdit = dialog->findChild<QLineEdit*>("startEdit");
+                QLineEdit *endEdit = dialog->findChild<QLineEdit*>("endEdit");
+                CHECK_SET_ERR(startEdit != NULL, "QLineEdit \"startEdit\" not found");
+                CHECK_SET_ERR(endEdit != NULL, "QLineEdit \"endEdit\" not found");
+                
+                GTLineEdit::setText(os, startEdit, QString::number(321));
+                GTLineEdit::setText(os, endEdit, QString::number(123));
+                                
+                QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox"));
+                QPushButton* goButton = box->button(QDialogButtonBox::Ok);
+                CHECK_SET_ERR(goButton!= NULL, "Go button not found");
+                CHECK_SET_ERR(!goButton->isEnabled(), "Go button is enabled");
+                
+                GTLineEdit::setText(os, startEdit, QString::number(123));
+                GTLineEdit::setText(os, endEdit, QString::number(321));
+                CHECK_SET_ERR(goButton!= NULL, "Go button not found");
+                CHECK_SET_ERR(goButton->isEnabled(), "Go button is notenabled");
+
+                GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            }
+        };
+        GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, new Scenario));
+        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));
+        GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0")); 
+        
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4606) {
     //1. Create custom WD element
     //2. Do not fill "Description" and "Parameters description" fields

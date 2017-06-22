@@ -42,6 +42,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     length = 0;
     len = _len;
     multipleRange = QString();
+    circular = false;
 }
 
 SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, CustomScenario* scenario) : Filler(_os, "RangeSelectionDialog", scenario)
@@ -54,6 +55,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     length = 0;
     len = NULL;
     multipleRange = QString();
+    circular = false;
 }
 
 SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int _minVal, int _maxVal) : Filler(_os, "RangeSelectionDialog")
@@ -66,6 +68,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     length = 0;
     len = NULL;
     multipleRange = QString();
+    circular = false;
 }
 
 SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, const QString &range) : Filler(_os, "RangeSelectionDialog")
@@ -78,6 +81,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     length = 0;
     len = NULL;
     multipleRange = range;
+    circular = false;
 }
 
 SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int _length, bool selectFromBegin) : Filler(_os, "RangeSelectionDialog")
@@ -90,7 +94,13 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     length = _length;
     len = NULL;
     multipleRange = QString();
+    circular = false;
 }
+
+void SelectSequenceRegionDialogFiller::setCircular(bool v) {
+    circular = v;
+}
+
 
 #define GT_METHOD_NAME "commonScenario"
 void SelectSequenceRegionDialogFiller::commonScenario()
@@ -116,7 +126,7 @@ void SelectSequenceRegionDialogFiller::commonScenario()
             *len = endEdit->text().toInt();
         }
     } else if (rangeType == Single) {
-        GT_CHECK(minVal <= maxVal, "Value \"min\" greater then \"max\"");
+        GT_CHECK(circular || minVal <= maxVal, "Value \"min\" greater then \"max\"");
 
         QLineEdit *startEdit = dialog->findChild<QLineEdit*>("startEdit");
         QLineEdit *endEdit = dialog->findChild<QLineEdit*>("endEdit");

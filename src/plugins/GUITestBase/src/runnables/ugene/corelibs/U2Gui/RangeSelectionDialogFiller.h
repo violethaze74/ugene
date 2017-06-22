@@ -37,11 +37,13 @@ using namespace HI;
         SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int _length, bool selectFromBegin = true);
 
         void commonScenario();
+        void setCircular(bool v);
     private:
         RangeType rangeType;
         bool selectAll, fromBegin;
         int minVal, maxVal, length, *len;
         QString multipleRange;
+        bool circular;
     };
 
 
