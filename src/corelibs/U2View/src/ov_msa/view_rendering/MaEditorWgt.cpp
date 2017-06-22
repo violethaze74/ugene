@@ -118,7 +118,8 @@ void MaEditorWgt::initWidgets() {
     initNameList(nhBar);
     nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
-    consArea = new MSAEditorConsensusArea(this);
+    initConsensusArea();
+
     statusWidget = new MSAEditorStatusWidget(editor->getMaObject(), seqArea);
 
     offsetsView = new MSAEditorOffsetsViewController(this, editor, seqArea);

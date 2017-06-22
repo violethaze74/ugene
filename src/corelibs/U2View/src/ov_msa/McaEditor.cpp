@@ -45,9 +45,7 @@
 #include <U2Gui/OptionsPanel.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 
-#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
 namespace U2 {
@@ -208,19 +206,14 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     refArea->installEventFilter(this);
     seqAreaHeaderLayout->insertWidget(0, refArea);
 
-    MaEditorConsensusAreaSettings consSettings;
-    consSettings.visibility[MSAEditorConsElement_HISTOGRAM] = false;
-    consSettings.highlightMismatches = true;
-    consArea->setDrawSettings(consSettings);
-
-    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO);
-    consArea->setConsensusAlgorithm(algoFactory);
-
     QString name = getEditor()->getReferenceContext()->getSequenceObject()->getSequenceName();
     QWidget *refName = createHeaderLabelWidget(name, Qt::AlignCenter, refArea);
 
     nameAreaLayout->insertWidget(0, refName);
 
+    // SANGER_TODO: add a proper getter?
+    McaEditorConsensusArea* consArea = qobject_cast<McaEditorConsensusArea*>(this->consArea);
+    SAFE_POINT(consArea != NULL, "Cannot cast McaEditorConsensusArea", );
     connect(consArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
 }
 
@@ -249,6 +242,10 @@ void McaEditorWgt::initOverviewArea() {
 
 void McaEditorWgt::initNameList(QScrollBar* nhBar) {
     nameList = new McaEditorNameList(this, nhBar);
+}
+
+void McaEditorWgt::initConsensusArea() {
+    consArea = new McaEditorConsensusArea(this);
 }
 
 } // namespace

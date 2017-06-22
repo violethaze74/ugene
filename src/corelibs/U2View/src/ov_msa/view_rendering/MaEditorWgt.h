@@ -36,7 +36,7 @@ class GScrollBar;
 class MaEditorSequenceArea;
 class MSACollapsibleItemModel;
 class MaEditor;
-class MSAEditorConsensusArea;
+class MaEditorConsensusArea;
 class MaEditorNameList;
 class MSAEditorOffsetsViewController;
 class MaEditorOverviewArea;
@@ -59,7 +59,7 @@ public:
     MaEditor*                       getEditor() const { return editor; }
     MaEditorSequenceArea*           getSequenceArea() const { return seqArea; }
     MaEditorNameList*               getEditorNameList() { return nameList; }
-    MSAEditorConsensusArea*         getConsensusArea() { return consArea; }
+    MaEditorConsensusArea*          getConsensusArea() { return consArea; }
     MaEditorOverviewArea*           getOverviewArea() { return overviewArea; }
     MSAEditorOffsetsViewController* getOffsetsViewController() { return offsetsView; }
 
@@ -93,12 +93,13 @@ protected:
     virtual void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) = 0;
     virtual void initOverviewArea() = 0;
     virtual void initNameList(QScrollBar* nhBar) = 0;
+    virtual void initConsensusArea() = 0;
 
 protected:
     MaEditor*                       editor;
     MaEditorSequenceArea*           seqArea;
     MaEditorNameList*               nameList;
-    MSAEditorConsensusArea*         consArea;
+    MaEditorConsensusArea*          consArea;
     MaEditorOverviewArea*           overviewArea;
     MSAEditorOffsetsViewController* offsetsView;
     MSAEditorStatusWidget*          statusWidget;

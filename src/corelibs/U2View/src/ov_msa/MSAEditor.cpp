@@ -650,6 +650,10 @@ void MSAEditorUI::initNameList(QScrollBar *nhBar) {
     nameList = new MsaEditorNameList(this, nhBar);
 }
 
+void MSAEditorUI::initConsensusArea() {
+    consArea = new MSAEditorConsensusArea(this);
+}
+
 MSAEditorTreeViewer* MSAEditorUI::getCurrentTree() const
 {
     if(NULL == multiTreeViewer) {

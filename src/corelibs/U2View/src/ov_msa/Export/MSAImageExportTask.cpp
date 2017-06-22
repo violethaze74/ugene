@@ -140,7 +140,7 @@ void MSAImageExportToSvgTask::run() {
 
     MaEditorNameList* nameListArea = ui->getEditorNameList();
     SAFE_POINT_EXT(nameListArea != NULL, setError(L10N::nullPointerError("MSAEditorNameList")), );
-    MSAEditorConsensusArea* consArea = ui->getConsensusArea();
+    MaEditorConsensusArea* consArea = ui->getConsensusArea();
     SAFE_POINT_EXT(consArea != NULL, setError(L10N::nullPointerError("MSAEditorConsensusArea")), );
 
     int namesWidth = nameListArea->width();

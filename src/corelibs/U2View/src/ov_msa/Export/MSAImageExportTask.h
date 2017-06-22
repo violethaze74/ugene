@@ -93,7 +93,7 @@ protected:
     template<class P>
     void paintConsensus(P& p) {
         CHECK( msaSettings.includeConsensus, );
-        MSAEditorConsensusArea* consArea = ui->getConsensusArea();
+        MaEditorConsensusArea* consArea = ui->getConsensusArea();
         SAFE_POINT_EXT( consArea != NULL, setError(tr("MSA Consensus area is NULL")), );
         if (msaSettings.exportAll) {
             consArea->paintFullConsensus(p);
@@ -105,7 +105,7 @@ protected:
     template<class P>
     void paintRuler(P& p) {
         if (msaSettings.includeRuler) {
-            MSAEditorConsensusArea* consArea = ui->getConsensusArea();
+            MaEditorConsensusArea* consArea = ui->getConsensusArea();
             consArea->paintRulerPart(p, msaSettings.region);
         }
     }

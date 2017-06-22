@@ -90,6 +90,7 @@ protected:
     void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
     void initOverviewArea();
     void initNameList(QScrollBar* nhBar);
+    void initConsensusArea();
 
 private:
     McaEditorReferenceArea* refArea;
