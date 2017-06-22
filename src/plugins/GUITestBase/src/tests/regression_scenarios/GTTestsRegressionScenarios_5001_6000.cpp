@@ -1670,6 +1670,22 @@ GUI_TEST_CLASS_DEFINITION(test_5588) {
         .arg(rect.topLeft().x()).arg(rect.topLeft().y()).arg(rect.bottomRight().x()).arg(rect.bottomRight().y()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5636) {
+    //1. Open File "\samples\CLUSTALW\COI.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+   //2. Click Actions->Align->Align sequence to profile with MUSCLE...
+    //3. Select "\samples\CLUSTALW\COI.aln"
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align sequences to profile with MUSCLE..."));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align");  
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: 18 sequences are added to the msa. 
+    CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 36, "Incorrect sequences count");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
