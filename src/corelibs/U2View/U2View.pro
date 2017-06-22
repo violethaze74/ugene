@@ -67,6 +67,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/McaEditorOverviewArea.h \
            src/ov_msa/McaEditorReferenceArea.h \
            src/ov_msa/McaEditorSequenceArea.h \
+           src/ov_msa/McaReferenceCharController.h \
            src/ov_msa/MSACollapsibleModel.h \
            src/ov_msa/MSAEditor.h \
            src/ov_msa/MSAEditorConsensusArea.h \
@@ -310,6 +311,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/McaEditorOverviewArea.cpp \
            src/ov_msa/McaEditorReferenceArea.cpp \
            src/ov_msa/McaEditorSequenceArea.cpp \
+           src/ov_msa/McaReferenceCharController.cpp \
            src/ov_msa/MSACollapsibleModel.cpp \
            src/ov_msa/MSAEditor.cpp \
            src/ov_msa/MSAEditorConsensusArea.cpp \
