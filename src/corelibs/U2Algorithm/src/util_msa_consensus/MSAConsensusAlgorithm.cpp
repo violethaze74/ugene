@@ -60,7 +60,7 @@ MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _fact
 }
 
 char MSAConsensusAlgorithm::getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score,
-                                                     QVector<qint64> seqIdx) const {
+                                                     QVector<int> seqIdx) const {
     char consensusChar = getConsensusChar(ma, column, seqIdx);
 
     //now compute score using most freq character
@@ -81,10 +81,10 @@ void MSAConsensusAlgorithm::setThreshold(int val) {
     emit si_thresholdChanged(newThreshold);
 }
 
-bool MSAConsensusAlgorithm::filterIdx(QVector<qint64> &seqIdx, const MultipleAlignment& ma, const int pos) const {
+bool MSAConsensusAlgorithm::filterIdx(QVector<int> &seqIdx, const MultipleAlignment& ma, const int pos) const {
     CHECK(ignoreTrailingAndLeadingGaps, true);
 
-    QVector<qint64> tmp;
+    QVector<int> tmp;
     int nSeq = seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
         int rowNum = seqIdx.isEmpty() ? seq : seqIdx[ seq ];

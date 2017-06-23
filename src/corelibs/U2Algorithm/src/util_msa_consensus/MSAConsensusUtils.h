@@ -58,7 +58,7 @@ public:
     // nonGapChars = sum of all non-gap characters
     // TODO: use var-length array instead of the vector!
     static uchar getColumnFreqs(const MultipleAlignment& ma, int pos, QVector<int>& freqsByChar,
-                                int &nonGapChars, const QVector <qint64>& seqIdx = QVector<qint64>());
+                                int &nonGapChars, const QVector<int> &seqIdx = QVector<int>());
 
 };
 

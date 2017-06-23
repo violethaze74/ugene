@@ -121,7 +121,7 @@ bool MSAEditorTreeViewer::sync() {
         MSAEditorUI* msaUI = msa->getUI();
         connect(msaUI->editor->getMaObject(),  SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
                 this,                           SLOT(sl_alignmentChanged(MultipleAlignment,MaModificationInfo)));
-        connect(msaUI,                          SIGNAL(si_stopMsaChanging(bool)),
+        connect(msaUI,                          SIGNAL(si_stopMaChanging(bool)),
                 this,                           SLOT(sl_startTracking(bool)));
 
         connectSignals();
@@ -160,7 +160,7 @@ void MSAEditorTreeViewer::connectSignals() {
     MSAEditorTreeViewerUI* treeViewerUI = qobject_cast<MSAEditorTreeViewerUI*>(ui);
     CHECK(treeViewerUI != NULL, );
 
-    connect(msaUI,                      SIGNAL(si_startMsaChanging()),
+    connect(msaUI,                      SIGNAL(si_startMaChanging()),
             this,                       SLOT(sl_stopTracking()));
 
     connect(treeViewerUI,               SIGNAL(si_seqOrderChanged(const QStringList&)),
@@ -191,7 +191,7 @@ void MSAEditorTreeViewer::disconnectSignals() {
     MSAEditorTreeViewerUI* treeViewerUI = qobject_cast<MSAEditorTreeViewerUI*>(ui);
     CHECK(treeViewerUI != NULL, );
 
-    disconnect(msaUI,                       SIGNAL(si_startMsaChanging()),
+    disconnect(msaUI,                       SIGNAL(si_startMaChanging()),
                this,                        SLOT(sl_stopTracking()));
 
     disconnect(treeViewerUI,                SIGNAL(si_seqOrderChanged(const QStringList&)),
@@ -217,7 +217,7 @@ void MSAEditorTreeViewer::sl_startTracking(bool changed) {
     CHECK(msa != NULL, );
     MSAEditorUI* msaUI = msa->getUI();
     CHECK(msaUI != NULL, );
-    disconnect(msaUI,   SIGNAL(si_stopMsaChanging(bool)),
+    disconnect(msaUI,   SIGNAL(si_stopMaChanging(bool)),
                this,    SLOT(sl_startTracking(bool)));
 
     if (changed) {
@@ -300,7 +300,7 @@ void MSAEditorTreeViewer::sl_alignmentChanged(const MultipleAlignment &/*ma*/, c
         CHECK(msaUI != NULL, );
         disconnect(msaUI->editor->getMaObject(),   SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
                    this,                            SLOT(sl_alignmentChanged(MultipleAlignment,MaModificationInfo)));
-        disconnect(msaUI,                          SIGNAL(si_stopMsaChanging(bool)),
+        disconnect(msaUI,                          SIGNAL(si_stopMaChanging(bool)),
                    this,                           SLOT(sl_startTracking(bool)));
         desync();
     }

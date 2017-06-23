@@ -19,22 +19,25 @@
  * MA 02110-1301, USA.
  */
 
-#include "McaEditorReferenceArea.h"
-#include "McaEditor.h"
-#include "McaEditorSequenceArea.h"
-#include "MSAEditorConsensusArea.h"
-
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/ADVSequenceObjectContext.h> // SANGER_TODO: rename
 
+#include "McaEditor.h"
+#include "McaEditorReferenceArea.h"
+#include "McaEditorSequenceArea.h"
+#include "MSAEditorConsensusArea.h"
+#include "helpers/DrawHelper.h"
+#include "helpers/ScrollController.h"
+
 namespace U2 {
 
-McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *p, SequenceObjectContext *ctx)
-    : PanView(p, ctx, McaReferenceAreaRendererFactory(NULL != p ? p->getEditor() : NULL)),
-      editor(NULL != p ? p->getEditor() : NULL),
+McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectContext *ctx)
+    : PanView(ui, ctx, McaReferenceAreaRendererFactory(NULL != ui ? ui->getEditor() : NULL)),
+      editor(NULL != ui ? ui->getEditor() : NULL),
+      ui(ui),
       renderer(dynamic_cast<McaReferenceAreaRenderer *>(getRenderArea()->getRenderer()))
 {
     SAFE_POINT(NULL != renderer, "Renderer is NULL", );
@@ -45,14 +48,15 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *p, SequenceObjectCo
     scrollBar->hide();
     rowBar->hide();
 
-    connect(p->getEditor()->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+    connect(ui->getEditor()->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
             SLOT(sl_update()));
 
-    connect(p->getSequenceArea(), SIGNAL(si_visibleRangeChanged()), SLOT(sl_visibleRangeChanged()));
-    connect(p->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection,MaEditorSelection)),
+    connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_visibleRangeChanged()));
+    connect(ui->getSequenceArea(), SIGNAL(si_visibleRangeChanged()), SLOT(sl_visibleRangeChanged()));
+    connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection,MaEditorSelection)),
             SLOT(sl_selectionChanged(MaEditorSelection,MaEditorSelection)));
 
-    connect(p->getSequenceArea(), SIGNAL(si_clearReferenceSelection()),
+    connect(ui->getSequenceArea(), SIGNAL(si_clearReferenceSelection()),
             SLOT(sl_clearSelection()));
 
     connect(ctx->getSequenceSelection(),
@@ -60,16 +64,16 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *p, SequenceObjectCo
         SLOT(sl_onSelectionChanged()));
 
     connect(this, SIGNAL(si_selectionChanged()),
-            p->getSequenceArea(), SLOT(sl_backgroundSelectionChanged()));
+            ui->getSequenceArea(), SLOT(sl_backgroundSelectionChanged()));
     connect(editor, SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_fontChanged(const QFont &)));
 
-    connect(p->getConsensusArea(), SIGNAL(si_mismatchRedrawRequired()), SLOT(completeUpdate()));
+    connect(ui->getConsensusArea(), SIGNAL(si_mismatchRedrawRequired()), SLOT(completeUpdate()));
 
     sl_fontChanged(editor->getFont());
 }
 
 void McaEditorReferenceArea::sl_selectMismatch(int pos) {
-    MaEditorSequenceArea* seqArea = editor->getUI()->getSequenceArea();
+    MaEditorSequenceArea* seqArea = ui->getSequenceArea();
     if (seqArea->getFirstVisibleBase() > pos || seqArea->getLastVisibleBase(false) < pos) {
         seqArea->centerPos(pos);
     }
@@ -77,11 +81,8 @@ void McaEditorReferenceArea::sl_selectMismatch(int pos) {
 }
 
 void McaEditorReferenceArea::sl_visibleRangeChanged() {
-    int start = editor->getUI()->getSequenceArea()->getFirstVisibleBase();
-    int len = editor->getUI()->getSequenceArea()->getNumVisibleBases(false);
-
-    U2Region visRange(start, len);
-    setVisibleRange(visRange);
+    const U2Region visibleRange = ui->getDrawHelper()->getVisibleBases(width());
+    setVisibleRange(visibleRange);
 }
 
 void McaEditorReferenceArea::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &) {

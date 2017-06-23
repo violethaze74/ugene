@@ -52,7 +52,7 @@ public:
           includeRuler(includeRuler) {}
 
     MSAImageExportSettings(const U2Region &region,
-                           const QList<qint64> &seqIdx,
+                           const QList<int> &seqIdx,
                            bool includeSeqNames = false,
                            bool includeConsensus = false,
                            bool includeRuler = true)
@@ -65,7 +65,7 @@ public:
 
     bool exportAll;
     U2Region region;
-    QList<qint64>      seqIdx;
+    QList<int> seqIdx;
 
     bool includeSeqNames;
     bool includeConsensus;
@@ -78,43 +78,12 @@ public:
     MSAImageExportTask(MaEditorWgt *ui,
                        const MSAImageExportSettings &msaSettings,
                        const ImageExportTaskSettings &settings);
-    virtual void run() = 0;
+
 protected:
-    // P - QPainter or QPixmap
-    template<class P>
-    void paintSeqNames(P& p) {
-        if (msaSettings.includeSeqNames) {
-            MaEditorNameList* namesArea = ui->getEditorNameList();
-            SAFE_POINT_EXT( ui->getEditor() != NULL, setError(tr("MSA Editor is NULL")), );
-            namesArea->drawNames(p, msaSettings.seqIdx);
-        }
-    }
-
-    template<class P>
-    void paintConsensus(P& p) {
-        CHECK( msaSettings.includeConsensus, );
-        MSAEditorConsensusArea* consArea = ui->getConsensusArea();
-        SAFE_POINT_EXT( consArea != NULL, setError(tr("MSA Consensus area is NULL")), );
-        if (msaSettings.exportAll) {
-            consArea->paintFullConsensus(p);
-            return;
-        }
-        consArea->paintConsenusPart(p, msaSettings.region, msaSettings.seqIdx);
-    }
-
-    template<class P>
-    void paintRuler(P& p) {
-        if (msaSettings.includeRuler) {
-            MSAEditorConsensusArea* consArea = ui->getConsensusArea();
-            consArea->paintRulerPart(p, msaSettings.region);
-        }
-    }
-
-    template<class P>
-    bool paintContent(P& p) {
-        MaEditorSequenceArea* seqArea = ui->getSequenceArea();
-            return seqArea->drawContent(p, msaSettings.region, msaSettings.seqIdx);
-    }
+    void paintSequencesNames(QPainter &painter);
+    void paintConsensus(QPainter &painter);
+    void paintRuler(QPainter &painter);
+    bool paintContent(QPainter &painter);
 
     MaEditorWgt* ui;
     MSAImageExportSettings  msaSettings;
@@ -129,8 +98,9 @@ public:
     void run();
 
 private:
-    QPixmap mergePixmaps(const QPixmap& seqPix, const QPixmap& namesPix,
-                         const QPixmap& consPix, const QPixmap& rulerPix);
+    QPixmap mergePixmaps(const QPixmap &sequencesPixmap,
+                         const QPixmap &namesPixmap,
+                         const QPixmap &consensusPixmap);
 };
 
 class MSAImageExportToSvgTask : public MSAImageExportTask {

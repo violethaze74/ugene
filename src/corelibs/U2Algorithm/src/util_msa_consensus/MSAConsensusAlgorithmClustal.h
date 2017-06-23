@@ -54,7 +54,7 @@ public:
     MSAConsensusAlgorithmClustal(MSAConsensusAlgorithmFactoryClustal* f, bool ignoreTrailingLeadingGaps, QObject* p = NULL)
         : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {}
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<qint64> seqIdx = QVector<qint64>()) const;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const;
 };
 
 }//namespace

@@ -37,6 +37,8 @@ public:
     MSACollapsableItem();
     MSACollapsableItem(int startPos, int length);
 
+    bool isValid() const;
+
     int row;
     int numRows;
     bool isCollapsed;
@@ -49,6 +51,11 @@ class U2Region;
 class U2VIEW_EXPORT MSACollapsibleItemModel : public QObject {
     Q_OBJECT
 public:
+    enum TrivialGroupsPolicy {
+        Allow,
+        Forbid
+    };
+
     MSACollapsibleItemModel(MaEditorWgt *p);
 
     // creates model with every item collapsed
@@ -66,33 +73,53 @@ public:
     U2Region mapToRows(int pos) const;
 
     U2Region mapSelectionRegionToRows(const U2Region &selectionRegion) const;
+    QList<int> numbersToIndexes(const U2Region &rowNumbers);        // invisible rows are not included to the result list
 
     /**
     * The method converts the row position in the whole msa into its "visible" position (i.e.
     * the row position that takes into account collapsed items).
     * Returns -1 if the row is inside a collapsed item and @failIfNotVisible is true.
     */
-    int rowToMap(int row, bool failIfNotVisible = false) const;
+    int rowToMap(int rowIndex, bool failIfNotVisible = false) const;
 
+    /**
+     * Returns rows indexes that are visible (that are not collapsed) grouped corresponding to the collapsing model
+     * for the positions between @startPos and @endPos.
+     */
     void getVisibleRows(int startPos, int endPos, QVector<U2Region> &rows) const;
 
-    bool isTopLevel(int pos) const;
+    bool isTopLevel(int rowNumber) const;
+    bool isRowInGroup(int rowNumber) const;
+    bool isItemCollapsed(int rowIndex) const;
+    bool isRowVisible(int rowIndex) const;
 
-    int itemAt(int pos) const;
+    /**
+     * Returns the item which contains the row defined by @rowNumber
+     * or -1, if the row is not in a collapsing group
+     */
+    int itemForRow(int rowNumber) const;
 
     int getItemPos(int index) const;
 
     MSACollapsableItem getItem(int index) const;
+    MSACollapsableItem getItemByRowIndex(int rowIndex) const;
 
-    int displayedRowsCount() const;
+    /**
+     * Returns count of rows that can be viewed (that are not collapsed).
+     * Every group has at least one row to view.
+     */
+    int displayableRowsCount() const;
 
     /** If there is a collapsible item at 'pos' position, it is removed. */
     void removeCollapsedForPosition(int pos);
 
     bool isEmpty() const;
 
+    void setTrivialGroupsPolicy(TrivialGroupsPolicy policy);
+
 signals:
-    void toggled();
+    void si_aboutToBeToggled();
+    void si_toggled();
 
 private:
     void triggerItem(int index);
@@ -102,6 +129,7 @@ private:
     MaEditorWgt* ui;
     QVector<MSACollapsableItem> items;
     QVector<int> positions;
+    TrivialGroupsPolicy trivialGroupsPolicy;
 };
 
 } //namespace

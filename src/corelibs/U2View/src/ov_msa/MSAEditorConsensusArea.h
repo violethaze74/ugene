@@ -28,6 +28,7 @@
 #include <U2Core/U2Region.h>
 
 #include "MaConsensusMismatchController.h"
+#include "MaEditorConsensusAreaSettings.h"
 #include "MSAEditorConsensusCache.h"
 
 class QHelpEvent;
@@ -38,29 +39,13 @@ class QToolBar;
 namespace U2 {
 
 class GObjectView;
-class MSAConsensusAlgorithm;
-class MSAConsensusAlgorithmFactory;
+class MaConsensusAreaRenderer;
 class MaEditor;
 class MaEditorSelection;
 class MaEditorWgt;
 class MaModificationInfo;
-
-enum MaEditorConsElement {
-    MSAEditorConsElement_HISTOGRAM,
-    MSAEditorConsElement_CONSENSUS_TEXT,
-    MSAEditorConsElement_RULER
-};
-
-class MaEditorConsensusAreaSettings {
-public:
-    MaEditorConsensusAreaSettings();
-
-    bool isVisible(const MaEditorConsElement element) const;
-
-    QList<MaEditorConsElement>      order;
-    QMap<MaEditorConsElement, bool> visibility;
-    bool                            highlightMismatches;
-};
+class MSAConsensusAlgorithm;
+class MSAConsensusAlgorithmFactory;
 
 class U2VIEW_EXPORT MSAEditorConsensusArea : public QWidget {
     Q_OBJECT
@@ -70,11 +55,12 @@ public:
     MSAEditorConsensusArea(MaEditorWgt* ui);
     ~MSAEditorConsensusArea();
 
-    U2Region getRullerLineYRange() const;
+    U2Region getRulerLineYRange() const;
 
     void setConsensusAlgorithm(MSAConsensusAlgorithmFactory* algo);
     void setConsensusAlgorithmConsensusThreshold(int val);
 
+    const MaEditorConsensusAreaSettings &getDrawSettings() const;
     void setDrawSettings(const MaEditorConsensusAreaSettings& settings);
 
     MSAConsensusAlgorithm* getConsensusAlgorithm() const;
@@ -83,14 +69,15 @@ public:
 
     MaConsensusMismatchController* getMismatchController() { return mismatchController; }
 
-    void paintFullConsensus(QPixmap &pixmap);
-    void paintFullConsensus(QPainter& p);
+    MaEditorWgt *getEditorWgt() const;
 
-    void paintConsenusPart(QPixmap & pixmap, const U2Region &region, const QList<qint64> &seqIdx);
-    void paintConsenusPart(QPainter& p, const U2Region &region, const QList<qint64> &seqIdx);
+    QSize getCanvasSize(const U2Region &region, const MaEditorConsElements &elements) const;
 
-    void paintRulerPart(QPixmap &pixmap, const U2Region &region);
-    void paintRulerPart(QPainter &p, const U2Region &region);
+    void drawContent(QPainter &painter);
+    void drawContent(QPainter &painter,
+                     const QList<int> &seqIdx,
+                     const U2Region &region,
+                     const MaEditorConsensusAreaSettings &consensusSettings);
 
 protected:
     bool event(QEvent* e);
@@ -106,12 +93,11 @@ signals:
     void si_mismatchRedrawRequired();
 
 private slots:
-    void sl_startChanged(const QPoint&, const QPoint&);
     void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
     void sl_alignmentChanged();
     void sl_changeConsensusAlgorithm(const QString& algoId);
     void sl_changeConsensusThreshold(int val);
-    void sl_onScrollBarActionTriggered( int scrollAction );
+    void sl_visibleAreaChanged();
     void sl_onConsensusThresholdChanged(int newValue);
 
     void sl_buildStaticMenu(GObjectView* v, QMenu* m);
@@ -121,11 +107,9 @@ private slots:
     void sl_copyConsensusSequenceWithGaps();
     void sl_configureConsensusAction();
     void sl_zoomOperationPerformed(bool resizeModeChanged);
+    void sl_completeRedraw();
 
     void setupFontAndHeight();
-
-public:
-    void drawContent(QPainter& painter);
 
 private:
     QString createToolTip(QHelpEvent* he) const;
@@ -137,42 +121,26 @@ private:
 
     void updateSelection(int newPos);
 
-    void drawConsensus(QPainter& p);
-    void drawConsensus(QPainter& p, int startPos, int lastPos, bool useVirtualCoords = false);
-
-    void drawConsensusChar(QPainter& p, int pos, int firstVisiblePos, bool selected, bool useVirtualCoords = false);
-    void drawConsensusChar(QPainter& p, int pos, int firstVisiblePos, char consChar,
-                           bool selected, bool useVirtualCoords = false);
-
-    void drawRuler(QPainter& p, int start = -1, int end = -1, bool drawFull = false);
-
-    void drawHistogram(QPainter& p);
-    void drawHistogram(QPainter& p, int firstBase, int lastBase);
-
-    void drawSelection(QPainter& p);
-
-
-    U2Region getYRange(MaEditorConsElement e) const;
-    int getYRangeLength(MaEditorConsElement e) const;
-
     MSAConsensusAlgorithmFactory* getConsensusAlgorithmFactory();
     void updateConsensusAlgorithm();
 
     MaEditor*           editor;
     MaEditorWgt*        ui;
-    QFont               rulerFont;
-    int                 rulerFontHeight;
+
+    MaEditorConsensusAreaSettings consensusSettings;
+    MaConsensusAreaRenderer *renderer;
+
     QAction*            copyConsensusAction;
     QAction*            copyConsensusWithGapsAction;
     QAction*            configureConsensusAction;
     int                 curPos;
-    bool                scribbling, selecting;
+    bool                scribbling;
+    bool                selecting;
 
     QSharedPointer<MSAEditorConsensusCache>         consensusCache;
     MaConsensusMismatchController*  mismatchController;
 
     bool                            completeRedraw;
-    mutable MaEditorConsensusAreaSettings   drawSettings;
     QPixmap*                        cachedView;
 };
 

@@ -113,10 +113,11 @@ class U2VIEW_EXPORT MSAEditorSequenceArea : public MaEditorSequenceArea {
     Q_DISABLE_COPY(MSAEditorSequenceArea)
     friend class SequenceAreaRenderer;
     friend class SequenceWithChromatogramAreaRenderer;
+
 public:
     MSAEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScrollBar* vb);
 
-    MSAEditor* getEditor() const { return qobject_cast<MSAEditor*>(editor); }
+    MSAEditor *getEditor() const;
 
     QStringList getAvailableHighlightingSchemes() const;
 
@@ -155,7 +156,7 @@ private slots:
     void sl_reverseCurrentSelection();
     void sl_complementCurrentSelection();
 
-    void sl_onPosChangeRequest(int pos);
+    void sl_onPosChangeRequest(int position);
 
     void sl_createSubaligniment();
 

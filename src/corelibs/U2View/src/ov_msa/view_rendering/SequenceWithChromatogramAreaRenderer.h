@@ -34,10 +34,10 @@ class McaEditorSequenceArea;
 class SequenceWithChromatogramAreaRenderer : public SequenceAreaRenderer {
     Q_OBJECT
 public:
-    SequenceWithChromatogramAreaRenderer(McaEditorSequenceArea* seqAreaWgt);
+    SequenceWithChromatogramAreaRenderer(MaEditorWgt *ui, McaEditorSequenceArea* seqAreaWgt);
 
-    void drawReferenceSelection(QPainter &p) const;
-    void drawNameListSelection(QPainter &p) const;
+    void drawReferenceSelection(QPainter &painter) const;
+    void drawNameListSelection(QPainter &painter) const;
 
     void setAreaHeight(int h);
 
@@ -47,9 +47,9 @@ public:
     static const int CHROMATOGRAM_MAX_HEIGHT;
 
 private:
-    int drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) const;
+    int drawRow(QPainter &painter, const MultipleAlignment &mca, int rowIndex, const U2Region &region, int xStart, int yStart) const;
 
-    void drawChromatogram(QPainter &p, const MultipleChromatogramAlignmentRow& row, const U2Region& visibleRange) const;
+    void drawChromatogram(QPainter &painter, const MultipleChromatogramAlignmentRow &row, const U2Region &visibleRange, int xStart) const;
 
     QColor getBaseColor(char base) const;
 
@@ -63,6 +63,7 @@ private:
 private:
     McaEditorSequenceArea* getSeqArea() const;
     const ChromatogramViewSettings& getSettings() const;
+    static int getChromatogramHeight();
 
 private:
     qreal   charWidth;

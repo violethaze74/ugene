@@ -19,16 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2SafePoints.h>
-
-#include <U2Gui/MainWindow.h>
-
-#include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MaEditorNameList.h>
-#include <U2View/MSAEditorOverviewArea.h>
-#include <U2View/MaGraphOverview.h>
-#include <U2View/MaSimpleOverview.h>
-
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTToolbar.h>
@@ -36,6 +26,17 @@
 #include <system/GTClipboard.h>
 #include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
+
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/MainWindow.h>
+
+#include <U2View/BaseWidthController.h>
+#include <U2View/MSAEditorConsensusArea.h>
+#include <U2View/MaEditorNameList.h>
+#include <U2View/MSAEditorOverviewArea.h>
+#include <U2View/MaGraphOverview.h>
+#include <U2View/MaSimpleOverview.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
@@ -136,9 +137,9 @@ QRect GTUtilsMsaEditor::getSequenceNameRect(HI::GUITestOpStatus &os, const QStri
     MaEditorNameList *nameList = getNameListArea(os);
     GT_CHECK_RESULT(NULL != nameList, "MSAEditorNameList not found", QRect());
 
-    const int rowHeight = GTUtilsMSAEditorSequenceArea::getRowHeight(os);
     const QStringList names = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     const int rowNumber = names.indexOf(sequenceName);
+    const int rowHeight = GTUtilsMSAEditorSequenceArea::getRowHeight(os, rowNumber);
     GT_CHECK_RESULT(0 <= rowNumber, QString("Sequence '%1' not found").arg(sequenceName), QRect());
 
     return QRect(nameList->mapToGlobal(QPoint(0, rowHeight * rowNumber)), nameList->mapToGlobal(QPoint(nameList->width(), rowHeight * (rowNumber + 1))));
@@ -154,7 +155,8 @@ QRect GTUtilsMsaEditor::getColumnHeaderRect(HI::GUITestOpStatus &os, int column)
     MSAEditor *editor = getEditor(os);
     GT_CHECK_RESULT(NULL != editor, "MSA Editor is NULL", QRect());
 
-    return QRect(sequenceArea->getBaseXRange(column, false).startPos, consensusArea->geometry().top(), editor->getColumnWidth(), consensusArea->height());
+    BaseWidthController *baseWidthController = editor->getUI()->getBaseWidthController();
+    return QRect(baseWidthController->getBaseScreenOffset(column), consensusArea->geometry().top(), baseWidthController->getBaseWidth(), consensusArea->height());
 }
 #undef GT_METHOD_NAME
 

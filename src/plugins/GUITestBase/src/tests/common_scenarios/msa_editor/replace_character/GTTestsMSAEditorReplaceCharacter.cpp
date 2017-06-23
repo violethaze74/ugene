@@ -454,7 +454,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015){
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //2. Enable collapsing mode
-    GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Mecopoda_elongata__Ishigaki__J");
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Mecopoda_elongata__Ishigaki__J");
 
     //3. Select a character in sequence inside of the collapsing group.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(9, 14), QPoint(9, 14));

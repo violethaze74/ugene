@@ -63,87 +63,41 @@ class MsaHighlightingSchemeFactory;
 class U2VIEW_EXPORT MaEditorSequenceArea : public QWidget {
     Q_OBJECT
     friend class SequenceAreaRenderer;
+
 public:
     MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScrollBar* vb);
     virtual ~MaEditorSequenceArea();
 
-    MaEditor* getEditor() const { return editor; }
+    MaEditor *getEditor() const;
 
-public:
-    // x dimension -> positions
-    int countWidthForBases(bool countClipped, bool forOffset = false) const;
+    QSize getCanvasSize(const QList<int> &seqIdx, const U2Region &region) const;
 
     int getFirstVisibleBase() const;
-    int getLastVisibleBase(bool countClipped, bool forOffset = false) const;
-    int getNumVisibleBases(bool countClipped, bool forOffset = false) const;
+    int getLastVisibleBase(bool countClipped) const;
+    int getNumVisibleBases() const;
 
-    U2Region getBaseXRange(int pos, bool useVirtualCoords) const;
-    U2Region getBaseXRange(int pos, int firstVisiblePos, bool useVirtualCoords) const;
-
-    int getColumnNumByX(int x, bool selecting = false) const;
-    int getXByColumnNum(int columnNum) const;
-
-    void setFirstVisibleBase(int pos);
-
-public:
-    // y dimension -> sequences
-
-    // SANGER_TODO: start point matters!
-    virtual int countHeightForSequences(bool countClipped) const;
-
-    int getFirstVisibleSequence() const;
-    int getLastVisibleSequence(bool countClipped) const;
-    /*
-     * Returns count of sequences that are visible on a screen.
-     * @countClipped specifies whether include to result count or not last partially displayed row.
-     */
-    int getNumVisibleSequences(bool countClipped) const;
     /*
      * Returns count of sequences that are drawn on the widget by taking into account
      * collapsed rows.
      */
-    int getNumDisplayedSequences() const;
-
-    U2Region getSequenceYRange(int seqNum, bool useVirtualCoords) const;
-    virtual U2Region getSequenceYRange(int seqNum, int firstVisibleRow, bool useVirtualCoords) const;
-    virtual U2Region getSequenceYRange(int startSeq, int count) const;
-
-    virtual int getSequenceNumByY(int y) const;
-    int getYBySequenceNum(int sequenceNum) const; // SANGER_TODO: works wrong for MCA!
-
-    void setFirstVisibleSequence(int seq);
-
-public:
-    U2Region getRowsAt(int seq) const;
+    int getNumDisplayableSequences() const;
 
     QPair<QString, int> getGappedColumnInfo() const;
 
     bool isAlignmentEmpty() const;
 
-    bool isPosInRange(int p) const;
-
-    bool isSeqInRange(int s) const;
-
-    bool isInRange(const QPoint& p) const;
+    bool isPosInRange(int position) const;
+    bool isSeqInRange(int rowNumber) const;
+    bool isInRange(const QPoint &point) const;
+    QPoint boundWithVisibleRange(const QPoint &point) const;
 
     bool isVisible(const QPoint& p, bool countClipped) const;
+    bool isPositionVisible(int pos, bool countClipped) const;
+    bool isRowVisible(int rowNumber, bool countClipped) const;
 
-    bool isPosVisible(int pos, bool countClipped) const;
+    const MaEditorSelection &getSelection() const;
 
-    bool isSeqVisible(int seq, bool countClipped) const;
-
-    int coordToPos(int x) const;
-
-    // returns valid position only for visible area
-    QPoint coordToPos(const QPoint& coord) const;
-
-    // returns valid position if coords are out of visible area
-    QPoint coordToAbsolutePos(const QPoint& coord) const;
-    QPoint coordToAbsolutePosOutOfRange(const QPoint& coord) const;
-
-    const MaEditorSelection& getSelection() const;
-
-    void updateSelection(const QPoint& newMousePos);
+    void updateSelection(const QPoint &newMousePos);
 
     // update selection when collapsible model changed
     void updateSelection();
@@ -157,8 +111,6 @@ public:
     void cancelSelection();
 
     U2Region getSelectedRows() const;
-
-    int getHeight();
 
     QString getCopyFormatedAlgorithmId() const;
     void setCopyFormatedAlgorithmId(const QString& algoId);
@@ -174,58 +126,51 @@ public:
      */
     bool shiftSelectedRegion(int shift);
 
-public:
-    void centerPos(const QPoint& pos);
+    void centerPos(const QPoint &point);
     void centerPos(int pos);
 
     void setFont(const QFont& f);
 
-    GScrollBar* getVBar() const {return svBar;}
-    GScrollBar* getHBar() const {return shBar;}
-
-    void updateHBarPosition(int base, bool repeatAction = false);
-    void updateVBarPosition(int seq, bool repeatAction = false);
-
     void onVisibleRangeChanged();
 
-    bool isAlignmentLocked();
+    bool isAlignmentLocked() const;
 
-    void drawVisibleContent(QPainter& p);
+    void drawVisibleContent(QPainter &painter);
 
-    bool drawContent(QPainter &p, const QRect &area);
-    bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx);
+    bool drawContent(QPainter &painter, const QRect &area);
+    bool drawContent(QPainter &painter, const QRect &area, int xStart, int yStart);
+    bool drawContent(QPainter &painter, const U2Region &region, const QList<int> &seqIdx);
+    bool drawContent(QPainter &painter, const U2Region &region, const QList<int> &seqIdx, int xStart, int yStart);
 
-    bool drawContent(QPainter& p);
-    bool drawContent(QPixmap& pixmap);
-    bool drawContent(QPixmap& pixmap, const U2Region& region, const QList<qint64>& seqIdx);
+    bool drawContent(QPainter &painter);
+    bool drawContent(QPixmap &pixmap);
+    bool drawContent(QPixmap &pixmap, const U2Region &region, const QList<int> &seqIdx);
 
     void highlightCurrentSelection();
 
     QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
-    MsaColorScheme * getCurrentColorScheme() const;
-    MsaHighlightingScheme * getCurrentHighlightingScheme() const;
+    MsaColorScheme *getCurrentColorScheme() const;
+    MsaHighlightingScheme *getCurrentHighlightingScheme() const;
     bool getUseDotsCheckedState() const;
-
 
 public slots:
     void sl_changeColorSchemeOutside(const QString &id);
-    void sl_changeCopyFormat(const QString& alg);
-    void sl_changeColorScheme();
     void sl_delCurrentSelection();
-    void sl_fillCurrentSelectionWithGaps();
 
 protected slots:
+    void sl_changeCopyFormat(const QString& alg);
+    void sl_changeColorScheme();
+    void sl_fillCurrentSelectionWithGaps();
+
     virtual void sl_buildStaticMenu(GObjectView* v, QMenu* m);
     virtual void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
     virtual void sl_buildContextMenu(GObjectView* v, QMenu* m);
 
     void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
 
-    void sl_onHScrollMoved(int pos);
-    void sl_onVScrollMoved(int pos);
-
     void sl_completeUpdate();
+    void sl_completeRedraw();
 
     void sl_triggerUseDots();
     void sl_useDots();
@@ -237,16 +182,19 @@ protected slots:
 
     void sl_replaceSelectedCharacter();
     void sl_changeSelectionColor();
+    virtual void sl_modelChanged();
+
+private slots:
+    void sl_hScrollBarActionPerfermed();
 
 signals:
-    void si_startChanged(const QPoint& p, const QPoint& prev);
     void si_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
     void si_selectionChanged(const QStringList& selectedRows);
     void si_highlightingChanged();
     void si_visibleRangeChanged(QStringList visibleSequences, int reqHeight);
     void si_visibleRangeChanged();
-    void si_startMsaChanging();
-    void si_stopMsaChanging(bool msaUpdated);
+    void si_startMaChanging();
+    void si_stopMaChanging(bool msaUpdated);
     void si_copyFormattedChanging(bool enabled);
 
 protected:
@@ -254,21 +202,19 @@ protected:
     void setCursorPos(int x, int y);
     void setCursorPos(int pos);
 
-protected:
-    void resizeEvent(QResizeEvent *);
-    void paintEvent(QPaintEvent *);
-    void wheelEvent (QWheelEvent * event);
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*);
+    void resizeEvent(QResizeEvent *event);
+    void paintEvent(QPaintEvent *event);
+    void wheelEvent(QWheelEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 
     void keyPressEvent(QKeyEvent *);
     void keyReleaseEvent(QKeyEvent *);
 
-protected:
     virtual void initRenderer() = 0;
     virtual void updateActions() = 0;
-    virtual void drawBackground(QPainter& p) { Q_UNUSED(p); }
+    virtual void drawBackground(QPainter& p);
 
     /**
      * Inserts a region consisting of gaps only before the selection. The inserted region width
@@ -301,7 +247,6 @@ protected:
     void cancelShiftTracking( );
 
     void drawAll();
-    void validateRanges();          //called on resize/refont like events
 
     virtual void buildMenu(QMenu* m);
     void updateColorAndHighlightSchemes();
@@ -318,11 +263,6 @@ protected:
     virtual void getColorAndHighlightingIds(QString &csid, QString &hsid);
     void applyColorScheme(const QString &id);
 
-    void updateHScrollBar();
-    void updateVScrollBar();
-
-    bool checkState() const;
-
     void processCharacterInEditMode(QKeyEvent *e);
     void processCharacterInEditMode(char newCharacter);
     void replaceChar(char newCharacter);
@@ -331,7 +271,7 @@ protected:
 
     void deleteOldCustomSchemes();
 
-    virtual void updateCollapsedGroups(const MaModificationInfo&) {}
+    virtual void updateCollapsedGroups(const MaModificationInfo &maModificationInfo);
 
 protected:
     enum MaMode {
@@ -356,9 +296,7 @@ protected:
     QPixmap*        cachedView;
     bool            completeRedraw;
 
-    int             startPos; //first visible x pos
-    int             startSeq; //first visible y pos
-    MaMode          msaMode;
+    MaMode          maMode;
     QTimer          editModeAnimationTimer;
     QColor          selectionColor;
 
@@ -366,12 +304,12 @@ protected:
     bool                shifting;
     bool                selecting;
     Qt::MouseButton     prevPressedButton;
-    QPoint              origin; // global window coordinates
+    QPoint              rubberBandOrigin; // global window coordinates
     QPoint              cursorPos; // mouse cursor position in alignment coordinates
     MaEditorSelection   selection; // selection with rows indexes in collapsible model coordinates
     MaEditorSelection   baseSelection; // selection with rows indexes in absolute coordinates
 
-    int                 msaVersionBeforeShifting;
+    int                 maVersionBeforeShifting;
 
     QAction*            useDotsAction;
 

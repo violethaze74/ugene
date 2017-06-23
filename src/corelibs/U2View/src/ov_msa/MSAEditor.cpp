@@ -80,26 +80,27 @@
 
 #include <U2View/UndoRedoFramework.h>
 
-#include "Export/MSAImageExportTask.h"
 #include "ExportHighlightedDialogController.h"
-#include "MaEditorFactory.h"
 #include "MSAEditor.h"
 #include "MSAEditorConsensusArea.h"
-#include "MaEditorNameList.h"
 #include "MSAEditorOffsetsView.h"
 #include "MSAEditorOverviewArea.h"
 #include "MSAEditorSequenceArea.h"
 #include "MSAEditorState.h"
 #include "MSAEditorStatusBar.h"
 #include "MSAEditorTasks.h"
+#include "MaEditorFactory.h"
+#include "MaEditorNameList.h"
 #include "MsaEditorSimilarityColumn.h"
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
-#include "PhyTrees/MSAEditorMultiTreeViewer.h"
-#include "PhyTrees/MSAEditorTreeViewer.h"
+#include "Export/MSAImageExportTask.h"
+#include "helpers/MsaRowHeightController.h"
 #include "ov_msa/TreeOptions//TreeOptionsWidgetFactory.h"
 #include "ov_phyltree/TreeViewer.h"
 #include "ov_phyltree/TreeViewerTasks.h"
 #include "phyltree/CreatePhyTreeDialogController.h"
+#include "PhyTrees/MSAEditorMultiTreeViewer.h"
+#include "PhyTrees/MSAEditorTreeViewer.h"
 
 
 namespace U2 {
@@ -152,7 +153,6 @@ bool MSAEditor::onCloseEvent() {
 }
 
 int MSAEditor::getFirstVisibleBase() const {
-
     return ui->getSequenceArea()->getFirstVisibleBase();
 }
 
@@ -564,6 +564,7 @@ MSAEditorUI::MSAEditorUI(MSAEditor* editor)
     : MaEditorWgt(editor),
       multiTreeViewer(NULL),
       similarityStatistics(NULL) {
+    rowHeightController = new MsaRowHeightController(this);
     initActions();
     initWidgets();
 }

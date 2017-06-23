@@ -34,14 +34,14 @@ class MaEditor;
 class SelectSubalignmentDialog : public QDialog, Ui_SelectSubalignmentDialog {
     Q_OBJECT
 public:
-    SelectSubalignmentDialog( MaEditor *editor, const U2Region& region = U2Region(), const QList<qint64>& selectedIndexes = QList<qint64>(), QWidget *p = NULL);
+    SelectSubalignmentDialog( MaEditor *editor, const U2Region& region = U2Region(), const QList<int>& selectedIndexes = QList<int>(), QWidget *p = NULL);
 
     void accept();
 
     const U2Region getRegion() const { return window; }
 
     const QStringList& getSelectedSeqNames() const { return selectedNames; }
-    const QList<qint64>& getSelectedSeqIndexes() const { return selectedIndexes; }
+    const QList<int>& getSelectedSeqIndexes() const { return selectedIndexes; }
 
 public slots:
     void sl_allButtonClicked();
@@ -55,7 +55,7 @@ private:
 
     U2Region window;
     QStringList selectedNames;
-    QList<qint64> selectedIndexes;
+    QList<int> selectedIndexes;
 };
 
 } // namespace

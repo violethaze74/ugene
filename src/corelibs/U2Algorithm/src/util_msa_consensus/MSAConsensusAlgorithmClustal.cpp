@@ -42,7 +42,7 @@ MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(cons
 //////////////////////////////////////////////////////////////////////////
 //Algorithm
 
-char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment& ma, int pos, QVector<qint64> seqIdx) const {
+char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment& ma, int pos, QVector<int> seqIdx) const {
     CHECK(filterIdx(seqIdx, ma, pos), INVALID_CONS_CHAR);
 
     if (!ma->getAlphabet()->isAmino()) {

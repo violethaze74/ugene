@@ -33,7 +33,7 @@
 namespace U2 {
 
 
-SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor *editor, const U2Region &region, const QList<qint64> &_selectedIndexes, QWidget *p)
+SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor *editor, const U2Region &region, const QList<int> &_selectedIndexes, QWidget *p)
     : QDialog(p),
       editor(editor),
       window(region),
@@ -80,7 +80,7 @@ void SelectSubalignmentDialog::accept() {
 
     selectedNames.clear();
     selectedIndexes.clear();
-    for (qint64 i = 0; i < sequencesTableWidget->rowCount(); i++) {
+    for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
         QCheckBox *cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         if(cb->isChecked()){
             selectedNames.append(cb->text());

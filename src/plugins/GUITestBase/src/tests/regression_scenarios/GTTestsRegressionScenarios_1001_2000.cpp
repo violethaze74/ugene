@@ -5630,7 +5630,7 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
 //    3. Open any group and try to edit any sequence:
-    GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Conocephalus_discolor");
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_discolor");
 
 //    3.1 Insert gap by pressing SPACE.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 10));
@@ -5756,7 +5756,7 @@ GUI_TEST_CLASS_DEFINITION(test_1585) {
 
     GTKeyboardDriver::keyClick( Qt::Key_Escape);
 
-    GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Conocephalus_discolor");
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_discolor");
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(6, 9), QPoint(11, 10));
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(9, 9));
