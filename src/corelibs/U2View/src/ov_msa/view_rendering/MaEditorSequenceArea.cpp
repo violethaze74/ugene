@@ -279,6 +279,11 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHigh
     MaEditorSelection prevSelection = selection;
     selection = s;
 
+    Q_ASSERT(isInRange(selection.topLeft()));
+    Q_ASSERT(isInRange(selection.bottomRight()));
+    selection = MaEditorSelection(MaEditorSequenceArea::boundWithVisibleRange(selection.topLeft()),
+                                  MaEditorSequenceArea::boundWithVisibleRange(selection.bottomRight());
+
     int selEndPos = s.x() + s.width() - 1;
     int ofRange = selEndPos - editor->getAlignmentLen();
     if (ofRange >= 0) {
@@ -938,12 +943,7 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
         editor->getMaObject()->releaseState();
     }
 
-    QPoint newCurPos = ui->getScrollController()->getMaPointByScreenPoint(e->pos());
-
-    const int firstVisibleRow = ui->getScrollController()->getFirstVisibleRowNumber(true);
-    const int lastVisibleRow = ui->getScrollController()->getLastVisibleRowNumber(height(), true);
-    const int fixedYPos = qBound(firstVisibleRow, newCurPos.y(), lastVisibleRow);
-    newCurPos.setY(fixedYPos);
+    QPoint newCurPos = boundWithVisibleRange(ui->getScrollController()->getMaPointByScreenPoint(e->pos()));
 
     if (shifting) {
         emit si_stopMaChanging(maVersionBeforeShifting != editor->getMaObject()->getModificationVersion());
