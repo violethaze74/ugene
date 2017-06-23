@@ -1829,7 +1829,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056){
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
 
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid cutoff values"));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid cutoff range"));
             QGroupBox* minmaxGroup = GTWidget::findExactWidget<QGroupBox*>(os, "minmaxGroup", dialog);
             minmaxGroup->setChecked(true);
 

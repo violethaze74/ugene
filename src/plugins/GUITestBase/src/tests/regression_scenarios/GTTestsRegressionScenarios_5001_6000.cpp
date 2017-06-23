@@ -1580,7 +1580,7 @@ GUI_TEST_CLASS_DEFINITION(test_5562_2) {
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix..."));
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, new Scenario));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1631,7 +1631,7 @@ GUI_TEST_CLASS_DEFINITION(test_5562_3) {
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix..."));
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, new Scenario));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);

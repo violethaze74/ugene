@@ -2262,6 +2262,7 @@ GUI_TEST_CLASS_DEFINITION(test_0846) {
 
 //    2. Add any annotations;
     GTUtilsAnnotationsTreeView::createAnnotation(os, "", "", "1..100");
+	GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    3. Use popup menu {Export->Export annotations}
 //    4. Chose "csv" in combobox "File format"
