@@ -329,6 +329,7 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
 
     MaEditorSelection newSelection(newTopLeft, selection.width(), selection.height());
     setSelection(newSelection);
+    ui->getScrollController()->scrollToMovedSelection(dx, dy);
 }
 
 void MaEditorSequenceArea::cancelSelection() {
@@ -1248,19 +1249,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     adjustReferenceLength(os);
     CHECK_OP(os,);
     moveSelection(removedRegionWidth, 0, true);
-
-    const U2Region fullyVisibleXRegion = ui->getDrawHelper()->getVisibleBases(width(), false, false);
-    const U2Region selectionXRegion = selection.getXRegion();
-    const bool selectionFitsVisibleArea = (selection.width() <= static_cast<int>(fullyVisibleXRegion.length));
-    const bool selectionIsFullyVisible = fullyVisibleXRegion.contains(selectionXRegion);
-    if (selectionIsFullyVisible ) {
-        // there is no need to scroll
-        return;
-    } else if (selectionFitsVisibleArea) {
-        ui->getScrollController()->scrollToBase(static_cast<int>(selectionXRegion.endPos() - 1), width());
-    } else {
-        ui->getScrollController()->setFirstVisibleBase(static_cast<int>(selectionXRegion.startPos));
-    }
+    ui->getScrollController()->scrollToMovedSelection(ScrollController::Right);
 }
 
 void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {

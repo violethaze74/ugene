@@ -439,6 +439,7 @@ void MSAEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
             } else {
                 MaEditorSelection selection(curPos, 0, 1, selectionHeight);
                 ui->getSequenceArea()->setSelection(selection);
+                ui->getScrollController()->scrollToBase(curPos, width());
                 scribbling = true;
             }
         }
@@ -475,11 +476,12 @@ void MSAEditorConsensusArea::updateSelection(int newPos) {
     CHECK(newPos != curPos, );
     CHECK(newPos != -1, );
 
-    int height = ui->getSequenceArea()->getNumDisplayableSequences();
+    int selectionHeight = ui->getSequenceArea()->getNumDisplayableSequences();
     int startPos = qMin(curPos, newPos);
-    int width = qAbs(newPos - curPos) + 1;
-    MaEditorSelection selection(startPos, 0, width, height);
+    int selectionWidth = qAbs(newPos - curPos) + 1;
+    MaEditorSelection selection(startPos, 0, selectionWidth, selectionHeight);
     ui->getSequenceArea()->setSelection(selection);
+    ui->getScrollController()->scrollToBase(newPos, width());
 }
 
 } // namespace U2

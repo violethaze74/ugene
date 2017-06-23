@@ -105,7 +105,7 @@ int BaseWidthController::getTotalAlignmentWidth() const {
 }
 
 int BaseWidthController::globalXPositionToColumn(int x) const {
-    return (x - 1) / getBaseWidth();
+    return x / getBaseWidth();
 }
 
 int BaseWidthController::screenXPositionToColumn(int x) const {
