@@ -22,8 +22,9 @@
 #ifndef _U2_WORKFLOW_SCRIPT_ENGINE_H_
 #define _U2_WORKFLOW_SCRIPT_ENGINE_H_
 
+#include <QScriptEngine>
+
 #include <U2Lang/WorkflowContext.h>
-#include <QtScript>
 
 namespace U2 {
 

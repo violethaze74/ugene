@@ -19,11 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QToolButton>
-
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -31,13 +30,13 @@
 
 #include "McaEditorSequenceArea.h"
 #include "helpers/RowHeightController.h"
+#include "ov_sequence/SequenceObjectContext.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 namespace U2 {
 
 McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb)
-    : MaEditorSequenceArea(ui, hb, vb),
-      insertionMode(false) {
+    : MaEditorSequenceArea(ui, hb, vb) {
     initRenderer();
 
     // TEST - remove the variable after fix
@@ -81,11 +80,25 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     updateActions();
 }
 
+void McaEditorSequenceArea::adjustReferenceLength(U2OpStatus& os) {
+    McaEditor* mcaEditor = getEditor();
+    qint64 newLength = mcaEditor->getMaObject()->getLength();
+    qint64 currentLength = mcaEditor->getReferenceContext()->getSequenceLength();
+    if (newLength > currentLength) {
+        U2DataId id = mcaEditor->getMaObject()->getEntityRef().entityId;
+        U2Region region(currentLength, 0);
+        QByteArray insert(newLength - currentLength, U2Msa::GAP_CHAR);
+        DNASequence seq(insert);
+        mcaEditor->getReferenceContext()->getSequenceObject()->replaceRegion(id, region, seq, os);
+    }
+}
+
 void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel, bool newHighlightSelection) {
     if (sel.height() > 1 || sel.width() > 1) {
         // ignore multi-selection
         return;
     }
+
     if (getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(sel.y(), sel.x())) {
         // clear selection
         emit si_clearReferenceSelection();
@@ -120,7 +133,7 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     setSelection(newSelection);
 }
 
-void McaEditorSequenceArea::sl_referenceSelectionChanged() {
+void McaEditorSequenceArea::sl_backgroundSelectionChanged() {
     update();
 }
 
@@ -187,8 +200,7 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
 }
 
 void McaEditorSequenceArea::sl_addInsertion() {
-    maMode = EditCharacterMode;
-    insertionMode = true;
+    maMode = InsertCharMode;
 
     editModeAnimationTimer.start(500);
     highlightCurrentSelection();
@@ -213,6 +225,7 @@ void McaEditorSequenceArea::drawBackground(QPainter &painter) {
     SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     SAFE_POINT(r != NULL, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
     r->drawReferenceSelection(painter);
+    r->drawNameListSelection(painter);
 }
 
 void McaEditorSequenceArea::buildMenu(QMenu *m) {
@@ -230,10 +243,9 @@ void McaEditorSequenceArea::buildMenu(QMenu *m) {
     editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
 }
 
-void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid,
-                                                       DNAAlphabetType, bool) {
+void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid) {
     csid = MsaColorScheme::UGENE_NUCL;
-    hsid = MsaHighlightingScheme::DISAGREEMENTS_NUCL;
+    hsid = MsaHighlightingScheme::DISAGREEMENTS;
 }
 
 QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionName) {
@@ -246,10 +258,8 @@ QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionNam
     return showTraceAction;
 }
 
-void McaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
-    if (!insertionMode) {
-        MaEditorSequenceArea::processCharacterInEditMode(newCharacter);
-    } else {
+void McaEditorSequenceArea::insertChar(char newCharacter) {
+        CHECK(maMode == InsertCharMode, );
         CHECK(getEditor() != NULL, );
         CHECK(!selection.isNull(), );
 
@@ -276,9 +286,7 @@ void McaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
         ref->replaceRegion(maObj->getEntityRef().entityId, region, DNASequence(QByteArray(1, U2Msa::GAP_CHAR)), os);
         SAFE_POINT_OP(os, );
 
-        insertionMode = false;
         exitFromEditCharacterMode();
-    }
 }
 
 } // namespace

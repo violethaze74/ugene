@@ -92,7 +92,7 @@ Task::ReportResult FormatDBSupportTask::report(){
     if (!fastaTmpFiles.isEmpty()) {
         QDir dir(QFileInfo(fastaTmpFiles.first()).absoluteDir());
         if (!dir.removeRecursively()) {
-            stateInfo.addWarning(tr("Can not remove directory for temporary files."));
+            stateInfo.addWarning(tr("Can not remove folder for temporary files."));
             emit si_stateChanged();
         }
     }
@@ -143,7 +143,7 @@ void FormatDBSupportTask::prepareInputFastaFiles() {
     QString tmpDir = GUrlUtils::prepareDirLocation(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(FORMATDB_TMP_DIR) + "/"+ tmpDirName,
                                                    stateInfo);
     CHECK_OP(stateInfo, );
-    CHECK_EXT(!tmpDir.isEmpty(), setError(tr("Cannot create temp directory")), );
+    CHECK_EXT(!tmpDir.isEmpty(), setError(tr("Cannot create temp folder")), );
 
     for(int i = 0; i < settings.inputFilesPath.length(); i++){
         GUrl url(settings.inputFilesPath[i]);

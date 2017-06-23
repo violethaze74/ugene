@@ -21,11 +21,7 @@
 
 #include "ScaleBar.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QVBoxLayout>
-#else
-#include <QtWidgets/QVBoxLayout>
-#endif
+#include <QVBoxLayout>
 
 namespace U2 {
 

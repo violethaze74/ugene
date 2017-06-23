@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QPixmap>
+#include <QPixmap>
 
 #include <U2Core/U2SafePoints.h>
 

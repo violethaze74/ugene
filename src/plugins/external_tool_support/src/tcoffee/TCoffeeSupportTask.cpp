@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QCoreApplication>
+#include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -112,7 +112,7 @@ void TCoffeeSupportTask::prepare(){
     }
 
     //Add new subdir for temporary files
-    //Directory name is ExternalToolName + CurrentDate + CurrentTime
+    //Folder name is ExternalToolName + CurrentDate + CurrentTime
 
     QString tmpDirName = "TCoffee_"+QString::number(this->getTaskId())+"_"+
                          QDate::currentDate().toString("dd.MM.yyyy")+"_"+
@@ -129,12 +129,12 @@ void TCoffeeSupportTask::prepare(){
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Subdir for temporary files exists. Can not remove this directory."));
+            stateInfo.setError(tr("Subdir for temporary files exists. Can not remove this folder."));
             return;
         }
     }
     if(!tmpDir.mkpath(tmpDirPath)){
-        stateInfo.setError(tr("Can not create directory for temporary files."));
+        stateInfo.setError(tr("Can not create folder for temporary files."));
         return;
     }
 
@@ -156,7 +156,7 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
     if(subTask==saveTemporaryDocumentTask){
         QStringList arguments;
         if(url.contains(" ")){
-            stateInfo.setError("Temporary directory path have space(s). Try select any other directory without spaces.");
+            stateInfo.setError("Temporary folder path have space(s). Try select any other folder without spaces.");
             return res;
         }
         arguments <<url;
@@ -288,7 +288,7 @@ Task::ReportResult TCoffeeSupportTask::report(){
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Can not remove directory for temporary files."));
+            stateInfo.setError(tr("Can not remove folder for temporary files."));
             emit si_stateChanged();
         }
     }

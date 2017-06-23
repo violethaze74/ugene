@@ -23,11 +23,11 @@
 #define _U2_BIOSTRUCT3D_COLORSCHEME_H
 
 #include <U2Core/BioStruct3D.h>
-#include <QtGui/QColor>
-#include <QtCore/QMap>
-#include <QtCore/QHash>
-#include <QtCore/QPair>
-#include <QtCore/QLinkedList>
+#include <QColor>
+#include <QMap>
+#include <QHash>
+#include <QPair>
+#include <QLinkedList>
 
 #include "GraphicUtils.h"
 

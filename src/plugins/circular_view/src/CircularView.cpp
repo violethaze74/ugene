@@ -21,8 +21,8 @@
 
 #include <math.h>
 
-#include <QtGui/QFontMetrics>
-#include <QtGui/QPainter>
+#include <QFontMetrics>
+#include <QPainter>
 
 #include <QApplication>
 #include <QDialog>
@@ -427,9 +427,9 @@ void CircularView::adaptSizes() {
 qreal CircularView::coordToAngle(const QPoint point) {
     float norm = sqrt((double)point.x()*point.x() + point.y()*point.y());
     float arcsin = 0.0;
-    if (abs(norm) > 1.0)
+    if (qAbs(norm) > 1.0)
     {
-        arcsin = asin(abs((double)point.y())/norm);
+        arcsin = asin(qAbs((double)point.y())/norm);
     }
 
     if(point.x() < 0) {

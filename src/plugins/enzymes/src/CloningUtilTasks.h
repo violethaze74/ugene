@@ -32,9 +32,9 @@
 #include <U2Core/U2Region.h>
 #include <U2Core/GUrl.h>
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
-#include <QtCore/QMutex>
+#include <QObject>
+#include <QList>
+#include <QMutex>
 
 namespace U2 {
 

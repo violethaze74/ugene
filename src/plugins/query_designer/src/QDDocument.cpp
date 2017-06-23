@@ -22,8 +22,8 @@
 #include "QDDocument.h"
 #include "QDSceneIOTasks.h"
 
-#include <QtCore/QStringList>
-#include <QtCore/QRegExp>
+#include <QStringList>
+#include <QRegExp>
 
 
 namespace U2 {

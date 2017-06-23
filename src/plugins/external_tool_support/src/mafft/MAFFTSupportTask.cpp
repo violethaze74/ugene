@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QCoreApplication>
+#include <QDir>
 
 #include "MAFFTSupportTask.h"
 #include "MAFFTSupport.h"
@@ -107,7 +107,7 @@ void MAFFTSupportTask::prepare(){
     }
 
     //Add new subdir for temporary files
-    //Directory name is ExternalToolName + CurrentDate + CurrentTime
+    //Folder name is ExternalToolName + CurrentDate + CurrentTime
 
     QString tmpDirName = "MAFFT_"+QString::number(this->getTaskId())+"_"+
                          QDate::currentDate().toString("dd.MM.yyyy")+"_"+
@@ -124,12 +124,12 @@ void MAFFTSupportTask::prepare(){
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Subdir for temporary files exists. Can not remove this directory."));
+            stateInfo.setError(tr("Subdir for temporary files exists. Can not remove this folder."));
             return;
         }
     }
     if (!tmpDir.mkpath(tmpDirPath)){
-        stateInfo.setError(tr("Can not create directory for temporary files."));
+        stateInfo.setError(tr("Can not create folder for temporary files."));
         return;
     }
 
@@ -293,7 +293,7 @@ Task::ReportResult MAFFTSupportTask::report() {
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Can not remove directory for temporary files."));
+            stateInfo.setError(tr("Can not remove folder for temporary files."));
             emit si_stateChanged();
         }
     }

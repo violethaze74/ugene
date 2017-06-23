@@ -214,7 +214,7 @@ class ExceptionHandler {
   bool SuspendThreads();
   bool ResumeThreads();
 
-  // The destination directory for the minidump
+  // The destination folder for the minidump
   string dump_path_;
 
   // The basename of the next minidump w/o extension

@@ -3,7 +3,7 @@
 MODULE_ID=U2Algorithm
 include( ../../ugene_lib_common.pri )
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += widgets
 
 use_opencl(){
     DEFINES += OPENCL_SUPPORT

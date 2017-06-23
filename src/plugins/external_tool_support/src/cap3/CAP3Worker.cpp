@@ -233,8 +233,8 @@ void CAP3WorkerFactory::init() {
         CAP3Worker::tr("The path to the CAP3 external tool in UGENE."));
 
     Descriptor tmpDir(TMP_DIR_PATH,
-        CAP3Worker::tr("Temporary directory"),
-        CAP3Worker::tr("The directory for temporary files."));
+        CAP3Worker::tr("Temporary folder"),
+        CAP3Worker::tr("The folder for temporary files."));
 
     attributes << new Attribute(outputFile, BaseTypes::STRING_TYPE(), true, "result.ace");
     attributes << new Attribute(clippingCutoff, BaseTypes::NUM_TYPE(), false, QVariant(CAP3SupportTaskSettings::defaultBaseQualityClipCutoff));

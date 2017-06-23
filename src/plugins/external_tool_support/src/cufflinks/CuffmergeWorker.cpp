@@ -71,8 +71,8 @@ void CuffmergeWorkerFactory::init()
     QList<Attribute*> attributes;
     { // Define parameters of the element
         Descriptor outDir(OUT_DIR,
-            CuffmergeWorker::tr("Output directory"),
-            CuffmergeWorker::tr("The base name of output directory. It could be modified with a suffix."));
+            CuffmergeWorker::tr("Output folder"),
+            CuffmergeWorker::tr("The base name of output folder. It could be modified with a suffix."));
 
         Descriptor refAnnotation(REF_ANNOTATION,
             CuffmergeWorker::tr("Reference annotation"),
@@ -99,8 +99,8 @@ void CuffmergeWorkerFactory::init()
             CuffmergeWorker::tr("The path to the Cuffmerge external tool in UGENE."));
 
         Descriptor tmpDir(TMP_DIR_PATH,
-            CuffmergeWorker::tr("Temporary directory"),
-            CuffmergeWorker::tr("The directory for temporary files."));
+            CuffmergeWorker::tr("Temporary folder"),
+            CuffmergeWorker::tr("The folder for temporary files."));
 
         attributes << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, "");
         attributes << new Attribute(refAnnotation, BaseTypes::STRING_TYPE(), false, QVariant(""));

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
+#include <QDir>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -78,7 +78,7 @@ void SeqPosTask::cleanup() {
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            //stateInfo.setError(tr("Subdir for temporary files exists. Can not remove this directory."));
+            //stateInfo.setError(tr("Subdir for temporary files exists. Can not remove this folder."));
             //return;
         }
     }

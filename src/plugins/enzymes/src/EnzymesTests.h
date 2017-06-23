@@ -27,8 +27,8 @@
 #include <U2Core/U2Region.h>
 #include <U2Test/XMLTestUtils.h>
 
-#include <QtCore/QMultiMap>
-#include <QtXml/QDomElement>
+#include <QMultiMap>
+#include <QDomElement>
 
 #include "DNAFragment.h"
 

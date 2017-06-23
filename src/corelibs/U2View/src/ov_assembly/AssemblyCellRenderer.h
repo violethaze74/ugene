@@ -24,12 +24,12 @@
 
 #include <U2Core/U2Assembly.h>
 
-#include <QtCore/QMap>
-#include <QtCore/QHash>
+#include <QMap>
+#include <QHash>
 
-#include <QtGui/QColor>
-#include <QtGui/QPixmap>
-#include <QtGui/QFont>
+#include <QColor>
+#include <QPixmap>
+#include <QFont>
 
 namespace U2 {
 

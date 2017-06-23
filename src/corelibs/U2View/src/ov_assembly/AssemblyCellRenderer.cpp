@@ -21,8 +21,8 @@
 
 #include "AssemblyCellRenderer.h"
 
-#include <QtGui/QPainter>
-#include <QtGui/QFont>
+#include <QPainter>
+#include <QFont>
 
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>

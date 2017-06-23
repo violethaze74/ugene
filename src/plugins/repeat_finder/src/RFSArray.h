@@ -22,9 +22,9 @@
 #ifndef _U2_RF_SARRAY_ALG_H_
 #define _U2_RF_SARRAY_ALG_H_
 
-#include <QtCore/QList>
-#include <QtCore/QVector>
-#include <QtCore/QMutex>
+#include <QList>
+#include <QVector>
+#include <QMutex>
 
 #include <U2Algorithm/SArrayIndex.h>
 #include <U2Algorithm/SArrayBasedFindTask.h>

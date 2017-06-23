@@ -26,9 +26,9 @@
 #include <U2Core/U2Location.h>
 #include <U2Core/U2Qualifier.h>
 
-#include <QtCore/QSharedData>
-#include <QtCore/QVector>
-#include <QtCore/QStringList>
+#include <QSharedData>
+#include <QVector>
+#include <QStringList>
 
 namespace U2 {
 

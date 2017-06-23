@@ -28,13 +28,8 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/HelpButton.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#include <QtGui/QToolButton>
-#else
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QToolButton>
-#endif
+#include <QPushButton>
+#include <QToolButton>
 
 namespace U2 {
 
@@ -100,7 +95,7 @@ void FormatDBSupportRunDialog::sl_onBrowseInputDir(){
     LastUsedDirHelper lod("");
 
     QString name;
-    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a directory with input files"), lod.dir);
+    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder with input files"), lod.dir);
     if (!name.isEmpty()) {
         inputDirLineEdit->setText(name);
     }
@@ -108,10 +103,10 @@ void FormatDBSupportRunDialog::sl_onBrowseInputDir(){
 }
 
 void FormatDBSupportRunDialog::sl_onBrowseDatabasePath(){
-    LastUsedDirHelper lod("Database Directory");
+    LastUsedDirHelper lod("Database folder");
 
     QString name;
-    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a directory to save database files"), lod.dir);
+    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder to save database files"), lod.dir);
     if (!name.isEmpty()) {
         databasePathLineEdit->setText(name);
     }

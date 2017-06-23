@@ -26,7 +26,7 @@
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/Schema.h>
 
-#include <QtCore/QPointer>
+#include <QPointer>
 
 class QDomDocument;
 

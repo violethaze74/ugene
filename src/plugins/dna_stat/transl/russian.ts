@@ -339,7 +339,7 @@
 <context>
     <name>U2::DNAStatsWindow</name>
     <message>
-        <location filename="../src/DNAStatsWindow.cpp" line="44"/>
+        <location filename="../src/DNAStatsWindow.cpp" line="37"/>
         <source>Statistics for %1</source>
         <translation>Статистика для %1</translation>
     </message>
@@ -443,12 +443,12 @@
         <translation>Недостаточно групп для того, чтобы создать матрицу расстояний!</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="357"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="352"/>
         <source>Distance matrix</source>
         <translation>Матрица расстояний</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="357"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="352"/>
         <source>Distance matrix for %1</source>
         <translation>Матрица расстояний для %1</translation>
     </message>

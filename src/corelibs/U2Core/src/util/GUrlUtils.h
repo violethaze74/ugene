@@ -25,9 +25,9 @@
 #include <U2Core/global.h>
 #include <U2Core/GUrl.h>
 
-#include <QtCore/QSet>
-#include <QtCore/QStringList>
-#include <QtCore/QUrl>
+#include <QSet>
+#include <QStringList>
+#include <QUrl>
 
 namespace U2 {
 
@@ -85,14 +85,14 @@ public:
     // adds count to the url. Ensures that URL ends with one of the exts from typeExt
     static QString prepareFileName(const QString& url, int count, const QStringList& typeExt);
 
-    // checks that file path is valid: creates required directory if needed.
-    // Returns canonical path to file. Does not create nor remove file, affects just directory
+    // checks that file path is valid: creates required folder if needed.
+    // Returns canonical path to file. Does not create nor remove file, affects just folder
     // Returns empty string and error message if some error occurs
     // Sample usage: processing URLs in "save file" inputs
     static QString prepareFileLocation(const QString& filePath, U2OpStatus& os);
 
-    // checks that dir path is valid. Creates the directory if needed.
-    // Returns canonical directory path. Does not affect directory if already exists.
+    // checks that dir path is valid. Creates the folder if needed.
+    // Returns canonical folder path. Does not affect folder if already exists.
     // Returns empty string and error message if some error occurs
     // Sample usage: processing URLs in "save dir" inputs
     static QString prepareDirLocation(const QString& dirPath, U2OpStatus& os);
@@ -116,7 +116,7 @@ public:
     //Get quoted input string if it has spaces
     static QString getQuotedString(const QString& inString);
 
-    // Creates the directory with a rolled path: @path + @suffix + "num". Returns the new path
+    // Creates the folder with a rolled path: @path + @suffix + "num". Returns the new path
     static QString createDirectory(const QString &path, const QString &suffix, U2OpStatus &os);
 
     // If url is local returns values from it, else returns default values: default data dir path from settings and @defaultBaseFileName

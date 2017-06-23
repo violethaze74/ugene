@@ -26,7 +26,7 @@
 #include <U2Core/ServiceModel.h>
 #include <U2Core/Task.h>
 
-#include <QtCore/QMap>
+#include <QMap>
 
 namespace U2 {
 

@@ -18,31 +18,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+ 
+#ifndef _U2_GROUPED_COMBOBOX_DELEGATE_H_
+#define _U2_GROUPED_COMBOBOX_DELEGATE_H_
 
-#include <QApplication>
+#include <QItemDelegate>
+#include <QPainter>
 
-#include <primitives/GTLineEdit.h>
-#include <primitives/GTWidget.h>
+#include <U2Core/global.h>
 
-#include "UHMM3SearchDialogFiller.h"
+class QStandardItemModel;
+
 namespace U2 {
 
-#define GT_CLASS_NAME "UHMM3SearchDialogFiller"
-#define GT_METHOD_NAME "run"
+class U2GUI_EXPORT GroupedComboBoxDelegate : public QItemDelegate {
+    Q_OBJECT
+public:
+    explicit GroupedComboBoxDelegate(QObject *parent = 0);
 
-void UHMM3SearchDialogFiller::commonScenario(){
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
-
-    QLineEdit* queryHmmFileEdit = GTWidget::findExactWidget<QLineEdit*>(os, "queryHmmFileEdit", dialog);
-    GTLineEdit::setText(os, queryHmmFileEdit, profile);
-
-    QLineEdit* newFilePathle = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath", dialog);
-    GTLineEdit::setText(os, newFilePathle, newFilePath);
-
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    static void addParentItem(QStandardItemModel * model, const QString& text);
+    static void addChildItem(QStandardItemModel * model, const QString& text, const QVariant& data);
+protected:
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+};
+    
 }
 
-#undef GT_METHOD_NAME
-#undef GT_CLASS_NAME
-}
+#endif // _U2_GROUPED_COMBOBOX_DELEGATE_H_

@@ -75,11 +75,20 @@ void SequenceAreaRenderer::drawSelection(QPainter &painter) const {
     QPen pen(seqAreaWgt->highlightSelection || seqAreaWgt->hasFocus()
              ? seqAreaWgt->selectionColor
              : Qt::gray);
-    if (seqAreaWgt->maMode != MaEditorSequenceArea::EditCharacterMode) {
+    if (seqAreaWgt->maMode == MaEditorSequenceArea::ViewMode) {
         pen.setStyle(Qt::DashLine);
     }
     pen.setWidth(seqAreaWgt->highlightSelection ? 2 : 1);
     painter.setPen(pen);
+
+    switch (seqAreaWgt->maMode) {
+    case MaEditorSequenceArea::ViewMode:
+    case MaEditorSequenceArea::ReplaceCharMode:
+        painter.drawRect(selectionRect);
+        break;
+    case MaEditorSequenceArea::InsertCharMode:
+        painter.drawLine(selectionRect.left(), selectionRect.top(), selectionRect.left(), selectionRect.bottom());
+    }
 
     painter.drawRect(selectionRect);
 }

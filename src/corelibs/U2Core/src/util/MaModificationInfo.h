@@ -22,6 +22,8 @@
 #ifndef _U2_MA_MODIFICATION_INFO_H_
 #define _U2_MA_MODIFICATION_INFO_H_
 
+#include <QVariantMap>
+
 #include <U2Core/global.h>
 
 namespace U2 {

@@ -132,7 +132,7 @@ ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<
     for (int i = 0, n = static_cast<int>(region.length); i < n; i++) {
         const int column = region.startPos + i;
         int score = 0;
-        const char consensusChar = algorithm->getConsensusCharAndScore(ma, column, score, seqIdx.toVector());
+        const char consensusChar = algorithm->getConsensusCharAndScore(ma, column, score);
         consensusRenderData.data += consensusChar;
         consensusRenderData.percents << qRound(score * 100. / seqIdx.size());
         consensusRenderData.mismatches[i] = (consensusChar != editor->getReferenceCharAt(column));
@@ -210,6 +210,9 @@ void MaConsensusAreaRenderer::drawConsensus(QPainter &painter, const ConsensusRe
     for (int i = 0, n = static_cast<int>(consensusRenderData.region.length); i < n; i++) {
         charData.column = static_cast<int>(consensusRenderData.region.startPos + i);
         charData.consensusChar = consensusRenderData.data[i];
+        if (MSAConsensusAlgorithm::INVALID_CONS_CHAR == charData.consensusChar) {
+            continue;
+        }
         charData.isMismatch = consensusRenderData.mismatches[i];
         charData.isSelected = settings.drawSelection && consensusRenderData.selectedRegion.contains(charData.column);
 

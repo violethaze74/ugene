@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QString>
+#include <QString>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
@@ -79,7 +79,7 @@ void ExternalToolJustValidateTask::run() {
             stateInfo.setError(QString("The tool %1 that runs %2 is not installed. "
                                        "Please set the path to the executable file of the"
                                        " tool in the External Tools settings. Some of the tools "
-                                       "may be located in UGENE/Tools directory")
+                                       "may be located in UGENE/Tools folder")
                                .arg(originalValidation.toolRunnerProgram)
                                .arg(toolName));
         } else {

@@ -92,7 +92,6 @@ void MsaEditorSimilarityColumn::setSettings(const UpdatedWidgetSettings* _settin
     const SimilarityStatisticsSettings* set= static_cast<const SimilarityStatisticsSettings*>(_settings);
     CHECK(NULL != set,);
     autoUpdate = set->autoUpdate;
-    state = DataIsValid;
     if(curSettings.algoName != set->algoName) {
         state = DataIsOutdated;
     }
@@ -113,6 +112,10 @@ void MsaEditorSimilarityColumn::setSettings(const UpdatedWidgetSettings* _settin
         updateDistanceMatrix();
     }
     emit si_dataStateChanged(state);
+}
+
+void MsaEditorSimilarityColumn::cancelPendingTasks() {
+    createDistanceMatrixTaskRunner.cancel();
 }
 
 QString MsaEditorSimilarityColumn::getHeaderText() const {
@@ -142,7 +145,8 @@ void MsaEditorSimilarityColumn::onAlignmentChanged(const MultipleSequenceAlignme
 
 void MsaEditorSimilarityColumn::sl_createMatrixTaskFinished(Task* t) {
     CreateDistanceMatrixTask* task = qobject_cast<CreateDistanceMatrixTask*> (t);
-    if(NULL != task && !task->hasError() && !task->isCanceled()) {
+    bool finishedSuccessfully = NULL != task && !task->hasError() && !task->isCanceled();
+    if (finishedSuccessfully) {
         if(NULL != matrix) {
             delete matrix;
         }
@@ -152,8 +156,12 @@ void MsaEditorSimilarityColumn::sl_createMatrixTaskFinished(Task* t) {
         }
     }
     sl_completeRedraw();
-    state = DataIsValid;
-    curSettings = newSettings;
+    if (finishedSuccessfully) {
+        state = DataIsValid;
+        curSettings = newSettings;
+    } else {
+        state = DataIsOutdated;
+    }
     emit si_dataStateChanged(state);
 }
 
@@ -238,6 +246,10 @@ void MsaEditorAlignmentDependentWidget::setSettings(const UpdatedWidgetSettings*
     automaticUpdating = settings->autoUpdate;
     contentWidget->setSettings(settings);
     nameWidget.setText(contentWidget->getHeaderText());
+}
+
+void MsaEditorAlignmentDependentWidget::cancelPendingTasks() {\
+    contentWidget->cancelPendingTasks();
 }
 
 void MsaEditorAlignmentDependentWidget::sl_onAlignmentChanged(const MultipleAlignment& maBefore, const MaModificationInfo& modInfo) {

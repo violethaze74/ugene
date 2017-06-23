@@ -22,8 +22,6 @@
 #ifndef _U2_MSAEDITOR_MULTI_TREE_VIEWER_H_
 #define _U2_MSAEDITOR_MULTI_TREE_VIEWER_H_
 
-#include <qglobal.h>
-
 #include <QStringList>
 #include <QToolBar>
 #include <QWidget>

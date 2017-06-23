@@ -26,10 +26,10 @@
 #include <U2Core/GUrl.h>
 #include <U2Core/NetworkConfiguration.h>
 
-#include <QtCore/QUrl>
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QAuthenticator>
-#include <QtXml/QXmlReader>
+#include <QUrl>
+#include <QNetworkReply>
+#include <QAuthenticator>
+#include <QXmlReader>
 
 class QEventLoop;
 class QTimer;

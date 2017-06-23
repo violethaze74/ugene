@@ -21,7 +21,7 @@
 
 #include "PWMatrix.h"
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 namespace U2 {
 

@@ -22,10 +22,10 @@
 #ifndef _U2_RUNFILESYSTEM_H_
 #define _U2_RUNFILESYSTEM_H_
 
-#include <U2Core/global.h>
-#include <U2Core/U2OpStatus.h>
-
+#include <QObject>
 #include <QVector>
+
+#include <U2Core/U2OpStatus.h>
 
 namespace U2 {
 

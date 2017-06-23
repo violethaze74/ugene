@@ -26,11 +26,7 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <ui_ETSSettingsWidget.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLineEdit>
-#else
-#include <QtWidgets/QLineEdit>
-#endif
+#include <QLineEdit>
 
 namespace U2
 {

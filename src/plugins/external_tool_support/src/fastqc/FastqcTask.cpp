@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
+#include <QDir>
 
 #include "FastqcSupport.h"
 #include "FastqcTask.h"
@@ -98,7 +98,7 @@ void FastQCTask::prepare(){
 
     const QDir outDir = QFileInfo(settings.outDir).absoluteDir();
     if (!outDir.exists()) {
-        setError(tr("Directory does not exist: %1").arg(outDir.absolutePath()));
+        setError(tr("Folder does not exist: %1").arg(outDir.absolutePath()));
         return ;
     }
 

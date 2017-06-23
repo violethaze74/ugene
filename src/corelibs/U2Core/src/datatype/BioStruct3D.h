@@ -27,11 +27,11 @@
 #include <U2Core/AnnotationData.h>
 #include <U2Core/Matrix44.h>
 
-#include <QtCore/QString>
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QSharedData>
-#include <QtCore/QMultiMap>
+#include <QString>
+#include <QList>
+#include <QMap>
+#include <QSharedData>
+#include <QMultiMap>
 
 namespace U2 {
 

@@ -19,29 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#include "DocumentModelTests.h"
+#include <QCoreApplication>
+#include <QDir>
+#include <QStringList>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObject.h>
+#include <U2Core/DocumentUtils.h>
 #include <U2Core/GHints.h>
+#include <U2Core/GObject.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
+#include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
+#include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Core/LoadDocumentTask.h>
-#include <U2Core/SaveDocumentTask.h>
-#include <U2Core/DocumentUtils.h>
+#include <U2Formats/SAMFormat.h>
 
 #include <U2Test/GTest.h>
 
-#include <U2Formats/SAMFormat.h>
-
-#include <QStringList>
+#include "DocumentModelTests.h"
 
 namespace U2 {
 

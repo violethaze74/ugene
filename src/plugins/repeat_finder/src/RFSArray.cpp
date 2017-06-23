@@ -25,7 +25,7 @@
 #include <U2Core/Timer.h>
 #include <U2Core/Log.h>
 
-#include <QtCore/QMutexLocker>
+#include <QMutexLocker>
 #include <U2Core/DNAAlphabet.h>
 
 namespace U2 {

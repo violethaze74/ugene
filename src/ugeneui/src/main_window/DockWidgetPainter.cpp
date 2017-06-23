@@ -21,7 +21,9 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QLabel>
 #include <QPainter>
+
 #include <U2Core/U2SafePoints.h>
 
 #include "DockManagerImpl.h"

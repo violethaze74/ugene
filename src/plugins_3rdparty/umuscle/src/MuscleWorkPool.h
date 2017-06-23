@@ -25,9 +25,9 @@
 #include "MuscleParallel.h"
 #include "MuscleUtils.h"
 
-#include <QtCore/QMutex>
-#include <QtCore/QMutexLocker>
-#include <QtCore/QSemaphore>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QSemaphore>
 
 #include "muscle/scorehistory.h"
 

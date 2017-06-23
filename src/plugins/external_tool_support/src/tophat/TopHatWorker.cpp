@@ -189,33 +189,33 @@ void TopHatWorkerFactory::init()
 
     // Define parameters of the element
     Descriptor outDir(OUT_DIR,
-        TopHatWorker::tr("Output directory"),
-        TopHatWorker::tr("The base name of output directory. It could be modified with a suffix."));
+        TopHatWorker::tr("Output folder"),
+        TopHatWorker::tr("The base name of output folder. It could be modified with a suffix."));
 
     Descriptor samplesMap(SAMPLES_MAP,
         TopHatWorker::tr("Samples map"),
         TopHatWorker::tr("The map which divide all input datasets into samples. Every sample has the unique name."));
 
     Descriptor bowtieIndexDir(BOWTIE_INDEX_DIR,
-        TopHatWorker::tr("Bowtie index directory"),
-        TopHatWorker::tr("The directory with the Bowtie index for the reference sequence."));
+        TopHatWorker::tr("Bowtie index folder"),
+        TopHatWorker::tr("The folder with the Bowtie index for the reference sequence."));
 
     // THe refSeq parameter and Bowtie parameters' descriptions have been commented because of UGENE-1160
 
-    //     " It is required to either input a directory and a basename of a Bowtie index,"
+    //     " It is required to either input a folder and a basename of a Bowtie index,"
     //     " or a reference sequence."));
 
     Descriptor bowtieIndexBasename(BOWTIE_INDEX_BASENAME,
         TopHatWorker::tr("Bowtie index basename"),
         TopHatWorker::tr("The basename of the Bowtie index for the reference sequence."));
 
-    //    " It is required to either input a directory and a basename of a Bowtie index,"
+    //    " It is required to either input a folder and a basename of a Bowtie index,"
     //    " or a reference sequence."));
 
     // Descriptor refSeq(REF_SEQ,
     //    TopHatWorker::tr("Reference sequence"),
     //    TopHatWorker::tr("The reference sequence for short reads."
-    //    " It is required to either input a directory and a basename of a Bowtie index,"
+    //    " It is required to either input a folder and a basename of a Bowtie index,"
     //    " or a reference sequence. Note that the Bowtie index parameters have higher priority"
     //    " than this parameter, i.e. if they are specified, this parameter is ignored."));
 
@@ -345,8 +345,8 @@ void TopHatWorkerFactory::init()
         TopHatWorker::tr("The path to the TopHat external tool in UGENE."));
 
     Descriptor tmpDir(TMP_DIR_PATH,
-        TopHatWorker::tr("Temporary directory"),
-        TopHatWorker::tr("The directory for temporary files."));
+        TopHatWorker::tr("Temporary folder"),
+        TopHatWorker::tr("The folder for temporary files."));
 
     attributes << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, "");
     {
@@ -769,7 +769,7 @@ QString DatasetData::getCurrentSample() const {
 /* Validators */
 /************************************************************************/
 bool InputSlotsValidator::validate(const IntegralBusPort *port, ProblemList &problemList) const {
-    QStrStrMap bm = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<QStrStrMap>();
+    StrStrMap bm = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
     bool data = isBinded(bm, IN_DATA_SLOT_ID);
     bool pairedData = isBinded(bm, PAIRED_IN_DATA_SLOT_ID);
     bool url = isBinded(bm, IN_URL_SLOT_ID);

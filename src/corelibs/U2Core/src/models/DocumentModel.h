@@ -30,10 +30,10 @@
 
 #include "StateLockableDataModel.h"
 
-#include <QtCore/QDateTime>
-#include <QtCore/QMimeData>
-#include <QtCore/QPointer>
-#include <QtScript/QScriptValue>
+#include <QDateTime>
+#include <QMimeData>
+#include <QPointer>
+#include <QScriptValue>
 
 namespace U2 {
 

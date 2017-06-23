@@ -29,7 +29,7 @@
 
 #include <U2Test/TestRunnerSettings.h>
 
-#include <QtCore/QDir>
+#include <QDir>
 
 
 namespace U2 {

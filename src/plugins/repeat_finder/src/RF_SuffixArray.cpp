@@ -21,8 +21,7 @@
 
 #include "RF_SuffixArray.h"
 #include "RFConstants.h"
-#include <QtCore/QtAlgorithms>
-#include <QtCore/QThread>
+#include <QThread>
 #include <U2Core/Log.h>
 
 namespace U2 {

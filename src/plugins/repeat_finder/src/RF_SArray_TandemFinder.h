@@ -32,8 +32,8 @@
 #include <U2Core/DNASequence.h>
 #include <U2Core/AnnotationData.h>
 
-#include <QtCore/QMutex>
-#include <QtCore/QMap>
+#include <QMutex>
+#include <QMap>
 
 #include "RF_SuffixArray.h"
 #include "RFBase.h"

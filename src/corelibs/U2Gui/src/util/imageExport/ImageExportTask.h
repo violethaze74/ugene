@@ -25,7 +25,7 @@
 #include <U2Core/global.h>
 #include <U2Core/Task.h>
 
-#include <QtCore/QSize>
+#include <QSize>
 
 #define IMAGE_SIZE_LIMIT 32768
 

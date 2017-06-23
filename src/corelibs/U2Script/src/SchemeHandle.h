@@ -41,7 +41,7 @@ extern "C" {
  *
  * Possible returning error codes:
  * U2_OK -                      success
- * U2_FAILED_TO_CREATE_DIR -    failed to create a directory for temporary files
+ * U2_FAILED_TO_CREATE_DIR -    failed to create a folder for temporary files
  * U2_FAILED_TO_CREATE_FILE -   failed to create temporary file describing scheme
  * U2_FAILED_TO_READ_FILE -     failed to open the file given by the `pathToScheme` parameter
  * U2_INVALID_CALL -            UGENE environment has not been properly initialized
@@ -74,7 +74,7 @@ U2SCRIPT_EXPORT U2ErrorType     createScheme(                const wchar_t *    
  * U2_OK -                      success
  * U2_ELEMENT_NOT_SUIT_SAS -    the `algorithmType` contains an element type name
  *                                  that does not suit for SAS
- * U2_FAILED_TO_CREATE_DIR -    failed to create a directory for temporary files
+ * U2_FAILED_TO_CREATE_DIR -    failed to create a folder for temporary files
  * U2_FAILED_TO_CREATE_FILE -   failed to create temporary file describing scheme
  * U2_INVALID_CALL -            UGENE environment has not been properly initialized
  * U2_INVALID_STRING -          `algorithmType` is an empty string
@@ -297,7 +297,7 @@ U2SCRIPT_EXPORT U2ErrorType     addSchemeActorsBinding(      SchemeHandle       
  * This function saves the computational scheme described by the `scheme` object to file
  * in UWL format which path is specified by the `path` parameter
  *
- * The `path` parameter has to specify some file within existing directory.
+ * The `path` parameter has to specify some file within existing folder.
  * The function does not succeed if these conditions are not satisfied.
  *
  * Possible returning error codes:
@@ -369,7 +369,7 @@ U2SCRIPT_EXPORT U2ErrorType         launchScheme(            SchemeHandle       
  * U2_OK -                      success
  * U2_ELEMENT_NOT_SUIT_SAS -    the `algorithmType` contains an element type name
  *                                  that does not suit for SAS
- * U2_FAILED_TO_CREATE_DIR -    failed to create a directory for temporary files
+ * U2_FAILED_TO_CREATE_DIR -    failed to create a folder for temporary files
  * U2_FAILED_TO_CREATE_FILE -   failed to create temporary file describing scheme
  * U2_INVALID_CALL -            UGENE environment has not been properly initialized
  * U2_INVALID_STRING -          at least one argument is null pointer

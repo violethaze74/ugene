@@ -82,19 +82,20 @@ public:
     QList<Annotation *> selectRelatedAnnotations(const QList<Annotation *> &alist) const;
     QVector<bool> getTranslationRowsVisibleStatus();
     void setTranslationsVisible(bool enable);
-
 private slots:
     void sl_setAminoTranslation();
     void sl_toggleTranslations();
     void sl_showDirectOnly();
     void sl_showComplOnly();
     void sl_showShowAll();
-    void sl_onAnnotationRelationChange();
 signals:
     void si_aminoTranslationChanged();
     void si_annotationObjectAdded(AnnotationTableObject *obj);
     void si_annotationObjectRemoved(AnnotationTableObject *obj);
     void si_translationRowsChanged();
+
+protected slots:
+    virtual void sl_onAnnotationRelationChange();
 
 protected:
     void guessAminoTT(const AnnotationTableObject *ao);

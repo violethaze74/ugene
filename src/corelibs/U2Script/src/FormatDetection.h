@@ -56,7 +56,7 @@ typedef enum U2Format {
  *
  * Possible returning error codes:
  * U2_OK -                 success
- * U2_INVALID_PATH -       the `pathToFile` does not exist or contains path to a directory
+ * U2_INVALID_PATH -       the `pathToFile` does not exist or contains path to a folder
  *
  */
 U2SCRIPT_EXPORT U2ErrorType         detectFileFormat(   const wchar_t *     pathToFile,

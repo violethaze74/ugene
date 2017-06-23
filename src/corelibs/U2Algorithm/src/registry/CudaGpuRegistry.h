@@ -22,7 +22,7 @@
 #ifndef __CUDA_GPU_REGISTRY_H__
 #define __CUDA_GPU_REGISTRY_H__
 
-#include <QtCore/QHash>
+#include <QHash>
 #include <U2Core/global.h>
 
 namespace U2 {

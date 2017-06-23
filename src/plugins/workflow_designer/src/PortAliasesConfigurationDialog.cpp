@@ -26,12 +26,7 @@
 
 #include "PortAliasesConfigurationDialog.h"
 #include <U2Gui/HelpButton.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#else
-#include <QtWidgets/QPushButton>
-#endif
-
+#include <QPushButton>
 
 namespace U2 {
 namespace Workflow {
@@ -54,11 +49,7 @@ PortAliasesConfigurationDialog::PortAliasesConfigurationDialog( const Schema & s
     okPushButton->setDefault(true);
     portAliasesTableWidget->verticalHeader()->hide();
 
-#if (QT_VERSION < 0x050000) //Qt 5
-    portAliasesTableWidget->horizontalHeader()->setClickable(false);
-#else
     portAliasesTableWidget->horizontalHeader()->setSectionsClickable(false);
-#endif
     portAliasesTableWidget->horizontalHeader()->setStretchLastSection( true );
 
     foreach (Actor *actor, schema.getProcesses()) {

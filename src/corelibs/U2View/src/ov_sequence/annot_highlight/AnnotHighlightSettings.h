@@ -24,9 +24,6 @@
 
 #include <ui_AnnotHighlightSettings.h>
 
-#include <QtGui/QtGui>
-
-
 namespace U2 {
 
 class AnnotationSettings;

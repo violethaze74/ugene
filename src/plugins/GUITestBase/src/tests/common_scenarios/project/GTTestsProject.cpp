@@ -97,7 +97,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 // Expected state: "Export Project" dialog has appeared
 //
 // 3. Fill the next field in dialog:
-//     {Destination Directory} _common_data/scenarios/sandbox
+//     {Destination folder} _common_data/scenarios/sandbox
 // 4. Click OK button
     GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir+"_common_data/scenarios/sandbox"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Export project...");
@@ -724,23 +724,6 @@ GUI_TEST_CLASS_DEFINITION(test_0043){
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "Tree");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0044){
-    GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check document which format cant be saved by UGENE
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
-
-    GTUtilsProjectTreeView::click(os, "COI.aln");
-    QString fileContent = readFileToStr(dataDir + "samples/HMM/aligment15900.hmm");
-    GTClipboard::setText(os, fileContent);
-
-    GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
-    GTGlobals::sleep();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProjectTreeView::findIndex(os, "aligment15900");
-
-    GTUtilsProjectTreeView::itemModificationCheck(os, GTUtilsProjectTreeView::findIndex(os, "clipboard.hmm"), false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0045){

@@ -43,8 +43,8 @@
 
 #include <U2View/DnaAssemblyUtils.h>
 
-#include <QtCore/QDir>
-#include <QtCore/QRegExp>
+#include <QDir>
+#include <QRegExp>
 
 /* TRANSLATOR U2::GTest*/
 

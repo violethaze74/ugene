@@ -24,9 +24,9 @@
 
 #include <U2Core/U2Dbi.h>
 
-#include <QtCore/QHash>
-#include <QtCore/QMutex>
-#include <QtCore/QTimer>
+#include <QHash>
+#include <QMutex>
+#include <QTimer>
 
 namespace U2 {
 

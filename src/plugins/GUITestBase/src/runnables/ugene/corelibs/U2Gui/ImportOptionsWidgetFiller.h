@@ -22,7 +22,7 @@
 #ifndef _U2_IMPORT_OPTIONS_WIDGET_FILLER_H_
 #define _U2_IMPORT_OPTIONS_WIDGET_FILLER_H_
 
-#include <QtCore/QVariantMap>
+#include <QVariantMap>
 #include <GTGlobals.h>
 
 namespace U2 {

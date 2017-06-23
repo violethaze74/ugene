@@ -36,7 +36,7 @@
 #include <cassert>
 #include <cstdio>
 //#include <boost/shared_array.hpp> // removed, replaced with QVector
-#include <QtCore/QVector>
+#include <QVector>
 #include <stdexcept>
 
 

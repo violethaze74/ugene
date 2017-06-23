@@ -23,6 +23,7 @@
 
 #include <QPushButton>
 #include <QMessageBox>
+#include <QLineEdit>
 
 #include "WindowStepSelectorWidget.h"
 
@@ -81,6 +82,11 @@ QString WindowStepSelectorWidget::validate() const {
 //////////////////////////////////////////////////////////////////////////
 ///
 
+class MinMaxDoubleSpinBox : public QDoubleSpinBox {
+public:
+    QLineEdit* getLineEdit() const { return lineEdit();}
+};
+
 MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget* p, double min, double max, bool enabled) {
     Q_UNUSED(p);
 
@@ -90,20 +96,22 @@ MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget* p, double min, double max, b
     minmaxGroup->setObjectName("minmaxGroup");
 
     //for range use min max of type
-    minBox = new QDoubleSpinBox;
+    minBox = new MinMaxDoubleSpinBox;
     minBox->setRange(INT_MIN,INT_MAX );
     minBox->setValue(min);
     minBox->setDecimals(2);
     minBox->setAlignment(Qt::AlignLeft);
     minBox->setObjectName("minBox");
 
-    maxBox = new QDoubleSpinBox;
+    maxBox = new MinMaxDoubleSpinBox ;
     maxBox->setRange(INT_MIN,INT_MAX);
     maxBox->setValue(max);
     maxBox->setDecimals(2);
     maxBox->setAlignment(Qt::AlignLeft);
     maxBox->setObjectName("maxBox");
 
+    normalPalette = maxBox->palette();
+    
     QFormLayout* l = new QFormLayout;
     l->setSizeConstraint(QLayout::SetMinAndMaxSize);
     l->addRow(tr("Minimum"), minBox);
@@ -115,6 +123,9 @@ MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget* p, double min, double max, b
     mainLayout->setMargin(0);
     mainLayout->addWidget(minmaxGroup);
     setLayout(mainLayout);
+    
+    connect(minBox, SIGNAL(valueChanged(const QString &)), SLOT(sl_valueChanged(const QString &)));
+    connect(maxBox, SIGNAL(valueChanged(const QString &)), SLOT(sl_valueChanged(const QString &)));
 }
 
 double MinMaxSelectorWidget::getMin() const {
@@ -132,6 +143,17 @@ bool MinMaxSelectorWidget::getState() const {
     return minmaxGroup->isChecked();
 }
 
+void MinMaxSelectorWidget::sl_valueChanged(const QString &) {
+    double min = minBox->value();
+    double max = maxBox->value();
+    QPalette p = normalPalette;
+    if (min >= max) {
+        p.setColor(QPalette::Base, QColor(255,200,200));
+    } 
+    ((MinMaxDoubleSpinBox*)minBox)->getLineEdit()->setPalette(p);
+    ((MinMaxDoubleSpinBox*)maxBox)->getLineEdit()->setPalette(p);
+}
+
 
 QString MinMaxSelectorWidget::validate() const {
     if (!minmaxGroup->isChecked()) return QString();
@@ -139,7 +161,7 @@ QString MinMaxSelectorWidget::validate() const {
     double max = maxBox->value();
     if (min >= max) {
         minBox->setFocus(Qt::NoFocusReason);
-        return tr("Invalid cutoff values");
+        return tr("Invalid cutoff range");
     }
     return QString();
 }

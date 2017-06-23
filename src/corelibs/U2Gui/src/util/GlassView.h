@@ -23,11 +23,7 @@
 #define _U2_GLASS_VIEW_H_
 
 #include <U2Core/global.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsView>
-#else
-#include <QtWidgets/QGraphicsView>
-#endif
+#include <QGraphicsView>
 
 class QTextDocument;
 

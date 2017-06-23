@@ -22,6 +22,8 @@
 #ifndef _U2_GENBANK_LOCATION_PARSER_H
 #define _U2_GENBANK_LOCATION_PARSER_H
 
+#include <QObject>
+
 #include <U2Core/global.h>
 
 namespace U2 {

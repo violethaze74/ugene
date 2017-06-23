@@ -46,6 +46,7 @@ void MSAConsensusUtils::updateConsensus(const MultipleAlignment& ma, const QVect
     if (cons.length()!=aliLen) {
         cons.resize(aliLen);
     }
+
     foreach(const U2Region& r, regions) {
         for (int i = r.startPos, n = r.endPos(); i < n ; i++) {
             cons[i] = algo->getConsensusChar(ma, i);

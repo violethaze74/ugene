@@ -24,8 +24,8 @@
 
 #include <U2Core/global.h>
 
-#include <QtCore/QByteArray>
-#include <QtCore/QStringList>
+#include <QByteArray>
+#include <QStringList>
 
 namespace U2 {
 
@@ -72,7 +72,7 @@ public:
     static DNAQualityType getDNAQualityTypeByName(const QString& name);
     static QStringList getDNAQualityTypeNames();
     static DNAQualityType detectTypeByCodes(const QByteArray &qualCodes);
-    static DNAQualityType detectTypeByMaxQualityValue(int maxQualityValue);
+    static DNAQualityType detectTypeByMinMaxQualityValues(int minQualityValue, int maxQualityValue);
 
     qint64 memoryHint() const;
 
@@ -82,6 +82,7 @@ public:
     static const DNAQualityFormat QUAL_FORMAT;
     static const DNAQualityFormat ENCODED;
     static const int MAX_PHRED33_VALUE;
+    static const int MIN_PHRED64_VALUE;
 };
 
 }//namespace

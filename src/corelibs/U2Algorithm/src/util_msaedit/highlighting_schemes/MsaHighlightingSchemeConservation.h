@@ -22,6 +22,8 @@
 #ifndef _U2_MSA_HIGHLIGHTING_SCHEME_CONSERVATION_H_
 #define _U2_MSA_HIGHLIGHTING_SCHEME_CONSERVATION_H_
 
+#include <QMap>
+
 #include "MsaHighlightingScheme.h"
 
 namespace U2 {
@@ -50,7 +52,7 @@ private:
 
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeConservationFactory : public MsaHighlightingSchemeFactory {
 public:
-    MsaHighlightingSchemeConservationFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType);
+    MsaHighlightingSchemeConservationFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
 
     MsaHighlightingScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
 };

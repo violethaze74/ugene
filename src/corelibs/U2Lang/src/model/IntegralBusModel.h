@@ -92,7 +92,7 @@ protected:
     mutable bool recursing;
 
 private:
-    QStrStrMap getBusMap() const;
+    StrStrMap getBusMap() const;
     SlotPathMap getPathsMap() const;
 }; // IntegralBusPort
 
@@ -182,17 +182,17 @@ public:
     virtual bool validate(const IntegralBusPort *port, ProblemList &problemList) const = 0;
 
 public:
-    static QStrStrMap getBusMap(const IntegralBusPort *port);
+    static StrStrMap getBusMap(const IntegralBusPort *port);
     static QString slotName(const IntegralBusPort *port, const QString &slotId);
     static bool isBinded(const IntegralBusPort *port, const QString &slotId);
-    static bool isBinded(const QStrStrMap &busMap, const QString &slotId);
+    static bool isBinded(const StrStrMap &busMap, const QString &slotId);
 };
 
 }//namespace Workflow
 }//namespace U2
 
-typedef QMap<QString, QString> QStrStrMap;
-Q_DECLARE_METATYPE(QStrStrMap)
+typedef QMap<QString, QString> StrStrMap;
+Q_DECLARE_METATYPE(StrStrMap)
 Q_DECLARE_METATYPE(SlotPathMap)
 
 #endif

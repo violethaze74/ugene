@@ -26,6 +26,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QTextStream>
+#include <QWidgetAction>
 
 #include <U2Algorithm/CreateSubalignmentTask.h>
 #include <U2Algorithm/MsaColorScheme.h>
@@ -79,6 +80,7 @@
 #include "MaEditorNameList.h"
 #include "MSAEditor.h"
 #include "MSAEditorSequenceArea.h"
+#include "Highlighting/MsaSchemesMenuBuilder.h"
 
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "Clipboard/SubalignmentToClipboardTask.h"
@@ -382,14 +384,15 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     colorsSchemeMenu->menuAction()->setObjectName("Colors");
     colorsSchemeMenu->setIcon(QIcon(":core/images/color_wheel.png"));
     foreach(QAction* a, colorSchemeMenuActions) {
-        colorsSchemeMenu->addAction(a);
+        MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, colorsSchemeMenu);
     }
+    colorsSchemeMenu->addSeparator();
 
     QMenu* customColorSchemaMenu = new QMenu(tr("Custom schemes"), colorsSchemeMenu);
     customColorSchemaMenu->menuAction()->setObjectName("Custom schemes");
 
     foreach(QAction* a, customColorSchemeMenuActions) {
-        customColorSchemaMenu->addAction(a);
+        MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, customColorSchemaMenu);
     }
 
     if (!customColorSchemeMenuActions.isEmpty()){
@@ -409,7 +412,7 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     highlightSchemeMenu->menuAction()->setObjectName("Highlighting");
 
     foreach(QAction* a, highlightingSchemeMenuActions) {
-        highlightSchemeMenu->addAction(a);
+        MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, highlightSchemeMenu);
     }
     highlightSchemeMenu->addSeparator();
     highlightSchemeMenu->addAction(useDotsAction);
@@ -457,7 +460,7 @@ void MSAEditorSequenceArea::sl_delCol() {
         cancelShiftTracking();
 
         MultipleSequenceAlignmentObject* msaObj = getEditor()->getMaObject();
-        int gapCount = GAP_COLUMN_ONLY;
+        int gapCount = 0;
         switch(deleteMode) {
         case DeleteByAbsoluteVal:
             gapCount = value;
@@ -471,21 +474,17 @@ void MSAEditorSequenceArea::sl_delCol() {
             break;
         }
         case DeleteAll:
-            gapCount = GAP_COLUMN_ONLY;
+            gapCount = msaObj->getNumRows();
             break;
         default:
             FAIL("Unknown delete mode", );
         }
 
-        QList<qint64> columnsToDelete = msaObj->getColumnsWithGaps(gapCount);
-        if (columnsToDelete.isEmpty()) {
-            return;
-        }
         U2OpStatus2Log os;
         U2UseCommonUserModStep userModStep(msaObj->getEntityRef(), os);
         Q_UNUSED(userModStep);
         SAFE_POINT_OP(os, );
-        msaObj->deleteColumnWithGaps(gapCount);
+        msaObj->deleteColumnWithGaps(os, gapCount);
     }
 }
 

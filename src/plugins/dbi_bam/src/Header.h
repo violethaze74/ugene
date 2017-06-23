@@ -22,9 +22,9 @@
 #ifndef _U2_BAM_HEADER_H_
 #define _U2_BAM_HEADER_H_
 
-#include <QtCore/QByteArray>
-#include <QtCore/QMap>
-#include <QtCore/QVariant>
+#include <QByteArray>
+#include <QMap>
+#include <QVariant>
 #include <U2Core/Version.h>
 #include <U2Core/GUrl.h>
 

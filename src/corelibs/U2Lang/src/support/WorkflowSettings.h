@@ -22,9 +22,9 @@
 #ifndef _U2_WORKFLOW_SETTINGS_H_
 #define _U2_WORKFLOW_SETTINGS_H_
 
-#include <QtCore/QString>
-#include <QtCore/QObject>
-#include <QtGui/QFont>
+#include <QString>
+#include <QObject>
+#include <QFont>
 
 #include <U2Core/global.h>
 

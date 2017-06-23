@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
+#include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineRegistry.h>
@@ -61,9 +61,9 @@ namespace U2 {
 
     // parse options
 
-    QList<StringPair> options = AppContext::getCMDLineRegistry()->getParameters();
+    QList<StrStrPair> options = AppContext::getCMDLineRegistry()->getParameters();
 
-    foreach (const StringPair& opt, options ) {
+    foreach (const StrStrPair& opt, options ) {
         if (opt.first == OPTION_INDEX_PATH  ) {
             indexPath = opt.second;
         }else if (opt.first == OPTION_BUILD_INDEX ) {
@@ -182,7 +182,7 @@ QString GenomeAlignerCMDLineTask::getArgumentsDescritption()
     desc += tr("  --%1    Use this flag to only build index for reference sequence.\n\n").arg(OPTION_BUILD_INDEX, fieldSize);
     desc += tr("  --%1    Path to reference genome sequence\n\n").arg(OPTION_REFERENCE, fieldSize);
     desc += tr("  --%1    Path to short-reads data in FASTA or FASTQ format\n\n").arg(OPTION_SHORTREADS, fieldSize);
-    desc += tr("  --%1    Path to prebuilt index (base file name or with .idx extension). If not set, index is searched in system temporary directory. If --build-index option is applied, index will be saved to specified path.\n\n").arg(OPTION_INDEX_PATH, fieldSize);
+    desc += tr("  --%1    Path to prebuilt index (base file name or with .idx extension). If not set, index is searched in system temporary folder. If --build-index option is applied, index will be saved to specified path.\n\n").arg(OPTION_INDEX_PATH, fieldSize);
     desc += tr("  --%1    Path to output alignment in UGENEDB or SAM format (see --%2)\n\n").arg(OPTION_RESULT, fieldSize).arg(OPTION_SAM);
     desc += tr("  --%1    Memory size (in Mbs) reserved for short-reads. The bigger value the faster algorithm works. Default value depends on available system memory.\n\n").arg(OPTION_MEMSIZE, fieldSize);
     desc += tr("  --%1    Index fragmentation size (in Mbs). Small fragments better fit into RAM, allowing to load more short reads. Default value is 10.\n\n").arg(OPTION_REF_FRAG, fieldSize);

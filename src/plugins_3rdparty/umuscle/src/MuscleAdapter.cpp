@@ -33,7 +33,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <algorithm>
-#include <QtCore/QVector>
+#include <QVector>
 
 
 namespace U2 {
@@ -513,7 +513,7 @@ void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const MultipleSequenceA
     MSA profileMSA;
     convertMAlignment2MSA(profileMSA, ma, true);
 
-    res = ma;
+    res = ma->getExplicitCopy();
 
     //align with input sequences one by one
     Tree tree1;

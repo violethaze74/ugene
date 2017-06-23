@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QBitArray>
+#include <QBitArray>
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/AnnotationTableObject.h>

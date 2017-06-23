@@ -24,7 +24,7 @@
 
 #include <U2Lang/Actor.h>
 
-#include <QtGui/QTextDocument>
+#include <QTextDocument>
 
 namespace U2 {
 namespace Workflow {

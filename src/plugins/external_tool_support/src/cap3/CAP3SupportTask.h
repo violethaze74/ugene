@@ -22,7 +22,7 @@
 #ifndef _U2_CAP3_SUPPORT_TASK_H_
 #define _U2_CAP3_SUPPORT_TASK_H_
 
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <U2Formats/StreamSequenceReader.h>
 #include <U2Formats/StreamSequenceWriter.h>

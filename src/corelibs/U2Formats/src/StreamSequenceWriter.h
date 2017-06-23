@@ -22,8 +22,8 @@
 #ifndef _U2_STREAM_SEQUENCE_WRITER_H_
 #define _U2_STREAM_SEQUENCE_WRITER_H_
 
-#include <QtCore/QList>
-#include <QtCore/QString>
+#include <QList>
+#include <QString>
 
 #include <U2Core/GUrl.h>
 #include <U2Core/DNASequenceObject.h>

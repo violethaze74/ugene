@@ -24,7 +24,7 @@
 
 #include <U2Lang/Descriptor.h>
 #include <U2Core/IdRegistry.h>
-#include <QtCore/QExplicitlySharedDataPointer>
+#include <QExplicitlySharedDataPointer>
 
 namespace U2 {
 

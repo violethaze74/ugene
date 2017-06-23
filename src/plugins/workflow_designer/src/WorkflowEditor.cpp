@@ -39,14 +39,9 @@
 #include <U2Lang/WorkflowUtils.h>
 #include "TableViewTabKey.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QHeaderView>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QHeaderView>
-#endif
-#include <QtGui/QKeyEvent>
+#include <QAction>
+#include <QHeaderView>
+#include <QKeyEvent>
 
 #define MAIN_SPLITTER "main.splitter"
 #define TAB_SPLITTER "tab.splitter"

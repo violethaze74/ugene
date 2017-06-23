@@ -29,7 +29,7 @@
 #include "NotificationsTypes.h"
 
 #include <QEvent>
-#include <QtWidgets/QWidget>
+#include <QWidget>
 
 class QAction;
 class QMdiSubWindow;

@@ -24,7 +24,7 @@
 
 #include "PWMConversionAlgorithm.h"
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 namespace U2 {
 

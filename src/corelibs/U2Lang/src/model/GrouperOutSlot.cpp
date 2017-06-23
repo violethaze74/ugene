@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QVariant>
+
 #include <U2Lang/BaseTypes.h>
 
 #include "GrouperOutSlot.h"

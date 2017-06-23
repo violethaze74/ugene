@@ -22,10 +22,12 @@
 #ifndef _U2_DBICLASSPROTOTYPE_H_
 #define _U2_DBICLASSPROTOTYPE_H_
 
-#include <U2Lang/DbiDataHandler.h>
-
 #include <QObject>
-#include <QtScript>
+#include <QScriptable>
+#include <QScriptClass>
+#include <QScriptEngine>
+
+#include <U2Lang/DbiDataHandler.h>
 
 namespace U2 {
 

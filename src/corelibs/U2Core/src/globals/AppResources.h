@@ -24,9 +24,9 @@
 
 #include <U2Core/global.h>
 #include <U2Core/U2SafePoints.h>
-#include <QtCore/QHash>
-#include <QtCore/QSemaphore>
-#include <QtCore/QReadWriteLock>
+#include <QHash>
+#include <QSemaphore>
+#include <QReadWriteLock>
 #include <U2Core/U2OpStatus.h>
 
 namespace U2 {

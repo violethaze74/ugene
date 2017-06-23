@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QObject>
+
 #include "Constants.h"
 
 namespace U2 {

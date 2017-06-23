@@ -182,7 +182,6 @@
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3SearchDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
@@ -1229,7 +1228,7 @@ GUI_TEST_CLASS_DEFINITION(test_0729){
     GTUtilsWorkflowDesigner::click(os, item);
 //    Expected state: Dataset view opened
     GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/FASTA");
-//    4) Click "Add directory", select data/samples/Genbank
+//    4) Click "Add folder", select data/samples/Genbank
     QListWidget* itemsArea = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea");
     GTListWidget::click(os, itemsArea, "FASTA", Qt::RightButton);
 //    5) Click on appeared item in the file list
@@ -1639,7 +1638,7 @@ GUI_TEST_CLASS_DEFINITION(test_0792) {
     GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
 //    Expected state: Dataset view opened
 
-//    3) Click "Add directory", select data/samples/Genbank
+//    3) Click "Add folder", select data/samples/Genbank
     GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/Genbank");
 //    4) Click on appeared item in the file list
     QWidget* datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
@@ -2024,7 +2023,7 @@ GUI_TEST_CLASS_DEFINITION(test_0830) {
         << testDir + "_common_data/scenarios/CAP3/region2.fa"
         << testDir + "_common_data/scenarios/CAP3/region4.fa",
         outUrl));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Contig assembly with CAP3...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and de novo assembly (with CAP3)...");
 
     //3) wait for task error, ensure that no output files are in the project
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3084,7 +3083,7 @@ GUI_TEST_CLASS_DEFINITION(test_0952) {
     //1. Start UGENE.
     //2. Press "Ctrl+O" or "Open" button on the main toolbar.
     //Expected state: "Select files to open..." dialog appears.
-    //3. Explore to the directory "data/samples/Genbank", then choose "CVU55762.gb" and "murine.gb" using Ctrl key
+    //3. Explore to the folder "data/samples/Genbank", then choose "CVU55762.gb" and "murine.gb" using Ctrl key
     //and press "Open" button.
     //Expected state: "Multiple sequence reading mode" dialog appears.
     //4. Set radio button "Merge sequence mode", set "New document name" if you need, then press "OK".

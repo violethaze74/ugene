@@ -27,10 +27,10 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Gui/MainWindow.h>
 
-#include <QtCore/QEvent>
+#include <QEvent>
 
-#include <QtGui/QPainter>
-#include <QtGui/QIcon>
+#include <QPainter>
+#include <QIcon>
 
 #include <math.h>
 

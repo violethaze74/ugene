@@ -28,7 +28,7 @@
 #include <U2Lang/WorkflowTransport.h>
 #include <U2Lang/WorkflowManager.h>
 
-#include <QtCore/QQueue>
+#include <QQueue>
 #include <limits.h>
 
 namespace U2 {

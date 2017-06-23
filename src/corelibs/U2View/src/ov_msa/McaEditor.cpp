@@ -36,6 +36,7 @@
 #include "view_rendering/MaEditorWgt.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
+#include <QApplication>
 #include <QToolBar>
 
 #include <U2Core/AppContext.h>
@@ -71,9 +72,6 @@ McaEditor::McaEditor(const QString &viewName,
     if (ref) {
         objects.append(referenceObj);
         onObjectAdded(referenceObj);
-        // SANGER_TODO: probably can be big
-        U2OpStatus2Log os;
-        referenceCache = referenceObj->getWholeSequenceData(os);
         referenceCtx = new SequenceObjectContext(referenceObj, this);
     } else {
         FAIL("Trying to open McaEditor without a reference", );
@@ -119,8 +117,11 @@ QString McaEditor::getReferenceRowName() const {
 }
 
 char McaEditor::getReferenceCharAt(int pos) const {
-    SAFE_POINT(referenceCache.size() > pos, "Invalid position", '\n');
-    return referenceCache[pos];
+    U2OpStatus2Log os;
+    SAFE_POINT(referenceObj->getSequenceLength() > pos, "Invalid position", '\n');
+    QByteArray seqData = referenceObj->getSequenceData(U2Region(pos, 1), os);
+    CHECK_OP(os, U2Msa::GAP_CHAR);
+    return seqData.isEmpty() ? U2Msa::GAP_CHAR : seqData.at(0);
 }
 
 SequenceObjectContext* McaEditor::getReferenceContext() const {
@@ -193,7 +194,8 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     initActions();
     initWidgets();
 
-    McaEditorReferenceArea* refArea = new McaEditorReferenceArea(this, getEditor()->getReferenceContext());
+    refArea = new McaEditorReferenceArea(this, getEditor()->getReferenceContext());
+    refArea->installEventFilter(this);
     seqAreaHeaderLayout->insertWidget(0, refArea);
 
     MaEditorConsensusAreaSettings consSettings;
@@ -224,6 +226,17 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
 
 McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
     return qobject_cast<McaEditorSequenceArea*>(seqArea);
+}
+
+bool McaEditorWgt::eventFilter(QObject *watched, QEvent *event) {
+    if (watched == refArea) {
+        QApplication::sendEvent(seqArea, event);
+        if (event->type() == QEvent::KeyPress) {
+            return true;
+        }
+        return false;
+    }
+    return MaEditorWgt::eventFilter(watched, event);
 }
 
 void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {

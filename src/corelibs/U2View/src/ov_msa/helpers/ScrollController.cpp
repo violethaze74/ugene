@@ -96,7 +96,7 @@ void ScrollController::scrollToBase(int baseNumber, int widgetWidth) {
     if (baseRange.startPos < visibleRange.startPos) {
         hScrollBar->setValue(static_cast<int>(baseRange.startPos));
     } else if (baseRange.endPos() >= visibleRange.endPos()) {
-        hScrollBar->setValue(static_cast<int>(visibleRange.endPos() - widgetWidth + baseRange.length));
+        hScrollBar->setValue(static_cast<int>(baseRange.endPos() - widgetWidth));
     }
 }
 
@@ -269,7 +269,10 @@ int ScrollController::getLastVisibleRowNumber(int widgetHeight, bool countClippe
 
 QPoint ScrollController::getMaPointByScreenPoint(const QPoint &point) const {
     const int columnNumber = ui->getBaseWidthController()->screenXPositionToColumn(point.x());
-    const int rowNumber = ui->getRowHeightController()->screenYPositionToRowNumber(point.y());
+    int rowNumber = ui->getRowHeightController()->screenYPositionToRowNumber(point.y());
+    if (-1 == rowNumber) {
+        rowNumber = ui->getCollapseModel()->displayableRowsCount() - 1;
+    }
     return QPoint(columnNumber, rowNumber);
 }
 

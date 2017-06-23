@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDomDocument>
+
 #include "XMLTestFormat.h"
 
 #define TEST_FACTORIES_AUTO_CLEANUP

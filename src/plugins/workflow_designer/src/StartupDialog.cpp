@@ -62,7 +62,7 @@ void StartupDialog::sl_accepted(){
     }
     QFile file(dir.filePath("ex1.txt"));
     if (!file.open(QIODevice::WriteOnly)){
-        QMessageBox::critical(this, this->windowTitle(), tr("You have no write access to the directory. Please choose another one."));
+        QMessageBox::critical(this, this->windowTitle(), tr("You have no write access to the folder. Please choose another one."));
         return;
     }
     file.close();

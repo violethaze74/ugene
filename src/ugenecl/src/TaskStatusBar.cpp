@@ -31,8 +31,8 @@
 #include <U2Core/CMDLineHelpProvider.h>
 #include <U2Lang/WorkflowRunTask.h>
 
-#include <QtCore/QEvent>
-#include <QtCore/QString>
+#include <QEvent>
+#include <QString>
 
 #include <math.h>
 #include <stdio.h>

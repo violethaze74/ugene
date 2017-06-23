@@ -19,11 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include "SMatrix.h"
+#include <QVariant>
 
-#include <U2Core/TextUtils.h>
-#include <U2Core/Log.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/Log.h>
+#include <U2Core/TextUtils.h>
+
+#include "SMatrix.h"
 
 namespace U2 {
 

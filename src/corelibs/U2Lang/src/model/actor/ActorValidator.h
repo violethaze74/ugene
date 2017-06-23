@@ -25,7 +25,7 @@
 #include <U2Lang/Actor.h>
 #include <U2Lang/ConfigurationValidator.h>
 
-#include <QtCore/QMutex>
+#include <QMutex>
 
 namespace U2 {
 namespace Workflow {

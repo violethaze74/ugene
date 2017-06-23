@@ -23,7 +23,7 @@
 #define _TLS_TASK_H_
 
 #include <U2Core/Task.h>
-#include <QtCore/QThreadStorage>
+#include <QThreadStorage>
 
 namespace U2 {
 /************************************************************************/

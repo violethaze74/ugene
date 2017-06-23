@@ -70,7 +70,7 @@ QString BlastDBSelectorWidgetController::getDatabasePath()const {
 }
 
 void BlastDBSelectorWidgetController::sl_onBrowseDatabasePath() {
-    LastUsedDirHelper lod("Database Directory");
+    LastUsedDirHelper lod("Database Folder");
 
     QFileDialog::Options options = 0;
     QString name = U2FileDialog::getOpenFileName(NULL, tr("Select a database file"), lod.dir, "", NULL, options);

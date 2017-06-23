@@ -39,6 +39,7 @@ class MaEditor;
 class MaEditorSelection;
 class MaEditorWgt;
 class MaModificationInfo;
+class McaEditorWgt;
 
 class McaEditor;
 
@@ -66,10 +67,12 @@ private slots:
     void sl_removeSequence();
     void sl_selectReferenceSequence();
     void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
-    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
     void sl_vScrollBarActionPerfermed();
     void sl_completeUpdate();
     void sl_onGroupColorsChanged(const GroupColorSchema&);
+
+protected slots:
+    virtual void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
 
 protected:
     virtual void updateScrollBar();
@@ -98,13 +101,17 @@ public:
     qint64 sequenceIdAtPos(const QPoint &p);
     void clearGroupsSelections();
 
+    virtual U2Region getSelection() const;
+
 signals:
     void si_sequenceNameChanged(QString prevName, QString newName);
     void si_startMaChanging();
     void si_stopMaChanging(bool modified);
 
 protected:
-    bool isRowInSelection(int row) const;
+    virtual void setSelection(int startSeq, int count);
+    virtual bool isRowInSelection(int row) const;
+
     void updateActions();
     void buildMenu(QMenu* m);
     void updateSelection(int newSeqNum);
@@ -156,14 +163,27 @@ protected:
 };
 
 class McaEditorNameList : public MaEditorNameList {
+    Q_OBJECT
 public:
-    McaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
+    McaEditorNameList(McaEditorWgt* ui, QScrollBar* nhBar);
+
+protected slots:
+    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
+
+signals:
+    void si_selectionChanged();
 
 protected:
     void drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool selected);
+    U2Region getSelection() const;
+
+    void setSelection(int startSeq, int count);
+    bool isRowInSelection(int row) const;
 
 private:
     McaEditor* getEditor() const;
+
+    U2Region localSelection;
 };
 
 class MsaEditorNameList : public MaEditorNameList {

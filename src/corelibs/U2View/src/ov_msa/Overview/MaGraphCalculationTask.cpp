@@ -141,7 +141,7 @@ MaConsensusOverviewCalculationTask::MaConsensusOverviewCalculationTask(MultipleA
 }
 
 int MaConsensusOverviewCalculationTask::getGraphValue(int pos) const {
-    int score;
+    int score = 0;
     algorithm->getConsensusCharAndScore(ma, pos, score);
     return qRound(score * 100. / seqNumber);
 }
@@ -199,13 +199,13 @@ MaHighlightingOverviewCalculationTask::MaHighlightingOverviewCalculationTask(MaE
 
     SAFE_POINT_EXT(AppContext::getMsaHighlightingSchemeRegistry() != NULL,
                    setError(tr("MSA highlighting scheme registry is NULL")), );
-    MsaHighlightingSchemeFactory* f_hs = AppContext::getMsaHighlightingSchemeRegistry()->getMsaHighlightingSchemeFactoryById( highlightingSchemeId );
+    MsaHighlightingSchemeFactory* f_hs = AppContext::getMsaHighlightingSchemeRegistry()->getSchemeFactoryById( highlightingSchemeId );
     SAFE_POINT_EXT(f_hs != NULL, setError(tr("MSA highlighting scheme factory with '%1' id is NULL").arg(highlightingSchemeId)), );
 
     highlightingScheme = f_hs->create(this, editor->getMaObject());
     schemeId = f_hs->getId();
 
-    MsaColorSchemeFactory* f_cs = AppContext::getMsaColorSchemeRegistry()->getMsaColorSchemeFactoryById( colorSchemeId );
+    MsaColorSchemeFactory* f_cs = AppContext::getMsaColorSchemeRegistry()->getSchemeFactoryById( colorSchemeId );
     colorScheme = f_cs->create(this, editor->getMaObject());
 
     U2OpStatusImpl os;
@@ -263,11 +263,11 @@ int MaHighlightingOverviewCalculationTask::getGraphValue(int pos) const {
 }
 
 bool MaHighlightingOverviewCalculationTask::isGapScheme(const QString &schemeId) {
-    return (schemeId == MsaHighlightingScheme::GAPS_AMINO || schemeId == MsaHighlightingScheme::GAPS_NUCL);
+    return (schemeId == MsaHighlightingScheme::GAPS);
 }
 
 bool MaHighlightingOverviewCalculationTask::isEmptyScheme(const QString &schemeId) {
-    return (schemeId == MsaHighlightingScheme::EMPTY_AMINO || schemeId == MsaHighlightingScheme::EMPTY_NUCL);
+    return (schemeId == MsaHighlightingScheme::EMPTY);
 }
 
 bool MaHighlightingOverviewCalculationTask::isCellHighlighted(int seq, int pos) const {

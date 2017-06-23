@@ -25,6 +25,8 @@
 #include "AnnotHighlightSettings.h"
 #include "AnnotHighlightTree.h"
 
+class QPushButton;
+
 namespace U2 {
 
 class ADVSequenceObjectContext;

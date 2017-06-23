@@ -22,8 +22,10 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
+#include <QDir>
 #include <QFile>
 #include <QMessageBox>
+#include <QSettings>
 #include <QWebFrame>
 
 #include <U2Core/AppContext.h>
@@ -35,16 +37,16 @@
 
 #include <U2Gui/MainWindow.h>
 
+#include <U2Lang/ActorModel.h>
 #include <U2Lang/WorkflowSettings.h>
 
+#include "Dashboard.h"
+#include "ExternalToolsWidget.h"
 #include "OutputFilesWidget.h"
 #include "ParametersWidget.h"
 #include "ProblemsWidget.h"
 #include "ResourcesWidget.h"
 #include "StatisticsWidget.h"
-#include "ExternalToolsWidget.h"
-
-#include "Dashboard.h"
 
 namespace U2 {
 
@@ -195,7 +197,7 @@ void Dashboard::sl_serialize() {
     if (!d.exists(reportDir)) {
         bool created = d.mkpath(reportDir);
         if (!created) {
-            coreLog.error(tr("Can not create a directory: ") + reportDir);
+            coreLog.error(tr("Can not create a folder: ") + reportDir);
             return;
         }
     }
@@ -414,7 +416,7 @@ void JavascriptAgent::setClipboardText(const QString &text) {
 /* LoadDashboardsTask */
 /************************************************************************/
 ScanDashboardsDirTask::ScanDashboardsDirTask()
-: Task(tr("Scan dashboards directory"), TaskFlag_None)
+: Task(tr("Scan dashboards folder"), TaskFlag_None)
 {
 
 }

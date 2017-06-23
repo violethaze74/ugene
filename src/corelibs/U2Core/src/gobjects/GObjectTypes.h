@@ -24,7 +24,7 @@
 
 #include <U2Core/global.h>
 
-#include <QtGui/QIcon>
+#include <QIcon>
 
 namespace U2 {
 

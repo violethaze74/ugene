@@ -138,12 +138,7 @@ void SelectSubalignmentDialog::init() {
     sequencesTableWidget->verticalHeader()->setHidden( true );
     sequencesTableWidget->horizontalHeader()->setHidden( true );
     sequencesTableWidget->setShowGrid(false);
-#if (QT_VERSION < 0x050000) //Qt 5
-    sequencesTableWidget->horizontalHeader()->setResizeMode( 0, QHeaderView::Stretch );
-#else
     sequencesTableWidget->horizontalHeader()->setSectionResizeMode( 0, QHeaderView::Stretch );
-#endif
-
 
     startLineEdit->setMaximum(alignLength);
     endLineEdit->setMaximum(alignLength);

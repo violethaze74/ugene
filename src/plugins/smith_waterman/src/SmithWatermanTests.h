@@ -31,8 +31,8 @@
 #include <U2Algorithm/SmithWatermanResult.h>
 
 
-#include <QtCore/QByteArray>
-#include <QtXml/QDomElement>
+#include <QByteArray>
+#include <QDomElement>
 
 namespace U2 {
 

@@ -22,8 +22,8 @@
 #ifndef _U2_TREE_SETTINGS_H_
 #define _U2_TREE_SETTINGS_H_
 
-#include <QtCore/QMap>
-#include <QtCore/QVariant>
+#include <QMap>
+#include <QVariant>
 #include <QDialog>
 #include <QFontInfo>
 

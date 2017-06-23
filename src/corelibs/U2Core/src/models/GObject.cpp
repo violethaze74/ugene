@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QMutexLocker>
+#include <QMutexLocker>
 
 #include "GObject.h"
 #include "DocumentModel.h"

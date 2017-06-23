@@ -38,10 +38,10 @@ namespace U2 {
 
 SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(const QString &defaultDir, const QString &defaultFileName, QWidget* p)
     : QDialog(p),
-      saveController(NULL),
-      ui(new Ui_SaveSelectedSequenceFromMSADialog()),
       defaultDir(defaultDir),
-      defaultFileName(defaultFileName)
+      defaultFileName(defaultFileName),
+      saveController(NULL),
+      ui(new Ui_SaveSelectedSequenceFromMSADialog())
 {
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "19759577");

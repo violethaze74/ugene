@@ -24,8 +24,8 @@
 
 #include <U2Core/global.h>
 
-#include <QtCore/QVariant>
-#include <QtCore/QStringList>
+#include <QVariant>
+#include <QStringList>
 
 namespace U2 {
 

@@ -144,7 +144,7 @@ void HmmerSearchTask::prepareWorkingDir() {
     }
 
     if (!tempDir.mkpath(settings.workingDir)) {
-        setError(tr("Cannot create a directory for temporary files."));
+        setError(tr("Cannot create a folder for temporary files."));
         return;
     }
 }

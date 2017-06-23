@@ -28,7 +28,7 @@
 #include "MuscleAdapter.h"
 
 #include <algorithm>
-#include <QtCore/QVector>
+#include <QVector>
 
 namespace U2 {
 

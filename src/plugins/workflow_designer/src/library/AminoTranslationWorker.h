@@ -24,7 +24,7 @@
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
-#include <QtCore/QSharedPointer>
+#include <QSharedPointer>
 #include <U2Core/DNATranslation.h>
 
 namespace U2 {

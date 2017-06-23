@@ -22,7 +22,7 @@
 #ifndef _U2_FIND_PATTERN_TASK_H_
 #define _U2_FIND_PATTERN_TASK_H_
 
-#include <QtCore/QPointer>
+#include <QPointer>
 
 #include <U2Algorithm/FindAlgorithmTask.h>
 

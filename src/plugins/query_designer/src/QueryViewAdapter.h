@@ -22,8 +22,8 @@
 #ifndef _U2_QUERY_VIEW_ADAPTER_H_
 #define _U2_QUERY_VIEW_ADAPTER_H_
 
-#include <QtCore/QList>
-#include <QtCore/QPointF>
+#include <QList>
+#include <QPointF>
 
 
 namespace U2 {

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedArrayPointer>
+#include <QScopedArrayPointer>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/GObjectReference.h>

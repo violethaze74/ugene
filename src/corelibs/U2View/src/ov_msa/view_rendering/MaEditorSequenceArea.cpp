@@ -53,6 +53,7 @@
 #include "ov_msa/helpers/DrawHelper.h"
 #include "ov_msa/helpers/RowHeightController.h"
 #include "ov_msa/helpers/ScrollController.h"
+#include "ov_msa/Highlighting/MsaSchemesMenuBuilder.h"
 
 namespace U2 {
 
@@ -82,6 +83,11 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
 
     cachedView = new QPixmap();
     completeRedraw = true;
+
+    useDotsAction = new QAction(QString(tr("Use dots")), this);
+    useDotsAction->setCheckable(true);
+    useDotsAction->setChecked(false);
+    connect(useDotsAction, SIGNAL(triggered()), SLOT(sl_useDots()));
 
     replaceCharacterAction = new QAction(tr("Replace selected character"), this);
     replaceCharacterAction->setObjectName("replace_selected_character");
@@ -187,6 +193,10 @@ bool MaEditorSequenceArea::isInRange(const QPoint &point) const {
     return isPosInRange(point.x()) && isSeqInRange(point.y());
 }
 
+QPoint MaEditorSequenceArea::boundWithVisibleRange(const QPoint &point) const {
+    return QPoint(qBound(0, point.x(), editor->getAlignmentLen() - 1), qBound(0, point.y(), ui->getCollapseModel()->displayableRowsCount() - 1));
+}
+
 bool MaEditorSequenceArea::isVisible(const QPoint& p, bool countClipped) const {
     return isPositionVisible(p.x(), countClipped) && isRowVisible(p.y(), countClipped);
 }
@@ -264,9 +274,6 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHigh
     if (highlightSelection != newHighlightSelection) {
         highlightSelection = newHighlightSelection;
         update();
-    }
-    if (s == selection) {
-        return;
     }
 
     MaEditorSelection prevSelection = selection;
@@ -374,7 +381,6 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
 
     const U2Region& sel = getSelectedRows();
     maObj->removeRegion(selection.x(), sel.startPos, selection.width(), sel.length, true);
-
     if (selection.height() == 1 && selection.width() == 1) {
         if (isInRange(selection.topLeft())) {
             return;
@@ -414,6 +420,9 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
                 ui->getScrollController()->scrollToBase(newSelection.x(), width());
             }
 
+            U2OpStatus2Log os;
+            adjustReferenceLength(os);
+
             return true;
         } else {
             return false;
@@ -432,23 +441,6 @@ void MaEditorSequenceArea::centerPos(int position) {
     SAFE_POINT(isPosInRange(position), QString("Base %1 is out of range").arg(position), );
     ui->getScrollController()->centerBase(position, width());
     update();
-}
-
-void MaEditorSequenceArea::updateHBarPosition(int base, bool repeatAction) {
-    if (isAlignmentEmpty()) {
-        shBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
-        return;
-    }
-
-    if (base <= getFirstVisibleBase()) {
-        ( repeatAction ? shBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub, 50, 10)
-                       : shBar->triggerAction(QAbstractSlider::SliderSingleStepSub) );
-    } else  if (base >= getLastVisibleBase(true)) {
-        ( repeatAction ? shBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd, 50, 10)
-                       : shBar->triggerAction(QAbstractSlider::SliderSingleStepAdd) );
-    } else {
-        shBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
-    }
 }
 
 void MaEditorSequenceArea::onVisibleRangeChanged() {
@@ -640,8 +632,8 @@ bool MaEditorSequenceArea::getUseDotsCheckedState() const {
     return useDotsAction->isChecked();
 }
 
-void MaEditorSequenceArea::sl_changeColorSchemeOutside(const QString &name) {
-    QAction* a = GUIUtils::findAction(QList<QAction*>() << colorSchemeMenuActions << customColorSchemeMenuActions << highlightingSchemeMenuActions, name);
+void MaEditorSequenceArea::sl_changeColorSchemeOutside(const QString &id) {
+    QAction* a = GUIUtils::findActionByData(QList<QAction*>() << colorSchemeMenuActions << customColorSchemeMenuActions << highlightingSchemeMenuActions, id);
     if (a != NULL) {
         a->trigger();
     }
@@ -687,15 +679,15 @@ void MaEditorSequenceArea::sl_buildContextMenu(GObjectView*, QMenu* m) {
     buildMenu(m);
 }
 
-void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &) {
+void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &modInfo) {
     exitFromEditCharacterMode();
     int nSeq = editor->getNumSequences();
     int aliLen = editor->getAlignmentLen();
-    //! SANGER_TODO
-//    if (ui->isCollapsibleMode()) {
-//        nSeq = getNumDisplayedSequences();
-//        updateCollapsedGroups(modInfo);
-//    }
+
+    if (ui->isCollapsibleMode()) {
+        nSeq = getNumDisplayableSequences();
+        updateCollapsedGroups(modInfo);
+    }
 
     editor->updateReference();
 
@@ -748,19 +740,9 @@ void MaEditorSequenceArea::sl_useDots(){
 void MaEditorSequenceArea::sl_registerCustomColorSchemes() {
     deleteOldCustomSchemes();
 
-    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QList<MsaColorSchemeFactory *> customFactories = msaColorSchemeRegistry->getMsaCustomColorSchemes(editor->getMaObject()->getAlphabet()->getType());
-    bool isAlphabetRaw = editor->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
-
-    foreach (MsaColorSchemeFactory *factory, customFactories) {
-        QString name = factory->getName(isAlphabetRaw);
-        QAction *action = new QAction(name, this);
-        action->setObjectName(name);
-        action->setCheckable(true);
-        action->setData(factory->getId());
-        connect(action, SIGNAL(triggered()), SLOT(sl_changeColorScheme()));
-        customColorSchemeMenuActions.append(action);
-    }
+    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(customColorSchemeMenuActions,
+                                                               MsaSchemesMenuBuilder::Custom, getEditor()->getMaObject()->getAlphabet()->getType(),
+                                                               this);
 }
 
 void MaEditorSequenceArea::sl_colorSchemeFactoryUpdated() {
@@ -783,7 +765,7 @@ void MaEditorSequenceArea::sl_changeHighlightScheme(){
     editor->saveHighlightingSettings(highlightingScheme->getFactory()->getId(), highlightingScheme->getSettings());
 
     QString id = a->data().toString();
-    MsaHighlightingSchemeFactory* factory = AppContext::getMsaHighlightingSchemeRegistry()->getMsaHighlightingSchemeFactoryById(id);
+    MsaHighlightingSchemeFactory* factory = AppContext::getMsaHighlightingSchemeRegistry()->getSchemeFactoryById(id);
     SAFE_POINT(NULL != factory, L10N::nullPointerError("highlighting scheme"), );
     if (ui->getEditor()->getMaObject() == NULL) {
         return;
@@ -812,19 +794,17 @@ void MaEditorSequenceArea::sl_changeHighlightScheme(){
     foreach(QAction* action, highlightingSchemeMenuActions) {
         action->setChecked(action == a);
     }
-    switch (factory->getAlphabetType()) {
-    case DNAAlphabet_RAW:
+    if (factory->isAlphabetTypeSupported(DNAAlphabet_RAW)) {
         AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_RAW, id);
-        break;
-    case DNAAlphabet_NUCL:
+    }
+    if (factory->isAlphabetTypeSupported(DNAAlphabet_NUCL)) {
         AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_NUCL, id);
-        break;
-    case DNAAlphabet_AMINO:
+    }
+    if (factory->isAlphabetTypeSupported(DNAAlphabet_AMINO)) {
         AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_AMINO, id);
-        break;
-    default:
+    }
+    if (factory->isAlphabetTypeSupported(DNAAlphabet_UNDEFINED)) {
         FAIL(tr("Unknown alphabet"), );
-        break;
     }
 
     completeRedraw = true;
@@ -833,7 +813,7 @@ void MaEditorSequenceArea::sl_changeHighlightScheme(){
 }
 
 void MaEditorSequenceArea::sl_replaceSelectedCharacter() {
-    maMode = EditCharacterMode;
+    maMode = ReplaceCharMode;
     editModeAnimationTimer.start(500);
     highlightCurrentSelection();
 }
@@ -920,7 +900,7 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
         }
 
         rubberBandOrigin = e->pos();
-        const QPoint p = ui->getScrollController()->getMaPointByScreenPoint(e->pos());
+        const QPoint p = boundWithVisibleRange(ui->getScrollController()->getMaPointByScreenPoint(e->pos()));
         if (isInRange(p)) {
             setCursorPos(p);
 
@@ -940,7 +920,10 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
             selecting = true;
             rubberBandOrigin = e->pos();
             rubberBand->setGeometry(QRect(rubberBandOrigin, QSize()));
-            rubberBand->show();
+            const bool isMSAEditor = (qobject_cast<MSAEditor*>(getEditor()) != NULL);
+            if (isMSAEditor) {
+                rubberBand->show();
+            }
             cancelSelection();
         }
     }
@@ -1015,7 +998,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
     }
 
     int key = e->key();
-    if (maMode == EditCharacterMode) {
+    if (maMode != ViewMode) {
         processCharacterInEditMode(e);
         return;
     }
@@ -1261,8 +1244,23 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
 
     const int removedRegionWidth = (-1 == countOfGaps) ? selection.width() : countOfGaps;
     const U2Region& sequences = getSelectedRows();
-    maObj->insertGap(sequences,  selection.x() , removedRegionWidth);
+    maObj->insertGap(sequences, selection.x(), removedRegionWidth);
+    adjustReferenceLength(os);
+    CHECK_OP(os,);
     moveSelection(removedRegionWidth, 0, true);
+
+    const U2Region fullyVisibleXRegion = ui->getDrawHelper()->getVisibleBases(width(), false, false);
+    const U2Region selectionXRegion = selection.getXRegion();
+    const bool selectionFitsVisibleArea = (selection.width() <= static_cast<int>(fullyVisibleXRegion.length));
+    const bool selectionIsFullyVisible = fullyVisibleXRegion.contains(selectionXRegion);
+    if (selectionIsFullyVisible ) {
+        // there is no need to scroll
+        return;
+    } else if (selectionFitsVisibleArea) {
+        ui->getScrollController()->scrollToBase(static_cast<int>(selectionXRegion.endPos() - 1), width());
+    } else {
+        ui->getScrollController()->setFirstVisibleBase(static_cast<int>(selectionXRegion.startPos));
+    }
 }
 
 void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
@@ -1359,22 +1357,17 @@ void MaEditorSequenceArea::updateColorAndHighlightSchemes() {
     if (!al){
         return;
     }
-    DNAAlphabetType atype = al->getType();
-    bool colorSchemesActionsIsEmpty = colorSchemeMenuActions.isEmpty();
+
     MsaColorSchemeRegistry* csr = AppContext::getMsaColorSchemeRegistry();
     MsaHighlightingSchemeRegistry* hsr = AppContext::getMsaHighlightingSchemeRegistry();
 
     QString csid;
     QString hsid;
-    getColorAndHighlightingIds(csid, hsid, atype, colorSchemesActionsIsEmpty);
-    MsaColorSchemeFactory* csf = csr->getMsaColorSchemeFactoryById(csid);
-    if (csf == NULL) {
-        csf = getDefaultColorSchemeFactory();
-    }
-    SAFE_POINT(csf != NULL, "Color scheme factory is NULL", );
-    MsaHighlightingSchemeFactory* hsf = hsr->getMsaHighlightingSchemeFactoryById(hsid);
+    getColorAndHighlightingIds(csid, hsid);
+    MsaColorSchemeFactory* csf = csr->getSchemeFactoryById(csid);
+    MsaHighlightingSchemeFactory* hsf = hsr->getSchemeFactoryById(hsid);
     initColorSchemes(csf);
-    initHighlightSchemes(hsf, atype);
+    initHighlightSchemes(hsf);
 }
 
 void MaEditorSequenceArea::initColorSchemes(MsaColorSchemeFactory *defaultColorSchemeFactory) {
@@ -1384,11 +1377,6 @@ void MaEditorSequenceArea::initColorSchemes(MsaColorSchemeFactory *defaultColorS
     registerCommonColorSchemes();
     sl_registerCustomColorSchemes();
 
-    useDotsAction = new QAction(QString(tr("Use dots")), this);
-    useDotsAction->setCheckable(true);
-    useDotsAction->setChecked(false);
-    connect(useDotsAction, SIGNAL(triggered()), SLOT(sl_useDots()));
-
     applyColorScheme(defaultColorSchemeFactory->getId());
 }
 
@@ -1396,168 +1384,99 @@ void MaEditorSequenceArea::registerCommonColorSchemes() {
     qDeleteAll(colorSchemeMenuActions);
     colorSchemeMenuActions.clear();
 
-    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QList<MsaColorSchemeFactory*> colorFactories = msaColorSchemeRegistry->getMsaColorSchemes(editor->getMaObject()->getAlphabet()->getType());
-    DNAAlphabetType editorAlphabet = editor->getMaObject()->getAlphabet()->getType();
-
-    foreach (MsaColorSchemeFactory *factory, colorFactories) {
-        QString name = factory->getName(editorAlphabet == DNAAlphabet_RAW);
-        QAction *action = new QAction(name, this);
-        action->setObjectName(name);
-        action->setCheckable(true);
-        action->setData(factory->getId());
-        connect(action, SIGNAL(triggered()), SLOT(sl_changeColorScheme()));
-        colorSchemeMenuActions.append(action);
-    }
+    MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(colorSchemeMenuActions, MsaSchemesMenuBuilder::Common, getEditor()->getMaObject()->getAlphabet()->getType(), this);
 }
 
-void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype) {
+void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* hsf) {
     qDeleteAll(highlightingSchemeMenuActions);
     highlightingSchemeMenuActions.clear();
     SAFE_POINT(hsf != NULL, "Highlight scheme factory is NULL", );
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
+    QVariantMap settings = highlightingScheme != NULL
+            ? highlightingScheme->getSettings()
+            : QVariantMap();
     delete highlightingScheme;
 
     highlightingScheme = hsf->create(this, maObj);
+    highlightingScheme->applySettings(settings);
 
-    MsaHighlightingSchemeRegistry* hsr = AppContext::getMsaHighlightingSchemeRegistry();
-    QList<MsaHighlightingSchemeFactory*> highFactories = hsr->getMsaHighlightingSchemes(atype);
-    DNAAlphabetType editorAlphabet = editor->getMaObject()->getAlphabet()->getType();
-
-    foreach (MsaHighlightingSchemeFactory* factory, highFactories) {
-        QString name = factory->getName(editorAlphabet == DNAAlphabet_RAW);
-        QAction* action = new QAction(name, this);
-        action->setObjectName(name);
-        action->setCheckable(true);
-        action->setChecked(factory == hsf);
-        action->setData(factory->getId());
-        connect(action, SIGNAL(triggered()), SLOT(sl_changeHighlightScheme()));
-        highlightingSchemeMenuActions.append(action);
+    MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(highlightingSchemeMenuActions, getEditor()->getMaObject()->getAlphabet()->getType(), this);
+    QList<QAction *> tmpActions = QList<QAction *>() << highlightingSchemeMenuActions;
+    foreach(QAction *action, tmpActions) {
+        action->setChecked(action->data() == hsf->getId());
     }
 }
 
-MsaColorSchemeFactory * MaEditorSequenceArea::getDefaultColorSchemeFactory() {
+MsaColorSchemeFactory * MaEditorSequenceArea::getDefaultColorSchemeFactory() const {
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
 
     switch (editor->getMaObject()->getAlphabet()->getType()) {
     case DNAAlphabet_RAW:
-        return msaColorSchemeRegistry->getMsaColorSchemeFactoryById(MsaColorScheme::EMPTY_RAW);
+        return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::EMPTY);
     case DNAAlphabet_NUCL:
-        return msaColorSchemeRegistry->getMsaColorSchemeFactoryById(MsaColorScheme::UGENE_NUCL);
+        return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::UGENE_NUCL);
     case DNAAlphabet_AMINO:
-        return msaColorSchemeRegistry->getMsaColorSchemeFactoryById(MsaColorScheme::UGENE_AMINO);
+        return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::UGENE_AMINO);
     default:
         FAIL(tr("Unknown alphabet"), NULL);
     }
     return NULL;
 }
 
-void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype, bool isFirstInitialization) {
+MsaHighlightingSchemeFactory* MaEditorSequenceArea::getDefaultHighlightingSchemeFactory() const {
+    MsaHighlightingSchemeRegistry *hsr = AppContext::getMsaHighlightingSchemeRegistry();
+    MsaHighlightingSchemeFactory *hsf = hsr->getSchemeFactoryById(MsaHighlightingScheme::EMPTY);
+    return hsf;
+}
+
+void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid) {
+    DNAAlphabetType atype = getEditor()->getMaObject()->getAlphabet()->getType();
     Settings* s = AppContext::getSettings();
-    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
     switch (atype) {
     case DNAAlphabet_RAW:
-        if (isFirstInitialization) {
-            csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, MsaColorScheme::EMPTY_RAW).toString();
-            hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_NUCL, MsaHighlightingScheme::EMPTY_RAW).toString();
-        } else {
-            QList<MsaColorSchemeFactory *> colorSchemesFactories = msaColorSchemeRegistry->getMsaColorSchemes(DNAAlphabet_RAW);
-            QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(DNAAlphabet_RAW);
-
-            if (MsaColorSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes().contains(colorScheme->getFactory()->getId())) {
-                foreach(MsaColorSchemeFactory *sf, colorSchemesFactories) {
-                    if (sf->getName() == colorScheme->getFactory()->getName()) {
-                        csid = sf->getId();
-                    }
-                }
-            } else {
-                csid = colorScheme->getFactory()->getId();
-            }
-            if (MsaHighlightingSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes().contains(highlightingScheme->getFactory()->getId())) {
-                foreach(MsaHighlightingSchemeFactory *sf, highlightingSchemesFactories) {
-                    if (sf->getName() == highlightingScheme->getFactory()->getName()) {
-                        hsid = sf->getId();
-                    }
-                }
-            } else {
-                hsid = highlightingScheme->getFactory()->getId();
-            }
-        }
+        csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, MsaColorScheme::EMPTY).toString();
+        hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_RAW, MsaHighlightingScheme::EMPTY).toString();
         break;
     case DNAAlphabet_NUCL:
-        if (isFirstInitialization) {
-            csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
-            hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_NUCL, MsaHighlightingScheme::EMPTY_NUCL).toString();
-        } else {
-            QList<MsaColorSchemeFactory *> colorSchemesFactories = msaColorSchemeRegistry->getMsaColorSchemes(DNAAlphabet_NUCL);
-            QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(DNAAlphabet_NUCL);
-
-            if (colorScheme->getFactory()->getAlphabetType() == DNAAlphabet_RAW) {
-                foreach(MsaColorSchemeFactory *sf, colorSchemesFactories) {
-                    if (sf->getName() == colorScheme->getFactory()->getName()) {
-                        csid = sf->getId();
-                    }
-                }
-            }
-            if(csid.isEmpty()) {
-                csid = colorScheme->getFactory()->getAlphabetType() == atype ? colorScheme->getFactory()->getId() : MsaColorScheme::UGENE_NUCL;
-            }
-
-            if (highlightingScheme->getFactory()->getAlphabetType() == DNAAlphabet_RAW) {
-                foreach(MsaHighlightingSchemeFactory *sf, highlightingSchemesFactories) {
-                    if (sf->getName() == highlightingScheme->getFactory()->getName()) {
-                        hsid = sf->getId();
-                    }
-                }
-            }
-            if (hsid.isEmpty()) {
-                hsid = colorScheme->getFactory()->getAlphabetType() == atype ? highlightingScheme->getFactory()->getId() : MsaHighlightingScheme::EMPTY_NUCL;
-            }
-        }
+        csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
+        hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_NUCL, MsaHighlightingScheme::EMPTY).toString();
         break;
     case DNAAlphabet_AMINO:
-        if (isFirstInitialization) {
-            csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString();
-            hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_AMINO, MsaHighlightingScheme::EMPTY_AMINO).toString();
-        } else {
-            QList<MsaColorSchemeFactory *> colorSchemesFactories = msaColorSchemeRegistry->getMsaColorSchemes(DNAAlphabet_AMINO);
-            QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(DNAAlphabet_AMINO);
-            if (colorScheme->getFactory()->getAlphabetType() == DNAAlphabet_RAW) {
-                foreach(MsaColorSchemeFactory *sf, colorSchemesFactories) {
-                    if (sf->getName() == highlightingScheme->getFactory()->getName()) {
-                        csid = sf->getId();
-                    }
-                }
-            }
-            if (csid.isEmpty()) {
-                csid = colorScheme->getFactory()->getAlphabetType() == atype ? colorScheme->getFactory()->getId() : MsaColorScheme::UGENE_AMINO;
-            }
-
-            if (highlightingScheme->getFactory()->getAlphabetType() == DNAAlphabet_RAW) {
-                foreach(MsaHighlightingSchemeFactory *sf, highlightingSchemesFactories) {
-                    if (sf->getName() == highlightingScheme->getFactory()->getName()) {
-                        hsid = sf->getId();
-                    }
-                }
-            }
-            if (hsid.isEmpty()) {
-                hsid = colorScheme->getFactory()->getAlphabetType() == atype ? highlightingScheme->getFactory()->getId() : MsaHighlightingScheme::EMPTY_AMINO;
-            }
-        }
+        csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString();
+        hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_AMINO, MsaHighlightingScheme::EMPTY).toString();
         break;
     default:
         csid = "";
         hsid = "";
         break;
     }
+
+    MsaColorSchemeRegistry* csr = AppContext::getMsaColorSchemeRegistry();
+    MsaHighlightingSchemeRegistry* hsr = AppContext::getMsaHighlightingSchemeRegistry();
+
+    MsaColorSchemeFactory* csf = csr->getSchemeFactoryById(csid);
+    if (csf == NULL) {
+        csid = getDefaultColorSchemeFactory()->getId();
+    }
+    MsaHighlightingSchemeFactory* hsf = hsr->getSchemeFactoryById(hsid);
+    if (hsf == NULL) {
+        hsid = getDefaultHighlightingSchemeFactory()->getId();
+    }
+
+
+    if (colorScheme != NULL && colorScheme->getFactory()->isAlphabetTypeSupported(atype)) {
+        csid = colorScheme->getFactory()->getId();
+    }
+    if (highlightingScheme != NULL && highlightingScheme->getFactory()->isAlphabetTypeSupported(atype)) {
+        hsid = highlightingScheme->getFactory()->getId();
+    }
 }
 
 void MaEditorSequenceArea::applyColorScheme(const QString &id) {
     CHECK(NULL != ui->getEditor()->getMaObject(), );
 
-    MsaColorSchemeFactory *factory = AppContext::getMsaColorSchemeRegistry()->getMsaColorSchemeFactoryById(id);
+    MsaColorSchemeFactory *factory = AppContext::getMsaColorSchemeRegistry()->getSchemeFactoryById(id);
     delete colorScheme;
     colorScheme = factory->create(this, ui->getEditor()->getMaObject());
 
@@ -1569,7 +1488,7 @@ void MaEditorSequenceArea::applyColorScheme(const QString &id) {
         action->setChecked(action->data() == id);
     }
 
-    switch (factory->getAlphabetType()) {
+    switch (ui->getEditor()->getMaObject()->getAlphabet()->getType()) {
     case DNAAlphabet_RAW:
         AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, id);
         break;
@@ -1615,6 +1534,21 @@ void MaEditorSequenceArea::processCharacterInEditMode(QKeyEvent *e) {
 }
 
 void MaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
+    switch (maMode) {
+    case ReplaceCharMode:
+        replaceChar(newCharacter);
+        break;
+    case InsertCharMode:
+        insertChar(newCharacter);
+    case ViewMode:
+    default:
+        // do nothing
+        ;
+    }
+}
+
+void MaEditorSequenceArea::replaceChar(char newCharacter) {
+    CHECK(maMode == ReplaceCharMode, );
     CHECK(getEditor() != NULL, );
     if (selection.isNull()) {
         return;
@@ -1639,9 +1573,8 @@ void MaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
     exitFromEditCharacterMode();
 }
 
-
 void MaEditorSequenceArea::exitFromEditCharacterMode() {
-    if (maMode == EditCharacterMode) {
+    if (maMode != ViewMode) {
         editModeAnimationTimer.stop();
         highlightSelection = false;
         selectionColor = Qt::black;
@@ -1653,6 +1586,10 @@ void MaEditorSequenceArea::exitFromEditCharacterMode() {
 void MaEditorSequenceArea::deleteOldCustomSchemes() {
     qDeleteAll(customColorSchemeMenuActions);
     customColorSchemeMenuActions.clear();
+}
+
+void MaEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo&) {
+
 }
 
 } // namespace

@@ -19,17 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
-#include <QtXml/QXmlInputSource>
+#include <QXmlInputSource>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QMessageBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>
@@ -124,7 +120,7 @@ const QString DOWNLOAD_REMOTE_FILE_DOMAIN = "DownloadRemoteFileDialog";
 
 void DownloadRemoteFileDialog::sl_saveFilenameButtonClicked() {
     LastUsedDirHelper lod(DOWNLOAD_REMOTE_FILE_DOMAIN);
-    QString filename = U2FileDialog::getExistingDirectory(this, tr("Select directory to save"), lod.dir);
+    QString filename = U2FileDialog::getExistingDirectory(this, tr("Select folder to save"), lod.dir);
     if(!filename.isEmpty()) {
         ui->saveFilenameLineEdit->setText(filename);
         lod.url = filename;
@@ -171,7 +167,7 @@ void DownloadRemoteFileDialog::accept()
     }
     QString fullPath = getFullpath();
     if( ui->saveFilenameLineEdit->text().isEmpty() ) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("No directory selected for saving file!"));
+        QMessageBox::critical(this, L10N::errorTitle(), tr("No folder selected for saving file!"));
         ui->saveFilenameLineEdit->setFocus();
         return;
     }
@@ -198,8 +194,23 @@ void DownloadRemoteFileDialog::accept()
     hints.insert(FORCE_DOWNLOAD_SEQUENCE_HINT, ui->chbForceDownloadSequence->isVisible() && ui->chbForceDownloadSequence->isChecked());
 
     int taskCount = 0;
+    bool addToProject = ui->chbAddToProjectCheck->isChecked();
+    if (addToProject && resIds.size() >= 100) {
+        QString message =  tr("There are more than 100 files found for download.\nAre you sure you want to open all of them?");
+        int button = QMessageBox::question(QApplication::activeWindow(), tr("Warning"), message, 
+                                           tr("Cancel"), tr("Open anyway"), tr("Don't open"));
+        if (button == 0) {
+            return; // return to dialog
+        } else if (button == 2) {
+            addToProject = false;
+        }
+    }
     foreach (const QString &resId, resIds) {
-        tasks.append(new LoadRemoteDocumentAndAddToProjectTask(resId, dbId, fullPath, fileFormat, hints, taskCount < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS));
+        LoadRemoteDocumentMode mode = LoadRemoteDocumentMode_LoadOnly;
+        if (addToProject) {
+            mode = taskCount < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS ? LoadRemoteDocumentMode_OpenView : LoadRemoteDocumentMode_AddToProject;
+        }
+        tasks.append(new LoadRemoteDocumentAndAddToProjectTask(resId, dbId, fullPath, fileFormat, hints, mode));
         taskCount++;
     }
 

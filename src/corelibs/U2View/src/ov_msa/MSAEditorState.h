@@ -25,7 +25,7 @@
 #include <U2Core/U2Region.h>
 #include <U2Core/GObject.h>
 
-#include <QtCore/QVariant>
+#include <QVariant>
 
 namespace U2 {
 

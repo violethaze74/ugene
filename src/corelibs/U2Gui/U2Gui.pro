@@ -55,6 +55,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/GlassView.h \
            src/util/GObjectComboBoxController.h \
            src/util/GraphUtils.h \
+           src/util/GroupedComboBoxDelegate.h \
            src/util/GScrollBar.h \
            src/util/GUIUtils.h \
            src/util/HelpButton.h \
@@ -203,6 +204,7 @@ SOURCES += src/MainWindow.cpp \
            src/util/GlassView.cpp \
            src/util/GObjectComboBoxController.cpp \
            src/util/GraphUtils.cpp \
+           src/util/GroupedComboBoxDelegate.cpp \
            src/util/GScrollBar.cpp \
            src/util/GUIUtils.cpp \
            src/util/HelpButton.cpp \

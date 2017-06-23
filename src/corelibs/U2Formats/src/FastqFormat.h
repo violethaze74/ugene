@@ -24,7 +24,7 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <QtCore/QStringList>
+#include <QStringList>
 
 namespace U2 {
 

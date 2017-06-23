@@ -24,7 +24,7 @@
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatus.h>
 
-#include <QtCore/QRegExp>
+#include <QRegExp>
 
 namespace U2 {
 

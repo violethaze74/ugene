@@ -20,6 +20,7 @@
  */
 
 #include <QDialogButtonBox>
+#include <QDomDocument>
 #include <QFormLayout>
 #include <QHBoxLayout>
 #include <QLineEdit>
@@ -33,10 +34,10 @@
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Log.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2Test/GTest.h>
@@ -267,7 +268,7 @@ void TestViewController::addTestSuite(GTestSuite* ts) {
         excludedSorted.insert(dynamic_cast<GTestRef*>(iter.key())->getShortName(), dynamic_cast<GTestRef*>(iter.key()) );
     }
     foreach(GTestRef* t, excludedSorted.values()) {
-        QString firstDirName=t->getShortName().section('/', 0 , 0 );//find first directory name
+        QString firstDirName=t->getShortName().section('/', 0 , 0 );//find first folder name
         if(t->getShortName()==firstDirName){
             addTest(tsi, t, ts->getExcludedTests().value(t));
         } else {
@@ -284,7 +285,7 @@ void TestViewController::addTestSuite(GTestSuite* ts) {
     }
     //add to tree Tests to run
     foreach(GTestRef* t, ts->getTests()) {
-        QString firstDirName=t->getShortName().section('/', 0 , 0 );//find first directory name
+        QString firstDirName=t->getShortName().section('/', 0 , 0 );//find first folder name
         if (t->getShortName()==firstDirName){
             addTest(tsi, t,"");
         } else {

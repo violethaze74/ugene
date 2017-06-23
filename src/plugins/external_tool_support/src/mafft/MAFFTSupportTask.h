@@ -22,7 +22,7 @@
 #ifndef _U2_MAFFT_SUPPORT_TASK_H
 #define _U2_MAFFT_SUPPORT_TASK_H
 
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/IOAdapter.h>

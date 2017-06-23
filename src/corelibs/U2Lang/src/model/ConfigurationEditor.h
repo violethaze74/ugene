@@ -27,11 +27,7 @@
 #include <U2Lang/Attribute.h>
 #include <U2Lang/SchemaConfig.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QItemDelegate>
-#else
-#include <QtWidgets/QItemDelegate>
-#endif
+#include <QItemDelegate>
 
 class QWidget;
 

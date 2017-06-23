@@ -36,6 +36,9 @@ public:
 
     AnnotationSelection* getAnnotationsSelection() const;
 
+protected slots:
+    void sl_onAnnotationRelationChange();
+
 private:
     AnnotatedDNAView*               view;
 };

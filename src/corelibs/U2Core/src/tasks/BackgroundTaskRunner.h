@@ -22,6 +22,8 @@
 #ifndef __BACKGROUND_TASK_RUNNER_H__
 #define __BACKGROUND_TASK_RUNNER_H__
 
+#include <QMap>
+
 #include <U2Core/Task.h>
 #include <U2Core/AppContext.h>
 

@@ -19,12 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTreeWidget>
-#else
-#include <QtWidgets/QTreeWidget>
-#endif
+#include <QTreeWidget>
 
 #include <U2View/ADVConstants.h>
 
@@ -143,7 +138,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "S"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep(3000);
 
 // 5. Check names and count of annotations
     QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
@@ -158,7 +153,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         }
     }
 
-    CHECK_SET_ERR(3 == annotationsCounter, "Result count mismatch detected");
+    CHECK_SET_ERR(3 == annotationsCounter, QString("Result count mismatch Expected= %1 Actual= %2").arg(3).arg(annotationsCounter));
 }
 
 } // namespace GUITest_common_scenarios_sw_dialog

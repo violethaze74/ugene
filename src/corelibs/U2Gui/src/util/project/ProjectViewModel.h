@@ -22,7 +22,7 @@
 #ifndef _U2_PROJECTVIEWMODEL_H_
 #define _U2_PROJECTVIEWMODEL_H_
 
-#include <QtCore/QAbstractItemModel>
+#include <QAbstractItemModel>
 
 #include <U2Core/Folder.h>
 #include <U2Core/ProjectTreeControllerModeSettings.h>

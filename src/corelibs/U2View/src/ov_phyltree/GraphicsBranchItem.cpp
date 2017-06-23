@@ -23,8 +23,8 @@
 #include "GraphicsButtonItem.h"
 #include "TreeViewerUtils.h"
 
-#include <QtGui/QPainter>
-#include <QtCore/QStack>
+#include <QPainter>
+#include <QStack>
 #include <U2Core/U2SafePoints.h>
 #include <QGraphicsScene>
 #include <QEvent>

@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QFileInfo>
+
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -253,7 +255,7 @@ FSItem * RunFileSystem::createPath(const QStringList &path, U2OpStatus &os) {
         }
         pathStr += "/" + dirName;
         if (!item->isDir()) {
-            os.setError(pathStr + " is a file, not a directory");
+            os.setError(pathStr + " is a file, not a folder");
             return root;
         }
         current = item;

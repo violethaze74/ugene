@@ -89,6 +89,7 @@ public:
     bool isPosInRange(int position) const;
     bool isSeqInRange(int rowNumber) const;
     bool isInRange(const QPoint &point) const;
+    QPoint boundWithVisibleRange(const QPoint &point) const;
 
     bool isVisible(const QPoint& p, bool countClipped) const;
     bool isPositionVisible(int pos, bool countClipped) const;
@@ -104,6 +105,8 @@ public:
     virtual void setSelection(const MaEditorSelection& sel, bool newHighlightSelection = false);
 
     virtual void moveSelection(int dx, int dy, bool allowSelectionResize = false);
+
+    virtual void adjustReferenceLength(U2OpStatus& os) {}
 
     void cancelSelection();
 
@@ -152,7 +155,7 @@ public:
     bool getUseDotsCheckedState() const;
 
 public slots:
-    void sl_changeColorSchemeOutside(const QString &name);
+    void sl_changeColorSchemeOutside(const QString &id);
     void sl_delCurrentSelection();
 
 protected slots:
@@ -249,22 +252,32 @@ protected:
     void updateColorAndHighlightSchemes();
 
     void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);
-    void registerCommonColorSchemes();
-    void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
 
-    MsaColorSchemeFactory * getDefaultColorSchemeFactory();
-    virtual void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype, bool isFirstInitialization);
+    void registerCommonColorSchemes();
+
+    void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf);
+
+    MsaColorSchemeFactory * getDefaultColorSchemeFactory() const;
+    MsaHighlightingSchemeFactory * getDefaultHighlightingSchemeFactory() const;
+
+    virtual void getColorAndHighlightingIds(QString &csid, QString &hsid);
     void applyColorScheme(const QString &id);
 
     void processCharacterInEditMode(QKeyEvent *e);
-    virtual void processCharacterInEditMode(char newCharacter);
+    void processCharacterInEditMode(char newCharacter);
+    void replaceChar(char newCharacter);
+    virtual void insertChar(char ) {}
     void exitFromEditCharacterMode();
 
     void deleteOldCustomSchemes();
 
+    virtual void updateCollapsedGroups(const MaModificationInfo &maModificationInfo);
+
+protected:
     enum MaMode {
         ViewMode,
-        EditCharacterMode
+        ReplaceCharMode,
+        InsertCharMode
     };
 
     MaEditor*       editor;

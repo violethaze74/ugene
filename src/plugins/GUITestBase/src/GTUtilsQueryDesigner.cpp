@@ -30,15 +30,9 @@
 #include "GTUtilsMdi.h"
 
 #include <U2View/MSAEditor.h>
-#if (QT_VERSION < 0x050000) //Qt 5
 #include <QTreeWidget>
 #include <QGraphicsItem>
 #include <QGraphicsView>
-#else
-#include <QtWidgets/QTreeWidget>
-#include <QtWidgets/QGraphicsItem>
-#include <QtWidgets/QGraphicsView>
-#endif
 
 namespace U2 {
 using namespace HI;

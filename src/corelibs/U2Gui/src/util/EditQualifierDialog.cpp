@@ -21,13 +21,8 @@
 
 #include <U2Core/Annotation.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QMessageBox>
-#endif
-
-#include <QtGui/QKeyEvent>
+#include <QMessageBox>
+#include <QKeyEvent>
 #include <U2Gui/HelpButton.h>
 #include <QPushButton>
 

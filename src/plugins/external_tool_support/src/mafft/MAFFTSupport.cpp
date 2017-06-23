@@ -67,7 +67,7 @@ MAFFTSupport::MAFFTSupport(const QString& name, const QString& path) : ExternalT
 }
 
 void MAFFTSupport::sl_runWithExtFileSpecify(){
-    //Check that Clustal and tempory directory path defined
+    //Check that Clustal and tempory folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -147,7 +147,7 @@ void MAFFTSupportContext::buildMenu(GObjectView* view, QMenu* m) {
 }
 
 void MAFFTSupportContext::sl_align_with_MAFFT() {
-    //Check that MAFFT and tempory directory path defined
+    //Check that MAFFT and tempory folder path defined
     if (AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(ET_MAFFT);

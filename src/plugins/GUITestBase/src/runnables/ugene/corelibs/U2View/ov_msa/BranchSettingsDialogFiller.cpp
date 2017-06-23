@@ -18,20 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+
 #include "BranchSettingsDialogFiller.h"
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QColorDialog>
-#include <QtGui/QSpinBox>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QColorDialog>
-#include <QtWidgets/QSpinBox>
-#include <QtWidgets/QDialogButtonBox>
-#endif
+#include <QApplication>
+#include <QPushButton>
+#include <QColorDialog>
+#include <QSpinBox>
+#include <QDialogButtonBox>
 
 #include <primitives/GTWidget.h>
 #include <primitives/GTSpinBox.h>

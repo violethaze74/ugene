@@ -26,7 +26,7 @@
 #include <U2Core/Task.h>
 #include <U2Algorithm/RepeatFinderSettings.h>
 
-#include <QtCore/QVector>
+#include <QVector>
 
 namespace U2 {
 

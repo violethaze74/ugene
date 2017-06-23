@@ -210,7 +210,7 @@ void BaseNGSTask::prepare(){
 
     const QDir outDir = QFileInfo(settings.outDir).absoluteDir();
     if (!outDir.exists()) {
-        setError(tr("Directory does not exist: ") + outDir.absolutePath());
+        setError(tr("Folder does not exist: ") + outDir.absolutePath());
         return ;
     }
 

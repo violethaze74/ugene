@@ -367,7 +367,7 @@ void ColorSchemaSettingsPageWidget::sl_schemaChanged(int index){
 
 void ColorSchemaSettingsPageWidget::sl_onColorsDirButton() {
     QString path = colorsDirEdit->text();
-    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Directory"), path,
+    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Folder"), path,
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!dir.isEmpty()) {
         colorsDirEdit->setText(dir);

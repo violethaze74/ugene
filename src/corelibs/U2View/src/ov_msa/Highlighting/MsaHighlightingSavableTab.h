@@ -22,7 +22,7 @@
 #ifndef _U2_MSA_HIGHLIGHTING_SAVABLE_TAB_H_
 #define _U2_MSA_HIGHLIGHTING_SAVABLE_TAB_H_
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 #include "../MsaOpSavableTab.h"
 

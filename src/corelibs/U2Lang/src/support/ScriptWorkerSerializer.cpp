@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtXml>
+#include <QDomElement>
 
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/IncludedProtoFactory.h>

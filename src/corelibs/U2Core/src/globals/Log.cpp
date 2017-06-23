@@ -24,7 +24,7 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/LogCache.h>
 
-#include <QtCore/QSet>
+#include <QSet>
 
 namespace U2 {
 

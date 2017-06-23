@@ -23,11 +23,7 @@
 #define GTSEQUENCEREADINGMODEDIALOG_H
 
 #include <U2Core/U2OpStatus.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QDialogButtonBox>
-#endif
+#include <QDialogButtonBox>
 
 #include <QString>
 #include "GTGlobals.h"

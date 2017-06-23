@@ -22,8 +22,10 @@
 #ifndef _U2_DNA_TRANSLATION_IMPL_H_
 #define _U2_DNA_TRANSLATION_IMPL_H_
 
+#include <QMap>
+#include <QVarLengthArray>
+
 #include <U2Core/DNATranslation.h>
-#include <QtCore/QVarLengthArray>
 
 namespace U2 {
 

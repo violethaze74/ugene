@@ -637,17 +637,17 @@
 <context>
     <name>U2::CSVColumnConfigurationDialog</name>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="42"/>
+        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="38"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="43"/>
+        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="39"/>
         <source>Cancel</source>
         <translation type="unfinished">Cancel</translation>
     </message>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="100"/>
+        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="96"/>
         <source>Invalid qualifier name!</source>
         <translation>Invalid qualifier name!</translation>
     </message>
@@ -995,17 +995,17 @@
         <translation>Trim</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="43"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="45"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="44"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="46"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="54"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="56"/>
         <source>File name is empty!</source>
         <translation>File name is empty!</translation>
     </message>
@@ -1400,68 +1400,68 @@
 <context>
     <name>U2::GTest</name>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="115"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="116"/>
         <source>Unable to create temporary file</source>
         <translation>Unable to create temporary file</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="134"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="135"/>
         <source>Invalid translation table num: %1</source>
         <translation>Invalid translation table num: %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="150"/>
-        <location filename="../src/DNAExportPluginTests.cpp" line="156"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="151"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="157"/>
         <source>Invalid base : %1</source>
         <translation>Invalid base : %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="169"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="170"/>
         <source> context not found %1</source>
         <translation> context not found %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="175"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="176"/>
         <source> container of object with type &quot;%1&quot; is empty</source>
         <translation> container of object with type &quot;%1&quot; is empty</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="210"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="211"/>
         <source>context  not found %1</source>
         <translation>context  not found %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="216"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="217"/>
         <source>container  of object with type &quot;%1&quot; is empty</source>
         <translation>container  of object with type &quot;%1&quot; is empty</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="233"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="234"/>
         <source>context not  found %1</source>
         <translation>context not  found %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="239"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="240"/>
         <source>container of  object with type &quot;%1&quot; is empty</source>
         <translation>container of  object with type &quot;%1&quot; is empty</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="246"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="247"/>
         <source>Unexpected alignment length %1, expected %2</source>
         <translation>Unexpected alignment length %1, expected %2</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="251"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="252"/>
         <source>Unexpected alignment size %1, expected %2</source>
         <translation>Unexpected alignment size %1, expected %2</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="260"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="261"/>
         <source>Invalid name for row %1: %2, expected %3</source>
         <translation>Invalid name for row %1: %2, expected %3</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="265"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="266"/>
         <source>Invalid char at row %1 column %2: %3, expected %4</source>
         <translation>Invalid char at row %1 column %2: %3, expected %4</translation>
     </message>
@@ -1477,14 +1477,24 @@
 <context>
     <name>U2::GetSequenceByIdDialog</name>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.cpp" line="55"/>
-        <source>Select directory to save</source>
-        <translation>Select directory to save</translation>
+        <location filename="../src/GetSequenceByIdDialog.cpp" line="40"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.cpp" line="70"/>
-        <source>Directory doesn&apos;t exist. Do you want to create it?</source>
-        <translation>Directory doesn&apos;t exist. Do you want to create it?</translation>
+        <location filename="../src/GetSequenceByIdDialog.cpp" line="41"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/GetSequenceByIdDialog.cpp" line="53"/>
+        <source>Select folder to save</source>
+        <translation>Select folder to save</translation>
+    </message>
+    <message>
+        <location filename="../src/GetSequenceByIdDialog.cpp" line="68"/>
+        <source>Folder doesn&apos;t exist. Do you want to create it?</source>
+        <translation>Folder doesn&apos;t exist. Do you want to create it?</translation>
     </message>
 </context>
 <context>
@@ -2067,7 +2077,11 @@ NCBI Genbank by their GI identifier</translation>
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="48"/>
         <source>Save to directory:</source>
-        <translation>Save to directory:</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save to folder:</source>
+        <translation type="vanished">Save to folder:</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="58"/>

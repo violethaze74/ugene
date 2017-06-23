@@ -27,12 +27,7 @@
 #include <U2Gui/MainWindow.h>
 #include <ui_Reporter.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTreeWidgetItem>
-#else
-#include <QtWidgets/QTreeWidgetItem>
-#endif
-
+#include <QTreeWidgetItem>
 
 namespace U2 {
 

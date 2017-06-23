@@ -24,7 +24,7 @@
 
 #include <U2Core/U2Mod.h>
 
-#include <QtCore/QSet>
+#include <QSet>
 
 namespace U2 {
 

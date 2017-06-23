@@ -93,7 +93,7 @@ QString WorkflowProcess::getTempDirectory() const {
     if (!dir.exists()) {
         bool created = dir.mkpath(tempDirectory);
         if (!created) {
-            coreLog.error(QString("Can not create a directory: %1").arg(tempDirectory));
+            coreLog.error(QString("Can not create a folder: %1").arg(tempDirectory));
         }
     }
     return tempDirectory;
@@ -137,7 +137,7 @@ void AppFileStorage::init(U2OpStatus &os) {
     QDir dir(storageDir);
     if (!dir.exists()) {
         bool created = dir.mkpath(storageDir);
-        CHECK_EXT(created, os.setError(QString("Can not create a directory: %1").arg(storageDir)), );
+        CHECK_EXT(created, os.setError(QString("Can not create a folder: %1").arg(storageDir)), );
     }
     QString storageUrl = storageDir + "/" + DB_FILE_NAME;
 
@@ -201,7 +201,7 @@ void AppFileStorage::registerWorkflowProcess(FileStorage::WorkflowProcess &proce
     QDir wdDir(wdDirPath);
     bool created = wdDir.mkpath(wdDirPath);
     if (!created) {
-        os.setError(QString("Can not create a directory: %1").arg(wdDirPath));
+        os.setError(QString("Can not create a folder: %1").arg(wdDirPath));
         return;
     }
 
@@ -293,7 +293,7 @@ QString AppFileStorage::createDirectory() const {
     QDir storageRoot(storageDir + "/" + WD_DIR_NAME);
     if (!storageRoot.exists()) {
         bool created = storageRoot.mkpath(storageRoot.path());
-        SAFE_POINT(created, QString("Can not create a directory: %1").arg(storageRoot.path()), "");
+        SAFE_POINT(created, QString("Can not create a folder: %1").arg(storageRoot.path()), "");
     }
     uint time = QDateTime::currentDateTime().toTime_t();
     QString baseDirName = QByteArray::number(time);

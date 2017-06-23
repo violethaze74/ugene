@@ -24,11 +24,11 @@
 
 #include <U2Core/global.h>
 
-#include <QtCore/QMap>
-#include <QtCore/QObject>
-#include <QtScript/QScriptValue>
-#include <QtScript/QScriptEngine>
-#include <QtCore/QStringList>
+#include <QMap>
+#include <QObject>
+#include <QScriptValue>
+#include <QScriptEngine>
+#include <QStringList>
 
 namespace U2 {
 

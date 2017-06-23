@@ -32,8 +32,8 @@
 #include "SmithWatermanAlgorithm.h"
 #include "PairAlignSequences.h"
 
-#include <QtCore/QVector>
-#include <QtCore/QMutex>
+#include <QVector>
+#include <QMutex>
 
 namespace U2 {
 

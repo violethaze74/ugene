@@ -24,7 +24,7 @@
 
 #include <U2Core/global.h>
 
-#include <QtCore/QString>
+#include <QString>
 
 namespace U2 {
 

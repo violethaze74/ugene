@@ -22,8 +22,10 @@
 #ifndef _U2_MATRIX_44_H_
 #define _U2_MATRIX_44_H_
 
-#include <U2Core/global.h>
 #include <QVector>
+#include <QVariantList>
+
+#include <U2Core/global.h>
 
 namespace U2 {
 

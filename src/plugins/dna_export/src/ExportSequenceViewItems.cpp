@@ -470,7 +470,7 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
             sequenceContext->getSequenceObject()->getSequenceName(), sequenceContext->getComplementTT(),
             d->exportSequence(), d->exportSequenceNames(), d->filePath());
     } else {
-        t = ExportObjectUtils::saveAnnotationsTask(d->filePath(), d->fileFormat(), annotationSet);
+        t = ExportObjectUtils::saveAnnotationsTask(d->filePath(), d->fileFormat(), annotationSet, d->addToProject());
     }
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }

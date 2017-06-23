@@ -22,13 +22,8 @@
 #ifndef __ASSEMBLY_RULER__
 #define __ASSEMBLY_RULER__
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#else
-#include <QtWidgets/QWidget>
-#endif
-#include <QtCore/QSharedPointer>
+#include <QWidget>
+#include <QSharedPointer>
 #include "AssemblyModel.h"
 
 namespace U2 {

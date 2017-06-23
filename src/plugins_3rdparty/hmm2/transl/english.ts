@@ -344,7 +344,7 @@ You can use this option to generate reproducible results for different hmmcalibr
 <context>
     <name>U2::GTest_uHMMERCalibrate</name>
     <message>
-        <location filename="../src/u_tests/uhmmerTests.cpp" line="570"/>
+        <location filename="../src/u_tests/uhmmerTests.cpp" line="589"/>
         <source>uhmmer-calibrate-subtask</source>
         <translation>HMM Calibrate</translation>
     </message>
@@ -352,83 +352,83 @@ You can use this option to generate reproducible results for different hmmcalibr
 <context>
     <name>U2::HMM2QDActor</name>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="65"/>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="150"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="67"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="152"/>
         <source>HMM2</source>
         <translation>HMM2</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="76"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="78"/>
         <source>QD HMM2 search</source>
         <translation>QD HMM2 search</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="82"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="84"/>
         <source>Power of e-value must be less or equal to zero. Using default value: 1e-1</source>
         <translation>Power of e-value must be less or equal to zero. Using default value: 1e-1</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="151"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="153"/>
         <source>Searches HMM signals in a sequence with one or more profile HMM2 and saves the results as annotations.</source>
         <translation>Searches HMM signals in a sequence with one or more profile HMM2 and saves the results as annotations.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="157"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="159"/>
         <source>Profile HMM</source>
         <translation>Profile HMM</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="158"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="160"/>
         <source>Semicolon-separated list of input HMM files.</source>
         <translation>Semicolon-separated list of input HMM files.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="161"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="163"/>
         <source>Min Length</source>
         <translation>Min Length</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="162"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="164"/>
         <source>Minimum length of a result region.</source>
         <translation>Minimum length of a result region.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="165"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="167"/>
         <source>Max Length</source>
         <translation>Max Length</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="166"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="168"/>
         <source>Maximum length of a result region.</source>
         <translation>Maximum length of a result region.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="169"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="171"/>
         <source>Filter by High E-value</source>
         <translation>Filter by High E-value</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="170"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="172"/>
         <source>Reports domains &amp;lt;= this E-value threshold in output.</source>
         <translation>Reports domains &amp;lt;= this E-value threshold in output.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="174"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="176"/>
         <source>Filter by Low Score</source>
         <translation>Filter by Low Score</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="175"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="177"/>
         <source>Reports domains &amp;gt;= this score cutoff in output.</source>
         <translation>Reports domains &amp;gt;= this score cutoff in output.</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="178"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="180"/>
         <source>Number of Sequences</source>
         <translation>Number of Sequences</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="179"/>
+        <location filename="../src/u_search/HMMSearchQDActor.cpp" line="181"/>
         <source>Specifies number of significant sequences. It is used for domain E-value calculations.</source>
         <translation>Specifies number of significant sequences. It is used for domain E-value calculations.</translation>
     </message>
@@ -790,80 +790,80 @@ You can use this option to generate reproducible results for different hmmcalibr
 <context>
     <name>U2::HMMIO</name>
     <message>
-        <location filename="../src/HMMIO.cpp" line="339"/>
+        <location filename="../src/HMMIO.cpp" line="338"/>
         <source>ALPH must precede NULE in HMM save files</source>
         <translation>ALPH must precede NULE in HMM save files</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="215"/>
-        <location filename="../src/HMMIO.cpp" line="231"/>
-        <location filename="../src/HMMIO.cpp" line="391"/>
-        <location filename="../src/HMMIO.cpp" line="397"/>
-        <location filename="../src/HMMIO.cpp" line="423"/>
-        <location filename="../src/HMMIO.cpp" line="454"/>
-        <location filename="../src/HMMIO.cpp" line="479"/>
+        <location filename="../src/HMMIO.cpp" line="214"/>
+        <location filename="../src/HMMIO.cpp" line="230"/>
+        <location filename="../src/HMMIO.cpp" line="390"/>
+        <location filename="../src/HMMIO.cpp" line="396"/>
+        <location filename="../src/HMMIO.cpp" line="422"/>
+        <location filename="../src/HMMIO.cpp" line="453"/>
+        <location filename="../src/HMMIO.cpp" line="478"/>
         <source>Illegal line</source>
         <translation>Illegal line</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="219"/>
+        <location filename="../src/HMMIO.cpp" line="218"/>
         <source>File format is not supported</source>
         <translation>File format is not supported</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="277"/>
-        <location filename="../src/HMMIO.cpp" line="282"/>
-        <location filename="../src/HMMIO.cpp" line="289"/>
-        <location filename="../src/HMMIO.cpp" line="294"/>
-        <location filename="../src/HMMIO.cpp" line="301"/>
-        <location filename="../src/HMMIO.cpp" line="306"/>
-        <location filename="../src/HMMIO.cpp" line="313"/>
-        <location filename="../src/HMMIO.cpp" line="319"/>
-        <location filename="../src/HMMIO.cpp" line="328"/>
-        <location filename="../src/HMMIO.cpp" line="333"/>
-        <location filename="../src/HMMIO.cpp" line="345"/>
-        <location filename="../src/HMMIO.cpp" line="354"/>
-        <location filename="../src/HMMIO.cpp" line="359"/>
-        <location filename="../src/HMMIO.cpp" line="403"/>
-        <location filename="../src/HMMIO.cpp" line="408"/>
-        <location filename="../src/HMMIO.cpp" line="412"/>
-        <location filename="../src/HMMIO.cpp" line="429"/>
-        <location filename="../src/HMMIO.cpp" line="433"/>
-        <location filename="../src/HMMIO.cpp" line="438"/>
-        <location filename="../src/HMMIO.cpp" line="445"/>
-        <location filename="../src/HMMIO.cpp" line="460"/>
-        <location filename="../src/HMMIO.cpp" line="469"/>
-        <location filename="../src/HMMIO.cpp" line="485"/>
-        <location filename="../src/HMMIO.cpp" line="493"/>
-        <location filename="../src/HMMIO.cpp" line="499"/>
-        <location filename="../src/HMMIO.cpp" line="504"/>
+        <location filename="../src/HMMIO.cpp" line="276"/>
+        <location filename="../src/HMMIO.cpp" line="281"/>
+        <location filename="../src/HMMIO.cpp" line="288"/>
+        <location filename="../src/HMMIO.cpp" line="293"/>
+        <location filename="../src/HMMIO.cpp" line="300"/>
+        <location filename="../src/HMMIO.cpp" line="305"/>
+        <location filename="../src/HMMIO.cpp" line="312"/>
+        <location filename="../src/HMMIO.cpp" line="318"/>
+        <location filename="../src/HMMIO.cpp" line="327"/>
+        <location filename="../src/HMMIO.cpp" line="332"/>
+        <location filename="../src/HMMIO.cpp" line="344"/>
+        <location filename="../src/HMMIO.cpp" line="353"/>
+        <location filename="../src/HMMIO.cpp" line="358"/>
+        <location filename="../src/HMMIO.cpp" line="402"/>
+        <location filename="../src/HMMIO.cpp" line="407"/>
+        <location filename="../src/HMMIO.cpp" line="411"/>
+        <location filename="../src/HMMIO.cpp" line="428"/>
+        <location filename="../src/HMMIO.cpp" line="432"/>
+        <location filename="../src/HMMIO.cpp" line="437"/>
+        <location filename="../src/HMMIO.cpp" line="444"/>
+        <location filename="../src/HMMIO.cpp" line="459"/>
+        <location filename="../src/HMMIO.cpp" line="468"/>
+        <location filename="../src/HMMIO.cpp" line="484"/>
+        <location filename="../src/HMMIO.cpp" line="492"/>
+        <location filename="../src/HMMIO.cpp" line="498"/>
+        <location filename="../src/HMMIO.cpp" line="503"/>
         <source>Invalid file structure near %1</source>
         <translation>Invalid file structure near %1</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="248"/>
-        <location filename="../src/HMMIO.cpp" line="374"/>
-        <location filename="../src/HMMIO.cpp" line="378"/>
+        <location filename="../src/HMMIO.cpp" line="247"/>
+        <location filename="../src/HMMIO.cpp" line="373"/>
+        <location filename="../src/HMMIO.cpp" line="377"/>
         <source>Value is illegal: %1</source>
         <translation>Value is illegal: %1</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="72"/>
+        <location filename="../src/HMMIO.cpp" line="71"/>
         <source>Alphabet is not set</source>
         <translation>Alphabet is not set</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="382"/>
+        <location filename="../src/HMMIO.cpp" line="381"/>
         <source>Value is not set for &apos;%1&apos;</source>
         <translation>Value is not set for &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="518"/>
+        <location filename="../src/HMMIO.cpp" line="517"/>
         <source>No &apos;//&apos; symbol found</source>
         <translation>No &apos;//&apos; symbol found</translation>
     </message>
     <message>
-        <location filename="../src/HMMIO.cpp" line="636"/>
+        <location filename="../src/HMMIO.cpp" line="635"/>
         <source>HMM models</source>
         <translation>HMM models</translation>
     </message>
@@ -879,7 +879,7 @@ You can use this option to generate reproducible results for different hmmcalibr
 <context>
     <name>U2::HMMReadTask</name>
     <message>
-        <location filename="../src/HMMIO.cpp" line="651"/>
+        <location filename="../src/HMMIO.cpp" line="650"/>
         <source>Read HMM profile &apos;%1&apos;.</source>
         <translation>Read HMM profile &apos;%1&apos;.</translation>
     </message>
@@ -1049,7 +1049,7 @@ You can use this option to generate reproducible results for different hmmcalibr
 <context>
     <name>U2::HMMWriteTask</name>
     <message>
-        <location filename="../src/HMMIO.cpp" line="671"/>
+        <location filename="../src/HMMIO.cpp" line="670"/>
         <source>Write HMM profile &apos;%1&apos;</source>
         <translation>Write HMM profile &apos;%1&apos;</translation>
     </message>

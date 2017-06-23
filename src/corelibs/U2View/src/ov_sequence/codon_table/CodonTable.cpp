@@ -8,23 +8,14 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 
-#include <QtCore/QUrl>
-#include <QtGui/QDesktopServices>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QScrollArea>
-#include <QtGui/QScrollBar>
-#include <QtGui/QSizePolicy>
-#include <QtGui/QTableWidget>
-#include <QtGui/QHeaderView>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QScrollBar>
-#include <QtWidgets/QSizePolicy>
-#include <QtWidgets/QTableWidget>
-#include <QtWidgets/QHeaderView>
-#endif
+#include <QUrl>
+#include <QDesktopServices>
+#include <QApplication>
+#include <QScrollArea>
+#include <QScrollBar>
+#include <QSizePolicy>
+#include <QTableWidget>
+#include <QHeaderView>
 
 namespace U2 {
 
@@ -46,33 +37,18 @@ CodonTableView::CodonTableView(AnnotatedDNAView *view)
     table->verticalHeader()->hide();
 
     table->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
-#if (QT_VERSION < 0x050000) //Qt 5
-    table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-    table->verticalHeader()->setResizeMode(QHeaderView::Fixed);
-#else
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-#endif
 
     const int rowHeight = 18;
     table->verticalHeader()->setDefaultSectionSize(rowHeight);
 
-#if (QT_VERSION < 0x050000) //Qt 5
-    table->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
-    table->horizontalHeader()->setResizeMode(1, QHeaderView::ResizeToContents);
-    table->horizontalHeader()->setResizeMode(3, QHeaderView::ResizeToContents);
-    table->horizontalHeader()->setResizeMode(5, QHeaderView::ResizeToContents);
-    table->horizontalHeader()->setResizeMode(7, QHeaderView::ResizeToContents);
-    table->horizontalHeader()->setResizeMode(9, QHeaderView::ResizeToContents);
-#else
     table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(5, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(7, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(9, QHeaderView::ResizeToContents);
-#endif
-
 
     // Fill the table
     QStringList nucleobases;

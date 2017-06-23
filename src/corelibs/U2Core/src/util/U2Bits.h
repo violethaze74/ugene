@@ -22,10 +22,11 @@
 #ifndef _U2_BITS_H_
 #define _U2_BITS_H_
 
-#include <U2Core/global.h>
+#include <QByteArray>
+#include <QObject>
+#include <QVector>
 
-#include <QtCore/QVector>
-#include <QtCore/QByteArray>
+#include <U2Core/global.h>
 
 namespace U2 {
 

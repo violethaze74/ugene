@@ -29,6 +29,7 @@
 #include <QProgressBar>
 #include <QPushButton>
 #include <QTableWidget>
+#include <QThreadPool>
 #include <QWebElement>
 #include <QWebFrame>
 #include <QWebView>
@@ -179,7 +180,6 @@
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3SearchDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
@@ -1522,7 +1522,7 @@ GUI_TEST_CLASS_DEFINITION(test_3229){
     QString s = table.toInnerXml();
     int i = s.count("test.fa");
 
-    CHECK_SET_ERR( i==4, "unexpected table content: " + s);
+    CHECK_SET_ERR( i==3, "unexpected table content: " + s);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3245) {
@@ -2715,28 +2715,20 @@ GUI_TEST_CLASS_DEFINITION(test_3402){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3414){
-//check time on dashboard
-//    1. Open WD
+/*  check time on dashboard
+ *  1. Open WD
+ *  2. Select "Remote BLASTing" sample
+ *  3. Set input file samples/FASTA/human_T1.fa
+ *  4. Execute workflow
+ *  5. Check elapsed time
+ * */
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    2. Select "tuxedo" sample
-//    3. Set proper input data(_common_data/NIAID_pipelines/tuxedo).
-    QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/index"));
-    map.insert("Bowtie index basename", "chr6");
-    map.insert("Bowtie version", "Bowtie1");
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QList<QStringList>()<<(QStringList()<<
-                                                     testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq"),
-                                                      map));
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
-                                                                   "Single-sample"<<"Single-end"));
-    GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
+    GTUtilsWorkflowDesigner::addSample(os, "Remote BLASTing");
     GTGlobals::sleep();
 
-    GTUtilsWorkflowDesigner::click(os, "Assemble Transcripts with Cufflinks");
-    GTKeyboardDriver::keyClick( Qt::Key_Delete);
-    GTGlobals::sleep(200);
+    GTUtilsWorkflowDesigner::click(os, "Read Sequence(s)");
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dataDir + "samples/FASTA/human_T1.fa" );
 
-    //    Launch pipeline
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(1000);
     HIWebElement initEl = GTUtilsDashboard::findElement(os, "00:00:0", "SPAN");
@@ -2745,6 +2737,7 @@ GUI_TEST_CLASS_DEFINITION(test_3414){
     HIWebElement finalEl = GTUtilsDashboard::findElement(os, "00:00:0", "SPAN");
     QString s1 = finalEl.toPlainText();
     CHECK_SET_ERR(s!=s1, "timer not changed");
+    GTUtilsTask::cancelTask(os, "Execute workflow");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3428){
@@ -3803,7 +3796,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3589) {
-    // 0. Copy "data/samples/Assembly/chrM.sam" to a new directory to avoid UGENE conversion cache.
+    // 0. Copy "data/samples/Assembly/chrM.sam" to a new folder to avoid UGENE conversion cache.
     // 1. Create a workflow: Read assembly.
     // 2. Set an input file: that copied chrM.sam.
     // 3. Run the workflow.
@@ -4781,7 +4774,7 @@ GUI_TEST_CLASS_DEFINITION(test_3738) {
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList()<<testDir + "_common_data/scf/Sequence A.scf"
                                                                  <<testDir + "_common_data/scf/Sequence B.scf",
                                                                  sandBoxDir + "test_3738.ace"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Contig assembly with CAP3...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" <<  "Reads quality control and de novo assembly (with CAP3)...");
 
 //    menu item in the main menu.
 //    Set sequences "_common_data/scf/Sequence A.scf" and "_common_data/scf/Sequence B.scf" as input, set any valid output path and run the task.
@@ -4807,13 +4800,16 @@ GUI_TEST_CLASS_DEFINITION(test_3744) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
     GTGlobals::sleep(500);
+   
+    GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Regular expression");
 
-    QComboBox* algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
-    GTComboBox::setIndexWithText(os, algorithmBox, "Regular expression");
-
-    GTKeyboardDriver::keySequence("ACT.G");
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "ACG.T", true);
+    GTGlobals::sleep(200);
 
     QWidget* createButton = GTWidget::findWidget(os, "getAnnotationsPushButton");
+
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "", true);
+
     CHECK_SET_ERR(!createButton->isEnabled(), "prevPushButton is unexpectidly enabled")
 
 
@@ -5007,8 +5003,10 @@ GUI_TEST_CLASS_DEFINITION(test_3773) {
  *   Expected state: Log not have errors
 */
     GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Plain text"));
     GTFileDialog::openFile(os, dataDir + "samples/HMM", "aligment15900.hmm");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTGlobals::sleep(200);
     GTUtilsProjectTreeView::click(os, "aligment15900.hmm");
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
@@ -5019,7 +5017,7 @@ GUI_TEST_CLASS_DEFINITION(test_3773) {
 GUI_TEST_CLASS_DEFINITION(test_3773_1) {
     class OkClicker : public Filler {
     public:
-        OkClicker(HI::GUITestOpStatus& _os) : Filler(_os, "UHMM3BuildDialog"){}
+        OkClicker(HI::GUITestOpStatus& _os) : Filler(_os, "HmmerBuildDialog"){}
         virtual void run() {
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK(dialog, );
@@ -5919,7 +5917,7 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
     GTUtilsWorkflowDesigner::click(os, "Align reads with BWA MEM");
     GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", sandBoxDir + "test_3950.fa", GTUtilsWorkflowDesigner::textValue);
     QDir sandBox;
-    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", sandBox.absoluteFilePath(sandBoxDir), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", sandBox.absoluteFilePath(sandBoxDir), GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os, 480000);

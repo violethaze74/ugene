@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QTextStream>
+
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
@@ -108,13 +110,13 @@ void SlopbedWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, SlopbedWorker::tr("Output directory"),
-            SlopbedWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, SlopbedWorker::tr("Output folder"),
+            SlopbedWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, SlopbedWorker::tr("Custom directory"),
-            SlopbedWorker::tr("Select the custom output directory."));
+        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, SlopbedWorker::tr("Custom folder"),
+            SlopbedWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, SlopbedWorker::tr("Output file name"),
             SlopbedWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));
@@ -496,13 +498,13 @@ void GenomecovWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, GenomecovWorker::tr("Output directory"),
-            GenomecovWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, GenomecovWorker::tr("Output folder"),
+            GenomecovWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, GenomecovWorker::tr("Custom directory"),
-            GenomecovWorker::tr("Select the custom output directory."));
+        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, GenomecovWorker::tr("Custom folder"),
+            GenomecovWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, GenomecovWorker::tr("Output file name"),
             GenomecovWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));

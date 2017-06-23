@@ -24,7 +24,7 @@
 
 #include <U2Gui/ObjectViewModel.h>
 
-#include <QtGui/QPixmap>
+#include <QPixmap>
 
 namespace U2 {
 

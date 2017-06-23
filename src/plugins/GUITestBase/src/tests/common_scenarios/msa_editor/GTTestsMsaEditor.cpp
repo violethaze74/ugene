@@ -208,7 +208,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
 
-    //GTUtilsMdi::click(os, GTGlobals::Maximize);
+    // GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
@@ -259,19 +259,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "revcompl.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Show offsets");
-    GTGlobals::sleep();
-    GTGlobals::sleep();
 
     bool offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
     CHECK_SET_ERR(offsetsVisible == false, "Offsets are visible");
 
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTGlobals::sleep();
+    GTGlobals::sleep(1000);
 
     mdiWindow = GTUtilsMdi::activeWindow(os, false);
     CHECK_SET_ERR(mdiWindow == NULL, "There is an MDI window");
@@ -402,7 +399,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003_4) {
     GTGlobals::sleep();
 
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep();
+    GTGlobals::sleep();
 #ifdef Q_OS_MAC
     GTMouseDriver::click();
     GTGlobals::sleep(1000);
@@ -2647,8 +2645,9 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2){//DIFFERENCE: Line label is tested
     CHECK_SET_ERR(lineLabel->text()=="Ln 1 / 10", "Expected text: Ln 1 / 10. Found: " + lineLabel->text());
 //Expected state: Statistics "Pos" in right bottom is "Pos 3/14"
 
-//3. Insert 3 gaps to first three positoons in "Phaneroptera_falcata"
-    GTUtilsMSAEditorSequenceArea::selectArea(os,QPoint(-5,0),QPoint(-5,4));
+//3. Select and delete 5 lines 
+    GTUtilsMSAEditorSequenceArea::selectArea(os,QPoint(-5,3),QPoint(-5,7));
+    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
 //4. Select char at 4 position in "Phaneroptera_falcata"(A)
@@ -2814,7 +2813,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2_linux){
     qint64 bigSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
     qint64 smallSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
 
-    CHECK_SET_ERR(bigSize==4785325 && smallSize>914800, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
+    CHECK_SET_ERR(bigSize==4785325 && smallSize>914000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
 //    Expected state: image is exported
 }
 
@@ -3746,21 +3745,16 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
         virtual void run() {
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
-            
+
+            GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "SelectSubalignmentDialog", QDialogButtonBox::Cancel));
             QComboBox* exportType = dialog->findChild<QComboBox*>("comboBox");
             GTComboBox::setIndexWithText(os, exportType, "Custom region", false, GTGlobals::UseKey);
-            
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
-            //UGENE-4762 "Select subalignment" dialog can be shown twice when exporting subalignment as image
-            //GTKeyboardDriver::keyClick(Qt::Key_Escape); - second action resolves the problem
-           
-            exportType = dialog->findChild<QComboBox*>("comboBox");
-            QString text = exportType->currentText();
-            CHECK_SET_ERR(text == "Whole alignment", "Wrong combo box text!");
+
+            GTGlobals::sleep();
+            CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
-
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3844,14 +3838,13 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
             GTSpinBox::setValue(os, startLineEdit, 10);
 
             QSpinBox* endLineEdit = dialog->findChild<QSpinBox*>("endLineEdit");
-            CHECK_SET_ERR(endLineEdit != NULL, "endPoxBox is NULL");
+            CHECK_SET_ERR(endLineEdit != NULL, "endLineEdit is NULL");
             GTSpinBox::setValue(os, endLineEdit, 5);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
             GTWidget::click(os, ok);
 
             GTSpinBox::setValue(os, endLineEdit, 15);
-
             QWidget *noneButton = dialog->findChild<QWidget*>("noneButton");
             CHECK_SET_ERR(noneButton != NULL, "noneButton is NULL");
             GTWidget::click(os, noneButton);
@@ -4321,6 +4314,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056){
                                                   << "export sequences as alignment"));
     GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
     GTGlobals::sleep();
+    GTGlobals::sleep();
 //    "Use Genbank "SOURCE" tags..." checkbox
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(nameList.size() == 1, QString("unexpected number of names: %1").arg(nameList.size()));
@@ -4505,7 +4499,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new customAppSettingsFiller()));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
-//    Select some color scheme directory. Check state
+//    Select some color scheme folder. Check state
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "GUITest_common_scenarios_msa_editor_test_0060", NewColorSchemeCreator::nucl));
@@ -4526,7 +4520,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
 
             QLineEdit* colorsDirEdit = GTWidget::findExactWidget<QLineEdit*>(os, "colorsDirEdit", dialog);
             QString path = colorsDirEdit->text();
-            CHECK_SET_ERR(path.contains("_common_data/scenarios/sandbox"), "unexpected color directory: " + path);
+            CHECK_SET_ERR(path.contains("_common_data/scenarios/sandbox"), "unexpected color folder: " + path);
 
             GTGlobals::sleep(500);
 
@@ -4536,7 +4530,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new customAppSettingsFiller1()));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
-//    Select some color scheme directory. Check state
+//    Select some color scheme folder. Check state
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 }
 
@@ -4620,10 +4614,10 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
 //    Check wrong parameters:
 //    Dir to save does not exists
             GTLineEdit::setText(os, filepathEdit, sandBoxDir + "some_dir/subalignment.aln");
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Directory to save does not exist"));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Folder to save does not exist"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTGlobals::sleep(500);
-//    No permission  to write to directory
+//    No permission  to write to folder
             GTLineEdit::setText(os, filepathEdit, sandBoxDir + "read_only_dir/subalignment.aln");
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "No write permission to "));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -4644,8 +4638,8 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
             GTWidget::click(os, GTWidget::findWidget(os, "noneButton", dialog));
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "You must select at least one sequence"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-
 //    Start pos > end pos
+
             QLineEdit* startLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "startLineEdit", dialog);
             GTLineEdit::setText(os, startLineEdit, "50");
             QLineEdit* endLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "endLineEdit", dialog);
@@ -4654,7 +4648,8 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Illegal region!"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-            GTGlobals::sleep(500);      
+            GTGlobals::sleep(500);
+
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }

@@ -23,11 +23,7 @@
 #define _U2_WORKFLOW_DESIGNER_EDITOR_DELEGATES_H_
 
 #include <U2Lang/ConfigurationEditor.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QItemDelegate>
-#else
-#include <QtWidgets/QItemDelegate>
-#endif
+#include <QItemDelegate>
 
 Q_DECLARE_METATYPE(U2::PropertyDelegate*)
 

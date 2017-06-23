@@ -36,6 +36,7 @@ public:
     DrawHelper(MaEditorWgt *maEditorWgt);
 
     U2Region getVisibleBases(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
+    U2Region getVisibleRowsNumbers(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
     QList<int> getVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
     QVector<U2Region> getGroupedVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
 

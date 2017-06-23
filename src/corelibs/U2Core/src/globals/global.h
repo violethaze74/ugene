@@ -22,13 +22,13 @@
 #ifndef _U2_COREAPI_H_
 #define _U2_COREAPI_H_
 
-#include <U2Core/U2IdTypes.h>
-
-#include <QtCore/qglobal.h>
-#include <QtCore/QVariantMap>
-#include <QtCore/QObject>
-
 #include <assert.h>
+
+#include <QObject>
+#include <QVariantMap>
+#include <QtGlobal>
+
+#include <U2Core/U2IdTypes.h>
 
 #ifdef _DEBUG
 #   define U2_PRODUCT_NAME      "UGENED"
@@ -121,8 +121,8 @@
 #define PATH_PREFIX_DATA "data"
 #define PATH_PREFIX_SCRIPTS "scripts"
 
-typedef QMap<QString, QString> QStrStrMap;
-typedef QPair<QString, QString> StringPair;
+typedef QMap<QString, QString> StrStrMap;
+typedef QPair<QString, QString> StrStrPair;
 
 namespace U2 {
 
@@ -141,9 +141,13 @@ enum UnloadedObjectFilter { //used as a separate type but not 'bool' to improve 
 }
 
 enum DNAAlphabetType {
-    DNAAlphabet_RAW,
-    DNAAlphabet_NUCL,
-    DNAAlphabet_AMINO
+    DNAAlphabet_UNDEFINED = 0x0,
+    DNAAlphabet_RAW     = 0x1,
+    DNAAlphabet_NUCL    = 0x2,
+    DNAAlphabet_AMINO   = 0x4
 };
+
+Q_DECLARE_FLAGS(AlphabetFlags, DNAAlphabetType)
+Q_DECLARE_OPERATORS_FOR_FLAGS(AlphabetFlags)
 
 #endif

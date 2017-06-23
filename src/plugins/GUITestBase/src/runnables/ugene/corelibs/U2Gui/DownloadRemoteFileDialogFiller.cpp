@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
+#include <QDir>
+#include <QFileInfo>
 
 #include "DownloadRemoteFileDialogFiller.h"
 #include <primitives/GTCheckBox.h>
@@ -31,19 +31,11 @@
 #include <primitives/GTWidget.h>
 #include <U2Core/U2SafePoints.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QComboBox>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QListWidget>
-#include <QtGui/QPushButton>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QListWidget>
-#include <QtWidgets/QPushButton>
-#endif
+#include <QApplication>
+#include <QComboBox>
+#include <QDialogButtonBox>
+#include <QListWidget>
+#include <QPushButton>
 
 namespace U2 {
 
@@ -131,7 +123,7 @@ void DownloadRemoteFileDialogFiller::setDatabase(const QVariant &actionData) {
 #define GT_METHOD_NAME "enterSaveToDirectoryPath"
 void DownloadRemoteFileDialogFiller::enterSaveToDirectoryPath(const QVariant &actionData) {
     CHECK_OP(os, );
-    GT_CHECK(actionData.canConvert<QString>(), "Can't get directory path from the action data");
+    GT_CHECK(actionData.canConvert<QString>(), "Can't get folder path from the action data");
     GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "saveFilenameLineEdit", dialog), actionData.toString());
 }
 #undef GT_METHOD_NAME
@@ -139,7 +131,7 @@ void DownloadRemoteFileDialogFiller::enterSaveToDirectoryPath(const QVariant &ac
 #define GT_METHOD_NAME "selectSaveToDirectoryPath"
 void DownloadRemoteFileDialogFiller::selectSaveToDirectoryPath(const QVariant &actionData) {
     CHECK_OP(os, );
-    GT_CHECK(actionData.canConvert<QString>(), "Can't get directory path from the action data");
+    GT_CHECK(actionData.canConvert<QString>(), "Can't get folder path from the action data");
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, QFileInfo(actionData.toString()).absoluteDir().absolutePath(), "", GTFileDialogUtils::Choose));
     GTWidget::click(os, GTWidget::findWidget(os, "saveFilenameToolButton", dialog));
 }

@@ -28,9 +28,8 @@
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/ObjectViewTasks.h>
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
-#include <QtXml/qdom.h>
 class QDomDocument;
 
 namespace U2 {

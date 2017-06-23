@@ -255,7 +255,7 @@ QString BaseShortReadsAlignerWorker::checkPairedReads() const {
 //ShortReadsAlignerSlotsValidator
 bool ShortReadsAlignerSlotsValidator::validate(const IntegralBusPort *port, ProblemList &problemList) const {
     QVariant busMap = port->getParameter(Workflow::IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributePureValue();
-    bool data = isBinded(busMap.value<QStrStrMap>(), READS_URL_SLOT_ID);
+    bool data = isBinded(busMap.value<StrStrMap>(), READS_URL_SLOT_ID);
     if (!data){
         QString dataName = slotName(port, READS_URL_SLOT_ID);
         problemList.append(Problem(IntegralBusPort::tr("The slot must be not empty: '%1'").arg(dataName)));
@@ -281,8 +281,8 @@ int BaseShortReadsAlignerWorkerFactory::getThreadsCount(){
 void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates) {
     {
         Descriptor outDir(OUTPUT_DIR,
-            BaseShortReadsAlignerWorker::tr("Output directory"),
-            BaseShortReadsAlignerWorker::tr("Directory to save output files."));
+            BaseShortReadsAlignerWorker::tr("Output folder"),
+            BaseShortReadsAlignerWorker::tr("Folder to save output files."));
 
         Descriptor refGenome(REFERENCE_GENOME,
             BaseShortReadsAlignerWorker::tr("Reference genome"),

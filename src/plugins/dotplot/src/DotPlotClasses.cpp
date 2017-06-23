@@ -19,10 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include "DotPlotClasses.h"
-#include <QtCore/qmath.h>
-#include <QtCore/qnumeric.h>
 #include <U2Core/U2SafePoints.h>
+
+#include "DotPlotClasses.h"
 
 namespace U2 {
 

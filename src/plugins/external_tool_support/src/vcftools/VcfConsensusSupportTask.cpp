@@ -29,10 +29,9 @@
 #include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QDir>
-#include <QtCore/QProcess>
-#include <QtCore/QProcessEnvironment>
-#include <QtCore/QtGlobal>
+#include <QDir>
+#include <QProcess>
+#include <QProcessEnvironment>
 
 namespace U2 {
 
@@ -53,12 +52,12 @@ void VcfConsensusSupportTask::prepare() {
     const UserAppsSettings* userAS = AppContext::getAppSettings()->getUserAppsSettings();
     SAFE_POINT_EXT(userAS != NULL, setError(tr("UserAppsSettings is NULL")), );
     QString tmpDirPath( userAS->getCurrentProcessTemporaryDirPath(VCF_CONSENSUS_TMP_DIR) );
-    SAFE_POINT_EXT(!tmpDirPath.isEmpty(), setError(tr("Temporary directory is not set!")), );
+    SAFE_POINT_EXT(!tmpDirPath.isEmpty(), setError(tr("Temporary folder is not set!")), );
     GUrl tmp( tmpDirPath + "/" + inputVcf.fileName() + ".gz");
 
     QDir tmpDir( tmpDirPath );
     if (!tmpDir.mkpath(tmpDirPath)){
-        stateInfo.setError(tr("Can not create directory for temporary files."));
+        stateInfo.setError(tr("Can not create folder for temporary files."));
         return;
     }
 

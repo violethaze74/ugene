@@ -24,8 +24,8 @@
 
 #include <U2Core/Matrix44.h>
 
-#include <QtOpenGL/QGLWidget>
-#include <QtCore/QVariantList>
+#include <QGLWidget>
+#include <QVariantList>
 
 namespace U2 {
 

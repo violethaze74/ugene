@@ -45,6 +45,7 @@ public:
     QString                         filePath( ) const;
     bool                            exportSequence( ) const;
     bool                            exportSequenceNames( ) const;
+    bool                            addToProject() const;
 
     static const QString            CSV_FORMAT_ID;
 

@@ -23,12 +23,8 @@
 #include <primitives/GTWidget.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <core/GUITest.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QFileDialog>
-#else
-#include <QtWidgets/QFileDialog>
-#endif
-#include <QtCore/QDirIterator>
+#include <QFileDialog>
+#include <QDirIterator>
 #include <U2Core/U2SafePoints.h>
 #include <U2Test/UGUITest.h>
 

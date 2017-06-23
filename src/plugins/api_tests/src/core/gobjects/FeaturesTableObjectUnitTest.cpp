@@ -19,9 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QBitArray>
-#include <QtCore/QDir>
-#include <QtCore/QScopedPointer>
+#include <QBitArray>
+#include <QDir>
+#include <QScopedPointer>
 
 #include <U2Core/AnnotationTableObjectConstraints.h>
 #include <U2Core/AppContext.h>

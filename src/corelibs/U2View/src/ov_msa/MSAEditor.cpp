@@ -410,6 +410,13 @@ bool MSAEditor::eventFilter(QObject*, QEvent* e) {
             }
         }
     }
+    if (e->type() == QEvent::KeyPress) {
+        QKeyEvent *keyEvent = dynamic_cast<QKeyEvent*>(e);
+        if (keyEvent->matches(QKeySequence::Paste)) {
+            ui->getPasteAction()->trigger();
+            return true;
+        }
+    }
 
     return false;
 }
@@ -628,6 +635,7 @@ void MSAEditorUI::showSimilarity() {
 void MSAEditorUI::hideSimilarity() {
     if(NULL != similarityStatistics) {
         similarityStatistics->hide();
+        similarityStatistics->cancelPendingTasks();
     }
 }
 

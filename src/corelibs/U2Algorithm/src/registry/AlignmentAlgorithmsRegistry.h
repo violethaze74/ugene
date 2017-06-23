@@ -22,11 +22,11 @@
 #ifndef _U2_ALIGNMENT_ALGORITHMS_REGISTRY_H_
 #define _U2_ALIGNMENT_ALGORITHMS_REGISTRY_H_
 
-#include <QtCore/QList>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QMutex>
-#include <QtCore/QObject>
+#include <QList>
+#include <QMap>
+#include <QMutex>
+#include <QObject>
+#include <QStringList>
 
 #include "U2Core/global.h"
 

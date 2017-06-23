@@ -26,7 +26,7 @@
 #include <U2Core/AnnotationData.h>
 #include <U2Core/DNASequenceObject.h>
 
-#include <QtCore/QList>
+#include <QList>
 
 namespace U2 {
 

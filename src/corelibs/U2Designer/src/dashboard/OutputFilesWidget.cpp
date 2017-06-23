@@ -84,7 +84,7 @@ QString OutputFilesWidget::createActionsSubMenu(const Monitor::FileInfo& info, b
         )
         .arg(fullWidth ? "full-width" : "")
         .arg(relative(QFileInfo(info.url).dir().absolutePath() + "/"))
-        .arg(tr("Open containing directory"));
+        .arg(tr("Open containing folder"));
 }
 
 static const int MAX_LEN = 25;

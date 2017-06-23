@@ -22,7 +22,7 @@
 #ifndef _U2_SCRIPT_HIGHLIGHTER_H_
 #define _U2_SCRIPT_HIGHLIGHTER_H_
 
-#include <QtGui/QSyntaxHighlighter>
+#include <QSyntaxHighlighter>
 
 namespace U2 {
 

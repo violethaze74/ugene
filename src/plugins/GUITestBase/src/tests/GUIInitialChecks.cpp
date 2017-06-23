@@ -22,6 +22,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QMainWindow>
+#include <QProcess>
 #include <QTreeView>
 
 #include <U2Core/AppContext.h>

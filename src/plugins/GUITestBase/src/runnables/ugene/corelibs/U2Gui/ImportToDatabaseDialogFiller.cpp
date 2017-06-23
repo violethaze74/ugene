@@ -19,18 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
+#include <QDir>
+#include <QFileInfo>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QHeaderView>
-#include <QtGui/QTreeWidget>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QTreeWidget>
-#endif
+#include <QApplication>
+#include <QHeaderView>
+#include <QTreeWidget>
 
 #include "ImportToDatabaseDialogFiller.h"
 #include <base_dialogs/GTFileDialog.h>

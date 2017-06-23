@@ -24,9 +24,9 @@
 
 #include <limits>
 
-#include <QtCore/QList>
-#include <QtCore/QMutex>
-#include <QtCore/QObject>
+#include <QList>
+#include <QMutex>
+#include <QObject>
 
 #include <U2Algorithm/EnzymeModel.h>
 

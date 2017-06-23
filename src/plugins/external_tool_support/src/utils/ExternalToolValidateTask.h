@@ -24,7 +24,7 @@
 
 #include <U2Core/Task.h>
 #include <U2Core/MultiTask.h>
-#include <QtCore/QProcess>
+#include <QProcess>
 
 namespace U2 {
 

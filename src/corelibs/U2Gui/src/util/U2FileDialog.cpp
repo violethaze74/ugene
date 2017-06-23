@@ -19,14 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QMainWindow>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QMainWindow>
-#endif
+#include <QApplication>
+#include <QMainWindow>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>

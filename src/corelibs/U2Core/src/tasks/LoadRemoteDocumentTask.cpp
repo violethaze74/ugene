@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QEventLoop>
-#include <QtCore/QTimer>
-#include <QtCore/QUrl>
+#include <QDir>
+#include <QEventLoop>
+#include <QTimer>
+#include <QUrl>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -93,7 +93,7 @@ void BaseLoadRemoteDocumentTask::prepare(){
     }
 
     if (!prepareDownloadDirectory(fullPath)) {
-        setError(QString("Directory %1 does not exist").arg(fullPath));
+        setError(QString("Folder %1 does not exist").arg(fullPath));
         return;
     }
 
@@ -109,7 +109,7 @@ Task::ReportResult BaseLoadRemoteDocumentTask::report()
 bool BaseLoadRemoteDocumentTask::prepareDownloadDirectory( QString &path ){
     if (!QDir(path).exists()) {
         if (path == getDefaultDownloadDirectory()) {
-            // Creating default directory if it doesn't exist
+            // Creating default folder if it doesn't exist
             if (!QDir().mkpath(path)) {
                 return false;
             }
@@ -406,7 +406,7 @@ void LoadDataFromEntrezTask::run( )
     createLoopAndNetworkManager(traceFetchUrl);
 
     ioLog.trace( traceFetchUrl );
-    QUrl requestUrl( EntrezUtils::NCBI_EFETCH_URL.arg( db ).arg( accNumber ).arg( format ) );
+    QUrl requestUrl(EntrezUtils::NCBI_EFETCH_URL.arg(db).arg(accNumber).arg(format)); 
     downloadReply = networkManager->get( QNetworkRequest( requestUrl ) );
     connect( downloadReply, SIGNAL( error( QNetworkReply::NetworkError ) ),
         this, SLOT( sl_onError( QNetworkReply::NetworkError ) ) );
@@ -420,7 +420,7 @@ void LoadDataFromEntrezTask::run( )
         ioLog.trace( "Download finished." );
 
         QByteArray result = downloadReply->readAll( );
-        if ( ( result.size( ) < 100 ) && result.contains( "Nothing has been found" ) ) {
+        if (((result.size() < 100) && result.contains("Nothing has been found")) || (result.contains("ID list is empty! In it there are neither IDs nor accessions"))) {
             setError( tr( "Sequence with ID=%1 is not found." ).arg( accNumber ) );
             return;
         }

@@ -77,8 +77,8 @@ void TCoffeeWorkerFactory::init() {
                                      "0 - no iteration, -1 - Nseq iterations."));
     Descriptor etp(EXT_TOOL_PATH, TCoffeeWorker::tr("Tool Path"),
                    TCoffeeWorker::tr("External tool path."));
-    Descriptor tdp(TMP_DIR_PATH, TCoffeeWorker::tr("Temporary directory"),
-                   TCoffeeWorker::tr("Directory for temporary file.s"));
+    Descriptor tdp(TMP_DIR_PATH, TCoffeeWorker::tr("Temporary folder"),
+                   TCoffeeWorker::tr("folder for temporary file.s"));
 
     a << new Attribute(gop, BaseTypes::NUM_TYPE(), false, QVariant(-50));
     a << new Attribute(gep, BaseTypes::NUM_TYPE(), false, QVariant(0));

@@ -22,16 +22,11 @@
 #ifndef _U2_DNA_ASSEMBLEY_GUI_EXTENSION_H_
 #define _U2_DNA_ASSEMBLEY_GUI_EXTENSION_H_
 
-
 #include <U2Core/global.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/Task.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#else
-#include <QtWidgets/QWidget>
-#endif
+#include <QWidget>
 
 #include <U2Algorithm/DnaAssemblyTask.h>
 

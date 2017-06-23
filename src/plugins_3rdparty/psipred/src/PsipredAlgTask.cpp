@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QTemporaryFile>
+#include <QDir>
+#include <QTemporaryFile>
 
 #include <U2View/SecStructPredictUtils.h>
 #include <U2Core/BioStruct3D.h>

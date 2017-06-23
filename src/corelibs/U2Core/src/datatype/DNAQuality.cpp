@@ -31,6 +31,7 @@ static const QString SOLEXA("Solexa/Illumina 1.0");
 const QString DNAQuality::QUAL_FORMAT("PHRED");
 const QString DNAQuality::ENCODED("Encoded");
 const int DNAQuality::MAX_PHRED33_VALUE = 74;
+const int DNAQuality::MIN_PHRED64_VALUE = 59;
 
 DNAQuality::DNAQuality(const QByteArray &qualScore)
     : qualCodes(qualScore),
@@ -100,14 +101,16 @@ QStringList DNAQuality::getDNAQualityTypeNames()
 
 DNAQualityType DNAQuality::detectTypeByCodes(const QByteArray &qualCodes) {
     int maxQualityValue = 33;
+    int minQualityValue = 126;
     for (int i = 0; i < qualCodes.size(); i++){
         maxQualityValue = qMax(static_cast<int>(qualCodes.at(i)), maxQualityValue);
+        minQualityValue = qMin(static_cast<int>(qualCodes.at(i)), minQualityValue);
     }
-    return detectTypeByMaxQualityValue(maxQualityValue);
+    return detectTypeByMinMaxQualityValues(minQualityValue, maxQualityValue);
 }
 
-DNAQualityType DNAQuality::detectTypeByMaxQualityValue(int maxQualityValue) {
-    return (maxQualityValue >= MAX_PHRED33_VALUE) ? DNAQualityType_Illumina : DNAQualityType_Sanger;
+DNAQualityType DNAQuality::detectTypeByMinMaxQualityValues(int minQualityValue, int maxQualityValue) {
+    return ( maxQualityValue >= MAX_PHRED33_VALUE && minQualityValue >= MIN_PHRED64_VALUE ) ? DNAQualityType_Illumina : DNAQualityType_Sanger;
 }
 
 } // U2

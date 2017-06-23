@@ -25,7 +25,7 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/AppResources.h>
 
-#include <QtCore/QMap>
+#include <QMap>
 
 
 namespace U2 {

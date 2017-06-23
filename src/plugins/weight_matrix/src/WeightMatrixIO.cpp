@@ -35,15 +35,11 @@
 
 #include <U2Core/DIProperties.h>
 
-#include <QtCore/QVector>
-#include <QtCore/QTextStream>
-#include <QtCore/QFile>
+#include <QVector>
+#include <QTextStream>
+#include <QFile>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QMessageBox>
 
 /* TRANSLATOR U2::IOAdapter */
 

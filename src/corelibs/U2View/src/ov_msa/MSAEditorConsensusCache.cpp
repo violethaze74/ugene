@@ -25,6 +25,7 @@
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 #include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -51,7 +52,7 @@ MSAEditorConsensusCache::~MSAEditorConsensusCache() {
 void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory) {
     delete algorithm;
     algorithm = NULL;
-    algorithm = factory->createAlgorithm(aliObj->getMultipleAlignment());
+    algorithm = factory->createAlgorithm(aliObj->getMultipleAlignment(), qobject_cast<MultipleChromatogramAlignmentObject*>(aliObj) != NULL);
     connect(algorithm, SIGNAL(si_thresholdChanged(int)), SLOT(sl_thresholdChanged(int)));
     updateMap.fill(false);
 }

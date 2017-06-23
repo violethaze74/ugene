@@ -22,12 +22,7 @@
 #ifndef _U2_AUTHENTICATION_WIDGET_H_
 #define _U2_AUTHENTICATION_WIDGET_H_
 
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#else
-#include <QtWidgets/QWidget>
-#endif
+#include <QWidget>
 
 #include <U2Core/global.h>
 #include "ui_AuthenticationWidget.h"

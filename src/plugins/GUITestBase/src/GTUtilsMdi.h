@@ -49,6 +49,8 @@ public:
     static void closeWindow(HI::GUITestOpStatus &os, const QString& windowName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
     static void closeAllWindows(HI::GUITestOpStatus &os);
     static void waitWindowOpened(HI::GUITestOpStatus &os, const QString &windowNamePart, qint64 timeout = 180000);
+
+    static bool isTabbedLayout(HI::GUITestOpStatus &os);
 };
 
 } // namespace

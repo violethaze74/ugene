@@ -43,6 +43,12 @@ U2Region DrawHelper::getVisibleBases(int widgetWidth, bool countFirstClippedBase
     return U2Region(firstVisibleBase, lastVisibleBase - firstVisibleBase + 1);
 }
 
+U2Region DrawHelper::getVisibleRowsNumbers(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
+    const int firstVisibleRowNumber = scrollController->getFirstVisibleRowNumber(countFirstClippedRow);
+    const int lastVisibleRowNumber= scrollController->getLastVisibleRowNumber(widgetHeight, countLastClippedRow);
+    return U2Region(firstVisibleRowNumber, lastVisibleRowNumber - firstVisibleRowNumber + 1);
+}
+
 QList<int> DrawHelper::getVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
     QVector<U2Region> groupedRowsIndexes = getGroupedVisibleRowsIndexes(widgetHeight, countFirstClippedRow, countLastClippedRow);
     QList<int> rowsIndexes;

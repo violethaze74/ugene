@@ -22,14 +22,13 @@
 #ifndef _U2_HTTP_FILE_ADAPTER_H_
 #define _U2_HTTP_FILE_ADAPTER_H_
 
+#include <QAuthenticator>
+#include <QEventLoop>
+#include <QLinkedList>
+#include <QMutex>
+#include <QNetworkProxy>
+
 #include <U2Core/IOAdapter.h>
-#include <U2Core/NetworkConfiguration.h>
-
-#include <QtCore/QEventLoop>
-#include <QtCore/QLinkedList>
-#include <QtCore/QMutex>
-#include <QtNetwork/QAuthenticator>
-
 
 class QNetworkAccessManager;
 class QNetworkReply;

@@ -22,12 +22,13 @@
 #ifndef _U2_SELECTION_MODEL_H_
 #define _U2_SELECTION_MODEL_H_
 
+#include <QObject>
+
 #include <U2Core/global.h>
 
 namespace U2 {
 
 typedef QString GSelectionType;
-
 
 class U2CORE_EXPORT GSelection : public QObject {
     Q_OBJECT

@@ -29,6 +29,7 @@
 #endif
 #endif
 
+#include <QObject>
 #include <QVector>
 
 #include <U2Core/global.h>
@@ -202,7 +203,7 @@ U2CORE_EXPORT QDataStream &operator>>(QDataStream &in, U2Region &myObj);
 }//namespace
 
 Q_DECLARE_TYPEINFO(U2::U2Region, Q_PRIMITIVE_TYPE);
-Q_DECLARE_METATYPE( U2::U2Region)
-Q_DECLARE_METATYPE( QVector< U2::U2Region >)
+Q_DECLARE_METATYPE(U2::U2Region)
+Q_DECLARE_METATYPE(QVector< U2::U2Region >)
 
 #endif

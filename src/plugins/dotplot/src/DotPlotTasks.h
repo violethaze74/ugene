@@ -28,7 +28,7 @@
 #include <U2Core/Task.h>
 #include <U2View/ADVSequenceObjectContext.h>
 
-#include <QtCore/QTextStream>
+#include <QTextStream>
 
 namespace U2 {
 

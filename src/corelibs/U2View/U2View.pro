@@ -57,6 +57,8 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.h \
+           src/ov_msa/Highlighting/MsaSchemeComboBoxController.h \
+           src/ov_msa/Highlighting/MsaSchemesMenuBuilder.h \
            src/ov_msa/MaConsensusMismatchController.h \
            src/ov_msa/MaEditor.h \
            src/ov_msa/MaEditorConsensusAreaSettings.h \
@@ -306,6 +308,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.cpp \
+           src/ov_msa/Highlighting/MsaSchemesMenuBuilder.cpp \
            src/ov_msa/MaConsensusMismatchController.cpp \
            src/ov_msa/MaEditor.cpp \
            src/ov_msa/MaEditorConsensusAreaSettings.cpp \

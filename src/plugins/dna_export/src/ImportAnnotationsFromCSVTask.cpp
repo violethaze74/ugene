@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedPointer>
+#include <QScopedPointer>
 
-#include <QtScript/QScriptEngine>
-#include <QtScript/QScriptValueIterator>
+#include <QScriptEngine>
+#include <QScriptValueIterator>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>

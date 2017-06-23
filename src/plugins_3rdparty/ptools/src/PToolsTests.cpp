@@ -19,11 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include "PToolsTests.h"
+#include <cmath>
+
+#include <QDomElement>
 
 #include <U2Core/BioStruct3DObject.h>
 
-#include <cmath>
+#include "PToolsTests.h"
 
 namespace U2 {
 

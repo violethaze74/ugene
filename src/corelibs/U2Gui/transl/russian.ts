@@ -537,9 +537,13 @@
         <translation>База данных:</translation>
     </message>
     <message>
+        <source>Save to folder:</source>
+        <translation type="vanished">Сохранить в папку:</translation>
+    </message>
+    <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="79"/>
         <source>Save to directory:</source>
-        <translation>Сохранить в директорию:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="104"/>
@@ -553,11 +557,16 @@
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="135"/>
+        <source>Add to project</source>
+        <translation type="unfinished">Добавить в проект</translation>
+    </message>
+    <message>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="145"/>
         <source>Some entries in the NCBI databases contain features without a sequence. You can download both sequence and features by checking this parameter. Note that some sequences are rather big.</source>
         <translation>Некоторые составляющие в базе данных NCBI содержат аннотации без последовательностей. Вы можете скачать и последовательности и аннотации при помощи этого параметра.</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="138"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.ui" line="148"/>
         <source>Force download the appropriate sequence</source>
         <translation>Принудительно скачать соответствующую последовательность</translation>
     </message>
@@ -864,9 +873,13 @@
         <translation>Параметры файлов и папок</translation>
     </message>
     <message>
+        <source>Process folders recursively</source>
+        <translation type="vanished">Обработать папки рекурсивно</translation>
+    </message>
+    <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="40"/>
         <source>Process directories recursively</source>
-        <translation>Обработать каталоги рекурсивно</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="47"/>
@@ -1071,13 +1084,13 @@ Remove it from the project first.</source>
     </message>
     <message>
         <location filename="../src/util/ExportObjectUtils.cpp" line="144"/>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="175"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="179"/>
         <source>Unable to create I/O factory for </source>
         <translation>Unable to create I/O factory for </translation>
     </message>
     <message>
         <location filename="../src/util/ExportObjectUtils.cpp" line="149"/>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="178"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="182"/>
         <source>Unknown document format I/O factory: </source>
         <translation>Unknown document format I/O factory: </translation>
     </message>
@@ -1129,27 +1142,27 @@ The items cannot be recovered once deleted.</source>
         <translation>&lt;авто&gt;</translation>
     </message>
     <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="64"/>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="59"/>
         <source>Format %1 is not supported by %2.</source>
         <translation>Формат %1 не поддерживается %2.</translation>
     </message>
     <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="65"/>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="60"/>
         <source>Failed to export image to %1.</source>
         <translation>Невозможно экспортировать изображение %1.</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="56"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="50"/>
         <source>Author</source>
         <translation>Автор</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="56"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="50"/>
         <source>Gene name</source>
         <translation>Имя гена</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="56"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="50"/>
         <source>Organism</source>
         <translation>Организм</translation>
     </message>
@@ -1539,8 +1552,8 @@ Close it or choose different file</source>
     </message>
     <message>
         <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="92"/>
-        <source>Destination directory &apos;%1&apos; is not writable, please choose different destination URL</source>
-        <translation>Директория места назначения &apos;%1&apos; недоступна для записи, выберите другое место назначения</translation>
+        <source>Destination folder &apos;%1&apos; is not writable, please choose different destination URL</source>
+        <translation>Папка места назначения &apos;%1&apos; недоступна для записи, выберите другое место назначения</translation>
     </message>
     <message>
         <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="100"/>
@@ -1657,12 +1670,12 @@ To append data to existing file press &apos;Append&apos;.</source>
 <context>
     <name>U2::AuthenticationDialog</name>
     <message>
-        <location filename="../src/util/AuthenticationDialog.cpp" line="88"/>
+        <location filename="../src/util/AuthenticationDialog.cpp" line="83"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/util/AuthenticationDialog.cpp" line="88"/>
+        <location filename="../src/util/AuthenticationDialog.cpp" line="83"/>
         <source>Login is not set</source>
         <translation>Логин не задан</translation>
     </message>
@@ -1733,33 +1746,33 @@ To append data to existing file press &apos;Append&apos;.</source>
 <context>
     <name>U2::CreateAnnotationWidgetController</name>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="238"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="240"/>
         <source>Select annotation saving parameters</source>
         <translation>Выберите параметры сохранения аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="241"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="243"/>
         <source>Document is already added to the project: &apos;%1&apos;</source>
         <translation>Документ уже существует: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="246"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="248"/>
         <source>Illegal folder: %1</source>
         <translation>Не найден путь: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="251"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="253"/>
         <source>Illegal annotation name! </source>
         <translation>Нелегальные символы в имени аннотации. Допустимы только цифры, буквы и подчёркивания! </translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="256"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="258"/>
         <source>Illegal group name</source>
         <translation>Нелегальные символы в имени группы</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="261"/>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="266"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="263"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="268"/>
         <source>Invalid location! Location must be in GenBank format.
 Simple examples:
 1..10
@@ -1772,7 +1785,7 @@ join(1..10,15..45)
 complement(5..15)</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="351"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="353"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
@@ -1813,22 +1826,22 @@ complement(5..15)</translation>
 <context>
     <name>U2::CreateObjectRelationDialogController</name>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="52"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="48"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="53"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="49"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="74"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="70"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="75"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="71"/>
         <source>Found annotations that are out of the sequence range, continue?</source>
         <translation>Найдены аннотации, выходящие за границы последовательности. Продолжить?</translation>
     </message>
@@ -1862,47 +1875,69 @@ complement(5..15)</translation>
 <context>
     <name>U2::DownloadRemoteFileDialog</name>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="64"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="60"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="65"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="61"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="201"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="127"/>
-        <source>Select directory to save</source>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="123"/>
+        <source>Select folder to save</source>
         <translation>Папка для сохранения</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="168"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="164"/>
         <source>Resource id is empty!</source>
         <translation>Идентификатор ресурса пуст!</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="174"/>
-        <source>No directory selected for saving file!</source>
-        <translation>Не задана директория для сохранения файла!</translation>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="170"/>
+        <source>No folder selected for saving file!</source>
+        <translation>Не задана папка для сохранения файла!</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="206"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="199"/>
+        <source>There are more than 100 files found for download.
+Are you sure you want to open all of them?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="200"/>
+        <source>Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="201"/>
+        <source>Open anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="201"/>
+        <source>Don&apos;t open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="217"/>
         <source>Download remote documents</source>
         <translation>Скачать удаленные документы</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="246"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="257"/>
         <source>Hint: </source>
         <translation>Подсказка: </translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="247"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="258"/>
         <source>Use database unique identifier.</source>
         <translation>Использовать уникальный идентификатор базы данных.</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="249"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="260"/>
         <source>You can download multiple items by separating IDs with space or semicolon.</source>
         <translation>Вы можете скачать несколько элементов разделяя идентификаторы при помощи пробела или точки с запятой.</translation>
     </message>
@@ -1910,18 +1945,18 @@ complement(5..15)</translation>
 <context>
     <name>U2::EditConnectionDialog</name>
     <message>
-        <location filename="../src/util/shared_db/EditConnectionDialog.cpp" line="145"/>
-        <location filename="../src/util/shared_db/EditConnectionDialog.cpp" line="151"/>
+        <location filename="../src/util/shared_db/EditConnectionDialog.cpp" line="140"/>
+        <location filename="../src/util/shared_db/EditConnectionDialog.cpp" line="146"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/EditConnectionDialog.cpp" line="145"/>
+        <location filename="../src/util/shared_db/EditConnectionDialog.cpp" line="140"/>
         <source>Host is not set</source>
         <translation>Хост не задан</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/EditConnectionDialog.cpp" line="151"/>
+        <location filename="../src/util/shared_db/EditConnectionDialog.cpp" line="146"/>
         <source>Database is not set</source>
         <translation>База данных не задана</translation>
     </message>
@@ -1929,33 +1964,33 @@ complement(5..15)</translation>
 <context>
     <name>U2::EditQualifierDialog</name>
     <message>
-        <location filename="../src/util/EditQualifierDialog.cpp" line="45"/>
+        <location filename="../src/util/EditQualifierDialog.cpp" line="40"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/EditQualifierDialog.cpp" line="46"/>
+        <location filename="../src/util/EditQualifierDialog.cpp" line="41"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/EditQualifierDialog.cpp" line="49"/>
+        <location filename="../src/util/EditQualifierDialog.cpp" line="44"/>
         <source>View Qualifier</source>
         <translation>Посмотреть квалификатор</translation>
     </message>
     <message>
-        <location filename="../src/util/EditQualifierDialog.cpp" line="100"/>
-        <location filename="../src/util/EditQualifierDialog.cpp" line="104"/>
+        <location filename="../src/util/EditQualifierDialog.cpp" line="95"/>
+        <location filename="../src/util/EditQualifierDialog.cpp" line="99"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/util/EditQualifierDialog.cpp" line="100"/>
+        <location filename="../src/util/EditQualifierDialog.cpp" line="95"/>
         <source>Illegal qualifier name</source>
         <translation>Нелегальные символы в имени квалификатора</translation>
     </message>
     <message>
-        <location filename="../src/util/EditQualifierDialog.cpp" line="104"/>
+        <location filename="../src/util/EditQualifierDialog.cpp" line="99"/>
         <source>Illegal qualifier value</source>
         <translation>Нелегальные символы в значении квалификатора</translation>
     </message>
@@ -1984,8 +2019,8 @@ complement(5..15)</translation>
     </message>
     <message>
         <location filename="../src/util/EditSequenceDialogController.cpp" line="141"/>
-        <source>Directory to save is not exists</source>
-        <translation>Директория не существует</translation>
+        <source>Folder to save is not exists</source>
+        <translation>Папка не существует</translation>
     </message>
     <message>
         <location filename="../src/util/EditSequenceDialogController.cpp" line="145"/>
@@ -2100,11 +2135,16 @@ complement(5..15)</translation>
     </message>
     <message>
         <location filename="../src/util/ExportAnnotationsDialog.ui" line="58"/>
+        <source>Add to project</source>
+        <translation type="unfinished">Добавить в проект</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ExportAnnotationsDialog.ui" line="68"/>
         <source>Save sequences under annotations</source>
         <translation>Сохранить последовательности аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.ui" line="65"/>
+        <location filename="../src/util/ExportAnnotationsDialog.ui" line="75"/>
         <source>Save sequence names</source>
         <translation>Сохранить имена последовательностей</translation>
     </message>
@@ -2188,8 +2228,8 @@ complement(5..15)</translation>
 <context>
     <name>U2::FileLineEdit</name>
     <message>
-        <location filename="../src/util/DialogUtils.cpp" line="91"/>
-        <location filename="../src/util/DialogUtils.cpp" line="97"/>
+        <location filename="../src/util/DialogUtils.cpp" line="89"/>
+        <location filename="../src/util/DialogUtils.cpp" line="95"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
     </message>
@@ -2205,12 +2245,12 @@ complement(5..15)</translation>
 <context>
     <name>U2::FolderNameDialog</name>
     <message>
-        <location filename="../src/util/project/FolderNameDialog.cpp" line="41"/>
+        <location filename="../src/util/project/FolderNameDialog.cpp" line="35"/>
         <source>Add Folder</source>
         <translation>Добавить папку</translation>
     </message>
     <message>
-        <location filename="../src/util/project/FolderNameDialog.cpp" line="41"/>
+        <location filename="../src/util/project/FolderNameDialog.cpp" line="35"/>
         <source>Rename Folder</source>
         <translation>Переименовать папку</translation>
     </message>
@@ -2231,24 +2271,24 @@ complement(5..15)</translation>
 <context>
     <name>U2::GUIUtils</name>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="148"/>
-        <location filename="../src/util/GUIUtils.cpp" line="158"/>
-        <location filename="../src/util/GUIUtils.cpp" line="176"/>
+        <location filename="../src/util/GUIUtils.cpp" line="143"/>
+        <location filename="../src/util/GUIUtils.cpp" line="153"/>
+        <location filename="../src/util/GUIUtils.cpp" line="171"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="148"/>
+        <location filename="../src/util/GUIUtils.cpp" line="143"/>
         <source>Document URL is empty!</source>
         <translation>Пустая ссылка!</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="158"/>
+        <location filename="../src/util/GUIUtils.cpp" line="153"/>
         <source>Unable to launch default web browser.</source>
         <translation>Не удалось запустить браузер Интернет, установленный по умолчанию.</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="176"/>
+        <location filename="../src/util/GUIUtils.cpp" line="171"/>
         <source>Please specify the browser executable</source>
         <translation>Не указано приложение браузера</translation>
     </message>
@@ -2269,7 +2309,7 @@ complement(5..15)</translation>
 <context>
     <name>U2::HelpButton</name>
     <message>
-        <location filename="../src/util/HelpButton.cpp" line="40"/>
+        <location filename="../src/util/HelpButton.cpp" line="34"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
@@ -2277,17 +2317,17 @@ complement(5..15)</translation>
 <context>
     <name>U2::ImageExportController</name>
     <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="81"/>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="76"/>
         <source>SVG format is not supported</source>
         <translation>SVG format is not supported</translation>
     </message>
     <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="85"/>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="80"/>
         <source>PS/PDF format is not supported</source>
         <translation>PS/PDF format is not supported</translation>
     </message>
     <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="88"/>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="83"/>
         <source>Raster formats are disabled</source>
         <translation>Raster formats are disabled</translation>
     </message>
@@ -2295,7 +2335,7 @@ complement(5..15)</translation>
 <context>
     <name>U2::ImageExportTask</name>
     <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="68"/>
+        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="63"/>
         <source>Done!</source>
         <translation>Готово!</translation>
     </message>
@@ -2331,17 +2371,17 @@ complement(5..15)</translation>
         <translation>Импорт</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="293"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="291"/>
         <source>Select files to import</source>
         <translation>Выберите файлы для импорта</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="316"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="314"/>
         <source>Select a folder to import</source>
         <translation>Выберите папку для импорта</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="551"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="549"/>
         <source>This file will be imported with its own options.
 
 </source>
@@ -2350,59 +2390,59 @@ complement(5..15)</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="554"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="552"/>
         <source>File:
 </source>
         <translation>Файл:
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="557"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="596"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="642"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="659"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="555"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="594"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="640"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="657"/>
         <source>Import to: </source>
         <translation>Импортировать в: </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="561"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="559"/>
         <source>A folder for file objects will be created</source>
         <translation>Будет создана папка для файловых объектов</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="565"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="609"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="563"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="607"/>
         <source>If file is not recognized, it will be imported as binary data</source>
         <translation>Если файл не будет распознан, он будет импортирован в виде бинарных данных</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="570"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="614"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="568"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="612"/>
         <source>If file contains more than one sequence, they will imported as separate objects</source>
         <translation>Если файл содержит больше чем одну последовательность, то они будут импортированы как отдельные объекты</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="573"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="617"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="571"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="615"/>
         <source>If file contains more than one sequence, they will imported as single sequence with several &apos;Unknown&apos; bases as separator</source>
         <translation>Если файл содержит больше чем одну последовательность они будут импортированы в одну последовательность с несколькими &apos;Unknown&apos; символами в качестве разделителей</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="574"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="618"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="572"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="616"/>
         <source>Size of separator: %1</source>
         <translation>Размер разделителя: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="577"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="621"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="575"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="619"/>
         <source>If file contains more than one sequence, they will be joined into the multiple alignment</source>
         <translation>Если файл содержит больше чем одну последовательность они будут соединены в выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="590"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="634"/>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="653"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="588"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="632"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="651"/>
         <source>This folder will be imported with its own options.
 
 </source>
@@ -2410,34 +2450,34 @@ complement(5..15)</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="593"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="591"/>
         <source>Folder:
 </source>
         <translation>Папка:
 </translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="601"/>
-        <source>The directory will be processed recursively</source>
-        <translation>Эта директория будет будет обработана рекурсивно</translation>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="599"/>
+        <source>The folder will be processed recursively</source>
+        <translation>Эта папка будет будет обработана рекурсивно</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="605"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="603"/>
         <source>A folder for each file will be created</source>
         <translation>Будет создана папка для каждого файла</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="637"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="635"/>
         <source>The </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="637"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="635"/>
         <source> from document </source>
         <translation> из документа</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="656"/>
+        <location filename="../src/util/shared_db/ImportToDatabaseDialog.cpp" line="654"/>
         <source>Document:
 </source>
         <translation>Документ:
@@ -2447,9 +2487,9 @@ complement(5..15)</translation>
 <context>
     <name>U2::LoadRemoteDocumentAndAddToProjectTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="232"/>
-        <location filename="../src/OpenViewTask.cpp" line="239"/>
-        <location filename="../src/OpenViewTask.cpp" line="246"/>
+        <location filename="../src/OpenViewTask.cpp" line="227"/>
+        <location filename="../src/OpenViewTask.cpp" line="235"/>
+        <location filename="../src/OpenViewTask.cpp" line="243"/>
         <source>Load remote document and add to project</source>
         <translation>Load remote document and add to project</translation>
     </message>
@@ -2462,7 +2502,7 @@ complement(5..15)</translation>
 <context>
     <name>U2::LoadUnloadedDocumentAndOpenViewTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="70"/>
+        <location filename="../src/OpenViewTask.cpp" line="65"/>
         <source>Load document: &apos;%1&apos;</source>
         <translation>Загрузка документа: %1</translation>
     </message>
@@ -2470,42 +2510,42 @@ complement(5..15)</translation>
 <context>
     <name>U2::LogViewWidget</name>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="72"/>
+        <location filename="../src/util/logview/LogView.cpp" line="65"/>
         <source>Log</source>
         <translation>Лог</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="79"/>
+        <location filename="../src/util/logview/LogView.cpp" line="72"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="83"/>
+        <location filename="../src/util/logview/LogView.cpp" line="76"/>
         <source>Dump performance counters</source>
         <translation>Сбросить счетчики производительности</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="86"/>
+        <location filename="../src/util/logview/LogView.cpp" line="79"/>
         <source>Append separator</source>
         <translation>Добавить разделитель</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="88"/>
+        <location filename="../src/util/logview/LogView.cpp" line="81"/>
         <source>Clear log</source>
         <translation>Очистить лог</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="133"/>
+        <location filename="../src/util/logview/LogView.cpp" line="126"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="198"/>
+        <location filename="../src/util/logview/LogView.cpp" line="191"/>
         <source>logview_set_case</source>
         <translation>Установить тип</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="201"/>
+        <location filename="../src/util/logview/LogView.cpp" line="194"/>
         <source>logview_use_regexp</source>
         <translation>Использовать регулярные выражения</translation>
     </message>
@@ -2513,12 +2553,12 @@ complement(5..15)</translation>
 <context>
     <name>U2::MultipleRangeSelector</name>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="244"/>
+        <location filename="../src/util/RangeSelector.cpp" line="241"/>
         <source>Go</source>
         <translation>Перейти</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="245"/>
+        <location filename="../src/util/RangeSelector.cpp" line="242"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -2562,27 +2602,27 @@ complement(5..15)</translation>
 <context>
     <name>U2::ObjectViewTreeController</name>
     <message>
-        <location filename="../src/util/ObjectViewTreeController.cpp" line="60"/>
+        <location filename="../src/util/ObjectViewTreeController.cpp" line="56"/>
         <source>Activate view</source>
         <translation>Переключиться на окно</translation>
     </message>
     <message>
-        <location filename="../src/util/ObjectViewTreeController.cpp" line="66"/>
+        <location filename="../src/util/ObjectViewTreeController.cpp" line="62"/>
         <source>Add bookmark</source>
         <translation>Добавить закладку</translation>
     </message>
     <message>
-        <location filename="../src/util/ObjectViewTreeController.cpp" line="71"/>
+        <location filename="../src/util/ObjectViewTreeController.cpp" line="67"/>
         <source>Remove bookmark</source>
         <translation>Удалить закладку</translation>
     </message>
     <message>
-        <location filename="../src/util/ObjectViewTreeController.cpp" line="78"/>
+        <location filename="../src/util/ObjectViewTreeController.cpp" line="74"/>
         <source>Rename bookmark</source>
         <translation>Переименовать закладку</translation>
     </message>
     <message>
-        <location filename="../src/util/ObjectViewTreeController.cpp" line="397"/>
+        <location filename="../src/util/ObjectViewTreeController.cpp" line="393"/>
         <source>New bookmark</source>
         <translation>Закладка</translation>
     </message>
@@ -2590,12 +2630,12 @@ complement(5..15)</translation>
 <context>
     <name>U2::OpenViewTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="152"/>
+        <location filename="../src/OpenViewTask.cpp" line="147"/>
         <source>State is NULL</source>
         <translation>State is NULL</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="154"/>
+        <location filename="../src/OpenViewTask.cpp" line="149"/>
         <source>GObject factory is NULL</source>
         <translation>GObject factory is NULL</translation>
     </message>
@@ -2625,30 +2665,30 @@ complement(5..15)</translation>
     <name>U2::PasteUrlsTask</name>
     <message>
         <location filename="../src/PasteController.cpp" line="178"/>
-        <source>Pasting of directories is not supported:</source>
-        <translation>Pasting of directories is not supported:</translation>
+        <source>Pasting of folders is not supported:</source>
+        <translation>Pasting of folders is not supported:</translation>
     </message>
 </context>
 <context>
     <name>U2::PositionSelector</name>
     <message>
-        <location filename="../src/util/PositionSelector.cpp" line="51"/>
-        <location filename="../src/util/PositionSelector.cpp" line="98"/>
+        <location filename="../src/util/PositionSelector.cpp" line="42"/>
+        <location filename="../src/util/PositionSelector.cpp" line="89"/>
         <source>Go!</source>
         <translation>Перейти!</translation>
     </message>
     <message>
-        <location filename="../src/util/PositionSelector.cpp" line="52"/>
+        <location filename="../src/util/PositionSelector.cpp" line="43"/>
         <source>Go to position</source>
         <translation>Перейти на позицию</translation>
     </message>
     <message>
-        <location filename="../src/util/PositionSelector.cpp" line="84"/>
+        <location filename="../src/util/PositionSelector.cpp" line="75"/>
         <source>Position</source>
         <translation>Позиция</translation>
     </message>
     <message>
-        <location filename="../src/util/PositionSelector.cpp" line="104"/>
+        <location filename="../src/util/PositionSelector.cpp" line="95"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -2844,12 +2884,12 @@ complement(5..15)</translation>
 <context>
     <name>U2::QueryBlockWidget</name>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="246"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="241"/>
         <source>Term:</source>
         <translation>Условие:</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="257"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="252"/>
         <source>All fields</source>
         <translation>Все поля</translation>
     </message>
@@ -2858,32 +2898,32 @@ complement(5..15)</translation>
     <name>U2::RangeSelector</name>
     <message>
         <location filename="../src/util/RangeSelector.cpp" line="60"/>
-        <location filename="../src/util/RangeSelector.cpp" line="149"/>
+        <location filename="../src/util/RangeSelector.cpp" line="146"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="96"/>
+        <location filename="../src/util/RangeSelector.cpp" line="93"/>
         <source>Min</source>
         <translation>Мин</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="100"/>
+        <location filename="../src/util/RangeSelector.cpp" line="97"/>
         <source>Max</source>
         <translation>Макс</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="116"/>
+        <location filename="../src/util/RangeSelector.cpp" line="113"/>
         <source>Range:</source>
         <translation>Регион:</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="128"/>
+        <location filename="../src/util/RangeSelector.cpp" line="125"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="155"/>
+        <location filename="../src/util/RangeSelector.cpp" line="152"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
@@ -2994,12 +3034,12 @@ complement(5..15)</translation>
 <context>
     <name>U2::ScaleBar</name>
     <message>
-        <location filename="../src/util/ScaleBar.cpp" line="43"/>
+        <location filename="../src/util/ScaleBar.cpp" line="39"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/util/ScaleBar.cpp" line="50"/>
+        <location filename="../src/util/ScaleBar.cpp" line="46"/>
         <source>+</source>
         <translation>+</translation>
     </message>
@@ -3007,53 +3047,53 @@ complement(5..15)</translation>
 <context>
     <name>U2::ScriptEditorDialog</name>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.cpp" line="52"/>
+        <location filename="../src/util/ScriptEditorDialog.cpp" line="45"/>
         <source>Done</source>
         <translation>Готово</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.cpp" line="53"/>
+        <location filename="../src/util/ScriptEditorDialog.cpp" line="46"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.cpp" line="103"/>
+        <location filename="../src/util/ScriptEditorDialog.cpp" line="96"/>
         <source>File is too large %1</source>
         <translation>Файл &quot;%1&quot; слишком большой</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.cpp" line="120"/>
+        <location filename="../src/util/ScriptEditorDialog.cpp" line="113"/>
         <source>Select script to open</source>
         <translation>Выберите скрипт</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.cpp" line="139"/>
+        <location filename="../src/util/ScriptEditorDialog.cpp" line="132"/>
         <source>Script is empty!</source>
         <translation>Скрипт пуст!</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.cpp" line="143"/>
+        <location filename="../src/util/ScriptEditorDialog.cpp" line="136"/>
         <source>Save script to file</source>
         <translation>Сохранить скрипт в файл</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.cpp" line="163"/>
+        <location filename="../src/util/ScriptEditorDialog.cpp" line="156"/>
         <source>Script files</source>
         <translation>Файлы скрипта</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.cpp" line="174"/>
+        <location filename="../src/util/ScriptEditorDialog.cpp" line="167"/>
         <source>Script syntax check failed! Line: %1, error: %2</source>
         <translation>Проверка синтаксиса скрипта не удалась! В строке: %1 обнаружена ошибка: %2</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.cpp" line="175"/>
-        <location filename="../src/util/ScriptEditorDialog.cpp" line="177"/>
+        <location filename="../src/util/ScriptEditorDialog.cpp" line="168"/>
+        <location filename="../src/util/ScriptEditorDialog.cpp" line="170"/>
         <source>Check result</source>
         <translation>Результат проверки</translation>
     </message>
     <message>
-        <location filename="../src/util/ScriptEditorDialog.cpp" line="177"/>
+        <location filename="../src/util/ScriptEditorDialog.cpp" line="170"/>
         <source>Syntax is OK!</source>
         <translation>Проверка синтаксиса удачна!</translation>
     </message>
@@ -3079,12 +3119,12 @@ complement(5..15)</translation>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="157"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="152"/>
         <source>an unexpected subtask</source>
         <translation>an unexpected subtask</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="194"/>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="189"/>
         <source>No results found corresponding to the query</source>
         <translation>Не найдено результатов соответствующих запросу</translation>
     </message>
@@ -3307,13 +3347,13 @@ check connection settings</translation>
 <context>
     <name>U2::WidgetScreenshotExportToSvgTask</name>
     <message>
-        <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="58"/>
+        <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="52"/>
         <source>Painter is still active</source>
         <translation>Отрисовка еще активна</translation>
     </message>
     <message>
-        <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="64"/>
-        <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="67"/>
+        <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="58"/>
+        <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="61"/>
         <source>Can not open the file: %1</source>
         <translation>Невозможно открыть файл: %1</translation>
     </message>
@@ -3321,7 +3361,7 @@ check connection settings</translation>
 <context>
     <name>U2::WidgetScreenshotImageExportController</name>
     <message>
-        <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="115"/>
+        <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="109"/>
         <source>Screenshot</source>
         <translation>Скриншот</translation>
     </message>

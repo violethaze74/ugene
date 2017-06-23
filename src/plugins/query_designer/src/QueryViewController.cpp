@@ -1149,8 +1149,10 @@ AddConstraintDialog::AddConstraintDialog(QueryScene* _scene, QDDistanceType _kin
 : scene(_scene), kind(_kind) {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759342");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    QString title = "Add %1 Constraint";
+    QString title = tr("Add Constraint %1");
     switch (kind)
     {
     case E2S:

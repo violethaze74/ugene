@@ -23,8 +23,8 @@
 #define _U2_PHYLTREE_OBJECT_TESTS_H_
 
 #include <U2Test/XMLTestUtils.h>
-#include <QtXml/QDomElement>
-#include <QtCore/QHash>
+#include <QDomElement>
+#include <QHash>
 
 namespace U2 {
 

@@ -22,8 +22,10 @@
 #ifndef _U2_ASSEMBLY_CONSENSUS_ALGORITHM_REGISTRY_H_
 #define _U2_ASSEMBLY_CONSENSUS_ALGORITHM_REGISTRY_H_
 
+#include <QMap>
+#include <QStringList>
+
 #include "AssemblyConsensusAlgorithm.h"
-#include <QtCore/QStringList>
 
 namespace U2 {
 

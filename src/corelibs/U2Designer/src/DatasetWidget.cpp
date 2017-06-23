@@ -104,12 +104,11 @@ void URLListWidget::addUrlItem(UrlItem *urlItem) {
 void URLListWidget::sl_addFileButton() {
     LastUsedDirHelper lod;
     QStringList files;
-#if defined(Q_OS_MAC) || (QT_VERSION >= 0x050000)
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         files = U2FileDialog::getOpenFileNames(NULL, tr("Select file"), lod.dir, "", 0, QFileDialog::DontUseNativeDialog);
-    } else
-#endif
-    files = U2FileDialog::getOpenFileNames(NULL, tr("Select file"), lod.dir);
+    } else {
+        files = U2FileDialog::getOpenFileNames(NULL, tr("Select file"), lod.dir);
+    }
     foreach (const QString &file, files) {
         lod.url = file;
         addUrl(file);
@@ -118,7 +117,7 @@ void URLListWidget::sl_addFileButton() {
 
 void URLListWidget::sl_addDirButton() {
     LastUsedDirHelper lod;
-    QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a directory"), lod.dir);
+    QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder"), lod.dir);
     if (!dir.isEmpty()) {
         lod.dir = dir;
         addUrl(dir);

@@ -25,7 +25,7 @@
 #include <U2Core/AnnotationData.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/Task.h>
-#include <QtCore/QProcess>
+#include <QProcess>
 
 
 namespace U2 {
@@ -134,7 +134,7 @@ public:
     static void removeTmpDir(const QString &absoulutePath, U2OpStatus &os);
     static QString createTmpDir(const QString &domain, U2OpStatus &os);
     /**
-     * Creates a new directory: prePath/domain/tmp_dir_name
+     * Creates a new folder: prePath/domain/tmp_dir_name
      */
     static QString createTmpDir(const QString &prePath, const QString &domain, U2OpStatus &os);
     static void appendExistingFile(const QString &path, QStringList &files);

@@ -23,15 +23,10 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include <QtCore/QDir>
+#include <QDir>
 #include <U2Gui/HelpButton.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QPushButton>
+#include <QMessageBox>
 
 namespace U2 {
 

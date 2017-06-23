@@ -21,7 +21,7 @@
 
 #include <time.h>
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 #include <U2Algorithm/MolecularSurface.h>
 

@@ -164,7 +164,7 @@ BlastPlusSupport::BlastPlusSupport(const QString& name, const QString& path) : E
 }
 
 void BlastPlusSupport::sl_runWithExtFileSpecify(){
-    //Check that blastal and tempory directory path defined
+    //Check that blastal and tempory folder path defined
     QStringList toolList;
     toolList << ET_BLASTN << ET_BLASTP << ET_BLASTX << ET_TBLASTN << ET_TBLASTX << ET_RPSBLAST;
     bool isOneOfToolConfigured=false;
@@ -299,7 +299,7 @@ void BlastPlusSupportContext::buildMenu(GObjectView* view, QMenu* m) {
 }
 
 void BlastPlusSupportContext::sl_showDialog() {
-    //Check that any of BLAST+ tools and tempory directory path defined
+    //Check that any of BLAST+ tools and tempory folder path defined
     bool isOneOfToolConfigured=false;
     foreach(QString toolName, toolList){
         if(!AppContext::getExternalToolRegistry()->getByName(toolName)->getPath().isEmpty()){

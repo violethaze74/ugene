@@ -23,11 +23,11 @@
 #define _U2_WINDOW_STEP_SELECTOR_WIDGET_
 
 #include <U2Core/U2Region.h>
-#include <QtWidgets/QDialog>
-#include <QtWidgets/QSpinBox>
-#include <QtWidgets/QDoubleSpinBox>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QFormLayout>
+#include <QDialog>
+#include <QSpinBox>
+#include <QDoubleSpinBox>
+#include <QGroupBox>
+#include <QFormLayout>
 
 namespace U2 {
 
@@ -56,10 +56,14 @@ public:
     double getMax() const;
     bool getState() const;
 
+private slots:
+    void sl_valueChanged(const QString &);
+    
 private:
     QGroupBox* minmaxGroup;
     QDoubleSpinBox* minBox;
     QDoubleSpinBox* maxBox;
+    QPalette normalPalette;
 };
 
 class U2VIEW_EXPORT WindowStepSelectorDialog : public QDialog {

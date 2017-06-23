@@ -22,7 +22,7 @@
 #ifndef _U2_LONG_LONG_VALIDATOR_H_
 #define _U2_LONG_LONG_VALIDATOR_H_
 
-#include <QtGui/QValidator>
+#include <QValidator>
 
 #include <U2Core/global.h>
 

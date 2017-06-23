@@ -24,8 +24,6 @@
 
 #include <U2Lang/WorkflowScriptEngine.h>
 
-#include <QtScript>
-
 #define SCRIPT_CHECK(condition, ctx, error, result) \
     if (!(condition)) { \
     ctx->throwError(error); \

@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <qdom.h>
 #include <QDir>
+#include <QDomDocument>
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
@@ -209,7 +209,7 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus& ts, Project* project,
     QByteArray rawData = xmlDoc.toByteArray();
     //  printf(">>%s", xmlDoc.toString().toStdString().c_str());
 
-    //check that project directory exists
+    //check that project folder exists
     if (!projectDir.exists()) {
         QDir root;
         root.mkpath(projectDir.absolutePath());

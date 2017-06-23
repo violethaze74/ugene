@@ -657,13 +657,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/CreateFragmentDialog.cpp" line="55"/>
         <location filename="../src/CreateFragmentDialog.cpp" line="77"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/CreateFragmentDialog.cpp" line="56"/>
         <location filename="../src/CreateFragmentDialog.cpp" line="78"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/CreateFragmentDialog.cpp" line="106"/>
@@ -697,37 +697,47 @@ Choose another region.</translation>
 <context>
     <name>U2::DigestSequenceDialog</name>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="124"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="63"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/DigestSequenceDialog.cpp" line="64"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/DigestSequenceDialog.cpp" line="126"/>
         <source>No enzymes are selected! Please select enzymes.</source>
         <translation>Необходимо выбрать ферменты рестрикции.</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="130"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="132"/>
         <source>Cannot load enzymes library</source>
         <translation>Невозможно загрузить библиотеку ферментов</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="148"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="150"/>
         <source>Error</source>
         <translation>Проблема</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="148"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="150"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="248"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="250"/>
         <source> : %1 cut(s)</source>
         <translation> : %1 разрез(ов)</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="332"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="334"/>
         <source>Auto-annotations update task is NULL.</source>
         <translation>Auto-annotations update task is NULL.</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="354"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="356"/>
         <source>Select annotations</source>
         <translation>Выделить аннотации</translation>
     </message>
@@ -778,42 +788,52 @@ Choose another region.</translation>
 <context>
     <name>U2::EditFragmentDialog</name>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="137"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="48"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/EditFragmentDialog.cpp" line="49"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/EditFragmentDialog.cpp" line="134"/>
         <source>Left overhang is empty. Please enter the overhang or set blunt left end.</source>
         <translation>Левый выступ не задан. Задайте выступ или уставновите срез.</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="141"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="138"/>
         <source>Invalid left overhang: unsupported alphabet!</source>
         <translation>Недопустимое левый конец: неподдерживаемый алфавит!</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="161"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="158"/>
         <source>Right overhang is empty. Please enter the overhang or set blunt right end.</source>
         <translation>Правый выступ не задан. Задайте выступ или уставновите срез.</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="165"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="162"/>
         <source>Invalid right overhang: unsupported alphabet!</source>
         <translation>Недопустимое правый конец: неподдерживаемый алфавит!</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="186"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="183"/>
         <source> (INVERTED)</source>
         <translation> (ИНВЕРТИРОВАН)</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="188"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="185"/>
         <source>Fragment of %1%2&lt;br&gt;</source>
         <translation>Фрагмент %1%2&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="203"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="200"/>
         <source>&lt;tr&gt; &lt;td align=&quot;center&quot;&gt; 5&apos; &lt;/td&gt;&lt;td&gt;&lt;/td&gt; &lt;td align=&quot;center&quot;&gt; 3&apos; &lt;/td&gt; &lt;/tr&gt;</source>
         <translation>&lt;tr&gt; &lt;td align=&quot;center&quot;&gt; 5&apos; &lt;/td&gt;&lt;td&gt;&lt;/td&gt; &lt;td align=&quot;center&quot;&gt; 3&apos; &lt;/td&gt; &lt;/tr&gt;</translation>
     </message>
     <message>
-        <location filename="../src/EditFragmentDialog.cpp" line="209"/>
+        <location filename="../src/EditFragmentDialog.cpp" line="206"/>
         <source>&lt;tr&gt; &lt;td align=&quot;center&quot;&gt; 3&apos; &lt;/td&gt;&lt;td&gt;&lt;/td&gt; &lt;td align=&quot;center&quot;&gt; 5&apos; &lt;/td&gt; &lt;/tr&gt;</source>
         <translation>&lt;tr&gt; &lt;td align=&quot;center&quot;&gt; 3&apos; &lt;/td&gt;&lt;td&gt;&lt;/td&gt; &lt;td align=&quot;center&quot;&gt; 5&apos; &lt;/td&gt; &lt;/tr&gt;</translation>
     </message>
@@ -942,6 +962,19 @@ To start ligation create a project or open an existing.</source>
     </message>
 </context>
 <context>
+    <name>U2::EnzymesSelectorDialog</name>
+    <message>
+        <location filename="../src/EnzymesQuery.cpp" line="144"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/EnzymesQuery.cpp" line="145"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Отмена</translation>
+    </message>
+</context>
+<context>
     <name>U2::EnzymesSelectorWidget</name>
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="153"/>
@@ -1055,27 +1088,37 @@ To start ligation create a project or open an existing.</source>
 <context>
     <name>U2::FindEnzymesDialog</name>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="550"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="520"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="521"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="552"/>
         <source>Total number of enzymes: %1, selected %2</source>
         <translation>Число ферментов в базе: %1, выбрано %2</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="557"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="559"/>
         <source>Invalid &apos;Search&apos; region!</source>
         <translation>Invalid &apos;Search&apos; region!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="566"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="568"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="587"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="589"/>
         <source>Error!</source>
         <translation>Проблема!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="587"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="589"/>
         <source>Minimum hit value must be lesser or equal then maximum!</source>
         <translation>Минимальное значение должно быть меньше либо равно максимального!</translation>
     </message>
@@ -1194,42 +1237,42 @@ To start ligation create a project or open an existing.</source>
 <context>
     <name>U2::QDEnzymesActor</name>
     <message>
-        <location filename="../src/EnzymesQuery.cpp" line="62"/>
+        <location filename="../src/EnzymesQuery.cpp" line="57"/>
         <source>Find enzymes</source>
         <translation>Найти ферменты рестрикции</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesQuery.cpp" line="71"/>
+        <location filename="../src/EnzymesQuery.cpp" line="66"/>
         <source>Enzymes query</source>
         <translation>Запрос ферментов рестрикции</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesQuery.cpp" line="115"/>
+        <location filename="../src/EnzymesQuery.cpp" line="110"/>
         <source>Restriction Sites</source>
         <translation>Сайты Рестрикции</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesQuery.cpp" line="116"/>
+        <location filename="../src/EnzymesQuery.cpp" line="111"/>
         <source>Finds restriction cut sites in supplied DNA sequence.</source>
         <translation>Найти сайты рестррикции в приведенной последовательности ДНК.</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesQuery.cpp" line="118"/>
+        <location filename="../src/EnzymesQuery.cpp" line="113"/>
         <source>Enzymes</source>
         <translation>Ферменты</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesQuery.cpp" line="118"/>
+        <location filename="../src/EnzymesQuery.cpp" line="113"/>
         <source>Restriction enzymes used to recognize the restriction sites.</source>
         <translation>Рестрикционный анализ используется для выявления сайтов рестрикции.</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesQuery.cpp" line="119"/>
+        <location filename="../src/EnzymesQuery.cpp" line="114"/>
         <source>Circular</source>
         <translation>Круговые</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesQuery.cpp" line="119"/>
+        <location filename="../src/EnzymesQuery.cpp" line="114"/>
         <source>If &lt;i&gt;True&lt;/i&gt; considers the sequence circular. That allows to search for restriction sites between the end and the beginning of the sequence.</source>
         <translation>Если&lt;i&gt;Истина&lt;/i&gt; то последовательность рассматривается как круговая. Сайты будут искаться между началом и концом последовательности.</translation>
     </message>

@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <qdom.h>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
@@ -335,7 +333,7 @@ void CoreLib::initUsersWorkers() {
 
     QDir dir(path);
     if(!dir.exists()) {
-        //log.info(tr("There isn't directory with users workflow elements"));
+        //log.info(tr("There isn't folder with users workflow elements"));
         return;
     }
     dir.setNameFilters(QStringList() << "*.usa"); //think about file extension // Answer: Ok :)

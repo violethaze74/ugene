@@ -26,10 +26,10 @@
 #include <U2Core/Log.h>
 #include <U2Core/U2OpStatus.h>
 
-#include <QtCore/QDateTime>
-#include <QtCore/QStringList>
-#include <QtCore/QVarLengthArray>
-#include <QtCore/QReadWriteLock>
+#include <QDateTime>
+#include <QStringList>
+#include <QVarLengthArray>
+#include <QReadWriteLock>
 
 namespace U2 {
 

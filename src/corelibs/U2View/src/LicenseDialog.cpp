@@ -20,7 +20,7 @@
  */
 
 
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <U2Core/AppContext.h>
 

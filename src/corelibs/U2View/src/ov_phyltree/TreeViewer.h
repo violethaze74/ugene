@@ -22,14 +22,12 @@
 #ifndef _U2_TREE_VIEWER_H_
 #define _U2_TREE_VIEWER_H_
 
-#include <qglobal.h>
-
 #include <QGraphicsView>
 #include <QToolBar>
 #include <QToolButton>
 #include <QScrollBar>
 
-#include <QtCore/QMap>
+#include <QMap>
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
@@ -40,7 +38,7 @@
 
 #include "TreeSettings.h"
 
-#include <QtGui/QTransform>
+#include <QTransform>
 
 namespace U2 {
 

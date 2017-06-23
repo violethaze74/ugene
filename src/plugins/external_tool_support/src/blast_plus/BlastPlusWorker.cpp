@@ -107,8 +107,8 @@ void BlastPlusWorkerFactory::init() {
                    BlastPlusWorker::tr("Name for annotations."));
     Descriptor etp(BLASTPLUS_EXT_TOOL_PATH, BlastPlusWorker::tr("Tool Path"),
                    BlastPlusWorker::tr("External tool path."));
-    Descriptor tdp(BLASTPLUS_TMP_DIR_PATH, BlastPlusWorker::tr("Temporary directory"),
-                   BlastPlusWorker::tr("Directory for temporary files."));
+    Descriptor tdp(BLASTPLUS_TMP_DIR_PATH, BlastPlusWorker::tr("Temporary folder"),
+                   BlastPlusWorker::tr("Folder for temporary files."));
     Descriptor output(BLASTPLUS_ORIGINAL_OUT, BlastPlusWorker::tr("BLAST output"),
                    BlastPlusWorker::tr("Location of BLAST output file."));
     Descriptor outtype(BLASTPLUS_OUT_TYPE, BlastPlusWorker::tr("BLAST output type"),
@@ -227,7 +227,7 @@ void BlastPlusWorkerFactory::init() {
     }
 
     delegates[BLASTPLUS_ORIGINAL_OUT] = new URLDelegate("", "out file", false);
-    delegates[BLASTPLUS_DATABASE_PATH] = new URLDelegate("", "Database Directory", false, true, false);
+    delegates[BLASTPLUS_DATABASE_PATH] = new URLDelegate("", "Database Folder", false, true, false);
     delegates[BLASTPLUS_EXT_TOOL_PATH] = new URLDelegate("", "executable", false, false, false);
     delegates[BLASTPLUS_TMP_DIR_PATH] = new URLDelegate("", "TmpDir", false, true);
 

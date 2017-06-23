@@ -41,7 +41,7 @@
 #include "ov_msa/MSAEditor.h"
 #include "ov_msa/PhyTrees/MSAEditorTreeManager.h"
 
-#include <QtCore/QSet>
+#include <QSet>
 
 
 namespace U2 {

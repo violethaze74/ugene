@@ -28,9 +28,9 @@
 #include <U2Core/GUrl.h>
 #include <U2Core/U2Alphabet.h>
 
-#include <QtCore/QByteArray>
-#include <QtCore/QString>
-#include <QtCore/QVariantMap>
+#include <QByteArray>
+#include <QString>
+#include <QVariantMap>
 
 #include <U2Core/DNASequence.h>
 

@@ -22,7 +22,7 @@
 #ifndef _U2_UDRSCHEMAREGISTRY_H_
 #define _U2_UDRSCHEMAREGISTRY_H_
 
-#include <QtCore/QMutex>
+#include <QMutex>
 
 #include <U2Core/UdrSchema.h>
 

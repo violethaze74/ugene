@@ -62,7 +62,7 @@ void SequenceQualityTrimTask::run() {
     cloneObjects();
     CHECK_OP(stateInfo, );
 
-    const U2Region acceptedRegion = trimSequnce();
+    const U2Region acceptedRegion = trimSequence();
     CHECK_OP(stateInfo, );
 
     trimChromatogram(acceptedRegion);
@@ -114,7 +114,7 @@ void SequenceQualityTrimTask::restoreRelation() {
     CHECK_OP(stateInfo, );
 }
 
-U2Region SequenceQualityTrimTask::trimSequnce() {
+U2Region SequenceQualityTrimTask::trimSequence() {
     DNASequence sequence = trimmedSequenceObject->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, U2Region());
     const U2Region acceptedRegion = DNASequenceUtils::trimByQuality(sequence, settings.qualityTreshold, settings.minSequenceLength, settings.trimBothEnds);

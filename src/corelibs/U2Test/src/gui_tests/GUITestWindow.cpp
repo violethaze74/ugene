@@ -19,9 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#include "GUITestWindow.h"
+#include <QDialog>
+#include <QLineEdit>
+#include <QMainWindow>
+#include <QMouseEvent>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDoubleSpinBox>
+#include <QGroupBox>
+#include <QMenuBar>
+#include <QRadioButton>
+#include <QSpinBox>
+#include <QToolBox>
+#include <QToolButton>
+
 #include <U2Core/U2SafePoints.h>
 
+#include "GUITestWindow.h"
 
 #define CLASS_NAME_CN 0
 #define OBJ_NAME_CN 1
@@ -422,9 +436,9 @@ QString EventFilter::generateFillerSource() const{
               "#include \"primitives/GTLineEdit.h\"\n"
               "#include \"primitives/GTComboBox.h\"\n"
               "#include \"api/GTRadioButton.h\"\n"
-              "#include <QtGui/QApplication>\n"
-              "#include <QtGui/QGroupBox>\n"
-              "#include <QtGui/QComboBox>\n\n").arg(fillerName));
+              "#include <QApplication>\n"
+              "#include <QGroupBox>\n"
+              "#include <QComboBox>\n\n").arg(fillerName));
 
     result.append(QString("namespace U2 {\n\n"
               "#define GT_CLASS_NAME \"GTUtilsDialog::%1\"\n"

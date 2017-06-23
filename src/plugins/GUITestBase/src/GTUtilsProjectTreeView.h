@@ -58,6 +58,9 @@ public:
     static void click(HI::GUITestOpStatus &os, const QString& itemName, Qt::MouseButton button = Qt::LeftButton);
     static void click(HI::GUITestOpStatus &os, const QString& itemName, const QString &parentName, Qt::MouseButton button = Qt::LeftButton);
 
+    static void callContextMenu(HI::GUITestOpStatus &os, const QString &itemName);
+    static void callContextMenu(HI::GUITestOpStatus &os, const QString &itemName, const QString &parentName);
+
     static QTreeView* getTreeView(HI::GUITestOpStatus &os);
     static QModelIndex findIndex(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
     static QModelIndex findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());

@@ -427,12 +427,20 @@ void MSAEditorConsensusArea::sl_visibleAreaChanged() {
 void MSAEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
     if (e->buttons() & Qt::LeftButton) {
         selecting = true;
+        int lastPos = curPos;
         curPos = ui->getBaseWidthController()->screenXPositionToBase(e->x());
         if (curPos != -1) {
             const int selectionHeight = ui->getSequenceArea()->getNumDisplayableSequences();
-            MaEditorSelection selection(curPos, 0, 1, selectionHeight);
-            ui->getSequenceArea()->setSelection(selection);
-            scribbling = true;
+            // select current column
+            if ((Qt::ShiftModifier == e->modifiers()) && (lastPos != -1)) {
+                MaEditorSelection selection(qMin(lastPos, curPos), 0, abs(curPos - lastPos) + 1, selectionHeight);
+                ui->getSequenceArea()->setSelection(selection);
+                curPos = lastPos;
+            } else {
+                MaEditorSelection selection(curPos, 0, 1, selectionHeight);
+                ui->getSequenceArea()->setSelection(selection);
+                scribbling = true;
+            }
         }
     }
     QWidget::mousePressEvent(e);
@@ -455,7 +463,6 @@ void MSAEditorConsensusArea::mouseReleaseEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton && selecting) {
         const int newPos = ui->getBaseWidthController()->screenXPositionToBase(event->x());
         updateSelection(newPos);
-        curPos = newPos;
         scribbling = false;
         selecting = false;
     }

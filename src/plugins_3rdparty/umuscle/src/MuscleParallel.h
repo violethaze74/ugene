@@ -30,7 +30,7 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 
 #include <algorithm>
-#include <QtCore/QVector>
+#include <QVector>
 
 class MuscleContext;
 class MSA;

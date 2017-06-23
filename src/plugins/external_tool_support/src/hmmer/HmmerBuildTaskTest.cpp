@@ -19,11 +19,14 @@
 * MA 02110-1301, USA.
 */
 
-#include "HmmerBuildTaskTest.h"
+#include <QDomElement>
+#include <QFile>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/TextUtils.h>
+
+#include "HmmerBuildTaskTest.h"
 
 namespace U2 {
 
@@ -48,11 +51,7 @@ float infinity() {
 }
 
 bool isfin(float x) {
-#if __cplusplus <= 199711L
-    return !isnan(x) && isinf(x);
-#else
-    return !std::isnan(x) && !std::isinf(x);
-#endif
+    return !qIsNaN(x) && qIsInf(x);
 }
 
 #ifdef _WINDOWS

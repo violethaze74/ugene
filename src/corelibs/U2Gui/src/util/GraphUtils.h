@@ -24,8 +24,8 @@
 
 #include <U2Core/global.h>
 
-#include <QtGui/QPainter>
-#include <QtGui/QFont>
+#include <QPainter>
+#include <QFont>
 
 namespace U2 {
 

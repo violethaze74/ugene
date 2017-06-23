@@ -26,7 +26,7 @@
 #include <U2Algorithm/SArrayBasedFindTask.h>
 #include "RFBase.h"
 
-#include <QtCore/QVector>
+#include <QVector>
 
 namespace U2 {
 

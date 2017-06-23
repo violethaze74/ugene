@@ -20,6 +20,7 @@
  */
 
 #include <QApplication>
+#include <QDir>
 #include <QFile>
 #include <QListWidget>
 #include <QPlainTextEdit>
@@ -68,6 +69,7 @@
 #include "GTTestsRegressionScenarios_5001_6000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
+#include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
@@ -92,12 +94,15 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
+#include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
@@ -676,6 +681,28 @@ GUI_TEST_CLASS_DEFINITION(test_5249) {
     CHECK_SET_ERR(!l.hasError(), "Error in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5252) {
+//    1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open an additional view for the sequence.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view" << "Open new view: Sequence View"));
+    GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: there are two bookmarks: "murine [s] NC_001363" and "murine [s] NC_001363 2".
+    GTUtilsBookmarksTreeView::findItem(os, "murine [s] NC_001363");
+    GTUtilsBookmarksTreeView::findItem(os, "murine [s] NC_001363 2");
+
+//    3. Rename the annotation table object.
+    GTUtilsProjectTreeView::rename(os, "NC_001363 features", "test_5252");
+
+//    Expected state: bookmarks are not renamed.
+    GTUtilsBookmarksTreeView::findItem(os, "murine [s] NC_001363");
+    GTUtilsBookmarksTreeView::findItem(os, "murine [s] NC_001363 2");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5268) {
 //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
@@ -866,8 +893,8 @@ GUI_TEST_CLASS_DEFINITION(test_5356) {
 
     GTUtilsWorkflowDesigner::click(os, "Cut Adapter");
     GTUtilsWorkflowDesigner::setParameter(os, "FASTA file with 3' adapters", QDir(testDir + "_common_data/regression/5356/adapter.fa").absolutePath(), GTUtilsWorkflowDesigner::textValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", "Custom", GTUtilsWorkflowDesigner::comboValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Custom directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", "Custom", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Custom folder", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1086,7 +1113,7 @@ GUI_TEST_CLASS_DEFINITION(test_5371) {
 
 GUI_TEST_CLASS_DEFINITION(test_5412) {
 //    1. Open "/_common_data/reads/wrong_order/align_bwa_mem.uwl"
-//    2. Set input data: e_coli_mess_1.fastq nd e_coli_mess_2.fastq (the directory from step 1)
+//    2. Set input data: e_coli_mess_1.fastq nd e_coli_mess_2.fastq (the folder from step 1)
 //    3. Reference: "/_common_data/e_coli/NC_008253.fa"
 //    4. Set requiered output parameters
 //    5. Set "Filter unpaired reads" to false
@@ -1105,7 +1132,7 @@ GUI_TEST_CLASS_DEFINITION(test_5412) {
     GTUtilsWorkflowDesigner::addInputFile(os, "File List 2", testDir + "/_common_data/reads/wrong_order/e_coli_mess_2.fastq");
 
     GTUtilsWorkflowDesigner::click(os, "Align Reads with BWA MEM");
-    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file name", "test_5412", GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", testDir + "/_common_data/e_coli/NC_008253.fa", GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Filter unpaired reads", false, GTUtilsWorkflowDesigner::comboValue);
@@ -1192,6 +1219,155 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5447_1) {
+//    1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open the context menu on the "NC_001363 features" object in the project view.
+//    3. Select "Export/Import" -> "Export annotations..." menu item.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
+
+//    Expected state: an "Export Annotations" dialog opens, "GenBank" format is selected, there is an "Add to project" checkbox, it is enabled and checked.
+            GTComboBox::checkCurrentValue(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "GenBank");
+
+            QCheckBox *addToProjectCheck = GTWidget::findExactWidget<QCheckBox *>(os, "addToProjectCheck", dialog);
+            CHECK_SET_ERR(NULL != addToProjectCheck, "addToProjectCheck is NULL");
+            CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
+            CHECK_SET_ERR(addToProjectCheck->isEnabled(), "addToProjectCheck is not enabled");
+            CHECK_SET_ERR(addToProjectCheck->isChecked(), "addToProjectCheck is not checked by default");
+
+//    4. Set a valid result file path, accept the dialog.
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog), sandBoxDir + "test_5447_1.gb");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export annotations..."));
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, new Scenario()));
+    GTUtilsProjectTreeView::callContextMenu(os, "NC_001363 features", "murine.gb");
+
+//    Expected state: the annotations were exported, a new document with an annotations table object was added to the project.
+    const qint64 fileSize = GTFile::getSize(os, sandBoxDir + "test_5447_1.gb");
+    CHECK_SET_ERR(0 != fileSize, "Result file is empty");
+
+    const QModelIndex annotationsTableObjectIndex = GTUtilsProjectTreeView::findIndex(os, "NC_001363 features", GTUtilsProjectTreeView::findIndex(os, "test_5447_1.gb"));
+    CHECK_SET_ERR(annotationsTableObjectIndex.isValid(), "Annotation object not found");
+
+//    5. Add the object to the "murine.gb" sequence.
+    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
+    GTUtilsProjectTreeView::dragAndDrop(os, annotationsTableObjectIndex, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+
+//    Expected state: all annotations are doubled.
+    const QStringList oldGroups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 features [murine.gb]");
+    const QStringList newGroups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 features [test_5447_1.gb]");
+    bool oldCommentGroupExists = false;
+    foreach (const QString &oldGroup, oldGroups) {
+        if (oldGroup == "comment  (0, 1)") {
+            oldCommentGroupExists = true;
+            continue;
+        }
+        CHECK_SET_ERR(newGroups.contains(oldGroup), QString("'%1' group from the original file is not present in a new file").arg(oldGroup));
+    }
+    CHECK_SET_ERR(oldGroups.size() - (oldCommentGroupExists ? 1 : 0) == newGroups.size(),
+                  QString("Groups count from the original file is not equal to a groups count in a new file (%1 and %2").arg(oldGroups.size()).arg(newGroups.size()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5447_2) {
+//    1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open the context menu on the "NC_001363 features" object in the project view.
+//    3. Select "Export/Import" -> "Export annotations..." menu item.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
+
+//    Expected state: an "Export Annotations" dialog opens, "GenBank" format is selected, there is an "Add to project" checkbox, it is enabled and checked.
+            GTComboBox::checkCurrentValue(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "GenBank");
+
+            QCheckBox *addToProjectCheck = GTWidget::findExactWidget<QCheckBox *>(os, "addToProjectCheck", dialog);
+            CHECK_SET_ERR(NULL != addToProjectCheck, "addToProjectCheck is NULL");
+            CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
+            CHECK_SET_ERR(addToProjectCheck->isEnabled(), "addToProjectCheck is not enabled");
+            CHECK_SET_ERR(addToProjectCheck->isChecked(), "addToProjectCheck is not checked by default");
+
+//    4. Select "CSV" format.
+//    Expected state: a "CSV" format is selected, the "Add to project" checkbox is disabled.
+            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "CSV");
+            CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
+            CHECK_SET_ERR(!addToProjectCheck->isEnabled(), "addToProjectCheck is unexpectedly enabled");
+
+//    5. Set a valid result file path, accept the dialog.
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog), sandBoxDir + "test_5447_2.csv");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export annotations..."));
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, new Scenario()));
+    GTUtilsProjectTreeView::callContextMenu(os, "NC_001363 features", "murine.gb");
+
+//    Expected state: the annotations were exported, there are no new documents in the project.
+    const qint64 fileSize = GTFile::getSize(os, sandBoxDir + "test_5447_2.csv");
+    CHECK_SET_ERR(0 != fileSize, "Result file is empty");
+
+    const bool newDocumentExists = GTUtilsProjectTreeView::checkItem(os, "test_5447_2.csv", GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(!newDocumentExists, "New document unexpectedly exists");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5447_3) {
+//    1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open the context menu on the "NC_001363 features" object in the project view.
+//    3. Select "Export/Import" -> "Export annotations..." menu item.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
+
+//    Expected state: an "Export Annotations" dialog opens, "GenBank" format is selected, there is an "Add to project" checkbox, it is enabled and checked.
+            GTComboBox::checkCurrentValue(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "GenBank");
+
+            QCheckBox *addToProjectCheck = GTWidget::findExactWidget<QCheckBox *>(os, "addToProjectCheck", dialog);
+            CHECK_SET_ERR(NULL != addToProjectCheck, "addToProjectCheck is NULL");
+            CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
+            CHECK_SET_ERR(addToProjectCheck->isEnabled(), "addToProjectCheck is not enabled");
+            CHECK_SET_ERR(addToProjectCheck->isChecked(), "addToProjectCheck is not checked by default");
+
+//    4. Select each format.
+//    Expected state: the "Add to project" checkbox becomes disabled only for CSV format.
+            const QStringList formats = GTComboBox::getValues(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog));
+            foreach (const QString &format, formats) {
+                GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), format);
+                CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
+                CHECK_SET_ERR(addToProjectCheck->isEnabled() != (format == "CSV"), QString("addToProjectCheck is unexpectedly enabled for format '%1'").arg(format));
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export annotations..."));
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, new Scenario()));
+    GTUtilsProjectTreeView::callContextMenu(os, "NC_001363 features", "murine.gb");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5469) {
     // 1. Open two different GenBank sequences in one Sequence view.
     // 2. Select two different annotations (one from the first sequence, and one from the second sequence) using the "Ctrl" keyboard button.
@@ -1201,15 +1377,10 @@ GUI_TEST_CLASS_DEFINITION(test_5469) {
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsProjectTreeView::click(os, "NC_004718");
-    QWidget* seqView = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    CHECK_SET_ERR(seqView != NULL, "Fail to get sequence view");
-    QPoint p = GTWidget::getWidgetCenter(os, seqView);
-    p.setX(p.x() + 1);
-    p.setY(p.y() + 1);
-    GTMouseDriver::dragAndDrop(GTMouseDriver::getMousePosition(), p);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Add to view" << "Add to view: murine [s] NC_001363"));
+        GTUtilsProjectTreeView::click(os, "NC_004718", Qt::RightButton);
+        GTGlobals::sleep();
 
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
@@ -1218,6 +1389,38 @@ GUI_TEST_CLASS_DEFINITION(test_5469) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size() == 2, "Wrong number of selected annotations");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5495) {
+    //1) Open samples/FASTA/human_T1.fa
+        GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    //2) Select 100..10 region of the sequence
+        class Scenario : public CustomScenario {
+        public:
+            void run(HI::GUITestOpStatus &os) {
+                QWidget *dialog = QApplication::activeModalWidget();
+                
+                QLineEdit *startEdit = dialog->findChild<QLineEdit*>("startEdit");
+                QLineEdit *endEdit = dialog->findChild<QLineEdit*>("endEdit");
+                CHECK_SET_ERR(startEdit != NULL, "QLineEdit \"startEdit\" not found");
+                CHECK_SET_ERR(endEdit != NULL, "QLineEdit \"endEdit\" not found");
+                
+                GTLineEdit::setText(os, startEdit, QString::number(321));
+                GTLineEdit::setText(os, endEdit, QString::number(123));
+                                
+                QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox"));
+                QPushButton* goButton = box->button(QDialogButtonBox::Ok);
+                CHECK_SET_ERR(goButton!= NULL, "Go button not found");
+                CHECK_SET_ERR(!goButton->isEnabled(), "Go button is enabled");
+                
+                GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            }
+        };
+        GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, new Scenario));
+        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));
+        GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));               
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5499) {
@@ -1436,6 +1639,35 @@ GUI_TEST_CLASS_DEFINITION(test_5562_3) {
     //Expected state : the file should look like a sample file "_common_data/scenarios/_regression/5562/5562.csv"
     bool check = GTFile::equals(os, testDir + "_common_data/scenarios/_regression/5562/5562.csv", sandBoxDir + "5562_3_CSV.csv");
     CHECK_SET_ERR(check, QString("files are not equal"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5588) {
+    //1. Open File "/samples/CLUSTALW/HIV-1.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Select a 6th column with a mouse click to the consensus area
+    GTUtilsMsaEditor::clickColumn(os, 5);
+    //3. Press the Shift key
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    //4. Select a 15th column with a mouse click to the consensus area
+    GTUtilsMsaEditor::clickColumn(os, 14);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    //Expected state : All columns between 6th and 15th clicks are selected
+    QRect rect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(rect == QRect(QPoint(5, 0), QPoint(14, 24)), QString("Incorrect selected area, %1, %2, %3, %4")
+        .arg(rect.topLeft().x()).arg(rect.topLeft().y()).arg(rect.bottomRight().x()).arg(rect.bottomRight().y()));
+
+    //5. Select a 30th column with a mouse click to the consensus area
+    GTUtilsMsaEditor::clickColumn(os, 29);
+    //6. Press the Shift key
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    //7. Select a 12th column with a mouse click to the consensus area
+    GTUtilsMsaEditor::clickColumn(os, 11);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    // Expected state : All columns between 12th and 30th clicks are selected
+    rect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(rect == QRect(QPoint(11, 0), QPoint(29, 24)), QString("Incorrect selected area, %1, %2, %3, %4")
+        .arg(rect.topLeft().x()).arg(rect.topLeft().y()).arg(rect.bottomRight().x()).arg(rect.bottomRight().y()));
 }
 
 } // namespace GUITest_regression_scenarios

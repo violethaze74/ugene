@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QCoreApplication>
+#include <QDir>
 
-#include <QtXml/QDomDocument>
+#include <QDomDocument>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
@@ -64,7 +64,7 @@ BlastAllSupportTask::BlastAllSupportTask(const BlastTaskSettings& _settings) :
 
 void BlastAllSupportTask::prepare(){
     //Add new subdir for temporary files
-    //Directory name is ExternalToolName + CurrentDate + CurrentTime
+    //Folder name is ExternalToolName + CurrentDate + CurrentTime
 
     QString tmpDirName = "BlastAll_"+QString::number(this->getTaskId())+"_"+
                          QDate::currentDate().toString("dd.MM.yyyy")+"_"+
@@ -78,12 +78,12 @@ void BlastAllSupportTask::prepare(){
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Subdirectory for temporary files exists. Can not remove this directory."));
+            stateInfo.setError(tr("Subdirectory for temporary files exists. Can not remove this folder."));
             return;
         }
     }
     if (!tmpDir.mkpath(tmpDir.absolutePath())) {
-        stateInfo.setError(tr("Can not create directory for temporary files."));
+        stateInfo.setError(tr("Can not create folder for temporary files."));
         return;
     }
     //Create ncbi.ini for windows or .ncbirc for unix like systems
@@ -255,7 +255,7 @@ Task::ReportResult BlastAllSupportTask::report() {
         tmpDir.remove(file);
     }
     if(!tmpDir.rmdir(tmpDir.absolutePath())){
-        stateInfo.setError(tr("Can not remove directory for temporary files."));
+        stateInfo.setError(tr("Can not remove folder for temporary files."));
         emit si_stateChanged();
     }
     return ReportResult_Finished;

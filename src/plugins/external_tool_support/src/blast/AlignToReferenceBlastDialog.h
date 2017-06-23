@@ -35,6 +35,7 @@ namespace U2 {
 
 class CmdlineInOutTaskRunner;
 class SaveDocumentController;
+class LoadDocumentTask;
 
 class AlignToReferenceBlastCmdlineTask : public Task {
     Q_OBJECT
@@ -60,6 +61,7 @@ public:
     AlignToReferenceBlastCmdlineTask(const Settings& settings);
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
+    virtual ReportResult report();
 
     static const QString ALIGN_TO_REF_CMDLINE;
     static const QString TRIM_ARG;
@@ -73,6 +75,7 @@ public:
 private:
     Settings settings;
     CmdlineInOutTaskRunner *cmdlineTask;
+    LoadDocumentTask *loadRef;
 };
 
 class AlignToReferenceBlastDialog : public QDialog, public Ui_AlignToReferenceBlastDialog {
@@ -88,16 +91,19 @@ private slots:
     void sl_setReference();
     void sl_addRead();
     void sl_removeRead();
+    void sl_referenceChanged(const QString &);
 
 private:
-    void connectSlots();
     void initSaveController();
+    void connectSlots();
+    bool fitsDefaultPattern(const QString &name) const;
 
     SaveDocumentController *saveController;
     AlignToReferenceBlastCmdlineTask::Settings settings;
     U2SavableWidget savableWidget;
 
     static QStringList lastUsedReadsUrls;
+    static const QString defaultOutputName;
 };
 
 } // namespace

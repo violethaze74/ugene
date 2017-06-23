@@ -432,7 +432,7 @@ void PWMSearchDialogController::sl_onClearQueue() {
 
 void PWMSearchDialogController::sl_onLoadFolder() {
     LastUsedDirHelper lod(WeightMatrixIO::WEIGHT_MATRIX_ID);
-    lod.dir = U2FileDialog::getExistingDirectory(this, tr("Select directory with frequency or weight matrices"), lod);
+    lod.dir = U2FileDialog::getExistingDirectory(this, tr("Select folder with frequency or weight matrices"), lod);
     if (lod.dir.isEmpty()) {
         return;
     }

@@ -25,7 +25,7 @@
 #include <U2Core/global.h>
 #include <U2Core/Counter.h>
 
-#include <QtCore/QDateTime>
+#include <QDateTime>
 
 #ifdef Q_OS_WIN
 #include <windows.h>

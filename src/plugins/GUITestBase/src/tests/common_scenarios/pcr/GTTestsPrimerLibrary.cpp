@@ -20,23 +20,25 @@
  */
 
 #include <QApplication>
+#include <QDir>
+
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTLineEdit.h>
+#include <utils/GTUtilsDialog.h>
 
 #include "GTDatabaseConfig.h"
 #include "GTTestsPrimerLibrary.h"
 #include "GTUtilsAnnotationsTreeView.h"
-#include "GTUtilsOptionPanelSequenceView.h"
-#include "utils/GTUtilsDialog.h"
+#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPrimerLibrary.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsTaskTreeView.h"
-#include "GTUtilsLog.h"
-#include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTLineEdit.h>
-#include <drivers/GTMouseDriver.h>
 #include "runnables/ugene/plugins/pcr/AddPrimerDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ExportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
@@ -61,7 +63,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     //3. Click the close button.
     GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Close);
-
+    GTGlobals::sleep();
     //Expected: The window is closed.
     QWidget *libraryMdi3 = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false));
     CHECK_SET_ERR(NULL == libraryMdi3, "Library MDI is not closed");

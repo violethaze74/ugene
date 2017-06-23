@@ -103,13 +103,13 @@ void SortBamWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor outDir(OUT_MODE_ID, SortBamWorker::tr("Output directory"),
-            SortBamWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(OUT_MODE_ID, SortBamWorker::tr("Output folder"),
+            SortBamWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(CUSTOM_DIR_ID, SortBamWorker::tr("Custom directory"),
-            SortBamWorker::tr("Select the custom output directory."));
+        Descriptor customDir(CUSTOM_DIR_ID, SortBamWorker::tr("Custom folder"),
+            SortBamWorker::tr("Select the custom output folder."));
 
         Descriptor outName(OUT_NAME_ID, SortBamWorker::tr("Output BAM name"),
             SortBamWorker::tr("A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .sorted.bam extention."));
@@ -271,7 +271,7 @@ void SamtoolsSortTask::prepare(){
 
     const QDir outDir = QFileInfo(settings.outDir).absoluteDir();
     if (!outDir.exists()) {
-        setError(tr("Directory does not exist: ") + outDir.absolutePath());
+        setError(tr("Folder does not exist: ") + outDir.absolutePath());
         return ;
     }
 }

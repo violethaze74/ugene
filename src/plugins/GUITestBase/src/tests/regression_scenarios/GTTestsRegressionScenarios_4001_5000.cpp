@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QClipboard>
 #include <QFile>
 #include <QGroupBox>
 #include <QListWidget>
@@ -4161,12 +4162,12 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: "Nucleotide UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
+    //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "Nucleotide UGENE");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
-
+    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
+    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
+ 
     //    4. Undo changes
     GTUtilsMsaEditor::undo(os);
     GTGlobals::sleep(500);
@@ -4177,6 +4178,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
     GTComboBox::checkCurrentValue(os, colorScheme, "UGENE");
     GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4719_2) {
@@ -4192,11 +4194,11 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: "Amino UGENE" color scheme is selected, "Amino UGENE" highlight scheme is selected
+    //    Expected state: "UGENE" color scheme is selected, "UGENE" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "Amino UGENE");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
+    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
+    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
 
     //    4. Undo changes
     GTUtilsMsaEditor::undo(os);
@@ -4715,11 +4717,11 @@ GUI_TEST_CLASS_DEFINITION(test_4795) {
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    //    Expected state: "Nucleotide UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
+    //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "Nucleotide UGENE");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
+    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
+    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4803_1) {

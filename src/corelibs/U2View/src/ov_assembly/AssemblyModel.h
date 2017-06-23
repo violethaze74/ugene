@@ -22,10 +22,10 @@
 #ifndef __U2_ASSEMBLY_BROWSER_MODEL_H__
 #define __U2_ASSEMBLY_BROWSER_MODEL_H__
 
-#include <QtCore/QPointer>
-#include <QtCore/QMutex>
-#include <QtCore/QMutexLocker>
-#include <QtCore/QFile>
+#include <QPointer>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QFile>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/GObject.h>
 

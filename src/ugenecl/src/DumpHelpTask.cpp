@@ -26,7 +26,7 @@
 #include "windows.h"
 #endif
 
-#include <QtCore/QDir>
+#include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Version.h>
@@ -248,8 +248,8 @@ QList<Task*> DumpHelpTask::onSubTaskFinished(Task* subTask) {
 }
 
 void DumpHelpTask::dumpParameters() {
-    QList<StringPair> params = AppContext::getCMDLineRegistry()->getParameters();
-    QList<StringPair>::const_iterator it = params.constBegin();
+    QList<StrStrPair> params = AppContext::getCMDLineRegistry()->getParameters();
+    QList<StrStrPair>::const_iterator it = params.constBegin();
     while( it != params.constEnd() ) {
         printStringToConsole( "key: \"%s\"", it->first);
         printStringToConsole( " and value: \"%s\"\n", it->second);

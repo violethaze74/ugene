@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDomElement>
+
 #include <U2Core/TextObject.h>
 
 #include "TextObjectTests.h"

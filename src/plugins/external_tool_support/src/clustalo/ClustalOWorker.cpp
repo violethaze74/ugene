@@ -82,8 +82,8 @@ void ClustalOWorkerFactory::init() {
                     ClustalOWorker::tr("Path to the ClustalO tool."
                         "<p>The default path can be set in the UGENE application settings."));
 
-    Descriptor tdp(TMP_DIR_PATH, ClustalOWorker::tr("Temporary directory"),
-                    ClustalOWorker::tr("Directory to store temporary files."));
+    Descriptor tdp(TMP_DIR_PATH, ClustalOWorker::tr("Temporary folder"),
+                    ClustalOWorker::tr("Folder to store temporary files."));
 
     a << new Attribute(ni, BaseTypes::NUM_TYPE(), false, QVariant(1));
     a << new Attribute(ngti, BaseTypes::NUM_TYPE(), false, QVariant(0));

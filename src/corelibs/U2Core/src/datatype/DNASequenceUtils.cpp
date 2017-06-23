@@ -63,7 +63,7 @@ void DNASequenceUtils::removeChars(QByteArray& sequence, int startPos, int endPo
 void DNASequenceUtils::insertChars(QByteArray& sequence, int startPos, const QByteArray& newChars, U2OpStatus& os) {
     int endPos = startPos + newChars.length();
     CHECK_EXT(newChars.length() > 0, os.setError("Array of chars for replacing is empty!"), );
-    if ((startPos < 0) || (endPos > sequence.length())) {
+    if ((startPos < 0) || (startPos > sequence.length())) {
         coreLog.trace(L10N::internalError("incorrect parameters was passed to DNASequenceUtils::insertChars, "
             "startPos '%1', endPos '%2', sequence length '%3'!").arg(startPos).arg(endPos).arg(sequence.length()));
         os.setError("Can't remove chars from a sequence.");

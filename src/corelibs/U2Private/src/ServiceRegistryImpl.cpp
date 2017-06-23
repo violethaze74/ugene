@@ -28,7 +28,7 @@
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QTimerEvent>
+#include <QTimerEvent>
 
 namespace U2 {
 

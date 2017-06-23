@@ -24,14 +24,17 @@
 
 #include <U2Gui/MainWindow.h>
 #include <U2Core/AppContext.h>
-#include <ui_GUITestingWindow.h>
 
+#include "ui_GUITestingWindow.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QtGui>
-#else
-#include <QtWidgets/QtWidgets>
-#endif
+class QCheckBox;
+class QComboBox;
+class QDoubleSpinBox;
+class QGroupBox;
+class QMenuBar;
+class QRadioButton;
+class QSpinBox;
+class QToolButton;
 
 namespace U2 {
 class EventFilter;

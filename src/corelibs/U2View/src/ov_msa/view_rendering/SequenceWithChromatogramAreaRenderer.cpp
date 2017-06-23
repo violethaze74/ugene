@@ -29,6 +29,7 @@
 #include <U2View/ADVSequenceObjectContext.h>
 
 #include "SequenceWithChromatogramAreaRenderer.h"
+#include "ov_msa/MaEditorNameList.h"
 #include "ov_msa/McaEditorSequenceArea.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/RowHeightController.h"
@@ -76,6 +77,25 @@ void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &pain
     painter.fillRect(xRange.startPos, 0,
                xRange.length, seqAreaWgt->height(),
                color);
+    painter.restore();
+}
+
+void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter &painter) const {
+    McaEditor* editor = getSeqArea()->getEditor();
+    SAFE_POINT(editor != NULL, "McaEditor is NULL", );
+    SAFE_POINT(editor->getUI() != NULL, "McaEditor UI is NULL", );
+
+    MaEditorNameList* nameList = editor->getUI()->getEditorNameList();
+    SAFE_POINT(nameList != NULL, "MaEditorNameList is NULL", );
+    U2Region selection = nameList->getSelection();
+    CHECK(!selection.isEmpty(), );
+    U2Region selectionPxl = ui->getRowHeightController()->getRowsScreenRangeByNumbers(selection);
+    painter.save();
+    // SANGER_TODO: color can be const -- for consensus and here
+    QColor color(Qt::lightGray);
+    color = color.lighter(115);
+    color.setAlpha(127);
+    painter.fillRect(0, selectionPxl.startPos, seqAreaWgt->width(), selectionPxl.length, color);
     painter.restore();
 }
 

@@ -25,11 +25,9 @@
 #include <U2Lang/Datatype.h>
 #include <U2Lang/ConfigurationEditor.h>
 
-#include <QtCore/qglobal.h>
-#include <QtCore/QString>
-#include <QtCore/QObject>
-#include <QtCore/QMap>
-
+#include <QString>
+#include <QObject>
+#include <QMap>
 
 namespace U2 {
 

@@ -30,19 +30,11 @@
 #include "utils/GTKeyboardUtils.h"
 #include <base_dialogs/MessageBoxFiller.h>
 
-#include <QtCore/QDir>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QToolButton>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QToolButton>
-#endif
-
+#include <QDir>
+#include <QApplication>
+#include <QPushButton>
+#include <QDialogButtonBox>
+#include <QToolButton>
 
 namespace U2 {
 using namespace HI;

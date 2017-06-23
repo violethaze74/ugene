@@ -96,13 +96,13 @@ public:
 
 private:
     void addNotification(const QString &key, int count);
-    static QStrStrMap initWellKnownMessages();
+    static StrStrMap initWellKnownMessages();
     static QMap<QString, QRegExp> initWellKnownCatchers();
 
     WorkflowMonitor *monitor;
     const QString actor;
 
-    static const QStrStrMap wellKnownMessages;
+    static const StrStrMap wellKnownMessages;
     static const QMap<QString, QRegExp> messageCatchers;
 };
 

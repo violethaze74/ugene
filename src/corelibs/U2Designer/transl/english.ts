@@ -57,14 +57,22 @@ this merge sequence slot:</translation>
 <context>
     <name>CreateDirectoryDialog</name>
     <message>
+        <source>Create a folder</source>
+        <translation type="vanished">Create a folder</translation>
+    </message>
+    <message>
+        <source>Parent folder:</source>
+        <translation type="vanished">Parent folder:</translation>
+    </message>
+    <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="14"/>
         <source>Create a directory</source>
-        <translation>Create a directory</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="43"/>
         <source>Parent directory:</source>
-        <translation>Parent directory:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="63"/>
@@ -85,9 +93,13 @@ this merge sequence slot:</translation>
         <translation>Add file(s)</translation>
     </message>
     <message>
+        <source>Add folder</source>
+        <translation type="vanished">Add folder</translation>
+    </message>
+    <message>
         <location filename="../src/DatasetWidget.ui" line="62"/>
         <source>Add directory</source>
-        <translation>Add directory</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/DatasetWidget.ui" line="84"/>
@@ -442,14 +454,22 @@ this merge sequence slot:</translation>
 <context>
     <name>OutputFileDialog</name>
     <message>
+        <source>Save file/folder</source>
+        <translation type="vanished">Save file/folder</translation>
+    </message>
+    <message>
+        <source>Create folder</source>
+        <translation type="vanished">Create folder</translation>
+    </message>
+    <message>
         <location filename="../src/OutputFileDialog.ui" line="14"/>
         <source>Save file/directory</source>
-        <translation>Save file/directory</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="31"/>
         <source>Create directory</source>
-        <translation>Create directory</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="63"/>
@@ -460,7 +480,11 @@ this merge sequence slot:</translation>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="126"/>
         <source>Directory:</source>
-        <translation>Directory:</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Folder:</source>
+        <translation type="vanished">Folder:</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="146"/>
@@ -562,13 +586,19 @@ this merge sequence slot:</translation>
         <translation>The page is broken. Please, close the wizard and report us the error: ugene@unipro.ru</translation>
     </message>
     <message>
+        <source>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subfolder of the folder is created for each run of a workflow.
+
+Set up the folder:</source>
+        <translation type="vanished">The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subfolder of the folder is created for each run of a workflow.
+
+Set up the folder:</translation>
+    </message>
+    <message>
         <location filename="../src/support/OutputDirectoryWidget.cpp" line="39"/>
-        <source>The Workflow Output Directory is a common directory that is used to store all output files in the Workflow Designer. A separate subdirectory of the directory is created for each run of a workflow.
+        <source>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subdirectory of the folder is created for each run of a workflow.
 
-Set up the directory:</source>
-        <translation>The Workflow Output Directory is a common directory that is used to store all output files in the Workflow Designer. A separate subdirectory of the directory is created for each run of a workflow.
-
-Set up the directory:</translation>
+Set up the folder:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -691,12 +721,12 @@ bowtie index file</translation>
 <context>
     <name>U2::ComboBoxWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="178"/>
+        <location filename="../src/PropertyWidget.cpp" line="179"/>
         <source>False</source>
         <translation>False</translation>
     </message>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="179"/>
+        <location filename="../src/PropertyWidget.cpp" line="180"/>
         <source>True</source>
         <translation>True</translation>
     </message>
@@ -704,7 +734,7 @@ bowtie index file</translation>
 <context>
     <name>U2::ComboBoxWithDbUrlWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="339"/>
+        <location filename="../src/PropertyWidget.cpp" line="340"/>
         <source>Add New Connection</source>
         <translation>Add New Connection</translation>
     </message>
@@ -712,12 +742,12 @@ bowtie index file</translation>
 <context>
     <name>U2::ComboBoxWithUrlWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="314"/>
-        <source>Select a directory</source>
-        <translation>Select a directory</translation>
+        <location filename="../src/PropertyWidget.cpp" line="315"/>
+        <source>Select a folder</source>
+        <translation>Select a folder</translation>
     </message>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="319"/>
+        <location filename="../src/PropertyWidget.cpp" line="320"/>
         <source>Select a file</source>
         <translation>Select a file</translation>
     </message>
@@ -738,43 +768,43 @@ bowtie index file</translation>
 <context>
     <name>U2::Dashboard</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="162"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="164"/>
         <source>Output Files</source>
         <translation>Output Files</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="163"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="165"/>
         <source>Workflow Task</source>
         <translation>Workflow Task</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="164"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="166"/>
         <source>Common Statistics</source>
         <translation>Common Statistics</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="171"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="173"/>
         <source>Parameters</source>
         <translation>Parameters</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="248"/>
-        <location filename="../src/dashboard/Dashboard.cpp" line="256"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="250"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="258"/>
         <source>External Tools</source>
         <translation>External Tools</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="188"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="190"/>
         <source>Problems</source>
         <translation>Problems</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="198"/>
-        <source>Can not create a directory: </source>
-        <translation>Can not create a directory: </translation>
+        <location filename="../src/dashboard/Dashboard.cpp" line="200"/>
+        <source>Can not create a folder: </source>
+        <translation>Can not create a folder: </translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="213"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="215"/>
         <source>Can not open a file for writing: </source>
         <translation>Can not open a file for writing: </translation>
     </message>
@@ -1019,12 +1049,12 @@ bowtie index file</translation>
 <context>
     <name>U2::JavascriptAgent</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="388"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="390"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="388"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="390"/>
         <source>The file does not exist</source>
         <translation>The file does not exist</translation>
     </message>
@@ -1119,8 +1149,8 @@ bowtie index file</translation>
     <name>U2::OutputDirectoryWidget</name>
     <message>
         <location filename="../src/support/OutputDirectoryWidget.cpp" line="71"/>
-        <source>Select a directory</source>
-        <translation>Select a directory</translation>
+        <source>Select a folder</source>
+        <translation>Select a folder</translation>
     </message>
 </context>
 <context>
@@ -1137,8 +1167,8 @@ bowtie index file</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.cpp" line="56"/>
-        <source>Save a directory</source>
-        <translation>Save a directory</translation>
+        <source>Save a folder</source>
+        <translation>Save a folder</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.cpp" line="58"/>
@@ -1160,8 +1190,8 @@ bowtie index file</translation>
     </message>
     <message>
         <location filename="../src/dashboard/OutputFilesWidget.cpp" line="87"/>
-        <source>Open containing directory</source>
-        <translation>Open containing directory</translation>
+        <source>Open containing folder</source>
+        <translation>Open containing folder</translation>
     </message>
     <message>
         <source>Open by operating system</source>
@@ -1279,7 +1309,7 @@ bowtie index file</translation>
 <context>
     <name>U2::RemoveDashboardsTask</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="463"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="465"/>
         <source>Remove dashboards</source>
         <translation>Remove dashboards</translation>
     </message>
@@ -1325,9 +1355,9 @@ bowtie index file</translation>
 <context>
     <name>U2::ScanDashboardsDirTask</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="417"/>
-        <source>Scan dashboards directory</source>
-        <translation>Scan dashboards directory</translation>
+        <location filename="../src/dashboard/Dashboard.cpp" line="419"/>
+        <source>Scan dashboards folder</source>
+        <translation>Scan dashboards folder</translation>
     </message>
 </context>
 <context>
@@ -1440,8 +1470,8 @@ bowtie index file</translation>
     <name>U2::URLLineEdit</name>
     <message>
         <location filename="../src/support/URLLineEdit.cpp" line="187"/>
-        <source>Select a directory</source>
-        <translation>Select a directory</translation>
+        <source>Select a folder</source>
+        <translation>Select a folder</translation>
     </message>
     <message>
         <location filename="../src/support/URLLineEdit.cpp" line="190"/>
@@ -1460,25 +1490,25 @@ bowtie index file</translation>
     <name>U2::URLListController</name>
     <message>
         <location filename="../src/DatasetsController.cpp" line="769"/>
-        <source>This file or directory does not exist: %1</source>
-        <translation>This file or directory does not exist: %1</translation>
+        <source>This file or folder does not exist: %1</source>
+        <translation>This file or folder does not exist: %1</translation>
     </message>
 </context>
 <context>
     <name>U2::URLListWidget</name>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="109"/>
-        <location filename="../src/DatasetWidget.cpp" line="112"/>
+        <location filename="../src/DatasetWidget.cpp" line="108"/>
+        <location filename="../src/DatasetWidget.cpp" line="110"/>
         <source>Select file</source>
         <translation>Select file</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="121"/>
-        <source>Select a directory</source>
-        <translation>Select a directory</translation>
+        <location filename="../src/DatasetWidget.cpp" line="120"/>
+        <source>Select a folder</source>
+        <translation>Select a folder</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="189"/>
+        <location filename="../src/DatasetWidget.cpp" line="188"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
@@ -1486,7 +1516,7 @@ bowtie index file</translation>
 <context>
     <name>U2::URLWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="502"/>
+        <location filename="../src/PropertyWidget.cpp" line="503"/>
         <source>add</source>
         <translation>add</translation>
     </message>

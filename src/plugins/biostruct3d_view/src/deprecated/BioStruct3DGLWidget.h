@@ -32,21 +32,14 @@
 
 #include <U2Algorithm/MolecularSurface.h>
 
-#include <QtCore/QTimer>
-#include <QtCore/QSharedPointer>
+#include <QTimer>
+#include <QSharedPointer>
+#include <QAction>
+#include <QMenu>
+#include <QActionGroup>
+#include <QColor>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
-#include <QtGui/QActionGroup>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QActionGroup>
-#endif
-#include <QtGui/QColor>
-
-#include <QtOpenGL/QGLWidget>
+#include <QGLWidget>
 
 namespace U2 {
 

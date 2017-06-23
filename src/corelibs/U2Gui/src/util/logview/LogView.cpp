@@ -28,19 +28,12 @@
 #include <U2Core/Timer.h>
 #include <U2Core/Counter.h>
 
-#include <QtCore/QDate>
-#include <QtCore/QThread>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
-#include <QtGui/QVBoxLayout>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QVBoxLayout>
-#endif
+#include <QDate>
+#include <QThread>
+#include <QApplication>
+#include <QAction>
+#include <QMenu>
+#include <QVBoxLayout>
 
 namespace U2 {
 

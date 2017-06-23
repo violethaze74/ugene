@@ -114,6 +114,13 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl& _sourceUrl, BAMInfo& _b
     ui.sourceUrlView->setText(QDir::cleanPath(sourceUrl.getURLString()));
     okButton->setFocus();
     connect(ui.tableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), SLOT(sl_assemblyCheckChanged(QTableWidgetItem*)));
+
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+    adjustSize();
+    if (ui.tableWidget->isHidden()) {
+        setFixedHeight(height());
+    }
+    setMinimumWidth(600);
 }
 
 void ConvertToSQLiteDialog::hideReferenceUrl() {
@@ -343,7 +350,7 @@ void ConvertToSQLiteDialog::accept() {
         QMessageBox::critical(this, windowTitle(), BAMDbiPlugin::tr("Destination URL must point to a local file"));
     } else if (!checkWritePermissions(destinationUrl.getURLString())) {
         ui.destinationUrlEdit->setFocus(Qt::OtherFocusReason);
-        QMessageBox::critical(this, windowTitle(), BAMDbiPlugin::tr("Destination URL directory has not write permissions"));
+        QMessageBox::critical(this, windowTitle(), BAMDbiPlugin::tr("Destination URL folder has not write permissions"));
     } else {
         if (!checkReferencesState()) {
             return;
@@ -362,7 +369,7 @@ void ConvertToSQLiteDialog::accept() {
         QFileInfo destinationDir(QFileInfo(destinationUrl.getURLString()).path());
         if(!destinationDir.isWritable()) {
             ui.destinationUrlEdit->setFocus(Qt::OtherFocusReason);
-            QMessageBox::critical(this, windowTitle(), BAMDbiPlugin::tr("Destination directory '%1' is not writable, please choose different destination URL").arg(destinationDir.absoluteFilePath()));
+            QMessageBox::critical(this, windowTitle(), BAMDbiPlugin::tr("Destination folder '%1' is not writable, please choose different destination URL").arg(destinationDir.absoluteFilePath()));
             return;
         }
 

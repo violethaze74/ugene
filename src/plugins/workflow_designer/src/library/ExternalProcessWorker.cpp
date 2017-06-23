@@ -48,7 +48,7 @@
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <QtCore/QDateTime>
+#include <QDateTime>
 
 namespace U2 {
 namespace LocalWorkflow {

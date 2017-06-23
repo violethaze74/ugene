@@ -27,7 +27,7 @@
 
 #include <SamtoolsAdapter.h>
 
-#include <QtCore/QVarLengthArray>
+#include <QVarLengthArray>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Timer.h>

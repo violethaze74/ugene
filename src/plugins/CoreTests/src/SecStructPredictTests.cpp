@@ -19,16 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/AppContext.h>
-#include <U2Core/U2DbiRegistry.h>
+#include <QDomElement>
+
 #include <U2Algorithm/SecStructPredictAlgRegistry.h>
-#include <U2Core/DNASequenceObject.h>
+#include <U2Algorithm/SecStructPredictTask.h>
+
 #include <U2Core/AnnotationTableObject.h>
+#include <U2Core/AppContext.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "SecStructPredictTests.h"
-#include <U2Algorithm/SecStructPredictTask.h>
 
 namespace U2 {
 

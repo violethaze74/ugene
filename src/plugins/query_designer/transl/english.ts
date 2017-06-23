@@ -51,11 +51,21 @@
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Hint: &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Queries can be created using the Query Designer tool. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;To launch the Query Designer select the&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-style:italic;&quot;&gt;&amp;quot;Tools &amp;gt; Query Designer&amp;quot;  &lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;item.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Hint: &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Queries can be created using the Query Designer tool. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;To launch the Query Designer select the&lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;&amp;quot;Tools &amp;gt; Query Designer&amp;quot;  &lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;item.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -166,22 +176,37 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AddConstraintDialog</name>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="1157"/>
+        <location filename="../src/QueryViewController.cpp" line="1152"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/QueryViewController.cpp" line="1153"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/QueryViewController.cpp" line="1155"/>
+        <source>Add Constraint %1</source>
+        <translation>Add Constraint %1</translation>
+    </message>
+    <message>
+        <location filename="../src/QueryViewController.cpp" line="1159"/>
         <source>End-Start</source>
         <translation>End-Start</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="1160"/>
+        <location filename="../src/QueryViewController.cpp" line="1162"/>
         <source>End-End</source>
         <translation>End-End</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="1163"/>
+        <location filename="../src/QueryViewController.cpp" line="1165"/>
         <source>Start-End</source>
         <translation>Start-End</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="1166"/>
+        <location filename="../src/QueryViewController.cpp" line="1168"/>
         <source>Start-Start</source>
         <translation>Start-Start</translation>
     </message>
@@ -327,34 +352,34 @@ p, li { white-space: pre-wrap; }
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="338"/>
+        <location filename="../src/QDRunDialog.cpp" line="339"/>
         <source>Select query</source>
         <translation>Select query</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="354"/>
-        <location filename="../src/QDRunDialog.cpp" line="361"/>
+        <location filename="../src/QDRunDialog.cpp" line="355"/>
+        <location filename="../src/QDRunDialog.cpp" line="362"/>
         <source>Can not load %1</source>
         <translation>Can not load %1</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="391"/>
+        <location filename="../src/QDRunDialog.cpp" line="392"/>
         <source>File with query is not selected!</source>
         <translation>File with query is not selected!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="396"/>
+        <location filename="../src/QDRunDialog.cpp" line="397"/>
         <source>Error in schema!</source>
         <translation>Error in schema!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="402"/>
-        <location filename="../src/QDRunDialog.cpp" line="414"/>
+        <location filename="../src/QDRunDialog.cpp" line="403"/>
+        <location filename="../src/QDRunDialog.cpp" line="415"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="414"/>
+        <location filename="../src/QDRunDialog.cpp" line="415"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
@@ -382,37 +407,37 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDElement</name>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="371"/>
+        <location filename="../src/QueryViewItems.cpp" line="362"/>
         <source>Set order</source>
         <translation>Set order</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="390"/>
+        <location filename="../src/QueryViewItems.cpp" line="381"/>
         <source>Remove from group</source>
         <translation>Remove from group</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="392"/>
+        <location filename="../src/QueryViewItems.cpp" line="383"/>
         <source>Add to group</source>
         <translation>Add to group</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="398"/>
+        <location filename="../src/QueryViewItems.cpp" line="389"/>
         <source>Up</source>
         <translation>Up</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="399"/>
+        <location filename="../src/QueryViewItems.cpp" line="390"/>
         <source>Down</source>
         <translation>Down</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="410"/>
+        <location filename="../src/QueryViewItems.cpp" line="401"/>
         <source>Add &apos;%1&apos; to group</source>
         <translation>Add &apos;%1&apos; to group</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="411"/>
+        <location filename="../src/QueryViewItems.cpp" line="402"/>
         <source>Group:</source>
         <translation>Group:</translation>
     </message>
@@ -732,7 +757,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDRulerItem</name>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="1238"/>
+        <location filename="../src/QueryViewItems.cpp" line="1229"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>
@@ -872,36 +897,36 @@ p, li { white-space: pre-wrap; }
         <translation>Any</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditor.cpp" line="116"/>
+        <location filename="../src/QueryEditor.cpp" line="112"/>
         <source>Select an element to inspect.</source>
         <translation>Select an element to inspect.</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditor.cpp" line="123"/>
-        <location filename="../src/QueryEditor.cpp" line="173"/>
+        <location filename="../src/QueryEditor.cpp" line="119"/>
+        <location filename="../src/QueryEditor.cpp" line="169"/>
         <source>Element Name</source>
         <translation>Element Name</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditor.cpp" line="125"/>
-        <location filename="../src/QueryEditor.cpp" line="175"/>
+        <location filename="../src/QueryEditor.cpp" line="121"/>
+        <location filename="../src/QueryEditor.cpp" line="171"/>
         <source>Annotate As</source>
         <translation>Annotate As</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditor.cpp" line="127"/>
-        <location filename="../src/QueryEditor.cpp" line="177"/>
+        <location filename="../src/QueryEditor.cpp" line="123"/>
+        <location filename="../src/QueryEditor.cpp" line="173"/>
         <source>Direction</source>
         <translation>Direction</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditor.cpp" line="139"/>
-        <location filename="../src/QueryEditor.cpp" line="194"/>
+        <location filename="../src/QueryEditor.cpp" line="135"/>
+        <location filename="../src/QueryEditor.cpp" line="190"/>
         <source>To configure the algorithm element parameters go to the &quot;Parameters&quot; area below.</source>
         <translation>To configure the algorithm element parameters go to the &quot;Parameters&quot; area below.</translation>
     </message>
     <message>
-        <location filename="../src/QueryEditor.cpp" line="161"/>
+        <location filename="../src/QueryEditor.cpp" line="157"/>
         <source>To configure the constraint element parameters go to the &quot;Parameters&quot; area below.</source>
         <translation>To configure the constraint element parameters go to the &quot;Parameters&quot; area below.</translation>
     </message>
@@ -909,12 +934,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QueryPalette</name>
     <message>
-        <location filename="../src/QueryPalette.cpp" line="159"/>
+        <location filename="../src/QueryPalette.cpp" line="155"/>
         <source>Algorithms</source>
         <translation>Algorithms</translation>
     </message>
     <message>
-        <location filename="../src/QueryPalette.cpp" line="175"/>
+        <location filename="../src/QueryPalette.cpp" line="171"/>
         <source>Constraints</source>
         <translation>Constraints</translation>
     </message>
@@ -935,7 +960,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QueryScene</name>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="1240"/>
+        <location filename="../src/QueryViewController.cpp" line="1242"/>
         <source>Preview is not available.</source>
         <translation>Preview is not available.</translation>
     </message>

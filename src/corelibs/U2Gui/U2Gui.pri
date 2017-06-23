@@ -5,8 +5,7 @@ include( ../../ugene_lib_common.pri )
 
 UGENE_RELATIVE_DESTDIR = ''
 
-QT += network xml svg sql
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
+QT += network xml svg sql widgets printsupport
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2GUI_DLL
 INCLUDEPATH += ../U2Private/src
 

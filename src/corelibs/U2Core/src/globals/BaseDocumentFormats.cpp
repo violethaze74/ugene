@@ -67,8 +67,8 @@ DocumentFormat* BaseDocumentFormats::get(const DocumentFormatId& formatId) {
 
 namespace {
 
-QStrStrMap initInvalidFormatIdsMap() {
-    QStrStrMap invalidIds2trueIds;
+StrStrMap initInvalidFormatIdsMap() {
+    StrStrMap invalidIds2trueIds;
 
     // IDs from 1.26.0
     invalidIds2trueIds.insert("ABI", BaseDocumentFormats::ABIF);
@@ -93,6 +93,7 @@ QStrStrMap initInvalidFormatIdsMap() {
     invalidIds2trueIds.insert("PHYLIP-Sequential", BaseDocumentFormats::PHYLIP_SEQUENTIAL);
     invalidIds2trueIds.insert("MMDB", BaseDocumentFormats::PLAIN_ASN);
     invalidIds2trueIds.insert("EMBL", BaseDocumentFormats::PLAIN_EMBL);
+    invalidIds2trueIds.insert("Genbank", BaseDocumentFormats::PLAIN_GENBANK);
     invalidIds2trueIds.insert("GenBank", BaseDocumentFormats::PLAIN_GENBANK);
     invalidIds2trueIds.insert("PDB", BaseDocumentFormats::PLAIN_PDB);
     invalidIds2trueIds.insert("Swiss-Prot", BaseDocumentFormats::PLAIN_SWISS_PROT);
@@ -110,8 +111,8 @@ QStrStrMap initInvalidFormatIdsMap() {
     return invalidIds2trueIds;
 }
 
-QStrStrMap initFormatIdsMap() {
-    QStrStrMap anyIds2trueIds;
+StrStrMap initFormatIdsMap() {
+    StrStrMap anyIds2trueIds;
 
     // IDs from 1.25.0 and lower
     anyIds2trueIds.insert(BaseDocumentFormats::ABIF, BaseDocumentFormats::ABIF);
@@ -161,7 +162,7 @@ QStrStrMap initFormatIdsMap() {
 bool BaseDocumentFormats::equal(const DocumentFormatId &first, const DocumentFormatId &second) {
     // After UGENE-5719 fix format IDs were occasionally changed
     // Case insensitive comparison grants a correct comparison result
-    static const QStrStrMap formatIds = initFormatIdsMap();
+    static const StrStrMap formatIds = initFormatIdsMap();
     return formatIds.value(first, first) == formatIds.value(second, second);
 }
 
@@ -171,7 +172,7 @@ bool BaseDocumentFormats::isInvalidId(const DocumentFormatId &formatId) {
 }
 
 DocumentFormatId BaseDocumentFormats::toValidId(const DocumentFormatId &invalidFormatId) {
-    static const QStrStrMap invalidIds = initInvalidFormatIdsMap();
+    static const StrStrMap invalidIds = initInvalidFormatIdsMap();
     return invalidIds.value(invalidFormatId, invalidFormatId);
 }
 

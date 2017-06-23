@@ -40,7 +40,7 @@
 
 #include <U2Formats/BAMUtils.h>
 
-#include <QtCore/QRegExp>
+#include <QRegExp>
 
 namespace U2 {
 

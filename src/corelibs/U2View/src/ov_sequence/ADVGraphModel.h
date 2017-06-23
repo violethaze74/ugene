@@ -26,8 +26,8 @@
 #include <U2Core/U2Region.h>
 #include <U2Core/BackgroundTaskRunner.h>
 
-#include <QtCore/QVector>
-#include <QtGui/QPixmap>
+#include <QVector>
+#include <QPixmap>
 #include <QPointer>
 
 #include "GraphLabelModel.h"

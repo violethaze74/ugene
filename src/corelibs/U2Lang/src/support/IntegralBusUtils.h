@@ -36,7 +36,7 @@ public:
     };
 
     static SplitResult splitCandidates(const QList<Descriptor> &candidates, const Descriptor &toDesc, DataTypePtr toDatatype);
-    static void remapBus(QStrStrMap &busMap, const ActorId &oldId, const ActorId &newId, const PortMapping &mapping);
+    static void remapBus(StrStrMap &busMap, const ActorId &oldId, const ActorId &newId, const PortMapping &mapping);
     static void remapPathedSlotString(QString &pathedSlotStr, const ActorId &oldId, const ActorId &newId, const PortMapping &mapping);
     static QList<Descriptor> getSlotsByType(const QMap<Descriptor, DataTypePtr> &busMap, const Descriptor &slot, const DataTypePtr &type);
 };

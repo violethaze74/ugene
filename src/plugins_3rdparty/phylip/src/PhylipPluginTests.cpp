@@ -35,7 +35,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/PhyTreeObject.h>
 
-#include <QtCore/QDir>
+#include <QDir>
 #include <U2Core/AppContext.h>
 #include "DistanceMatrix.h"
 #include <U2Algorithm/CreatePhyTreeSettings.h>

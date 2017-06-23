@@ -26,8 +26,8 @@
 
 #include <U2Core/global.h>
 
-#include <QtCore/QLibrary>
-#include <QtCore/QString>
+#include <QLibrary>
+#include <QString>
 
 #include <opencl/legacy/cl.h>
 

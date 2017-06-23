@@ -24,8 +24,8 @@
 
 #include <U2Core/Task.h>
 
-#include <QtCore/QMap>
-#include <QtScript/QScriptValue>
+#include <QMap>
+#include <QScriptValue>
 
 namespace U2 {
 

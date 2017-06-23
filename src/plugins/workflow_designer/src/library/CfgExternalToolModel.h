@@ -22,7 +22,7 @@
 #ifndef _CFG_EXTERNAL_TOOL_MODEL_H_
 #define _CFG_EXTERNAL_TOOL_MODEL_H_
 
-#include <QtCore/QAbstractTableModel>
+#include <QAbstractTableModel>
 
 #include <U2Lang/ExternalToolCfg.h>
 
