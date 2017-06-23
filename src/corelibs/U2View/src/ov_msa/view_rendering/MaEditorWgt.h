@@ -24,6 +24,8 @@
 
 #include <QWidget>
 
+#include <U2Core/global.h>
+
 #include "MaEditorUtils.h"
 
 class QGridLayout;
@@ -51,7 +53,7 @@ class SequenceAreaRenderer;
 /************************************************************************/
 /* MaEditorWgt */
 /************************************************************************/
-class MaEditorWgt : public QWidget {
+class U2VIEW_EXPORT MaEditorWgt : public QWidget {
     Q_OBJECT
 public:
     MaEditorWgt(MaEditor* editor);
