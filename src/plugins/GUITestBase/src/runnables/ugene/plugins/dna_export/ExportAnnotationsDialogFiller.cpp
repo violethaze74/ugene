@@ -106,7 +106,9 @@ void ExportAnnotationsFiller::commonScenario()
     if (!addToProject){
         QCheckBox *addToProjectButton = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjectCheck"));
         GT_CHECK(addToProjectButton != NULL, "Check box not found");
-        GTCheckBox::setChecked(os, addToProjectButton, false);
+        if (addToProjectButton->isEnabled()) {
+            GTCheckBox::setChecked(os, addToProjectButton, false);
+        }
     }
 
     if (!softMode) {
