@@ -247,7 +247,7 @@ U2Region ChromatogramUtils::sequenceRegion2TraceRegion(const DNAChromatogram &ch
                && sequenceRegion.endPos() <= chromatogram.baseCalls.length(), U2Region());
 
     const int traceStartPos = sequenceRegion.startPos == 0 ? 0 : chromatogram.baseCalls[sequenceRegion.startPos - 1];
-    const int traceLength = chromatogram.baseCalls[sequenceRegion.endPos()] - traceStartPos - 1;
+    const int traceLength = chromatogram.baseCalls[sequenceRegion.endPos() - 1] - traceStartPos + 1;
     return U2Region(traceStartPos, traceLength);
 }
 
