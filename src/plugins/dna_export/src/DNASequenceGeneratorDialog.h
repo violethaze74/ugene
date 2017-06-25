@@ -23,7 +23,6 @@
 #define _U2_DNA_SEQUENCE_GENERATOR_DIALOG_H_
 
 #include "ui_DNASequenceGeneratorDialog.h"
-#include "ui_BaseContentDialog.h"
 
 namespace U2 {
 
@@ -38,8 +37,11 @@ private slots:
     void sl_browseReference();
     void sl_configureContent();
     void sl_generate();
-    void sl_refButtonToggled(bool checked);
-    void sl_stateChanged(int state);
+    void sl_seedStateChanged(int state);
+    void sl_save();
+    void sl_enableRefMode();
+    void sl_enableBaseMode();
+    void sl_enableGCSkewMode();
 
 private:
     void initSaveController();
@@ -48,21 +50,8 @@ private:
     static QMap<char, qreal> content;
     QPushButton* generateButton;
     QPushButton* cancelButton;
-};
-
-class BaseContentDialog : public QDialog, public Ui_BaseContentDialog {
-    Q_OBJECT
-public:
-    BaseContentDialog(QMap<char, qreal>& percentMap_, QWidget* p=NULL);
-private slots:
-    void sl_save();
-    void sl_baseClicked();
-    void sl_gcSkewClicked();
-private:
     QMap<char, qreal>& percentMap;
     float gcSkew;
-    float gcSkewPrev;
-    QPushButton* saveButton;
 };
 
 } //namespace

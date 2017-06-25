@@ -31,8 +31,7 @@ HEADERS += src/CSVColumnConfiguration.h \
            src/ImportQualityScoresWorker.h \
            src/tasks/ExportMsa2McaTask.h
 
-FORMS += src/BaseContentDialog.ui \
-         src/CSVColumnConfigurationDialog.ui \
+FORMS += src/CSVColumnConfigurationDialog.ui \
          src/DNASequenceGeneratorDialog.ui \
          src/ExportBlastResultDialog.ui \
          src/ExportChromatogramDialog.ui \
