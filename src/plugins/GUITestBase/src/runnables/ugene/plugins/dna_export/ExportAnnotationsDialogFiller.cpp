@@ -76,7 +76,7 @@ ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &os, Custom
 }
 
 void ExportAnnotationsFiller::init(const QString &exportToFile) {
-    this->exportToFile = QDir::toNativeSeparators(QDir::cleanPath(QDir::currentPath() + "/" + exportToFile));
+    this->exportToFile = QDir::toNativeSeparators(QDir::cleanPath(exportToFile));
 
     comboBoxItems[bed] = "BED";
     comboBoxItems[genbank] = "GenBank";
