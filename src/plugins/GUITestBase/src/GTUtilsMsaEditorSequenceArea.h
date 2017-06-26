@@ -88,6 +88,7 @@ public:
     static int getRowHeight(HI::GUITestOpStatus &os, int rowNumber);
 
     static void renameSequence(HI::GUITestOpStatus &os, const QString& seqToRename, const QString& newName);
+    static void replaceSymbol(HI::GUITestOpStatus &os, const QPoint &maPoint, char newSymbol);
 
     static void createColorScheme(HI::GUITestOpStatus &os, const QString& schemeName, const NewColorSchemeCreator::alphabet al);
     static void deleteColorScheme(HI::GUITestOpStatus &os, const QString& schemeName);

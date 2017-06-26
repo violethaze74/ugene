@@ -581,6 +581,14 @@ void GTUtilsMSAEditorSequenceArea::renameSequence(HI::GUITestOpStatus &os, const
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "replaceSymbol"
+void GTUtilsMSAEditorSequenceArea::replaceSymbol(GUITestOpStatus &os, const QPoint &maPoint, char newSymbol) {
+    clickToPosition(os, maPoint);
+    GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
+    GTKeyboardDriver::keyClick(newSymbol);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "createColorScheme"
 void GTUtilsMSAEditorSequenceArea::createColorScheme(HI::GUITestOpStatus &os, const QString &colorSchemeName, const NewColorSchemeCreator::alphabet al){
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));

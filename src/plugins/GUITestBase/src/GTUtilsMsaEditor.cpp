@@ -42,6 +42,7 @@
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsProjectTreeView.h"
 #include "api/GTMSAEditorStatusWidget.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 
@@ -281,6 +282,12 @@ void GTUtilsMsaEditor::redo(HI::GUITestOpStatus &os) {
 void GTUtilsMsaEditor::buildPhylogeneticTree(HI::GUITestOpStatus &os, const QString &pathToSave) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, pathToSave, 0, 0, true));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "dragAndDropSequenceFromProject"
+void GTUtilsMsaEditor::dragAndDropSequenceFromProject(GUITestOpStatus &os, const QStringList &pathToSequence) {
+    GTUtilsProjectTreeView::dragAndDrop(os, pathToSequence, getEditorUi(os));
 }
 #undef GT_METHOD_NAME
 

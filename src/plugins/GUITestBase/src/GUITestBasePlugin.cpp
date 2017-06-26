@@ -1912,6 +1912,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0003);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0007);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/consensus

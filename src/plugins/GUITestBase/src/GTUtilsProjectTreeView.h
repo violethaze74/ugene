@@ -66,6 +66,7 @@ public:
     static QModelIndex findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
     static QModelIndex findIndex(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex& parent, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
     static QModelIndex findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex& parent, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
+    static QModelIndex findIndex(HI::GUITestOpStatus &os, const QStringList &itemPath, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
     static QModelIndexList findIndecies(HI::GUITestOpStatus &os,
                                         const QString &itemName,
                                         const QModelIndex &parent = QModelIndex(),
@@ -108,6 +109,7 @@ public:
 
     static void dragAndDrop(HI::GUITestOpStatus &os, const QModelIndex &from, const QModelIndex &to);
     static void dragAndDrop(HI::GUITestOpStatus &os, const QModelIndex &from, QWidget* to);
+    static void dragAndDrop(HI::GUITestOpStatus &os, const QStringList &from, QWidget* to);
     static void dragAndDropSeveralElements(HI::GUITestOpStatus &os, QModelIndexList from, QModelIndex to);
 
     static void expandProjectView(HI::GUITestOpStatus &os);

@@ -283,6 +283,16 @@ QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, QTreeView
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "findIndex"
+QModelIndex GTUtilsProjectTreeView::findIndex(GUITestOpStatus &os, const QStringList &itemPath, const GTGlobals::FindOptions &options) {
+    QModelIndex item;
+    foreach (const QString &itemName, itemPath) {
+        item = findIndex(os, itemName, item, options);
+    }
+    return item;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "findIndecies"
 QModelIndexList GTUtilsProjectTreeView::findIndecies(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, int parentDepth, const GTGlobals::FindOptions &options) {
     QTreeView *treeView = getTreeView(os);
@@ -572,14 +582,25 @@ bool GTUtilsProjectTreeView::isVisible( HI::GUITestOpStatus &os ){
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "dragAndDrop"
 void GTUtilsProjectTreeView::dragAndDrop(HI::GUITestOpStatus &os, const QModelIndex &from, const QModelIndex &to) {
     sendDragAndDrop(os, getItemCenter(os, from), getItemCenter(os, to));
 }
+#undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "dragAndDrop"
 void GTUtilsProjectTreeView::dragAndDrop(HI::GUITestOpStatus &os, const QModelIndex &from, QWidget *to) {
     sendDragAndDrop(os, getItemCenter(os, from), to);
 }
+#undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "dragAndDrop"
+void GTUtilsProjectTreeView::dragAndDrop(GUITestOpStatus &os, const QStringList &from, QWidget *to) {
+    dragAndDrop(os, findIndex(os, from), to);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isVisible"
 void GTUtilsProjectTreeView::dragAndDropSeveralElements(HI::GUITestOpStatus &os, QModelIndexList from, QModelIndex to) {
     QTreeView *treeView = getTreeView(os);
 
@@ -596,6 +617,7 @@ void GTUtilsProjectTreeView::dragAndDropSeveralElements(HI::GUITestOpStatus &os,
 
     sendDragAndDrop(os, enterPos, dropPos);
 }
+#undef GT_METHOD_NAME
 
 void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus &os, const QPoint &enterPos, const QPoint &dropPos) {
     GTMouseDriver::dragAndDrop(enterPos, dropPos);
