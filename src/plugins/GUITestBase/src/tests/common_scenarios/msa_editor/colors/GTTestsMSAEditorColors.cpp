@@ -189,6 +189,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
+//    Highlighting scheme options should be saved on the alphabet changing for a DNA MSA
+
 //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -261,6 +263,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
+//    Highlighting scheme options should be saved on the alphabet changing for an amino acid MSA
+
 //    1. Open "_common_data/fasta/RAW.fa".
     GTUtilsProject::openFileExpectRawSequence(os, testDir + "_common_data/fasta/RAW.fa", "RAW263");
 
