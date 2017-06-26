@@ -410,13 +410,6 @@ bool MSAEditor::eventFilter(QObject*, QEvent* e) {
             }
         }
     }
-    if (e->type() == QEvent::KeyPress) {
-        QKeyEvent *keyEvent = dynamic_cast<QKeyEvent*>(e);
-        if (keyEvent->matches(QKeySequence::Paste)) {
-            ui->getPasteAction()->trigger();
-            return true;
-        }
-    }
 
     return false;
 }

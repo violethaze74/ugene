@@ -245,7 +245,7 @@ void MaEditorWgt::initActions() {
 
     pasteAction = new QAction(tr("Paste"), this);
     pasteAction->setObjectName("paste");
-    pasteAction->setShortcut(QKeySequence::Paste);
+    pasteAction->setShortcuts(QKeySequence::Paste);
     pasteAction->setShortcutContext(Qt::WidgetShortcut);
     pasteAction->setToolTip(QString("%1 (%2)").arg(pasteAction->text())
         .arg(pasteAction->shortcut().toString()));
