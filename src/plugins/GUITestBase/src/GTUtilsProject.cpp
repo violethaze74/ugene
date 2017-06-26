@@ -161,11 +161,11 @@ ADVSingleSequenceWidget *GTUtilsProject::openFileExpectSequence(GUITestOpStatus 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openFileExpectRawSequence"
-ADVSingleSequenceWidget * GTUtilsProject::openFileExpectRawSequence(HI::GUITestOpStatus &os,
+ADVSingleSequenceWidget *GTUtilsProject::openFileExpectRawSequence(HI::GUITestOpStatus &os,
                                                                  const QString &dirPath,
                                                                  const QString &fileName,
                                                                  const QString &seqName) {
-    openFileExpectRawSequence(os, dirPath + "/" + fileName, seqName);
+    return openFileExpectRawSequence(os, dirPath + "/" + fileName, seqName);
 }
 #undef GT_METHOD_NAME
 
