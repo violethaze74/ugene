@@ -123,7 +123,7 @@ protected:
 
     void addCopyMenu(QMenu* m);
     void addEditMenu(QMenu* m);
-    void addExportMenu(QMenu* m);
+    virtual void addExportMenu(QMenu* m);
     void addViewMenu(QMenu* m);
     void addLoadMenu(QMenu* m);
     void addAlignMenu(QMenu* m); // SANGER_TODO: should the align menu exist in MCA?
