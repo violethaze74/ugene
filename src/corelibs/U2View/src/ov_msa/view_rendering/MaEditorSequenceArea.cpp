@@ -282,7 +282,7 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHigh
     Q_ASSERT(isInRange(selection.topLeft()));
     Q_ASSERT(isInRange(selection.bottomRight()));
     selection = MaEditorSelection(MaEditorSequenceArea::boundWithVisibleRange(selection.topLeft()),
-                                  MaEditorSequenceArea::boundWithVisibleRange(selection.bottomRight());
+                                  MaEditorSequenceArea::boundWithVisibleRange(selection.bottomRight()));
 
     int selEndPos = s.x() + s.width() - 1;
     int ofRange = selEndPos - editor->getAlignmentLen();
