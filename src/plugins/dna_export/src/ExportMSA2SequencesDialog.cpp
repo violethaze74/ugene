@@ -35,9 +35,11 @@
 
 namespace U2 {
 
-ExportMSA2SequencesDialog::ExportMSA2SequencesDialog(QWidget* p)
+ExportMSA2SequencesDialog::ExportMSA2SequencesDialog(const QString &defaultDir, const QString &defaultFileName, QWidget* p)
     : QDialog(p),
-      saveController(NULL) {
+    defaultDir(defaultDir),
+    defaultFileName(defaultFileName),
+    saveController(NULL) {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759428");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
@@ -70,6 +72,7 @@ void ExportMSA2SequencesDialog::initSaveController() {
     config.fileNameEdit = fileNameEdit;
     config.formatCombo = formatCombo;
     config.parentWidget = this;
+    config.defaultFileName = defaultDir + "/" + defaultFileName + "." +AppContext::getDocumentFormatRegistry()->getFormatById(config.defaultFormatId)->getSupportedDocumentFileExtensions().first();
 
     DocumentFormatConstraints formatConstraints;
     formatConstraints.supportedObjectTypes << GObjectTypes::SEQUENCE;

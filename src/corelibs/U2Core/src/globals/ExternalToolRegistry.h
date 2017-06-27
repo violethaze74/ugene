@@ -22,12 +22,12 @@
 #ifndef _U2_EXTERNAL_TOOL_REGISTRY_H
 #define _U2_EXTERNAL_TOOL_REGISTRY_H
 
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QVariant>
-#include <QtGui/QIcon>
+#include <QIcon>
+#include <QList>
+#include <QMap>
+#include <QString>
+#include <QStringList>
+#include <QVariant>
 
 #include <U2Core/IdRegistry.h>
 #include <U2Core/global.h>
@@ -77,6 +77,7 @@ public:
     const QRegExp&      getVersionRegExp()  const { return versionRegExp; }
     const QString&      getToolKitName()  const { return toolKitName; }
     const QStrStrMap&   getErrorDescriptions()  const { return errorDescriptions; }
+    const QVariantMap & getAdditionalInfo() const;
 
     virtual void        getAdditionalParameters(const QString& output) { Q_UNUSED(output) }
 
@@ -87,10 +88,12 @@ public:
     void setPath(const QString& _path);
     void setValid(bool _isValid);
     void setVersion(const QString& _version);
+    virtual void setAdditionalInfo(const QVariantMap &additionalInfo);
 
     bool isValid() const { return isValidTool; }
     bool isMuted() const;
     bool isModule() const { return isModuleTool; }
+
 signals:
     void si_pathChanged();
     void si_toolValidationStatusChanged(bool isValid);
@@ -111,6 +114,7 @@ protected:
     bool        isValidTool;            // tool state
     QString     toolKitName;            // toolkit which includes the tool
     QStrStrMap  errorDescriptions;      // error messages for the tool's standard errors
+    QVariantMap additionalInfo;         // any additional info, it is specific for the extenal tool
     QList<ExternalToolValidation> additionalValidators;     // validators for the environment state (e.g. some external program should be installed)
     QStringList dependencies;           // a list of dependencies for the tool of another external tools (e.g. python for python scripts).
     bool        muted;                  // a muted tool doesn't write its validation error to the log

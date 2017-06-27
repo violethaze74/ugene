@@ -21,13 +21,18 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ScriptingToolRegistry.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "JavaSupport.h"
 
 namespace U2 {
 
+const QString JavaSupport::ARCHITECTURE = "architecture";
+const QString JavaSupport::ARCHITECTURE_X32 = "x32";
+const QString JavaSupport::ARCHITECTURE_X64 = "x64";
+
 JavaSupport::JavaSupport(const QString &name, const QString &path)
-: ExternalTool(name, path), architecture(x32)
+    : ExternalTool(name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -55,18 +60,47 @@ JavaSupport::JavaSupport(const QString &name, const QString &path)
 }
 
 void JavaSupport::getAdditionalParameters(const QString& output) {
+    Architecture architecture = x32;
     if (output.contains("64-Bit")) {
         architecture = x64;
     }
+    additionalInfo.insert(ARCHITECTURE, architecture2string(architecture));
+    coreLog.details(tr("Java architecture: %1").arg(architecture2string(architecture)));
 }
 
-U2::JavaSupport::Architecture JavaSupport::getArchitecture() const {
-    return architecture;
+JavaSupport::Architecture JavaSupport::getArchitecture() const {
+    return string2architecture(additionalInfo.value(ARCHITECTURE).toString());
 }
 
 void JavaSupport::sl_toolValidationStatusChanged(bool isValid) {
     Q_UNUSED(isValid);
     ScriptingTool::onPathChanged(this, QStringList() << "-jar");
+}
+
+void JavaSupport::setAdditionalInfo(const QVariantMap &newAdditionalInfo) {
+    ExternalTool::setAdditionalInfo(newAdditionalInfo);
+    coreLog.details(tr("Java architecture: %1").arg(architecture2string(getArchitecture())));
+}
+
+QString JavaSupport::architecture2string(Architecture architecture) {
+    switch (architecture) {
+    case JavaSupport::x32:
+        return ARCHITECTURE_X32;
+    case JavaSupport::x64:
+        return ARCHITECTURE_X64;
+    default:
+        FAIL("An unknown architecture", "");
+    }
+}
+
+JavaSupport::Architecture JavaSupport::string2architecture(const QString &string) {
+    if (ARCHITECTURE_X32 == string) {
+        return x32;
+    } else if (ARCHITECTURE_X64 == string) {
+        return x64;
+    } else {
+        return x32;
+    }
 }
 
 } // U2

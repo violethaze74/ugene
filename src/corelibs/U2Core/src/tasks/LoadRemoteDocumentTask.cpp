@@ -406,7 +406,7 @@ void LoadDataFromEntrezTask::run( )
     createLoopAndNetworkManager(traceFetchUrl);
 
     ioLog.trace( traceFetchUrl );
-    QUrl requestUrl( EntrezUtils::NCBI_EFETCH_URL.arg( db ).arg( accNumber ).arg( format ) );
+    QUrl requestUrl(EntrezUtils::NCBI_EFETCH_URL.arg(db).arg(accNumber).arg(format)); 
     downloadReply = networkManager->get( QNetworkRequest( requestUrl ) );
     connect( downloadReply, SIGNAL( error( QNetworkReply::NetworkError ) ),
         this, SLOT( sl_onError( QNetworkReply::NetworkError ) ) );
@@ -420,7 +420,7 @@ void LoadDataFromEntrezTask::run( )
         ioLog.trace( "Download finished." );
 
         QByteArray result = downloadReply->readAll( );
-        if ( ( result.size( ) < 100 ) && result.contains( "Nothing has been found" ) ) {
+        if (((result.size() < 100) && result.contains("Nothing has been found")) || (result.contains("ID list is empty! In it there are neither IDs nor accessions"))) {
             setError( tr( "Sequence with ID=%1 is not found." ).arg( accNumber ) );
             return;
         }

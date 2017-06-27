@@ -209,7 +209,7 @@ void BlastPlusSupportRunDialog::sl_runQuery(){
     lastDBName = dbSelector->baseNameLineEdit->text();
     settings.outputType = 5;//By default set output file format to xml
     if(seqCtx != NULL){
-        seqCtx->getAnnotatedDNAView()->tryAddObject(ca_c->getModel().getAnnotationObject());
+        seqCtx->getAnnotatedDNAView()->tryAddObject(settings.aobj);
     }
     accept();
 }

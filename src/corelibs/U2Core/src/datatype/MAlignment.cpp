@@ -625,6 +625,25 @@ void MAlignmentRow::replaceChars(char origChar, char resultChar, U2OpStatus& os)
     }
 }
 
+bool MAlignmentRow::isGap(int position) const {
+    int gapsLength = 0;
+    foreach (const U2MsaGap &gap, gaps) {
+        if (gap.offset <= position && position < gap.offset + gap.gap) {
+            return true;
+        }
+        if (position < gap.offset) {
+            return false;
+        }
+        gapsLength += gap.gap;
+    }
+
+    if (sequence.length() + gapsLength <= position) {
+        return true;
+    }
+
+    return false;
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // MAlignment
@@ -1377,6 +1396,10 @@ bool MAlignment::sortRowsByList(const QStringList& rowsOrder) {
 
     rows = sortedRows;
     return true;
+}
+
+bool MAlignment::isGap(int row, int column) const {
+    return rows[row].isGap(column);
 }
 
 const MAlignmentRow& MAlignment::getRow( QString name ) const{

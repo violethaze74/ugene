@@ -39,8 +39,8 @@ void MsaHighlightingSchemeAgreements::process(const char refChar, char &seqChar,
     MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
-MsaHighlightingSchemeAgreementsFactory::MsaHighlightingSchemeAgreementsFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType)
-    : MsaHighlightingSchemeFactory(parent, id, name, alphabetType)
+MsaHighlightingSchemeAgreementsFactory::MsaHighlightingSchemeAgreementsFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes)
+    : MsaHighlightingSchemeFactory(parent, id, name, alphabetTypes)
 {
 
 }

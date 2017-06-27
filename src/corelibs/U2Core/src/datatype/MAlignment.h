@@ -39,7 +39,6 @@ namespace U2 {
 
 /** Gap character */
 #define MAlignment_GapChar '-'
-#define MAlignment_TailedGapsPattern "\\-+$"
 
 class DNAAlphabet;
 class MAlignment;
@@ -196,6 +195,8 @@ public:
     void replaceChars(char origChar, char resultChar, U2OpStatus& os);
 
     inline static qint64 invalidRowId() { return -1; }
+
+    bool isGap(int position) const;
 
 private:
     /** Do NOT create a row without an alignment! */
@@ -535,6 +536,8 @@ public:
 
     /** Arranges rows in lists order*/
     bool sortRowsByList(const QStringList& order);
+
+    bool isGap(int row, int column) const;
 
 private:
     /** Create a new row (sequence + gap model) from the bytes */

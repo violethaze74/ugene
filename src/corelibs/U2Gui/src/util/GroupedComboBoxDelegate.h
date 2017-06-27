@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,40 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_MSA2SEQ_DIALOG_H_
-#define _U2_EXPORT_MSA2SEQ_DIALOG_H_
+#ifndef _U2_GROUPED_COMBOBOX_DELEGATE_H_
+#define _U2_GROUPED_COMBOBOX_DELEGATE_H_
 
-#include <QDialog>
+#include <QItemDelegate>
+#include <QPainter>
 
 #include <U2Core/global.h>
 
-#include <ui_ExportMSA2SequencesDialog.h>
+class QStandardItemModel;
 
 namespace U2 {
 
-class SaveDocumentController;
-
-class ExportMSA2SequencesDialog : public QDialog, private Ui_ExportMSA2SequencesDialog {
+class U2GUI_EXPORT GroupedComboBoxDelegate : public QItemDelegate {
     Q_OBJECT
 public:
-    ExportMSA2SequencesDialog(const QString &defaultDir, const QString &defaultFilename, QWidget* p);
+    explicit GroupedComboBoxDelegate(QObject *parent = 0);
 
-    virtual void accept();
-
-public:
-    QString             url;
-    QString             defaultDir;
-    QString             defaultFileName;
-    DocumentFormatId    format;
-    bool                trimGapsFlag;
-    bool                addToProjectFlag;
-
-private:
-    void initSaveController();
-
-    SaveDocumentController* saveController;
+    static void addParentItem(QStandardItemModel * model, const QString& text);
+    static void addChildItem(QStandardItemModel * model, const QString& text, const QVariant& data);
+protected:
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-}//namespace
+}
 
-#endif
+#endif // _U2_GROUPED_COMBOBOX_DELEGATE_H_
