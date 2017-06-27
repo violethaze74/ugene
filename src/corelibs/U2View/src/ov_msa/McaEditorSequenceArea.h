@@ -54,13 +54,6 @@ public:
     const ChromatogramViewSettings&  getSettings() const { return settings; }
     bool getShowQA() const {return showQVAction->isChecked(); }
 
-    U2Region getSequenceYRange(int seqNum, int firstVisibleRow, bool useVirtualCoords) const;
-
-    int         getSequenceNumByY(int y) const;
-    U2Region    getSequenceYRange(int startSeq, int count) const;
-
-    int         countHeightForSequences(bool countClipped) const;
-
     void setSelection(const MaEditorSelection& sel, bool newHighlightSelection = false);
 
     void moveSelection(int dx, int dy, bool allowSelectionResize = false);
@@ -74,6 +67,7 @@ public slots:
     void sl_backgroundSelectionChanged();
 
 private slots:
+    void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
     void sl_showHideTrace();
     void sl_showAllTraces();
     void sl_setRenderAreaHeight(int k);
@@ -85,7 +79,7 @@ private slots:
 private:
     void initRenderer();
     void updateActions();
-    void drawBackground(QPainter& p);
+    void drawBackground(QPainter &p);
 
     void buildMenu(QMenu* m);
 

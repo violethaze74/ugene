@@ -141,7 +141,7 @@ MaConsensusOverviewCalculationTask::MaConsensusOverviewCalculationTask(MultipleA
 }
 
 int MaConsensusOverviewCalculationTask::getGraphValue(int pos) const {
-    int score;
+    int score = 0;
     algorithm->getConsensusCharAndScore(ma, pos, score);
     return qRound(score * 100. / seqNumber);
 }

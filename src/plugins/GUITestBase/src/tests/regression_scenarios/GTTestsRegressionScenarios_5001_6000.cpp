@@ -63,6 +63,7 @@
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
 
@@ -97,6 +98,7 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
@@ -591,6 +593,61 @@ GUI_TEST_CLASS_DEFINITION(test_5208) {
     //    Expected state: the library contains four primers, log contains no errors.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5211) {
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Select the first sequence.
+    GTUtilsMsaEditor::clickSequenceName(os, "Phaneroptera_falcata");
+
+//    3. Copy it to the clipboard.
+    GTKeyboardUtils::copy(os);
+
+//    4. Press the next key sequence:
+//        ﻿Windows and Linux: Shift+Ins
+//        macOS: Meta+Y
+#ifndef Q_OS_MAC
+    GTKeyboardDriver::keyClick(Qt::Key_Insert, Qt::ShiftModifier);
+#else
+    GTKeyboardDriver::keyClick('y', Qt::MetaModifier);
+#endif
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: a new sequence is added to the alignment. There are no new objects and documents in the Project View.
+    int expectedSequencesCount = 19;
+    int sequencesCount = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(expectedSequencesCount == sequencesCount,
+                  QString("Incorrect count of sequences after the first insertion: expected %1, got %2")
+                  .arg(expectedSequencesCount).arg(sequencesCount));
+
+    const int expectedDocumentsCount = 2;
+    int documentsCount = GTUtilsProjectTreeView::findIndecies(os, "", QModelIndex(), 2).size();
+    CHECK_SET_ERR(expectedDocumentsCount == documentsCount,
+                  QString("Incorrect count of items in the Project View after the first insertion: expected %1, got %2")
+                  .arg(expectedDocumentsCount).arg(documentsCount));
+
+//    5. Press the next key sequence:
+//        ﻿Windows and Linux: Ctrl+V
+//        macOS: Cmd+V
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);     // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: one more new sequence is added to the alignment. There are no new objects and documents in the Project View.
+    expectedSequencesCount = 20;
+    sequencesCount = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(expectedSequencesCount == sequencesCount,
+                  QString("Incorrect count of sequences after the second insertion: expected %1, got %2")
+                  .arg(expectedSequencesCount).arg(sequencesCount));
+
+    documentsCount = GTUtilsProjectTreeView::findIndecies(os, "", QModelIndex(), 2).size();
+    CHECK_SET_ERR(expectedDocumentsCount == documentsCount,
+                  QString("Incorrect count of items in the Project View after the second insertion: expected %1, got %2")
+                  .arg(expectedDocumentsCount).arg(documentsCount));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5216) {
@@ -1390,6 +1447,38 @@ GUI_TEST_CLASS_DEFINITION(test_5469) {
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size() == 2, "Wrong number of selected annotations");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5495) {
+    //1) Open samples/FASTA/human_T1.fa
+        GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    //2) Select 100..10 region of the sequence
+        class Scenario : public CustomScenario {
+        public:
+            void run(HI::GUITestOpStatus &os) {
+                QWidget *dialog = QApplication::activeModalWidget();
+                
+                QLineEdit *startEdit = dialog->findChild<QLineEdit*>("startEdit");
+                QLineEdit *endEdit = dialog->findChild<QLineEdit*>("endEdit");
+                CHECK_SET_ERR(startEdit != NULL, "QLineEdit \"startEdit\" not found");
+                CHECK_SET_ERR(endEdit != NULL, "QLineEdit \"endEdit\" not found");
+                
+                GTLineEdit::setText(os, startEdit, QString::number(321));
+                GTLineEdit::setText(os, endEdit, QString::number(123));
+                                
+                QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox"));
+                QPushButton* goButton = box->button(QDialogButtonBox::Ok);
+                CHECK_SET_ERR(goButton!= NULL, "Go button not found");
+                CHECK_SET_ERR(!goButton->isEnabled(), "Go button is enabled");
+                
+                GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            }
+        };
+        GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, new Scenario));
+        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));
+        GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));               
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5499) {
 //    1. Open txt file (_common_data/text/text.txt).
 //    Expected state: "Select correct document format" dialog appears
@@ -1547,7 +1636,7 @@ GUI_TEST_CLASS_DEFINITION(test_5562_2) {
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix..."));
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, new Scenario));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1598,7 +1687,7 @@ GUI_TEST_CLASS_DEFINITION(test_5562_3) {
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix..."));
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, new Scenario));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1635,6 +1724,22 @@ GUI_TEST_CLASS_DEFINITION(test_5588) {
     rect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(rect == QRect(QPoint(11, 0), QPoint(29, 24)), QString("Incorrect selected area, %1, %2, %3, %4")
         .arg(rect.topLeft().x()).arg(rect.topLeft().y()).arg(rect.bottomRight().x()).arg(rect.bottomRight().y()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5636) {
+    //1. Open File "\samples\CLUSTALW\COI.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+   //2. Click Actions->Align->Align sequence to profile with MUSCLE...
+    //3. Select "\samples\CLUSTALW\COI.aln"
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align sequences to profile with MUSCLE..."));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align");  
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: 18 sequences are added to the msa. 
+    CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 36, "Incorrect sequences count");
 }
 
 } // namespace GUITest_regression_scenarios

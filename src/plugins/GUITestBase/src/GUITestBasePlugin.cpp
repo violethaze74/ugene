@@ -1158,6 +1158,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4588);
     REGISTER_TEST(GUITest_regression_scenarios::test_4588_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4588_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4591);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4591_1);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_4606);
     REGISTER_TEST(GUITest_regression_scenarios::test_4620);
@@ -1274,6 +1276,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5199);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5208);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5211);
     REGISTER_TEST(GUITest_regression_scenarios::test_5216);
     REGISTER_TEST(GUITest_regression_scenarios::test_5227);
     REGISTER_TEST(GUITest_regression_scenarios::test_5246);
@@ -1302,16 +1305,18 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5447_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5447_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_5469);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5495);
     REGISTER_TEST(GUITest_regression_scenarios::test_5499);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5517);
-
     REGISTER_TEST(GUITest_regression_scenarios::test_5520_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5520_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5562_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5562_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5562_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_5588);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_5636);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -1572,6 +1577,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0008);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0010);
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0011);
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0012);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/toggle view/
@@ -1898,6 +1905,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0012);
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0014);
+    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0015);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/colors
@@ -1906,6 +1914,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0003);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0007);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/consensus

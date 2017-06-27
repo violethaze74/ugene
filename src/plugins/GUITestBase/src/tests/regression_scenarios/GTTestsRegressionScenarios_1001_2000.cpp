@@ -3827,7 +3827,7 @@ GUI_TEST_CLASS_DEFINITION(test_1362) {
     //    Profile mode: Percents.
     //    Exclude gaps: unchecked.
     //4) Run the task.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix..."));
     DistanceMatrixDialogFiller *filler = new DistanceMatrixDialogFiller(os, false, false, false);
     filler->saveToFile = true;
     filler->format = DistanceMatrixDialogFiller::CSV;
@@ -5630,7 +5630,7 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
 //    3. Open any group and try to edit any sequence:
-    GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Conocephalus_discolor");
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_discolor");
 
 //    3.1 Insert gap by pressing SPACE.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 10));
@@ -5756,7 +5756,7 @@ GUI_TEST_CLASS_DEFINITION(test_1585) {
 
     GTKeyboardDriver::keyClick( Qt::Key_Escape);
 
-    GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Conocephalus_discolor");
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_discolor");
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(6, 9), QPoint(11, 10));
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(9, 9));
@@ -6195,7 +6195,7 @@ GUI_TEST_CLASS_DEFINITION( test_1606 ) {
 //    Expected state: UGENE doesn't crash on closing.
     GTLogTracer l;
 
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, true, false,
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, true, true, false,
                                                                         sandBoxDir));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -7537,7 +7537,7 @@ GUI_TEST_CLASS_DEFINITION(test_1747){
     //Expected state: progress for "Generete distance matrix" correctly displays current state of calculation
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix..."));
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 

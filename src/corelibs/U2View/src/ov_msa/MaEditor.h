@@ -29,7 +29,6 @@ namespace U2 {
 class MaEditorWgt;
 class MultipleAlignmentObject;
 
-
 class SNPSettings {
 public:
     SNPSettings();
@@ -72,7 +71,6 @@ public:
 
     const QRect& getCurrentSelection() const;
 
-    virtual int getRowHeight() const;
     virtual int getRowContentIndent(int rowId) const;
     int getSequenceRowHeight() const; // SANGER_TODO: order the methods
 
@@ -125,7 +123,7 @@ protected:
 
     void addCopyMenu(QMenu* m);
     void addEditMenu(QMenu* m);
-    void addExportMenu(QMenu* m);
+    virtual void addExportMenu(QMenu* m);
     void addViewMenu(QMenu* m);
     void addLoadMenu(QMenu* m);
     void addAlignMenu(QMenu* m); // SANGER_TODO: should the align menu exist in MCA?

@@ -24,6 +24,11 @@
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 
+#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
+#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MSAConsensusUtils.h>
+#include <U2Algorithm/MsaColorScheme.h>
+
 #include <U2Core/AppContext.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -33,6 +38,7 @@
 
 #include "McaEditor.h"
 #include "MSAEditor.h"
+
 
 namespace U2 {
 
@@ -58,8 +64,8 @@ void MSAEditorConsensusArea::buildMenu(QMenu* m) {
 /************************************************************************/
 McaEditorConsensusArea::McaEditorConsensusArea(McaEditorWgt *ui)
     : MaEditorConsensusArea(ui) {
-    drawSettings.visibility[MSAEditorConsElement_HISTOGRAM] = false;
-    drawSettings.highlightMismatches = true;
+    consensusSettings.visibleElements = MSAEditorConsElement_CONSENSUS_TEXT | MSAEditorConsElement_RULER;
+    consensusSettings.highlightMismatches = true;
 
     MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO);
     setConsensusAlgorithm(algoFactory);
@@ -84,7 +90,7 @@ void McaEditorConsensusArea::buildMenu(QMenu* m) {
 }
 
 bool McaEditorConsensusArea::highlightConsensusChar(int pos) {
-    return drawSettings.highlightMismatches && mismatchController->isMismatch(pos);
+    return consensusSettings.highlightMismatches && mismatchController->isMismatch(pos);
 }
 
 } // namespace U2

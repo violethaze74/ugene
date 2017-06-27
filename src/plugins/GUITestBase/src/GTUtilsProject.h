@@ -63,8 +63,13 @@ public:
      * Verifies that the sequence name is @seqName.
      * Returns the sequence widget.
      */
-    static ADVSingleSequenceWidget * openFileExpectSequence(HI::GUITestOpStatus &os, const QString &path, const QString &fileName,
-        const QString &seqName);
+    static ADVSingleSequenceWidget *openFileExpectSequence(HI::GUITestOpStatus &os,
+                                                            const QString &dirPath,
+                                                            const QString &fileName,
+                                                            const QString &seqName);
+    static ADVSingleSequenceWidget *openFileExpectSequence(HI::GUITestOpStatus &os,
+                                                            const QString &filePath,
+                                                            const QString &seqName);
 
      /**
      * Opens file @path\@fileName and expects a sequence with raw alphabet to be opened.
@@ -72,8 +77,14 @@ public:
      * Verifies that the sequence name is @seqName.
      * Returns the sequence widget.
      */
-    static ADVSingleSequenceWidget * openFileExpectRawSequence(HI::GUITestOpStatus &os, const QString &path, const QString &fileName,
-        const QString &seqName);
+    static ADVSingleSequenceWidget *openFileExpectRawSequence(HI::GUITestOpStatus &os,
+                                                              const QString &dirPath,
+                                                              const QString &fileName,
+                                                              const QString &seqName);
+
+    static ADVSingleSequenceWidget *openFileExpectRawSequence(HI::GUITestOpStatus &os,
+                                                              const QString &filePath,
+                                                              const QString &seqName);
 
     /**
      * Opens file @path\@fileName.

@@ -167,6 +167,7 @@ protected:
     virtual bool onCloseEvent();
 
 private:
+    void addExportMenu(QMenu* m);
     void addTreeMenu(QMenu* m);
     void addAdvancedMenu(QMenu* m);
     void addStatisticsMenu(QMenu* m);

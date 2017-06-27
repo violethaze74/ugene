@@ -101,7 +101,7 @@ void MsaEditorSimilarityColumn::setSettings(const UpdatedWidgetSettings* _settin
     if(curSettings.usePercents != set->usePercents) {
         if(NULL != matrix) {
             matrix->setPercentSimilarity(set->usePercents);
-            updateContent();
+            sl_completeRedraw();
         }
         curSettings.usePercents = set->usePercents;
     }
@@ -155,7 +155,7 @@ void MsaEditorSimilarityColumn::sl_createMatrixTaskFinished(Task* t) {
             matrix->setPercentSimilarity(newSettings.usePercents);
         }
     }
-    updateContent();
+    sl_completeRedraw();
     if (finishedSuccessfully) {
         state = DataIsValid;
         curSettings = newSettings;

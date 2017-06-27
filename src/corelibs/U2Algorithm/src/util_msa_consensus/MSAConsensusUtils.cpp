@@ -46,6 +46,7 @@ void MSAConsensusUtils::updateConsensus(const MultipleAlignment& ma, const QVect
     if (cons.length()!=aliLen) {
         cons.resize(aliLen);
     }
+
     foreach(const U2Region& r, regions) {
         for (int i = r.startPos, n = r.endPos(); i < n ; i++) {
             cons[i] = algo->getConsensusChar(ma, i);
@@ -124,7 +125,7 @@ void MSAConsensusUtils::unpackConsensusCharsFromInt(quint32 val, char* charVal, 
 }
 
 uchar MSAConsensusUtils::getColumnFreqs(const MultipleAlignment& ma, int pos, QVector<int>& freqsByChar,
-                                        int& nonGapChars, const QVector<qint64>& seqIdx) {
+                                        int& nonGapChars, const QVector<int>& seqIdx) {
     assert(freqsByChar.size() == 256);
     freqsByChar.fill(0);
     nonGapChars = 0;

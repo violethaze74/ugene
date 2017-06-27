@@ -24,6 +24,8 @@
 
 #include <QWidget>
 
+#include <U2Core/global.h>
+
 #include "MaEditorUtils.h"
 
 class QGridLayout;
@@ -32,22 +34,26 @@ class QVBoxLayout;
 
 namespace U2 {
 
+class BaseWidthController;
+class DrawHelper;
 class GScrollBar;
-class MaEditorSequenceArea;
 class MSACollapsibleItemModel;
-class MaEditor;
 class MaEditorConsensusArea;
-class MaEditorNameList;
 class MSAEditorOffsetsViewController;
-class MaEditorOverviewArea;
 class MSAEditorStatusWidget;
+class MaEditor;
+class MaEditorNameList;
+class MaEditorOverviewArea;
+class MaEditorSequenceArea;
+class RowHeightController;
 class MsaUndoRedoFramework;
+class ScrollController;
 class SequenceAreaRenderer;
 
 /************************************************************************/
 /* MaEditorWgt */
 /************************************************************************/
-class MaEditorWgt : public QWidget {
+class U2VIEW_EXPORT MaEditorWgt : public QWidget {
     Q_OBJECT
 public:
     MaEditorWgt(MaEditor* editor);
@@ -62,6 +68,10 @@ public:
     MaEditorConsensusArea*          getConsensusArea() { return consArea; }
     MaEditorOverviewArea*           getOverviewArea() { return overviewArea; }
     MSAEditorOffsetsViewController* getOffsetsViewController() { return offsetsView; }
+    ScrollController *              getScrollController();
+    BaseWidthController *           getBaseWidthController();
+    RowHeightController *           getRowHeightController();
+    DrawHelper *                    getDrawHelper();
 
     QAction* getUndoAction() const;
     QAction* getRedoAction() const;
@@ -80,8 +90,9 @@ public:
     QWidget* getHeaderWidget() const { return seqAreaHeader; }
 
 signals:
-    void si_startMsaChanging();
-    void si_stopMsaChanging(bool modified = false);
+    void si_startMaChanging();
+    void si_stopMaChanging(bool modified = false);
+    void si_completeRedraw();
 
 public slots:
     void sl_saveScreenshot();
@@ -116,6 +127,10 @@ protected:
 
     MSACollapsibleItemModel*        collapseModel;
     bool                            collapsibleMode;
+    ScrollController *              scrollController;
+    BaseWidthController *           baseWidthController;
+    RowHeightController *           rowHeightController;
+    DrawHelper *                    drawHelper;
 
     QAction                         *delSelectionAction;
     QAction                         *copySelectionAction;

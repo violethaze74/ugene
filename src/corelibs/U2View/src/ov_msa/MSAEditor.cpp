@@ -80,26 +80,27 @@
 
 #include <U2View/UndoRedoFramework.h>
 
-#include "Export/MSAImageExportTask.h"
 #include "ExportHighlightedDialogController.h"
-#include "MaEditorFactory.h"
 #include "MSAEditor.h"
 #include "MSAEditorConsensusArea.h"
-#include "MaEditorNameList.h"
 #include "MSAEditorOffsetsView.h"
 #include "MSAEditorOverviewArea.h"
 #include "MSAEditorSequenceArea.h"
 #include "MSAEditorState.h"
 #include "MSAEditorStatusBar.h"
 #include "MSAEditorTasks.h"
+#include "MaEditorFactory.h"
+#include "MaEditorNameList.h"
 #include "MsaEditorSimilarityColumn.h"
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
-#include "PhyTrees/MSAEditorMultiTreeViewer.h"
-#include "PhyTrees/MSAEditorTreeViewer.h"
+#include "Export/MSAImageExportTask.h"
+#include "helpers/MsaRowHeightController.h"
 #include "ov_msa/TreeOptions//TreeOptionsWidgetFactory.h"
 #include "ov_phyltree/TreeViewer.h"
 #include "ov_phyltree/TreeViewerTasks.h"
 #include "phyltree/CreatePhyTreeDialogController.h"
+#include "PhyTrees/MSAEditorMultiTreeViewer.h"
+#include "PhyTrees/MSAEditorTreeViewer.h"
 
 
 namespace U2 {
@@ -152,7 +153,6 @@ bool MSAEditor::onCloseEvent() {
 }
 
 int MSAEditor::getFirstVisibleBase() const {
-
     return ui->getSequenceArea()->getFirstVisibleBase();
 }
 
@@ -170,6 +170,7 @@ MSAEditor::~MSAEditor() {
 void MSAEditor::buildStaticToolbar(QToolBar* tb) {
     MaEditor::buildStaticToolbar(tb);
 
+    tb->addAction(saveScreenshotAction);
     tb->addAction(buildTreeAction);
     tb->addAction(alignAction);
     tb->addAction(alignSequencesToAlignmentAction);
@@ -195,6 +196,13 @@ void MSAEditor::buildStaticMenu(QMenu* m) {
     GObjectView::buildStaticMenu(m);
 
     GUIUtils::disableEmptySubmenus(m);
+}
+
+void MSAEditor::addExportMenu(QMenu* m) {
+    MaEditor::addExportMenu(m);
+    QMenu* em = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
+    SAFE_POINT(em != NULL, "Export menu not found", );
+    em->addAction(saveScreenshotAction);
 }
 
 void MSAEditor::addTreeMenu(QMenu* m) {
@@ -410,13 +418,6 @@ bool MSAEditor::eventFilter(QObject*, QEvent* e) {
             }
         }
     }
-    if (e->type() == QEvent::KeyPress) {
-        QKeyEvent *keyEvent = dynamic_cast<QKeyEvent*>(e);
-        if (keyEvent->matches(QKeySequence::Paste)) {
-            ui->getPasteAction()->trigger();
-            return true;
-        }
-    }
 
     return false;
 }
@@ -564,6 +565,7 @@ MSAEditorUI::MSAEditorUI(MSAEditor* editor)
     : MaEditorWgt(editor),
       multiTreeViewer(NULL),
       similarityStatistics(NULL) {
+    rowHeightController = new MsaRowHeightController(this);
     initActions();
     initWidgets();
 }

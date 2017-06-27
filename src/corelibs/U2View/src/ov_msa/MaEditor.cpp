@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "MaEditor.h"
-
-#include "view_rendering/MaEditorWgt.h"
+#include <QFontDialog>
 
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
@@ -42,7 +40,9 @@
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
 
-#include <QFontDialog>
+#include "MaEditor.h"
+#include "helpers/ScrollController.h"
+#include "view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 
@@ -136,7 +136,6 @@ void MaEditor::buildStaticToolbar(QToolBar* tb) {
 
     tb->addAction(showOverviewAction);
     tb->addAction(changeFontAction);
-    tb->addAction(saveScreenshotAction);
 }
 
 void MaEditor::buildStaticMenu(QMenu* m) {
@@ -166,11 +165,6 @@ bool MaEditor::isAlignmentEmpty() const {
 
 const QRect& MaEditor::getCurrentSelection() const {
     return ui->getSequenceArea()->getSelection().getRect();
-}
-
-int MaEditor::getRowHeight() const {
-    QFontMetrics fm(font, ui);
-    return fm.height() * zoomMult;
 }
 
 int MaEditor::getRowContentIndent(int) const {
@@ -301,8 +295,8 @@ void MaEditor::sl_zoomToSelection()
         zoomFactor = pixelsPerBase / (MOBJECT_MIN_FONT_SIZE * fontPixelToPointSize);
         resizeMode = ResizeMode_OnlyContent;
     }
-    ui->getSequenceArea()->setFirstVisibleBase(selection.x());
-    ui->getSequenceArea()->setFirstVisibleSequence(selection.y());
+    ui->getScrollController()->setFirstVisibleBase(selection.x());
+    ui->getScrollController()->setFirstVisibleRowByNumber(selection.y());
 
     updateActions();
 
@@ -392,7 +386,6 @@ void MaEditor::addEditMenu(QMenu* m) {
 void MaEditor::addExportMenu(QMenu* m) {
     QMenu* em = m->addMenu(tr("Export"));
     em->menuAction()->setObjectName(MSAE_MENU_EXPORT);
-    em->addAction(saveScreenshotAction);
     em->addAction(exportHighlightedAction);
     if(!ui->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->isRefFree() &&
                 getReferenceRowId() != U2MsaRow::INVALID_ROW_ID){
@@ -444,9 +437,8 @@ void MaEditor::calcFontPixelToPointSizeCoef() {
 }
 
 void MaEditor::setFirstVisibleBase(int firstPos) {
-
     if (ui->getSequenceArea()->isPosInRange(firstPos)) {
-        ui->getSequenceArea()->setFirstVisibleBase(firstPos);
+        ui->getScrollController()->setFirstVisibleBase(firstPos);
     }
 }
 

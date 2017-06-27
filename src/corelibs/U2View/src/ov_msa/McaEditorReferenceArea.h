@@ -35,7 +35,7 @@ class McaEditorWgt;
 class McaEditorReferenceArea : public PanView {
     Q_OBJECT
 public:
-    McaEditorReferenceArea(McaEditorWgt* p, SequenceObjectContext* ctx);
+    McaEditorReferenceArea(McaEditorWgt* ui, SequenceObjectContext* ctx);
 
 signals:
     void si_selectionChanged();
@@ -53,6 +53,7 @@ private slots:
 
 private:
     McaEditor* editor;
+    McaEditorWgt* ui;
     McaReferenceAreaRenderer *renderer;
 };
 

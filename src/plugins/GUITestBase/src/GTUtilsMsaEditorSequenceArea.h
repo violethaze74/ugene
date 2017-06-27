@@ -46,7 +46,7 @@ public:
     static QStringList getNameList(HI::GUITestOpStatus &os);
     static QStringList getVisibleNames(HI::GUITestOpStatus &os);
     static QString getSimilarityValue(HI::GUITestOpStatus &os, int row);
-    static void clickCollapceTriangle(HI::GUITestOpStatus &os, QString seqName);
+    static void clickCollapseTriangle(HI::GUITestOpStatus &os, QString seqName);
     static bool isCollapsed(HI::GUITestOpStatus &os, QString seqName);
     static bool collapsingMode(HI::GUITestOpStatus &os);
 
@@ -65,7 +65,7 @@ public:
     static void selectArea(HI::GUITestOpStatus &os, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1));
     static void cancelSelection(HI::GUITestOpStatus &os);
     static QPoint convertCoordinates(HI::GUITestOpStatus &os, const QPoint p);
-    static void click(HI::GUITestOpStatus &os, QPoint p = QPoint(0, 0));
+    static void click(HI::GUITestOpStatus &os, QPoint screenMaPoint = QPoint(0, 0));
 
     // scrolls to the position (in the MSA zero-based coordinates)
     static void scrollToPosition(HI::GUITestOpStatus &os, const QPoint& position);
@@ -85,9 +85,10 @@ public:
     static bool isSequenceHightighted(HI::GUITestOpStatus &os, const QString& seqName);
     static QString getColor(HI::GUITestOpStatus &os, QPoint p);
     static bool checkColor(HI::GUITestOpStatus &os, const QPoint& p, const QString& expectedColor);
-    static int getRowHeight(HI::GUITestOpStatus &os);
+    static int getRowHeight(HI::GUITestOpStatus &os, int rowNumber);
 
     static void renameSequence(HI::GUITestOpStatus &os, const QString& seqToRename, const QString& newName);
+    static void replaceSymbol(HI::GUITestOpStatus &os, const QPoint &maPoint, char newSymbol);
 
     static void createColorScheme(HI::GUITestOpStatus &os, const QString& schemeName, const NewColorSchemeCreator::alphabet al);
     static void deleteColorScheme(HI::GUITestOpStatus &os, const QString& schemeName);

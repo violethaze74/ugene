@@ -91,6 +91,8 @@ public:
     DistanceMatrixMSAProfileTask(const DistanceMatrixMSAProfileTaskSettings& s);
 
     virtual void prepare();
+    QString generateReport() const;
+    virtual bool isReportingEnabled() const;
 
     void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MultipleSequenceAlignmentRow> &rows, QFile *f);
 

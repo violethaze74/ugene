@@ -68,7 +68,7 @@ void DNAStatMSAEditorContext::initViewContext(GObjectView* v) {
     if (msaed != NULL && !msaed->getMaObject())
         return;
 
-    GObjectViewAction* profileAction = new GObjectViewAction(this, v, tr("Generate grid profile"));
+    GObjectViewAction* profileAction = new GObjectViewAction(this, v, tr("Generate grid profile..."));
     profileAction->setObjectName("Generate grid profile");
     connect(profileAction, SIGNAL(triggered()), SLOT(sl_showMSAProfileDialog()));
 
@@ -105,7 +105,7 @@ void DistanceMatrixMSAEditorContext::initViewContext(GObjectView* v) {
     if (msaed != NULL && !msaed->getMaObject())
         return;
 
-    GObjectViewAction* profileAction = new GObjectViewAction(this, v, tr("Generate distance matrix"));
+    GObjectViewAction* profileAction = new GObjectViewAction(this, v, tr("Generate distance matrix..."));
     profileAction->setObjectName("Generate distance matrix");
     connect(profileAction, SIGNAL(triggered()), SLOT(sl_showDistanceMatrixDialog()));
     addViewAction(profileAction);

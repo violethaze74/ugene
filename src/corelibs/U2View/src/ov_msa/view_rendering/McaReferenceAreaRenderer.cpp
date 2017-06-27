@@ -29,6 +29,8 @@
 #include "ov_msa/MSAEditorConsensusArea.h"
 #include "ov_msa/MSAEditorConsensusCache.h"
 #include "ov_msa/MSAEditorSequenceArea.h"
+#include "ov_msa/helpers/BaseWidthController.h"
+#include "ov_msa/helpers/ScrollController.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_sequence/SequenceObjectContext.h"
@@ -51,8 +53,8 @@ qint64 McaReferenceAreaRenderer::getMinimumHeight() const {
 }
 
 float McaReferenceAreaRenderer::posToXCoordF(const qint64 position, const QSize &/*canvasSize*/, const U2Region &visibleRange) const {
-    const int baseCenterX = maEditor->getUI()->getSequenceArea()->getXByColumnNum(position - visibleRange.startPos);
-    const int columnWidth = maEditor->getColumnWidth();
+    const int baseCenterX = maEditor->getUI()->getBaseWidthController()->getBaseScreenRange(position).center();
+    const int columnWidth = maEditor->getUI()->getBaseWidthController()->getBaseWidth();
     return baseCenterX - columnWidth / 2;
 }
 
@@ -62,18 +64,10 @@ void McaReferenceAreaRenderer::setFont(const QFont &font) {
     commonMetrics.lineHeight = fm.height() + 2 * commonMetrics.yCharOffset + 2 * SELECTION_LINE_WIDTH;
 }
 
-void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize &, const U2Region &visibleRange) {
-    CHECK(isSequenceCharsVisible(), );
-
-    U2Region region = visibleRange;
-    region.length++;
-
+void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize &/*canvasSize*/, const U2Region &region) {
     U2OpStatusImpl os;
-    QByteArray seq = ctx->getSequenceData(region, os);
+    const QByteArray sequenceRegion = ctx->getSequenceData(region, os);
     SAFE_POINT_OP(os, );
-
-    int columnWidth = maEditor->getColumnWidth();
-    qint64 regionEnd = region.endPos() - (int)(region.endPos() == maEditor->getAlignmentLen());
 
     p.setPen(Qt::black);
     p.setFont(commonMetrics.sequenceFont);
@@ -84,16 +78,16 @@ void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize &, const U2
     MsaColorScheme* scheme = seqArea->getCurrentColorScheme();
     SAFE_POINT(scheme != NULL, "MsaColorScheme is NULL", );
 
-    for (int position = region.startPos; position <= regionEnd; position++) {
-        U2Region baseXRange = U2Region(columnWidth * (position - region.startPos), columnWidth);
+    for (int position = region.startPos; position < region.endPos(); position++) {
+        const U2Region baseXRange = maEditor->getUI()->getBaseWidthController()->getBaseScreenRange(position);
 
-        const char c = seq[(int)(position - region.startPos)];
-        QRect cr(baseXRange.startPos, 0, baseXRange.length + 1, commonMetrics.lineHeight);
-        QColor color = scheme->getColor(0, 0, c);
+        const char c = sequenceRegion[(int)(position - region.startPos)];
+        QRect charRect(baseXRange.startPos, 0, baseXRange.length + 1, commonMetrics.lineHeight);
+        const QColor color = scheme->getColor(0, 0, c);
         if (color.isValid()) {
-            p.fillRect(cr, color);
+            p.fillRect(charRect, color);
         }
-        p.drawText(cr, Qt::AlignCenter, QString(c));
+        p.drawText(charRect, Qt::AlignCenter, QString(c));
     }
 }
 

@@ -50,6 +50,7 @@ public:
     char getConsensusChar(int pos);
 
     int getConsensusCharPercent(int pos);
+    QList<int> getConsensusPercents(const U2Region &region);
 
     int getConsensusLength() const { return cache.size(); }
 
@@ -57,7 +58,9 @@ public:
 
     MSAConsensusAlgorithm* getConsensusAlgorithm() const {return algorithm;}
 
+    QByteArray getConsensusLine(const U2Region &region, bool withGaps);
     QByteArray getConsensusLine(bool withGaps);
+
 signals:
     void si_cachedItemUpdated(int pos, char c);
     void si_cacheResized(int newSize);

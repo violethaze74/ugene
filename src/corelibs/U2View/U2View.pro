@@ -61,6 +61,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/Highlighting/MsaSchemesMenuBuilder.h \
            src/ov_msa/MaConsensusMismatchController.h \
            src/ov_msa/MaEditor.h \
+           src/ov_msa/MaEditorConsensusAreaSettings.h \
            src/ov_msa/MaEditorFactory.h \
            src/ov_msa/MaEditorNameList.h \
            src/ov_msa/McaEditor.h \
@@ -84,6 +85,12 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MSASelectSubalignmentDialog.h \
            src/ov_msa/MsaEditorUserModStepController.h \
            src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h \
+           src/ov_msa/helpers/BaseWidthController.h \
+           src/ov_msa/helpers/DrawHelper.h \
+           src/ov_msa/helpers/RowHeightController.h \
+           src/ov_msa/helpers/McaRowHeightController.h \
+           src/ov_msa/helpers/MsaRowHeightController.h \
+           src/ov_msa/helpers/ScrollController.h \
            src/ov_msa/Overview/MaEditorOverviewArea.h \
            src/ov_msa/Overview/MaGraphCalculationTask.h \
            src/ov_msa/Overview/MaGraphOverview.h \
@@ -104,6 +111,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/SequenceSelectorWidgetController.h \
            src/ov_msa/TreeOptions/TreeOptionsWidget.h \
            src/ov_msa/TreeOptions/TreeOptionsWidgetFactory.h \
+           src/ov_msa/view_rendering/MaConsensusAreaRenderer.h \
            src/ov_msa/view_rendering/MaEditorConsensusArea.h \
            src/ov_msa/view_rendering/MaEditorSelection.h \
            src/ov_msa/view_rendering/MaEditorSequenceArea.h \
@@ -305,6 +313,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/Highlighting/MsaSchemesMenuBuilder.cpp \
            src/ov_msa/MaConsensusMismatchController.cpp \
            src/ov_msa/MaEditor.cpp \
+           src/ov_msa/MaEditorConsensusAreaSettings.cpp \
            src/ov_msa/MaEditorFactory.cpp \
            src/ov_msa/MaEditorNameList.cpp \
            src/ov_msa/McaEditor.cpp \
@@ -329,6 +338,12 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/ExportConsensus/MSAExportConsensusTab.cpp \
            src/ov_msa/ExportConsensus/MSAExportConsensusTabFactory.cpp \
            src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentTask.cpp \
+           src/ov_msa/helpers/BaseWidthController.cpp \
+           src/ov_msa/helpers/DrawHelper.cpp \
+           src/ov_msa/helpers/McaRowHeightController.cpp \
+           src/ov_msa/helpers/MsaRowHeightController.cpp \
+           src/ov_msa/helpers/RowHeightController.cpp \
+           src/ov_msa/helpers/ScrollController.cpp \
            src/ov_msa/Overview/MaEditorOverviewArea.cpp \
            src/ov_msa/Overview/MaGraphOverview.cpp \
            src/ov_msa/Overview/MaGraphCalculationTask.cpp \
@@ -349,6 +364,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidget.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidgetFactory.cpp \
            src/ov_msa/SequenceSelectorWidgetController.cpp \
+           src/ov_msa/view_rendering/MaConsensusAreaRenderer.cpp \
            src/ov_msa/view_rendering/MaEditorConsensusArea.cpp \
            src/ov_msa/view_rendering/MaEditorSelection.cpp \
            src/ov_msa/view_rendering/MaEditorSequenceArea.cpp \

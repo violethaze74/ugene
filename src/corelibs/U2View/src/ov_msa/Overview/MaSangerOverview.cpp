@@ -19,14 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include "MaSangerOverview.h"
-
-#include "ov_msa/McaEditor.h"
-#include "ov_msa/view_rendering/MaEditorSequenceArea.h"
+#include <QPainter>
 
 #include <U2Core/U2SafePoints.h>
 
-#include <QPainter>
+#include "MaSangerOverview.h"
+#include "ov_msa/McaEditor.h"
+#include "ov_msa/helpers/BaseWidthController.h"
+#include "ov_msa/helpers/RowHeightController.h"
+#include "ov_msa/helpers/ScrollController.h"
+#include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
 
@@ -38,8 +40,7 @@ MaSangerOverview::MaSangerOverview(MaEditorWgt *ui)
         setVisible(false);
     }
     MultipleChromatogramAlignmentObject* mAlignmentObj = getEditor()->getMaObject();
-    setFixedHeight(mAlignmentObj->getNumRows() * READ_HEIGHT);
-    stepX = READ_HEIGHT;
+    setFixedHeight(mAlignmentObj->getNumRows() * READ_HEIGHT);      // SANGER_TODO: do something, if there are too many reads
 
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 }
@@ -83,8 +84,7 @@ void MaSangerOverview::drawOverview(QPainter &p) {
         return;
     }
 
-    double stepX = width() / (double)editor->getAlignmentLen();
-    double stepY = height() / (double)editor->getNumSequences();
+    recalculateScale();
 
     MultipleChromatogramAlignmentObject* mAlignmentObj = getEditor()->getMaObject();
     SAFE_POINT(NULL != mAlignmentObj, tr("Incorrect multiple alignment object!"), );
@@ -92,21 +92,16 @@ void MaSangerOverview::drawOverview(QPainter &p) {
 
     for (int seq = 0; seq < editor->getNumSequences(); seq++) {
         const MultipleChromatogramAlignmentRow row =  ma->getMcaRow(seq);
-        U2Region r = row->getCoreRegion();
+        const U2Region coreRegion = row->getCoreRegion();
+        const U2Region positionRegion = ui->getBaseWidthController()->getBasesGlobalRange(coreRegion);
 
-        QRect rect;
-        rect.setY( qRound( stepY * (double)seq ) );
-        rect.setX( qRound( stepX * (double)r.startPos ) );
+        QRect readRect;
+        readRect.setX(qRound(positionRegion.startPos / stepX));
+        readRect.setY(seq * READ_HEIGHT);
+        readRect.setHeight(READ_HEIGHT);
+        readRect.setWidth(positionRegion.length / stepX);
 
-        int prev = qRound( stepY * (double)seq );
-        int next = qRound( stepY * (double)(seq + 1) );
-        rect.setHeight( next - prev );
-
-        prev = qRound( stepX * (double)r.startPos);
-        next = qRound( stepX * (double)(r.endPos() - 1));
-        rect.setWidth( next - prev );
-
-        drawRead(p, rect, !(seq % 2)); // SANGER_TODO: replace with "getDirection() == U2Strand::Direct"
+        drawRead(p, readRect, !row->isReversed()); // SANGER_TODO: replace with "getDirection() == U2Strand::Direct"
     }
 
     p.setPen(Qt::gray);
@@ -117,14 +112,15 @@ void MaSangerOverview::drawVisibleRange(QPainter &p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
-        double stepX = width() / (double)editor->getAlignmentLen();
-        double stepY = height() / (double)editor->getNumSequences();
+        recalculateScale();
 
-        cachedVisibleRange.setX(qRound(stepX * sequenceArea->getFirstVisibleBase()));
-        cachedVisibleRange.setWidth(qRound(stepX * (sequenceArea->getLastVisibleBase(true) - sequenceArea->getFirstVisibleBase() + 1)));
+        const QPoint screenPosition = ui->getScrollController()->getScreenPosition();
+        const QSize screenSize = ui->getSequenceArea()->size();
 
-        cachedVisibleRange.setY(qRound(stepY * sequenceArea->getFirstVisibleSequence()));
-        cachedVisibleRange.setHeight(qRound(stepY * (sequenceArea->getLastVisibleSequence(true) - sequenceArea->getFirstVisibleSequence() + 1)));
+        cachedVisibleRange.setX(qRound(screenPosition.x() / stepX));
+        cachedVisibleRange.setWidth(qRound(screenSize.width() / stepX));
+        cachedVisibleRange.setY(qRound(screenPosition.y() / stepY));
+        cachedVisibleRange.setHeight(qRound(screenSize.height() / stepY));
 
         if (cachedVisibleRange.width() < VISIBLE_RANGE_CRITICAL_SIZE || cachedVisibleRange.height() < VISIBLE_RANGE_CRITICAL_SIZE) {
             p.setPen(Qt::red);
@@ -141,35 +137,17 @@ void MaSangerOverview::drawSelection(QPainter &p) {
 
 void MaSangerOverview::moveVisibleRange(QPoint _pos) {
     // SANGER_TODO: this is located in the separate method in simpleoverview
-    double stepX = width() / (double)editor->getAlignmentLen();
-    double stepY = height() / (double)editor->getNumSequences();
 
-    const QRect& overviewRect = rect();
     QRect newVisibleRange(cachedVisibleRange);
-    newVisibleRange.moveLeft(_pos.x() - (double)cachedVisibleRange.width() / 2 );
+    const int newPosX = qBound((cachedVisibleRange.width() - 1) / 2, _pos.x(), width() - (cachedVisibleRange.width() - 1 ) / 2);
+    const int newPosY = qBound((cachedVisibleRange.height() - 1) / 2, _pos.y(), height() - (cachedVisibleRange.height() - 1 ) / 2);
+    const QPoint newPos(newPosX, newPosY);
+    newVisibleRange.moveCenter(newPos);
 
-    newVisibleRange.moveTop(_pos.y() - (double)cachedVisibleRange.height() / 2 );
-
-    if (!overviewRect.contains(newVisibleRange)) {
-        // fit in overview horizontally
-        if (newVisibleRange.x() < 0) {
-            newVisibleRange.moveLeft(0);
-        } else if (newVisibleRange.topRight().x() > overviewRect.width()) {
-            newVisibleRange.moveRight(overviewRect.width());
-        }
-
-        // fit in overview vertically
-        if (newVisibleRange.y() < 0) {
-            newVisibleRange.moveTop(0);
-        } else if (newVisibleRange.bottomRight().y() > overviewRect.height()) {
-            newVisibleRange.moveBottom(overviewRect.height());
-        }
-    }
-
-    int pos = qRound( newVisibleRange.x() / stepX );
-    sequenceArea->setFirstVisibleBase(pos);
-    pos = qRound( newVisibleRange.y() / stepY );
-    sequenceArea->setFirstVisibleSequence(pos);
+    const int newHScrollBarValue = newVisibleRange.x() * stepX;
+    ui->getScrollController()->setHScrollbarValue(newHScrollBarValue);
+    const int newVScrollBarValue = newVisibleRange.y() * stepY;
+    ui->getScrollController()->setVScrollbarValue(newVScrollBarValue);
 }
 
 void MaSangerOverview::drawRead(QPainter &p, const QRect &rect, bool forward) {

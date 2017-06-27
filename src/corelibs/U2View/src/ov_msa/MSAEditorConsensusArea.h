@@ -35,14 +35,14 @@ class MSAEditorUI;
 class U2VIEW_EXPORT MSAEditorConsensusArea : public MaEditorConsensusArea {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusArea)
-
 public:
     MSAEditorConsensusArea(MSAEditorUI* ui);
+
+    U2Region getRulerLineYRange() const; // from where?
 
 private:
     void buildMenu(QMenu* m);
 };
-
 
 class McaEditorConsensusArea : public MaEditorConsensusArea {
     Q_OBJECT
@@ -53,9 +53,8 @@ public:
 
     MaConsensusMismatchController* getMismatchController() { return mismatchController; }
 
-private slots:
-    void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
 private:
+    void sl_buildStaticToolbar(GObjectView* v, QToolBar* tb);
     void buildMenu(QMenu* m);
     bool highlightConsensusChar(int pos);
 

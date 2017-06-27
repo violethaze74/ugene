@@ -19,11 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include "McaEditorSequenceArea.h"
-#include "ov_sequence/SequenceObjectContext.h"
-
-#include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
-
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
@@ -33,7 +28,10 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include <QToolButton>
+#include "McaEditorSequenceArea.h"
+#include "helpers/RowHeightController.h"
+#include "ov_sequence/SequenceObjectContext.h"
+#include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 namespace U2 {
 
@@ -82,74 +80,6 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     updateActions();
 }
 
-U2Region McaEditorSequenceArea::getSequenceYRange(int seq, int firstVisibleRow, bool useVirtualCoords) const {
-    int start = 0;
-
-    // temporarry fix -- should be rewritten according to the solution of UGENE-5479 (smooth scrolling)
-    bool positiveDirection = seq > firstVisibleRow;
-    int i = firstVisibleRow;
-    while (i != seq) {
-        if (getEditor()->isChromVisible(i)) {
-            start += editor->getRowHeight();
-        } else {
-            start += editor->getSequenceRowHeight();
-        }
-
-        if (positiveDirection ) {
-            i++;
-        } else {
-            i--;
-        }
-    }
-    if (!positiveDirection ) {
-        start *= -1;
-    }
-
-    U2Region res(start, getEditor()->isChromVisible(seq) ? editor->getRowHeight() : editor->getSequenceRowHeight());
-    if (!useVirtualCoords) {
-        int h = height();
-        res = res.intersect(U2Region(0, h));
-    }
-    return res;
-}
-
-int McaEditorSequenceArea::getSequenceNumByY(int y) const {
-    int seqNum = startSeq;
-    U2Region r;
-    do {
-        r = MaEditorSequenceArea::getSequenceYRange(seqNum, true);
-        seqNum++;
-    } while (!r.contains(y));
-
-    return seqNum - 1;
-}
-
-U2Region McaEditorSequenceArea::getSequenceYRange(int startSeq, int count) const {
-    int len = 0;
-    for (int i = startSeq; i < startSeq + count; i++) {
-        if (getEditor()->isChromVisible(i)) {
-            len += editor->getRowHeight();
-        } else {
-            len += editor->getSequenceRowHeight();
-        }
-    }
-    U2Region res(MaEditorSequenceArea::getSequenceYRange(startSeq, true).startPos, len);
-    return res;
-}
-
-int McaEditorSequenceArea::countHeightForSequences(bool countClipped) const {
-    int seqAreaHeight = height();
-    int nVisible = 0;
-    int  i = startSeq;
-    while (seqAreaHeight > 0) {
-        seqAreaHeight -= getEditor()->isChromVisible(i) ? editor->getRowHeight()
-                                                        : editor->getSequenceRowHeight();
-        nVisible++;
-        i++;
-    }
-    return nVisible;
-}
-
 void McaEditorSequenceArea::adjustReferenceLength(U2OpStatus& os) {
     McaEditor* mcaEditor = getEditor();
     qint64 newLength = mcaEditor->getMaObject()->getLength();
@@ -181,7 +111,7 @@ void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel, bool newH
 void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     CHECK(selection.width() == 1 && selection.height() == 1, );
 
-    const MultipleChromatogramAlignment& mca = getEditor()->getMaObject()->getMca();
+    const MultipleChromatogramAlignment mca = getEditor()->getMaObject()->getMca();
     if (dy == 0 && mca->isTrailingOrLeadingGap(selection.y(), selection.x() + dx)) {
         return;
     }
@@ -189,8 +119,8 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     int nextRowToSelect = selection.y() + dy;
     if (dy != 0) {
         bool noRowAvailabe = true;
-        for ( ; nextRowToSelect >= 0 && nextRowToSelect < editor->getNumSequences(); nextRowToSelect += dy) {
-            if (!mca->isTrailingOrLeadingGap(nextRowToSelect, selection.x() + dx)) {
+        for ( ; nextRowToSelect >= 0 && nextRowToSelect < ui->getCollapseModel()->displayableRowsCount(); nextRowToSelect += dy) {
+            if (!mca->isTrailingOrLeadingGap(ui->getCollapseModel()->mapToRow(nextRowToSelect), selection.x() + dx)) {
                 noRowAvailabe  = false;
                 break;
             }
@@ -205,6 +135,11 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
 
 void McaEditorSequenceArea::sl_backgroundSelectionChanged() {
     update();
+}
+
+void McaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo) {
+    getEditor()->getReferenceContext()->getSequenceObject()->forceCachedSequenceUpdate();
+    MaEditorSequenceArea::sl_alignmentChanged(ma, modInfo);
 }
 
 void McaEditorSequenceArea::sl_showHideTrace() {
@@ -270,14 +205,14 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
 }
 
 void McaEditorSequenceArea::sl_addInsertion() {
-    msaMode = InsertCharMode;
+    maMode = InsertCharMode;
 
     editModeAnimationTimer.start(500);
     highlightCurrentSelection();
 }
 
 void McaEditorSequenceArea::initRenderer() {
-    renderer = new SequenceWithChromatogramAreaRenderer(this);
+    renderer = new SequenceWithChromatogramAreaRenderer(ui, this);
 }
 
 void McaEditorSequenceArea::updateActions() {
@@ -291,11 +226,11 @@ void McaEditorSequenceArea::updateActions() {
     ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
 }
 
-void McaEditorSequenceArea::drawBackground(QPainter& p) {
+void McaEditorSequenceArea::drawBackground(QPainter &painter) {
     SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     SAFE_POINT(r != NULL, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
-    r->drawReferenceSelection(p);
-    r->drawNameListSelection(p);
+    r->drawReferenceSelection(painter);
+    r->drawNameListSelection(painter);
 }
 
 void McaEditorSequenceArea::buildMenu(QMenu *m) {
@@ -329,7 +264,7 @@ QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionNam
 }
 
 void McaEditorSequenceArea::insertChar(char newCharacter) {
-        CHECK(msaMode == InsertCharMode, );
+        CHECK(maMode == InsertCharMode, );
         CHECK(getEditor() != NULL, );
         CHECK(!selection.isNull(), );
 

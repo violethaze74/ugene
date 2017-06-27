@@ -49,7 +49,7 @@ public:
 public slots:
     void sl_visibleRangeChanged();
     virtual void sl_selectionChanged() {}
-    virtual void sl_redraw(){}
+    virtual void sl_redraw();
 
 protected:
     void mousePressEvent(QMouseEvent* );
@@ -63,6 +63,8 @@ protected:
     void setVisibleRangeForEmptyAlignment();
 
     virtual void moveVisibleRange(QPoint){}
+
+    void recalculateScale();
 
 protected:
     MaEditor*      editor;

@@ -26,15 +26,20 @@
 #include <QToolButton>
 #include <QTreeWidget>
 
+#include <drivers/GTKeyboardDriver.h>
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTRadioButton.h>
+#include <primitives/GTSlider.h>
+#include <primitives/GTTreeWidget.h>
+#include <primitives/GTWidget.h>
+#include <utils/GTThread.h>
+
 #include <U2Core/U2IdTypes.h>
+
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "api/GTBaseCompleter.h"
-#include <primitives/GTComboBox.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTTreeWidget.h>
-#include <primitives/GTWidget.h>
-#include "utils/GTThread.h"
 
 namespace U2 {
 using namespace HI;
@@ -178,6 +183,13 @@ QString GTUtilsOptionPanelMsa::getColorScheme(HI::GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "setHighlightingScheme"
+void GTUtilsOptionPanelMsa::setHighlightingScheme(GUITestOpStatus &os, const QString &highlightingSchemeName) {
+    openTab(os, Highlighting);
+    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "highlightingScheme"), highlightingSchemeName);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "addFirstSeqToPA"
 void GTUtilsOptionPanelMsa::addFirstSeqToPA(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method){
     addSeqToPA(os, seqName, method, 1);
@@ -242,15 +254,77 @@ QToolButton* GTUtilsOptionPanelMsa::getDeleteButton(HI::GUITestOpStatus &os, int
 
 #define GT_METHOD_NAME "getAlignButton"
 QPushButton *GTUtilsOptionPanelMsa::getAlignButton(HI::GUITestOpStatus &os) {
-    // TODO: ensure that the Pairwise alignment" tab is opened.
+    openTab(os, PairwiseAlignment);
     return GTWidget::findExactWidget<QPushButton *>(os, "alignButton");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setPairwiseAlignmentAlgorithm"
 void GTUtilsOptionPanelMsa::setPairwiseAlignmentAlgorithm(HI::GUITestOpStatus &os, const QString &algorithm) {
-    // TODO: ensure that the Pairwise alignment" tab is opened.
+    openTab(os, PairwiseAlignment);
     GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox*>(os, "algorithmListComboBox"), algorithm);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setThreshold"
+void GTUtilsOptionPanelMsa::setThreshold(GUITestOpStatus &os, int threshold) {
+    openTab(os, Highlighting);
+    GTSlider::setValue(os, GTWidget::findExactWidget<QSlider *>(os, "thresholdSlider"), threshold);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getThreshold"
+int GTUtilsOptionPanelMsa::getThreshold(GUITestOpStatus &os) {
+    openTab(os, Highlighting);
+    QSlider *thresholdSlider = GTWidget::findExactWidget<QSlider *>(os, "thresholdSlider");
+    GT_CHECK_RESULT(NULL != thresholdSlider, "thresholdSlider is NULL", -1);
+    return thresholdSlider->value();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setThresholdComparison"
+void GTUtilsOptionPanelMsa::setThresholdComparison(GUITestOpStatus &os, GTUtilsOptionPanelMsa::ThresholdComparison comparison) {
+    openTab(os, Highlighting);
+    switch (comparison) {
+    case LessOrEqual:
+        GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "thresholdLessRb"));
+        break;
+    case GreaterOrEqual:
+        GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "thresholdMoreRb"));
+        break;
+    default:
+        GT_CHECK(false, QString("An unknown threshold comparison type: %1").arg(comparison));
+    }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getThresholdComparison"
+GTUtilsOptionPanelMsa::ThresholdComparison GTUtilsOptionPanelMsa::getThresholdComparison(GUITestOpStatus &os) {
+    openTab(os, Highlighting);
+    QRadioButton *thresholdLessRb = GTWidget::findExactWidget<QRadioButton *>(os, "thresholdLessRb");
+    GT_CHECK_RESULT(NULL != thresholdLessRb, "thresholdLessRb is NULL", LessOrEqual);
+    QRadioButton *thresholdMoreRb = GTWidget::findExactWidget<QRadioButton *>(os, "thresholdMoreRb");
+    GT_CHECK_RESULT(NULL != thresholdMoreRb, "thresholdMoreRb is NULL", LessOrEqual);
+    const bool lessOrEqual = thresholdLessRb->isChecked();
+    const bool greaterOrEqual = thresholdMoreRb->isChecked();
+    GT_CHECK_RESULT(lessOrEqual ^ greaterOrEqual, "Incorrect state of threshold comparison radiobuttons", LessOrEqual);
+    return lessOrEqual ? LessOrEqual : GreaterOrEqual;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setUseDotsOption"
+void GTUtilsOptionPanelMsa::setUseDotsOption(GUITestOpStatus &os, bool useDots) {
+    openTab(os, Highlighting);
+    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "useDots"), useDots);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isUseDotsOptionSet"
+bool GTUtilsOptionPanelMsa::isUseDotsOptionSet(GUITestOpStatus &os) {
+    openTab(os, Highlighting);
+    QCheckBox *useDots = GTWidget::findExactWidget<QCheckBox *>(os, "useDots");
+    GT_CHECK_RESULT(NULL != useDots, "useDots checkbox is NULL", false);
+    return useDots->isChecked();
 }
 #undef GT_METHOD_NAME
 
@@ -262,7 +336,7 @@ QLineEdit* GTUtilsOptionPanelMsa::getSeqLineEdit(HI::GUITestOpStatus &os, int nu
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "agetWidget"
+#define GT_METHOD_NAME "getWidget"
 QWidget* GTUtilsOptionPanelMsa::getWidget(HI::GUITestOpStatus &os, const QString& widgetName, int number){
     QWidget* sequenceContainerWidget = GTWidget::findWidget(os, "sequenceContainerWidget");
     GT_CHECK_RESULT(sequenceContainerWidget != NULL, "sequenceContainerWidget not found", NULL);

@@ -19,11 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "MaEditorWgt.h"
-
-#include "MaEditorUtils.h"
-#include "SequenceAreaRenderer.h"
-#include "../Export/MSAImageExportTask.h"
+#include <QGridLayout>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GObjectTypes.h>
@@ -41,7 +37,13 @@
 #include <U2View/MSAEditorStatusBar.h>
 #include <U2View/UndoRedoFramework.h>
 
-#include <QGridLayout>
+#include "MaEditorUtils.h"
+#include "MaEditorWgt.h"
+#include "SequenceAreaRenderer.h"
+#include "ov_msa/Export/MSAImageExportTask.h"
+#include "ov_msa/helpers/BaseWidthController.h"
+#include "ov_msa/helpers/DrawHelper.h"
+#include "ov_msa/helpers/ScrollController.h"
 
 namespace U2 {
 
@@ -61,13 +63,17 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       seqAreaHeaderLayout(NULL),
       seqAreaLayout(NULL),
       nameAreaLayout(NULL),
+      collapseModel(new MSACollapsibleItemModel(this)),
       collapsibleMode(false),
+      scrollController(new ScrollController(editor, this, collapseModel)),
+      baseWidthController(new BaseWidthController(this)),
+      rowHeightController(NULL),
+      drawHelper(new DrawHelper(this)),
       delSelectionAction(NULL),
       copySelectionAction(NULL),
       copyFormattedSelectionAction(NULL),
       pasteAction(NULL)
 {
-    collapseModel = new MSACollapsibleItemModel(this);
     undoFWK = new MsaUndoRedoFramework(this, editor->getMaObject());
 }
 
@@ -75,6 +81,22 @@ QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment
     return new MaLabelWidget(this,
                              heightTarget == NULL ? seqAreaHeader : heightTarget,
                              text, ali);
+}
+
+ScrollController *MaEditorWgt::getScrollController() {
+    return scrollController;
+}
+
+BaseWidthController *MaEditorWgt::getBaseWidthController() {
+    return baseWidthController;
+}
+
+RowHeightController *MaEditorWgt::getRowHeightController() {
+    return rowHeightController;
+}
+
+DrawHelper *MaEditorWgt::getDrawHelper() {
+    return drawHelper;
 }
 
 QAction* MaEditorWgt::getUndoAction() const {
@@ -90,6 +112,7 @@ QAction* MaEditorWgt::getRedoAction() const {
 }
 
 void MaEditorWgt::sl_saveScreenshot(){
+    CHECK(qobject_cast<MSAEditor*>(editor) != NULL, );
     MSAImageExportController controller(this);
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QString fileName = GUrlUtils::fixFileName(editor->getMaObject()->getGObjectName());
@@ -112,6 +135,7 @@ void MaEditorWgt::initWidgets() {
     cvBar->setObjectName("vertical_sequence_scroll");
 
     initSeqArea(shBar, cvBar);
+    scrollController->init(shBar, cvBar);
     seqArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     initOverviewArea();
 
@@ -145,7 +169,7 @@ void MaEditorWgt::initWidgets() {
 
     seqAreaLayout->addWidget(label1, 0, 0);
     seqAreaLayout->addWidget(seqAreaHeader, 0, 1);
-    seqAreaLayout->addWidget(label2, 0, 2);
+    seqAreaLayout->addWidget(label2, 0, 2, 1, 2);
 
     seqAreaLayout->addWidget(offsetsView->getLeftWidget(), 1, 0);
     seqAreaLayout->addWidget(seqArea, 1, 1);
@@ -188,8 +212,8 @@ void MaEditorWgt::initWidgets() {
 
     setLayout(mainLayout);
 
-    connect(collapseModel, SIGNAL(toggled()), offsetsView, SLOT(sl_updateOffsets()));
-    connect(collapseModel, SIGNAL(toggled()), seqArea,     SLOT(sl_modelChanged()));
+    connect(collapseModel, SIGNAL(si_toggled()), offsetsView, SLOT(sl_updateOffsets()));
+    connect(collapseModel, SIGNAL(si_toggled()), seqArea,     SLOT(sl_modelChanged()));
 
     connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));
 
@@ -223,7 +247,7 @@ void MaEditorWgt::initActions() {
 
     pasteAction = new QAction(tr("Paste"), this);
     pasteAction->setObjectName("paste");
-    pasteAction->setShortcut(QKeySequence::Paste);
+    pasteAction->setShortcuts(QKeySequence::Paste);
     pasteAction->setShortcutContext(Qt::WidgetShortcut);
     pasteAction->setToolTip(QString("%1 (%2)").arg(pasteAction->text())
         .arg(pasteAction->shortcut().toString()));

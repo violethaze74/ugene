@@ -247,7 +247,7 @@ void OpenSavedMSAEditorTask::updateRanges(const QVariantMap& stateData, MaEditor
     }
 
     int firstPos = state.getFirstPos();
-    ctx->setFirstVisibleBase(firstPos);
+    ctx->setFirstVisibleBase(firstPos); // SCROLLING_TODO: replace base number with offset
 
     float zoomFactor = state.getZoomFactor();
     ctx->setZoomFactor(zoomFactor);

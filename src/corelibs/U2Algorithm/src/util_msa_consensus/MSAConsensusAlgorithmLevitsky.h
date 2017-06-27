@@ -60,7 +60,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmLevitsky: public MSAConsensusAlgor
 public:
     MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p = NULL);
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<qint64> seqIdx = QVector<qint64>()) const;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const;
 
 private:
     QVarLengthArray<int> globalFreqs;

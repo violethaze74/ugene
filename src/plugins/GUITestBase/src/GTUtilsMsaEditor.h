@@ -75,6 +75,8 @@ public:
     static void redo(HI::GUITestOpStatus &os);
 
     static void buildPhylogeneticTree(HI::GUITestOpStatus &os, const QString &pathToSave);
+
+    static void dragAndDropSequenceFromProject(HI::GUITestOpStatus &os, const QStringList &pathToSequence);
 };
 
 }   // namespace U2

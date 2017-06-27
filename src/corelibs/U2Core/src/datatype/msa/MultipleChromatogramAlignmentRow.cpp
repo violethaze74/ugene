@@ -154,7 +154,8 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
     : MultipleAlignmentRowData(row->sequence, row->gaps),
       alignment(mcaData),
       chromatogram(row->chromatogram),
-      initialRowInDb(row->initialRowInDb)
+      initialRowInDb(row->initialRowInDb),
+      additionalInfo(row->additionalInfo)
 {
     SAFE_POINT(alignment != NULL, "Parent MultipleChromatogramAlignmentData is NULL", );
 }

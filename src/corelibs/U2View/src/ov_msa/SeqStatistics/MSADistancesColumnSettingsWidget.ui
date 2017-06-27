@@ -136,7 +136,7 @@
             <item>
              <widget class="QRadioButton" name="percentsButton">
               <property name="text">
-               <string>Percents</string>
+               <string>Percent</string>
               </property>
              </widget>
             </item>

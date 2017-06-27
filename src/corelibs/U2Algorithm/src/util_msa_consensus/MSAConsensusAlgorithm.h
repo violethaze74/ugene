@@ -88,9 +88,9 @@ public:
         Score is a number: [0, num] sequences. Usually is means count of the char in the row
         Note that consensus character may be out of the to MSA alphabet symbols range
     */
-    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<qint64> seqIdx = QVector<qint64>()) const;
+    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<int> seqIdx = QVector<int>()) const;
 
-    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<qint64> seqIdx = QVector<qint64>()) const = 0;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const = 0;
 
     virtual QString getDescription() const {return factory->getDescription();}
 
@@ -121,7 +121,7 @@ signals:
 
 protected:
     // returns true if there are meaningful symbols on @pos, depending on @ignoreTrailingleadingGaps flag
-    bool filterIdx(QVector<qint64> &seqIdx, const MultipleAlignment& ma, const int pos) const;
+    bool filterIdx(QVector<int> &seqIdx, const MultipleAlignment& ma, const int pos) const;
 
 private:
     MSAConsensusAlgorithmFactory* factory;

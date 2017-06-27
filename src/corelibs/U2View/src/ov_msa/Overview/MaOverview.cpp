@@ -19,26 +19,33 @@
  * MA 02110-1301, USA.
  */
 
-#include "MaOverview.h"
+#include <QMouseEvent>
+#include <QPainter>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
-#include <QMouseEvent>
-#include <QPainter>
+#include "MaOverview.h"
+#include "ov_msa/helpers/BaseWidthController.h"
+#include "ov_msa/helpers/RowHeightController.h"
+#include "ov_msa/helpers/ScrollController.h"
 
 namespace U2 {
 
 MaOverview::MaOverview(MaEditorWgt *_ui)
     : editor(_ui->getEditor()),
       ui(_ui),
-      sequenceArea(_ui->getSequenceArea())
+      sequenceArea(_ui->getSequenceArea()),
+      stepX(0),
+      stepY(0)
 {
     connect(sequenceArea, SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
     connect(sequenceArea, SIGNAL(si_selectionChanged(MaEditorSelection,MaEditorSelection)),
             SLOT(sl_selectionChanged()));
     connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
             SLOT(sl_redraw()));
+    connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
+    connect(ui->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_redraw()));
 }
 
 MaEditor *MaOverview::getEditor() const {
@@ -49,6 +56,10 @@ void MaOverview::sl_visibleRangeChanged() {
     if (!isValid()) {
         return;
     }
+    update();
+}
+
+void MaOverview::sl_redraw() {
     update();
 }
 
@@ -90,6 +101,11 @@ void MaOverview::mouseReleaseEvent(QMouseEvent *me) {
 
 void MaOverview::setVisibleRangeForEmptyAlignment() {
     cachedVisibleRange = rect();
+}
+
+void MaOverview::recalculateScale() {
+    stepX = static_cast<double>(ui->getBaseWidthController()->getTotalAlignmentWidth()) / width();
+    stepY = static_cast<double>(ui->getRowHeightController()->getTotalAlignmentHeight()) / height();
 }
 
 } // namespace

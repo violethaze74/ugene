@@ -24,11 +24,9 @@
 
 #include <QRect>
 
-#include <U2Core/global.h>
+#include <U2Core/U2Region.h>
 
 namespace U2 {
-
-class MaEditorSequenceArea;
 
 /************************************************************************/
 /* MaEditorSelection */
@@ -43,16 +41,20 @@ public:
     bool isNull() const;
 
     QPoint topLeft() const;
+    QPoint bottomRight() const;
 
     const QRect& getRect() const;
 
     int x() const;
-
     int y() const;
 
     int width() const;
-
     int height() const;
+
+    int bottom() const;
+
+    U2Region getXRegion() const;
+    U2Region getYRegion() const;
 
     bool operator==(const MaEditorSelection& other) const;
 

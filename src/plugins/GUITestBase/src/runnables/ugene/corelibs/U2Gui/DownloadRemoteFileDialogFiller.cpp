@@ -260,6 +260,11 @@ void RemoteDBDialogFillerDeprecated::commonScenario() {
         QComboBox* formatBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "formatBox"));
         GTComboBox::setCurrentIndex(os, formatBox, outFormatVal, true, useMethod);
     }
+    if (!addToProject){
+        QCheckBox *addToProjectButton = dialog->findChild<QCheckBox*>(QString::fromUtf8("chbAddToProjectCheck"));
+        GT_CHECK(addToProjectButton != NULL, "Check box not found");
+        GTCheckBox::setChecked(os, addToProjectButton, false);
+    }
     if (pressCancel) {
         QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
         GT_CHECK(box != NULL, "buttonBox is NULL");

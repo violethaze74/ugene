@@ -33,18 +33,19 @@ namespace U2 {
 class SequenceAreaRenderer : public QObject {
     Q_OBJECT
 public:
-    SequenceAreaRenderer(MaEditorSequenceArea* seqAreaWgt);
+    SequenceAreaRenderer(MaEditorWgt *ui, MaEditorSequenceArea* seqAreaWgt);
 
-    bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx) const;
+    bool drawContent(QPainter &painter, const U2Region& region, const QList<int> &rowNumbers, int xStart, int yStart) const;
 
-    void drawSelection(QPainter &p) const;
-    void drawFocus(QPainter& p) const;
+    void drawSelection(QPainter &painter) const;
+    void drawFocus(QPainter &painter) const;
 
 protected:
     // returns the height of the drawn row
-    virtual int drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) const;
+    virtual int drawRow(QPainter &painter, const MultipleAlignment &ma, int rowIndex, const U2Region &region, int xStart, int yStart) const;
 
-    MaEditorSequenceArea*  seqAreaWgt;
+    MaEditorWgt *ui;
+    MaEditorSequenceArea* seqAreaWgt;
 
     bool drawLeadingAndTrailingGaps;
 };

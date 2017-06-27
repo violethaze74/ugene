@@ -20,6 +20,7 @@
  */
 
 #include <QDateTime>
+#include <QDir>
 #include <QFile>
 #include <QMessageBox>
 #include <QPushButton>
@@ -31,10 +32,13 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FileAndDirectoryUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/TextUtils.h>
 
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/Notification.h>
 #include <U2Gui/SaveDocumentController.h>
 
 #include <U2View/MSAEditor.h>
@@ -72,14 +76,23 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
 }
 
 void DistanceMatrixMSAProfileDialog::initSaveController() {
+    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
+    if (msaObj == NULL) {
+        return;
+    }
+    QString domain = "plugin_dna_stat";
+    LastUsedDirHelper lod(domain);
+    QString fileName = GUrlUtils::fixFileName(msaObj->getGObjectName());
+
     SaveDocumentControllerConfig config;
-    config.defaultDomain = "plugin_dna_stat";
+    config.defaultDomain = domain;
     config.defaultFormatId = HTML;
+    config.defaultFileName = lod.dir + "/" + fileName + "_distance_matrix" + "." + DistanceMatrixMSAProfileDialog::HTML;
     config.fileDialogButton = fileButton;
     config.fileNameEdit = fileEdit;
     config.parentWidget = this;
     config.saveTitle = tr("Select file to save report to..");
-
+    
     SaveDocumentController::SimpleFormatsInfo formats;
     formats.addFormat(HTML, HTML.toUpper(), QStringList() << HTML);
     formats.addFormat(CSV, CSV.toUpper(), QStringList() << CSV);
@@ -135,7 +148,7 @@ void DistanceMatrixMSAProfileDialog::sl_formatChanged(const QString &newFormatId
 // task
 
 DistanceMatrixMSAProfileTask::DistanceMatrixMSAProfileTask(const DistanceMatrixMSAProfileTaskSettings& _s)
-: Task(tr("Generate distance matrix"), TaskFlags_NR_FOSE_COSC), s(_s)
+: Task(tr("Generate distance matrix"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled), s(_s)
 {
     setVerboseLogMode(true);
 }
@@ -181,7 +194,7 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
             resultText = "<STYLE TYPE=\"text/css\"><!-- \n";
             resultText += "table.tbl   {\n border-width: 1px;\n border-style: solid;\n border-spacing: 0;\n border-collapse: collapse;\n}\n";
             resultText += "table.tbl td{\n max-width: 400px;\n min-width: 20px;\n text-align: center;\n border-width: 1px;\n ";
-            resultText += "border-style: solid;\n margin:0px;\n padding: 0px;\n}\n";
+            resultText += "border-style: solid;\n \n padding: 0 10px;\n}\n";
             resultText += "--></STYLE>\n";
 
             //header
@@ -293,6 +306,7 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
     return res;
 }
 
+
 void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* algo, const QList<MultipleSequenceAlignmentRow> &rows, QFile *f)
 {
     int maxVal = s.usePercents ? 100 : s.ma->getLength();
@@ -342,10 +356,23 @@ void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* alg
     }
     resultText += "</table>\n";
 }
+QString DistanceMatrixMSAProfileTask::generateReport() const {
+    if (hasError() || isCanceled()) {
+        return tr("Task was finished with an error: %1").arg(getError());
+    }
+    QString res;
+    res += "<br>";
+    res += QString(tr("Distanse matrix for %1: <a href='%2'>%2</a>")).arg(s.profileName).arg(QDir::toNativeSeparators(s.outURL)) + "<br>";
+    return res;
+}
+
+bool DistanceMatrixMSAProfileTask::isReportingEnabled() const {
+    return !hasError() && !isCanceled() && s.outFormat != DistanceMatrixMSAProfileOutputFormat_Show;
+}
 
 
 Task::ReportResult DistanceMatrixMSAProfileTask::report() {
-    if (s.outFormat != DistanceMatrixMSAProfileOutputFormat_Show || hasError() || isCanceled()) {
+    if (hasError() || isCanceled() || s.outFormat != DistanceMatrixMSAProfileOutputFormat_Show) {
         return Task::ReportResult_Finished;
     }
     assert(!resultText.isEmpty());

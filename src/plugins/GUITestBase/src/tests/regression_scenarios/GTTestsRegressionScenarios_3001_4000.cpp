@@ -211,7 +211,7 @@ GUI_TEST_CLASS_DEFINITION(test_3006){
 //    Expected state: the sequence list should be sorted, collapsing should be updated
     CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
                   "2 Mecopoda_elongata__Sumatra_ is not collapsed");
-    GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Mecopoda_elongata__Ishigaki__J");
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Mecopoda_elongata__Ishigaki__J");
     CHECK_SET_ERR(!GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
                   "3 Mecopoda_elongata__Sumatra_ is unexpectidly collapsed");
 
@@ -3978,7 +3978,7 @@ GUI_TEST_CLASS_DEFINITION(test_3612) {
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
 //    3. Expand "Conocephalus_discolor" group.
-    GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Conocephalus_discolor");
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_discolor");
 
 //    4. Open "Pairwise alignment" options panel tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
@@ -4647,7 +4647,7 @@ GUI_TEST_CLASS_DEFINITION(test_3724) {
 
 //    3. Click "Generate".
 //    Expected state: the "Multiple Sequence Alignment Distance Matrix" view has appeared.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix..."));
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
@@ -4958,7 +4958,7 @@ GUI_TEST_CLASS_DEFINITION(test_3770) {
 //    Expected state: the task cancels within a half of a minute.
 //    Current state: the task doesn't cancel.
 
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "NW_003943623", 0, true, false,
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "NW_003943623", 0, true, true, false,
                                                                         sandBoxDir));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
     GTUtilsTaskTreeView::cancelTask(os, "Download remote documents");
@@ -5487,7 +5487,7 @@ GUI_TEST_CLASS_DEFINITION(test_3843) {
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     // 3. Expand one of the collapsed sequences.
-    GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Conocephalus_discolor");
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_discolor");
 
     // 4. Select some region within a sequence from the chosen collapsed group.
     // 5. Click "Ctrl+C"
