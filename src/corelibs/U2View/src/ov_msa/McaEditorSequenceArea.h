@@ -67,6 +67,7 @@ public slots:
     void sl_backgroundSelectionChanged();
 
 private slots:
+    void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
     void sl_showHideTrace();
     void sl_showAllTraces();
     void sl_setRenderAreaHeight(int k);

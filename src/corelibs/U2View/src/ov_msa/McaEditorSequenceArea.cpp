@@ -137,6 +137,11 @@ void McaEditorSequenceArea::sl_backgroundSelectionChanged() {
     update();
 }
 
+void McaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo) {
+    getEditor()->getReferenceContext()->getSequenceObject()->forceCachedSequenceUpdate();
+    MaEditorSequenceArea::sl_alignmentChanged(ma, modInfo);
+}
+
 void McaEditorSequenceArea::sl_showHideTrace() {
     QAction* traceAction = qobject_cast<QAction*> (sender());
 
