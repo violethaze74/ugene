@@ -63,6 +63,7 @@
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
 
@@ -592,6 +593,61 @@ GUI_TEST_CLASS_DEFINITION(test_5208) {
     //    Expected state: the library contains four primers, log contains no errors.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5211) {
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Select the first sequence.
+    GTUtilsMsaEditor::clickSequenceName(os, "Phaneroptera_falcata");
+
+//    3. Copy it to the clipboard.
+    GTKeyboardUtils::copy(os);
+
+//    4. Press the next key sequence:
+//        ﻿Windows and Linux: Shift+Ins
+//        macOS: Meta+Y
+#ifndef Q_OS_MAC
+    GTKeyboardDriver::keyClick(Qt::Key_Insert, Qt::ShiftModifier);
+#else
+    GTKeyboardDriver::keyClick('y', Qt::MetaModifier);
+#endif
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: a new sequence is added to the alignment. There are no new objects and documents in the Project View.
+    int expectedSequencesCount = 19;
+    int sequencesCount = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(expectedSequencesCount == sequencesCount,
+                  QString("Incorrect count of sequences after the first insertion: expected %1, got %2")
+                  .arg(expectedSequencesCount).arg(sequencesCount));
+
+    const int expectedDocumentsCount = 2;
+    int documentsCount = GTUtilsProjectTreeView::findIndecies(os, "", QModelIndex(), 2).size();
+    CHECK_SET_ERR(expectedDocumentsCount == documentsCount,
+                  QString("Incorrect count of items in the Project View after the first insertion: expected %1, got %2")
+                  .arg(expectedDocumentsCount).arg(documentsCount));
+
+//    5. Press the next key sequence:
+//        ﻿Windows and Linux: Ctrl+V
+//        macOS: Cmd+V
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);     // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: one more new sequence is added to the alignment. There are no new objects and documents in the Project View.
+    expectedSequencesCount = 20;
+    sequencesCount = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(expectedSequencesCount == sequencesCount,
+                  QString("Incorrect count of sequences after the second insertion: expected %1, got %2")
+                  .arg(expectedSequencesCount).arg(sequencesCount));
+
+    documentsCount = GTUtilsProjectTreeView::findIndecies(os, "", QModelIndex(), 2).size();
+    CHECK_SET_ERR(expectedDocumentsCount == documentsCount,
+                  QString("Incorrect count of items in the Project View after the second insertion: expected %1, got %2")
+                  .arg(expectedDocumentsCount).arg(documentsCount));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5216) {
