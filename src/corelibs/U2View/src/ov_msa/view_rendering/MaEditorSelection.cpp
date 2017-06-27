@@ -53,6 +53,10 @@ QPoint MaEditorSelection::topLeft() const {
     return selArea.topLeft();
 }
 
+QPoint MaEditorSelection::bottomRight() const {
+    return selArea.bottomRight();
+}
+
 const QRect& MaEditorSelection::getRect() const {
     return selArea;
 }

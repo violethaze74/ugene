@@ -47,9 +47,10 @@ SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignme
     inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
 }
 
-void SimpleAddToAlignmentTask::prepare()
-{
+void SimpleAddToAlignmentTask::prepare() {
     algoLog.info(tr("Align sequences to an existing alignment by UGENE started"));
+
+    MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getNumRows());
 
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
     foreach(const U2EntityRef& sequence, settings.addedSequencesRefs) {
@@ -79,6 +80,14 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
+
+    const QList<qint64> rowsIds = inputMsa->getRowsIds();
+    const U2MsaListGapModel msaGapModel = inputMsa->getGapModel();
+    for (int i = 0; i < inputMsa->getNumRows(); i++) {
+        MaDbiUtils::updateRowGapModel(settings.msaRef, rowsIds[i], msaGapModel[i], stateInfo);
+        CHECK_OP(stateInfo, ReportResult_Finished);
+    }
+
     foreach(const U2EntityRef& sequence, settings.addedSequencesRefs) {
         QString seqName = namesIterator.peekNext();
         U2SequenceObject seqObject(seqName, sequence);
@@ -95,6 +104,9 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
         }
         namesIterator.next();
     }
+
+    MsaDbiUtils::trim(settings.msaRef, stateInfo);
+    CHECK_OP(stateInfo, ReportResult_Finished);
 
     return ReportResult_Finished;
 }

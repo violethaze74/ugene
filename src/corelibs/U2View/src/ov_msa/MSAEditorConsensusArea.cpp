@@ -461,7 +461,7 @@ void MSAEditorConsensusArea::mouseReleaseEvent(QMouseEvent *event) {
     }
 
     if (event->button() == Qt::LeftButton && selecting) {
-        const int newPos = ui->getBaseWidthController()->screenXPositionToBase(event->x());
+        const int newPos = qBound(0, ui->getBaseWidthController()->screenXPositionToBase(event->x()), editor->getAlignmentLen() - 1);
         updateSelection(newPos);
         scribbling = false;
         selecting = false;

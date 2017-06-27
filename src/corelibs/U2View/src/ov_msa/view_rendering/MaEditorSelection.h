@@ -41,6 +41,7 @@ public:
     bool isNull() const;
 
     QPoint topLeft() const;
+    QPoint bottomRight() const;
 
     const QRect& getRect() const;
 

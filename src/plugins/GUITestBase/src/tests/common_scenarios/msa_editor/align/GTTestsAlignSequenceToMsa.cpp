@@ -501,5 +501,37 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0015) {
+//    Adding and aligning without MAFFT should remove all columns of gaps from the source msa before the aligning, also it should be trimmed after the aligning.
+
+//    1. Open "_common_data/scenarios/msa/ma2_gap_8_col.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Ensure that MAFFT tool is not set. Remove it, if it is set.
+    GTUtilsExternalTools::removeTool(os, "MAFFT");
+
+//    3. Click "Align sequence to this alignment" button on the toolbar.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_3.fa"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+
+//    4. Select "_common_data/scenarios/msa/add_and_align_3.fa" in the dialog.
+//    Expected state: an additional row appeared in the alignment, the forth column doesn't consist only of gaps, there are no columns of gaps even in the end of the alignment.
+    const QStringList expectedMsaData = QStringList() << "AAGCTTCTTTTAA"
+                                                      << "AAGTTACTAA---"
+                                                      << "TAG---TTATTAA"
+                                                      << "AAGC---TATTAA"
+                                                      << "TAGTTATTAA---"
+                                                      << "TAGTTATTAA---"
+                                                      << "TAGTTATTAA---"
+                                                      << "AAGCTTT---TAA"
+                                                      << "A--AGAATAATTA"
+                                                      << "AAGCTTTTAA---"
+                                                      << "AAGAATA------";
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
+}
+
 } // namespace
 } // namespace U2
