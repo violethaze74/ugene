@@ -427,7 +427,7 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
     MAlignmentObject* maObject = qobject_cast<MAlignmentObject*>(obj);
     const MAlignment& ma = maObject->getMAlignment();
 
-    QObjectScopedPointer<ExportMSA2SequencesDialog> d = new ExportMSA2SequencesDialog(AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportMSA2SequencesDialog> d = new ExportMSA2SequencesDialog(obj->getDocument()->getURL().dirPath(), GUrlUtils::fixFileName(obj->getGObjectName()), AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
     CHECK(!d.isNull(), );
 

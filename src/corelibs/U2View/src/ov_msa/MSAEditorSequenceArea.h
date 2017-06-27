@@ -275,6 +275,8 @@ public:
     QString getCopyFormatedAlgorithmId() const;
     void setCopyFormatedAlgorithmId(const QString& algoId);
 
+    MSAEditor *getEditor() const;
+
 private:
     // emulating cursor mode with
 
@@ -332,7 +334,7 @@ signals:
     void si_copyFormattedChanging(bool enabled);
 
 public slots:
-    void sl_changeColorSchemeOutside(const QString &name);
+    void sl_changeColorSchemeOutside(const QString &id);
     void sl_doUseDots();
     void sl_changeCopyFormat(const QString& alg);
     void sl_delCurrentSelection();
@@ -419,10 +421,12 @@ private:
 
     void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);
     void registerCommonColorSchemes();
-    void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
+    void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf);
 
     MsaColorSchemeFactory * getDefaultColorSchemeFactory();
-    void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype, bool isFirstInitialization);
+    MsaHighlightingSchemeFactory * getDefaultHighlightingSchemeFactory() const;
+
+    void getColorAndHighlightingIds(QString &csid, QString &hsid);
     void applyColorScheme(const QString &id);
 
     void exitFromEditCharacterMode();

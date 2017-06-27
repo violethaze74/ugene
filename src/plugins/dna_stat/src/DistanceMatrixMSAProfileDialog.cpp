@@ -274,7 +274,7 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
                 TextUtils::wrapForCSV(name);
                 resultText += name;
                 for (int j = 0; j < s.ma.getNumRows(); j++) {
-                    int val = qRound(algo->getSimilarity(i, j) * (s.usePercents ? (100.0 / s.ma.getLength()) : 1.0));
+                    int val = algo->getSimilarity(i, j, s.usePercents);
                     resultText += "," + QString::number(val) + (s.usePercents ? "%" : "");
                     FileAndDirectoryUtils::dumpStringToFile(f, resultText);
                 }
@@ -296,7 +296,6 @@ void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* alg
     int maxVal = s.usePercents ? 100 : s.ma.getLength();
     QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
     bool isSimilarity = algo->isSimilarityMeasure();
-    int minLen = s.ma.getLength();
 
     if(rows.size() < 2) {
         resultText += "<tr><td><b>"+tr("There is not enough groups to create distance matrix!") + "</td></tr>\n";
@@ -317,12 +316,7 @@ void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* alg
         resultText += "<tr>";
         resultText += "<td> " + name + "</td>";
         for (int j=0; j < rows.size(); j++) {
-            if(s.usePercents && s.excludeGaps){
-                int len1 = rows.at(i).getUngappedLength();
-                int len2 = rows.at(j).getUngappedLength();
-                minLen = qMin(len1, len2);
-            }
-            int val = qRound(algo->getSimilarity(i, j) * (s.usePercents ? (100.0 / minLen) : 1.0));
+            int val = algo->getSimilarity(i, j, s.usePercents);
 
             QString colorStr = "";
             if (i != j) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QRadioButton>
+#include <QStandardItemModel>
 #include <QToolButton>
 #include <QVBoxLayout>
 
@@ -31,7 +32,9 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GroupedComboBoxDelegate.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
@@ -62,16 +65,16 @@ static inline QHBoxLayout * initHBoxLayout(QWidget * w) {
     return layout;
 }
 
-QWidget* MSAHighlightingTab::createColorGroup(){
+QWidget* MSAHighlightingTab::createColorGroup() {
     QWidget * group = new QWidget(this);
 
     QVBoxLayout * layout = initVBoxLayout(group);
-    colorScheme = new QComboBox();
-    colorScheme->setObjectName("colorScheme");
-    colorScheme->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+    colorSchemeController = new MsaSchemeComboBoxController<MsaColorSchemeFactory, MsaColorSchemeRegistry>(msa, AppContext::getMsaColorSchemeRegistry(), this);
+    colorSchemeController->getComboBox()->setObjectName("colorScheme");
+    colorSchemeController->getComboBox()->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
 
     layout->addSpacing(TITLE_SPACING);
-    layout->addWidget(colorScheme);
+    layout->addWidget(colorSchemeController->getComboBox());
     layout->addSpacing(ITEMS_SPACING);
 
     return group;
@@ -81,8 +84,8 @@ QWidget* MSAHighlightingTab::createHighlightingGroup() {
     QWidget * group = new QWidget(this);
 
     QVBoxLayout * layout = initVBoxLayout(group);
-    highlightingScheme = new QComboBox();
-    highlightingScheme->setObjectName("highlightingScheme");
+    highlightingSchemeController = new MsaSchemeComboBoxController<MsaHighlightingSchemeFactory, MsaHighlightingSchemeRegistry>(msa, AppContext::getMsaHighlightingSchemeRegistry(), this);
+    highlightingSchemeController->getComboBox()->setObjectName("highlightingScheme");
 
     hint = new QLabel("");
     hint->setWordWrap(true);
@@ -119,7 +122,7 @@ QWidget* MSAHighlightingTab::createHighlightingGroup() {
 
     layout->setSpacing(ITEMS_SPACING);
     layout->addSpacing(TITLE_SPACING);
-    layout->addWidget(highlightingScheme);
+    layout->addWidget(highlightingSchemeController->getComboBox());
     layout->addWidget(thresholdLabel);
     layout->addWidget(thresholdSlider);
     layout->addWidget(lessMoreLabel);
@@ -151,26 +154,27 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
 
     seqArea = msa->getUI()->getSequenceArea();
 
-    savableTab.disableSavingForWidgets(QStringList() << thresholdSlider->objectName() << highlightingScheme->objectName()
-        << colorScheme->objectName() << highlightingScheme->objectName());
+    savableTab.disableSavingForWidgets(QStringList()
+                                       << thresholdSlider->objectName()
+                                       << highlightingSchemeController->getComboBox()->objectName()
+                                       << colorSchemeController->getComboBox()->objectName());
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 
-    initColorCB();
     sl_sync();
 
-    connect(colorScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
-    connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
+    connect(colorSchemeController, SIGNAL(si_dataChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
+    connect(highlightingSchemeController, SIGNAL(si_dataChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
     connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_doUseDots()));
 
     connect(seqArea, SIGNAL(si_highlightingChanged()), SLOT(sl_sync()));
 
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_customSchemesListChanged()));
+    connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_refreshSchemes()));
 
     connect(m, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateHint()));
-    connect(m->getMSAObject(), SIGNAL(si_alphabetChanged(MAlignmentModInfo, const DNAAlphabet *)), SLOT(sl_customSchemesListChanged()));
+    connect(m->getMSAObject(), SIGNAL(si_alphabetChanged(MAlignmentModInfo, const DNAAlphabet *)), SLOT(sl_refreshSchemes()));
 
-    connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateHint()));
+    connect(highlightingSchemeController->getComboBox(), SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateHint()));
     connect(exportHighlightning, SIGNAL(clicked()), SLOT(sl_exportHighlightningClicked()));
     connect(thresholdSlider, SIGNAL(valueChanged(int)), SLOT(sl_highlightingParametersChanged()));
     connect(thresholdMoreRb, SIGNAL(toggled(bool)), SLOT(sl_highlightingParametersChanged()));
@@ -180,47 +184,22 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     sl_highlightingParametersChanged();
 }
 
-void MSAHighlightingTab::initColorCB() {
-    colorScheme->blockSignals(true);
-    highlightingScheme->blockSignals(true);
-
-    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QList<MsaColorSchemeFactory *> colorSchemesFactories = msaColorSchemeRegistry->getMsaColorSchemes(msa->getMSAObject()->getAlphabet()->getType());
-    colorSchemesFactories << msaColorSchemeRegistry->getMsaCustomColorSchemes(msa->getMSAObject()->getAlphabet()->getType());
-
-    colorScheme->clear();
-    foreach (MsaColorSchemeFactory *factory, colorSchemesFactories) {
-        colorScheme->addItem(factory->getName());
-    }
-
-    MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
-    QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(msa->getMSAObject()->getAlphabet()->getType());
-
-    highlightingScheme->clear();
-    foreach (MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
-        highlightingScheme->addItem(factory->getName());
-    }
-
-    colorScheme->blockSignals(false);
-    highlightingScheme->blockSignals(false);
-}
-
 void MSAHighlightingTab::sl_sync() {
     MsaColorScheme *s = seqArea->getCurrentColorScheme();
     SAFE_POINT(s != NULL, "Current scheme is NULL", );
     SAFE_POINT(s->getFactory() != NULL, "Current scheme color factory is NULL", );
 
-    colorScheme->blockSignals(true);
-    colorScheme->setCurrentIndex(colorScheme->findText(s->getFactory()->getName()));
-    colorScheme->blockSignals(false);
+    colorSchemeController->getComboBox()->blockSignals(true);
+    colorSchemeController->setCurrentItemById(s->getFactory()->getId());
+    colorSchemeController->getComboBox()->blockSignals(false);
 
     MsaHighlightingScheme *sh = seqArea->getCurrentHighlightingScheme();
     SAFE_POINT(sh != NULL, "Current highlighting scheme is NULL!", );
     SAFE_POINT(sh->getFactory() != NULL, "Current highlighting scheme factory is NULL!", );
 
-    highlightingScheme->blockSignals(true);
-    highlightingScheme->setCurrentIndex(highlightingScheme->findText(sh->getFactory()->getName()));
-    highlightingScheme->blockSignals(false);
+    highlightingSchemeController->getComboBox()->blockSignals(true);
+    highlightingSchemeController->setCurrentItemById(sh->getFactory()->getId());
+    highlightingSchemeController->getComboBox()->blockSignals(false);
 
     useDots->blockSignals(true);
     useDots->setChecked(seqArea->getUseDotsCheckedState());
@@ -286,12 +265,13 @@ void MSAHighlightingTab::sl_highlightingParametersChanged() {
     highlightingSettings.insert(MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME, thresholdSlider->value());
     highlightingSettings.insert(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked());
     s->applySettings(highlightingSettings);
-    seqArea->sl_changeColorSchemeOutside(colorScheme->currentText());
+    seqArea->sl_changeColorSchemeOutside(colorSchemeController->getComboBox()->currentData().toString());
 }
 
-void MSAHighlightingTab::sl_customSchemesListChanged() {
-    initColorCB();
+void MSAHighlightingTab::sl_refreshSchemes() {
+    colorSchemeController->init();
+    highlightingSchemeController->init();
     sl_sync();
 }
 
-}//ns
+}   // namespace U2

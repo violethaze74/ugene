@@ -28,8 +28,6 @@
 
 #include "GObjectTypes.h"
 
-const int GAP_COLUMN_ONLY = -1;
-
 namespace U2 {
 
 class GHints;
@@ -181,9 +179,7 @@ public:
      * Returns shift size, besides sign of the returning value specifies direction of the shift
      */
     int shiftRegion(int startPos, int startRow, int nBases, int nRows, int shift);
-    void deleteColumnWithGaps(int requiredGapCount, U2OpStatus &os);
-    void deleteColumnWithGaps(int requiredGapCount = GAP_COLUMN_ONLY);
-    QList<qint64> getColumnsWithGaps(int requiredGapCount = GAP_COLUMN_ONLY) const;
+    void deleteColumnWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
     void updateCachedMAlignment(const MAlignmentModInfo &mi = MAlignmentModInfo(),
         const QList<qint64> &removedRowIds = QList<qint64>());
     void sortRowsByList(const QStringList& order);

@@ -55,6 +55,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/GlassView.h \
            src/util/GObjectComboBoxController.h \
            src/util/GraphUtils.h \
+           src/util/GroupedComboBoxDelegate.h \
            src/util/GScrollBar.h \
            src/util/GUIUtils.h \
            src/util/HelpButton.h \
@@ -122,6 +123,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/shared_db/ImportToDatabaseDialog.h \
            src/util/shared_db/ItemToImportEditDialog.h \
            src/util/shared_db/SharedConnectionsDialog.h
+
 FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/AuthenticationDialog.ui \
          src/util/AuthenticationWidget.ui \
@@ -154,6 +156,7 @@ FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/shared_db/ImportToDatabaseDialog.ui \
          src/util/shared_db/ItemToImportEditDialog.ui \
          src/util/shared_db/SharedConnectionsDialog.ui
+
 SOURCES += src/MainWindow.cpp \
            src/Notification.cpp \
            src/NotificationWidget.cpp \
@@ -203,6 +206,7 @@ SOURCES += src/MainWindow.cpp \
            src/util/GlassView.cpp \
            src/util/GObjectComboBoxController.cpp \
            src/util/GraphUtils.cpp \
+           src/util/GroupedComboBoxDelegate.cpp \
            src/util/GScrollBar.cpp \
            src/util/GUIUtils.cpp \
            src/util/HelpButton.cpp \

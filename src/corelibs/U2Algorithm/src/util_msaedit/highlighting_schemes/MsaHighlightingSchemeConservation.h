@@ -50,7 +50,7 @@ private:
 
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeConservationFactory : public MsaHighlightingSchemeFactory {
 public:
-    MsaHighlightingSchemeConservationFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType);
+    MsaHighlightingSchemeConservationFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes);
 
     MsaHighlightingScheme * create(QObject *parent, MAlignmentObject *maObj) const;
 };

@@ -24,6 +24,7 @@
 
 #include "ui_SaveSelectedSequenceFromMSADialog.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/L10n.h>
 
@@ -35,8 +36,10 @@
 
 namespace U2 {
 
-SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(QWidget* p)
+SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(const QString &defaultDir, const QString &defaultFileName, QWidget* p)
     : QDialog(p),
+      defaultDir(defaultDir),
+      defaultFileName(defaultFileName),
       saveController(NULL),
       ui(new Ui_SaveSelectedSequenceFromMSADialog())
 {
@@ -75,6 +78,7 @@ void SaveSelectedSequenceFromMSADialogController::initSaveController() {
     config.fileNameEdit = ui->fileNameEdit;
     config.formatCombo = ui->formatCombo;
     config.parentWidget = this;
+    config.defaultFileName = defaultDir + "/" + defaultFileName + "." + AppContext::getDocumentFormatRegistry()->getFormatById(config.defaultFormatId)->getSupportedDocumentFileExtensions().first();
 
     DocumentFormatConstraints formatConstraints;
     formatConstraints.supportedObjectTypes << GObjectTypes::SEQUENCE;
