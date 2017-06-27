@@ -136,7 +136,6 @@ void MaEditor::buildStaticToolbar(QToolBar* tb) {
 
     tb->addAction(showOverviewAction);
     tb->addAction(changeFontAction);
-    tb->addAction(saveScreenshotAction);
 }
 
 void MaEditor::buildStaticMenu(QMenu* m) {
@@ -387,7 +386,6 @@ void MaEditor::addEditMenu(QMenu* m) {
 void MaEditor::addExportMenu(QMenu* m) {
     QMenu* em = m->addMenu(tr("Export"));
     em->menuAction()->setObjectName(MSAE_MENU_EXPORT);
-    em->addAction(saveScreenshotAction);
     em->addAction(exportHighlightedAction);
     if(!ui->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->isRefFree() &&
                 getReferenceRowId() != U2MsaRow::INVALID_ROW_ID){

@@ -112,6 +112,7 @@ QAction* MaEditorWgt::getRedoAction() const {
 }
 
 void MaEditorWgt::sl_saveScreenshot(){
+    CHECK(qobject_cast<MSAEditor*>(editor) != NULL, );
     MSAImageExportController controller(this);
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QString fileName = GUrlUtils::fixFileName(editor->getMaObject()->getGObjectName());

@@ -87,7 +87,6 @@ void McaEditor::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(showOverviewAction);
     tb->addAction(showChromatogramsAction);
     tb->addAction(changeFontAction);
-    tb->addAction(saveScreenshotAction);
 
     GObjectView::buildStaticToolbar(tb);
 }

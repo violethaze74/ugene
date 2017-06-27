@@ -170,6 +170,7 @@ MSAEditor::~MSAEditor() {
 void MSAEditor::buildStaticToolbar(QToolBar* tb) {
     MaEditor::buildStaticToolbar(tb);
 
+    tb->addAction(saveScreenshotAction);
     tb->addAction(buildTreeAction);
     tb->addAction(alignAction);
     tb->addAction(alignSequencesToAlignmentAction);
@@ -195,6 +196,13 @@ void MSAEditor::buildStaticMenu(QMenu* m) {
     GObjectView::buildStaticMenu(m);
 
     GUIUtils::disableEmptySubmenus(m);
+}
+
+void MSAEditor::addExportMenu(QMenu* m) {
+    MaEditor::addExportMenu(m);
+    QMenu* em = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
+    SAFE_POINT(em != NULL, "Export menu not found", );
+    em->addAction(saveScreenshotAction);
 }
 
 void MSAEditor::addTreeMenu(QMenu* m) {
