@@ -1752,15 +1752,20 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
+            
+            QComboBox *comboBox = dialog->findChild<QComboBox*>();
+            CHECK_SET_ERR(comboBox != NULL, "ComboBox not found");
+            
+            QStringList formats = GTComboBox::getValues(os, comboBox);
+            CHECK_SET_ERR(!formats.contains("BAM"), "BAM format is present in annotations export dialog");
+            
+            QDialogButtonBox* buttonBox = dialog->findChild<QDialogButtonBox*>("buttonBox");
+            CHECK_SET_ERR(buttonBox != NULL, "buttonBox is NULL");
 
-            //    Expected state:
-            //    1) opened dialog have File formats: {BED, CSV, Differential, FPKM Tracking Format, GenBank, GFF, GTF, UGENE Database}
-            QComboBox* documentFormatComboBox = GTWidget::findExactWidget<QComboBox*>(os, "formatsBox", dialog);
-            QStringList comboList;
-            comboList<<"BED"<<"CSV"<<"Differential"<<"FPKM Tracking Format"<<"GenBank"<<"GFF"<<"GTF"<<"UGENE Database";
-            GTComboBox::checkValuesPresence(os, documentFormatComboBox, comboList);
+            QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+            CHECK_SET_ERR(cancelButton != NULL, "cancelButton is NULL");
+            GTWidget::click(os, cancelButton);
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
     
