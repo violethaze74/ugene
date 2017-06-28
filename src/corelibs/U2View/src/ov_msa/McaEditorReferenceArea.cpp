@@ -77,6 +77,7 @@ void McaEditorReferenceArea::sl_selectMismatch(int pos) {
     if (seqArea->getFirstVisibleBase() > pos || seqArea->getLastVisibleBase(false) < pos) {
         seqArea->centerPos(pos);
     }
+    seqArea->cancelSelection();
     setSelection(U2Region(pos, 1));
 }
 
