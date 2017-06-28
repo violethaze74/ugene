@@ -1742,6 +1742,36 @@ GUI_TEST_CLASS_DEFINITION(test_5636) {
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 36, "Incorrect sequences count");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5659) {
+    //    1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
+
+            //    Expected state:
+            //    1) opened dialog have File formats: {BED, CSV, Differential, FPKM Tracking Format, GenBank, GFF, GTF, UGENE Database}
+            QComboBox* documentFormatComboBox = GTWidget::findExactWidget<QComboBox*>(os, "formatsBox", dialog);
+            QStringList comboList;
+            comboList<<"BED"<<"CSV"<<"Differential"<<"FPKM Tracking Format"<<"GenBank"<<"GFF"<<"GTF"<<"UGENE Database";
+            GTComboBox::checkValuesPresence(os, documentFormatComboBox, comboList);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, new Scenario()));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "source"));
+    GTMouseDriver::click(Qt::RightButton);
+    GTGlobals::sleep();
+}
+
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
