@@ -1743,7 +1743,11 @@ GUI_TEST_CLASS_DEFINITION(test_5636) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5659) {
-    //    1. Open "data/samples/Genbank/murine.gb".
+    // 1. Open murine.gb
+    // 2. Context menu on annotations object
+    // Expected state: export annotataions dialog appeared
+    // 3. Check format combobox
+    // Expected state: BAM format is abcent
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     
@@ -1765,7 +1769,6 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
             QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
             CHECK_SET_ERR(cancelButton != NULL, "cancelButton is NULL");
             GTWidget::click(os, cancelButton);
-
         }
     };
     
