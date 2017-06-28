@@ -86,9 +86,10 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h \
            src/ov_msa/helpers/BaseWidthController.h \
            src/ov_msa/helpers/DrawHelper.h \
-           src/ov_msa/helpers/RowHeightController.h \
+           src/ov_msa/helpers/MaAmbiguousCharactersController.h \
            src/ov_msa/helpers/McaRowHeightController.h \
            src/ov_msa/helpers/MsaRowHeightController.h \
+           src/ov_msa/helpers/RowHeightController.h \
            src/ov_msa/helpers/ScrollController.h \
            src/ov_msa/Overview/MaEditorOverviewArea.h \
            src/ov_msa/Overview/MaGraphCalculationTask.h \
@@ -214,6 +215,7 @@ HEADERS += src/LicenseDialog.h \
            src/util_smith_waterman/SmithWatermanDialog.h \
            src/util_smith_waterman/SmithWatermanDialogImpl.h \
            src/util_smith_waterman/SubstMatrixDialog.h
+
 FORMS += src/ov_assembly/ExportConsensusDialog.ui \
          src/ov_assembly/ExportCoverageDialog.ui \
          src/ov_assembly/ExportReadsDialog.ui \
@@ -254,6 +256,7 @@ FORMS += src/ov_assembly/ExportConsensusDialog.ui \
          src/util_sec_struct_predict/SecStructDialog.ui \
          src/util_smith_waterman/SmithWatermanDialogBase.ui \
          src/util_smith_waterman/SubstMatrixDialogBase.ui
+
 SOURCES += src/LicenseDialog.cpp \
            src/UndoRedoFramework.cpp \
            src/WebWindow.cpp \
@@ -337,6 +340,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentTask.cpp \
            src/ov_msa/helpers/BaseWidthController.cpp \
            src/ov_msa/helpers/DrawHelper.cpp \
+           src/ov_msa/helpers/MaAmbiguousCharactersController.cpp \
            src/ov_msa/helpers/McaRowHeightController.cpp \
            src/ov_msa/helpers/MsaRowHeightController.cpp \
            src/ov_msa/helpers/RowHeightController.cpp \
@@ -459,5 +463,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/util_sec_struct_predict/SecStructPredictUtils.cpp \
            src/util_smith_waterman/SmithWatermanDialog.cpp \
            src/util_smith_waterman/SubstMatrixDialog.cpp
+
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

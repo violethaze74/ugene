@@ -28,6 +28,7 @@
 
 namespace U2 {
 
+class MaAmbiguousCharactersController;
 class McaEditor;
 
 class ChromatogramViewSettings {
@@ -88,8 +89,11 @@ private:
 
     void insertChar(char newCharacter);
 
+    McaEditorWgt *getMcaEditorWgt() const;
+
 private:
     ChromatogramViewSettings    settings;
+    MaAmbiguousCharactersController *ambiguousCharactersController;
 
     QAction*    showQVAction;
     QAction*    showAllTraces;
