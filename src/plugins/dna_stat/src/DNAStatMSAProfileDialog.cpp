@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDir>
 #include <QFile>
 #include <QMessageBox>
 #include <QPushButton>
@@ -27,9 +28,11 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FileAndDirectoryUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
 
 #include <U2View/MSAEditor.h>
@@ -66,9 +69,18 @@ void DNAStatMSAProfileDialog::sl_formatChanged(const QString &newFormat) {
 }
 
 void DNAStatMSAProfileDialog::initSaveController() {
+    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
+    if (msaObj == NULL) {
+        return;
+    }
+    QString domain = "plugin_dna_stat";
+    LastUsedDirHelper lod(domain, GUrlUtils::getDefaultDataPath());
+    QString fileName = GUrlUtils::fixFileName(msaObj->getGObjectName());
+
     SaveDocumentControllerConfig config;
-    config.defaultDomain = "plugin_dna_stat";
+    config.defaultDomain = domain;
     config.defaultFormatId = HTML;
+    config.defaultFileName = lod.dir + "/" + fileName + "_grid_profile" + "." + DNAStatMSAProfileDialog::HTML;
     config.fileDialogButton = fileButton;
     config.fileNameEdit = fileEdit;
     config.parentWidget = this;
@@ -114,7 +126,7 @@ void DNAStatMSAProfileDialog::accept() {
 //////////////////////////////////////////////////////////////////////////
 // task
 DNAStatMSAProfileTask::DNAStatMSAProfileTask(const DNAStatMSAProfileTaskSettings& _s)
-: Task(tr("Generate alignment profile"), TaskFlag_None), s(_s)
+: Task(tr("Generate alignment profile"), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled), s(_s)
 {
     setVerboseLogMode(true);
 }
@@ -276,9 +288,23 @@ void DNAStatMSAProfileTask::run() {
         delete f;
     }
 }
+QString DNAStatMSAProfileTask::generateReport() const {
+    if (hasError() || isCanceled()) {
+        return tr("Task was finished with an error: %1").arg(getError());
+    }
+    QString res;
+    res += "<br>";
+    res += QString(tr("Grid profile %1: <a href='%2'>%2</a>")).arg(s.profileName).arg(QDir::toNativeSeparators(s.outURL)) + "<br>";
+    return res;
+}
+
+bool DNAStatMSAProfileTask::isReportingEnabled() const {
+    return !hasError() && !isCanceled() && s.outFormat != DNAStatMSAProfileOutputFormat_Show;
+}
+
 
 Task::ReportResult DNAStatMSAProfileTask::report() {
-    if (s.outFormat != DNAStatMSAProfileOutputFormat_Show || hasError() || isCanceled()) {
+    if (hasError() || isCanceled() || s.outFormat != DNAStatMSAProfileOutputFormat_Show) {
         return Task::ReportResult_Finished;
     }
     assert(!resultText.isEmpty());

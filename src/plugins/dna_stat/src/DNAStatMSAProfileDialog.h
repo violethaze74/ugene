@@ -94,6 +94,8 @@ public:
     DNAStatMSAProfileTask(const DNAStatMSAProfileTaskSettings& s);
 
     void run();
+    QString generateReport() const;
+    virtual bool isReportingEnabled() const;
 
     ReportResult report();
 

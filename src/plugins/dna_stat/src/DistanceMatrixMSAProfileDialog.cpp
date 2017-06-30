@@ -81,7 +81,7 @@ void DistanceMatrixMSAProfileDialog::initSaveController() {
         return;
     }
     QString domain = "plugin_dna_stat";
-    LastUsedDirHelper lod(domain);
+    LastUsedDirHelper lod(domain, GUrlUtils::getDefaultDataPath());
     QString fileName = GUrlUtils::fixFileName(msaObj->getGObjectName());
 
     SaveDocumentControllerConfig config;
