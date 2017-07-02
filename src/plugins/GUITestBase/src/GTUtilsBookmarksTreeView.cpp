@@ -22,6 +22,14 @@
 #include <QMainWindow>
 #include <QTreeWidget>
 
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTLineEdit.h>
+#include <primitives/GTTreeWidget.h>
+#include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
+#include <utils/GTUtilsDialog.h>
+
 #include <U2Core/ProjectModel.h>
 
 #include <U2Gui/MainWindow.h>
@@ -30,15 +38,8 @@
 #include <U2View/AnnotationsTreeView.h>
 
 #include "GTUtilsBookmarksTreeView.h"
-#include "utils/GTUtilsDialog.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-#include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTLineEdit.h>
-#include <drivers/GTMouseDriver.h>
-#include <primitives/GTTreeWidget.h>
-#include <primitives/GTWidget.h>
-#include "primitives/PopupChooser.h"
 
 namespace U2 {
 using namespace HI;
@@ -48,7 +49,7 @@ using namespace HI;
 const QString GTUtilsBookmarksTreeView::widgetName = ACTION_BOOKMARK_TREE_VIEW;
 
 #define GT_METHOD_NAME "getTreeWidget"
-QTreeWidget* GTUtilsBookmarksTreeView::getTreeWidget(HI::GUITestOpStatus &os) {
+QTreeWidget* GTUtilsBookmarksTreeView::getTreeWidget(GUITestOpStatus &os) {
 
     QTreeWidget *treeWidget = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, widgetName, NULL, false));
 
@@ -63,7 +64,7 @@ QTreeWidget* GTUtilsBookmarksTreeView::getTreeWidget(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findItem"
-QTreeWidgetItem* GTUtilsBookmarksTreeView::findItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
+QTreeWidgetItem* GTUtilsBookmarksTreeView::findItem(GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
 
     GT_CHECK_RESULT(itemName.isEmpty() == false, "Item name is empty", NULL);
 
@@ -91,7 +92,7 @@ QTreeWidgetItem* GTUtilsBookmarksTreeView::findItem(HI::GUITestOpStatus &os, con
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSelectedItem"
-QString GTUtilsBookmarksTreeView::getSelectedItem(HI::GUITestOpStatus &os)
+QString GTUtilsBookmarksTreeView::getSelectedItem(GUITestOpStatus &os)
 {
     QTreeWidget *treeWidget = getTreeWidget(os);
     GT_CHECK_RESULT(treeWidget != NULL, "Tree widget is NULL", NULL);
@@ -108,21 +109,44 @@ QString GTUtilsBookmarksTreeView::getSelectedItem(HI::GUITestOpStatus &os)
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addBookmark"
-void GTUtilsBookmarksTreeView::addBookmark(HI::GUITestOpStatus &os, const QString &viewName, const QString &bookmarkName) {
+void GTUtilsBookmarksTreeView::addBookmark(GUITestOpStatus &os, const QString &viewName, const QString &bookmarkName) {
     Q_UNUSED(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_ADD_BOOKMARK));
     GTMouseDriver::moveTo(getItemCenter(os, viewName));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(500);
 
-    QWidget *bookmarkLineEdit = getTreeWidget(os)->itemWidget(getTreeWidget(os)->currentItem(), 0);
-    GTLineEdit::setText(os, qobject_cast<QLineEdit *>(bookmarkLineEdit), bookmarkName);
+    if (!bookmarkName.isEmpty()) {
+        QWidget *bookmarkLineEdit = getTreeWidget(os)->itemWidget(getTreeWidget(os)->currentItem(), 0);
+        GTLineEdit::setText(os, qobject_cast<QLineEdit *>(bookmarkLineEdit), bookmarkName);
+    }
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "deleteBookmark"
+void GTUtilsBookmarksTreeView::deleteBookmark(GUITestOpStatus &os, const QString &bookmarkName) {
+    clickBookmark(os, bookmarkName);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickBookmark"
+void GTUtilsBookmarksTreeView::clickBookmark(GUITestOpStatus &os, const QString &bookmarkName) {
+    GTMouseDriver::moveTo(getItemCenter(os, bookmarkName));
+    GTMouseDriver::click();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "doubleClickBookmark"
+void GTUtilsBookmarksTreeView::doubleClickBookmark(GUITestOpStatus &os, const QString &bookmarkName) {
+    GTMouseDriver::moveTo(getItemCenter(os, bookmarkName));
+    GTMouseDriver::doubleClick();
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getItemCenter"
-QPoint GTUtilsBookmarksTreeView::getItemCenter(HI::GUITestOpStatus &os, const QString &itemName) {
+QPoint GTUtilsBookmarksTreeView::getItemCenter(GUITestOpStatus &os, const QString &itemName) {
 
     QTreeWidgetItem* item = findItem(os, itemName);
     GT_CHECK_RESULT(item != NULL, "Item " + itemName + " is NULL", QPoint());

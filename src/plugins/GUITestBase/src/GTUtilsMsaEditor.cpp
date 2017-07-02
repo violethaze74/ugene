@@ -262,6 +262,8 @@ QStringList GTUtilsMsaEditor::getWholeData(GUITestOpStatus &os) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     GTKeyboardUtils::copy(os);
+    GTGlobals::sleep(500);
+
     return GTClipboard::text(os).split('\n');
 }
 #undef GT_METHOD_NAME

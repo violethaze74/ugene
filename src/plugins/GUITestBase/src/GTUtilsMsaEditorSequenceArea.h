@@ -65,12 +65,12 @@ public:
     static void selectArea(HI::GUITestOpStatus &os, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1));
     static void cancelSelection(HI::GUITestOpStatus &os);
     static QPoint convertCoordinates(HI::GUITestOpStatus &os, const QPoint p);
-    static void click(HI::GUITestOpStatus &os, QPoint screenMaPoint = QPoint(0, 0));
+    static void click(HI::GUITestOpStatus &os, const QPoint &screenMaPoint = QPoint(0, 0));
 
     // scrolls to the position (in the MSA zero-based coordinates)
     static void scrollToPosition(HI::GUITestOpStatus &os, const QPoint& position);
     static void scrollToBottom(HI::GUITestOpStatus &os);
-    static void clickToPosition(HI::GUITestOpStatus &os, const QPoint& position);
+    static void clickToPosition(HI::GUITestOpStatus &os, const QPoint& globalMaPosition);
 
     static void selectSequence(HI::GUITestOpStatus &os, const QString &seqName);
     static bool isSequenceSelected(HI::GUITestOpStatus &os, const QString &seqName);

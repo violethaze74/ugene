@@ -312,8 +312,9 @@ void GUITestService::runGUITest() {
     needTeamcityLog = cmdLine->hasParameter(CMDLineCoreOptions::TEAMCITY_OUTPUT);
 
     UGUITestBase *tb = AppContext::getGUITestBase();
-    SAFE_POINT(NULL != tb,"",);
+    SAFE_POINT(NULL != tb, "Test base is NULL", );
     HI::GUITest *t = tb->takeTest(testName.split(":").first(), testName.split(":").last());
+    SAFE_POINT(NULL != t, QString("Test '%1' is NULL. A wrong test name?").arg(testName), );
 
     runGUITest(t);
 }
