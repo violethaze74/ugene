@@ -55,6 +55,7 @@ const float MaEditor::zoomMult = 1.25;
 MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObject *obj)
     : GObjectView(factoryId, viewName),
       ui(NULL),
+      cachedColumnWidth(0),
       exportHighlightedAction(NULL)
 {
     maObject = qobject_cast<MultipleAlignmentObject*>(obj);
@@ -106,6 +107,8 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
     exportHighlightedAction->setDisabled(true);
 
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
+    connect(this, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_resetColumnWidthCache()));
+    connect(this, SIGNAL(si_fontChanged(QFont)), SLOT(sl_resetColumnWidthCache()));
 
     Settings* s = AppContext::getSettings();
     zoomFactor = MOBJECT_DEFAULT_ZOOM_FACTOR;
@@ -177,13 +180,15 @@ int MaEditor::getSequenceRowHeight() const {
 }
 
 int MaEditor::getColumnWidth() const {
-    QFontMetrics fm(font, ui);
-    int width =  fm.width('W') * zoomMult;
+    if (0 == cachedColumnWidth) {
+        QFontMetrics fm(font, ui);
+        cachedColumnWidth = fm.width('W') * zoomMult;
 
-    width = (int)(width * zoomFactor);
-    width = qMax(width, MOBJECT_MIN_COLUMN_WIDTH);
+        cachedColumnWidth = (int)(cachedColumnWidth * zoomFactor);
+        cachedColumnWidth = qMax(cachedColumnWidth, MOBJECT_MIN_COLUMN_WIDTH);
 
-    return width;
+    }
+    return cachedColumnWidth;
 }
 
 QVariantMap MaEditor::getHighlightingSettings(const QString &highlightingFactoryId) const {
@@ -361,6 +366,10 @@ void MaEditor::sl_exportHighlighted(){
     }
 }
 
+void MaEditor::sl_resetColumnWidthCache() {
+    cachedColumnWidth = 0;
+}
+
 void MaEditor::initActions() {
     saveScreenshotAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export as image"), this);
     saveScreenshotAction->setObjectName("Export as image");
@@ -440,6 +449,11 @@ void MaEditor::setFirstVisibleBase(int firstPos) {
     if (ui->getSequenceArea()->isPosInRange(firstPos)) {
         ui->getScrollController()->setFirstVisibleBase(firstPos);
     }
+}
+
+void MaEditor::setZoomFactor(float newZoomFactor) {
+    zoomFactor = newZoomFactor;
+    sl_resetColumnWidthCache();
 }
 
 void MaEditor::updateActions() {
