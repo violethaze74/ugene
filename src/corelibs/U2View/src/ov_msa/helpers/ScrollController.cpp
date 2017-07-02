@@ -260,7 +260,7 @@ int ScrollController::getLastVisibleRowIndex(int widgetHeight, bool countClipped
 int ScrollController::getLastVisibleRowNumber(int widgetHeight, bool countClipped) const {
     int lastVisibleRowNumber = ui->getRowHeightController()->globalYPositionToRowNumber(vScrollBar->value() + widgetHeight);
     if (lastVisibleRowNumber < 0) {
-        lastVisibleRowNumber = collapsibleModel->displayableRowsCount() - 1;
+        lastVisibleRowNumber = collapsibleModel->getDisplayableRowsCount() - 1;
     }
     const U2Region lastRowScreenRegion = ui->getRowHeightController()->getRowScreenRangeByNumber(lastVisibleRowNumber);
     const bool removeClippedRow = !countClipped && lastRowScreenRegion.endPos() > widgetHeight;
@@ -271,7 +271,7 @@ QPoint ScrollController::getMaPointByScreenPoint(const QPoint &point) const {
     const int columnNumber = ui->getBaseWidthController()->screenXPositionToColumn(point.x());
     int rowNumber = ui->getRowHeightController()->screenYPositionToRowNumber(point.y());
     if (-1 == rowNumber) {
-        rowNumber = ui->getCollapseModel()->displayableRowsCount() - 1;
+        rowNumber = ui->getCollapseModel()->getDisplayableRowsCount() - 1;
     }
     return QPoint(columnNumber, rowNumber);
 }

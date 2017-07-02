@@ -418,8 +418,8 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
         curRowNumber = ui->getRowHeightController()->screenYPositionToRowNumber(e->y());
         if (ui->isCollapsibleMode()) {
             MSACollapsibleItemModel* m = ui->getCollapseModel();
-            if (curRowNumber >= m->displayableRowsCount()) {
-                curRowNumber = m->displayableRowsCount() - 1;
+            if (curRowNumber >= m->getDisplayableRowsCount()) {
+                curRowNumber = m->getDisplayableRowsCount() - 1;
             }
             if (m->isTopLevel(curRowNumber)) {
                 const U2Region yRange = ui->getRowHeightController()->getRowScreenRangeByNumber(curRowNumber);

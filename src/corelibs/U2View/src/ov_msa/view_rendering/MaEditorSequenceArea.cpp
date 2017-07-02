@@ -151,11 +151,15 @@ int MaEditorSequenceArea::getNumVisibleBases() const {
     return ui->getDrawHelper()->getVisibleBasesCount(width());
 }
 
+int MaEditorSequenceArea::getDisplayableRowsCount() const {
+    return ui->getCollapseModel()->getDisplayableRowsCount();
+}
+
 int MaEditorSequenceArea::getNumDisplayableSequences() const {
     CHECK(!isAlignmentEmpty(), 0);
     MSACollapsibleItemModel *model = ui->getCollapseModel();
     SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
-    return model->displayableRowsCount();
+    return model->getDisplayableRowsCount();
 }
 
 QPair<QString, int> MaEditorSequenceArea::getGappedColumnInfo() const{
@@ -194,7 +198,7 @@ bool MaEditorSequenceArea::isInRange(const QPoint &point) const {
 }
 
 QPoint MaEditorSequenceArea::boundWithVisibleRange(const QPoint &point) const {
-    return QPoint(qBound(0, point.x(), editor->getAlignmentLen() - 1), qBound(0, point.y(), ui->getCollapseModel()->displayableRowsCount() - 1));
+    return QPoint(qBound(0, point.x(), editor->getAlignmentLen() - 1), qBound(0, point.y(), ui->getCollapseModel()->getDisplayableRowsCount() - 1));
 }
 
 bool MaEditorSequenceArea::isVisible(const QPoint& p, bool countClipped) const {
@@ -260,7 +264,7 @@ void MaEditorSequenceArea::updateSelection() {
             selectionHeight = qMax(selectionHeight, endPos - newStart + collapsibleItem.numRows);
         }
     }
-    if(selectionHeight > 0 && newStart + selectionHeight <= m->displayableRowsCount()) {
+    if(selectionHeight > 0 && newStart + selectionHeight <= m->getDisplayableRowsCount()) {
         MaEditorSelection s(selection.topLeft().x(), newStart, selection.width(), selectionHeight);
         setSelection(s);
     } else {
@@ -512,7 +516,7 @@ bool MaEditorSequenceArea::drawContent(QPainter &painter, const U2Region &region
 }
 
 bool MaEditorSequenceArea::drawContent(QPainter &painter) {
-    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->displayableRowsCount());
+    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->getDisplayableRowsCount());
     return drawContent(painter, areaToDraw);
 }
 
@@ -524,7 +528,7 @@ bool MaEditorSequenceArea::drawContent(QPixmap &pixmap) {
     pixmap = QPixmap(totalAlignmentWidth, totalAlignmentHeight);
     QPainter p(&pixmap);
 
-    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->displayableRowsCount());
+    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->getDisplayableRowsCount());
     return drawContent(p, areaToDraw, 0, 0);
 }
 
@@ -1114,7 +1118,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 moveSelection(0, 1);
                 break;
             }
-            if (selectionEnd.y() >= (ui->getCollapseModel()->displayableRowsCount() - 1)) {
+            if (selectionEnd.y() >= (ui->getCollapseModel()->getDisplayableRowsCount() - 1)) {
                 break;
             }
             selectionEnd.setY(selectionEnd.y() + 1);

@@ -322,7 +322,7 @@ MSACollapsableItem MSACollapsibleItemModel::getItemByRowIndex(int rowIndex) cons
     return items[itemNumber];
 }
 
-int MSACollapsibleItemModel::displayableRowsCount() const {
+int MSACollapsibleItemModel::getDisplayableRowsCount() const {
     MaEditor *ed = ui->getEditor();
     MultipleAlignmentObject *o = ed->getMaObject();
     int size = o->getNumRows();

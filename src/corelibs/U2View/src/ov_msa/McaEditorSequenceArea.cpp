@@ -119,7 +119,7 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     int nextRowToSelect = selection.y() + dy;
     if (dy != 0) {
         bool noRowAvailabe = true;
-        for ( ; nextRowToSelect >= 0 && nextRowToSelect < ui->getCollapseModel()->displayableRowsCount(); nextRowToSelect += dy) {
+        for ( ; nextRowToSelect >= 0 && nextRowToSelect < ui->getCollapseModel()->getDisplayableRowsCount(); nextRowToSelect += dy) {
             if (!mca->isTrailingOrLeadingGap(ui->getCollapseModel()->mapToRow(nextRowToSelect), selection.x() + dx)) {
                 noRowAvailabe  = false;
                 break;

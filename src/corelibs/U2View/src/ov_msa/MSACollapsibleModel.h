@@ -108,7 +108,7 @@ public:
      * Returns count of rows that can be viewed (that are not collapsed).
      * Every group has at least one row to view.
      */
-    int displayableRowsCount() const;
+    int getDisplayableRowsCount() const;
 
     /** If there is a collapsible item at 'pos' position, it is removed. */
     void removeCollapsedForPosition(int pos);
