@@ -121,6 +121,10 @@ public:
 
     virtual void setObjectRank(const U2DataId &objectId, U2DbiObjectRank newRank, U2OpStatus &os);
 
+    virtual U2DbiObjectRank getObjectRank(const U2DataId &objectId, U2OpStatus& os);
+
+    virtual void setParent(const U2DataId& parentId, const U2DataId& childId, U2OpStatus& os);
+
 private:
     Dbi &dbi;
     DbRef &dbRef;

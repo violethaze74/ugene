@@ -40,8 +40,7 @@ class McaEditor : public MaEditor {
     friend class McaEditorSequenceArea;
 public:
     McaEditor(const QString& viewName,
-              MultipleChromatogramAlignmentObject* obj,
-              U2SequenceObject* ref = NULL);
+              MultipleChromatogramAlignmentObject* obj);
 
     MultipleChromatogramAlignmentObject* getMaObject() const { return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject); }
 
@@ -69,7 +68,8 @@ protected:
 
     QAction*          showChromatogramsAction;
 
-    U2SequenceObject*       referenceObj;
+    QMap<qint64, bool>  chromVisibility;
+
     SequenceObjectContext*  referenceCtx;
 };
 

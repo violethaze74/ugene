@@ -30,14 +30,19 @@
 namespace U2 {
 
 class MultipleAlignment;
+class U2SequenceObject;
 
 class U2CORE_EXPORT MultipleChromatogramAlignmentObject : public MultipleAlignmentObject {
     Q_OBJECT
 public:
+    static const QString MCAOBJECT_REFERENCE;
+
     MultipleChromatogramAlignmentObject(const QString &name,
                                         const U2EntityRef &mcaRef,
                                         const QVariantMap &hintsMap = QVariantMap(),
                                         const MultipleChromatogramAlignment &mca = MultipleChromatogramAlignment());
+
+    virtual ~MultipleChromatogramAlignmentObject();
 
     GObject * clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
 
@@ -47,6 +52,7 @@ public:
     const MultipleChromatogramAlignment getMcaCopy() const;
 
     const MultipleChromatogramAlignmentRow getMcaRow(int row) const;
+    U2SequenceObject* getReferenceObj() const;
 
     void replaceCharacter(int startPos, int rowIndex, char newChar);
     // inserts column of gaps with newChar at rowIndex row
@@ -64,6 +70,7 @@ private:
                              int startPos, int nBases);
     virtual void insertGap(const U2Region &rows, int pos, int nGaps);
 
+    mutable U2SequenceObject* referenceObj;
 };
 
 }   // namespace U2

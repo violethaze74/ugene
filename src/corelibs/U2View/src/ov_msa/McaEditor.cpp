@@ -55,10 +55,8 @@
 namespace U2 {
 
 McaEditor::McaEditor(const QString &viewName,
-                     MultipleChromatogramAlignmentObject *obj,
-                     U2SequenceObject* ref)
+                     MultipleChromatogramAlignmentObject *obj)
     : MaEditor(McaEditorFactory::ID, viewName, obj),
-      referenceObj(ref),
       referenceCtx(NULL)
 {
 
@@ -68,10 +66,15 @@ McaEditor::McaEditor(const QString &viewName,
     showChromatogramsAction->setCheckable(true);
     showChromatogramsAction->setChecked(true);
     connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
-
-    if (ref) {
-        objects.append(referenceObj);
-        onObjectAdded(referenceObj);
+    
+    U2OpStatusImpl os;
+    foreach (const MultipleChromatogramAlignmentRow& row, obj->getMca()->getMcaRows()) {
+        chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), true);
+    }
+    
+    U2SequenceObject* referenceObj = obj->getReferenceObj();
+    if (referenceObj) {
+        // SANGER_TODO: probably can be big
         referenceCtx = new SequenceObjectContext(referenceObj, this);
     } else {
         FAIL("Trying to open McaEditor without a reference", );
@@ -112,13 +115,13 @@ bool McaEditor::isChromVisible(int rowIndex) const {
 }
 
 QString McaEditor::getReferenceRowName() const {
-    return referenceObj->getSequenceName();
+    return getMaObject()->getReferenceObj()->getSequenceName();
 }
 
 char McaEditor::getReferenceCharAt(int pos) const {
     U2OpStatus2Log os;
-    SAFE_POINT(referenceObj->getSequenceLength() > pos, "Invalid position", '\n');
-    QByteArray seqData = referenceObj->getSequenceData(U2Region(pos, 1), os);
+    SAFE_POINT(getMaObject()->getReferenceObj()->getSequenceLength() > pos, "Invalid position", '\n');
+    QByteArray seqData = getMaObject()->getReferenceObj()->getSequenceData(U2Region(pos, 1), os);
     CHECK_OP(os, U2Msa::GAP_CHAR);
     return seqData.isEmpty() ? U2Msa::GAP_CHAR : seqData.at(0);
 }

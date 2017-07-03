@@ -184,14 +184,6 @@ MaEditor* McaEditorFactory::getEditor(const QString& viewName, GObject* obj) {
     return new McaEditor(viewName, mcaObj);
 }
 
-MaEditor* McaEditorFactory::getEditor(const QString &viewName, GObject *maObj, GObject* ref) {
-    MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(maObj);
-    SAFE_POINT(mcaObj != NULL, "Invalid GObject", NULL);
-    U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(ref);
-    SAFE_POINT(seqObj != NULL, "Invalid GObject", NULL);
-    return new McaEditor(viewName, mcaObj, seqObj);
-}
-
 OpenMaEditorTask* McaEditorFactory::getOpenMaEditorTask(MultipleAlignmentObject* obj) {
     return new OpenMcaEditorTask(obj);
 }

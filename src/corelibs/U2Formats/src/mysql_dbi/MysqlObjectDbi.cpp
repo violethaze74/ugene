@@ -278,6 +278,13 @@ qint64 MysqlObjectDbi::getFolderGlobalVersion(const QString& folder, U2OpStatus&
     return q.selectInt64();
 }
 
+U2DbiObjectRank MysqlObjectDbi::getObjectRank(const U2DataId &objectId, U2OpStatus& os) {
+    static const QString queryString("SELECT rank FROM Object WHERE id = :id");
+    U2SqlQuery q(queryString, db, os);
+    q.bindDataId(":id", objectId);
+    return static_cast<U2DbiObjectRank> (q.selectInt32());
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // Write methods for objects
