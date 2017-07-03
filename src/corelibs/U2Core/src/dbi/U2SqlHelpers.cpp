@@ -415,6 +415,13 @@ U2DataId SQLiteQuery::insert(U2DataType type, const QByteArray& dbExtra) {
     return U2DbiUtils::toU2DataId(lastRowId, type, dbExtra);
 }
 
+qint32 SQLiteQuery::selectInt32() {
+    if (step()) {
+        return getInt32(0);
+    }
+    return -1;
+}
+
 qint64 SQLiteQuery::selectInt64() {
     if (step()) {
         return getInt64(0);

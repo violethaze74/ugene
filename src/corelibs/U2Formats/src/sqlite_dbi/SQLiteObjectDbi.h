@@ -89,6 +89,9 @@ public:
     /**  Returns all folders this object must be shown in  */
     virtual QStringList getObjectFolders(const U2DataId& objectId, U2OpStatus& os);
 
+    /** Returns object rank of the given object */
+    virtual U2DbiObjectRank getObjectRank(const U2DataId &objectId, U2OpStatus& os);
+
     // Write methods for objects
 
     /**

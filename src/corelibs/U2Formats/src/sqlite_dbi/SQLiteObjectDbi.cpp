@@ -992,6 +992,12 @@ void SQLiteObjectDbi::setObjectRank(const U2DataId &objectId, U2DbiObjectRank ne
     query->update(1);
 }
 
+U2DbiObjectRank SQLiteObjectDbi::getObjectRank(const U2DataId &objectId, U2OpStatus& os) {
+    SQLiteReadQuery q("SELECT rank FROM Object WHERE id = ?1", db, os);
+    q.bindDataId(1, objectId);
+    return static_cast<U2DbiObjectRank> (q.selectInt32());
+}
+
 void SQLiteObjectDbi::onFolderUpdated(const QString& ) {
     //TODO: update local version of the given folder & global for all parents
 }

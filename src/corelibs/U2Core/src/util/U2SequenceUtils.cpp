@@ -132,6 +132,12 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef& srcSeq, const U2DbiR
         res.length += currentChunkSize;
     }
 
+    U2DbiObjectRank rank = srcCon.dbi->getObjectDbi()->getObjectRank(seq.id, os);
+    CHECK_OP(os, res);
+
+    dstCon.dbi->getObjectDbi()->setObjectRank(res.id, rank, os);
+    CHECK_OP(os, res);
+
     res.trackModType = modType;
     return res;
 }

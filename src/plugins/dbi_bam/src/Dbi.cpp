@@ -552,6 +552,15 @@ void ObjectDbi::setObjectRank(const U2DataId & /*objectId*/, U2DbiObjectRank /*n
     os.setError("Not implemented!");
 }
 
+U2DbiObjectRank ObjectDbi::getObjectRank(const U2DataId & /*objectId*/, U2OpStatus &os) {
+    os.setError("Not implemented!");
+    return U2DbiObjectRank_TopLevel;
+}
+
+void ObjectDbi::setParent(const U2DataId& /*parentId*/, const U2DataId& /*childId*/, U2OpStatus& os){
+    os.setError("Not implemented!");
+}
+
 // AssemblyDbi
 AssemblyDbi::AssemblyDbi(Dbi &dbi, BamReader &reader, DbRef &dbRef, QList<qint64> maxReadLengths):
     U2SimpleAssemblyDbi(&dbi),

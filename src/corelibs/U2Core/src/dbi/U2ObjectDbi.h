@@ -127,6 +127,12 @@ public:
     /** Updates object rank, e.g. a top-level object can be transmuted into a child object */
     virtual void setObjectRank(const U2DataId &objectId, U2DbiObjectRank newRank, U2OpStatus& os) = 0;
 
+    /** Adds a record, representing parent-child relationship between entities, to a DB */
+    virtual void setParent(const U2DataId& parentId, const U2DataId& childId, U2OpStatus& os) = 0;
+
+    /** Returns object rank of the given object */
+    virtual U2DbiObjectRank getObjectRank(const U2DataId &objectId, U2OpStatus& os) = 0;
+
     /** Gets the trackMod value for the object */
     virtual U2TrackModType getTrackModType(const U2DataId& objectId, U2OpStatus& os) = 0;
 
