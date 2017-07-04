@@ -226,10 +226,13 @@ void Notification::showNotification(int x, int y) {
     resize(TT_WIDTH, 0);
 }
 
-void Notification::dissapear() {
+void Notification::switchEmbeddedVisualState() {
     setMinimumHeight(TT_HEIGHT);
     close->show();
     setAttribute(Qt::WA_Hover);
+}
+
+void Notification::dissapear() {
     hide();
     timer.stop();
     emit si_dissapear();
@@ -305,25 +308,35 @@ void NotificationStack::addNotification(Notification *t) {
         }
     }
 
+    bool onScreen = AppContext::getMainWindow()->getQMainWindow()->isActiveWindow();
     notifications.append(t);
-    notificationsOnScreen.append(t);
+    if (onScreen) {
+        notificationsOnScreen.append(t);
+    }
     emit si_changed();
     
     connect(t, SIGNAL(si_delete()), this, SLOT(sl_delete()), Qt::DirectConnection);
-    QPoint pos = getBottomRightOfMainWindow();
-    t->showNotification(pos.x() - TT_WIDTH, pos.y() - 50 - notificationPosition);
-    notificationNumber++;
-    notificationPosition += TT_HEIGHT;
-    connect(t, SIGNAL(si_dissapear()), SLOT(sl_notificationDissapear()));
+    if (onScreen) {
+        QPoint pos = getBottomRightOfMainWindow();
+        t->showNotification(pos.x() - TT_WIDTH, pos.y() - 50 - notificationPosition);
+        notificationNumber++;
+        notificationPosition += TT_HEIGHT;
+        connect(t, SIGNAL(si_dissapear()), SLOT(sl_notificationDissapear()));
+    } else {
+        addToNotificationWidget(t);
+    }
 }
 
 void NotificationStack::sl_notificationDissapear() {
-    notificationNumber--;
-    if(notificationNumber == 0) {
-        notificationPosition = 0;
-    }
-    
+    notificationNumber = qMax(0, notificationNumber - 1);
+    notificationPosition = qMax(0, notificationPosition  - TT_HEIGHT);
+
     Notification *t = qobject_cast<Notification*>(sender());
+    addToNotificationWidget(t);
+}
+
+void NotificationStack::addToNotificationWidget(Notification* t) {
+    t->switchEmbeddedVisualState();
     t->show();
     t->setParent(w);
     w->addNotification(t);

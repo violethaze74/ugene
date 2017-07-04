@@ -63,6 +63,10 @@ public:
     virtual bool eventFilter( QObject * watched, QEvent * event ); 
     void increaseCounter();
 
+    // Switches notification to embedded visual state:
+    // In embedded state notification is shown inside NotificationWidget
+    void switchEmbeddedVisualState();
+
 private slots:
     void sl_timeout();
 
@@ -117,6 +121,9 @@ signals:
 
 private:
     QPoint getBottomRightOfMainWindow();    // because of Mac's strange behavior
+
+    // Adds notification as a child to notification widget
+    void addToNotificationWidget(Notification* n);
 
     NotificationWidget *w;
 
