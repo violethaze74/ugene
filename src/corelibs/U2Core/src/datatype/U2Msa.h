@@ -109,6 +109,7 @@ public:
     qint64          length;
 
     static const char GAP_CHAR;
+    static const char INVALID_CHAR;
 };
 
 }   // namespace U2

@@ -29,6 +29,7 @@
 #include <U2Gui/GUIUtils.h>
 
 #include "McaEditorSequenceArea.h"
+#include "helpers/MaAmbiguousCharactersController.h"
 #include "helpers/ScrollController.h"
 #include "helpers/RowHeightController.h"
 #include "ov_sequence/SequenceObjectContext.h"
@@ -72,6 +73,9 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     scaleBar->slider()->setRange(100, 1000);
     scaleBar->slider()->setTickInterval(100);
     scaleAction = NULL;
+
+    ambiguousCharactersController = new MaAmbiguousCharactersController(ui);
+    addActions(ambiguousCharactersController->getActions());
 
     SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     scaleBar->setValue(r->getScaleBarValue());
@@ -204,6 +208,10 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
 
     t->addAction(ui->getUndoAction());
     t->addAction(ui->getRedoAction());
+
+    t->addSeparator();
+
+    t->addActions(ambiguousCharactersController->getActions());
 }
 
 void McaEditorSequenceArea::sl_addInsertion() {
@@ -248,6 +256,8 @@ void McaEditorSequenceArea::buildMenu(QMenu *m) {
     actions << fillWithGapsinsSymAction << replaceCharacterAction << insertAction;
     editMenu->insertActions(editMenu->isEmpty() ? NULL : editMenu->actions().first(), actions);
     editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
+
+    m->addActions(ambiguousCharactersController->getActions());
 }
 
 void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid) {
@@ -294,6 +304,10 @@ void McaEditorSequenceArea::insertChar(char newCharacter) {
         SAFE_POINT_OP(os, );
 
         exitFromEditCharacterMode();
+}
+
+McaEditorWgt *McaEditorSequenceArea::getMcaEditorWgt() const {
+    return qobject_cast<McaEditorWgt *>(ui);
 }
 
 } // namespace

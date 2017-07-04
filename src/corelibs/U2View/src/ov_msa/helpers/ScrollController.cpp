@@ -122,7 +122,7 @@ void ScrollController::centerRow(int rowNumber, int widgetHeight) {
 
 void ScrollController::centerPoint(const QPoint &maPoint, const QSize &widgetSize) {
     centerBase(maPoint.x(), widgetSize.width());
-    centerRow(maPoint.x(), widgetSize.height());
+    centerRow(maPoint.y(), widgetSize.height());
 }
 
 void ScrollController::setHScrollbarValue(int value) {

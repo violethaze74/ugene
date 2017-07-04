@@ -136,7 +136,7 @@ public:
     inline int getCoreEnd() const;
 
     /** Obsolete. Always returns zero. */
-    qint64 getCoreStart() const;
+    int getCoreStart() const;
 
     /** Obsolete. The length of the row core */
     qint64 getCoreLength() const;

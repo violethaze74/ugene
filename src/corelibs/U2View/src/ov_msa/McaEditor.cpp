@@ -19,38 +19,35 @@
  * MA 02110-1301, USA.
  */
 
-#include "McaEditor.h"
-
-#include "MaConsensusMismatchController.h"
-#include "MaEditorConsensusAreaSettings.h"
-#include "MaEditorFactory.h"
-#include "MaEditorNameList.h"
-#include "McaEditorSequenceArea.h"
-#include "McaEditorReferenceArea.h"
-#include "McaEditorOverviewArea.h"
-#include "MSAEditorConsensusArea.h"
-#include "helpers/McaRowHeightController.h"
-
-#include "ov_sequence/SequenceObjectContext.h"
-
-#include "view_rendering/MaEditorWgt.h"
-#include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
-
 #include <QApplication>
 #include <QToolBar>
-
-#include <U2Core/AppContext.h>
-#include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/DNASequenceObject.h>
-
-#include <U2Gui/GUIUtils.h>
-#include <U2Gui/OptionsPanel.h>
-#include <U2Gui/OPWidgetFactoryRegistry.h>
 
 #include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/U2OpStatusUtils.h>
+
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/OptionsPanel.h>
+#include <U2Gui/OPWidgetFactoryRegistry.h>
+
+#include "MaConsensusMismatchController.h"
+#include "MaEditorConsensusAreaSettings.h"
+#include "MaEditorFactory.h"
+#include "MaEditorNameList.h"
+#include "McaEditor.h"
+#include "McaEditorOverviewArea.h"
+#include "McaEditorReferenceArea.h"
+#include "McaEditorSequenceArea.h"
+#include "MSAEditorConsensusArea.h"
+#include "helpers/McaRowHeightController.h"
+#include "ov_sequence/SequenceObjectContext.h"
+#include "view_rendering/MaEditorWgt.h"
+#include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 namespace U2 {
 

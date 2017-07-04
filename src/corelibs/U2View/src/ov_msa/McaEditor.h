@@ -22,11 +22,10 @@
 #ifndef _U2_MCA_EDITOR_H_
 #define _U2_MCA_EDITOR_H_
 
-#include "MaEditor.h"
-
-#include "view_rendering/MaEditorWgt.h"
-
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
+
+#include "MaEditor.h"
+#include "view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 

@@ -207,6 +207,14 @@ QList<int> MSACollapsibleItemModel::numbersToIndexes(const U2Region &rowNumbers)
     return rowsIndexes;
 }
 
+QList<int> MSACollapsibleItemModel::getDisplayableRowsIndexes() const {
+    QList<int> displayableRowsIndexes;
+    for (int rowNumber = 0; rowNumber < displayableRowsCount(); rowNumber++) {
+        displayableRowsIndexes << mapToRow(rowNumber);
+    }
+    return displayableRowsIndexes;
+}
+
 int MSACollapsibleItemModel::rowToMap(int rowIndex, bool failIfNotVisible) const {
     int invisibleRows = 0;
     for (QVector<MSACollapsableItem>::ConstIterator it = items.constBegin(); it < items.constEnd() && it->row < rowIndex; it++) {

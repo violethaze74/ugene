@@ -225,6 +225,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/GUrlUtils.h \
            src/util/ImportToDatabaseOptions.h \
            src/util/IOAdapterUtils.h \
+           src/util/MaIterator.h \
            src/util/MaModificationInfo.h \
            src/util/McaDbiUtils.h \
            src/util/MsaDbiUtils.h \
@@ -446,6 +447,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/GUrlUtils.cpp \
            src/util/ImportToDatabaseOptions.cpp \
            src/util/IOAdapterUtils.cpp \
+           src/util/MaIterator.cpp \
            src/util/MaModificationInfo.cpp \
            src/util/McaDbiUtils.cpp \
            src/util/McaRowInnerData.cpp \
