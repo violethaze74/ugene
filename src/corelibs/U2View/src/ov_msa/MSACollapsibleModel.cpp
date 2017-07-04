@@ -209,7 +209,7 @@ QList<int> MSACollapsibleItemModel::numbersToIndexes(const U2Region &rowNumbers)
 
 QList<int> MSACollapsibleItemModel::getDisplayableRowsIndexes() const {
     QList<int> displayableRowsIndexes;
-    for (int rowNumber = 0; rowNumber < displayableRowsCount(); rowNumber++) {
+    for (int rowNumber = 0; rowNumber < getDisplayableRowsCount(); rowNumber++) {
         displayableRowsIndexes << mapToRow(rowNumber);
     }
     return displayableRowsIndexes;
