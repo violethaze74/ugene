@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-class MaIterator {
+class U2CORE_EXPORT MaIterator {
 public:
     MaIterator(const MultipleAlignment &ma, NavigationDirection direction, const QList<int> &rowsIndexes = QList<int>());
 
