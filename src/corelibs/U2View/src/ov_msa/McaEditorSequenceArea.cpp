@@ -29,6 +29,7 @@
 #include <U2Gui/GUIUtils.h>
 
 #include "McaEditorSequenceArea.h"
+#include "helpers/ScrollController.h"
 #include "helpers/RowHeightController.h"
 #include "ov_sequence/SequenceObjectContext.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
@@ -131,6 +132,7 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     QPoint newSelectedPoint(selection.x() + dx, nextRowToSelect);
     MaEditorSelection newSelection(newSelectedPoint, selection.width(), selection.height());
     setSelection(newSelection);
+    ui->getScrollController()->scrollToMovedSelection(dx, dy);
 }
 
 void McaEditorSequenceArea::sl_backgroundSelectionChanged() {
