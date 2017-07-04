@@ -1000,7 +1000,7 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
 
 void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
     if (!hasFocus()) {
-        return;
+        setFocus();
     }
 
     int key = e->key();
