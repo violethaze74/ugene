@@ -177,7 +177,8 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
         GT_CHECK(prevWindow != mdiWindow, "Can't close MDI window");
         prevWindow = mdiWindow;
 
-        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
+        MessageBoxDialogFiller *filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
+        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
 
         if (!tabbedView) {
             const QPoint closeButtonPos = GTWidget::getWidgetGlobalTopLeftPoint(os, mdiWindow) + QPoint(10, 5);
@@ -188,6 +189,7 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
         }
         GTGlobals::sleep(100);
         GTThread::waitForMainThread();
+        GTUtilsDialog::removeRunnable(filler);
     }
 #endif
 }
