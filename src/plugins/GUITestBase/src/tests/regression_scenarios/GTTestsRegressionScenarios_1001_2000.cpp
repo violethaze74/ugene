@@ -8372,7 +8372,7 @@ GUI_TEST_CLASS_DEFINITION( test_1897 ) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //3) Selected any region on alignment view using mouse or keyboard
-    GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 40, 4 ), QPoint( 50, 12 ) );
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(40, 4), QPoint(50, 12));
 
     //4) Choose Highlighting/Gaps action from context-menu
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList( ) << "Highlighting"

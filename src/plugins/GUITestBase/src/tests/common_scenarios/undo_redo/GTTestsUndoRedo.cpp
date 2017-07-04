@@ -19,30 +19,33 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTTestsUndoRedo.h"
-#include <drivers/GTMouseDriver.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTWidget.h>
+#include <GTGlobals.h>
 #include <base_dialogs/GTFileDialog.h>
-#include "primitives/GTMenu.h"
-#include "primitives/GTAction.h"
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTMenu.h>
 #include <primitives/GTTreeWidget.h>
-#include "GTGlobals.h"
-#include "system/GTClipboard.h"
 #include <primitives/GTTreeWidget.h>
-#include "utils/GTUtilsDialog.h"
+#include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
+#include <utils/GTUtilsDialog.h>
+
+#include <U2View/MSAEditor.h>
+
+#include "GTTestsUndoRedo.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "primitives/PopupChooser.h"
+#include "runnables/ugene/corelibs/U2Gui/util/RenameSequenceFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/util/RenameSequenceFiller.h"
-#include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
-#include <U2View/MSAEditor.h>
+#include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 
 namespace U2{
 
@@ -464,424 +467,353 @@ GUI_TEST_CLASS_DEFINITION( test_0006_2 )
        "There are unexpected names in nameList" );
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0007){//remove columns with 3 or more gaps
+GUI_TEST_CLASS_DEFINITION(test_0007) {
+    // remove columns with 3 or more gaps
     //Open file
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gap_col.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //save initial state
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString initAln = GTClipboard::text(os);
-    QString expectedChangedAln = "AAGCTTCTTT\nAAGTTACTAA\nTAG---TTAT\nAAGC---TAT\n"
-                                 "TAGTTATTAA\nTAGTTATTAA\nTAGTTATTAA\nAAGCTTT---\n"
-                                 "A--AGAATAA\nAAGCTTTTAA";
+    const QStringList originalMsa = GTUtilsMsaEditor::getWholeData(os);
+    const QStringList expectedChangedMsa = QStringList() << "AAGCTTCTTT"
+                                                         << "AAGTTACTAA"
+                                                         << "TAG---TTAT"
+                                                         << "AAGC---TAT"
+                                                         << "TAGTTATTAA"
+                                                         << "TAGTTATTAA"
+                                                         << "TAGTTATTAA"
+                                                         << "AAGCTTT---"
+                                                         << "A--AGAATAA"
+                                                         << "AAGCTTTTAA";
 
     //fill remove columns of gaps dialog
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "remove_columns_of_gaps",GTGlobals::UseMouse));
-    GTUtilsDialog::waitForDialog(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Number,3));
-    GTMenu::showContextMenu(os,GTUtilsMdi::activeWindow(os));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "remove_columns_of_gaps", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Number, 3));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString changedAln = GTClipboard::text(os);
-    CHECK_SET_ERR(changedAln == expectedChangedAln,"remove gaps option works wrong");
+    const QStringList changedMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(changedMsa == expectedChangedMsa, "remove gaps option works wrong");
 
     //undo
-    QAbstractButton *undo= GTAction::button(os,"msa_action_undo");
-    GTWidget::click(os, undo);
+    GTUtilsMsaEditor::undo(os);
 
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText==initAln, "undo works wrong");
+    const QStringList undoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(undoneMsa == originalMsa, "undo works wrong");
 
     //redo
-    QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
-    GTWidget::click(os, redo);
+    GTUtilsMsaEditor::redo(os);
 
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    clipboardText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText==expectedChangedAln, "redo works wrong");
+    const QStringList redoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(redoneMsa == expectedChangedMsa, "redo works wrong");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0007_1){//remove columns with 15 percents of gaps
+GUI_TEST_CLASS_DEFINITION(test_0007_1) {
+    // remove columns with 15 percents of gaps
     //Open file
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gap_col.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //save initial state
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString initAln = GTClipboard::text(os);
-    QString expectedChangedAln = "AAGCCTTT\nAAGTCTAA\nTAG-TTAT\nAAGC-TAT\nTAGTTTAA\nTAGTTTAA\n"
-                                 "TAGTTTAA\nAAGCT---\nA--AATAA\nAAGCTTAA";
+    const QStringList originalMsa = GTUtilsMsaEditor::getWholeData(os);
+    const QStringList expectedChangedMsa = QStringList() << "AAGCCTTT"
+                                                         << "AAGTCTAA"
+                                                         << "TAG-TTAT"
+                                                         << "AAGC-TAT"
+                                                         << "TAGTTTAA"
+                                                         << "TAGTTTAA"
+                                                         << "TAGTTTAA"
+                                                         << "AAGCT---"
+                                                         << "A--AATAA"
+                                                         << "AAGCTTAA";
 
     //fill remove columns of gaps dialog
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "remove_columns_of_gaps",GTGlobals::UseMouse));
-    GTUtilsDialog::waitForDialog(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Percent,15));
-    GTMenu::showContextMenu(os,GTUtilsMdi::activeWindow(os));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "remove_columns_of_gaps", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Percent, 15));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString changedAln = GTClipboard::text(os);
-    CHECK_SET_ERR(changedAln == expectedChangedAln,"remove gaps option works wrong\n" + changedAln + '\n' + expectedChangedAln);
+    const QStringList changedMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(changedMsa == expectedChangedMsa, "remove gaps option works wrong:\nChenged MSA:\n" + changedMsa.join("\n") + "\nOriginal MSA:\n" + expectedChangedMsa.join("\n"));
 
     //undo
-    QAbstractButton *undo= GTAction::button(os,"msa_action_undo");
-    GTWidget::click(os, undo);
+    GTUtilsMsaEditor::undo(os);
 
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText==initAln, "undo works wrong");
+    const QStringList undoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(undoneMsa == originalMsa, "undo works wrong");
 
     //redo
-    QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
-    GTWidget::click(os, redo);
+    GTUtilsMsaEditor::redo(os);
 
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    clipboardText=GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText==expectedChangedAln, "redo works wrong");
+    const QStringList redoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(redoneMsa == expectedChangedMsa, "redo works wrong");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0007_2){//remove columns of gaps is tested
+GUI_TEST_CLASS_DEFINITION(test_0007_2) {
+    // remove columns of gaps is tested
     //Open file
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gap_col.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //save initial state
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString initAln = GTClipboard::text(os);
-    QString expectedChangedAln = "AAGCTTCTTTTAA\nAAGTTACTAA---\nTAG---TTATTAA\nAAGC---TATTAA\nTAGTTATTAA---\n"
-                                 "TAGTTATTAA---\nTAGTTATTAA---\nAAGCTTT---TAA\nA--AGAATAATTA\nAAGCTTTTAA---";
+    const QStringList originalMsa = GTUtilsMsaEditor::getWholeData(os);
+    const QStringList expectedChangedMsa = QStringList() << "AAGCTTCTTTTAA"
+                                                         << "AAGTTACTAA---"
+                                                         << "TAG---TTATTAA"
+                                                         << "AAGC---TATTAA"
+                                                         << "TAGTTATTAA---"
+                                                         << "TAGTTATTAA---"
+                                                         << "TAGTTATTAA---"
+                                                         << "AAGCTTT---TAA"
+                                                         << "A--AGAATAATTA"
+                                                         << "AAGCTTTTAA---";
 
     //fill remove columns of gaps dialog
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "remove_columns_of_gaps",GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "remove_columns_of_gaps", GTGlobals::UseMouse));
     GTUtilsDialog::waitForDialog(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Column));
-    GTMenu::showContextMenu(os,GTUtilsMdi::activeWindow(os));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString changedAln = GTClipboard::text(os);
-    CHECK_SET_ERR(changedAln == expectedChangedAln,"remove gaps option works wrong\n" + changedAln + '\n' + expectedChangedAln);
+    const QStringList changedMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(changedMsa == expectedChangedMsa, "remove gaps option works wrong:\nChenged MSA:\n" + changedMsa.join("\n") + "\nOriginal MSA:\n" + expectedChangedMsa.join("\n"));
 
     //undo
-    QAbstractButton *undo= GTAction::button(os,"msa_action_undo");
-    GTWidget::click(os, undo);
+    GTUtilsMsaEditor::undo(os);
 
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText==initAln, "undo works wrong");
+    const QStringList undoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(undoneMsa == originalMsa, "undo works wrong");
 
     //redo
-    QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
-    GTWidget::click(os, redo);
+    GTUtilsMsaEditor::redo(os);
 
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    clipboardText=GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText==expectedChangedAln, "redo works wrong\n" + clipboardText);
+    const QStringList redoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(redoneMsa == expectedChangedMsa, "redo works wrong");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0008){//remove all gaps is tested
+GUI_TEST_CLASS_DEFINITION(test_0008) {
+    // remove all gaps is tested
     //Open file
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gap_col.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //save initial state
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString initAln = GTClipboard::text(os);
-    QString expectedChangedAln = "AAGCTTCTTTTAA\nAAGTTACTAA---\nTAGTTATTAA---\nAAGCTATTAA---\nTAGTTATTAA---\n"
-                                 "TAGTTATTAA---\nTAGTTATTAA---\nAAGCTTTTAA---\nAAGAATAATTA--\nAAGCTTTTAA---";
+    const QStringList originalMsa = GTUtilsMsaEditor::getWholeData(os);
+    const QStringList expectedChangedMsa = QStringList() << "AAGCTTCTTTTAA"
+                                                         << "AAGTTACTAA---"
+                                                         << "TAGTTATTAA---"
+                                                         << "AAGCTATTAA---"
+                                                         << "TAGTTATTAA---"
+                                                         << "TAGTTATTAA---"
+                                                         << "TAGTTATTAA---"
+                                                         << "AAGCTTTTAA---"
+                                                         << "AAGAATAATTA--"
+                                                         << "AAGCTTTTAA---";
 
     //fill remove columns of gaps dialog
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "Remove all gaps",GTGlobals::UseMouse));
-    GTMenu::showContextMenu(os,GTUtilsMdi::activeWindow(os));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "Remove all gaps", GTGlobals::UseMouse));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString changedAln = GTClipboard::text(os);
-    CHECK_SET_ERR(changedAln == expectedChangedAln,"remove gaps option works wrong\n" + changedAln + '\n' + expectedChangedAln);
+    const QStringList changedMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(changedMsa == expectedChangedMsa, "remove gaps option works wrong:\nChenged MSA:\n" + changedMsa.join("\n") + "\nOriginal MSA:\n" + expectedChangedMsa.join("\n"));
 
     //undo
-    QAbstractButton *undo= GTAction::button(os,"msa_action_undo");
-    GTWidget::click(os, undo);
+    GTUtilsMsaEditor::undo(os);
 
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText==initAln, "undo works wrong");
+    const QStringList undoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(undoneMsa == originalMsa, "undo works wrong");
 
     //redo
-    QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
-    GTWidget::click(os, redo);
+    GTUtilsMsaEditor::redo(os);
 
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    clipboardText=GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText==expectedChangedAln, "redo works wrong\n" + clipboardText);
+    const QStringList redoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(redoneMsa == expectedChangedMsa, "redo works wrong");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0009){//rename msa is tested
+GUI_TEST_CLASS_DEFINITION(test_0009) {
+    // rename msa is tested
     //Open file
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gap_col.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //rename msa
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Rename"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rename"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "ma2_gap_col"));
     GTMouseDriver::click(Qt::RightButton);
     GTKeyboardDriver::keySequence("some_name");
-    GTKeyboardDriver::keyClick( Qt::Key_Enter);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     //Expected state: msa renamed
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "some_name"));
 
     //undo
-    QAbstractButton *undo= GTAction::button(os,"msa_action_undo");
-    QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
-    GTWidget::click(os, undo);
+    GTUtilsMsaEditor::undo(os);
 
     //Expected state: rename undone
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "ma2_gap_col"));
 
     //redo
-    GTWidget::click(os, redo);
+    GTUtilsMsaEditor::redo(os);
 
     //Expected state: rename redone
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "some_name"));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0010){//MUSCLE aligner undo test
+GUI_TEST_CLASS_DEFINITION(test_0010) {
+    // MUSCLE aligner undo test
     //Open file
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString initAln = GTClipboard::text(os);
-    QString expectedAln("AAG---AATAATTA\n"
-                        "AAG---TCTATTAA\n"
-                        "AAGACTTCTTTTAA\n"
-                        "AAG---TCTTTTAA\n"
-                        "AAG---CCTTTTAA\n"
-                        "AAG---CTTACTAA\n"
-                        "TAG---TTTATTAA\n"
-                        "TAG---CTTATTAA\n"
-                        "TAG---CTTATTAA\n"
-                        "TAG---CTTATTAA");
+    const QStringList originalMsa = GTUtilsMsaEditor::getWholeData(os);
+    const QStringList expectedChangedMsa = QStringList() << "AAG---AATAATTA"
+                                                         << "AAG---TCTATTAA"
+                                                         << "AAGACTTCTTTTAA"
+                                                         << "AAG---TCTTTTAA"
+                                                         << "AAG---CCTTTTAA"
+                                                         << "AAG---CTTACTAA"
+                                                         << "TAG---TTTATTAA"
+                                                         << "TAG---CTTATTAA"
+                                                         << "TAG---CTTATTAA"
+                                                         << "TAG---CTTATTAA";
 
     //Use context {Edit->Align with MUSCLE}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<MSAE_MENU_ALIGN<<"Align with muscle", GTGlobals::UseMouse));
-    GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os,MuscleDialogFiller::Default,false));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, false));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTGlobals::sleep(10000);
-
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString changedAln = GTClipboard::text(os);
-    CHECK_SET_ERR(changedAln==expectedAln, "Unexpected alignment" + changedAln);
-
-    QAbstractButton *undo= GTAction::button(os,"msa_action_undo");
-    QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
-
-    //undo
-    GTWidget::click(os,undo);
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    changedAln = GTClipboard::text(os);
-
-    CHECK_SET_ERR(changedAln==initAln, "Undo works wrong\n" + changedAln);
-
-    //redo
-    GTWidget::click(os,redo);
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    changedAln = GTClipboard::text(os);
-
-    CHECK_SET_ERR(changedAln==expectedAln, "Undo works wrong\n" + changedAln);
-
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0011){//Kalign undo test
-    //Open file
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString initAln = GTClipboard::text(os);
+    const QStringList changedMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(changedMsa == expectedChangedMsa, "Unexpected alignment:\n" + changedMsa.join("\n"));
 
-    QString expectedAln("AAGACTTCTTTTAA\n"
-                        "AAGCTTACT---AA\n"
-                        "TAGTTTATT---AA\n"
-                        "AAGTCTATT---AA\n"
-                        "TAGCTTATT---AA\n"
-                        "TAGCTTATT---AA\n"
-                        "TAGCTTATT---AA\n"
-                        "AAGTCTTTT---AA\n"
-                        "AAGAATAAT---TA\n"
-                        "AAGCCTTTT---AA");
+    //undo
+    GTUtilsMsaEditor::undo(os);
+
+    const QStringList undoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(undoneMsa == originalMsa, "Undo works wrong:\n" + undoneMsa.join("\n"));
+
+    //redo
+    GTUtilsMsaEditor::redo(os);
+
+    const QStringList redoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(redoneMsa == expectedChangedMsa, "Redo works wrong:\n" + redoneMsa.join("\n"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0011) {
+    // Kalign undo test
+    //Open file
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const QStringList originalMsa = GTUtilsMsaEditor::getWholeData(os);
+    const QStringList expectedChangedMsa = QStringList() << "AAGACTTCTTTTAA"
+                                                         << "AAGCTTACT---AA"
+                                                         << "TAGTTTATT---AA"
+                                                         << "AAGTCTATT---AA"
+                                                         << "TAGCTTATT---AA"
+                                                         << "TAGCTTATT---AA"
+                                                         << "TAGCTTATT---AA"
+                                                         << "AAGTCTTTT---AA"
+                                                         << "AAGAATAAT---TA"
+                                                         << "AAGCCTTTT---AA";
 
     //Use context {Edit->Align with Kalign}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<MSAE_MENU_ALIGN<<"align_with_kalign", GTGlobals::UseKey));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseKey));
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(10000);
 
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString changedAln = GTClipboard::text(os);
-    CHECK_SET_ERR(changedAln==expectedAln, "Unexpected alignment" + changedAln);
-
-    QAbstractButton *undo= GTAction::button(os,"msa_action_undo");
-    QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
+    const QStringList changedMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(changedMsa == expectedChangedMsa, "Unexpected alignment:\n" + changedMsa.join("\n"));
 
     //undo
-    GTWidget::click(os,undo);
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(3000);
-    changedAln = GTClipboard::text(os);
+    GTUtilsMsaEditor::undo(os);
 
-    CHECK_SET_ERR(changedAln==initAln, "Undo works wrong\n" + changedAln);
+    const QStringList undoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(undoneMsa == originalMsa, "Undo works wrong:\n" + undoneMsa.join("\n"));
 
     //redo
-    GTWidget::click(os,redo);
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(3000);
-    changedAln = GTClipboard::text(os);
+    GTUtilsMsaEditor::redo(os);
 
-    CHECK_SET_ERR(changedAln==expectedAln, "Undo works wrong\n" + changedAln);
+    const QStringList redoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(redoneMsa == expectedChangedMsa, "Redo works wrong:\n" + redoneMsa.join("\n"));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0011_1){//Kalign undo test
+GUI_TEST_CLASS_DEFINITION(test_0011_1) {
+    //Kalign undo test
     //Open file
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString initAln = GTClipboard::text(os);
-
-    QString expectedAln("AAGACTTCTTTTAA\n"
-                        "AAG-CTTACT--AA\n"
-                        "TAG-TTTATT--AA\n"
-                        "AAG-TCTATT--AA\n"
-                        "TAG-CTTATT--AA\n"
-                        "TAG-CTTATT--AA\n"
-                        "TAG-CTTATT--AA\n"
-                        "AAG-TCTTTT--AA\n"
-                        "AAG-AATAAT--TA\n"
-                        "AAG-CCTTTT--AA");
+    const QStringList originalMsa = GTUtilsMsaEditor::getWholeData(os);
+    const QStringList expectedChangedMsa = QStringList() << "AAGACTTCTTTTAA"
+                                                         << "AAG-CTTACT--AA"
+                                                         << "TAG-TTTATT--AA"
+                                                         << "AAG-TCTATT--AA"
+                                                         << "TAG-CTTATT--AA"
+                                                         << "TAG-CTTATT--AA"
+                                                         << "TAG-CTTATT--AA"
+                                                         << "AAG-TCTTTT--AA"
+                                                         << "AAG-AATAAT--TA"
+                                                         << "AAG-CCTTTT--AA";
 
     //Use context {Edit->Align with Kalign}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<MSAE_MENU_ALIGN<<"align_with_kalign", GTGlobals::UseMouse));
-    GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os,100));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os, 100));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    QString changedAln = GTClipboard::text(os);
-    CHECK_SET_ERR(changedAln==expectedAln, "Unexpected alignment" + changedAln);
-
-    QAbstractButton *undo= GTAction::button(os,"msa_action_undo");
-    QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
+    const QStringList changedMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(changedMsa == expectedChangedMsa, "Unexpected alignment:\n" + changedMsa.join("\n"));
 
     //undo
-    GTWidget::click(os,undo);
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    changedAln = GTClipboard::text(os);
+    GTUtilsMsaEditor::undo(os);
 
-    CHECK_SET_ERR(changedAln==initAln, "Undo works wrong\n" + changedAln);
+    const QStringList undoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(undoneMsa == originalMsa, "Undo works wrong:\n" + undoneMsa.join("\n"));
 
     //redo
-    GTWidget::click(os,redo);
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    changedAln = GTClipboard::text(os);
+    GTUtilsMsaEditor::redo(os);
 
-    CHECK_SET_ERR(changedAln==expectedAln, "Undo works wrong\n" + changedAln);
+    const QStringList redoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(redoneMsa == expectedChangedMsa, "Redo works wrong:\n" + redoneMsa.join("\n"));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0012){//ClustalW aligner undo test
+GUI_TEST_CLASS_DEFINITION(test_0012) {
+    // ClustalW aligner undo test
     //Open file
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString initAln = GTClipboard::text(os);
-
-    QString expectedAln("---AAGACTTCTTTTAA\n"
-                        "---AAGCTT---ACTAA\n"
-                        "---TAGT---TTATTAA\n"
-                        "---AAGTC---TATTAA\n"
-                        "---TAGCTT---ATTAA\n"
-                        "---TAGCTT---ATTAA\n"
-                        "---TAGCTT---ATTAA\n"
-                        "---AAGTCTTT---TAA\n"
-                        "A---AGAAT--AATTA-\n"
-                        "---AAGCCT---TTTAA");
+    const QStringList originalMsa = GTUtilsMsaEditor::getWholeData(os);
+    const QStringList expectedChangedMsa = QStringList() << "---AAGACTTCTTTTAA"
+                                                         << "---AAGCTT---ACTAA"
+                                                         << "---TAGT---TTATTAA"
+                                                         << "---AAGTC---TATTAA"
+                                                         << "---TAGCTT---ATTAA"
+                                                         << "---TAGCTT---ATTAA"
+                                                         << "---TAGCTT---ATTAA"
+                                                         << "---AAGTCTTT---TAA"
+                                                         << "A---AGAAT--AATTA-"
+                                                         << "---AAGCCT---TTTAA";
 
     //Use context {Edit->Align with Kalign}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<MSAE_MENU_ALIGN<<"Align with ClustalW", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with ClustalW", GTGlobals::UseMouse));
     GTUtilsDialog::waitForDialog(os, new ClustalWDialogFiller(os));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(17,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString changedAln = GTClipboard::text(os);
-    CHECK_SET_ERR(changedAln==expectedAln, "Unexpected alignment\n" + changedAln);
-
-    QAbstractButton *undo= GTAction::button(os,"msa_action_undo");
-    QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
+    const QStringList changedMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(changedMsa == expectedChangedMsa, "Unexpected alignment:\n" + changedMsa.join("\n"));
 
     //undo
-    GTWidget::click(os,undo);
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    changedAln = GTClipboard::text(os);
+    GTUtilsMsaEditor::undo(os);
 
-    CHECK_SET_ERR(changedAln==initAln, "Undo works wrong\n" + changedAln);
+    const QStringList undoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(undoneMsa == originalMsa, "Undo works wrong:\n" + undoneMsa.join("\n"));
 
     //redo
-    GTWidget::click(os,redo);
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(17,10));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    changedAln = GTClipboard::text(os);
+    GTUtilsMsaEditor::redo(os);
 
-    CHECK_SET_ERR(changedAln==expectedAln, "Redo works wrong\n" + changedAln);
+    const QStringList redoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(redoneMsa == expectedChangedMsa, "Redo works wrong:\n" + redoneMsa.join("\n"));
 }
 
-}//namespace GUITest_common_scenarios_undo_redo
-
-}//namespace U2
+}   // namespace GUITest_common_scenarios_undo_redo
+}   // namespace U2

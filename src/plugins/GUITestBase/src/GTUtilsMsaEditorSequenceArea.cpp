@@ -199,11 +199,11 @@ void GTUtilsMSAEditorSequenceArea::clickToPosition(HI::GUITestOpStatus &os, cons
     GT_CHECK(msaSeqArea->isInRange(globalMaPosition), "Position is out of range");
 
     scrollToPosition(os, globalMaPosition);
-    const QPoint positionCenter = msaSeqArea->mapToGlobal(QPoint(msaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(globalMaPosition.x()),
-                                                                 msaSeqArea->getEditor()->getUI()->getRowHeightController()->getRowScreenRangeByNumber(globalMaPosition.y()).center()));
+    const QPoint positionCenter(msaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(globalMaPosition.x()),
+                                    msaSeqArea->getEditor()->getUI()->getRowHeightController()->getRowScreenRangeByNumber(globalMaPosition.y()).center());
     GT_CHECK(msaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
 
-    GTMouseDriver::moveTo(positionCenter);
+    GTMouseDriver::moveTo(msaSeqArea->mapToGlobal(positionCenter));
     GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
