@@ -35,10 +35,8 @@ public:
 
 private slots:
     void sl_browseReference();
-    void sl_configureContent();
     void sl_generate();
     void sl_seedStateChanged(int state);
-    void sl_save();
     void sl_enableRefMode();
     void sl_enableBaseMode();
     void sl_enableGCSkewMode();

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>406</width>
+    <width>422</width>
     <height>528</height>
    </rect>
   </property>
@@ -454,15 +454,6 @@
       </item>
      </layout>
      <zorder>referenceButton</zorder>
-     <zorder>baseContentRadioButton</zorder>
-     <zorder>percentTLabel</zorder>
-     <zorder>percentGLabel</zorder>
-     <zorder>percentALabel</zorder>
-     <zorder>percentASpin</zorder>
-     <zorder>percentGSpin</zorder>
-     <zorder>percentCSpin</zorder>
-     <zorder>percentCLabel</zorder>
-     <zorder>percentTSpin</zorder>
      <zorder>percentGCSpin</zorder>
      <zorder>baseContentRadioButton</zorder>
      <zorder>gcSkewRadioButton</zorder>
@@ -551,12 +542,6 @@
     </widget>
    </item>
   </layout>
-  <zorder>paramsBox</zorder>
-  <zorder>contentValuesBox</zorder>
-  <zorder>outputBox</zorder>
-  <zorder>buttonBox</zorder>
-  <zorder>percentGCSpin</zorder>
-  <zorder>horizontalSpacer_2</zorder>
  </widget>
  <resources/>
  <connections/>
