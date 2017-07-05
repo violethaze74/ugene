@@ -59,8 +59,12 @@ QMap<char, qreal> DNASequenceGeneratorDialog::content = initContent();
 
 DNASequenceGeneratorDialog::DNASequenceGeneratorDialog(QWidget* p)
     : QDialog(p),
+      saveController(NULL),
+      generateButton(NULL),
+      cancelButton(NULL),
       percentMap(content),
-      saveController(NULL) {
+      gcSkew(0)
+{
     setupUi(this);
     new HelpButton(this, buttonBox, "19759725");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Generate"));

@@ -1870,26 +1870,25 @@ GUI_TEST_CLASS_DEFINITION( test_2270 ){
     GTUtilsLog::check(os, lt);
 }
 
-GUI_TEST_CLASS_DEFINITION( test_2281 ){
+GUI_TEST_CLASS_DEFINITION(test_2281) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    QTabWidget* tabs = qobject_cast<QTabWidget*>(GTWidget::findWidget(os,"tabs"));
-    CHECK_SET_ERR(tabs!=NULL, "tabs widget not found");
+    QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs"));
+    CHECK_SET_ERR(tabs != NULL, "tabs widget not found");
 
     //2. Click the "samples" bar. The samples hint is shown
-    GTTabWidget::setCurrentIndex(os,tabs,1);
+    GTTabWidget::setCurrentIndex(os, tabs, 1);
     GTGlobals::sleep(500);
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView"));
+    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
 
-    QPixmap pixmap = QPixmap::grabWidget(sceneView, sceneView->rect());
-    QImage img = pixmap.toImage();
+    QImage img = GTWidget::getImage(os, sceneView);
 
+    const QColor yc = QColor(255, 255, 160);
     bool found = false;
-    for(int i=sceneView->rect().left(); i< sceneView->rect().right(); i+=10){
-        for(int j=sceneView->rect().top(); j< sceneView->rect().bottom(); j+=10){
-            QRgb rgb = img.pixel(QPoint(i,j));
-            QColor c(rgb);
-            QColor yc = QColor(255,255,160);
+    for (int i = sceneView->rect().left(); i < sceneView->rect().right(); i += 10) {
+        for (int j = sceneView->rect().top(); j < sceneView->rect().bottom(); j += 10) {
+            const QRgb rgb = img.pixel(QPoint(i,j));
+            const QColor c(rgb);
             if (c == yc){
                 found = true;
                 break;
@@ -1899,19 +1898,17 @@ GUI_TEST_CLASS_DEFINITION( test_2281 ){
     CHECK_SET_ERR(found, "hint not found");
 
     //3. Click the "elements" bar.
-    GTTabWidget::setCurrentIndex(os,tabs,0);
+    GTTabWidget::setCurrentIndex(os, tabs, 0);
     GTGlobals::sleep(500);
 
     //Expected: the samples hint is hidden
-    pixmap = QPixmap::grabWidget(sceneView, sceneView->rect());
-    img = pixmap.toImage();
+    img = GTWidget::getImage(os, sceneView);
     bool notFound = true;
-    for(int i=sceneView->rect().left(); i< sceneView->rect().right(); i+=10){
-        for(int j=sceneView->rect().top(); j< sceneView->rect().bottom(); j+=10){
-            QRgb rgb = img.pixel(QPoint(i,j));
-            QColor c(rgb);
-            QColor yc = QColor(255,255,160);
-            if (c == yc){
+    for (int i = sceneView->rect().left(); i < sceneView->rect().right(); i += 10) {
+        for (int j = sceneView->rect().top(); j < sceneView->rect().bottom(); j += 10) {
+            const QRgb rgb = img.pixel(QPoint(i, j));
+            const QColor c(rgb);
+            if (c == yc) {
                 notFound = false;
                 break;
             }
@@ -1919,7 +1916,6 @@ GUI_TEST_CLASS_DEFINITION( test_2281 ){
     }
 
     CHECK_SET_ERR(notFound, "hint is found");
-    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2292) {
@@ -3541,29 +3537,29 @@ GUI_TEST_CLASS_DEFINITION( test_2519 ) {
     GTGlobals::sleep(5000);
 }
 
-GUI_TEST_CLASS_DEFINITION( test_2538 ){
+GUI_TEST_CLASS_DEFINITION( test_2538 ) {
 //    1. Open file "_common_data/scenarios/tree_view/COI.nwk"
     GTFileDialog::openFile(os, dataDir + "/samples/Newick/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Call context menu on node just near root. Click "Collapse"
-    GTGlobals::sleep(1000);
     GTMouseDriver::moveTo(GTUtilsPhyTree::getGlobalCoord(os, GTUtilsPhyTree::getNodes(os).at(1)));
     GTMouseDriver::click();
     GTGlobals::sleep(1000);
 
-    QWidget* treeView = GTWidget::findWidget(os, "treeView");
+    QWidget *treeView = GTWidget::findWidget(os, "treeView");
 
-    QPixmap pixmap = QPixmap::grabWidget(treeView, treeView->rect());
-    QImage initImg = pixmap.toImage();
+    const QImage initImg = GTWidget::getImage(os, treeView);
 
     GTMouseDriver::doubleClick();
     GTGlobals::sleep(1000);
+
 //    3. Call context menu on node just near root. Click "Expand"
     GTMouseDriver::doubleClick();
     GTGlobals::sleep(1000);
+
 //    Expected state: tree has the same view as at the beginning
-    pixmap = QPixmap::grabWidget(treeView, treeView->rect());
-    QImage finalImg = pixmap.toImage();
+    const QImage finalImg = GTWidget::getImage(os, treeView);
 
     //images have several pixels differ. so sizes are compared
     CHECK_SET_ERR(initImg.size() == finalImg.size(), "different images");

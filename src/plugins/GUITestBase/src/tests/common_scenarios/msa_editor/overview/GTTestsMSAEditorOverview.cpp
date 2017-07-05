@@ -45,31 +45,23 @@ namespace U2 {
 namespace GUITest_common_scenarios_msa_editor_overview {
 using namespace HI;
 
-GUI_TEST_CLASS_DEFINITION(test_0001){
+GUI_TEST_CLASS_DEFINITION(test_0001) {
     //1. Open "_common_data/fasta/empty.fa".
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "empty.fa");
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     //Expected state: msa is empty, overview is pure white.
-    QWidget* simple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    QWidget *simpleOverview = GTWidget::findWidget(os, "msa_overview_area_simple");
 
-    QPixmap pixmap = QPixmap::grabWidget(simple, simple->rect());
-    QImage img = pixmap.toImage();
-    QRgb rgb = img.pixel(simple->rect().center());
-    QColor c(rgb);
+    QColor c = GTWidget::getColor(os, simpleOverview, simpleOverview->rect().center());
+    CHECK_SET_ERR(c.name() == "#ededed", "simple overview has wrong color. Expected: #ededed, Found: " + c.name());
 
-    CHECK_SET_ERR(c.name()=="#ededed","simple overview has wrong color. Expected: #ededed, Found: " + c.name());
-
-    simple = GTWidget::findWidget(os, "msa_overview_area_graph");
-    pixmap = QPixmap::grabWidget(simple, simple->rect());
-    img = pixmap.toImage();
-    rgb = img.pixel(simple->rect().center());
-    c = QColor(rgb);
-
-    CHECK_SET_ERR(c.name()=="#ededed","graph overview has wrong color. Expected: #ededed, Found: " + c.name());
+    QWidget *graphOverview = GTWidget::findWidget(os, "msa_overview_area_graph");
+    c = GTWidget::getColor(os, graphOverview, graphOverview->rect().center());
+    CHECK_SET_ERR(c.name() == "#ededed", "graph overview has wrong color. Expected: #ededed, Found: " + c.name());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002){
@@ -123,15 +115,18 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
     CHECK_SET_ERR(!overview->isVisible(), "overview is visiable");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0005){
+GUI_TEST_CLASS_DEFINITION(test_0005) {
 //    1. Open "_common_data/clustal/COI_na.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "COI na.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
+
 //    Expected state: simple overview is enabled.
-    QWidget* simple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    QWidget *simple = GTWidget::findWidget(os, "msa_overview_area_simple");
     CHECK_SET_ERR(simple->isVisible(), "simple overveiw is not visiable");
+
 //    2. Resize Ugene window to make overview area smaller.
     QMainWindow *window = AppContext::getMainWindow()->getQMainWindow();
     if (window->isMaximized()) {
@@ -139,18 +134,16 @@ GUI_TEST_CLASS_DEFINITION(test_0005){
         GTGlobals::sleep(500);
     }
     GTWidget::resizeWidget(os, window, QSize(550, 550));
+
 //    Expected state: at some moment simple overview is not displayed -
 //    there is a gray area with "MSA is too big for current window size. Simple overview is unavailable." text.
 
     // text can not be checked, check color
-    QPixmap pixmap = QPixmap::grabWidget(simple, simple->rect());
-    QImage img = pixmap.toImage();
-    QRgb rgb = img.pixel(simple->rect().topLeft() + QPoint(5,5));
-    QColor c(rgb);
-    CHECK_SET_ERR(c.name()=="#a0a0a4","simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
+    QColor c = GTWidget::getColor(os, simple, simple->rect().topLeft() + QPoint(5, 5));
+    CHECK_SET_ERR(c.name() == "#a0a0a4", "simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
 
     const int tasksCount = GTUtilsTaskTreeView::getTopLevelTasksCount(os);
-    CHECK_SET_ERR(0 == tasksCount,"An unexpected task is running. Ensure that the overview is not calculating");
+    CHECK_SET_ERR(0 == tasksCount, "An unexpected task is running. Ensure that the overview is not calculating");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006){
@@ -161,11 +154,11 @@ GUI_TEST_CLASS_DEFINITION(test_0006){
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 //    2. Resize main window.
     QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));
+    QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
     QImage imgSimple1 = pixmapSimple1.toImage();
 
     QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    QPixmap pixmapGraph1 = QPixmap::grabWidget(overviewGraph, QRect(QPoint(0,0), QPoint(200,overviewGraph->rect().height())));
+    QPixmap pixmapGraph1 = QPixmap::grabWidget(overviewGraph, QRect(QPoint(0,0), QPoint(200,overviewGraph->rect().height())));       // It should be replaces with GTWidget::getPixmap()
     QImage imgGraph1 = pixmapGraph1.toImage();
 
     QMainWindow* window = AppContext::getMainWindow()->getQMainWindow();
@@ -173,9 +166,9 @@ GUI_TEST_CLASS_DEFINITION(test_0006){
 
     GTGlobals::sleep(1000);
 
-    QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));
+    QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
     QImage imgSimple2 = pixmapSimple2.toImage();
-    QPixmap pixmapGraph2 = QPixmap::grabWidget(overviewGraph, QRect(QPoint(0,0), QPoint(200,overviewGraph->rect().height())));
+    QPixmap pixmapGraph2 = QPixmap::grabWidget(overviewGraph, QRect(QPoint(0,0), QPoint(200,overviewGraph->rect().height())));       // It should be replaces with GTWidget::getPixmap()
     QImage imgGraph2 = pixmapGraph2.toImage();
 
     CHECK_SET_ERR(imgSimple1 != imgSimple2, "simple overview not updated");
@@ -197,10 +190,10 @@ GUI_TEST_CLASS_DEFINITION(test_0007){
 
     for(int i=0; i<12; i++){
         //saving overviews' images
-        QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));
+        QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
         QImage imgSimple1 = pixmapSimple1.toImage();
 
-        QPixmap pixmapGraph1 = QPixmap::grabWidget(overviewGraph, QRect(QPoint(0,0), QPoint(200,overviewGraph->rect().height())));
+        QPixmap pixmapGraph1 = QPixmap::grabWidget(overviewGraph, QRect(QPoint(0,0), QPoint(200,overviewGraph->rect().height())));       // It should be replaces with GTWidget::getPixmap()
         QImage imgGraph1 = pixmapGraph1.toImage();
 
         GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(40,17));
@@ -208,9 +201,9 @@ GUI_TEST_CLASS_DEFINITION(test_0007){
         GTGlobals::sleep(500);
 
         //checking images changed
-        QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));
+        QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
         QImage imgSimple2 = pixmapSimple2.toImage();
-        QPixmap pixmapGraph2 = QPixmap::grabWidget(overviewGraph, QRect(QPoint(0,0), QPoint(200,overviewGraph->rect().height())));
+        QPixmap pixmapGraph2 = QPixmap::grabWidget(overviewGraph, QRect(QPoint(0,0), QPoint(200,overviewGraph->rect().height())));       // It should be replaces with GTWidget::getPixmap()
         QImage imgGraph2 = pixmapGraph2.toImage();
 
         CHECK_SET_ERR(imgSimple1 != imgSimple2, "simple overview not updated");
@@ -218,93 +211,85 @@ GUI_TEST_CLASS_DEFINITION(test_0007){
     }
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0008){
+GUI_TEST_CLASS_DEFINITION(test_0008) {
 //    1. Open "_common_data/clustal/COI_na.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "COI na.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
     //saving overviews' images
-    QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));
+    QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0, 0), QPoint(200, overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
     QImage imgSimple1 = pixmapSimple1.toImage();
 
 //    2. Select some area in msa view and move it with mouse.
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(10,10));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5,5));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(10, 10));
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5, 5));
     GTMouseDriver::press();
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(15,5));
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(15, 5));
 
 //    Expected state: while mouse button is pressed graph overview is blocked. On mouse release overview updating starts.
 //    Simple overview updates simultaneously.
     //checking simple overview image changed
-    QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));
+    QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0, 0), QPoint(200, overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
     QImage imgSimple2 = pixmapSimple2.toImage();
 
     CHECK_SET_ERR(imgSimple1 != imgSimple2, "simple overview not updated");
 
-    QPixmap pixmapGraph = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
-    QImage img = pixmapGraph.toImage();
-
 #ifdef Q_OS_WIN
-    QRgb rgb = img.pixel(QPoint(6,6));
-    QColor c(rgb);
-
-    CHECK_SET_ERR(c.name()=="#a0a0a4","simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
+    const QPoint point(6, 6);
 #else
-    QRgb rgb = img.pixel(overviewGraph->rect().center() - QPoint(0,20));
-    QColor c(rgb);
-
-    CHECK_SET_ERR(c.name()=="#a0a0a4","simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
+    const QPoint point(overviewGraph->rect().center() - QPoint(0, 20));
 #endif
+    const QColor c = GTWidget::getColor(os, overviewGraph, point);
+    CHECK_SET_ERR(c.name()=="#a0a0a4","simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
+
     GTMouseDriver::release();
     GTThread::waitForMainThread();
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0009){
+GUI_TEST_CLASS_DEFINITION(test_0009) {
 //    1. Open "_common_data/clustal/COI_na.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "COI na.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
     //saving overviews' images
-    QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));
+    QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0, 0), QPoint(200, overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
     QImage imgSimple1 = pixmapSimple1.toImage();
 
 //    2. Select one symbol.
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5,5));
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5, 5));
     GTMouseDriver::click();
+
 //    3. Press Delete button and release it after a while.
     GTKeyboardDriver::keyPress(Qt::Key_Delete);
     GTGlobals::sleep(1000);
+
 //    Expected state: while button is pressed graph overview is blocked. Overview updating starts on button release.
 //    Simple overview updates simultaneously.
     //checking simple overview image changed
-    QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));
+    QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0, 0), QPoint(200, overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
     QImage imgSimple2 = pixmapSimple2.toImage();
 
     CHECK_SET_ERR(imgSimple1 != imgSimple2, "simple overview not updated");
 
-    QPixmap pixmapGraph = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
-    QImage img = pixmapGraph.toImage();
-    QRgb rgb = img.pixel(overviewGraph->rect().center() - QPoint(0,20));
-    QColor c(rgb);
-
+    const QColor c = GTWidget::getColor(os, overviewGraph, overviewGraph->rect().center() - QPoint(0, 20));
     CHECK_SET_ERR(c.name()=="#a0a0a4","simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
 
     GTKeyboardDriver::keyRelease(Qt::Key_Delete);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0010){
+GUI_TEST_CLASS_DEFINITION(test_0010) {
 //    1. Open "_common_data/clustal/COI_na.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "COI na.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
@@ -313,101 +298,91 @@ GUI_TEST_CLASS_DEFINITION(test_0010){
     QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
     //saving overviews' images
-    QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));
+    QPixmap pixmapSimple1 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0, 0), QPoint(200, overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
     QImage imgSimple1 = pixmapSimple1.toImage();
 
 //    2. Select one symbol.
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5,5));
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5, 5));
     GTMouseDriver::click();
+
 //    3. Press Delete button and release it after a while.
     GTKeyboardDriver::keyPress(Qt::Key_Space);
     GTGlobals::sleep(1000);
+
 //    Expected state: while button is pressed graph overview is blocked. Overview updating starts on button release.
 //    Simple overview updates simultaneously.
     //checking simple overview image changed
-    QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0,0), QPoint(200,overviewSimple->rect().height())));
+    QPixmap pixmapSimple2 = QPixmap::grabWidget(overviewSimple, QRect(QPoint(0, 0), QPoint(200, overviewSimple->rect().height())));       // It should be replaces with GTWidget::getPixmap()
     QImage imgSimple2 = pixmapSimple2.toImage();
 
     CHECK_SET_ERR(imgSimple1 != imgSimple2, "simple overview not updated");
 
-    QPixmap pixmapGraph = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
-    QImage img = pixmapGraph.toImage();
-    QRgb rgb = img.pixel(overviewGraph->rect().topLeft() + QPoint(5,5));
-    QColor c(rgb);
+    QColor c = GTWidget::getColor(os, overviewGraph, overviewGraph->rect().topLeft() + QPoint(5, 5));
 
     GTKeyboardDriver::keyRelease(Qt::Key_Space);
-#ifdef Q_OS_MAC
-    CHECK_SET_ERR(c.name()=="#a0a0a4","simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
-#else
-    CHECK_SET_ERR(c.name()=="#a0a0a4","simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
-#endif
 
+    CHECK_SET_ERR(c.name() == "#a0a0a4","simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0011){
+GUI_TEST_CLASS_DEFINITION(test_0011) {
 //    1. Open "_common_data/phylip/seq_protein.ph".
-    GTFileDialog::openFile(os, testDir + "_common_data/phylip", "seq_protein.ph");
+    GTFileDialog::openFile(os, testDir + "_common_data/phylip/seq_protein.ph");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    //saving overview image
-    QPixmap pixmapGraph = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
-    QImage img = pixmapGraph.toImage();
-//    2. Go to MSA Overview context menu (right click on msa overview).
 
+    //saving overview image
+    QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    const QImage img = GTWidget::getImage(os, overviewGraph);
+
+//    2. Go to MSA Overview context menu (right click on msa overview).
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Display settings"
-                                                      << "Orientation"
-                                                      << "Top to bottom"));
+                                                                        << "Orientation"
+                                                                        << "Top to bottom"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
+
 //    3. Go to {Display settings... -> Orientation}
 //    4. Change graph orientation.
 //    Expected state: y-axis changes its orientation. No calculation task starts.
-    QPixmap pixmapGraph1 = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
-    QImage img1 = pixmapGraph1.toImage();
+    const QImage img1 = GTWidget::getImage(os, overviewGraph);
     CHECK_SET_ERR(img1 != img, "overview not inverted");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0012){
+GUI_TEST_CLASS_DEFINITION(test_0012) {
 //    1. Open "_common_data/stockholm/5_msa.sto".
-    GTFileDialog::openFile(os, testDir + "_common_data/stockholm", "5_msa.sto");
+    GTFileDialog::openFile(os, testDir + "_common_data/stockholm/5_msa.sto");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Go to MSA Overview context menu (right click on msa overview).
-    GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 255,0,0));
+    GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 255, 0, 0));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Display settings"
-                                                      << "Set color"));
+                                                                        << "Set color"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area_graph"));
 
 //    3. Go to {Display settings -> Color}.
 //    Expected state: color dialog appears.
 //    4. Chenge current color.
 //    Expected state: graph color had changed.
-    QWidget* graph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    QPixmap pixmap = QPixmap::grabWidget(graph, graph->rect());
-    QImage img = pixmap.toImage();
-    QRgb rgb = img.pixel(QPoint(5, graph->rect().height() - 5));
-    QColor c(rgb);
-
-    CHECK_SET_ERR(c.name()=="#eda2a2","simple overview has wrong color. Expected: #eda2a2, Found: " + c.name());
+    QWidget *graph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    const QColor c = GTWidget::getColor(os, graph, QPoint(5, graph->rect().height() - 5));
+    CHECK_SET_ERR(c.name() == "#eda2a2","simple overview has wrong color. Expected: #eda2a2, Found: " + c.name());
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0013){
+GUI_TEST_CLASS_DEFINITION(test_0013) {
 //    1. Open "_common_data/stockholm/5_msa.sto".
-    GTFileDialog::openFile(os, testDir + "_common_data/stockholm", "5_msa.sto");
+    GTFileDialog::openFile(os, testDir + "_common_data/stockholm/5_msa.sto");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Go to MSA Overview context menu (right click on msa overview).
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Display settings"
-                                                      << "Graph type"
-                                                      << "Line graph"));
+                                                                        << "Graph type"
+                                                                        << "Line graph"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area_graph"));
+
 //    3. Go to {Display settings -> Graph type};
 //    4. Change selected type.
 //    Expected state: graph type had changed.
-    QWidget* graph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    QPixmap pixmap = QPixmap::grabWidget(graph, graph->rect());
-    QImage img = pixmap.toImage();
-    QRgb rgb = img.pixel(QPoint(5, graph->rect().height() - 5));
-    QColor c(rgb);
-
-    CHECK_SET_ERR(c.name()=="#ededed","simple overview has wrong color. Expected: #ededed, Found: " + c.name());
+    QWidget *graph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    const QColor c = GTWidget::getColor(os, graph, QPoint(5, graph->rect().height() - 5));
+    CHECK_SET_ERR(c.name() == "#ededed","simple overview has wrong color. Expected: #ededed, Found: " + c.name());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0014){
@@ -431,109 +406,106 @@ GUI_TEST_CLASS_DEFINITION(test_0014){
 //    Expected state: in simple msa overview color scheme was changed.
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0015){
+GUI_TEST_CLASS_DEFINITION(test_0015) {
     //this is 0015 and 0016 scenarios
 //    1. Open "_common_data/CLUSLAL/COI_na.aln"
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "COI na.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Go to MSA overview context menu (right click on MSA Overview).
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Calculation method"
-                                                      << "Gaps"));
+                                                                        << "Gaps"));
     GTMenu::showContextMenu(os, overviewGraph);
+
 //    3. Select {Calculation method -> Strict}.
 //    Expected state: graph displays the percent of the most frequent nucleotide in column.
 //    Current graph corresponds to column over the consensus in sequence area.
-    QPixmap pixmap = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
-    QImage img = pixmap.toImage();
-    QRgb rgb = img.pixel(QPoint(5, overviewGraph->rect().height() - 5));
-    QColor c(rgb);
-
-    CHECK_SET_ERR(c.name()=="#ededed","simple overview has wrong color. Expected: #ededed, Found: " + c.name());
+    QColor c = GTWidget::getColor(os, overviewGraph, QPoint(5, overviewGraph->rect().height() - 5));
+    CHECK_SET_ERR(c.name() == "#ededed", "simple overview has wrong color. Expected: #ededed, Found: " + c.name());
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Calculation method"
-                                                      << "Highlighting"));
+                                                                        << "Highlighting"));
     GTMenu::showContextMenu(os, overviewGraph);
 
     overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    pixmap = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
-    img = pixmap.toImage();
-    rgb = img.pixel(QPoint(5, overviewGraph->rect().height() - 5));
-    c = QColor(rgb);
-
-    CHECK_SET_ERR(c.name()=="#d1d1d2","simple overview has wrong color. Expected: #d1d1d2, Found: " + c.name());
+    c = GTWidget::getColor(os, overviewGraph, QPoint(5, overviewGraph->rect().height() - 5));
+    CHECK_SET_ERR(c.name() == "#d1d1d2", "simple overview has wrong color. Expected: #d1d1d2, Found: " + c.name());
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0017){
+GUI_TEST_CLASS_DEFINITION(test_0017) {
 //    1. Open "_common_data/CLUSLAL/HIV_1.aln"
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "HIV-1.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Go to MSA overview context menu (right click on MSA Overview).
 //    3. Select {Calculation method -> Gaps}.
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Calculation method"
-                                                      << "Gaps"));
+                                                                        << "Gaps"));
     GTMenu::showContextMenu(os, overviewGraph);
+
 //    Expected state: graph overview displays percent of gaps in each culumn.
     //save grahpView
-    QPixmap pixmap = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
-    QImage img = pixmap.toImage();
+    const QImage img = GTWidget::getImage(os, overviewGraph);
+
 //    4. Go to Highlighting tab on Options panel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     GTGlobals::sleep(500);
+
 //    5. Select Highlighting to "Gaps"
-    QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
+    QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
     CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
     GTComboBox::setIndexWithText(os, combo , "Gaps");
+
 //    6. Go to MSA overview context menu (right click on MSA Overview).
 //    7. Select {Calculation method -> Highlighting}.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Calculation method"
-                                                      << "Highlighting"));
+                                                                        << "Highlighting"));
     GTMenu::showContextMenu(os, overviewGraph);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     GTGlobals::sleep(1000);
+
 //    Expected state: graph didn't change.
-
-    QPixmap pixmap1 = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
-    QImage img1 = pixmap1.toImage();
-
-    CHECK_SET_ERR(img==img1, "overview changed");
+    const QImage img1 = GTWidget::getImage(os, overviewGraph);
+    CHECK_SET_ERR(img == img1, "overview changed");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0019){
+GUI_TEST_CLASS_DEFINITION(test_0019) {
     //0019 and 0020 scenarios
 //    1. Open "_common_data/CLUSLAL/HIV_1.aln"
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "HIV-1.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Go to MSA overview context menu (right click on MSA Overview).
-    QWidget* overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
+    QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Calculation method"
-                                                      << "Highlighting"));
+                                                                        << "Highlighting"));
     GTMenu::showContextMenu(os, overviewGraph);
+
 //    3. Select {Calculation method -> Highlighting}.
 //    4. Go to Highlighting tab on Options panel.
     //save grahpView
-    QPixmap pixmap = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
-    QImage img = pixmap.toImage();
+    const QImage img = GTWidget::getImage(os, overviewGraph);
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "sf170");
     GTWidget::click(os, GTWidget::findWidget(os,"addSeq"));
+
 //    5. Change Highlighting.
-    QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
+    QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
     CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
     GTComboBox::setIndexWithText(os, combo , "Agreements");
+
 //    Expected state: graph displays percent of highlighted cells in column.
     //save grahpView
-    QPixmap pixmap1 = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
-    QImage img1 = pixmap1.toImage();
-    CHECK_SET_ERR(img!=img1, "overview not changed");
+    const QImage img1 = GTWidget::getImage(os, overviewGraph);
+    CHECK_SET_ERR(img != img1, "overview not changed");
+
 //    Overview changes after each highlighting change.
     GTComboBox::setIndexWithText(os, combo , "Disagreements");
-    QPixmap pixmap2 = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
-    QImage img2 = pixmap2.toImage();
-    CHECK_SET_ERR(img!=img2, "overview not changed");
-
+    const QImage img2 = GTWidget::getImage(os, overviewGraph);
+    CHECK_SET_ERR(img != img2, "overview not changed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0020){
