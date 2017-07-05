@@ -107,9 +107,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006){
 //    Expected state: project is added to "Resent files" list
 //    Close project
     GTUtilsProject::closeProject(os);
-    GTGlobals::sleep(500);
-    GTWebView::traceAllWebElements(os, GTUtilsStartPage::getStartPage(os));
-    GTGlobals::sleep(500);
 //    Go to Start page
     GTUtilsStartPage::openStartPage(os);
 //    Click project name in "Resent projects" list

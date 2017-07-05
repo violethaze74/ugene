@@ -689,28 +689,27 @@ GUI_TEST_CLASS_DEFINITION(test_0009){
 //Expected state: UGENE not crash
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0010){
+GUI_TEST_CLASS_DEFINITION(test_0010) {
 //PhyTree branch settings
 
 //1. Open file _common_data/scenario/tree_view/COI.nwk
-    GTFileDialog::openFile(os,testDir + "_common_data/scenarios/tree_view/", "COI.nwk");
+    GTFileDialog::openFile(os,testDir + "_common_data/scenarios/tree_view/COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
 //Expected state: phylogenetic tree appears
 
 //2. Open context menu on branch and  select {change settings} menu item
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    QList<QGraphicsItem*> list = treeView->scene()->items();
-    QList<GraphicsButtonItem*> nodeList;
+    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
+    QList<QGraphicsItem *> list = treeView->scene()->items();
+    QList<GraphicsButtonItem *> nodeList;
 
-    foreach(QGraphicsItem* item, list){
-        GraphicsButtonItem* buttonItem = dynamic_cast<GraphicsButtonItem*>(item);
-        if(NULL != buttonItem){
+    foreach (QGraphicsItem *item, list) {
+        GraphicsButtonItem *buttonItem = dynamic_cast<GraphicsButtonItem *>(item);
+        if (NULL != buttonItem){
             nodeList.append(buttonItem);
         }
     }
 
-    QGraphicsItem* node = nodeList.last();
+    QGraphicsItem *node = nodeList.last();
     QPointF sceneCoord = node->mapToScene(node->boundingRect().center());
     QPoint viewCord = treeView->mapFromScene(sceneCoord);
     QPoint globalCoord = treeView->mapToGlobal(viewCord);
@@ -719,21 +718,15 @@ GUI_TEST_CLASS_DEFINITION(test_0010){
 
     //3. Change thickness and collor to differ than standard. Click OK
     //Expected state: selected branch changed
-
     GTUtilsDialog::waitForDialog(os, new BranchSettingsDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Branch Settings"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Branch Settings"));
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();
     GTMouseDriver::click(Qt::RightButton);
 
+    globalCoord.setX(globalCoord.x() - 10);
 
-    globalCoord.setX(globalCoord.x()-10);
-    QPixmap content;
-    content = QPixmap::grabWidget(treeView,treeView->rect());
-
-    QRgb rgb = content.toImage().pixel(treeView->mapFromGlobal(globalCoord));
-    QColor color(rgb);
-
+    const QColor color = GTWidget::getColor(os, treeView, treeView->mapFromGlobal(globalCoord));
     CHECK_SET_ERR(color.name()=="#0000ff","Expected: #0000ff, found: " + color.name());
 }
 
