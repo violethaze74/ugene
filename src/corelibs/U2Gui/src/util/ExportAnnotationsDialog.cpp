@@ -72,6 +72,7 @@ void ExportAnnotationsDialog::initSaveController(const QString &filename) {
     formatConstraints.supportedObjectTypes.insert(GObjectTypes::ANNOTATION_TABLE);
     formatConstraints.addFlagToSupport(DocumentFormatFlag_SupportWriting);
     formatConstraints.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
+    formatConstraints.addFlagToExclude(DocumentFormatFlag_Hidden);
     formatConstraints.formatsToExclude << BaseDocumentFormats::VECTOR_NTI_SEQUENCE;
 
     saveController = new SaveDocumentController(config, formatConstraints, this);

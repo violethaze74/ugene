@@ -127,7 +127,7 @@ void MultipleAlignmentData::setInfo(const QVariantMap &newInfo) {
 }
 
 bool MultipleAlignmentData::isEmpty() const {
-    return getLength() == 0;
+    return getLength() == 0 || rows.isEmpty();
 }
 
 int MultipleAlignmentData::getLength() const {

@@ -32,6 +32,8 @@
 #include <U2Core/MultipleChromatogramAlignment.h>
 #include <U2Core/MultipleChromatogramAlignmentImporter.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/U2AttributeDbi.h>
+#include <U2Core/U2AttributeUtils.h>
 
 #include "BlastReadsSubTask.h"
 #include "ComposeResultSubTask.h"
@@ -91,6 +93,12 @@ void ComposeResultSubTask::prepare() {
 void ComposeResultSubTask::run() {
     referenceSequenceObject = StorageUtils::getSequenceObject(storage, reference);
     CHECK_EXT(NULL != referenceSequenceObject, setError(L10N::nullPointerError("reference sequence object")), );
+
+    DbiConnection con(storage->getDbiRef(), stateInfo);
+    CHECK_OP(stateInfo, );
+
+    con.dbi->getObjectDbi()->setObjectRank(referenceSequenceObject->getEntityRef().entityId, U2DbiObjectRank_Child, stateInfo);
+    CHECK_OP(stateInfo, );
 
     createAlignmentAndAnnotations();
     CHECK_OP(stateInfo, );
@@ -190,6 +198,23 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
 
     mcaObject = MultipleChromatogramAlignmentImporter::createAlignment(stateInfo, storage->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, result);
     CHECK_OP(stateInfo, );
+
+    DbiConnection con(storage->getDbiRef(), stateInfo);
+    CHECK_OP(stateInfo, );
+
+    con.dbi->getObjectDbi()->setParent(mcaObject->getEntityRef().entityId, referenceSequenceObject->getEntityRef().entityId, stateInfo);
+    CHECK_OP(stateInfo, );
+
+    U2ByteArrayAttribute attribute;
+    U2Object obj;
+    obj.dbiId = storage->getDbiRef().dbiId;
+    obj.id = mcaObject->getEntityRef().entityId;
+    obj.version = mcaObject->getModificationVersion();
+    U2AttributeUtils::init(attribute, obj, MultipleChromatogramAlignmentObject::MCAOBJECT_REFERENCE);
+    attribute.value = referenceSequenceObject->getEntityRef().entityId;
+    con.dbi->getAttributeDbi()->createByteArrayAttribute(attribute, stateInfo);
+    CHECK_OP(stateInfo, );
+
     mcaObject->moveToThread(thread());
 
     // remove gap columns

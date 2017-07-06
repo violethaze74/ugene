@@ -126,7 +126,6 @@ typedef QPair<QString, QString> StrStrPair;
 
 namespace U2 {
 
-
 enum TriState {
     TriState_Unknown,
     TriState_Yes,
@@ -136,6 +135,11 @@ enum TriState {
 enum UnloadedObjectFilter { //used as a separate type but not 'bool' to improve readability
     UOF_LoadedAndUnloaded,
     UOF_LoadedOnly
+};
+
+enum NavigationDirection {
+    Forward,
+    Backward
 };
 
 }

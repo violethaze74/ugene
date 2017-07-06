@@ -22,11 +22,10 @@
 #ifndef _U2_MCA_EDITOR_H_
 #define _U2_MCA_EDITOR_H_
 
-#include "MaEditor.h"
-
-#include "view_rendering/MaEditorWgt.h"
-
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
+
+#include "MaEditor.h"
+#include "view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 
@@ -40,8 +39,7 @@ class McaEditor : public MaEditor {
     friend class McaEditorSequenceArea;
 public:
     McaEditor(const QString& viewName,
-              MultipleChromatogramAlignmentObject* obj,
-              U2SequenceObject* ref = NULL);
+              MultipleChromatogramAlignmentObject* obj);
 
     MultipleChromatogramAlignmentObject* getMaObject() const { return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject); }
 
@@ -69,7 +67,8 @@ protected:
 
     QAction*          showChromatogramsAction;
 
-    U2SequenceObject*       referenceObj;
+    QMap<qint64, bool>  chromVisibility;
+
     SequenceObjectContext*  referenceCtx;
 };
 

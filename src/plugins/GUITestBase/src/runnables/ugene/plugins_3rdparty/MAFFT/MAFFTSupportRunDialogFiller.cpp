@@ -19,24 +19,50 @@
  * MA 02110-1301, USA.
  */
 
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTDoubleSpinBox.h>
+#include <primitives/GTLineEdit.h>
+#include <primitives/GTRadioButton.h>
+#include <primitives/GTSpinBox.h>
+#include <primitives/GTWidget.h>
+
 #include <QApplication>
-#include <QGroupBox>
 #include <QComboBox>
+#include <QGroupBox>
 
 #include "MAFFTSupportRunDialogFiller.h"
-#include <primitives/GTWidget.h>
-#include <primitives/GTSpinBox.h>
-#include <primitives/GTDoubleSpinBox.h>
-#include <primitives/GTCheckBox.h>
-#include <primitives/GTLineEdit.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTRadioButton.h>
 
 namespace U2 {
 
-#define GT_CLASS_NAME "GTUtilsDialog::MAFFTSupportRunDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
+MAFFTSupportRunDialogFiller::Parameters::Parameters():
+    ckeckBox_gapOpenCheckBox_checked(0),
+    doubleSpin_gapOpenSpinBox_value(1.53),
+    ckeckBox_gapExtCheckBox_checked(0),
+    doubleSpin_gapExtSpinBox_value(0),
+    ckeckBox_maxNumberIterRefinementCheckBox_checked(0),
+    spin_maxNumberIterRefinementSpinBox_value(0)
+{
 
+}
+
+#define GT_CLASS_NAME "GTUtilsDialog::MAFFTSupportRunDialogFiller"
+
+MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(GUITestOpStatus &os, MAFFTSupportRunDialogFiller::Parameters *parameters)
+    : Filler(os, "MAFFTSupportRunDialog"),
+      parameters(parameters)
+{
+    CHECK_SET_ERR(parameters, "Invalid filler parameters: NULL pointer");
+}
+
+MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(GUITestOpStatus &os, CustomScenario *scenario)
+    : Filler(os, "MAFFTSupportRunDialog", scenario),
+      parameters(NULL)
+{
+
+}
+
+#define GT_METHOD_NAME "commonScenario"
 void MAFFTSupportRunDialogFiller::commonScenario() {
     QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
@@ -70,4 +96,4 @@ void MAFFTSupportRunDialogFiller::commonScenario() {
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-}
+}   // namespace U2

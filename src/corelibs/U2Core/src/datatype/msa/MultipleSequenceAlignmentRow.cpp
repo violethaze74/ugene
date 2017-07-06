@@ -616,7 +616,7 @@ void MultipleSequenceAlignmentRowData::setParentAlignment(MultipleSequenceAlignm
     alignment = msaData;
 }
 
-qint64 MultipleSequenceAlignmentRowData::getCoreStart() const {
+int MultipleSequenceAlignmentRowData::getCoreStart() const {
     return MsaRowUtils::getCoreStart(gaps);
 }
 

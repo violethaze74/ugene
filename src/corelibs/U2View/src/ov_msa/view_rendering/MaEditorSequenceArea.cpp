@@ -151,11 +151,15 @@ int MaEditorSequenceArea::getNumVisibleBases() const {
     return ui->getDrawHelper()->getVisibleBasesCount(width());
 }
 
+int MaEditorSequenceArea::getDisplayableRowsCount() const {
+    return ui->getCollapseModel()->getDisplayableRowsCount();
+}
+
 int MaEditorSequenceArea::getNumDisplayableSequences() const {
     CHECK(!isAlignmentEmpty(), 0);
     MSACollapsibleItemModel *model = ui->getCollapseModel();
     SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
-    return model->displayableRowsCount();
+    return model->getDisplayableRowsCount();
 }
 
 QPair<QString, int> MaEditorSequenceArea::getGappedColumnInfo() const{
@@ -194,7 +198,7 @@ bool MaEditorSequenceArea::isInRange(const QPoint &point) const {
 }
 
 QPoint MaEditorSequenceArea::boundWithVisibleRange(const QPoint &point) const {
-    return QPoint(qBound(0, point.x(), editor->getAlignmentLen() - 1), qBound(0, point.y(), ui->getCollapseModel()->displayableRowsCount() - 1));
+    return QPoint(qBound(0, point.x(), editor->getAlignmentLen() - 1), qBound(0, point.y(), ui->getCollapseModel()->getDisplayableRowsCount() - 1));
 }
 
 bool MaEditorSequenceArea::isVisible(const QPoint& p, bool countClipped) const {
@@ -215,13 +219,15 @@ const MaEditorSelection & MaEditorSequenceArea::getSelection() const {
 }
 
 void MaEditorSequenceArea::updateSelection(const QPoint& newPos) {
-    int width = qAbs(newPos.x() - cursorPos.x()) + 1;
-    int height = qAbs(newPos.y() - cursorPos.y()) + 1;
-    int left = qMin(newPos.x(), cursorPos.x());
-    int top = qMin(newPos.y(), cursorPos.y());
+    const int width = qAbs(newPos.x() - cursorPos.x()) + 1;
+    const int height = qAbs(newPos.y() - cursorPos.y()) + 1;
+    const int left = qMin(newPos.x(), cursorPos.x());
+    const int top = qMin(newPos.y(), cursorPos.y());
+    const QPoint topLeft = boundWithVisibleRange(QPoint(left, top));
+    const QPoint bottomRight = boundWithVisibleRange(QPoint(left + width - 1, top + height - 1));
 
-    MaEditorSelection s(left, top, width, height);
-    if (newPos.x()!=-1 && newPos.y()!=-1) {
+    MaEditorSelection s(topLeft, bottomRight);
+    if (newPos.x() != -1 && newPos.y() != -1) {
         ui->getScrollController()->scrollToPoint(newPos, size());
         setSelection(s);
     }
@@ -260,7 +266,7 @@ void MaEditorSequenceArea::updateSelection() {
             selectionHeight = qMax(selectionHeight, endPos - newStart + collapsibleItem.numRows);
         }
     }
-    if(selectionHeight > 0 && newStart + selectionHeight <= m->displayableRowsCount()) {
+    if(selectionHeight > 0 && newStart + selectionHeight <= m->getDisplayableRowsCount()) {
         MaEditorSelection s(selection.topLeft().x(), newStart, selection.width(), selectionHeight);
         setSelection(s);
     } else {
@@ -279,10 +285,12 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHigh
     MaEditorSelection prevSelection = selection;
     selection = s;
 
-    Q_ASSERT(isInRange(selection.topLeft()));
-    Q_ASSERT(isInRange(selection.bottomRight()));
-    selection = MaEditorSelection(MaEditorSequenceArea::boundWithVisibleRange(selection.topLeft()),
-                                  MaEditorSequenceArea::boundWithVisibleRange(selection.bottomRight()));
+    if (!selection.isEmpty()) {
+        Q_ASSERT(isInRange(selection.topLeft()));
+        Q_ASSERT(isInRange(selection.bottomRight()));
+        selection = MaEditorSelection(MaEditorSequenceArea::boundWithVisibleRange(selection.topLeft()),
+                                      MaEditorSequenceArea::boundWithVisibleRange(selection.bottomRight()));
+    }
 
     int selEndPos = s.x() + s.width() - 1;
     int ofRange = selEndPos - editor->getAlignmentLen();
@@ -334,6 +342,7 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
 
     MaEditorSelection newSelection(newTopLeft, selection.width(), selection.height());
     setSelection(newSelection);
+    ui->getScrollController()->scrollToMovedSelection(dx, dy);
 }
 
 void MaEditorSequenceArea::cancelSelection() {
@@ -510,7 +519,7 @@ bool MaEditorSequenceArea::drawContent(QPainter &painter, const U2Region &region
 }
 
 bool MaEditorSequenceArea::drawContent(QPainter &painter) {
-    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->displayableRowsCount());
+    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->getDisplayableRowsCount());
     return drawContent(painter, areaToDraw);
 }
 
@@ -522,7 +531,7 @@ bool MaEditorSequenceArea::drawContent(QPixmap &pixmap) {
     pixmap = QPixmap(totalAlignmentWidth, totalAlignmentHeight);
     QPainter p(&pixmap);
 
-    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->displayableRowsCount());
+    const QRect areaToDraw = QRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->getDisplayableRowsCount());
     return drawContent(p, areaToDraw, 0, 0);
 }
 
@@ -905,10 +914,10 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
         }
 
         rubberBandOrigin = e->pos();
-        const QPoint p = boundWithVisibleRange(ui->getScrollController()->getMaPointByScreenPoint(e->pos()));
-        if (isInRange(p)) {
-            setCursorPos(p);
+        const QPoint p = ui->getScrollController()->getMaPointByScreenPoint(e->pos());
+        setCursorPos(boundWithVisibleRange(p));
 
+        if (isInRange(p)) {
             const MaEditorSelection &s = getSelection();
             if (s.getRect().contains(cursorPos) && !isAlignmentLocked() && editingEnabled) {
                 shifting = true;
@@ -943,7 +952,7 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
         editor->getMaObject()->releaseState();
     }
 
-    QPoint newCurPos = boundWithVisibleRange(ui->getScrollController()->getMaPointByScreenPoint(e->pos()));
+    QPoint newCurPos = ui->getScrollController()->getMaPointByScreenPoint(e->pos());
 
     if (shifting) {
         emit si_stopMaChanging(maVersionBeforeShifting != editor->getMaObject()->getModificationVersion());
@@ -994,7 +1003,7 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
 
 void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
     if (!hasFocus()) {
-        return;
+        setFocus();
     }
 
     int key = e->key();
@@ -1112,7 +1121,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 moveSelection(0, 1);
                 break;
             }
-            if (selectionEnd.y() >= (ui->getCollapseModel()->displayableRowsCount() - 1)) {
+            if (selectionEnd.y() >= (ui->getCollapseModel()->getDisplayableRowsCount() - 1)) {
                 break;
             }
             selectionEnd.setY(selectionEnd.y() + 1);
@@ -1248,18 +1257,8 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     adjustReferenceLength(os);
     CHECK_OP(os,);
     moveSelection(removedRegionWidth, 0, true);
-
-    const U2Region fullyVisibleXRegion = ui->getDrawHelper()->getVisibleBases(width(), false, false);
-    const U2Region selectionXRegion = selection.getXRegion();
-    const bool selectionFitsVisibleArea = (selection.width() <= static_cast<int>(fullyVisibleXRegion.length));
-    const bool selectionIsFullyVisible = fullyVisibleXRegion.contains(selectionXRegion);
-    if (selectionIsFullyVisible ) {
-        // there is no need to scroll
-        return;
-    } else if (selectionFitsVisibleArea) {
-        ui->getScrollController()->scrollToBase(static_cast<int>(selectionXRegion.endPos() - 1), width());
-    } else {
-        ui->getScrollController()->setFirstVisibleBase(static_cast<int>(selectionXRegion.startPos));
+    if (!getSelection().isEmpty()) {
+        ui->getScrollController()->scrollToMovedSelection(ScrollController::Right);
     }
 }
 

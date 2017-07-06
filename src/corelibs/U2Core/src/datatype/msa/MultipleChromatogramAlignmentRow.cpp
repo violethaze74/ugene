@@ -712,7 +712,7 @@ void MultipleChromatogramAlignmentRowData::setParentAlignment(MultipleChromatogr
     alignment = mcaData;
 }
 
-qint64 MultipleChromatogramAlignmentRowData::getCoreStart() const {
+int MultipleChromatogramAlignmentRowData::getCoreStart() const {
     return MsaRowUtils::getCoreStart(gaps);
 }
 

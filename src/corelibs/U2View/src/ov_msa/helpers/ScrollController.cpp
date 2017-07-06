@@ -22,6 +22,7 @@
 #include <U2Core/MultipleAlignmentObject.h>
 
 #include "BaseWidthController.h"
+#include "DrawHelper.h"
 #include "RowHeightController.h"
 #include "ScrollController.h"
 #include "ov_msa/MaEditor.h"
@@ -121,7 +122,7 @@ void ScrollController::centerRow(int rowNumber, int widgetHeight) {
 
 void ScrollController::centerPoint(const QPoint &maPoint, const QSize &widgetSize) {
     centerBase(maPoint.x(), widgetSize.width());
-    centerRow(maPoint.x(), widgetSize.height());
+    centerRow(maPoint.y(), widgetSize.height());
 }
 
 void ScrollController::setHScrollbarValue(int value) {
@@ -228,8 +229,71 @@ void ScrollController::scrollToEnd(ScrollController::Direction direction) {
         hScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
         break;
     default:
-        FAIL("An unknown direction" ,);
+        FAIL("An unknown direction", );
         break;
+    }
+}
+
+void ScrollController::scrollToMovedSelection(int deltaX, int deltaY) {
+    const Direction direction = (deltaX != 0 ? (deltaX < 0 ? ScrollController::Left : ScrollController::Right)
+                                             : (deltaY != 0 ? (deltaY < 0 ? ScrollController::Up
+                                                                          : ScrollController::Down)
+                                                            : ScrollController::None));
+    scrollToMovedSelection(direction);
+}
+
+void ScrollController::scrollToMovedSelection(ScrollController::Direction direction) {
+    U2Region fullyVisibleRegion;
+    U2Region selectionRegion;
+    const MaEditorSelection selection = ui->getSequenceArea()->getSelection();
+    int selectionEdgePosition = 0;
+    const QSize widgetWize = ui->getSequenceArea()->size();
+
+    switch (direction) {
+    case Up:
+        fullyVisibleRegion = ui->getDrawHelper()->getVisibleRowsNumbers(widgetWize.height(), false, false);
+        selectionRegion = selection.getYRegion();
+        selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
+        break;
+    case Down:
+        fullyVisibleRegion = ui->getDrawHelper()->getVisibleRowsNumbers(widgetWize.height(), false, false);
+        selectionRegion = selection.getYRegion();
+        selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
+        break;
+    case Left:
+        fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetWize.width(), false, false);
+        selectionRegion = selection.getXRegion();
+        selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
+        break;
+    case Right:
+        fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetWize.width(), false, false);
+        selectionRegion = selection.getXRegion();
+        selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
+        break;
+    case None:
+        return;
+    default:
+        FAIL("An unknown direction", );
+        break;
+    }
+
+    const bool selectionEdgeIsFullyVisible = fullyVisibleRegion.contains(selectionEdgePosition);
+    if (!selectionEdgeIsFullyVisible) {
+        switch (direction) {
+        case Up:
+        case Down:
+            scrollToRowByNumber(static_cast<int>(selectionEdgePosition), widgetWize.height());
+            break;
+        case Left:
+        case Right:
+            scrollToBase(static_cast<int>(selectionEdgePosition), widgetWize.width());
+            break;
+        case None:
+            return;
+        default:
+            FAIL("An unknown direction", );
+            break;
+        }
     }
 }
 
@@ -240,7 +304,7 @@ int ScrollController::getFirstVisibleBase(bool countClipped) const {
 
 int ScrollController::getLastVisibleBase(int widgetWidth, bool countClipped) const {
     const bool removeClippedBase = !countClipped && ((hScrollBar->value() + widgetWidth) % maEditor->getColumnWidth() != 0);
-    const int lastVisiblebase = ui->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value() + widgetWidth) - (removeClippedBase ? 1 : 0);
+    const int lastVisiblebase = ui->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value() + widgetWidth - 1) - (removeClippedBase ? 1 : 0);
     return qMin(lastVisiblebase, maEditor->getAlignmentLen() - 1);
 }
 
@@ -260,7 +324,7 @@ int ScrollController::getLastVisibleRowIndex(int widgetHeight, bool countClipped
 int ScrollController::getLastVisibleRowNumber(int widgetHeight, bool countClipped) const {
     int lastVisibleRowNumber = ui->getRowHeightController()->globalYPositionToRowNumber(vScrollBar->value() + widgetHeight);
     if (lastVisibleRowNumber < 0) {
-        lastVisibleRowNumber = collapsibleModel->displayableRowsCount() - 1;
+        lastVisibleRowNumber = collapsibleModel->getDisplayableRowsCount() - 1;
     }
     const U2Region lastRowScreenRegion = ui->getRowHeightController()->getRowScreenRangeByNumber(lastVisibleRowNumber);
     const bool removeClippedRow = !countClipped && lastRowScreenRegion.endPos() > widgetHeight;
@@ -271,7 +335,7 @@ QPoint ScrollController::getMaPointByScreenPoint(const QPoint &point) const {
     const int columnNumber = ui->getBaseWidthController()->screenXPositionToColumn(point.x());
     int rowNumber = ui->getRowHeightController()->screenYPositionToRowNumber(point.y());
     if (-1 == rowNumber) {
-        rowNumber = ui->getCollapseModel()->displayableRowsCount() - 1;
+        rowNumber = ui->getCollapseModel()->getDisplayableRowsCount();
     }
     return QPoint(columnNumber, rowNumber);
 }
@@ -350,7 +414,7 @@ void ScrollController::updateVerticalScrollBarPrivate() {
     vScrollBar->setSingleStep(ui->getRowHeightController()->getSequenceHeight());
     vScrollBar->setPageStep(sequenceAreaHeight);
 
-    const int numVisibleSequences = getLastVisibleRowNumber(sequenceAreaHeight) - getFirstVisibleRowNumber();
+    const int numVisibleSequences = getLastVisibleRowNumber(sequenceAreaHeight) - getFirstVisibleRowNumber() + 1;
     SAFE_POINT(numVisibleSequences <= totalDisplayableSequences, "Vertical scrollbar appears unexpectedly: numVisibleSequences is too small", );
     vScrollBar->setVisible(numVisibleSequences < totalDisplayableSequences);
 }

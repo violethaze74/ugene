@@ -211,6 +211,7 @@ void MaConsensusAreaRenderer::drawConsensus(QPainter &painter, const ConsensusRe
         charData.column = static_cast<int>(consensusRenderData.region.startPos + i);
         charData.consensusChar = consensusRenderData.data[i];
         if (MSAConsensusAlgorithm::INVALID_CONS_CHAR == charData.consensusChar) {
+            charData.xRange.startPos += settings.columnWidth;
             continue;
         }
         charData.isMismatch = consensusRenderData.mismatches[i];

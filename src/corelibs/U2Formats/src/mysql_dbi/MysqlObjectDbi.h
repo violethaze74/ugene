@@ -100,6 +100,9 @@ public:
         */
     virtual qint64 getFolderGlobalVersion(const QString& folder, U2OpStatus& os);
 
+    /** Returns object rank of the given object */
+    virtual U2DbiObjectRank getObjectRank(const U2DataId &objectId, U2OpStatus& os);
+
     // Write methods for objects
 
     /**

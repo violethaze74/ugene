@@ -123,6 +123,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/shared_db/ImportToDatabaseDialog.h \
            src/util/shared_db/ItemToImportEditDialog.h \
            src/util/shared_db/SharedConnectionsDialog.h
+
 FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/AuthenticationDialog.ui \
          src/util/AuthenticationWidget.ui \
@@ -155,6 +156,7 @@ FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/shared_db/ImportToDatabaseDialog.ui \
          src/util/shared_db/ItemToImportEditDialog.ui \
          src/util/shared_db/SharedConnectionsDialog.ui
+
 SOURCES += src/MainWindow.cpp \
            src/Notification.cpp \
            src/NotificationWidget.cpp \

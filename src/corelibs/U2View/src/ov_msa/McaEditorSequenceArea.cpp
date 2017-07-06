@@ -29,6 +29,8 @@
 #include <U2Gui/GUIUtils.h>
 
 #include "McaEditorSequenceArea.h"
+#include "helpers/MaAmbiguousCharactersController.h"
+#include "helpers/ScrollController.h"
 #include "helpers/RowHeightController.h"
 #include "ov_sequence/SequenceObjectContext.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
@@ -71,6 +73,9 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     scaleBar->slider()->setRange(100, 1000);
     scaleBar->slider()->setTickInterval(100);
     scaleAction = NULL;
+
+    ambiguousCharactersController = new MaAmbiguousCharactersController(ui);
+    addActions(ambiguousCharactersController->getActions());
 
     SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     scaleBar->setValue(r->getScaleBarValue());
@@ -119,7 +124,7 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     int nextRowToSelect = selection.y() + dy;
     if (dy != 0) {
         bool noRowAvailabe = true;
-        for ( ; nextRowToSelect >= 0 && nextRowToSelect < ui->getCollapseModel()->displayableRowsCount(); nextRowToSelect += dy) {
+        for ( ; nextRowToSelect >= 0 && nextRowToSelect < ui->getCollapseModel()->getDisplayableRowsCount(); nextRowToSelect += dy) {
             if (!mca->isTrailingOrLeadingGap(ui->getCollapseModel()->mapToRow(nextRowToSelect), selection.x() + dx)) {
                 noRowAvailabe  = false;
                 break;
@@ -131,6 +136,7 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     QPoint newSelectedPoint(selection.x() + dx, nextRowToSelect);
     MaEditorSelection newSelection(newSelectedPoint, selection.width(), selection.height());
     setSelection(newSelection);
+    ui->getScrollController()->scrollToMovedSelection(dx, dy);
 }
 
 void McaEditorSequenceArea::sl_backgroundSelectionChanged() {
@@ -202,6 +208,10 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
 
     t->addAction(ui->getUndoAction());
     t->addAction(ui->getRedoAction());
+
+    t->addSeparator();
+
+    t->addActions(ambiguousCharactersController->getActions());
 }
 
 void McaEditorSequenceArea::sl_addInsertion() {
@@ -246,6 +256,8 @@ void McaEditorSequenceArea::buildMenu(QMenu *m) {
     actions << fillWithGapsinsSymAction << replaceCharacterAction << insertAction;
     editMenu->insertActions(editMenu->isEmpty() ? NULL : editMenu->actions().first(), actions);
     editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
+
+    m->addActions(ambiguousCharactersController->getActions());
 }
 
 void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid) {
@@ -286,12 +298,16 @@ void McaEditorSequenceArea::insertChar(char newCharacter) {
         maObj->insertCharacter(selection.y(), selection.x(), newCharacter);
 
         // insert char into the reference
-        U2SequenceObject* ref = getEditor()->referenceObj;
+        U2SequenceObject* ref = getEditor()->getMaObject()->getReferenceObj();
         U2Region region = U2Region(selection.x(), 0);
         ref->replaceRegion(maObj->getEntityRef().entityId, region, DNASequence(QByteArray(1, U2Msa::GAP_CHAR)), os);
         SAFE_POINT_OP(os, );
 
         exitFromEditCharacterMode();
+}
+
+McaEditorWgt *McaEditorSequenceArea::getMcaEditorWgt() const {
+    return qobject_cast<McaEditorWgt *>(ui);
 }
 
 } // namespace

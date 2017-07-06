@@ -49,7 +49,10 @@ BAMFormat::BAMFormat()
     DocumentFormatFlags(DocumentFormatFlag_NoPack) | DocumentFormatFlag_NoFullMemoryLoad
     | DocumentFormatFlag_Hidden | DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed)
 {
-
+    // DbiDocumentFormat adds a set of object types that are supported by DBI but have no relation to BAM.
+    // Reset these formats and add BAM related object types only.
+    supportedObjectTypes.clear();
+    supportedObjectTypes += GObjectTypes::ASSEMBLY;
 }
 
 void BAMFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {

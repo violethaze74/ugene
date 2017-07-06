@@ -51,6 +51,7 @@
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
 
@@ -685,27 +686,28 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
 
     QWidget *hSeqScroll = GTWidget::findWidget(os, "horizontal_sequence_scroll");
     CHECK_SET_ERR(hSeqScroll != NULL, "No scroll bar at the bottom of sequence area");
-    CHECK_SET_ERR(hSeqScroll->isVisible(), "Scroll bat at the bottom of sequence area is invisible");
+    CHECK_SET_ERR(hSeqScroll->isVisible(), "Scroll bar at the bottom of sequence area is invisible");
 
     QWidget *vSeqScroll = GTWidget::findWidget(os, "vertical_sequence_scroll");
+
     CHECK_SET_ERR(vSeqScroll != NULL, "No scroll bar at the bottom of sequence area");
-    CHECK_SET_ERR(!vSeqScroll->isVisible(), "Scroll bat at the rigth side of sequence area is visible");
+    CHECK_SET_ERR(!vSeqScroll->isVisible(), "Scroll bar at the rigth side of sequence area is visible");
 
     QWidget* hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll");
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area");
     CHECK_SET_ERR(!hNameScroll->isVisible(), "Scroll bar at the botton of name list area is visible");
 
-    QSplitter* splitter = qobject_cast<QSplitter*>(GTWidget::findWidget(os, "msa_editor_horizontal_splitter"));
+    QSplitter* splitter = qobject_cast<QSplitter *>(GTWidget::findWidget(os, "msa_editor_horizontal_splitter"));
     CHECK_SET_ERR(splitter != NULL, "MSA Splitter not found");
-    QSplitterHandle* handle = splitter->handle(1);
+    QSplitterHandle *handle = splitter->handle(1);
     CHECK_SET_ERR(handle != NULL, "MSA Splitter handle is NULL");
 
-    QWidget* nameList = GTWidget::findWidget(os, "msa_editor_name_list");
+    QWidget *nameList = GTWidget::findWidget(os, "msa_editor_name_list");
     CHECK_SET_ERR(nameList != NULL, "MSA Editor name list not found");
 
     GTWidget::click(os, handle);
     QPoint p = GTMouseDriver::getMousePosition();
-    p.setX( p.x() - 2*nameList->width()/3);
+    p.setX(p.x() - 2 * nameList->width() / 3);
     GTMouseDriver::press();
     GTMouseDriver::moveTo(p);
     GTMouseDriver::release();
@@ -714,9 +716,7 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
 
     CHECK_SET_ERR(hNameScroll->isVisible(), "Scroll bar at the botton of name list area is invisible");
 
-
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/fungal - all.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll");
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area");
@@ -1330,7 +1330,7 @@ GUI_TEST_CLASS_DEFINITION(test_4124) {
     QFile::remove(sandBoxDir+"out.ugenedb");
     GTGlobals::sleep();
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, new Scenario_test_4124()));
-    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
@@ -4462,51 +4462,53 @@ GUI_TEST_CLASS_DEFINITION(test_4735) {
 
 GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     //1. Open "COI.aln"
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Add some gaps
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(5, 5));
-    GTKeyboardDriver::keyClick( ' ');
+    GTKeyboardDriver::keyClick(' ');
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(5, 6));
-    GTKeyboardDriver::keyClick( ' ');
-    GTKeyboardDriver::keyClick( ' ');
-    GTKeyboardDriver::keyClick( ' ');
+    GTKeyboardDriver::keyClick(' ');
+    GTKeyboardDriver::keyClick(' ');
+    GTKeyboardDriver::keyClick(' ');
 
     //3. Select region with edited sequences, one of sequences should starts with gap
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5,5), QPoint(16, 9));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
 
     //4. Copy this subalignment
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy formatted"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(500);
 
-    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor* editor = mw->findChild<MSAEditor*>();
+    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
+    MSAEditor *editor = mw->findChild<MSAEditor *>();
     QWidget *nameListWidget = editor->getUI()->getEditorNameList();
 
     //5. Open conext menu by right clicking "Name list area". Paste this subaliment throu context menu {Copy/Paste->Paste}
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Paste"));
     GTWidget::click(os, nameListWidget, Qt::RightButton);
-    GTGlobals::sleep();
+    GTGlobals::sleep(500);
 
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).size() == 23, "Number of sequences should be 26");
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 18), QPoint(11, 27));
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).size() == 23, "Number of sequences should be 23");
+
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 18), QPoint(11, 27), GTGlobals::UseMouse);
+
+    QString expectedClipboard = "-CTACTAATTCG\n---TTATTAATT\nTTGCTAATTCGA\nTTATTAATCCGG\nCTATTAATTCGA";
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy selection"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(500);
 
-    //Expected state subalignment pasted correctly
-    QString expectedClipboard = "-CTACTAATTCG\n---TTATTAATT\nTTGCTAATTCGA\nTTATTAATCCGG\nCTATTAATTCGA";
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     QString clipboardText = GTClipboard::text(os);
-    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 
-    GTGlobals::sleep(11000);
+    //Expected state subalignment pasted correctly
+    GTKeyboardUtils::copy(os);
+    GTGlobals::sleep(200);
+    clipboardText = GTClipboard::text(os);
+    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4764_2) {
@@ -5252,7 +5254,7 @@ GUI_TEST_CLASS_DEFINITION(test_4885_2) {
 
 //    3. Doubleclick the first symbol of the first sequence.
 //    Expected state: UGENE doesn't ask about confirmation of the modification.
-    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new MessageBoxDialogFiller(os, QMessageBox::Cancel, "The alignment has been modified"));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, QMessageBox::Cancel, "The alignment has been modified"));
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
     GTMouseDriver::doubleClick();

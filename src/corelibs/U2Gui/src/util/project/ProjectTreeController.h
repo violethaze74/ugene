@@ -135,6 +135,9 @@ private:
     void updateLoadDocumentActions();
     QModelIndex getIndexForDoc(Document *doc) const;
     QModelIndex getOriginalModelIndex(const QModelIndex &index) const;
+    
+    // auto expands/collapses document node based on loaded state & current documents count in project
+    void handleAutoExpand(Document* doc);
 
     // after folders or objects has been removed from Project View,
     // they can still present in the database during the next merge procedure (due to their large sizes).

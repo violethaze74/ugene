@@ -19,53 +19,50 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_CONSENSUS_MISMATCH_CONTROLLER_H_
-#define _U2_MA_CONSENSUS_MISMATCH_CONTROLLER_H_
+#ifndef _U2_MA_AMBIGUOUS_CHARACTERS_CONTROLLER_H_
+#define _U2_MA_AMBIGUOUS_CHARACTERS_CONTROLLER_H_
 
-#include "MSAEditorConsensusCache.h"
-
-#include <QBitArray>
 #include <QObject>
+
+#include <U2Core/global.h>
+#include <U2Core/MaIterator.h>
 
 class QAction;
 
 namespace U2 {
 
 class MaEditor;
+class MaEditorWgt;
 
-class MaConsensusMismatchController : public QObject {
+class MaAmbiguousCharactersController : public QObject {
     Q_OBJECT
 public:
-    MaConsensusMismatchController(QObject* p,
-                                  const QSharedPointer<MSAEditorConsensusCache>& consCache,
-                                  MaEditor* editor);
-    bool isMismatch(int pos) const;
+    MaAmbiguousCharactersController(MaEditorWgt *maEditorWgt);
 
-    QAction* getNextAction() const { return nextMismatch; }
-    QAction* getPrevAction() const { return prevMismatch; }
-
-signals:
-    void si_selectMismatch(int pos);
+    QList<QAction *> getActions() const;
 
 private slots:
-    void sl_updateItem(int pos, char c);
-    void sl_resize(int newSize);
-
     void sl_next();
-    void sl_prev();
+    void sl_previous();
+    void sl_resetCachedIterator();
 
 private:
-    void selectNextMismatch(NavigationDirection direction);
+    QPoint getStartPosition() const;
+    void scrollToNextAmbiguous(NavigationDirection direction) const;
+    QPoint findNextAmbiguous(NavigationDirection direction) const;
+    void prepareIterator(NavigationDirection direction, const QPoint &startPosition) const;
 
-private:
-    QBitArray mismatchCache;
-    QSharedPointer<MSAEditorConsensusCache> consCache;
-    MaEditor* editor;
+    MaEditor *maEditor;
+    MaEditorWgt *maEditorWgt;
 
-    QAction* nextMismatch;
-    QAction* prevMismatch;
+    QAction *nextAction;
+    QAction *previousAction;
+
+    mutable QScopedPointer<MaIterator> cachedIterator;
+
+    static const QPoint INVALID_POINT;
 };
 
-} // namespace U2
+}   // namespace U2
 
-#endif // _U2_MA_CONSENSUS_MISMATCH_CONTROLLER_H_
+#endif // _U2_MA_AMBIGUOUS_CHARACTERS_CONTROLLER_H_

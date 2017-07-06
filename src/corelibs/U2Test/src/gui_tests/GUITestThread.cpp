@@ -60,17 +60,17 @@ void GUITestThread::run() {
 
     clearSandbox();
 
-    QTimer* timer = new QTimer(this);
-    timer->connect(timer, SIGNAL(timeout()), this, SLOT(sl_getMemory()));
-    timer->start(1000);
+    QTimer timer;
+    connect(&timer, SIGNAL(timeout()), this, SLOT(sl_getMemory()), Qt::DirectConnection);
+    timer.start(1000);
 
     const QString error = launchTest(tests);
 
-    if(needCleanup){
+    if (needCleanup) {
         cleanup();
     }
 
-    timer->stop();
+    timer.stop();
 
     saveMemoryInfo();
 

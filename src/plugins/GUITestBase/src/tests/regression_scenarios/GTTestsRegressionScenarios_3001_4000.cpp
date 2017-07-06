@@ -1160,15 +1160,12 @@ GUI_TEST_CLASS_DEFINITION(test_3170) {
 
 GUI_TEST_CLASS_DEFINITION(test_3175) {
     // 1. Open "_common_data/scenarios/msa/ma.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(200);
+
     // Expected: the first sequence is "TAAGACTTCTAA".
-    GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 0, 0 ), QPoint( 12, 0 ) );
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
-    GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::text( os );
-    CHECK_SET_ERR( "TAAGACTTCTAA" == selectionContent, "MSA changing is failed" );
+    const QString firstSequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
+    CHECK_SET_ERR("TAAGACTTCTAA" == firstSequence, "MSA changing is failed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3180) {
@@ -4528,7 +4525,7 @@ GUI_TEST_CLASS_DEFINITION(test_3697){
     GTUtilsDialog::waitForDialog(os, new EditConnectionDialogFiller(os, params2, EditConnectionDialogFiller::MANUAL));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Connect to UGENE shared database...");
 
-    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new MessageBoxDialogFiller(os, "Ok"));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, "Ok"));
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addElement(os, "Read Alignment");
     GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
@@ -4654,7 +4651,7 @@ GUI_TEST_CLASS_DEFINITION(test_3724) {
 //    4. Click right mouse button on the view.
 //    Expected state: nothing happens.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new PopupChecker(os, QStringList()));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new PopupChecker(os, QStringList()));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 }
