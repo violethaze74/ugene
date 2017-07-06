@@ -28,7 +28,10 @@
 
 #include "MaConsensusAreaRenderer.h"
 #include "MaEditorWgt.h"
+#include "ov_msa/MaConsensusMismatchController.h"
 #include "ov_msa/MaEditor.h"
+#include "ov_msa/McaEditor.h"
+#include "ov_msa/McaReferenceCharController.h"
 #include "ov_msa/MSAEditorConsensusArea.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/DrawHelper.h"
@@ -98,7 +101,42 @@ void MaConsensusAreaRenderer::drawContent(QPainter &painter) {
     const ConsensusRenderData consensusRenderData = getScreenDataToRender();
     const ConsensusRenderSettings renderSettings = getScreenRenderSettings(consensusSettings);
 
-    drawContent(painter, consensusRenderData, consensusSettings, renderSettings);
+    // SANGER_TODO: should be refactored!
+//    drawContent(painter, consensusRenderData, consensusSettings, renderSettings);
+    SAFE_POINT(consensusRenderData.isValid(), "Incorrect consensus data to draw", );
+    SAFE_POINT(NULL != renderSettings.colorScheme, "Color scheme is NULL", );
+
+    if (consensusSettings.isVisible(MSAEditorConsElement_CONSENSUS_TEXT)) {
+        drawConsensus(painter, consensusRenderData, renderSettings);
+    }
+
+    if (consensusSettings.isVisible(MSAEditorConsElement_RULER)) {
+        if (qobject_cast<MSAEditorConsensusArea*>(area) != NULL) {
+            drawRuler(painter, renderSettings);
+        } else {
+            McaEditorConsensusArea* mcaConsArea = qobject_cast<McaEditorConsensusArea*>(area);
+            SAFE_POINT(mcaConsArea != NULL, "Failed to cast consensus area to MCA consensus area", );
+            McaEditorWgt * wgt = qobject_cast<McaEditorWgt *>(mcaConsArea->getEditorWgt());
+            SAFE_POINT(wgt != NULL, "Failed to cast!", );
+            McaReferenceCharController* refController = wgt->refCharController;
+            SAFE_POINT(refController != NULL, "Controller is null", );
+            QVector<U2Region> regions = refController->getCharRegions(U2Region(renderSettings.firstNotchedBasePosition,
+                                                                               renderSettings.lastNotchedBasePosition - renderSettings.firstNotchedBasePosition + 1));
+            ConsensusRenderSettings cutRenderSettings = renderSettings;
+            foreach (U2Region r, regions) {
+                cutRenderSettings.firstNotchedBasePosition = r.startPos;
+                cutRenderSettings.lastNotchedBasePosition = r.endPos() - 1;
+
+                cutRenderSettings.firstNotchedBaseXRange = ui->getBaseWidthController()->getBaseScreenRange(cutRenderSettings.firstNotchedBasePosition);
+                cutRenderSettings.lastNotchedBaseXRange = ui->getBaseWidthController()->getBaseScreenRange(cutRenderSettings.lastNotchedBasePosition);
+                drawRuler(painter, cutRenderSettings);
+            }
+        }
+    }
+
+    if (consensusSettings.isVisible(MSAEditorConsElement_HISTOGRAM)) {
+        drawHistogram(painter, consensusRenderData, renderSettings);
+    }
 }
 
 void MaConsensusAreaRenderer::drawContent(QPainter &painter,
@@ -134,7 +172,7 @@ ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<
         int score = 0;
         const char consensusChar = algorithm->getConsensusCharAndScore(ma, column, score);
         consensusRenderData.data += consensusChar;
-        consensusRenderData.percents << qRound(score * 100. / seqIdx.size());
+        consensusRenderData.percentage << qRound(score * 100. / seqIdx.size());
         consensusRenderData.mismatches[i] = (consensusChar != editor->getReferenceCharAt(column));
     }
 
@@ -207,6 +245,7 @@ void MaConsensusAreaRenderer::drawConsensus(QPainter &painter, const ConsensusRe
     ConsensusCharRenderData charData;
     charData.xRange = U2Region(settings.xRangeToDrawIn.startPos, settings.columnWidth);
     charData.yRange = settings.yRangeToDrawIn[MSAEditorConsElement_CONSENSUS_TEXT];
+
     for (int i = 0, n = static_cast<int>(consensusRenderData.region.length); i < n; i++) {
         charData.column = static_cast<int>(consensusRenderData.region.startPos + i);
         charData.consensusChar = consensusRenderData.data[i];
@@ -269,7 +308,7 @@ void MaConsensusAreaRenderer::drawRuler(QPainter &painter, const ConsensusRender
     config.extraAxisLenBefore = startPoint.x();
     config.extraAxisLenAfter = settings.rulerWidth - (startPoint.x() + firstLastDistance);
     config.textBorderStart = -settings.firstNotchedBaseXRange.length / 2;
-    config.textBorderEnd = settings.firstNotchedBaseXRange.length / 2;
+    config.textBorderEnd = -settings.firstNotchedBaseXRange.length / 2;
 
     GraphUtils::drawRuler(painter, startPoint, firstLastDistance, settings.firstNotchedBasePosition + 1, settings.lastNotchedBasePosition + 1, settings.rulerFont, config);
 
@@ -294,7 +333,7 @@ void MaConsensusAreaRenderer::drawHistogram(QPainter &painter, const ConsensusRe
     QVector<QRect> rects;
     U2Region xRange = U2Region(settings.xRangeToDrawIn.startPos, settings.columnWidth);
     for (int i = 0, n = static_cast<int>(consensusRenderData.region.length); i < n; i++) {
-        const int height = qRound((double)consensusRenderData.percents[i] * yRange.length / 100.0);
+        const int height = qRound((double)consensusRenderData.percentage[i] * yRange.length / 100.0);
         const QRect histogramRecT(xRange.startPos + 1, yRange.endPos() - height, xRange.length - 2, height);
         rects << histogramRecT;
         xRange.startPos += settings.columnWidth;
@@ -311,7 +350,7 @@ ConsensusRenderData MaConsensusAreaRenderer::getScreenDataToRender() const {
     const MaEditorSelection selection = ui->getSequenceArea()->getSelection();
     consensusRenderData.selectedRegion = U2Region(selection.x(), selection.width());
     consensusRenderData.data = consensusCache->getConsensusLine(consensusRenderData.region, true);
-    consensusRenderData.percents << consensusCache->getConsensusPercents(consensusRenderData.region);
+    consensusRenderData.percentage << consensusCache->getConsensusPercents(consensusRenderData.region);
 
     consensusRenderData.mismatches.resize(consensusRenderData.region.length);
     for (int i = 0, n = static_cast<int>(consensusRenderData.region.length); i < n; i++) {

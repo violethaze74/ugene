@@ -45,9 +45,12 @@ QVector<U2Region> McaReferenceCharController::getCharRegions(const U2Region& reg
 
     QVector<U2Region> result;
     do {
-        result << charRegions[i];
+        result << region.intersect(charRegions[i]);
+        if (charRegions[i].contains(region.endPos())) {
+            return result;
+        }
         i++;
-    } while (!charRegions[i].contains(region.endPos()));
+    } while (i < charRegions.size());
     return result;
 }
 
@@ -70,6 +73,9 @@ void McaReferenceCharController::initRegions(U2SequenceObject *reference) {
             charRegions << current;
             current = U2Region();
         }
+    }
+    if (!current.isEmpty()) {
+        charRegions << current;
     }
 }
 

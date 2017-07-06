@@ -67,7 +67,7 @@ public:
     U2Region        selectedRegion;
     QByteArray      data;
     QBitArray       mismatches;
-    QList<int>      percents;
+    QList<int>      percentage;
 };
 
 class ConsensusCharRenderData {

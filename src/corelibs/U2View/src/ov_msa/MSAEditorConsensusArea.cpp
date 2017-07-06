@@ -64,9 +64,6 @@ void MSAEditorConsensusArea::buildMenu(QMenu* m) {
 /************************************************************************/
 McaEditorConsensusArea::McaEditorConsensusArea(McaEditorWgt *ui)
     : MaEditorConsensusArea(ui) {
-    consensusSettings.visibleElements = MSAEditorConsElement_CONSENSUS_TEXT | MSAEditorConsElement_RULER;
-    consensusSettings.highlightMismatches = true;
-
     MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO);
     setConsensusAlgorithm(algoFactory);
 

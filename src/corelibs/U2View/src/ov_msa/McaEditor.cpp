@@ -43,6 +43,7 @@
 #include "McaEditorOverviewArea.h"
 #include "McaEditorReferenceArea.h"
 #include "McaEditorSequenceArea.h"
+#include "McaReferenceCharController.h"
 #include "MSAEditorConsensusArea.h"
 #include "helpers/McaRowHeightController.h"
 #include "ov_sequence/SequenceObjectContext.h"
@@ -63,12 +64,12 @@ McaEditor::McaEditor(const QString &viewName,
     showChromatogramsAction->setCheckable(true);
     showChromatogramsAction->setChecked(true);
     connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
-    
+
     U2OpStatusImpl os;
     foreach (const MultipleChromatogramAlignmentRow& row, obj->getMca()->getMcaRows()) {
         chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), true);
     }
-    
+
     U2SequenceObject* referenceObj = obj->getReferenceObj();
     if (referenceObj) {
         // SANGER_TODO: probably can be big
@@ -189,6 +190,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     : MaEditorWgt(editor)
 {
     rowHeightController = new McaRowHeightController(this);
+    refCharController = new McaReferenceCharController(this, editor);
 
     initActions();
     initWidgets();
