@@ -41,15 +41,16 @@ class ConsensusRenderSettings {
 public:
     ConsensusRenderSettings();
 
-    U2Region xRangeToDrawIn;
+    U2Region                            xRangeToDrawIn;
     QMap<MaEditorConsElement, U2Region> yRangeToDrawIn;
-    int columnWidth;
-    QFont font;
-    QFont rulerFont;
-    bool drawSelection;
-    MsaColorScheme* colorScheme;
-    MaEditor::ResizeMode resizeMode;
-    bool highlightMismatches;
+
+    int                     columnWidth;
+    QFont                   font;
+    QFont                   rulerFont;
+    bool                    drawSelection;
+    MsaColorScheme*         colorScheme;
+    MaEditor::ResizeMode    resizeMode;
+    bool                    highlightMismatches;
 
     int rulerWidth;
     int firstNotchedBasePosition;
