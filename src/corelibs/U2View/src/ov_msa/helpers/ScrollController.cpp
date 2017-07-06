@@ -335,7 +335,7 @@ QPoint ScrollController::getMaPointByScreenPoint(const QPoint &point) const {
     const int columnNumber = ui->getBaseWidthController()->screenXPositionToColumn(point.x());
     int rowNumber = ui->getRowHeightController()->screenYPositionToRowNumber(point.y());
     if (-1 == rowNumber) {
-        rowNumber = ui->getCollapseModel()->getDisplayableRowsCount() - 1;
+        rowNumber = ui->getCollapseModel()->getDisplayableRowsCount();
     }
     return QPoint(columnNumber, rowNumber);
 }

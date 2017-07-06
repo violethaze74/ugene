@@ -219,13 +219,15 @@ const MaEditorSelection & MaEditorSequenceArea::getSelection() const {
 }
 
 void MaEditorSequenceArea::updateSelection(const QPoint& newPos) {
-    int width = qAbs(newPos.x() - cursorPos.x()) + 1;
-    int height = qAbs(newPos.y() - cursorPos.y()) + 1;
-    int left = qMin(newPos.x(), cursorPos.x());
-    int top = qMin(newPos.y(), cursorPos.y());
+    const int width = qAbs(newPos.x() - cursorPos.x()) + 1;
+    const int height = qAbs(newPos.y() - cursorPos.y()) + 1;
+    const int left = qMin(newPos.x(), cursorPos.x());
+    const int top = qMin(newPos.y(), cursorPos.y());
+    const QPoint topLeft = boundWithVisibleRange(QPoint(left, top));
+    const QPoint bottomRight = boundWithVisibleRange(QPoint(left + width - 1, top + height - 1));
 
-    MaEditorSelection s(left, top, width, height);
-    if (newPos.x()!=-1 && newPos.y()!=-1) {
+    MaEditorSelection s(topLeft, bottomRight);
+    if (newPos.x() != -1 && newPos.y() != -1) {
         ui->getScrollController()->scrollToPoint(newPos, size());
         setSelection(s);
     }
@@ -912,10 +914,10 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
         }
 
         rubberBandOrigin = e->pos();
-        const QPoint p = boundWithVisibleRange(ui->getScrollController()->getMaPointByScreenPoint(e->pos()));
-        if (isInRange(p)) {
-            setCursorPos(p);
+        const QPoint p = ui->getScrollController()->getMaPointByScreenPoint(e->pos());
+        setCursorPos(boundWithVisibleRange(p));
 
+        if (isInRange(p)) {
             const MaEditorSelection &s = getSelection();
             if (s.getRect().contains(cursorPos) && !isAlignmentLocked() && editingEnabled) {
                 shifting = true;
@@ -950,7 +952,7 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
         editor->getMaObject()->releaseState();
     }
 
-    QPoint newCurPos = boundWithVisibleRange(ui->getScrollController()->getMaPointByScreenPoint(e->pos()));
+    QPoint newCurPos = ui->getScrollController()->getMaPointByScreenPoint(e->pos());
 
     if (shifting) {
         emit si_stopMaChanging(maVersionBeforeShifting != editor->getMaObject()->getModificationVersion());
@@ -1255,7 +1257,9 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     adjustReferenceLength(os);
     CHECK_OP(os,);
     moveSelection(removedRegionWidth, 0, true);
-    ui->getScrollController()->scrollToMovedSelection(ScrollController::Right);
+    if (!getSelection().isEmpty()) {
+        ui->getScrollController()->scrollToMovedSelection(ScrollController::Right);
+    }
 }
 
 void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
