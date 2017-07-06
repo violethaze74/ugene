@@ -414,7 +414,7 @@ void ScrollController::updateVerticalScrollBarPrivate() {
     vScrollBar->setSingleStep(ui->getRowHeightController()->getSequenceHeight());
     vScrollBar->setPageStep(sequenceAreaHeight);
 
-    const int numVisibleSequences = getLastVisibleRowNumber(sequenceAreaHeight) - getFirstVisibleRowNumber();
+    const int numVisibleSequences = getLastVisibleRowNumber(sequenceAreaHeight) - getFirstVisibleRowNumber() + 1;
     SAFE_POINT(numVisibleSequences <= totalDisplayableSequences, "Vertical scrollbar appears unexpectedly: numVisibleSequences is too small", );
     vScrollBar->setVisible(numVisibleSequences < totalDisplayableSequences);
 }

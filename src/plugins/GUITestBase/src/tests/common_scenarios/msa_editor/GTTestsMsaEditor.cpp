@@ -37,6 +37,7 @@
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
 
 #include <QApplication>
@@ -2054,106 +2055,46 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 // Shifting sequences in the Alignment Editor (UGENE-238)
 //
 // 1. Open file data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 // 2. Click on some row in sequence names area
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(-10, 2));
+    GTUtilsMsaEditor::clickSequence(os, 2);
+
 // Expected state: row became selected
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 2, 604, 1));
 
 // 3. Click & drag selected row in sequence names area
     QStringList list1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-10, 2), QPoint(-10, 3));
+
+    QRect rowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 2);
+    QRect destinationRowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 3);
+    GTMouseDriver::dragAndDrop(rowNameRect.center(), destinationRowNameRect.center());
+
 // Expected state: row order changes respectively
     QStringList list2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(list1 != list2, "Name list wasn't changed");
 
 // 4. Click & drag on unselected area
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-10, 0), QPoint(-9, 1));
+    rowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 0);
+    destinationRowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 1);
+    GTMouseDriver::dragAndDrop(rowNameRect.center(), destinationRowNameRect.center());
+
 // Expected state: multiple rows selected
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 604, 2));
 
 // 5. Click & drag selected block
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-10, 0), QPoint(-9, 1));
+    rowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 0);
+    destinationRowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 1);
+    GTMouseDriver::dragAndDrop(rowNameRect.center(), destinationRowNameRect.center());
+
 // Expected state: whole selected block shifted
     QStringList list3 = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(list2 != list3, "Name list wasn't changed");
 
 // 6. Click on some row in selected block
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(-9, 1));
-// Expected state: selection falls back to one row
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 1, 604, 1));
-}
+    GTUtilsMsaEditor::clickSequence(os, 1);
 
-GUI_TEST_CLASS_DEFINITION(test_0018_1) {
-// Shifting sequences in the Alignment Editor (UGENE-238)
-//
-// 1. Open file data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-// 2. Click on some row in sequence names area
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(-10, 2));
-// Expected state: row became selected
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 2, 604, 1));
-
-// 3. Click & drag selected row in sequence names area
-    QStringList list1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-10, 2), QPoint(-10, 3));
-// Expected state: row order changes respectively
-    QStringList list2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(list1 != list2, "Name list wasn't changed");
-
-// 4. Click & drag on unselected area
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-10, 0), QPoint(-9, 1));
-// Expected state: multiple rows selected
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 604, 2));
-
-// 5. Click & drag selected block
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-10, 0), QPoint(-9, 1));
-// Expected state: whole selected block shifted
-    QStringList list3 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(list2 != list3, "Name list wasn't changed");
-
-// 6. Click on some row in selected block
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(-9, 1));
-// Expected state: selection falls back to one row
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 1, 604, 1));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0018_2) {
-// Shifting sequences in the Alignment Editor (UGENE-238)
-//
-// 1. Open file data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-// 2. Click on some row in sequence names area
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(-10, 2));
-// Expected state: row became selected
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 2, 604, 1));
-
-// 3. Click & drag selected row in sequence names area
-    QStringList list1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-10, 2), QPoint(-10, 3));
-// Expected state: row order changes respectively
-    QStringList list2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(list1 != list2, "Name list wasn't changed");
-
-// 4. Click & drag on unselected area
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-10, 0), QPoint(-9, 1));
-// Expected state: multiple rows selected
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 604, 2));
-
-// 5. Click & drag selected block
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-10, 0), QPoint(-9, 1));
-// Expected state: whole selected block shifted
-    QStringList list3 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(list2 != list3, "Name list wasn't changed");
-
-// 6. Click on some row in selected block
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(-9, 1));
 // Expected state: selection falls back to one row
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 1, 604, 1));
 }
@@ -2375,26 +2316,27 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1){//DIFFERENCE: Column label is tested
 //Expected state: Gaps are inserted, statistics "Pos" in right bottom is "Pos 1/14"
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0022_2){//DIFFERENCE: Line label is tested
+GUI_TEST_CLASS_DEFINITION(test_0022_2) { //DIFFERENCE: Line label is tested
 //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-//2. Select character â„–3 in "Phaneroptera_falcata"(G)
-    GTUtilsMSAEditorSequenceArea::click(os,QPoint(2,0));
-    QLabel* lineLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os,"Line"));
-    CHECK_SET_ERR(lineLabel, "Line label not found");
-    CHECK_SET_ERR(lineLabel->text()=="Ln 1 / 10", "Expected text: Ln 1 / 10. Found: " + lineLabel->text());
-//Expected state: Statistics "Pos" in right bottom is "Pos 3/14"
 
-//3. Select and delete 5 lines 
-    GTUtilsMSAEditorSequenceArea::selectArea(os,QPoint(-5,3),QPoint(-5,7));
-    GTGlobals::sleep(500);
+//2. Select the thirs character in "Phaneroptera_falcata"(G)
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 0));
+
+//Expected state: Statistics "Ln" in right bottom is "Ln 1 / 10"
+    QLabel* lineLabel = GTWidget::findExactWidget<QLabel *>(os, "Line");
+    CHECK_SET_ERR(lineLabel, "Line label not found");
+    CHECK_SET_ERR(lineLabel->text() == "Ln 1 / 10", "Expected text: Ln 1 / 10. Found: " + lineLabel->text());
+
+//3. Select and delete 5 lines
+    GTUtilsMsaEditor::selectRows(os, 3, 7);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
 //4. Select char at 4 position in "Phaneroptera_falcata"(A)
-    GTUtilsMSAEditorSequenceArea::click(os,QPoint(3,0));
-    CHECK_SET_ERR(lineLabel->text()=="Ln 1 / 5", "Expected text: Ln 1 / 5. Found: " + lineLabel->text());
-//Expected state: Gaps are inserted, statistics "Pos" in right bottom is "Pos 1/14"
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(3, 0));
+//Expected state: Gaps are inserted, statistics "Ln" in right bottom is "Ln 1 / 5"
+    CHECK_SET_ERR(lineLabel->text() == "Ln 1 / 5", "Expected text: Ln 1 / 5. Found: " + lineLabel->text());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0023){
@@ -2583,40 +2525,40 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2_windows){
 //    Expected state: image is exported
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0027){
+GUI_TEST_CLASS_DEFINITION(test_0027) {
 //    1. open document samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-//    2. select element 4 in sequence 3
-    GTUtilsMSAEditorSequenceArea::click(os,QPoint(3,2));
-//    3. Move selected left using mouse by 6
-    GTUtilsMSAEditorSequenceArea::selectArea(os,QPoint(3,2),QPoint(9,2));
-    GTGlobals::sleep(500);
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os,QPoint(3,2),QPoint(8,2));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::text(os);
+//    2. select element 4 in sequence 3
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(3, 2));
+
+//    3. Move selected left using mouse by 6
+    GTUtilsMSAEditorSequenceArea::dragAndDropSelection(os, QPoint(3, 2), QPoint(9, 2));
+
+//    Expected state: area is moved,position 4-9 filled with gaps
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 2), QPoint(8, 2));
+    GTKeyboardUtils::copy(os);
+    const QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "------", "Expected: ------ Found: " + clipboardText);
-//    Expected stste: area is moved,position 4-9 filled with gaps
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0027_1){
+GUI_TEST_CLASS_DEFINITION(test_0027_1) {
 //    1. open document samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-//    2. select element 4 in sequence 3
-    GTUtilsMSAEditorSequenceArea::selectArea(os,QPoint(3,2),QPoint(3,3));
-//    3. Move selected left using mouse by 6
-    GTUtilsMSAEditorSequenceArea::selectArea(os,QPoint(3,2),QPoint(9,2));
-    GTGlobals::sleep(500);
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os,QPoint(3,2),QPoint(8,3));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText == "------\n------", "Expected: ------\n------ Found: " + clipboardText);
+//    2. select element 4 in sequences 2 and 3
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 2), QPoint(3, 3));
+
+//    3. Move selected left using mouse by 6
+    GTUtilsMSAEditorSequenceArea::dragAndDropSelection(os, QPoint(3, 2), QPoint(9, 2));
+
 //    Expected stste: area is moved,position 4-9 filled with gaps
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 2), QPoint(8, 3));
+    GTKeyboardUtils::copy(os);
+    const QString clipboardText = GTClipboard::text(os);
+    CHECK_SET_ERR(clipboardText == "------\n------", "Expected: ------\n------ Found: " + clipboardText);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0028_linux){
@@ -4482,22 +4424,25 @@ GUI_TEST_CLASS_DEFINITION(test_0065){
     CHECK_SET_ERR(clipboardText.startsWith("TaAGttTatTaATtCGagCtGAAtTagG+CAaCCaGGtTat---+TaATT"), "unexpected consensus was exported: " + clipboardText);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0066){
+GUI_TEST_CLASS_DEFINITION(test_0066) {
 //    Open COI.aln consArea
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    Select some area on consensus with mouse
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, -3), QPoint(10, -3));
+    GTUtilsMsaEditor::selectColumns(os, 1, 10, GTGlobals::UseMouse);
+
 //    Check selection on consensus and alignment
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(1, 0), QPoint(10, 17)));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0067){
+GUI_TEST_CLASS_DEFINITION(test_0067) {
 //TODO: write this test when UGENE-4803 is fixed
 //    Open COI.aln
 //    Build tree displayed with msa
 //    Use context menu on tree tab(in tabWidget)
 //    Check all actions in popup menu
+    CHECK_SET_ERR(false, "The test is not implemented");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0068){
@@ -4514,65 +4459,75 @@ GUI_TEST_CLASS_DEFINITION(test_0068){
     CHECK_SET_ERR(clipboardText.startsWith("TTAGTTTATTAATTCGAGCTGAACTAGGTCAACCAGGCTAT---TTAATTGGTGACGATCAAATTTACAAT"), "unexpected clipboard text: " + clipboardText);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0069){
+GUI_TEST_CLASS_DEFINITION(test_0069) {
 //    Open COI.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "Chikungunya_E1.fasta");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/Chikungunya_E1.fasta");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    Press on some sequence in nameList
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(-5, 2));
-    QScrollBar* hscroll = GTWidget::findExactWidget<QScrollBar*>(os, "horizontal_names_scroll");
-    QScrollBar* vscroll = GTWidget::findExactWidget<QScrollBar*>(os, "vertical_sequence_scroll");
+    GTUtilsMsaEditor::clickSequence(os, 2);
+    QScrollBar *hscroll = GTWidget::findExactWidget<QScrollBar *>(os, "horizontal_names_scroll");
+    QScrollBar *vscroll = GTWidget::findExactWidget<QScrollBar *>(os, "vertical_sequence_scroll");
+
 //    Check keys:
 //    right,
-    for(int i = 0; i<3; i++){
+    for (int i = 0; i < 3; i++) {
         GTKeyboardDriver::keyClick(Qt::Key_Right);
         GTGlobals::sleep(500);
         GTThread::waitForMainThread();
     }
     CHECK_SET_ERR(hscroll->value() == 3, QString("right key works wrong. Scrollbar has value: %1").arg(hscroll->value()));
+
 //    left
-    for(int i = 0; i<2; i++){
+    for (int i = 0; i < 2; i++) {
         GTKeyboardDriver::keyClick(Qt::Key_Left);
         GTGlobals::sleep(500);
         GTThread::waitForMainThread();
     }
     CHECK_SET_ERR(hscroll->value() == 1, QString("left key works wrong. Scrollbar has value: %1").arg(hscroll->value()));\
+
 //    page down
-    GTKeyboardDriver::keyClick( Qt::Key_PageDown);
+    GTKeyboardDriver::keyClick(Qt::Key_PageDown);
     GTGlobals::sleep(500);
     GTThread::waitForMainThread();
     CHECK_SET_ERR(vscroll->value() > 20, QString("page down key works wrong: %1").arg(vscroll->value()));
+
 //    page up
-    GTKeyboardDriver::keyClick( Qt::Key_PageUp);
+    GTKeyboardDriver::keyClick(Qt::Key_PageUp);
     GTGlobals::sleep(500);
     GTThread::waitForMainThread();
     CHECK_SET_ERR(vscroll->value() == 0, QString("page up key works wrong: %1").arg(vscroll->value()));
+
 //    end
-    GTKeyboardDriver::keyClick( Qt::Key_End);
+    GTKeyboardDriver::keyClick(Qt::Key_End);
     GTGlobals::sleep(500);
     GTThread::waitForMainThread();
     CHECK_SET_ERR(vscroll->value() > 1650, QString("end key works wrong: %1").arg(vscroll->value()));
+
 //    home
-    GTKeyboardDriver::keyClick( Qt::Key_Home);
+    GTKeyboardDriver::keyClick(Qt::Key_Home);
     GTGlobals::sleep(500);
     GTThread::waitForMainThread();
     CHECK_SET_ERR(vscroll->value() == 0, QString("end key works wrong: %1").arg(vscroll->value()));
+
 //    mouse wheel
-    for(int i = 0; i<3; i++){
+    for (int i = 0; i < 3; i++) {
         GTMouseDriver::scroll(-1);
         GTGlobals::sleep(100);
         GTThread::waitForMainThread();
     }
-    CHECK_SET_ERR(vscroll->value() == 3, QString("scroll down works wrong. Scrollbar has value: %1").arg(vscroll->value()));
+    const int scrolledValue = vscroll->value();
+    CHECK_SET_ERR(scrolledValue > 0, QString("scroll down works wrong. Scrollbar has value: %1").arg(vscroll->value()));
     GTGlobals::sleep(500);
 
-    for(int i = 0; i<2; i++){
+    for (int i = 0; i < 2; i++) {
         GTMouseDriver::scroll(1);
         GTGlobals::sleep(500);
         GTThread::waitForMainThread();
     }
-    CHECK_SET_ERR(vscroll->value() == 1, QString("scroll up works wrong. Scrollbar has value: %1").arg(vscroll->value()));
+    CHECK_SET_ERR(0 < vscroll->value() && vscroll->value() < scrolledValue, QString("scroll up works wrong. Scrollbar has value: %1").arg(vscroll->value()));
 }
+
 GUI_TEST_CLASS_DEFINITION(test_0070){
 //    Open empty alignment
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "empty.fa");

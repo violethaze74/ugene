@@ -3232,29 +3232,28 @@ GUI_TEST_CLASS_DEFINITION(test_2459) {
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
 }
 
-GUI_TEST_CLASS_DEFINITION( test_2460 ) {
+GUI_TEST_CLASS_DEFINITION(test_2460) {
     //1. Open "COI.aln".
-    //2. Remove all sequences except the first one.
-    //3. Align the result one-line-msa by kalign with default values.
-    //Expected state: Kalign task finishes with error. Redo button is disabled.
 
     GTLogTracer l;
-    GTFileDialog::openFile(os, dataDir+"samples/CLUSTALW/", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    //2. Remove all sequences except the first one.
     QStringList list = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 1), QPoint(-5, list.size() - 1));
-    GTKeyboardDriver::keyPress(Qt::Key_Delete);
+    GTUtilsMsaEditor::removeRows(os, 1, list.size() - 1);
 
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-5, 0));
+    GTGlobals::sleep(500);
 
+    //3. Align the result one-line-msa by kalign with default values.
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR( l.hasError() == true, "There is no error in the log");
+    //Expected state: Kalign task finishes with error. Redo button is disabled.
+    CHECK_SET_ERR(l.hasError() == true, "There is no error in the log");
 
     QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
     CHECK_SET_ERR( NULL != redo, "There is no REDO button");
@@ -3270,7 +3269,7 @@ GUI_TEST_CLASS_DEFINITION(test_2470) {
     class OkClicker : public Filler {
     public:
         OkClicker(HI::GUITestOpStatus& _os, const QString &dbPath, const QString &outputPath)
-            : Filler(_os, "BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath){};
+            : Filler(_os, "BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath){}
         virtual void run() {
             QWidget *w = QApplication::activeWindow();
             CHECK(NULL != w, );

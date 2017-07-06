@@ -477,7 +477,7 @@ void MSAEditorConsensusArea::updateSelection(int newPos) {
     CHECK(newPos != -1, );
 
     int selectionHeight = ui->getSequenceArea()->getNumDisplayableSequences();
-    int startPos = qMin(curPos, newPos);
+    int startPos = qMax(0, qMin(curPos, newPos));
     int selectionWidth = qAbs(newPos - curPos) + 1;
     MaEditorSelection selection(startPos, 0, selectionWidth, selectionHeight);
     ui->getSequenceArea()->setSelection(selection);

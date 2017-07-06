@@ -44,6 +44,7 @@
 #include "GTTestsOptionPanelMSA.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsPhyTree.h"
@@ -173,26 +174,31 @@ GUI_TEST_CLASS_DEFINITION(general_test_0004){
     GTWidget::click(os, sequenceLineEdit);//needed to close completer
 }
 
-GUI_TEST_CLASS_DEFINITION(general_test_0005){
+GUI_TEST_CLASS_DEFINITION(general_test_0005) {
 //    1. Open file data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+
 //    3. Delete Hetrodes_pupus_EF540832
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Hetrodes_pupus_EF540832");
-    GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(300);
+
 //    Expected state: Sequence number is 17
-    int height = GTUtilsOptionPanelMsa::getHeight(os);
-    CHECK_SET_ERR( height == 17, QString("wrong height. expected 17, found %1").arg(height));
+    const int height = GTUtilsOptionPanelMsa::getHeight(os);
+    CHECK_SET_ERR(height == 17, QString("wrong height. expected 17, found %1").arg(height));
+
 //    4. Select one column. Press delete
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 0), QPoint(5,17));
-    GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTUtilsMsaEditor::clickColumn(os, 5);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(300);
+
 //    Expected state: Length is 603
-    int length = GTUtilsOptionPanelMsa::getLength(os);
-    CHECK_SET_ERR( length== 603, QString("wrong length. expected 17, found %1").arg(length));
+    const int length = GTUtilsOptionPanelMsa::getLength(os);
+    CHECK_SET_ERR(length == 603, QString("wrong length. expected 603, found %1").arg(length));
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0001){

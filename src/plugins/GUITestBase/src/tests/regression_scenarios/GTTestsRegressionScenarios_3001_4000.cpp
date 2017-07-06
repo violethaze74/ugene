@@ -1160,15 +1160,12 @@ GUI_TEST_CLASS_DEFINITION(test_3170) {
 
 GUI_TEST_CLASS_DEFINITION(test_3175) {
     // 1. Open "_common_data/scenarios/msa/ma.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(200);
+
     // Expected: the first sequence is "TAAGACTTCTAA".
-    GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 0, 0 ), QPoint( 12, 0 ) );
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
-    GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::text( os );
-    CHECK_SET_ERR( "TAAGACTTCTAA" == selectionContent, "MSA changing is failed" );
+    const QString firstSequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
+    CHECK_SET_ERR("TAAGACTTCTAA" == firstSequence, "MSA changing is failed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3180) {

@@ -52,17 +52,17 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsMsaEditor"
 
 #define GT_METHOD_NAME "getGraphOverviewTopLeftPixelColor"
-QColor GTUtilsMsaEditor::getGraphOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point) {
+QColor GTUtilsMsaEditor::getGraphOverviewPixelColor(GUITestOpStatus &os, const QPoint &point) {
     return GTWidget::getColor(os, getGraphOverview(os), point);
 }
 
-QColor GTUtilsMsaEditor::getSimpleOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point) {
+QColor GTUtilsMsaEditor::getSimpleOverviewPixelColor(GUITestOpStatus &os, const QPoint &point) {
     return GTWidget::getColor(os, getSimpleOverview(os), point);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getEditor"
-MSAEditor * GTUtilsMsaEditor::getEditor(HI::GUITestOpStatus &os) {
+MSAEditor * GTUtilsMsaEditor::getEditor(GUITestOpStatus &os) {
     MSAEditorUI *editorUi = getEditorUi(os);
     CHECK_OP(os, NULL);
     return editorUi->getEditor();
@@ -70,7 +70,7 @@ MSAEditor * GTUtilsMsaEditor::getEditor(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getEditorUi"
-MSAEditorUI * GTUtilsMsaEditor::getEditorUi(HI::GUITestOpStatus &os) {
+MSAEditorUI * GTUtilsMsaEditor::getEditorUi(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
     return activeWindow->findChild<MSAEditorUI *>();
@@ -78,7 +78,7 @@ MSAEditorUI * GTUtilsMsaEditor::getEditorUi(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getGraphOverview"
-MaGraphOverview * GTUtilsMsaEditor::getGraphOverview(HI::GUITestOpStatus &os) {
+MaGraphOverview * GTUtilsMsaEditor::getGraphOverview(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
 
@@ -89,7 +89,7 @@ MaGraphOverview * GTUtilsMsaEditor::getGraphOverview(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSimpleOverview"
-MaSimpleOverview * GTUtilsMsaEditor::getSimpleOverview(HI::GUITestOpStatus &os) {
+MaSimpleOverview * GTUtilsMsaEditor::getSimpleOverview(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
 
@@ -100,7 +100,7 @@ MaSimpleOverview * GTUtilsMsaEditor::getSimpleOverview(HI::GUITestOpStatus &os) 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTreeView"
-MSAEditorTreeViewerUI * GTUtilsMsaEditor::getTreeView(HI::GUITestOpStatus &os) {
+MSAEditorTreeViewerUI * GTUtilsMsaEditor::getTreeView(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
     return GTWidget::findExactWidget<MSAEditorTreeViewerUI *>(os, "treeView", activeWindow);
@@ -108,7 +108,7 @@ MSAEditorTreeViewerUI * GTUtilsMsaEditor::getTreeView(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNameListArea"
-MaEditorNameList * GTUtilsMsaEditor::getNameListArea(HI::GUITestOpStatus &os) {
+MaEditorNameList * GTUtilsMsaEditor::getNameListArea(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
 
@@ -119,7 +119,7 @@ MaEditorNameList * GTUtilsMsaEditor::getNameListArea(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getConsensusArea"
-MSAEditorConsensusArea * GTUtilsMsaEditor::getConsensusArea(HI::GUITestOpStatus &os) {
+MSAEditorConsensusArea * GTUtilsMsaEditor::getConsensusArea(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
     return GTWidget::findExactWidget<MSAEditorConsensusArea *>(os, "consArea", activeWindow);
@@ -127,28 +127,39 @@ MSAEditorConsensusArea * GTUtilsMsaEditor::getConsensusArea(HI::GUITestOpStatus 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSequenceNameRect"
-MSAEditorSequenceArea * GTUtilsMsaEditor::getSequenceArea(HI::GUITestOpStatus &os) {
+MSAEditorSequenceArea * GTUtilsMsaEditor::getSequenceArea(GUITestOpStatus &os) {
     return GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSequenceNameRect"
-QRect GTUtilsMsaEditor::getSequenceNameRect(HI::GUITestOpStatus &os, const QString &sequenceName) {
-    Q_UNUSED(os);
+QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, const QString &sequenceName) {
     MaEditorNameList *nameList = getNameListArea(os);
     GT_CHECK_RESULT(NULL != nameList, "MSAEditorNameList not found", QRect());
 
     const QStringList names = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     const int rowNumber = names.indexOf(sequenceName);
-    const int rowHeight = GTUtilsMSAEditorSequenceArea::getRowHeight(os, rowNumber);
     GT_CHECK_RESULT(0 <= rowNumber, QString("Sequence '%1' not found").arg(sequenceName), QRect());
+    return getSequenceNameRect(os,  rowNumber);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getSequenceNameRect"
+QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, int rowNumber) {
+    Q_UNUSED(os);
+    GT_CHECK_RESULT(0 <= rowNumber, QString("Sequence '%1' not found").arg(rowNumber), QRect());
+
+    MaEditorNameList *nameList = getNameListArea(os);
+    GT_CHECK_RESULT(NULL != nameList, "MSAEditorNameList not found", QRect());
+
+    const int rowHeight = GTUtilsMSAEditorSequenceArea::getRowHeight(os, rowNumber);
 
     return QRect(nameList->mapToGlobal(QPoint(0, rowHeight * rowNumber)), nameList->mapToGlobal(QPoint(nameList->width(), rowHeight * (rowNumber + 1))));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getColumnHeaderRect"
-QRect GTUtilsMsaEditor::getColumnHeaderRect(HI::GUITestOpStatus &os, int column) {
+QRect GTUtilsMsaEditor::getColumnHeaderRect(GUITestOpStatus &os, int column) {
     MSAEditorConsensusArea *consensusArea = getConsensusArea(os);
     GT_CHECK_RESULT(NULL != consensusArea, "Consensus area is NULL", QRect());
     MSAEditorSequenceArea *sequenceArea = getSequenceArea(os);
@@ -157,12 +168,15 @@ QRect GTUtilsMsaEditor::getColumnHeaderRect(HI::GUITestOpStatus &os, int column)
     GT_CHECK_RESULT(NULL != editor, "MSA Editor is NULL", QRect());
 
     BaseWidthController *baseWidthController = editor->getUI()->getBaseWidthController();
-    return QRect(baseWidthController->getBaseScreenOffset(column), consensusArea->geometry().top(), baseWidthController->getBaseWidth(), consensusArea->height());
+    return QRect(consensusArea->mapToGlobal(QPoint(baseWidthController->getBaseScreenOffset(column),
+                                                   consensusArea->geometry().top())),
+                 QSize(baseWidthController->getBaseWidth(),
+                       consensusArea->height()));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "replaceSequence"
-void GTUtilsMsaEditor::replaceSequence(HI::GUITestOpStatus &os, const QString &sequenceToReplace, int targetPosition) {
+void GTUtilsMsaEditor::replaceSequence(GUITestOpStatus &os, const QString &sequenceToReplace, int targetPosition) {
     clickSequenceName(os, sequenceToReplace);
 
     targetPosition = qMax(0, qMin(getSequencesCount(os) - 1, targetPosition));
@@ -179,47 +193,135 @@ void GTUtilsMsaEditor::replaceSequence(HI::GUITestOpStatus &os, const QString &s
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "replaceSequence"
+void GTUtilsMsaEditor::replaceSequence(GUITestOpStatus &os, int rowNumber, int targetPosition) {
+    const QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    GT_CHECK(0 <= rowNumber && rowNumber <= names.size(), "Row number is out of boundaries");
+    replaceSequence(os, names[rowNumber], targetPosition);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "removeColumn"
-void GTUtilsMsaEditor::removeColumn(HI::GUITestOpStatus &os, int column) {
+void GTUtilsMsaEditor::removeColumn(GUITestOpStatus &os, int column) {
     clickColumn(os, column);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickSequenceName"
-void GTUtilsMsaEditor::clickSequenceName(HI::GUITestOpStatus &os, const QString &sequenceName, Qt::MouseButton mouseButton) {
+#define GT_METHOD_NAME "removeRows"
+void GTUtilsMsaEditor::removeRows(GUITestOpStatus &os, int firstRowNumber, int lastRowNumber) {
+    selectRows(os, firstRowNumber, lastRowNumber);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "moveToSequence"
+void GTUtilsMsaEditor::moveToSequence(GUITestOpStatus &os, int rowNumber) {
+    const QRect sequenceNameRect = getSequenceNameRect(os, rowNumber);
+    GTMouseDriver::moveTo(sequenceNameRect.center());
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "moveToSequenceName"
+void GTUtilsMsaEditor::moveToSequenceName(GUITestOpStatus &os, const QString &sequenceName) {
     const QRect sequenceNameRect = getSequenceNameRect(os, sequenceName);
     GTMouseDriver::moveTo(sequenceNameRect.center());
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickSequence"
+void GTUtilsMsaEditor::clickSequence(GUITestOpStatus &os, int rowNumber, Qt::MouseButton mouseButton) {
+    moveToSequence(os, rowNumber);
     GTMouseDriver::click(mouseButton);
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickColumn"
-void GTUtilsMsaEditor::clickColumn(HI::GUITestOpStatus &os, int column, Qt::MouseButton mouseButton) {
-    MSAEditorConsensusArea *consensusArea = getConsensusArea(os);
-    GT_CHECK(NULL != consensusArea, "Consensus area is NULL");
+#define GT_METHOD_NAME "clickSequenceName"
+void GTUtilsMsaEditor::clickSequenceName(GUITestOpStatus &os, const QString &sequenceName, Qt::MouseButton mouseButton) {
+    moveToSequenceName(os, sequenceName);
+    GTMouseDriver::click(mouseButton);
+}
+#undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "moveToColumn"
+void GTUtilsMsaEditor::moveToColumn(GUITestOpStatus &os, int column) {
     GTUtilsMSAEditorSequenceArea::scrollToPosition(os, QPoint(column, 1));
     const QRect columnHeaderRect = getColumnHeaderRect(os, column);
-    GTWidget::click(os, consensusArea, mouseButton, columnHeaderRect.center());
+    GTMouseDriver::moveTo(columnHeaderRect.center());
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickColumn"
+void GTUtilsMsaEditor::clickColumn(GUITestOpStatus &os, int column, Qt::MouseButton mouseButton) {
+    moveToColumn(os, column);
+    GTMouseDriver::click(mouseButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "selectRows"
+void GTUtilsMsaEditor::selectRows(GUITestOpStatus &os, int firstRowNumber, int lastRowNumber, GTGlobals::UseMethod method) {
+    switch (method) {
+    case GTGlobals::UseKey:
+        clickSequence(os, firstRowNumber);
+        GTKeyboardDriver::keyPress(Qt::Key_Shift);
+        clickSequence(os, lastRowNumber);
+        GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+        break;
+    case GTGlobals::UseMouse:
+        GTMouseDriver::dragAndDrop(getSequenceNameRect(os, firstRowNumber).center(),
+                                   getSequenceNameRect(os, lastRowNumber).center());
+        break;
+    case GTGlobals::UseKeyBoard:
+        GT_CHECK(false, "Not implemented");
+    default:
+        GT_CHECK(false, "An unknown method");
+    }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "selectColumns"
+void GTUtilsMsaEditor::selectColumns(GUITestOpStatus &os, int firstColumnNumber, int lastColumnNumber, GTGlobals::UseMethod method) {
+    switch (method) {
+    case GTGlobals::UseKey:
+        clickColumn(os, firstColumnNumber);
+        GTKeyboardDriver::keyPress(Qt::Key_Shift);
+        clickColumn(os, lastColumnNumber);
+        GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+        break;
+    case GTGlobals::UseMouse:
+        GTMouseDriver::dragAndDrop(getColumnHeaderRect(os, firstColumnNumber).center(),
+                                   getColumnHeaderRect(os, lastColumnNumber).center());
+        break;
+    case GTGlobals::UseKeyBoard:
+        GT_CHECK(false, "Not implemented");
+    default:
+        GT_CHECK(false, "An unknown method");
+    }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clearSelection"
+void GTUtilsMsaEditor::clearSelection(GUITestOpStatus &os) {
+    Q_UNUSED(os);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceSequenceName"
-QString GTUtilsMsaEditor::getReferenceSequenceName(HI::GUITestOpStatus &os) {
+QString GTUtilsMsaEditor::getReferenceSequenceName(GUITestOpStatus &os) {
     return GTUtilsOptionPanelMsa::getReference(os);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "toggleCollapsingMode"
-void GTUtilsMsaEditor::toggleCollapsingMode(HI::GUITestOpStatus &os) {
+void GTUtilsMsaEditor::toggleCollapsingMode(GUITestOpStatus &os) {
     Q_UNUSED(os);
     GTWidget::click(os, GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Switch on/off collapsing"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isSequenceCollapsed"
-bool GTUtilsMsaEditor::isSequenceCollapsed(HI::GUITestOpStatus &os, const QString &seqName){
+bool GTUtilsMsaEditor::isSequenceCollapsed(GUITestOpStatus &os, const QString &seqName){
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
     GT_CHECK_RESULT(names.contains(seqName), "sequence " + seqName + " not found in name list", false);
     QStringList visiablenames = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -229,7 +331,7 @@ bool GTUtilsMsaEditor::isSequenceCollapsed(HI::GUITestOpStatus &os, const QStrin
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "toggleCollapsingMode"
-void GTUtilsMsaEditor::toggleCollapsingGroup(HI::GUITestOpStatus &os, const QString &groupName) {
+void GTUtilsMsaEditor::toggleCollapsingGroup(GUITestOpStatus &os, const QString &groupName) {
     Q_UNUSED(os);
 
     const QRect sequenceNameRect = getSequenceNameRect(os, groupName);
@@ -245,7 +347,7 @@ void GTUtilsMsaEditor::toggleCollapsingGroup(HI::GUITestOpStatus &os, const QStr
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSequencesCount"
-int GTUtilsMsaEditor::getSequencesCount(HI::GUITestOpStatus &os) {
+int GTUtilsMsaEditor::getSequencesCount(GUITestOpStatus &os) {
     QWidget *statusWidget = GTWidget::findWidget(os, "msa_editor_status_bar");
     return GTMSAEditorStatusWidget::getSequencesCount(os, statusWidget);
 }
@@ -269,19 +371,19 @@ QStringList GTUtilsMsaEditor::getWholeData(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "undo"
-void GTUtilsMsaEditor::undo(HI::GUITestOpStatus &os) {
+void GTUtilsMsaEditor::undo(GUITestOpStatus &os) {
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "redo"
-void GTUtilsMsaEditor::redo(HI::GUITestOpStatus &os) {
+void GTUtilsMsaEditor::redo(GUITestOpStatus &os) {
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "buildPhylogeneticTree"
-void GTUtilsMsaEditor::buildPhylogeneticTree(HI::GUITestOpStatus &os, const QString &pathToSave) {
+void GTUtilsMsaEditor::buildPhylogeneticTree(GUITestOpStatus &os, const QString &pathToSave) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, pathToSave, 0, 0, true));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
 }
@@ -294,7 +396,7 @@ void GTUtilsMsaEditor::dragAndDropSequenceFromProject(GUITestOpStatus &os, const
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setReference"
-void GTUtilsMsaEditor::setReference(HI::GUITestOpStatus &os, const QString &sequenceName) {
+void GTUtilsMsaEditor::setReference(GUITestOpStatus &os, const QString &sequenceName) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Set this sequence as reference", GTGlobals::UseMouse));
     clickSequenceName(os, sequenceName, Qt::RightButton);
     GTGlobals::sleep(100);

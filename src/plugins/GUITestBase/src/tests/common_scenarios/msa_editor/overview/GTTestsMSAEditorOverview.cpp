@@ -508,35 +508,34 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     CHECK_SET_ERR(img != img2, "overview not changed");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0020){
+GUI_TEST_CLASS_DEFINITION(test_0020) {
 /* 1. Open "_common_data/clustal/test_1393.aln".
  * 2. Show simple overview.
  * 3. Select whole alignment.
  * Expected state: whole simple overview is filled with a selection rect.
  * 4. Click "Align sequence to this alignment" button on the tool bar and select "data/samples/fastq/eas.fastq".
  * Expected state: sequences are added, two of five sequences are selected both in the sequence area and simple overview.
- * Current state: sequences are added, two of five sequences are selected in the sequence area, but the simple overview if filled with a selection rect like whole alignment is selected.
+ * Current state: sequences are added, two of five sequences are selected in the sequence area, but the simple overview is filled with a selection rect like whole alignment is selected.
  */
 
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "test_1393.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/test_1393.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5,0), QPoint(-5,2));
+    GTUtilsMSAEditorSequenceArea::selectArea(os);
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTGlobals::sleep();
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    QColor color = GTWidget::getColor(os,overviewSimple,overviewSimple->geometry().topRight()-QPoint(5,-5));
-    CHECK_SET_ERR(color.name() == "#ededed", "graph overview has wrong color. Expected: #ededed, Found: " + color.name());
+    QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    const QColor color = GTWidget::getColor(os, overviewSimple, overviewSimple->geometry().topRight() - QPoint(5, -5));
+    CHECK_SET_ERR(color.name() == "#ededed", "simple overview has wrong color. Expected: #ededed, found: " + color.name());
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0021){
+GUI_TEST_CLASS_DEFINITION(test_0021) {
 /* 1. Open "_common_data/clustal/test_1393.aln".
  * 2. Select whole alignment.
  * 3. Show simple overview.
@@ -544,21 +543,20 @@ GUI_TEST_CLASS_DEFINITION(test_0021){
  * Current state: selection not showed.
  */
 
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "test_1393.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/test_1393.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-4,2), QPoint(-5,0));
+    GTUtilsMSAEditorSequenceArea::selectArea(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
-    GTGlobals::sleep();
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    QColor color = GTWidget::getColor(os,overviewSimple,overviewSimple->geometry().topRight()-QPoint(5,-5));
-    CHECK_SET_ERR(color.name() == "#7eaecc", "graph overview has wrong color. Expected: #7eaecc, Found: " + color.name());
+    QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    const QColor color = GTWidget::getColor(os, overviewSimple, overviewSimple->geometry().topRight() - QPoint(5, -5));
+    CHECK_SET_ERR(color.name() == "#7eaecc", "simple overview has wrong color. Expected: #7eaecc, Found: " + color.name());
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0022){
+GUI_TEST_CLASS_DEFINITION(test_0022) {
 /* 1. Open "_common_data/clustal/test_1393.aln".
  * 2. Open ProjectView if it closed
  * 3. Select whole alignment.
@@ -569,26 +567,24 @@ GUI_TEST_CLASS_DEFINITION(test_0022){
  * Current state: selection is not full.
  */
 
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "test_1393.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/test_1393.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProjectTreeView::openView(os);
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-4,2), QPoint(-5,0));
+    GTUtilsMSAEditorSequenceArea::selectArea(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     GTUtilsProjectTreeView::toggleView(os);
 
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    QColor color = GTWidget::getColor(os,overviewSimple,overviewSimple->geometry().topRight()-QPoint(5,-5));
-    CHECK_SET_ERR(color.name() == "#7eaecc", "graph overview has wrong color. Expected: #7eaecc, Found: " + color.name());
+    QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
+    const QColor color = GTWidget::getColor(os, overviewSimple, overviewSimple->geometry().topRight() - QPoint(5, -5));
+    CHECK_SET_ERR(color.name() == "#7eaecc", "simple overview has wrong color. Expected: #7eaecc, Found: " + color.name());
 }
 
-
-}//namespace GUITest_common_scenarios_msa_editor
-
-}//namespace U2
+}   // namespace GUITest_common_scenarios_msa_editor
+}   // namespace U2
