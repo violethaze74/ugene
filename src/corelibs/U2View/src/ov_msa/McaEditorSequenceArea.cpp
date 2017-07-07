@@ -295,6 +295,7 @@ void McaEditorSequenceArea::insertChar(char newCharacter) {
         Q_UNUSED(userModStep);
         SAFE_POINT_OP(os, );
 
+        maObj->enlargeLength(os, maObj->getLength() + 1);
         maObj->insertCharacter(selection.y(), selection.x(), newCharacter);
 
         // insert char into the reference
