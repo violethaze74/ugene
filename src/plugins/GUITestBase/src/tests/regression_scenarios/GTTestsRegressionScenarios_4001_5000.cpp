@@ -4522,7 +4522,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     QWidget *sequenceAreaWidget = editor->getUI()->getSequenceArea();
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0));
+	GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy selection"));
     GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
     GTGlobals::sleep();

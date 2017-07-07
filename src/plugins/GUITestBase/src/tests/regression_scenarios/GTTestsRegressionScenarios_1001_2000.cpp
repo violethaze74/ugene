@@ -6749,7 +6749,7 @@ GUI_TEST_CLASS_DEFINITION(test_1668){
 //    7) Deactivate the PWA tab
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    8) Select some bunch of sequences (more than two) in the name list area
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 2), QPoint(-5, 6));
+	GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 2), QPoint(-5, 6), GTGlobals::UseMouse);
 //    9) Activate the PWA tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: previosly chosen two sequences and their order are saved
@@ -6760,7 +6760,7 @@ GUI_TEST_CLASS_DEFINITION(test_1668){
 //    10) Deactivate the PWA tab
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    11) Select exactly two sequences in the name list area
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 7), QPoint(-5, 8));
+	GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 7), QPoint(-5, 8), GTGlobals::UseMouse);
 //    12) Activate the PWA tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: last chosen two sequences has appeared on PWA tab
