@@ -56,13 +56,23 @@ int OffsetRegions::getSize() {
     return regions.size();
 }
 
+void OffsetRegions::clear() {
+    regions.clear();
+    offsets.clear();
+}
+
 McaReferenceCharController::McaReferenceCharController(QObject* p, McaEditor *editor)
-    : QObject(p) {
+    : QObject(p),
+      refObject (NULL) {
     SequenceObjectContext* ctx = editor->getReferenceContext();
     SAFE_POINT(ctx != NULL, "SequenceObjectContext is NULL", );
-    U2SequenceObject* refObject = ctx->getSequenceObject();
+    refObject = ctx->getSequenceObject();
     SAFE_POINT(ctx != NULL, "Reference U2SequenceObject is NULL", );
-    initRegions(refObject);
+    initRegions();
+
+    connect(refObject, SIGNAL(si_sequenceChanged()), SLOT(sl_update()));
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+            SLOT(sl_update(MultipleAlignment,MaModificationInfo)));
 }
 
 OffsetRegions McaReferenceCharController::getCharRegions(const U2Region& region) {
@@ -81,9 +91,24 @@ OffsetRegions McaReferenceCharController::getCharRegions(const U2Region& region)
     return result;
 }
 
-void McaReferenceCharController::initRegions(U2SequenceObject *reference) {
+void McaReferenceCharController::sl_update() {
+    initRegions();
+}
+
+void McaReferenceCharController::sl_update(const MultipleAlignment &, const MaModificationInfo &modInfo) {
+    if (modInfo.type == MaModificationType_Undo || modInfo.type == MaModificationType_Redo) {
+        initRegions();
+    }
+}
+
+void McaReferenceCharController::initRegions() {
+    charRegions.clear();
+    SAFE_POINT(refObject != NULL, "MCA reference object is NULL", );
+
     U2OpStatusImpl os;
-    QByteArray data = reference->getWholeSequenceData(os);
+    refObject->forceCachedSequenceUpdate();
+    QByteArray data = refObject->getWholeSequenceData(os);
+
     SAFE_POINT_OP(os, );
     U2Region current;
     int gapCounter = 0;

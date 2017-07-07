@@ -29,6 +29,9 @@ namespace U2 {
 class McaEditor;
 class U2SequenceObject;
 
+class MultipleAlignment;
+class MaModificationInfo;
+
 class OffsetRegions {
 public:
     OffsetRegions();
@@ -39,6 +42,8 @@ public:
     U2Region getRegion(int i);
     int getOffset(int i);
     int getSize();
+
+    void clear();
 
 private:
     QVector<U2Region>   regions;
@@ -52,10 +57,15 @@ public:
 
     OffsetRegions getCharRegions(const U2Region& region);
 
-private:
-    void initRegions(U2SequenceObject* reference);
+public slots:
+    void sl_update();
+    void sl_update(const MultipleAlignment &maBefore, const MaModificationInfo &modInfo);
 
-    OffsetRegions charRegions;
+private:
+    void initRegions();
+
+    OffsetRegions       charRegions;
+    U2SequenceObject*   refObject;
 };
 
 } // namespace
