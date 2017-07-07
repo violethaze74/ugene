@@ -131,6 +131,9 @@ public:
     /** Returns the number of rows in the alignment */
     int getNumRows() const;
 
+    U2MsaMapGapModel getMapGapModel() const;
+    U2MsaListGapModel getGapModel() const;
+
     /** Sorts rows by name */
     void sortRowsByName(MultipleAlignment::Order order = MultipleAlignment::Ascending);
 

@@ -159,8 +159,6 @@ public:
      */
     MultipleChromatogramAlignment mid(int start, int len) const;
 
-    U2MsaListGapModel getGapModel() const;
-
     void setRowGapModel(int rowNumber, const QList<U2MsaGap> &gapModel);
 
     void setSequenceId(int rowIndex, const U2DataId &sequenceId);

@@ -238,14 +238,6 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentData::mid(int start, 
     return res;
 }
 
-U2MsaListGapModel MultipleChromatogramAlignmentData::getGapModel() const {
-    U2MsaListGapModel gapModel;
-    foreach (const MultipleChromatogramAlignmentRow &row, rows) {
-        gapModel << row->getGapModel();
-    }
-    return gapModel;
-}
-
 MultipleChromatogramAlignmentData &MultipleChromatogramAlignmentData::operator+=(const MultipleChromatogramAlignmentData &mcaData) {
     // TODO: it is used in MUSCLE alignment and it should be something like this. But this emthod is incorrect for the MCA
     MaStateCheck check(this);
