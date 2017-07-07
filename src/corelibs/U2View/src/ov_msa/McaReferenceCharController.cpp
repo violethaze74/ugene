@@ -30,6 +30,32 @@
 
 namespace U2 {
 
+OffsetRegions::OffsetRegions() {
+
+}
+
+void OffsetRegions::append(const U2Region& region, int offset) {
+    regions.append(region);
+    offsets.append(offset);
+}
+
+int OffsetRegions::findIntersectedRegion(const U2Region& region) {
+    return region.findIntersectedRegion(regions);
+}
+
+U2Region OffsetRegions::getRegion(int i) {
+    return regions[i];
+}
+
+int OffsetRegions::getOffset(int i) {
+    return offsets[i];
+}
+
+int OffsetRegions::getSize() {
+    SAFE_POINT(regions.size() == offsets.size(), "Invalid state!", 0);
+    return regions.size();
+}
+
 McaReferenceCharController::McaReferenceCharController(QObject* p, McaEditor *editor)
     : QObject(p) {
     SequenceObjectContext* ctx = editor->getReferenceContext();
@@ -39,18 +65,19 @@ McaReferenceCharController::McaReferenceCharController(QObject* p, McaEditor *ed
     initRegions(refObject);
 }
 
-QVector<U2Region> McaReferenceCharController::getCharRegions(const U2Region& region) {
-    int i = region.findIntersectedRegion(charRegions);
-    CHECK(i != -1, QVector<U2Region>());
+OffsetRegions McaReferenceCharController::getCharRegions(const U2Region& region) {
+    int i = charRegions.findIntersectedRegion(region);
+    CHECK(i != -1, OffsetRegions());
 
-    QVector<U2Region> result;
+    OffsetRegions result;
     do {
-        result << region.intersect(charRegions[i]);
-        if (charRegions[i].contains(region.endPos())) {
+        result.append(region.intersect(charRegions.getRegion(i)),
+                      charRegions.getOffset(i));
+        if (charRegions.getRegion(i).contains(region.endPos())) {
             return result;
         }
         i++;
-    } while (i < charRegions.size());
+    } while (i < charRegions.getSize());
     return result;
 }
 
@@ -59,6 +86,7 @@ void McaReferenceCharController::initRegions(U2SequenceObject *reference) {
     QByteArray data = reference->getWholeSequenceData(os);
     SAFE_POINT_OP(os, );
     U2Region current;
+    int gapCounter = 0;
     for (int i = 0; i < data.size(); i++) {
         if (data.at(i) != U2Msa::GAP_CHAR) {
             if (current.isEmpty()) {
@@ -68,14 +96,17 @@ void McaReferenceCharController::initRegions(U2SequenceObject *reference) {
                 // extend the current
                 current.length++;
             }
-        } else if (!current.isEmpty()) {
-            // append the region to resut
-            charRegions << current;
-            current = U2Region();
+        } else {
+            if (!current.isEmpty()) {
+                // append the region to resut
+                charRegions.append(current, gapCounter);
+                current = U2Region();
+            }
+            gapCounter++;
         }
     }
     if (!current.isEmpty()) {
-        charRegions << current;
+        charRegions.append(current, gapCounter);
     }
 }
 

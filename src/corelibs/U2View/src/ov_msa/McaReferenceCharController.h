@@ -29,17 +29,33 @@ namespace U2 {
 class McaEditor;
 class U2SequenceObject;
 
+class OffsetRegions {
+public:
+    OffsetRegions();
+
+    void append(const U2Region& region, int offset);
+    int findIntersectedRegion(const U2Region& region);
+
+    U2Region getRegion(int i);
+    int getOffset(int i);
+    int getSize();
+
+private:
+    QVector<U2Region>   regions;
+    QVector<int>        offsets;
+};
+
 class McaReferenceCharController : public QObject {
     Q_OBJECT
 public:
     McaReferenceCharController(QObject* p, McaEditor* editor);
 
-    QVector<U2Region> getCharRegions(const U2Region& region);
+    OffsetRegions getCharRegions(const U2Region& region);
 
 private:
     void initRegions(U2SequenceObject* reference);
 
-    QVector<U2Region> charRegions;
+    OffsetRegions charRegions;
 };
 
 } // namespace

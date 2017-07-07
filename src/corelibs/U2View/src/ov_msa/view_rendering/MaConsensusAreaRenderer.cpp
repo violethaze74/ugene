@@ -120,15 +120,17 @@ void MaConsensusAreaRenderer::drawContent(QPainter &painter) {
             SAFE_POINT(wgt != NULL, "Failed to cast!", );
             McaReferenceCharController* refController = wgt->refCharController;
             SAFE_POINT(refController != NULL, "Controller is null", );
-            QVector<U2Region> regions = refController->getCharRegions(U2Region(renderSettings.firstNotchedBasePosition,
+
+            OffsetRegions charRegions = refController->getCharRegions(U2Region(renderSettings.firstNotchedBasePosition,
                                                                                renderSettings.lastNotchedBasePosition - renderSettings.firstNotchedBasePosition + 1));
             ConsensusRenderSettings cutRenderSettings = renderSettings;
-            foreach (U2Region r, regions) {
-                cutRenderSettings.firstNotchedBasePosition = r.startPos;
-                cutRenderSettings.lastNotchedBasePosition = r.endPos() - 1;
+            for (int i = 0; i < charRegions.getSize(); i++) {
+                U2Region r = charRegions.getRegion(i);
+                cutRenderSettings.firstNotchedBasePosition = r.startPos - charRegions.getOffset(i);
+                cutRenderSettings.lastNotchedBasePosition = r.endPos() - 1 - charRegions.getOffset(i);
 
-                cutRenderSettings.firstNotchedBaseXRange = ui->getBaseWidthController()->getBaseScreenRange(cutRenderSettings.firstNotchedBasePosition);
-                cutRenderSettings.lastNotchedBaseXRange = ui->getBaseWidthController()->getBaseScreenRange(cutRenderSettings.lastNotchedBasePosition);
+                cutRenderSettings.firstNotchedBaseXRange = ui->getBaseWidthController()->getBaseScreenRange(r.startPos);
+                cutRenderSettings.lastNotchedBaseXRange = ui->getBaseWidthController()->getBaseScreenRange(r.endPos() - 1);
                 drawRuler(painter, cutRenderSettings);
             }
         }
