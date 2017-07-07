@@ -120,11 +120,11 @@ protected:
     QString getLastUsedAlgoSettingsKey() const;
     QString getThresholdSettingsKey(const QString& factoryId) const;
 
+    virtual void initRenderer() = 0;
     virtual void buildMenu(QMenu* m);
+    virtual bool highlightConsensusChar(int pos);
 
     void updateSelection(int newPos);
-
-    virtual bool highlightConsensusChar(int pos);
 
     MSAConsensusAlgorithmFactory* getConsensusAlgorithmFactory();
     void updateConsensusAlgorithm();

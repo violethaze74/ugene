@@ -61,7 +61,7 @@ namespace U2 {
 MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt *_ui)
     : editor(_ui->getEditor()),
       ui(_ui),
-      renderer(new MaConsensusAreaRenderer(this))
+      renderer(NULL)
 {
     assert(editor->getMaObject());
     completeRedraw = true;
@@ -97,8 +97,6 @@ MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt *_ui)
     configureConsensusAction = new QAction(tr("Consensus mode..."), this);
     configureConsensusAction->setObjectName("Consensus mode");
     connect(configureConsensusAction, SIGNAL(triggered()), SLOT(sl_configureConsensusAction()));
-
-    setupFontAndHeight();
 
     connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(setupFontAndHeight()));
 
@@ -308,15 +306,6 @@ void MaEditorConsensusArea::buildMenu(QMenu* m) {
     SAFE_POINT(copyMenu != NULL, "copyMenu", );
     copyMenu->addAction(copyConsensusAction);
     copyMenu->addAction(copyConsensusWithGapsAction);
-
-//    if (qobject_cast<MSAEditor*>(editor) != NULL) {
-//        m->addAction(configureConsensusAction);
-//    }
-
-//    CHECK(qobject_cast<McaEditor*>(editor) != NULL, );
-//    m->addAction(mismatchController->getNextAction());
-//    m->addAction(mismatchController->getPrevAction());
-//    m->addSeparator();
 }
 
 void MaEditorConsensusArea::sl_copyConsensusSequence() {

@@ -40,11 +40,11 @@
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
 #include "McaEditor.h"
+#include "McaEditorConsensusArea.h"
 #include "McaEditorOverviewArea.h"
 #include "McaEditorReferenceArea.h"
 #include "McaEditorSequenceArea.h"
 #include "McaReferenceCharController.h"
-#include "MSAEditorConsensusArea.h"
 #include "helpers/McaRowHeightController.h"
 #include "ov_sequence/SequenceObjectContext.h"
 #include "view_rendering/MaEditorWgt.h"
@@ -190,7 +190,6 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     : MaEditorWgt(editor)
 {
     rowHeightController = new McaRowHeightController(this);
-    refCharController = new McaReferenceCharController(this, editor);
 
     initActions();
     initWidgets();

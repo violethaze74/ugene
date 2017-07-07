@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.net
+ * http://ugene.unipro.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,30 +19,37 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_CONSENSUS_AREA_H_
-#define _U2_MSA_EDITOR_CONSENSUS_AREA_H_
+#ifndef _U2_MCA_EDITOR_CONSENSUS_AREA_H_
+#define _U2_MCA_EDITOR_CONSENSUS_AREA_H_
 
 #include <QWidget>
 
 #include "view_rendering/MaEditorConsensusArea.h"
 
+
 namespace U2 {
 
 class MaConsensusMismatchController;
 class McaEditorWgt;
-class MSAEditorUI;
 
-class U2VIEW_EXPORT MSAEditorConsensusArea : public MaEditorConsensusArea {
+class McaEditorConsensusArea : public MaEditorConsensusArea {
     Q_OBJECT
-    Q_DISABLE_COPY(MSAEditorConsensusArea)
+    Q_DISABLE_COPY(McaEditorConsensusArea)
+
 public:
-    MSAEditorConsensusArea(MSAEditorUI* ui);
+    McaEditorConsensusArea(McaEditorWgt* ui);
+
+    MaConsensusMismatchController* getMismatchController() { return mismatchController; }
 
 private:
+    void sl_buildStaticToolbar(GObjectView* v, QToolBar* tb);
     void initRenderer();
     void buildMenu(QMenu* m);
+    bool highlightConsensusChar(int pos);
+
+private:
+    MaConsensusMismatchController*  mismatchController;
 };
 
 } // namespace
-#endif // _U2_MSA_EDITOR_CONSENSUS_AREA_H_
-
+#endif // _U2_MCA_EDITOR_CONSENSUS_AREA_H_

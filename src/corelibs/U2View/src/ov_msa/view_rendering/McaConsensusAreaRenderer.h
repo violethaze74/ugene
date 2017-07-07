@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.net
+ * http://ugene.unipro.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,30 +19,25 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_CONSENSUS_AREA_H_
-#define _U2_MSA_EDITOR_CONSENSUS_AREA_H_
+#ifndef _U2_MCA_CONSENSUS_AREA_RENDERER_H_
+#define _U2_MCA_CONSENSUS_AREA_RENDERER_H_
 
-#include <QWidget>
-
-#include "view_rendering/MaEditorConsensusArea.h"
+#include "MaConsensusAreaRenderer.h"
 
 namespace U2 {
 
-class MaConsensusMismatchController;
-class McaEditorWgt;
-class MSAEditorUI;
+class McaReferenceCharController;
 
-class U2VIEW_EXPORT MSAEditorConsensusArea : public MaEditorConsensusArea {
-    Q_OBJECT
-    Q_DISABLE_COPY(MSAEditorConsensusArea)
+class McaConsensusAreaRenderer : public MaConsensusAreaRenderer {
 public:
-    MSAEditorConsensusArea(MSAEditorUI* ui);
+    McaConsensusAreaRenderer(MaEditorConsensusArea *area);
 
 private:
-    void initRenderer();
-    void buildMenu(QMenu* m);
+    void drawRuler(QPainter &painter, const ConsensusRenderSettings &settings);
+
+    McaReferenceCharController* refCharController;
 };
 
 } // namespace
-#endif // _U2_MSA_EDITOR_CONSENSUS_AREA_H_
 
+#endif // _U2_MCA_CONSENSUS_AREA_RENDERER_H_

@@ -28,10 +28,8 @@
 
 #include "MaConsensusAreaRenderer.h"
 #include "MaEditorWgt.h"
-#include "ov_msa/MaConsensusMismatchController.h"
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/McaEditor.h"
-#include "ov_msa/McaReferenceCharController.h"
 #include "ov_msa/MSAEditorConsensusArea.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/DrawHelper.h"
@@ -101,44 +99,7 @@ void MaConsensusAreaRenderer::drawContent(QPainter &painter) {
     const ConsensusRenderData consensusRenderData = getScreenDataToRender();
     const ConsensusRenderSettings renderSettings = getScreenRenderSettings(consensusSettings);
 
-    // SANGER_TODO: should be refactored!
-//    drawContent(painter, consensusRenderData, consensusSettings, renderSettings);
-    SAFE_POINT(consensusRenderData.isValid(), "Incorrect consensus data to draw", );
-    SAFE_POINT(NULL != renderSettings.colorScheme, "Color scheme is NULL", );
-
-    if (consensusSettings.isVisible(MSAEditorConsElement_CONSENSUS_TEXT)) {
-        drawConsensus(painter, consensusRenderData, renderSettings);
-    }
-
-    if (consensusSettings.isVisible(MSAEditorConsElement_RULER)) {
-        if (qobject_cast<MSAEditorConsensusArea*>(area) != NULL) {
-            drawRuler(painter, renderSettings);
-        } else {
-            McaEditorConsensusArea* mcaConsArea = qobject_cast<McaEditorConsensusArea*>(area);
-            SAFE_POINT(mcaConsArea != NULL, "Failed to cast consensus area to MCA consensus area", );
-            McaEditorWgt * wgt = qobject_cast<McaEditorWgt *>(mcaConsArea->getEditorWgt());
-            SAFE_POINT(wgt != NULL, "Failed to cast!", );
-            McaReferenceCharController* refController = wgt->refCharController;
-            SAFE_POINT(refController != NULL, "Controller is null", );
-
-            OffsetRegions charRegions = refController->getCharRegions(U2Region(renderSettings.firstNotchedBasePosition,
-                                                                               renderSettings.lastNotchedBasePosition - renderSettings.firstNotchedBasePosition + 1));
-            ConsensusRenderSettings cutRenderSettings = renderSettings;
-            for (int i = 0; i < charRegions.getSize(); i++) {
-                U2Region r = charRegions.getRegion(i);
-                cutRenderSettings.firstNotchedBasePosition = r.startPos - charRegions.getOffset(i);
-                cutRenderSettings.lastNotchedBasePosition = r.endPos() - 1 - charRegions.getOffset(i);
-
-                cutRenderSettings.firstNotchedBaseXRange = ui->getBaseWidthController()->getBaseScreenRange(r.startPos);
-                cutRenderSettings.lastNotchedBaseXRange = ui->getBaseWidthController()->getBaseScreenRange(r.endPos() - 1);
-                drawRuler(painter, cutRenderSettings);
-            }
-        }
-    }
-
-    if (consensusSettings.isVisible(MSAEditorConsElement_HISTOGRAM)) {
-        drawHistogram(painter, consensusRenderData, renderSettings);
-    }
+    drawContent(painter, consensusRenderData, consensusSettings, renderSettings);
 }
 
 void MaConsensusAreaRenderer::drawContent(QPainter &painter,
@@ -394,9 +355,10 @@ int MaConsensusAreaRenderer::getYRangeLength(MaEditorConsElement element) const 
         return 50;
     case MSAEditorConsElement_CONSENSUS_TEXT:
         return ui->getRowHeightController()->getSequenceHeight();
-    case MSAEditorConsElement_RULER:
-//        return rulerFontHeight + 2 * MaConsensusAreaRenderer::RULER_NOTCH_SIZE + 4;
-        return 12 + 2 * MaEditorConsensusAreaSettings::RULER_NOTCH_SIZE + 4;
+    case MSAEditorConsElement_RULER: {
+        QFontMetrics fm(area->getDrawSettings().getRulerFont());
+        return fm.height() + 2 * MaEditorConsensusAreaSettings::RULER_NOTCH_SIZE + 4;
+    }
     default:
         FAIL(false, 0);
     }
