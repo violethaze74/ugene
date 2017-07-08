@@ -162,25 +162,6 @@ int MaEditorSequenceArea::getNumDisplayableSequences() const {
     return model->getDisplayableRowsCount();
 }
 
-QPair<QString, int> MaEditorSequenceArea::getGappedColumnInfo() const{
-    QPair<QString, int> p;
-    CHECK(getEditor() != NULL, p);
-    CHECK(qobject_cast<MSAEditor*>(editor) != NULL, p); // SANGER_TODO: no ungappedLen and ungappedPosition for MCA
-    if (isAlignmentEmpty()) {
-        return QPair<QString, int>(QString::number(0), 0);
-    }
-
-    const MultipleSequenceAlignmentRow row = qobject_cast<MSAEditor*>(editor)->getMaObject()->getMsaRow(getSelectedRows().startPos);
-    int len = row->getUngappedLength();
-    QChar current = row->charAt(selection.topLeft().x());
-    if(current == U2Msa::GAP_CHAR){
-        return QPair<QString, int>(QString("gap"),len);
-    }else{
-        int pos = row->getUngappedPosition(selection.topLeft().x());
-        return QPair<QString, int>(QString::number(pos + 1),len);
-    }
-}
-
 bool MaEditorSequenceArea::isAlignmentEmpty() const {
     return editor->isAlignmentEmpty();
 }

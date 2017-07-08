@@ -87,7 +87,7 @@
 #include "MSAEditorOverviewArea.h"
 #include "MSAEditorSequenceArea.h"
 #include "MSAEditorState.h"
-#include "MSAEditorStatusBar.h"
+#include "MsaEditorStatusBar.h"
 #include "MSAEditorTasks.h"
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
@@ -654,6 +654,10 @@ void MSAEditorUI::initNameList(QScrollBar *nhBar) {
 
 void MSAEditorUI::initConsensusArea() {
     consArea = new MSAEditorConsensusArea(this);
+}
+
+void MSAEditorUI::initStatusBar() {
+    statusBar = new MsaEditorStatusBar(editor->getMaObject(), seqArea);
 }
 
 MSAEditorTreeViewer* MSAEditorUI::getCurrentTree() const

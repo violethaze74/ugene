@@ -87,6 +87,7 @@ protected:
     void initOverviewArea();
     void initNameList(QScrollBar* nhBar);
     void initConsensusArea();
+    void initStatusBar();
 
 private:
     McaEditorReferenceArea*     refArea;

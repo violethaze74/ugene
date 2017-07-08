@@ -44,6 +44,7 @@
 #include "McaEditorOverviewArea.h"
 #include "McaEditorReferenceArea.h"
 #include "McaEditorSequenceArea.h"
+#include "McaEditorStatusBar.h"
 #include "McaReferenceCharController.h"
 #include "helpers/McaRowHeightController.h"
 #include "ov_sequence/SequenceObjectContext.h"
@@ -255,6 +256,10 @@ void McaEditorWgt::initNameList(QScrollBar* nhBar) {
 
 void McaEditorWgt::initConsensusArea() {
     consArea = new McaEditorConsensusArea(this);
+}
+
+void McaEditorWgt::initStatusBar() {
+    statusBar = new McaEditorStatusBar(editor->getMaObject(), seqArea, refCharController);
 }
 
 } // namespace
