@@ -19,38 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_MSA_2_MCA_TASK_H_
-#define _U2_EXPORT_MSA_2_MCA_TASK_H_
+#ifndef _U2_MCA_EDITOR_CONTEXT_H_
+#define _U2_MCA_EDITOR_CONTEXT_H_
 
-#include <U2Core/DNAChromatogram.h>
-#include <U2Core/DocumentProviderTask.h>
+#include <U2Gui/ObjectViewModel.h>
 
 namespace U2 {
 
-class StateLocker;
-class MultipleSequenceAlignmentObject;
-
-class ExportMsa2McaTask : public DocumentProviderTask {
+class McaEditorContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    ExportMsa2McaTask(MultipleSequenceAlignmentObject *msaObject, const QString &mcaFilePath);
-    ~ExportMsa2McaTask();
+    McaEditorContext(QObject *parent);
+
+private slots:
+    void sl_exportMca2Msa();
 
 private:
-    void prepare();
-    void run();
-    ReportResult report();
-
-    static DNAChromatogram generateChromatogram(const QString &name, const int length);
-    Document * prepareDocument();
-
-    MultipleSequenceAlignmentObject *msaObject;
-    const QString mcaFilePath;
-    StateLocker *locker;
-
-    static const int MAX_TRACE_VALUE;
+    void initViewContext(GObjectView *view);
+    void buildMenu(GObjectView *view, QMenu *menu);
 };
 
 }   // namespace U2
 
-#endif // _U2_EXPORT_MSA_2_MCA_TASK_H_
+#endif // _U2_MCA_EDITOR_CONTEXT_H_

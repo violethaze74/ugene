@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.net
+ * http://ugene.unipro.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,37 +19,35 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_UTILS_H_
-#define _U2_EXPORT_UTILS_H_
+#ifndef _U2_EXPORT_MCA_2_MSA_TASK_H_
+#define _U2_EXPORT_MCA_2_MSA_TASK_H_
 
-#include <QObject>
-
-#include <U2Core/global.h>
+#include <U2Core/DocumentProviderTask.h>
 
 namespace U2 {
 
-class AbstractExportTask;
-class Annotation;
-class DocumentProviderTask;
-class ExportSequenceTaskSettings;
-class ExportSequencesDialog;
+class ConvertMca2MsaTask;
+class ExportAlignmentTask;
 class MultipleChromatogramAlignmentObject;
-class Task;
 
-class ExportUtils: public QObject {
+class ExportMca2MsaTask : public DocumentProviderTask {
     Q_OBJECT
 public:
+    ExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject, const QString &fileName, const DocumentFormatId &formatId, bool includeReference);
 
-    static void loadDNAExportSettingsFromDlg(ExportSequenceTaskSettings& s, U2::ExportSequencesDialog *d);
+private:
+    void prepare();
+    QList<Task *> onSubTaskFinished(Task *subTask);
 
-    static Task* wrapExportTask(DocumentProviderTask* t, bool addToProject);
+    MultipleChromatogramAlignmentObject *mcaObject;
+    QString fileName;
+    DocumentFormatId formatId;
+    const bool includeReference;
 
-    // generates unique name using prefix + numbers
-    static QString genUniqueName(const QSet<QString>& names, QString prefix);
-
-    static void launchExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject);
+    ConvertMca2MsaTask *convertTask;
+    ExportAlignmentTask *exportTask;
 };
 
-}//namespace
+}   // namespace U2
 
-#endif
+#endif // _U2_EXPORT_MCA_2_MSA_TASK_H_

@@ -77,6 +77,7 @@ QList<Task*> AddExportedDocumentAndOpenViewTask::onSubTaskFinished( Task* subTas
             }
         }
         loadTask = LoadDocumentTask::getDefaultLoadDocTask(doc->getURL());
+        CHECK_EXT(NULL != loadTask, setError(tr("Can't create load task")), subTasks);
         subTasks << loadTask;
     }
     if (subTask == loadTask) {

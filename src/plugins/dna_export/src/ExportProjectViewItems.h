@@ -44,7 +44,7 @@ private slots:
     void sl_saveCorrespondingSequence();
     void sl_saveSequencesAsAlignment();
     void sl_saveAlignmentAsSequences();
-    void sl_saveMsaAsMca();
+    void sl_exportMcaToMsa();
     void sl_exportNucleicAlignmentToAmino();
     void sl_importAnnotationsFromCSV();
     void sl_exportChromatogramToSCF();
@@ -60,7 +60,7 @@ private:
     QAction* exportCorrespondingSeqsAction;
     QAction* exportSequencesAsAlignmentAction;
     QAction* exportAlignmentAsSequencesAction;
-    QAction* exportMsaToMcaAction;
+    QAction* exportMcaToMsaAction;
     QAction* exportNucleicAlignmentToAminoAction;
     QAction* importAnnotationsFromCSVAction;
     QAction* exportDNAChromatogramAction;

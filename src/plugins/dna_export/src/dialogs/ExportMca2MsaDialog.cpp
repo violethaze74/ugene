@@ -19,36 +19,58 @@
  * MA 02110-1301, USA.
  */
 
+#include <QPushButton>
+
 #include <U2Core/BaseDocumentFormats.h>
 
+#include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
 
-#include "ExportMsa2McaDialog.h"
+#include "dialogs/ExportMca2MsaDialog.h"
 
 namespace U2 {
 
-ExportMsa2McaDialog::ExportMsa2McaDialog(const QString &defaultFileName, QWidget *parent)
-    : QDialog(parent)
+ExportMca2MsaDialog::ExportMca2MsaDialog(const QString &defaultFilePath, QWidget *parent)
+    : QDialog(parent),
+      saveController(NULL)
 {
     setupUi(this);
-    initSaveController(defaultFileName);
+
+    new HelpButton(this, buttonBox, "19759429");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+
+    initSaveController(defaultFilePath);
 }
 
-QString ExportMsa2McaDialog::getSavePath() const {
+QString ExportMca2MsaDialog::getSavePath() const {
     return saveController->getSaveFileName();
 }
 
-void ExportMsa2McaDialog::initSaveController(const QString &defaultFileName) {
+QString ExportMca2MsaDialog::getFormatId() const {
+    return saveController->getFormatIdToSave();
+}
+
+bool ExportMca2MsaDialog::getAddToProjectOption() const {
+    return chbAddToProject->isChecked();
+}
+
+bool ExportMca2MsaDialog::getIncludeReferenceOption() const {
+    return chbIncludeReference->isChecked();
+}
+
+void ExportMca2MsaDialog::initSaveController(const QString &defaultFilePath) {
     SaveDocumentControllerConfig config;
-    config.defaultFileName = defaultFileName;
-    config.defaultFormatId = BaseDocumentFormats::UGENEDB;
-    config.fileDialogButton = pbBrowse;
-    config.fileNameEdit = lePath;
+    config.defaultFileName = defaultFilePath;
+    config.defaultFormatId = BaseDocumentFormats::CLUSTAL_ALN;
+    config.fileDialogButton = tbFilePath;
+    config.fileNameEdit = leFilePath;
+    config.formatCombo = cbFormat;
     config.parentWidget = this;
-    config.saveTitle = tr("Export MSA to MCA");
+    config.saveTitle = tr("Export Alignment");
 
     DocumentFormatConstraints formatConstraints;
-    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
+    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     formatConstraints.addFlagToSupport(DocumentFormatFlag_SupportWriting);
 
     saveController = new SaveDocumentController(config, formatConstraints, this);
