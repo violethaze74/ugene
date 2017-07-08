@@ -84,6 +84,7 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
       reference(reference),
       minIdentityPercent(minIdentityPercent),
       offset(0),
+      readIdentity(0),
       readShift(0),
       storage(storage),
       blastTask(NULL),
@@ -208,6 +209,10 @@ qint64 BlastAndSwReadTask::getOffset() const {
     return offset;
 }
 
+int BlastAndSwReadTask::getReadIdentity() const {
+    return readIdentity;
+}
+
 U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData> &blastAnnotations) {
     U2Region refRegion;
     U2Region blastReadRegion;
@@ -236,7 +241,7 @@ U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData
     CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), U2Region());
     qint64 readLen = readObject->getSequenceLength();
 
-    int readIdentity = 100 * maxIdentity / readLen;
+    readIdentity = 100 * maxIdentity / readLen;
     CHECK(readIdentity >= minIdentityPercent, U2Region());
 
     qint64 undefinedLen = readLen - maxIdentity;

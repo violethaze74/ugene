@@ -21,6 +21,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/L10n.h>
@@ -207,6 +208,21 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) c
     AlignToReferenceBlastTask *alignTask = qobject_cast<AlignToReferenceBlastTask*>(task);
     CHECK_EXT(NULL != alignTask, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
 
+    const QMap<QString, bool> acceptedReads = alignTask->getAcceptedReads();
+    const QStringList discardedReads = alignTask->getDiscardedReads();
+
+    algoLog.info(QString("Reads discarded by the mapper: %1").arg(discardedReads.count()));
+    foreach (const QString &readName, discardedReads) {
+        algoLog.details(readName);
+    }
+    algoLog.info(QString("Reads accepted by the mapper: %1").arg(acceptedReads.count()));
+    foreach (const QString &readName, acceptedReads.keys()) {
+        algoLog.details((acceptedReads[readName] ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + readName);
+    }
+    algoLog.info(QString("Total reads processed by the mapper: %1").arg(acceptedReads.count() + discardedReads.count()));
+
+    monitor()->addInfo(QString("%1 reads were not mapped").arg(discardedReads.count()), actor->getId(), Problem::U2_INFO);
+
     const QString resultUrl = alignTask->getResultUrl();
     if (QFileInfo(resultUrl).exists()) {
         monitor()->addOutputFile(resultUrl, actor->getId());
@@ -233,7 +249,7 @@ AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl, cons
                                                      const QList<SharedDbiDataHandler> &reads,
                                                      int minIdentityPercent,
                                                      DbiDataStorage *storage)
-    : Task(tr("Align to reference"), TaskFlags_NR_FOSE_COSC),
+    : Task(tr("Align to reference"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       referenceUrl(refUrl),
       resultUrl(resultUrl),
       reference(reference),
@@ -245,6 +261,7 @@ AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl, cons
       saveTask(NULL),
       storage(storage)
 {
+    GCOUNTER(cvar, tvar, "AlignToReferenceBlastTask");
 }
 
 void AlignToReferenceBlastTask::prepare() {
@@ -288,6 +305,35 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
     return result;
 }
 
+QString AlignToReferenceBlastTask::generateReport() const {
+    QString result;
+
+    QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
+    CHECK(NULL != refObject, "");
+
+    const QMap<QString, bool> acceptedReads = getAcceptedReads();
+    const QStringList filtredReads = getDiscardedReads();
+
+    result += "<br><table><tr><td><b>" + tr("Details") + "</b></td></tr></table>\n";
+    result += "<u>" + tr("Reference sequence:") + QString("</u> %1<br>").arg(refObject->getSequenceName());
+    result += "<u>" + tr("Aligned reads (%1):").arg(acceptedReads.size()) + "</u>";
+    result += "<table>";
+    foreach (const QString &readName, acceptedReads.keys()) {
+        const QString read = (acceptedReads[readName] ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + readName;
+        result += "<tr><td width=50>" + tr("") + "</td><td>" + read + "</td></tr>";
+    }
+
+    result += "</table><br>";
+    result += "<u>" + tr("Filtered by quality (%1):").arg(filtredReads.size()) + "</u>";
+    result += "<table>";
+    foreach (const QString &readName, filtredReads) {
+        result += "<tr><td width=50></td><td width=300 nowrap>" + readName + "</td></tr>";
+    }
+    result += "</table>";
+
+    return result;
+}
+
 QString AlignToReferenceBlastTask::getResultUrl() const {
     CHECK(NULL != saveTask, "");
     return saveTask->getURL().getURLString();
@@ -296,6 +342,26 @@ QString AlignToReferenceBlastTask::getResultUrl() const {
 SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
     CHECK(NULL != composeSubTask, SharedDbiDataHandler());
     return composeSubTask->getAnnotations();
+}
+
+QMap<QString, bool> AlignToReferenceBlastTask::getAcceptedReads() const {
+    QMap<QString, bool> acceptedReads;
+    foreach (BlastAndSwReadTask *subTask, blastTask->getBlastSubtasks()) {
+        if (subTask->getReadIdentity() >= minIdentityPercent) {
+            acceptedReads.insert(subTask->getReadName(), subTask->isComplement());
+        }
+    }
+    return acceptedReads;
+}
+
+QStringList AlignToReferenceBlastTask::getDiscardedReads() const {
+    QStringList discardedReads;
+    foreach (BlastAndSwReadTask* subTask, blastTask->getBlastSubtasks()) {
+        if (subTask->getReadIdentity() < minIdentityPercent) {
+            discardedReads << subTask->getReadName();
+        }
+    }
+    return discardedReads;
 }
 
 } // LocalWorkflow

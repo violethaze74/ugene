@@ -36,6 +36,7 @@ public:
     LogLevel            logLevel;
     bool                withPluginList;
     QStringList         pluginList;
+    QString             reportFile;
 };
 
 class U2CORE_EXPORT CmdlineTaskRunner : public Task {
@@ -45,6 +46,8 @@ public:
 
     void prepare();
     ReportResult report();
+
+    static const QString REPORT_FILE_ARG;
 
 protected:
     virtual bool isCommandLogLine(const QString &logLine) const;

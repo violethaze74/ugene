@@ -76,6 +76,7 @@ public:
     virtual int getMsgPassed(const Link*);
 
 private:
+    QString generateReport() const;
     // CmdlineTask
     QString getTaskError() const;
 

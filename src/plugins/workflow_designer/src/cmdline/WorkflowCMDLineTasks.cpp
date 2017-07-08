@@ -22,6 +22,7 @@
 #include <QFile>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Counter.h>
@@ -46,7 +47,12 @@ namespace U2 {
 * WorkflowRunFromCMDLineBase
 *******************************************/
 WorkflowRunFromCMDLineBase::WorkflowRunFromCMDLineBase()
-: Task( tr( "Workflow run from cmdline" ), TaskFlag_NoRun ), schema(NULL), optionsStartAt(-1), loadTask(NULL) {
+    : Task(tr("Workflow run from cmdline"), TaskFlag_None),
+      schema(NULL),
+      optionsStartAt(-1),
+      loadTask(NULL),
+      workflowRunTask(NULL)
+{
     GCOUNTER(cvar,tvar,"workflow_run_from_cmdline");
 
     CMDLineRegistry * cmdLineRegistry = AppContext::getCMDLineRegistry();
@@ -173,9 +179,25 @@ QList<Task*> WorkflowRunFromCMDLineBase::onSubTaskFinished( Task* subTask ) {
             return res;
         }
 
-        res << getWorkflowRunTask();
+        workflowRunTask = getWorkflowRunTask();
+        res << workflowRunTask;
     }
     return res;
+}
+
+void WorkflowRunFromCMDLineBase::run() {
+    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    SAFE_POINT(NULL != cmdLineRegistry, "CMDLineRegistry is NULL", );
+    CHECK(NULL != workflowRunTask, );
+
+    const QString reportFilePath = cmdLineRegistry->getParameterValue(CmdlineTaskRunner::REPORT_FILE_ARG);
+    CHECK(!reportFilePath.isEmpty(), );
+
+    QFile reportFile(reportFilePath);
+    const bool opened = reportFile.open(QIODevice::WriteOnly);
+    CHECK_EXT(opened, setError(L10N::errorOpeningFileWrite(reportFilePath)), );
+
+    reportFile.write(workflowRunTask->generateReport().toLocal8Bit());
 }
 
 /*******************************************

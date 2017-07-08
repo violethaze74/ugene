@@ -89,6 +89,7 @@ public:
     QString     getReadName() const;
     MultipleSequenceAlignment getMAlignment();
     qint64      getOffset() const;
+    int         getReadIdentity() const;
 
 private:
     U2Region getReferenceRegion(const QList<SharedAnnotationData>& blastAnnotations);
@@ -103,6 +104,7 @@ private:
     const SharedDbiDataHandler reference;
     const int minIdentityPercent;
     qint64 referenceLength;
+    int readIdentity;
 
     SharedDbiDataHandler msa;
     qint64 offset;
