@@ -22,14 +22,14 @@
 #ifndef _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_H_
 #define _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_H_
 
-#include "ui_AlignToReferenceBlastDialog.h"
+#include <QDialog>
+#include <QTemporaryFile>
 
 #include <U2Core/Task.h>
 
 #include <U2Gui/U2SavableWidget.h>
 
-#include <QDialog>
-
+#include "ui_AlignToReferenceBlastDialog.h"
 
 namespace U2 {
 
@@ -40,14 +40,10 @@ class LoadDocumentTask;
 class AlignToReferenceBlastCmdlineTask : public Task {
     Q_OBJECT
 public:
-    struct Settings {
-        Settings()
-            : minIdentity(60),
-              minLength(0),
-              qualityThreshold(30),
-              trimBothEnds(true),
-              addResultToProject(true)
-        {}
+    class Settings {
+    public:
+        Settings();
+
         QString referenceUrl;
         QStringList readUrls;
         int minIdentity;
@@ -59,9 +55,20 @@ public:
     };
 
     AlignToReferenceBlastCmdlineTask(const Settings& settings);
+
+private:
     void prepare();
+    QString generateReport() const;
     QList<Task*> onSubTaskFinished(Task *subTask);
-    virtual ReportResult report();
+    void run();
+    ReportResult report();
+
+    Settings settings;
+    CmdlineInOutTaskRunner *cmdlineTask;
+    LoadDocumentTask *loadRef;
+
+    QTemporaryFile reportFile;
+    QString reportString;
 
     static const QString ALIGN_TO_REF_CMDLINE;
     static const QString TRIM_ARG;
@@ -71,11 +78,6 @@ public:
     static const QString MIN_IDENTITY_ARG;
     static const QString REF_ARG;
     static const QString RESULT_ALIGNMENT_ARG;
-
-private:
-    Settings settings;
-    CmdlineInOutTaskRunner *cmdlineTask;
-    LoadDocumentTask *loadRef;
 };
 
 class AlignToReferenceBlastDialog : public QDialog, public Ui_AlignToReferenceBlastDialog {

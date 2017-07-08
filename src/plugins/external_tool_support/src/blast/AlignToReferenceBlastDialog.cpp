@@ -19,31 +19,44 @@
  * MA 02110-1301, USA.
  */
 
-#include "AlignToReferenceBlastDialog.h"
+#include <QMessageBox>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CmdlineInOutTaskRunner.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
+#include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/OpenViewTask.h>
-#include <U2Gui/U2FileDialog.h>
 #include <U2Gui/SaveDocumentController.h>
+#include <U2Gui/U2FileDialog.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
-#include <QMessageBox>
-
+#include "AlignToReferenceBlastDialog.h"
 
 namespace U2 {
+
+AlignToReferenceBlastCmdlineTask::Settings::Settings()
+    : minIdentity(60),
+      minLength(0),
+      qualityThreshold(30),
+      trimBothEnds(true),
+      addResultToProject(true)
+{
+
+}
 
 const QString AlignToReferenceBlastCmdlineTask::ALIGN_TO_REF_CMDLINE = "align-to-reference";
 
@@ -58,15 +71,21 @@ const QString AlignToReferenceBlastCmdlineTask::REF_ARG = "reference";
 const QString AlignToReferenceBlastCmdlineTask::RESULT_ALIGNMENT_ARG = "result-url";
 
 AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Settings &settings)
-    : Task(tr("Align to reference workflow wrapper"), TaskFlags_NR_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText),
+    : Task(tr("Align Sanger reads to reference"), TaskFlags_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
       cmdlineTask(NULL),
-      loadRef(NULL)
+      loadRef(NULL),
+      reportFile(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath() + "/align_to_ref_XXXXXX.txt")
 {
-
+    GCOUNTER(cvar, tvar, "AlignToReferenceBlastCmdlineTask");
 }
 
 void AlignToReferenceBlastCmdlineTask::prepare() {
+    AppContext::getAppSettings()->getUserAppsSettings()->createCurrentProcessTemporarySubDir(stateInfo);
+    const bool opened = reportFile.open();
+    SAFE_POINT_EXT(opened, setError(L10N::errorOpeningFileWrite(reportFile.fileName())), );
+    reportFile.close();
+
     FormatDetectionConfig config;
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.referenceUrl, config);
     CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError(tr("wrong reference format")), );
@@ -77,6 +96,10 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
     loadRef = new LoadDocumentTask(format->getFormatId(),
         settings.referenceUrl, AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.referenceUrl)));
     addSubTask(loadRef);
+}
+
+QString AlignToReferenceBlastCmdlineTask::generateReport() const {
+    return reportString;
 }
 
 QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) {
@@ -96,6 +119,7 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
         config.arguments << argString.arg(TRIM_ARG).arg(settings.trimBothEnds);
         config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(settings.outAlignment);
 
+        config.reportFile = reportFile.fileName();
         config.emptyOutputPossible = true;
 
         cmdlineTask = new CmdlineInOutTaskRunner(config);
@@ -116,6 +140,11 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
     }
 
     return result;
+}
+
+void AlignToReferenceBlastCmdlineTask::run() {
+    reportFile.open();
+    reportString = reportFile.readAll();
 }
 
 Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {

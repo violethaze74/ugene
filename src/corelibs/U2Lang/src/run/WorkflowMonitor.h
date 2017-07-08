@@ -99,17 +99,20 @@ public:
     const QMap<QString, Monitor::WorkerInfo> & getWorkersInfo() const;
     const QList<Monitor::WorkerParamsInfo>  & getWorkersParameters() const;
     const QMap<QString, Monitor::WorkerLogInfo> & getWorkersLog() const;
+    const QMap<QString, StrStrMap> &getWorkersReports() const;
     QString actorName(const QString &id) const;
     int getDataProduced(const QString &actor) const;
     bool containsOutputFile(const QString &url) const;
 
     void addOutputFile(const QString &url, const QString &producer, bool openBySystem = false);
-    void addError(const QString &message, const QString &actor ,const QString &type = Problem::U2_ERROR);
+    void addInfo(const QString &message, const QString &actor, const QString &type = Problem::U2_INFO);
+    void addError(const QString &message, const QString &actor, const QString &type = Problem::U2_ERROR);
     /** Can be called only one time for the task */
     void addTaskError(Task *task, const QString &message = "");
     void addTaskWarning(Task *task, const QString &message = "");
     void addTime(qint64 timeMks, const QString &actor);
     void addTick(qint64 timeMks, const QString &actor);
+
     void start();
     void pause();
     void resume();
@@ -130,6 +133,7 @@ public:
 public slots:
     void sl_progressChanged();
     void sl_taskStateChanged();
+    void sl_workerTaskFinished(Task *workerTask);
 
 signals:
     void si_firstProblem();
@@ -156,6 +160,7 @@ private:
     QMap<QString, Monitor::WorkerInfo> workers;
     QList<Monitor::WorkerParamsInfo> workersParamsInfo;
     QMap<QString, Monitor::WorkerLogInfo> workersLog;
+    QMap<QString, StrStrMap> workersReports;
     QString _outputDir;
     bool saveSchema;
     bool started;

@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -92,6 +93,10 @@ const QMap<QString, Monitor::WorkerLogInfo> & WorkflowMonitor::getWorkersLog() c
     return workersLog;
 }
 
+const QMap<QString, StrStrMap> &WorkflowMonitor::getWorkersReports() const {
+    return workersReports;
+}
+
 QString WorkflowMonitor::actorName(const QString &id) const {
     SAFE_POINT(procMap.contains(id), QString("Unknown actor id %1").arg(id), "");
     return procMap[id]->getLabel();
@@ -105,6 +110,10 @@ void WorkflowMonitor::addOutputFile(const QString &url, const QString &producer,
 
     outputFiles << info;
     emit si_newOutputFile(info);
+}
+
+void WorkflowMonitor::addInfo(const QString &message, const QString &actor, const QString &type) {
+    addProblem(Problem(message, actor, type));
 }
 
 void WorkflowMonitor::addError(const QString &message, const QString &actor, const QString &type) {
@@ -162,6 +171,7 @@ void WorkflowMonitor::resume() {
 void WorkflowMonitor::registerTask(Task *task, const QString &actor) {
     SAFE_POINT(procMap.contains(actor), "Unknown actor id", );
     taskMap[task] = procMap[actor];
+    connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_workerTaskFinished(Task *)));
 }
 
 void WorkflowMonitor::setOutputDir(const QString &dir) {
@@ -202,6 +212,13 @@ void WorkflowMonitor::sl_taskStateChanged() {
         emit si_taskStateChanged(state);
         emit si_report();
     }
+}
+
+void WorkflowMonitor::sl_workerTaskFinished(Task *workerTask) {
+    Actor *actor = taskMap.value(workerTask, NULL);
+    SAFE_POINT(NULL != actor, QString("An unknown task finished: %1").arg(workerTask->getTaskName()), );
+    CHECK(workerTask->isReportingEnabled(), );
+    workersReports[actor->getId()].insert(workerTask->getTaskName(), workerTask->generateReport());
 }
 
 void WorkflowMonitor::setWorkerInfo(const QString &actorId, const WorkerInfo &info) {
