@@ -91,14 +91,4 @@ void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize &/*canvasSi
     }
 }
 
-McaReferenceAreaRendererFactory::McaReferenceAreaRendererFactory(MaEditor *maEditor)
-    : maEditor(maEditor)
-{
-
-}
-
-McaReferenceAreaRenderer *McaReferenceAreaRendererFactory::createRenderer(PanView *panView) const {
-    return new McaReferenceAreaRenderer(panView, panView->getSequenceContext(), maEditor);
-}
-
 }   // namespace U2

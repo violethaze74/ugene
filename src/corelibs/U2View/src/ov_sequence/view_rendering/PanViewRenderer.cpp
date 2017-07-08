@@ -423,12 +423,16 @@ const QString PanViewRenderer::getText(const PVRowData * rData) const {
     return text;
 }
 
-PanViewRendererFactory::~PanViewRendererFactory() {
+PanViewRenderAreaFactory::PanViewRenderAreaFactory() {
 
 }
 
-PanViewRenderer *PanViewRendererFactory::createRenderer(PanView *panView) const {
-    return new PanViewRenderer(panView, panView->getSequenceContext());
+PanViewRenderAreaFactory::~PanViewRenderAreaFactory() {
+
+}
+
+PanViewRenderArea *PanViewRenderAreaFactory::createRenderArea(PanView *panView) const {
+    return new PanViewRenderArea(panView, new PanViewRenderer(panView, panView->getSequenceContext()));
 }
 
 } // namespace

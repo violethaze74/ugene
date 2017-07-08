@@ -140,14 +140,14 @@ void PanView::ZoomUseObject::releaseZoom() {
 }
 
 #define MAX_VISIBLE_ROWS_ON_START 10
-PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRendererFactory &rendererFactory)
+PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderAreaFactory &renderFactory)
     : GSequenceLineViewAnnotated(p, ctx)
 {
     rowBar = new QScrollBar(this);
 
     settings = new PanViewLinesSettings();
     rowsManager = new PVRowsManager();
-    renderArea = new PanViewRenderArea(this, rendererFactory.createRenderer(this));
+    renderArea = renderFactory.createRenderArea(this);
 
     updateNumVisibleRows();
 

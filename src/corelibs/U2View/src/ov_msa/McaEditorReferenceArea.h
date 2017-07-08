@@ -57,6 +57,26 @@ private:
     McaReferenceAreaRenderer *renderer;
 };
 
+class McaEditorReferenceRenderArea : public PanViewRenderArea {
+public:
+    McaEditorReferenceRenderArea(McaEditorWgt* _ui, PanView *d, PanViewRenderer *renderer);
+
+    virtual qint64 coordToPos(int x) const;
+private:
+    McaEditorWgt* ui;
+};
+
+class McaEditorReferenceRenderAreaFactory : public PanViewRenderAreaFactory {
+public:
+    McaEditorReferenceRenderAreaFactory(McaEditorWgt *_ui, McaEditor *_editor);
+
+    PanViewRenderArea *createRenderArea(PanView *panView) const;
+
+private:
+    McaEditorWgt *ui;
+    MaEditor *maEditor;
+};
+
 } // namespace U2
 
 #endif // _U2_MCA_EDITOR_REFERENCE_VIEW_H_

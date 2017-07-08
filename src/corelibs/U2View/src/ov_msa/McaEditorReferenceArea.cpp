@@ -31,11 +31,12 @@
 #include "MSAEditorConsensusArea.h"
 #include "helpers/DrawHelper.h"
 #include "helpers/ScrollController.h"
+#include "ov_msa/helpers/BaseWidthController.h"
 
 namespace U2 {
 
 McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectContext *ctx)
-    : PanView(ui, ctx, McaReferenceAreaRendererFactory(NULL != ui ? ui->getEditor() : NULL)),
+    : PanView(ui, ctx, McaEditorReferenceRenderAreaFactory(ui, NULL != ui ? ui->getEditor() : NULL)),
       editor(NULL != ui ? ui->getEditor() : NULL),
       ui(ui),
       renderer(dynamic_cast<McaReferenceAreaRenderer *>(getRenderArea()->getRenderer()))
@@ -107,6 +108,26 @@ void McaEditorReferenceArea::sl_update() {
 
 void McaEditorReferenceArea::sl_onSelectionChanged() {
     emit si_selectionChanged();
+}
+
+McaEditorReferenceRenderArea::McaEditorReferenceRenderArea(McaEditorWgt *_ui, PanView *d, PanViewRenderer *renderer)
+    : PanViewRenderArea(d, renderer), 
+    ui(_ui) {
+};
+
+qint64 McaEditorReferenceRenderArea::coordToPos(int x) const {
+    return ui == NULL ? 0 : ui->getBaseWidthController()->screenXPositionToBase(x);
+}
+
+McaEditorReferenceRenderAreaFactory::McaEditorReferenceRenderAreaFactory(McaEditorWgt *_ui, McaEditor *_editor)
+    : PanViewRenderAreaFactory(),
+    ui(_ui),
+    maEditor(_editor) {
+
+}
+
+PanViewRenderArea * McaEditorReferenceRenderAreaFactory::createRenderArea(PanView *panView) const {
+    return new McaEditorReferenceRenderArea(ui, panView, new McaReferenceAreaRenderer(panView, panView->getSequenceContext(), maEditor));
 }
 
 } // namespace
