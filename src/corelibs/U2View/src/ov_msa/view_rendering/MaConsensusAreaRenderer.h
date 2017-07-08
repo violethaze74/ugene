@@ -90,7 +90,7 @@ public:
     MaConsensusAreaRenderer(MaEditorConsensusArea *area);
 
     void drawContent(QPainter &painter);
-    static void drawContent(QPainter &painter,
+    void drawContent(QPainter &painter,
                             const ConsensusRenderData &consensusRenderData,
                             const MaEditorConsensusAreaSettings &consensusSettings,
                             const ConsensusRenderSettings &renderSettings);
@@ -103,10 +103,10 @@ public:
     U2Region getYRange(const MaEditorConsElements &visibleElements, MaEditorConsElement element) const;
     U2Region getYRange(MaEditorConsElement element) const;
 
-private:
+protected:
     static void drawConsensus(QPainter &painter, const ConsensusRenderData &consensusRenderData, const ConsensusRenderSettings &settings);
     static void drawConsensusChar(QPainter &painter, const ConsensusCharRenderData& charData, const ConsensusRenderSettings &settings);
-    static void drawRuler(QPainter &painter, const ConsensusRenderSettings &settings);
+    virtual void drawRuler(QPainter &painter, const ConsensusRenderSettings &settings);
     static void drawHistogram(QPainter &painter, const ConsensusRenderData &consensusRenderData, const ConsensusRenderSettings &settings);
 
     ConsensusRenderData getScreenDataToRender() const;

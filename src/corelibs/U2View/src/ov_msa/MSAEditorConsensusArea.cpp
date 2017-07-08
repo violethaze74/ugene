@@ -19,25 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include <QToolBar>
-
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
-
-#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/MSAConsensusUtils.h>
-#include <U2Algorithm/MsaColorScheme.h>
-
-#include <U2Core/AppContext.h>
-
 #include <U2Gui/GUIUtils.h>
 
-#include "MSAEditorConsensusArea.h"
-#include "MaConsensusMismatchController.h"
-
-#include "McaEditor.h"
 #include "MSAEditor.h"
+#include "MSAEditorConsensusArea.h"
+#include "view_rendering/MaConsensusAreaRenderer.h"
 
 
 namespace U2 {
@@ -47,7 +33,12 @@ namespace U2 {
 /************************************************************************/
 MSAEditorConsensusArea::MSAEditorConsensusArea(MSAEditorUI *ui)
     : MaEditorConsensusArea(ui) {
+    initRenderer();
+    setupFontAndHeight();
+}
 
+void MSAEditorConsensusArea::initRenderer() {
+    renderer = new MaConsensusAreaRenderer(this);
 }
 
 void MSAEditorConsensusArea::buildMenu(QMenu* m) {
@@ -57,37 +48,6 @@ void MSAEditorConsensusArea::buildMenu(QMenu* m) {
     copyMenu->addAction(copyConsensusWithGapsAction);
 
     m->addAction(configureConsensusAction);
-}
-
-/************************************************************************/
-/* McaEditorConsensusArea */
-/************************************************************************/
-McaEditorConsensusArea::McaEditorConsensusArea(McaEditorWgt *ui)
-    : MaEditorConsensusArea(ui) {
-    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO);
-    setConsensusAlgorithm(algoFactory);
-
-    mismatchController = new MaConsensusMismatchController(this, consensusCache, editor);
-}
-
-void McaEditorConsensusArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
-    t->addAction(mismatchController->getPrevAction());
-    t->addAction(mismatchController->getNextAction());
-}
-
-void McaEditorConsensusArea::buildMenu(QMenu* m) {
-    QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
-    SAFE_POINT(copyMenu != NULL, "copyMenu", );
-    copyMenu->addAction(copyConsensusAction);
-    copyMenu->addAction(copyConsensusWithGapsAction);
-
-    m->addAction(mismatchController->getNextAction());
-    m->addAction(mismatchController->getPrevAction());
-    m->addSeparator();
-}
-
-bool McaEditorConsensusArea::highlightConsensusChar(int pos) {
-    return consensusSettings.highlightMismatches && mismatchController->isMismatch(pos);
 }
 
 } // namespace U2

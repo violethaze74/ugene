@@ -31,7 +31,6 @@ namespace U2 {
 
 class McaEditorReferenceArea;
 class McaEditorSequenceArea;
-class McaReferenceCharController;
 class SequenceObjectContext;
 class U2SequenceObject;
 
@@ -75,7 +74,6 @@ protected:
 
 class McaEditorWgt : public MaEditorWgt {
     Q_OBJECT
-    friend class MaConsensusAreaRenderer; //SANGER_TODO: should be removed! added for checking
 public:
     McaEditorWgt(McaEditor* editor);
 
@@ -92,7 +90,6 @@ protected:
 
 private:
     McaEditorReferenceArea*     refArea;
-    McaReferenceCharController* refCharController;
 };
 
 } // namespace

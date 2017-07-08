@@ -44,10 +44,12 @@ int OffsetRegions::findIntersectedRegion(const U2Region& region) {
 }
 
 U2Region OffsetRegions::getRegion(int i) {
+    SAFE_POINT(0 <= i && i < regions.size(), "Index out of range", U2Region());
     return regions[i];
 }
 
 int OffsetRegions::getOffset(int i) {
+    SAFE_POINT(0 <= i && i < offsets.size(), "Index out of range", 0);
     return offsets[i];
 }
 
