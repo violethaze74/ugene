@@ -58,6 +58,8 @@ public:
     // inserts column of gaps with newChar at rowIndex row
     void insertCharacter(int rowIndex, int pos, char newChar);
 
+    void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
+
     void saveState();
     void releaseState();
 
@@ -69,6 +71,8 @@ private:
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
                              int startPos, int nBases);
     virtual void insertGap(const U2Region &rows, int pos, int nGaps);
+    QList<U2Region> getColumnsWithGaps(int requiredGapsCount) const;
+    U2MsaRowGapModel getReferenceGapModel() const;
 
     mutable U2SequenceObject* referenceObj;
 };

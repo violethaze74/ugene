@@ -23,6 +23,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
 #include <U2Core/MsaDbiUtils.h>
+#include <U2Core/MSAUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -147,6 +148,14 @@ const MultipleAlignmentRow MultipleAlignmentObject::getRow(int row) const {
 
 int MultipleAlignmentObject::getRowPosById(qint64 rowId) const {
     return getMultipleAlignment()->getRowsIds().indexOf(rowId);
+}
+
+U2MsaMapGapModel MultipleAlignmentObject::getMapGapModel() const {
+    return getMultipleAlignment()->getMapGapModel();
+}
+
+U2MsaListGapModel MultipleAlignmentObject::getGapModel() const {
+    return getMultipleAlignment()->getGapModel();
 }
 
 void MultipleAlignmentObject::removeRow(int rowIdx) {

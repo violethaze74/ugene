@@ -76,6 +76,7 @@ private slots:
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
 
     void sl_addInsertion();
+    void sl_removeColumnsOfGaps();
 
 private:
     void initRenderer();
@@ -103,6 +104,7 @@ private:
     QAction*    scaleAction;
 
     QAction*    insertAction;
+    QAction*    removeColumnsOfGapsAction;
 };
 
 

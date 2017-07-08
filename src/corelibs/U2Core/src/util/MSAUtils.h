@@ -78,7 +78,7 @@ public:
       **/
     static bool restoreRowNames(MultipleSequenceAlignment& ma, const QStringList& names);
 
-    static QList<U2Region> getColumnsWithGaps(const MultipleAlignment &ma, int requiredGapsCount = -1);
+    static QList<U2Region> getColumnsWithGaps(const U2MsaListGapModel &maGapModel, int length, int requiredGapsCount = -1);
     static void removeColumnsWithGaps(MultipleSequenceAlignment &msa, int requiredGapsCount = -1);
 };
 

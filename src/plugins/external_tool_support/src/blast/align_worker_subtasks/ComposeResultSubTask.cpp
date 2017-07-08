@@ -218,8 +218,7 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
     mcaObject->moveToThread(thread());
 
     // remove gap columns
-    // TODO: implement the method and restoer code
-//    mcaObject->deleteColumnWithGaps(stateInfo, GAP_COLUMN_ONLY);
+    mcaObject->deleteColumnsWithGaps(stateInfo);
 
     annsObject->addAnnotations(anns);
     annotations = storage->getDataHandler(annsObject->getEntityRef());

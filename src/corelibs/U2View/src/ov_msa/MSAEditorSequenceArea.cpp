@@ -273,7 +273,7 @@ void MSAEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo& modI
     if(modInfo.rowContentChanged) {
         QList<qint64> updatedRows;
         bool isModelChanged = false;
-        QMap<qint64, QList<U2MsaGap> > curGapModel = getEditor()->getMaObject()->getGapModel();
+        QMap<qint64, QList<U2MsaGap> > curGapModel = getEditor()->getMaObject()->getMapGapModel();
         QList<U2Region> updatedRegions;
         foreach (qint64 modifiedSeqId, modInfo.modifiedRowIds) {
             int modifiedRowPos = editor->getMaObject()->getRowPosById(modifiedSeqId);
@@ -484,7 +484,7 @@ void MSAEditorSequenceArea::sl_delCol() {
         U2UseCommonUserModStep userModStep(msaObj->getEntityRef(), os);
         Q_UNUSED(userModStep);
         SAFE_POINT_OP(os, );
-        msaObj->deleteColumnWithGaps(os, gapCount);
+        msaObj->deleteColumnsWithGaps(os, gapCount);
     }
 }
 

@@ -69,6 +69,11 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     connect(insertAction, SIGNAL(triggered()), SLOT(sl_addInsertion()));
     addAction(insertAction);
 
+    removeColumnsOfGapsAction = new QAction(tr("Remove columns of gaps"), this);
+    removeColumnsOfGapsAction->setObjectName("remove_columns_of_gaps");
+    connect(removeColumnsOfGapsAction, SIGNAL(triggered()), SLOT(sl_removeColumnsOfGaps()));
+    addAction(removeColumnsOfGapsAction);
+
     scaleBar = new ScaleBar(Qt::Horizontal);
     scaleBar->slider()->setRange(100, 1000);
     scaleBar->slider()->setTickInterval(100);
@@ -221,6 +226,14 @@ void McaEditorSequenceArea::sl_addInsertion() {
     highlightCurrentSelection();
 }
 
+void McaEditorSequenceArea::sl_removeColumnsOfGaps() {
+    U2OpStatus2Log os;
+    U2UseCommonUserModStep userModStep(editor->getMaObject()->getEntityRef(), os);
+    Q_UNUSED(userModStep);
+    SAFE_POINT_OP(os, );
+    editor->getMaObject()->deleteColumnsWithGaps(os);
+}
+
 void McaEditorSequenceArea::initRenderer() {
     renderer = new SequenceWithChromatogramAreaRenderer(ui, this);
 }
@@ -253,7 +266,7 @@ void McaEditorSequenceArea::buildMenu(QMenu *m) {
     QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != NULL, "editMenu", );
     QList<QAction*> actions;
-    actions << fillWithGapsinsSymAction << replaceCharacterAction << insertAction;
+    actions << fillWithGapsinsSymAction << replaceCharacterAction << insertAction << removeColumnsOfGapsAction;
     editMenu->insertActions(editMenu->isEmpty() ? NULL : editMenu->actions().first(), actions);
     editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
 
@@ -276,35 +289,35 @@ QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionNam
 }
 
 void McaEditorSequenceArea::insertChar(char newCharacter) {
-        CHECK(maMode == InsertCharMode, );
-        CHECK(getEditor() != NULL, );
-        CHECK(!selection.isNull(), );
+    CHECK(maMode == InsertCharMode, );
+    CHECK(getEditor() != NULL, );
+    CHECK(!selection.isNull(), );
 
-        assert(isInRange(selection.topLeft()));
-        assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
+    assert(isInRange(selection.topLeft()));
+    assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
 
-        MultipleChromatogramAlignmentObject* maObj = getEditor()->getMaObject();
-        CHECK(maObj != NULL && !maObj->isStateLocked(), );
+    MultipleChromatogramAlignmentObject* maObj = getEditor()->getMaObject();
+    CHECK(maObj != NULL && !maObj->isStateLocked(), );
 
-        // if this method was invoked during a region shifting
-        // then shifting should be canceled
-        cancelShiftTracking();
+    // if this method was invoked during a region shifting
+    // then shifting should be canceled
+    cancelShiftTracking();
 
-        U2OpStatusImpl os;
-        U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
-        Q_UNUSED(userModStep);
-        SAFE_POINT_OP(os, );
+    U2OpStatusImpl os;
+    U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
+    Q_UNUSED(userModStep);
+    SAFE_POINT_OP(os, );
 
-        maObj->enlargeLength(os, maObj->getLength() + 1);
-        maObj->insertCharacter(selection.y(), selection.x(), newCharacter);
+    maObj->enlargeLength(os, maObj->getLength() + 1);
+    maObj->insertCharacter(selection.y(), selection.x(), newCharacter);
 
-        // insert char into the reference
-        U2SequenceObject* ref = getEditor()->getMaObject()->getReferenceObj();
-        U2Region region = U2Region(selection.x(), 0);
-        ref->replaceRegion(maObj->getEntityRef().entityId, region, DNASequence(QByteArray(1, U2Msa::GAP_CHAR)), os);
-        SAFE_POINT_OP(os, );
+    // insert char into the reference
+    U2SequenceObject* ref = getEditor()->getMaObject()->getReferenceObj();
+    U2Region region = U2Region(selection.x(), 0);
+    ref->replaceRegion(maObj->getEntityRef().entityId, region, DNASequence(QByteArray(1, U2Msa::GAP_CHAR)), os);
+    SAFE_POINT_OP(os, );
 
-        exitFromEditCharacterMode();
+    exitFromEditCharacterMode();
 }
 
 McaEditorWgt *McaEditorSequenceArea::getMcaEditorWgt() const {

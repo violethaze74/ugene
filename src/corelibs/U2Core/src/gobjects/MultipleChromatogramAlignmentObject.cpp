@@ -28,6 +28,7 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/McaDbiUtils.h>
 #include <U2Core/MsaDbiUtils.h>
+#include <U2Core/MSAUtils.h>
 #include <U2Core/MultipleChromatogramAlignmentExporter.h>
 #include <U2Core/MultipleChromatogramAlignmentImporter.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -171,10 +172,39 @@ void MultipleChromatogramAlignmentObject::insertGap(const U2Region &rows, int po
     MultipleAlignmentObject::insertGap(rows, pos, nGaps, true);
 }
 
+QList<U2Region> MultipleChromatogramAlignmentObject::getColumnsWithGaps(int requiredGapsCount) const {
+    assert(-1 == requiredGapsCount || requiredGapsCount == getNumRows() + 1);
+    U2MsaListGapModel gapModel = getGapModel();
+    gapModel.prepend(getReferenceGapModel());
+    return MSAUtils::getColumnsWithGaps(gapModel, getLength());
+}
+
+U2MsaRowGapModel MultipleChromatogramAlignmentObject::getReferenceGapModel() const {
+    QByteArray unusedSequence;
+    U2MsaRowGapModel referenceGapModel;
+    MaDbiUtils::splitBytesToCharsAndGaps(getReferenceObj()->getSequenceData(U2_REGION_MAX), unusedSequence, referenceGapModel);
+    return referenceGapModel;
+}
+
 void MultipleChromatogramAlignmentObject::insertCharacter(int rowIndex, int pos, char newChar) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     insertGap(U2Region(0, getNumRows()), pos, 1);
     replaceCharacter(pos, rowIndex, newChar);
+}
+
+void MultipleChromatogramAlignmentObject::deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount) {
+    assert(-1 == requiredGapsCount || requiredGapsCount == getNumRows() + 1);
+    const QList<U2Region> regionsToDelete = getColumnsWithGaps(requiredGapsCount);
+    CHECK(!regionsToDelete.isEmpty(), );
+    CHECK(regionsToDelete.first().length != getLength(), );
+
+    for (int n = regionsToDelete.size(), i = n - 1; i >= 0; i--) {
+        removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, getNumRows(), true, false);
+        getReferenceObj()->replaceRegion(getEntityRef().entityId, regionsToDelete[i], DNASequence(), os);
+        os.setProgress(100 * (n - i) / n);
+    }
+
+    updateCachedMultipleAlignment();
 }
 
 void MultipleChromatogramAlignmentObject::loadAlignment(U2OpStatus &os) {

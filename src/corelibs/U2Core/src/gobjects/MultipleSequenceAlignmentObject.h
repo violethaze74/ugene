@@ -52,11 +52,7 @@ public:
     void updateGapModel(U2OpStatus &os, const U2MsaMapGapModel &rowsGapModel);
     void updateGapModel(const QList<MultipleSequenceAlignmentRow> &sourceRows);
 
-    U2MsaMapGapModel getGapModel() const;
-
     void crop(const U2Region &window, const QSet<QString> &rowNames);
-
-    void deleteColumnWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
 
     /** Methods to work with rows */
     void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel);
@@ -64,6 +60,8 @@ public:
     /** Replace character in row and change alphabet, if it does not contain the character
     */
     void replaceCharacter(int startPos, int rowIndex, char newChar);
+
+    void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
 
 private:
     void loadAlignment(U2OpStatus &os);
@@ -73,8 +71,7 @@ private:
     void removeRowPrivate(U2OpStatus &os, const U2EntityRef &msaRef, qint64 rowId);
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
                              int startPos, int nBases);
-    virtual void insertGap(const U2Region &rows, int pos, int nGaps);
-
+    void insertGap(const U2Region &rows, int pos, int nGaps);
 };
 
 }   // namespace U2
