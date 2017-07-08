@@ -343,7 +343,7 @@ void ComposeResultSubTask::insertShiftedGapsIntoReference() {
     CHECK_OP(stateInfo, );
     for (int i = referenceGaps.size() - 1; i >= 0; i--) {
         U2MsaGap gap = referenceGaps[i];
-        dnaSeq.seq.insert(gap.offset, &U2Msa::GAP_CHAR, gap.gap);
+        dnaSeq.seq.insert(gap.offset, QByteArray(gap.gap, U2Msa::GAP_CHAR));
     }
     referenceSequenceObject->setWholeSequence(dnaSeq);
 }
