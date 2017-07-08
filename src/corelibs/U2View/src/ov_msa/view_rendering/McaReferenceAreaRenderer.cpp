@@ -33,7 +33,7 @@
 #include "ov_msa/helpers/ScrollController.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
-#include "ov_sequence/ADVSequenceObjectContext.h"
+#include "ov_sequence/SequenceObjectContext.h"
 #include "ov_sequence/PanView.h"
 
 namespace U2 {

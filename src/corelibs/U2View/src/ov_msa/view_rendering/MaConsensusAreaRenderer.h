@@ -34,22 +34,23 @@ class QPainter;
 namespace U2 {
 
 class MsaColorScheme;
-class MSAEditorConsensusArea;
+class MaEditorConsensusArea;
 class MSAEditorConsensusCache;
 
 class ConsensusRenderSettings {
 public:
     ConsensusRenderSettings();
 
-    U2Region xRangeToDrawIn;
+    U2Region                            xRangeToDrawIn;
     QMap<MaEditorConsElement, U2Region> yRangeToDrawIn;
-    int columnWidth;
-    QFont font;
-    QFont rulerFont;
-    bool drawSelection;
-    MsaColorScheme* colorScheme;
-    MaEditor::ResizeMode resizeMode;
-    bool highlightMismatches;
+
+    int                     columnWidth;
+    QFont                   font;
+    QFont                   rulerFont;
+    bool                    drawSelection;
+    MsaColorScheme*         colorScheme;
+    MaEditor::ResizeMode    resizeMode;
+    bool                    highlightMismatches;
 
     int rulerWidth;
     int firstNotchedBasePosition;
@@ -62,11 +63,11 @@ class ConsensusRenderData {
 public:
     bool isValid() const;
 
-    U2Region region;
-    U2Region selectedRegion;
-    QByteArray data;
-    QBitArray mismatches;
-    QList<int> percents;
+    U2Region        region;
+    U2Region        selectedRegion;
+    QByteArray      data;
+    QBitArray       mismatches;
+    QList<int>      percentage;
 };
 
 class ConsensusCharRenderData {
@@ -75,21 +76,21 @@ public:
 
     QRect getCharRect() const;
 
-    U2Region xRange;
-    U2Region yRange;
-    int column;
-    char consensusChar;
-    bool isMismatch;
-    bool isSelected;
+    U2Region    xRange;
+    U2Region    yRange;
+    int         column;
+    char        consensusChar;
+    bool        isMismatch;
+    bool        isSelected;
 };
 
 class MaConsensusAreaRenderer : public QObject {
     Q_OBJECT
 public:
-    MaConsensusAreaRenderer(MSAEditorConsensusArea *area);
+    MaConsensusAreaRenderer(MaEditorConsensusArea *area);
 
     void drawContent(QPainter &painter);
-    static void drawContent(QPainter &painter,
+    void drawContent(QPainter &painter,
                             const ConsensusRenderData &consensusRenderData,
                             const MaEditorConsensusAreaSettings &consensusSettings,
                             const ConsensusRenderSettings &renderSettings);
@@ -102,10 +103,10 @@ public:
     U2Region getYRange(const MaEditorConsElements &visibleElements, MaEditorConsElement element) const;
     U2Region getYRange(MaEditorConsElement element) const;
 
-private:
+protected:
     static void drawConsensus(QPainter &painter, const ConsensusRenderData &consensusRenderData, const ConsensusRenderSettings &settings);
     static void drawConsensusChar(QPainter &painter, const ConsensusCharRenderData& charData, const ConsensusRenderSettings &settings);
-    static void drawRuler(QPainter &painter, const ConsensusRenderSettings &settings);
+    virtual void drawRuler(QPainter &painter, const ConsensusRenderSettings &settings);
     static void drawHistogram(QPainter &painter, const ConsensusRenderData &consensusRenderData, const ConsensusRenderSettings &settings);
 
     ConsensusRenderData getScreenDataToRender() const;
@@ -115,7 +116,7 @@ private:
 
     MaEditor *editor;
     MaEditorWgt *ui;
-    MSAEditorConsensusArea *area;
+    MaEditorConsensusArea *area;
 
     static const QColor DEFAULT_MISMATCH_COLOR;
 };

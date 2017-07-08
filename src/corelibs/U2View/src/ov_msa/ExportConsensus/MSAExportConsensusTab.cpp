@@ -60,7 +60,7 @@ MSAExportConsensusTab::MSAExportConsensusTab(MSAEditor* msa_)
 
     initSaveController();
 
-    MSAEditorConsensusArea *consensusArea = msa->getUI()->getConsensusArea();
+    MaEditorConsensusArea *consensusArea = msa->getUI()->getConsensusArea();
     showHint(true);
 
     connect(exportBtn, SIGNAL(clicked()), SLOT(sl_exportClicked()));
