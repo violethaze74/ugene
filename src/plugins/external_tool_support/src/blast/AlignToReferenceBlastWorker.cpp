@@ -21,6 +21,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/L10n.h>
@@ -185,6 +186,10 @@ void AlignToReferenceBlastWorker::onPrepared(Task *task, U2OpStatus &os) {
     QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     CHECK_EXT(!objects.isEmpty(), os.setError(tr("No reference sequence in the file: ") + loadTask->getURLString()), );
     CHECK_EXT(1 == objects.size(), os.setError(tr("More than one sequence in the reference file: ") + loadTask->getURLString()), );
+
+    U2SequenceObject* so = qobject_cast<U2SequenceObject*>(objects.first());
+    CHECK_EXT(so != NULL, os.setError(tr("Unable to cast gobject to sequence object")), );
+    CHECK_EXT(so->getAlphabet()->isDNA(), os.setError(tr("The input reference sequence '%1' contains characters that don't belong to DNA alphabet.").arg(so->getSequenceName())), );
 
     referenceDoc = doc.take();
     referenceDoc->setDocumentOwnsDbiResources(false);

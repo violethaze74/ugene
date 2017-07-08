@@ -84,14 +84,6 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
     CHECK(subTask != NULL, result);
     CHECK(!subTask->isCanceled() && !subTask->hasError(), result);
     if (loadRef == subTask) {
-        CHECK_EXT(loadRef->getDocument(false) != NULL, setError(tr("Loaded reference document is NULL")), result);
-        CHECK_EXT(!loadRef->getDocument(false)->findGObjectByType(GObjectTypes::SEQUENCE).isEmpty(), setError(tr("No sequence objects in reference document")), result);
-        CHECK_EXT(loadRef->getDocument(false)->findGObjectByType(GObjectTypes::SEQUENCE).size() == 1, setError(tr("'%1' has invalid data. Input a file with a single reference sequence.").arg(settings.referenceUrl)), result);
-        GObject *firtsSequenceObject = loadRef->getDocument(false)->findGObjectByType(GObjectTypes::SEQUENCE).first();
-        U2SequenceObject* so = qobject_cast<U2SequenceObject*>(firtsSequenceObject);
-        CHECK_EXT(so != NULL, setError(tr("Unable to cast gobject to sequence object")), result);
-        CHECK_EXT(so->getAlphabet()->isDNA(), setError(tr("The input reference sequence '%1' contains characters that don't belong to DNA alphabet.").arg(so->getSequenceName())), result);
-
         CmdlineInOutTaskConfig config;
 
         config.command = "--task=" + ALIGN_TO_REF_CMDLINE;
