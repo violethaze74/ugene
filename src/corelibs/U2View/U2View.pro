@@ -65,9 +65,11 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MaEditorFactory.h \
            src/ov_msa/MaEditorNameList.h \
            src/ov_msa/McaEditor.h \
+           src/ov_msa/McaEditorConsensusArea.h \
            src/ov_msa/McaEditorOverviewArea.h \
            src/ov_msa/McaEditorReferenceArea.h \
            src/ov_msa/McaEditorSequenceArea.h \
+           src/ov_msa/McaReferenceCharController.h \
            src/ov_msa/MSACollapsibleModel.h \
            src/ov_msa/MSAEditor.h \
            src/ov_msa/MSAEditorConsensusArea.h \
@@ -112,10 +114,12 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/TreeOptions/TreeOptionsWidget.h \
            src/ov_msa/TreeOptions/TreeOptionsWidgetFactory.h \
            src/ov_msa/view_rendering/MaConsensusAreaRenderer.h \
+           src/ov_msa/view_rendering/MaEditorConsensusArea.h \
            src/ov_msa/view_rendering/MaEditorSelection.h \
            src/ov_msa/view_rendering/MaEditorSequenceArea.h \
            src/ov_msa/view_rendering/MaEditorUtils.h \
            src/ov_msa/view_rendering/MaEditorWgt.h \
+           src/ov_msa/view_rendering/McaConsensusAreaRenderer.h \
            src/ov_msa/view_rendering/McaReferenceAreaRenderer.h \
            src/ov_msa/view_rendering/SequenceAreaRenderer.h \
            src/ov_msa/view_rendering/SequenceWithChromatogramAreaRenderer.h \
@@ -318,9 +322,11 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MaEditorFactory.cpp \
            src/ov_msa/MaEditorNameList.cpp \
            src/ov_msa/McaEditor.cpp \
+           src/ov_msa/McaEditorConsensusArea.cpp \
            src/ov_msa/McaEditorOverviewArea.cpp \
            src/ov_msa/McaEditorReferenceArea.cpp \
            src/ov_msa/McaEditorSequenceArea.cpp \
+           src/ov_msa/McaReferenceCharController.cpp \
            src/ov_msa/MSACollapsibleModel.cpp \
            src/ov_msa/MSAEditor.cpp \
            src/ov_msa/MSAEditorConsensusArea.cpp \
@@ -366,10 +372,12 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidgetFactory.cpp \
            src/ov_msa/SequenceSelectorWidgetController.cpp \
            src/ov_msa/view_rendering/MaConsensusAreaRenderer.cpp \
+           src/ov_msa/view_rendering/MaEditorConsensusArea.cpp \
            src/ov_msa/view_rendering/MaEditorSelection.cpp \
            src/ov_msa/view_rendering/MaEditorSequenceArea.cpp \
            src/ov_msa/view_rendering/MaEditorUtils.cpp \
            src/ov_msa/view_rendering/MaEditorWgt.cpp \
+           src/ov_msa/view_rendering/McaConsensusAreaRenderer.cpp \
            src/ov_msa/view_rendering/McaReferenceAreaRenderer.cpp \
            src/ov_msa/view_rendering/SequenceAreaRenderer.cpp \
            src/ov_msa/view_rendering/SequenceWithChromatogramAreaRenderer.cpp \

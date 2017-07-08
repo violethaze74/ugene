@@ -65,7 +65,7 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
         chunk /= 2;
     }
     float scale =  len / (float)span;
-    if (c.direction == BTT) {
+    if (c.direction == BottomToTop) {
         if(c.drawAxis) {
             p.drawLine(pos.x(), pos.y() - c.extraAxisLenBefore, pos.x(), pos.y() + len + c.extraAxisLenAfter);
         }
@@ -87,7 +87,7 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
                 p.drawText(pos.x() + c.textOffset, pos.y() + ch, en);
             }
         }
-    } else if (c.direction == TTB) {
+    } else if (c.direction == TopToBottom) {
         int notchDX1 =  c.notchSize;
         int notchDX2 =  c.notchSize;
         QFontMetrics fm(font);
@@ -174,7 +174,7 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
             drawNum(p, enX1, enX2, en, enX1, enX2, yt1, yt2);
         }
 
-        if (c.direction == LTR) {
+        if (c.direction == LeftToRight) {
             int leftborder = stX2;
             int rightborder= enX1;
             if (c.drawArrow) {
@@ -201,7 +201,7 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
                     }
                 }
             }
-        } else if (c.direction == RTL) {
+        } else if (c.direction == RightToLeft) {
             int leftborder = enX2;
             int rightborder= stX1;
             if (c.drawArrow) {

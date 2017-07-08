@@ -195,8 +195,6 @@ void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
 }
 
 void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
-    t->addAction(showQVAction);
-
     QToolButton* button = new QToolButton();
     button->setMenu(traceActionMenu);
     button->setIcon(QIcon(":chroma_view/images/traces.png"));
@@ -259,7 +257,6 @@ void McaEditorSequenceArea::drawBackground(QPainter &painter) {
 void McaEditorSequenceArea::buildMenu(QMenu *m) {
     QMenu* viewMenu = GUIUtils::findSubMenu(m, MSAE_MENU_VIEW);
     SAFE_POINT(viewMenu != NULL, "viewMenu", );
-    viewMenu->addAction(showQVAction);
     viewMenu->addMenu(traceActionMenu);
 
     // SANGER_TODO

@@ -40,10 +40,11 @@
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
 #include "McaEditor.h"
+#include "McaEditorConsensusArea.h"
 #include "McaEditorOverviewArea.h"
 #include "McaEditorReferenceArea.h"
 #include "McaEditorSequenceArea.h"
-#include "MSAEditorConsensusArea.h"
+#include "McaReferenceCharController.h"
 #include "helpers/McaRowHeightController.h"
 #include "ov_sequence/SequenceObjectContext.h"
 #include "view_rendering/MaEditorWgt.h"
@@ -63,12 +64,12 @@ McaEditor::McaEditor(const QString &viewName,
     showChromatogramsAction->setCheckable(true);
     showChromatogramsAction->setChecked(true);
     connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
-    
+
     U2OpStatusImpl os;
     foreach (const MultipleChromatogramAlignmentRow& row, obj->getMca()->getMcaRows()) {
         chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), true);
     }
-    
+
     U2SequenceObject* referenceObj = obj->getReferenceObj();
     if (referenceObj) {
         // SANGER_TODO: probably can be big
@@ -220,7 +221,9 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     collapseModel->collapseAll(false);
     collapsibleMode = true;
 
-    connect(consArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
+    McaEditorConsensusArea* mcaConsArea = qobject_cast<McaEditorConsensusArea*>(consArea);
+    SAFE_POINT(mcaConsArea != NULL, "Failed to cast consensus area to MCA consensus area", );
+    connect(mcaConsArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
 }
 
 McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
@@ -248,6 +251,10 @@ void McaEditorWgt::initOverviewArea() {
 
 void McaEditorWgt::initNameList(QScrollBar* nhBar) {
     nameList = new McaEditorNameList(this, nhBar);
+}
+
+void McaEditorWgt::initConsensusArea() {
+    consArea = new McaEditorConsensusArea(this);
 }
 
 } // namespace

@@ -26,14 +26,14 @@
 
 namespace U2 {
 
-class MSAEditorConsensusArea;
+class MaEditorConsensusArea;
 class MultipleAlignmentObject;
 
 class MaConsensusModeWidget : public QWidget, public Ui_MaConsensusModeWidget {
     Q_OBJECT
 public:
     MaConsensusModeWidget(QWidget* parent = NULL);
-    void init(MultipleAlignmentObject* maObject, MSAEditorConsensusArea* consArea);
+    void init(MultipleAlignmentObject* maObject, MaEditorConsensusArea* consArea);
 
     void updateState();
     void updateThresholdState(bool enable, int minVal = 0, int maxVal = 0, int value = 0);
@@ -53,7 +53,7 @@ public slots:
 private:
     void initConsensusTypeCombo();
 
-    MSAEditorConsensusArea*     consArea;
+    MaEditorConsensusArea*      consArea;
     MultipleAlignmentObject*    maObject;
     QString                     curAlphabetId;
 };
