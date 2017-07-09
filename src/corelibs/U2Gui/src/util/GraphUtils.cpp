@@ -92,6 +92,7 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
         int notchDX2 =  c.notchSize;
         QFontMetrics fm(font);
         int fontHeight = fm.height();
+        qint64 fontCenteringOffset = fontHeight / 2 - 2; // -2 is for baseline offset
         if(c.drawAxis) {
             p.drawLine(pos.x(), pos.y() - c.extraAxisLenBefore , pos.x(), pos.y() + len + c.extraAxisLenAfter);
         }
@@ -117,26 +118,29 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
                 }
                 if (c.drawNumbers) {
                     QString snum = FormatUtils::formatNumber(currnotch);
-                    if( y > fontHeight){
+                    qint64 textY = pos.y() + len - (y - fontCenteringOffset);
+                    if (y > fontHeight && textY > pos.y() + fontHeight) {
                         if (c.textPosition == LEFT) {
-                            p.drawText(pos.x() - c.textOffset - snum.length() * cw, pos.y() + len - y, snum);
-                        }else{
+                            qint64 textX = pos.x() - c.textOffset - snum.length() * cw;
+                            p.drawText(textX, textY, snum);
+                        } else {
                             assert(c.textPosition == RIGHT);
-                            p.drawText(pos.x() + c.textOffset - snum.length() * cw, pos.y() + len - y, snum);
+                            qint64 textX = pos.x() + c.textOffset;
+                            p.drawText(textX, textY, snum);
                         }
                     }
                 }
             }
         }
         if (c.drawNumbers) {
-            QString endStr = QString::number(end);
-            int roundedEnd = end, endLen = endStr.length();
-            if (endLen >= 4){
-                endStr = endStr.left(endLen - 3);
-                roundedEnd = endStr.toInt() * pow((double)10 , (double)(3));
-                //roundedEnd = endStr.toInt() * pow((double)10 , (double)(endLen - 3));
+            QString startStr = QString::number(start);
+            if (c.textPosition == LEFT) {
+                p.drawText(pos.x() - c.textOffset - startStr.length() * cw, pos.y() + fontCenteringOffset, startStr);
+            } else {
+                assert(c.textPosition == RIGHT);
+                p.drawText(pos.x() + c.textOffset - startStr.length() * cw, pos.y() + fontCenteringOffset, startStr);
             }
-            endStr = FormatUtils::formatNumber(roundedEnd);
+            QString endStr = QString::number(end);
             if (c.textPosition == LEFT) {
                 p.drawText(pos.x() - c.textOffset - endStr.length() * cw, pos.y() + len, endStr);
             } else {

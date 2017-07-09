@@ -163,7 +163,6 @@ private:
     QAction *filterDotPlotAction;
 
     int textSpace;
-    static const int defaultTextSpace = 30;
     static const int rulerNotchSize = 2;
 
     int w;
