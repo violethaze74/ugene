@@ -48,7 +48,7 @@ class MaEditorSelection;
 class MaEditorWgt;
 class MaModificationInfo;
 
-class MaEditorConsensusArea : public QWidget {
+class U2VIEW_EXPORT MaEditorConsensusArea : public QWidget {
     Q_OBJECT
     Q_DISABLE_COPY(MaEditorConsensusArea)
     friend class MaConsensusAreaRenderer;
