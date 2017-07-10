@@ -84,7 +84,7 @@ void DNAStatMSAProfileDialog::initSaveController() {
     config.fileDialogButton = fileButton;
     config.fileNameEdit = fileEdit;
     config.parentWidget = this;
-    config.saveTitle = tr("Select file to save report to..");
+    config.saveTitle = tr("Save file");
 
     SaveDocumentController::SimpleFormatsInfo formats;
     formats.addFormat(HTML, HTML.toUpper(), QStringList() << HTML);
@@ -289,12 +289,15 @@ void DNAStatMSAProfileTask::run() {
     }
 }
 QString DNAStatMSAProfileTask::generateReport() const {
-    if (hasError() || isCanceled()) {
+    if (hasError()) {
         return tr("Task was finished with an error: %1").arg(getError());
+    }
+    if (isCanceled()) {
+        return tr("Task was canceled.");
     }
     QString res;
     res += "<br>";
-    res += QString(tr("Grid profile %1: <a href='%2'>%2</a>")).arg(s.profileName).arg(QDir::toNativeSeparators(s.outURL)) + "<br>";
+    res += tr("Grid profile for %1: <a href='%2'>%2</a>").arg(s.profileName).arg(QDir::toNativeSeparators(s.outURL)) + "<br>";
     return res;
 }
 
