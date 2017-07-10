@@ -226,7 +226,9 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) c
     }
     algoLog.info(QString("Total reads processed by the mapper: %1").arg(acceptedReads.count() + discardedReads.count()));
 
-    monitor()->addInfo(QString("%1 reads were not mapped").arg(discardedReads.count()), actor->getId(), Problem::U2_INFO);
+    if (0 != discardedReads.count()) {
+        monitor()->addInfo(QString("%1 reads were not mapped").arg(discardedReads.count()), actor->getId(), Problem::U2_INFO);
+    }
 
     const QString resultUrl = alignTask->getResultUrl();
     if (QFileInfo(resultUrl).exists()) {
