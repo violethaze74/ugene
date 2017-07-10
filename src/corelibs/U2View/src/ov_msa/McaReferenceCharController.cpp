@@ -39,19 +39,19 @@ void OffsetRegions::append(const U2Region& region, int offset) {
     offsets.append(offset);
 }
 
-int OffsetRegions::findIntersectedRegion(const U2Region& region) {
+int OffsetRegions::findIntersectedRegion(const U2Region& region) const {
     return region.findIntersectedRegion(regions);
 }
 
-U2Region OffsetRegions::getRegion(int i) {
+U2Region OffsetRegions::getRegion(int i) const {
     return regions[i];
 }
 
-int OffsetRegions::getOffset(int i) {
+int OffsetRegions::getOffset(int i) const {
     return offsets[i];
 }
 
-int OffsetRegions::getSize() {
+int OffsetRegions::getSize() const {
     SAFE_POINT(regions.size() == offsets.size(), "Invalid state!", 0);
     return regions.size();
 }
@@ -63,7 +63,8 @@ void OffsetRegions::clear() {
 
 McaReferenceCharController::McaReferenceCharController(QObject* p, McaEditor *editor)
     : QObject(p),
-      refObject (NULL) {
+      refObject (NULL),
+      ungappedLength(-1) {
     SequenceObjectContext* ctx = editor->getReferenceContext();
     SAFE_POINT(ctx != NULL, "SequenceObjectContext is NULL", );
     refObject = ctx->getSequenceObject();
@@ -75,7 +76,7 @@ McaReferenceCharController::McaReferenceCharController(QObject* p, McaEditor *ed
             SLOT(sl_update(MultipleAlignment,MaModificationInfo)));
 }
 
-OffsetRegions McaReferenceCharController::getCharRegions(const U2Region& region) {
+OffsetRegions McaReferenceCharController::getCharRegions(const U2Region& region) const {
     int i = charRegions.findIntersectedRegion(region);
     CHECK(i != -1, OffsetRegions());
 
@@ -90,6 +91,26 @@ OffsetRegions McaReferenceCharController::getCharRegions(const U2Region& region)
     } while (i < charRegions.getSize());
     return result;
 }
+
+int McaReferenceCharController::getUngappedPosition(int pos) const {
+    CHECK(charRegions.getSize() != 0, -1);
+
+    int ungappedPos = 0;
+    int i = 0;
+    do {
+        if (charRegions.getRegion(i).contains(pos)) {
+            ungappedPos += pos - charRegions.getRegion(i).startPos;
+            return ungappedPos;
+        }
+        ungappedPos += charRegions.getRegion(i).length;
+        i++;
+    } while (i < charRegions.getSize());
+    return -1;
+}
+
+ int McaReferenceCharController::getUngappedLength() const {
+     return ungappedLength;
+ }
 
 void McaReferenceCharController::sl_update() {
     initRegions();
@@ -133,6 +154,7 @@ void McaReferenceCharController::initRegions() {
     if (!current.isEmpty()) {
         charRegions.append(current, gapCounter);
     }
+    ungappedLength = data.size() - gapCounter;
 }
 
 } // namepspace

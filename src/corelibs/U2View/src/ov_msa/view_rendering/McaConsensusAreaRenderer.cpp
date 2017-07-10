@@ -33,7 +33,7 @@ McaConsensusAreaRenderer::McaConsensusAreaRenderer(MaEditorConsensusArea *area)
     : MaConsensusAreaRenderer(area) {
     McaEditorWgt* wgt = qobject_cast<McaEditorWgt*>(area->getEditorWgt());
     SAFE_POINT(wgt != NULL, "McaEditorWgt is NULL", );
-    refCharController = new McaReferenceCharController(this, wgt->getEditor());
+    refCharController = wgt->getRefCharController();
 }
 
 void McaConsensusAreaRenderer::drawRuler(QPainter &painter, const ConsensusRenderSettings &renderSettings) {

@@ -19,23 +19,35 @@
  * MA 02110-1301, USA.
  */
 
+#include "McaEditor.h"
+#include "McaEditorReferenceArea.h"
 #include "McaEditorStatusBar.h"
+#include "McaReferenceCharController.h"
 
+#include <U2Core/DNASequenceSelection.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2View/SequenceObjectContext.h>
+
+#include "view_rendering/MaEditorSelection.h"
+#include "view_rendering/MaEditorSequenceArea.h"
 
 #include <QHBoxLayout>
 
 namespace U2 {
 
-McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject* mobj, MaEditorSequenceArea* seqArea)
-    : MaEditorStatusBar(mobj, seqArea) {
+McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject* mobj,
+                                       MaEditorSequenceArea* seqArea,
+                                       McaReferenceCharController* refCharController)
+    : MaEditorStatusBar(mobj, seqArea),
+      refCharController(refCharController) {
     setObjectName("mca_editor_status_bar");
 
-    // SANGER_TODO: approve tooltip texts
     colomnLabel->setPatterns(tr("RefPos %1 / %2"),
-                             tr("Reference position %1 / %2 (gaps excluded)"));
-    positionLabel->setPatterns(tr("ReadPos %1 / %2"),
-                               tr("Read position %1 / %2 (gaps excluded)"));
+                             tr("Reference position %1 of %2"));
+    positionLabel->setPatterns(tr("ReadPos %1 of %2"),
+                               tr("Read position %1 of %2"));
     selectionLabel->hide();
 
     updateLabels();
@@ -47,6 +59,24 @@ void McaEditorStatusBar::setupLayout() {
     layout->addWidget(colomnLabel);
     layout->addWidget(positionLabel);
     layout->addWidget(lockLabel);
+}
+
+void McaEditorStatusBar::updateLabels() {
+    updateLinePositionLabels();
+
+    McaEditor* editor = qobject_cast<McaEditor*>(seqArea->getEditor());
+    SAFE_POINT(editor->getReferenceContext() != NULL, "Reference context is NULL", );
+    DNASequenceSelection* selection = editor->getReferenceContext()->getSequenceSelection();
+    SAFE_POINT(selection != NULL, "Reference selection is NULL", );
+
+    QString ungappedRefLen = QString::number(refCharController->getUngappedLength());
+    if (selection->isEmpty()) {
+        colomnLabel->update(MaEditorStatusBar::NONE_MARK, ungappedRefLen);
+    } else {
+        int startSelection = selection->getSelectedRegions().first().startPos;
+        int refPos = refCharController->getUngappedPosition(startSelection);
+        colomnLabel->update(refPos == -1 ? "gap" : QString::number(refPos + 1), ungappedRefLen);
+    }
 }
 
 } // namespace

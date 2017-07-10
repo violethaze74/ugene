@@ -86,6 +86,15 @@ public:
     MultipleAlignmentRowData();
     MultipleAlignmentRowData(const DNASequence &sequence, const QList<U2MsaGap> &gaps);
 
+    /** Length of the sequence without gaps */
+    inline int getUngappedLength() const;
+
+    /**
+     * If character at 'pos' position is not a gap, returns the char position in sequence.
+     * Otherwise returns '-1'.
+     */
+    int getUngappedPosition(int pos) const;
+
     bool isTrailingOrLeadingGap(qint64 position) const;
 
     virtual ~MultipleAlignmentRowData();
@@ -129,6 +138,10 @@ protected:
      */
     QList<U2MsaGap> gaps;
 };
+
+inline int MultipleAlignmentRowData::getUngappedLength() const {
+    return sequence.length();
+}
 
 inline bool	operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 != *ptr2; }
 inline bool	operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRowData *ptr2) { return *ptr1 != *ptr2; }

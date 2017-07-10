@@ -191,11 +191,13 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     : MaEditorWgt(editor)
 {
     rowHeightController = new McaRowHeightController(this);
+    refCharController = new McaReferenceCharController(this, editor);
 
     initActions();
     initWidgets();
 
     refArea = new McaEditorReferenceArea(this, getEditor()->getReferenceContext());
+    connect(refArea, SIGNAL(si_selectionChanged()), statusBar, SLOT(sl_update()));
     refArea->installEventFilter(this);
     seqAreaHeaderLayout->insertWidget(0, refArea);
 
@@ -229,6 +231,10 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
 
 McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
     return qobject_cast<McaEditorSequenceArea*>(seqArea);
+}
+
+McaReferenceCharController* McaEditorWgt::getRefCharController() const {
+    return refCharController;
 }
 
 bool McaEditorWgt::eventFilter(QObject *watched, QEvent *event) {

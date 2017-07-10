@@ -207,6 +207,12 @@ void MsaEditorStatusBar::setupLayout() {
     layout->addWidget(lockLabel);
 }
 
+void MsaEditorStatusBar::updateLabels() {
+    updateLinePositionLabels();
+    updateColumnLabel();
+    updateSelectionLabel();
+}
+
 MaSearchValidator::MaSearchValidator(const DNAAlphabet* alphabet, QObject *parent)
 : QRegExpValidator(parent)
 {

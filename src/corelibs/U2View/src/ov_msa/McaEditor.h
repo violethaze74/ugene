@@ -31,6 +31,7 @@ namespace U2 {
 
 class McaEditorReferenceArea;
 class McaEditorSequenceArea;
+class McaReferenceCharController;
 class SequenceObjectContext;
 class U2SequenceObject;
 
@@ -79,6 +80,7 @@ public:
 
     McaEditor* getEditor() const { return qobject_cast<McaEditor* >(editor); }
     McaEditorSequenceArea* getSequenceArea() const;
+    McaReferenceCharController* getRefCharController() const;
 
     bool eventFilter(QObject *watched, QEvent *event);
 
@@ -91,6 +93,7 @@ protected:
 
 private:
     McaEditorReferenceArea*     refArea;
+    McaReferenceCharController* refCharController;
 };
 
 } // namespace

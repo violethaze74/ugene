@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_STATUS_WIDGET_H_
-#define _U2_MSA_EDITOR_STATUS_WIDGET_H_
+#ifndef _U2_MSA_EDITOR_STATUS_BAR_H_
+#define _U2_MSA_EDITOR_STATUS_BAR_H_
 
 #include "MaEditorStatusBar.h"
 
@@ -48,6 +48,7 @@ private slots:
 
 private:
     void setupLayout();
+    void updateLabels();
 
 private:
     QLabel*                     findLabel;
@@ -68,4 +69,4 @@ public:
 
 } // namespace
 
-#endif // _U2_MSA_EDITOR_STATUS_WIDGET_H_
+#endif // _U2_MSA_EDITOR_STATUS_BAR_H_

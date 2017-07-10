@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_STATUS_BAR_H_
-#define _U2_MSA_EDITOR_STATUS_BAR_H_
+#ifndef _U2_MA_EDITOR_STATUS_BAR_H_
+#define _U2_MA_EDITOR_STATUS_BAR_H_
 
 #include <QLabel>
 #include <QVariant>
@@ -42,7 +42,11 @@ protected:
                            QString objectName, QWidget* parent = NULL);
         TwoArgPatternLabel(QString objectName, QWidget* parent = NULL);
         void setPatterns(QString textPattern, QString tooltipPattern);
+
+        void update(QString firstArg, int minWidth);
         void update(QString firstArg, QString secondArg);
+
+        void updateMinWidth(QString maxLenArg);
 
     private:
         QString         textPattern;
@@ -54,17 +58,18 @@ public:
     MaEditorStatusBar(MultipleAlignmentObject* mobj, MaEditorSequenceArea* seqArea);
 
 private slots:
-    void sl_alignmentChanged();
+    void sl_update();
     void sl_lockStateChanged();
-    void sl_selectionChanged(const MaEditorSelection& , const MaEditorSelection& );
 
 protected:
     virtual void setupLayout() = 0;
-    virtual void updateLabels();
+    virtual void updateLabels() = 0;
+    QPair<QString, QString> getGappedPositionInfo(const QPoint& pos) const;
 
-private:
     void updateLock();
-    QPair<QString, int> getGappedColumnInfo(const QPoint& pos) const;
+    void updateLinePositionLabels();
+    void updateColumnLabel();
+    void updateSelectionLabel();
 
 protected:
     MultipleAlignmentObject*    aliObj;
@@ -79,6 +84,7 @@ protected:
     TwoArgPatternLabel*         selectionLabel;
     QLabel*                     lockLabel;
 
+    static const QString NONE_MARK;
 private:
     QString selectionPattern;
 };
@@ -87,4 +93,4 @@ private:
 
 }//namespace;
 
-#endif
+#endif // _U2_MA_EDITOR_STATUS_BAR_H_
