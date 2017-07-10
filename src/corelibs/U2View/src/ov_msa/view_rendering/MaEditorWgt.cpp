@@ -28,13 +28,13 @@
 
 #include <U2Gui/ExportImageDialog.h>
 
+#include <U2View/MaEditorStatusBar.h>
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
-#include <U2View/MSAEditorStatusBar.h>
 #include <U2View/UndoRedoFramework.h>
 
 #include "MaEditorUtils.h"
@@ -57,7 +57,7 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       consArea(NULL),
       overviewArea(NULL),
       offsetsView(NULL),
-      statusWidget(NULL),
+      statusBar(NULL),
       nameAreaContainer(NULL),
       seqAreaHeader(NULL),
       seqAreaHeaderLayout(NULL),
@@ -143,8 +143,7 @@ void MaEditorWgt::initWidgets() {
     nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
     initConsensusArea();
-
-    statusWidget = new MSAEditorStatusWidget(editor->getMaObject(), seqArea);
+    initStatusBar();
 
     offsetsView = new MSAEditorOffsetsViewController(this, editor, seqArea);
     offsetsView->getLeftWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
@@ -207,7 +206,7 @@ void MaEditorWgt::initWidgets() {
 
     mainLayout->addWidget(maSplitter.getSplitter());
     mainLayout->setStretch(0, 1);
-    mainLayout->addWidget(statusWidget);
+    mainLayout->addWidget(statusBar);
     mainLayout->addWidget(overviewArea);
 
     setLayout(mainLayout);

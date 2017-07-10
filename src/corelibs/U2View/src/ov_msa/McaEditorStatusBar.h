@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.net
+ * http://ugene.unipro.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,21 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_MSAEDITOR_STATUSWIDGET_H_
-#define _U2_GT_MSAEDITOR_STATUSWIDGET_H_
+#ifndef _U2_MCA_EDITOR_STATUS_BAR_H_
+#define _U2_MCA_EDITOR_STATUS_BAR_H_
 
-#include "GTGlobals.h"
-#include <U2View/MaEditorStatusBar.h>
+#include "MaEditorStatusBar.h"
 
 namespace U2 {
-using namespace HI;
 
-class GTMSAEditorStatusWidget {
+class McaReferenceCharController;
+
+class McaEditorStatusBar : public MaEditorStatusBar {
+    Q_OBJECT
 public:
-    // fails if the widget is NULL or can't get length
-    static int length(HI::GUITestOpStatus& os, QWidget* w);
-    static int getSequencesCount(HI::GUITestOpStatus &os, QWidget *w);
+    McaEditorStatusBar(MultipleAlignmentObject* mobj,
+                       MaEditorSequenceArea* seqArea,
+                       McaReferenceCharController* refCharController);
+
+private:
+    void setupLayout();
+    void updateLabels();
+
+    McaReferenceCharController* refCharController;
 };
 
-}
-#endif // _U2_GT_MSAEDITOR_STATUSWIDGET_H_
+} // namespace
+
+#endif // _U2_MCA_EDITOR_STATUS_BAR_H_

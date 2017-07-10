@@ -83,8 +83,6 @@ public:
      */
     int getNumDisplayableSequences() const;
 
-    QPair<QString, int> getGappedColumnInfo() const;
-
     bool isAlignmentEmpty() const;
 
     bool isPosInRange(int position) const;

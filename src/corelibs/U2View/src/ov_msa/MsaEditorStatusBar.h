@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.net
+ * http://ugene.unipro.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,70 +22,51 @@
 #ifndef _U2_MSA_EDITOR_STATUS_BAR_H_
 #define _U2_MSA_EDITOR_STATUS_BAR_H_
 
-#include <QObject>
-#include <QVector>
-#include <QEvent>
+#include "MaEditorStatusBar.h"
 
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QValidator>
-#include <QWidget>
+#include <QRegExpValidator>
+
+class QLineEdit;
+class QPushButton;
 
 namespace U2 {
 
 class DNAAlphabet;
-class MultipleAlignmentObject;
-class MaModificationInfo;
-class MaEditorSequenceArea;
-class MaEditorSelection;
-class MSASearchValidator;
+class MaSearchValidator;
 
-class MSAEditorStatusWidget : public QWidget {
-    Q_OBJECT
+class MsaEditorStatusBar : public MaEditorStatusBar {
 public:
-    MSAEditorStatusWidget(MultipleAlignmentObject* mobj, MaEditorSequenceArea* seqArea);
+    MsaEditorStatusBar(MultipleAlignmentObject* mobj, MaEditorSequenceArea* seqArea);
 
     bool eventFilter(QObject* obj, QEvent* ev);
 
 private slots:
-    void sl_alignmentChanged() {updateCoords();}
-    void sl_lockStateChanged() {updateLock();}
-    void sl_selectionChanged(const MaEditorSelection& , const MaEditorSelection& ){updateCoords();}
     void sl_alphabetChanged();
     void sl_findNext();
     void sl_findPrev();
     void sl_findFocus();
 
 private:
-    void updateCoords();
-    void updateLock();
-    MultipleAlignmentObject*    aliObj;
-    MaEditorSequenceArea*       seqArea;
-    QPixmap                     lockedIcon;
-    QPixmap                     unlockedIcon;
+    void setupLayout();
+    void updateLabels();
 
+private:
+    QLabel*                     findLabel;
     QPushButton*                prevButton;
     QPushButton*                nextButton;
     QLineEdit*                  searchEdit;
-    QLabel*                     linesLabel;
-    QLabel*                     colsLabel;
-    QLabel*                     lockLabel;
-    QLabel*                     posLabel;
-    QLabel*                     selectionLabel;
+
     QPoint                      lastSearchPos;
     QAction*                    findAction;
-    MSASearchValidator*         validator;
-
+    MaSearchValidator*         validator;
 };
 
-class MSASearchValidator : public QRegExpValidator {
+class MaSearchValidator : public QRegExpValidator {
 public:
-    MSASearchValidator(const DNAAlphabet* alphabet, QObject* parent);
+    MaSearchValidator(const DNAAlphabet* alphabet, QObject* parent);
     State validate(QString &input, int &pos) const;
 };
 
+} // namespace
 
-}//namespace;
-
-#endif
+#endif // _U2_MSA_EDITOR_STATUS_BAR_H_

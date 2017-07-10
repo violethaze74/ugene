@@ -54,7 +54,6 @@ class MSAEditorConsensusArea;
 class MaEditorNameList;
 class MSAEditorOffsetsViewController;
 class MSAEditorOverviewArea;
-class MSAEditorStatusWidget;
 class PhyTreeGeneratorLauncherTask;
 class MSAEditorTreeViewer;
 class MSACollapsibleItemModel;
@@ -230,6 +229,7 @@ protected:
     void initOverviewArea();
     void initNameList(QScrollBar *nhBar);
     void initConsensusArea();
+    void initStatusBar();
 
 private:
     MsaEditorSimilarityColumn*         dataList;

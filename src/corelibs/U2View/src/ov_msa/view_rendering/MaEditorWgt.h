@@ -40,7 +40,7 @@ class GScrollBar;
 class MSACollapsibleItemModel;
 class MaEditorConsensusArea;
 class MSAEditorOffsetsViewController;
-class MSAEditorStatusWidget;
+class MaEditorStatusBar;
 class MaEditor;
 class MaEditorNameList;
 class MaEditorOverviewArea;
@@ -105,6 +105,7 @@ protected:
     virtual void initOverviewArea() = 0;
     virtual void initNameList(QScrollBar* nhBar) = 0;
     virtual void initConsensusArea() = 0;
+    virtual void initStatusBar() = 0;
 
 protected:
     MaEditor*                       editor;
@@ -113,7 +114,7 @@ protected:
     MaEditorConsensusArea*          consArea;
     MaEditorOverviewArea*           overviewArea;
     MSAEditorOffsetsViewController* offsetsView;
-    MSAEditorStatusWidget*          statusWidget;
+    MaEditorStatusBar*              statusBar;
 
     QWidget*                        nameAreaContainer;
     QWidget*                        seqAreaHeader;

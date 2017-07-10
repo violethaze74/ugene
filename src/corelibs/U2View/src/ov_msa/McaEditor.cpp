@@ -44,6 +44,7 @@
 #include "McaEditorOverviewArea.h"
 #include "McaEditorReferenceArea.h"
 #include "McaEditorSequenceArea.h"
+#include "McaEditorStatusBar.h"
 #include "McaReferenceCharController.h"
 #include "helpers/McaRowHeightController.h"
 #include "ov_sequence/SequenceObjectContext.h"
@@ -190,11 +191,13 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     : MaEditorWgt(editor)
 {
     rowHeightController = new McaRowHeightController(this);
+    refCharController = new McaReferenceCharController(this, editor);
 
     initActions();
     initWidgets();
 
     refArea = new McaEditorReferenceArea(this, getEditor()->getReferenceContext());
+    connect(refArea, SIGNAL(si_selectionChanged()), statusBar, SLOT(sl_update()));
     refArea->installEventFilter(this);
     seqAreaHeaderLayout->insertWidget(0, refArea);
 
@@ -230,6 +233,10 @@ McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
     return qobject_cast<McaEditorSequenceArea*>(seqArea);
 }
 
+McaReferenceCharController* McaEditorWgt::getRefCharController() const {
+    return refCharController;
+}
+
 bool McaEditorWgt::eventFilter(QObject *watched, QEvent *event) {
     if (watched == refArea) {
         QApplication::sendEvent(seqArea, event);
@@ -255,6 +262,10 @@ void McaEditorWgt::initNameList(QScrollBar* nhBar) {
 
 void McaEditorWgt::initConsensusArea() {
     consArea = new McaEditorConsensusArea(this);
+}
+
+void McaEditorWgt::initStatusBar() {
+    statusBar = new McaEditorStatusBar(editor->getMaObject(), seqArea, refCharController);
 }
 
 } // namespace

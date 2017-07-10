@@ -64,22 +64,24 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MaEditorConsensusAreaSettings.h \
            src/ov_msa/MaEditorFactory.h \
            src/ov_msa/MaEditorNameList.h \
+           src/ov_msa/MaEditorStatusBar.h \
            src/ov_msa/McaEditor.h \
            src/ov_msa/McaEditorConsensusArea.h \
            src/ov_msa/McaEditorOverviewArea.h \
            src/ov_msa/McaEditorReferenceArea.h \
            src/ov_msa/McaEditorSequenceArea.h \
+           src/ov_msa/McaEditorStatusBar.h \
            src/ov_msa/McaReferenceCharController.h \
            src/ov_msa/MSACollapsibleModel.h \
            src/ov_msa/MSAEditor.h \
            src/ov_msa/MSAEditorConsensusArea.h \
            src/ov_msa/MSAEditorConsensusCache.h \
-           src/ov_msa/MsaEditorSimilarityColumn.h \
            src/ov_msa/MSAEditorOffsetsView.h \
            src/ov_msa/MSAEditorOverviewArea.h \
            src/ov_msa/MSAEditorSequenceArea.h \
+           src/ov_msa/MsaEditorSimilarityColumn.h \
            src/ov_msa/MSAEditorState.h \
-           src/ov_msa/MSAEditorStatusBar.h \
+           src/ov_msa/MsaEditorStatusBar.h \
            src/ov_msa/MSAEditorTasks.h \
            src/ov_msa/MsaUpdatedWidgetInterface.h \
            src/ov_msa/MsaOpSavableTab.h \
@@ -321,22 +323,24 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MaEditorConsensusAreaSettings.cpp \
            src/ov_msa/MaEditorFactory.cpp \
            src/ov_msa/MaEditorNameList.cpp \
+           src/ov_msa/MaEditorStatusBar.cpp \
            src/ov_msa/McaEditor.cpp \
            src/ov_msa/McaEditorConsensusArea.cpp \
            src/ov_msa/McaEditorOverviewArea.cpp \
            src/ov_msa/McaEditorReferenceArea.cpp \
            src/ov_msa/McaEditorSequenceArea.cpp \
+           src/ov_msa/McaEditorStatusBar.cpp \
            src/ov_msa/McaReferenceCharController.cpp \
            src/ov_msa/MSACollapsibleModel.cpp \
            src/ov_msa/MSAEditor.cpp \
            src/ov_msa/MSAEditorConsensusArea.cpp \
            src/ov_msa/MSAEditorConsensusCache.cpp \
-           src/ov_msa/MsaEditorSimilarityColumn.cpp \
            src/ov_msa/MSAEditorOffsetsView.cpp \
            src/ov_msa/MSAEditorOverviewArea.cpp \
            src/ov_msa/MSAEditorSequenceArea.cpp \
+           src/ov_msa/MsaEditorSimilarityColumn.cpp \
            src/ov_msa/MSAEditorState.cpp \
-           src/ov_msa/MSAEditorStatusBar.cpp \
+           src/ov_msa/MsaEditorStatusBar.cpp \
            src/ov_msa/MSAEditorTasks.cpp \
            src/ov_msa/MsaOpSavableTab.cpp \
            src/ov_msa/MSASelectSubalignmentDialog.cpp \
