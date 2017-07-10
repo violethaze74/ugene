@@ -397,6 +397,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
 }
 
 void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
+    setFocus();
     SAFE_POINT(ui, "MSA Editor UI is NULL", );
     MaEditorSequenceArea* seqArea = ui->getSequenceArea();
     SAFE_POINT(seqArea, "MSA Editor sequence area", );
