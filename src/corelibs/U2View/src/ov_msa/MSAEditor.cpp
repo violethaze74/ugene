@@ -239,6 +239,7 @@ QWidget* MSAEditor::createWidget() {
     treeManager.loadRelatedTrees();
 
     initDragAndDropSupport();
+    updateActions();
     return ui;
 }
 
