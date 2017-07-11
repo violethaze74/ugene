@@ -25,12 +25,19 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2View/CodonTable.h>
 
 namespace U2 {
 
 ADVSequenceObjectContext::ADVSequenceObjectContext(AnnotatedDNAView* v, U2SequenceObject* obj)
     : SequenceObjectContext(obj, v),
       view(v) {
+    if (v != NULL) {
+        const CodonTableView *ct = v->getCodonTableView();
+        foreach(QAction* a, translations->actions()) {
+            connect(a, SIGNAL(triggered()), ct, SLOT(sl_setAminoTranslation()));
+        }
+    }
 }
 
 AnnotationSelection* ADVSequenceObjectContext::getAnnotationsSelection() const {
