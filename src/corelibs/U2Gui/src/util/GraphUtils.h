@@ -19,13 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#if !defined(GRAPHUTILS_H)
-#define GRAPHUTILS_H
+#ifndef _U2_GRAPH_UTILS_H_
+#define _U2_GRAPH_UTILS_H_
+
+#include <QColor>
 
 #include <U2Core/global.h>
 
-#include <QPainter>
-#include <QFont>
+class QPainter;
 
 namespace U2 {
 
@@ -33,7 +34,6 @@ namespace U2 {
 
 class U2GUI_EXPORT GraphUtils {
 public:
-
     enum Direction {
         LeftToRight,
         RightToLeft,
@@ -87,6 +87,18 @@ public:
         TextPos   textPosition;
     };
 
+    class ArrowConfig {
+    public:
+        ArrowConfig();
+
+        qreal lineWidth;
+        qreal lineLength;
+        qreal arrowHeadWidth;
+        qreal arrowHeadLength;
+        QColor color;
+        Direction direction;
+    };
+
     static void drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 start, qint64 end, const QFont& f, const RulerConfig& config);
     static int calculateChunk(qint64 start, qint64 end, qint64 len, const QPainter &p);
     static int findChunk(qint64 len, qint64 span, int N);
@@ -104,8 +116,10 @@ public:
        Works only for positive numbers, returns maxVal for negative or zero
     */
     static qint64 pickRoundedNumberBelow(qint64 maxVal);
+
+    static void drawArrow(QPainter &painter, const QRectF &rect, const ArrowConfig &config);
 };
 
-} //namespace
+}   // namespace U2
 
-#endif
+#endif // _U2_GRAPH_UTILS_H_

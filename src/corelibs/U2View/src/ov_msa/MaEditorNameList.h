@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_NAME_LIST_H_
-#define _U2_MSA_EDITOR_NAME_LIST_H_
+#ifndef _U2_MA_EDITOR_NAME_LIST_H_
+#define _U2_MA_EDITOR_NAME_LIST_H_
 
 #include <QMenu>
 #include <QRubberBand>
@@ -39,9 +39,6 @@ class MaEditor;
 class MaEditorSelection;
 class MaEditorWgt;
 class MaModificationInfo;
-class McaEditorWgt;
-
-class McaEditor;
 
 class U2VIEW_EXPORT MaEditorNameList: public QWidget {
     Q_OBJECT
@@ -122,14 +119,14 @@ protected:
     void drawSequenceItem(QPainter &painter, const QString &text, const U2Region &yRange, bool selected, bool isReference);
     virtual void drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool selected);
 
-    void drawCollapsibileSequenceItem(QPainter &painter, const QString &name, const QRect &rect,
+    virtual void drawCollapsibileSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect,
                                       bool selected, bool collapsed, bool isReference);
     void drawChildSequenceItem(QPainter &painter, const QString &name, const QRect &rect,
                                         bool selected, bool isReference);
 
     // SANGER_TODO: drawSequenceItem should use these methods
     void drawBackground(QPainter& p, const QString& name, const QRect& rect, bool isReferece);
-    void drawText(QPainter& p, const QString& name, const QRect& rect, bool selected);
+    virtual void drawText(QPainter& p, const QString& name, const QRect& rect, bool selected);
     void drawCollapsePrimitive(QPainter& p, bool collapsed, const QRect& rect);
 
     virtual void drawRefSequence(QPainter &p, QRect r);
@@ -137,6 +134,8 @@ protected:
     QFont getFont(bool selected) const;
     QRect calculateTextRect(const U2Region& yRange, bool selected) const;
     QRect calculateButtonRect(const QRect& itemRect) const;
+
+    virtual int getAvailableWidth() const;
 
     QObject*            labels; // used in GUI tests
     MaEditorWgt*        ui;
@@ -157,42 +156,14 @@ protected:
 
     static const int CROSS_SIZE = 9;
     static const int CHILDREN_OFFSET = 8;
+    static const int MARGIN_TEXT_LEFT = 5;
+    static const int MARGIN_TEXT_TOP = 2;
+    static const int MARGIN_TEXT_BOTTOM = 2;
+
 protected:
     MaEditor*          editor;
-
 };
 
-class McaEditorNameList : public MaEditorNameList {
-    Q_OBJECT
-public:
-    McaEditorNameList(McaEditorWgt* ui, QScrollBar* nhBar);
+}   // namespace U2
 
-protected slots:
-    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
-
-signals:
-    void si_selectionChanged();
-
-protected:
-    void drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool selected);
-    U2Region getSelection() const;
-
-    void setSelection(int startSeq, int count);
-    bool isRowInSelection(int row) const;
-
-private:
-    McaEditor* getEditor() const;
-
-    U2Region localSelection;
-};
-
-class MsaEditorNameList : public MaEditorNameList {
-public:
-    MsaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
-
-private:
-    MSAEditor* getEditor() const;
-};
-
-}//namespace
-#endif
+#endif // _U2_MA_EDITOR_NAME_LIST_H_
