@@ -41,6 +41,7 @@
 #include "MaEditorNameList.h"
 #include "McaEditor.h"
 #include "McaEditorConsensusArea.h"
+#include "McaEditorNameList.h"
 #include "McaEditorOverviewArea.h"
 #include "McaEditorReferenceArea.h"
 #include "McaEditorSequenceArea.h"

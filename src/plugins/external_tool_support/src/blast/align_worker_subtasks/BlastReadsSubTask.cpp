@@ -83,8 +83,8 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
       read(read),
       reference(reference),
       minIdentityPercent(minIdentityPercent),
-      offset(0),
       readIdentity(0),
+      offset(0),
       readShift(0),
       storage(storage),
       blastTask(NULL),
@@ -195,7 +195,7 @@ bool BlastAndSwReadTask::isReadAligned() const {
 }
 
 QString BlastAndSwReadTask::getReadName() const {
-    return initialReadName + (complement ? "(rev-compl)" : "");
+    return initialReadName;
 }
 
 MultipleSequenceAlignment BlastAndSwReadTask::getMAlignment() {

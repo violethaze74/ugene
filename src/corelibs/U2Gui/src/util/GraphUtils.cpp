@@ -19,15 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#include "GraphUtils.h"
+#include <math.h>
+
+#include <QPainter>
+#include <QVector>
 
 #include <U2Core/FormatUtils.h>
+#include <U2Core/U2SafePoints.h>
 
-#include <math.h>
-#include <QVector>
-#include <QColor>
+#include "GraphUtils.h"
 
 namespace U2 {
+
+GraphUtils::ArrowConfig::ArrowConfig()
+    : lineWidth(0),
+      lineLength(0),
+      arrowHeadWidth(0),
+      arrowHeadLength(0),
+      direction(LeftToRight)
+{
+
+}
 
 static void drawNum(QPainter& p, int x1, int x2, const QString& num, int lBorder, int rBorder, int y1, int y2) {
     if (x1 < lBorder|| x2 > rBorder) {
@@ -466,5 +478,42 @@ qint64 GraphUtils::pickRoundedNumberBelow(qint64 maxVal) {
     return res;
 }
 
-}//namespace
+void GraphUtils::drawArrow(QPainter &painter, const QRectF &rect, const ArrowConfig &config) {
+    SAFE_POINT(LeftToRight == config.direction || RightToLeft == config.direction, "Vertical arrows drawing is not implemented", );
+    painter.save();
 
+    QLineF line;
+    QPolygonF arrowHead(3);
+    switch (config.direction) {
+    case LeftToRight:
+        arrowHead[0] = QPointF(rect.left() + config.lineLength, rect.top() + config.arrowHeadWidth / 2);
+        arrowHead[1] = QPointF(rect.left() + config.lineLength - config.arrowHeadLength, rect.top());
+        arrowHead[2] = QPointF(rect.left() + config.lineLength - config.arrowHeadLength, rect.top() + config.arrowHeadWidth);
+        line.setP1(QPointF(rect.left(), rect.top() + config.arrowHeadWidth / 2));
+        line.setP2(QPointF(rect.left() + config.lineLength - config.arrowHeadLength, rect.top() + config.arrowHeadWidth / 2));
+        break;
+    case RightToLeft:
+        arrowHead[0] = QPointF(rect.left(), rect.top() + config.arrowHeadWidth / 2);
+        arrowHead[1] = QPointF(rect.left() + config.arrowHeadLength, rect.top());
+        arrowHead[2] = QPointF(rect.left() + config.arrowHeadLength, rect.top() + config.arrowHeadWidth);
+        line.setP1(QPointF(rect.left() + config.arrowHeadLength, rect.top() + config.arrowHeadWidth / 2));
+        line.setP2(QPointF(rect.left() + config.lineLength, rect.top() + config.arrowHeadWidth / 2));
+        break;
+    default:
+        FAIL("Not implemented", );
+    }
+
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QPen pen(config.color);
+    pen.setWidth(config.lineWidth);
+    painter.setPen(pen);
+    painter.drawLine(line);
+
+    painter.setPen(config.color);
+    painter.setBrush(QBrush(config.color));
+    painter.drawPolygon(arrowHead);
+    painter.restore();
+}
+
+}   // namespace U2
