@@ -107,7 +107,7 @@ void MaEditorStatusBar::sl_lockStateChanged() {
     updateLock();
 }
 
-const QString NONE_SELECTION = MaEditorStatusBar::tr("none");
+const QString NONE_SELECTION = QObject::tr("none");
 
 QPair<QString, QString> MaEditorStatusBar::getGappedPositionInfo(const QPoint& pos) const{
     if (pos.isNull()) {
