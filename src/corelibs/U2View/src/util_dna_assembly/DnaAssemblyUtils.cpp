@@ -297,12 +297,13 @@ void FilterUnpairedReadsTask::run() {
         CHECK_OP(stateInfo, );
         QString tmpFileDownstream = getTmpFilePath(downstream[i].url);
         CHECK_OP(stateInfo, );
-        compareFiles(upstream[i].url.getURLString(), downstream[i].url.getURLString(),
-                     tmpFileUpstream, tmpFileDownstream);
-        CHECK_OP(stateInfo, );
 
         filteredReads << ShortReadSet(GUrl(tmpFileUpstream), ShortReadSet::PairedEndReads, ShortReadSet::UpstreamMate);
         filteredReads << ShortReadSet(GUrl(tmpFileDownstream), ShortReadSet::PairedEndReads, ShortReadSet::DownstreamMate);
+
+        compareFiles(upstream[i].url.getURLString(), downstream[i].url.getURLString(),
+                     tmpFileUpstream, tmpFileDownstream);
+        CHECK_OP(stateInfo, );
     }
 }
 
@@ -369,6 +370,10 @@ void DnaAssemblyTaskWithConversions::prepare() {
 
 QList<Task*> DnaAssemblyTaskWithConversions::onSubTaskFinished(Task *subTask) {
     QList<Task*> result;
+    FilterUnpairedReadsTask* filterTask = qobject_cast<FilterUnpairedReadsTask*>(subTask);
+    if (filterTask != NULL) {
+        settings.shortReadSets = filterTask->getFilteredReadList();
+    }
     CHECK(!subTask->hasError(), result);
     CHECK(!hasError(), result);
 
@@ -395,9 +400,7 @@ QList<Task*> DnaAssemblyTaskWithConversions::onSubTaskFinished(Task *subTask) {
             result << assemblyTask;
         }
     }
-    FilterUnpairedReadsTask* filterTask = qobject_cast<FilterUnpairedReadsTask*>(subTask);
     if (settings.filterUnpaired && filterTask != NULL) {
-        settings.shortReadSets = filterTask->getFilteredReadList();
         assemblyTask = new DnaAssemblyMultiTask(settings, viewResult, justBuildIndex);
         result << assemblyTask;
     }
