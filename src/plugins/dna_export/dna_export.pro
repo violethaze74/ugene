@@ -10,7 +10,6 @@ HEADERS += src/CSVColumnConfiguration.h \
            src/ExportAlignmentViewItems.h \
            src/ExportBlastResultDialog.h \
            src/ExportChromatogramDialog.h \
-           src/ExportMsa2McaDialog.h \
            src/ExportMSA2MSADialog.h \
            src/ExportMSA2SequencesDialog.h \
            src/ExportProjectViewItems.h \
@@ -29,19 +28,22 @@ HEADERS += src/CSVColumnConfiguration.h \
            src/ImportAnnotationsFromCSVTask.h \
            src/ImportQualityScoresTask.h \
            src/ImportQualityScoresWorker.h \
-           src/tasks/ExportMsa2McaTask.h
+           src/McaEditorContext.h \
+           src/dialogs/ExportMca2MsaDialog.h \
+           src/tasks/ConvertMca2MsaTask.h \
+           src/tasks/ExportMca2MsaTask.h
 
 FORMS += src/CSVColumnConfigurationDialog.ui \
          src/DNASequenceGeneratorDialog.ui \
          src/ExportBlastResultDialog.ui \
          src/ExportChromatogramDialog.ui \
-         src/ExportMsa2McaDialog.ui \
          src/ExportMSA2MSADialog.ui \
          src/ExportMSA2SequencesDialog.ui \
          src/ExportSequences2MSADialog.ui \
          src/ExportSequencesDialog.ui \
          src/GetSequenceByIdDialog.ui \
-         src/ImportAnnotationsFromCSVDialog.ui
+         src/ImportAnnotationsFromCSVDialog.ui \
+         src/dialogs/ExportMca2MsaDialog.ui
 
 SOURCES += src/CSVColumnConfigurationDialog.cpp \
            src/DNAExportPlugin.cpp \
@@ -51,7 +53,6 @@ SOURCES += src/CSVColumnConfigurationDialog.cpp \
            src/ExportAlignmentViewItems.cpp \
            src/ExportBlastResultDialog.cpp \
            src/ExportChromatogramDialog.cpp \
-           src/ExportMsa2McaDialog.cpp \
            src/ExportMSA2MSADialog.cpp \
            src/ExportMSA2SequencesDialog.cpp \
            src/ExportProjectViewItems.cpp \
@@ -70,6 +71,9 @@ SOURCES += src/CSVColumnConfigurationDialog.cpp \
            src/ImportAnnotationsFromCSVTask.cpp \
            src/ImportQualityScoresTask.cpp \
            src/ImportQualityScoresWorker.cpp \
-           src/tasks/ExportMsa2McaTask.cpp
+           src/McaEditorContext.cpp \
+           src/dialogs/ExportMca2MsaDialog.cpp \
+           src/tasks/ConvertMca2MsaTask.cpp \
+           src/tasks/ExportMca2MsaTask.cpp
 
 TRANSLATIONS += transl/english.ts transl/russian.ts

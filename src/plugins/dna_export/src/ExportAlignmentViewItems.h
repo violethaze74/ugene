@@ -47,7 +47,7 @@ protected:
 };
 
 class MSAExportContext : public QObject {
-    Q_OBJECT;
+    Q_OBJECT
 public:
     MSAExportContext(MSAEditor* e);
     void buildMenu(QMenu* m);

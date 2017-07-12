@@ -19,30 +19,33 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_MSA_2_MCA_DIALOG_H_
-#define _U2_EXPORT_MSA_2_MCA_DIALOG_H_
+#ifndef _U2_EXPORT_MCA_2_MSA_DIALOG_H_
+#define _U2_EXPORT_MCA_2_MSA_DIALOG_H_
 
 #include <QDialog>
 
-#include "ui_ExportMsa2McaDialog.h"
+#include "ui_ExportMca2MsaDialog.h"
 
 namespace U2 {
 
 class SaveDocumentController;
 
-class ExportMsa2McaDialog : public QDialog, public Ui_ExportMsa2McaDialog {
-    Q_OBJECT
+class ExportMca2MsaDialog : public QDialog, public Ui_ExportMca2MsaDialog {
 public:
-    ExportMsa2McaDialog(const QString &defaultFileName, QWidget *parent);
+    ExportMca2MsaDialog(const QString &defaultFilePath, QWidget *parent);
 
     QString getSavePath() const;
+    QString getFormatId() const;
+    bool getAddToProjectOption() const;
+    bool getIncludeReferenceOption() const;
 
 private:
-    void initSaveController(const QString &defaultFileName);
+    void initSaveController(const QString &defaultFilePath);
 
-    SaveDocumentController* saveController;
+    const QString defaultFilePath;
+    SaveDocumentController *saveController;
 };
 
 }   // namespace U2
 
-#endif // _U2_EXPORT_MSA_2_MCA_DIALOG_H_
+#endif // _U2_EXPORT_MCA_2_MSA_DIALOG_H_
