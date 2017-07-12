@@ -211,6 +211,47 @@ QColor SequenceWithChromatogramAreaRenderer::getBaseColor( char base ) const {
     }
 }
 
+namespace {
+
+static int getPreviousBaseCallEndPosition(const QVector<ushort>& baseCalls, int startPos) {
+    int res = 0;
+    SAFE_POINT(startPos > 0 && startPos < baseCalls.size(), "Out of array boundary", 0);
+    int prevStep = baseCalls[startPos] - baseCalls[startPos - 1];
+    //When many gaps was insered to the single place, the difference between current and previous baceCalls element may be very little.
+    //Because of it, left correct point to draw may be out of the left edge of visible area
+    //If it happends, we need to go to the left while we will find a correct point
+    if (prevStep <= 1) {
+        int pos = startPos - 1;
+        while (prevStep == 0 && pos > 0) {
+            prevStep = baseCalls[pos] - baseCalls[pos - 1];
+            pos--;
+        }
+        SAFE_POINT(pos >= 0, "Pos is the ordinal number of baseCalls element, it must be >= 0", 0);
+        res = baseCalls[startPos] - prevStep;
+    } else {
+        res = baseCalls[startPos] - prevStep / 2;
+    }
+    return res;
+}
+
+static int getCorrectPointsCountVariable(const QVector<ushort>& baseCalls, int pointsCount, int endPos, int currentNumBer) {
+    //The same situation as with "getPreviousBaseCallEndPosition" except in this case we look for correct point for right edge
+    if (currentNumBer != endPos - 1) {
+        return pointsCount;
+    }
+
+    int res = pointsCount;
+    int pos = endPos;
+    while (res == 0 && pos < baseCalls.size()) {
+        res = baseCalls[pos] - baseCalls[pos - 1];
+        pos++;
+    }
+    SAFE_POINT(pos <= baseCalls.size(), "Pos is the ordinal number of baseCalls element, it must be < baseCalls.size() ", 0);
+    return res;
+}
+
+}
+
 void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChromatogram& chroma,
                                                                  qreal x, qreal y, qreal h, QPainter& p,
                                                                  const U2Region& visible) const
@@ -234,13 +275,16 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
     int startPos = visible.startPos;
     int prev = 0;
     if (startPos != 0) {
-        int prevStep = chroma.baseCalls[startPos] - chroma.baseCalls[startPos - 1];
-        prev = chroma.baseCalls[startPos] - prevStep / 2;
+        prev = getPreviousBaseCallEndPosition(chroma.baseCalls, startPos);
     }
-    for (int i = startPos; i < visible.endPos(); i++) {
+    
+    qint64 endPos = visible.endPos();
+    for (int i = startPos; i < endPos; i++) {
         SAFE_POINT(i < chroma.baseCalls.length(), "Base calls array is too short: visible range index is out range", );
-        int k = chroma.baseCalls[i];
-        int pointsCount = k - prev;
+        int currentBaseCalls = chroma.baseCalls[i];
+        int pointsCount = currentBaseCalls - prev;
+
+        pointsCount = getCorrectPointsCountVariable(chroma.baseCalls, pointsCount, endPos, i);
 
         qreal pxPerPoint = columnWidth / pointsCount;
         for (int j = 0; j < pointsCount; j++) {
@@ -256,6 +300,8 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
         }
         prev = chroma.baseCalls[i];
     }
+
+    completePolygonsWithLastBaseCallTrace(polylineA, polylineC, polylineG, polylineT, chroma, columnWidth, visible, h);
 
     if (getSettings().drawTraceA) {
         p.setPen(getBaseColor('A'));
@@ -274,6 +320,41 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
         p.drawPolyline(polylineT);
     }
     p.translate(- x, - h - y);
+}
+
+void SequenceWithChromatogramAreaRenderer::completePolygonsWithLastBaseCallTrace(QPolygonF& polylineA, QPolygonF& polylineC, QPolygonF& polylineG, QPolygonF& polylineT,
+                                                               const DNAChromatogram& chroma, qreal columnWidth, const U2Region& visible, qreal h) const {
+    //The last character may not to be included in visible area, so the trace for this symbol may be necessary to draw separately.
+    int areaHeight = (heightPD - heightBC) * this->maxTraceHeight / 100;
+    int startPos = visible.startPos;
+    int endPos = visible.endPos();
+    int prev = 0;
+    int pointsCount = 0;
+    if (endPos == chroma.baseCalls.size()) {
+        prev = chroma.baseCalls.back();
+        pointsCount = 2;
+    } else {
+        prev = chroma.baseCalls[endPos - 1]; 
+        pointsCount = chroma.baseCalls[endPos] - prev;
+        pointsCount = getCorrectPointsCountVariable(chroma.baseCalls, pointsCount, endPos, endPos - 1);
+        pointsCount = pointsCount == 1 ? 2 : pointsCount;
+    }
+    qreal pxPerPoint = columnWidth / pointsCount;
+    for (int i = 0; i < pointsCount; i++) {
+        double x = columnWidth * (endPos - startPos) + columnWidth / 2 - (pointsCount - i) * pxPerPoint;
+        if (chroma.A.size() == prev + i) {
+            prev -= i;
+        }
+        qreal yA = -qMin(static_cast<qreal>(chroma.A[prev + i]) * areaHeight / chromaMax, h);
+        qreal yC = -qMin(static_cast<qreal>(chroma.C[prev + i]) * areaHeight / chromaMax, h);
+        qreal yG = -qMin(static_cast<qreal>(chroma.G[prev + i]) * areaHeight / chromaMax, h);
+        qreal yT = -qMin(static_cast<qreal>(chroma.T[prev + i]) * areaHeight / chromaMax, h);
+
+        polylineA.append(QPointF(x, yA));
+        polylineC.append(QPointF(x, yC));
+        polylineG.append(QPointF(x, yG));
+        polylineT.append(QPointF(x, yT));
+    }
 }
 
 void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
