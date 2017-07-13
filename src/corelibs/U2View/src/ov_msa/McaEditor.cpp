@@ -198,7 +198,6 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
 
     refArea = new McaEditorReferenceArea(this, getEditor()->getReferenceContext());
     connect(refArea, SIGNAL(si_selectionChanged()), statusBar, SLOT(sl_update()));
-    refArea->installEventFilter(this);
     seqAreaHeaderLayout->insertWidget(0, refArea);
 
     MaEditorConsensusAreaSettings consSettings;
@@ -235,17 +234,6 @@ McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
 
 McaReferenceCharController* McaEditorWgt::getRefCharController() const {
     return refCharController;
-}
-
-bool McaEditorWgt::eventFilter(QObject *watched, QEvent *event) {
-    if (watched == refArea) {
-        QApplication::sendEvent(seqArea, event);
-        if (event->type() == QEvent::KeyPress) {
-            return true;
-        }
-        return false;
-    }
-    return MaEditorWgt::eventFilter(watched, event);
 }
 
 void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {

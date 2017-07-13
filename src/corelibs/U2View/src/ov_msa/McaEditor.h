@@ -82,8 +82,6 @@ public:
     McaEditorSequenceArea* getSequenceArea() const;
     McaReferenceCharController* getRefCharController() const;
 
-    bool eventFilter(QObject *watched, QEvent *event);
-
 protected:
     void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
     void initOverviewArea();

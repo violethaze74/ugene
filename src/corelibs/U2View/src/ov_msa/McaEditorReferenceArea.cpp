@@ -19,8 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/SequenceObjectContext.h>
@@ -49,11 +51,12 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
     scrollBar->hide();
     rowBar->hide();
 
+    connect(this, SIGNAL(si_visibleRangeChanged()), SLOT(sl_syncVisibleRange()));
+
     connect(ui->getEditor()->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
             SLOT(sl_update()));
 
     connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_visibleRangeChanged()));
-    connect(ui->getSequenceArea(), SIGNAL(si_visibleRangeChanged()), SLOT(sl_visibleRangeChanged()));
     connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection,MaEditorSelection)),
             SLOT(sl_selectionChanged(MaEditorSelection,MaEditorSelection)));
 
@@ -106,14 +109,22 @@ void McaEditorReferenceArea::sl_update() {
     completeUpdate();
 }
 
+void McaEditorReferenceArea::sl_syncVisibleRange() {
+    SAFE_POINT(ui->getSequenceArea() != NULL, "Sequence are is NULL", );
+    SAFE_POINT(ui->getScrollController() != NULL, "Scroll controller is NULL", );
+    if (getVisibleRange().startPos != ui->getSequenceArea()->getFirstVisibleBase()) {
+        ui->getScrollController()->setFirstVisibleBase(getVisibleRange().startPos);
+    }
+}
+
 void McaEditorReferenceArea::sl_onSelectionChanged() {
     emit si_selectionChanged();
 }
 
 McaEditorReferenceRenderArea::McaEditorReferenceRenderArea(McaEditorWgt *_ui, PanView *d, PanViewRenderer *renderer)
-    : PanViewRenderArea(d, renderer), 
+    : PanViewRenderArea(d, renderer),
     ui(_ui) {
-};
+}
 
 qint64 McaEditorReferenceRenderArea::coordToPos(int x) const {
     return ui == NULL ? 0 : ui->getBaseWidthController()->screenXPositionToBase(x);
