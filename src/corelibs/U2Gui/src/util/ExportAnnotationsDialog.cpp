@@ -43,16 +43,15 @@ ExportAnnotationsDialog::ExportAnnotationsDialog( const QString &filename, QWidg
     : QDialog( parent ), ui( new Ui_ExportAnnotationsDialog( ) )
 {
     ui->setupUi( this );
+    lastAddToProjectState = ui->addToProjectCheck->isChecked();
     new HelpButton(this, ui->buttonBox, "19759498");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     initSaveController(filename);
     sl_formatChanged(saveController->getFormatIdToSave());
-
     window()->resize(window()->width(), 0);
     
-    lastAddToProjectState = ui->addToProjectCheck->isChecked();
 }
 
 ExportAnnotationsDialog::~ExportAnnotationsDialog( ) {

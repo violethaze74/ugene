@@ -3381,6 +3381,29 @@ GUI_TEST_CLASS_DEFINITION(test_4591_1) {
         
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4591_2) {
+    
+    //1. Open a circular sequence of length N.
+    GTFileDialog::openFile(os, dataDir  + "samples/Genbank/NC_014267.1.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    SelectSequenceRegionDialogFiller* filler = new SelectSequenceRegionDialogFiller(os, 3, 3);
+    filler->setCircular(true);
+    GTUtilsDialog::waitForDialog(os, filler);
+    GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
+    //2. Open "Region selection" dialog {Ctrl+a} fill it with next data:
+    //        {Single range selection} checked
+    //        {Region:} 140425..2
+    
+    //3. Press 'Go' button
+    //Expected state: this regions are selected on the view
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ADV_MENU_COPY<<"Copy sequence"));
+    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
+    GTGlobals::sleep(500);
+    QString text = GTClipboard::text(os);
+    CHECK_SET_ERR(text == "G", "unexpected selection: " + text);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4606) {
     //1. Create custom WD element
     //2. Do not fill "Description" and "Parameters description" fields
