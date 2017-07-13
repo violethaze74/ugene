@@ -87,7 +87,7 @@ public:
         TextPos   textPosition;
     };
 
-    class ArrowConfig {
+    class U2GUI_EXPORT ArrowConfig {
     public:
         ArrowConfig();
 
