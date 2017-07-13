@@ -83,6 +83,7 @@
 #include "ExportHighlightedDialogController.h"
 #include "MSAEditor.h"
 #include "MSAEditorConsensusArea.h"
+#include "MsaEditorNameList.h"
 #include "MSAEditorOffsetsView.h"
 #include "MSAEditorOverviewArea.h"
 #include "MSAEditorSequenceArea.h"
