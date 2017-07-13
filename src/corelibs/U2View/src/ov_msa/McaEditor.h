@@ -35,7 +35,7 @@ class McaReferenceCharController;
 class SequenceObjectContext;
 class U2SequenceObject;
 
-class McaEditor : public MaEditor {
+class U2VIEW_EXPORT McaEditor : public MaEditor {
     Q_OBJECT
     friend class McaEditorSequenceArea;
 public:
