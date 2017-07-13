@@ -469,10 +469,17 @@ void GUrlUtils::validateLocalFileUrl(const GUrl &url, U2OpStatus &os, const QStr
     }
 }
 
+/* Maximum file name length for Linux, Windows and MacOS X is 255 characters. */
+#define MAX_OS_FILE_NAME_LENGTH 255
+
 QString GUrlUtils::fixFileName(const QString &fileName) {
     QString result = fileName;
     result.replace(QRegExp("[^0-9a-zA-Z._\\-]"), "_");
-    return result.replace(QRegExp("_+"), "_");
+    result.replace(QRegExp("_+"), "_");
+
+    /* We truncate long file names a little bit more to allow suffix adjustments (rolling) later. */
+    result.truncate(MAX_OS_FILE_NAME_LENGTH - 50);
+    return result;
 }
 
 }//namespace
