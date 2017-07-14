@@ -32,7 +32,7 @@ namespace U2 {
 ADVSequenceObjectContext::ADVSequenceObjectContext(AnnotatedDNAView* v, U2SequenceObject* obj)
     : SequenceObjectContext(obj, v),
       view(v) {
-    if (v != NULL) {
+    if (v != NULL && translations != NULL) {
         const CodonTableView *ct = v->getCodonTableView();
         foreach(QAction* a, translations->actions()) {
             connect(a, SIGNAL(triggered()), ct, SLOT(sl_setAminoTranslation()));
