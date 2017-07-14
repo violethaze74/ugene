@@ -52,7 +52,6 @@ public:
 
     void updateHorizontalScrollBar();
     void updateVerticalScrollBar();
-    void updateScrollBars();
 
     void scrollToRowByNumber(int rowNumber, int widgetHeight);
     void scrollToBase(int baseNumber, int widgetWidth);
@@ -92,6 +91,9 @@ public:
 
 signals:
     void si_visibleAreaChanged();
+
+public slots:
+    void sl_updateScrollBars();
 
 private slots:
     void sl_collapsibleModelIsAboutToBeChanged();
