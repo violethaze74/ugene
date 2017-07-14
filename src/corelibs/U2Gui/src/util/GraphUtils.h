@@ -87,8 +87,7 @@ public:
         TextPos   textPosition;
     };
 
-    class ArrowConfig {
-    public:
+    struct U2GUI_EXPORT ArrowConfig {
         ArrowConfig();
 
         qreal lineWidth;

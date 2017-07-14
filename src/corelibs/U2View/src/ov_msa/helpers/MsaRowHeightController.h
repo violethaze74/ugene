@@ -26,11 +26,11 @@
 
 namespace U2 {
 
-class MSAEditorUI;
+class MsaEditorWgt;
 
 class MsaRowHeightController : public RowHeightController {
 public:
-    MsaRowHeightController(MSAEditorUI *msaEditortWgt);
+    MsaRowHeightController(MsaEditorWgt *msaEditortWgt);
 
     int getRowHeight(int rowIndex) const;
 };

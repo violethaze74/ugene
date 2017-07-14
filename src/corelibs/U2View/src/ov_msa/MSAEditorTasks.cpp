@@ -19,42 +19,41 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSAEditorTasks.h"
-#include "MSAEditor.h"
-#include "MSAEditorState.h"
-#include "MSAEditorConsensusArea.h"
-
-#include "MaEditorFactory.h"
-#include "McaEditor.h" // SANGER_TODO: deal with includes
+#include <QSet>
 
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObjectTypes.h>
+#include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/Log.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Log.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
+#include <U2Core/TextObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/GObjectUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
-#include <U2Core/TextObject.h>
 #include <U2Core/UnloadedObject.h>
 
 #include <U2Gui/OpenViewTask.h>
 
 #include <U2Formats/DocumentFormatUtils.h>
 
-#include <QSet>
+#include "MSAEditor.h"
+#include "MSAEditorConsensusArea.h"
+#include "MSAEditorState.h"
+#include "MSAEditorTasks.h"
+#include "MaEditorFactory.h"
+#include "McaEditor.h" // SANGER_TODO: deal with includes
 
 namespace U2 {
 

@@ -51,7 +51,7 @@ class MsaEditorSimilarityColumn : public MaEditorNameList, public UpdatedWidgetI
     friend class GTUtilsMSAEditorSequenceArea;
     Q_OBJECT
 public:
-    MsaEditorSimilarityColumn(MSAEditorUI* ui, QScrollBar* nhBar, const SimilarityStatisticsSettings* _settings);
+    MsaEditorSimilarityColumn(MsaEditorWgt* ui, QScrollBar* nhBar, const SimilarityStatisticsSettings* _settings);
     virtual ~MsaEditorSimilarityColumn();
 
     void setSettings(const UpdatedWidgetSettings* _settings);

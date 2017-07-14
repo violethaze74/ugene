@@ -32,7 +32,7 @@ public:
     UpdatedWidgetSettings()
         : ma(NULL), ui(NULL), autoUpdate(true) {}
     const MultipleSequenceAlignmentObject* ma;
-    MSAEditorUI*            ui;
+    MsaEditorWgt*            ui;
     bool                    autoUpdate;
 };
 

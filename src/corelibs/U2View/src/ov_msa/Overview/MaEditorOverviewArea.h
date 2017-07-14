@@ -37,17 +37,17 @@ class MaEditorOverviewArea : public QWidget {
 public:
     MaEditorOverviewArea(MaEditorWgt* ui, const QString& objectName);
 
-    void cancelRendering();
-    virtual bool isOverviewWidget(QWidget* wgt) const;
+    virtual void cancelRendering();
 
-public slots:
-    void sl_show();
+    bool isResizable() const;
+
+protected slots:
+    virtual void sl_show();
 
 protected:
     void addOverview(QWidget* overviewWgt);
 
-protected:
-    MaGraphOverview*   graphOverview;
+    bool isWidgetResizable;
 
 private:
     QVBoxLayout* layout;

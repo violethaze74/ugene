@@ -21,6 +21,7 @@
 
 #include "MaConsensusMismatchController.h"
 #include "McaEditor.h"
+#include "McaEditorSequenceArea.h"
 #include "MSAEditorConsensusCache.h"
 
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"

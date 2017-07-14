@@ -37,8 +37,9 @@
 
 namespace U2 {
 
-MaOverviewContextMenu::MaOverviewContextMenu(MaSimpleOverview *sOverview, MaGraphOverview *gOverview)
-    : simpleOverview(sOverview),
+MaOverviewContextMenu::MaOverviewContextMenu(QWidget *parent, MaSimpleOverview *sOverview, MaGraphOverview *gOverview)
+    : QMenu(parent),
+      simpleOverview(sOverview),
       graphOverview(gOverview)
 {
     SAFE_POINT(simpleOverview != NULL, tr("Overview is NULL"), );

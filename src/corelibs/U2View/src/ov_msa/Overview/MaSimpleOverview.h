@@ -66,7 +66,7 @@ private:
 private:
     mutable QPixmap cachedMSAOverview;
 
-    mutable bool    redrawMSAOverview;
+    mutable bool    redrawMsaOverview;
     mutable bool    redrawSelection;
 };
 

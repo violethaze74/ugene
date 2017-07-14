@@ -42,14 +42,16 @@ class U2VIEW_EXPORT MSAEditorOverviewArea : public MaEditorOverviewArea {
 public:
     MSAEditorOverviewArea(MaEditorWgt* ui);
 
-    bool isOverviewWidget(QWidget* wgt) const;
+    void contextMenuEvent(QContextMenuEvent *event);
+    void cancelRendering();
 
     static const QString OVERVIEW_AREA_OBJECT_NAME;
 
-public slots:
-    void sl_onContextMenuRequested(const QPoint& p);
+private slots:
+    void sl_show();
 
 private:
+    MaGraphOverview*   graphOverview;
     MaSimpleOverview*  simpleOverview;
     MaOverviewContextMenu* contextMenu;
 };

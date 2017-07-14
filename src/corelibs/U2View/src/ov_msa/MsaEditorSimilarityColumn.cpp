@@ -43,7 +43,7 @@ const QString MsaEditorAlignmentDependentWidget::DataIsOutdatedMessage(QString("
 const QString MsaEditorAlignmentDependentWidget::DataIsValidMessage(QString("<FONT COLOR=#00FF00>%1</FONT>").arg(QObject::tr("Data is valid")));
 const QString MsaEditorAlignmentDependentWidget::DataIsBeingUpdatedMessage(QString("<FONT COLOR=#0000FF>%1</FONT>").arg(QObject::tr("Data is being updated")));
 
-MsaEditorSimilarityColumn::MsaEditorSimilarityColumn(MSAEditorUI* ui, QScrollBar* nhBar, const SimilarityStatisticsSettings* _settings)
+MsaEditorSimilarityColumn::MsaEditorSimilarityColumn(MsaEditorWgt* ui, QScrollBar* nhBar, const SimilarityStatisticsSettings* _settings)
     : MaEditorNameList(ui, nhBar),
       matrix(NULL),
       autoUpdate(true)

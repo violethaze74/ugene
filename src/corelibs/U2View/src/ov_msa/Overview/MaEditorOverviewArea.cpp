@@ -28,11 +28,11 @@
 
 namespace U2 {
 
-MaEditorOverviewArea::MaEditorOverviewArea(MaEditorWgt *ui, const QString& objectName) {
+MaEditorOverviewArea::MaEditorOverviewArea(MaEditorWgt *ui, const QString& objectName)
+    : QWidget(ui),
+      isWidgetResizable(false)
+{
     setObjectName(objectName);
-
-    graphOverview = new MaGraphOverview(ui);
-    graphOverview->setObjectName(objectName + QString("_graph"));
 
     layout = new QVBoxLayout();
     layout->setMargin(0);
@@ -40,31 +40,23 @@ MaEditorOverviewArea::MaEditorOverviewArea(MaEditorWgt *ui, const QString& objec
     setLayout(layout);
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    setContextMenuPolicy(Qt::PreventContextMenu);
 }
 
 void MaEditorOverviewArea::cancelRendering() {
-    graphOverview->cancelRendering();
+
 }
 
-bool MaEditorOverviewArea::isOverviewWidget(QWidget *wgt) const {
-    if (wgt == graphOverview || wgt == this) {
-        return true;
-    }
-    return false;
+bool MaEditorOverviewArea::isResizable() const {
+    return isWidgetResizable;
 }
 
 void MaEditorOverviewArea::sl_show() {
-    setVisible( !isVisible() );
-    if (graphOverview->isVisible()) {
-        graphOverview->sl_unblockRendering(true);
-    } else {
-        graphOverview->sl_blockRendering();
-        cancelRendering();
-    }
+    setVisible(!isVisible());
 }
 
 void MaEditorOverviewArea::addOverview(QWidget *overviewWgt) {
     layout->addWidget(overviewWgt);
 }
 
-}
+}   // namespace U2

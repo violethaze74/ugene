@@ -57,7 +57,6 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
     }
     p.save();
 
-    assert(c.drawArrow != c.drawBorderNotches);
     assert(c.drawArrow ? c.drawAxis : true);
 
     p.setFont(font);

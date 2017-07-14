@@ -63,17 +63,17 @@ QColor GTUtilsMsaEditor::getSimpleOverviewPixelColor(GUITestOpStatus &os, const 
 
 #define GT_METHOD_NAME "getEditor"
 MSAEditor * GTUtilsMsaEditor::getEditor(GUITestOpStatus &os) {
-    MSAEditorUI *editorUi = getEditorUi(os);
+    MsaEditorWgt *editorUi = getEditorUi(os);
     CHECK_OP(os, NULL);
     return editorUi->getEditor();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getEditorUi"
-MSAEditorUI * GTUtilsMsaEditor::getEditorUi(GUITestOpStatus &os) {
+MsaEditorWgt * GTUtilsMsaEditor::getEditorUi(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
-    return activeWindow->findChild<MSAEditorUI *>();
+    return activeWindow->findChild<MsaEditorWgt *>();
 }
 #undef GT_METHOD_NAME
 

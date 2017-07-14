@@ -19,12 +19,19 @@
  * MA 02110-1301, USA.
  */
 
+#include <QHBoxLayout>
 #include <QPainter>
+#include <QPaintEvent>
 
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/GraphUtils.h>
 
 #include "MaSangerOverview.h"
 #include "ov_msa/McaEditor.h"
+#include "ov_msa/McaReferenceCharController.h"
+#include "ov_msa/MSACollapsibleModel.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/RowHeightController.h"
 #include "ov_msa/helpers/ScrollController.h"
@@ -32,17 +39,45 @@
 
 namespace U2 {
 
-const int MaSangerOverview::READ_HEIGHT = 8;
+
+const int MaSangerOverview::READ_HEIGHT = 9;
+const int MaSangerOverview::MINIMUM_HEIGHT = 100;
+const qreal MaSangerOverview::ARROW_LINE_WIDTH = 2;
+const qreal MaSangerOverview::ARROW_HEAD_WIDTH = 6;
+const qreal MaSangerOverview::ARROW_HEAD_LENGTH = 7;
+const QColor MaSangerOverview::ARROW_DIRECT_COLOR = "blue"; // another possible color: "#4EADE1";
+const QColor MaSangerOverview::ARROW_REVERSE_COLOR = "green"; // another possible color: "#03c03c";
 
 MaSangerOverview::MaSangerOverview(MaEditorWgt *ui)
-    : MaOverview(ui) {
-    if (!isValid()) {
-        setVisible(false);
-    }
-    MultipleChromatogramAlignmentObject* mAlignmentObj = getEditor()->getMaObject();
-    setFixedHeight(mAlignmentObj->getNumRows() * READ_HEIGHT);      // SANGER_TODO: do something, if there are too many reads
+    : MaOverview(ui),
+      vScrollBar(new QScrollBar(Qt::Vertical, this)),
+      renderArea(new QWidget(this)),
+      completeRedraw(true)
+{
+    QHBoxLayout *mainLayout = new QHBoxLayout();
+    mainLayout->setSpacing(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setSizeConstraint(QLayout::SetMaximumSize);
 
+    mainLayout->addWidget(renderArea);
+    mainLayout->addWidget(vScrollBar);
+    setLayout(mainLayout);
+
+    renderArea->installEventFilter(this);
+
+    setMinimumHeight(MINIMUM_HEIGHT);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_updateScrollBar()));
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_resetCaches()));
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_completeRedraw()));
+    connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
+    connect(ui->getScrollController()->getVerticalScrollBar(), SIGNAL(valueChanged(int)), SLOT(sl_screenMoved()));
+    connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_resetCaches()));
+    connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_resetCaches()));
+    connect(vScrollBar, SIGNAL(valueChanged(int)), SLOT(sl_completeRedraw()));
+
+    sl_updateScrollBar();
 }
 
 bool MaSangerOverview::isValid() const {
@@ -50,65 +85,130 @@ bool MaSangerOverview::isValid() const {
 }
 
 QPixmap MaSangerOverview::getView() {
-    // SANGER_TODO: change
-    resize(ui->width(), height());
     if (cachedView.isNull()) {
-        cachedView = QPixmap(size());
-        QPainter p(&cachedView);
-        drawOverview(p);
+        cachedView = QPixmap(renderArea->width(), getContentWidgetHeight() + getReferenceHeight());
+    }
+
+    if (cachedReferenceView.isNull()) {
+        cachedReferenceView = QPixmap(renderArea->width(), getReferenceHeight());
+    }
+
+    if (cachedReadsView.isNull()) {
+        cachedReadsView = QPixmap(renderArea->width(), getContentWidgetHeight());
+    }
+
+    if (completeRedraw) {
+        QPainter painter(&cachedView);
+        drawOverview(painter);
+        completeRedraw = false;
     }
     return cachedView;
 }
 
-McaEditor* MaSangerOverview::getEditor() const {
-    return qobject_cast<McaEditor*>(editor);
-}
+void MaSangerOverview::sl_updateScrollBar() {
+    vScrollBar->setMinimum(0);
+    vScrollBar->setSingleStep(3);
+    const int maximum = getReadsHeight() - renderArea->height() + getReferenceHeight();
+    vScrollBar->setMaximum(maximum);
 
-void MaSangerOverview::paintEvent(QPaintEvent *e) {
-    QPainter p(this);
-    p.drawPixmap(0, 0, getView());
-    drawVisibleRange(p);
-    QWidget::paintEvent(e);
-}
-
-void MaSangerOverview::resizeEvent(QResizeEvent *e) {
-    cachedView = QPixmap();
-    QWidget::resizeEvent(e);
-    update();
-}
-
-void MaSangerOverview::drawOverview(QPainter &p) {
-    p.fillRect(cachedView.rect(), Qt::white);
-
-    if (editor->isAlignmentEmpty()) {
-        return;
+    const bool prevVisibilityState = vScrollBar->isVisible();
+    vScrollBar->setVisible(maximum > 0);
+    const bool newVisibilityState = vScrollBar->isVisible();
+    if (prevVisibilityState != newVisibilityState) {
+        sl_completeRedraw();
     }
+}
 
+void MaSangerOverview::sl_completeRedraw() {
+    completeRedraw = true;
+    renderArea->update();
+}
+
+void MaSangerOverview::sl_resetCaches() {
+    cachedReferenceHeight = -1;
+    cachedView = QPixmap();
+    cachedReferenceView = QPixmap();
+    cachedReadsView = QPixmap();
+    sl_completeRedraw();
+}
+
+void MaSangerOverview::sl_screenMoved() {
+    const int screenYPosition = ui->getScrollController()->getScreenPosition().y();
+    const int screenHeight = ui->getSequenceArea()->height();
+    const int mappedTopPosition = screenYPosition / stepY;
+    const int mappedBottomPosition = (screenYPosition + screenHeight) / stepY;
+
+    if (mappedTopPosition < getScrollBarValue()) {
+        vScrollBar->setValue(mappedTopPosition);
+    }
+    if (mappedBottomPosition > getScrollBarValue() + renderArea->height() - getReferenceHeight()) {
+        vScrollBar->setValue(mappedBottomPosition - (renderArea->height() - getReferenceHeight()));
+    }
+}
+
+McaEditor *MaSangerOverview::getEditor() const {
+    return qobject_cast<McaEditor *>(editor);
+}
+
+int MaSangerOverview::getContentWidgetWidth() const {
+    return renderArea->width();
+}
+
+int MaSangerOverview::getContentWidgetHeight() const {
+    return qMax(getReadsHeight(), (vScrollBar->isVisible() ? 0 : renderArea->height()) - getReferenceHeight());
+}
+
+int MaSangerOverview::getReadsHeight() const {
+    const int rowsCount = ui->getCollapseModel()->getDisplayableRowsCount();
+    return rowsCount * READ_HEIGHT;
+}
+
+int MaSangerOverview::getReferenceHeight() const {
+    if (-1 == cachedReferenceHeight) {
+        QFontMetrics fontMetrics(editor->getFont());
+        return fontMetrics.height() + 2 * 2 + 4;    // Some magic. These values were taken from GraphUtils::drawRuler()
+    }
+    return cachedReferenceHeight;
+}
+
+int MaSangerOverview::getScrollBarValue() const {
+    return vScrollBar->isVisible() ? vScrollBar->value() : 0;
+}
+
+void MaSangerOverview::resizeEvent(QResizeEvent *event) {
+    sl_resetCaches();
+    QWidget::resizeEvent(event);
+    sl_updateScrollBar();
+    sl_completeRedraw();
+}
+
+bool MaSangerOverview::eventFilter(QObject *object, QEvent *event) {
+    QPaintEvent *paintEvent = dynamic_cast<QPaintEvent *>(event);
+    CHECK(NULL != paintEvent, MaOverview::eventFilter(object, event));
+    if (object == renderArea) {
+        QPainter painter(renderArea);
+        painter.fillRect(renderArea->rect(), Qt::white);
+        painter.drawPixmap(QPoint(0, 0), getView());
+
+        drawVisibleRange(painter);
+    }
+    return true;
+}
+
+void MaSangerOverview::drawOverview(QPainter &painter) {
+    CHECK(!editor->isAlignmentEmpty(), );
     recalculateScale();
 
-    MultipleChromatogramAlignmentObject* mAlignmentObj = getEditor()->getMaObject();
-    SAFE_POINT(NULL != mAlignmentObj, tr("Incorrect multiple alignment object!"), );
-    const MultipleChromatogramAlignment ma = mAlignmentObj->getMultipleAlignment();
+    drawReference();
+    drawReads();
 
-    for (int seq = 0; seq < editor->getNumSequences(); seq++) {
-        const MultipleChromatogramAlignmentRow row =  ma->getMcaRow(seq);
-        const U2Region coreRegion = row->getCoreRegion();
-        const U2Region positionRegion = ui->getBaseWidthController()->getBasesGlobalRange(coreRegion);
-
-        QRect readRect;
-        readRect.setX(qRound(positionRegion.startPos / stepX));
-        readRect.setY(seq * READ_HEIGHT);
-        readRect.setHeight(READ_HEIGHT);
-        readRect.setWidth(positionRegion.length / stepX);
-
-        drawRead(p, readRect, !row->isReversed()); // SANGER_TODO: replace with "getDirection() == U2Strand::Direct"
-    }
-
-    p.setPen(Qt::gray);
-    p.drawRect( rect().adjusted(0, 0, -1, -1) );
+    painter.drawPixmap(cachedReferenceView.rect(), cachedReferenceView);
+    painter.drawPixmap(QRect(0, cachedReferenceView.height(), getContentWidgetWidth(), height() - cachedReferenceView.height()),
+                       cachedReadsView,
+                       QRect(0, getScrollBarValue(), cachedReadsView.width(), height() - cachedReferenceView.height()));
 }
 
-void MaSangerOverview::drawVisibleRange(QPainter &p) {
+void MaSangerOverview::drawVisibleRange(QPainter &painter) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
@@ -119,62 +219,96 @@ void MaSangerOverview::drawVisibleRange(QPainter &p) {
 
         cachedVisibleRange.setX(qRound(screenPosition.x() / stepX));
         cachedVisibleRange.setWidth(qRound(screenSize.width() / stepX));
-        cachedVisibleRange.setY(qRound(screenPosition.y() / stepY));
-        cachedVisibleRange.setHeight(qRound(screenSize.height() / stepY));
+        cachedVisibleRange.setY(qMax(qRound(screenPosition.y() / stepY + getReferenceHeight() - getScrollBarValue()), getReferenceHeight()));
+        cachedVisibleRange.setHeight(qMin(qRound(screenSize.height() / stepY), renderArea->height() - getReferenceHeight()));
 
         if (cachedVisibleRange.width() < VISIBLE_RANGE_CRITICAL_SIZE || cachedVisibleRange.height() < VISIBLE_RANGE_CRITICAL_SIZE) {
-            p.setPen(Qt::red);
+            painter.setPen(Qt::red);
         }
     }
 
-    p.fillRect(cachedVisibleRange, VISIBLE_RANGE_COLOR);
-    p.drawRect(cachedVisibleRange.adjusted(0, 0, -1, -1));
+    painter.fillRect(cachedVisibleRange, VISIBLE_RANGE_COLOR);
+    painter.drawRect(cachedVisibleRange.adjusted(0, 0, -1, -1));
 }
 
-void MaSangerOverview::drawSelection(QPainter &p) {
-    p.fillRect(cachedSelection, SELECTION_COLOR);
+void MaSangerOverview::drawReference() {
+    QPainter painter(&cachedReferenceView);
+    painter.fillRect(cachedReferenceView.rect(), Qt::white);
+
+    const int referenceUngappedLength = getEditor()->getUI()->getRefCharController()->getUngappedLength();
+    GraphUtils::RulerConfig config;
+    config.drawArrow = false;
+    config.drawNumbers = true;
+    config.drawNotches = false;
+    config.drawAxis = false;
+    config.drawBorderNotches = false;
+
+    GraphUtils::drawRuler(painter, QPoint(0, 0), getContentWidgetWidth() - 1, 0, referenceUngappedLength, editor->getFont(), config);
+
+    const int yOffset = config.notchSize + QFontMetrics(editor->getFont()).height() + config.textOffset;
+    config.drawNotches = true;
+    config.drawNumbers = false;
+    config.drawAxis = true;
+    config.drawBorderNotches = true;
+
+    GraphUtils::drawRuler(painter, QPoint(0, yOffset), getContentWidgetWidth() - 1, 0, referenceUngappedLength, editor->getFont(), config);
 }
 
-void MaSangerOverview::moveVisibleRange(QPoint _pos) {
-    // SANGER_TODO: this is located in the separate method in simpleoverview
+void MaSangerOverview::drawReads() {
+    QPainter painter(&cachedReadsView);
+    painter.fillRect(cachedReadsView.rect(), Qt::white);
 
+    MultipleChromatogramAlignmentObject const * const mcaObject = getEditor()->getMaObject();
+    SAFE_POINT(NULL != mcaObject, tr("Incorrect multiple chromatogram alignment object"), );
+    const MultipleChromatogramAlignment mca = mcaObject->getMultipleAlignment();
+    const int rowsCount = editor->getUI()->getCollapseModel()->getDisplayableRowsCount();
+
+    double yOffset = 0;
+    const double yStep = qMax(static_cast<double>(READ_HEIGHT), static_cast<double>(cachedReadsView.height()) / rowsCount);
+    yOffset += (yStep - READ_HEIGHT) / 2;
+
+    for (int rowNumber = 0; rowNumber < rowsCount; rowNumber++) {
+        const MultipleChromatogramAlignmentRow row = mca->getMcaRow(ui->getCollapseModel()->mapToRow(rowNumber));
+        const U2Region coreRegion = row->getCoreRegion();
+        const U2Region positionRegion = editor->getUI()->getBaseWidthController()->getBasesGlobalRange(coreRegion);
+
+        QRect readRect;
+        readRect.setX(qRound(positionRegion.startPos / stepX));
+        readRect.setY(qRound(yOffset));
+        readRect.setHeight(READ_HEIGHT);
+        readRect.setWidth(positionRegion.length / stepX);
+
+        GraphUtils::ArrowConfig config;
+        config.lineWidth = ARROW_LINE_WIDTH;
+        config.lineLength = readRect.width();
+        config.arrowHeadWidth = ARROW_HEAD_WIDTH;
+        config.arrowHeadLength = ARROW_HEAD_LENGTH;
+        config.color = row->isReversed() ? ARROW_REVERSE_COLOR : ARROW_DIRECT_COLOR;
+        config.direction = row->isReversed() ? GraphUtils::RightToLeft : GraphUtils::LeftToRight;
+        GraphUtils::drawArrow(painter, readRect, config);
+
+        yOffset += yStep;
+    }
+}
+
+void MaSangerOverview::moveVisibleRange(QPoint pos) {
     QRect newVisibleRange(cachedVisibleRange);
-    const int newPosX = qBound((cachedVisibleRange.width() - 1) / 2, _pos.x(), width() - (cachedVisibleRange.width() - 1 ) / 2);
-    const int newPosY = qBound((cachedVisibleRange.height() - 1) / 2, _pos.y(), height() - (cachedVisibleRange.height() - 1 ) / 2);
+    const int newPosX = qBound((cachedVisibleRange.width() - 1) / 2, pos.x(), width() - (cachedVisibleRange.width() - 1 ) / 2);
+    const int newPosY = qBound(getReferenceHeight() + (cachedVisibleRange.height() - 1) / 2, pos.y(), height() - (cachedVisibleRange.height() - 1 ) / 2);
     const QPoint newPos(newPosX, newPosY);
     newVisibleRange.moveCenter(newPos);
 
+    if (pos.y() < newPosY && 0 < getScrollBarValue()) {
+        vScrollBar->triggerAction(QScrollBar::SliderSingleStepSub);
+    }
+    if (newPosY < pos.y() && getScrollBarValue() < vScrollBar->maximum()) {
+        vScrollBar->triggerAction(QScrollBar::SliderSingleStepAdd);
+    }
+
     const int newHScrollBarValue = newVisibleRange.x() * stepX;
     ui->getScrollController()->setHScrollbarValue(newHScrollBarValue);
-    const int newVScrollBarValue = newVisibleRange.y() * stepY;
+    const int newVScrollBarValue = (newVisibleRange.y() - getReferenceHeight() + getScrollBarValue()) * stepY;
     ui->getScrollController()->setVScrollbarValue(newVScrollBarValue);
 }
 
-void MaSangerOverview::drawRead(QPainter &p, const QRect &rect, bool forward) {
-    if (forward) {
-        p.setPen(Qt::SolidLine);
-        p.drawLine(rect.topLeft(), rect.bottomLeft());
-
-        // arrow
-        p.drawLine(rect.right(), rect.center().y(),
-                   rect.right() - READ_HEIGHT / 2,
-                   rect.center().y() - READ_HEIGHT / 2);
-        p.drawLine(rect.right(), rect.center().y(),
-                   rect.right() - READ_HEIGHT / 2,
-                   rect.center().y() + READ_HEIGHT / 2);
-    } else {
-        p.setPen(Qt::DashLine);
-        p.drawLine(rect.topRight(), rect.bottomRight());
-
-        // arrow
-        p.drawLine(rect.left(), rect.center().y(),
-                   rect.left() + READ_HEIGHT / 2,
-                   rect.center().y() - READ_HEIGHT / 2);
-        p.drawLine(rect.left(), rect.center().y(),
-                   rect.left() + READ_HEIGHT / 2,
-                   rect.center().y() + READ_HEIGHT / 2);
-    }
-    p.drawLine(rect.left(), rect.center().y(), rect.right(), rect.center().y());
-}
-
-} // namespace
+}   // namespace U2

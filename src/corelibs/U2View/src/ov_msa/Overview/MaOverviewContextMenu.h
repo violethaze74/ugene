@@ -34,9 +34,11 @@ class MSAEditorOverviewArea;
 class MaOverviewContextMenu : public QMenu {
     Q_OBJECT
 public:
-    MaOverviewContextMenu(MaSimpleOverview *so, MaGraphOverview *go);
+    MaOverviewContextMenu(QWidget *parent, MaSimpleOverview *so, MaGraphOverview *go);
+
 private:
     void connectSlots();
+
 signals:
     void si_graphTypeSelected(MaGraphOverviewDisplaySettings::GraphType type);
     void si_graphOrientationSelected(MaGraphOverviewDisplaySettings::OrientationMode orientation);

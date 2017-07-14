@@ -72,6 +72,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/McaEditorReferenceArea.h \
            src/ov_msa/McaEditorSequenceArea.h \
            src/ov_msa/McaEditorStatusBar.h \
+           src/ov_msa/McaEditorWgt.h \
            src/ov_msa/McaReferenceCharController.h \
            src/ov_msa/MSACollapsibleModel.h \
            src/ov_msa/MSAEditor.h \
@@ -85,6 +86,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MSAEditorState.h \
            src/ov_msa/MsaEditorStatusBar.h \
            src/ov_msa/MSAEditorTasks.h \
+           src/ov_msa/MsaEditorWgt.h \
            src/ov_msa/MsaUpdatedWidgetInterface.h \
            src/ov_msa/MsaOpSavableTab.h \
            src/ov_msa/MSASelectSubalignmentDialog.h \
@@ -333,6 +335,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/McaEditorReferenceArea.cpp \
            src/ov_msa/McaEditorSequenceArea.cpp \
            src/ov_msa/McaEditorStatusBar.cpp \
+           src/ov_msa/McaEditorWgt.cpp \
            src/ov_msa/McaReferenceCharController.cpp \
            src/ov_msa/MSACollapsibleModel.cpp \
            src/ov_msa/MSAEditor.cpp \
@@ -346,6 +349,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MSAEditorState.cpp \
            src/ov_msa/MsaEditorStatusBar.cpp \
            src/ov_msa/MSAEditorTasks.cpp \
+           src/ov_msa/MsaEditorWgt.cpp \
            src/ov_msa/MsaOpSavableTab.cpp \
            src/ov_msa/MSASelectSubalignmentDialog.cpp \
            src/ov_msa/MsaEditorUserModStepController.cpp \

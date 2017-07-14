@@ -33,7 +33,7 @@ class MSAEditorConsensusArea;
 class MaEditorNameList;
 class MSAEditorSequenceArea;
 class MSAEditorTreeViewerUI;
-class MSAEditorUI;
+class MsaEditorWgt;
 class MaGraphOverview;
 class MaSimpleOverview;
 
@@ -44,7 +44,7 @@ public:
     static QColor getSimpleOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point);
 
     static MSAEditor * getEditor(HI::GUITestOpStatus &os);
-    static MSAEditorUI * getEditorUi(HI::GUITestOpStatus &os);
+    static MsaEditorWgt * getEditorUi(HI::GUITestOpStatus &os);
     static MaGraphOverview * getGraphOverview(HI::GUITestOpStatus &os);
     static MaSimpleOverview * getSimpleOverview(HI::GUITestOpStatus &os);
     static MSAEditorTreeViewerUI * getTreeView(HI::GUITestOpStatus &os);

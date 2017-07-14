@@ -152,7 +152,7 @@ void MaEditorWgt::initWidgets() {
     seqAreaHeader = new QWidget(this);
     seqAreaHeader->setObjectName("alignment_header_widget");
     seqAreaHeaderLayout = new QVBoxLayout();
-    seqAreaHeaderLayout->setMargin(0);
+    seqAreaHeaderLayout->setContentsMargins(0, 0, 0, 0);
     seqAreaHeaderLayout->setSpacing(0);
     seqAreaHeaderLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
@@ -163,7 +163,7 @@ void MaEditorWgt::initWidgets() {
     seqAreaHeader->setLayout(seqAreaHeaderLayout);
 
     seqAreaLayout = new QGridLayout();
-    seqAreaLayout->setMargin(0);
+    seqAreaLayout->setContentsMargins(0, 0, 0, 0);
     seqAreaLayout->setSpacing(0);
 
     seqAreaLayout->addWidget(label1, 0, 0);
@@ -188,7 +188,7 @@ void MaEditorWgt::initWidgets() {
     label->setMinimumHeight(consArea->height());
 
     nameAreaLayout = new QVBoxLayout();
-    nameAreaLayout->setMargin(0);
+    nameAreaLayout->setContentsMargins(0, 0, 0, 0);
     nameAreaLayout->setSpacing(0);
     nameAreaLayout->addWidget(label);
     nameAreaLayout->addWidget(nameList);
@@ -200,15 +200,33 @@ void MaEditorWgt::initWidgets() {
     maSplitter.addWidget(nameAreaContainer, 0, 0.1);
     maSplitter.addWidget(seqAreaContainer, 1, 3);
 
+    QVBoxLayout *maContainerLayout = new QVBoxLayout();
+    maContainerLayout->setContentsMargins(0, 0, 0, 0);
+    maContainerLayout->setSpacing(0);
+
+    maContainerLayout->addWidget(maSplitter.getSplitter());
+    maContainerLayout->setStretch(0, 1);
+    maContainerLayout->addWidget(statusBar);
+
+    QWidget *maContainer = new QWidget(this);
+    maContainer->setLayout(maContainerLayout);
+
     QVBoxLayout *mainLayout = new QVBoxLayout();
-    mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
-    mainLayout->addWidget(maSplitter.getSplitter());
-    mainLayout->setStretch(0, 1);
-    mainLayout->addWidget(statusBar);
-    mainLayout->addWidget(overviewArea);
+    QSplitter *mainSplitter = new QSplitter(Qt::Vertical, this);
+    mainSplitter->addWidget(maContainer);
+    mainSplitter->setStretchFactor(0, 2);
 
+    if (overviewArea->isResizable()) {
+        mainSplitter->addWidget(overviewArea);
+        mainSplitter->setCollapsible(1, false);
+    } else {
+        maContainerLayout->addWidget(overviewArea);
+    }
+    mainLayout->addWidget(mainSplitter);
     setLayout(mainLayout);
 
     connect(collapseModel, SIGNAL(si_toggled()), offsetsView, SLOT(sl_updateOffsets()));

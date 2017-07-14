@@ -65,7 +65,7 @@ public:
 
     virtual MultipleAlignmentObject* getMaObject() const { return maObject; }
 
-    MaEditorWgt* getUI() const { return ui; }
+    virtual MaEditorWgt* getUI() const { return ui; }
 
     virtual OptionsPanel* getOptionsPanel() { return optionsPanel; }
 
