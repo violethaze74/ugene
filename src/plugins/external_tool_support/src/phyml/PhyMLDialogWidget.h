@@ -86,6 +86,10 @@ private slots:
     void sl_checkTreeImprovement(int newIndex);
     void sl_checkSubModelType(const QString& newModel);
     void sl_inputPathButtonClicked();
+    void sl_optTopologyCheckboxClicked(bool checked);
+
+private:
+    bool optBranchCheckboxSavedState;    
 };
 
 }//namespace
