@@ -64,6 +64,7 @@ private:
     McaEditorSequenceArea* getSeqArea() const;
     const ChromatogramViewSettings& getSettings() const;
     static int getChromatogramHeight();
+    void getInfoForLastSymbolTrace(QPolygonF& polylineA, QPolygonF& polylineC, QPolygonF& polylineG, QPolygonF& polylineT, const DNAChromatogram& chroma, qreal columnWidth, const U2Region& visible, qreal h) const;
 
 private:
     qreal   charWidth;
