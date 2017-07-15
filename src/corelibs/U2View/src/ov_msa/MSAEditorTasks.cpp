@@ -348,7 +348,7 @@ void ExtractConsensusTask::run() {
         SAFE_POINT(0 != nSeq, tr("No sequences in alignment"), );
 
         QChar c = algorithm->getConsensusCharAndScore(alignment, i, count);
-        if (c == 0) {//?? make it more clear
+        if (c == MSAConsensusAlgorithm::INVALID_CONS_CHAR) {
             c = U2Msa::GAP_CHAR;
         }
         if (c != U2Msa::GAP_CHAR || keepGaps) {

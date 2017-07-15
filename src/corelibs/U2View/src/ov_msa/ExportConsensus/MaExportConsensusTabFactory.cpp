@@ -23,46 +23,81 @@
 
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/ShowHideSubgroupWidget.h>
+
 #include <U2View/MSAEditor.h>
+#include <U2View/McaEditor.h>
 
-#include "MaExportConsensusTab.h"
-
+#include "MaExportConsensusWidget.h"
 #include "MaExportConsensusTabFactory.h"
+#include "../General/MaConsensusModeWidget.h"
 
 namespace U2 {
 
-const QString MaExportConsensusTabFactory::GROUP_ID = "OP_EXPORT_CONSENSUS";
-const QString MaExportConsensusTabFactory::GROUP_ICON_STR = ":core/images/consensus.png";
-const QString MaExportConsensusTabFactory::GROUP_DOC_PAGE = "19759549";
-
-MaExportConsensusTabFactory::MaExportConsensusTabFactory() {
-
-}
-
-QWidget * MaExportConsensusTabFactory::createWidget(GObjectView* objView) {
-    SAFE_POINT(NULL != objView,
-        QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
-        NULL);
-
-    MaEditor* ma = qobject_cast<MaEditor*>(objView);
-    SAFE_POINT(NULL != ma,
-        QString("Internal error: unable to cast object view to MaEditor for group '%1'.").arg(GROUP_ID),
-        NULL);
-
-    MaExportConsensusTab *widget = new MaExportConsensusTab(ma);
-    return widget;
-}
-
-OPGroupParameters MaExportConsensusTabFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Export Consensus"), GROUP_DOC_PAGE);
-}
+const QString GROUP_ICON_STR = ":core/images/consensus.png";
+const QString GROUP_DOC_PAGE = "19759549";
+const QString MsaExportConsensusTabFactory::GROUP_ID = "OP_EXPORT_CONSENSUS";
+const QString McaExportConsensusTabFactory::GROUP_ID = "OP_CONSENSUS";
 
 MsaExportConsensusTabFactory::MsaExportConsensusTabFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
+QWidget * MsaExportConsensusTabFactory::createWidget(GObjectView* objView) {
+    SAFE_POINT(NULL != objView,
+               QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
+               NULL);
+
+    MSAEditor* ma = qobject_cast<MSAEditor*>(objView);
+    SAFE_POINT(NULL != ma,
+               QString("Internal error: unable to cast object view to MsaEditor for group '%1'.").arg(GROUP_ID),
+               NULL);
+
+    MaExportConsensusWidget *widget = new MaExportConsensusWidget(ma);
+    return widget;
+}
+
+OPGroupParameters MsaExportConsensusTabFactory::getOPGroupParameters() {
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Export Consensus"), GROUP_DOC_PAGE);
+}
+
 McaExportConsensusTabFactory::McaExportConsensusTabFactory() {
     objectViewOfWidget = ObjViewType_ChromAlignmentEditor;
 }
+
+QWidget * McaExportConsensusTabFactory::createWidget(GObjectView* objView) {
+    SAFE_POINT(NULL != objView,
+               QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
+               NULL);
+
+    McaEditor* ma = qobject_cast<McaEditor*>(objView);
+    SAFE_POINT(NULL != ma,
+               QString("Internal error: unable to cast object view to MsaEditor for group '%1'.").arg(GROUP_ID),
+               NULL);
+
+    QWidget* widget = new QWidget();
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->setContentsMargins(0, 0, 0, 0);
+    widget->setLayout(layout);
+
+    MaConsensusModeWidget* consensusModeWgt = new MaConsensusModeWidget();
+    consensusModeWgt->init(ma->getMaObject(), ma->getUI()->getConsensusArea());
+    ShowHideSubgroupWidget* consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"),
+                                                                       consensusModeWgt, true);
+
+    MaExportConsensusWidget *exportWidget = new MaExportConsensusWidget(ma);
+    exportWidget->layout()->setContentsMargins(9, 9, 9, 9);
+    ShowHideSubgroupWidget* exportConsensus = new ShowHideSubgroupWidget("EXPORT_CONSENSUS", tr("Export consensus"),
+                                                                         exportWidget, true);
+
+    layout->addWidget(consensusMode);
+    layout->addWidget(exportConsensus);
+    return widget;
+}
+
+OPGroupParameters McaExportConsensusTabFactory::getOPGroupParameters() {
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Consensus"), GROUP_DOC_PAGE);
+}
+
 
 } // namespace U2

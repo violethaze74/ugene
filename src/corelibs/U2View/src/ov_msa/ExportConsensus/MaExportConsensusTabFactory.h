@@ -19,37 +19,35 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EXPORT_CONSENSUS_FACTORY_TAB_H_
-#define _U2_MSA_EXPORT_CONSENSUS_FACTORY_TAB_H_
+#ifndef _U2_MA_EXPORT_CONSENSUS_FACTORY_TAB_H_
+#define _U2_MA_EXPORT_CONSENSUS_FACTORY_TAB_H_
 
 #include <U2Gui/OPWidgetFactory.h>
 
 namespace U2 {
 
-class MaExportConsensusTabFactory : public OPWidgetFactory {
-    Q_OBJECT
+class U2VIEW_EXPORT MsaExportConsensusTabFactory : public OPWidgetFactory {
 public:
-    MaExportConsensusTabFactory();
+    MsaExportConsensusTabFactory();
 
     QWidget * createWidget(GObjectView* objView);
     OPGroupParameters getOPGroupParameters();
 
 private:
     static const QString GROUP_ID;
-    static const QString GROUP_ICON_STR;
-    static const QString GROUP_DOC_PAGE;
 };
 
-class U2VIEW_EXPORT MsaExportConsensusTabFactory : public MaExportConsensusTabFactory {
-public:
-    MsaExportConsensusTabFactory();
-};
-
-class U2VIEW_EXPORT McaExportConsensusTabFactory : public MaExportConsensusTabFactory {
+class U2VIEW_EXPORT McaExportConsensusTabFactory : public OPWidgetFactory {
 public:
     McaExportConsensusTabFactory();
+
+    QWidget * createWidget(GObjectView* objView);
+    OPGroupParameters getOPGroupParameters();
+
+private:
+    static const QString GROUP_ID;
 };
 
 } // namespace U2
 
-#endif // _U2_MSA_EXPORT_CONSENSUS_FACTORY_TAB_H_
+#endif // _U2_MA_EXPORT_CONSENSUS_FACTORY_TAB_H_

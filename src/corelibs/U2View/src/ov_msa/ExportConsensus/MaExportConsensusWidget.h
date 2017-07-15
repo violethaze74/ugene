@@ -31,10 +31,10 @@ namespace U2 {
 class MaEditor;
 class SaveDocumentController;
 
-class MaExportConsensusTab : public QWidget, private Ui_ExportConsensusWidget {
+class MaExportConsensusWidget : public QWidget, private Ui_ExportConsensusWidget {
     Q_OBJECT
 public:
-    MaExportConsensusTab(MaEditor* ma_);
+    MaExportConsensusWidget(MaEditor* ma_);
 
     void showHint(bool showHint);
 

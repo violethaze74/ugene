@@ -47,18 +47,18 @@
 
 #include <U2View/MSAEditorTasks.h>
 
-#include "MaExportConsensusTab.h"
+#include "MaExportConsensusWidget.h"
 
 namespace U2 {
 
-MaExportConsensusTab::MaExportConsensusTab(MaEditor* ma_)
+MaExportConsensusWidget::MaExportConsensusWidget(MaEditor* ma_)
     : ma(ma_),
       savableWidget(this, GObjectViewUtils::findViewByName(ma_->getName())),
       saveController(NULL)
 {
     setupUi(this);
 
-    hintLabel->setStyleSheet("color: green; font: bold;");
+    hintLabel->setStyleSheet(L10N::infoHintStyleSheet());
 
     initSaveController();
 
@@ -72,7 +72,7 @@ MaExportConsensusTab::MaExportConsensusTab(MaEditor* ma_)
     sl_consensusChanged(consensusArea->getConsensusAlgorithm()->getId());
 }
 
-void MaExportConsensusTab::sl_exportClicked(){
+void MaExportConsensusWidget::sl_exportClicked(){
     if (saveController->getSaveFileName().isEmpty()) {
         saveController->setPath(getDefaultFilePath());
     }
@@ -89,7 +89,7 @@ void MaExportConsensusTab::sl_exportClicked(){
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
-void MaExportConsensusTab::showHint( bool showHint ){
+void MaExportConsensusWidget::showHint( bool showHint ){
     if (showHint){
         hintLabel->show();
         keepGapsChb->hide();
@@ -99,7 +99,7 @@ void MaExportConsensusTab::showHint( bool showHint ){
     }
 }
 
-void MaExportConsensusTab::sl_consensusChanged(const QString& algoId) {
+void MaExportConsensusWidget::sl_consensusChanged(const QString& algoId) {
     MSAConsensusAlgorithmFactory *consAlgorithmFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
     SAFE_POINT(consAlgorithmFactory != NULL, "Fetched consensus algorithm factory is NULL", );
 
@@ -124,7 +124,7 @@ void MaExportConsensusTab::sl_consensusChanged(const QString& algoId) {
     }
 }
 
-void MaExportConsensusTab::initSaveController() {
+void MaExportConsensusWidget::initSaveController() {
     SaveDocumentControllerConfig config;
     config.defaultFileName = getDefaultFilePath();
     config.defaultFormatId = BaseDocumentFormats::PLAIN_TEXT;
@@ -141,7 +141,7 @@ void MaExportConsensusTab::initSaveController() {
     saveController = new SaveDocumentController(config, formats, this);
 }
 
-QString MaExportConsensusTab::getDefaultFilePath() const {
+QString MaExportConsensusWidget::getDefaultFilePath() const {
     return GUrlUtils::getDefaultDataPath() + "/" + ma->getMaObject()->getGObjectName() + "_consensus.txt";
 }
 
