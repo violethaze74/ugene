@@ -19,27 +19,38 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EXPORT_CONSENSUS_FACTORY_TAB_H_
-#define _U2_MSA_EXPORT_CONSENSUS_FACTORY_TAB_H_
+#ifndef _U2_MSA_EXPORT_CONSENSUS_TAB_H_
+#define _U2_MSA_EXPORT_CONSENSUS_TAB_H_
 
-#include <U2Gui/OPWidgetFactory.h>
+#include <U2Gui/U2SavableWidget.h>
+
+#include "ui_ExportConsensusWidget.h"
 
 namespace U2 {
 
-class U2VIEW_EXPORT MSAExportConsensusFactoryTab : public OPWidgetFactory {
+class MaEditor;
+class SaveDocumentController;
+
+class MaExportConsensusWidget : public QWidget, private Ui_ExportConsensusWidget {
     Q_OBJECT
 public:
-    MSAExportConsensusFactoryTab();
+    MaExportConsensusWidget(MaEditor* ma_);
 
-    QWidget * createWidget(GObjectView* objView);
-    OPGroupParameters getOPGroupParameters();
+    void showHint(bool showHint);
+
+private slots:
+    void sl_exportClicked();
+    void sl_consensusChanged(const QString& algoId);
 
 private:
-    static const QString GROUP_ID;
-    static const QString GROUP_ICON_STR;
-    static const QString GROUP_DOC_PAGE;
+    void initSaveController();
+    QString getDefaultFilePath() const;
+
+    MaEditor *ma;
+    U2SavableWidget savableWidget;
+    SaveDocumentController *saveController;
 };
 
-} // namespace U2
+} // namespace
 
-#endif // _U2_MSA_EXPORT_CONSENSUS_FACTORY_TAB_H_
+#endif

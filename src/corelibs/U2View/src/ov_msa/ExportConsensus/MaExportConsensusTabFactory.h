@@ -19,38 +19,35 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EXPORT_CONSENSUS_TAB_H_
-#define _U2_MSA_EXPORT_CONSENSUS_TAB_H_
+#ifndef _U2_MA_EXPORT_CONSENSUS_FACTORY_TAB_H_
+#define _U2_MA_EXPORT_CONSENSUS_FACTORY_TAB_H_
 
-#include <U2Gui/U2SavableWidget.h>
-
-#include "ui_ExportConsensusWidget.h"
+#include <U2Gui/OPWidgetFactory.h>
 
 namespace U2 {
 
-class MSAEditor;
-class SaveDocumentController;
-
-class MSAExportConsensusTab : public QWidget, private Ui_ExportConsensusWidget {
-    Q_OBJECT
+class U2VIEW_EXPORT MsaExportConsensusTabFactory : public OPWidgetFactory {
 public:
-    MSAExportConsensusTab(MSAEditor* msa_);
+    MsaExportConsensusTabFactory();
 
-    void showHint(bool showHint);
-
-private slots:
-    void sl_exportClicked();
-    void sl_consensusChanged(const QString& algoId);
+    QWidget * createWidget(GObjectView* objView);
+    OPGroupParameters getOPGroupParameters();
 
 private:
-    void initSaveController();
-    QString getDefaultFilePath() const;
-
-    MSAEditor *msa;
-    U2SavableWidget savableWidget;
-    SaveDocumentController *saveController;
+    static const QString GROUP_ID;
 };
 
-} // namespace
+class U2VIEW_EXPORT McaExportConsensusTabFactory : public OPWidgetFactory {
+public:
+    McaExportConsensusTabFactory();
 
-#endif
+    QWidget * createWidget(GObjectView* objView);
+    OPGroupParameters getOPGroupParameters();
+
+private:
+    static const QString GROUP_ID;
+};
+
+} // namespace U2
+
+#endif // _U2_MA_EXPORT_CONSENSUS_FACTORY_TAB_H_
