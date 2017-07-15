@@ -28,13 +28,13 @@
 
 namespace U2 {
 
-class MSAEditorUI;
+class MsaEditorWgt;
 
 class U2VIEW_EXPORT MSAEditorConsensusArea : public MaEditorConsensusArea {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusArea)
 public:
-    MSAEditorConsensusArea(MSAEditorUI* ui);
+    MSAEditorConsensusArea(MsaEditorWgt* ui);
 
 private:
     void initRenderer();

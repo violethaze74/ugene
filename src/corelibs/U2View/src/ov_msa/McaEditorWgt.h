@@ -19,27 +19,39 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MCA_EDITOR_OVERVIEW_AREA_H_
-#define _U2_MCA_EDITOR_OVERVIEW_AREA_H_
+#ifndef _U2_MCA_EDITOR_WGT_H_
+#define _U2_MCA_EDITOR_WGT_H_
 
-#include "Overview/MaEditorOverviewArea.h"
+#include "view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 
-class MaSangerOverview;
-class McaEditorWgt;
+class McaEditor;
+class McaEditorReferenceArea;
+class McaEditorSequenceArea;
+class McaReferenceCharController;
 
-class McaEditorOverviewArea : public MaEditorOverviewArea {
+class McaEditorWgt : public MaEditorWgt {
     Q_OBJECT
 public:
-    McaEditorOverviewArea(MaEditorWgt* ui);
+    McaEditorWgt(McaEditor* editor);
 
-    static const QString OVERVIEW_AREA_OBJECT_NAME;
+    McaEditor* getEditor() const;
+    McaEditorSequenceArea* getSequenceArea() const;
+    McaReferenceCharController* getRefCharController() const;
+
+protected:
+    void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
+    void initOverviewArea();
+    void initNameList(QScrollBar* nhBar);
+    void initConsensusArea();
+    void initStatusBar();
 
 private:
-    MaSangerOverview*  sangerOverview;
+    McaEditorReferenceArea*     refArea;
+    McaReferenceCharController* refCharController;
 };
 
 }   // namespace U2
 
-#endif // _U2_MCA_EDITOR_OVERVIEW_AREA_H_
+#endif // _U2_MCA_EDITOR_WGT_H_

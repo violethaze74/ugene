@@ -22,6 +22,7 @@
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>

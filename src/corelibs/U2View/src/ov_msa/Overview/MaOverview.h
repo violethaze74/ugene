@@ -66,8 +66,10 @@ protected:
 
     void recalculateScale();
 
-protected:
-    MaEditor*      editor;
+    virtual int getContentWidgetWidth() const;
+    virtual int getContentWidgetHeight() const;
+
+    MaEditor*       editor;
     MaEditorWgt*    ui;
     MaEditorSequenceArea*  sequenceArea;
 

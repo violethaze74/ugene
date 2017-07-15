@@ -31,7 +31,7 @@ namespace U2 {
 /************************************************************************/
 /* MSAEditorConsensusArea */
 /************************************************************************/
-MSAEditorConsensusArea::MSAEditorConsensusArea(MSAEditorUI *ui)
+MSAEditorConsensusArea::MSAEditorConsensusArea(MsaEditorWgt *ui)
     : MaEditorConsensusArea(ui) {
     initRenderer();
     setupFontAndHeight();
