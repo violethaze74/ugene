@@ -171,6 +171,7 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
 
     connectSlots();
     initSaveController();
+    readsListWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
     foreach (const QString& read, lastUsedReadsUrls) {
