@@ -185,6 +185,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/tasks/ConsoleShutdownTask.h \
            src/tasks/CopyDataTask.h \
            src/tasks/CopyDocumentTask.h \
+           src/tasks/CopyFileTask.h \
            src/tasks/CreateAnnotationTask.h \
            src/tasks/DeleteObjectsTask.h \
            src/tasks/DocumentProviderTask.h \
@@ -408,6 +409,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/tasks/ConsoleShutdownTask.cpp \
            src/tasks/CopyDataTask.cpp \
            src/tasks/CopyDocumentTask.cpp \
+           src/tasks/CopyFileTask.cpp \
            src/tasks/CreateAnnotationTask.cpp \
            src/tasks/DeleteObjectsTask.cpp \
            src/tasks/DocumentProviderTask.cpp \

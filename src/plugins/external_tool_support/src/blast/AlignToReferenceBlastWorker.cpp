@@ -353,6 +353,7 @@ SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
 
 QMap<QString, bool> AlignToReferenceBlastTask::getAcceptedReads() const {
     QMap<QString, bool> acceptedReads;
+    CHECK(NULL != blastTask, acceptedReads);
     foreach (BlastAndSwReadTask *subTask, blastTask->getBlastSubtasks()) {
         if (subTask->getReadIdentity() >= minIdentityPercent) {
             acceptedReads.insert(subTask->getReadName(), subTask->isComplement());
@@ -363,6 +364,7 @@ QMap<QString, bool> AlignToReferenceBlastTask::getAcceptedReads() const {
 
 QStringList AlignToReferenceBlastTask::getDiscardedReads() const {
     QStringList discardedReads;
+    CHECK(NULL != blastTask, discardedReads);
     foreach (BlastAndSwReadTask* subTask, blastTask->getBlastSubtasks()) {
         if (subTask->getReadIdentity() < minIdentityPercent) {
             discardedReads << subTask->getReadName();

@@ -28,6 +28,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/blast/FormatDBSupport.h \
            src/blast/FormatDBSupportRunDialog.h \
            src/blast/FormatDBSupportTask.h \
+           src/blast/PrepareInputFastaFilesTask.h \
            src/blast_plus/BlastDBCmdDialog.h \
            src/blast_plus/BlastDBCmdSupport.h \
            src/blast_plus/BlastDBCmdSupportTask.h \
@@ -240,6 +241,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/blast/FormatDBSupport.cpp \
            src/blast/FormatDBSupportRunDialog.cpp \
            src/blast/FormatDBSupportTask.cpp \
+           src/blast/PrepareInputFastaFilesTask.cpp \
            src/blast_plus/BlastDBCmdDialog.cpp \
            src/blast_plus/BlastDBCmdSupport.cpp \
            src/blast_plus/BlastDBCmdSupportTask.cpp \

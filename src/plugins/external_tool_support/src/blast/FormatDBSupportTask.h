@@ -22,15 +22,17 @@
 #ifndef _U2_FORMATDB_SUPPORT_TASK_H
 #define _U2_FORMATDB_SUPPORT_TASK_H
 
-#include <U2Core/Task.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/ExternalToolRunTask.h>
+#include <U2Core/IOAdapter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
+#include <U2Core/Task.h>
+
 #include "utils/ExportTasks.h"
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
-
 namespace U2 {
+
+class PrepareInputFastaFilesTask;
 
 /*Options for FormatDB
 -t  Title for database file [String]  Optional
@@ -92,24 +94,27 @@ class FormatDBSupportTask : public Task {
     Q_OBJECT
 public:
     FormatDBSupportTask(const QString& name, const FormatDBSupportTaskSettings& settings);
+
+private:
     void prepare();
-    QList<Task*> onSubTaskFinished(Task *subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask);
     Task::ReportResult report();
     QString generateReport() const;
-private:
-    void                        prepareInputFastaFiles();
+
+    QString                     prepareTempDir();
     QString                     prepareLink(const QString &path) const;
     void                        createFormatDbTask();
 
     QString                     externalToolLog;
+    PrepareInputFastaFilesTask *prepareTask;
     ExternalToolRunTask*        formatDBTask;
     QString                     toolName;
     FormatDBSupportTaskSettings settings;
-    int                         convertSubTaskCounter;
 
     QStringList                 inputFastaFiles;
     QStringList                 fastaTmpFiles;
 };
 
-}//namespace
+}   // namespace U2
+
 #endif // _U2_FORMATDB_SUPPORT_TASK_H
