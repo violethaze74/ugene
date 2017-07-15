@@ -54,7 +54,7 @@ void ScrollController::init(GScrollBar *hScrollBar, GScrollBar *vScrollBar) {
     vScrollBar->setValue(0);
     connect(vScrollBar, SIGNAL(valueChanged(int)), SIGNAL(si_visibleAreaChanged()));
 
-    updateScrollBars();
+    sl_updateScrollBars();
 }
 
 QPoint ScrollController::getScreenPosition() const {
@@ -67,12 +67,6 @@ void ScrollController::updateHorizontalScrollBar() {
 }
 
 void ScrollController::updateVerticalScrollBar() {
-    updateVerticalScrollBarPrivate();
-    emit si_visibleAreaChanged();
-}
-
-void ScrollController::updateScrollBars() {
-    updateHorizontalScrollBarPrivate();
     updateVerticalScrollBarPrivate();
     emit si_visibleAreaChanged();
 }
@@ -299,7 +293,9 @@ void ScrollController::scrollToMovedSelection(ScrollController::Direction direct
 
 int ScrollController::getFirstVisibleBase(bool countClipped) const {
     const bool removeClippedBase = !countClipped && (getAdditionalXOffset() != 0);
-    return ui->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value()) + (removeClippedBase ? 1 : 0);
+    const int firstVisibleBase = ui->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value()) + (removeClippedBase ? 1 : 0);
+    assert(firstVisibleBase < maEditor->getAlignmentLen());
+    return qMin(firstVisibleBase, maEditor->getAlignmentLen() - 1);
 }
 
 int ScrollController::getLastVisibleBase(int widgetWidth, bool countClipped) const {
@@ -346,6 +342,12 @@ GScrollBar *ScrollController::getHorizontalScrollBar() const {
 
 GScrollBar *ScrollController::getVerticalScrollBar() const {
     return vScrollBar;
+}
+
+void ScrollController::sl_updateScrollBars() {
+    updateHorizontalScrollBarPrivate();
+    updateVerticalScrollBarPrivate();
+    emit si_visibleAreaChanged();
 }
 
 void ScrollController::sl_collapsibleModelIsAboutToBeChanged() {
