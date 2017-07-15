@@ -215,7 +215,8 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
         || 1 == SelectionUtils::findObjects(GObjectTypes::VARIANT_TRACK, &ms, UOF_LoadedOnly).size()
         || 1 == SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly).size()
         || 1 == SelectionUtils::findObjects(GObjectTypes::PHYLOGENETIC_TREE, &ms, UOF_LoadedOnly).size()
-        || 1 == SelectionUtils::findObjects(GObjectTypes::ASSEMBLY, &ms, UOF_LoadedOnly).size());
+        || 1 == SelectionUtils::findObjects(GObjectTypes::ASSEMBLY, &ms, UOF_LoadedOnly).size()
+        || 1 == SelectionUtils::findObjects(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT, &ms, UOF_LoadedOnly).size());
     if (exportedObjectsFound) {
         if (NULL == sub) {
             sub = new QMenu(tr("Export/Import"));
