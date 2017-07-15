@@ -28,6 +28,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2IdTypes.h>
 #include <U2Core/U2SafePoints.h>
@@ -40,18 +41,19 @@
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorSequenceArea.h>
+#include "ov_msa/MaEditor.h"
+#include "ov_msa/view_rendering/MaEditorConsensusArea.h"
+#include "ov_msa/view_rendering/MaEditorWgt.h"
+
 #include <U2View/MSAEditorTasks.h>
 
-#include "MSAExportConsensusTab.h"
+#include "MaExportConsensusTab.h"
 
 namespace U2 {
 
-MSAExportConsensusTab::MSAExportConsensusTab(MSAEditor* msa_)
-    : msa(msa_),
-      savableWidget(this, GObjectViewUtils::findViewByName(msa_->getName())),
+MaExportConsensusTab::MaExportConsensusTab(MaEditor* ma_)
+    : ma(ma_),
+      savableWidget(this, GObjectViewUtils::findViewByName(ma_->getName())),
       saveController(NULL)
 {
     setupUi(this);
@@ -60,7 +62,7 @@ MSAExportConsensusTab::MSAExportConsensusTab(MSAEditor* msa_)
 
     initSaveController();
 
-    MaEditorConsensusArea *consensusArea = msa->getUI()->getConsensusArea();
+    MaEditorConsensusArea *consensusArea = ma->getUI()->getConsensusArea();
     showHint(true);
 
     connect(exportBtn, SIGNAL(clicked()), SLOT(sl_exportClicked()));
@@ -70,24 +72,24 @@ MSAExportConsensusTab::MSAExportConsensusTab(MSAEditor* msa_)
     sl_consensusChanged(consensusArea->getConsensusAlgorithm()->getId());
 }
 
-void MSAExportConsensusTab::sl_exportClicked(){
+void MaExportConsensusTab::sl_exportClicked(){
     if (saveController->getSaveFileName().isEmpty()) {
         saveController->setPath(getDefaultFilePath());
     }
 
-    ExportMSAConsensusTaskSettings settings;
+    ExportMaConsensusTaskSettings settings;
     settings.format = saveController->getFormatIdToSave();
     settings.keepGaps = keepGapsChb->isChecked() || keepGapsChb->isHidden();
-    settings.msa = msa;
-    settings.name = msa->getMaObject()->getGObjectName() + "_consensus";
+    settings.ma = ma;
+    settings.name = ma->getMaObject()->getGObjectName() + "_consensus";
     settings.url = saveController->getSaveFileName();
 
-    Task *t = new ExportMSAConsensusTask(settings);
-    TaskWatchdog::trackResourceExistence(msa->getMaObject(), t, tr("A problem occurred during export consensus. The multiple alignment is no more available."));
+    Task *t = new ExportMaConsensusTask(settings);
+    TaskWatchdog::trackResourceExistence(ma->getMaObject(), t, tr("A problem occurred during export consensus. The multiple alignment is no more available."));
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
-void MSAExportConsensusTab::showHint( bool showHint ){
+void MaExportConsensusTab::showHint( bool showHint ){
     if (showHint){
         hintLabel->show();
         keepGapsChb->hide();
@@ -97,7 +99,7 @@ void MSAExportConsensusTab::showHint( bool showHint ){
     }
 }
 
-void MSAExportConsensusTab::sl_consensusChanged(const QString& algoId) {
+void MaExportConsensusTab::sl_consensusChanged(const QString& algoId) {
     MSAConsensusAlgorithmFactory *consAlgorithmFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
     SAFE_POINT(consAlgorithmFactory != NULL, "Fetched consensus algorithm factory is NULL", );
 
@@ -122,7 +124,7 @@ void MSAExportConsensusTab::sl_consensusChanged(const QString& algoId) {
     }
 }
 
-void MSAExportConsensusTab::initSaveController() {
+void MaExportConsensusTab::initSaveController() {
     SaveDocumentControllerConfig config;
     config.defaultFileName = getDefaultFilePath();
     config.defaultFormatId = BaseDocumentFormats::PLAIN_TEXT;
@@ -139,8 +141,8 @@ void MSAExportConsensusTab::initSaveController() {
     saveController = new SaveDocumentController(config, formats, this);
 }
 
-QString MSAExportConsensusTab::getDefaultFilePath() const {
-    return GUrlUtils::getDefaultDataPath() + "/" + msa->getMaObject()->getGObjectName() + "_consensus.txt";
+QString MaExportConsensusTab::getDefaultFilePath() const {
+    return GUrlUtils::getDefaultDataPath() + "/" + ma->getMaObject()->getGObjectName() + "_consensus.txt";
 }
 
 }

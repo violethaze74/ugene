@@ -28,13 +28,13 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MaEditor;
 class SaveDocumentController;
 
-class MSAExportConsensusTab : public QWidget, private Ui_ExportConsensusWidget {
+class MaExportConsensusTab : public QWidget, private Ui_ExportConsensusWidget {
     Q_OBJECT
 public:
-    MSAExportConsensusTab(MSAEditor* msa_);
+    MaExportConsensusTab(MaEditor* ma_);
 
     void showHint(bool showHint);
 
@@ -46,7 +46,7 @@ private:
     void initSaveController();
     QString getDefaultFilePath() const;
 
-    MSAEditor *msa;
+    MaEditor *ma;
     U2SavableWidget savableWidget;
     SaveDocumentController *saveController;
 };

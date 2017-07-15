@@ -26,10 +26,10 @@
 
 namespace U2 {
 
-class U2VIEW_EXPORT MSAExportConsensusFactoryTab : public OPWidgetFactory {
+class MaExportConsensusTabFactory : public OPWidgetFactory {
     Q_OBJECT
 public:
-    MSAExportConsensusFactoryTab();
+    MaExportConsensusTabFactory();
 
     QWidget * createWidget(GObjectView* objView);
     OPGroupParameters getOPGroupParameters();
@@ -38,6 +38,16 @@ private:
     static const QString GROUP_ID;
     static const QString GROUP_ICON_STR;
     static const QString GROUP_DOC_PAGE;
+};
+
+class U2VIEW_EXPORT MsaExportConsensusTabFactory : public MaExportConsensusTabFactory {
+public:
+    MsaExportConsensusTabFactory();
+};
+
+class U2VIEW_EXPORT McaExportConsensusTabFactory : public MaExportConsensusTabFactory {
+public:
+    McaExportConsensusTabFactory();
 };
 
 } // namespace U2

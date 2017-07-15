@@ -25,36 +25,44 @@
 
 #include <U2View/MSAEditor.h>
 
-#include "MSAExportConsensusTab.h"
+#include "MaExportConsensusTab.h"
 
-#include "MSAExportConsensusTabFactory.h"
+#include "MaExportConsensusTabFactory.h"
 
 namespace U2 {
 
-const QString MSAExportConsensusFactoryTab::GROUP_ID = "OP_EXPORT_CONSENSUS";
-const QString MSAExportConsensusFactoryTab::GROUP_ICON_STR = ":core/images/consensus.png";
-const QString MSAExportConsensusFactoryTab::GROUP_DOC_PAGE = "19759549";
+const QString MaExportConsensusTabFactory::GROUP_ID = "OP_EXPORT_CONSENSUS";
+const QString MaExportConsensusTabFactory::GROUP_ICON_STR = ":core/images/consensus.png";
+const QString MaExportConsensusTabFactory::GROUP_DOC_PAGE = "19759549";
 
-MSAExportConsensusFactoryTab::MSAExportConsensusFactoryTab() {
-    objectViewOfWidget = ObjViewType_AlignmentEditor;
+MaExportConsensusTabFactory::MaExportConsensusTabFactory() {
+
 }
 
-QWidget * MSAExportConsensusFactoryTab::createWidget(GObjectView* objView) {
+QWidget * MaExportConsensusTabFactory::createWidget(GObjectView* objView) {
     SAFE_POINT(NULL != objView,
         QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
         NULL);
 
-    MSAEditor* msa = qobject_cast<MSAEditor*>(objView);
-    SAFE_POINT(NULL != msa,
-        QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
+    MaEditor* ma = qobject_cast<MaEditor*>(objView);
+    SAFE_POINT(NULL != ma,
+        QString("Internal error: unable to cast object view to MaEditor for group '%1'.").arg(GROUP_ID),
         NULL);
 
-    MSAExportConsensusTab *widget = new MSAExportConsensusTab(msa);
+    MaExportConsensusTab *widget = new MaExportConsensusTab(ma);
     return widget;
 }
 
-OPGroupParameters MSAExportConsensusFactoryTab::getOPGroupParameters() {
+OPGroupParameters MaExportConsensusTabFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Export Consensus"), GROUP_DOC_PAGE);
+}
+
+MsaExportConsensusTabFactory::MsaExportConsensusTabFactory() {
+    objectViewOfWidget = ObjViewType_AlignmentEditor;
+}
+
+McaExportConsensusTabFactory::McaExportConsensusTabFactory() {
+    objectViewOfWidget = ObjViewType_ChromAlignmentEditor;
 }
 
 } // namespace U2

@@ -46,8 +46,8 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/CreateSubalignmentDialogController.h \
            src/ov_msa/DeleteGapsDialog.h \
            src/ov_msa/Export/MSAImageExportTask.h \
-           src/ov_msa/ExportConsensus/MSAExportConsensusTab.h \
-           src/ov_msa/ExportConsensus/MSAExportConsensusTabFactory.h \
+           src/ov_msa/ExportConsensus/MaExportConsensusTab.h \
+           src/ov_msa/ExportConsensus/MaExportConsensusTabFactory.h \
            src/ov_msa/ExportHighlightedDialogController.h \
            src/ov_msa/General/MaConsensusModeWidget.h \
            src/ov_msa/General/McaGeneralTab.h \
@@ -310,6 +310,8 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/CreateSubalignmentDialogController.cpp \
            src/ov_msa/DeleteGapsDialog.cpp \
            src/ov_msa/Export/MSAImageExportTask.cpp \
+           src/ov_msa/ExportConsensus/MaExportConsensusTab.cpp \
+           src/ov_msa/ExportConsensus/MaExportConsensusTabFactory.cpp \
            src/ov_msa/ExportHighlightedDialogController.cpp \
            src/ov_msa/General/MaConsensusModeWidget.cpp \
            src/ov_msa/General/McaGeneralTab.cpp \
@@ -349,8 +351,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MsaOpSavableTab.cpp \
            src/ov_msa/MSASelectSubalignmentDialog.cpp \
            src/ov_msa/MsaEditorUserModStepController.cpp \
-           src/ov_msa/ExportConsensus/MSAExportConsensusTab.cpp \
-           src/ov_msa/ExportConsensus/MSAExportConsensusTabFactory.cpp \
            src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentTask.cpp \
            src/ov_msa/helpers/BaseWidthController.cpp \
            src/ov_msa/helpers/DrawHelper.cpp \
