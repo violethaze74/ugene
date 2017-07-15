@@ -66,7 +66,9 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     consArea->setConsensusAlgorithm(algoFactory);
 
     QString name = getEditor()->getReferenceContext()->getSequenceObject()->getSequenceName();
-    QWidget *refName = createHeaderLabelWidget(name, Qt::AlignCenter, refArea);
+    QWidget *refName = createHeaderLabelWidget(tr("Reference %1:").arg(name),
+                                               Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), refArea);
+
 
     nameAreaLayout->insertWidget(0, refName);
 

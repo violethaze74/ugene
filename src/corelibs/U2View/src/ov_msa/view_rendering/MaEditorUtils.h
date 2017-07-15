@@ -22,6 +22,7 @@
 #ifndef _U2_MA_EDITOR_UTILS_H_
 #define _U2_MA_EDITOR_UTILS_H_
 
+#include <QLabel>
 #include <QSplitter>
 #include <QWidget>
 
@@ -89,14 +90,14 @@ public:
     // SANGER_TODO: rename the class and reconsider the usage of it and its parent
     MaLabelWidget(MaEditorWgt* _ui, QWidget* heightWidget, const QString & _t, Qt::Alignment _a);
 
-    QString             text;
-    Qt::Alignment       ali;
-
 protected:
     void paintEvent(QPaintEvent *e);
     void mousePressEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
+
+private:
+    QLabel* label;
 };
 
 } // namespace
