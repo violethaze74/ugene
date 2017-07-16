@@ -71,7 +71,7 @@ WorkflowPalette::WorkflowPalette(ActorPrototypeRegistry* reg, QWidget *parent)
     vl->addLayout(nameFilter);
     vl->addWidget(elementsList);
 
-    connect(elementsList, SIGNAL(processSelected(Workflow::ActorPrototype*)), SIGNAL(processSelected(Workflow::ActorPrototype*)));
+    connect(elementsList, SIGNAL(processSelected(Workflow::ActorPrototype*, bool)), SIGNAL(processSelected(Workflow::ActorPrototype*, bool)));
     connect(elementsList, SIGNAL(si_protoDeleted(const QString &)), SIGNAL(si_protoDeleted(const QString &)));
     connect(elementsList, SIGNAL(si_protoChanged()), SIGNAL(si_protoChanged()));
     connect(elementsList, SIGNAL(si_protoListModified()), SIGNAL(si_protoListModified()));
@@ -230,6 +230,8 @@ QMenu * WorkflowPaletteElements::createMenu(const QString &name) {
     return menu;
 }
 
+#define MENU_ACTION_MARKER  QString("menu-action")
+
 void WorkflowPaletteElements::createMenu(QMenu *menu) {
     menu->clear();
     QMenu *dataSink = NULL, *dataSource = NULL, *userScript = NULL, *externalTools = NULL;
@@ -245,7 +247,11 @@ void WorkflowPaletteElements::createMenu(QMenu *menu) {
         QMapIterator<QString, QAction *> jt(map);
         while(jt.hasNext()) {
             jt.next();
-            grpMenu->addAction(jt.value());
+            QAction* elementAction = jt.value();
+            QAction* menuAction = new QAction(elementAction->icon(), elementAction->text(), elementAction);
+            menuAction->setData(MENU_ACTION_MARKER);
+            connect(menuAction, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
+            grpMenu->addAction(menuAction);
         }
         if(it.key() == BaseActorCategories::CATEGORY_DATASRC().getDisplayName()) {
             dataSource = grpMenu;
@@ -459,14 +465,22 @@ void WorkflowPaletteElements::sl_selectProcess(bool checked) {
     if (currentAction && currentAction != sender()) {
         currentAction->setChecked(false);
     }
-    if (!checked) {
-        currentAction = NULL;
+
+    QAction * senderAction= qobject_cast<QAction*>(sender());
+    bool fromMenu = false;
+    if (senderAction->data() == MENU_ACTION_MARKER) {
+        fromMenu = true;
+        currentAction = qobject_cast<QAction*>(senderAction->parent());
+    } else if (checked) {
+        currentAction = senderAction;
     } else {
-        currentAction = qobject_cast<QAction*>(sender());
-        assert(currentAction);
+        currentAction = NULL;
     }
-    emit processSelected(currentAction ?
-        (currentAction->data().value<Workflow::ActorPrototype*>()) : NULL );
+    if (currentAction) {
+        Workflow::ActorPrototype* actor =  currentAction->data().value<Workflow::ActorPrototype*>();
+        emit processSelected(actor, fromMenu);
+    }
+
 }
 
 void WorkflowPaletteElements::editElement() {
