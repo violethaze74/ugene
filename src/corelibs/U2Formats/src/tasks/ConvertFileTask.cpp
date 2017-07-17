@@ -75,13 +75,22 @@ void ConvertFileTask::run(){
 
 //////////////////////////////////////////////////////////////////////////
 //DefaultConvertFileTask
-DefaultConvertFileTask::DefaultConvertFileTask( const GUrl &sourceURL, const QString &detectedFormat, const QString &targetFormat, const QString &dir )
-:ConvertFileTask(sourceURL, detectedFormat, targetFormat, dir)
-,loadTask(NULL)
-,saveTask(NULL)
+DefaultConvertFileTask::DefaultConvertFileTask( const GUrl &sourceUrl, const QString &detectedFormat, const QString &targetFormat, const QString &dir)
+    : ConvertFileTask(sourceUrl, detectedFormat, targetFormat, dir),
+      loadTask(NULL),
+      saveTask(NULL)
 {
 
 }
+
+DefaultConvertFileTask::DefaultConvertFileTask(const GUrl &sourceUrl, const QString &detectedFormat, const QString &targetUrl, const QString &targetFormat, const QString &dir)
+    : ConvertFileTask(sourceUrl, detectedFormat, targetFormat, dir),
+      loadTask(NULL),
+      saveTask(NULL)
+{
+    this->targetUrl = targetUrl;
+}
+
 void DefaultConvertFileTask::prepare() {
     loadTask = LoadDocumentTask::getDefaultLoadDocTask(sourceURL);
     if (NULL == loadTask) {
@@ -126,8 +135,16 @@ QList<Task*> DefaultConvertFileTask::onSubTaskFinished(Task *subTask) {
     if (!df->getSupportedDocumentFileExtensions().isEmpty()) {
         ext = df->getSupportedDocumentFileExtensions().first();
     }
-    QString fileName = srcDoc->getName() + "." + ext;
-    targetUrl = GUrlUtils::rollFileName(workingDir + fileName, QSet<QString>());
+
+    if (targetUrl.isEmpty()) {
+        QString fileName = srcDoc->getName() + "." + ext;
+        targetUrl = GUrlUtils::rollFileName(workingDir + fileName, QSet<QString>());
+    } else {
+        if (QFileInfo(targetFormat).suffix() != ext) {
+            targetUrl += "." + ext;
+        }
+        targetUrl = GUrlUtils::rollFileName(targetUrl, QSet<QString>());
+    }
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(srcDoc->getURL()));
     Document *dstDoc = srcDoc->getSimpleCopy(df, iof, srcDoc->getURL());

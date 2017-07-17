@@ -168,12 +168,17 @@ QVariantMap MultipleChromatogramAlignmentExporter::exportRowAdditionalInfo(U2OpS
 QVariantMap MultipleChromatogramAlignmentExporter::exportAlignmentInfo(U2OpStatus &os, const U2DataId &mcaId) const {
     U2AttributeDbi *attributeDbi = connection.dbi->getAttributeDbi();
     SAFE_POINT_EXT(NULL != attributeDbi, os.setError("NULL Attribute Dbi during exporting an alignment info"), QVariantMap());
+    U2Dbi* dbi = attributeDbi->getRootDbi();
+    SAFE_POINT_EXT(NULL != dbi, os.setError("NULL root Dbi during exporting an alignment info"), QVariantMap());
 
     QVariantMap info;
     QList<U2DataId> attributeIds = attributeDbi->getObjectAttributes(mcaId, "", os);
     CHECK_OP(os, QVariantMap());
 
     foreach (const U2DataId &attributeId, attributeIds) {
+        if (dbi->getEntityTypeById(attributeId) != U2Type::AttributeString) {
+            continue;
+        }
         const U2StringAttribute attr = attributeDbi->getStringAttribute(attributeId, os);
         CHECK_OP(os, QVariantMap());
         info.insert(attr.name, attr.value);

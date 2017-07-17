@@ -127,6 +127,11 @@
 #define CHECK_BREAK(condition) CHECK_OPERATION(condition, break)
 
 /**
+    Checks condition is false and continue the cycle if it is.
+*/
+#define CHECK_CONTINUE(condition) CHECK_OPERATION(condition, continue)
+
+/**
     Checks condition is false and breaks if it is.
     Before breaking the 'extraOp' operation is performed (for example logging)
 
