@@ -1410,7 +1410,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
 //    4. Add Isophya_altaica_EF540820 sequence
 //    5. Select some existing read-only file as output
     QString s = sandBoxDir + "pairwise_alignment_test_0009";
-    QDir::mkpath(s);
+    QDir().mkpath(s);
 
     s += "/" + fileName;
     QFile f(s);
@@ -1961,8 +1961,8 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002){
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
 //    3. Select some existing read-only file as output
 
-    const QString s = sandBoxDir + "export_consensus_test_0002";
-    QDir::mkpath(s);
+    QString s = sandBoxDir + "export_consensus_test_0002";
+    QDir().mkpath(s);
 
     s += "/" + fileName;
     QFile f(s);
