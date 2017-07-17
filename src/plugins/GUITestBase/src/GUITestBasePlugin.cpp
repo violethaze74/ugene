@@ -55,6 +55,7 @@
 #include "tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.h"
 #include "tests/common_scenarios/pcr/GTTestsInSilicoPcr.h"
 #include "tests/common_scenarios/pcr/GTTestsPrimerLibrary.h"
+#include "tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.h"
 #include "tests/common_scenarios/project/GTTestsProject.h"
 #include "tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.h"
 #include "tests/common_scenarios/project/bookmarks/GTTestsBookmarks.h"
@@ -2798,6 +2799,16 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0016);
+
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/phyml
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_phyml::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_phyml::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_phyml::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_phyml::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_phyml::test_0005);
+    REGISTER_TEST(GUITest_common_scenarios_phyml::test_0006);
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/start_page
