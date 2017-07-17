@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-class CopyFileTask : public Task {
+class U2CORE_EXPORT CopyFileTask : public Task {
     Q_OBJECT
 public:
     CopyFileTask(const QString &sourceFilePath, const QString &targetFilePath);
