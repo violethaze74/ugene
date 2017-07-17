@@ -129,14 +129,14 @@
             <item>
              <widget class="QRadioButton" name="countsButton">
               <property name="text">
-               <string>Counts</string>
+               <string>Count</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QRadioButton" name="percentsButton">
               <property name="text">
-               <string>Percent</string>
+               <string>Percentage</string>
               </property>
              </widget>
             </item>

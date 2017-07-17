@@ -63,8 +63,6 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
         if (!aminoTs.empty()) {
             aminoTT = aminoTT == NULL ? tr->getStandardGeneticCodeTranslation(al) : aminoTT;
             translations = new QActionGroup(this);
-            // SANGER_REF_TODO: - save the connection to codon table
-//            const CodonTableView *ct = v->getCodonTableView();
             foreach(DNATranslation* t, aminoTs) {
                 QAction* a = translations->addAction(t->getTranslationName());
                 a->setObjectName(t->getTranslationName());
@@ -72,7 +70,6 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
                 a->setChecked(aminoTT == t);
                 a->setData(QVariant(t->getTranslationId()));
                 connect(a, SIGNAL(triggered()), SLOT(sl_setAminoTranslation()));
-//                connect(a, SIGNAL(triggered()), ct, SLOT(sl_setAminoTranslation()));
             }
             visibleFrames = new QActionGroup(this);
             visibleFrames->setExclusive(false);

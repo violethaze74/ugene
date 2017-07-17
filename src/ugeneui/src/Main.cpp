@@ -118,7 +118,7 @@
 #include <U2View/DnaAssemblyUtils.h>
 #include <U2View/FindPatternWidgetFactory.h>
 #include <U2View/McaGeneralTabFactory.h>
-#include <U2View/MSAExportConsensusTabFactory.h>
+#include <U2View/MaExportConsensusTabFactory.h>
 #include <U2View/MSAGeneralTabFactory.h>
 #include <U2View/MSAHighlightingTabFactory.h>
 #include <U2View/PairAlignFactory.h>
@@ -265,7 +265,7 @@ static void initOptionsPanels() {
     opWidgetFactoryRegistry->registerFactory(new PairAlignFactory());
     opWidgetFactoryRegistry->registerFactory(new MSATreeOptionsWidgetFactory());
     opWidgetFactoryRegistry->registerFactory(new AddTreeWidgetFactory());
-    opWidgetFactoryRegistry->registerFactory(new MSAExportConsensusFactoryTab());
+    opWidgetFactoryRegistry->registerFactory(new MsaExportConsensusTabFactory());
 
     SeqStatisticsWidgetFactory *msaSeqStatisticvsFactory = new SeqStatisticsWidgetFactory();
     QString msaSeqStatisticsId = msaSeqStatisticvsFactory->getOPGroupParameters().getGroupId();
@@ -282,6 +282,7 @@ static void initOptionsPanels() {
 
     //MCA groups
     opWidgetFactoryRegistry->registerFactory(new McaGeneralTabFactory());
+    opWidgetFactoryRegistry->registerFactory(new McaExportConsensusTabFactory());
 }
 
 static void initProjectFilterTaskRegistry() {

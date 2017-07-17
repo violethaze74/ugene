@@ -45,7 +45,7 @@ class MsaColorScheme;
 class MsaColorSchemeFactory;
 class MsaColorSchemeRegistry;
 class MSAEditor;
-class MSAEditorUI;
+class MsaEditorWgt;
 class MsaHighlightingScheme;
 class MsaHighlightingSchemeFactory;
 class MsaHighlightingSchemeRegistry;

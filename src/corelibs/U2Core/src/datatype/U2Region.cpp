@@ -39,6 +39,8 @@ QString U2Region::toString(Format format) const {
         return QString("%1 - %2").arg(start, end);
     case FormatPlusMinus:
         return QString("%1 &plusmn; %2").arg(middle, halfLength);
+    case FormatDots:
+        return QString("%1..%2").arg(start, FormatUtils::splitThousands(endPos() - 1));
     case FormatBrackets:
     default:
         return QString("[%1, %2)").arg(start, end);

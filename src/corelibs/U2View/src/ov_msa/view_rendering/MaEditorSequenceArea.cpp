@@ -699,7 +699,7 @@ void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const 
         setSelection(newSelection);
     }
 
-    ui->getScrollController()->updateScrollBars();
+    ui->getScrollController()->sl_updateScrollBars();
 
     completeRedraw = true;
     updateActions();
@@ -861,7 +861,7 @@ void MaEditorSequenceArea::setCursorPos(int pos) {
 
 void MaEditorSequenceArea::resizeEvent(QResizeEvent *e) {
     completeRedraw = true;
-    ui->getScrollController()->updateScrollBars();
+    ui->getScrollController()->sl_updateScrollBars();
     emit si_visibleRangeChanged();
     QWidget::resizeEvent(e);
 }

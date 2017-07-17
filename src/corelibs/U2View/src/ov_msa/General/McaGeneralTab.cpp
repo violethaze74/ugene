@@ -29,15 +29,11 @@ namespace U2 {
 McaGeneralTab::McaGeneralTab(McaEditor *mca)
     : mca(mca) {
     setupUi(this);
-    consensusModeWgt->init(mca->getMaObject(), mca->getUI()->getConsensusArea());
 
     ShowHideSubgroupWidget* alignmentInfo = new ShowHideSubgroupWidget("ALIGNMENT_INFO", tr("Alignment info"),
                                                                        alignmentInfoWgt, true);
-    ShowHideSubgroupWidget* consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"),
-                                                                       consensusModeWgt, true);
 
     Ui_McaGeneralTab::verticalLayout->addWidget(alignmentInfo);
-    Ui_McaGeneralTab::verticalLayout->addWidget(consensusMode);
 
     lengthLabel->setText(QString::number(mca->getAlignmentLen()));
     seqNumLabel->setText(QString::number(mca->getNumSequences()));

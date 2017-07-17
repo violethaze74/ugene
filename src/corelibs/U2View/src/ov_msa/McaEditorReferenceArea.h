@@ -50,6 +50,10 @@ private slots:
     void sl_clearSelection();
     void sl_fontChanged(const QFont &newFont);
     void sl_update();
+    void sl_syncVisibleRange();
+
+protected:
+    virtual int getSingleStep() const {return 1; }
 
 private:
     McaEditor* editor;

@@ -33,6 +33,7 @@ class Annotation;
 class DocumentProviderTask;
 class ExportSequenceTaskSettings;
 class ExportSequencesDialog;
+class MultipleChromatogramAlignmentObject;
 class Task;
 
 class ExportUtils: public QObject {
@@ -45,6 +46,8 @@ public:
 
     // generates unique name using prefix + numbers
     static QString genUniqueName(const QSet<QString>& names, QString prefix);
+
+    static void launchExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject);
 };
 
 }//namespace

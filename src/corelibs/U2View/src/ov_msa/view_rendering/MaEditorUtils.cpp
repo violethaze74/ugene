@@ -29,6 +29,7 @@
 #include <QApplication>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QVBoxLayout>
 
 
 namespace U2 {
@@ -142,18 +143,21 @@ void MaUtilsWidget::paintEvent(QPaintEvent *) {
 /* MaLabelWidget */
 /************************************************************************/
 MaLabelWidget::MaLabelWidget(MaEditorWgt* ui, QWidget* heightWidget, const QString & t, Qt::Alignment a)
-    : MaUtilsWidget(ui, heightWidget),
-      text(t),
-      ali(a) {
+    : MaUtilsWidget(ui, heightWidget) {
+    label = new QLabel(t, this);
+    label->setAlignment(a);
+    label->setTextFormat(Qt::RichText);
+    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(label);
+    setLayout(layout);
 }
 
 void MaLabelWidget::paintEvent(QPaintEvent * e) {
     MaUtilsWidget::paintEvent(e);
-    QPainter p(this);
-    if (!text.isEmpty()) {
-        p.setFont(getMsaEditorFont());
-        p.drawText(rect(), text, ali);
-    }
+    label->setFont(getMsaEditorFont());
 }
 
 void MaLabelWidget::mousePressEvent( QMouseEvent * e ) {

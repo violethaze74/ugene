@@ -113,11 +113,13 @@ public:
             FormatBrackets  "[100, 200)"
             FormatDash      "100 - 200"
             FormatPlusMinus "150 &plusmn; 50" - for html only
+            FormatDots      "100..199"
     */
     enum Format {
         FormatBrackets,
         FormatDash,
-        FormatPlusMinus
+        FormatPlusMinus,
+        FormatDots
     };
 
     /** Converts region to its string represenation using given format. */

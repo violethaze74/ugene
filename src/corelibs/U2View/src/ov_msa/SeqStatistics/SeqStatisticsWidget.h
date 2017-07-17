@@ -29,7 +29,7 @@
 namespace U2 {
 
 class MSAEditor;
-class MSAEditorUI;
+class MsaEditorWgt;
 class SimilarityStatisticsSettings;
 
 class U2VIEW_EXPORT SeqStatisticsWidget : public QWidget {
@@ -59,7 +59,7 @@ private:
     Ui_MSADistanceColumnSettingsForm ui;
 
     MSAEditor*      msa;
-    MSAEditorUI*    msaUI;
+    MsaEditorWgt*    msaUI;
 
     QWidget*        distancesStatisticsGroup;
 

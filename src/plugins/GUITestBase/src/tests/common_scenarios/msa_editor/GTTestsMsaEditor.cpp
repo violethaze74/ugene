@@ -2397,7 +2397,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025){
     GTGlobals::sleep(500);
 
     QWidget* nameListWidget = GTWidget::findWidget(os,"msa_editor_COI");
-    MSAEditorUI* ui = qobject_cast<MSAEditorUI*>(nameListWidget);
+    MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(nameListWidget);
 
     QFont f = ui->getEditor()->getFont();
     QString expectedFont = "Sans Serif,10,-1,5,50,0,0,0,0,0";
@@ -2423,7 +2423,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1){
     GTGlobals::sleep(500);
 
     QWidget* nameListWidget = GTWidget::findWidget(os,"msa_editor_COI");
-    MSAEditorUI* ui = qobject_cast<MSAEditorUI*>(nameListWidget);
+    MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(nameListWidget);
 
     QFont f = ui->getEditor()->getFont();
     QString expectedFont = "Verdana,10,-1,5,50,0,0,0,0,0";
@@ -4345,6 +4345,7 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
 
     GTGlobals::sleep(500);
 
+    GTFile::setReadWrite(os, sandBoxDir + "read_only_dir");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0063){

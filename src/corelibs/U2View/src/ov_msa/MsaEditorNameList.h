@@ -19,38 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_MSA_2_MCA_TASK_H_
-#define _U2_EXPORT_MSA_2_MCA_TASK_H_
+#ifndef _U2_MSA_EDITOR_NAME_LIST_H_
+#define _U2_MSA_EDITOR_NAME_LIST_H_
 
-#include <U2Core/DNAChromatogram.h>
-#include <U2Core/DocumentProviderTask.h>
+#include "MaEditorNameList.h"
 
 namespace U2 {
 
-class StateLocker;
-class MultipleSequenceAlignmentObject;
-
-class ExportMsa2McaTask : public DocumentProviderTask {
-    Q_OBJECT
+class MsaEditorNameList : public MaEditorNameList {
 public:
-    ExportMsa2McaTask(MultipleSequenceAlignmentObject *msaObject, const QString &mcaFilePath);
-    ~ExportMsa2McaTask();
+    MsaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
 
 private:
-    void prepare();
-    void run();
-    ReportResult report();
-
-    static DNAChromatogram generateChromatogram(const QString &name, const int length);
-    Document * prepareDocument();
-
-    MultipleSequenceAlignmentObject *msaObject;
-    const QString mcaFilePath;
-    StateLocker *locker;
-
-    static const int MAX_TRACE_VALUE;
+    MSAEditor* getEditor() const;
 };
 
 }   // namespace U2
 
-#endif // _U2_EXPORT_MSA_2_MCA_TASK_H_
+#endif // _U2_MSA_EDITOR_NAME_LIST_H_

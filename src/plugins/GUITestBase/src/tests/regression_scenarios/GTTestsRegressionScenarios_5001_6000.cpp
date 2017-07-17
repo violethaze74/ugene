@@ -1320,6 +1320,8 @@ GUI_TEST_CLASS_DEFINITION(test_5447_1) {
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, annotationsTableObjectIndex, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 
+    GTGlobals::sleep(1000);
+
 //    Expected state: all annotations are doubled.
     const QStringList oldGroups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 features [murine.gb]");
     const QStringList newGroups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 features [test_5447_1.gb]");

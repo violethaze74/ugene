@@ -79,6 +79,11 @@ PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
     connect(treeTypesCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_checkUserTreeType(int )));
     connect(treeImprovementsCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_checkTreeImprovement(int )));
     connect(inputFilePathButton, SIGNAL(clicked ()), SLOT(sl_inputPathButtonClicked()));
+    connect(optTopologyCheckbox, SIGNAL(clicked(bool)), SLOT(sl_optTopologyCheckboxClicked(bool)));
+    
+    optBranchCheckboxSavedState = optBranchCheckbox->isChecked();
+    sl_optTopologyCheckboxClicked(optTopologyCheckbox->isChecked());
+    sl_checkUserTreeType(treeTypesCombo->currentIndex());
 }
 
 void PhyMlWidget::fillComboBoxes(const MultipleSequenceAlignment& ma) {
@@ -154,7 +159,9 @@ void PhyMlWidget::createWidgetsControllers() {
 }
 
 void PhyMlWidget::sl_checkUserTreeType(int newIndex) {
-    inputTreeGroupBox->setEnabled(newIndex == 1);
+    bool enableFileEdit = newIndex == 1;
+    inputFileLineEdit->setEnabled(enableFileEdit);
+    inputFilePathButton->setEnabled(enableFileEdit);
 }
 
 void PhyMlWidget::sl_checkTreeImprovement(int newIndex) {
@@ -173,6 +180,17 @@ void PhyMlWidget::sl_inputPathButtonClicked() {
         return;
     }
     inputFileLineEdit->setText(lod.url);
+}
+
+void PhyMlWidget::sl_optTopologyCheckboxClicked(bool checked) {
+    if (checked) {
+        optBranchCheckboxSavedState = optBranchCheckbox->isChecked();
+        optBranchCheckbox->setChecked(true);
+        optBranchCheckbox->setEnabled(false);
+    } else {
+        optBranchCheckbox->setChecked(optBranchCheckboxSavedState);
+        optBranchCheckbox->setEnabled(true);
+    }
 }
 
 void PhyMlWidget::sl_checkSubModelType(const QString& newModel){
@@ -266,11 +284,13 @@ QStringList PhyMlWidget::generatePhyMlSettingsScript(){
     }
 
     QString optimisationOptions;
-    if(optTopologyCheckbox->isChecked()) {
-        optimisationOptions = "t";
-    }
-    if(optBranchCheckbox->isChecked()) {
+    if (optTopologyCheckbox->isChecked()) {
+        optimisationOptions = "tl";
+    } else if (optBranchCheckbox->isChecked()) {
         optimisationOptions += "l";
+    }
+    if (optimiseSubstitutionRateCheckbox->isChecked()) {
+        optimisationOptions += "r";
     }
     if(!optimisationOptions.isEmpty()) {
         script << "-o";

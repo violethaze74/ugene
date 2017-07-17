@@ -50,7 +50,8 @@ GSequenceLineView::GSequenceLineView(QWidget* p, SequenceObjectContext* _ctx)
       featureFlags(GSLV_FF_SupportsCustomRange),
       frameView(NULL),
       coherentRangeView(NULL),
-      ignoreMouseSelectionEvents(false)
+      ignoreMouseSelectionEvents(false),
+      singleBaseSelection(false)
 {
     GCOUNTER( cvar, tvar, "SequenceLineView" );
     seqLen = ctx->getSequenceLength();
@@ -188,7 +189,7 @@ void GSequenceLineView::mouseReleaseEvent(QMouseEvent* me) {
     if (!ignoreMouseSelectionEvents) {
         //click with 'alt' selects a single base
         Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
-        bool singleBaseSelectionMode = km.testFlag(Qt::AltModifier);
+        bool singleBaseSelectionMode = km.testFlag(Qt::AltModifier) || singleBaseSelection;
         if (me->button() == Qt::LeftButton && singleBaseSelectionMode) {
             QPoint areaPoint = toRenderAreaPoint(me->pos());
             qint64 pos = renderArea->coordToPos(areaPoint);

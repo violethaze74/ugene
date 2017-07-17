@@ -595,7 +595,7 @@ bool GTUtilsMSAEditorSequenceArea::checkColor(GUITestOpStatus &os, const QPoint 
 int GTUtilsMSAEditorSequenceArea::getRowHeight(GUITestOpStatus &os, int rowNumber){
     QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
     GT_CHECK_RESULT(activeWindow != NULL, "active mdi window is NULL", 0);
-    MSAEditorUI* ui = GTUtilsMdi::activeWindow(os)->findChild<MSAEditorUI*>();
+    MsaEditorWgt* ui = GTUtilsMdi::activeWindow(os)->findChild<MsaEditorWgt*>();
     return ui->getRowHeightController()->getRowHeightByNumber(rowNumber);
 }
 #undef GT_METHOD_NAME

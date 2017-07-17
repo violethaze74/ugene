@@ -19,93 +19,39 @@
  * MA 02110-1301, USA.
  */
 
-#include <QApplication>
-#include <QEvent>
-#include <QGridLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QMainWindow>
-#include <QMessageBox>
-#include <QPainter>
-#include <QResizeEvent>
-#include <QSvgGenerator>
-#include <QToolBar>
-#include <QVBoxLayout>
-
-#include <U2Algorithm/MSADistanceAlgorithm.h>
-#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
-#include <U2Algorithm/MsaColorScheme.h>
-#include <U2Algorithm/MsaHighlightingScheme.h>
-#include <U2Algorithm/PairwiseAlignmentTask.h>
-#include <U2Algorithm/PhyTreeGeneratorRegistry.h>
+#include <QDropEvent>
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/Counter.h>
-#include <U2Core/DNAChromatogram.h>
+#include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/DocumentSelection.h>
-#include <U2Core/DocumentUtils.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectSelection.h>
-#include <U2Core/GUrlUtils.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleChromatogramAlignment.h>
-#include <U2Core/MultipleChromatogramAlignmentImporter.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
-#include <U2Core/PhyTreeObject.h>
-#include <U2Core/ProjectModel.h>
-#include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/Settings.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/U2SafePoints.h>
-#include <U2Core/U2SequenceUtils.h>
 
 #include <U2Gui/DialogUtils.h>
-#include <U2Gui/ExportImageDialog.h>
-#include <U2Gui/GScrollBar.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/GroupHeaderImageWidget.h>
 #include <U2Gui/GroupOptionsWidget.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
 #include <U2Gui/OptionsPanelWidget.h>
+#include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/ProjectView.h>
-#include <U2Gui/U2FileDialog.h>
 
-#include <U2View/UndoRedoFramework.h>
-
-#include "ExportHighlightedDialogController.h"
 #include "MSAEditor.h"
-#include "MSAEditorConsensusArea.h"
-#include "MSAEditorOffsetsView.h"
-#include "MSAEditorOverviewArea.h"
-#include "MSAEditorSequenceArea.h"
 #include "MSAEditorState.h"
-#include "MsaEditorStatusBar.h"
 #include "MSAEditorTasks.h"
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
-#include "MsaEditorSimilarityColumn.h"
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
-#include "Export/MSAImageExportTask.h"
-#include "helpers/MsaRowHeightController.h"
-#include "ov_msa/TreeOptions//TreeOptionsWidgetFactory.h"
-#include "ov_phyltree/TreeViewer.h"
-#include "ov_phyltree/TreeViewerTasks.h"
-#include "phyltree/CreatePhyTreeDialogController.h"
-#include "PhyTrees/MSAEditorMultiTreeViewer.h"
-#include "PhyTrees/MSAEditorTreeViewer.h"
-
+#include "Overview/MaEditorOverviewArea.h"
+#include "view_rendering/MaEditorConsensusArea.h"
+#include "view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
-
-/* TRANSLATOR U2::MSAEditor */
 
 MSAEditor::MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
@@ -231,9 +177,13 @@ QVariantMap MSAEditor::saveState() {
     return MSAEditorState::saveState(this);
 }
 
+MsaEditorWgt *MSAEditor::getUI() const {
+    return qobject_cast<MsaEditorWgt *>(ui);
+}
+
 QWidget* MSAEditor::createWidget() {
     Q_ASSERT(ui == NULL);
-    ui = new MSAEditorUI(this);
+    ui = new MsaEditorWgt(this);
 
     QString objName = "msa_editor_" + maObject->getGObjectName();
     ui->setObjectName(objName);
@@ -281,16 +231,7 @@ QWidget* MSAEditor::createWidget() {
     return ui;
 }
 
-void MSAEditor::sl_onContextMenuRequested(const QPoint & pos) {
-    Q_UNUSED(pos);
-
-    if (ui->childAt(pos) != NULL) {
-        // ignore context menu request if overview area was clicked on
-        if (ui->getOverviewArea()->isOverviewWidget(ui->childAt(pos))) {
-            return;
-        }
-    }
-
+void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     QMenu m;
 
     addLoadMenu(&m);
@@ -560,116 +501,4 @@ char MSAEditor::getReferenceCharAt(int pos) const {
     return maObject->getMultipleAlignment()->charAt(refSeq, pos);
 }
 
-//////////////////////////////////////////////////////////////////////////
-MSAEditorUI::MSAEditorUI(MSAEditor* editor)
-    : MaEditorWgt(editor),
-      multiTreeViewer(NULL),
-      similarityStatistics(NULL) {
-    rowHeightController = new MsaRowHeightController(this);
-    initActions();
-    initWidgets();
-}
-
-MSAEditorSequenceArea* MSAEditorUI::getSequenceArea() const {
-    return qobject_cast<MSAEditorSequenceArea* >(seqArea);
-}
-
-void MSAEditorUI::sl_onTabsCountChanged(int curTabsNumber) {
-    if(curTabsNumber < 1) {
-        maSplitter.removeWidget(multiTreeViewer);
-        delete multiTreeViewer;
-        multiTreeViewer = NULL;
-        emit si_hideTreeOP();
-        nameList->clearGroupsSelections();
-    }
-}
-
-void MSAEditorUI::createDistanceColumn(MSADistanceMatrix* matrix)
-{
-    dataList->setMatrix(matrix);
-    dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-    MsaEditorAlignmentDependentWidget* statisticsWidget = new MsaEditorAlignmentDependentWidget(dataList);
-
-    maSplitter.addWidget(nameAreaContainer, statisticsWidget, 0.04, 1);
-}
-
-void MSAEditorUI::addTreeView(GObjectViewWindow* treeView) {
-    if (NULL == multiTreeViewer) {
-        multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
-        maSplitter.addWidget(nameAreaContainer, multiTreeViewer, 0.35);
-        multiTreeViewer->addTreeView(treeView);
-        emit si_showTreeOP();
-        connect(multiTreeViewer, SIGNAL(si_tabsCountChanged(int)), SLOT(sl_onTabsCountChanged(int)));
-    }
-    else {
-        multiTreeViewer->addTreeView(treeView);
-    }
-}
-
-void MSAEditorUI::setSimilaritySettings( const SimilarityStatisticsSettings* settings ) {
-    similarityStatistics->setSettings(settings);
-}
-
-void MSAEditorUI::refreshSimilarityColumn() {
-    dataList->updateWidget();
-}
-
-void MSAEditorUI::showSimilarity() {
-    if(NULL == similarityStatistics) {
-        SimilarityStatisticsSettings settings;
-        settings.ma = getEditor()->getMaObject();
-        settings.algoName = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds().at(0);
-        settings.ui = this;
-
-        dataList = new MsaEditorSimilarityColumn(this, new QScrollBar(Qt::Horizontal), &settings);
-        dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-        similarityStatistics = new MsaEditorAlignmentDependentWidget(dataList);
-
-        maSplitter.addWidget(nameAreaContainer, similarityStatistics, 0.04, 1);
-    }
-    else {
-        similarityStatistics->show();
-    }
-
-}
-
-void MSAEditorUI::hideSimilarity() {
-    if(NULL != similarityStatistics) {
-        similarityStatistics->hide();
-        similarityStatistics->cancelPendingTasks();
-    }
-}
-
-void MSAEditorUI::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
-    seqArea = new MSAEditorSequenceArea(this, shBar, cvBar);
-}
-
-void MSAEditorUI::initOverviewArea() {
-    overviewArea = new MSAEditorOverviewArea(this);
-}
-
-void MSAEditorUI::initNameList(QScrollBar *nhBar) {
-    nameList = new MsaEditorNameList(this, nhBar);
-}
-
-void MSAEditorUI::initConsensusArea() {
-    consArea = new MSAEditorConsensusArea(this);
-}
-
-void MSAEditorUI::initStatusBar() {
-    statusBar = new MsaEditorStatusBar(editor->getMaObject(), seqArea);
-}
-
-MSAEditorTreeViewer* MSAEditorUI::getCurrentTree() const
-{
-    if(NULL == multiTreeViewer) {
-        return NULL;
-    }
-    GObjectViewWindow* page = qobject_cast<GObjectViewWindow*>(multiTreeViewer->getCurrentWidget());
-    if(NULL == page) {
-        return NULL;
-    }
-    return qobject_cast<MSAEditorTreeViewer*>(page->getObjectView());
-}
-
-}//namespace
+}   // namespace U2

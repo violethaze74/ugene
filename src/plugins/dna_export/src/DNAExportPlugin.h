@@ -27,14 +27,16 @@
 
 namespace U2 {
 
+class ExportAlignmentViewItemsController;
 class ExportProjectViewItemsContoller;
 class ExportSequenceViewItemsController;
-class ExportAlignmentViewItemsController;
+class McaEditorContext;
 
 class DNAExportPlugin : public Plugin {
     Q_OBJECT
 public:
     DNAExportPlugin();
+
 private slots:
     void sl_generateSequence();
 };
@@ -50,10 +52,9 @@ protected:
     ExportProjectViewItemsContoller*    projectViewController;
     ExportSequenceViewItemsController*  sequenceViewController;
     ExportAlignmentViewItemsController* alignmentViewController;
-
+    McaEditorContext *                  mcaEditorContext;
 };
 
+}   // namespace U2
 
-} //namespace
-
-#endif
+#endif // _U2_DNA_EXPORT_PLUGIN_H_

@@ -34,13 +34,12 @@ class McaEditorOverviewArea : public MaEditorOverviewArea {
 public:
     McaEditorOverviewArea(MaEditorWgt* ui);
 
-    bool isOverviewWidget(QWidget* wgt) const;
-
     static const QString OVERVIEW_AREA_OBJECT_NAME;
+
 private:
     MaSangerOverview*  sangerOverview;
 };
 
-}
+}   // namespace U2
 
 #endif // _U2_MCA_EDITOR_OVERVIEW_AREA_H_

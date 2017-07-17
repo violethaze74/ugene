@@ -25,24 +25,23 @@
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 
 #include "MaEditor.h"
+#include "McaEditorWgt.h"
 #include "view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 
-class McaEditorReferenceArea;
-class McaEditorSequenceArea;
-class McaReferenceCharController;
+class McaEditor;
 class SequenceObjectContext;
-class U2SequenceObject;
 
-class McaEditor : public MaEditor {
+class U2VIEW_EXPORT McaEditor : public MaEditor {
     Q_OBJECT
     friend class McaEditorSequenceArea;
 public:
     McaEditor(const QString& viewName,
               MultipleChromatogramAlignmentObject* obj);
 
-    MultipleChromatogramAlignmentObject* getMaObject() const { return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject); }
+    MultipleChromatogramAlignmentObject* getMaObject() const;
+    McaEditorWgt *getUI() const;
 
     virtual void buildStaticToolbar(QToolBar* tb);
 
@@ -73,30 +72,6 @@ protected:
     SequenceObjectContext*  referenceCtx;
 };
 
-class McaEditorWgt : public MaEditorWgt {
-    Q_OBJECT
-public:
-    McaEditorWgt(McaEditor* editor);
-
-    McaEditor* getEditor() const { return qobject_cast<McaEditor* >(editor); }
-    McaEditorSequenceArea* getSequenceArea() const;
-    McaReferenceCharController* getRefCharController() const;
-
-    bool eventFilter(QObject *watched, QEvent *event);
-
-protected:
-    void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
-    void initOverviewArea();
-    void initNameList(QScrollBar* nhBar);
-    void initConsensusArea();
-    void initStatusBar();
-
-private:
-    McaEditorReferenceArea*     refArea;
-    McaReferenceCharController* refCharController;
-};
-
-} // namespace
+}   // namespace U2
 
 #endif // _U2_MCA_EDITOR_H_
-

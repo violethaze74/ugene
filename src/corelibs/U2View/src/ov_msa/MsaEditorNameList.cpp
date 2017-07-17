@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.net
+ * http://ugene.unipro.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,38 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EXPORT_CONSENSUS_TAB_H_
-#define _U2_MSA_EXPORT_CONSENSUS_TAB_H_
-
-#include <U2Gui/U2SavableWidget.h>
-
-#include "ui_ExportConsensusWidget.h"
+#include "MSAEditor.h"
+#include "MsaEditorNameList.h"
 
 namespace U2 {
 
-class MSAEditor;
-class SaveDocumentController;
+MsaEditorNameList::MsaEditorNameList(MaEditorWgt *ui, QScrollBar *nhBar)
+    : MaEditorNameList(ui, nhBar)
+{
 
-class MSAExportConsensusTab : public QWidget, private Ui_ExportConsensusWidget {
-    Q_OBJECT
-public:
-    MSAExportConsensusTab(MSAEditor* msa_);
+}
 
-    void showHint(bool showHint);
+MSAEditor* MsaEditorNameList::getEditor() const {
+    return qobject_cast<MSAEditor*>(editor);
+}
 
-private slots:
-    void sl_exportClicked();
-    void sl_consensusChanged(const QString& algoId);
-
-private:
-    void initSaveController();
-    QString getDefaultFilePath() const;
-
-    MSAEditor *msa;
-    U2SavableWidget savableWidget;
-    SaveDocumentController *saveController;
-};
-
-} // namespace
-
-#endif
+}   // namespace U2
