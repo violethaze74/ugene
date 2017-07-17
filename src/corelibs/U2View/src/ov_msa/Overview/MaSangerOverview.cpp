@@ -221,10 +221,6 @@ void MaSangerOverview::drawVisibleRange(QPainter &painter) {
         cachedVisibleRange.setWidth(qRound(screenSize.width() / stepX));
         cachedVisibleRange.setY(qMax(qRound(screenPosition.y() / stepY + getReferenceHeight() - getScrollBarValue()), getReferenceHeight()));
         cachedVisibleRange.setHeight(qMin(qRound(screenSize.height() / stepY), renderArea->height() - getReferenceHeight()));
-
-        if (cachedVisibleRange.width() < VISIBLE_RANGE_CRITICAL_SIZE || cachedVisibleRange.height() < VISIBLE_RANGE_CRITICAL_SIZE) {
-            painter.setPen(Qt::red);
-        }
     }
 
     painter.fillRect(cachedVisibleRange, VISIBLE_RANGE_COLOR);
