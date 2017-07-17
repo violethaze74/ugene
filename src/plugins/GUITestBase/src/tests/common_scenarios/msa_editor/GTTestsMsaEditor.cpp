@@ -4345,6 +4345,7 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
 
     GTGlobals::sleep(500);
 
+    GTFile::setReadWrite(os, sandBoxDir + "read_only_dir");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0063){

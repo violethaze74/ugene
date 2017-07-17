@@ -1409,7 +1409,10 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
 //    4. Add Isophya_altaica_EF540820 sequence
 //    5. Select some existing read-only file as output
-    QString s = sandBoxDir + fileName;
+    QString s = sandBoxDir + "pairwise_alignment_test_0009";
+    QDir::mkpath(s);
+
+    s += "/" + fileName;
     QFile f(s);
     bool created = f.open(QFile::ReadWrite);
     CHECK_SET_ERR(created, "file not created");
@@ -1424,6 +1427,8 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
     QString expected;
     expected = QString("Task {Pairwise alignment task} finished with error: No permission to write to \'%1\' file.").arg(fileName);
     CHECK_SET_ERR(error.contains(expected), QString("enexpected error: %1").arg(error));
+
+    GTFile::setReadWrite(os, s);
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010){
@@ -1453,7 +1458,10 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010){
     QString error = l.getError();
     QString expected = QString("Task {Pairwise alignment task} finished with error: No permission to write to \'%1\' file.").arg(fileName);
     CHECK_SET_ERR(error == expected, QString("enexpected error: %1").arg(error));
+
+    GTFile::setReadWrite(os, s);
 }
+
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0011){
 //1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
@@ -1952,7 +1960,11 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002){
 //    2. Open export consensus option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
 //    3. Select some existing read-only file as output
-    QString s = sandBoxDir + fileName;
+
+    const QString s = sandBoxDir + "export_consensus_test_0002";
+    QDir::mkpath(s);
+
+    s += "/" + fileName;
     QFile f(s);
     bool created = f.open(QFile::ReadWrite);
     CHECK_SET_ERR(created, "file not created");
@@ -1969,6 +1981,8 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002){
     QString expected;
     expected = QString("Task {Export consensus to MSA} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(fileName);
     CHECK_SET_ERR(error.contains(expected), QString("enexpected error: %1").arg(error));
+
+    GTFile::setReadWrite(os, s);
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003){
@@ -1994,6 +2008,8 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003){
     QString error = l.getError();
     QString expected = QString("Task {Export consensus to MSA} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(fileName);
     CHECK_SET_ERR(error == expected, QString("enexpected error: %1").arg(error));
+
+    GTFile::setReadWrite(os, s);
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004){
