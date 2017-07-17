@@ -49,7 +49,7 @@ ImportPrimersDialog::ImportPrimersDialog(QWidget *parent) :
     waitForConnection(false)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759741");
+    new HelpButton(this, buttonBox, "19766997");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Import"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     init();

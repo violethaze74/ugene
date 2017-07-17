@@ -174,7 +174,7 @@ ViewMatrixDialogController::ViewMatrixDialogController(PFMatrix matrix, QWidget 
 
 ViewMatrixDialogController::ViewMatrixDialogController(PWMatrix matrix, QWidget *w): QDialog(w){
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759711");
+    new HelpButton(this, buttonBox, "19766967");
     buttonBox->button(QDialogButtonBox::Close)->setText(tr("Close"));
 
     ml = new MatrixAndLogoController(matrix, this);

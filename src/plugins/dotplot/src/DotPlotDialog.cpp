@@ -55,7 +55,7 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView* currentADV, int 
 {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "19759528");
+    new HelpButton(this, buttonBox, "19766784");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

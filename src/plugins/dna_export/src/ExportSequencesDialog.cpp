@@ -50,7 +50,7 @@ ExportSequencesDialog::ExportSequencesDialog( bool m, bool allowComplement, bool
       saveController(NULL),
       defaultFileName(defaultFileName) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759426");
+    new HelpButton(this, buttonBox, "19766683");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
