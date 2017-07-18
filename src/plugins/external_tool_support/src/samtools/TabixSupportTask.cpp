@@ -21,14 +21,14 @@
 
 #include <QFile>
 
-#include "TabixSupportTask.h"
-#include "TabixSupport.h"
-
-#include <U2Core/Task.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/UserApplicationsSettings.h>
+#include <U2Core/CopyFileTask.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/UserApplicationsSettings.h>
+
+#include "TabixSupport.h"
+#include "TabixSupportTask.h"
 
 namespace U2 {
 
@@ -49,7 +49,7 @@ void TabixSupportTask::prepare() {
     if ( BgzipTask::checkBgzf( fileUrl )) {
         algoLog.info(tr("Input file '%1' is already bgzipped").arg(fileUrl.getURLString()));
 
-        copyTask = new CopyFileTask( fileUrl, bgzfUrl);
+        copyTask = new CopyFileTask(fileUrl.getURLString(), bgzfUrl.getURLString());
         addSubTask(copyTask);
         return;
     }
@@ -74,6 +74,10 @@ QList<Task*> TabixSupportTask::onSubTaskFinished(Task *subTask) {
         return res;
     }
 
+    if (subTask == copyTask) {
+        bgzfUrl = copyTask->getTargetFilePath();
+    }
+
     initTabixTask();
     res.append(tabixTask);
     return res;
@@ -96,45 +100,4 @@ void TabixSupportTask::initTabixTask() {
     setListenerForTask(tabixTask);
 }
 
-// CopyFileTask
-CopyFileTask::CopyFileTask(const GUrl &from, const GUrl &to)
-    : Task(tr("Copy file task"), (TaskFlag)(TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled)),
-      from(from),
-      to(to)
-{
-}
-
-void CopyFileTask::run() {
-    if (from.isEmpty()) {
-        setError(tr("Input file is not set"));
-        return;
-    }
-    if (to.isEmpty()) {
-        setError(tr("Output file is not set"));
-        return;
-    }
-
-    taskLog.details(tr("Copy %1 to %2").arg(from.getURLString()).arg(to.getURLString()));
-    if (QFile::exists(to.getURLString())) {
-        bool res = GUrlUtils::renameFileWithNameRoll(to.getURLString(), stateInfo);
-        if (!res) {
-            setError(tr("Can not rename existing file '%1'").arg(to.getURLString()));
-            return;
-        }
-    }
-    bool res = QFile::copy(from.getURLString(), to.getURLString());
-    if (!res) {
-        setError(tr("Error copying file").arg(from.getURLString()));
-        return;
-    }
-    taskLog.details(tr("File copying finished"));
-}
-
-QString CopyFileTask::generateReport() const {
-    if (hasError() || isCanceled()) {
-        return tr("File copying task was finished with an error: %1").arg(getError());
-    }
-    return tr("File copy was finished. Copy of '%1' is '%2'").arg(from.getURLString()).arg(to.getURLString());
-}
-
-} // namespace U2
+}   // namespace U2

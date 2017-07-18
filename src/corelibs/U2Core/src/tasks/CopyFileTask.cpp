@@ -21,6 +21,7 @@
 
 #include <QFile>
 
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "CopyFileTask.h"
@@ -30,7 +31,7 @@ namespace U2 {
 CopyFileTask::CopyFileTask(const QString &sourceFilePath, const QString &targetFilePath)
     : Task(tr("File '%1' copy task").arg(sourceFilePath), TaskFlag_None),
       sourceFilePath(sourceFilePath),
-      targetFilePath(targetFilePath)
+      targetFilePath(GUrlUtils::rollFileName(targetFilePath, "_"))
 {
 
 }
