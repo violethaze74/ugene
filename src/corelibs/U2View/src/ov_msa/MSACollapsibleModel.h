@@ -118,6 +118,10 @@ public:
 
     void setTrivialGroupsPolicy(TrivialGroupsPolicy policy);
 
+    void setFakeCollapsibleModel(bool fakeModel);
+
+    bool isFakeModel();
+
 signals:
     void si_aboutToBeToggled();
     void si_toggled();
@@ -131,6 +135,7 @@ private:
     QVector<MSACollapsableItem> items;
     QVector<int> positions;
     TrivialGroupsPolicy trivialGroupsPolicy;
+    bool fakeModel;
 };
 
 } //namespace
