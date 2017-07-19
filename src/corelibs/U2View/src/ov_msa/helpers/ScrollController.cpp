@@ -344,6 +344,12 @@ GScrollBar *ScrollController::getVerticalScrollBar() const {
     return vScrollBar;
 }
 
+void ScrollController::sl_zoomScrollBars() {
+    zoomHorizontalScrollBarPrivate();
+    zoomVerticalScrollBarPrivate();
+    emit si_visibleAreaChanged();
+}
+
 void ScrollController::sl_updateScrollBars() {
     updateHorizontalScrollBarPrivate();
     updateVerticalScrollBarPrivate();
@@ -379,9 +385,49 @@ U2Region ScrollController::getVerticalRangeToDrawIn(int widgetHeight) const {
     return U2Region(vScrollBar->value(), widgetHeight);
 }
 
+class SignalBlocker {
+public:
+    SignalBlocker(QObject * const object) :
+        object(object),
+        previousState(true)
+    {
+        previousState = object->blockSignals(true);
+    }
+
+    ~SignalBlocker() {
+        object->blockSignals(previousState);
+    }
+
+private:
+    QObject * const object;
+    bool previousState;
+};
+
+void ScrollController::zoomHorizontalScrollBarPrivate() {
+    CHECK(!maEditor->isAlignmentEmpty(), );
+    SignalBlocker signalBlocker(hScrollBar);
+    Q_UNUSED(signalBlocker);
+
+    const int previousAlignmentWidth = hScrollBar->maximum() + ui->getSequenceArea()->width();
+    const double previousRelation = static_cast<double>(hScrollBar->value()) / previousAlignmentWidth;
+    updateHorizontalScrollBarPrivate();
+    hScrollBar->setValue(previousRelation * ui->getBaseWidthController()->getTotalAlignmentWidth());
+}
+
+void ScrollController::zoomVerticalScrollBarPrivate() {
+    CHECK(!maEditor->isAlignmentEmpty(), );
+    SignalBlocker signalBlocker(vScrollBar);
+    Q_UNUSED(signalBlocker);
+
+    const int previousAlignmentHeight = vScrollBar->maximum() + ui->getSequenceArea()->height();
+    const double previousRelation = static_cast<double>(vScrollBar->value()) / previousAlignmentHeight;
+    updateVerticalScrollBarPrivate();
+    vScrollBar->setValue(previousRelation * ui->getRowHeightController()->getTotalAlignmentHeight());
+}
+
 void ScrollController::updateHorizontalScrollBarPrivate() {
     SAFE_POINT(NULL != hScrollBar, "Horizontal scrollbar is not initialized", );
-    QSignalBlocker signalBlocker(hScrollBar);
+    SignalBlocker signalBlocker(hScrollBar);
     Q_UNUSED(signalBlocker);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), hScrollBar->setVisible(false), );
@@ -402,7 +448,7 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
 
 void ScrollController::updateVerticalScrollBarPrivate() {
     SAFE_POINT(NULL != vScrollBar, "Vertical scrollbar is not initialized", );
-    QSignalBlocker signalBlocker(vScrollBar);
+    SignalBlocker signalBlocker(vScrollBar);
     Q_UNUSED(signalBlocker);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), vScrollBar->setVisible(false), );
