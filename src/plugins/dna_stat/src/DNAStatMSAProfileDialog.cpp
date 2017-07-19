@@ -159,7 +159,7 @@ void DNAStatMSAProfileTask::run() {
             resultText = "<STYLE TYPE=\"text/css\"><!-- \n";
             resultText += "table.tbl   {\n border-width: 1px;\n border-style: solid;\n border-spacing: 0;\n border-collapse: collapse;\n}\n";
             resultText += "table.tbl td{\n max-width: 200px;\n min-width: 20px;\n text-align: center;\n border-width: 1px;\n ";
-            resultText += "border-style: solid;\n margin:0px;\n padding: 0px;\n}\n";
+            resultText += "border-style: solid;\n padding: 0 10px;\n}\n";
             resultText += "--></STYLE>\n";
 
             //header
