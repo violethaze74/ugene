@@ -31,6 +31,8 @@ public:
     MsaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
 
 private:
+    void buildMenu(QMenu *menu);
+
     MSAEditor* getEditor() const;
 };
 

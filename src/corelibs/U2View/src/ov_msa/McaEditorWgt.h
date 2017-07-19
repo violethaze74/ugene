@@ -27,6 +27,7 @@
 namespace U2 {
 
 class McaEditor;
+class McaEditorConsensusArea;
 class McaEditorReferenceArea;
 class McaEditorSequenceArea;
 class McaReferenceCharController;
@@ -37,10 +38,17 @@ public:
     McaEditorWgt(McaEditor* editor);
 
     McaEditor* getEditor() const;
+    McaEditorConsensusArea* getConsensusArea() const;
     McaEditorSequenceArea* getSequenceArea() const;
     McaReferenceCharController* getRefCharController() const;
 
+    QAction *getClearSelectionAction() const;
+
+signals:
+    void si_clearSelection();
+
 protected:
+    void initActions();
     void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
     void initOverviewArea();
     void initNameList(QScrollBar* nhBar);
@@ -50,6 +58,8 @@ protected:
 private:
     McaEditorReferenceArea*     refArea;
     McaReferenceCharController* refCharController;
+
+    QAction *clearSelectionAction;
 };
 
 }   // namespace U2

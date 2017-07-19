@@ -37,6 +37,9 @@ public:
 protected slots:
     void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& oldSelection);
 
+private slots:
+    void sl_clearSelection();
+
 signals:
     void si_selectionChanged();
 

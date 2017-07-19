@@ -35,19 +35,30 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MsaEditorWgt *ui)
     : MaEditorConsensusArea(ui) {
     initRenderer();
     setupFontAndHeight();
+
+    connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
+    connect(editor, SIGNAL(si_buildPopupMenu(GObjectView * , QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
+}
+
+void MSAEditorConsensusArea::sl_buildStaticMenu(GObjectView * /*view*/, QMenu *menu) {
+    buildMenu(menu);
+}
+
+void MSAEditorConsensusArea::sl_buildContextMenu(GObjectView * /*view*/, QMenu *menu) {
+    buildMenu(menu);
 }
 
 void MSAEditorConsensusArea::initRenderer() {
     renderer = new MaConsensusAreaRenderer(this);
 }
 
-void MSAEditorConsensusArea::buildMenu(QMenu* m) {
-    QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
+void MSAEditorConsensusArea::buildMenu(QMenu *menu) {
+    QMenu* copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
     SAFE_POINT(copyMenu != NULL, "copyMenu", );
     copyMenu->addAction(copyConsensusAction);
     copyMenu->addAction(copyConsensusWithGapsAction);
 
-    m->addAction(configureConsensusAction);
+    menu->addAction(configureConsensusAction);
 }
 
 } // namespace U2

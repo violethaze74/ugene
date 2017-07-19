@@ -44,7 +44,6 @@ public:
 private:
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* tb);
     void initRenderer();
-    void buildMenu(QMenu* m);
     bool highlightConsensusChar(int pos);
 
 private:

@@ -73,7 +73,6 @@ MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt *_ui)
     QObject *parent=new QObject(this);
     parent->setObjectName("parent");
 
-    connect(ui->getSequenceArea(), SIGNAL(si_startChanged(const QPoint &, const QPoint &)), SLOT(sl_startChanged(const QPoint &, const QPoint &)));
     connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
         SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
     connect(ui->getEditor(), SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_zoomOperationPerformed(bool)));
@@ -81,10 +80,6 @@ MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt *_ui)
 
     connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)),
                                     SLOT(sl_alignmentChanged()));
-
-    connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
-    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*,QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*,QToolBar*)));
-    connect(editor, SIGNAL(si_buildPopupMenu(GObjectView * , QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
 
     copyConsensusAction = new QAction(tr("Copy consensus"), this);
     copyConsensusAction->setObjectName("Copy consensus");
@@ -252,14 +247,6 @@ void MaEditorConsensusArea::updateConsensusAlgorithm() {
     emit si_consensusAlgorithmChanged(newAlgo->getId());
 }
 
-void MaEditorConsensusArea::sl_startChanged(const QPoint& p, const QPoint& prev) {
-    if (p.x() == prev.x()) {
-        return;
-    }
-    completeRedraw = true;
-    update();
-}
-
 void MaEditorConsensusArea::sl_alignmentChanged() {
     updateConsensusAlgorithm();
     completeRedraw = true;
@@ -289,23 +276,6 @@ void MaEditorConsensusArea::sl_selectionChanged(const MaEditorSelection& current
     if (current.getXRegion() != prev.getXRegion()) {
         sl_completeRedraw();
     }
-}
-
-void MaEditorConsensusArea::sl_buildStaticMenu(GObjectView* v, QMenu* m) {
-    Q_UNUSED(v);
-    buildMenu(m);
-}
-
-void MaEditorConsensusArea::sl_buildContextMenu(GObjectView* v, QMenu* m) {
-    Q_UNUSED(v);
-    buildMenu(m);
-}
-
-void MaEditorConsensusArea::buildMenu(QMenu* m) {
-    QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
-    SAFE_POINT(copyMenu != NULL, "copyMenu", );
-    copyMenu->addAction(copyConsensusAction);
-    copyMenu->addAction(copyConsensusWithGapsAction);
 }
 
 void MaEditorConsensusArea::sl_copyConsensusSequence() {

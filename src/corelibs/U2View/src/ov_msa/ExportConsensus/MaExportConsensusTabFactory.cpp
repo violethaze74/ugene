@@ -70,9 +70,9 @@ QWidget * McaExportConsensusTabFactory::createWidget(GObjectView* objView) {
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                NULL);
 
-    McaEditor* ma = qobject_cast<McaEditor*>(objView);
+    MaEditor* ma = qobject_cast<MaEditor *>(objView);
     SAFE_POINT(NULL != ma,
-               QString("Internal error: unable to cast object view to MsaEditor for group '%1'.").arg(GROUP_ID),
+               QString("Internal error: unable to cast object view to MaEditor for group '%1'.").arg(GROUP_ID),
                NULL);
 
     QWidget* widget = new QWidget();
@@ -97,6 +97,10 @@ QWidget * McaExportConsensusTabFactory::createWidget(GObjectView* objView) {
 
 OPGroupParameters McaExportConsensusTabFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Consensus"), GROUP_DOC_PAGE);
+}
+
+const QString &McaExportConsensusTabFactory::getGroupId() {
+    return GROUP_ID;
 }
 
 

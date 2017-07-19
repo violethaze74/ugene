@@ -94,7 +94,6 @@ signals:
     void si_mismatchRedrawRequired();
 
 protected slots:
-    void sl_startChanged(const QPoint&, const QPoint&);
     void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
     void sl_alignmentChanged();
     void sl_changeConsensusAlgorithm(const QString& algoId);
@@ -102,9 +101,6 @@ protected slots:
     void sl_onConsensusThresholdChanged(int newValue);
     void sl_visibleAreaChanged();
 
-    void sl_buildStaticMenu(GObjectView* v, QMenu* m);
-    virtual void sl_buildStaticToolbar(GObjectView* , QToolBar* ) {}
-    void sl_buildContextMenu(GObjectView* v, QMenu* m);
     void sl_copyConsensusSequence();
     void sl_copyConsensusSequenceWithGaps();
     void sl_configureConsensusAction();
@@ -121,7 +117,6 @@ protected:
     QString getThresholdSettingsKey(const QString& factoryId) const;
 
     virtual void initRenderer() = 0;
-    virtual void buildMenu(QMenu* m);
     virtual bool highlightConsensusChar(int pos);
 
     void updateSelection(int newPos);

@@ -48,7 +48,7 @@ MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui)
 
     connect(ui->getSequenceArea(), SIGNAL(si_highlightingChanged()),
             simpleOverview, SLOT(sl_highlightingChanged()));
-    connect(ui->getSequenceArea(), SIGNAL(si_highlightingChanged(addOverview)),
+    connect(ui->getSequenceArea(), SIGNAL(si_highlightingChanged()),
             graphOverview, SLOT(sl_highlightingChanged()));
     connect(ui->getEditor(), SIGNAL(si_referenceSeqChanged(qint64)),
             graphOverview, SLOT(sl_highlightingChanged()));

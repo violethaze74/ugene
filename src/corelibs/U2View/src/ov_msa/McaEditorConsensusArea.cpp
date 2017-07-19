@@ -46,33 +46,24 @@ McaEditorConsensusArea::McaEditorConsensusArea(McaEditorWgt *ui)
     setConsensusAlgorithm(algoFactory);
 
     mismatchController = new MaConsensusMismatchController(this, consensusCache, editor);
+    addAction(mismatchController->getPrevMismatchAction());
+    addAction(mismatchController->getNextMismatchAction());
 
     initRenderer();
     setupFontAndHeight();
 }
 
 void McaEditorConsensusArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
-    t->addAction(mismatchController->getPrevAction());
-    t->addAction(mismatchController->getNextAction());
+    t->addAction(mismatchController->getPrevMismatchAction());
+    t->addAction(mismatchController->getNextMismatchAction());
 }
 
 void McaEditorConsensusArea::initRenderer() {
     renderer = new McaConsensusAreaRenderer(this);
 }
 
-void McaEditorConsensusArea::buildMenu(QMenu* m) {
-    QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
-    SAFE_POINT(copyMenu != NULL, "copyMenu", );
-    copyMenu->addAction(copyConsensusAction);
-    copyMenu->addAction(copyConsensusWithGapsAction);
-
-    m->addAction(mismatchController->getNextAction());
-    m->addAction(mismatchController->getPrevAction());
-    m->addSeparator();
-}
-
 bool McaEditorConsensusArea::highlightConsensusChar(int pos) {
     return consensusSettings.highlightMismatches && mismatchController->isMismatch(pos);
 }
 
-} // namespace
+}   // namespace U2

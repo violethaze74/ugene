@@ -59,10 +59,6 @@ public:
 public:
     MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, GObject* obj);
 
-    virtual void buildStaticToolbar(QToolBar* tb);
-
-    virtual void buildStaticMenu(QMenu* m);
-
     virtual MultipleAlignmentObject* getMaObject() const { return maObject; }
 
     virtual MaEditorWgt* getUI() const { return ui; }
@@ -132,7 +128,7 @@ private slots:
 
 protected:
     virtual QWidget* createWidget() = 0;
-    void initActions();
+    virtual void initActions();
 
     void addCopyMenu(QMenu* m);
     void addEditMenu(QMenu* m);

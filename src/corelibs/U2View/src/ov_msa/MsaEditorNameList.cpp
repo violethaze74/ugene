@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Gui/GUIUtils.h>
+
 #include "MSAEditor.h"
 #include "MsaEditorNameList.h"
 
@@ -28,6 +30,23 @@ MsaEditorNameList::MsaEditorNameList(MaEditorWgt *ui, QScrollBar *nhBar)
     : MaEditorNameList(ui, nhBar)
 {
 
+}
+
+void MsaEditorNameList::buildMenu(QMenu *menu) {
+    QMenu* editMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_EDIT);
+    SAFE_POINT(editMenu != NULL, "editMenu not found", );
+
+    editMenu->insertAction(editMenu->actions().last(), removeSequenceAction);
+
+    CHECK(qobject_cast<MSAEditor*>(editor) != NULL, );
+    CHECK(rect().contains(mapFromGlobal(QCursor::pos())), );
+
+    QMenu* copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
+    SAFE_POINT(copyMenu != NULL, "copyMenu not found", );
+    copyMenu->addAction(copyCurrentSequenceAction);
+
+    copyCurrentSequenceAction->setDisabled(getSelectedRow() == -1);
+    editMenu->insertAction(editMenu->actions().first(), editSequenceNameAction);
 }
 
 MSAEditor* MsaEditorNameList::getEditor() const {

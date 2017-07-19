@@ -52,12 +52,13 @@ public:
     void drawNames(QPixmap &pixmap, const QList<int> &seqIdx, bool drawSelection = false);
     void drawNames(QPainter &painter, const QList<int> &seqIdx, bool drawSelection = false);
 
+    QAction *getEditSequenceNameAction() const;
+    QAction *getRemoveSequenceAction() const;
+
 protected slots:
     void sl_completeRedraw();
 
 private slots:
-    virtual void sl_buildStaticMenu(GObjectView* v, QMenu* m);
-    virtual void sl_buildContextMenu(GObjectView* v, QMenu* m);
     void sl_copyCurrentSequence();
     void sl_editSequenceName();
     void sl_lockedStateChanged();
@@ -110,7 +111,6 @@ protected:
     virtual bool isRowInSelection(int row) const;
 
     void updateActions();
-    void buildMenu(QMenu* m);
     void updateSelection(int newSeqNum);
     void moveSelectedRegion( int shift );
     void drawAll();

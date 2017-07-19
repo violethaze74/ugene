@@ -131,7 +131,7 @@ void MaUtilsWidget::setHeightMargin(int _heightMargin) {
 }
 
 void MaUtilsWidget::mousePressEvent( QMouseEvent * ) {
-    ui->getSequenceArea()->cancelSelection();
+    ui->getSequenceArea()->sl_cancelSelection();
 }
 void MaUtilsWidget::paintEvent(QPaintEvent *) {
     QPainter p(this);
@@ -161,7 +161,7 @@ void MaLabelWidget::paintEvent(QPaintEvent * e) {
 }
 
 void MaLabelWidget::mousePressEvent( QMouseEvent * e ) {
-    ui->getSequenceArea()->cancelSelection();
+    ui->getSequenceArea()->sl_cancelSelection();
     QMouseEvent eventForNameListArea(e->type(), QPoint(e->x(), 0), e->globalPos(), e->button(), e->buttons(), e->modifiers());
     QApplication::instance()->notify((QObject*)ui->getEditorNameList(), &eventForNameListArea);
 }

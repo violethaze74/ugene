@@ -48,7 +48,7 @@ public:
 class McaEditorSequenceArea : public MaEditorSequenceArea {
     Q_OBJECT
 public:
-    McaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScrollBar* vb);
+    McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar* hb, GScrollBar* vb);
 
     McaEditor* getEditor() const { return qobject_cast<McaEditor*>(editor); }
 
@@ -60,6 +60,16 @@ public:
     void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
     virtual void adjustReferenceLength(U2OpStatus& os);
+
+    const MaAmbiguousCharactersController * const getAmbiguousCharactersController() const;
+
+    QMenu *getTraceActionsMenu() const;
+    QAction *getIncreasePeaksHeightAction() const;
+    QAction *getDecreasePeaksHeightAction() const;
+    QAction *getInsertAction() const;
+    QAction *getInsertGapAction() const;
+    QAction *getRemoveGapBeforeSelectionAction() const;
+    QAction *getRemoveColumnsOfGapsAction() const;
 
 signals:
     void si_clearReferenceSelection();
@@ -76,14 +86,13 @@ private slots:
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
 
     void sl_addInsertion();
+    void sl_removeGapBeforeSelection();
     void sl_removeColumnsOfGaps();
 
 private:
     void initRenderer();
     void updateActions();
     void drawBackground(QPainter &p);
-
-    void buildMenu(QMenu* m);
 
     void getColorAndHighlightingIds(QString &csid, QString &hsid);
 
@@ -99,16 +108,16 @@ private:
 
     QAction*    showQVAction;
     QAction*    showAllTraces;
-    QMenu*      traceActionMenu;
+    QMenu*      traceActionsMenu;
     ScaleBar*   scaleBar;
     QAction*    scaleAction;
 
     QAction*    insertAction;
+    QAction*    removeGapBeforeSelectionAction;
     QAction*    removeColumnsOfGapsAction;
 };
 
-
-} // namespace
+}   // namespace U2
 
 #endif // _U2_MCA_EDITOR_SEQUENCE_AREA_
 
