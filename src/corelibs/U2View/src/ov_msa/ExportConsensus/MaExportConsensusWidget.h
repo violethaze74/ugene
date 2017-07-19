@@ -34,7 +34,7 @@ class SaveDocumentController;
 class MaExportConsensusWidget : public QWidget, private Ui_ExportConsensusWidget {
     Q_OBJECT
 public:
-    MaExportConsensusWidget(MaEditor* ma_);
+    MaExportConsensusWidget(MaEditor* ma_, QWidget *parent = NULL);
 
     void showHint(bool showHint);
 

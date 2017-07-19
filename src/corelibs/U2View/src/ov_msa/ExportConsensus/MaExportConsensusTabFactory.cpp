@@ -75,17 +75,17 @@ QWidget * McaExportConsensusTabFactory::createWidget(GObjectView* objView) {
                QString("Internal error: unable to cast object view to MsaEditor for group '%1'.").arg(GROUP_ID),
                NULL);
 
-    QWidget* widget = new QWidget();
+    QWidget* widget = new QWidget(objView->getWidget());
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
     widget->setLayout(layout);
 
-    MaConsensusModeWidget* consensusModeWgt = new MaConsensusModeWidget();
+    MaConsensusModeWidget* consensusModeWgt = new MaConsensusModeWidget(widget);
     consensusModeWgt->init(ma->getMaObject(), ma->getUI()->getConsensusArea());
     ShowHideSubgroupWidget* consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"),
                                                                        consensusModeWgt, true);
 
-    MaExportConsensusWidget *exportWidget = new MaExportConsensusWidget(ma);
+    MaExportConsensusWidget *exportWidget = new MaExportConsensusWidget(ma, widget);
     exportWidget->layout()->setContentsMargins(9, 9, 9, 9);
     ShowHideSubgroupWidget* exportConsensus = new ShowHideSubgroupWidget("EXPORT_CONSENSUS", tr("Export consensus"),
                                                                          exportWidget, true);
