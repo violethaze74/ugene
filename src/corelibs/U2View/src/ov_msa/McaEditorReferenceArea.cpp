@@ -87,7 +87,7 @@ void McaEditorReferenceArea::sl_selectMismatch(int pos) {
 }
 
 void McaEditorReferenceArea::sl_visibleRangeChanged() {
-    const U2Region visibleRange = ui->getDrawHelper()->getVisibleBases(width());
+    const U2Region visibleRange = ui->getDrawHelper()->getVisibleBases(ui->getSequenceArea()->width());
     setVisibleRange(visibleRange);
 }
 
