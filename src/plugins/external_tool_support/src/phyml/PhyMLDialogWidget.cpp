@@ -69,7 +69,10 @@ PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
 {
     setupUi(this);
 
-    fillComboBoxes(ma);
+    isAminoAcid = ma->getAlphabet()->getType() == DNAAlphabet_AMINO;
+    makeTTRatioControlsAvailable(!isAminoAcid);
+    fillComboBoxes();
+
     createWidgetsControllers();
 
     widgetControllers.getDataFromSettings();
@@ -86,19 +89,17 @@ PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
     sl_checkUserTreeType(treeTypesCombo->currentIndex());
 }
 
-void PhyMlWidget::fillComboBoxes(const MultipleSequenceAlignment& ma) {
-    DNAAlphabetType alphabetType = ma->getAlphabet()->getType();
-    if ((alphabetType == DNAAlphabet_RAW) || (alphabetType == DNAAlphabet_NUCL)){
-        isAminoAcid = false;
-        subModelCombo->addItems(PhyMLModelTypes::getDnaModelTypes());
-    } else {
-        isAminoAcid = true;
-        subModelCombo->addItems(PhyMLModelTypes::getAminoAcidModelTypes());
-        tranCheckBox->setEnabled(false);
-    }
+void PhyMlWidget::fillComboBoxes() {
+    subModelCombo->addItems(isAminoAcid ? PhyMLModelTypes::getAminoAcidModelTypes() : PhyMLModelTypes::getDnaModelTypes());
     fastMethodCombo->addItems(PhyMLRatioTestsTypes::getRatioTestsTypes());
     treeTypesCombo->addItems(TreeSearchingParams::getInputTreeTypes());
     treeImprovementsCombo->addItems(TreeSearchingParams::getTreeImprovementTypes());
+}
+
+void PhyMlWidget::makeTTRatioControlsAvailable(bool enabled) {
+    transLabel->setEnabled(enabled);
+    transEstimatedCheckbox->setEnabled(enabled);
+    tranSpinBox->setEnabled(enabled && !transEstimatedCheckbox->isChecked());
 }
 
 void PhyMlWidget::createWidgetsControllers() {
@@ -109,19 +110,19 @@ void PhyMlWidget::createWidgetsControllers() {
     widgetControllers.addWidgetController(substitutionSpinBox, PhyMlSettingsPreffixes::SubRatesNumber, "-c");
 
     //Transition / transversion ratio
-    InputWidgetController* ttRatioEstimationController = widgetControllers.addWidgetController(tranCheckBox, PhyMlSettingsPreffixes::EstimateTtRatio, "");
+    InputWidgetController* ttRatioEstimationController = widgetControllers.addWidgetController(transEstimatedCheckbox, PhyMlSettingsPreffixes::EstimateTtRatio, "");
     InputWidgetController* ttRatioController = widgetControllers.addWidgetController(tranSpinBox, PhyMlSettingsPreffixes::TtRatio, "-t");
-    ttRatioEstimationController->addDependentParameter(ParameterDependence(ttRatioController, true));
+    ttRatioEstimationController->addDependentParameter(ParameterDependence(ttRatioController, false));
 
     //Proportion of invariable sites
-    InputWidgetController* sitesEstimationController = widgetControllers.addWidgetController(sitesCheckBox, PhyMlSettingsPreffixes::EstimateSitesProportion, "");
-    InputWidgetController* sitesPropController = widgetControllers.addWidgetController(sitesSpinBox, PhyMlSettingsPreffixes::InvariableSitesProportion, "-t");
-    sitesEstimationController->addDependentParameter(ParameterDependence(sitesPropController, true));
+    InputWidgetController* sitesEstimationController = widgetControllers.addWidgetController(sitesEstimatedCheckbox, PhyMlSettingsPreffixes::EstimateSitesProportion, "");
+    InputWidgetController* sitesPropController = widgetControllers.addWidgetController(sitesSpinBox, PhyMlSettingsPreffixes::InvariableSitesProportion, "-v");
+    sitesEstimationController->addDependentParameter(ParameterDependence(sitesPropController, false));
 
     //Gamma shape parameter
-    InputWidgetController* gammaEstimationController = widgetControllers.addWidgetController(gammaCheckBox, PhyMlSettingsPreffixes::EstimateGammaFactor, "");
+    InputWidgetController* gammaEstimationController = widgetControllers.addWidgetController(gammaEstimatedCheckbox, PhyMlSettingsPreffixes::EstimateGammaFactor, "");
     InputWidgetController* gammaController = widgetControllers.addWidgetController(gammaSpinBox, PhyMlSettingsPreffixes::GammaFactor, "-a");
-    gammaEstimationController->addDependentParameter(ParameterDependence(gammaController, true));
+    gammaEstimationController->addDependentParameter(ParameterDependence(gammaController, false));
 
     //Bootstrap replicates number
     InputWidgetController* bootstrapCheckBoxController = widgetControllers.addWidgetController(bootstrapRadioButton, PhyMlSettingsPreffixes::UseBootstrap, "");
@@ -195,7 +196,7 @@ void PhyMlWidget::sl_optTopologyCheckboxClicked(bool checked) {
 
 void PhyMlWidget::sl_checkSubModelType(const QString& newModel){
     if(isAminoAcid) {
-        tranCheckBox->setEnabled(false);
+        makeTTRatioControlsAvailable(false);
         return;
     }
 
@@ -204,13 +205,7 @@ void PhyMlWidget::sl_checkSubModelType(const QString& newModel){
     SAFE_POINT(modelIndex >= 0, QString("'%1' is incorrect substitution model for dna sequence").arg(newModel),);
 
     SubstModelTrRatioType ttRatioType = PhyMLModelTypes::getTtRatioType(newModel);
-    if(ttRatioType == ANY_TT_RATIO) {
-        tranCheckBox->setEnabled(true);
-    }
-    else {
-        tranCheckBox->setChecked(ttRatioType == ONLY_FIXED_TT_RATIO);
-        tranCheckBox->setEnabled(false);
-    }
+    makeTTRatioControlsAvailable(ttRatioType == ANY_TT_RATIO);
 }
 
 void PhyMlWidget::fillSettings(CreatePhyTreeSettings& settings){
@@ -277,6 +272,12 @@ QStringList PhyMlWidget::generatePhyMlSettingsScript(){
     }
 
     widgetControllers.addParametersToCmdLine(script);
+    if (sitesEstimatedCheckbox->isChecked()) {
+        script << "-v" << "e";
+    }
+    if (gammaEstimatedCheckbox->isChecked()) {
+        script << "-a" << "e";
+    }
 
     if(1 == treeTypesCombo->currentIndex()) {
         script << "-u";

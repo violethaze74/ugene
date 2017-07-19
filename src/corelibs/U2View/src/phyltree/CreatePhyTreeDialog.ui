@@ -107,7 +107,7 @@
        <item>
         <widget class="QPushButton" name="storeSettings">
          <property name="text">
-          <string>Remember Settings</string>
+          <string>Save Settings</string>
          </property>
         </widget>
        </item>
