@@ -272,7 +272,7 @@ void McaEditorSequenceArea::buildMenu(QMenu *m) {
 }
 
 void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid) {
-    csid = MsaColorScheme::UGENE_NUCL;
+    csid = MsaColorScheme::UGENE_SANGER_NUCL;
     hsid = MsaHighlightingScheme::DISAGREEMENTS;
 }
 

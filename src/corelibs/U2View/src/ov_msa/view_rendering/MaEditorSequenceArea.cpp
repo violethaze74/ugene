@@ -1468,19 +1468,21 @@ void MaEditorSequenceArea::applyColorScheme(const QString &id) {
         action->setChecked(action->data() == id);
     }
 
-    switch (ui->getEditor()->getMaObject()->getAlphabet()->getType()) {
-    case DNAAlphabet_RAW:
-        AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, id);
-        break;
-    case DNAAlphabet_NUCL:
-        AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL, id);
-        break;
-    case DNAAlphabet_AMINO:
-        AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_AMINO, id);
-        break;
-    default:
-        FAIL(tr("Unknown alphabet"), );
-        break;
+    if (qobject_cast<MSAEditor*>(getEditor()) != NULL) { // to avoid setting of sanger scheme
+        switch (ui->getEditor()->getMaObject()->getAlphabet()->getType()) {
+        case DNAAlphabet_RAW:
+            AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, id);
+            break;
+        case DNAAlphabet_NUCL:
+            AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL, id);
+            break;
+        case DNAAlphabet_AMINO:
+            AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_AMINO, id);
+            break;
+        default:
+            FAIL(tr("Unknown alphabet"), );
+            break;
+        }
     }
 
     completeRedraw = true;
