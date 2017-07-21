@@ -68,6 +68,8 @@ const QString OUT_PORT_DESCR("out-data");
 
 const QString OUTPUT_DIR("output-dir");
 
+const QString OUTPUT_SUBDIR("short-reads-aligner");
+
 const QString OUTPUT_NAME = "outname";
 
 const QString BASE_OUTFILE = "out.sam";
@@ -128,7 +130,12 @@ DnaAssemblyToRefTaskSettings BaseShortReadsAlignerWorker::getSettings(U2OpStatus
     //settings.refSeqUrl = GUrl(settings.indexFileName).baseFileName();
     settings.algName = algName;
 
+    QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
+    tmpDir = GUrlUtils::createDirectory(tmpDir + getAlignerSubdir() , "_", os);
+
     settings.setCustomSettings(getCustomParameters());
+    settings.cleanTmpDir = false;
+    settings.tmpDirPath = tmpDir;
 
     return settings;
 }
@@ -249,6 +256,10 @@ QString BaseShortReadsAlignerWorker::checkPairedReads() const {
         return tr("Not enough downstream reads datasets");
     }
     return "";
+}
+
+QString BaseShortReadsAlignerWorker::getAlignerSubdir() const {
+    return OUTPUT_SUBDIR;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -41,6 +41,7 @@ protected:
     QString getDefaultFileName() const;
     QString getBaseSubdir() const;
     void setGenomeIndex(DnaAssemblyToRefTaskSettings& settings);
+    QString getAlignerSubdir() const;
 }; // BwaMemWorker
 
 class BwaMemWorkerFactory : public BaseShortReadsAlignerWorkerFactory {
