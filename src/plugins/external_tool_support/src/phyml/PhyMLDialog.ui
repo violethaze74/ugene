@@ -12,13 +12,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>509</width>
-    <height>251</height>
+    <width>600</width>
+    <height>268</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>0</width>
+    <width>600</width>
     <height>0</height>
    </size>
   </property>
@@ -70,7 +70,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1" colspan="2">
+       <item row="0" column="1" colspan="3">
         <widget class="QComboBox" name="subModelCombo">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -87,14 +87,20 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="1" column="2">
         <widget class="QRadioButton" name="freqOptimRadio">
+         <property name="layoutDirection">
+          <enum>Qt::RightToLeft</enum>
+         </property>
          <property name="text">
           <string>optimized</string>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">freqRbGroup</string>
+         </attribute>
         </widget>
        </item>
-       <item row="1" column="2">
+       <item row="1" column="3">
         <widget class="QRadioButton" name="freqEmpRadio">
          <property name="text">
           <string>empirical</string>
@@ -102,6 +108,9 @@
          <property name="checked">
           <bool>true</bool>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">freqRbGroup</string>
+         </attribute>
         </widget>
        </item>
        <item row="2" column="0">
@@ -137,7 +146,26 @@
         </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QCheckBox" name="transEstimatedCheckbox">
+        <widget class="QRadioButton" name="transFixedRb">
+         <property name="toolTip">
+          <string>Set a fixed value or get the maximum likelihood estimate.</string>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text">
+          <string>fixed</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">sitesRbGroup</string>
+         </attribute>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <widget class="QRadioButton" name="transEstimatedRb">
          <property name="toolTip">
           <string>Set a fixed value or get the maximum likelihood estimate.</string>
          </property>
@@ -147,6 +175,9 @@
          <property name="checked">
           <bool>true</bool>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">sitesRbGroup</string>
+         </attribute>
         </widget>
        </item>
        <item row="3" column="0">
@@ -185,7 +216,26 @@
         </widget>
        </item>
        <item row="3" column="2">
-        <widget class="QCheckBox" name="sitesEstimatedCheckbox">
+        <widget class="QRadioButton" name="sitesFixedRb">
+         <property name="toolTip">
+          <string>Set a fixed value or get the maximum likelihood estimate.</string>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text">
+          <string>fixed</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">gammaRbGroup</string>
+         </attribute>
+        </widget>
+       </item>
+       <item row="3" column="3">
+        <widget class="QRadioButton" name="sitesEstimatedRb">
          <property name="toolTip">
           <string>Set a fixed value or get the maximum likelihood estimate.</string>
          </property>
@@ -195,6 +245,9 @@
          <property name="checked">
           <bool>true</bool>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">gammaRbGroup</string>
+         </attribute>
         </widget>
        </item>
        <item row="4" column="0">
@@ -268,7 +321,26 @@
         </widget>
        </item>
        <item row="5" column="2">
-        <widget class="QCheckBox" name="gammaEstimatedCheckbox">
+        <widget class="QRadioButton" name="gammaFixedRb">
+         <property name="toolTip">
+          <string>Set a fixed value or get the maximum likelihood estimate.</string>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text">
+          <string>fixed</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">transitionRbGroup</string>
+         </attribute>
+        </widget>
+       </item>
+       <item row="5" column="3">
+        <widget class="QRadioButton" name="gammaEstimatedRb">
          <property name="toolTip">
           <string>Set a fixed value or get the maximum likelihood estimate.</string>
          </property>
@@ -278,6 +350,9 @@
          <property name="checked">
           <bool>true</bool>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">transitionRbGroup</string>
+         </attribute>
         </widget>
        </item>
       </layout>
@@ -504,8 +579,8 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>88</x>
-     <y>85</y>
+     <x>90</x>
+     <y>108</y>
     </hint>
     <hint type="destinationlabel">
      <x>311</x>
@@ -520,8 +595,8 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>88</x>
-     <y>85</y>
+     <x>90</x>
+     <y>108</y>
     </hint>
     <hint type="destinationlabel">
      <x>335</x>
@@ -530,36 +605,58 @@
    </hints>
   </connection>
   <connection>
-   <sender>sitesEstimatedCheckbox</sender>
+   <sender>gammaFixedRb</sender>
    <signal>toggled(bool)</signal>
-   <receiver>sitesSpinBox</receiver>
-   <slot>setDisabled(bool)</slot>
+   <receiver>gammaSpinBox</receiver>
+   <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>445</x>
-     <y>151</y>
+     <x>439</x>
+     <y>223</y>
     </hint>
     <hint type="destinationlabel">
-     <x>335</x>
-     <y>151</y>
+     <x>333</x>
+     <y>223</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>gammaEstimatedCheckbox</sender>
+   <sender>transFixedRb</sender>
    <signal>toggled(bool)</signal>
-   <receiver>gammaSpinBox</receiver>
-   <slot>setDisabled(bool)</slot>
+   <receiver>tranSpinBox</receiver>
+   <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>445</x>
-     <y>215</y>
+     <x>439</x>
+     <y>127</y>
     </hint>
     <hint type="destinationlabel">
-     <x>335</x>
-     <y>215</y>
+     <x>333</x>
+     <y>127</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sitesFixedRb</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>sitesSpinBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>439</x>
+     <y>159</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>333</x>
+     <y>159</y>
     </hint>
    </hints>
   </connection>
  </connections>
+ <buttongroups>
+  <buttongroup name="transitionRbGroup"/>
+  <buttongroup name="gammaRbGroup"/>
+  <buttongroup name="sitesRbGroup"/>
+  <buttongroup name="freqRbGroup"/>
+ </buttongroups>
 </ui>

@@ -69,7 +69,7 @@ PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
 {
     setupUi(this);
 
-    isAminoAcid = ma->getAlphabet()->getType() == DNAAlphabet_AMINO;
+    isAminoAcid = ma->getAlphabet()->isAmino();
     makeTTRatioControlsAvailable(!isAminoAcid);
     fillComboBoxes();
 
@@ -98,8 +98,8 @@ void PhyMlWidget::fillComboBoxes() {
 
 void PhyMlWidget::makeTTRatioControlsAvailable(bool enabled) {
     transLabel->setEnabled(enabled);
-    transEstimatedCheckbox->setEnabled(enabled);
-    tranSpinBox->setEnabled(enabled && !transEstimatedCheckbox->isChecked());
+    transEstimatedRb->setEnabled(enabled);
+    tranSpinBox->setEnabled(enabled && !transEstimatedRb->isChecked());
 }
 
 void PhyMlWidget::createWidgetsControllers() {
@@ -110,19 +110,19 @@ void PhyMlWidget::createWidgetsControllers() {
     widgetControllers.addWidgetController(substitutionSpinBox, PhyMlSettingsPreffixes::SubRatesNumber, "-c");
 
     //Transition / transversion ratio
-    InputWidgetController* ttRatioEstimationController = widgetControllers.addWidgetController(transEstimatedCheckbox, PhyMlSettingsPreffixes::EstimateTtRatio, "");
+    InputWidgetController* ttRatioEstimationController = widgetControllers.addWidgetController(transFixedRb, PhyMlSettingsPreffixes::EstimateTtRatio, "");
     InputWidgetController* ttRatioController = widgetControllers.addWidgetController(tranSpinBox, PhyMlSettingsPreffixes::TtRatio, "-t");
-    ttRatioEstimationController->addDependentParameter(ParameterDependence(ttRatioController, false));
+    ttRatioEstimationController->addDependentParameter(ParameterDependence(ttRatioController, true));
 
     //Proportion of invariable sites
-    InputWidgetController* sitesEstimationController = widgetControllers.addWidgetController(sitesEstimatedCheckbox, PhyMlSettingsPreffixes::EstimateSitesProportion, "");
+    InputWidgetController* sitesEstimationController = widgetControllers.addWidgetController(sitesFixedRb, PhyMlSettingsPreffixes::EstimateSitesProportion, "");
     InputWidgetController* sitesPropController = widgetControllers.addWidgetController(sitesSpinBox, PhyMlSettingsPreffixes::InvariableSitesProportion, "-v");
-    sitesEstimationController->addDependentParameter(ParameterDependence(sitesPropController, false));
+    sitesEstimationController->addDependentParameter(ParameterDependence(sitesPropController, true));
 
     //Gamma shape parameter
-    InputWidgetController* gammaEstimationController = widgetControllers.addWidgetController(gammaEstimatedCheckbox, PhyMlSettingsPreffixes::EstimateGammaFactor, "");
+    InputWidgetController* gammaEstimationController = widgetControllers.addWidgetController(gammaFixedRb, PhyMlSettingsPreffixes::EstimateGammaFactor, "");
     InputWidgetController* gammaController = widgetControllers.addWidgetController(gammaSpinBox, PhyMlSettingsPreffixes::GammaFactor, "-a");
-    gammaEstimationController->addDependentParameter(ParameterDependence(gammaController, false));
+    gammaEstimationController->addDependentParameter(ParameterDependence(gammaController, true));
 
     //Bootstrap replicates number
     InputWidgetController* bootstrapCheckBoxController = widgetControllers.addWidgetController(bootstrapRadioButton, PhyMlSettingsPreffixes::UseBootstrap, "");
@@ -272,10 +272,10 @@ QStringList PhyMlWidget::generatePhyMlSettingsScript(){
     }
 
     widgetControllers.addParametersToCmdLine(script);
-    if (sitesEstimatedCheckbox->isChecked()) {
+    if (sitesEstimatedRb->isChecked()) {
         script << "-v" << "e";
     }
-    if (gammaEstimatedCheckbox->isChecked()) {
+    if (gammaEstimatedRb->isChecked()) {
         script << "-a" << "e";
     }
 
