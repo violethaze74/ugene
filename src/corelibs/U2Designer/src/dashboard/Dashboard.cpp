@@ -27,6 +27,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QWebFrame>
+#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>

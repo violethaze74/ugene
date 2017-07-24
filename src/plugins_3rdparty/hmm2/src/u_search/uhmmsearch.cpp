@@ -228,7 +228,7 @@ main_loop_serial(struct plan7_s *hmm, const char* seq, int seqLen, struct thresh
     if (sc >= thresh->globT && evalue <= thresh->globE)  {
         sc = PostprocessSignificantHit(ghit, dhit, 
             tr, hmm, dsq, seqLen,
-            "sequence", //todo: sqinfo.name, 
+			(char *)"sequence", //todo: sqinfo.name, 
             NULL, 
             NULL, 
             do_forward, sc,

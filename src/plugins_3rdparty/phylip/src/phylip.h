@@ -265,8 +265,13 @@ typedef void *Anyptr;
 
 typedef unsigned char boolean;
 
-#define true    1
-#define false   0
+#ifdef _MSC_VER
+#  if _MSC_VER < 1900
+#		define true    1
+#		define false   0
+#  endif
+#endif
+
 
 /* Number of items per machine word in set.
  * Used in consensus programs and clique */

@@ -27,6 +27,8 @@
 #include <QPlainTextEdit>
 #include <QTableView>
 #include <QWebElement>
+#include <QTextStream>
+#include <QDebug>
 
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>

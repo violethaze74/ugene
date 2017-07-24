@@ -80,7 +80,7 @@ void cleanupMemory(float **submatrix, unsigned int numseq, float **dm, struct al
 }
 
 void throwCancellingException() {
-    throwKalignException("Align task has been cancelled");
+    throwKalignException((char *) "Align task has been cancelled");
 }
 
 }

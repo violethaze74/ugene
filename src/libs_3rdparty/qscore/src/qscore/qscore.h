@@ -16,8 +16,13 @@
 
 #define UINT_MAX 0xffffffff
 #ifdef _MSC_VER
+#  if _MSC_VER < 1900
 #include <hash_map>
 typedef stdext::hash_map<std::string, unsigned> StrToInt;
+#  else
+#include <unordered_map>
+typedef std::unordered_map<std::string, unsigned> StrToInt;
+#  endif
 #else
 #include <ext/hash_map>
 #define HASH_MAP	
