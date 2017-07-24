@@ -750,7 +750,7 @@ void SQLiteObjectDbi::undoUpdateObjectName(const U2DataId& id, const QByteArray&
     // Parse the input
     QString oldName;
     QString newName;
-    bool ok = PackUtils::unpackObjectNameDetails(modDetails, oldName, newName);
+    bool ok = U2DbiPackUtils::unpackObjectNameDetails(modDetails, oldName, newName);
     if (!ok) {
         os.setError("An error occurred during updating an object name!");
         return;
@@ -768,7 +768,7 @@ void SQLiteObjectDbi::undoUpdateObjectName(const U2DataId& id, const QByteArray&
 void SQLiteObjectDbi::redoUpdateObjectName(const U2DataId& id, const QByteArray& modDetails, U2OpStatus& os) {
     QString oldName;
     QString newName;
-    bool ok = PackUtils::unpackObjectNameDetails(modDetails, oldName, newName);
+    bool ok = U2DbiPackUtils::unpackObjectNameDetails(modDetails, oldName, newName);
     if (!ok) {
         os.setError("An error occurred during updating an object name!");
         return;
@@ -1196,7 +1196,7 @@ void SQLiteObjectDbiUtils::renameObject(SQLiteModificationAction& updateAction, 
 
     QByteArray modDetails;
     if (TrackOnUpdate == updateAction.getTrackModType()) {
-        modDetails = PackUtils::packObjectNameDetails(object.visualName, newName);
+        modDetails = U2DbiPackUtils::packObjectNameDetails(object.visualName, newName);
     }
 
     object.visualName = newName;

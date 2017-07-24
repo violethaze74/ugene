@@ -19,9 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include "BaseDocumentFormats.h"
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/StrPackUtils.h>
+
+#include "BaseDocumentFormats.h"
 
 namespace U2 {
 

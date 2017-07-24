@@ -31,6 +31,7 @@
 
 #include <U2Core/IdRegistry.h>
 #include <U2Core/global.h>
+#include <U2Core/StrPackUtils.h>
 
 namespace U2 {
 
@@ -76,8 +77,8 @@ public:
     const QString&      getVersion()  const { return version; }
     const QRegExp&      getVersionRegExp()  const { return versionRegExp; }
     const QString&      getToolKitName()  const { return toolKitName; }
-    const StrStrMap&   getErrorDescriptions()  const { return errorDescriptions; }
-    const QVariantMap & getAdditionalInfo() const;
+    const StrStrMap&    getErrorDescriptions()  const { return errorDescriptions; }
+    const StrStrMap&    getAdditionalInfo() const;
 
     virtual void        getAdditionalParameters(const QString& output) { Q_UNUSED(output) }
 
@@ -88,7 +89,7 @@ public:
     void setPath(const QString& _path);
     void setValid(bool _isValid);
     void setVersion(const QString& _version);
-    void setAdditionalInfo(const QVariantMap &additionalInfo);
+    void setAdditionalInfo(const StrStrMap &additionalInfo);
 
     bool isValid() const { return isValidTool; }
     bool isMuted() const;
@@ -113,8 +114,8 @@ protected:
     QRegExp     versionRegExp;          // RegExp to get the version from the validation run output
     bool        isValidTool;            // tool state
     QString     toolKitName;            // toolkit which includes the tool
-    StrStrMap  errorDescriptions;      // error messages for the tool's standard errors
-    QVariantMap additionalInfo;         // any additional info, it is specific for the extenal tool
+    StrStrMap   errorDescriptions;      // error messages for the tool's standard errors
+    StrStrMap   additionalInfo;         // any additional info, it is specific for the extenal tool
     QList<ExternalToolValidation> additionalValidators;     // validators for the environment state (e.g. some external program should be installed)
     QStringList dependencies;           // a list of dependencies for the tool of another external tools (e.g. python for python scripts).
     bool        muted;                  // a muted tool doesn't write its validation error to the log

@@ -52,7 +52,7 @@ void SQLiteUdrDbi::undo(const U2SingleModStep &modStep, U2OpStatus &os) {
 
     QByteArray oldData;
     QByteArray newData;
-    bool ok = PackUtils::unpackUdr(modStep.details, oldData, newData);
+    bool ok = U2DbiPackUtils::unpackUdr(modStep.details, oldData, newData);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating UDR")), );
 
     RawDataUdrSchema::writeContent(oldData, U2EntityRef(getRootDbi()->getDbiRef(), modStep.objectId), os);
@@ -63,7 +63,7 @@ void SQLiteUdrDbi::redo(const U2SingleModStep &modStep, U2OpStatus &os) {
 
     QByteArray oldData;
     QByteArray newData;
-    bool ok = PackUtils::unpackUdr(modStep.details, oldData, newData);
+    bool ok = U2DbiPackUtils::unpackUdr(modStep.details, oldData, newData);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating UDR")), );
 
     RawDataUdrSchema::writeContent(newData, U2EntityRef(getRootDbi()->getDbiRef(), modStep.objectId), os);

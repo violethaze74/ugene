@@ -273,7 +273,7 @@ void MysqlMsaDbi::updateMsaAlphabet(const U2DataId& msaId, const U2AlphabetId& a
     if (TrackOnUpdate == trackMod) {
         U2Msa msaObj = getMsaObject(msaId, os);
         CHECK_OP(os, );
-        modDetails = PackUtils::packAlphabetDetails(msaObj.alphabet, alphabet);
+        modDetails = U2DbiPackUtils::packAlphabetDetails(msaObj.alphabet, alphabet);
     }
 
     // Update the alphabet
@@ -310,7 +310,7 @@ void MysqlMsaDbi::addRows(const U2DataId& msaId, QList<U2MsaRow>& rows, U2OpStat
 
     QByteArray modDetails;
     if (TrackOnUpdate == trackMod) {
-        modDetails = PackUtils::packRows(posInMsa, rows);
+        modDetails = U2DbiPackUtils::packRows(posInMsa, rows);
     }
 
     addRowsCore(msaId, posInMsa, rows, os);
@@ -354,7 +354,7 @@ void MysqlMsaDbi::addRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, 
 
     QByteArray modDetails;
     if (TrackOnUpdate == trackMod) {
-        modDetails = PackUtils::packRow(posInMsa, row);
+        modDetails = U2DbiPackUtils::packRow(posInMsa, row);
     }
     if (row.length > getMsaLength(msaId, os)) {
         updateMsaLength(updateAction, msaId, row.length, os);
@@ -392,7 +392,7 @@ void MysqlMsaDbi::removeRows(const U2DataId& msaId, const QList<qint64>& rowIds,
             rows << getRow(msaId, rowId, os);
             CHECK_OP(os, );
         }
-        modDetails = PackUtils::packRows(posInMsa, rows);
+        modDetails = U2DbiPackUtils::packRows(posInMsa, rows);
     }
 
     bool removeSequence = (TrackOnUpdate != trackMod);
@@ -424,7 +424,7 @@ void MysqlMsaDbi::removeRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os)
         CHECK_OP(os, );
         qint64 posInMsa = getPosInMsa(msaId, rowId, os);
         CHECK_OP(os, );
-        modDetails = PackUtils::packRow(posInMsa, removedRow);
+        modDetails = U2DbiPackUtils::packRow(posInMsa, removedRow);
     }
 
     bool removeSequence = (TrackOnUpdate != trackMod);
@@ -535,7 +535,7 @@ void MysqlMsaDbi::updateMsaLength(MysqlModificationAction &updateAction, const U
     if (TrackOnUpdate == updateAction.getTrackModType()) {
         const qint64 oldMsaLen = getMsaLength(msaId, os);
         CHECK_OP(os, );
-        modDetails = PackUtils::packAlignmentLength(oldMsaLen, length);
+        modDetails = U2DbiPackUtils::packAlignmentLength(oldMsaLen, length);
     }
 
     updateMsaLengthCore(msaId, length, os);
@@ -555,7 +555,7 @@ void MysqlMsaDbi::setNewRowsOrder(const U2DataId& msaId, const QList<qint64>& ro
     if (TrackOnUpdate == trackMod) {
         QList<qint64> oldOrder = getRowsOrder(msaId, os);
         CHECK_OP(os, );
-        modDetails = PackUtils::packRowOrderDetails(oldOrder, rowIds);
+        modDetails = U2DbiPackUtils::packRowOrderDetails(oldOrder, rowIds);
     }
 
     // Check that row IDs number is correct (if required, can be later removed for efficiency)
@@ -1074,7 +1074,7 @@ void MysqlMsaDbi::undoUpdateMsaAlphabet(const U2DataId& msaId, const QByteArray&
     U2AlphabetId oldAlphabet;
     U2AlphabetId newAlphabet;
 
-    bool ok = PackUtils::unpackAlphabetDetails(modDetails, oldAlphabet, newAlphabet);
+    bool ok = U2DbiPackUtils::unpackAlphabetDetails(modDetails, oldAlphabet, newAlphabet);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an alignment alphabet")), );
 
     // Update the value
@@ -1092,7 +1092,7 @@ void MysqlMsaDbi::undoAddRows(const U2DataId& msaId, const QByteArray& modDetail
     QList<qint64> posInMsa;
     QList<U2MsaRow> rows;
 
-    bool ok = PackUtils::unpackRows(modDetails, posInMsa, rows);
+    bool ok = U2DbiPackUtils::unpackRows(modDetails, posInMsa, rows);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during reverting adding of rows")), );
 
     QList<qint64> rowIds;
@@ -1110,7 +1110,7 @@ void MysqlMsaDbi::undoAddRow(const U2DataId& msaId, const QByteArray& modDetails
     U2MsaRow row;
     qint64 posInMsa;
 
-    bool ok = PackUtils::unpackRow(modDetails, posInMsa, row);
+    bool ok = U2DbiPackUtils::unpackRow(modDetails, posInMsa, row);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during reverting addition of a row")), );
 
     removeRowCore(msaId, row.rowId, false, os);
@@ -1123,7 +1123,7 @@ void MysqlMsaDbi::undoRemoveRows(const U2DataId& msaId, const QByteArray& modDet
     QList<qint64> posInMsa;
     QList<U2MsaRow> rows;
 
-    bool ok = PackUtils::unpackRows(modDetails, posInMsa, rows);
+    bool ok = U2DbiPackUtils::unpackRows(modDetails, posInMsa, rows);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during reverting removing of rows")), );
 
     addRowsCore(msaId, posInMsa, rows, os);
@@ -1136,7 +1136,7 @@ void MysqlMsaDbi::undoRemoveRow(const U2DataId& msaId, const QByteArray& modDeta
     U2MsaRow row;
     qint64 posInMsa;
 
-    bool ok = PackUtils::unpackRow(modDetails, posInMsa, row);
+    bool ok = U2DbiPackUtils::unpackRow(modDetails, posInMsa, row);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during reverting removing of a row")), );
 
     addRowCore(msaId, posInMsa, row, os);
@@ -1150,7 +1150,7 @@ void MysqlMsaDbi::undoUpdateGapModel(const U2DataId& msaId, const QByteArray& mo
     QList<U2MsaGap> oldGaps;
     QList<U2MsaGap> newGaps;
 
-    bool ok = PackUtils::unpackGapDetails(modDetails, rowId, oldGaps, newGaps);
+    bool ok = U2DbiPackUtils::unpackGapDetails(modDetails, rowId, oldGaps, newGaps);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an alignment gaps")), );
 
     updateGapModelCore(msaId, rowId, oldGaps, os);
@@ -1163,7 +1163,7 @@ void MysqlMsaDbi::undoSetNewRowsOrder(const U2DataId& msaId, const QByteArray& m
     QList<qint64> oldOrder;
     QList<qint64> newOrder;
 
-    bool ok = PackUtils::unpackRowOrderDetails(modDetails, oldOrder, newOrder);
+    bool ok = U2DbiPackUtils::unpackRowOrderDetails(modDetails, oldOrder, newOrder);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an alignment row order")), );
 
     // Set the old order
@@ -1177,7 +1177,7 @@ void MysqlMsaDbi::undoUpdateRowInfo(const U2DataId& msaId, const QByteArray& mod
     U2MsaRow oldRow;
     U2MsaRow newRow;
 
-    bool ok = PackUtils::unpackRowInfoDetails(modDetails, oldRow, newRow);
+    bool ok = U2DbiPackUtils::unpackRowInfoDetails(modDetails, oldRow, newRow);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating a row info")), );
     SAFE_POINT(oldRow.rowId == newRow.rowId, "Incorrect rowId", );
     SAFE_POINT(oldRow.sequenceId == newRow.sequenceId, "Incorrect sequenceId", );
@@ -1192,7 +1192,7 @@ void MysqlMsaDbi::undoMsaLengthChange(const U2DataId &msaId, const QByteArray &m
     qint64 oldLen;
     qint64 newLen;
 
-    bool ok = PackUtils::unpackAlignmentLength(modDetails, oldLen, newLen);
+    bool ok = U2DbiPackUtils::unpackAlignmentLength(modDetails, oldLen, newLen);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an msa length")), );
 
     updateMsaLengthCore(msaId, oldLen, os);
@@ -1205,7 +1205,7 @@ void MysqlMsaDbi::redoUpdateMsaAlphabet(const U2DataId& msaId, const QByteArray&
     U2AlphabetId oldAlphabet;
     U2AlphabetId newAlphabet;
 
-    bool ok = PackUtils::unpackAlphabetDetails(modDetails, oldAlphabet, newAlphabet);
+    bool ok = U2DbiPackUtils::unpackAlphabetDetails(modDetails, oldAlphabet, newAlphabet);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an alignment alphabet")), );
 
     // Redo the updating
@@ -1220,7 +1220,7 @@ void MysqlMsaDbi::redoAddRows(const U2DataId& msaId, const QByteArray& modDetail
     QList<qint64> posInMsa;
     QList<U2MsaRow> rows;
 
-    bool ok = PackUtils::unpackRows(modDetails, posInMsa, rows);
+    bool ok = U2DbiPackUtils::unpackRows(modDetails, posInMsa, rows);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during reverting adding of rows")), );
 
     addRowsCore(msaId, posInMsa, rows, os);
@@ -1230,7 +1230,7 @@ void MysqlMsaDbi::redoAddRow(const U2DataId& msaId, const QByteArray& modDetails
     U2MsaRow row;
     qint64 posInMsa;
 
-    bool ok = PackUtils::unpackRow(modDetails, posInMsa, row);
+    bool ok = U2DbiPackUtils::unpackRow(modDetails, posInMsa, row);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during addition of a row")), );
 
     addRowCore(msaId, posInMsa, row, os);
@@ -1240,7 +1240,7 @@ void MysqlMsaDbi::redoRemoveRows(const U2DataId& msaId, const QByteArray& modDet
     QList<qint64> posInMsa;
     QList<U2MsaRow> rows;
 
-    bool ok = PackUtils::unpackRows(modDetails, posInMsa, rows);
+    bool ok = U2DbiPackUtils::unpackRows(modDetails, posInMsa, rows);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during reverting removing of rows")), );
 
     QList<qint64> rowIds;
@@ -1255,7 +1255,7 @@ void MysqlMsaDbi::redoRemoveRow(const U2DataId& msaId, const QByteArray& modDeta
     U2MsaRow row;
     qint64 posInMsa;
 
-    bool ok = PackUtils::unpackRow(modDetails, posInMsa, row);
+    bool ok = U2DbiPackUtils::unpackRow(modDetails, posInMsa, row);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during reverting removing of a row")), );
 
     removeRowCore(msaId, row.rowId, false, os);
@@ -1266,7 +1266,7 @@ void MysqlMsaDbi::redoUpdateGapModel(const U2DataId& msaId, const QByteArray& mo
     QList<U2MsaGap> oldGaps;
     QList<U2MsaGap> newGaps;
 
-    bool ok = PackUtils::unpackGapDetails(modDetails, rowId, oldGaps, newGaps);
+    bool ok = U2DbiPackUtils::unpackGapDetails(modDetails, rowId, oldGaps, newGaps);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an alignment gaps")), );
 
     updateGapModelCore(msaId, rowId, newGaps, os);
@@ -1276,7 +1276,7 @@ void MysqlMsaDbi::redoSetNewRowsOrder(const U2DataId& msaId, const QByteArray& m
     QList<qint64> oldOrder;
     QList<qint64> newOrder;
 
-    bool ok = PackUtils::unpackRowOrderDetails(modDetails, oldOrder, newOrder);
+    bool ok = U2DbiPackUtils::unpackRowOrderDetails(modDetails, oldOrder, newOrder);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an alignment row order")), );
 
     setNewRowsOrderCore(msaId, newOrder, os);
@@ -1286,7 +1286,7 @@ void MysqlMsaDbi::redoUpdateRowInfo(const U2DataId& msaId, const QByteArray& mod
     U2MsaRow oldRow;
     U2MsaRow newRow;
 
-    bool ok = PackUtils::unpackRowInfoDetails(modDetails, oldRow, newRow);
+    bool ok = U2DbiPackUtils::unpackRowInfoDetails(modDetails, oldRow, newRow);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating a row info")), );
     SAFE_POINT(oldRow.rowId == newRow.rowId, "Incorrect rowId", );
     SAFE_POINT(oldRow.sequenceId == newRow.sequenceId, "Incorrect sequenceId", );
@@ -1301,7 +1301,7 @@ void MysqlMsaDbi::redoMsaLengthChange(const U2DataId &msaId, const QByteArray &m
     qint64 oldLen;
     qint64 newLen;
 
-    bool ok = PackUtils::unpackAlignmentLength(modDetails, oldLen, newLen);
+    bool ok = U2DbiPackUtils::unpackAlignmentLength(modDetails, oldLen, newLen);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an msa length")), );
 
     updateMsaLengthCore(msaId, newLen, os);
@@ -1319,7 +1319,7 @@ void MysqlMsaDbi::updateRowInfo(MysqlModificationAction &updateAction, const U2D
     if (TrackOnUpdate == updateAction.getTrackModType()) {
         U2MsaRow oldRow = getRow(msaId, row.rowId, os);
         CHECK_OP(os, );
-        modDetails = PackUtils::packRowInfoDetails(oldRow, row);
+        modDetails = U2DbiPackUtils::packRowInfoDetails(oldRow, row);
     }
 
     updateRowInfoCore(msaId, row, os);
@@ -1337,7 +1337,7 @@ void MysqlMsaDbi::updateGapModel(MysqlModificationAction &updateAction, const U2
     if (TrackOnUpdate == updateAction.getTrackModType()) {
         U2MsaRow row = getRow(msaId, msaRowId, os);
         CHECK_OP(os, );
-        gapsDetails = PackUtils::packGapDetails(msaRowId, row.gaps, gapModel);
+        gapsDetails = U2DbiPackUtils::packGapDetails(msaRowId, row.gaps, gapModel);
     }
 
     updateGapModelCore(msaId, msaRowId, gapModel, os);

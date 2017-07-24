@@ -120,7 +120,7 @@ void SQLiteMsaDbi::updateMsaAlphabet(const U2DataId& msaId, const U2AlphabetId& 
     if (TrackOnUpdate == trackMod) {
         U2Msa msaObj = getMsaObject(msaId, os);
         CHECK_OP(os, );
-        modDetails = PackUtils::packAlphabetDetails(msaObj.alphabet, alphabet);
+        modDetails = U2DbiPackUtils::packAlphabetDetails(msaObj.alphabet, alphabet);
     }
 
     // Update the alphabet
@@ -200,7 +200,7 @@ void SQLiteMsaDbi::addRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row,
 
     QByteArray modDetails;
     if (TrackOnUpdate == trackMod) {
-        modDetails = PackUtils::packRow(posInMsa, row);
+        modDetails = U2DbiPackUtils::packRow(posInMsa, row);
     }
     if (row.length > getMsaLength(msaId, os)) {
         updateMsaLength(updateAction, msaId, row.length, os);
@@ -243,7 +243,7 @@ void SQLiteMsaDbi::addRows(const U2DataId& msaId, QList<U2MsaRow>& rows, U2OpSta
 
     QByteArray modDetails;
     if (TrackOnUpdate == trackMod) {
-        modDetails = PackUtils::packRows(posInMsa, rows);
+        modDetails = U2DbiPackUtils::packRows(posInMsa, rows);
     }
 
     addRowsCore(msaId, posInMsa, rows, os);
@@ -339,7 +339,7 @@ void SQLiteMsaDbi::updateRowInfo(SQLiteModificationAction &updateAction, const U
         U2MsaRow oldRow = getRow(msaId, row.rowId, os);
         SAFE_POINT_OP(os, );
 
-        modDetails = PackUtils::packRowInfoDetails(oldRow, row);
+        modDetails = U2DbiPackUtils::packRowInfoDetails(oldRow, row);
     }
 
     updateRowInfoCore(msaId, row, os);
@@ -387,7 +387,7 @@ void SQLiteMsaDbi::setNewRowsOrder(const U2DataId& msaId, const QList<qint64>& r
     if (TrackOnUpdate == trackMod) {
         QList<qint64> oldOrder = getRowsOrder(msaId, os);
         CHECK_OP(os, );
-        modDetails = PackUtils::packRowOrderDetails(oldOrder, rowIds);
+        modDetails = U2DbiPackUtils::packRowOrderDetails(oldOrder, rowIds);
     }
 
     // Check that row IDs number is correct (if required, can be later removed for efficiency)
@@ -441,7 +441,7 @@ void SQLiteMsaDbi::removeRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os
         CHECK_OP(os, );
         qint64 posInMsa = getPosInMsa(msaId, rowId, os);
         CHECK_OP(os, );
-        modDetails = PackUtils::packRow(posInMsa, removedRow);
+        modDetails = U2DbiPackUtils::packRow(posInMsa, removedRow);
     }
 
     bool removeSequence = (TrackOnUpdate != trackMod);
@@ -474,7 +474,7 @@ void SQLiteMsaDbi::removeRows(const U2DataId& msaId, const QList<qint64>& rowIds
             rows << getRow(msaId, rowId, os);
             CHECK_OP(os, );
         }
-        modDetails = PackUtils::packRows(posInMsa, rows);
+        modDetails = U2DbiPackUtils::packRows(posInMsa, rows);
     }
 
     bool removeSequence = (TrackOnUpdate != trackMod);
@@ -668,7 +668,7 @@ void SQLiteMsaDbi::updateGapModel(SQLiteModificationAction &updateAction, const 
     if (TrackOnUpdate == updateAction.getTrackModType()) {
         U2MsaRow row = getRow(msaId, msaRowId, os);
         SAFE_POINT_OP(os, );
-        gapsDetails = PackUtils::packGapDetails(msaRowId, row.gaps, gapModel);
+        gapsDetails = U2DbiPackUtils::packGapDetails(msaRowId, row.gaps, gapModel);
     }
 
     updateGapModelCore(msaId, msaRowId, gapModel, os);
@@ -709,7 +709,7 @@ void SQLiteMsaDbi::updateMsaLength(SQLiteModificationAction &updateAction, const
     if (TrackOnUpdate == updateAction.getTrackModType()) {
         qint64 oldMsaLen = getMsaLength(msaId, os);
         CHECK_OP(os, );
-        modDetails = PackUtils::packAlignmentLength(oldMsaLen, length);
+        modDetails = U2DbiPackUtils::packAlignmentLength(oldMsaLen, length);
     }
 
     updateMsaLengthCore(msaId, length, os);
@@ -1104,7 +1104,7 @@ void SQLiteMsaDbi::updateRowInfoCore(const U2DataId& msaId, const U2MsaRow& row,
 void SQLiteMsaDbi::undoUpdateMsaAlphabet(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     U2AlphabetId oldAlphabet;
     U2AlphabetId newAlphabet;
-    bool ok = PackUtils::unpackAlphabetDetails(modDetails, oldAlphabet, newAlphabet);
+    bool ok = U2DbiPackUtils::unpackAlphabetDetails(modDetails, oldAlphabet, newAlphabet);
     if (!ok) {
         os.setError("An error occurred during updating an alignment alphabet!");
         return;
@@ -1122,7 +1122,7 @@ void SQLiteMsaDbi::undoUpdateMsaAlphabet(const U2DataId& msaId, const QByteArray
 void SQLiteMsaDbi::redoUpdateMsaAlphabet(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     U2AlphabetId oldAlphabet;
     U2AlphabetId newAlphabet;
-    bool ok = PackUtils::unpackAlphabetDetails(modDetails, oldAlphabet, newAlphabet);
+    bool ok = U2DbiPackUtils::unpackAlphabetDetails(modDetails, oldAlphabet, newAlphabet);
     if (!ok) {
         os.setError("An error occurred during updating an alignment alphabet!");
         return;
@@ -1140,7 +1140,7 @@ void SQLiteMsaDbi::redoUpdateMsaAlphabet(const U2DataId& msaId, const QByteArray
 void SQLiteMsaDbi::undoAddRows(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     QList<qint64> posInMsa;
     QList<U2MsaRow> rows;
-    bool ok = PackUtils::unpackRows(modDetails, posInMsa, rows);
+    bool ok = U2DbiPackUtils::unpackRows(modDetails, posInMsa, rows);
     if (!ok) {
         os.setError("An error occurred during reverting adding of rows!");
         return;
@@ -1155,7 +1155,7 @@ void SQLiteMsaDbi::undoAddRows(const U2DataId& msaId, const QByteArray& modDetai
 void SQLiteMsaDbi::redoAddRows(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     QList<qint64> posInMsa;
     QList<U2MsaRow> rows;
-    bool ok = PackUtils::unpackRows(modDetails, posInMsa, rows);
+    bool ok = U2DbiPackUtils::unpackRows(modDetails, posInMsa, rows);
     if (!ok) {
         os.setError("An error occurred during reverting adding of rows!");
         return;
@@ -1167,7 +1167,7 @@ void SQLiteMsaDbi::redoAddRows(const U2DataId& msaId, const QByteArray& modDetai
 void SQLiteMsaDbi::undoAddRow(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     U2MsaRow row;
     qint64 posInMsa;
-    bool ok = PackUtils::unpackRow(modDetails, posInMsa, row);
+    bool ok = U2DbiPackUtils::unpackRow(modDetails, posInMsa, row);
     if (!ok) {
         os.setError("An error occurred during reverting addition of a row!");
         return;
@@ -1179,7 +1179,7 @@ void SQLiteMsaDbi::undoAddRow(const U2DataId& msaId, const QByteArray& modDetail
 void SQLiteMsaDbi::redoAddRow(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     U2MsaRow row;
     qint64 posInMsa;
-    bool ok = PackUtils::unpackRow(modDetails, posInMsa, row);
+    bool ok = U2DbiPackUtils::unpackRow(modDetails, posInMsa, row);
     if (!ok) {
         os.setError("An error occurred during addition of a row!");
         return;
@@ -1191,7 +1191,7 @@ void SQLiteMsaDbi::redoAddRow(const U2DataId& msaId, const QByteArray& modDetail
 void SQLiteMsaDbi::undoRemoveRows(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     QList<qint64> posInMsa;
     QList<U2MsaRow> rows;
-    bool ok = PackUtils::unpackRows(modDetails, posInMsa, rows);
+    bool ok = U2DbiPackUtils::unpackRows(modDetails, posInMsa, rows);
     if (!ok) {
         os.setError("An error occurred during reverting removing of rows!");
         return;
@@ -1203,7 +1203,7 @@ void SQLiteMsaDbi::undoRemoveRows(const U2DataId& msaId, const QByteArray& modDe
 void SQLiteMsaDbi::redoRemoveRows(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     QList<qint64> posInMsa;
     QList<U2MsaRow> rows;
-    bool ok = PackUtils::unpackRows(modDetails, posInMsa, rows);
+    bool ok = U2DbiPackUtils::unpackRows(modDetails, posInMsa, rows);
     if (!ok) {
         os.setError("An error occurred during reverting removing of rows!");
         return;
@@ -1218,7 +1218,7 @@ void SQLiteMsaDbi::redoRemoveRows(const U2DataId& msaId, const QByteArray& modDe
 void SQLiteMsaDbi::undoRemoveRow(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     U2MsaRow row;
     qint64 posInMsa;
-    bool ok = PackUtils::unpackRow(modDetails, posInMsa, row);
+    bool ok = U2DbiPackUtils::unpackRow(modDetails, posInMsa, row);
     if (!ok) {
         os.setError("An error occurred during reverting removing of a row!");
         return;
@@ -1230,7 +1230,7 @@ void SQLiteMsaDbi::undoRemoveRow(const U2DataId& msaId, const QByteArray& modDet
 void SQLiteMsaDbi::redoRemoveRow(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     U2MsaRow row;
     qint64 posInMsa;
-    bool ok = PackUtils::unpackRow(modDetails, posInMsa, row);
+    bool ok = U2DbiPackUtils::unpackRow(modDetails, posInMsa, row);
     if (!ok) {
         os.setError("An error occurred during reverting removing of a row!");
         return;
@@ -1243,7 +1243,7 @@ void SQLiteMsaDbi::undoUpdateGapModel(const U2DataId& msaId, const QByteArray& m
     qint64 rowId = 0;
     QList<U2MsaGap> oldGaps;
     QList<U2MsaGap> newGaps;
-    bool ok = PackUtils::unpackGapDetails(modDetails, rowId, oldGaps, newGaps);
+    bool ok = U2DbiPackUtils::unpackGapDetails(modDetails, rowId, oldGaps, newGaps);
     if (!ok) {
         os.setError("An error occurred during updating an alignment gaps!");
         return;
@@ -1256,7 +1256,7 @@ void SQLiteMsaDbi::redoUpdateGapModel(const U2DataId& msaId, const QByteArray& m
     qint64 rowId = 0;
     QList<U2MsaGap> oldGaps;
     QList<U2MsaGap> newGaps;
-    bool ok = PackUtils::unpackGapDetails(modDetails, rowId, oldGaps, newGaps);
+    bool ok = U2DbiPackUtils::unpackGapDetails(modDetails, rowId, oldGaps, newGaps);
     if (!ok) {
         os.setError("An error occurred during updating an alignment gaps!");
         return;
@@ -1268,7 +1268,7 @@ void SQLiteMsaDbi::redoUpdateGapModel(const U2DataId& msaId, const QByteArray& m
 void SQLiteMsaDbi::undoSetNewRowsOrder(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     QList<qint64> oldOrder;
     QList<qint64> newOrder;
-    bool ok = PackUtils::unpackRowOrderDetails(modDetails, oldOrder, newOrder);
+    bool ok = U2DbiPackUtils::unpackRowOrderDetails(modDetails, oldOrder, newOrder);
     if (!ok) {
         os.setError("An error occurred during updating an alignment row order!");
         return;
@@ -1281,7 +1281,7 @@ void SQLiteMsaDbi::undoSetNewRowsOrder(const U2DataId& msaId, const QByteArray& 
 void SQLiteMsaDbi::redoSetNewRowsOrder(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     QList<qint64> oldOrder;
     QList<qint64> newOrder;
-    bool ok = PackUtils::unpackRowOrderDetails(modDetails, oldOrder, newOrder);
+    bool ok = U2DbiPackUtils::unpackRowOrderDetails(modDetails, oldOrder, newOrder);
     if (!ok) {
         os.setError("An error occurred during updating an alignment row order!");
         return;
@@ -1293,7 +1293,7 @@ void SQLiteMsaDbi::redoSetNewRowsOrder(const U2DataId& msaId, const QByteArray& 
 void SQLiteMsaDbi::undoUpdateRowInfo(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     U2MsaRow oldRow;
     U2MsaRow newRow;
-    bool ok = PackUtils::unpackRowInfoDetails(modDetails, oldRow, newRow);
+    bool ok = U2DbiPackUtils::unpackRowInfoDetails(modDetails, oldRow, newRow);
     if (!ok) {
         os.setError("An error occurred during updating a row info!");
         return;
@@ -1307,7 +1307,7 @@ void SQLiteMsaDbi::undoUpdateRowInfo(const U2DataId& msaId, const QByteArray& mo
 void SQLiteMsaDbi::redoUpdateRowInfo(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     U2MsaRow oldRow;
     U2MsaRow newRow;
-    bool ok = PackUtils::unpackRowInfoDetails(modDetails, oldRow, newRow);
+    bool ok = U2DbiPackUtils::unpackRowInfoDetails(modDetails, oldRow, newRow);
     if (!ok) {
         os.setError("An error occurred during updating a row info!");
         return;
@@ -1322,7 +1322,7 @@ void SQLiteMsaDbi::undoMsaLengthChange(const U2DataId &msaId, const QByteArray &
     qint64 oldLen;
     qint64 newLen;
 
-    bool ok = PackUtils::unpackAlignmentLength(modDetails, oldLen, newLen);
+    bool ok = U2DbiPackUtils::unpackAlignmentLength(modDetails, oldLen, newLen);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an msa length")), );
 
     updateMsaLengthCore(msaId, oldLen, os);
@@ -1332,7 +1332,7 @@ void SQLiteMsaDbi::redoMsaLengthChange(const U2DataId &msaId, const QByteArray &
     qint64 oldLen;
     qint64 newLen;
 
-    bool ok = PackUtils::unpackAlignmentLength(modDetails, oldLen, newLen);
+    bool ok = U2DbiPackUtils::unpackAlignmentLength(modDetails, oldLen, newLen);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an msa length")), );
 
     updateMsaLengthCore(msaId, newLen, os);

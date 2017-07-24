@@ -1143,7 +1143,7 @@ void MysqlObjectDbi::undoUpdateObjectName(const U2DataId& id, const QByteArray& 
     QString oldName;
     QString newName;
 
-    bool ok = PackUtils::unpackObjectNameDetails(modDetails, oldName, newName);
+    bool ok = U2DbiPackUtils::unpackObjectNameDetails(modDetails, oldName, newName);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an object name")), );
 
     // Update the value
@@ -1161,7 +1161,7 @@ void MysqlObjectDbi::redoUpdateObjectName(const U2DataId& id, const QByteArray& 
     QString oldName;
     QString newName;
 
-    bool ok = PackUtils::unpackObjectNameDetails(modDetails, oldName, newName);
+    bool ok = U2DbiPackUtils::unpackObjectNameDetails(modDetails, oldName, newName);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an object name!")), );
 
     U2Object obj;

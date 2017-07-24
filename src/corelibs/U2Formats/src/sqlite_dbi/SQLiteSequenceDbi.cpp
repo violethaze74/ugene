@@ -211,7 +211,7 @@ void SQLiteSequenceDbi::updateSequenceData(SQLiteModificationAction& updateActio
     if (TrackOnUpdate == updateAction.getTrackModType()) {
         QByteArray oldSeq = dbi->getSequenceDbi()->getSequenceData(sequenceId, regionToReplace, os);
         SAFE_POINT_OP(os, );
-        modDetails = PackUtils::packSequenceDataDetails(regionToReplace, oldSeq, dataToInsert, hints);
+        modDetails = U2DbiPackUtils::packSequenceDataDetails(regionToReplace, oldSeq, dataToInsert, hints);
     }
 
     updateSequenceDataCore(sequenceId, regionToReplace, dataToInsert, hints, os);
@@ -375,7 +375,7 @@ void SQLiteSequenceDbi::undoUpdateSequenceData(const U2DataId& sequenceId, const
     QByteArray oldData;
     QByteArray newData;
     QVariantMap hints;
-    bool ok = PackUtils::unpackSequenceDataDetails(modDetails, replacedRegion, oldData, newData, hints);
+    bool ok = U2DbiPackUtils::unpackSequenceDataDetails(modDetails, replacedRegion, oldData, newData, hints);
     if (!ok) {
         os.setError("An error occurred during reverting replacing sequence data!");
         return;
@@ -393,7 +393,7 @@ void SQLiteSequenceDbi::redoUpdateSequenceData(const U2DataId& sequenceId, const
     QByteArray oldData;
     QByteArray newData;
     QVariantMap hints;
-    bool ok = PackUtils::unpackSequenceDataDetails(modDetails, replacedRegion, oldData, newData, hints);
+    bool ok = U2DbiPackUtils::unpackSequenceDataDetails(modDetails, replacedRegion, oldData, newData, hints);
     if (!ok) {
         os.setError("An error occurred during replacing sequence data!");
         return;

@@ -25,6 +25,8 @@
 #include <QMap>
 #include <QString>
 
+#include <U2Core/StrPackUtils.h>
+
 namespace U2 {
 
 class U2CORE_EXPORT PasswordStorage {

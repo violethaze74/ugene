@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DBI_PACKUTILS_H_
-#define _U2_DBI_PACKUTILS_H_
+#ifndef _U2_DBI_PACK_UTILS_H_
+#define _U2_DBI_PACK_UTILS_H_
 
 #include <U2Core/U2Mca.h>
 
@@ -29,7 +29,7 @@ namespace U2 {
 class DNAChromatogram;
 class U2Region;
 
-class U2CORE_EXPORT PackUtils {
+class U2CORE_EXPORT U2DbiPackUtils {
 public:
     /** Pack utils version */
     static const QByteArray VERSION;
@@ -125,4 +125,4 @@ private:
 
 } // U2
 
-#endif // _U2_DBI_PACKUTILS_H_
+#endif // _U2_DBI_PACK_UTILS_H_

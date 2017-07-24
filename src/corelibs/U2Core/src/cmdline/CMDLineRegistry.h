@@ -22,10 +22,11 @@
 #ifndef _U2_CMD_LINE_REGISTRY_
 #define _U2_CMD_LINE_REGISTRY_
 
-#include <U2Core/global.h>
+#include <QMap>
+#include <QStringList>
 
-#include <QtCore/QStringList>
-#include <QtCore/QMap>
+#include <U2Core/global.h>
+#include <U2Core/StrPackUtils.h>
 
 namespace U2 {
 

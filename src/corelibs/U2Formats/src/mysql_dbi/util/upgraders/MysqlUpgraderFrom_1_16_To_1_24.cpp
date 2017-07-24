@@ -93,7 +93,7 @@ QString convertInfo(const QString &additionalInfo, const QStringList &header) {
         convertedInfoMap.insert(QString::number(qMax(maxVcf4MandatoryColumnNumber, header.size()) + 1), splittedInfo.join("\t"));
     }
 
-    return U2DbiUtils::packMap(convertedInfoMap);
+    return StrPackUtils::packMap(convertedInfoMap);
 }
 
 }
@@ -176,7 +176,7 @@ void MysqlUpgraderFrom_1_16_To_1_24::extractAttributes(U2OpStatus &os, QMap<U2Da
 
         addStringAttribute(os, variantTrack, U2VariantTrack::META_INFO_ATTIBUTE, metaInfo);
         CHECK_OP(os, );
-        addStringAttribute(os, variantTrack, U2VariantTrack::HEADER_ATTIBUTE, U2DbiUtils::packStringList(header));
+        addStringAttribute(os, variantTrack, U2VariantTrack::HEADER_ATTIBUTE, StrPackUtils::packStringList(header));
         CHECK_OP(os, );
 
         number++;

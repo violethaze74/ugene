@@ -243,6 +243,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/QVariantUtils.h \
            src/util/SequenceUtils.h \
            src/util/SnpeffDictionary.h \
+           src/util/StrPackUtils.h \
            src/util/SyncHttp.h \
            src/util/TextUtils.h \
            src/util/TaskWatchdog.h \
@@ -464,6 +465,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/QVariantUtils.cpp \
            src/util/SequenceUtils.cpp \
            src/util/SnpeffDictionary.cpp \
+           src/util/StrPackUtils.cpp \
            src/util/SyncHttp.cpp \
            src/util/TextUtils.cpp \
            src/util/TaskWatchdog.cpp \

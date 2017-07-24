@@ -22,6 +22,7 @@
 #ifndef _U2_VARIANT_H_
 #define _U2_VARIANT_H_
 
+#include <U2Core/StrPackUtils.h>
 #include <U2Core/U2Type.h>
 
 namespace U2 {
@@ -74,7 +75,7 @@ public:
     QByteArray  refData;
     QByteArray  obsData;
     QString     publicId;
-    StrStrMap  additionalInfo;
+    StrStrMap   additionalInfo;
 
     static const QString VCF4_QUAL;
     static const QString VCF4_FILTER;
