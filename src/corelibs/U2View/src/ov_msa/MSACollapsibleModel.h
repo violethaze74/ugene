@@ -120,7 +120,7 @@ public:
 
     void setFakeCollapsibleModel(bool fakeModel);
 
-    bool isFakeModel();
+    bool isFakeModel() const;
 
 signals:
     void si_aboutToBeToggled();

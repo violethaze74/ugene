@@ -370,7 +370,7 @@ void MSACollapsibleItemModel::setFakeCollapsibleModel(bool fakeModelStatus) {
     fakeModel = fakeModelStatus;
 }
 
-bool MSACollapsibleItemModel::isFakeModel() {
+bool MSACollapsibleItemModel::isFakeModel() const {
     return fakeModel;
 }
 
