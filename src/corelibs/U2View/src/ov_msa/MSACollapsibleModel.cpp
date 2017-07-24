@@ -55,9 +55,9 @@ bool MSACollapsableItem::isValid() const {
 //////////////////////////////////////////////////////////////////////////
 
 MSACollapsibleItemModel::MSACollapsibleItemModel(MaEditorWgt *p)
-    : QObject(p), ui(p)
+: QObject(p), ui(p)
 {
-
+    fakeModel = false;
 }
 
 void MSACollapsibleItemModel::reset(const QVector<U2Region>& itemRegions) {
@@ -364,6 +364,14 @@ bool MSACollapsibleItemModel::isEmpty() const {
 
 void MSACollapsibleItemModel::setTrivialGroupsPolicy(TrivialGroupsPolicy policy) {
     trivialGroupsPolicy = policy;
+}
+
+void MSACollapsibleItemModel::setFakeCollapsibleModel(bool fakeModelStatus) {
+    fakeModel = fakeModelStatus;
+}
+
+bool MSACollapsibleItemModel::isFakeModel() {
+    return fakeModel;
 }
 
 } // namespace U2

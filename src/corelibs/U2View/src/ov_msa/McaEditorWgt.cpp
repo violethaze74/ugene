@@ -80,6 +80,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     collapseModel->setTrivialGroupsPolicy(MSACollapsibleItemModel::Allow);
     collapseModel->reset(itemRegions);
     collapseModel->collapseAll(false);
+    collapseModel->setFakeCollapsibleModel(true);
     collapsibleMode = true;
 
     McaEditorConsensusArea* mcaConsArea = qobject_cast<McaEditorConsensusArea*>(consArea);

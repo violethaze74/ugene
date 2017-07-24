@@ -436,7 +436,7 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
 
         U2Region s = getSelection();
         if (s.contains(curRowNumber)) {
-            if (!ui->isCollapsibleMode()) {
+            if (!ui->isCollapsibleMode() || ui->getCollapseModel()->isFakeModel()) {
                 shifting = true;
             }
         } else {
@@ -483,7 +483,7 @@ void MaEditorNameList::mouseMoveEvent(QMouseEvent* e) {
         }
 
         if (shifting) {
-            assert(!ui->isCollapsibleMode());
+            assert(!ui->isCollapsibleMode() || ui->getCollapseModel()->isFakeModel());
             moveSelectedRegion(newSeqNum - curRowNumber);
         } else {
             rubberBand->setGeometry(QRect(selectionStartPoint, e->pos()).normalized());
@@ -510,7 +510,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
         }
 
         if (shifting) {
-            assert(!ui->isCollapsibleMode());
+            assert(!ui->isCollapsibleMode() || ui->getCollapseModel()->isFakeModel());
             int shift = 0;
             int numSeq = ui->getSequenceArea()->getNumDisplayableSequences();
             int selectionStart = getSelection().startPos;
@@ -585,7 +585,7 @@ void MaEditorNameList::sl_selectionChanged(const MaEditorSelection& current, con
 
 void MaEditorNameList::sl_vScrollBarActionPerfermed() {
     CHECK(shifting, );
-    assert(!ui->isCollapsibleMode());
+    assert(!ui->isCollapsibleMode() || ui->getCollapseModel()->isFakeModel());
 
     GScrollBar *vScrollBar = qobject_cast<GScrollBar *>(sender());
     SAFE_POINT(NULL != vScrollBar, "vScrollBar is NULL", );
