@@ -82,7 +82,7 @@ void cleanupTempDir(const QStringList &tempDirFiles) {
     foreach(const QString& url, tempDirFiles) {
         QFile toDelete(url);
         if (toDelete.exists(url)) {
-            toDelete.remove(url);
+            toDelete.remove();
         }
     }
 }
@@ -200,7 +200,6 @@ void BwaAlignTask::prepare() {
 QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
     QList<Task*> result;
     QFileInfo resultPathFileInfo(resultPath);
-    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
     if (alignMultiTask == subTask) {
         QList<Task*> samTasks;
         QList<ShortReadSet> &containerToIterate = settings.pairedReads ? downStreamList : settings.shortReadSets;
@@ -214,7 +213,7 @@ QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
             if (containerToIterate.size() == 1) {
                 arguments.append(resultPath);
             } else {
-                QString pathToSort = tmpDirPath + "/" + resultPathFileInfo.baseName() + QString::number(resultPartsCounter);
+                QString pathToSort = settings.tmpDirPath + "/" + resultPathFileInfo.baseName() + QString::number(resultPartsCounter);
                 urlsToMerge.append(pathToSort);
                 arguments.append(pathToSort);
             }
@@ -247,7 +246,7 @@ QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
         int i = 0;
         foreach(const QString &url, urlsToMerge) {
             QFileInfo urlToConvertFileInfo(url);
-            QString convertedBamUrl = tmpDirPath + "/" + resultPathFileInfo.baseName() + "_" + QString::number(i) + ".bam";
+            QString convertedBamUrl = settings.tmpDirPath + "/" + resultPathFileInfo.baseName() + "_" + QString::number(i) + ".bam";
             BAMUtils::ConvertOption options(true);
             BAMUtils::convertToSamOrBam(url, convertedBamUrl, options, stateInfo);
             bamUrlstoMerge.append(convertedBamUrl);
@@ -403,7 +402,7 @@ void BwaMemAlignTask::prepare() {
             if (upStreamList.size() == 1) {
                 alignTask->setStandartOutputFile(settings.resultFileName.getURLString());
             } else {
-                QString resultFilePathWithpartNumber = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + "_" +
+                QString resultFilePathWithpartNumber = settings.tmpDirPath + "/" + resultFileInfo.baseName() + "_" +
                     QString::number(pairedReadsCounter++) + "." + resultFileInfo.completeSuffix();
                 alignTask->setStandartOutputFile(resultFilePathWithpartNumber);
             }
@@ -412,7 +411,7 @@ void BwaMemAlignTask::prepare() {
         } else if (settings.shortReadSets.size() > 1) {
             arguments.append(currentReadSet.url.getURLString());
             ExternalToolRunTask* alignTask = new ExternalToolRunTask(ET_BWA, arguments, new BwaAlignTask::LogParser(), NULL);
-            QString resultFilePathWithpartNumber = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + "_" +
+            QString resultFilePathWithpartNumber = settings.tmpDirPath + "/" + resultFileInfo.baseName() + "_" +
                 QString::number(resultPartsCounter) + "." + resultFileInfo.completeSuffix();
             alignTask->setStandartOutputFile(resultFilePathWithpartNumber);
             setListenerForTask(alignTask);
@@ -431,7 +430,6 @@ void BwaMemAlignTask::prepare() {
 
 QList<Task *> BwaMemAlignTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
-    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
     QFileInfo resultFileInfo(settings.resultFileName.getURLString());
     if (alignMultiTask == subTask) {
         if (settings.shortReadSets.size() == 1 || (settings.shortReadSets.size() == 2 && settings.pairedReads)) {
@@ -440,9 +438,9 @@ QList<Task *> BwaMemAlignTask::onSubTaskFinished(Task *subTask) {
         //converting SAM -> BAM
         int partsCounter = settings.pairedReads ? settings.shortReadSets.size() / 2 : settings.shortReadSets.size();
         for (int i = 0; i < partsCounter; i++) {
-            QString resultFilePathWithpartNumber = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + "_" +
+            QString resultFilePathWithpartNumber = settings.tmpDirPath + "/" + resultFileInfo.baseName() + "_" +
                 QString::number(i) + "." + resultFileInfo.completeSuffix();
-            QString bamFilePath = tmpDirPath + "/" + resultFileInfo.baseName() + "_" + QString::number(i) + ".bam";
+            QString bamFilePath = settings.tmpDirPath + "/" + resultFileInfo.baseName() + "_" + QString::number(i) + ".bam";
             BAMUtils::ConvertOption options(true);
             BAMUtils::convertToSamOrBam(resultFilePathWithpartNumber, bamFilePath, options, stateInfo);
             bamUrlstoMerge.append(bamFilePath);
@@ -451,13 +449,15 @@ QList<Task *> BwaMemAlignTask::onSubTaskFinished(Task *subTask) {
                 return result;
             }
         }
-        mergeTask = new MergeBamTask(bamUrlstoMerge, resultFileInfo.dir().canonicalPath(), resultFileInfo.baseName() + ".bam", true);
+        mergeTask = new MergeBamTask(bamUrlstoMerge, settings.tmpDirPath, resultFileInfo.baseName() + ".bam", true);
         result.append(mergeTask);
     }
     if (mergeTask == subTask) {
         //converting BAM -> SAM
-        cleanupTempDir(bamUrlstoMerge);
-        QString bamResultPath = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + ".bam";
+        if (settings.cleanTmpDir) {
+            cleanupTempDir(bamUrlstoMerge);
+        }
+        QString bamResultPath = settings.tmpDirPath + "/" + resultFileInfo.baseName() + ".bam";
         BAMUtils::ConvertOption options(false);
         BAMUtils::convertToSamOrBam(resultPath, bamResultPath, options, stateInfo);
     }

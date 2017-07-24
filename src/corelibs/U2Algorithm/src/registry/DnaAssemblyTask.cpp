@@ -22,6 +22,10 @@
 #include <QDir>
 #include <QFileInfo>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/UserApplicationsSettings.h>
+
 #include "DnaAssemblyTask.h"
 
 namespace U2 {
@@ -106,7 +110,17 @@ QList<GUrl> DnaAssemblyToRefTaskSettings::getShortReadUrls() const
     return res;
 }
 
-void DnaAssemblyToRefTaskSettings::setCustomSettings( const QMap<QString, QVariant>& settings ) {
+DnaAssemblyToRefTaskSettings::DnaAssemblyToRefTaskSettings() 
+    : pairedReads(false),
+    filterUnpaired(false),
+    prebuiltIndex(false),
+    openView(false),
+    samOutput(true),
+    tmpDirPath(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath()),
+    cleanTmpDir(true) {
+}
+
+void DnaAssemblyToRefTaskSettings::setCustomSettings(const QMap<QString, QVariant>& settings) {
     customSettings = settings;
 }
 } // U2
