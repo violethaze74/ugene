@@ -33,7 +33,7 @@
 #include "ov_msa/helpers/ScrollController.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
-#include "ov_sequence/ADVSequenceObjectContext.h"
+#include "ov_sequence/SequenceObjectContext.h"
 #include "ov_sequence/PanView.h"
 
 namespace U2 {
@@ -89,16 +89,6 @@ void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize &/*canvasSi
         }
         p.drawText(charRect, Qt::AlignCenter, QString(c));
     }
-}
-
-McaReferenceAreaRendererFactory::McaReferenceAreaRendererFactory(MaEditor *maEditor)
-    : maEditor(maEditor)
-{
-
-}
-
-McaReferenceAreaRenderer *McaReferenceAreaRendererFactory::createRenderer(PanView *panView) const {
-    return new McaReferenceAreaRenderer(panView, panView->getSequenceContext(), maEditor);
 }
 
 }   // namespace U2

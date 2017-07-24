@@ -118,14 +118,6 @@ void MultipleSequenceAlignmentObject::updateGapModel(const QList<MultipleSequenc
     updateGapModel(os, newGapModel);
 }
 
-U2MsaMapGapModel MultipleSequenceAlignmentObject::getGapModel() const {
-    U2MsaMapGapModel rowsGapModel;
-    foreach (const MultipleSequenceAlignmentRow &curRow, getMsa()->getMsaRows()) {
-        rowsGapModel[curRow->getRowId()] = curRow->getGapModel();
-    }
-    return rowsGapModel;
-}
-
 void MultipleSequenceAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps) {
     MultipleAlignmentObject::insertGap(rows, pos, nGaps, false);
 }
@@ -147,18 +139,6 @@ void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QS
     MsaDbiUtils::crop(entityRef, rowIds, window.startPos, window.length, os);
     SAFE_POINT_OP(os, );
 
-    updateCachedMultipleAlignment();
-}
-
-void MultipleSequenceAlignmentObject::deleteColumnWithGaps(U2OpStatus &os, int requiredGapsCount) {
-    const QList<U2Region> regionsToDelete = MSAUtils::getColumnsWithGaps(getMultipleAlignment(), requiredGapsCount);
-    CHECK(!regionsToDelete.isEmpty(), );
-    CHECK(regionsToDelete.first().length != getLength(), );
-
-    for (int n = regionsToDelete.size(), i = n - 1; i >= 0; i--) {
-        removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, getNumRows(), true, false);
-        os.setProgress(100 * (n - i) / n);
-    }
     updateCachedMultipleAlignment();
 }
 
@@ -210,6 +190,18 @@ void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowInde
     }
 
     updateCachedMultipleAlignment(mi);
+}
+
+void MultipleSequenceAlignmentObject::deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount) {
+    const QList<U2Region> regionsToDelete = MSAUtils::getColumnsWithGaps(getGapModel(), getLength(), requiredGapsCount);
+    CHECK(!regionsToDelete.isEmpty(), );
+    CHECK(regionsToDelete.first().length != getLength(), );
+
+    for (int n = regionsToDelete.size(), i = n - 1; i >= 0; i--) {
+        removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, getNumRows(), true, false);
+        os.setProgress(100 * (n - i) / n);
+    }
+    updateCachedMultipleAlignment();
 }
 
 void MultipleSequenceAlignmentObject::loadAlignment(U2OpStatus &os) {

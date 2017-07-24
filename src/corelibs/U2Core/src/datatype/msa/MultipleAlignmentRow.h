@@ -108,7 +108,7 @@ public:
     virtual QByteArray toByteArray(U2OpStatus &os, qint64 length) const = 0;
 
     virtual qint64 getRowLengthWithoutTrailing() const = 0;
-    virtual qint64 getCoreStart() const = 0;
+    virtual int getCoreStart() const = 0;
     virtual int getCoreEnd() const = 0;
     virtual qint64 getCoreLength() const = 0;
     virtual qint64 getBaseCount(qint64 beforePosition) const = 0;

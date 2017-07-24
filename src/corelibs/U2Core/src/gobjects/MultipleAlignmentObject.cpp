@@ -23,6 +23,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
 #include <U2Core/MsaDbiUtils.h>
+#include <U2Core/MSAUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -149,6 +150,14 @@ int MultipleAlignmentObject::getRowPosById(qint64 rowId) const {
     return getMultipleAlignment()->getRowsIds().indexOf(rowId);
 }
 
+U2MsaMapGapModel MultipleAlignmentObject::getMapGapModel() const {
+    return getMultipleAlignment()->getMapGapModel();
+}
+
+U2MsaListGapModel MultipleAlignmentObject::getGapModel() const {
+    return getMultipleAlignment()->getGapModel();
+}
+
 void MultipleAlignmentObject::removeRow(int rowIdx) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
@@ -173,7 +182,7 @@ void MultipleAlignmentObject::removeRow(int rowIdx) {
 void MultipleAlignmentObject::renameRow(int rowIdx, const QString &newName) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
-    const MultipleSequenceAlignment &ma = getMultipleAlignment();
+    const MultipleAlignment &ma = getMultipleAlignment();
     SAFE_POINT(rowIdx >= 0 && rowIdx < ma->getNumRows(), "Invalid row index", );
     qint64 rowId = ma->getRow(rowIdx)->getRowId();
 

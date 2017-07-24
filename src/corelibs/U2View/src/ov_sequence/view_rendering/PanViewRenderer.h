@@ -31,6 +31,7 @@ namespace U2 {
 class ADVSequenceObjectContext;
 class PanView;
 class PanViewLinesSettings;
+class PanViewRenderArea;
 class PVRowData;
 
 /************************************************************************/
@@ -83,11 +84,12 @@ private:
     static const int LINE_TEXT_OFFSET;
 };
 
-class PanViewRendererFactory {
+class PanViewRenderAreaFactory {
 public:
-    ~PanViewRendererFactory();
+    PanViewRenderAreaFactory();
+    virtual ~PanViewRenderAreaFactory();
 
-    virtual PanViewRenderer *createRenderer(PanView *panView) const;
+    virtual PanViewRenderArea *createRenderArea(PanView *panView) const;
 };
 
 } // namespace

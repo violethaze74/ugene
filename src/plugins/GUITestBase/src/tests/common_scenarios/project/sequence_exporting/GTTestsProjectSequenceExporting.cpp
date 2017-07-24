@@ -260,6 +260,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
         testDir+"_common_data/scenarios/sandbox/1.csv",
         ExportAnnotationsFiller::csv,
         true,
+        true,
         false
     );
     GTUtilsDialog::waitForDialog(os, filler);

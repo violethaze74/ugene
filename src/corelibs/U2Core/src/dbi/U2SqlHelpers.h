@@ -193,6 +193,8 @@ public:
     */
     qint64 update(qint64 expectedRows = -1);
 
+    /** Selects a single int32 value */
+    qint32 selectInt32();
 
     /** Selects a single int64 value */
     qint64 selectInt64();

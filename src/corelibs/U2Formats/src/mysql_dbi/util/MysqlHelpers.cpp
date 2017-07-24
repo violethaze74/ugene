@@ -311,6 +311,18 @@ U2DataId U2SqlQuery::insert(U2DataType type, const QByteArray& dbExtra) {
     return U2DbiUtils::toU2DataId(lastRowId, type, dbExtra);
 }
 
+qint32 U2SqlQuery::selectInt32() {
+    execute();
+    CHECK(!hasError(), -1);
+
+    if (step()) {
+        return getInt32(0);
+    }
+    else {
+        return -1;
+    }
+}
+
 qint64 U2SqlQuery::selectInt64() {
     execute();
     CHECK(!hasError(), -1);

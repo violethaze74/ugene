@@ -231,14 +231,6 @@ MultipleSequenceAlignment MultipleSequenceAlignmentData::mid(int start, int len)
     return res;
 }
 
-U2MsaListGapModel MultipleSequenceAlignmentData::getGapModel() const {
-    U2MsaListGapModel gapModel;
-    foreach (const MultipleSequenceAlignmentRow &row, rows) {
-        gapModel << row->getGapModel();
-    }
-    return gapModel;
-}
-
 MultipleSequenceAlignmentData & MultipleSequenceAlignmentData::operator+=(const MultipleSequenceAlignmentData &msaData) {
     MaStateCheck check(this);
     Q_UNUSED(check);

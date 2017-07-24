@@ -43,16 +43,6 @@ private:
     MaEditor *maEditor;
 };
 
-class McaReferenceAreaRendererFactory : public PanViewRendererFactory {
-public:
-    McaReferenceAreaRendererFactory(MaEditor *maEditor);
-
-    McaReferenceAreaRenderer *createRenderer(PanView *panView) const;
-
-private:
-    MaEditor *maEditor;
-};
-
 }   // namespace U2
 
 #endif // _U2_MCA_REFERENCE_AREA_RENDERER_H_

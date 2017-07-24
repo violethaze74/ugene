@@ -87,7 +87,6 @@ public:
     McaEditorFactory();
 
     static MaEditor* getEditor(const QString &viewName, GObject *obj);
-    static MaEditor* getEditor(const QString &viewName, GObject *obj, GObject* ref);
 
     static const GObjectViewFactoryId ID;
 private:

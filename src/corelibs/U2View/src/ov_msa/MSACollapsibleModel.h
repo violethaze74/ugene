@@ -74,6 +74,7 @@ public:
 
     U2Region mapSelectionRegionToRows(const U2Region &selectionRegion) const;
     QList<int> numbersToIndexes(const U2Region &rowNumbers);        // invisible rows are not included to the result list
+    QList<int> getDisplayableRowsIndexes() const;
 
     /**
     * The method converts the row position in the whole msa into its "visible" position (i.e.
@@ -108,7 +109,7 @@ public:
      * Returns count of rows that can be viewed (that are not collapsed).
      * Every group has at least one row to view.
      */
-    int displayableRowsCount() const;
+    int getDisplayableRowsCount() const;
 
     /** If there is a collapsible item at 'pos' position, it is removed. */
     void removeCollapsedForPosition(int pos);

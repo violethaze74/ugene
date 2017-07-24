@@ -71,7 +71,7 @@ QRect ConsensusCharRenderData::getCharRect() const {
 
 const QColor MaConsensusAreaRenderer::DEFAULT_MISMATCH_COLOR = Qt::red;
 
-MaConsensusAreaRenderer::MaConsensusAreaRenderer(MSAEditorConsensusArea *area)
+MaConsensusAreaRenderer::MaConsensusAreaRenderer(MaEditorConsensusArea *area)
     : QObject(area),
       editor(area->getEditorWgt()->getEditor()),
       ui(area->getEditorWgt()),
@@ -134,7 +134,7 @@ ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<
         int score = 0;
         const char consensusChar = algorithm->getConsensusCharAndScore(ma, column, score);
         consensusRenderData.data += consensusChar;
-        consensusRenderData.percents << qRound(score * 100. / seqIdx.size());
+        consensusRenderData.percentage << qRound(score * 100. / seqIdx.size());
         consensusRenderData.mismatches[i] = (consensusChar != editor->getReferenceCharAt(column));
     }
 
@@ -207,10 +207,12 @@ void MaConsensusAreaRenderer::drawConsensus(QPainter &painter, const ConsensusRe
     ConsensusCharRenderData charData;
     charData.xRange = U2Region(settings.xRangeToDrawIn.startPos, settings.columnWidth);
     charData.yRange = settings.yRangeToDrawIn[MSAEditorConsElement_CONSENSUS_TEXT];
+
     for (int i = 0, n = static_cast<int>(consensusRenderData.region.length); i < n; i++) {
         charData.column = static_cast<int>(consensusRenderData.region.startPos + i);
         charData.consensusChar = consensusRenderData.data[i];
         if (MSAConsensusAlgorithm::INVALID_CONS_CHAR == charData.consensusChar) {
+            charData.xRange.startPos += settings.columnWidth;
             continue;
         }
         charData.isMismatch = consensusRenderData.mismatches[i];
@@ -268,7 +270,7 @@ void MaConsensusAreaRenderer::drawRuler(QPainter &painter, const ConsensusRender
     config.extraAxisLenBefore = startPoint.x();
     config.extraAxisLenAfter = settings.rulerWidth - (startPoint.x() + firstLastDistance);
     config.textBorderStart = -settings.firstNotchedBaseXRange.length / 2;
-    config.textBorderEnd = settings.firstNotchedBaseXRange.length / 2;
+    config.textBorderEnd = -settings.firstNotchedBaseXRange.length / 2;
 
     GraphUtils::drawRuler(painter, startPoint, firstLastDistance, settings.firstNotchedBasePosition + 1, settings.lastNotchedBasePosition + 1, settings.rulerFont, config);
 
@@ -293,7 +295,7 @@ void MaConsensusAreaRenderer::drawHistogram(QPainter &painter, const ConsensusRe
     QVector<QRect> rects;
     U2Region xRange = U2Region(settings.xRangeToDrawIn.startPos, settings.columnWidth);
     for (int i = 0, n = static_cast<int>(consensusRenderData.region.length); i < n; i++) {
-        const int height = qRound((double)consensusRenderData.percents[i] * yRange.length / 100.0);
+        const int height = qRound((double)consensusRenderData.percentage[i] * yRange.length / 100.0);
         const QRect histogramRecT(xRange.startPos + 1, yRange.endPos() - height, xRange.length - 2, height);
         rects << histogramRecT;
         xRange.startPos += settings.columnWidth;
@@ -310,12 +312,12 @@ ConsensusRenderData MaConsensusAreaRenderer::getScreenDataToRender() const {
     const MaEditorSelection selection = ui->getSequenceArea()->getSelection();
     consensusRenderData.selectedRegion = U2Region(selection.x(), selection.width());
     consensusRenderData.data = consensusCache->getConsensusLine(consensusRenderData.region, true);
-    consensusRenderData.percents << consensusCache->getConsensusPercents(consensusRenderData.region);
+    consensusRenderData.percentage << consensusCache->getConsensusPercents(consensusRenderData.region);
 
     consensusRenderData.mismatches.resize(consensusRenderData.region.length);
     for (int i = 0, n = static_cast<int>(consensusRenderData.region.length); i < n; i++) {
         const int column = static_cast<int>(consensusRenderData.region.startPos + i);
-        consensusRenderData.mismatches[i] = area->getMismatchController()->isMismatch(column);
+        consensusRenderData.mismatches[i] = area->highlightConsensusChar(column);
     }
 
     return consensusRenderData;
@@ -352,9 +354,10 @@ int MaConsensusAreaRenderer::getYRangeLength(MaEditorConsElement element) const 
         return 50;
     case MSAEditorConsElement_CONSENSUS_TEXT:
         return ui->getRowHeightController()->getSequenceHeight();
-    case MSAEditorConsElement_RULER:
-//        return rulerFontHeight + 2 * MaConsensusAreaRenderer::RULER_NOTCH_SIZE + 4;
-        return 12 + 2 * MaEditorConsensusAreaSettings::RULER_NOTCH_SIZE + 4;
+    case MSAEditorConsElement_RULER: {
+        QFontMetrics fm(area->getDrawSettings().getRulerFont());
+        return fm.height() + 2 * MaEditorConsensusAreaSettings::RULER_NOTCH_SIZE + 4;
+    }
     default:
         FAIL(false, 0);
     }

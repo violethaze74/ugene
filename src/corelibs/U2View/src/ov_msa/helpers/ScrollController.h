@@ -75,6 +75,9 @@ public:
     void scrollPage(Direction direction);
     void scrollToEnd(Direction direction);
 
+    void scrollToMovedSelection(int deltaX, int deltaY);
+    void scrollToMovedSelection(Direction direction);
+
     int getFirstVisibleBase(bool countClipped = false) const;
     int getLastVisibleBase(int widgetWidth, bool countClipped = false) const;
     int getFirstVisibleRowIndex(bool countClipped = false) const;

@@ -88,7 +88,7 @@ int RowHeightController::getRowsHeight(const QList<int> &rowIndexes) const {
 }
 
 int RowHeightController::getTotalAlignmentHeight() const {
-    return static_cast<int>(getRowsGlobalRange(0, ui->getCollapseModel()->displayableRowsCount()).length);
+    return static_cast<int>(getRowsGlobalRange(0, ui->getCollapseModel()->getDisplayableRowsCount()).length);
 }
 
 int RowHeightController::getSequenceHeight() const {
@@ -102,9 +102,9 @@ int RowHeightController::globalYPositionToRowIndex(int y) const {
 }
 
 int RowHeightController::globalYPositionToRowNumber(int y) const {
-    const int displayableRowsCount = ui->getCollapseModel()->displayableRowsCount();
+    const int getDisplayableRowsCount = ui->getCollapseModel()->getDisplayableRowsCount();
     int accumulatedHeight = 0;
-    for (int i = 0; i < displayableRowsCount; i++) {
+    for (int i = 0; i < getDisplayableRowsCount; i++) {
         const int rowHeight = getRowHeightByNumber(i);
         if (accumulatedHeight + rowHeight <= y) {
             accumulatedHeight += rowHeight;

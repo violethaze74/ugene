@@ -26,7 +26,7 @@
 
 #include <U2Core/DNASequenceSelection.h>
 
-#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/SequenceObjectContext.h>
 
 #include "SequenceWithChromatogramAreaRenderer.h"
 #include "ov_msa/MaEditorNameList.h"

@@ -361,14 +361,11 @@ QVector<U2Region> MultipleRangeSelector::getSelectedRegions(){
         int en = ui->endEdit->text().toInt(&ok);
         assert(ok);
 
-        if (isCircular && st >= en ) {
-            if (st == en) {
-                currentRegions.append(U2Region(0, seqLen));
-            } else {
-                currentRegions.append(U2Region(0, en));
-                currentRegions.append(U2Region(st - 1, seqLen - st + 1));
+        if (isCircular && st > en ) {
+            currentRegions.append(U2Region(0, en));
+            currentRegions.append(U2Region(st - 1, seqLen - st + 1));
             }
-        } else {
+        else {
             currentRegions.append(U2Region(st - 1, en - st + 1));
         }
 

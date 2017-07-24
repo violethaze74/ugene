@@ -33,6 +33,7 @@ public:
     WorkflowRunFromCMDLineBase();
     virtual ~WorkflowRunFromCMDLineBase();
     QList<Task*> onSubTaskFinished( Task* subTask );
+    void run();
 
 protected:
     virtual Task * getWorkflowRunTask() const = 0;
@@ -45,6 +46,7 @@ protected:
     Schema*             schema;
     int                 optionsStartAt;
     LoadWorkflowTask *  loadTask;
+    Task *              workflowRunTask;
     QString             schemaName;
     QMap<ActorId, ActorId> remapping;
 

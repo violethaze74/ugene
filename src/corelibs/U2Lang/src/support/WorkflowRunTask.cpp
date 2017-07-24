@@ -116,6 +116,22 @@ int WorkflowRunTask::getMsgPassed(const Link* l) {
     return ret;
 }
 
+QString WorkflowRunTask::generateReport() const {
+    QString report;
+    foreach (WorkflowMonitor *monitor, getMonitors()) {
+        const QMap<QString, StrStrMap> workersReports = monitor->getWorkersReports();
+        foreach (const QString &worker, workersReports.keys()) {
+            const StrStrMap tasksReports = workersReports[worker];
+            QString workerReport;
+            foreach (const QString &taskName, tasksReports.keys()) {
+                workerReport += QString("<div class=\"task\" id=\"%1\">%2</div>").arg(taskName).arg(tasksReports[taskName]);
+            }
+            report += QString("<div class=\"worker\" id=\"%1\">%2</div>").arg(worker).arg(workerReport);
+        }
+    }
+    return report;
+}
+
 QString WorkflowRunTask::getTaskError() const {
     if (hasError()) {
         return getError();

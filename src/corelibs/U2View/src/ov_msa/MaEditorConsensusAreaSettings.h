@@ -45,10 +45,10 @@ public:
     void setRulerFont(const QFont &font);
 
     QFont font;
-    QList<MaEditorConsElement> order;
-    MaEditorConsElements visibleElements;
-    bool highlightMismatches;
-
+    QList<MaEditorConsElement>  order;
+    MaEditorConsElements        visibleElements;
+    // SANGER_TODO: valid only for mca yet - can be separated
+    bool                        highlightMismatches;
     static const int RULER_NOTCH_SIZE;
 
 private:

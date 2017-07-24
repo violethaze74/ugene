@@ -207,6 +207,14 @@ QList<int> MSACollapsibleItemModel::numbersToIndexes(const U2Region &rowNumbers)
     return rowsIndexes;
 }
 
+QList<int> MSACollapsibleItemModel::getDisplayableRowsIndexes() const {
+    QList<int> displayableRowsIndexes;
+    for (int rowNumber = 0; rowNumber < getDisplayableRowsCount(); rowNumber++) {
+        displayableRowsIndexes << mapToRow(rowNumber);
+    }
+    return displayableRowsIndexes;
+}
+
 int MSACollapsibleItemModel::rowToMap(int rowIndex, bool failIfNotVisible) const {
     int invisibleRows = 0;
     for (QVector<MSACollapsableItem>::ConstIterator it = items.constBegin(); it < items.constEnd() && it->row < rowIndex; it++) {
@@ -322,7 +330,7 @@ MSACollapsableItem MSACollapsibleItemModel::getItemByRowIndex(int rowIndex) cons
     return items[itemNumber];
 }
 
-int MSACollapsibleItemModel::displayableRowsCount() const {
+int MSACollapsibleItemModel::getDisplayableRowsCount() const {
     MaEditor *ed = ui->getEditor();
     MultipleAlignmentObject *o = ed->getMaObject();
     int size = o->getNumRows();

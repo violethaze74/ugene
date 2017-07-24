@@ -52,7 +52,7 @@ void MSAImageExportTask::paintSequencesNames(QPainter &painter) {
 
 void MSAImageExportTask::paintConsensus(QPainter &painter) {
     CHECK(msaSettings.includeConsensus || msaSettings.includeRuler, );
-    MSAEditorConsensusArea *consensusArea = ui->getConsensusArea();
+    MaEditorConsensusArea *consensusArea = ui->getConsensusArea();
     SAFE_POINT_EXT(consensusArea != NULL, setError(tr("MSA Consensus area is NULL")), );
 
     MaEditorConsensusAreaSettings consensusSettings = consensusArea->getDrawSettings();
@@ -69,7 +69,7 @@ void MSAImageExportTask::paintConsensus(QPainter &painter) {
 
 void MSAImageExportTask::paintRuler(QPainter &painter) {
     CHECK(msaSettings.includeRuler, );
-    MSAEditorConsensusArea* consensusArea = ui->getConsensusArea();
+    MaEditorConsensusArea* consensusArea = ui->getConsensusArea();
     SAFE_POINT_EXT(consensusArea != NULL, setError(tr("MSA Consensus area is NULL")), );
 
     MaEditorConsensusAreaSettings consensusSettings = consensusArea->getDrawSettings();
@@ -208,7 +208,7 @@ void MSAImageExportToSvgTask::run() {
 
     MaEditorNameList* nameListArea = ui->getEditorNameList();
     SAFE_POINT_EXT(nameListArea != NULL, setError(L10N::nullPointerError("MSAEditorNameList")), );
-    MSAEditorConsensusArea* consArea = ui->getConsensusArea();
+    MaEditorConsensusArea* consArea = ui->getConsensusArea();
     SAFE_POINT_EXT(consArea != NULL, setError(L10N::nullPointerError("MSAEditorConsensusArea")), );
 
     MaEditorConsElements visibleConsensusElements;

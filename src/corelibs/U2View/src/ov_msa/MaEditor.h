@@ -117,6 +117,9 @@ protected slots:
 
     void sl_exportHighlighted();
 
+private slots:
+    void sl_resetColumnWidthCache();
+
 protected:
     virtual QWidget* createWidget() = 0;
     void initActions();
@@ -132,11 +135,10 @@ protected:
     void calcFontPixelToPointSizeCoef();
 
     void setFirstVisibleBase(int firstPos);
-    void setZoomFactor(float newZoomFactor) { zoomFactor = newZoomFactor; }
+    void setZoomFactor(float newZoomFactor);
 
     virtual void updateActions();
 
-protected:
     MultipleAlignmentObject*    maObject;
     MaEditorWgt*                ui;
 
@@ -145,6 +147,7 @@ protected:
     SNPSettings snp;
     float       zoomFactor;
     float       fontPixelToPointSize;
+    mutable int cachedColumnWidth;
 
     QAction*          saveAlignmentAction;
     QAction*          saveAlignmentAsAction;

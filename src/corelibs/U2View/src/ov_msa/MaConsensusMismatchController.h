@@ -55,10 +55,6 @@ private slots:
     void sl_prev();
 
 private:
-    enum NavigationDirection {
-        Forward,
-        Backward
-    };
     void selectNextMismatch(NavigationDirection direction);
 
 private:

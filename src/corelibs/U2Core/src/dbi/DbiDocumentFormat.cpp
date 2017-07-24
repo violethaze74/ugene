@@ -137,6 +137,9 @@ QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const 
             QList<U2ObjectRelation> relations = handle.dbi->getObjectRelationsDbi()->getObjectRelations(id, status);
             foreach (const U2ObjectRelation& r, relations) {
                 GObject* relatedObject = match[r.referencedObject];
+                if (relatedObject == NULL) {
+                    continue;
+                }
                 // SANGER_TODO: dbiId - url, should not be left like this
                 GObjectReference relatedRef(handle.dbi->getDbiId(), relatedObject->getGObjectName(), relatedObject->getGObjectType(), relatedObject->getEntityRef());
                 GObjectRelation gRelation(relatedRef, r.relationRole);

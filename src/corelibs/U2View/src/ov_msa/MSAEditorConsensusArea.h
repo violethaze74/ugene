@@ -24,126 +24,23 @@
 
 #include <QWidget>
 
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/U2Region.h>
-
-#include "MaConsensusMismatchController.h"
-#include "MaEditorConsensusAreaSettings.h"
-#include "MSAEditorConsensusCache.h"
-
-class QHelpEvent;
-class QMenu;
-class QPainter;
-class QToolBar;
+#include "view_rendering/MaEditorConsensusArea.h"
 
 namespace U2 {
 
-class GObjectView;
-class MaConsensusAreaRenderer;
-class MaEditor;
-class MaEditorSelection;
-class MaEditorWgt;
-class MaModificationInfo;
-class MSAConsensusAlgorithm;
-class MSAConsensusAlgorithmFactory;
+class MSAEditorUI;
 
-class U2VIEW_EXPORT MSAEditorConsensusArea : public QWidget {
+class U2VIEW_EXPORT MSAEditorConsensusArea : public MaEditorConsensusArea {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusArea)
-
 public:
-    MSAEditorConsensusArea(MaEditorWgt* ui);
-    ~MSAEditorConsensusArea();
-
-    U2Region getRulerLineYRange() const;
-
-    void setConsensusAlgorithm(MSAConsensusAlgorithmFactory* algo);
-    void setConsensusAlgorithmConsensusThreshold(int val);
-
-    const MaEditorConsensusAreaSettings &getDrawSettings() const;
-    void setDrawSettings(const MaEditorConsensusAreaSettings& settings);
-
-    MSAConsensusAlgorithm* getConsensusAlgorithm() const;
-
-    QSharedPointer<MSAEditorConsensusCache> getConsensusCache();
-
-    MaConsensusMismatchController* getMismatchController() { return mismatchController; }
-
-    MaEditorWgt *getEditorWgt() const;
-
-    QSize getCanvasSize(const U2Region &region, const MaEditorConsElements &elements) const;
-
-    void drawContent(QPainter &painter);
-    void drawContent(QPainter &painter,
-                     const QList<int> &seqIdx,
-                     const U2Region &region,
-                     const MaEditorConsensusAreaSettings &consensusSettings);
-
-protected:
-    bool event(QEvent* e);
-    void paintEvent(QPaintEvent*);
-    void resizeEvent(QResizeEvent*);
-    void mousePressEvent(QMouseEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-
-signals:
-    void si_consensusAlgorithmChanged(const QString& algoId);
-    void si_consensusThresholdChanged(int value);
-    void si_mismatchRedrawRequired();
-
-private slots:
-    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
-    void sl_alignmentChanged();
-    void sl_changeConsensusAlgorithm(const QString& algoId);
-    void sl_changeConsensusThreshold(int val);
-    void sl_visibleAreaChanged();
-    void sl_onConsensusThresholdChanged(int newValue);
-
-    void sl_buildStaticMenu(GObjectView* v, QMenu* m);
-    void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
-    void sl_buildContextMenu(GObjectView* v, QMenu* m);
-    void sl_copyConsensusSequence();
-    void sl_copyConsensusSequenceWithGaps();
-    void sl_configureConsensusAction();
-    void sl_zoomOperationPerformed(bool resizeModeChanged);
-    void sl_completeRedraw();
-
-    void setupFontAndHeight();
+    MSAEditorConsensusArea(MSAEditorUI* ui);
 
 private:
-    QString createToolTip(QHelpEvent* he) const;
-    void restoreLastUsedConsensusThreshold();
-    QString getLastUsedAlgoSettingsKey() const;
-    QString getThresholdSettingsKey(const QString& factoryId) const;
-
+    void initRenderer();
     void buildMenu(QMenu* m);
-
-    void updateSelection(int newPos);
-
-    MSAConsensusAlgorithmFactory* getConsensusAlgorithmFactory();
-    void updateConsensusAlgorithm();
-
-    MaEditor*           editor;
-    MaEditorWgt*        ui;
-
-    MaEditorConsensusAreaSettings consensusSettings;
-    MaConsensusAreaRenderer *renderer;
-
-    QAction*            copyConsensusAction;
-    QAction*            copyConsensusWithGapsAction;
-    QAction*            configureConsensusAction;
-    int                 curPos;
-    bool                scribbling;
-    bool                selecting;
-
-    QSharedPointer<MSAEditorConsensusCache>         consensusCache;
-    MaConsensusMismatchController*  mismatchController;
-
-    bool                            completeRedraw;
-    QPixmap*                        cachedView;
 };
 
-}//namespace
-#endif
+} // namespace
+#endif // _U2_MSA_EDITOR_CONSENSUS_AREA_H_
 

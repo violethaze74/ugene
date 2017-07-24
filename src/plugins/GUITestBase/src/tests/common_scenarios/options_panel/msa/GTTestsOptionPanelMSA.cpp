@@ -44,6 +44,7 @@
 #include "GTTestsOptionPanelMSA.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsPhyTree.h"
@@ -173,26 +174,31 @@ GUI_TEST_CLASS_DEFINITION(general_test_0004){
     GTWidget::click(os, sequenceLineEdit);//needed to close completer
 }
 
-GUI_TEST_CLASS_DEFINITION(general_test_0005){
+GUI_TEST_CLASS_DEFINITION(general_test_0005) {
 //    1. Open file data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+
 //    3. Delete Hetrodes_pupus_EF540832
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Hetrodes_pupus_EF540832");
-    GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(300);
+
 //    Expected state: Sequence number is 17
-    int height = GTUtilsOptionPanelMsa::getHeight(os);
-    CHECK_SET_ERR( height == 17, QString("wrong height. expected 17, found %1").arg(height));
+    const int height = GTUtilsOptionPanelMsa::getHeight(os);
+    CHECK_SET_ERR(height == 17, QString("wrong height. expected 17, found %1").arg(height));
+
 //    4. Select one column. Press delete
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 0), QPoint(5,17));
-    GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTUtilsMsaEditor::clickColumn(os, 5);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(300);
+
 //    Expected state: Length is 603
-    int length = GTUtilsOptionPanelMsa::getLength(os);
-    CHECK_SET_ERR( length== 603, QString("wrong length. expected 17, found %1").arg(length));
+    const int length = GTUtilsOptionPanelMsa::getLength(os);
+    CHECK_SET_ERR(length == 603, QString("wrong length. expected 603, found %1").arg(length));
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0001){
@@ -1022,30 +1028,32 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0012){
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6,1), "#fcff92");
 }
 
-GUI_TEST_CLASS_DEFINITION(highlighting_test_0013){
+GUI_TEST_CLASS_DEFINITION(highlighting_test_0013) {
 //1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
-    QWidget* w = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    QPixmap initPixmap = QPixmap::grabWidget(w, w->rect());
-    QImage initImg = initPixmap.toImage();//initial state
+    QWidget *w = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    const QImage initImg = GTWidget::getImage(os, w);
+
 //3. Check "use dots" checkbox
     setHighlightingType(os, "Agreements");
-    QCheckBox* useDots = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "useDots"));
+    QCheckBox *useDots = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "useDots"));
     CHECK_SET_ERR(useDots != NULL, "use dots checkbox not found");
     GTCheckBox::setChecked(os, useDots, true);
+
 //Expected state: no effect
-    QPixmap pixmap = QPixmap::grabWidget(w, w->rect());
-    QImage img = pixmap.toImage();
+    QImage img = GTWidget::getImage(os, w);
     CHECK_SET_ERR(img == initImg, "sequence area unexpectedly changed");
+
 //4. Select Phaneroptera_falcata as reference.
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
+
 //Expected state: not highlighted changed to dots
-    pixmap = QPixmap::grabWidget(w, w->rect());
-    img = pixmap.toImage();
-    CHECK_SET_ERR(img != initImg, "image not changed");//no way to check dots. Can only check that sequence area changed
+    img = GTWidget::getImage(os, w);
+    CHECK_SET_ERR(img != initImg, "image not changed");     // no way to check dots. Can only check that sequence area changed
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0001){
@@ -1501,10 +1509,11 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0002){
     GTWidget::findWidget(os, "treeView");
 }
 
-GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003){
+GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
 //    1. Open data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Open tree settings option panel tab. build tree
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
@@ -1512,46 +1521,48 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003){
     GTGlobals::sleep(1000);
 
     //prepating widgets
-    QWidget* treeView = GTWidget::findWidget(os, "treeView");
+    QWidget *treeView = GTWidget::findWidget(os, "treeView");
     CHECK_SET_ERR(treeView != NULL, "tree view not found");
-    QWidget* heightSlider = GTWidget::findWidget(os, "heightSlider");
+    QWidget *heightSlider = GTWidget::findWidget(os, "heightSlider");
     CHECK_SET_ERR(heightSlider != NULL, "heightSlider not found");
-    QComboBox* layoutCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "layoutCombo"));
+    QComboBox *layoutCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "layoutCombo"));
     CHECK_SET_ERR(layoutCombo != NULL, "layoutCombo not found");
 
-    QPixmap init = QPixmap::grabWidget(treeView, treeView->rect());
-    QImage initImage = init.toImage();
+    const QImage initImage = GTWidget::getImage(os, treeView);
 
 //    3. Select circular layout
     GTComboBox::setIndexWithText(os, layoutCombo, "Circular");
     GTGlobals::sleep(500);
+
 //    Expected state: layout changed, height slider is disabled
-    QPixmap circular = QPixmap::grabWidget(treeView, treeView->rect());
-    QImage circularImage = circular.toImage();
+    const QImage circularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage != circularImage, "tree view not changed to circular");
     CHECK_SET_ERR(!heightSlider->isEnabled(), "heightSlider in enabled for circular layout");
+
 //    4. Select unrooted layout
     GTComboBox::setIndexWithText(os, layoutCombo, "Unrooted");
     GTGlobals::sleep(500);
+
 //    Expected state: layout changed, height slider is disabled
-    QPixmap unrooted = QPixmap::grabWidget(treeView, treeView->rect());
-    QImage unrootedImage = unrooted.toImage();
+    const QImage unrootedImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage != unrootedImage, "tree view not changed to unrooted");
     CHECK_SET_ERR(!heightSlider->isEnabled(), "heightSlider in enabled for unrooted layout");
+
 //    5. Select rectangular layout
     GTComboBox::setIndexWithText(os, layoutCombo, "Rectangular");
     GTGlobals::sleep(500);
+
 //    Expected state: tree is similar to the beginning, height slider is enabled
-    QPixmap rectangular = QPixmap::grabWidget(treeView, treeView->rect());
-    QImage rectangularImage = rectangular.toImage();
+    const QImage rectangularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage == rectangularImage, "final image is not equal to initial");
     CHECK_SET_ERR(heightSlider->isEnabled(), "heightSlider in disabled for rectangular layout");
 }
 
-GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004){
+GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
 //    1. Open data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Open tree settings option panel tab. build tree
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
@@ -1559,34 +1570,35 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004){
     GTGlobals::sleep(1000);
 
     //prepating widgets
-    QWidget* treeView = GTWidget::findWidget(os, "treeView");
+    QWidget *treeView = GTWidget::findWidget(os, "treeView");
     CHECK_SET_ERR(treeView != NULL, "tree view not found");
-    QComboBox* treeViewCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "treeViewCombo"));
+    QComboBox *treeViewCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "treeViewCombo"));
     CHECK_SET_ERR(treeViewCombo != NULL, "treeViewCombo not found");
 
-    QPixmap init = QPixmap::grabWidget(treeView, treeView->rect());
-    QImage initImage = init.toImage();
+    const QImage initImage = GTWidget::getImage(os, treeView);
 
 //    3. Select phylogram view
     GTComboBox::setIndexWithText(os, treeViewCombo, "Phylogram");
     GTGlobals::sleep(500);
+
 //    Expected state: layout changed
-    QPixmap circular = QPixmap::grabWidget(treeView, treeView->rect());
-    QImage circularImage = circular.toImage();
+    const QImage circularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage != circularImage, "tree view not changed to Phylogram");
+
 //    4. Select cladogram view
     GTComboBox::setIndexWithText(os, treeViewCombo, "Cladogram");
     GTGlobals::sleep(500);
+
 //    Expected state: layout changed
-    QPixmap unrooted = QPixmap::grabWidget(treeView, treeView->rect());
-    QImage unrootedImage = unrooted.toImage();
+    const QImage unrootedImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage != unrootedImage, "tree view not changed to unrooted");
+
 //    5. Select default view
     GTComboBox::setIndexWithText(os, treeViewCombo, "Default");
     GTGlobals::sleep(500);
+
 //    Expected state: tree is similar to the beginning
-    QPixmap rectangular = QPixmap::grabWidget(treeView, treeView->rect());
-    QImage rectangularImage = rectangular.toImage();
+    const QImage rectangularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage == rectangularImage, "final image is not equal to initial");
 }
 
@@ -1655,22 +1667,19 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005){
     GTCheckBox::setChecked(os, alignLabelsCheck, false);
     QWidget* w = GTWidget::findWidget(os, "treeView");
     CHECK_SET_ERR(w != NULL, "tree view not found");
-    QPixmap initPixmap = QPixmap::grabWidget(w, w->rect());
-    QImage initImg = initPixmap.toImage();//initial state
+    QImage initImg = GTWidget::getImage(os, w);//initial state
 
     GTCheckBox::setChecked(os, alignLabelsCheck, true);
 
 //    Expected state: labels are aligned
-    QPixmap alignedPixmap = QPixmap::grabWidget(w, w->rect());
-    QImage alignedImg = alignedPixmap.toImage();//initial state
+    QImage alignedImg = GTWidget::getImage(os, w);
     CHECK_SET_ERR(alignedImg != initImg, "labels not aligned");
 
 //    8. Uncheck "align labels" checkbox.
     GTCheckBox::setChecked(os, alignLabelsCheck, false);
 
 //    Expected state: labels are not aligned
-    QPixmap finalPixmap = QPixmap::grabWidget(w, w->rect());
-    QImage finalImg = finalPixmap.toImage();//initial state
+    QImage finalImg = GTWidget::getImage(os, w);
     CHECK_SET_ERR(finalImg == initImg, "tree ialigned");
 }
 
@@ -1690,28 +1699,27 @@ void setLabelsColor(HI::GUITestOpStatus &os, int r, int g, int b){
     GTWidget::click(os, labelsColorButton);
 }
 
-bool checkLabelColor(HI::GUITestOpStatus &os, QString expectedColorName){
-    QGraphicsView* w = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
+bool checkLabelColor(HI::GUITestOpStatus &os, const QString &expectedColorName) {
+    QGraphicsView *w = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     CHECK_SET_ERR_RESULT(w != NULL, "tree view not found", false);
-    QList<QGraphicsSimpleTextItem*> labels = GTUtilsPhyTree::getVisiableLabels(os, w);
+    QList<QGraphicsSimpleTextItem *> labels = GTUtilsPhyTree::getVisiableLabels(os, w);
     CHECK_SET_ERR_RESULT(!labels.isEmpty(), "there are no visiable labels", false);
 
-    QPixmap pixmap = QPixmap::grabWidget(AppContext::getMainWindow()->getQMainWindow(), AppContext::getMainWindow()->getQMainWindow()->rect());
-    QImage img = pixmap.toImage();
+    const QImage img = GTWidget::getImage(os, AppContext::getMainWindow()->getQMainWindow());
 
     //hack
-    foreach(QGraphicsSimpleTextItem* label, labels){
+    foreach (QGraphicsSimpleTextItem *label, labels) {
         QRectF rect = label->boundingRect();
         w->ensureVisible(label);
-        for(int i = 0; i< rect.right(); i++){
-            for(int j = 0; j< rect.bottom(); j++){
-                QPoint p(i,j);
+        for (int i = 0; i < rect.right(); i++) {
+            for (int j = 0; j < rect.bottom(); j++) {
+                QPoint p(i, j);
                 QPoint global = w->viewport()->mapToGlobal(w->mapFromScene(label->mapToScene(p)));
 
                 QRgb rgb = img.pixel(global);
                 QColor c = QColor(rgb);
                 QString name = c.name();
-                if(name == expectedColorName){
+                if (name == expectedColorName) {
                     return true;
                 }
             }
@@ -1842,29 +1850,29 @@ void setBranchColor(HI::GUITestOpStatus &os, int r, int g, int b){
     GTWidget::click(os, branchesColorButton);
 }
 
-double colorPercent(HI::GUITestOpStatus & /*os*/, QWidget* w, const QString& c){
-    double total = 0;
-    double found = 0;
-    QPixmap pixmap = QPixmap::grabWidget(w, w->rect());
-    QImage img = pixmap.toImage();
-    QRect r = w->rect();
+double colorPercent(HI::GUITestOpStatus &os, QWidget *widget, const QString &colorName){
+    int total = 0;
+    int found = 0;
+    const QImage img = GTWidget::getImage(os, widget);
+    QRect r = widget->rect();
     int wid = r.width();
     int heig = r.height();
-    for(int i = 0; i < wid; i++){
-        for (int j = 0; j < heig; j++){
+    for (int i = 0; i < wid; i++) {
+        for (int j = 0; j < heig; j++) {
             total++;
-            QPoint p(i,j);
+            QPoint p(i, j);
             QRgb rgb = img.pixel(p);
             QColor color = QColor(rgb);
             QString name = color.name();
-            if(name == c){
+            if (name == colorName) {
                 found++;
             }
         }
     }
-    double result = found/total;
+    double result = static_cast<double>(found) / total;
     return result;
 }
+
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008){

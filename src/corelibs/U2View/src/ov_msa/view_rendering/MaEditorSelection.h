@@ -39,6 +39,7 @@ public:
     MaEditorSelection(const QPoint& topLeft, int width, int height);
 
     bool isNull() const;
+    bool isEmpty() const;
 
     QPoint topLeft() const;
     QPoint bottomRight() const;

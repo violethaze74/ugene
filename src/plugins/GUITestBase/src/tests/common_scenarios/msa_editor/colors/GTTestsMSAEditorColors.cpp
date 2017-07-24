@@ -56,25 +56,23 @@ namespace U2 {
 
 namespace GUITest_common_scenarios_msa_editor_colors {
 using namespace HI;
-void checkColor(HI::GUITestOpStatus &os, QPoint p, QString expectedColor, int Xmove=0,int Ymove=0){
-    QWidget* seq=GTWidget::findWidget(os, "msa_editor_sequence_area");
-    CHECK_SET_ERR(seq!=NULL,"msa_editor_sequence_area widget is NULL")
 
-    QPixmap content;
-    content = QPixmap::grabWidget(seq,seq->rect());
+void checkColor(HI::GUITestOpStatus &os, const QPoint &p, const QString &expectedColor, int Xmove = 0, int Ymove = 0) {
+    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    CHECK_SET_ERR(seq != NULL, "msa_editor_sequence_area widget is NULL");
 
     GTUtilsMSAEditorSequenceArea::click(os, p);
     QPoint p1 = GTMouseDriver::getMousePosition();
-    p1.setY(p1.y()+Ymove);
-    p1.setX(p1.x()+Xmove);
+    p1.setY(p1.y() + Ymove);
+    p1.setX(p1.x() + Xmove);
 
-    QRgb rgb = content.toImage().pixel(seq->mapFromGlobal(p1));
-    QColor color(rgb);
+    const QImage content = GTWidget::getImage(os, seq);
+    const QRgb rgb = content.pixel(seq->mapFromGlobal(p1));
+    const QColor color(rgb);
 
-
-    CHECK_SET_ERR(color.name()==expectedColor ,"Expected: " + expectedColor + " ,found: " + color.name());
+    CHECK_SET_ERR(color.name() == expectedColor , "Expected: " + expectedColor + " ,found: " + color.name());
     GTGlobals::sleep(500);
-    }
+}
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
 //1. Open document _common_data\scenarios\msa\ma2_gapped.aln

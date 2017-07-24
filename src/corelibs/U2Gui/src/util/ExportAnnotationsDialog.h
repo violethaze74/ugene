@@ -51,6 +51,7 @@ public:
 
 private slots:
     void sl_formatChanged(const QString &newFormatId);
+    void sl_addToProjectStateChanged(bool state);
 
 private:
     void                            initSaveController(const QString &filename);
@@ -58,6 +59,8 @@ private:
     QList<QString>                  supportedFormatsExts;
     SaveDocumentController *        saveController;
     Ui_ExportAnnotationsDialog *    ui;
+    bool                            lastAddToProjectState;
+    
 };
 
 } // namespace U2

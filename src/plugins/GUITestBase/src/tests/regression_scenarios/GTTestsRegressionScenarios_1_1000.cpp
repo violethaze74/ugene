@@ -1584,7 +1584,7 @@ GUI_TEST_CLASS_DEFINITION(test_0782){
 //    3. Press right mouse button in the graph area, choose {Graph -> Graph settings...}.
     QWidget* graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
     GTWidget::click(os, graphView);
-    QImage init = QPixmap::grabWidget(graphView).toImage();
+    QImage init = GTWidget::getImage(os, graphView);
     init.save("/home/vmalin/init", "BMP");
     class custom: public CustomScenario{
     public:
@@ -1600,7 +1600,7 @@ GUI_TEST_CLASS_DEFINITION(test_0782){
 //    4. In "Graph Settings" dialog change graph's color, then press "Cancel".
 
 //    Expected result: Graph's color didn't change.
-    QImage final = QPixmap::grabWidget(graphView).toImage();
+    QImage final = GTWidget::getImage(os, graphView);
     final.save("/home/vmalin/final", "BMP");
     CHECK_SET_ERR(final == init, "graph view changed");
 //    5. Repeat the third step, then check "Cutoff for minimum and maximum values".

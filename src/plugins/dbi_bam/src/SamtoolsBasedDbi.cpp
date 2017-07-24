@@ -359,6 +359,15 @@ void SamtoolsBasedObjectDbi::setObjectRank(const U2DataId & /*objectId*/, U2DbiO
     os.setError("Not implemented!");
 }
 
+U2DbiObjectRank SamtoolsBasedObjectDbi::getObjectRank(const U2DataId & /*objectId*/, U2OpStatus &os) {
+    os.setError("Not implemented!");
+    return U2DbiObjectRank_TopLevel;
+}
+
+void SamtoolsBasedObjectDbi::setParent(const U2DataId& /*parentId*/, const U2DataId& /*childId*/, U2OpStatus& os){
+    os.setError("Not implemented!");
+}
+
 /************************************************************************/
 /* SamtoolsBasedReadsIterator */
 /************************************************************************/

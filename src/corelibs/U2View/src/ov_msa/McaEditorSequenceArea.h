@@ -28,6 +28,7 @@
 
 namespace U2 {
 
+class MaAmbiguousCharactersController;
 class McaEditor;
 
 class ChromatogramViewSettings {
@@ -75,6 +76,7 @@ private slots:
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
 
     void sl_addInsertion();
+    void sl_removeColumnsOfGaps();
 
 private:
     void initRenderer();
@@ -89,8 +91,11 @@ private:
 
     void insertChar(char newCharacter);
 
+    McaEditorWgt *getMcaEditorWgt() const;
+
 private:
     ChromatogramViewSettings    settings;
+    MaAmbiguousCharactersController *ambiguousCharactersController;
 
     QAction*    showQVAction;
     QAction*    showAllTraces;
@@ -99,6 +104,7 @@ private:
     QAction*    scaleAction;
 
     QAction*    insertAction;
+    QAction*    removeColumnsOfGapsAction;
 };
 
 

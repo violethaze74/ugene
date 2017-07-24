@@ -97,7 +97,7 @@ public:
         PanView *panView;
     };
 
-    PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRendererFactory &rendererFactory = PanViewRendererFactory());
+    PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderAreaFactory &rendererFactory = PanViewRenderAreaFactory());
     ~PanView();
 
     const U2Region& getFrameRange() const {return frameView->getVisibleRange();}

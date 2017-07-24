@@ -53,13 +53,25 @@ public:
     static MSAEditorSequenceArea * getSequenceArea(HI::GUITestOpStatus &os);
 
     static QRect getSequenceNameRect(HI::GUITestOpStatus &os, const QString &sequenceName);
+    static QRect getSequenceNameRect(HI::GUITestOpStatus &os, int rowNumber);
     static QRect getColumnHeaderRect(HI::GUITestOpStatus &os, int column);
 
     static void replaceSequence(HI::GUITestOpStatus &os, const QString &sequenceToReplace, int targetPosition);
+    static void replaceSequence(HI::GUITestOpStatus &os, int rowNumber, int targetPosition);
     static void removeColumn(HI::GUITestOpStatus &os, int column);
+    static void removeRows(HI::GUITestOpStatus &os, int firstRowNumber, int lastRowNumber);
 
+    static void moveToSequence(HI::GUITestOpStatus &os, int rowNumber);
+    static void moveToSequenceName(HI::GUITestOpStatus &os, const QString &sequenceName);
+    static void clickSequence(HI::GUITestOpStatus &os, int rowNumber, Qt::MouseButton mouseButton = Qt::LeftButton);
     static void clickSequenceName(HI::GUITestOpStatus &os, const QString &sequenceName, Qt::MouseButton mouseButton = Qt::LeftButton);
+    static void moveToColumn(HI::GUITestOpStatus &os, int column);
     static void clickColumn(HI::GUITestOpStatus &os, int column, Qt::MouseButton mouseButton = Qt::LeftButton);
+
+    static void selectRows(HI::GUITestOpStatus &os, int firstRowNumber, int lastRowNumber, GTGlobals::UseMethod method = GTGlobals::UseKey);
+    static void selectColumns(HI::GUITestOpStatus &os, int firstColumnNumber, int lastColumnNumber, GTGlobals::UseMethod method = GTGlobals::UseKey);
+
+    static void clearSelection(HI::GUITestOpStatus &os);
 
     static QString getReferenceSequenceName(HI::GUITestOpStatus &os);
     static void setReference(HI::GUITestOpStatus &os, const QString &sequenceName);

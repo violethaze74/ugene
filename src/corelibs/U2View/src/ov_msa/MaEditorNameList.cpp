@@ -397,6 +397,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
 }
 
 void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
+    setFocus();
     SAFE_POINT(ui, "MSA Editor UI is NULL", );
     MaEditorSequenceArea* seqArea = ui->getSequenceArea();
     SAFE_POINT(seqArea, "MSA Editor sequence area", );
@@ -418,8 +419,8 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
         curRowNumber = ui->getRowHeightController()->screenYPositionToRowNumber(e->y());
         if (ui->isCollapsibleMode()) {
             MSACollapsibleItemModel* m = ui->getCollapseModel();
-            if (curRowNumber >= m->displayableRowsCount()) {
-                curRowNumber = m->displayableRowsCount() - 1;
+            if (curRowNumber >= m->getDisplayableRowsCount()) {
+                curRowNumber = m->getDisplayableRowsCount() - 1;
             }
             if (m->isTopLevel(curRowNumber)) {
                 const U2Region yRange = ui->getRowHeightController()->getRowScreenRangeByNumber(curRowNumber);
@@ -532,7 +533,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
         } else {
             ui->getSequenceArea()->setSelection(MaEditorSelection());
 
-            const int firstVisibleRowNumber = ui->getScrollController()->getFirstVisibleRowNumber();
+            const int firstVisibleRowNumber = ui->getScrollController()->getFirstVisibleRowNumber(true);
             const int lastVisibleRowNumber = ui->getScrollController()->getLastVisibleRowNumber(height(), true);
             bool selectionContainsSeqs = (startSelectingRowNumber <= lastVisibleRowNumber || newRowNumber <= lastVisibleRowNumber);
 
@@ -564,6 +565,7 @@ void MaEditorNameList::updateSelection(int newSeq) {
     CHECK(ui->getSequenceArea()->isSeqInRange(newSeq) || ui->getSequenceArea()->isSeqInRange(curRowNumber), );
 
     setSelection(qMin(curRowNumber, newSeq), qAbs(newSeq - curRowNumber) + 1);
+    ui->getScrollController()->scrollToRowByNumber(newSeq, ui->getSequenceArea()->height());
 }
 
 void MaEditorNameList::wheelEvent(QWheelEvent *we) {

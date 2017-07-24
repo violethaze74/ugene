@@ -49,6 +49,10 @@ bool MaEditorSelection::isNull() const {
     return selArea.isNull();
 }
 
+bool MaEditorSelection::isEmpty() const {
+    return selArea.isEmpty();
+}
+
 QPoint MaEditorSelection::topLeft() const {
     return selArea.topLeft();
 }

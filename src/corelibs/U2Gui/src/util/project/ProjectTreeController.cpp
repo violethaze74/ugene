@@ -234,11 +234,7 @@ void ProjectTreeController::sl_onDocumentAdded(Document *doc) {
     connectDocument(doc);
     sl_updateActions();
 
-    if (NULL != proxyModel || !settings.isObjectFilterActive()) {
-        const QModelIndex idx = getIndexForDoc(doc);
-        CHECK(idx.isValid(), );
-        tree->setExpanded(idx, doc->isLoaded());
-    }
+    handleAutoExpand(doc);
 }
 
 void ProjectTreeController::sl_onDocumentRemoved(Document *doc) {
@@ -620,6 +616,10 @@ void ProjectTreeController::sl_onDocumentLoadedStateChanged() {
         connect(doc, SIGNAL(si_loadedStateChanged()), SLOT(sl_onDocumentLoadedStateChanged()));
     }
 
+    handleAutoExpand(doc);
+}
+
+void ProjectTreeController::handleAutoExpand(Document* doc) {
     if (!settings.isObjectFilterActive() && AppContext::getProject()->getDocuments().size() < MAX_DOCUMENTS_TO_AUTOEXPAND) {
         QModelIndex idx = getIndexForDoc(doc);
         CHECK(idx.isValid(), );

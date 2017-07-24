@@ -1847,7 +1847,7 @@ GUI_TEST_CLASS_DEFINITION(test_1154) {
     parameters.useBestMode = false;
     parameters.samOutput = false;
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
-    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The short reads can't be mapped to the reference sequence!"));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The short reads can't be mapped to the reference sequence!"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Map reads to reference...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4817,18 +4817,17 @@ GUI_TEST_CLASS_DEFINITION(test_1443){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1445) {
-/*  1. Open "data/samples/CLUSTALW/COI.aln"
-    2. Choose last sequence (i.e. in bottom) with mouse in sequences area
-    3. Choose { Edit -> Remove sequence } in context menu
-    Expected state: UGENE doesn't crash
-*/
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+//    1. Open "data/samples/CLUSTALW/COI.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 17), QPoint(-4, 17));
-    int numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
+//    2. Choose last sequence (i.e. in bottom) with mouse in sequences area
+    GTUtilsMsaEditor::clickSequence(os, 17);
+    const int numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
     CHECK_SET_ERR(numSelectedSequences == 1, "There is no selection in MSA, but expected");
 
+//    3. Choose { Edit -> Remove sequence } in context menu
+//    Expected state: UGENE doesn't crash
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "Remove sequence", GTGlobals::UseMouse));
     GTMouseDriver::click(Qt::RightButton);
 }
@@ -4919,15 +4918,17 @@ GUI_TEST_CLASS_DEFINITION(test_1475) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_1483){
+GUI_TEST_CLASS_DEFINITION(test_1483) {
 //    1. Open "data/COI.aln" in MSA view
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Press tool button "Enable collapsing"
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+
 //    3. Start selection in sequences name list and then go for the lower boundary of the list
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 5), QPoint(-4, 20));
 //    Expected state: Ugene doesn't crashes
+    GTUtilsMsaEditor::selectRows(os, 5, 20, GTGlobals::UseMouse);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1491) {
@@ -5164,31 +5165,33 @@ GUI_TEST_CLASS_DEFINITION(test_1510) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1511) {
-/*
- * 1. Open "data/COI.aln" in MSA view
- * 2. Select some region in Sequence Area
- * 3. Press Esc key
- * Expected state: selection is removed
- * 4. Select some sequences in Name Area
- * 5. Press Esc key
- * Expected state: selection is removed
-*/
-    GTFileDialog::openFile(os, dataDir+"samples/CLUSTALW/", "COI.aln");
+//    1. Open "data/COI.aln" in MSA view
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2,2), QPoint(15,6));
+
+//    2. Select some region in Sequence Area
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 2), QPoint(15, 6));
     int numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
     CHECK_SET_ERR(numSelectedSequences == 5, "There is no selection in MSA, but expected (check #1)");
-    GTKeyboardDriver::keyClick( Qt::Key_Escape);
+
+//    3. Press Esc key
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTGlobals::sleep(200);
+
+//    Expected state: selection is removed
     numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
     CHECK_SET_ERR(numSelectedSequences == 0, "There is selection in MSA, but not expected (check #1)");
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5,2), QPoint(-5,6));
+//    4. Select some sequences in Name Area
+    GTUtilsMsaEditor::selectRows(os, 2, 6);
     numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
     CHECK_SET_ERR(numSelectedSequences == 5, "There is no selection in MSA, but expected (check #2)");
-    GTKeyboardDriver::keyClick( Qt::Key_Escape);
+
+//    5. Press Esc key
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTGlobals::sleep(200);
+
+//    Expected state: selection is removed
     numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
     CHECK_SET_ERR(numSelectedSequences == 0, "There is selection in MSA, but not expected(check #2)");
 }
@@ -5437,7 +5440,7 @@ GUI_TEST_CLASS_DEFINITION(test_1551) {
 //    4. Move the mouse cursor away from context menu and press the left mouse button.
 //    5. Press right mouse button on the same place.
 //    Expected state: there is no rename sequence dialog appeared.
-//    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new MessageBoxDialogFiller(os));
+//    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os));
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() - QPoint(5, 0));
@@ -5451,7 +5454,7 @@ GUI_TEST_CLASS_DEFINITION(test_1551) {
     GTWidget::click(os, GTUtilsMsaEditor::getNameListArea(os), Qt::RightButton);
 
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new PopupChecker(os, new Scenario));
-    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new RenameSequenceFiller(os, "test_1551"));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new RenameSequenceFiller(os, "test_1551"));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 }
@@ -5596,28 +5599,36 @@ GUI_TEST_CLASS_DEFINITION(test_1573) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(0, 4), QPoint(11, 4)));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_1574){
+GUI_TEST_CLASS_DEFINITION(test_1574) {
 //    1. Open "_common_data/scenarios/msa/ma.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Turn on the collapsing mode with the "Switch on/off collapsing" button on the toolbar.
 //    Expected state: there are two collapsed groups.
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+
 //    3. Try to select some area in the Sequence area (selection start point must be in the white space under sequences).
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 15), QPoint(2, 0));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 15), QPoint(2, 0), GTGlobals::UseMouse);
+
 //    Expected state: A region from the alignment bottom to the selection end point is selected.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(2, 0), QPoint(2, 13)));
 
 //    4. Try to click to the white space under sequences.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 15));
+
 //    Expected state: Only one symbol is selected.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(2, 13), QPoint(2, 13)));
+
 //    5. Try to select some area in the NameList area (selection must start from the next row under the last row).
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 14), QPoint(-5, 10));
+    GTUtilsMsaEditor::selectRows(os, 14, 10, GTGlobals::UseMouse);
+
 //    Expected state: A region from the alignmnet bottom to the selection end point is selected.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(0, 10), QPoint(11, 13)));
+
 //    6. Try to select some area in the NameList area (selection must start from the bottom of widget.
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 30), QPoint(-5, 10));
+    GTUtilsMsaEditor::selectRows(os, 30, 10, GTGlobals::UseMouse);
+
 //    Expected state: A region from the alignment bottom to the selection end point is selected.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(0, 10), QPoint(11, 13)));
 }
@@ -5635,21 +5646,21 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
 
 //    3.1 Insert gap by pressing SPACE.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 10));
-    GTKeyboardDriver::keyClick( Qt::Key_Space);
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
 
 //    Expected state: gap was inserted in every sequence of this group.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 10), QPoint(0, 12));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
+    GTKeyboardUtils::copy(os);
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "-\n-\n-", "Unexpected selection: " + clipboardText);
 
 //    3.2 Select some region of the grouped sequences in the Sequence area and drag this selection to the right.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 11));
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 11), QPoint(3, 11));
+    GTUtilsMSAEditorSequenceArea::dragAndDropSelection(os, QPoint(2, 11), QPoint(3, 11));
 
 //    Expected state: all sequences in the group are changed simultaneously.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 10), QPoint(2, 12));
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
+    GTKeyboardUtils::copy(os);
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "-\n-\n-", "Unexpected selection 2: " + clipboardText);
 }
@@ -5775,42 +5786,33 @@ GUI_TEST_CLASS_DEFINITION(test_1585) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1586) {
-/*  1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
-    2. Use context menu {align->align with MUSCLE}
-    3. press undo toolbar button
-    Expected state: alignment is similar to initial
-    Bug state: alignments are not similar
-*/
-
-    GTFileDialog::openFile(os, testDir+"_common_data/scenarios/msa", "ma2_gapped.aln");
+//    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-    //Save the initial content
-    GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 0, 0 ), QPoint( 13, 10 ) );
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
-    GTGlobals::sleep(200);
-    const QString initialContent = GTClipboard::text( os );
 
+    //Save the initial content
+    const QStringList originalMsa = GTUtilsMsaEditor::getWholeData(os);
+
+//    2. Use context menu {align->align with MUSCLE}
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align" << "Align with MUSCLE..."));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+//    3. press undo toolbar button
     GTUtilsMsaEditor::undo(os);
     GTThread::waitForMainThread();
 
+//    Expected state: alignment is similar to initial
+//    Bug state: alignments are not similar
     //Deselect alignment
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(15, 15));
-    GTMouseDriver::click();
+    GTUtilsMsaEditor::clearSelection(os);
 
     //Check the undone state
-    GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 0, 0 ), QPoint( 13, 10 ) );
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
-    GTGlobals::sleep(200);
-    const QString undoneContent = GTClipboard::text( os );
-    CHECK_SET_ERR( undoneContent == initialContent,
-        "Undo works wrong. Found text is: " + undoneContent );
+    const QStringList undoneMsa = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(undoneMsa == originalMsa,
+                  "Undo works wrong. Found text is:\n" + undoneMsa.join("\n"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1587) {
@@ -6113,28 +6115,31 @@ GUI_TEST_CLASS_DEFINITION( test_1600_6 ){
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == false, "collapsing mode is unexpectidly on");
 }
 
-GUI_TEST_CLASS_DEFINITION( test_1600_7 ){
+GUI_TEST_CLASS_DEFINITION(test_1600_7) {
 //    1. Open file "test/_common_data/scenarios/msa/ma2_gap_col.aln"
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton* collapce = GTAction::button(os, "Enable collapsing");
+    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
     GTWidget::click(os, collapce);
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
-    GTGlobals::sleep(500);
+
 //    Expected state: One collapsible item has appeared in MSA
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
 
 //    3. Select some area in MSA by left mouse button and press "Space" button
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(0,0));
-    GTKeyboardDriver::keyClick( Qt::Key_Space);
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
 //    Expected state: New gaps have been added, collapsible item has retained
     QString seq = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Phaneroptera_falcata");
     CHECK_SET_ERR(seq == "-AAG-CTTCTTTTAA", "unexpected sequence1: " + seq);
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off 1");
 
 //    4. Select some area in MSA by left mouse button, then drag the area to the right by mouse
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(0,1));
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,1), QPoint(1,1));
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 1));
+    GTUtilsMSAEditorSequenceArea::dragAndDropSelection(os, QPoint(0, 1), QPoint(1, 1));
+
 //    Expected state: New gaps have been added, collapsible item has retained
     seq = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Isophya_altaica_EF540820");
     CHECK_SET_ERR(seq == "-AAG-TTACTAA----", "unexpected sequence1: " + seq);
@@ -6745,7 +6750,7 @@ GUI_TEST_CLASS_DEFINITION(test_1668){
 //    7) Deactivate the PWA tab
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    8) Select some bunch of sequences (more than two) in the name list area
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 2), QPoint(-5, 6));
+	GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 2), QPoint(-5, 6), GTGlobals::UseMouse);
 //    9) Activate the PWA tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: previosly chosen two sequences and their order are saved
@@ -6756,7 +6761,7 @@ GUI_TEST_CLASS_DEFINITION(test_1668){
 //    10) Deactivate the PWA tab
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    11) Select exactly two sequences in the name list area
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 7), QPoint(-5, 8));
+	GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 7), QPoint(-5, 8), GTGlobals::UseMouse);
 //    12) Activate the PWA tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: last chosen two sequences has appeared on PWA tab
@@ -8373,7 +8378,7 @@ GUI_TEST_CLASS_DEFINITION( test_1897 ) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //3) Selected any region on alignment view using mouse or keyboard
-    GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 40, 4 ), QPoint( 50, 12 ) );
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(40, 4), QPoint(50, 12));
 
     //4) Choose Highlighting/Gaps action from context-menu
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList( ) << "Highlighting"

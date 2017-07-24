@@ -1173,7 +1173,7 @@ void DotPlotWidget::drawRulers(QPainter &p, qreal fontScale) const{
 
     GraphUtils::drawRuler(p, QPoint(textSpace + extraLen.x(), textSpace), w - 2*extraLen.x(), startX+1, endX, rulerFont, rConf);
 
-    rConf.direction = GraphUtils::TTB;
+    rConf.direction = GraphUtils::TopToBottom;
     rConf.textBorderEnd = 10;
     GraphUtils::drawRuler(p, QPoint(textSpace, textSpace + extraLen.y()), h - 2*extraLen.y(), startY+1, endY, rulerFont, rConf);
 }

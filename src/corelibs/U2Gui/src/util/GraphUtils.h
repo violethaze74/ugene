@@ -34,10 +34,18 @@ namespace U2 {
 class U2GUI_EXPORT GraphUtils {
 public:
 
-    enum Direction { LTR, RTL, BTT, TTB };
+    enum Direction {
+        LeftToRight,
+        RightToLeft,
+        BottomToTop,
+        TopToBottom
+    };
 
-    enum TextPos { LEFT, RIGHT };
-    
+    enum TextPos {
+        LEFT,
+        RIGHT
+    };
+
     struct RulerConfig {
         RulerConfig() {
             drawArrow = false;
@@ -50,7 +58,7 @@ public:
             drawBorderNotches = true;
             singleSideNotches = false;
             drawAxis = true;
-            direction = LTR;
+            direction = LeftToRight;
             textPosition = RIGHT;
             extraAxisLenBefore =0;
             extraAxisLenAfter =0;
@@ -87,15 +95,15 @@ public:
 
     static QColor proposeLightColorByKey(const QString& key);
 
-	/* 
-	   The method is designed to be used by different algorithms that needs to 
-	   select some "nice looking" number in range to be presented to user.
+    /*
+       The method is designed to be used by different algorithms that needs to
+       select some "nice looking" number in range to be presented to user.
 
-	   Selects "nice looking" number below maxVal.
-	   Example (input, result) : (231, 200), (49, 40), (12421452, 12000000)
-	   Works only for positive numbers, returns maxVal for negative or zero
-	*/
-	static qint64 pickRoundedNumberBelow(qint64 maxVal);
+       Selects "nice looking" number below maxVal.
+       Example (input, result) : (231, 200), (49, 40), (12421452, 12000000)
+       Works only for positive numbers, returns maxVal for negative or zero
+    */
+    static qint64 pickRoundedNumberBelow(qint64 maxVal);
 };
 
 } //namespace

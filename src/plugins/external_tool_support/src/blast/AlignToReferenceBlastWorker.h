@@ -48,12 +48,17 @@ public:
                               const QList<SharedDbiDataHandler> &reads,
                               int minIdentityPercent,
                               DbiDataStorage *storage);
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task *subTask);
     QString getResultUrl() const;
     SharedDbiDataHandler getAnnotations() const;
 
+    QMap<QString, bool> getAcceptedReads() const;
+    QStringList getDiscardedReads() const;
+
 private:
+    void prepare();
+    QString generateReport() const;
+    QList<Task*> onSubTaskFinished(Task *subTask);
+
     const QString referenceUrl;
     const QString resultUrl;
     const SharedDbiDataHandler reference;

@@ -82,6 +82,7 @@ U2MsaRow::~U2MsaRow() {
 }
 
 const char U2Msa::GAP_CHAR = '-';
+const char U2Msa::INVALID_CHAR = '\0';
 
 U2Msa::U2Msa()
     : length(0)

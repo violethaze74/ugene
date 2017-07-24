@@ -401,7 +401,7 @@ void GTest_RemoveColumnsOfGaps::prepare(){
         return;
     }
 
-    maObj->deleteColumnWithGaps(stateInfo);
+    maObj->deleteColumnsWithGaps(stateInfo);
 }
 
 

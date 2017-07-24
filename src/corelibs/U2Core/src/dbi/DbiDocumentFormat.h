@@ -50,9 +50,9 @@ protected:
     QList<GObject *> cloneObjects(const QList<GObject *> &srcObjects, const U2DbiRef &dstDbiRef, const QVariantMap &hints, U2OpStatus &os);
 
 private:
-    QString             formatName;
-    U2DbiFactoryId      id;
-    DocumentFormatId    formatId;
+    QString                  formatName;
+    U2DbiFactoryId           id;
+    DocumentFormatId         formatId;
 };
 
 }//namespace

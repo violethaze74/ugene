@@ -65,9 +65,11 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MaEditorFactory.h \
            src/ov_msa/MaEditorNameList.h \
            src/ov_msa/McaEditor.h \
+           src/ov_msa/McaEditorConsensusArea.h \
            src/ov_msa/McaEditorOverviewArea.h \
            src/ov_msa/McaEditorReferenceArea.h \
            src/ov_msa/McaEditorSequenceArea.h \
+           src/ov_msa/McaReferenceCharController.h \
            src/ov_msa/MSACollapsibleModel.h \
            src/ov_msa/MSAEditor.h \
            src/ov_msa/MSAEditorConsensusArea.h \
@@ -86,9 +88,10 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h \
            src/ov_msa/helpers/BaseWidthController.h \
            src/ov_msa/helpers/DrawHelper.h \
-           src/ov_msa/helpers/RowHeightController.h \
+           src/ov_msa/helpers/MaAmbiguousCharactersController.h \
            src/ov_msa/helpers/McaRowHeightController.h \
            src/ov_msa/helpers/MsaRowHeightController.h \
+           src/ov_msa/helpers/RowHeightController.h \
            src/ov_msa/helpers/ScrollController.h \
            src/ov_msa/Overview/MaEditorOverviewArea.h \
            src/ov_msa/Overview/MaGraphCalculationTask.h \
@@ -111,10 +114,12 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/TreeOptions/TreeOptionsWidget.h \
            src/ov_msa/TreeOptions/TreeOptionsWidgetFactory.h \
            src/ov_msa/view_rendering/MaConsensusAreaRenderer.h \
+           src/ov_msa/view_rendering/MaEditorConsensusArea.h \
            src/ov_msa/view_rendering/MaEditorSelection.h \
            src/ov_msa/view_rendering/MaEditorSequenceArea.h \
            src/ov_msa/view_rendering/MaEditorUtils.h \
            src/ov_msa/view_rendering/MaEditorWgt.h \
+           src/ov_msa/view_rendering/McaConsensusAreaRenderer.h \
            src/ov_msa/view_rendering/McaReferenceAreaRenderer.h \
            src/ov_msa/view_rendering/SequenceAreaRenderer.h \
            src/ov_msa/view_rendering/SequenceWithChromatogramAreaRenderer.h \
@@ -214,6 +219,7 @@ HEADERS += src/LicenseDialog.h \
            src/util_smith_waterman/SmithWatermanDialog.h \
            src/util_smith_waterman/SmithWatermanDialogImpl.h \
            src/util_smith_waterman/SubstMatrixDialog.h
+
 FORMS += src/ov_assembly/ExportConsensusDialog.ui \
          src/ov_assembly/ExportCoverageDialog.ui \
          src/ov_assembly/ExportReadsDialog.ui \
@@ -254,6 +260,7 @@ FORMS += src/ov_assembly/ExportConsensusDialog.ui \
          src/util_sec_struct_predict/SecStructDialog.ui \
          src/util_smith_waterman/SmithWatermanDialogBase.ui \
          src/util_smith_waterman/SubstMatrixDialogBase.ui
+
 SOURCES += src/LicenseDialog.cpp \
            src/UndoRedoFramework.cpp \
            src/WebWindow.cpp \
@@ -315,9 +322,11 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MaEditorFactory.cpp \
            src/ov_msa/MaEditorNameList.cpp \
            src/ov_msa/McaEditor.cpp \
+           src/ov_msa/McaEditorConsensusArea.cpp \
            src/ov_msa/McaEditorOverviewArea.cpp \
            src/ov_msa/McaEditorReferenceArea.cpp \
            src/ov_msa/McaEditorSequenceArea.cpp \
+           src/ov_msa/McaReferenceCharController.cpp \
            src/ov_msa/MSACollapsibleModel.cpp \
            src/ov_msa/MSAEditor.cpp \
            src/ov_msa/MSAEditorConsensusArea.cpp \
@@ -337,6 +346,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentTask.cpp \
            src/ov_msa/helpers/BaseWidthController.cpp \
            src/ov_msa/helpers/DrawHelper.cpp \
+           src/ov_msa/helpers/MaAmbiguousCharactersController.cpp \
            src/ov_msa/helpers/McaRowHeightController.cpp \
            src/ov_msa/helpers/MsaRowHeightController.cpp \
            src/ov_msa/helpers/RowHeightController.cpp \
@@ -362,10 +372,12 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidgetFactory.cpp \
            src/ov_msa/SequenceSelectorWidgetController.cpp \
            src/ov_msa/view_rendering/MaConsensusAreaRenderer.cpp \
+           src/ov_msa/view_rendering/MaEditorConsensusArea.cpp \
            src/ov_msa/view_rendering/MaEditorSelection.cpp \
            src/ov_msa/view_rendering/MaEditorSequenceArea.cpp \
            src/ov_msa/view_rendering/MaEditorUtils.cpp \
            src/ov_msa/view_rendering/MaEditorWgt.cpp \
+           src/ov_msa/view_rendering/McaConsensusAreaRenderer.cpp \
            src/ov_msa/view_rendering/McaReferenceAreaRenderer.cpp \
            src/ov_msa/view_rendering/SequenceAreaRenderer.cpp \
            src/ov_msa/view_rendering/SequenceWithChromatogramAreaRenderer.cpp \
@@ -459,5 +471,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/util_sec_struct_predict/SecStructPredictUtils.cpp \
            src/util_smith_waterman/SmithWatermanDialog.cpp \
            src/util_smith_waterman/SubstMatrixDialog.cpp
+
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

@@ -37,6 +37,11 @@
 #include <utils/GTKeyboardUtils.h>
 #include <utils/GTUtilsDialog.h>
 
+#include <QApplication>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRegistry.h>
+
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
@@ -56,22 +61,17 @@ namespace U2 {
 namespace GUITest_common_scenarios_align_sequences_to_msa{
 using namespace HI;
 
-void checkAlignedRegion(HI::GUITestOpStatus& os, QRect selectionRect, const QString& expectedContent) {
+void checkAlignedRegion(HI::GUITestOpStatus& os, const QRect &selectionRect, const QString& expectedContent) {
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, selectionRect.center().x()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    int leftOffset = GTUtilsMSAEditorSequenceArea::getLeftOffset(os) - 1;
-
-    selectionRect.adjust(-leftOffset, 0, -leftOffset, 0);
-
     GTUtilsMSAEditorSequenceArea::selectArea(os, selectionRect.topLeft(), selectionRect.bottomRight());
-    GTKeyboardDriver::keyClick( 'c',Qt::ControlModifier);
-
+    GTKeyboardUtils::copy(os);
     GTGlobals::sleep(500);
-    QString clipboardTest = GTClipboard::text(os);
 
-    CHECK_SET_ERR(clipboardTest== expectedContent, QString("Incorrect alignment of the region\n Expected: \n%1 \nResult: \n%2").arg(expectedContent).arg(clipboardTest));
+    const QString clipboardText = GTClipboard::text(os);
+    CHECK_SET_ERR(clipboardText == expectedContent, QString("Incorrect alignment of the region\n Expected: \n%1 \nResult: \n%2").arg(expectedContent).arg(clipboardText));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001){
@@ -136,12 +136,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002){
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3086, "Incorrect sequences count");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0003){
+GUI_TEST_CLASS_DEFINITION(test_0003) {
     //Align short sequences with default settings(on platforms with MAFFT)
     //Expected state: MAFFT alignment started and finished succesfully with using option --addfragments
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getByName("MAFFT");
+    CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
+    CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
+
     GTLogTracer logTracer;
+
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/cmdline/primers/", "primers.fa");
@@ -157,7 +161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003){
     const bool hasMessage = logTracer.checkMessage("--addfragments");
     CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
 
-    checkAlignedRegion(os, QRect(QPoint(86,17), QPoint(114,23)),
+    checkAlignedRegion(os, QRect(QPoint(86, 17), QPoint(114, 23)),
         QString("CATGCCTTTGTAATAATCTTCTTTATAGT\n"
                 "-----------------------------\n"
                 "-----------------------------\n"
@@ -194,6 +198,10 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005){
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getByName("MAFFT");
+    CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
+    CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
+
     GTFileDialog::openFile(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/", "TUB.msf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);

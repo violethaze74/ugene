@@ -40,7 +40,7 @@ MaConsensusModeWidget::MaConsensusModeWidget(QWidget *parent)
     setupUi(this);
 }
 
-void MaConsensusModeWidget::init(MultipleAlignmentObject* _maObject, MSAEditorConsensusArea* _consArea) {
+void MaConsensusModeWidget::init(MultipleAlignmentObject* _maObject, MaEditorConsensusArea* _consArea) {
     SAFE_POINT(_maObject != NULL, "MaConsensusModeWidget can not be initialized: MultipleAlignmentObject is NULL", );
     SAFE_POINT(_consArea != NULL, "MaConsensusModeWidget can not be initialized: MaEditorConsensusArea is NULL", );
 
