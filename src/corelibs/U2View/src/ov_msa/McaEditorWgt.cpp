@@ -62,7 +62,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     consSettings.highlightMismatches = true;
     consArea->setDrawSettings(consSettings);
 
-    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO);
+    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO);
     consArea->setConsensusAlgorithm(algoFactory);
 
     QString name = getEditor()->getReferenceContext()->getSequenceObject()->getSequenceName();

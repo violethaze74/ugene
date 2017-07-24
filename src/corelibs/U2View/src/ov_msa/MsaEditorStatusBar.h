@@ -35,6 +35,7 @@ class DNAAlphabet;
 class MaSearchValidator;
 
 class MsaEditorStatusBar : public MaEditorStatusBar {
+    Q_OBJECT
 public:
     MsaEditorStatusBar(MultipleAlignmentObject* mobj, MaEditorSequenceArea* seqArea);
 
