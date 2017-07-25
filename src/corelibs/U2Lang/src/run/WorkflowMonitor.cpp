@@ -203,10 +203,12 @@ void WorkflowMonitor::sl_taskStateChanged() {
         } else if (task->hasError()) {
             state = FAILED;
         } else if (!problems.isEmpty()) {
-            if (!hasErrors()) {
+            if (hasErrors()) {
+                state = FAILED;
+            } else if (hasWarnings()) {
                 state = FINISHED_WITH_PROBLEMS;
             } else {
-                state = FAILED;
+                state = SUCCESS;
             }
         }
         emit si_taskStateChanged(state);
@@ -253,6 +255,13 @@ void WorkflowMonitor::addProblem(const Problem &problem) {
         emit si_taskStateChanged(RUNNING_WITH_PROBLEMS);
     }
     emit si_newProblem(problem);
+}
+
+bool WorkflowMonitor::hasWarnings() const {
+    foreach (Problem problem, problems) {
+        CHECK(problem.type != Problem::U2_WARNING, true);
+    }
+    return false;
 }
 
 bool WorkflowMonitor::hasErrors() const {
