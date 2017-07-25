@@ -22,6 +22,7 @@
 #ifndef _U2_DBI_UTILS_H_
 #define _U2_DBI_UTILS_H_
 
+#include <U2Core/StrPackUtils.h>
 #include <U2Core/U2Dbi.h>
 #include <U2Core/U2DbiRegistry.h>
 
@@ -163,12 +164,6 @@ public:
     static Version getDbMinRequiredVersion(const U2DbiRef &dbiRef, U2OpStatus &os);
     static bool isDatabaseTooNew(const U2DbiRef &dbiRef, const Version &ugeneVersion, QString &minRequiredVersionString, U2OpStatus &os);
     static bool isDatabaseTooOld(const U2DbiRef &dbiRef, const Version &ugeneVersion, U2OpStatus &os);
-
-    static QString packStringList(const QStringList &list);
-    static QStringList unpackStringList(const QString &string);
-
-    static QString packMap(const StrStrMap &map);
-    static StrStrMap unpackMap(const QString &string);
 
     static const QString PUBLIC_DATABASE_NAME;
     static const QString PUBLIC_DATABASE_URL;

@@ -25,6 +25,7 @@
 #include <QTextStream>
 
 #include <U2Core/global.h>
+#include <U2Core/StrPackUtils.h>
 
 namespace U2 {
 namespace WorkflowSerialize {
