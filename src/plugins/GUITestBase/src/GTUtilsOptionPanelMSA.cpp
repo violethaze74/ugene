@@ -29,6 +29,7 @@
 #include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSlider.h>
 #include <primitives/GTTreeWidget.h>
@@ -325,6 +326,32 @@ bool GTUtilsOptionPanelMsa::isUseDotsOptionSet(GUITestOpStatus &os) {
     QCheckBox *useDots = GTWidget::findExactWidget<QCheckBox *>(os, "useDots");
     GT_CHECK_RESULT(NULL != useDots, "useDots checkbox is NULL", false);
     return useDots->isChecked();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setExportConsensusOutputPath"
+void GTUtilsOptionPanelMsa::setExportConsensusOutputPath(GUITestOpStatus &os, const QString &filePath) {
+    openTab(os, ExportConsensus);
+    GTLineEdit::setText(os, "pathLe", filePath, NULL);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getExportConsensusOutputPath"
+QString GTUtilsOptionPanelMsa::getExportConsensusOutputPath(GUITestOpStatus &os) {
+    return GTLineEdit::getText(os, "pathLe");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setExportConsensusOutputFormat"
+void GTUtilsOptionPanelMsa::setExportConsensusOutputFormat(GUITestOpStatus &os, const QString &format) {
+    openTab(os, ExportConsensus);
+    GTComboBox::setIndexWithText(os, "formatCb", NULL, format);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getExportConsensusOutputFormat"
+QString GTUtilsOptionPanelMsa::getExportConsensusOutputFormat(GUITestOpStatus &os) {
+    return GTComboBox::getCurrentText(os, "formatCb");
 }
 #undef GT_METHOD_NAME
 
