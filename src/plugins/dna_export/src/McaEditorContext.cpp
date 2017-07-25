@@ -65,9 +65,9 @@ void McaEditorContext::buildMenu(GObjectView *view, QMenu *menu) {
 
     QList<GObjectViewAction *> list = getViewActions(view);
     SAFE_POINT(1 == list.size(), "List size is incorrect", );
-    QMenu *exportMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_EXPORT);
-    SAFE_POINT(exportMenu != NULL, "menu 'Export' is NULL", );
-    exportMenu->addAction(list.first());
+    QMenu *alignmentMenu = GUIUtils::findSubMenu(menu, MCAE_MENU_ALIGNMENT);
+    SAFE_POINT(alignmentMenu != NULL, "menu 'Alignment' is NULL", );
+    alignmentMenu->addAction(list.first());
 }
 
 }   // namespace U2

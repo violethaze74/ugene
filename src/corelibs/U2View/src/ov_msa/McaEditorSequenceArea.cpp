@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QToolButton>
+
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
@@ -38,9 +40,11 @@
 
 namespace U2 {
 
-McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb)
+McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb)
     : MaEditorSequenceArea(ui, hb, vb) {
     initRenderer();
+
+    connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_cancelSelection()));
 
     // TEST - remove the variable after fix
     editingEnabled = true;
@@ -56,32 +60,48 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     showAllTraces = new QAction(tr("Show all"), this);
     connect(showAllTraces, SIGNAL(triggered()), SLOT(sl_showAllTraces()));
 
-    traceActionMenu = new QMenu(tr("Show/hide trace"), this);
-    traceActionMenu->addAction( createToggleTraceAction("A") );
-    traceActionMenu->addAction( createToggleTraceAction("C") );
-    traceActionMenu->addAction( createToggleTraceAction("G") );
-    traceActionMenu->addAction( createToggleTraceAction("T") ) ;
-    traceActionMenu->addSeparator();
-    traceActionMenu->addAction(showAllTraces);
+    traceActionsMenu = new QMenu(tr("Show/hide trace"), this);
+    traceActionsMenu->setObjectName("traceActionsMenu");
+    traceActionsMenu->addAction( createToggleTraceAction("A") );
+    traceActionsMenu->addAction( createToggleTraceAction("C") );
+    traceActionsMenu->addAction( createToggleTraceAction("G") );
+    traceActionsMenu->addAction( createToggleTraceAction("T") ) ;
+    traceActionsMenu->addSeparator();
+    traceActionsMenu->addAction(showAllTraces);
 
     insertAction = new QAction(tr("Add insertion"), this); // 5491_TODO: the text should be meaningfull
     insertAction->setObjectName("add_insertion");
-    // 5491_TODO: add shortcut
+    insertAction->setShortcut(Qt::SHIFT + Qt::Key_I);
     connect(insertAction, SIGNAL(triggered()), SLOT(sl_addInsertion()));
     addAction(insertAction);
 
+    removeGapBeforeSelectionAction = new QAction(tr("Shift characters left"), this);
+    removeGapBeforeSelectionAction->setShortcut(Qt::Key_Backspace);
+    connect(removeGapBeforeSelectionAction, SIGNAL(triggered()), SLOT(sl_removeGapBeforeSelection()));
+    addAction(removeGapBeforeSelectionAction);
+
     removeColumnsOfGapsAction = new QAction(tr("Remove columns of gaps"), this);
     removeColumnsOfGapsAction->setObjectName("remove_columns_of_gaps");
+    removeColumnsOfGapsAction->setShortcut(Qt::SHIFT + Qt::Key_Delete);
     connect(removeColumnsOfGapsAction, SIGNAL(triggered()), SLOT(sl_removeColumnsOfGaps()));
     addAction(removeColumnsOfGapsAction);
 
+    fillWithGapsinsSymAction->setText(tr("Insert gap"));
+    fillWithGapsinsSymAction->setShortcut(Qt::Key_Space);
+    fillWithGapsinsSymAction->setShortcutContext(Qt::WidgetShortcut);
+
     scaleBar = new ScaleBar(Qt::Horizontal);
-    scaleBar->slider()->setRange(100, 1000);
-    scaleBar->slider()->setTickInterval(100);
+    scaleBar->setRange(100, 1000);
+    scaleBar->setTickInterval(100);
+    scaleBar->getPlusAction()->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
+    scaleBar->getMinusAction()->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Down));
+    addAction(scaleBar->getPlusAction());
+    addAction(scaleBar->getMinusAction());
     scaleAction = NULL;
 
     ambiguousCharactersController = new MaAmbiguousCharactersController(ui);
-    addActions(ambiguousCharactersController->getActions());
+    addAction(ambiguousCharactersController->getPreviousAction());
+    addAction(ambiguousCharactersController->getNextAction());
 
     SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     scaleBar->setValue(r->getScaleBarValue());
@@ -102,6 +122,38 @@ void McaEditorSequenceArea::adjustReferenceLength(U2OpStatus& os) {
         DNASequence seq(insert);
         mcaEditor->getReferenceContext()->getSequenceObject()->replaceRegion(id, region, seq, os);
     }
+}
+
+const MaAmbiguousCharactersController * const McaEditorSequenceArea::getAmbiguousCharactersController() const {
+    return ambiguousCharactersController;
+}
+
+QMenu *McaEditorSequenceArea::getTraceActionsMenu() const {
+    return traceActionsMenu;
+}
+
+QAction *McaEditorSequenceArea::getIncreasePeaksHeightAction() const {
+    return scaleBar->getPlusAction();
+}
+
+QAction *McaEditorSequenceArea::getDecreasePeaksHeightAction() const {
+    return scaleBar->getMinusAction();
+}
+
+QAction *McaEditorSequenceArea::getInsertAction() const {
+    return insertAction;
+}
+
+QAction *McaEditorSequenceArea::getInsertGapAction() const {
+    return fillWithGapsinsSymAction;
+}
+
+QAction *McaEditorSequenceArea::getRemoveGapBeforeSelectionAction() const {
+    return removeGapBeforeSelectionAction;
+}
+
+QAction *McaEditorSequenceArea::getRemoveColumnsOfGapsAction() const {
+    return removeColumnsOfGapsAction;
 }
 
 void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel, bool newHighlightSelection) {
@@ -181,7 +233,7 @@ void McaEditorSequenceArea::sl_showAllTraces() {
     settings.drawTraceC = true;
     settings.drawTraceG = true;
     settings.drawTraceT = true;
-    QList<QAction*> actions = traceActionMenu->actions();
+    QList<QAction*> actions = traceActionsMenu->actions();
     foreach(QAction* action, actions) {
         action->setChecked(true);
     }
@@ -197,7 +249,7 @@ void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
 
 void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
     QToolButton* button = new QToolButton();
-    button->setMenu(traceActionMenu);
+    button->setMenu(traceActionsMenu);
     button->setIcon(QIcon(":chroma_view/images/traces.png"));
     button->setPopupMode(QToolButton::InstantPopup);
     t->addWidget(button);
@@ -215,7 +267,8 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
 
     t->addSeparator();
 
-    t->addActions(ambiguousCharactersController->getActions());
+    t->addAction(ambiguousCharactersController->getPreviousAction());
+    t->addAction(ambiguousCharactersController->getNextAction());
 }
 
 void McaEditorSequenceArea::sl_addInsertion() {
@@ -223,6 +276,12 @@ void McaEditorSequenceArea::sl_addInsertion() {
 
     editModeAnimationTimer.start(500);
     highlightCurrentSelection();
+}
+
+void McaEditorSequenceArea::sl_removeGapBeforeSelection() {
+    emit si_startMaChanging();
+    removeGapsPrecedingSelection(1);
+    emit si_stopMaChanging(true);
 }
 
 void McaEditorSequenceArea::sl_removeColumnsOfGaps() {
@@ -238,14 +297,20 @@ void McaEditorSequenceArea::initRenderer() {
 }
 
 void McaEditorSequenceArea::updateActions() {
-    // 5491_TODO: checkall acions and disable the right ones
-    /// add separate methods smt like 'updateEditActions'
     MultipleAlignmentObject* maObj = editor->getMaObject();
-    assert(maObj != NULL);
-    bool readOnly = maObj->isStateLocked();
-    bool canEditAlignment = !readOnly && !isAlignmentEmpty();
-    bool canEditSelectedArea = canEditAlignment && !selection.isNull();
+    SAFE_POINT(NULL != maObj, "MaObj is NULL", );
+
+    const bool readOnly = maObj->isStateLocked();
+    const bool canEditAlignment = !readOnly && !isAlignmentEmpty();
+    const bool canEditSelectedArea = canEditAlignment && !selection.isNull();
+    const bool isSingleSymbolSelected = (selection.getRect().size() == QSize(1, 1));
+    const bool hasGapBeforeSelection = canEditAlignment && (maObj->getMultipleAlignment()->isGap(selection.y(), selection.x() - 1));
+
     ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
+    insertAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected);
+    replaceCharacterAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected);
+    fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected);
+    removeGapBeforeSelectionAction->setEnabled(hasGapBeforeSelection);
 }
 
 void McaEditorSequenceArea::drawBackground(QPainter &painter) {
@@ -253,22 +318,6 @@ void McaEditorSequenceArea::drawBackground(QPainter &painter) {
     SAFE_POINT(r != NULL, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
     r->drawReferenceSelection(painter);
     r->drawNameListSelection(painter);
-}
-
-void McaEditorSequenceArea::buildMenu(QMenu *m) {
-    QMenu* viewMenu = GUIUtils::findSubMenu(m, MSAE_MENU_VIEW);
-    SAFE_POINT(viewMenu != NULL, "viewMenu", );
-    viewMenu->addMenu(traceActionMenu);
-
-    // SANGER_TODO
-    QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
-    SAFE_POINT(editMenu != NULL, "editMenu", );
-    QList<QAction*> actions;
-    actions << fillWithGapsinsSymAction << replaceCharacterAction << insertAction << removeColumnsOfGapsAction;
-    editMenu->insertActions(editMenu->isEmpty() ? NULL : editMenu->actions().first(), actions);
-    editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
-
-    m->addActions(ambiguousCharactersController->getActions());
 }
 
 void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid) {

@@ -41,8 +41,8 @@ public:
                                   MaEditor* editor);
     bool isMismatch(int pos) const;
 
-    QAction* getNextAction() const { return nextMismatch; }
-    QAction* getPrevAction() const { return prevMismatch; }
+    QAction *getPrevMismatchAction() const;
+    QAction *getNextMismatchAction() const;
 
 signals:
     void si_selectMismatch(int pos);

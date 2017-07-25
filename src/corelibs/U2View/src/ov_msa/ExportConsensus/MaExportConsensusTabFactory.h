@@ -44,6 +44,8 @@ public:
     QWidget * createWidget(GObjectView* objView);
     OPGroupParameters getOPGroupParameters();
 
+    static const QString &getGroupId();
+
 private:
     static const QString GROUP_ID;
 };

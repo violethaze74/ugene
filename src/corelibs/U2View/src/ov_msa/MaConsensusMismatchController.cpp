@@ -37,8 +37,8 @@
 namespace U2 {
 
 MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
-                                             const QSharedPointer<MSAEditorConsensusCache>& consCache,
-                                             MaEditor* editor)
+                                                             const QSharedPointer<MSAEditorConsensusCache>& consCache,
+                                                             MaEditor* editor)
     : QObject(p),
       consCache(consCache),
       editor(editor),
@@ -51,9 +51,11 @@ MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
 
     nextMismatch = new QAction(tr("Jump to next variation"), this);
     nextMismatch->setObjectName("next_mismatch");
+    nextMismatch->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_V);
     connect(nextMismatch, SIGNAL(triggered(bool)), SLOT(sl_next()));
 
     prevMismatch = new QAction(tr("Jump to previous variation"), this);
+    prevMismatch->setShortcut(Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_V);
     prevMismatch->setObjectName("prev_mismatch");
     connect(prevMismatch, SIGNAL(triggered(bool)), SLOT(sl_prev()));
 }
@@ -61,6 +63,14 @@ MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
 bool MaConsensusMismatchController::isMismatch(int pos) const {
     SAFE_POINT(0 <= pos && pos < mismatchCache.size(), "Invalid pos", false);
     return mismatchCache[pos];
+}
+
+QAction *MaConsensusMismatchController::getPrevMismatchAction() const {
+    return prevMismatch;
+}
+
+QAction *MaConsensusMismatchController::getNextMismatchAction() const {
+    return nextMismatch;
 }
 
 void MaConsensusMismatchController::sl_updateItem(int pos, char c) {

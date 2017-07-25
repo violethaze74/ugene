@@ -114,7 +114,18 @@ MSAEditor::~MSAEditor() {
 }
 
 void MSAEditor::buildStaticToolbar(QToolBar* tb) {
-    MaEditor::buildStaticToolbar(tb);
+    tb->addAction(ui->getCopyFormattedSelectionAction());
+
+    tb->addAction(saveAlignmentAction);
+    tb->addAction(saveAlignmentAsAction);
+
+    tb->addAction(zoomInAction);
+    tb->addAction(zoomOutAction);
+    tb->addAction(zoomToSelectionAction);
+    tb->addAction(resetZoomAction);
+
+    tb->addAction(showOverviewAction);
+    tb->addAction(changeFontAction);
 
     tb->addAction(saveScreenshotAction);
     tb->addAction(buildTreeAction);

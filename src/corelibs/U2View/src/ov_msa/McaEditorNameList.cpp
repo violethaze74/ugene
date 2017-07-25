@@ -41,7 +41,7 @@ const QColor McaEditorNameList::ARROW_REVERSE_COLOR = "green"; // another possib
 McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
     : MaEditorNameList(ui, nhBar)
 {
-    connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged()), SLOT(sl_backgroundSelectionChanged()));
+    connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
 
     setMinimumWidth(getMinimumWidgetWidth());
 }
@@ -49,6 +49,10 @@ McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
 void McaEditorNameList::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection &oldSelection) {
     setSelection(current.y(), current.height());
     updateActions();
+}
+
+void McaEditorNameList::sl_clearSelection() {
+    setSelection(0, 0);
 }
 
 void McaEditorNameList::drawCollapsibileSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool selected, bool collapsed, bool isReference) {

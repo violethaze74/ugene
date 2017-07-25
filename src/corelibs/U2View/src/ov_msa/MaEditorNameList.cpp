@@ -64,8 +64,6 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     startSelectingRowNumber = curRowNumber;
     rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
 
-    connect(editor, SIGNAL(si_buildStaticMenu(GObjectView*, QMenu*)), SLOT(sl_buildStaticMenu(GObjectView*, QMenu*)));
-
     editSequenceNameAction = new QAction(tr("Edit sequence name"), this);
     connect(editSequenceNameAction, SIGNAL(triggered()), SLOT(sl_editSequenceName()));
 
@@ -78,7 +76,6 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     connect(removeSequenceAction, SIGNAL(triggered()), SLOT(sl_removeSequence()));
     addAction(removeSequenceAction);
 
-    connect(editor, SIGNAL(si_buildPopupMenu(GObjectView* , QMenu*)), SLOT(sl_buildContextMenu(GObjectView*, QMenu*)));
     if (editor->getMaObject()) {
         connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
             SLOT(sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
@@ -153,6 +150,14 @@ void MaEditorNameList::drawNames(QPainter &painter, const QList<int> &seqIdx, bo
     }
 }
 
+QAction *MaEditorNameList::getEditSequenceNameAction() const {
+    return editSequenceNameAction;
+}
+
+QAction *MaEditorNameList::getRemoveSequenceAction() const {
+    return removeSequenceAction;
+}
+
 U2Region MaEditorNameList::getSelection() const {
     const MaEditorSelection& selection = ui->getSequenceArea()->getSelection();
     return U2Region(selection.y(), selection.height());
@@ -180,7 +185,7 @@ void MaEditorNameList::updateActions() {
     MultipleAlignmentObject* maObj = editor->getMaObject();
     if (maObj){
         removeSequenceAction->setEnabled(!maObj->isStateLocked() && getSelectedRow() != -1);
-        editSequenceNameAction->setEnabled(!maObj->isStateLocked());
+        editSequenceNameAction->setEnabled(!maObj->isStateLocked() && getSelectedRow() != -1);
         addAction(ui->getCopySelectionAction());
         addAction(ui->getPasteAction());
     }
@@ -216,33 +221,6 @@ void MaEditorNameList::updateScrollBar() {
 
     nhBar->setVisible(nSteps > 1);
     connect(nhBar, SIGNAL(valueChanged(int)), SLOT(sl_completeRedraw()));
-}
-
-void MaEditorNameList::sl_buildStaticMenu(GObjectView* v, QMenu* m) {
-    Q_UNUSED(v);
-    buildMenu(m);
-}
-
-void MaEditorNameList::sl_buildContextMenu(GObjectView* v, QMenu* m) {
-    Q_UNUSED(v);
-    buildMenu(m);
-}
-
-void MaEditorNameList::buildMenu(QMenu* m) {
-    QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
-    SAFE_POINT(editMenu != NULL, "editMenu not found", );
-
-    editMenu->insertAction(editMenu->actions().last(), removeSequenceAction);
-
-    CHECK(qobject_cast<MSAEditor*>(editor) != NULL, );
-    CHECK(rect().contains(mapFromGlobal(QCursor::pos())), );
-
-    QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
-    SAFE_POINT(copyMenu != NULL, "copyMenu not found", );
-    copyMenu->addAction(copyCurrentSequenceAction);
-
-    copyCurrentSequenceAction->setDisabled(getSelectedRow() == -1);
-    editMenu->insertAction(editMenu->actions().first(), editSequenceNameAction);
 }
 
 int MaEditorNameList::getSelectedRow() const {
@@ -381,7 +359,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         }
         break;
     case Qt::Key_Escape:
-        ui->getSequenceArea()->cancelSelection();
+        ui->getSequenceArea()->sl_cancelSelection();
         curRowNumber = 0;
         startSelectingRowNumber = 0;
         break;
@@ -449,7 +427,7 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
             }
             rubberBand->setGeometry(QRect(selectionStartPoint, QSize()));
             rubberBand->show();
-            seqArea->cancelSelection();
+            seqArea->sl_cancelSelection();
             scribbling = true;
         }
         if (seqArea->isSeqInRange(curRowNumber)) {

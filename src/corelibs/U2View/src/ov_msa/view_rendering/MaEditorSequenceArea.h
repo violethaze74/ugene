@@ -107,8 +107,6 @@ public:
 
     virtual void adjustReferenceLength(U2OpStatus& os) {}
 
-    void cancelSelection();
-
     U2Region getSelectedRows() const;
 
     QString getCopyFormatedAlgorithmId() const;
@@ -153,18 +151,18 @@ public:
     MsaHighlightingScheme *getCurrentHighlightingScheme() const;
     bool getUseDotsCheckedState() const;
 
+    QAction *getReplaceCharacterAction() const;
+    const QAction * const getRemoveSAction() const;
+
 public slots:
     void sl_changeColorSchemeOutside(const QString &id);
     void sl_delCurrentSelection();
+    void sl_cancelSelection();
 
 protected slots:
     void sl_changeCopyFormat(const QString& alg);
     void sl_changeColorScheme();
     void sl_fillCurrentSelectionWithGaps();
-
-    virtual void sl_buildStaticMenu(GObjectView* v, QMenu* m);
-    virtual void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
-    virtual void sl_buildContextMenu(GObjectView* v, QMenu* m);
 
     virtual void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
 
@@ -247,7 +245,6 @@ protected:
 
     void drawAll();
 
-    virtual void buildMenu(QMenu* m);
     void updateColorAndHighlightSchemes();
 
     void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);

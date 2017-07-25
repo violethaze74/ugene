@@ -79,8 +79,6 @@ private slots:
     void onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MaModificationInfo& modInfo);
     void sl_createMatrixTaskFinished(Task*);
 private:
-    void sl_buildStaticMenu(GObjectView*, QMenu*) {}
-    void sl_buildContextMenu(GObjectView*, QMenu*) {}
     void updateDistanceMatrix();
 
     MSADistanceMatrix* matrix;

@@ -98,6 +98,10 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
 
     initRenderer();
 
+    connect(editor, SIGNAL(si_buildPopupMenu(GObjectView *, QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
+    connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
+    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView *, QToolBar *)), SLOT(sl_buildStaticToolbar(GObjectView *, QToolBar *)));
+
     selectionColor = Qt::black;
     editingEnabled = true;
 
@@ -734,7 +738,7 @@ void MSAEditorSequenceArea::sl_addSeqFromFile()
 
     if (!urls.isEmpty()) {
         lod.url = urls.first();
-        cancelSelection();
+        sl_cancelSelection();
         AddSequencesFromFilesToAlignmentTask *task = new AddSequencesFromFilesToAlignmentTask(msaObject, urls);
         TaskWatchdog::trackResourceExistence(msaObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
@@ -766,7 +770,7 @@ void MSAEditorSequenceArea::sl_addSeqFromProject()
     if (objectsToAdd.size() > 0) {
         AddSequenceObjectsToAlignmentTask *addSeqObjTask = new AddSequenceObjectsToAlignmentTask(getEditor()->getMaObject(), objectsToAdd);
         AppContext::getTaskScheduler()->registerTopLevelTask(addSeqObjTask);
-        cancelSelection();
+        sl_cancelSelection();
     }
 }
 

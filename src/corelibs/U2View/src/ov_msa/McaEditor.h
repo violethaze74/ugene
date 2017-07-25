@@ -33,6 +33,11 @@ namespace U2 {
 class McaEditor;
 class SequenceObjectContext;
 
+#define     MCAE_MENU_ALIGNMENT     "MCAE_MENU_ALIGNMENT"
+#define     MCAE_MENU_APPEARANCE    "MCAE_MENU_APPEARANCE"
+#define     MCAE_MENU_NAVIGATION    "MCAE_MENU_NAVIGATION"
+#define     MCAE_MENU_EDITING       "MCAE_MENU_EDITING"
+
 class U2VIEW_EXPORT McaEditor : public MaEditor {
     Q_OBJECT
     friend class McaEditorSequenceArea;
@@ -45,7 +50,7 @@ public:
 
     virtual void buildStaticToolbar(QToolBar* tb);
 
-    virtual void buildStaticMenu(QMenu* m);
+    virtual void buildStaticMenu(QMenu* menu);
 
     virtual int getRowContentIndent(int rowId) const;
 
@@ -62,14 +67,27 @@ protected slots:
     void sl_onContextMenuRequested(const QPoint & pos);
     void sl_showHideChromatograms(bool show);
 
+private slots:
+    void sl_showGeneralTab();
+    void sl_showConsensusTab();
+
 protected:
     QWidget* createWidget();
+    void initActions();
 
     QAction*          showChromatogramsAction;
+    QAction*          showGeneralTabAction;
+    QAction*          showConsensusTabAction;
 
     QMap<qint64, bool>  chromVisibility;
 
     SequenceObjectContext*  referenceCtx;
+
+private:
+    void addAlignmentMenu(QMenu *menu);
+    void addAppearanceMenu(QMenu *menu);
+    void addNavigationMenu(QMenu *menu);
+    void addEditingMenu(QMenu *menu);
 };
 
 }   // namespace U2

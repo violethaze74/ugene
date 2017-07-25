@@ -28,6 +28,7 @@
 #include <U2View/SequenceObjectContext.h>
 
 #include "McaEditor.h"
+#include "McaEditorConsensusArea.h"
 #include "McaEditorReferenceArea.h"
 #include "McaEditorSequenceArea.h"
 #include "MSAEditorConsensusArea.h"
@@ -61,6 +62,7 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
     connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection,MaEditorSelection)),
             SLOT(sl_selectionChanged(MaEditorSelection,MaEditorSelection)));
 
+    connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
     connect(ui->getSequenceArea(), SIGNAL(si_clearReferenceSelection()),
             SLOT(sl_clearSelection()));
 
@@ -82,7 +84,7 @@ void McaEditorReferenceArea::sl_selectMismatch(int pos) {
     if (seqArea->getFirstVisibleBase() > pos || seqArea->getLastVisibleBase(false) < pos) {
         seqArea->centerPos(pos);
     }
-    seqArea->cancelSelection();
+    seqArea->sl_cancelSelection();
     setSelection(U2Region(pos, 1));
 }
 

@@ -92,12 +92,29 @@ McaEditor *McaEditorWgt::getEditor() const {
     return qobject_cast<McaEditor *>(editor);
 }
 
+McaEditorConsensusArea *McaEditorWgt::getConsensusArea() const {
+    return qobject_cast<McaEditorConsensusArea *>(consArea);
+}
+
 McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
     return qobject_cast<McaEditorSequenceArea*>(seqArea);
 }
 
 McaReferenceCharController* McaEditorWgt::getRefCharController() const {
     return refCharController;
+}
+
+QAction *McaEditorWgt::getClearSelectionAction() const {
+    return clearSelectionAction;
+}
+
+void McaEditorWgt::initActions() {
+    clearSelectionAction = new QAction(tr("Clear selection"), this);
+    clearSelectionAction->setShortcut(Qt::Key_Escape);
+    connect(clearSelectionAction, SIGNAL(triggered()), SIGNAL(si_clearSelection()));
+    addAction(clearSelectionAction);
+
+    MaEditorWgt::initActions();
 }
 
 void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
