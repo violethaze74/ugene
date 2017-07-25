@@ -242,6 +242,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/QObjectScopedPointer.h \
            src/util/QVariantUtils.h \
            src/util/SequenceUtils.h \
+           src/util/SignalBlocker.h \
            src/util/SnpeffDictionary.h \
            src/util/StrPackUtils.h \
            src/util/SyncHttp.h \
@@ -464,6 +465,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/MultipleSequenceAlignmentWalker.cpp \
            src/util/QVariantUtils.cpp \
            src/util/SequenceUtils.cpp \
+           src/util/SignalBlocker.cpp \
            src/util/SnpeffDictionary.cpp \
            src/util/StrPackUtils.cpp \
            src/util/SyncHttp.cpp \
