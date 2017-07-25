@@ -1781,6 +1781,33 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
     GTGlobals::sleep();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5716) {
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open "Export Consensus" options panel tab.
+//    Expected state: UGENE doesn't crash.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
+
+//    3. Set any output file path, set any format.
+    const QString expectedOutputPath = sandBoxDir + "test_5716.gb";
+    GTUtilsOptionPanelMsa::setExportConsensusOutputPath(os, expectedOutputPath);
+
+//    4. Open "General" options panel tab.
+//    Expected state: UGENE doesn't crash.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+
+//    5. Open "Export Consensus" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
+
+//    Expected state: UGENE doesn't crash, the form is filled with values from step 3.
+    const QString currentOutputPath = GTUtilsOptionPanelMsa::getExportConsensusOutputPath(os);
+    const QString currentOutputFormat = GTUtilsOptionPanelMsa::getExportConsensusOutputFormat(os);
+    const QString expectedOutputFormat = "GenBank";
+    CHECK_SET_ERR(currentOutputPath == expectedOutputPath, QString("Output path is incorrect: expected '%1', got '%2'").arg(expectedOutputPath).arg(currentOutputPath));
+    CHECK_SET_ERR(currentOutputFormat == expectedOutputFormat, QString("Output format is incorrect: expected '%1', got '%2'").arg(expectedOutputFormat).arg(currentOutputFormat));
+}
 
 } // namespace GUITest_regression_scenarios
 

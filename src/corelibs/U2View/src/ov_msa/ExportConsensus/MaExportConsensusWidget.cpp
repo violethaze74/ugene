@@ -54,7 +54,7 @@ namespace U2 {
 MaExportConsensusWidget::MaExportConsensusWidget(MaEditor* ma_, QWidget *parent)
     : QWidget(parent),
       ma(ma_),
-      savableWidget(parent, GObjectViewUtils::findViewByName(ma_->getName())),
+      savableWidget(this, GObjectViewUtils::findViewByName(ma_->getName())),
       saveController(NULL)
 {
     setupUi(this);

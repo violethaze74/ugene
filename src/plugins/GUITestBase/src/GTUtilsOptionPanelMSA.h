@@ -90,6 +90,13 @@ public:
     static void setUseDotsOption(HI::GUITestOpStatus &os, bool useDots);
     static bool isUseDotsOptionSet(HI::GUITestOpStatus &os);
 
+    // functions for accessing "Export consensus" options elements
+    static void setExportConsensusOutputPath(HI::GUITestOpStatus &os, const QString &filePath);
+    static QString getExportConsensusOutputPath(HI::GUITestOpStatus &os);
+
+    static void setExportConsensusOutputFormat(HI::GUITestOpStatus &os, const QString &format);
+    static QString getExportConsensusOutputFormat(HI::GUITestOpStatus &os);
+
 private:
     static QWidget* getWidget(HI::GUITestOpStatus &os, const QString& widgetName, int number);
 
