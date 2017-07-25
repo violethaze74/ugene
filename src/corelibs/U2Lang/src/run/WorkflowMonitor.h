@@ -169,6 +169,7 @@ protected:
     void setWorkerInfo(const QString &actorId, const Monitor::WorkerInfo &info);
     void setRunState(bool paused);
     void addProblem(const Problem &problem);
+    bool hasWarnings() const;
     bool hasErrors() const;
 };
 
