@@ -23,9 +23,10 @@
 
 namespace U2 {
 
-const QString BuiltInConsensusAlgorithms::DEFAULT_ALGO("Default");
-const QString BuiltInConsensusAlgorithms::CLUSTAL_ALGO("Clustal");
-const QString BuiltInConsensusAlgorithms::STRICT_ALGO("Strict");
-const QString BuiltInConsensusAlgorithms::LEVITSKY_ALGO("Levitsky");
+const QString BuiltInConsensusAlgorithms::DEFAULT_ALGO = "Default";
+const QString BuiltInConsensusAlgorithms::CLUSTAL_ALGO = "Clustal";
+const QString BuiltInConsensusAlgorithms::STRICT_ALGO = "Strict";
+const QString BuiltInConsensusAlgorithms::LEVITSKY_ALGO = "Levitsky";
+const QString BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO = "Simple extended";
 
-}//namespace
+}   // namespace U2

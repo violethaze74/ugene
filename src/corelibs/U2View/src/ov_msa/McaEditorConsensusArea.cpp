@@ -42,7 +42,7 @@ namespace U2 {
 /************************************************************************/
 McaEditorConsensusArea::McaEditorConsensusArea(McaEditorWgt *ui)
     : MaEditorConsensusArea(ui) {
-    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO);
+    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO);
     setConsensusAlgorithm(algoFactory);
 
     mismatchController = new MaConsensusMismatchController(this, consensusCache, editor);

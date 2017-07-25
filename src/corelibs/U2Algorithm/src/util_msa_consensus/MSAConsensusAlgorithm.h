@@ -38,7 +38,9 @@ enum ConsensusAlgorithmFlag {
     ConsensusAlgorithmFlag_AvailableForChromatogram = 1 << 4
 };
 
-typedef QFlags<ConsensusAlgorithmFlag> ConsensusAlgorithmFlags;
+Q_DECLARE_FLAGS(ConsensusAlgorithmFlags, ConsensusAlgorithmFlag)
+Q_DECLARE_OPERATORS_FOR_FLAGS(ConsensusAlgorithmFlags)
+
 #define ConsensusAlgorithmFlags_AllAlphabets (ConsensusAlgorithmFlags(ConsensusAlgorithmFlag_Nucleic) | ConsensusAlgorithmFlag_Amino | ConsensusAlgorithmFlag_Raw)
 #define ConsensusAlgorithmFlags_NuclAmino    (ConsensusAlgorithmFlags(ConsensusAlgorithmFlag_Nucleic) | ConsensusAlgorithmFlag_Amino)
 

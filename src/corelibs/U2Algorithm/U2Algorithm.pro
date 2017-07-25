@@ -67,6 +67,7 @@ HEADERS += src/misc/BinaryFindOpenCL.h \
            src/util_assembly_consensus/AssemblyConsensusUtils.h \
            src/util_assembly_consensus/BuiltInAssemblyConsensusAlgorithms.h \
            src/util_msa_consensus/BuiltInConsensusAlgorithms.h \
+           src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.h \
            src/util_msa_consensus/MSAConsensusAlgorithm.h \
            src/util_msa_consensus/MSAConsensusAlgorithmClustal.h \
            src/util_msa_consensus/MSAConsensusAlgorithmDefault.h \
@@ -81,6 +82,7 @@ HEADERS += src/misc/BinaryFindOpenCL.h \
            src/util_msa_distance/MSADistanceAlgorithmHammingRevCompl.h \
            src/util_msa_distance/MSADistanceAlgorithmRegistry.h \
            src/util_msaedit/CreateSubalignmentTask.h \
+           src/util_msaedit/MsaUtilTasks.h \
            src/util_msaedit/color_schemes/ColorSchemeUtils.h \
            src/util_msaedit/color_schemes/MsaColorScheme.h \
            src/util_msaedit/color_schemes/MsaColorSchemeClustalX.h \
@@ -109,8 +111,7 @@ HEADERS += src/misc/BinaryFindOpenCL.h \
            src/util_weight_matrix/PWMConversionAlgorithmNLG.h \
            src/util_weight_matrix/PWMConversionAlgorithmRegistry.h \
            src/util_gpu/opencl/OpenCLHelper.h \
-           src/util_gpu/opencl/OpenCLUtils.h \
-    src/util_msaedit/MsaUtilTasks.h
+           src/util_gpu/opencl/OpenCLUtils.h
 
 SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/misc/BitsTable.cpp \
@@ -166,6 +167,7 @@ SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/util_assembly_consensus/AssemblyConsensusUtils.cpp \
            src/util_assembly_consensus/BuiltInAssemblyConsensusAlgorithms.cpp \
            src/util_msa_consensus/BuiltInConsensusAlgorithms.cpp \
+           src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp \
            src/util_msa_consensus/MSAConsensusAlgorithm.cpp \
            src/util_msa_consensus/MSAConsensusAlgorithmClustal.cpp \
            src/util_msa_consensus/MSAConsensusAlgorithmDefault.cpp \
@@ -180,6 +182,7 @@ SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/util_msa_distance/MSADistanceAlgorithmHammingRevCompl.cpp \
            src/util_msa_distance/MSADistanceAlgorithmRegistry.cpp \
            src/util_msaedit/CreateSubalignmentTask.cpp \
+           src/util_msaedit/MsaUtilTasks.cpp \
            src/util_msaedit/color_schemes/ColorSchemeUtils.cpp \
            src/util_msaedit/color_schemes/MsaColorScheme.cpp \
            src/util_msaedit/color_schemes/MsaColorSchemeClustalX.cpp \
@@ -208,15 +211,7 @@ SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/util_weight_matrix/PWMConversionAlgorithmNLG.cpp \
            src/util_weight_matrix/PWMConversionAlgorithmRegistry.cpp \
            src/util_gpu/opencl/OpenCLHelper.cpp \
-           src/util_gpu/opencl/OpenCLUtils.cpp \
-    src/util_msaedit/MsaUtilTasks.cpp
+           src/util_gpu/opencl/OpenCLUtils.cpp
+
 RESOURCES += U2Algorithm.qrc
 TRANSLATIONS += transl/english.ts transl/russian.ts
-
-
-
-
-
-
-
-

@@ -19,12 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSAConsensusAlgorithmRegistry.h"
-
-#include "MSAConsensusAlgorithmDefault.h"
-#include "MSAConsensusAlgorithmStrict.h"
+#include "MaConsensusAlgorithmSimpleExtended.h"
 #include "MSAConsensusAlgorithmClustal.h"
+#include "MSAConsensusAlgorithmDefault.h"
 #include "MSAConsensusAlgorithmLevitsky.h"
+#include "MSAConsensusAlgorithmRegistry.h"
+#include "MSAConsensusAlgorithmStrict.h"
 
 namespace U2 {
 
@@ -33,6 +33,7 @@ MSAConsensusAlgorithmRegistry::MSAConsensusAlgorithmRegistry(QObject* p) : QObje
     addAlgorithm(new MSAConsensusAlgorithmFactoryStrict());
     addAlgorithm(new MSAConsensusAlgorithmFactoryClustal());
     addAlgorithm(new MSAConsensusAlgorithmFactoryLevitsky());
+    addAlgorithm(new MaConsensusAlgorithmFactorySimpleExtended());
 }
 
 MSAConsensusAlgorithmRegistry::~MSAConsensusAlgorithmRegistry() {
