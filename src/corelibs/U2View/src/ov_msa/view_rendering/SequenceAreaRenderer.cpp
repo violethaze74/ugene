@@ -88,9 +88,8 @@ void SequenceAreaRenderer::drawSelection(QPainter &painter) const {
         break;
     case MaEditorSequenceArea::InsertCharMode:
         painter.drawLine(selectionRect.left(), selectionRect.top(), selectionRect.left(), selectionRect.bottom());
+        break;
     }
-
-    painter.drawRect(selectionRect);
 }
 
 void SequenceAreaRenderer::drawFocus(QPainter &painter) const {
