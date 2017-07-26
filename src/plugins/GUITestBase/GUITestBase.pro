@@ -172,7 +172,9 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsWorkflowDesigner.h \
             src/GTUtilsStartPage.h \
 #   Tests
-            src/tests/GUIInitialChecks.h \
+            src/tests/PosteriorActions.h \
+            src/tests/PosteriorChecks.h \
+            src/tests/PreliminaryActions.h \
 #   Tests/Regression Scenarios
             src/tests/regression_scenarios/GTTestsRegressionScenarios_1_1000.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_1001_2000.h \
@@ -418,7 +420,9 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsWorkflowDesigner.cpp \
             src/GTUtilsStartPage.cpp \
 #   Tests
-            src/tests/GUIInitialChecks.cpp \
+            src/tests/PreliminaryActions.cpp \
+            src/tests/PosteriorActions.cpp \
+            src/tests/PosteriorChecks.cpp \
 #   Tests/Regression Scenarios
             src/tests/regression_scenarios/GTTestsRegressionScenarios_1001_2000.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_1_1000.cpp \

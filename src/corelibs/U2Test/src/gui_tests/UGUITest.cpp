@@ -26,7 +26,9 @@
 #include <QScreen>
 
 #include <core/GUITestOpStatus.h>
+#include <system/GTFile.h>
 
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
 
 #include "UGUITest.h"
@@ -100,4 +102,4 @@ const QString UGUITest::dataDir = getDataDir();
 const QString UGUITest::sandBoxDir = testDir + "_common_data/scenarios/sandbox/";
 const QString UGUITest::screenshotDir = getScreenshotDir();
 
-} // namespace
+}   // namespace U2

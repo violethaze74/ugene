@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.net
+ * http://ugene.unipro.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,31 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUITESTBASE_PLUGIN_H_
-#define _U2_GUITESTBASE_PLUGIN_H_
+#ifndef _U2_POSTERIOR_ACTIONS_H_
+#define _U2_POSTERIOR_ACTIONS_H_
 
-#include <U2Core/PluginModel.h>
-#include "test_runner/GUITestRunner.h"
-#include <QAction>
+#include <U2Test/UGUITest.h>
 
 namespace U2 {
+namespace GUITest_posterior_actions {
 
-class UGUITestBase;
+#define POSTERIOR_ACTION_DECLARATION(className) GUI_TEST_CLASS_DECLARATION(className)
+#define POSTERIOR_ACTION_DEFINITION(className) GUI_TEST_CLASS_DEFINITION(className)
 
-class GUITestBasePlugin : public Plugin {
-    Q_OBJECT
-public:
-    GUITestBasePlugin();
-private slots:
-    void sl_showWindow();
-private:
-    void registerTests(UGUITestBase *guiTestBase);
-    void registerAdditionalActions(UGUITestBase *guiTestBase);
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_posterior_actions"
 
-    QAction*        openGUITestRunnerAction;
-    GUITestRunner*  view;
-};
+POSTERIOR_ACTION_DECLARATION(post_action_0000)
+POSTERIOR_ACTION_DECLARATION(post_action_0001)
+POSTERIOR_ACTION_DECLARATION(post_action_0002)
+POSTERIOR_ACTION_DECLARATION(post_action_0003)
+POSTERIOR_ACTION_DECLARATION(post_action_0004)
 
-} //namespace
+#undef GUI_TEST_SUITE
 
-#endif
+}   // namespace GUITest_posterior_actions
+}   // namespace U2
+
+#endif // _U2_POSTERIOR_ACTIONS_H_

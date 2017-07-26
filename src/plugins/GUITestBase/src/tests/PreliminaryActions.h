@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.net
+ * http://ugene.unipro.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,16 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUI_INITIAL_CHECKS_H_
-#define _U2_GUI_INITIAL_CHECKS_H_
+#ifndef _U2_PRELIMINARY_ACTIONS_H_
+#define _U2_PRELIMINARY_ACTIONS_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <U2Test/UGUITest.h>
 
 namespace U2 {
+namespace GUITest_preliminary_actions {
 
-namespace GUITest_initial_checks {
+#define PRELIMINARY_ACTION_DECLARATION(className) GUI_TEST_CLASS_DECLARATION(className)
+#define PRELIMINARY_ACTION_DEFINITION(className) GUI_TEST_CLASS_DEFINITION(className)
+
 #undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_initial_checks"
+#define GUI_TEST_SUITE "GUITest_preliminary_actions"
 
 // 'Pre action' do some actions that are needed to prepare UGENE for testing
 GUI_TEST_CLASS_DECLARATION(pre_action_0000)
@@ -37,21 +40,10 @@ GUI_TEST_CLASS_DECLARATION(pre_action_0002)
 GUI_TEST_CLASS_DECLARATION(pre_action_0003)
 GUI_TEST_CLASS_DECLARATION(pre_action_0004)
 GUI_TEST_CLASS_DECLARATION(pre_action_0005)
-GUI_TEST_CLASS_DECLARATION(pre_action_0006)
-
-// 'Post check' checks UGENE state after test finish and can set error
-GUI_TEST_CLASS_DECLARATION(post_check_0000)
-GUI_TEST_CLASS_DECLARATION(post_check_0001)
-
-// 'Post action' do some actions that are needed to close UGENE after test finish
-GUI_TEST_CLASS_DECLARATION(post_action_0000)
-GUI_TEST_CLASS_DECLARATION(post_action_0001)
-GUI_TEST_CLASS_DECLARATION(post_action_0002)
-GUI_TEST_CLASS_DECLARATION(post_action_0003)
 
 #undef GUI_TEST_SUITE
-}
 
-} //namespace
+}   // namespace GUITest_preliminary_actions
+}   // namespace U2
 
-#endif
+#endif // _U2_PRELIMINARY_ACTIONS_H_
