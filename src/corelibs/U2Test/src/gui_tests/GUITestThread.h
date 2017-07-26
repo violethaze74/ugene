@@ -54,7 +54,7 @@ private:
     void clearSandbox();
     static void removeDir(const QString &dirName);
     void saveScreenshot();
-    static void cleanup();
+    void cleanup();
     void writeTestResult();
     void saveMemoryInfo();
     int countMemForProcessTree(int pid);

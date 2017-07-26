@@ -215,6 +215,7 @@ void GUITestThread::saveScreenshot() {
 }
 
 void GUITestThread::cleanup() {
+    test->cleanup();
     foreach (HI::GUITest *postAction, postActions()) {
         HI::GUITestOpStatus os;
         try {
