@@ -109,12 +109,14 @@ QAction *McaEditorWgt::getClearSelectionAction() const {
 }
 
 void McaEditorWgt::initActions() {
+    MaEditorWgt::initActions();
+
     clearSelectionAction = new QAction(tr("Clear selection"), this);
     clearSelectionAction->setShortcut(Qt::Key_Escape);
     connect(clearSelectionAction, SIGNAL(triggered()), SIGNAL(si_clearSelection()));
     addAction(clearSelectionAction);
 
-    MaEditorWgt::initActions();
+    delSelectionAction->setText(tr("Remove character/gap"));
 }
 
 void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {

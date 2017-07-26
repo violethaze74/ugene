@@ -43,6 +43,9 @@ McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
 {
     connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
 
+    editSequenceNameAction->setText(tr("Rename read"));
+    removeSequenceAction->setText(tr("Remove read"));
+
     setMinimumWidth(getMinimumWidgetWidth());
 }
 
