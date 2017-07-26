@@ -179,16 +179,21 @@ QWidget* McaEditor::createWidget() {
 }
 
 void McaEditor::initActions() {
+    MaEditor::initActions();
+
+    zoomInAction->setText(tr("Zoom in"));
     zoomInAction->setShortcut(QKeySequence::ZoomIn);
     ui->addAction(zoomInAction);
 
+    zoomOutAction->setText(tr("Zoom out"));
     zoomOutAction->setShortcut(QKeySequence::ZoomOut);
     ui->addAction(zoomOutAction);
 
+    resetZoomAction->setText(tr("Reset zoom"));
     resetZoomAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0));
     ui->addAction(resetZoomAction);
 
-    showChromatogramsAction = new QAction(QIcon(":/core/images/graphs.png"), tr("Show/hide chromatogram(s)"), this);
+    showChromatogramsAction = new QAction(QIcon(":/core/images/graphs.png"), tr("Show/hide chromatograms"), this);
     showChromatogramsAction->setObjectName("chromatograms");
     showChromatogramsAction->setCheckable(true);
     showChromatogramsAction->setChecked(true);
@@ -203,7 +208,8 @@ void McaEditor::initActions() {
     connect(showConsensusTabAction, SIGNAL(triggered()), SLOT(sl_showConsensusTab()));
     ui->addAction(showConsensusTabAction);
 
-    MaEditor::initActions();
+    showOverviewAction->setText(tr("Show overview"));
+    changeFontAction->setText(tr("Change characters font"));
 }
 
 void McaEditor::addAlignmentMenu(QMenu *menu) {

@@ -69,18 +69,19 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
     traceActionsMenu->addSeparator();
     traceActionsMenu->addAction(showAllTraces);
 
-    insertAction = new QAction(tr("Add insertion"), this); // 5491_TODO: the text should be meaningfull
-    insertAction->setObjectName("add_insertion");
+    insertAction = new QAction(tr("Insert character/gap"), this);
     insertAction->setShortcut(Qt::SHIFT + Qt::Key_I);
     connect(insertAction, SIGNAL(triggered()), SLOT(sl_addInsertion()));
     addAction(insertAction);
+
+    replaceCharacterAction->setText(tr("Replace character/gap"));
 
     removeGapBeforeSelectionAction = new QAction(tr("Shift characters left"), this);
     removeGapBeforeSelectionAction->setShortcut(Qt::Key_Backspace);
     connect(removeGapBeforeSelectionAction, SIGNAL(triggered()), SLOT(sl_removeGapBeforeSelection()));
     addAction(removeGapBeforeSelectionAction);
 
-    removeColumnsOfGapsAction = new QAction(tr("Remove columns of gaps"), this);
+    removeColumnsOfGapsAction = new QAction(tr("Remove all columns of gaps"), this);
     removeColumnsOfGapsAction->setObjectName("remove_columns_of_gaps");
     removeColumnsOfGapsAction->setShortcut(Qt::SHIFT + Qt::Key_Delete);
     connect(removeColumnsOfGapsAction, SIGNAL(triggered()), SLOT(sl_removeColumnsOfGaps()));
