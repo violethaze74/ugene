@@ -189,7 +189,7 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
             ti.setError(U2::PDBFormat::tr("Line is too long"));
             return;
         }
-        currentPDBLine = QString(QByteArray::fromRawData(buf, len));
+        currentPDBLine = QString(QByteArray(buf, len));
 
         ti.setProgress(io->getProgress() * 0.8);
 
@@ -562,7 +562,6 @@ QByteArray PDBFormat::PDBParser::getNextSpecLine()
     char* buf = readBuf.data();
     bool lineOk;
     int len = io->readUntil(buf, DocumentFormat::READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
-    QByteArray line = QByteArray::fromRawData(buf, len);
     // retrieve back ioAdapter position
     io->skip(-len);
     return readBuf;

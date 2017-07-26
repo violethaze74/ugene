@@ -104,7 +104,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
             break;
         }
 
-        QByteArray line = QByteArray::fromRawData( buff, len );
+        QByteArray line = QByteArray(buff, len);
         if (valStartPos == 0) {
             int spaceIdx = line.indexOf(' ');
             int valIdx = spaceIdx + 1;
@@ -267,7 +267,7 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
                 line = line.left(MAX_NAME_LEN);
             }
             TextUtils::replace(line.data(), line.length(), TextUtils::WHITES, '_');
-            line.append(QByteArray::fromRawData(spaces, seqStart - line.length()));
+            line.append(QByteArray(spaces, seqStart - line.length()));
             line.append(*si);
             line.append(' ');
             line.append(QString::number(qMin(i+seqPerPage, aliLen)));
@@ -281,7 +281,7 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
             }
         }
         //write consensus
-        QByteArray line = QByteArray::fromRawData(spaces, seqStart);
+        QByteArray line = QByteArray(spaces, seqStart);
         line.append(consensus.mid(i, partLen));
         line.append("\n\n");
         len = io->writeBlock(line);

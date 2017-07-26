@@ -189,7 +189,7 @@ Document* SAMFormat::loadDocument(IOAdapter* /* io */, const U2DbiRef& /* dbiRef
 
     //int len = 0;
     //while(!os.isCoR() && (len = io->readLine(buff, READ_BUFF_SIZE, &lineOk)) > 0) {
-    //    QByteArray line = QByteArray::fromRawData( buff, len );
+    //    QByteArray line = QByteArray( buff, len );
 
     //    if(line.startsWith(SAM_SECTION_START)) { //Parse sections
 
@@ -198,7 +198,7 @@ Document* SAMFormat::loadDocument(IOAdapter* /* io */, const U2DbiRef& /* dbiRef
     //        if(getSectionTags(line, SECTION_SEQUENCE, tags)) { //Parse sequence section
     //            foreach(QByteArray tag, tags) {
     //                if(tag.startsWith(TAG_SEQUENCE_NAME)) { // Set alignment name
-    //                    QString maName = QByteArray::fromRawData(tag.constData() + 3, tag.length() - 3);
+    //                    QString maName = QByteArray(tag.constData() + 3, tag.length() - 3);
     //                    MultipleSequenceAlignment ma;
     //                    ma.setName(maName);
     //                    maMap[maName] = ma;
@@ -207,7 +207,7 @@ Document* SAMFormat::loadDocument(IOAdapter* /* io */, const U2DbiRef& /* dbiRef
     //        } else if(getSectionTags(line, SECTION_HEADER, tags)) { //Parse header section
     //            foreach(QByteArray tag, tags) {
     //                if(tag.startsWith(TAG_VERSION)) { //Check file format version
-    //                    QByteArray versionStr = QByteArray::fromRawData(tag.constData() + 3, tag.length() - 3);
+    //                    QByteArray versionStr = QByteArray(tag.constData() + 3, tag.length() - 3);
     //                    QList<QByteArray> version = versionStr.split('.');
     //                    if (version[0].toInt() != 1 && version[1].toInt() > 3) {
     //                        os.setError(SAMFormat::tr("Unsupported file version \"%1\"").arg(QString(versionStr)));
@@ -230,7 +230,7 @@ Document* SAMFormat::loadDocument(IOAdapter* /* io */, const U2DbiRef& /* dbiRef
     //    char lastTerminator = lineOk ? '\n' : 0;
 
     //    while(readFieldsCount < 11 && (len = io->readUntil(buff, READ_BUFF_SIZE, terminators, IOAdapter::Term_Include, &lineOk)) > 0) {
-    //        QByteArray addline = QByteArray::fromRawData( buff, len - 1 ).simplified();
+    //        QByteArray addline = QByteArray( buff, len - 1 ).simplified();
     //        fieldValues[readFieldsCount - 1].append(addline);
     //        lastTerminator = buff[len-1];
     //        if(lineOk)
@@ -246,7 +246,7 @@ Document* SAMFormat::loadDocument(IOAdapter* /* io */, const U2DbiRef& /* dbiRef
     //                if(!lineOk) {
     //                    len++;
     //                }
-    //                QByteArray addline = QByteArray::fromRawData( buff, len - 1).simplified();
+    //                QByteArray addline = QByteArray( buff, len - 1).simplified();
     //                if(merge) {
     //                    fieldValues[readFieldsCount - 1].append(addline);
     //                } else {
@@ -412,7 +412,7 @@ void SAMFormat::storeEntry(IOAdapter * /* io */, const QMap< GObjectType, QList<
 bool SAMFormat::getSectionTags( QByteArray &line, const QByteArray &sectionName, QList<QByteArray> &tags )
 {
     if(!line.startsWith(sectionName)) return false;
-    QByteArray tagsLine = QByteArray::fromRawData(line.constData() + 3, line.length() - 3);
+    QByteArray tagsLine = QByteArray(line.constData() + 3, line.length() - 3);
     tags = tagsLine.split(SPACE);
     tags.removeAll("");
     return true;

@@ -246,7 +246,7 @@ static inline void parseConsensus(U2::IOAdapter *io, U2OpStatus &ti, char* buff,
         ti.setProgress(io->getProgress());
     } while (!ti.isCoR() && !ok);
     len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &ok);
-    line = QString(QByteArray::fromRawData(buff, len)).trimmed();
+    line = QString(QByteArray(buff, len)).trimmed();
     if(!line.startsWith("BQ")){
         ti.setError(ACEFormat::tr("BQ keyword hasn't been found"));
         return ;
@@ -273,7 +273,7 @@ static inline void parseAFTag(U2::IOAdapter *io, U2OpStatus &ti, char* buff, int
             if(ti.hasError()){
                 return;
             }
-            readLine = QString(QByteArray::fromRawData(buff, len)).trimmed();
+            readLine = QString(QByteArray(buff, len)).trimmed();
         }while (!readLine.startsWith("AF"));
 
         name = getName(readLine);
@@ -323,7 +323,7 @@ static inline void parseRDandQATag(U2::IOAdapter *io, U2OpStatus &ti, char* buff
         if(ti.hasError()){
             return;
         }
-        line = QString(QByteArray::fromRawData(buff, len)).trimmed();
+        line = QString(QByteArray(buff, len)).trimmed();
     }while (!line.startsWith("RD"));
 
     name = getName(line);
@@ -345,7 +345,7 @@ static inline void parseRDandQATag(U2::IOAdapter *io, U2OpStatus &ti, char* buff
         ti.setProgress(io->getProgress());
     } while (!ti.isCoR() && !ok);
     len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &ok);
-    line = QString(QByteArray::fromRawData(buff, len)).trimmed();
+    line = QString(QByteArray(buff, len)).trimmed();
     if(!line.startsWith("QA")){
         ti.setError(ACEFormat::tr("QA keyword hasn't been found"));
         return ;
@@ -418,7 +418,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
     if(os.hasError()){
         return;
     }
-    QString headerLine = QString(QByteArray::fromRawData(buff, len)).trimmed();
+    QString headerLine = QString(QByteArray(buff, len)).trimmed();
 
     if (!headerLine.startsWith(AS)) {
         os.setError(ACEFormat::tr("First line is not an ace header"));
@@ -438,7 +438,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
             if(os.hasError()){
                 return;
             }
-            headerLine = QString(QByteArray::fromRawData(buff, len)).trimmed();
+            headerLine = QString(QByteArray(buff, len)).trimmed();
             if (!headerLine.startsWith(CO)) {
                 os.setError(ACEFormat::tr("Must be CO keyword"));
                 return ;
@@ -449,7 +449,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
                 if(os.hasError()){
                     return;
                 }
-                headerLine = QString(QByteArray::fromRawData(buff, len)).trimmed();
+                headerLine = QString(QByteArray(buff, len)).trimmed();
             }while (!headerLine.startsWith(CO));
         }
         count = readsCount(headerLine);
