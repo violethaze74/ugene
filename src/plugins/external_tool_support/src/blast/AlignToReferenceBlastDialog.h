@@ -94,7 +94,6 @@ private slots:
     void sl_addRead();
     void sl_removeRead();
     void sl_referenceChanged(const QString &);
-
 private:
     void initSaveController();
     void connectSlots();
@@ -104,7 +103,6 @@ private:
     AlignToReferenceBlastCmdlineTask::Settings settings;
     U2SavableWidget savableWidget;
 
-    static QStringList lastUsedReadsUrls;
     static const QString defaultOutputName;
 };
 
