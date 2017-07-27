@@ -69,6 +69,8 @@ public:
     void replaceRegion(const U2Region& region, const DNASequence& seq, U2OpStatus& os);
     void replaceRegion(const U2DataId &masterId, const U2Region &region, const DNASequence &seq, U2OpStatus &os);
 
+    void removeRegion(U2OpStatus &os, const U2Region &region);
+
     GObject* clone(const U2DbiRef& ref, U2OpStatus& os, const QVariantMap &hints = QVariantMap()) const;
 
     bool checkConstraints(const GObjectConstraints* c) const;

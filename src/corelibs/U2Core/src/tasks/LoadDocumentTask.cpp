@@ -267,20 +267,23 @@ void LoadDocumentTask::init() {
     }
 }
 
-LoadDocumentTask * LoadDocumentTask::getDefaultLoadDocTask(const GUrl &url, const QVariantMap &hints) {
-    if( url.isEmpty() ) {
-        return NULL;
-    }
-    IOAdapterFactory * iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById( IOAdapterUtils::url2io( url ) );
-    if ( iof == NULL ) {
-        return NULL;
-    }
+LoadDocumentTask *LoadDocumentTask::getDefaultLoadDocTask(const GUrl &url, const QVariantMap &hints) {
+    U2OpStatusImpl os;
+    return getDefaultLoadDocTask(os, url, hints);
+}
+
+LoadDocumentTask *LoadDocumentTask::getDefaultLoadDocTask(U2OpStatus &os, const GUrl &url, const QVariantMap &hints) {
+    CHECK_EXT(!url.isEmpty(), os.setError(tr("The fileURL  to load is empty")), NULL);
+
+    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    CHECK_EXT(NULL != iof, os.setError(tr("Cannot get an IO file adapter factory for the file URL: %1").arg(url.getURLString())), NULL);
+
     QList<FormatDetectionResult> dfs = DocumentUtils::detectFormat(url);
-    if( dfs.isEmpty() ) {
-        return NULL;
-    }
-    DocumentFormat * df = dfs.first().format;
-    return new LoadDocumentTask( df->getFormatId(), url, iof, hints );
+    CHECK_EXT(!dfs.isEmpty(), os.setError(tr("Cannot detect the file format: %1").arg(url.getURLString())), NULL);
+
+    DocumentFormat *df = dfs.first().format;
+    SAFE_POINT_EXT(NULL != df, os.setError(tr("Document format is NULL (format ID: '%1', file URL: '%2')").arg(df->getFormatId()).arg(url.getURLString())), NULL);
+    return new LoadDocumentTask(df->getFormatId(), url, iof, hints);
 }
 
 DocumentProviderTask * LoadDocumentTask::getCommonLoadDocTask( const GUrl & url ) {

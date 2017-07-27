@@ -66,7 +66,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="outputGroupBox">
      <property name="title">
       <string>Output path</string>
      </property>
@@ -167,7 +167,7 @@
   <zorder>dbSelectorWidget</zorder>
   <zorder>groupBox</zorder>
   <zorder>addToProjectBox</zorder>
-  <zorder>groupBox</zorder>
+  <zorder>outputGroupBox</zorder>
  </widget>
  <resources/>
  <connections>

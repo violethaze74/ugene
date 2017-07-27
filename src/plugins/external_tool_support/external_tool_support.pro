@@ -17,8 +17,10 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/bigWigTools/BedGraphToBigWigTask.h \
            src/bigWigTools/BedGraphToBigWigWorker.h \
            src/blast/align_worker_subtasks/BlastReadsSubTask.h \
-           src/blast/align_worker_subtasks/FormatDBSubTask.h \
            src/blast/align_worker_subtasks/ComposeResultSubTask.h \
+           src/blast/align_worker_subtasks/FormatDBSubTask.h \
+           src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.h \
+           src/blast/align_worker_subtasks/RemoveGapsFromSequenceTask.h \
            src/blast/AlignToReferenceBlastDialog.h \
            src/blast/AlignToReferenceBlastWorker.h \
            src/blast/BlastAllSupport.h \
@@ -230,8 +232,10 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/bigWigTools/BedGraphToBigWigTask.cpp \
            src/bigWigTools/BedGraphToBigWigWorker.cpp \
            src/blast/align_worker_subtasks/BlastReadsSubTask.cpp \
-           src/blast/align_worker_subtasks/FormatDBSubTask.cpp \
            src/blast/align_worker_subtasks/ComposeResultSubTask.cpp \
+           src/blast/align_worker_subtasks/FormatDBSubTask.cpp \
+           src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp \
+           src/blast/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp \
            src/blast/AlignToReferenceBlastDialog.cpp \
            src/blast/AlignToReferenceBlastWorker.cpp \
            src/blast/BlastAllSupport.cpp \

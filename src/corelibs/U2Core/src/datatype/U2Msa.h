@@ -54,6 +54,8 @@ public:
 
     U2MsaGap intersect(const U2MsaGap &anotherGap) const;
 
+    operator U2Region() const;
+
     /** Offset of the gap in sequence*/
     qint64 offset;
 
