@@ -67,14 +67,15 @@ McaEditorWgt *McaEditor::getUI() const {
 }
 
 void McaEditor::buildStaticToolbar(QToolBar* tb) {
+    tb->addAction(showChromatogramsAction);
+    tb->addAction(showOverviewAction);
+    tb->addSeparator();
+
     tb->addAction(zoomInAction);
     tb->addAction(zoomOutAction);
     tb->addAction(zoomToSelectionAction);
     tb->addAction(resetZoomAction);
-
-    tb->addAction(showOverviewAction);
-    tb->addAction(showChromatogramsAction);
-    tb->addAction(changeFontAction);
+    tb->addSeparator();
 
     GObjectView::buildStaticToolbar(tb);
 }

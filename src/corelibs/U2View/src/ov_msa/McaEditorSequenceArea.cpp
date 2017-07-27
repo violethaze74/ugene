@@ -35,6 +35,7 @@
 #include "helpers/MaAmbiguousCharactersController.h"
 #include "helpers/ScrollController.h"
 #include "helpers/RowHeightController.h"
+#include "ov_msa/McaEditorConsensusArea.h"
 #include "ov_sequence/SequenceObjectContext.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
@@ -59,6 +60,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
 
     showAllTraces = new QAction(tr("Show all"), this);
     connect(showAllTraces, SIGNAL(triggered()), SLOT(sl_showAllTraces()));
+    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView *, QToolBar *)), SLOT(sl_buildStaticToolbar(GObjectView *, QToolBar *)));
 
     traceActionsMenu = new QMenu(tr("Show/hide trace"), this);
     traceActionsMenu->setObjectName("traceActionsMenu");
@@ -247,28 +249,22 @@ void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
     sl_completeUpdate();
 }
 
-void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
-    QToolButton* button = new QToolButton();
-    button->setMenu(traceActionsMenu);
-    button->setIcon(QIcon(":chroma_view/images/traces.png"));
-    button->setPopupMode(QToolButton::InstantPopup);
-    t->addWidget(button);
-    t->addSeparator();
-
+void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     if (scaleAction != NULL) {
         t->addAction(scaleAction);
     } else {
         scaleAction = t->addWidget(scaleBar);
     }
-    t->addSeparator();
-
-    t->addAction(ui->getUndoAction());
-    t->addAction(ui->getRedoAction());
 
     t->addSeparator();
-
     t->addAction(ambiguousCharactersController->getPreviousAction());
     t->addAction(ambiguousCharactersController->getNextAction());
+    McaEditorConsensusArea* consensusArea = getEditor()->getUI()->getConsensusArea();
+    consensusArea->buildStaticToolbar(t);
+
+    t->addSeparator();
+    t->addAction(ui->getUndoAction());
+    t->addAction(ui->getRedoAction());
 }
 
 void McaEditorSequenceArea::sl_addInsertion() {

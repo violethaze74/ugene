@@ -53,7 +53,7 @@ McaEditorConsensusArea::McaEditorConsensusArea(McaEditorWgt *ui)
     setupFontAndHeight();
 }
 
-void McaEditorConsensusArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
+void McaEditorConsensusArea::buildStaticToolbar(QToolBar *t) {
     t->addAction(mismatchController->getPrevMismatchAction());
     t->addAction(mismatchController->getNextMismatchAction());
 }
