@@ -40,9 +40,9 @@ public:
     McaEditorConsensusArea(McaEditorWgt* ui);
 
     MaConsensusMismatchController* getMismatchController() { return mismatchController; }
+    void buildStaticToolbar(QToolBar* tb);
 
 private:
-    void sl_buildStaticToolbar(GObjectView* v, QToolBar* tb);
     void initRenderer();
     bool highlightConsensusChar(int pos);
 
