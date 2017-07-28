@@ -233,9 +233,10 @@ void MSAEditorSequenceArea::updateActions() {
 //Update actions of "Edit" group
     bool canEditAlignment = !readOnly && !isAlignmentEmpty();
     bool canEditSelectedArea = canEditAlignment && !selection.isNull();
+    const bool isEditing = (maMode != ViewMode);
     ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
 
-    fillWithGapsinsSymAction->setEnabled(canEditSelectedArea);
+    fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && !isEditing);
     bool oneCharacterIsSelected = selection.width() == 1 && selection.height() == 1;
     replaceCharacterAction->setEnabled(canEditSelectedArea && oneCharacterIsSelected);
     delColAction->setEnabled(canEditAlignment);

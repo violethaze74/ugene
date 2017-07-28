@@ -99,10 +99,11 @@ private:
     QAction* createToggleTraceAction(const QString& actionName);
 
     void insertChar(char newCharacter);
+    bool isCharacterAcceptable(const QString &text) const;
+    const QString &getInacceptableCharacterErrorMessage() const;
 
     McaEditorWgt *getMcaEditorWgt() const;
 
-private:
     ChromatogramViewSettings    settings;
     MaAmbiguousCharactersController *ambiguousCharactersController;
 
