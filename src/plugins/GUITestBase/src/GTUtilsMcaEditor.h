@@ -19,33 +19,24 @@
 * MA 02110-1301, USA.
 */
 
-#ifndef GTTESTSMCAEDITOR_H
-#define GTTESTSMCAEDITOR_H
+#ifndef _U2_GT_UTILS_MCA_EDITOR_H_
+#define _U2_GT_UTILS_MCA_EDITOR_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <QColor>
+#include <QRect>
+#include <GTGlobals.h>
 
 namespace U2 {
+    class McaEditorSequenceArea;
+    class U2McaRow;
 
-namespace GUITest_common_scenarios_mca_editor {
-#undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_common_scenarios_mca_editor"
+    class GTUtilsMcaEditor {
+    public:
+        static McaEditorSequenceArea * getSequenceArea(HI::GUITestOpStatus &os);
+        static int getRowsQuantity(HI::GUITestOpStatus &os);
+        static QList<QString> getRowNames(HI::GUITestOpStatus &os);
+    };
 
-GUI_TEST_CLASS_DECLARATION(test_0001)
-GUI_TEST_CLASS_DECLARATION(test_0002)
+}   // namespace U2
 
-
-
-
-
-
-
-
-
-
-
-#undef GUI_TEST_SUITE
-}//namespace U2
-
-}//namespace
-
-#endif // GTTESTSMCAEDITOR_H
+#endif // _U2_GT_UTILS_MCA_EDITOR_H_
