@@ -45,6 +45,7 @@
 #include "tests/common_scenarios/cloning/GTTestsCloning.h"
 #include "tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h"
 #include "tests/common_scenarios/dp_view/GTTestsDpView.h"
+#include "tests/common_scenarios/mca_editor/GTTestsMcaEditor.h"
 #include "tests/common_scenarios/msa_editor/GTTestsMsaEditor.h"
 #include "tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h"
 #include "tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h"
@@ -2036,6 +2037,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0020);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0021);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0022);
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/mca_editor
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0001);
+
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/document_from_text/
     //////////////////////////////////////////////////////////////////////////
