@@ -4526,7 +4526,7 @@ GUI_TEST_CLASS_DEFINITION(test_3697){
     GTUtilsDialog::waitForDialog(os, new EditConnectionDialogFiller(os, params2, EditConnectionDialogFiller::MANUAL));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Connect to UGENE shared database...");
 
-    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, "Ok"));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new MessageBoxDialogFiller(os, "Ok"));
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addElement(os, "Read Alignment");
     GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
@@ -4652,7 +4652,7 @@ GUI_TEST_CLASS_DEFINITION(test_3724) {
 //    4. Click right mouse button on the view.
 //    Expected state: nothing happens.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new PopupChecker(os, QStringList()));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new PopupChecker(os, QStringList()));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 }

@@ -58,8 +58,10 @@ win32-msvc2013 {
     DEFINES += NOMINMAX _XKEYCHECK_H
 }
 
-!win32-msvc2015 {
-	DEFINES += "inline=__inline" 
+win32 {
+    !win32-msvc2015 {
+        DEFINES += "inline=__inline" 
+    }
 }
 
 #unix {

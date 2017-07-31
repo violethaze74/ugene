@@ -26,9 +26,11 @@ win32-msvc2013 {
     LIBS += -L../../_release -lzlib
 }
 
-# not visual studio 2015
-!win32-msvc2015 {
-	DEFINES += "inline=__inline" 
+win32 {
+    # not visual studio 2015
+    !win32-msvc2015 {
+        DEFINES += "inline=__inline" 
+    }
 }
 
 !debug_and_release|build_pass {

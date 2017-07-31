@@ -9,9 +9,11 @@ include( ../../ugene_plugin_common.pri )
 DEFINES+="_FILE_OFFSET_BITS=64" _LARGEFILE64_SOURCE _USE_KNETFILE
 win32 : DEFINES += _USE_MATH_DEFINES "__func__=__FUNCTION__" "R_OK=4" "atoll=_atoi64" "alloca=_alloca"
 
-# not visual studio 2015
-!win32-msvc2015 {
-	DEFINES += "inline=__inline" 
+win32 {
+    # not visual studio 2015
+    !win32-msvc2015 {
+        DEFINES += "inline=__inline" 
+    }
 }
 
 use_bundled_zlib() {

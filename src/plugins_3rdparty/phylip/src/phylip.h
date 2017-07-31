@@ -267,9 +267,12 @@ typedef unsigned char boolean;
 
 #ifdef _MSC_VER
 #  if _MSC_VER < 1900
-#		define true    1
-#		define false   0
+#    define true    1
+#    define false   0
 #  endif
+#else
+#  define true    1
+#  define false   0
 #endif
 
 
