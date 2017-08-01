@@ -19,13 +19,7 @@
 * MA 02110-1301, USA.
 */
 
-#include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
-#include <primitives/GTToolbar.h>
-#include <primitives/PopupChooser.h>
-#include <system/GTClipboard.h>
-#include <utils/GTKeyboardUtils.h>
-#include <utils/GTThread.h>
 
 #include <U2Core/U2SafePoints.h>
 
@@ -33,25 +27,14 @@
 
 #include <U2Core/McaDbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2View/BaseWidthController.h>
-#include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MaEditorNameList.h>
-#include <U2View/MsaEditorOverviewArea.h>
-#include <U2View/MaGraphOverview.h>
-#include <U2View/MaSimpleOverview.h>
 #include <U2View/McaEditorSequenceArea.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsMcaEditor.h"
-#include "GTUtilsMsaEditorSequenceArea.h"
-#include "GTUtilsOptionPanelMSA.h"
-#include "GTUtilsProjectTreeView.h"
-#include "api/GTMSAEditorStatusWidget.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
+#include "GTUtilsMcaEditorSequenceArea.h"
 
 namespace U2 {
-    using namespace HI;
-
 #define GT_CLASS_NAME "GTUtilsMcaEditor"
 
 #define GT_METHOD_NAME "getSequenceNameRect"
@@ -81,7 +64,57 @@ QList<QString> GTUtilsMcaEditor::getRowNames(HI::GUITestOpStatus &os) {
     const MultipleChromatogramAlignment mca = ref->getEditor()->getMaObject()->getMca();
     return mca->getRowNames();
 }
+#undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "clickReadName"
+void GTUtilsMcaEditor::clickReadName(HI::GUITestOpStatus &os, const QString &readName, Qt::MouseButton mouseButton) {
+    moveToReadName(os, readName);
+    GTMouseDriver::click(mouseButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getNameListArea"
+MaEditorNameList * GTUtilsMcaEditor::getNameListArea(GUITestOpStatus &os) {
+    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
+    CHECK_OP(os, NULL);
+
+    MaEditorNameList *result = GTWidget::findExactWidget<MaEditorNameList*>(os, "msa_editor_name_list", activeWindow);
+    GT_CHECK_RESULT(NULL != result, "MaGraphOverview is not found", NULL);
+    return result;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getReadNameRect"
+QRect GTUtilsMcaEditor::getReadNameRect(GUITestOpStatus &os, const QString &readName) {
+    MaEditorNameList *nameList = getNameListArea(os);
+    GT_CHECK_RESULT(NULL != nameList, "McaEditorNameList not found", QRect());
+
+    const QStringList names = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
+    const int rowNumber = names.indexOf(readName);
+    GT_CHECK_RESULT(0 <= rowNumber, QString("Read '%1' not found").arg(readName), QRect());
+    return getReadNameRect(os, rowNumber);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getRedNameRect"
+QRect GTUtilsMcaEditor::getReadNameRect(GUITestOpStatus &os, int rowNumber) {
+    Q_UNUSED(os);
+    GT_CHECK_RESULT(0 <= rowNumber, QString("Read '%1' not found").arg(rowNumber), QRect());
+
+    MaEditorNameList *nameList = getNameListArea(os);
+    GT_CHECK_RESULT(NULL != nameList, "McaEditorNameList not found", QRect());
+
+    const int rowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, rowNumber);
+
+    return QRect(nameList->mapToGlobal(QPoint(0, rowHeight * rowNumber)), nameList->mapToGlobal(QPoint(nameList->width(), rowHeight * (rowNumber + 1))));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "moveToReadName"
+void GTUtilsMcaEditor::moveToReadName(GUITestOpStatus &os, const QString &readName) {
+    const QRect sequenceNameRect = getReadNameRect(os, readName);
+    GTMouseDriver::moveTo(sequenceNameRect.center());
+}
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME

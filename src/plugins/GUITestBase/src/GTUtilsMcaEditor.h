@@ -27,15 +27,22 @@
 #include <GTGlobals.h>
 
 namespace U2 {
+    using namespace HI;
+    class MaEditorNameList;
     class McaEditorSequenceArea;
     class U2McaRow;
 
     class GTUtilsMcaEditor {
     public:
-        static McaEditorSequenceArea * getSequenceArea(HI::GUITestOpStatus &os);
-        static int getRowsQuantity(HI::GUITestOpStatus &os);
-        static QList<QString> getRowNames(HI::GUITestOpStatus &os);
-    };
+        static McaEditorSequenceArea * getSequenceArea(GUITestOpStatus &os);
+        static int getRowsQuantity(GUITestOpStatus &os);
+        static QList<QString> getRowNames(GUITestOpStatus &os);
+        static void clickReadName(HI::GUITestOpStatus &os, const QString &sequenceName, Qt::MouseButton mouseButton = Qt::LeftButton);
+        static MaEditorNameList* GTUtilsMcaEditor::getNameListArea(GUITestOpStatus &os);
+        static QRect getReadNameRect(GUITestOpStatus &os, const QString &readName);
+        static QRect getReadNameRect(GUITestOpStatus &os, int rowNumber);
+        static void moveToReadName(GUITestOpStatus &os, const QString &readName);
+};
 
 }   // namespace U2
 
