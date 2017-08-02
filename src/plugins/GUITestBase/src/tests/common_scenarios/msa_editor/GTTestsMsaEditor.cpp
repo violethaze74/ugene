@@ -4446,20 +4446,6 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
     CHECK_SET_ERR(false, "The test is not implemented");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0068){
-//    Open COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-//    Press on some sequence in nameList with right button
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(-5, 2));
-//    Use context menu: {Copy->Copy current sequence}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_COPY << "Copy current sequence"));
-    GTMouseDriver::click(Qt::RightButton);
-//    Check the clipboard
-    QString clipboardText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText.startsWith("TTAGTTTATTAATTCGAGCTGAACTAGGTCAACCAGGCTAT---TTAATTGGTGACGATCAAATTTACAAT"), "unexpected clipboard text: " + clipboardText);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_0069) {
 //    Open COI.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/Chikungunya_E1.fasta");
