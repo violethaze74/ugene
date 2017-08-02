@@ -31,9 +31,11 @@
 namespace U2 {
 
 static const int MAX_FILES_COUNT = 10;
+const QString OutputFilesWidget::ID = "output files";
 
 OutputFilesWidget::OutputFilesWidget(const QWebElement &content, Dashboard *parent)
-: TableWidget(content, parent), collapsed(false)
+    : TableWidget(content, ID, parent),
+      collapsed(false)
 {
     createTable();
 
@@ -51,7 +53,7 @@ void OutputFilesWidget::sl_newOutputFile(const U2::Workflow::Monitor::FileInfo &
     if (collapsed && rows.contains(id(info))) {
         addFileMenu(info);
     } else {
-        addRow(id(info), createRowByFile(info));
+        addRow(id(info), createRowByFile(info), info.actor);
     }
 }
 

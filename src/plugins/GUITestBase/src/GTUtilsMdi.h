@@ -46,6 +46,7 @@ public:
     // fails if windowName is empty or because of FindOptions settings
     static QWidget* findWindow(HI::GUITestOpStatus &os, const QString& windowName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
 
+    static void closeActiveWindow(HI::GUITestOpStatus &os);
     static void closeWindow(HI::GUITestOpStatus &os, const QString& windowName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
     static void closeAllWindows(HI::GUITestOpStatus &os);
     static void waitWindowOpened(HI::GUITestOpStatus &os, const QString &windowNamePart, qint64 timeout = 180000);

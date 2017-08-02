@@ -30,17 +30,17 @@ namespace U2 {
 
 class GTUtilsMcaEditorSequenceArea {
 public:
-    static McaEditorSequenceArea* getSequenceArea(GUITestOpStatus &os);
-    static QStringList getVisibleNames(GUITestOpStatus &os);
-    static int getRowHeight(GUITestOpStatus &os, int rowNumber);
-    static void clickToPosition(GUITestOpStatus &os, const QPoint &globalMaPosition);
-    static void scrollToPosition(GUITestOpStatus &os, const QPoint &position);
-    static void clickCollapseTriangle(GUITestOpStatus &os, QString seqName, bool showChromatogram);
-    static bool isChromatogramShown(GUITestOpStatus &os, QString seqName);
-    static QStringList getNameList(GUITestOpStatus &os);
-    static void callContextMenu(GUITestOpStatus &os, const QPoint &innerCoords = QPoint());
-    static void moveTo(GUITestOpStatus &os, const QPoint &p);
-    static QPoint convertCoordinates(GUITestOpStatus &os, const QPoint p);
+    static McaEditorSequenceArea* getSequenceArea(HI::GUITestOpStatus &os);
+    static QStringList getVisibleNames(HI::GUITestOpStatus &os);
+    static int getRowHeight(HI::GUITestOpStatus &os, int rowNumber);
+    static void clickToPosition(HI::GUITestOpStatus &os, const QPoint &globalMaPosition);
+    static void scrollToPosition(HI::GUITestOpStatus &os, const QPoint &position);
+    static void clickCollapseTriangle(HI::GUITestOpStatus &os, QString seqName, bool showChromatogram);
+    static bool isChromatogramShown(HI::GUITestOpStatus &os, QString seqName);
+    static QStringList getNameList(HI::GUITestOpStatus &os);
+    static void callContextMenu(HI::GUITestOpStatus &os, const QPoint &innerCoords = QPoint());
+    static void moveTo(HI::GUITestOpStatus &os, const QPoint &p);
+    static QPoint convertCoordinates(HI::GUITestOpStatus &os, const QPoint p);
 };
 
 }//namespace
