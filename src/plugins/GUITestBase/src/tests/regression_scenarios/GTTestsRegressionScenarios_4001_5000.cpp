@@ -2219,10 +2219,9 @@ GUI_TEST_CLASS_DEFINITION(test_4306_1) {
 
 //    3. Use context menu on tree view.
 //    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
-    QList<QStringList> items;
-    items << (QStringList() << "Zoom In");
-    items << (QStringList() << "Zoom Out");
-    items << (QStringList() << "Reset Zooming");
+    QStringList items = QStringList() << "Zoom In"
+                                      << "Zoom Out"
+                                      << "Reset Zooming";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, items));
     GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
     GTGlobals::sleep();
@@ -2235,11 +2234,10 @@ GUI_TEST_CLASS_DEFINITION(test_4306_2) {
 
 //    2. Use context menu on the tree view.
 //    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
-    QList<QStringList> items;
-    items << (QStringList() << "Zoom In");
-    items << (QStringList() << "Zoom Out");
-    items << (QStringList() << "Reset Zooming");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, items));
+    QStringList items = QStringList() << "Zoom In"
+                                      << "Zoom Out"
+                                      << "Reset Zooming";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), items));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTGlobals::sleep();
 }
@@ -4161,14 +4159,14 @@ GUI_TEST_CLASS_DEFINITION(test_4714_1) {
     CHECK_SET_ERR(1 == sequencesCount, QString("An incorrect vount of sequences in the view: expect %1, got %2")
                   .arg(1).arg(sequencesCount));
 
-    const QList<QStringList> visibleItems = QList<QStringList>() << (QStringList() << "Edit new sequence")
-                                                                 << (QStringList() << "Edit existing sequence");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, visibleItems));
+    const QStringList visibleItems = QStringList() << "Edit new sequence"
+                                                   << "Edit existing sequence";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), visibleItems));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 
-    const QList<QStringList> invisibleItems = QList<QStringList>() << (QStringList() << "Remove edited sequence")
-                                                                   << (QStringList() << "Undo changes");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, invisibleItems, PopupChecker::CheckOptions(PopupChecker::NotExists)));
+    const QStringList invisibleItems = QStringList() << "Remove edited sequence"
+                                                     << "Undo changes";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), invisibleItems, PopupChecker::CheckOptions(PopupChecker::NotExists)));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 }
 
@@ -4201,14 +4199,14 @@ GUI_TEST_CLASS_DEFINITION(test_4714_2) {
     CHECK_SET_ERR(1 == sequencesCount, QString("An incorrect vount of sequences in the view: expect %1, got %2")
                   .arg(1).arg(sequencesCount));
 
-    const QList<QStringList> visibleItems = QList<QStringList>() << (QStringList() << "Edit new sequence")
-                                                                 << (QStringList() << "Edit existing sequence");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, visibleItems));
+    const QStringList visibleItems = QStringList() << "Edit new sequence"
+                                                   << "Edit existing sequence";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), visibleItems));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 
-    const QList<QStringList> invisibleItems = QList<QStringList>() << (QStringList() << "Remove edited sequence")
-                                                                   << (QStringList() << "Undo changes");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, invisibleItems, PopupChecker::CheckOptions(PopupChecker::NotExists)));
+    const QStringList invisibleItems = QStringList() << "Remove edited sequence"
+                                                     << "Undo changes";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), invisibleItems, PopupChecker::CheckOptions(PopupChecker::NotExists)));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 }
 
