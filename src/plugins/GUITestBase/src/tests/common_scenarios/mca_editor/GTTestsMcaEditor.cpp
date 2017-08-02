@@ -927,18 +927,9 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
 
     //7. Push "Show/Hide Trace"combo from main menu
     //Expected state : Combo with selected "A", "C", "G", "T" items and "Show all" item appeared
-    QList<QStringList> paths;
-    QList<QStringList> onlyLetterPaths;
-    paths.append(QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "A");
-    onlyLetterPaths.append(QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "A");
-    paths.append(QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "C");
-    onlyLetterPaths.append(QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "C");
-    paths.append(QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "G");
-    onlyLetterPaths.append(QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "G");
-    paths.append(QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "T");
-    onlyLetterPaths.append(QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "T");
-    paths.append(QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "Show all");
-    GTMenu::checkMainMenuItemState(os, paths, PopupChecker::CheckOption(PopupChecker::Exists));
+    const QStringList menuPath = QStringList() << "Actions" << "Appearance" << "Show/hide trace";
+    const QStringList itemsNames = QStringList() << "A" << "C" << "G" << "T" << "Show all";
+    GTMenu::checkMainMenuItemsState(os, menuPath, itemsNames, PopupChecker::CheckOption(PopupChecker::Exists));
 
     //8. Select "A"
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "A");;
@@ -947,9 +938,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
 
     //9. Select "C"
     //Expected state : "A" is unchecked
-    QList<QStringList> intermediateCheck;
-    intermediateCheck.append(QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "A");
-    GTMenu::checkMainMenuItemState(os, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
+    QStringList intermediateCheck = QStringList() << "A";
+    GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "C");;
 
@@ -957,8 +947,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
 
     //10. Select "G"
     //Expected state : "A" and "C"  are unchecked
-    intermediateCheck.append(QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "C");
-    GTMenu::checkMainMenuItemState(os, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
+    intermediateCheck << "C";
+    GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "G");;
 
@@ -966,8 +956,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
 
     //11. Select "T"
     //Expected state : "A", "C", "G"  are unchecked
-    intermediateCheck.append(QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "G");
-    GTMenu::checkMainMenuItemState(os, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
+    intermediateCheck << "G";
+    GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "T");;
 
@@ -975,15 +965,14 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
 
     //12. Select "All"
     //Expected state : All four traces are restored for all chromatograms
-    intermediateCheck.append(QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "T");
-    GTMenu::checkMainMenuItemState(os, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
+    intermediateCheck << "T";
+    GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "Show all");;
 
-
     //13. Expand combo once more
     //Expected state : All four letters are checked
-    GTMenu::checkMainMenuItemState(os, onlyLetterPaths, PopupChecker::CheckOption(PopupChecker::Exists));
+    GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsChecked));
 }
 
 }//namespace U2
