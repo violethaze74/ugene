@@ -84,6 +84,7 @@ public:
     static QModelIndexList findFilteredIndexes(HI::GUITestOpStatus &os, const QString &substring, const QModelIndex &parentIndex = QModelIndex());
     static void checkFilteredGroup(HI::GUITestOpStatus &os, const QString &groupName, const QStringList &namesToCheck, const QStringList &alternativeNamesToCheck,
         const QStringList &excludedNames);
+    static void ensureFilteringIsDisabled(HI::GUITestOpStatus &os);
 
     // returns true if the item exists, does not set error unlike findIndex method
     static bool checkItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
@@ -116,15 +117,16 @@ public:
 
     static void markSequenceAsCircular(HI::GUITestOpStatus &os, const QString &sequenceObjectName);
 
+    // Get all documents names with their object names (database connections are processed incorrectly)
+    static QMap<QString, QStringList> getDocuments(HI::GUITestOpStatus &os);
+
     static const QString widgetName;
 
 private:
     static void sendDragAndDrop(HI::GUITestOpStatus &os, const QPoint &enterPos, const QPoint &dropPos);
     static void sendDragAndDrop(HI::GUITestOpStatus &os, const QPoint &enterPos, QWidget* dropWidget);
-
-
 };
 
-} // namespace
+}   // namespace U2
 
 #endif

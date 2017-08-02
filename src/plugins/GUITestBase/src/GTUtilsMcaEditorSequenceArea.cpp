@@ -28,8 +28,8 @@
 
 #include <U2View/BaseWidthController.h>
 #include <U2View/DrawHelper.h>
-#include <U2View/MaEditorNameList.h>
 #include <U2View/McaEditor.h>
+#include <U2View/McaEditorNameList.h>
 #include <U2View/McaEditorSequenceArea.h>
 #include <U2View/McaEditorWgt.h>
 #include <U2View/RowHeightController.h>
@@ -61,7 +61,7 @@ QStringList GTUtilsMcaEditorSequenceArea::getVisibleNames(GUITestOpStatus &os) {
     McaEditor* editor = mw->findChild<McaEditor*>();
     CHECK_SET_ERR_RESULT(editor != NULL, "McaEditor not found", QStringList());
 
-    MaEditorNameList *nameListArea = GTUtilsMcaEditor::getNameListArea(os);
+    McaEditorNameList *nameListArea = GTUtilsMcaEditor::getNameListArea(os);
     CHECK_SET_ERR_RESULT(NULL != nameListArea, "Mca Editor name list area is NULL", QStringList());
 
     const QList<int> visibleRowsIndexes = editor->getUI()->getDrawHelper()->getVisibleRowsIndexes(nameListArea->height());
@@ -162,9 +162,8 @@ void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus &os, QS
 bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(GUITestOpStatus &os, QString rowName){
     McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea*>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
     GT_CHECK_RESULT(mcaEditArea != NULL, "McaEditorSequenceArea not found", false);
-    int rowNum = GTUtilsMcaEditor::getRowNames(os).indexOf(rowName);
+    int rowNum = GTUtilsMcaEditor::getReadsNames(os).indexOf(rowName);
     GT_CHECK_RESULT(rowNum != -1, "sequence not found in nameList", false);
-    QWidget* nameList = GTWidget::findWidget(os, "msa_editor_name_list");
     int rowHeight = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowHeight(rowNum);
     bool isCollapsed = rowHeight > 100;
     return isCollapsed;

@@ -155,13 +155,14 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsProject::checkProject(os);
     GTUtilsProjectTreeView::openView(os);
     bool check = GTUtilsProjectTreeView::checkItem(os, "Aligned reads");
+    CHECK_SET_ERR(check, "'Aligned reads' is not present in the project view");
 
     //    Expected state : Reference name is  "KM099231" at the editor left corner
     //    Expected state : 16 reads are present
-    int rows = GTUtilsMcaEditor::getRowsQuantity(os);
+    int rows = GTUtilsMcaEditor::getReadsCount(os);
     CHECK_SET_ERR(rows == 16, QString("Incorrect rows quantity, expected: 16, current: %1").arg(rows));
-    //    16 reads with names "SZYD_Cas9_CR50"..."SZYD_Cas9_CR56", "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66", "SZYD_Cas9_C5B70" and "SZYD_Cas9_5B71"
-    QList<QString> rowNames = GTUtilsMcaEditor::getRowNames(os);
+    //    16 reads with names "SZYD_Cas9_CR50"..."SZYD_Cas9_CR56", "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66", "SZYD_Cas9_CR70" and "SZYD_Cas9_CR71"
+    QList<QString> rowNames = GTUtilsMcaEditor::getReadsNames(os);
     foreach(QString rowName, rowNames) {
         bool checkCurrentName = false;
         for (int i = 0; i < 16; i++) {
@@ -259,7 +260,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     //6. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    sandBoxDir;
     QStringList path;
     path << sandBoxDir + "Sanger";
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
@@ -292,12 +292,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsProjectTreeView::openView(os);
     //Expected state : Reference name is  "KM099231" at the editor left corner
 
-    //Expected state : 16 reads are present
-    int rows = GTUtilsMcaEditor::getRowsQuantity(os);
+    //    Expected state : 16 reads are present
+    int rows = GTUtilsMcaEditor::getReadsCount(os);
     CHECK_SET_ERR(rows == 16, QString("Incorrect rows quantity, expected: 16, current: %1").arg(rows));
 
     //16 reads with names "SZYD_Cas9_CR50"..."SZYD_Cas9_CR56", "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66", "SZYD_Cas9_5B70" and "SZYD_Cas9_5B71"
-    QList<QString> rowNames = GTUtilsMcaEditor::getRowNames(os);
+    QList<QString> rowNames = GTUtilsMcaEditor::getReadsNames(os);
     foreach(QString rowName, rowNames) {
         bool checkCurrentName = false;
         for (int i = 0; i < 16; i++) {
@@ -387,7 +387,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     //5. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    sandBoxDir;
     QStringList path;
     path << sandBoxDir + "Sanger";
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
@@ -481,7 +480,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     //5. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    sandBoxDir;
     QStringList path;
     path << sandBoxDir + "Sanger";
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
@@ -668,7 +666,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     //Expected state : "Show/Hide Chromatograms" button is in pressed state
     //All reads are expanded, chromatograms if any are displayed for each reads
-    QList<QString> rows = GTUtilsMcaEditor::getRowNames(os);
+    QList<QString> rows = GTUtilsMcaEditor::getReadsNames(os);
     foreach(QString row, rows) {
         bool isChromatogramShown = GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, row);
         CHECK_SET_ERR(isChromatogramShown, QString("Error: read %1 should be displayed with chromatogram").arg(row));
