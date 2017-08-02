@@ -1870,7 +1870,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0064);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0065);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0066);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0068);
+    //REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0068); removed as obsolete
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0069);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0070);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0071);
@@ -2835,7 +2835,7 @@ void GUITestBasePlugin::registerAdditionalActions(UGUITestBase *guiTestBase) {
         guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0005, UGUITestBase::PreAdditional);
 
         guiTestBase->registerTest(new GUITest_posterior_checks::post_check_0000, UGUITestBase::PostAdditionalChecks);
-        guiTestBase->registerTest(new GUITest_posterior_checks::post_check_0001, UGUITestBase::PostAdditionalChecks);
+        //guiTestBase->registerTest(new GUITest_posterior_checks::post_check_0001, UGUITestBase::PostAdditionalChecks);
 
         guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0000, UGUITestBase::PostAdditionalActions);
         guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0001, UGUITestBase::PostAdditionalActions);
