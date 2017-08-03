@@ -20,6 +20,7 @@
  */
 
 #include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/SignalBlocker.h>
 
 #include "BaseWidthController.h"
 #include "DrawHelper.h"
@@ -384,24 +385,6 @@ U2Region ScrollController::getHorizontalRangeToDrawIn(int widgetWidth) const {
 U2Region ScrollController::getVerticalRangeToDrawIn(int widgetHeight) const {
     return U2Region(vScrollBar->value(), widgetHeight);
 }
-
-class SignalBlocker {
-public:
-    SignalBlocker(QObject * const object) :
-        object(object),
-        previousState(true)
-    {
-        previousState = object->blockSignals(true);
-    }
-
-    ~SignalBlocker() {
-        object->blockSignals(previousState);
-    }
-
-private:
-    QObject * const object;
-    bool previousState;
-};
 
 void ScrollController::zoomHorizontalScrollBarPrivate() {
     CHECK(!maEditor->isAlignmentEmpty(), );

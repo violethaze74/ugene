@@ -19,9 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/SignalBlocker.h>
 #include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -53,8 +53,6 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
     scrollBar->hide();
     rowBar->hide();
 
-    connect(this, SIGNAL(si_visibleRangeChanged()), SLOT(sl_syncVisibleRange()));
-
     connect(ui->getEditor()->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
             SLOT(sl_update()));
 
@@ -68,13 +66,14 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
 
     connect(ctx->getSequenceSelection(),
         SIGNAL(si_selectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)),
-        SLOT(sl_onSelectionChanged()));
+        SLOT(sl_onSelectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)));
 
     connect(this, SIGNAL(si_selectionChanged()),
             ui->getSequenceArea(), SLOT(sl_backgroundSelectionChanged()));
     connect(editor, SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_fontChanged(const QFont &)));
 
     connect(ui->getConsensusArea(), SIGNAL(si_mismatchRedrawRequired()), SLOT(completeUpdate()));
+    connect(scrollBar, SIGNAL(valueChanged(int)), ui->getScrollController()->getHorizontalScrollBar(), SLOT(setValue(int)));
 
     sl_fontChanged(editor->getFont());
 }
@@ -112,15 +111,87 @@ void McaEditorReferenceArea::sl_update() {
     completeUpdate();
 }
 
-void McaEditorReferenceArea::sl_syncVisibleRange() {
-    SAFE_POINT(ui->getSequenceArea() != NULL, "Sequence are is NULL", );
-    SAFE_POINT(ui->getScrollController() != NULL, "Scroll controller is NULL", );
-    if (getVisibleRange().startPos != ui->getSequenceArea()->getFirstVisibleBase()) {
-        ui->getScrollController()->setFirstVisibleBase(getVisibleRange().startPos);
+void McaEditorReferenceArea::keyPressEvent(QKeyEvent *event) {
+    const int key = event->key();
+    bool accepted = false;
+    DNASequenceSelection * const selection = ctx->getSequenceSelection();
+    U2Region selectedRegion = (NULL != selection && !selection->isEmpty() ? selection->getSelectedRegions().first() : U2Region());
+
+    switch(key) {
+    case Qt::Key_Left:
+        if (!selectedRegion.isEmpty() && selectedRegion.startPos > 0) {
+            selectedRegion.startPos--;
+            ctx->getSequenceSelection()->setSelectedRegions(QVector<U2Region>() << selectedRegion);
+            ui->getScrollController()->scrollToBase(selectedRegion.startPos, width());
+        }
+    case Qt::Key_Up:
+        accepted = true;
+        break;
+    case Qt::Key_Right:
+        if (!selectedRegion.isEmpty() && selectedRegion.endPos() < ctx->getSequenceLength()) {
+            selectedRegion.startPos++;
+            ctx->getSequenceSelection()->setSelectedRegions(QVector<U2Region>() << selectedRegion);
+            ui->getScrollController()->scrollToBase(selectedRegion.endPos() - 1, width());
+        }
+    case Qt::Key_Down:
+        accepted = true;
+        break;
+    case Qt::Key_Home:
+        ui->getScrollController()->scrollToEnd(ScrollController::Left);
+        accepted = true;
+        break;
+    case Qt::Key_End:
+        ui->getScrollController()->scrollToEnd(ScrollController::Right);
+        accepted = true;
+        break;
+    case Qt::Key_PageUp:
+        ui->getScrollController()->scrollPage(ScrollController::Left);
+        accepted = true;
+        break;
+    case Qt::Key_PageDown:
+        ui->getScrollController()->scrollPage(ScrollController::Right);
+        accepted = true;
+        break;
+    }
+
+    if (accepted) {
+        event->accept();
+    } else {
+        PanView::keyPressEvent(event);
     }
 }
 
-void McaEditorReferenceArea::sl_onSelectionChanged() {
+void McaEditorReferenceArea::updateScrollBar() {
+    SignalBlocker signalBlocker(scrollBar);
+    Q_UNUSED(signalBlocker);
+
+    const QScrollBar * const hScrollbar = ui->getScrollController()->getHorizontalScrollBar();
+
+    scrollBar->setMinimum(hScrollbar->minimum());
+    scrollBar->setMaximum(hScrollbar->maximum());
+    scrollBar->setSliderPosition(hScrollbar->value());
+    scrollBar->setSingleStep(hScrollbar->singleStep());
+    scrollBar->setPageStep(hScrollbar->pageStep());
+}
+
+void McaEditorReferenceArea::sl_onSelectionChanged(LRegionsSelection * /*selection*/, const QVector<U2Region> &addedRegions, const QVector<U2Region> &removedRegions) {
+    if (addedRegions.size() == 1) {
+        const U2Region addedRegion = addedRegions.first();
+        qint64 baseToScrollTo = -1;
+        if (removedRegions.size() == 1) {
+            const U2Region removedRegion = removedRegions.first();
+            if (addedRegion.startPos < removedRegion.startPos && addedRegion.endPos() == removedRegion.endPos()) {
+                baseToScrollTo = addedRegion.startPos;
+            } else if (addedRegion.startPos == removedRegion.startPos && addedRegion.endPos() > removedRegion.endPos()) {
+                baseToScrollTo = addedRegion.endPos() - 1;
+            } else {
+                baseToScrollTo = addedRegion.startPos;
+            }
+        } else {
+            baseToScrollTo = addedRegion.startPos;
+        }
+        ui->getScrollController()->scrollToBase(static_cast<int>(baseToScrollTo), width());
+    }
     emit si_selectionChanged();
 }
 
@@ -144,4 +215,4 @@ PanViewRenderArea * McaEditorReferenceRenderAreaFactory::createRenderArea(PanVie
     return new McaEditorReferenceRenderArea(ui, panView, new McaReferenceAreaRenderer(panView, panView->getSequenceContext(), maEditor));
 }
 
-} // namespace
+}   // namespace U2
