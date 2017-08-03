@@ -1841,6 +1841,8 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
 
     GTGlobals::sleep(100);
     GTUtilsWorkflowDesigner::runWorkflow(os);
+	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+	
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
