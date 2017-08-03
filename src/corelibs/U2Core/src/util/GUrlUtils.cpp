@@ -148,7 +148,8 @@ bool GUrlUtils::renameFileWithNameRoll(const QString& original, TaskStateInfo& t
     }
 }
 
-static void getPreNPost(const QString &originalUrl, QString &pre, QString &post) {
+static void getPreNPost(const QString &originalUrl, QString &pre, QString &post, int &i, const QString &rolledSuffix) {
+    i = 0;
     pre = originalUrl;
     int idx = pre.lastIndexOf(".");
 
@@ -166,21 +167,30 @@ static void getPreNPost(const QString &originalUrl, QString &pre, QString &post)
             post = extSuffix;
             pre.chop(extSuffix.length());
         }
+        idx = pre.lastIndexOf(rolledSuffix);
+        if (idx != -1) {
+            QString possibleNumber = pre.mid(idx + rolledSuffix.length());
+            i = possibleNumber.toInt();
+            if (i > 0) {
+                pre = pre.left(idx);
+            }
+        }
     }
 }
 
 QString GUrlUtils::insertSuffix(const QString &originalUrl, const QString &suffix) {
     QString pre, post;
-    getPreNPost(originalUrl, pre, post);
+    int i = 0;
+    getPreNPost(originalUrl, pre, post, i,suffix);
     return pre + suffix + post;
 }
 
 QStringList GUrlUtils::getRolledFilesList(const QString& originalUrl, const QString& rolledSuffix) {
     QString pre, post; //pre and post url parts. A number will be placed between
-    getPreNPost(originalUrl, pre, post);
+    int i = 0;
+    getPreNPost(originalUrl, pre, post, i, rolledSuffix);
 
     QString resultUrl = originalUrl;
-    int i = 0;
     QStringList urls;
     while (QFile::exists(resultUrl)) {
         urls << resultUrl;
@@ -191,10 +201,10 @@ QStringList GUrlUtils::getRolledFilesList(const QString& originalUrl, const QStr
 
 QString GUrlUtils::rollFileName(const QString& originalUrl, const QString& rolledSuffix, const QSet<QString>& excludeList) {
     QString pre, post; //pre and post url parts. A number will be placed between
-    getPreNPost(originalUrl, pre, post);
+    int i = 0;
+    getPreNPost(originalUrl, pre, post, i, rolledSuffix);
 
     QString resultUrl = originalUrl;
-    int i = 0;
     while (QFile::exists(resultUrl) || excludeList.contains(resultUrl)) {
         resultUrl = pre + rolledSuffix + QString("%1").arg(++i) + post;
     }
