@@ -264,6 +264,8 @@ protected:
     void replaceChar(char newCharacter);
     virtual void insertChar(char ) {}
     void exitFromEditCharacterMode();
+    virtual bool isCharacterAcceptable(const QString &text) const;
+    virtual const QString &getInacceptableCharacterErrorMessage() const;
 
     void deleteOldCustomSchemes();
 
@@ -321,6 +323,8 @@ protected:
     // If the changing action fits within one method it's recommended using
     // the U2UseCommonUserModStep object explicitly.
     MsaEditorUserModStepController changeTracker;
+
+    static const QChar emDash;
 };
 
 } // namespace

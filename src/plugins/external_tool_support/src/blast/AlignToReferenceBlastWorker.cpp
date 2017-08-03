@@ -182,7 +182,7 @@ void AlignToReferenceBlastWorker::onPrepared(Task *task, U2OpStatus &os) {
     LoadDocumentTask *loadTask = qobject_cast<LoadDocumentTask*>(task);
     CHECK_EXT(NULL != loadTask, os.setError(L10N::internalError("Unexpected prepare task")), );
 
-    QScopedPointer<Document> doc(loadTask->takeDocument());
+    QScopedPointer<Document> doc(loadTask->takeDocument(false));
     CHECK_EXT(!doc.isNull(), os.setError(tr("Can't read the file: ") + loadTask->getURLString()), );
     QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     CHECK_EXT(!objects.isEmpty(), os.setError(tr("No reference sequence in the file: ") + loadTask->getURLString()), );
