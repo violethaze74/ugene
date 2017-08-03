@@ -57,6 +57,8 @@
 
 namespace U2 {
 
+const QChar MaEditorSequenceArea::emDash = QChar(0x2015);
+
 MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb)
     : editor(ui->getEditor()),
       ui(ui),
@@ -796,6 +798,7 @@ void MaEditorSequenceArea::sl_replaceSelectedCharacter() {
     maMode = ReplaceCharMode;
     editModeAnimationTimer.start(500);
     highlightCurrentSelection();
+    updateActions();
 }
 
 void MaEditorSequenceArea::sl_changeSelectionColor() {
@@ -1483,18 +1486,13 @@ void MaEditorSequenceArea::processCharacterInEditMode(QKeyEvent *e) {
 
     QString text = e->text().toUpper();
     if (1 == text.length()) {
-        QChar emDash(0x2015);
-        QRegExp latinCharacterOrGap(QString("([A-Z]| |-|%1)").arg(emDash));
-        if (latinCharacterOrGap.exactMatch(text)) {
+        if (isCharacterAcceptable(text)) {
             QChar newChar = text.at(0);
             newChar = (newChar == '-' || newChar == emDash || newChar == ' ') ? U2Msa::GAP_CHAR : newChar;
             processCharacterInEditMode(newChar.toLatin1());
-        }
-        else {
+        } else {
             MainWindow *mainWindow = AppContext::getMainWindow();
-            const QString message = tr("It is not possible to insert the character into the alignment."
-                                       "Please use a character from set A-Z (upper-case or lower-case) or the gap character ('Space', '-' or '%1').").arg(emDash);
-            mainWindow->addNotification(message, Error_Not);
+            mainWindow->addNotification(getInacceptableCharacterErrorMessage(), Error_Not);
             exitFromEditCharacterMode();
         }
     }
@@ -1546,8 +1544,20 @@ void MaEditorSequenceArea::exitFromEditCharacterMode() {
         highlightSelection = false;
         selectionColor = Qt::black;
         maMode = ViewMode;
+        updateActions();
         update();
     }
+}
+
+bool MaEditorSequenceArea::isCharacterAcceptable(const QString &text) const {
+    static const QRegExp latinCharacterOrGap(QString("([A-Z]| |-|%1)").arg(emDash));
+    return latinCharacterOrGap.exactMatch(text);
+}
+
+const QString &MaEditorSequenceArea::getInacceptableCharacterErrorMessage() const {
+    static const QString message = tr("It is not possible to insert the character into the alignment. "
+                                      "Please use a character from set A-Z (upper-case or lower-case) or the gap character ('Space', '-' or '%1').").arg(emDash);
+    return message;
 }
 
 void MaEditorSequenceArea::deleteOldCustomSchemes() {

@@ -29,6 +29,7 @@ unix {
 
 win32 {
     LIBS += User32.lib Gdi32.lib
+    QMAKE_CXXFLAGS += -bigobj
 }
 
 macx {

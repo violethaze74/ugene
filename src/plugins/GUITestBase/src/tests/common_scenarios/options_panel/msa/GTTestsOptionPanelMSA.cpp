@@ -1399,6 +1399,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0008){
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
     GTLogTracer l;
     const QString fileName = "pairwise_alignment_test_0009.aln";
+	const QString dirName = "pairwise_alignment_test_0009";
 //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1410,6 +1411,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
 //    4. Add Isophya_altaica_EF540820 sequence
 //    5. Select some existing read-only file as output
     QString s = sandBoxDir + "pairwise_alignment_test_0009";
+
     QDir().mkpath(s);
 
     s += "/" + fileName;
@@ -1419,10 +1421,10 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
     f.close();
     GTFile::setReadOnly(os, s);
 
-    setOutputPath(os, sandBoxDir,  fileName);
+	setOutputPath(os, sandBoxDir + dirName, fileName);
     align(os);
     GTGlobals::sleep(500);
-//    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'COI_transl.aln' file.
+//    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'pairwise_alignment_test_0009.aln' file.
     QString error = l.getError();
     QString expected;
     expected = QString("Task {Pairwise alignment task} finished with error: No permission to write to \'%1\' file.").arg(fileName);

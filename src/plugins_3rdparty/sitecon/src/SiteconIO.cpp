@@ -88,7 +88,7 @@ SiteconModel SiteconIO::readModel(IOAdapterFactory* iof, const QString& url, Tas
     QByteArray block(BUFF_SIZE, '\0');
     qint64 blockLen = 0;
     while ((blockLen = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
-        text.append(QByteArray::fromRawData(block.data(), blockLen));
+        text.append(QByteArray(block.data(), blockLen));
         if (text.size() > 1000*1000) {
             si.setError(L10N::errorFileTooLarge(url));
             break;

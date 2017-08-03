@@ -224,6 +224,10 @@ void U2SequenceObject::replaceRegion(const U2DataId &masterId, const U2Region &r
     emit si_sequenceChanged();
 }
 
+void U2SequenceObject::removeRegion(U2OpStatus &os, const U2Region &region) {
+    replaceRegion(region, DNASequence(), os);
+}
+
 GObject * U2SequenceObject::clone(const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dbiRef, os);
     Q_UNUSED(opBlock);

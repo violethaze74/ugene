@@ -53,7 +53,7 @@ class U2CORE_EXPORT SequenceDbiWalkerTask : public Task {
     Q_OBJECT
 public:
     SequenceDbiWalkerTask(const SequenceDbiWalkerConfig& config, SequenceDbiWalkerCallback* callback,
-        const QString& name, TaskFlags tf = TaskFlags_NR_FOSCOE);
+        const QString& name, TaskFlags tf = TaskFlags_NR_FOSE_COSC);
 
     SequenceDbiWalkerCallback*     getCallback() const {return callback;}
     const SequenceDbiWalkerConfig& getConfig() const {return config;}

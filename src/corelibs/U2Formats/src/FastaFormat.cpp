@@ -178,7 +178,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
         }
         CHECK_EXT_BREAK(lineOk, os.setError(FastaFormat::tr("Line is too long")));
 
-        QString headerLine = QString(QByteArray::fromRawData(buff+1, len-1)).trimmed();
+        QString headerLine = QString(QByteArray(buff+1, len-1)).trimmed();
         CHECK_EXT_BREAK(buff[0] == FastaFormat::FASTA_HEADER_START_SYMBOL, os.setError(FastaFormat::tr("First line is not a FASTA header")));
 
         //read sequence

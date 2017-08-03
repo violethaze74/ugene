@@ -24,6 +24,8 @@
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/U2Mod.h>
@@ -270,9 +272,9 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
 
 void McaEditorSequenceArea::sl_addInsertion() {
     maMode = InsertCharMode;
-
     editModeAnimationTimer.start(500);
     highlightCurrentSelection();
+    updateActions();
 }
 
 void McaEditorSequenceArea::sl_removeGapBeforeSelection() {
@@ -300,14 +302,15 @@ void McaEditorSequenceArea::updateActions() {
     const bool readOnly = maObj->isStateLocked();
     const bool canEditAlignment = !readOnly && !isAlignmentEmpty();
     const bool canEditSelectedArea = canEditAlignment && !selection.isNull();
+    const bool isEditing = (maMode != ViewMode);
     const bool isSingleSymbolSelected = (selection.getRect().size() == QSize(1, 1));
     const bool hasGapBeforeSelection = canEditAlignment && (maObj->getMultipleAlignment()->isGap(selection.y(), selection.x() - 1));
 
     ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
-    insertAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected);
-    replaceCharacterAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected);
-    fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected);
-    removeGapBeforeSelectionAction->setEnabled(hasGapBeforeSelection);
+    insertAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
+    replaceCharacterAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
+    fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
+    removeGapBeforeSelectionAction->setEnabled(hasGapBeforeSelection && !isEditing);
 }
 
 void McaEditorSequenceArea::drawBackground(QPainter &painter) {
@@ -362,6 +365,18 @@ void McaEditorSequenceArea::insertChar(char newCharacter) {
     SAFE_POINT_OP(os, );
 
     exitFromEditCharacterMode();
+}
+
+bool McaEditorSequenceArea::isCharacterAcceptable(const QString &text) const {
+    static const QString alphabetCharacters = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED())->getAlphabetChars();
+    static const QRegExp dnaExtendedCharacterOrGap(QString("([%1]| |-|%2)").arg(alphabetCharacters).arg(emDash));
+    return dnaExtendedCharacterOrGap.exactMatch(text);
+}
+
+const QString &McaEditorSequenceArea::getInacceptableCharacterErrorMessage() const {
+    static const QString message = tr("It is not possible to insert the character into the alignment. "
+                                      "Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character ('Space', '-' or '%1').").arg(emDash);
+    return message;
 }
 
 McaEditorWgt *McaEditorSequenceArea::getMcaEditorWgt() const {
