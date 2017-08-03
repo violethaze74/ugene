@@ -35,6 +35,12 @@ class U2SequenceObject;
 class U2CORE_EXPORT MultipleChromatogramAlignmentObject : public MultipleAlignmentObject {
     Q_OBJECT
 public:
+    enum TrimEdge {
+        Left,
+        Right
+
+    };
+
     static const QString MCAOBJECT_REFERENCE;
 
     MultipleChromatogramAlignmentObject(const QString &name,
@@ -60,6 +66,7 @@ public:
 
     void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
 
+    void trimRow(const int rowIndex, int currentPos, U2OpStatus& os, TrimEdge edge);
     void saveState();
     void releaseState();
 
