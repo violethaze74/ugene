@@ -33,6 +33,7 @@ class U2CORE_EXPORT ChromatogramUtils {
 public:
     static void append(DNAChromatogram chromatogram, const DNAChromatogram &appendedChromatogram);
     static void removeBaseCalls(U2OpStatus &os, DNAChromatogram &chromatogram, int startPos, int endPos);
+    static void removeRegion(U2OpStatus &os, DNAChromatogram &chromatogram, int startPos, int endPos);
     static bool areEqual(const DNAChromatogram &first, const DNAChromatogram &second);
     static void crop(DNAChromatogram &chromatogram, int startPos, int length);
     static U2EntityRef import(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const DNAChromatogram &chromatogram);

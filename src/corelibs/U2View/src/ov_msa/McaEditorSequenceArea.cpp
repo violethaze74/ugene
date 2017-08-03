@@ -91,6 +91,18 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
     connect(removeColumnsOfGapsAction, SIGNAL(triggered()), SLOT(sl_removeColumnsOfGaps()));
     addAction(removeColumnsOfGapsAction);
 
+    trimLeftEndAction = new QAction(tr("Trim left end"), this);
+    trimLeftEndAction->setObjectName("trim_left_end");
+    trimLeftEndAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Backspace));
+    connect(trimLeftEndAction, SIGNAL(triggered()), SLOT(sl_trimLeftEnd()));
+    addAction(trimLeftEndAction);
+
+    trimRightEndAction = new QAction(tr("Trim right end"), this);
+    trimRightEndAction->setObjectName("trim_right_end");
+    trimRightEndAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Delete));
+    connect(trimRightEndAction, SIGNAL(triggered()), SLOT(sl_trimRightEnd()));
+    addAction(trimRightEndAction);
+
     fillWithGapsinsSymAction->setText(tr("Insert gap"));
     fillWithGapsinsSymAction->setShortcut(Qt::Key_Space);
     fillWithGapsinsSymAction->setShortcutContext(Qt::WidgetShortcut);
@@ -159,6 +171,14 @@ QAction *McaEditorSequenceArea::getRemoveGapBeforeSelectionAction() const {
 
 QAction *McaEditorSequenceArea::getRemoveColumnsOfGapsAction() const {
     return removeColumnsOfGapsAction;
+}
+
+QAction *McaEditorSequenceArea::getTrimLeftEndAction() const {
+    return trimLeftEndAction;
+}
+
+QAction *McaEditorSequenceArea::getTrimRightEndAction() const {
+    return trimRightEndAction;
 }
 
 void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel, bool newHighlightSelection) {
@@ -291,6 +311,52 @@ void McaEditorSequenceArea::sl_removeColumnsOfGaps() {
     editor->getMaObject()->deleteColumnsWithGaps(os);
 }
 
+void McaEditorSequenceArea::sl_trimLeftEnd() {
+    trimRowEnd(MultipleChromatogramAlignmentObject::Left);
+}
+
+void McaEditorSequenceArea::sl_trimRightEnd() {
+    trimRowEnd(MultipleChromatogramAlignmentObject::Right);
+}
+
+void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::TrimEdge edge) {
+    MultipleChromatogramAlignmentObject* mcaObj = getEditor()->getMaObject();
+    U2Region reg = getSelectedRows();
+    SAFE_POINT(!reg.isEmpty() && reg.length == 1, "Incorrect selection", )
+    U2OpStatus2Log os;
+    U2UseCommonUserModStep userModStep(mcaObj->getEntityRef(), os);
+    Q_UNUSED(userModStep);
+    SAFE_POINT_OP(os, );
+
+    SAFE_POINT(!getSelection().isEmpty(), "selection is empty", );
+    int currentPos = getSelection().x();
+
+    mcaObj->trimRow(reg.startPos, currentPos, os, edge);
+    CHECK_OP(os, );
+
+}
+
+void McaEditorSequenceArea::updateTrimActions(bool isEnabled) {
+    trimLeftEndAction->setEnabled(isEnabled);
+    trimRightEndAction->setEnabled(isEnabled);
+
+    CHECK(isEnabled, );
+    CHECK(!getSelection().isEmpty(), );
+
+    MultipleAlignmentObject* maObj = editor->getMaObject();
+    U2Region reg = getSelectedRows();
+    MultipleAlignmentRow row = editor->getMaObject()->getRow(reg.startPos);
+    int start = row->getCoreStart();
+    int end = row->getCoreEnd();
+    int currentSelection = getSelection().x();
+    if (start == currentSelection) {
+        trimLeftEndAction->setEnabled(false);
+    }
+    if (end - 1 == currentSelection) {
+        trimRightEndAction->setEnabled(false);
+    }
+}
+
 void McaEditorSequenceArea::initRenderer() {
     renderer = new SequenceWithChromatogramAreaRenderer(ui, this);
 }
@@ -307,6 +373,7 @@ void McaEditorSequenceArea::updateActions() {
     const bool hasGapBeforeSelection = canEditAlignment && (maObj->getMultipleAlignment()->isGap(selection.y(), selection.x() - 1));
 
     ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
+    updateTrimActions(canEditSelectedArea);
     insertAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
     replaceCharacterAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
     fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);

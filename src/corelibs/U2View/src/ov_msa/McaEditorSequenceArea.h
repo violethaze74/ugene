@@ -70,6 +70,8 @@ public:
     QAction *getInsertGapAction() const;
     QAction *getRemoveGapBeforeSelectionAction() const;
     QAction *getRemoveColumnsOfGapsAction() const;
+    QAction *getTrimLeftEndAction() const;
+    QAction *getTrimRightEndAction() const;
 
 signals:
     void si_clearReferenceSelection();
@@ -88,6 +90,8 @@ private slots:
     void sl_addInsertion();
     void sl_removeGapBeforeSelection();
     void sl_removeColumnsOfGaps();
+    void sl_trimLeftEnd();
+    void sl_trimRightEnd();
 
 private:
     void initRenderer();
@@ -104,6 +108,10 @@ private:
 
     McaEditorWgt *getMcaEditorWgt() const;
 
+    void trimRowEnd(MultipleChromatogramAlignmentObject::TrimEdge edge);
+
+    void updateTrimActions(bool isEnabled);
+
     ChromatogramViewSettings    settings;
     MaAmbiguousCharactersController *ambiguousCharactersController;
 
@@ -116,6 +124,8 @@ private:
     QAction*    insertAction;
     QAction*    removeGapBeforeSelectionAction;
     QAction*    removeColumnsOfGapsAction;
+    QAction*    trimLeftEndAction;
+    QAction*    trimRightEndAction;
 };
 
 }   // namespace U2
