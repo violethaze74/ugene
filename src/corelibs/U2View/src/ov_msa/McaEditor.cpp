@@ -260,6 +260,8 @@ void McaEditor::addEditingMenu(QMenu* menu) {
     editingMenu->addAction(getUI()->getSequenceArea()->getInsertGapAction());
     editingMenu->addAction(getUI()->getSequenceArea()->getRemoveGapBeforeSelectionAction());
     editingMenu->addAction(getUI()->getSequenceArea()->getRemoveColumnsOfGapsAction());
+    editingMenu->addAction(getUI()->getSequenceArea()->getTrimLeftEndAction());
+    editingMenu->addAction(getUI()->getSequenceArea()->getTrimRightEndAction());
     editingMenu->addSeparator();
     editingMenu->addAction(getUI()->getEditorNameList()->getEditSequenceNameAction());
     editingMenu->addAction(getUI()->getEditorNameList()->getRemoveSequenceAction());

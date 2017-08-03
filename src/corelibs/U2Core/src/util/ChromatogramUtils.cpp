@@ -66,6 +66,38 @@ void ChromatogramUtils::removeBaseCalls(U2OpStatus &os, DNAChromatogram &chromat
     chromatogram.prob_T.remove(startPos, regionLength);
 }
 
+void ChromatogramUtils::removeRegion(U2OpStatus &os, DNAChromatogram &chromatogram, int startPos, int endPos) {
+    if ((endPos <= startPos) || (startPos < 0) || (endPos > chromatogram.seqLength)) {
+        coreLog.trace(L10N::internalError("incorrect parameters were passed to ChromatogramUtils::removeRegion, "
+             "startPos '%1', endPos '%2', chromatogram sequence length '%3'").arg(startPos).arg(endPos).arg(chromatogram.seqLength));
+        os.setError("Can't remove current region");
+        return;
+    }
+    const int regionLength = endPos - startPos;
+    U2Region traceRegion = sequenceRegion2TraceRegion(chromatogram, U2Region(startPos, regionLength));
+    if (traceRegion.startPos != 0) {
+        traceRegion.startPos++;
+        int baseCall = chromatogram.baseCalls[startPos - 1];
+        qint64 supposedLength = chromatogram.traceLength - baseCall - 1;
+        traceRegion.length = qMin(traceRegion.length, supposedLength);
+    }
+    int size = chromatogram.baseCalls.size();
+    for (int i = endPos; i < size; i++) {
+        chromatogram.baseCalls[i] -= traceRegion.length;
+    }
+    chromatogram.A.remove(traceRegion.startPos, traceRegion.length);
+    chromatogram.C.remove(traceRegion.startPos, traceRegion.length);
+    chromatogram.G.remove(traceRegion.startPos, traceRegion.length);
+    chromatogram.T.remove(traceRegion.startPos, traceRegion.length);
+    chromatogram.traceLength -= traceRegion.length;
+    chromatogram.seqLength -= regionLength;
+    chromatogram.baseCalls.remove(startPos, regionLength);
+    chromatogram.prob_A.remove(startPos, regionLength);
+    chromatogram.prob_C.remove(startPos, regionLength);
+    chromatogram.prob_G.remove(startPos, regionLength);
+    chromatogram.prob_T.remove(startPos, regionLength);
+}
+
 bool ChromatogramUtils::areEqual(const DNAChromatogram &first, const DNAChromatogram &second) {
     return first.traceLength == second.traceLength &&
             first.seqLength == second.seqLength &&
