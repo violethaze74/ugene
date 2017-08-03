@@ -90,8 +90,9 @@ private:
 class U2CORE_EXPORT LoadDocumentTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    static LoadDocumentTask * getDefaultLoadDocTask( const GUrl & url, const QVariantMap & hints = QVariantMap() );
-    static DocumentProviderTask * getCommonLoadDocTask( const GUrl & url );
+    static LoadDocumentTask *getDefaultLoadDocTask(const GUrl &url, const QVariantMap &hints = QVariantMap());
+    static LoadDocumentTask *getDefaultLoadDocTask(U2OpStatus &os, const GUrl &url, const QVariantMap &hints = QVariantMap());
+    static DocumentProviderTask *getCommonLoadDocTask(const GUrl &url);
 
 public:
     LoadDocumentTask(DocumentFormatId format, const GUrl& url,

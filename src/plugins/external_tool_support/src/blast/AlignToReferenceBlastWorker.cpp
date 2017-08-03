@@ -23,10 +23,9 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/FormatUtils.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -43,14 +42,12 @@
 #include <U2Lang/WorkflowMonitor.h>
 
 #include "AlignToReferenceBlastWorker.h"
-
+#include "align_worker_subtasks/BlastReadsSubTask.h"
+#include "align_worker_subtasks/ComposeResultSubTask.h"
+#include "align_worker_subtasks/FormatDBSubTask.h"
+#include "align_worker_subtasks/PrepareReferenceSequenceTask.h"
 #include "blast/BlastAllSupport.h"
 #include "blast/FormatDBSupport.h"
-
-#include "align_worker_subtasks/BlastReadsSubTask.h"
-#include "align_worker_subtasks/FormatDBSubTask.h"
-#include "align_worker_subtasks/ComposeResultSubTask.h"
-
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -156,45 +153,20 @@ QString AlignToReferenceBlastPrompter::composeRichDoc() {
 /* AlignToReferenceBlastWorker */
 /************************************************************************/
 AlignToReferenceBlastWorker::AlignToReferenceBlastWorker(Actor *a)
-: BaseDatasetWorker(a, BasePorts::IN_SEQ_PORT_ID(), OUT_PORT_ID), referenceDoc(NULL)
+    : BaseDatasetWorker(a, BasePorts::IN_SEQ_PORT_ID(), OUT_PORT_ID)
 {
 
 }
 
-void AlignToReferenceBlastWorker::cleanup() {
-    delete referenceDoc;
-    referenceDoc = NULL;
-    BaseDatasetWorker::cleanup();
-}
-
-Task * AlignToReferenceBlastWorker::createPrepareTask(U2OpStatus &os) const {
-    QString referenceUrl = getValue<QString>(REF_ATTR_ID);
-    QVariantMap hints;
-    hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(context->getDataStorage()->getDbiRef());
-    LoadDocumentTask *task = LoadDocumentTask::getDefaultLoadDocTask(referenceUrl, hints);
-    if (NULL == task) {
-        os.setError(tr("Can not read the reference file: ") + referenceUrl);
-    }
-    return task;
+Task *AlignToReferenceBlastWorker::createPrepareTask(U2OpStatus & /*os*/) const {
+    const QString referenceUrl = getValue<QString>(REF_ATTR_ID);
+    return new PrepareReferenceSequenceTask(referenceUrl, context->getDataStorage()->getDbiRef());
 }
 
 void AlignToReferenceBlastWorker::onPrepared(Task *task, U2OpStatus &os) {
-    LoadDocumentTask *loadTask = qobject_cast<LoadDocumentTask*>(task);
-    CHECK_EXT(NULL != loadTask, os.setError(L10N::internalError("Unexpected prepare task")), );
-
-    QScopedPointer<Document> doc(loadTask->takeDocument(false));
-    CHECK_EXT(!doc.isNull(), os.setError(tr("Can't read the file: ") + loadTask->getURLString()), );
-    QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
-    CHECK_EXT(!objects.isEmpty(), os.setError(tr("No reference sequence in the file: ") + loadTask->getURLString()), );
-    CHECK_EXT(1 == objects.size(), os.setError(tr("More than one sequence in the reference file: ") + loadTask->getURLString()), );
-
-    U2SequenceObject* so = qobject_cast<U2SequenceObject*>(objects.first());
-    CHECK_EXT(so != NULL, os.setError(tr("Unable to cast gobject to sequence object")), );
-    CHECK_EXT(so->getAlphabet()->isDNA(), os.setError(tr("The input reference sequence '%1' contains characters that don't belong to DNA alphabet.").arg(so->getSequenceName())), );
-
-    referenceDoc = doc.take();
-    referenceDoc->setDocumentOwnsDbiResources(false);
-    reference = context->getDataStorage()->getDataHandler(objects.first()->getEntityRef());
+    PrepareReferenceSequenceTask *prepareTask = qobject_cast<PrepareReferenceSequenceTask *>(task);
+    CHECK_EXT(NULL != prepareTask, os.setError(L10N::internalError("Unexpected prepare task")), );
+    reference = context->getDataStorage()->getDataHandler(prepareTask->getReferenceEntityRef());
 }
 
 Task * AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) const {
@@ -244,8 +216,7 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) c
 }
 
 MessageMetadata AlignToReferenceBlastWorker::generateMetadata(const QString &datasetName) const {
-    SAFE_POINT(NULL != referenceDoc, L10N::nullPointerError("Reference sequence document"), BaseDatasetWorker::generateMetadata(datasetName));
-    return MessageMetadata(referenceDoc->getURLString(), datasetName);
+    return MessageMetadata(getValue<QString>(REF_ATTR_ID), datasetName);
 }
 
 /************************************************************************/

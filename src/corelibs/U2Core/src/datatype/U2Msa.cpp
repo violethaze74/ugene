@@ -66,6 +66,10 @@ U2MsaGap U2MsaGap::intersect(const U2MsaGap &anotherGap) const {
     return U2MsaGap(newOffset, newEnd - newOffset);
 }
 
+U2MsaGap::operator U2Region() const {
+    return U2Region(offset, gap);
+}
+
 const qint64 U2MsaRow::INVALID_ROW_ID = -1;
 
 U2MsaRow::U2MsaRow()
