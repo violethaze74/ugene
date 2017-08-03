@@ -865,7 +865,7 @@ QByteArray GTest_CompareFiles::getLine(IOAdapter* io) {
         CHECK(len != 0, "");
         CHECK_EXT(lineOk, setError("Line is too long"), "");
 
-        line = (QByteArray::fromRawData(buff, len)).trimmed();
+        line = (QByteArray(buff, len)).trimmed();
         commentString = false;
         foreach(const QString& comment, commentsStartWith){
             if (line.startsWith(comment.toLatin1())){
@@ -995,7 +995,7 @@ QString GTest_Compare_VCF_Files::getLine(IOAdapter* io) {
         CHECK(len != 0, "");
         CHECK_EXT(lineOk, setError("Line is too long"), "");
 
-        line = (QByteArray::fromRawData(buff, len)).trimmed();
+        line = (QByteArray(buff, len)).trimmed();
     } while (line.startsWith(COMMENT_MARKER));
 
     return QString(line);

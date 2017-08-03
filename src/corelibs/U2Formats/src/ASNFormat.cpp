@@ -619,7 +619,7 @@ bool ASNFormat::AsnParser::readRootElement()
         throw AsnParserError(ASNFormat::tr("First line is too long"));
     }
 
-    QString line = QString(QByteArray::fromRawData(buf, len));
+    QString line = QString(QByteArray(buf, len));
     if (line.contains("::=")) {
         // get mime type
         int start = line.indexOf("::=")+ 4;

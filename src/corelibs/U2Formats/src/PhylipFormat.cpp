@@ -211,15 +211,14 @@ MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatu
         CHECK_EXT(!io->isEof(), os.setError( PhylipSequentialFormat::tr("There is not enough data")), MultipleSequenceAlignment());
         // get name
         len = io->readBlock(buff, MAX_NAME_LEN);
-        QByteArray name;
-        name.append(QByteArray::fromRawData(buff, len).trimmed());
+        QByteArray name = QByteArray(buff, len).trimmed();
         CHECK_EXT(len != 0, os.setError( PhylipSequentialFormat::tr("Error parsing file") ), MultipleSequenceAlignment());
 
         // get sequence
         QByteArray value;
         while ((value.size() != numberOfCharacters) && (!io->isEof())) {
             len = io->readUntil(buff, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Skip, &resOk);
-            QByteArray line = QByteArray::fromRawData(buff, len);
+            QByteArray line = QByteArray(buff, len);
             removeSpaces(line);
             value.append(line);
         }
@@ -350,14 +349,13 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
         len = io->readBlock(buff, MAX_NAME_LEN);
         CHECK_EXT(len != 0, os.setError( PhylipFormat::tr("Error parsing file") ), MultipleSequenceAlignment());
 
-        QByteArray name;
-        name.append(QByteArray::fromRawData(buff, len).trimmed());
+        QByteArray name = QByteArray(buff, len).trimmed();
 
         QByteArray value;
         do {
             len = io->readUntil(buff, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Skip, &resOk);
             CHECK_EXT(len != 0, os.setError( PhylipSequentialFormat::tr("Error parsing file") ), MultipleSequenceAlignment());
-            value.append(QByteArray::fromRawData(buff, len));
+            value.append(QByteArray(buff, len));
         } while (!resOk);
 
         removeSpaces(value);
@@ -374,7 +372,7 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
             QByteArray value;
             do {
                 len = io->readUntil(buff, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Skip, &resOk);
-                value.append(QByteArray::fromRawData(buff, len));
+                value.append(QByteArray(buff, len));
             } while (!resOk && !io->isEof());
             if (value.size() == 0) {
                 if (i != 0) {
