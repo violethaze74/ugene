@@ -68,6 +68,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
     while(!scheduller->getTopLevelTasks().isEmpty()){
         GTGlobals::sleep();
     }
+	GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
 }
 #define GT_CLASS_NAME "GTUtilsDialog::WizardFiller0002"
 #define GT_METHOD_NAME "run"
