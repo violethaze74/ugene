@@ -457,7 +457,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsWorkflowDesigner::clickParameter(os, "Output file");
     URLWidget *urlWidget = qobject_cast<URLWidget *>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<URLWidget *>());
     GTKeyboardDriver::keySequence("aaa");
-    GTGlobals::sleep(1000);
+	GTKeyboardDriver::keyPress(Qt::Key_Enter);
     CHECK_SET_ERR(NULL != urlWidget, "Output file url widget was not found");
     QTreeWidget *completer = urlWidget->findChild<QTreeWidget *>();
     CHECK_SET_ERR(completer != NULL, "auto completer widget was not found");
@@ -916,6 +916,8 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
 //    1. Open assembly
     GTFile::copy(os, testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "chrM.sorted.bam.ugenedb");
     GTFileDialog::openFile(os, sandBoxDir + "chrM.sorted.bam.ugenedb");
+	GTUtilsProjectTreeView::click(os, "chrM");
+	
 //    2. Rename assembly object
     GTUtilsProjectTreeView::rename(os, "chrM", "new_name");
 //    Check UGENE title
