@@ -253,6 +253,15 @@ void GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(HI::GUIT
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "dragAndDrop"
+void GTUtilsMcaEditorSequenceArea::dragAndDrop(HI::GUITestOpStatus &os, const QPoint p) {
+    GTMouseDriver::press(Qt::MouseButton::LeftButton);
+    GTGlobals::sleep(1000);
+    GTMouseDriver::moveTo(p);
+    GTMouseDriver::release(Qt::MouseButton::LeftButton);
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }//namespace

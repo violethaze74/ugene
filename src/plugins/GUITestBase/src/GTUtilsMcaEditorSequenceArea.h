@@ -44,6 +44,7 @@ public:
     static QPoint convertCoordinates(HI::GUITestOpStatus &os, const QPoint p);
     static QString getReferenceReg(HI::GUITestOpStatus &os, int num, int length);
     static void moveTheBorderBetweenAlignmentAndRead(HI::GUITestOpStatus &os, int shift);
+    static void dragAndDrop(HI::GUITestOpStatus &os, const QPoint p);
 };
 
 }//namespace
