@@ -25,6 +25,7 @@
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/Notification.h>
 
 #include "MaAmbiguousCharactersController.h"
@@ -51,11 +52,13 @@ MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt *ma
     nextAction = new QAction(QIcon(":core/images/amb_forward.png"), tr("Jump to next ambiguous character"), this);
     nextAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_A));
     nextAction->setObjectName("next_ambiguous");
+    GUIUtils::updateActionToolTip(nextAction);
     connect(nextAction, SIGNAL(triggered(bool)), SLOT(sl_next()));
 
     previousAction = new QAction(QIcon(":core/images/amb_backward.png"), tr("Jump to previous ambiguous character"), this);
     previousAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_A));
     previousAction->setObjectName("prev_ambiguous");
+    GUIUtils::updateActionToolTip(previousAction);
     connect(previousAction, SIGNAL(triggered(bool)), SLOT(sl_previous()));
 
     connect(maEditor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_resetCachedIterator()));

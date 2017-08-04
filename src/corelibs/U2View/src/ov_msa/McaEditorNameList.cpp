@@ -44,6 +44,8 @@ McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
     connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
 
     editSequenceNameAction->setText(tr("Rename read"));
+    editSequenceNameAction->setShortcut(Qt::Key_F2);
+
     removeSequenceAction->setText(tr("Remove read"));
 
     setMinimumWidth(getMinimumWidgetWidth());
@@ -126,6 +128,16 @@ int McaEditorNameList::getMinimumWidgetWidth() const {
 int McaEditorNameList::getIconColumnWidth() const {
     static int iconColumnWidth = MARGIN_ARROW_LEFT + ARROW_LENGTH + MARGIN_ARROW_RIGHT;
     return iconColumnWidth;
+}
+
+void McaEditorNameList::updateActions() {
+    MaEditorNameList::updateActions();
+
+    const bool hasSequenceSelection = !ui->getSequenceArea()->getSelection().isEmpty();
+    const bool hasRowSelection = !getSelection().isEmpty();
+    const bool isWholeReadSelected = hasRowSelection && !hasSequenceSelection;
+
+    removeSequenceAction->setShortcut(isWholeReadSelected ? QKeySequence::Delete : QKeySequence());
 }
 
 }   // namespace U2

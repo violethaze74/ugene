@@ -43,7 +43,7 @@ ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent)
     connect(minusAction, SIGNAL(triggered()), SLOT(sl_minusButtonClicked()));
 
     minusButton = new QToolButton();
-    minusButton->setText(QString(tr("-")));
+    minusButton->setText(QString(tr("Decrease peaks height")));
     minusButton->setIcon(QIcon(":core/images/minus.png"));
     minusButton->setFixedSize(20, 20);
     minusButton->setAutoRepeat(true);
@@ -54,7 +54,7 @@ ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent)
     connect(plusAction, SIGNAL(triggered()), SLOT(sl_plusButtonClicked()));
 
     plusButton = new QToolButton(this);
-    plusButton->setText(QString(tr("+")));
+    plusButton->setText(QString(tr("Increase peaks height")));
     plusButton->setIcon(QIcon(":core/images/plus.png"));
     plusButton->setAutoRepeat(true);
     plusButton->setAutoRepeatInterval(20);
@@ -97,6 +97,14 @@ QAction *ScaleBar::getPlusAction() const {
 
 QAction *ScaleBar::getMinusAction() const {
     return minusAction;
+}
+
+QAbstractButton *ScaleBar::getPlusButton() const {
+    return plusButton;
+}
+
+QAbstractButton *ScaleBar::getMinusButton() const {
+    return minusButton;
 }
 
 void ScaleBar::sl_minusButtonClicked() {

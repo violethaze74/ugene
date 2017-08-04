@@ -31,8 +31,6 @@
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 
-#include <U2Gui/GUIUtils.h>
-
 #include "McaEditorSequenceArea.h"
 #include "helpers/MaAmbiguousCharactersController.h"
 #include "helpers/ScrollController.h"
@@ -80,7 +78,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
 
     replaceCharacterAction->setText(tr("Replace character/gap"));
 
-    removeGapBeforeSelectionAction = new QAction(tr("Shift characters left"), this);
+    removeGapBeforeSelectionAction = new QAction(tr("Remove gap at the left"), this);
     removeGapBeforeSelectionAction->setShortcut(Qt::Key_Backspace);
     connect(removeGapBeforeSelectionAction, SIGNAL(triggered()), SLOT(sl_removeGapBeforeSelection()));
     addAction(removeGapBeforeSelectionAction);
@@ -110,10 +108,17 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
     scaleBar = new ScaleBar(Qt::Horizontal);
     scaleBar->setRange(100, 1000);
     scaleBar->setTickInterval(100);
+
     scaleBar->getPlusAction()->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
-    scaleBar->getMinusAction()->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Down));
     addAction(scaleBar->getPlusAction());
+    QAbstractButton *plusButton = scaleBar->getPlusButton();
+    plusButton->setToolTip(QString("%1 (%2)").arg(plusButton->text()).arg(scaleBar->getPlusAction()->shortcut().toString(QKeySequence::NativeText)));
+
+    scaleBar->getMinusAction()->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Down));
     addAction(scaleBar->getMinusAction());
+    QAbstractButton *minusButton = scaleBar->getMinusButton();
+    minusButton->setToolTip(QString("%1 (%2)").arg(minusButton->text()).arg(scaleBar->getMinusAction()->shortcut().toString(QKeySequence::NativeText)));
+
     scaleAction = NULL;
 
     ambiguousCharactersController = new MaAmbiguousCharactersController(ui);
@@ -343,7 +348,6 @@ void McaEditorSequenceArea::updateTrimActions(bool isEnabled) {
     CHECK(isEnabled, );
     CHECK(!getSelection().isEmpty(), );
 
-    MultipleAlignmentObject* maObj = editor->getMaObject();
     U2Region reg = getSelectedRows();
     MultipleAlignmentRow row = editor->getMaObject()->getRow(reg.startPos);
     int start = row->getCoreStart();

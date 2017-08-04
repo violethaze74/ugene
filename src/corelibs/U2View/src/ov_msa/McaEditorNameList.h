@@ -62,6 +62,8 @@ private:
 
     int getIconColumnWidth() const;
 
+    void updateActions();
+
     U2Region localSelection;
 
     static const int MARGIN_ARROW_LEFT;

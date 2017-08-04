@@ -36,7 +36,7 @@ class SequenceObjectContext;
 #define     MCAE_MENU_ALIGNMENT     "MCAE_MENU_ALIGNMENT"
 #define     MCAE_MENU_APPEARANCE    "MCAE_MENU_APPEARANCE"
 #define     MCAE_MENU_NAVIGATION    "MCAE_MENU_NAVIGATION"
-#define     MCAE_MENU_EDITING       "MCAE_MENU_EDITING"
+#define     MCAE_MENU_EDIT          "MCAE_MENU_EDIT"
 
 class U2VIEW_EXPORT McaEditor : public MaEditor {
     Q_OBJECT
@@ -87,7 +87,7 @@ private:
     void addAlignmentMenu(QMenu *menu);
     void addAppearanceMenu(QMenu *menu);
     void addNavigationMenu(QMenu *menu);
-    void addEditingMenu(QMenu *menu);
+    void addEditMenu(QMenu *menu);
 };
 
 }   // namespace U2
