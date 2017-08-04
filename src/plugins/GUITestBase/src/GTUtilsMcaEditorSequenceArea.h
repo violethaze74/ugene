@@ -43,6 +43,7 @@ public:
     static void moveTo(HI::GUITestOpStatus &os, const QPoint &p);
     static QPoint convertCoordinates(HI::GUITestOpStatus &os, const QPoint p);
     static QString getReferenceReg(HI::GUITestOpStatus &os, int num, int length);
+    static void moveTheBorderBetweenAlignmentAndRead(HI::GUITestOpStatus &os, int shift);
 };
 
 }//namespace

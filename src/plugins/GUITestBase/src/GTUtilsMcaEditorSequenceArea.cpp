@@ -238,6 +238,21 @@ QString GTUtilsMcaEditorSequenceArea::getReferenceReg(GUITestOpStatus &os, int n
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "moveTheBorderBetweenAlignmentAndRead"
+void GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(HI::GUITestOpStatus &os, int shift) {
+    QStringList visible = getVisibleNames(os);
+    GT_CHECK_RESULT(visible.size() != 0, "No visible reads", );
+    QString firstVisible = visible.first();
+
+    const QRect sequenceNameRect = GTUtilsMcaEditor::getReadNameRect(os, firstVisible);
+    GTMouseDriver::moveTo(QPoint (sequenceNameRect.right() + 2, sequenceNameRect.center().y()));
+    GTMouseDriver::press(Qt::MouseButton::LeftButton);
+    GTGlobals::sleep(1000);
+    GTMouseDriver::moveTo(QPoint(sequenceNameRect.right() + 2 + shift, sequenceNameRect.center().y()));
+    GTMouseDriver::release(Qt::MouseButton::LeftButton);
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }//namespace
