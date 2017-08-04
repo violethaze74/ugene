@@ -1144,8 +1144,8 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0004){
     CHECK_SET_ERR(line2 != NULL, "lineEdit 2 not found");
     GTLineEdit::setText(os, line2, "wrong name");
     CHECK_SET_ERR(GTBaseCompleter::isEmpty(os), "Completer is not empty");
-
-    GTKeyboardDriver::keyClick( Qt::Key_Escape);
+	GTKeyboardDriver::keyClick(Qt::Key_Escape);
+	GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: empty popup helper appeared
 }
 
