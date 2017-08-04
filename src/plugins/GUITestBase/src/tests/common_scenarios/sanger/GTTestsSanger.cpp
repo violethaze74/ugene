@@ -190,6 +190,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             const QString actualTitle = wizard->windowTitle();
             CHECK_SET_ERR(expectedTitle == actualTitle, QString("Wizard title is incorrect: expected '%1', got '%2'").arg(expectedTitle).arg(actualTitle));
 
+            GTWidget::click(os, wizard);
+
 //    3. Select Reference .../test/general/_common_data/sanger/reference.gb
             GTUtilsWizard::setParameter(os, "Reference", testDir + "_common_data/sanger/reference.gb");
 
@@ -272,29 +274,29 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     const int readsCount = GTUtilsMcaEditor::getReadsCount(os);
     CHECK_SET_ERR(16 == readsCount, QString("Unexpected count of reads: expected 16, got %1").arg(readsCount));
 
-//                    8 reads with names "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66" and "SZYD_Cas9_CR71"
-    const QStringList expectedDirectReadsNames = QStringList() << "SZYD_Cas9_CR60"
-                                                               << "SZYD_Cas9_CR61"
-                                                               << "SZYD_Cas9_CR62"
-                                                               << "SZYD_Cas9_CR63"
-                                                               << "SZYD_Cas9_CR64"
-                                                               << "SZYD_Cas9_CR65"
-                                                               << "SZYD_Cas9_CR66"
-                                                               << "SZYD_Cas9_CR71";
+//                    8 reads with names "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66" and "SZYD_Cas9_5B71"
+    const QSet<QString> expectedDirectReadsNames = QSet<QString>() << "SZYD_Cas9_5B71"
+                                                                   << "SZYD_Cas9_CR60"
+                                                                   << "SZYD_Cas9_CR61"
+                                                                   << "SZYD_Cas9_CR62"
+                                                                   << "SZYD_Cas9_CR63"
+                                                                   << "SZYD_Cas9_CR64"
+                                                                   << "SZYD_Cas9_CR65"
+                                                                   << "SZYD_Cas9_CR66";
     const QStringList actualDirectReadsNames = GTUtilsMcaEditor::getDirectReadsNames(os);
-    CHECK_SET_ERR(expectedDirectReadsNames == actualDirectReadsNames, "Direct reads names are incorrect");
+    CHECK_SET_ERR(expectedDirectReadsNames == actualDirectReadsNames.toSet(), "Direct reads names are incorrect");
 
-//                    8 reverse reads with names "SZYD_Cas9_CR50"... "SZYD_Cas9_CR56" and "SZYD_Cas9_CR70"
-    const QStringList expectedReverseComplementReadsNames = QStringList() << "SZYD_Cas9_CR50"
-                                                             << "SZYD_Cas9_CR51"
-                                                             << "SZYD_Cas9_CR52"
-                                                             << "SZYD_Cas9_CR53"
-                                                             << "SZYD_Cas9_CR54"
-                                                             << "SZYD_Cas9_CR55"
-                                                             << "SZYD_Cas9_CR56"
-                                                             << "SZYD_Cas9_CR70";
+//                    8 reverse reads with names "SZYD_Cas9_CR50"... "SZYD_Cas9_CR56" and "SZYD_Cas9_5B70"
+    const QSet<QString> expectedReverseComplementReadsNames = QSet<QString>() << "SZYD_Cas9_CR50"
+                                                                              << "SZYD_Cas9_CR51"
+                                                                              << "SZYD_Cas9_CR52"
+                                                                              << "SZYD_Cas9_CR53"
+                                                                              << "SZYD_Cas9_CR54"
+                                                                              << "SZYD_Cas9_CR55"
+                                                                              << "SZYD_Cas9_CR56"
+                                                                              << "SZYD_Cas9_5B70";
     const QStringList actualReverseComplementReadsNames = GTUtilsMcaEditor::getReverseComplementReadsNames(os);
-    CHECK_SET_ERR(expectedReverseComplementReadsNames == actualReverseComplementReadsNames, "Reverse complement reads names are incorrect");
+    CHECK_SET_ERR(expectedReverseComplementReadsNames == actualReverseComplementReadsNames.toSet(), "Reverse complement reads names are incorrect");
 
 //                    No Еrrors in the Log
     GTUtilsLog::check(os, logTracer);
@@ -304,7 +306,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
 //    10. Select "Open view" from context menu and select "Open new view: "Alignment Editor" from context view
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view" << "Open new view: Alignment Editor", GTGlobals::UseMouse));
-    GTUtilsProjectTreeView::callContextMenu(os, expectedObjectName);
+    GTUtilsProjectTreeView::callContextMenu(os, "Aligned reads");
 
 //    Expected state:  Chromatogram sanger view is opened
     GTUtilsTaskTreeView::waitTaskFinished(os);

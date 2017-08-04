@@ -95,11 +95,11 @@ QString GTUtilsMcaEditor::getReferenceLabelText(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "getReadsCount"
 int GTUtilsMcaEditor::getReadsCount(GUITestOpStatus &os) {
     QWidget *statusBar = GTWidget::findWidget(os, "mca_editor_status_bar", getEditorUi(os));
-    QLabel *readsCountLabel = GTWidget::findExactWidget<QLabel *>(os, "", statusBar);
+    QLabel *readsCountLabel = GTWidget::findExactWidget<QLabel *>(os, "Line", statusBar);
 
     QRegExp readsCounRegExp("Ln \\d+|\\- / (\\d+)");
     readsCounRegExp.indexIn(readsCountLabel->text());
-    const QString totalReadsCountString = readsCounRegExp.cap();
+    const QString totalReadsCountString = readsCounRegExp.cap(1);
 
     bool isNumber = false;
     const int totalReadsCount =  totalReadsCountString.toInt(&isNumber);
