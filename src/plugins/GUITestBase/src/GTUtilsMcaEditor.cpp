@@ -23,6 +23,7 @@
 #include <QTextDocument>
 
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 
 #include <U2Core/U2SafePoints.h>
@@ -183,6 +184,17 @@ void GTUtilsMcaEditor::clickReadName(GUITestOpStatus &os, const QString &readNam
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "undo"
+void GTUtilsMcaEditor::undo(GUITestOpStatus &os) {
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "redo"
+void GTUtilsMcaEditor::redo(GUITestOpStatus &os) {
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo"));
+}
+#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

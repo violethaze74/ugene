@@ -157,6 +157,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsMsaEditor.h \
             src/GTUtilsMsaEditorSequenceArea.h \
             src/GTUtilsNotifications.h \
+            src/GTUtilsOptionPanelMca.h \
             src/GTUtilsOptionPanelMSA.h \
             src/GTUtilsOptionPanelSequenceView.h \
             src/GTUtilsOptionsPanel.h \
@@ -408,6 +409,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsMsaEditor.cpp \
             src/GTUtilsMsaEditorSequenceArea.cpp \
             src/GTUtilsNotifications.cpp \
+            src/GTUtilsOptionPanelMca.cpp \
             src/GTUtilsOptionPanelMSA.cpp \
             src/GTUtilsOptionPanelSequenceView.cpp \
             src/GTUtilsOptionsPanel.cpp \

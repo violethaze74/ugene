@@ -27,6 +27,7 @@
 #include <U2View/McaEditorSequenceArea.h>
 
 namespace U2 {
+    using namespace HI;
 
 class GTUtilsMcaEditorSequenceArea {
 public:
@@ -41,6 +42,7 @@ public:
     static void callContextMenu(HI::GUITestOpStatus &os, const QPoint &innerCoords = QPoint());
     static void moveTo(HI::GUITestOpStatus &os, const QPoint &p);
     static QPoint convertCoordinates(HI::GUITestOpStatus &os, const QPoint p);
+    static QString getReferenceReg(HI::GUITestOpStatus &os, int num, int length);
 };
 
 }//namespace

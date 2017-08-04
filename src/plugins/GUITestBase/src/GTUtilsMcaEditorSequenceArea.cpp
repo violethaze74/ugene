@@ -25,14 +25,22 @@
 #include <drivers/GTMouseDriver.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNASequenceSelection.h>
+#include <U2Core/U2OpStatusUtils.h>
 
+#include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/BaseWidthController.h>
 #include <U2View/DrawHelper.h>
 #include <U2View/McaEditor.h>
 #include <U2View/McaEditorNameList.h>
 #include <U2View/McaEditorSequenceArea.h>
+#include <U2View/McaEditorConsensusArea.h>
+
 #include <U2View/McaEditorWgt.h>
+#include <U2View/PanView.h>
 #include <U2View/RowHeightController.h>
+#include <U2View/SequenceObjectContext.h>
 
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
@@ -211,6 +219,22 @@ QPoint GTUtilsMcaEditorSequenceArea::convertCoordinates(GUITestOpStatus &os, con
     const int posX = static_cast<int>(mcaEditArea->getEditor()->getUI()->getBaseWidthController()->getBaseGlobalRange(p.x()).center());
     const int posY = static_cast<int>(mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowGlobalRangeByNumber(p.y()).center());
     return mcaEditArea->mapToGlobal(QPoint(posX, posY));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getReferenceReg"
+QString GTUtilsMcaEditorSequenceArea::getReferenceReg(GUITestOpStatus &os, int num, int length) {
+    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
+    GT_CHECK_RESULT(mw != NULL, "QMainWindow not found", QString());
+    McaEditor* editor = mw->findChild<McaEditor*>();
+    GT_CHECK_RESULT(editor != NULL, "McaEditor not found", QString());
+    MultipleChromatogramAlignmentObject* obj = editor->getMaObject();
+    GT_CHECK_RESULT(obj != NULL, "MultipleChromatogramAlignmentObject not found", QString());
+
+    U2OpStatus2Log status;
+    QByteArray seq = obj->getReferenceObj()->getSequenceData(U2Region(num, 1), status);
+
+    return seq;
 }
 #undef GT_METHOD_NAME
 

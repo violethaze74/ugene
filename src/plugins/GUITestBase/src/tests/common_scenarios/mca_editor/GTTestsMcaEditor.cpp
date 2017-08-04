@@ -54,6 +54,7 @@
 #include "GTUtilsMcaEditorSequenceArea.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsNotifications.h"
+#include "GTUtilsOptionPanelMca.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -82,71 +83,74 @@ const QString namesOfRow[16] = {"SZYD_Cas9_CR50",
                                 "SZYD_Cas9_5B71" };
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
-    GTGlobals::sleep();
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-    //Expected state : "Align Sanger Reads to Reference" has appered
-    //Expected state : "Min read identity" option by default = 80 %
-    int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-    QString expected = "80";
-    CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
 
-    //Expected state : "Min read length" option by default = 0
-    int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-    expected = "0";
-    CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
 
-    //Expected state : "Quality threshold" option by default = 30
-    int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-    expected = "30";
-    CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state : "Add to project" option is checked by default
-    bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-    CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
 
-    //Expected state : "Result aligment" field is filled by default
-    QString output = GTLineEdit::getText(os, "outputLineEdit");
-    bool checkOutput = output.isEmpty();
-    CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state : "Trim both ends" option is checked by default
-    bool trim = GTCheckBox::getState(os, "trimCheckBox");
-    CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
-    //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-    bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-    bool checkContainsSecond = output.contains("sanger_reads_alignment");
-    bool checkContainsThird = output.contains("UGENE_Data");
-    bool checkContainsFourth = output.contains("Documents");
-    bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-    CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
-    //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
 
-    //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
-    QStringList reads;
-    for (int i = 1; i < 21; i++) {
-        QString name = "sanger_";
-        QString num = QString::number(i);
-        if (num.size() == 1) {
-            num = "0" + QString::number(i);
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
-        name += num;
-        name += ".ab1";
-        reads << name;
-    }
-    QString readDir = testDir + "_common_data/sanger/";
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-    GTUtilsDialog::waitForDialog(os, ob);
+    };
 
-    GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-    //4. Push "Align" button
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state :
@@ -189,91 +193,94 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
-    GTGlobals::sleep();
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-    //Expected state : "Align Sanger Reads to Reference" has appered
-    //Expected state : "Min read identity" option by default = 80 %
-    int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-    QString expected = "80";
-    CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
 
-    //Expected state : "Min read length" option by default = 0
-    int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-    expected = "0";
-    CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
 
-    //Expected state : "Quality threshold" option by default = 30
-    int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-    expected = "30";
-    CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state : "Add to project" option is checked by default
-    bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-    CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
 
-    //Expected state : "Result aligment" field is filled by default
-    QString output = GTLineEdit::getText(os, "outputLineEdit");
-    bool checkOutput = output.isEmpty();
-    CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state : "Trim both ends" option is checked by default
-    bool trim = GTCheckBox::getState(os, "trimCheckBox");
-    CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
-    //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
-    bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-    bool checkContainsSecond = output.contains("sanger_reads_alignment");
-    bool checkContainsThird = output.contains("UGENE_Data");
-    bool checkContainsFourth = output.contains("Documents");
-    bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-    CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
-    //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
 
-    //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)
-    QStringList reads;
-    for (int i = 1; i < 21; i++) {
-        QString name = "sanger_";
-        QString num = QString::number(i);
-        if (num.size() == 1) {
-            num = "0" + QString::number(i);
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Uncheck "Add to project" option
+            GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
+
+            //5. Push "..." in "Result aligment"
+            GTLineEdit::setText(os, "outputLineEdit", "...", QApplication::activeModalWidget());
+
+            //6. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            QStringList path;
+            path << sandBoxDir + "Sanger";
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
+
+            //7.Push Save
+            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+
+            //Expected state : "Result alignment" is filled <path> / Sanger.ugenedb
+            output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutputContains = output.contains("Sanger.ugenedb");
+            CHECK_SET_ERR(checkOutputContains, QString("incorrect output line"));
+
+            //8. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
-        name += num;
-        name += ".ab1";
-        reads << name;
-    }
-    QString readDir = testDir + "_common_data/sanger/";
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-    GTUtilsDialog::waitForDialog(os, ob);
+    };
 
-    GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-    //4. Uncheck "Add to project" option
-    GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
-
-    //5. Push "..." in "Result aligment"
-    GTLineEdit::setText(os, "outputLineEdit", "...", QApplication::activeModalWidget());
-
-    //6. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    QStringList path;
-    path << sandBoxDir + "Sanger";
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
-
-    //7.Push Save
-    GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
-
-    //Expected state : "Result alignment" is filled <path> / Sanger.ugenedb
-    output = GTLineEdit::getText(os, "outputLineEdit");
-    bool checkOutputContains = output.contains("Sanger.ugenedb");
-    CHECK_SET_ERR(checkOutputContains, QString("incorrect output line"));
-
-    //8. Push "Align" button
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : No Еrrors in the Log
@@ -316,92 +323,95 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
-    GTGlobals::sleep();
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-    //Expected state: "Align Sanger Reads to Reference" has appered
-    //Expected state: "Min read identity" option by default = 80 %
-    int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-    QString expected = "80";
-    CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
 
-    //Expected state: "Min read length" option by default = 0
-    int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-    expected = "0";
-    CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
 
-    //Expected state: "Quality threshold" option by default = 30
-    int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-    expected = "30";
-    CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state: "Add to project" option is checked by default
-    bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-    CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
 
-    //Expected state: "Result aligment" field is filled by default
-    QString output = GTLineEdit::getText(os, "outputLineEdit");
-    bool checkOutput = output.isEmpty();
-    CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state: "Trim both ends" option is unchecked by default
-    bool trim = GTCheckBox::getState(os, "trimCheckBox");
-    CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
-    //Expected state: "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
-    bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-    bool checkContainsSecond = output.contains("sanger_reads_alignment");
-    bool checkContainsThird = output.contains("UGENE_Data");
-    bool checkContainsFourth = output.contains("Documents");
-    bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-    CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            //2. Select reference  /test/general/_common_data/alphabets/standard_dna_rna_amino_1000.fa
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_dna_rna_amino_1000.fa");
 
-    //2. Select reference  /test/general/_common_data/alphabets/standard_dna_rna_amino_1000.fa
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_dna_rna_amino_1000.fa");
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
 
-    //3. Select Reads: ... / test / general / _common_data / sanger / sanger_01.ab1 - / sanger_20.ab1(20 files)
-    QStringList reads;
-    for (int i = 1; i < 21; i++) {
-        QString name = "sanger_";
-        QString num = QString::number(i);
-        if (num.size() == 1) {
-            num = "0" + QString::number(i);
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Uncheck "Add to project" option
+            GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
+
+            //5. Push "..." in "Result aligment"
+            GTLineEdit::setText(os, "outputLineEdit", "...", QApplication::activeModalWidget());
+
+            //6. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            QStringList path;
+            path << sandBoxDir + "Sanger";
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
+
+            //7.Push Save
+            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+
+            //Expected state : "Result alignment" is filled <path> / Sanger.ugenedb
+            output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutputContains = output.contains("Sanger.ugenedb");
+            CHECK_SET_ERR(checkOutputContains, QString("incorrect output line"));
+
+            //8. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
-        name += num;
-        name += ".ab1";
-        reads << name;
-    }
-    QString readDir = testDir + "_common_data/sanger/";
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-    GTUtilsDialog::waitForDialog(os, ob);
+    };
 
-    GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-    //4. Uncheck "Add to project" option
-    GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
-
-    //5. Push "..." in "Result aligment"
-    GTLineEdit::setText(os, "outputLineEdit", "...", QApplication::activeModalWidget());
-
-    //5. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    QStringList path;
-    path << sandBoxDir + "Sanger";
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
-
-    //6. Push Save
-    GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
-
-    //Expected state: "Result alignment" is filled <path> / Sanger.ugenedb
-    output = GTLineEdit::getText(os, "outputLineEdit");
-    bool checkOutputContains = output.contains("Sanger.ugenedb");
-    CHECK_SET_ERR(checkOutputContains, QString("incorrect output line"));
-
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTLogTracer trace;
-    //7. Push "Align" button
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Error: More than one sequence in the reference file:  <path>/alphabets/standard_dna_rna_amino_1000.fa
@@ -409,92 +419,95 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
-    GTGlobals::sleep();
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-    //Expected state: "Align Sanger Reads to Reference" has appered
-    //Expected state: "Min read identity" option by default = 80 %
-    int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-    QString expected = "80";
-    CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
 
-    //Expected state: "Min read length" option by default = 0
-    int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-    expected = "0";
-    CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
 
-    //Expected state: "Quality threshold" option by default = 30
-    int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-    expected = "30";
-    CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state: "Add to project" option is checked by default
-    bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-    CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
 
-    //Expected state: "Result aligment" field is filled by default
-    QString output = GTLineEdit::getText(os, "outputLineEdit");
-    bool checkOutput = output.isEmpty();
-    CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state: "Trim both ends" option is unchecked by default
-    bool trim = GTCheckBox::getState(os, "trimCheckBox");
-    CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
-    //Expected state: "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
-    bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-    bool checkContainsSecond = output.contains("sanger_reads_alignment");
-    bool checkContainsThird = output.contains("UGENE_Data");
-    bool checkContainsFourth = output.contains("Documents");
-    bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-    CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            //2. Select reference  /test/general/_common_data/alphabets/standard_dna_rna_1000.fa
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_rna_1000.fa");
 
-    //2. Select reference  /test/general/_common_data/alphabets/standard_dna_rna_1000.fa
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_rna_1000.fa");
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
 
-    //3. Select Reads: ... / test / general / _common_data / sanger / sanger_01.ab1 - / sanger_20.ab1(20 files)
-    QStringList reads;
-    for (int i = 1; i < 21; i++) {
-        QString name = "sanger_";
-        QString num = QString::number(i);
-        if (num.size() == 1) {
-            num = "0" + QString::number(i);
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Uncheck "Add to project" option
+            GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
+
+            //5. Push "..." in "Result aligment"
+            GTLineEdit::setText(os, "outputLineEdit", "...", QApplication::activeModalWidget());
+
+            //6. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            QStringList path;
+            path << sandBoxDir + "Sanger";
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
+
+            //7.Push Save
+            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+
+            //Expected state : "Result alignment" is filled <path> / Sanger.ugenedb
+            output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutputContains = output.contains("Sanger.ugenedb");
+            CHECK_SET_ERR(checkOutputContains, QString("incorrect output line"));
+
+            //8. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
-        name += num;
-        name += ".ab1";
-        reads << name;
-    }
-    QString readDir = testDir + "_common_data/sanger/";
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-    GTUtilsDialog::waitForDialog(os, ob);
+    };
 
-    GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-    //4. Uncheck "Add to project" option
-    GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
-
-    //5. Push "..." in "Result aligment"
-    GTLineEdit::setText(os, "outputLineEdit", "...", QApplication::activeModalWidget());
-
-    //5. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    QStringList path;
-    path << sandBoxDir + "Sanger";
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
-
-    //6. Push Save
-    GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
-
-    //Expected state: "Result alignment" is filled <path> / Sanger.ugenedb
-    output = GTLineEdit::getText(os, "outputLineEdit");
-    bool checkOutputContains = output.contains("Sanger.ugenedb");
-    CHECK_SET_ERR(checkOutputContains, QString("incorrect output line"));
-
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTLogTracer trace;
-    //7. Push "Align" button
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
@@ -502,71 +515,74 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
-    GTGlobals::sleep();
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-    //Expected state : "Align Sanger Reads to Reference" has appered
-    //Expected state : "Min read identity" option by default = 80 %
-    int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-    QString expected = "80";
-    CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
 
-    //Expected state : "Min read length" option by default = 0
-    int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-    expected = "0";
-    CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
 
-    //Expected state : "Quality threshold" option by default = 30
-    int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-    expected = "30";
-    CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state : "Add to project" option is checked by default
-    bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-    CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
 
-    //Expected state : "Result aligment" field is filled by default
-    QString output = GTLineEdit::getText(os, "outputLineEdit");
-    bool checkOutput = output.isEmpty();
-    CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state : "Trim both ends" option is checked by default
-    bool trim = GTCheckBox::getState(os, "trimCheckBox");
-    CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
-    //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-    bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-    bool checkContainsSecond = output.contains("sanger_reads_alignment");
-    bool checkContainsThird = output.contains("UGENE_Data");
-    bool checkContainsFourth = output.contains("Documents");
-    bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-    CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
-    //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
 
-    //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
-    QStringList reads;
-    for (int i = 1; i < 21; i++) {
-        QString name = "sanger_";
-        QString num = QString::number(i);
-        if (num.size() == 1) {
-            num = "0" + QString::number(i);
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
-        name += num;
-        name += ".ab1";
-        reads << name;
-    }
-    QString readDir = testDir + "_common_data/sanger/";
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-    GTUtilsDialog::waitForDialog(os, ob);
+    };
 
-    GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-    //4. Push "Align" button
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select "SZYD_Cas9_5B71" read
@@ -596,72 +612,75 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     CHECK_SET_ERR(isChromatogramShown, "Error: alighed read sequence should be displayed with chromatogram")
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0012) {
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
-    GTGlobals::sleep();
+GUI_TEST_CLASS_DEFINITION(test_0011) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-    //Expected state : "Align Sanger Reads to Reference" has appered
-    //Expected state : "Min read identity" option by default = 80 %
-    int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-    QString expected = "80";
-    CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
 
-    //Expected state : "Min read length" option by default = 0
-    int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-    expected = "0";
-    CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
 
-    //Expected state : "Quality threshold" option by default = 30
-    int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-    expected = "30";
-    CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state : "Add to project" option is checked by default
-    bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-    CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
 
-    //Expected state : "Result aligment" field is filled by default
-    QString output = GTLineEdit::getText(os, "outputLineEdit");
-    bool checkOutput = output.isEmpty();
-    CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state : "Trim both ends" option is checked by default
-    bool trim = GTCheckBox::getState(os, "trimCheckBox");
-    CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
-    //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-    bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-    bool checkContainsSecond = output.contains("sanger_reads_alignment");
-    bool checkContainsThird = output.contains("UGENE_Data");
-    bool checkContainsFourth = output.contains("Documents");
-    bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-    CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
-    //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
 
-    //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
-    QStringList reads;
-    for (int i = 1; i < 21; i++) {
-        QString name = "sanger_";
-        QString num = QString::number(i);
-        if (num.size() == 1) {
-            num = "0" + QString::number(i);
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
-        name += num;
-        name += ".ab1";
-        reads << name;
-    }
-    QString readDir = testDir + "_common_data/sanger/";
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-    GTUtilsDialog::waitForDialog(os, ob);
+    };
 
-    GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-    //4. Push "Align" button
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : "Show/Hide Chromatograms" button is in pressed state
@@ -693,72 +712,75 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     }
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0014_1) {
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
-    GTGlobals::sleep();
+GUI_TEST_CLASS_DEFINITION(test_0012_1) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-    //Expected state : "Align Sanger Reads to Reference" has appered
-    //Expected state : "Min read identity" option by default = 80 %
-    int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-    QString expected = "80";
-    CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
 
-    //Expected state : "Min read length" option by default = 0
-    int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-    expected = "0";
-    CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
 
-    //Expected state : "Quality threshold" option by default = 30
-    int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-    expected = "30";
-    CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state : "Add to project" option is checked by default
-    bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-    CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
 
-    //Expected state : "Result aligment" field is filled by default
-    QString output = GTLineEdit::getText(os, "outputLineEdit");
-    bool checkOutput = output.isEmpty();
-    CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state : "Trim both ends" option is checked by default
-    bool trim = GTCheckBox::getState(os, "trimCheckBox");
-    CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
-    //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-    bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-    bool checkContainsSecond = output.contains("sanger_reads_alignment");
-    bool checkContainsThird = output.contains("UGENE_Data");
-    bool checkContainsFourth = output.contains("Documents");
-    bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-    CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
-    //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
 
-    //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
-    QStringList reads;
-    for (int i = 1; i < 21; i++) {
-        QString name = "sanger_";
-        QString num = QString::number(i);
-        if (num.size() == 1) {
-            num = "0" + QString::number(i);
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
-        name += num;
-        name += ".ab1";
-        reads << name;
-    }
-    QString readDir = testDir + "_common_data/sanger/";
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-    GTUtilsDialog::waitForDialog(os, ob);
+    };
 
-    GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-    //4. Push "Align" button
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select "SZYD_Cas9_5B71" read
@@ -851,72 +873,75 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
 
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0014_2) {
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
-    GTGlobals::sleep();
+GUI_TEST_CLASS_DEFINITION(test_0012_2) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-    //Expected state : "Align Sanger Reads to Reference" has appered
-    //Expected state : "Min read identity" option by default = 80 %
-    int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-    QString expected = "80";
-    CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
 
-    //Expected state : "Min read length" option by default = 0
-    int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-    expected = "0";
-    CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
 
-    //Expected state : "Quality threshold" option by default = 30
-    int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-    expected = "30";
-    CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state : "Add to project" option is checked by default
-    bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-    CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
 
-    //Expected state : "Result aligment" field is filled by default
-    QString output = GTLineEdit::getText(os, "outputLineEdit");
-    bool checkOutput = output.isEmpty();
-    CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
-    //Expected state : "Trim both ends" option is checked by default
-    bool trim = GTCheckBox::getState(os, "trimCheckBox");
-    CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
 
-    //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-    bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-    bool checkContainsSecond = output.contains("sanger_reads_alignment");
-    bool checkContainsThird = output.contains("UGENE_Data");
-    bool checkContainsFourth = output.contains("Documents");
-    bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-    CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
-    //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
 
-    //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
-    QStringList reads;
-    for (int i = 1; i < 21; i++) {
-        QString name = "sanger_";
-        QString num = QString::number(i);
-        if (num.size() == 1) {
-            num = "0" + QString::number(i);
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
-        name += num;
-        name += ".ab1";
-        reads << name;
-    }
-    QString readDir = testDir + "_common_data/sanger/";
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-    GTUtilsDialog::waitForDialog(os, ob);
+    };
 
-    GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-    //4. Push "Align" button
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select "SZYD_Cas9_5B71" read
@@ -973,6 +998,638 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     //13. Expand combo once more
     //Expected state : All four letters are checked
     GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsChecked));
+
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0013_1) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
+
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //5. Select "SZYD_Cas9_CR50" read
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
+
+    //6. Push Remove seuence(s) button on main menu
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Editing" << "Remove read"));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state : the read is deleted
+    QStringList reads = GTUtilsMcaEditor::getReadsNames(os);
+    bool isReadWasDelete = true;
+    foreach(QString read, reads) {
+        if (read == "SZYD_Cas9_CR50") {
+            isReadWasDelete = false;
+        }
+    }
+    CHECK_SET_ERR(isReadWasDelete, "Error: read SZYD_Cas9_CR50 was not delete");
+
+    //7. Select 3 reads using Shift modifier
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B70");
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR51");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    //8. Push Remove seuence(s) button
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Editing" << "Remove read"));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state : 3 reads are deleted
+    //Expected state : No corresponding reads in the map
+    reads = GTUtilsMcaEditor::getReadsNames(os);
+    isReadWasDelete = true;
+    foreach(QString read, reads) {
+        if (read == "SZYD_Cas9_5B70" || read == "SZYD_Cas9_5B71" || read == "SZYD_Cas9_CR51") {
+            isReadWasDelete = false;
+        }
+    }
+    CHECK_SET_ERR(isReadWasDelete, "Error: read SZYD_Cas9_CR50 was not delete");
+
+    //9. Push undo
+    GTUtilsMcaEditor::undo(os);
+
+    //Expected state : 3 reads are restored in the same place
+    //Expected state : Map is restored too
+    reads = GTUtilsMcaEditor::getReadsNames(os);
+    int restoreReadsCount = 0;
+    QStringList removedReads;
+    removedReads << "SZYD_Cas9_5B70" << "SZYD_Cas9_5B71" << "SZYD_Cas9_5B70";
+    foreach(QString read, reads) {
+        if (read == "SZYD_Cas9_5B70") {
+            restoreReadsCount++;
+            removedReads.removeOne("SZYD_Cas9_5B70");
+        }
+        if (read == "SZYD_Cas9_5B71") {
+            restoreReadsCount++;
+            removedReads.removeOne("SZYD_Cas9_5B71");
+        }
+        if (read == "SZYD_Cas9_CR51") {
+            restoreReadsCount++;
+            removedReads.removeOne("SZYD_Cas9_CR51");
+        }
+    }
+    CHECK_SET_ERR(restoreReadsCount == 3, QString("Error: read %1 was not restore").arg(removedReads.first()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0013_2) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
+
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //5. Select "SZYD_Cas9_CR50" read
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
+
+    //6. Push Remove seuence(s) button on context menu
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Editing" << "Remove read");;
+
+    //Expected state : the read is deleted
+    QStringList reads = GTUtilsMcaEditor::getReadsNames(os);
+    bool isReadWasDelete = true;
+    foreach(QString read, reads) {
+        if (read == "SZYD_Cas9_CR50") {
+            isReadWasDelete = false;
+        }
+    }
+    CHECK_SET_ERR(isReadWasDelete, "Error: read SZYD_Cas9_CR50 was not delete");
+
+    //7. Select 3 reads using Shift modifier
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B70");
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR51");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    //8. Push Remove seuence(s) button
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Editing" << "Remove read");;
+
+    //Expected state : 3 reads are deleted
+    //Expected state : No corresponding reads in the map
+    reads = GTUtilsMcaEditor::getReadsNames(os);
+    isReadWasDelete = true;
+    foreach(QString read, reads) {
+        if (read == "SZYD_Cas9_5B70" || read == "SZYD_Cas9_5B71" || read == "SZYD_Cas9_CR51") {
+            isReadWasDelete = false;
+        }
+    }
+    CHECK_SET_ERR(isReadWasDelete, "Error: read SZYD_Cas9_CR50 was not delete");
+
+    //9. Push undo
+    GTUtilsMcaEditor::undo(os);
+
+    //Expected state : 3 reads are restored in the same place
+    //Expected state : Map is restored too
+    reads = GTUtilsMcaEditor::getReadsNames(os);
+    int restoreReadsCount = 0;
+    QStringList removedReads;
+    removedReads << "SZYD_Cas9_5B70" << "SZYD_Cas9_5B71" << "SZYD_Cas9_5B70";
+    foreach(QString read, reads) {
+        if (read == "SZYD_Cas9_5B70") {
+            restoreReadsCount++;
+            removedReads.removeOne("SZYD_Cas9_5B70");
+        }
+        if (read == "SZYD_Cas9_5B71") {
+            restoreReadsCount++;
+            removedReads.removeOne("SZYD_Cas9_5B71");
+        }
+        if (read == "SZYD_Cas9_CR51") {
+            restoreReadsCount++;
+            removedReads.removeOne("SZYD_Cas9_CR51");
+        }
+    }
+    CHECK_SET_ERR(restoreReadsCount == 3, QString("Error: read %1 was not restore").arg(removedReads.first()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0013_3) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
+
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //5. Select any symbol  in the "SZYD_Cas9_CR50" read
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(5500, 2));
+
+    //6. Push Remove seuence(s) from main or context menu
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Editing" << "Remove read");
+
+    //Expected state: the read is deleted
+    QStringList reads = GTUtilsMcaEditor::getReadsNames(os);
+    bool isReadWasDelete = true;
+    foreach(QString read, reads) {
+        if (read == "SZYD_Cas9_CR50") {
+            isReadWasDelete = false;
+        }
+    }
+    CHECK_SET_ERR(isReadWasDelete, "Error: read SZYD_Cas9_CR50 was not delete");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0015_1) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
+
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //5. In Option panelSelect consensuns mode = Strict
+    GTUtilsOptionPanelMca::setConsensusType(os, "Strict");
+
+    //6. Push "Ctrl+Alt+v"
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+    GTGlobals::sleep(1000);
+
+    //Expected state : first difference between reference "A" and consensus "T"
+    QString referenceChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, 2059, 1);
+
+    //7. Push "Jump to next variation" button twice
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+
+    //Expected state : difference between reference "T" and consensus "A"
+    referenceChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, 2061, 1);
+
+    //8. Push "Jump to next variation" from context menu
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next variation"));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state : difference between reference "A" and consensus "T"
+    referenceChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, 2062, 1);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0015_2) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+
+            //2. Select reference  .../test/general/_common_data/sanger/sanger_01.ab1
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/sanger_01.ab1");
+
+            //3. Select Read: .../test/general/_common_data/sanger/sanger_01.ab1
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils* d = new GTFileDialogUtils(os, testDir + "_common_data/sanger/sanger_01.ab1");
+            GTUtilsDialog::waitForDialog(os, d);
+
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(5000);
+
+    //5. Push "Jump to next variation" button
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+
+    //Expected state : Notification "There are no variations in the consensus sequence" will be shown
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
+
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //5. In Option panelSelect consensuns mode = Strict
+    GTUtilsOptionPanelMca::setConsensusType(os, "Strict");
+
+    //6. Push "Ctrl+Alt+Shift+v"
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
+    GTGlobals::sleep(1000);
+
+    //Expected state : first difference between reference "A" and consensus "T"
+    QString referenceChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, 2059, 1);
+
+    //7. Push "Jump to previous variation" button twice
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
+
+    //Expected state : difference between reference "T" and consensus "A"
+    referenceChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, 2061, 1);
+
+    //8. Push "Jump to previous variation" from context menu
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to previous variation"));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state : difference between reference "A" and consensus "T"
+    referenceChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, 2062, 1);
+
+    //9. Push "Jump to next variation" button 3 times
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+    GTGlobals::sleep(1000);
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+    GTGlobals::sleep(1000);
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+    GTGlobals::sleep(1000);
+
+    //Expected state : The cursor jumps to the begining at the first difference reference "A" and  consensus "T"
 }
 
 }//namespace U2

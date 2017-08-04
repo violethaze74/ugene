@@ -55,6 +55,9 @@ public:
 
     static void moveToReadName(HI::GUITestOpStatus &os, const QString &readName);
     static void clickReadName(HI::GUITestOpStatus &os, const QString &sequenceName, Qt::MouseButton mouseButton = Qt::LeftButton);
+
+    static void undo(HI::GUITestOpStatus &os);
+    static void redo(HI::GUITestOpStatus &os);
 };
 
 }   // namespace U2
