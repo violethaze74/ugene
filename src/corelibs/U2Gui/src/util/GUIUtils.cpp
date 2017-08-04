@@ -19,7 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include "GUIUtils.h"
+#include <QApplication>
+#include <QDesktopServices>
+#include <QFile>
+#include <QMessageBox>
+#include <QPainter>
+#include <QProcess>
+#include <QUrl>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -32,15 +38,7 @@
 #include <U2Gui/AppSettingsGUI.h>
 #include <U2Gui/MainWindow.h>
 
-#include <QFile>
-#include <QProcess>
-
-#include <QApplication>
-#include <QMessageBox>
-#include <QPainter>
-
-#include <QUrl>
-#include <QDesktopServices>
+#include "GUIUtils.h"
 
 namespace U2 {
 
@@ -96,6 +94,12 @@ QMenu* GUIUtils::findSubMenu(QMenu* m, const QString& name) {
         return NULL;
     }
     return action->menu();
+}
+
+void GUIUtils::updateActionToolTip(QAction *action) {
+    const QString actionShortcutString = action->shortcut().toString(QKeySequence::NativeText);
+    const QString toolTip = actionShortcutString.isEmpty() ? action->text() : QString("%1 (%2)").arg(action->text()).arg(actionShortcutString);
+    action->setToolTip(toolTip);
 }
 
 void GUIUtils::disableEmptySubmenus(QMenu* m) {

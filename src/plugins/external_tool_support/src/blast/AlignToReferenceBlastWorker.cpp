@@ -117,7 +117,7 @@ void AlignToReferenceBlastWorkerFactory::init() {
         delegates[IDENTITY_ID] = new SpinBoxDelegate(m);
     }
 
-    Descriptor desc(ACTOR_ID, AlignToReferenceBlastWorker::tr("Align to Reference"),
+    Descriptor desc(ACTOR_ID, AlignToReferenceBlastWorker::tr("Map to Reference"),
         AlignToReferenceBlastWorker::tr("Align input sequences (e.g. Sanger reads) to the reference sequence."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));

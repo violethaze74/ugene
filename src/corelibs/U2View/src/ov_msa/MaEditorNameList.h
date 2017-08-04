@@ -110,7 +110,7 @@ protected:
     virtual void setSelection(int startSeq, int count);
     virtual bool isRowInSelection(int row) const;
 
-    void updateActions();
+    virtual void updateActions();
     void updateSelection(int newSeqNum);
     void moveSelectedRegion( int shift );
     void drawAll();

@@ -26,6 +26,7 @@
 
 #include <U2Core/global.h>
 
+class QAbstractButton;
 class QAction;
 class QSlider;
 class QToolButton;
@@ -45,6 +46,9 @@ public:
 
     QAction *getPlusAction() const;
     QAction *getMinusAction() const;
+
+    QAbstractButton *getPlusButton() const;
+    QAbstractButton *getMinusButton() const;
 
 signals:
     void valueChanged(int value);

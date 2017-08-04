@@ -111,8 +111,8 @@ void ToolsMenu::init() {
     {
         subMenuAction[SANGER_MENU] << SANGER_CONTROL;
         subMenuAction[SANGER_MENU] << LINE;
-        subMenuAction[SANGER_MENU] << SANGER_DENOVO;
         subMenuAction[SANGER_MENU] << SANGER_ALIGN;
+        subMenuAction[SANGER_MENU] << SANGER_DENOVO;
     }
 
     actionText[NGS_MENU] = tr("NGS data analysis");

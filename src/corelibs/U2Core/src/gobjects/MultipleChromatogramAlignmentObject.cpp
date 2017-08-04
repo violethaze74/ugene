@@ -142,7 +142,7 @@ void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int row
     if (newChar != U2Msa::GAP_CHAR) {
         McaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
     } else {
-        McaDbiUtils::removeCharacter(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
+        McaDbiUtils::removeCharacters(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
         MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os, true);
     }
     SAFE_POINT_OP(os, );
@@ -268,7 +268,7 @@ void MultipleChromatogramAlignmentObject::removeRowPrivate(U2OpStatus &os, const
 
 void MultipleChromatogramAlignmentObject::removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef,
                                                               const QList<qint64> &rows, int startPos, int nBases) {
-    McaDbiUtils::removeCharacter(maRef, rows, startPos, nBases, os);
+    McaDbiUtils::removeCharacters(maRef, rows, startPos, nBases, os);
 }
 
 }   // namespace U2

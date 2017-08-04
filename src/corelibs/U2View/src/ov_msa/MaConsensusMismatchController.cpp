@@ -19,20 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#include "MaConsensusMismatchController.h"
-#include "McaEditor.h"
-#include "McaEditorSequenceArea.h"
-#include "MSAEditorConsensusCache.h"
-
-#include "ov_msa/view_rendering/MaEditorSequenceArea.h"
-#include "ov_sequence/SequenceObjectContext.h"
-
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceSelection.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/Notification.h>
+
+#include "MaConsensusMismatchController.h"
+#include "McaEditor.h"
+#include "McaEditorSequenceArea.h"
+#include "MSAEditorConsensusCache.h"
+#include "ov_msa/view_rendering/MaEditorSequenceArea.h"
+#include "ov_sequence/SequenceObjectContext.h"
 
 namespace U2 {
 
@@ -52,11 +52,13 @@ MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
     nextMismatch = new QAction(QIcon(":core/images/mismatch-forward.png"), tr("Jump to next variation"), this);
     nextMismatch->setObjectName("next_mismatch");
     nextMismatch->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_V);
+    GUIUtils::updateActionToolTip(nextMismatch);
     connect(nextMismatch, SIGNAL(triggered(bool)), SLOT(sl_next()));
 
     prevMismatch = new QAction(QIcon(":core/images/mismatch-backward.png"), tr("Jump to previous variation"), this);
     prevMismatch->setShortcut(Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_V);
     prevMismatch->setObjectName("prev_mismatch");
+    GUIUtils::updateActionToolTip(prevMismatch);
     connect(prevMismatch, SIGNAL(triggered(bool)), SLOT(sl_prev()));
 }
 

@@ -15,7 +15,7 @@
 
 
 
-workflow "Trim and align Sanger reads"{
+workflow "Trim and map Sanger reads"{
 
     SequenceQualityTrim {
         type:SequenceQualityTrim;
@@ -30,7 +30,7 @@ workflow "Trim and align Sanger reads"{
     }
     align-to-reference {
         type:align-to-reference;
-        name:"Align to Reference";
+        name:"Map to Reference";
         result-url:alignment.ugenedb;
     }
 

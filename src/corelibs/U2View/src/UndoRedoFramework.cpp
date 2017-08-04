@@ -19,15 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include "UndoRedoFramework.h"
-#include "ov_msa/MSACollapsibleModel.h"
-
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
+#include "UndoRedoFramework.h"
+#include "ov_msa/MSACollapsibleModel.h"
 
 namespace U2 {
 
@@ -43,13 +44,13 @@ MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject *
     undoAction->setText("Undo");
     undoAction->setIcon(QIcon(":core/images/undo.png"));
     undoAction->setShortcut(QKeySequence::Undo);
-    undoAction->setToolTip(QString("%1 (%2)").arg(undoAction->text()).arg(undoAction->shortcut().toString()));
+    GUIUtils::updateActionToolTip(undoAction);
 
     redoAction = new QAction(this);
     redoAction->setText("Redo");
     redoAction->setIcon(QIcon(":core/images/redo.png"));
     redoAction->setShortcut(QKeySequence::Redo);
-    redoAction->setToolTip(QString("%1 (%2)").arg(redoAction->text()).arg(redoAction->shortcut().toString()));
+    GUIUtils::updateActionToolTip(redoAction);
 
     checkUndoRedoEnabled();
 

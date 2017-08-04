@@ -49,7 +49,6 @@ public:
         int minIdentity;
         int minLength;
         int qualityThreshold;
-        bool trimBothEnds;
         QString outAlignment;
         bool addResultToProject;
     };

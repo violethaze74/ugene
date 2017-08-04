@@ -73,7 +73,6 @@ void McaEditor::buildStaticToolbar(QToolBar* tb) {
 
     tb->addAction(zoomInAction);
     tb->addAction(zoomOutAction);
-    tb->addAction(zoomToSelectionAction);
     tb->addAction(resetZoomAction);
     tb->addSeparator();
 
@@ -83,13 +82,11 @@ void McaEditor::buildStaticToolbar(QToolBar* tb) {
 void McaEditor::buildStaticMenu(QMenu* menu) {
     addAlignmentMenu(menu);
     addAppearanceMenu(menu);
-    menu->addSeparator();
-    menu->addAction(getUI()->getClearSelectionAction());
-    menu->addSeparator();
     addNavigationMenu(menu);
-    addEditingMenu(menu);
+    addEditMenu(menu);
     menu->addSeparator();
     menu->addAction(showConsensusTabAction);
+    menu->addSeparator();
 
     GObjectView::buildStaticMenu(menu);
     GUIUtils::disableEmptySubmenus(menu);
@@ -176,6 +173,8 @@ QWidget* McaEditor::createWidget() {
 
     qDeleteAll(filters);
 
+    updateActions();
+
     return ui;
 }
 
@@ -184,28 +183,31 @@ void McaEditor::initActions() {
 
     zoomInAction->setText(tr("Zoom in"));
     zoomInAction->setShortcut(QKeySequence::ZoomIn);
+    GUIUtils::updateActionToolTip(zoomInAction);
     ui->addAction(zoomInAction);
 
     zoomOutAction->setText(tr("Zoom out"));
     zoomOutAction->setShortcut(QKeySequence::ZoomOut);
+    GUIUtils::updateActionToolTip(zoomOutAction);
     ui->addAction(zoomOutAction);
 
     resetZoomAction->setText(tr("Reset zoom"));
     resetZoomAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0));
+    GUIUtils::updateActionToolTip(resetZoomAction);
     ui->addAction(resetZoomAction);
 
-    showChromatogramsAction = new QAction(QIcon(":/core/images/graphs.png"), tr("Show/hide chromatograms"), this);
+    showChromatogramsAction = new QAction(QIcon(":/core/images/graphs.png"), tr("Show chromatograms"), this);
     showChromatogramsAction->setObjectName("chromatograms");
     showChromatogramsAction->setCheckable(true);
     showChromatogramsAction->setChecked(true);
     connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
     ui->addAction(showChromatogramsAction);
 
-    showGeneralTabAction = new QAction(tr("Open \"General\" tab on options panel"), this);
+    showGeneralTabAction = new QAction(tr("Open \"General\" tab on the options panel"), this);
     connect(showGeneralTabAction, SIGNAL(triggered()), SLOT(sl_showGeneralTab()));
     ui->addAction(showGeneralTabAction);
 
-    showConsensusTabAction = new QAction(tr("Open \"Consensus\" tab on options panel"), this);
+    showConsensusTabAction = new QAction(tr("Open \"Consensus\" tab on the options panel"), this);
     connect(showConsensusTabAction, SIGNAL(triggered()), SLOT(sl_showConsensusTab()));
     ui->addAction(showConsensusTabAction);
 
@@ -236,6 +238,8 @@ void McaEditor::addAppearanceMenu(QMenu *menu) {
     appearanceMenu->addAction(getUI()->getSequenceArea()->getDecreasePeaksHeightAction());
     appearanceMenu->addSeparator();
     appearanceMenu->addAction(changeFontAction);
+    appearanceMenu->addSeparator();
+    appearanceMenu->addAction(getUI()->getClearSelectionAction());
 }
 
 void McaEditor::addNavigationMenu(QMenu *menu) {
@@ -249,25 +253,26 @@ void McaEditor::addNavigationMenu(QMenu *menu) {
     navigationMenu->addAction(getUI()->getConsensusArea()->getMismatchController()->getNextMismatchAction());
 }
 
-void McaEditor::addEditingMenu(QMenu* menu) {
-    QMenu* editingMenu = menu->addMenu(tr("Editing"));
-    editingMenu->menuAction()->setObjectName(MCAE_MENU_EDITING);
+void McaEditor::addEditMenu(QMenu* menu) {
+    QMenu* editMenu = menu->addMenu(tr("Edit"));
+    editMenu->menuAction()->setObjectName(MCAE_MENU_EDIT);
 
-    editingMenu->addAction(getUI()->getSequenceArea()->getInsertAction());
-    editingMenu->addAction(getUI()->getSequenceArea()->getReplaceCharacterAction());
-    editingMenu->addAction(getUI()->getDelSelectionAction());
-    editingMenu->addSeparator();
-    editingMenu->addAction(getUI()->getSequenceArea()->getInsertGapAction());
-    editingMenu->addAction(getUI()->getSequenceArea()->getRemoveGapBeforeSelectionAction());
-    editingMenu->addAction(getUI()->getSequenceArea()->getRemoveColumnsOfGapsAction());
-    editingMenu->addAction(getUI()->getSequenceArea()->getTrimLeftEndAction());
-    editingMenu->addAction(getUI()->getSequenceArea()->getTrimRightEndAction());
-    editingMenu->addSeparator();
-    editingMenu->addAction(getUI()->getEditorNameList()->getEditSequenceNameAction());
-    editingMenu->addAction(getUI()->getEditorNameList()->getRemoveSequenceAction());
-    editingMenu->addSeparator();
-    editingMenu->addAction(getUI()->getUndoAction());
-    editingMenu->addAction(getUI()->getRedoAction());
+    editMenu->addAction(getUI()->getSequenceArea()->getInsertAction());
+    editMenu->addAction(getUI()->getSequenceArea()->getReplaceCharacterAction());
+    editMenu->addAction(getUI()->getDelSelectionAction());
+    editMenu->addSeparator();
+    editMenu->addAction(getUI()->getSequenceArea()->getInsertGapAction());
+    editMenu->addAction(getUI()->getSequenceArea()->getRemoveGapBeforeSelectionAction());
+    editMenu->addAction(getUI()->getSequenceArea()->getRemoveColumnsOfGapsAction());
+    editMenu->addSeparator();
+    editMenu->addAction(getUI()->getSequenceArea()->getTrimLeftEndAction());
+    editMenu->addAction(getUI()->getSequenceArea()->getTrimRightEndAction());
+    editMenu->addSeparator();
+    editMenu->addAction(getUI()->getEditorNameList()->getEditSequenceNameAction());
+    editMenu->addAction(getUI()->getEditorNameList()->getRemoveSequenceAction());
+    editMenu->addSeparator();
+    editMenu->addAction(getUI()->getUndoAction());
+    editMenu->addAction(getUI()->getRedoAction());
 }
 
 }   // namespace U2

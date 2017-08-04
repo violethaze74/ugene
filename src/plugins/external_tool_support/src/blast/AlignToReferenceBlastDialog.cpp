@@ -53,7 +53,6 @@ AlignToReferenceBlastCmdlineTask::Settings::Settings()
     : minIdentity(60),
       minLength(0),
       qualityThreshold(30),
-      trimBothEnds(true),
       addResultToProject(true)
 {
 
@@ -117,7 +116,7 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
         config.arguments << argString.arg(MIN_IDENTITY_ARG).arg(settings.minIdentity);
         config.arguments << argString.arg(MIN_LEN_ARG).arg(settings.minLength);
         config.arguments << argString.arg(THRESHOLD_ARG).arg(settings.qualityThreshold);
-        config.arguments << argString.arg(TRIM_ARG).arg(settings.trimBothEnds);
+        config.arguments << argString.arg(TRIM_ARG).arg(true);
         config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(settings.outAlignment);
 
         config.reportFile = reportFile.fileName();
@@ -218,9 +217,8 @@ void AlignToReferenceBlastDialog::accept() {
     settings.readUrls = readUrls;
 
     settings.minIdentity = minIdentitySpinBox->value();
-    settings.minLength = minLenSpinBox->value();
+    settings.minLength = 0;
     settings.qualityThreshold = qualitySpinBox->value();
-    settings.trimBothEnds = trimCheckBox->isChecked();
 
     if (outputLineEdit->text().isEmpty()) {
         QMessageBox::warning(this, tr("Error"),

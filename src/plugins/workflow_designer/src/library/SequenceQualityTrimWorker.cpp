@@ -127,7 +127,7 @@ void SequenceQualityTrimWorkerFactory::init() {
         Descriptor qualityTreshold(QUALITY_ID, SequenceQualityTrimWorker::tr("Quality threshold"),
                                    SequenceQualityTrimWorker::tr("Quality threshold for trimming."));
 
-        Descriptor minSequenceLength(LEN_ID, SequenceQualityTrimWorker::tr("Min Length"),
+        Descriptor minSequenceLength(LEN_ID, SequenceQualityTrimWorker::tr("Min length"),
                                      SequenceQualityTrimWorker::tr("Too short reads are discarded by the filter."));
 
         Descriptor trimBothEnds(BOTH_ID, SequenceQualityTrimWorker::tr("Trim both ends"),

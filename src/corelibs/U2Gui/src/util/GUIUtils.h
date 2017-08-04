@@ -22,13 +22,13 @@
 #ifndef _U2_GUI_UTILS_H_
 #define _U2_GUI_UTILS_H_
 
-#include <U2Core/global.h>
-
 #include <QAction>
+#include <QList>
 #include <QMenu>
 #include <QTreeWidgetItem>
 
-#include <QList>
+#include <U2Core/global.h>
+
 #include "U2FileDialog.h"
 
 namespace U2 {
@@ -36,7 +36,6 @@ namespace U2 {
 class U2GUI_EXPORT GUIUtils : public QObject {
     Q_OBJECT
 public:
-    
     static QAction* findAction(const QList<QAction*>& actions, const QString& name);
 
     static QAction* getCheckedAction(QList<QAction*> actions);
@@ -45,6 +44,8 @@ public:
     static QAction* findActionAfter(const QList<QAction*>& actions, const QString& name);
 
     static QMenu* findSubMenu(QMenu* m, const QString& name);
+
+    static void updateActionToolTip(QAction *action);
 
     static void disableEmptySubmenus(QMenu* m);
 
@@ -64,6 +65,6 @@ public:
     static void showMessage(QWidget *widgetToPaintOn, QPainter& painter, const QString& message);
 };
 
-} //namespace
+}   // namespace U2
 
 #endif
