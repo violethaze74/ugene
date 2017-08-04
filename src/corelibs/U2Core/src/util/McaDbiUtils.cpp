@@ -244,10 +244,10 @@ void McaDbiUtils::removeRow(const U2EntityRef& mcaRef, qint64 rowId, U2OpStatus&
     // SANGER_TODO: remove chromatogram as well
 }
 
-void McaDbiUtils::removeCharacter(const U2EntityRef &mcaRef, const QList<qint64> &rowIds, qint64 pos, qint64 count, U2OpStatus &os) {
+void McaDbiUtils::removeCharacters(const U2EntityRef &mcaRef, const QList<qint64> &rowIds, qint64 pos, qint64 count, U2OpStatus &os) {
     // Check parameters
     CHECK_EXT(pos >= 0, os.setError(QString("Negative MSA pos: %1").arg(pos)), );
-    SAFE_POINT(count == 1, QString("Wrong MCA base count: %1").arg(count), );
+    SAFE_POINT(count > 0, QString("Wrong MCA base count: %1").arg(count), );
 
     // Prepare the connection
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaRef.dbiRef, os));

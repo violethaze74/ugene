@@ -106,7 +106,7 @@ void ComposeResultSubTask::run() {
     insertShiftedGapsIntoReference();
     CHECK_OP(stateInfo, );
 
-    mcaObject->enlargeLength(stateInfo, qMax(mcaObject->getLength(), referenceSequenceObject->getSequenceLength()));
+    mcaObject->changeLength(stateInfo, qMax(mcaObject->getLength(), referenceSequenceObject->getSequenceLength()));
     CHECK_OP(stateInfo, );
 
     referenceSequenceObject->moveToThread(thread());

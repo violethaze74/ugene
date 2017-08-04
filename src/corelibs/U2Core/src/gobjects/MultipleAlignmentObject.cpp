@@ -237,16 +237,29 @@ void MultipleAlignmentObject::updateRowsOrder(U2OpStatus &os, const QList<qint64
     updateCachedMultipleAlignment(mi);
 }
 
-void MultipleAlignmentObject::enlargeLength(U2OpStatus &os, qint64 newLength) {
+void MultipleAlignmentObject::changeLength(U2OpStatus &os, qint64 newLength) {
     const qint64 length = getLength();
     CHECK(length != newLength, );
-    CHECK_EXT(length < newLength, os.setError("New length should be greater than the current"), );
 
     MaDbiUtils::updateMaLength(getEntityRef(), newLength, os);
     CHECK_OP(os, );
 
+    bool rowContentChangeStatus = false;
+    if (newLength < length) {
+        const qint64 numRows = getNumRows();
+        for (int i = 0; i < numRows; i++) {
+            MultipleAlignmentRow row = getRow(i);
+            qint64 rowLengthWithoutTrailing = row->getRowLengthWithoutTrailing();
+            if (rowLengthWithoutTrailing > newLength) {
+                U2OpStatus2Log os;
+                row->crop(os, 0, newLength);
+                rowContentChangeStatus = true;
+            }
+        }
+    }
+
     MaModificationInfo modificationInfo;
-    modificationInfo.rowContentChanged = false;
+    modificationInfo.rowContentChanged = rowContentChangeStatus;
     modificationInfo.rowListChanged = false;
     updateCachedMultipleAlignment(modificationInfo);
 }
