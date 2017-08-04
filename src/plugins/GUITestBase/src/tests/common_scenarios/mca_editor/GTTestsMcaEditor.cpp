@@ -802,7 +802,12 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     paths.append(QStringList() << "Appearance" << "Show/hide trace" << "T");
     onlyLetterPaths.append(QStringList() << "Appearance" << "Show/hide trace" << "T");
     paths.append(QStringList() << "Appearance" << "Show/hide trace" << "Show all");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, paths, PopupChecker::CheckOptions(PopupChecker::Exists)));
+    //GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, paths, PopupChecker::CheckOptions(PopupChecker::Exists)));
+    QStringList menuPath;
+    menuPath << "Appearance" << "Show/hide trace";
+    QStringList itemsNames;
+    itemsNames << "A" << "C" << "G" << "T" << "Show all";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, itemsNames, PopupChecker::CheckOptions(PopupChecker::Exists)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -815,9 +820,9 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     //9. Select "C"
     //Expected state : "A" is unchecked
-    QList<QStringList> intermediateCheck;
-    intermediateCheck.append(QStringList() << "Appearance" << "Show/hide trace" << "A");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsUnchecked)));
+    QStringList intermediateCheck;
+    intermediateCheck << "A";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsUnchecked)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -829,8 +834,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     //10. Select "G"
     //Expected state : "A" and "C"  are unchecked
-    intermediateCheck.append(QStringList() << "Appearance" << "Show/hide trace" << "C");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsUnchecked)));
+    intermediateCheck << "C";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsUnchecked)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -842,8 +847,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     //11. Select "T"
     //Expected state : "A", "C", "G"  are unchecked
-    intermediateCheck.append(QStringList() << "Appearance" << "Show/hide trace" << "G");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsUnchecked)));
+    intermediateCheck << "G";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsUnchecked)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -855,8 +860,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     //12. Select "All"
     //Expected state : All four traces are restored for all chromatograms
-    intermediateCheck.append(QStringList() << "Appearance" << "Show/hide trace" << "T");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsUnchecked)));
+    intermediateCheck << "T";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsUnchecked)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -867,10 +872,11 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     //13. Expand combo once more
     //Expected state : All four letters are checked
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, onlyLetterPaths, PopupChecker::CheckOptions(PopupChecker::IsChecked)));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsChecked)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012_2) {
