@@ -142,7 +142,7 @@ void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int row
     if (newChar != U2Msa::GAP_CHAR) {
         McaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
     } else {
-        McaDbiUtils::removeCharacter(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
+        McaDbiUtils::removeCharacters(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
         MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os, true);
     }
     SAFE_POINT_OP(os, );
@@ -203,6 +203,15 @@ void MultipleChromatogramAlignmentObject::deleteColumnsWithGaps(U2OpStatus &os, 
         getReferenceObj()->replaceRegion(getEntityRef().entityId, regionsToDelete[i], DNASequence(), os);
         os.setProgress(100 * (n - i) / n);
     }
+
+    const int length = getLength();
+    int coloumnsRemoved = 0;
+    for (int i = 0; i < regionsToDelete.size(); i++) {
+        coloumnsRemoved += regionsToDelete[i].length;
+    }
+    const int newLength = length - coloumnsRemoved;
+    changeLength(os, newLength);
+    CHECK_OP(os, );
 
     updateCachedMultipleAlignment();
 }
@@ -268,7 +277,7 @@ void MultipleChromatogramAlignmentObject::removeRowPrivate(U2OpStatus &os, const
 
 void MultipleChromatogramAlignmentObject::removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef,
                                                               const QList<qint64> &rows, int startPos, int nBases) {
-    McaDbiUtils::removeCharacter(maRef, rows, startPos, nBases, os);
+    McaDbiUtils::removeCharacters(maRef, rows, startPos, nBases, os);
 }
 
 }   // namespace U2
