@@ -62,6 +62,8 @@ class ExternalToolsWidget : public DashboardWidget {
 public:
     ExternalToolsWidget(const QWebElement &container, Dashboard *parent, const ExternalToolsWidgetController* ctrl);
 
+    static const QString ID;
+
 public slots:
     void sl_onLogUpdate();
 

@@ -29,7 +29,7 @@ namespace U2 {
 class McaEditor;
 class McaEditorWgt;
 
-class McaEditorNameList : public MaEditorNameList {
+class U2VIEW_EXPORT McaEditorNameList : public MaEditorNameList {
     Q_OBJECT
 public:
     McaEditorNameList(McaEditorWgt* ui, QScrollBar* nhBar);

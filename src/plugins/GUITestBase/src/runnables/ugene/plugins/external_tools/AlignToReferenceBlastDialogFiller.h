@@ -51,6 +51,7 @@ public:
     };
 
     AlignToReferenceBlastDialogFiller(const Settings &settings, HI::GUITestOpStatus &os);
+    AlignToReferenceBlastDialogFiller(HI::GUITestOpStatus &os, CustomScenario* c);
 
     void commonScenario();
 

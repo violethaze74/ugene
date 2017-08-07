@@ -33,6 +33,8 @@ class ResourcesWidget : public DashboardWidget {
 public:
     ResourcesWidget(const QWebElement &container, Dashboard *parent);
 
+    static const QString ID;
+
 private slots:
     void sl_progressChanged(int progress);
     void sl_taskStateChanged(Monitor::TaskState state);

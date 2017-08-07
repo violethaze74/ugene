@@ -25,8 +25,10 @@
 
 namespace U2 {
 
+const QString ProblemsWidget::ID = "problems";
+
 ProblemsWidget::ProblemsWidget(const QWebElement &content, Dashboard *parent)
-: TableWidget(content, parent)
+    : TableWidget(content, ID, parent)
 {
     createTable();
     foreach (const Problem &info, dashboard->monitor()->getProblems()) {

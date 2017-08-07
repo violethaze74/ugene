@@ -45,6 +45,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
     : MaEditorSequenceArea(ui, hb, vb) {
     initRenderer();
 
+    setObjectName("mca_editor_sequence_area");
     connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_cancelSelection()));
 
     // TEST - remove the variable after fix

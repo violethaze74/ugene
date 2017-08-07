@@ -113,11 +113,12 @@ private:
 class DashboardWidget : public QObject {
     Q_OBJECT
 public:
-    DashboardWidget(const QWebElement &container, Dashboard *parent);
+    DashboardWidget(const QWebElement &container, const QString &id, Dashboard *parent);
 
 protected:
     Dashboard *dashboard;
     QWebElement container;
+    const QString id;
 };
 
 class JavascriptAgent : public QObject {

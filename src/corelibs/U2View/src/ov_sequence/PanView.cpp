@@ -144,7 +144,7 @@ PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderArea
     : GSequenceLineViewAnnotated(p, ctx)
 {
     rowBar = new QScrollBar(this);
-
+    setObjectName("pan_view");
     settings = new PanViewLinesSettings();
     rowsManager = new PVRowsManager();
     renderArea = renderFactory.createRenderArea(this);
