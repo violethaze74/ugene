@@ -227,7 +227,7 @@ Document *AbstractVariationFormat::loadDocument(IOAdapter *io, const U2DbiRef &d
 
         addStringAttribute(os, dbi, track, U2VariantTrack::META_INFO_ATTIBUTE, metaInfo);
         CHECK_OP(os, NULL);
-        addStringAttribute(os, dbi, track, U2VariantTrack::HEADER_ATTIBUTE, U2DbiUtils::packStringList(header));
+        addStringAttribute(os, dbi, track, U2VariantTrack::HEADER_ATTIBUTE, StrPackUtils::packStringList(header));
         CHECK_OP(os, NULL);
 
         U2EntityRef trackRef(dbiRef, track.id);
@@ -246,7 +246,7 @@ Document *AbstractVariationFormat::loadDocument(IOAdapter *io, const U2DbiRef &d
 
         addStringAttribute(os, dbi, track, U2VariantTrack::META_INFO_ATTIBUTE, metaInfo);
         CHECK_OP(os, NULL);
-        addStringAttribute(os, dbi, track, U2VariantTrack::HEADER_ATTIBUTE, U2DbiUtils::packStringList(header));
+        addStringAttribute(os, dbi, track, U2VariantTrack::HEADER_ATTIBUTE, StrPackUtils::packStringList(header));
         CHECK_OP(os, NULL);
 
         const QList<U2Variant>& vars = snpsMap.value(seqName);
@@ -478,7 +478,7 @@ QStringList AbstractVariationFormat::getHeader(const VariantTrackObject *variant
     DbiConnection connection(variantTrackObject->getEntityRef().dbiRef, os);
     CHECK_OP(os, QStringList());
     const QString packedHeader = U2AttributeUtils::findStringAttribute(connection.dbi->getAttributeDbi(), variantTrackObject->getEntityRef().entityId, U2VariantTrack::HEADER_ATTIBUTE, os).value;
-    return U2DbiUtils::unpackStringList(packedHeader);
+    return StrPackUtils::unpackStringList(packedHeader);
 }
 
 } // U2

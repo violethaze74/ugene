@@ -174,15 +174,6 @@ public:
     char charAt(qint64 position) const;
     bool isGap(qint64 pos) const;
 
-    /** Length of the sequence without gaps */
-    inline int getUngappedLength() const;
-
-    /**
-     * If character at 'pos' position is not a gap, returns the char position in sequence.
-     * Otherwise returns '-1'.
-     */
-    int getUngappedPosition(int pos) const;
-
     /**
      * Returns base count located leftward to the 'before' position in the alignment.
      */
@@ -292,10 +283,6 @@ inline bool MultipleSequenceAlignmentRowData::simplify() {
         return true;
     }
     return false;
-}
-
-inline int MultipleSequenceAlignmentRowData::getUngappedLength() const {
-    return sequence.length();
 }
 
 inline int MultipleSequenceAlignmentRowData::getGapsLength() const {

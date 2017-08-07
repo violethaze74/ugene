@@ -149,7 +149,7 @@ protected slots:
 
 protected:
     QPoint toRenderAreaPoint(const QPoint& p);
-    void updateScrollBar();
+    virtual void updateScrollBar();
     void setSelection(const U2Region& r);
     void addSelection(const U2Region& r);
     void removeSelection(const U2Region& r);
@@ -172,6 +172,7 @@ protected:
     // special flag setup by child classes that tells to this class do or skip
     // any changes to selection on mouse ops
     bool                            ignoreMouseSelectionEvents;
+    bool                            singleBaseSelection;
 };
 
 class U2VIEW_EXPORT GSequenceLineViewRenderArea : public QWidget  {

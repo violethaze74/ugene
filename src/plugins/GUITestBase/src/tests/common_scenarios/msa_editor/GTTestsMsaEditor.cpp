@@ -2397,7 +2397,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025){
     GTGlobals::sleep(500);
 
     QWidget* nameListWidget = GTWidget::findWidget(os,"msa_editor_COI");
-    MSAEditorUI* ui = qobject_cast<MSAEditorUI*>(nameListWidget);
+    MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(nameListWidget);
 
     QFont f = ui->getEditor()->getFont();
     QString expectedFont = "Sans Serif,10,-1,5,50,0,0,0,0,0";
@@ -2423,7 +2423,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1){
     GTGlobals::sleep(500);
 
     QWidget* nameListWidget = GTWidget::findWidget(os,"msa_editor_COI");
-    MSAEditorUI* ui = qobject_cast<MSAEditorUI*>(nameListWidget);
+    MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(nameListWidget);
 
     QFont f = ui->getEditor()->getFont();
     QString expectedFont = "Verdana,10,-1,5,50,0,0,0,0,0";
@@ -4345,6 +4345,7 @@ GUI_TEST_CLASS_DEFINITION(test_0062){
 
     GTGlobals::sleep(500);
 
+    GTFile::setReadWrite(os, sandBoxDir + "read_only_dir");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0063){
@@ -4443,20 +4444,6 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
 //    Use context menu on tree tab(in tabWidget)
 //    Check all actions in popup menu
     CHECK_SET_ERR(false, "The test is not implemented");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0068){
-//    Open COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-//    Press on some sequence in nameList with right button
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(-5, 2));
-//    Use context menu: {Copy->Copy current sequence}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_COPY << "Copy current sequence"));
-    GTMouseDriver::click(Qt::RightButton);
-//    Check the clipboard
-    QString clipboardText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipboardText.startsWith("TTAGTTTATTAATTCGAGCTGAACTAGGTCAACCAGGCTAT---TTAATTGGTGACGATCAAATTTACAAT"), "unexpected clipboard text: " + clipboardText);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0069) {

@@ -25,8 +25,10 @@
 
 namespace U2 {
 
+const QString StatisticsWidget::ID = "statistics";
+
 StatisticsWidget::StatisticsWidget(const QWebElement &container, Dashboard *parent)
-: TableWidget(container, parent)
+    : TableWidget(container, ID, parent)
 {
     useEmptyRows = false;
     createTable();

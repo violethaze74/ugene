@@ -28,17 +28,21 @@
 
 namespace U2 {
 
-class MSAEditorUI;
+class MsaEditorWgt;
 
 class U2VIEW_EXPORT MSAEditorConsensusArea : public MaEditorConsensusArea {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusArea)
 public:
-    MSAEditorConsensusArea(MSAEditorUI* ui);
+    MSAEditorConsensusArea(MsaEditorWgt* ui);
+
+private slots:
+    void sl_buildStaticMenu(GObjectView *view, QMenu *menu);
+    void sl_buildContextMenu(GObjectView *view, QMenu *menu);
 
 private:
     void initRenderer();
-    void buildMenu(QMenu* m);
+    void buildMenu(QMenu *menu);
 };
 
 } // namespace

@@ -24,6 +24,8 @@
 
 #include "MaOverview.h"
 
+class QScrollBar;
+
 namespace U2 {
 
 class McaEditor;
@@ -31,29 +33,55 @@ class McaEditor;
 class MaSangerOverview : public MaOverview {
     Q_OBJECT
 public:
-    MaSangerOverview(MaEditorWgt* ui);
+    MaSangerOverview(MaEditorWgt *ui);
 
     bool isValid() const;
     QPixmap getView();
 
-protected:
-    void paintEvent(QPaintEvent *e);
-    void resizeEvent(QResizeEvent *e);
+private slots:
+    void sl_updateScrollBar();
+    void sl_completeRedraw();
+    void sl_resetCaches();
+    void sl_screenMoved();
 
 private:
-    void drawOverview(QPainter &p);
-    void drawVisibleRange(QPainter &p);
-    void drawSelection(QPainter &p);
+    bool eventFilter(QObject *object, QEvent *event);
+    void resizeEvent(QResizeEvent *event);
+
+    void drawOverview(QPainter &painter);
+    void drawVisibleRange(QPainter &painter);
+    void drawReference();
+    void drawReads();
 
     void moveVisibleRange(QPoint pos);
 
-    void drawRead(QPainter &p, const QRect& rect, bool forward);
-
-private:
     McaEditor* getEditor() const;
+
+    int getContentWidgetWidth() const;
+    int getContentWidgetHeight() const;
+    int getReadsHeight() const;
+    int getReferenceHeight() const;
+    int getScrollBarValue() const;
+
+    QScrollBar *vScrollBar;
+    QWidget *referenceArea;
+    QWidget *renderArea;
+
+    QPixmap cachedReadsView;
+    QPixmap cachedReferenceView;
+
+    bool completeRedraw;
+    int cachedReferenceHeight;
+
     static const int READ_HEIGHT;
+    static const int MINIMUM_HEIGHT;
+    static const qreal ARROW_LINE_WIDTH;
+    static const qreal ARROW_HEAD_WIDTH;
+    static const qreal ARROW_HEAD_LENGTH;
+    static const QColor ARROW_DIRECT_COLOR;
+    static const QColor ARROW_REVERSE_COLOR;
 };
 
-} // namespace
+}   // namespace U2
 
 #endif // _U2_MA_SANGER_OVERVIEW_H_

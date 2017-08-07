@@ -55,7 +55,7 @@ public slots:
     void resetSelection();
 
 signals:
-    void processSelected(Workflow::ActorPrototype*);
+    void processSelected(Workflow::ActorPrototype*, bool);
     void si_protoDeleted(const QString &);
     void si_protoChanged();
     void si_protoListModified();
@@ -82,7 +82,7 @@ public slots:
     void sl_nameFilterChanged(const QString &filter);
 
 signals:
-    void processSelected(Workflow::ActorPrototype*);
+    void processSelected(Workflow::ActorPrototype*, bool putToScene);
     void si_protoDeleted(const QString &);
     void si_protoChanged();
     void si_protoListModified();
@@ -95,7 +95,7 @@ protected:
 
 private slots:
     void handleItemAction();
-    void sl_selectProcess(bool checked = false);
+    void sl_selectProcess(bool checked);
     void rebuild();
     void editElement();
     bool removeElement();

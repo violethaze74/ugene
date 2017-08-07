@@ -15,7 +15,7 @@
 
 include "Read one sequence.usa" as "Script-Read one sequence"
 
-workflow "Trim and align Sanger reads"{
+workflow "Trim and map Sanger reads"{
 
     SequenceQualityTrim {
         type:SequenceQualityTrim;
@@ -32,7 +32,7 @@ workflow "Trim and align Sanger reads"{
     }
     align-to-reference {
         type:align-to-reference;
-        name:"Align to Reference";
+        name:"Map to Reference";
         result-url:alignment.ugenedb;
     }
 
@@ -93,7 +93,7 @@ workflow "Trim and align Sanger reads"{
         wizard {
             help-page-id:16122701;
 	    auto-run: true;
-            name:"Trim and Align Sanger Reads";
+            name:"Trim and Map Sanger Reads";
             page {
                 id:1;
                 next:2;
@@ -141,7 +141,7 @@ workflow "Trim and align Sanger reads"{
                         title:"Output files";
                         label-size:120;
                         align-to-reference.result-url {
-                            label:"Aligned reads file";
+                            label:"Mapped reads file";
                         }
                     }
                 }

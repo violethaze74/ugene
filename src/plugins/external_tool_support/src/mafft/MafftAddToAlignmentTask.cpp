@@ -32,6 +32,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GObjectUtils.h>

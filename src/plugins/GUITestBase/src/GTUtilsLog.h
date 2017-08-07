@@ -56,7 +56,6 @@ public:
     static void checkContainsError(HI::GUITestOpStatus &os, const GTLogTracer& logTracer, const QString &messagePart);
     static void checkContainsMessage(HI::GUITestOpStatus &os, const GTLogTracer& logTracer, bool expected = true);
     static QStringList getErrors(HI::GUITestOpStatus &os, const GTLogTracer &logTracer);
-
 };
 
 } // namespace

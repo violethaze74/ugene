@@ -53,16 +53,16 @@ protected:
 class U2FORMATS_EXPORT DefaultConvertFileTask : public ConvertFileTask  {
     Q_OBJECT
 public:
-    DefaultConvertFileTask(const GUrl &sourceURL, const QString &detectedFormat, const QString &targetFormat, const QString &dir);
+    DefaultConvertFileTask(const GUrl &sourceUrl, const QString &detectedFormat, const QString &targetFormat, const QString &dir);
+    DefaultConvertFileTask(const GUrl &sourceUrl, const QString &detectedFormat, const QString &targetUrl, const QString &targetFormat, const QString &dir);
 
-protected:
+private:
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
 
-private:
-
     LoadDocumentTask *loadTask;
     SaveDocumentTask *saveTask;
+
 }; //DefaultConvertFileTask
 
 //SAM->BAM creates a sorted and indexed BAM

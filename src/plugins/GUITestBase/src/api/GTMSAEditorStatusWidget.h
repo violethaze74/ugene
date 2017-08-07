@@ -23,7 +23,7 @@
 #define _U2_GT_MSAEDITOR_STATUSWIDGET_H_
 
 #include "GTGlobals.h"
-#include <U2View/MSAEditorStatusBar.h>
+#include <U2View/MaEditorStatusBar.h>
 
 namespace U2 {
 using namespace HI;

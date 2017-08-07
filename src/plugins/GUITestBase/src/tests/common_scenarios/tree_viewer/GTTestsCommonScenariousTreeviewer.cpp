@@ -1052,7 +1052,7 @@ GUI_TEST_CLASS_DEFINITION( test_0024 ) {
     // it does automatically
     GTUtilsProjectTreeView::openView(os);
     GTUtilsProjectTreeView::toggleView(os);
-    MSAEditorUI* ui = AppContext::getMainWindow()->getQMainWindow()->findChild<MSAEditorUI*>();
+    MsaEditorWgt* ui = AppContext::getMainWindow()->getQMainWindow()->findChild<MsaEditorWgt*>();
     QSplitter* splitter = ui->findChild<QSplitter*>();
     splitter->setSizes(QList<int>()<<100<<0<<0);
     GTGlobals::sleep(500);

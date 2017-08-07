@@ -57,6 +57,7 @@ protected:
     bool isReadyToRun() const;
     bool dataFinished() const;
     QString checkPairedReads() const;
+    virtual QString getAlignerSubdir() const;
 
 protected:
     QString      algName;

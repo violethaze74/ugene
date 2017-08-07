@@ -285,7 +285,7 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t) {
 
             connect(w, SIGNAL(si_windowClosed(GObjectViewWindow*)), this, SLOT(sl_onWindowClosed(GObjectViewWindow*)));
 
-            MSAEditorUI* msaUI = editor->getUI();
+            MsaEditorWgt* msaUI = editor->getUI();
             msaUI->addTreeView(w);
 
             if(!addExistingTree) {
@@ -378,7 +378,7 @@ void MSAEditorTreeManager::sl_onWindowClosed(GObjectViewWindow* viewWindow) {
 
 MSAEditorMultiTreeViewer* MSAEditorTreeManager::getMultiTreeViewer() const {
     SAFE_POINT(NULL != editor, tr("Incorrect reference to the MSAEditor"), NULL);
-    MSAEditorUI* msaEditorUi = editor->getUI();
+    MsaEditorWgt* msaEditorUi = editor->getUI();
     SAFE_POINT(NULL != msaEditorUi, tr("Incorrect reference to the MSAEditor"), NULL);
     return msaEditorUi->getMultiTreeViewer();
 }

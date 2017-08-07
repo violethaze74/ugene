@@ -69,7 +69,10 @@ PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
 {
     setupUi(this);
 
-    fillComboBoxes(ma);
+    isAminoAcid = ma->getAlphabet()->isAmino();
+    makeTTRatioControlsAvailable(!isAminoAcid);
+    fillComboBoxes();
+
     createWidgetsControllers();
 
     widgetControllers.getDataFromSettings();
@@ -79,21 +82,24 @@ PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
     connect(treeTypesCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_checkUserTreeType(int )));
     connect(treeImprovementsCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_checkTreeImprovement(int )));
     connect(inputFilePathButton, SIGNAL(clicked ()), SLOT(sl_inputPathButtonClicked()));
+    connect(optTopologyCheckbox, SIGNAL(clicked(bool)), SLOT(sl_optTopologyCheckboxClicked(bool)));
+    
+    optBranchCheckboxSavedState = optBranchCheckbox->isChecked();
+    sl_optTopologyCheckboxClicked(optTopologyCheckbox->isChecked());
+    sl_checkUserTreeType(treeTypesCombo->currentIndex());
 }
 
-void PhyMlWidget::fillComboBoxes(const MultipleSequenceAlignment& ma) {
-    DNAAlphabetType alphabetType = ma->getAlphabet()->getType();
-    if ((alphabetType == DNAAlphabet_RAW) || (alphabetType == DNAAlphabet_NUCL)){
-        isAminoAcid = false;
-        subModelCombo->addItems(PhyMLModelTypes::getDnaModelTypes());
-    } else {
-        isAminoAcid = true;
-        subModelCombo->addItems(PhyMLModelTypes::getAminoAcidModelTypes());
-        tranCheckBox->setEnabled(false);
-    }
+void PhyMlWidget::fillComboBoxes() {
+    subModelCombo->addItems(isAminoAcid ? PhyMLModelTypes::getAminoAcidModelTypes() : PhyMLModelTypes::getDnaModelTypes());
     fastMethodCombo->addItems(PhyMLRatioTestsTypes::getRatioTestsTypes());
     treeTypesCombo->addItems(TreeSearchingParams::getInputTreeTypes());
     treeImprovementsCombo->addItems(TreeSearchingParams::getTreeImprovementTypes());
+}
+
+void PhyMlWidget::makeTTRatioControlsAvailable(bool enabled) {
+    transLabel->setEnabled(enabled);
+    transEstimatedRb->setEnabled(enabled);
+    tranSpinBox->setEnabled(enabled && !transEstimatedRb->isChecked());
 }
 
 void PhyMlWidget::createWidgetsControllers() {
@@ -104,17 +110,17 @@ void PhyMlWidget::createWidgetsControllers() {
     widgetControllers.addWidgetController(substitutionSpinBox, PhyMlSettingsPreffixes::SubRatesNumber, "-c");
 
     //Transition / transversion ratio
-    InputWidgetController* ttRatioEstimationController = widgetControllers.addWidgetController(tranCheckBox, PhyMlSettingsPreffixes::EstimateTtRatio, "");
+    InputWidgetController* ttRatioEstimationController = widgetControllers.addWidgetController(transFixedRb, PhyMlSettingsPreffixes::EstimateTtRatio, "");
     InputWidgetController* ttRatioController = widgetControllers.addWidgetController(tranSpinBox, PhyMlSettingsPreffixes::TtRatio, "-t");
     ttRatioEstimationController->addDependentParameter(ParameterDependence(ttRatioController, true));
 
     //Proportion of invariable sites
-    InputWidgetController* sitesEstimationController = widgetControllers.addWidgetController(sitesCheckBox, PhyMlSettingsPreffixes::EstimateSitesProportion, "");
-    InputWidgetController* sitesPropController = widgetControllers.addWidgetController(sitesSpinBox, PhyMlSettingsPreffixes::InvariableSitesProportion, "-t");
+    InputWidgetController* sitesEstimationController = widgetControllers.addWidgetController(sitesFixedRb, PhyMlSettingsPreffixes::EstimateSitesProportion, "");
+    InputWidgetController* sitesPropController = widgetControllers.addWidgetController(sitesSpinBox, PhyMlSettingsPreffixes::InvariableSitesProportion, "-v");
     sitesEstimationController->addDependentParameter(ParameterDependence(sitesPropController, true));
 
     //Gamma shape parameter
-    InputWidgetController* gammaEstimationController = widgetControllers.addWidgetController(gammaCheckBox, PhyMlSettingsPreffixes::EstimateGammaFactor, "");
+    InputWidgetController* gammaEstimationController = widgetControllers.addWidgetController(gammaFixedRb, PhyMlSettingsPreffixes::EstimateGammaFactor, "");
     InputWidgetController* gammaController = widgetControllers.addWidgetController(gammaSpinBox, PhyMlSettingsPreffixes::GammaFactor, "-a");
     gammaEstimationController->addDependentParameter(ParameterDependence(gammaController, true));
 
@@ -154,7 +160,9 @@ void PhyMlWidget::createWidgetsControllers() {
 }
 
 void PhyMlWidget::sl_checkUserTreeType(int newIndex) {
-    inputTreeGroupBox->setEnabled(newIndex == 1);
+    bool enableFileEdit = newIndex == 1;
+    inputFileLineEdit->setEnabled(enableFileEdit);
+    inputFilePathButton->setEnabled(enableFileEdit);
 }
 
 void PhyMlWidget::sl_checkTreeImprovement(int newIndex) {
@@ -175,9 +183,20 @@ void PhyMlWidget::sl_inputPathButtonClicked() {
     inputFileLineEdit->setText(lod.url);
 }
 
+void PhyMlWidget::sl_optTopologyCheckboxClicked(bool checked) {
+    if (checked) {
+        optBranchCheckboxSavedState = optBranchCheckbox->isChecked();
+        optBranchCheckbox->setChecked(true);
+        optBranchCheckbox->setEnabled(false);
+    } else {
+        optBranchCheckbox->setChecked(optBranchCheckboxSavedState);
+        optBranchCheckbox->setEnabled(true);
+    }
+}
+
 void PhyMlWidget::sl_checkSubModelType(const QString& newModel){
     if(isAminoAcid) {
-        tranCheckBox->setEnabled(false);
+        makeTTRatioControlsAvailable(false);
         return;
     }
 
@@ -186,13 +205,7 @@ void PhyMlWidget::sl_checkSubModelType(const QString& newModel){
     SAFE_POINT(modelIndex >= 0, QString("'%1' is incorrect substitution model for dna sequence").arg(newModel),);
 
     SubstModelTrRatioType ttRatioType = PhyMLModelTypes::getTtRatioType(newModel);
-    if(ttRatioType == ANY_TT_RATIO) {
-        tranCheckBox->setEnabled(true);
-    }
-    else {
-        tranCheckBox->setChecked(ttRatioType == ONLY_FIXED_TT_RATIO);
-        tranCheckBox->setEnabled(false);
-    }
+    makeTTRatioControlsAvailable(ttRatioType == ANY_TT_RATIO);
 }
 
 void PhyMlWidget::fillSettings(CreatePhyTreeSettings& settings){
@@ -259,6 +272,12 @@ QStringList PhyMlWidget::generatePhyMlSettingsScript(){
     }
 
     widgetControllers.addParametersToCmdLine(script);
+    if (sitesEstimatedRb->isChecked()) {
+        script << "-v" << "e";
+    }
+    if (gammaEstimatedRb->isChecked()) {
+        script << "-a" << "e";
+    }
 
     if(1 == treeTypesCombo->currentIndex()) {
         script << "-u";
@@ -266,11 +285,13 @@ QStringList PhyMlWidget::generatePhyMlSettingsScript(){
     }
 
     QString optimisationOptions;
-    if(optTopologyCheckbox->isChecked()) {
-        optimisationOptions = "t";
-    }
-    if(optBranchCheckbox->isChecked()) {
+    if (optTopologyCheckbox->isChecked()) {
+        optimisationOptions = "tl";
+    } else if (optBranchCheckbox->isChecked()) {
         optimisationOptions += "l";
+    }
+    if (optimiseSubstitutionRateCheckbox->isChecked()) {
+        optimisationOptions += "r";
     }
     if(!optimisationOptions.isEmpty()) {
         script << "-o";

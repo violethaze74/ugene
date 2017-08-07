@@ -185,6 +185,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/tasks/ConsoleShutdownTask.h \
            src/tasks/CopyDataTask.h \
            src/tasks/CopyDocumentTask.h \
+           src/tasks/CopyFileTask.h \
            src/tasks/CreateAnnotationTask.h \
            src/tasks/DeleteObjectsTask.h \
            src/tasks/DocumentProviderTask.h \
@@ -241,7 +242,9 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/QObjectScopedPointer.h \
            src/util/QVariantUtils.h \
            src/util/SequenceUtils.h \
+           src/util/SignalBlocker.h \
            src/util/SnpeffDictionary.h \
+           src/util/StrPackUtils.h \
            src/util/SyncHttp.h \
            src/util/TextUtils.h \
            src/util/TaskWatchdog.h \
@@ -408,6 +411,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/tasks/ConsoleShutdownTask.cpp \
            src/tasks/CopyDataTask.cpp \
            src/tasks/CopyDocumentTask.cpp \
+           src/tasks/CopyFileTask.cpp \
            src/tasks/CreateAnnotationTask.cpp \
            src/tasks/DeleteObjectsTask.cpp \
            src/tasks/DocumentProviderTask.cpp \
@@ -461,7 +465,9 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/MultipleSequenceAlignmentWalker.cpp \
            src/util/QVariantUtils.cpp \
            src/util/SequenceUtils.cpp \
+           src/util/SignalBlocker.cpp \
            src/util/SnpeffDictionary.cpp \
+           src/util/StrPackUtils.cpp \
            src/util/SyncHttp.cpp \
            src/util/TextUtils.cpp \
            src/util/TaskWatchdog.cpp \

@@ -25,27 +25,32 @@
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 
 #include "MaEditor.h"
+#include "McaEditorWgt.h"
 #include "view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 
-class McaEditorReferenceArea;
-class McaEditorSequenceArea;
+class McaEditor;
 class SequenceObjectContext;
-class U2SequenceObject;
 
-class McaEditor : public MaEditor {
+#define     MCAE_MENU_ALIGNMENT     "MCAE_MENU_ALIGNMENT"
+#define     MCAE_MENU_APPEARANCE    "MCAE_MENU_APPEARANCE"
+#define     MCAE_MENU_NAVIGATION    "MCAE_MENU_NAVIGATION"
+#define     MCAE_MENU_EDIT          "MCAE_MENU_EDIT"
+
+class U2VIEW_EXPORT McaEditor : public MaEditor {
     Q_OBJECT
     friend class McaEditorSequenceArea;
 public:
     McaEditor(const QString& viewName,
               MultipleChromatogramAlignmentObject* obj);
 
-    MultipleChromatogramAlignmentObject* getMaObject() const { return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject); }
+    MultipleChromatogramAlignmentObject* getMaObject() const;
+    McaEditorWgt *getUI() const;
 
     virtual void buildStaticToolbar(QToolBar* tb);
 
-    virtual void buildStaticMenu(QMenu* m);
+    virtual void buildStaticMenu(QMenu* menu);
 
     virtual int getRowContentIndent(int rowId) const;
 
@@ -62,37 +67,29 @@ protected slots:
     void sl_onContextMenuRequested(const QPoint & pos);
     void sl_showHideChromatograms(bool show);
 
+private slots:
+    void sl_showGeneralTab();
+    void sl_showConsensusTab();
+
 protected:
     QWidget* createWidget();
+    void initActions();
 
     QAction*          showChromatogramsAction;
+    QAction*          showGeneralTabAction;
+    QAction*          showConsensusTabAction;
 
     QMap<qint64, bool>  chromVisibility;
 
     SequenceObjectContext*  referenceCtx;
-};
-
-class McaEditorWgt : public MaEditorWgt {
-    Q_OBJECT
-public:
-    McaEditorWgt(McaEditor* editor);
-
-    McaEditor* getEditor() const { return qobject_cast<McaEditor* >(editor); }
-    McaEditorSequenceArea* getSequenceArea() const;
-
-    bool eventFilter(QObject *watched, QEvent *event);
-
-protected:
-    void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
-    void initOverviewArea();
-    void initNameList(QScrollBar* nhBar);
-    void initConsensusArea();
 
 private:
-    McaEditorReferenceArea*     refArea;
+    void addAlignmentMenu(QMenu *menu);
+    void addAppearanceMenu(QMenu *menu);
+    void addNavigationMenu(QMenu *menu);
+    void addEditMenu(QMenu *menu);
 };
 
-} // namespace
+}   // namespace U2
 
 #endif // _U2_MCA_EDITOR_H_
-

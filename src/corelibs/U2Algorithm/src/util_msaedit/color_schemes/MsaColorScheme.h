@@ -56,6 +56,7 @@ public:
     static const QString EMPTY;
 
     static const QString UGENE_NUCL;
+    static const QString UGENE_SANGER_NUCL;
     static const QString JALVIEW_NUCL;
     static const QString IDENTPERC_NUCL;
     static const QString IDENTPERC_NUCL_GRAY;

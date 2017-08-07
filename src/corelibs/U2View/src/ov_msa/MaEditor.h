@@ -26,6 +26,16 @@
 
 namespace U2 {
 
+#define MSAE_MENU_COPY          "MSAE_MENU_COPY"
+#define MSAE_MENU_EDIT          "MSAE_MENU_EDIT"
+#define MSAE_MENU_EXPORT        "MSAE_MENU_EXPORT"
+#define MSAE_MENU_VIEW          "MSAE_MENU_VIEW"
+#define MSAE_MENU_ALIGN         "MSAE_MENU_ALIGN"
+#define MSAE_MENU_TREES         "MSAE_MENU_TREES"
+#define MSAE_MENU_STATISTICS    "MSAE_MENU_STATISTICS"
+#define MSAE_MENU_ADVANCED      "MSAE_MENU_ADVANCED"
+#define MSAE_MENU_LOAD          "MSAE_MENU_LOAD_SEQ"
+
 class MaEditorWgt;
 class MultipleAlignmentObject;
 
@@ -49,13 +59,9 @@ public:
 public:
     MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, GObject* obj);
 
-    virtual void buildStaticToolbar(QToolBar* tb);
-
-    virtual void buildStaticMenu(QMenu* m);
-
     virtual MultipleAlignmentObject* getMaObject() const { return maObject; }
 
-    MaEditorWgt* getUI() const { return ui; }
+    virtual MaEditorWgt* getUI() const { return ui; }
 
     virtual OptionsPanel* getOptionsPanel() { return optionsPanel; }
 
@@ -122,7 +128,7 @@ private slots:
 
 protected:
     virtual QWidget* createWidget() = 0;
-    void initActions();
+    virtual void initActions();
 
     void addCopyMenu(QMenu* m);
     void addEditMenu(QMenu* m);

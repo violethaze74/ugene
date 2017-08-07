@@ -93,8 +93,6 @@ class AlignToReferenceBlastWorker : public BaseDatasetWorker {
 public:
     AlignToReferenceBlastWorker(Actor *a);
 
-    void cleanup();
-
 protected:
     Task * createPrepareTask(U2OpStatus &os) const;
     void onPrepared(Task *task, U2OpStatus &os);
@@ -103,7 +101,6 @@ protected:
     MessageMetadata generateMetadata(const QString &datasetName) const;
 
 private:
-    Document *referenceDoc;
     SharedDbiDataHandler reference;
 };
 

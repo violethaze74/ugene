@@ -110,7 +110,7 @@ void SQLiteVariantDbi::addVariantsToTrack(const U2VariantTrack& track, U2DbiIter
         q2->bindBlob(4, var.refData);
         q2->bindBlob(5, var.obsData);
         q2->bindString(6, var.publicId);
-        q2->bindString(7, U2DbiUtils::packMap(var.additionalInfo));
+        q2->bindString(7, StrPackUtils::packMap(var.additionalInfo));
 
         var.id = q2->insert(U2Type::VariantType);
         SAFE_POINT_OP(os,);
@@ -175,7 +175,7 @@ public:
         res.refData = q->getBlob(3);
         res.obsData = q->getBlob(4);
         res.publicId = q->getString(5);
-        res.additionalInfo = U2DbiUtils::unpackMap(q->getString(6));
+        res.additionalInfo = StrPackUtils::unpackMap(q->getString(6));
         return res;
     }
 };

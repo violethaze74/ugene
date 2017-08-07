@@ -19,42 +19,41 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSAEditorTasks.h"
-#include "MSAEditor.h"
-#include "MSAEditorState.h"
-#include "MSAEditorConsensusArea.h"
-
-#include "MaEditorFactory.h"
-#include "McaEditor.h" // SANGER_TODO: deal with includes
+#include <QSet>
 
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObjectTypes.h>
+#include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/Log.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Log.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
+#include <U2Core/TextObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/GObjectUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
-#include <U2Core/TextObject.h>
 #include <U2Core/UnloadedObject.h>
 
 #include <U2Gui/OpenViewTask.h>
 
 #include <U2Formats/DocumentFormatUtils.h>
 
-#include <QSet>
+#include "MSAEditor.h"
+#include "MSAEditorConsensusArea.h"
+#include "MSAEditorState.h"
+#include "MSAEditorTasks.h"
+#include "MaEditorFactory.h"
+#include "McaEditor.h" // SANGER_TODO: deal with includes
 
 namespace U2 {
 
@@ -267,20 +266,21 @@ void UpdateMSAEditorTask::update() {
 }
 
 
-ExportMSAConsensusTask::ExportMSAConsensusTask(const ExportMSAConsensusTaskSettings& s )
-: DocumentProviderTask(tr("Export consensus to MSA")
-, (TaskFlags(TaskFlag_NoRun) | TaskFlag_FailOnSubtaskError | TaskFlag_CancelOnSubtaskCancel))
-, settings(s), extractConsensus(NULL) {
+ExportMaConsensusTask::ExportMaConsensusTask(const ExportMaConsensusTaskSettings& s )
+    : DocumentProviderTask(tr("Export consensus"),
+                           (TaskFlags(TaskFlag_NoRun) | TaskFlag_FailOnSubtaskError | TaskFlag_CancelOnSubtaskCancel)),
+      settings(s),
+      extractConsensus(NULL) {
     setVerboseLogMode(true);
-    SAFE_POINT_EXT(s.msa != NULL, setError("Given msa pointer is NULL"), );
+    SAFE_POINT_EXT(s.ma != NULL, setError("Given msa pointer is NULL"), );
 }
 
-void ExportMSAConsensusTask::prepare(){
-    extractConsensus = new ExtractConsensusTask(settings.keepGaps, settings.msa);
+void ExportMaConsensusTask::prepare(){
+    extractConsensus = new ExtractConsensusTask(settings.keepGaps, settings.ma);
     addSubTask(extractConsensus);
 }
 
-QList<Task*> ExportMSAConsensusTask::onSubTaskFinished( Task* subTask ){
+QList<Task*> ExportMaConsensusTask::onSubTaskFinished( Task* subTask ){
     QList<Task*> result;
     if(subTask == extractConsensus && !isCanceled() && !hasError()) {
         Document *takenDoc = createDocument();
@@ -300,7 +300,7 @@ QList<Task*> ExportMSAConsensusTask::onSubTaskFinished( Task* subTask ){
     return result;
 }
 
-Document *ExportMSAConsensusTask::createDocument(){
+Document *ExportMaConsensusTask::createDocument(){
     filteredConsensus = extractConsensus->getExtractedConsensus();
     CHECK_EXT(!filteredConsensus.isEmpty(), setError("Consensus is empty!"), NULL);
     QString fullPath = GUrlUtils::prepareFileLocation(settings.url, stateInfo);
@@ -323,29 +323,33 @@ Document *ExportMSAConsensusTask::createDocument(){
     return doc.take();
 }
 
-ExtractConsensusTask::ExtractConsensusTask( bool keepGaps_, MSAEditor* msa_ )
-: Task(tr("Export consensus to MSA"), TaskFlags(TaskFlag_None)),
-keepGaps(keepGaps_), msa(msa_){
+ExtractConsensusTask::ExtractConsensusTask( bool keepGaps_, MaEditor* ma_ )
+    : Task(tr("Extract consensus"), TaskFlags(TaskFlag_None)),
+      keepGaps(keepGaps_),
+      ma(ma_) {
     setVerboseLogMode(true);
-    SAFE_POINT_EXT(msa != NULL, setError("Given msa pointer is NULL"), );
+    SAFE_POINT_EXT(ma != NULL, setError("Given ma pointer is NULL"), );
 }
 
 void ExtractConsensusTask::run() {
-    CHECK(msa->getUI(), );
-    CHECK(msa->getUI()->getConsensusArea(), );
-    CHECK(msa->getUI()->getConsensusArea()->getConsensusCache(),);
+    CHECK(ma->getUI(), );
+    CHECK(ma->getUI()->getConsensusArea(), );
+    CHECK(ma->getUI()->getConsensusArea()->getConsensusCache(),);
 
-    MSAConsensusAlgorithm *algorithm = msa->getUI()->getConsensusArea()->getConsensusAlgorithm();
-    const MultipleAlignment ma = msa->getMaObject()->getMultipleAlignmentCopy();
-    for (int i = 0, n = ma->getLength(); i < n; i++) {
+    MSAConsensusAlgorithm *algorithm = ma->getUI()->getConsensusArea()->getConsensusAlgorithm();
+    const MultipleAlignment alignment = ma->getMaObject()->getMultipleAlignmentCopy();
+    for (int i = 0, n = alignment->getLength(); i < n; i++) {
         if (stateInfo.isCoR()) {
             return;
         }
         int count = 0;
-        int nSeq = ma->getNumRows();
+        int nSeq = alignment->getNumRows();
         SAFE_POINT(0 != nSeq, tr("No sequences in alignment"), );
 
-        QChar c = algorithm->getConsensusCharAndScore(ma, i, count);
+        QChar c = algorithm->getConsensusCharAndScore(alignment, i, count);
+        if (c == MSAConsensusAlgorithm::INVALID_CONS_CHAR) {
+            c = U2Msa::GAP_CHAR;
+        }
         if (c != U2Msa::GAP_CHAR || keepGaps) {
             filteredConsensus.append(c);
         }
@@ -357,8 +361,10 @@ const QByteArray& ExtractConsensusTask::getExtractedConsensus() const {
 }
 
 
-ExportMSAConsensusTaskSettings::ExportMSAConsensusTaskSettings(): keepGaps(true), msa(NULL),
-format(BaseDocumentFormats::PLAIN_TEXT)
+ExportMaConsensusTaskSettings::ExportMaConsensusTaskSettings()
+    : keepGaps(true),
+      ma(NULL),
+      format(BaseDocumentFormats::PLAIN_TEXT)
 {}
 
 } // namespace

@@ -19,25 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#include "MaConsensusMismatchController.h"
-#include "McaEditor.h"
-#include "MSAEditorConsensusCache.h"
-
-#include "ov_msa/view_rendering/MaEditorSequenceArea.h"
-#include "ov_sequence/SequenceObjectContext.h"
-
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceSelection.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/Notification.h>
+
+#include "MaConsensusMismatchController.h"
+#include "McaEditor.h"
+#include "McaEditorSequenceArea.h"
+#include "MSAEditorConsensusCache.h"
+#include "ov_msa/view_rendering/MaEditorSequenceArea.h"
+#include "ov_sequence/SequenceObjectContext.h"
 
 namespace U2 {
 
 MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
-                                             const QSharedPointer<MSAEditorConsensusCache>& consCache,
-                                             MaEditor* editor)
+                                                             const QSharedPointer<MSAEditorConsensusCache>& consCache,
+                                                             MaEditor* editor)
     : QObject(p),
       consCache(consCache),
       editor(editor),
@@ -48,18 +49,30 @@ MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
     connect(consCache.data(), SIGNAL(si_cachedItemUpdated(int, char)), SLOT(sl_updateItem(int, char)));
     connect(consCache.data(), SIGNAL(si_cacheResized(int)), SLOT(sl_resize(int)));
 
-    nextMismatch = new QAction(tr("Jump to next variation"), this);
+    nextMismatch = new QAction(QIcon(":core/images/mismatch-forward.png"), tr("Jump to next variation"), this);
     nextMismatch->setObjectName("next_mismatch");
+    nextMismatch->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_V);
+    GUIUtils::updateActionToolTip(nextMismatch);
     connect(nextMismatch, SIGNAL(triggered(bool)), SLOT(sl_next()));
 
-    prevMismatch = new QAction(tr("Jump to previous variation"), this);
+    prevMismatch = new QAction(QIcon(":core/images/mismatch-backward.png"), tr("Jump to previous variation"), this);
+    prevMismatch->setShortcut(Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_V);
     prevMismatch->setObjectName("prev_mismatch");
+    GUIUtils::updateActionToolTip(prevMismatch);
     connect(prevMismatch, SIGNAL(triggered(bool)), SLOT(sl_prev()));
 }
 
 bool MaConsensusMismatchController::isMismatch(int pos) const {
     SAFE_POINT(0 <= pos && pos < mismatchCache.size(), "Invalid pos", false);
     return mismatchCache[pos];
+}
+
+QAction *MaConsensusMismatchController::getPrevMismatchAction() const {
+    return prevMismatch;
+}
+
+QAction *MaConsensusMismatchController::getNextMismatchAction() const {
+    return nextMismatch;
 }
 
 void MaConsensusMismatchController::sl_updateItem(int pos, char c) {

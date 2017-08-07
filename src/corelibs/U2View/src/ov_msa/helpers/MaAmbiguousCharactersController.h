@@ -39,7 +39,8 @@ class MaAmbiguousCharactersController : public QObject {
 public:
     MaAmbiguousCharactersController(MaEditorWgt *maEditorWgt);
 
-    QList<QAction *> getActions() const;
+    QAction *getPreviousAction() const;
+    QAction *getNextAction() const;
 
 private slots:
     void sl_next();

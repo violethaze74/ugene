@@ -160,7 +160,7 @@ void RawDataUdrSchema::writeContent(const U2DataId &masterId, const QByteArray &
     QByteArray modDetails;
     if (trackMod == TrackOnUpdate) {
         QByteArray olderData = readAllContent(objRef, os);
-        modDetails = PackUtils::packUdr(olderData, data);
+        modDetails = U2DbiPackUtils::packUdr(olderData, data);
     }
 
     writeContent(data, objRef, os);

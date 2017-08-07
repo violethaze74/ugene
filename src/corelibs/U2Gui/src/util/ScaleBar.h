@@ -22,10 +22,14 @@
 #ifndef _U2_SCALE_BAR_H_
 #define _U2_SCALE_BAR_H_
 
+#include <QWidget>
+
 #include <U2Core/global.h>
 
-#include <QSlider>
-#include <QToolButton>
+class QAbstractButton;
+class QAction;
+class QSlider;
+class QToolButton;
 
 namespace U2 {
 
@@ -33,24 +37,35 @@ class U2GUI_EXPORT ScaleBar : public QWidget {
     Q_OBJECT
 public:
     ScaleBar(Qt::Orientation ori = Qt::Vertical, QWidget* parent = 0);
-    QSlider* slider() const {return scaleBar;}
-    int value() const {return scaleBar->value();}
-    void setValue(int v) {scaleBar->setValue(v);}
+
+    int value() const;
+    void setValue(int value);
+
+    void setRange(int minumum, int maximum);
+    void setTickInterval(int interval);
+
+    QAction *getPlusAction() const;
+    QAction *getMinusAction() const;
+
+    QAbstractButton *getPlusButton() const;
+    QAbstractButton *getMinusButton() const;
 
 signals:
-    void valueChanged(int);
+    void valueChanged(int value);
 
 private slots:
     void sl_minusButtonClicked();
     void sl_plusButtonClicked();
+    void sl_updateState();
 
 protected:
-
-    QSlider*                    scaleBar;
-    QToolButton*                minusButton;
-    QToolButton*                plusButton;
+    QSlider *scaleBar;
+    QAction *minusAction;
+    QAction *plusAction;
+    QToolButton *plusButton;
+    QToolButton *minusButton;
 };
 
-} // namespace
+}   // namespace U2
 
-#endif
+#endif // _U2_SCALE_BAR_H_

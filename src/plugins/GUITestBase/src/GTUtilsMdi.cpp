@@ -132,6 +132,12 @@ QWidget * GTUtilsMdi::findWindow(HI::GUITestOpStatus &os, const QString &windowN
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "closeActiveWindow"
+void GTUtilsMdi::closeActiveWindow(GUITestOpStatus &os) {
+    closeWindow(os, activeWindowTitle(os));
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "closeWindow"
 void GTUtilsMdi::closeWindow(HI::GUITestOpStatus &os, const QString &windowName, const GTGlobals::FindOptions& options) {
     GT_CHECK(windowName.isEmpty() == false, "windowname is empty");

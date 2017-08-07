@@ -17,8 +17,10 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/bigWigTools/BedGraphToBigWigTask.h \
            src/bigWigTools/BedGraphToBigWigWorker.h \
            src/blast/align_worker_subtasks/BlastReadsSubTask.h \
-           src/blast/align_worker_subtasks/FormatDBSubTask.h \
            src/blast/align_worker_subtasks/ComposeResultSubTask.h \
+           src/blast/align_worker_subtasks/FormatDBSubTask.h \
+           src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.h \
+           src/blast/align_worker_subtasks/RemoveGapsFromSequenceTask.h \
            src/blast/AlignToReferenceBlastDialog.h \
            src/blast/AlignToReferenceBlastWorker.h \
            src/blast/BlastAllSupport.h \
@@ -28,6 +30,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/blast/FormatDBSupport.h \
            src/blast/FormatDBSupportRunDialog.h \
            src/blast/FormatDBSupportTask.h \
+           src/blast/PrepareInputFastaFilesTask.h \
            src/blast_plus/BlastDBCmdDialog.h \
            src/blast_plus/BlastDBCmdSupport.h \
            src/blast_plus/BlastDBCmdSupportTask.h \
@@ -229,8 +232,10 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/bigWigTools/BedGraphToBigWigTask.cpp \
            src/bigWigTools/BedGraphToBigWigWorker.cpp \
            src/blast/align_worker_subtasks/BlastReadsSubTask.cpp \
-           src/blast/align_worker_subtasks/FormatDBSubTask.cpp \
            src/blast/align_worker_subtasks/ComposeResultSubTask.cpp \
+           src/blast/align_worker_subtasks/FormatDBSubTask.cpp \
+           src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp \
+           src/blast/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp \
            src/blast/AlignToReferenceBlastDialog.cpp \
            src/blast/AlignToReferenceBlastWorker.cpp \
            src/blast/BlastAllSupport.cpp \
@@ -240,6 +245,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/blast/FormatDBSupport.cpp \
            src/blast/FormatDBSupportRunDialog.cpp \
            src/blast/FormatDBSupportTask.cpp \
+           src/blast/PrepareInputFastaFilesTask.cpp \
            src/blast_plus/BlastDBCmdDialog.cpp \
            src/blast_plus/BlastDBCmdSupport.cpp \
            src/blast_plus/BlastDBCmdSupportTask.cpp \

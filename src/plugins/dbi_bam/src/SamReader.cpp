@@ -302,7 +302,7 @@ QByteArray SamReader::readString(bool &eof) {
     if (len == -1) {
         eof = true;
     } else {
-        result = QByteArray::fromRawData(buff, len);
+        result = QByteArray(buff, len);
     }
 
     return result;
@@ -324,7 +324,7 @@ void SamReader::readHeader() {
                 break;
             }
 
-            QByteArray line = QByteArray::fromRawData(buff, len);
+            QByteArray line = QByteArray(buff, len);
             if(line.isEmpty()) {
                 continue;
             }

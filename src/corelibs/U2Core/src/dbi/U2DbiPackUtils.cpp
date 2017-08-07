@@ -28,11 +28,11 @@
 
 namespace U2 {
 
-const QByteArray PackUtils::VERSION("0");
-const char PackUtils::SEP = '\t';
-const char PackUtils::SECOND_SEP = 11;
+const QByteArray U2DbiPackUtils::VERSION("0");
+const char U2DbiPackUtils::SEP = '\t';
+const char U2DbiPackUtils::SECOND_SEP = 11;
 
-QByteArray PackUtils::packGaps(const QList<U2MsaGap> &gaps) {
+QByteArray U2DbiPackUtils::packGaps(const QList<U2MsaGap> &gaps) {
     QByteArray result;
     foreach (const U2MsaGap &gap, gaps) {
         if (!result.isEmpty()) {
@@ -45,7 +45,7 @@ QByteArray PackUtils::packGaps(const QList<U2MsaGap> &gaps) {
     return "\"" + result + "\"";
 }
 
-bool PackUtils::unpackGaps(const QByteArray &str, QList<U2MsaGap> &gaps) {
+bool U2DbiPackUtils::unpackGaps(const QByteArray &str, QList<U2MsaGap> &gaps) {
     CHECK(str.startsWith('\"') && str.endsWith('\"'), false);
     QByteArray gapsStr = str.mid(1, str.length() - 2);
     if (gapsStr.isEmpty()) {
@@ -67,7 +67,7 @@ bool PackUtils::unpackGaps(const QByteArray &str, QList<U2MsaGap> &gaps) {
     return true;
 }
 
-QByteArray PackUtils::packGapDetails(qint64 rowId, const QList<U2MsaGap> &oldGaps, const QList<U2MsaGap> &newGaps) {
+QByteArray U2DbiPackUtils::packGapDetails(qint64 rowId, const QList<U2MsaGap> &oldGaps, const QList<U2MsaGap> &newGaps) {
     QByteArray result = VERSION;
     result += SEP;
     result += QByteArray::number(rowId);
@@ -78,7 +78,7 @@ QByteArray PackUtils::packGapDetails(qint64 rowId, const QList<U2MsaGap> &oldGap
     return result;
 }
 
-bool PackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps) {
+bool U2DbiPackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(4 == tokens.size(), QString("Invalid gap modDetails string '%1'").arg(QString(modDetails)), false);
     { // version
@@ -100,7 +100,7 @@ bool PackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QL
     return true;
 }
 
-QByteArray PackUtils::packGapDetails(qint64 rowId, const U2DataId &relatedObjectId, const QList<U2MsaGap> &oldGaps, const QList<U2MsaGap> &newGaps) {
+QByteArray U2DbiPackUtils::packGapDetails(qint64 rowId, const U2DataId &relatedObjectId, const QList<U2MsaGap> &oldGaps, const QList<U2MsaGap> &newGaps) {
     QByteArray result = VERSION;
     result += SEP;
     result += QByteArray::number(rowId);
@@ -113,7 +113,7 @@ QByteArray PackUtils::packGapDetails(qint64 rowId, const U2DataId &relatedObject
     return result;
 }
 
-bool PackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, U2DataId &relatedObjectId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps) {
+bool U2DbiPackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, U2DataId &relatedObjectId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(5 == tokens.size(), QString("Invalid gap modDetails string '%1'").arg(QString(modDetails)), false);
     { // version
@@ -138,7 +138,7 @@ bool PackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, U2
     return true;
 }
 
-QByteArray PackUtils::packRowOrder(const QList<qint64>& rowIds) {
+QByteArray U2DbiPackUtils::packRowOrder(const QList<qint64>& rowIds) {
     QByteArray result;
     foreach (qint64 rowId, rowIds) {
         if (!result.isEmpty()) {
@@ -149,7 +149,7 @@ QByteArray PackUtils::packRowOrder(const QList<qint64>& rowIds) {
     return "\"" + result + "\"";
 }
 
-bool PackUtils::unpackRowOrder(const QByteArray& str, QList<qint64>& rowsIds) {
+bool U2DbiPackUtils::unpackRowOrder(const QByteArray& str, QList<qint64>& rowsIds) {
     CHECK(str.startsWith('\"') && str.endsWith('\"'), false);
     QByteArray orderStr = str.mid(1, str.length() - 2);
     if (orderStr.isEmpty()) {
@@ -165,7 +165,7 @@ bool PackUtils::unpackRowOrder(const QByteArray& str, QList<qint64>& rowsIds) {
     return true;
 }
 
-QByteArray PackUtils::packRowOrderDetails(const QList<qint64>& oldOrder, const QList<qint64>& newOrder) {
+QByteArray U2DbiPackUtils::packRowOrderDetails(const QList<qint64>& oldOrder, const QList<qint64>& newOrder) {
     QByteArray result = VERSION;
     result += SEP;
     result += packRowOrder(oldOrder);
@@ -174,7 +174,7 @@ QByteArray PackUtils::packRowOrderDetails(const QList<qint64>& oldOrder, const Q
     return result;
 }
 
-bool PackUtils::unpackRowOrderDetails(const QByteArray &modDetails, QList<qint64>& oldOrder, QList<qint64>& newOrder) {
+bool U2DbiPackUtils::unpackRowOrderDetails(const QByteArray &modDetails, QList<qint64>& oldOrder, QList<qint64>& newOrder) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(3 == tokens.size(), QString("Invalid rows order modDetails string '%1'").arg(QString(modDetails)), false);
     { // version
@@ -192,7 +192,7 @@ bool PackUtils::unpackRowOrderDetails(const QByteArray &modDetails, QList<qint64
     return true;
 }
 
-QByteArray PackUtils::packRowNameDetails(qint64 rowId, const QString &oldName, const QString &newName) {
+QByteArray U2DbiPackUtils::packRowNameDetails(qint64 rowId, const QString &oldName, const QString &newName) {
     QByteArray result = VERSION;
     result += SEP;
     result += QByteArray::number(rowId);
@@ -203,7 +203,7 @@ QByteArray PackUtils::packRowNameDetails(qint64 rowId, const QString &oldName, c
     return result;
 }
 
-bool PackUtils::unpackRowNameDetails(const QByteArray &modDetails, qint64 &rowId, QString &oldName, QString &newName) {
+bool U2DbiPackUtils::unpackRowNameDetails(const QByteArray &modDetails, qint64 &rowId, QString &oldName, QString &newName) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(4 == tokens.size(), QString("Invalid row name modDetails string '%1'").arg(QString(modDetails)), false);
     { // version
@@ -223,7 +223,7 @@ bool PackUtils::unpackRowNameDetails(const QByteArray &modDetails, qint64 &rowId
     return true;
 }
 
-QByteArray PackUtils::packRow(qint64 posInMsa, const U2MsaRow& row) {
+QByteArray U2DbiPackUtils::packRow(qint64 posInMsa, const U2MsaRow& row) {
     QByteArray result = VERSION;
     result += SEP;
     result += QByteArray::number(posInMsa);
@@ -240,7 +240,7 @@ QByteArray PackUtils::packRow(qint64 posInMsa, const U2MsaRow& row) {
     return result;
 }
 
-bool PackUtils::unpackRow(const QByteArray &modDetails, qint64& posInMsa, U2MsaRow& row) {
+bool U2DbiPackUtils::unpackRow(const QByteArray &modDetails, qint64& posInMsa, U2MsaRow& row) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(7 == tokens.size(), QString("Invalid added row modDetails string '%1'").arg(QString(modDetails)), false);
     { // version
@@ -276,7 +276,7 @@ bool PackUtils::unpackRow(const QByteArray &modDetails, qint64& posInMsa, U2MsaR
     return true;
 }
 
-QByteArray PackUtils::packRow(qint64 posInMca, const U2McaRow &row) {
+QByteArray U2DbiPackUtils::packRow(qint64 posInMca, const U2McaRow &row) {
     QByteArray result = VERSION;
     result += SEP;
     result += QByteArray::number(posInMca);
@@ -295,7 +295,7 @@ QByteArray PackUtils::packRow(qint64 posInMca, const U2McaRow &row) {
     return result;
 }
 
-bool PackUtils::unpackRow(const QByteArray &modDetails, qint64 &posInMca, U2McaRow &row) {
+bool U2DbiPackUtils::unpackRow(const QByteArray &modDetails, qint64 &posInMca, U2McaRow &row) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(8 == tokens.size(), QString("Invalid added row modDetails string '%1'").arg(QString(modDetails)), false);
     { // version
@@ -334,7 +334,7 @@ bool PackUtils::unpackRow(const QByteArray &modDetails, qint64 &posInMca, U2McaR
     return true;
 }
 
-QByteArray PackUtils::packRowInfo(const U2MsaRow &row) {
+QByteArray U2DbiPackUtils::packRowInfo(const U2MsaRow &row) {
     QByteArray result;
     result += QByteArray::number(row.rowId);
     result += SECOND_SEP;
@@ -348,7 +348,7 @@ QByteArray PackUtils::packRowInfo(const U2MsaRow &row) {
     return result;
 }
 
-bool PackUtils::unpackRowInfo(const QByteArray &str, U2MsaRow& row) {
+bool U2DbiPackUtils::unpackRowInfo(const QByteArray &str, U2MsaRow& row) {
     QList<QByteArray> tokens = str.split(SECOND_SEP);
     CHECK(5 == tokens.count(), false);
 
@@ -367,7 +367,7 @@ bool PackUtils::unpackRowInfo(const QByteArray &str, U2MsaRow& row) {
     return true;
 }
 
-QByteArray PackUtils::packRowInfo(const U2McaRow &row) {
+QByteArray U2DbiPackUtils::packRowInfo(const U2McaRow &row) {
     QByteArray result;
     result += QByteArray::number(row.rowId);
     result += SECOND_SEP;
@@ -383,7 +383,7 @@ QByteArray PackUtils::packRowInfo(const U2McaRow &row) {
     return result;
 }
 
-bool PackUtils::unpackRowInfo(const QByteArray &str, U2McaRow &row) {
+bool U2DbiPackUtils::unpackRowInfo(const QByteArray &str, U2McaRow &row) {
     QList<QByteArray> tokens = str.split(SECOND_SEP);
     CHECK(5 == tokens.count(), false);
 
@@ -403,7 +403,7 @@ bool PackUtils::unpackRowInfo(const QByteArray &str, U2McaRow &row) {
     return true;
 }
 
-QByteArray PackUtils::packRowInfoDetails(const U2MsaRow &oldRow, const U2MsaRow &newRow) {
+QByteArray U2DbiPackUtils::packRowInfoDetails(const U2MsaRow &oldRow, const U2MsaRow &newRow) {
     QByteArray result = VERSION;
     result += SEP;
     result += packRowInfo(oldRow);
@@ -412,7 +412,7 @@ QByteArray PackUtils::packRowInfoDetails(const U2MsaRow &oldRow, const U2MsaRow 
     return result;
 }
 
-bool PackUtils::unpackRowInfoDetails(const QByteArray &modDetails, U2MsaRow &oldRow, U2MsaRow &newRow) {
+bool U2DbiPackUtils::unpackRowInfoDetails(const QByteArray &modDetails, U2MsaRow &oldRow, U2MsaRow &newRow) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(3 == tokens.count(), QString("Invalid modDetails '%1'!").arg(QString(modDetails)), false);
     SAFE_POINT(VERSION == tokens[0], QString("Invalid modDetails version '%1'").arg(QString(tokens[0])), false);
@@ -426,7 +426,7 @@ bool PackUtils::unpackRowInfoDetails(const QByteArray &modDetails, U2MsaRow &old
     return true;
 }
 
-QByteArray PackUtils::packRowInfoDetails(const U2McaRow &oldRow, const U2McaRow &newRow) {
+QByteArray U2DbiPackUtils::packRowInfoDetails(const U2McaRow &oldRow, const U2McaRow &newRow) {
     QByteArray result = VERSION;
     result += SEP;
     result += packRowInfo(oldRow);
@@ -435,7 +435,7 @@ QByteArray PackUtils::packRowInfoDetails(const U2McaRow &oldRow, const U2McaRow 
     return result;
 }
 
-bool PackUtils::unpackRowInfoDetails(const QByteArray &modDetails, U2McaRow &oldRow, U2McaRow &newRow) {
+bool U2DbiPackUtils::unpackRowInfoDetails(const QByteArray &modDetails, U2McaRow &oldRow, U2McaRow &newRow) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(3 == tokens.count(), QString("Invalid modDetails '%1'").arg(QString(modDetails)), false);
     SAFE_POINT(VERSION == tokens[0], QString("Invalid modDetails version '%1'").arg(QString(tokens[0])), false);
@@ -449,7 +449,7 @@ bool PackUtils::unpackRowInfoDetails(const QByteArray &modDetails, U2McaRow &old
     return true;
 }
 
-QByteArray PackUtils::packAlphabetDetails(const U2AlphabetId &oldAlphabet, const U2AlphabetId &newAlphabet) {
+QByteArray U2DbiPackUtils::packAlphabetDetails(const U2AlphabetId &oldAlphabet, const U2AlphabetId &newAlphabet) {
     QByteArray result = VERSION;
     result += SEP;
     result += oldAlphabet.id.toLatin1();
@@ -458,7 +458,7 @@ QByteArray PackUtils::packAlphabetDetails(const U2AlphabetId &oldAlphabet, const
     return result;
 }
 
-bool PackUtils::unpackAlphabetDetails(const QByteArray &modDetails, U2AlphabetId &oldAlphabet, U2AlphabetId &newAlphabet) {
+bool U2DbiPackUtils::unpackAlphabetDetails(const QByteArray &modDetails, U2AlphabetId &oldAlphabet, U2AlphabetId &newAlphabet) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(3 == tokens.count(), QString("Invalid modDetails '%1'!").arg(QString(modDetails)), false);
     SAFE_POINT(VERSION == tokens[0], QString("Invalid modDetails version '%1'").arg(QString(tokens[0])), false);
@@ -473,7 +473,7 @@ bool PackUtils::unpackAlphabetDetails(const QByteArray &modDetails, U2AlphabetId
     return true;
 }
 
-QByteArray PackUtils::packObjectNameDetails(const QString &oldName, const QString &newName) {
+QByteArray U2DbiPackUtils::packObjectNameDetails(const QString &oldName, const QString &newName) {
     QByteArray result = VERSION;
     result += SEP;
     result += oldName.toUtf8();
@@ -482,7 +482,7 @@ QByteArray PackUtils::packObjectNameDetails(const QString &oldName, const QStrin
     return result;
 }
 
-bool PackUtils::unpackObjectNameDetails(const QByteArray &modDetails, QString &oldName, QString &newName) {
+bool U2DbiPackUtils::unpackObjectNameDetails(const QByteArray &modDetails, QString &oldName, QString &newName) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(3 == tokens.count(), "Invalid modDetails!", false);
     SAFE_POINT(VERSION == tokens[0], "Invalid modDetails version!", false);
@@ -494,7 +494,7 @@ bool PackUtils::unpackObjectNameDetails(const QByteArray &modDetails, QString &o
     return true;
 }
 
-QByteArray PackUtils::packRows(const QList<qint64> &posInMsa, const QList<U2MsaRow> &rows) {
+QByteArray U2DbiPackUtils::packRows(const QList<qint64> &posInMsa, const QList<U2MsaRow> &rows) {
     SAFE_POINT(posInMsa.size() == rows.size(), "Different lists sizes", "");
     QByteArray result = VERSION;
     QList<qint64>::ConstIterator pi = posInMsa.begin();
@@ -505,7 +505,7 @@ QByteArray PackUtils::packRows(const QList<qint64> &posInMsa, const QList<U2MsaR
     return result;
 }
 
-bool PackUtils::unpackRows(const QByteArray &modDetails, QList<qint64> &posInMsa, QList<U2MsaRow> &rows) {
+bool U2DbiPackUtils::unpackRows(const QByteArray &modDetails, QList<qint64> &posInMsa, QList<U2MsaRow> &rows) {
     QList<QByteArray> tokens = modDetails.split(SECOND_SEP);
     SAFE_POINT(tokens.count() > 0, QString("Invalid modDetails '%1'!").arg(QString(modDetails)), false);
     QByteArray modDetailsVersion = tokens.takeFirst();
@@ -521,7 +521,7 @@ bool PackUtils::unpackRows(const QByteArray &modDetails, QList<qint64> &posInMsa
     return true;
 }
 
-QByteArray PackUtils::packRows(const QList<qint64> &posInMca, const QList<U2McaRow> &rows) {
+QByteArray U2DbiPackUtils::packRows(const QList<qint64> &posInMca, const QList<U2McaRow> &rows) {
     SAFE_POINT(posInMca.size() == rows.size(), "Different lists sizes", "");
     QByteArray result = VERSION;
     QList<qint64>::ConstIterator pi = posInMca.begin();
@@ -532,7 +532,7 @@ QByteArray PackUtils::packRows(const QList<qint64> &posInMca, const QList<U2McaR
     return result;
 }
 
-bool PackUtils::unpackRows(const QByteArray &modDetails, QList<qint64> &posInMca, QList<U2McaRow> &rows) {
+bool U2DbiPackUtils::unpackRows(const QByteArray &modDetails, QList<qint64> &posInMca, QList<U2McaRow> &rows) {
     QList<QByteArray> tokens = modDetails.split(SECOND_SEP);
     SAFE_POINT(tokens.count() > 0, QString("Invalid modDetails '%1'").arg(QString(modDetails)), false);
     QByteArray modDetailsVersion = tokens.takeFirst();
@@ -548,7 +548,7 @@ bool PackUtils::unpackRows(const QByteArray &modDetails, QList<qint64> &posInMca
     return true;
 }
 
-QByteArray PackUtils::packSequenceDataDetails(const U2Region &replacedRegion, const QByteArray &oldData,
+QByteArray U2DbiPackUtils::packSequenceDataDetails(const U2Region &replacedRegion, const QByteArray &oldData,
                                               const QByteArray &newData, const QVariantMap &hints) {
     // replacedRegion length is used only for check, it is not stored
     SAFE_POINT(replacedRegion.length >= oldData.length(), "oldData length does not match to the region length.", QByteArray());
@@ -564,7 +564,7 @@ QByteArray PackUtils::packSequenceDataDetails(const U2Region &replacedRegion, co
     return result;
 }
 
-bool PackUtils::unpackSequenceDataDetails(const QByteArray &modDetails, U2Region &replacedRegion, QByteArray &oldData,
+bool U2DbiPackUtils::unpackSequenceDataDetails(const QByteArray &modDetails, U2Region &replacedRegion, QByteArray &oldData,
                                           QByteArray &newData, QVariantMap &hints) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(tokens.count() == 5, QString("Invalid modDetails '%1'!").arg(QString(modDetails)), false);
@@ -583,17 +583,17 @@ bool PackUtils::unpackSequenceDataDetails(const QByteArray &modDetails, U2Region
     return true;
 }
 
-QByteArray PackUtils::packChromatogramData(const DNAChromatogram &chromatogram) {
+QByteArray U2DbiPackUtils::packChromatogramData(const DNAChromatogram &chromatogram) {
     return DNAChromatogramSerializer::serialize(chromatogram).toHex();
 }
 
-bool PackUtils::unpackChromatogramData(const QByteArray &modDetails, DNAChromatogram &chromatogram) {
+bool U2DbiPackUtils::unpackChromatogramData(const QByteArray &modDetails, DNAChromatogram &chromatogram) {
     U2OpStatusImpl os;
     chromatogram = DNAChromatogramSerializer::deserialize(QByteArray::fromHex(modDetails), os);
     return !os.hasError();
 }
 
-QByteArray PackUtils::packChromatogramDetails(const DNAChromatogram &oldChromatogram, const DNAChromatogram &newChromatogram) {
+QByteArray U2DbiPackUtils::packChromatogramDetails(const DNAChromatogram &oldChromatogram, const DNAChromatogram &newChromatogram) {
     QByteArray result = VERSION;
     result += SEP;
     result += packChromatogramData(oldChromatogram);
@@ -602,7 +602,7 @@ QByteArray PackUtils::packChromatogramDetails(const DNAChromatogram &oldChromato
     return result;
 }
 
-bool PackUtils::unpackChromatogramDetails(const QByteArray &modDetails, DNAChromatogram &oldChromatogram, DNAChromatogram &newChromatogram) {
+bool U2DbiPackUtils::unpackChromatogramDetails(const QByteArray &modDetails, DNAChromatogram &oldChromatogram, DNAChromatogram &newChromatogram) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(tokens.count() == 3, QString("Invalid modDetails '%1'").arg(QString(modDetails)), false);
     SAFE_POINT(VERSION == tokens[0], QString("Invalid modDetails version '%1'").arg(QString(tokens[0])), false);
@@ -617,7 +617,7 @@ bool PackUtils::unpackChromatogramDetails(const QByteArray &modDetails, DNAChrom
     return true;
 }
 
-QByteArray PackUtils::packSequenceDataHints(const QVariantMap &hints) {
+QByteArray U2DbiPackUtils::packSequenceDataHints(const QVariantMap &hints) {
     QByteArray result;
     foreach (QString key, hints.keys()) {
         if (false == result.isEmpty()) {
@@ -628,7 +628,7 @@ QByteArray PackUtils::packSequenceDataHints(const QVariantMap &hints) {
     return "\"" + result + "\"";
 }
 
-bool PackUtils::unpackSequenceDataHints(const QByteArray &str, QVariantMap &hints) {
+bool U2DbiPackUtils::unpackSequenceDataHints(const QByteArray &str, QVariantMap &hints) {
     CHECK(str.startsWith('\"') && str.endsWith('\"'), false);
     QByteArray hintsStr = str.mid(1, str.length() - 2);
     if (hintsStr.isEmpty()) {
@@ -644,7 +644,7 @@ bool PackUtils::unpackSequenceDataHints(const QByteArray &str, QVariantMap &hint
     return true;
 }
 
-QByteArray PackUtils::packAlignmentLength(const qint64 oldLen, const qint64 newLen) {
+QByteArray U2DbiPackUtils::packAlignmentLength(const qint64 oldLen, const qint64 newLen) {
     QByteArray result;
     result += QByteArray::number(oldLen);
     result += SEP;
@@ -652,7 +652,7 @@ QByteArray PackUtils::packAlignmentLength(const qint64 oldLen, const qint64 newL
     return result;
 }
 
-bool PackUtils::unpackAlignmentLength(const QByteArray &modDetails, qint64 &oldLen, qint64 &newLen) {
+bool U2DbiPackUtils::unpackAlignmentLength(const QByteArray &modDetails, qint64 &oldLen, qint64 &newLen) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(tokens.count() == 2, QString("Invalid modDetails '%1'!").arg(QString(modDetails)), false);
 
@@ -665,7 +665,7 @@ bool PackUtils::unpackAlignmentLength(const QByteArray &modDetails, qint64 &oldL
     return true;
 }
 
-QByteArray PackUtils::packUdr(const QByteArray& oldData, const QByteArray& newData) {
+QByteArray U2DbiPackUtils::packUdr(const QByteArray& oldData, const QByteArray& newData) {
     QByteArray result;
     result += oldData.toHex();
     result += SEP;
@@ -673,7 +673,7 @@ QByteArray PackUtils::packUdr(const QByteArray& oldData, const QByteArray& newDa
     return result;
 }
 
-bool PackUtils::unpackUdr(const QByteArray& modDetails, QByteArray& oldData, QByteArray& newData) {
+bool U2DbiPackUtils::unpackUdr(const QByteArray& modDetails, QByteArray& oldData, QByteArray& newData) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(tokens.count() == 2, QString("Invalid modDetails, wrong tokens count: %1. Expected - 2.").arg(tokens.size()), false);
 

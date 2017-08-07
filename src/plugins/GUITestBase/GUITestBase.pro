@@ -151,10 +151,13 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsEscClicker.h \
             src/GTUtilsExternalTools.h \
             src/GTUtilsLog.h \
+            src/GTUtilsMcaEditor.h \
+            src/GTUtilsMcaEditorSequenceArea.h \
             src/GTUtilsMdi.h \
             src/GTUtilsMsaEditor.h \
             src/GTUtilsMsaEditorSequenceArea.h \
             src/GTUtilsNotifications.h \
+            src/GTUtilsOptionPanelMca.h \
             src/GTUtilsOptionPanelMSA.h \
             src/GTUtilsOptionPanelSequenceView.h \
             src/GTUtilsOptionsPanel.h \
@@ -172,7 +175,9 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsWorkflowDesigner.h \
             src/GTUtilsStartPage.h \
 #   Tests
-            src/tests/GUIInitialChecks.h \
+            src/tests/PosteriorActions.h \
+            src/tests/PosteriorChecks.h \
+            src/tests/PreliminaryActions.h \
 #   Tests/Regression Scenarios
             src/tests/regression_scenarios/GTTestsRegressionScenarios_1_1000.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_1001_2000.h \
@@ -198,6 +203,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/cloning/GTTestsCloning.h \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h \
             src/tests/common_scenarios/dp_view/GTTestsDpView.h \
+            src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.h \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.h \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h \
             src/tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h \
@@ -210,6 +216,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.h \
             src/tests/common_scenarios/pcr/GTTestsInSilicoPcr.h \
             src/tests/common_scenarios/pcr/GTTestsPrimerLibrary.h \
+            src/tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.h \
             src/tests/common_scenarios/project/GTTestsProject.h \
             src/tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.h \
             src/tests/common_scenarios/project/bookmarks/GTTestsBookmarks.h \
@@ -396,10 +403,13 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsEscClicker.cpp \
             src/GTUtilsExternalTools.cpp \
             src/GTUtilsLog.cpp \
+            src/GTUtilsMcaEditor.cpp \
+            src/GTUtilsMcaEditorSequenceArea.cpp \
             src/GTUtilsMdi.cpp \
             src/GTUtilsMsaEditor.cpp \
             src/GTUtilsMsaEditorSequenceArea.cpp \
             src/GTUtilsNotifications.cpp \
+            src/GTUtilsOptionPanelMca.cpp \
             src/GTUtilsOptionPanelMSA.cpp \
             src/GTUtilsOptionPanelSequenceView.cpp \
             src/GTUtilsOptionsPanel.cpp \
@@ -417,7 +427,9 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsWorkflowDesigner.cpp \
             src/GTUtilsStartPage.cpp \
 #   Tests
-            src/tests/GUIInitialChecks.cpp \
+            src/tests/PreliminaryActions.cpp \
+            src/tests/PosteriorActions.cpp \
+            src/tests/PosteriorChecks.cpp \
 #   Tests/Regression Scenarios
             src/tests/regression_scenarios/GTTestsRegressionScenarios_1001_2000.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_1_1000.cpp \
@@ -443,6 +455,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/cloning/GTTestsCloning.cpp \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.cpp \
             src/tests/common_scenarios/dp_view/GTTestsDpView.cpp \
+            src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.cpp \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.cpp \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.cpp \
             src/tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.cpp \
@@ -455,6 +468,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.cpp \
             src/tests/common_scenarios/pcr/GTTestsInSilicoPcr.cpp \
             src/tests/common_scenarios/pcr/GTTestsPrimerLibrary.cpp \
+            src/tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.cpp \
             src/tests/common_scenarios/project/GTTestsProject.cpp \
             src/tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.cpp \
             src/tests/common_scenarios/project/bookmarks/GTTestsBookmarks.cpp \

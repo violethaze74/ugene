@@ -102,42 +102,43 @@ public:
     virtual void update();
 };
 
-class ExportMSAConsensusTaskSettings {
+class ExportMaConsensusTaskSettings {
 public:
-    ExportMSAConsensusTaskSettings();
+    ExportMaConsensusTaskSettings();
 
-    bool keepGaps;
-    MSAEditor* msa;
-    QString url;
-    DocumentFormatId format;
-    QString name;
+    bool                keepGaps;
+    MaEditor*           ma;
+    QString             url;
+    DocumentFormatId    format;
+    QString             name;
 };
 
 class ExtractConsensusTask : public Task {
     Q_OBJECT
 public:
-    ExtractConsensusTask( bool keepGaps, MSAEditor* msa);
+    ExtractConsensusTask( bool keepGaps, MaEditor* ma);
     void run();
     const QByteArray& getExtractedConsensus() const;
 private:
-    bool keepGaps;
-    MSAEditor* msa;
-    QByteArray filteredConsensus;
+    bool        keepGaps;
+    MaEditor*   ma;
+    QByteArray  filteredConsensus;
 };
 
-class ExportMSAConsensusTask : public DocumentProviderTask {
+class ExportMaConsensusTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMSAConsensusTask(const ExportMSAConsensusTaskSettings& s);
+    ExportMaConsensusTask(const ExportMaConsensusTaskSettings& s);
 
     void prepare();
 protected:
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:
     Document* createDocument();
-    ExportMSAConsensusTaskSettings settings;
-    ExtractConsensusTask *extractConsensus;
-    QByteArray filteredConsensus;
+
+    ExportMaConsensusTaskSettings   settings;
+    ExtractConsensusTask*           extractConsensus;
+    QByteArray                      filteredConsensus;
 };
 
 } // namespace

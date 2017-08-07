@@ -20,6 +20,7 @@
  */
 
 #include <U2Core/MultipleAlignmentObject.h>
+#include <U2Core/SignalBlocker.h>
 
 #include "BaseWidthController.h"
 #include "DrawHelper.h"
@@ -54,7 +55,7 @@ void ScrollController::init(GScrollBar *hScrollBar, GScrollBar *vScrollBar) {
     vScrollBar->setValue(0);
     connect(vScrollBar, SIGNAL(valueChanged(int)), SIGNAL(si_visibleAreaChanged()));
 
-    updateScrollBars();
+    sl_updateScrollBars();
 }
 
 QPoint ScrollController::getScreenPosition() const {
@@ -67,12 +68,6 @@ void ScrollController::updateHorizontalScrollBar() {
 }
 
 void ScrollController::updateVerticalScrollBar() {
-    updateVerticalScrollBarPrivate();
-    emit si_visibleAreaChanged();
-}
-
-void ScrollController::updateScrollBars() {
-    updateHorizontalScrollBarPrivate();
     updateVerticalScrollBarPrivate();
     emit si_visibleAreaChanged();
 }
@@ -299,7 +294,9 @@ void ScrollController::scrollToMovedSelection(ScrollController::Direction direct
 
 int ScrollController::getFirstVisibleBase(bool countClipped) const {
     const bool removeClippedBase = !countClipped && (getAdditionalXOffset() != 0);
-    return ui->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value()) + (removeClippedBase ? 1 : 0);
+    const int firstVisibleBase = ui->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value()) + (removeClippedBase ? 1 : 0);
+    assert(firstVisibleBase < maEditor->getAlignmentLen());
+    return qMin(firstVisibleBase, maEditor->getAlignmentLen() - 1);
 }
 
 int ScrollController::getLastVisibleBase(int widgetWidth, bool countClipped) const {
@@ -348,6 +345,18 @@ GScrollBar *ScrollController::getVerticalScrollBar() const {
     return vScrollBar;
 }
 
+void ScrollController::sl_zoomScrollBars() {
+    zoomHorizontalScrollBarPrivate();
+    zoomVerticalScrollBarPrivate();
+    emit si_visibleAreaChanged();
+}
+
+void ScrollController::sl_updateScrollBars() {
+    updateHorizontalScrollBarPrivate();
+    updateVerticalScrollBarPrivate();
+    emit si_visibleAreaChanged();
+}
+
 void ScrollController::sl_collapsibleModelIsAboutToBeChanged() {
     savedFirstVisibleRowIndex = getFirstVisibleRowIndex(true);
     savedFirstVisibleRowAdditionalOffset = getScreenPosition().y() - ui->getRowHeightController()->getRowGlobalOffset(savedFirstVisibleRowIndex);
@@ -377,9 +386,31 @@ U2Region ScrollController::getVerticalRangeToDrawIn(int widgetHeight) const {
     return U2Region(vScrollBar->value(), widgetHeight);
 }
 
+void ScrollController::zoomHorizontalScrollBarPrivate() {
+    CHECK(!maEditor->isAlignmentEmpty(), );
+    SignalBlocker signalBlocker(hScrollBar);
+    Q_UNUSED(signalBlocker);
+
+    const int previousAlignmentWidth = hScrollBar->maximum() + ui->getSequenceArea()->width();
+    const double previousRelation = static_cast<double>(hScrollBar->value()) / previousAlignmentWidth;
+    updateHorizontalScrollBarPrivate();
+    hScrollBar->setValue(previousRelation * ui->getBaseWidthController()->getTotalAlignmentWidth());
+}
+
+void ScrollController::zoomVerticalScrollBarPrivate() {
+    CHECK(!maEditor->isAlignmentEmpty(), );
+    SignalBlocker signalBlocker(vScrollBar);
+    Q_UNUSED(signalBlocker);
+
+    const int previousAlignmentHeight = vScrollBar->maximum() + ui->getSequenceArea()->height();
+    const double previousRelation = static_cast<double>(vScrollBar->value()) / previousAlignmentHeight;
+    updateVerticalScrollBarPrivate();
+    vScrollBar->setValue(previousRelation * ui->getRowHeightController()->getTotalAlignmentHeight());
+}
+
 void ScrollController::updateHorizontalScrollBarPrivate() {
     SAFE_POINT(NULL != hScrollBar, "Horizontal scrollbar is not initialized", );
-    QSignalBlocker signalBlocker(hScrollBar);
+    SignalBlocker signalBlocker(hScrollBar);
     Q_UNUSED(signalBlocker);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), hScrollBar->setVisible(false), );
@@ -400,7 +431,7 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
 
 void ScrollController::updateVerticalScrollBarPrivate() {
     SAFE_POINT(NULL != vScrollBar, "Vertical scrollbar is not initialized", );
-    QSignalBlocker signalBlocker(vScrollBar);
+    SignalBlocker signalBlocker(vScrollBar);
     Q_UNUSED(signalBlocker);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), vScrollBar->setVisible(false), );

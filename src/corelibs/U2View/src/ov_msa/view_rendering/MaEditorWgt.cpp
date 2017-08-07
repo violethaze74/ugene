@@ -28,13 +28,13 @@
 
 #include <U2Gui/ExportImageDialog.h>
 
+#include <U2View/MaEditorStatusBar.h>
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
-#include <U2View/MSAEditorStatusBar.h>
 #include <U2View/UndoRedoFramework.h>
 
 #include "MaEditorUtils.h"
@@ -57,7 +57,7 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       consArea(NULL),
       overviewArea(NULL),
       offsetsView(NULL),
-      statusWidget(NULL),
+      statusBar(NULL),
       nameAreaContainer(NULL),
       seqAreaHeader(NULL),
       seqAreaHeaderLayout(NULL),
@@ -80,7 +80,7 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
 QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment ali, QWidget* heightTarget){
     return new MaLabelWidget(this,
                              heightTarget == NULL ? seqAreaHeader : heightTarget,
-                             text, ali);
+                             QString("<p style=\"margin-right: 5px\">%1</p>").arg(text), ali);
 }
 
 ScrollController *MaEditorWgt::getScrollController() {
@@ -143,8 +143,7 @@ void MaEditorWgt::initWidgets() {
     nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
     initConsensusArea();
-
-    statusWidget = new MSAEditorStatusWidget(editor->getMaObject(), seqArea);
+    initStatusBar();
 
     offsetsView = new MSAEditorOffsetsViewController(this, editor, seqArea);
     offsetsView->getLeftWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
@@ -153,7 +152,7 @@ void MaEditorWgt::initWidgets() {
     seqAreaHeader = new QWidget(this);
     seqAreaHeader->setObjectName("alignment_header_widget");
     seqAreaHeaderLayout = new QVBoxLayout();
-    seqAreaHeaderLayout->setMargin(0);
+    seqAreaHeaderLayout->setContentsMargins(0, 0, 0, 0);
     seqAreaHeaderLayout->setSpacing(0);
     seqAreaHeaderLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
@@ -164,7 +163,7 @@ void MaEditorWgt::initWidgets() {
     seqAreaHeader->setLayout(seqAreaHeaderLayout);
 
     seqAreaLayout = new QGridLayout();
-    seqAreaLayout->setMargin(0);
+    seqAreaLayout->setContentsMargins(0, 0, 0, 0);
     seqAreaLayout->setSpacing(0);
 
     seqAreaLayout->addWidget(label1, 0, 0);
@@ -185,11 +184,11 @@ void MaEditorWgt::initWidgets() {
     seqAreaContainer->setLayout(seqAreaLayout);
 
     QWidget *label;
-    label = createHeaderLabelWidget(tr("Consensus"), Qt::AlignCenter, consArea);
+    label = createHeaderLabelWidget(tr("Consensus:"), Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), consArea);
     label->setMinimumHeight(consArea->height());
 
     nameAreaLayout = new QVBoxLayout();
-    nameAreaLayout->setMargin(0);
+    nameAreaLayout->setContentsMargins(0, 0, 0, 0);
     nameAreaLayout->setSpacing(0);
     nameAreaLayout->addWidget(label);
     nameAreaLayout->addWidget(nameList);
@@ -201,19 +200,38 @@ void MaEditorWgt::initWidgets() {
     maSplitter.addWidget(nameAreaContainer, 0, 0.1);
     maSplitter.addWidget(seqAreaContainer, 1, 3);
 
+    QVBoxLayout *maContainerLayout = new QVBoxLayout();
+    maContainerLayout->setContentsMargins(0, 0, 0, 0);
+    maContainerLayout->setSpacing(0);
+
+    maContainerLayout->addWidget(maSplitter.getSplitter());
+    maContainerLayout->setStretch(0, 1);
+    maContainerLayout->addWidget(statusBar);
+
+    QWidget *maContainer = new QWidget(this);
+    maContainer->setLayout(maContainerLayout);
+
     QVBoxLayout *mainLayout = new QVBoxLayout();
-    mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
-    mainLayout->addWidget(maSplitter.getSplitter());
-    mainLayout->setStretch(0, 1);
-    mainLayout->addWidget(statusWidget);
-    mainLayout->addWidget(overviewArea);
+    QSplitter *mainSplitter = new QSplitter(Qt::Vertical, this);
+    mainSplitter->addWidget(maContainer);
+    mainSplitter->setStretchFactor(0, 2);
 
+    if (overviewArea->isResizable()) {
+        mainSplitter->addWidget(overviewArea);
+        mainSplitter->setCollapsible(1, false);
+    } else {
+        maContainerLayout->addWidget(overviewArea);
+    }
+    mainLayout->addWidget(mainSplitter);
     setLayout(mainLayout);
 
     connect(collapseModel, SIGNAL(si_toggled()), offsetsView, SLOT(sl_updateOffsets()));
     connect(collapseModel, SIGNAL(si_toggled()), seqArea,     SLOT(sl_modelChanged()));
+    connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), scrollController, SLOT(sl_zoomScrollBars()));
 
     connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));
 

@@ -385,7 +385,7 @@ void WorkflowView::setupScene() {
 void WorkflowView::setupPalette() {
     palette = new WorkflowPalette(WorkflowEnv::getProtoRegistry());
     palette->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored));
-    connect(palette, SIGNAL(processSelected(Workflow::ActorPrototype*)), SLOT(sl_selectPrototype(Workflow::ActorPrototype*)));
+    connect(palette, SIGNAL(processSelected(Workflow::ActorPrototype*, bool)), SLOT(sl_selectPrototype(Workflow::ActorPrototype*, bool)));
     connect(palette, SIGNAL(si_protoDeleted(const QString&)), SLOT(sl_protoDeleted(const QString&)));
     connect(palette, SIGNAL(si_protoListModified()), SLOT(sl_protoListModified()));
     connect(palette, SIGNAL(si_protoChanged()), scene, SLOT(sl_updateDocs()));
@@ -1832,7 +1832,7 @@ void WorkflowView::sl_importSchemaToElement() {
     }
 }
 
-void WorkflowView::sl_selectPrototype(Workflow::ActorPrototype* p) {
+void WorkflowView::sl_selectPrototype(Workflow::ActorPrototype* p, bool putToScene) {
     propertyEditor->setEditable(!p);
     scene->clearSelection();
     currentProto = p;
@@ -1844,8 +1844,12 @@ void WorkflowView::sl_selectPrototype(Workflow::ActorPrototype* p) {
     } else {
         delete currentActor;
         currentActor = createActor(p, QVariantMap());
-        propertyEditor->setDescriptor(p, tr("Drag the palette element to the scene or just click on the scene to add the element."));
-        scene->views().at(0)->setCursor(Qt::CrossCursor);
+        if (putToScene) {
+            addProcess(currentActor, scene->getLastMousePressPoint());
+        } else {
+            propertyEditor->setDescriptor(p, tr("Drag the palette element to the scene or just click on the scene to add the element."));
+            scene->views().at(0)->setCursor(Qt::CrossCursor);
+        }
     }
 }
 
@@ -2704,6 +2708,7 @@ void WorkflowScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     if (!locked && !mouseEvent->isAccepted() && controller->selectedProto() && (mouseEvent->button() == Qt::LeftButton)) {
         controller->addProcess(controller->getActor(), mouseEvent->scenePos());
     }
+    lastMousePressPoint = mouseEvent->scenePos();
     QGraphicsScene::mousePressEvent(mouseEvent);
 }
 

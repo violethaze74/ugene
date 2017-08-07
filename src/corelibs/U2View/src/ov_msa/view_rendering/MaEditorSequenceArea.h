@@ -83,8 +83,6 @@ public:
      */
     int getNumDisplayableSequences() const;
 
-    QPair<QString, int> getGappedColumnInfo() const;
-
     bool isAlignmentEmpty() const;
 
     bool isPosInRange(int position) const;
@@ -108,8 +106,6 @@ public:
     virtual void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
     virtual void adjustReferenceLength(U2OpStatus& os) {}
-
-    void cancelSelection();
 
     U2Region getSelectedRows() const;
 
@@ -155,18 +151,18 @@ public:
     MsaHighlightingScheme *getCurrentHighlightingScheme() const;
     bool getUseDotsCheckedState() const;
 
+    QAction *getReplaceCharacterAction() const;
+    const QAction * const getRemoveSAction() const;
+
 public slots:
     void sl_changeColorSchemeOutside(const QString &id);
     void sl_delCurrentSelection();
+    void sl_cancelSelection();
 
 protected slots:
     void sl_changeCopyFormat(const QString& alg);
     void sl_changeColorScheme();
     void sl_fillCurrentSelectionWithGaps();
-
-    virtual void sl_buildStaticMenu(GObjectView* v, QMenu* m);
-    virtual void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
-    virtual void sl_buildContextMenu(GObjectView* v, QMenu* m);
 
     virtual void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
 
@@ -249,7 +245,6 @@ protected:
 
     void drawAll();
 
-    virtual void buildMenu(QMenu* m);
     void updateColorAndHighlightSchemes();
 
     void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);
@@ -269,6 +264,8 @@ protected:
     void replaceChar(char newCharacter);
     virtual void insertChar(char ) {}
     void exitFromEditCharacterMode();
+    virtual bool isCharacterAcceptable(const QString &text) const;
+    virtual const QString &getInacceptableCharacterErrorMessage() const;
 
     void deleteOldCustomSchemes();
 
@@ -326,6 +323,8 @@ protected:
     // If the changing action fits within one method it's recommended using
     // the U2UseCommonUserModStep object explicitly.
     MsaEditorUserModStepController changeTracker;
+
+    static const QChar emDash;
 };
 
 } // namespace

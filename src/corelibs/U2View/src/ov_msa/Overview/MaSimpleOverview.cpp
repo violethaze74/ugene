@@ -42,7 +42,7 @@ namespace U2 {
 
 MaSimpleOverview::MaSimpleOverview(MaEditorWgt *_ui)
     : MaOverview(_ui),
-      redrawMSAOverview(true),
+      redrawMsaOverview(true),
       redrawSelection(true)
 {
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
@@ -65,7 +65,7 @@ QPixmap MaSimpleOverview::getView() {
         cachedMSAOverview = QPixmap(size());
         QPainter pOverview(&cachedMSAOverview);
         drawOverview(pOverview);
-        redrawMSAOverview = false;
+        redrawMsaOverview = false;
     }
     return cachedMSAOverview;
 }
@@ -80,7 +80,7 @@ void MaSimpleOverview::sl_selectionChanged() {
 }
 
 void MaSimpleOverview::sl_redraw() {
-    redrawMSAOverview = true;
+    redrawMsaOverview = true;
     redrawSelection = true;
     MaOverview::sl_redraw();
 }
@@ -89,7 +89,7 @@ void MaSimpleOverview::sl_highlightingChanged() {
     if (!isValid()) {
         return;
     }
-    redrawMSAOverview = true;
+    redrawMsaOverview = true;
     update();
 }
 
@@ -101,11 +101,11 @@ void MaSimpleOverview::paintEvent(QPaintEvent *e) {
         return;
     }
 
-    if (redrawMSAOverview) {
+    if (redrawMsaOverview) {
         cachedMSAOverview = QPixmap(size());
         QPainter pOverview(&cachedMSAOverview);
         drawOverview(pOverview);
-        redrawMSAOverview = false;
+        redrawMsaOverview = false;
     }
     cachedView = cachedMSAOverview;
 
@@ -128,7 +128,7 @@ void MaSimpleOverview::paintEvent(QPaintEvent *e) {
 }
 
 void MaSimpleOverview::resizeEvent(QResizeEvent *e) {
-    redrawMSAOverview = true;
+    redrawMsaOverview = true;
     redrawSelection = true;
     QWidget::resizeEvent(e);
 }

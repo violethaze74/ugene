@@ -51,12 +51,7 @@ public:
 
 class U2ALGORITHM_EXPORT DnaAssemblyToRefTaskSettings {
 public:
-    DnaAssemblyToRefTaskSettings()
-        : pairedReads(false),
-          filterUnpaired(false),
-          prebuiltIndex(false),
-          openView(false),
-          samOutput(true) {}
+    DnaAssemblyToRefTaskSettings();
 
     void setCustomSettings(const QMap<QString, QVariant>& settings);
     QVariant getCustomValue(const QString& optionName, const QVariant& defaultVal) const;
@@ -76,6 +71,8 @@ public:
     bool prebuiltIndex;
     bool openView;
     bool samOutput;
+    QString tmpDirPath;
+    bool cleanTmpDir;
 
 private:
     QMap<QString, QVariant> customSettings;

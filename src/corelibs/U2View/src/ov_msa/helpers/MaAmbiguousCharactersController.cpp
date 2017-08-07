@@ -25,6 +25,7 @@
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/Notification.h>
 
 #include "MaAmbiguousCharactersController.h"
@@ -48,20 +49,28 @@ MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt *ma
     SAFE_POINT(NULL != maEditorWgt, "maEditorWgt is NULL", );
     SAFE_POINT(NULL != maEditor, "maEditor is NULL", );
 
-    nextAction = new QAction(tr("Jump to next ambiguous character"), this);
+    nextAction = new QAction(QIcon(":core/images/amb_forward.png"), tr("Jump to next ambiguous character"), this);
+    nextAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_A));
     nextAction->setObjectName("next_ambiguous");
+    GUIUtils::updateActionToolTip(nextAction);
     connect(nextAction, SIGNAL(triggered(bool)), SLOT(sl_next()));
 
-    previousAction = new QAction(tr("Jump to previous ambiguous character"), this);
+    previousAction = new QAction(QIcon(":core/images/amb_backward.png"), tr("Jump to previous ambiguous character"), this);
+    previousAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_A));
     previousAction->setObjectName("prev_ambiguous");
+    GUIUtils::updateActionToolTip(previousAction);
     connect(previousAction, SIGNAL(triggered(bool)), SLOT(sl_previous()));
 
     connect(maEditor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_resetCachedIterator()));
     connect(maEditorWgt->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_resetCachedIterator()));
 }
 
-QList<QAction *> MaAmbiguousCharactersController::getActions() const {
-    return QList<QAction *>() << previousAction << nextAction;
+QAction *MaAmbiguousCharactersController::getPreviousAction() const {
+    return previousAction;
+}
+
+QAction *MaAmbiguousCharactersController::getNextAction() const {
+    return nextAction;
 }
 
 void MaAmbiguousCharactersController::sl_next() {

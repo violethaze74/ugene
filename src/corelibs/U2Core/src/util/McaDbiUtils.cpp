@@ -244,10 +244,10 @@ void McaDbiUtils::removeRow(const U2EntityRef& mcaRef, qint64 rowId, U2OpStatus&
     // SANGER_TODO: remove chromatogram as well
 }
 
-void McaDbiUtils::removeRegion(const U2EntityRef &mcaRef, const QList<qint64> &rowIds, qint64 pos, qint64 count, U2OpStatus &os) {
+void McaDbiUtils::removeCharacters(const U2EntityRef &mcaRef, const QList<qint64> &rowIds, qint64 pos, qint64 count, U2OpStatus &os) {
     // Check parameters
     CHECK_EXT(pos >= 0, os.setError(QString("Negative MSA pos: %1").arg(pos)), );
-    CHECK_EXT(count > 0, os.setError(QString("Wrong MCA base count: %1").arg(count)), );
+    SAFE_POINT(count > 0, QString("Wrong MCA base count: %1").arg(count), );
 
     // Prepare the connection
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaRef.dbiRef, os));
@@ -333,6 +333,43 @@ void McaDbiUtils::replaceCharacterInRow(const U2EntityRef& mcaRef, qint64 rowId,
 
     msaDbi->updateRowContent(mcaRef.entityId, rowId, seq, row.gaps, os);
     CHECK_OP(os, );
+}
+
+void McaDbiUtils::removeRegion(const U2EntityRef& entityRef, const qint64 rowId, qint64 pos, qint64 count, U2OpStatus& os) {
+    // Check parameters
+    CHECK_EXT(pos >= 0, os.setError(QString("Negative MCA pos: %1").arg(pos)), );
+    CHECK_EXT(count > 0, os.setError(QString("Wrong MCA base count: %1").arg(count)), );
+
+    // Prepare the connection
+    QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(entityRef.dbiRef, os));
+    SAFE_POINT_OP(os, );
+    U2MsaDbi* msaDbi = con->dbi->getMsaDbi();
+    U2SequenceDbi* sequenceDbi = con->dbi->getSequenceDbi();
+
+    // Remove region for the row from
+    U2McaRow row = McaDbiUtils::getMcaRow(os, entityRef, rowId);
+    SAFE_POINT_OP(os, );
+
+    U2Region seqReg(0, row.length);
+
+    QByteArray seq = sequenceDbi->getSequenceData(row.sequenceId, seqReg, os);
+    SAFE_POINT_OP(os, );
+
+    qint64 startPosInSeq = -1;
+    qint64 endPosInSeq = -1;
+    MaDbiUtils::getStartAndEndSequencePositions(seq, row.gaps,
+    pos, count,
+    startPosInSeq, endPosInSeq);
+
+    DNAChromatogram chrom = ChromatogramUtils::exportChromatogram(os, U2EntityRef(entityRef.dbiRef, row.chromatogramId));
+    ChromatogramUtils::removeRegion(os, chrom, startPosInSeq, endPosInSeq);
+    ChromatogramUtils::updateChromatogramData(os, entityRef.entityId, U2EntityRef(entityRef.dbiRef, row.chromatogramId), chrom);
+
+    // Calculate the modified row
+    MsaDbiUtils::removeCharsFromRow(seq, row.gaps, pos, count);
+
+    msaDbi->updateRowContent(entityRef.entityId, rowId, seq, row.gaps, os);
+    SAFE_POINT_OP(os, );
 }
 
 }   // namespace U2

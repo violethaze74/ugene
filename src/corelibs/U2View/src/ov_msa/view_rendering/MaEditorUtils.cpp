@@ -29,6 +29,7 @@
 #include <QApplication>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QVBoxLayout>
 
 
 namespace U2 {
@@ -130,7 +131,7 @@ void MaUtilsWidget::setHeightMargin(int _heightMargin) {
 }
 
 void MaUtilsWidget::mousePressEvent( QMouseEvent * ) {
-    ui->getSequenceArea()->cancelSelection();
+    ui->getSequenceArea()->sl_cancelSelection();
 }
 void MaUtilsWidget::paintEvent(QPaintEvent *) {
     QPainter p(this);
@@ -142,22 +143,25 @@ void MaUtilsWidget::paintEvent(QPaintEvent *) {
 /* MaLabelWidget */
 /************************************************************************/
 MaLabelWidget::MaLabelWidget(MaEditorWgt* ui, QWidget* heightWidget, const QString & t, Qt::Alignment a)
-    : MaUtilsWidget(ui, heightWidget),
-      text(t),
-      ali(a) {
+    : MaUtilsWidget(ui, heightWidget) {
+    label = new QLabel(t, this);
+    label->setAlignment(a);
+    label->setTextFormat(Qt::RichText);
+    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(label);
+    setLayout(layout);
 }
 
 void MaLabelWidget::paintEvent(QPaintEvent * e) {
     MaUtilsWidget::paintEvent(e);
-    QPainter p(this);
-    if (!text.isEmpty()) {
-        p.setFont(getMsaEditorFont());
-        p.drawText(rect(), text, ali);
-    }
+    label->setFont(getMsaEditorFont());
 }
 
 void MaLabelWidget::mousePressEvent( QMouseEvent * e ) {
-    ui->getSequenceArea()->cancelSelection();
+    ui->getSequenceArea()->sl_cancelSelection();
     QMouseEvent eventForNameListArea(e->type(), QPoint(e->x(), 0), e->globalPos(), e->button(), e->buttons(), e->modifiers());
     QApplication::instance()->notify((QObject*)ui->getEditorNameList(), &eventForNameListArea);
 }

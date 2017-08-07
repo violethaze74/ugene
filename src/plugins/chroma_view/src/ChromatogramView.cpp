@@ -89,8 +89,8 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     renderArea = new ChromatogramViewRenderArea(this, chroma);
 
     scaleBar = new ScaleBar();
-    scaleBar->slider()->setRange(100, 1000);
-    scaleBar->slider()->setTickInterval(100);
+    scaleBar->setRange(100, 1000);
+    scaleBar->setTickInterval(100);
     connect(scaleBar,SIGNAL(valueChanged(int)),SLOT(setRenderAreaHeight(int)));
 
     ra = static_cast<ChromatogramViewRenderArea *>(renderArea);

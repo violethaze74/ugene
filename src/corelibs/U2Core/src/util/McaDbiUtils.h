@@ -41,9 +41,10 @@ public:
     static U2McaRow getMcaRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId);
 
     static void removeRow(const U2EntityRef& mcaRef, qint64 rowId, U2OpStatus& os);
-    static void removeRegion(const U2EntityRef& mcaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os);
+    static void removeCharacters(const U2EntityRef& mcaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os);
 
     static void replaceCharacterInRow(const U2EntityRef& mcaRef, qint64 rowId, qint64 pos, char newChar, U2OpStatus& os);
+    static void removeRegion(const U2EntityRef& entityRef, const qint64 rowId, qint64 pos, qint64 count, U2OpStatus& os);
 };
 
 }   // namespace U2

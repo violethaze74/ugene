@@ -52,7 +52,6 @@ public:
 
     void updateHorizontalScrollBar();
     void updateVerticalScrollBar();
-    void updateScrollBars();
 
     void scrollToRowByNumber(int rowNumber, int widgetHeight);
     void scrollToBase(int baseNumber, int widgetWidth);
@@ -93,6 +92,10 @@ public:
 signals:
     void si_visibleAreaChanged();
 
+public slots:
+    void sl_updateScrollBars();
+    void sl_zoomScrollBars();
+
 private slots:
     void sl_collapsibleModelIsAboutToBeChanged();
     void sl_collapsibleModelChanged();
@@ -104,6 +107,8 @@ private:
     U2Region getHorizontalRangeToDrawIn(int widgetWidth) const;     // in pixels
     U2Region getVerticalRangeToDrawIn(int widgetHeight) const;       // in pixels
 
+    void zoomHorizontalScrollBarPrivate();
+    void zoomVerticalScrollBarPrivate();
     void updateHorizontalScrollBarPrivate();
     void updateVerticalScrollBarPrivate();
 

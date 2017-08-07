@@ -19,13 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QApplication>
 #include <QToolBar>
-
-#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
-#include <U2Algorithm/MSAConsensusAlgorithm.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
@@ -36,18 +30,15 @@
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 
 #include "MaConsensusMismatchController.h"
-#include "MaEditorConsensusAreaSettings.h"
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
 #include "McaEditor.h"
 #include "McaEditorConsensusArea.h"
-#include "McaEditorOverviewArea.h"
-#include "McaEditorReferenceArea.h"
 #include "McaEditorSequenceArea.h"
-#include "McaReferenceCharController.h"
-#include "helpers/McaRowHeightController.h"
+#include "ExportConsensus/MaExportConsensusTabFactory.h"
+#include "General/McaGeneralTabFactory.h"
+#include "helpers/MaAmbiguousCharactersController.h"
 #include "ov_sequence/SequenceObjectContext.h"
-#include "view_rendering/MaEditorWgt.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 namespace U2 {
@@ -57,44 +48,48 @@ McaEditor::McaEditor(const QString &viewName,
     : MaEditor(McaEditorFactory::ID, viewName, obj),
       referenceCtx(NULL)
 {
-
-    // SANGER_TODO: set new proper icon
-    showChromatogramsAction = new QAction(QIcon(":/core/images/graphs.png"), tr("Show/hide chromatogram(s)"), this);
-    showChromatogramsAction->setObjectName("chromatograms");
-    showChromatogramsAction->setCheckable(true);
-    showChromatogramsAction->setChecked(true);
-    connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
-
     U2OpStatusImpl os;
     foreach (const MultipleChromatogramAlignmentRow& row, obj->getMca()->getMcaRows()) {
         chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), true);
     }
 
     U2SequenceObject* referenceObj = obj->getReferenceObj();
-    if (referenceObj) {
-        // SANGER_TODO: probably can be big
-        referenceCtx = new SequenceObjectContext(referenceObj, this);
-    } else {
-        FAIL("Trying to open McaEditor without a reference", );
-    }
+    SAFE_POINT(NULL != referenceObj, "Trying to open McaEditor without a reference", );
+    referenceCtx = new SequenceObjectContext(referenceObj, this);
+}
+
+MultipleChromatogramAlignmentObject *McaEditor::getMaObject() const {
+    return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject);
+}
+
+McaEditorWgt *McaEditor::getUI() const {
+    return qobject_cast<McaEditorWgt *>(ui);
 }
 
 void McaEditor::buildStaticToolbar(QToolBar* tb) {
+    tb->addAction(showChromatogramsAction);
+    tb->addAction(showOverviewAction);
+    tb->addSeparator();
+
     tb->addAction(zoomInAction);
     tb->addAction(zoomOutAction);
-    tb->addAction(zoomToSelectionAction);
     tb->addAction(resetZoomAction);
-
-    tb->addAction(showOverviewAction);
-    tb->addAction(showChromatogramsAction);
-    tb->addAction(changeFontAction);
+    tb->addSeparator();
 
     GObjectView::buildStaticToolbar(tb);
 }
 
-void McaEditor::buildStaticMenu(QMenu* m) {
-    // SANGER_TODO: review the menus and toolbar
-//    MaEditor::buildStaticMenu(m);
+void McaEditor::buildStaticMenu(QMenu* menu) {
+    addAlignmentMenu(menu);
+    addAppearanceMenu(menu);
+    addNavigationMenu(menu);
+    addEditMenu(menu);
+    menu->addSeparator();
+    menu->addAction(showConsensusTabAction);
+    menu->addSeparator();
+
+    GObjectView::buildStaticMenu(menu);
+    GUIUtils::disableEmptySubmenus(menu);
 }
 
 int McaEditor::getRowContentIndent(int rowId) const {
@@ -128,35 +123,30 @@ SequenceObjectContext* McaEditor::getReferenceContext() const {
     return referenceCtx;
 }
 
-void McaEditor::sl_onContextMenuRequested(const QPoint & pos) {
-    Q_UNUSED(pos);
-
-    if (ui->childAt(pos) != NULL) {
-        // ignore context menu request if overview area was clicked on
-        if (ui->getOverviewArea()->isOverviewWidget(ui->childAt(pos))) {
-            return;
-        }
-    }
-
-    QMenu m;
-
-    addCopyMenu(&m);
-    addViewMenu(&m);
-    addEditMenu(&m);
-    addExportMenu(&m);
-
-    m.addSeparator();
-
-    emit si_buildPopupMenu(this, &m);
-
-    GUIUtils::disableEmptySubmenus(&m);
-
-    m.exec(QCursor::pos());
+void McaEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
+    QMenu menu;
+    buildStaticMenu(&menu);
+    emit si_buildPopupMenu(this, &menu);
+    menu.exec(QCursor::pos());
 }
 
 void McaEditor::sl_showHideChromatograms(bool show) {
     ui->getCollapseModel()->collapseAll(!show);
     emit si_completeUpdate();
+}
+
+void McaEditor::sl_showGeneralTab() {
+    OptionsPanel* optionsPanel = getOptionsPanel();
+    SAFE_POINT(NULL != optionsPanel, "Internal error: options panel is NULL"
+        " when msageneraltab opening was initiated", );
+    optionsPanel->openGroupById(McaGeneralTabFactory::getGroupId());
+}
+
+void McaEditor::sl_showConsensusTab() {
+    OptionsPanel* optionsPanel = getOptionsPanel();
+    SAFE_POINT(NULL != optionsPanel, "Internal error: options panel is NULL"
+        " when msaconsensustab opening was initiated", );
+    optionsPanel->openGroupById(McaExportConsensusTabFactory::getGroupId());
 }
 
 QWidget* McaEditor::createWidget() {
@@ -183,78 +173,106 @@ QWidget* McaEditor::createWidget() {
 
     qDeleteAll(filters);
 
+    updateActions();
+
     return ui;
 }
 
-McaEditorWgt::McaEditorWgt(McaEditor *editor)
-    : MaEditorWgt(editor)
-{
-    rowHeightController = new McaRowHeightController(this);
+void McaEditor::initActions() {
+    MaEditor::initActions();
 
-    initActions();
-    initWidgets();
+    zoomInAction->setText(tr("Zoom in"));
+    zoomInAction->setShortcut(QKeySequence::ZoomIn);
+    GUIUtils::updateActionToolTip(zoomInAction);
+    ui->addAction(zoomInAction);
 
-    refArea = new McaEditorReferenceArea(this, getEditor()->getReferenceContext());
-    refArea->installEventFilter(this);
-    seqAreaHeaderLayout->insertWidget(0, refArea);
+    zoomOutAction->setText(tr("Zoom out"));
+    zoomOutAction->setShortcut(QKeySequence::ZoomOut);
+    GUIUtils::updateActionToolTip(zoomOutAction);
+    ui->addAction(zoomOutAction);
 
-    MaEditorConsensusAreaSettings consSettings;
-    consSettings.visibleElements = MSAEditorConsElement_CONSENSUS_TEXT | MSAEditorConsElement_RULER;
-    consSettings.highlightMismatches = true;
-    consArea->setDrawSettings(consSettings);
+    resetZoomAction->setText(tr("Reset zoom"));
+    resetZoomAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0));
+    GUIUtils::updateActionToolTip(resetZoomAction);
+    ui->addAction(resetZoomAction);
 
-    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO);
-    consArea->setConsensusAlgorithm(algoFactory);
+    showChromatogramsAction = new QAction(QIcon(":/core/images/graphs.png"), tr("Show chromatograms"), this);
+    showChromatogramsAction->setObjectName("chromatograms");
+    showChromatogramsAction->setCheckable(true);
+    showChromatogramsAction->setChecked(true);
+    connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
+    ui->addAction(showChromatogramsAction);
 
-    QString name = getEditor()->getReferenceContext()->getSequenceObject()->getSequenceName();
-    QWidget *refName = createHeaderLabelWidget(name, Qt::AlignCenter, refArea);
+    showGeneralTabAction = new QAction(tr("Open \"General\" tab on the options panel"), this);
+    connect(showGeneralTabAction, SIGNAL(triggered()), SLOT(sl_showGeneralTab()));
+    ui->addAction(showGeneralTabAction);
 
-    nameAreaLayout->insertWidget(0, refName);
+    showConsensusTabAction = new QAction(tr("Open \"Consensus\" tab on the options panel"), this);
+    connect(showConsensusTabAction, SIGNAL(triggered()), SLOT(sl_showConsensusTab()));
+    ui->addAction(showConsensusTabAction);
 
-    QVector<U2Region> itemRegions;
-    for (int i = 0; i < editor->getNumSequences(); i++) {
-        itemRegions << U2Region(i, 1);
-    }
-
-    collapseModel->setTrivialGroupsPolicy(MSACollapsibleItemModel::Allow);
-    collapseModel->reset(itemRegions);
-    collapseModel->collapseAll(false);
-    collapsibleMode = true;
-
-    McaEditorConsensusArea* mcaConsArea = qobject_cast<McaEditorConsensusArea*>(consArea);
-    SAFE_POINT(mcaConsArea != NULL, "Failed to cast consensus area to MCA consensus area", );
-    connect(mcaConsArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
+    showOverviewAction->setText(tr("Show overview"));
+    changeFontAction->setText(tr("Change characters font"));
 }
 
-McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
-    return qobject_cast<McaEditorSequenceArea*>(seqArea);
+void McaEditor::addAlignmentMenu(QMenu *menu) {
+    QMenu *alignmentMenu = menu->addMenu(tr("Alignment"));
+    alignmentMenu->menuAction()->setObjectName(MCAE_MENU_ALIGNMENT);
+
+    alignmentMenu->addAction(showGeneralTabAction);
 }
 
-bool McaEditorWgt::eventFilter(QObject *watched, QEvent *event) {
-    if (watched == refArea) {
-        QApplication::sendEvent(seqArea, event);
-        if (event->type() == QEvent::KeyPress) {
-            return true;
-        }
-        return false;
-    }
-    return MaEditorWgt::eventFilter(watched, event);
+void McaEditor::addAppearanceMenu(QMenu *menu) {
+    QMenu* appearanceMenu = menu->addMenu(tr("Appearance"));
+    appearanceMenu->menuAction()->setObjectName(MCAE_MENU_APPEARANCE);
+
+    appearanceMenu->addAction(showChromatogramsAction);
+    appearanceMenu->addMenu(getUI()->getSequenceArea()->getTraceActionsMenu());
+    appearanceMenu->addAction(showOverviewAction);
+    appearanceMenu->addSeparator();
+    appearanceMenu->addAction(zoomInAction);
+    appearanceMenu->addAction(zoomOutAction);
+    appearanceMenu->addAction(resetZoomAction);
+    appearanceMenu->addSeparator();
+    appearanceMenu->addAction(getUI()->getSequenceArea()->getIncreasePeaksHeightAction());
+    appearanceMenu->addAction(getUI()->getSequenceArea()->getDecreasePeaksHeightAction());
+    appearanceMenu->addSeparator();
+    appearanceMenu->addAction(changeFontAction);
+    appearanceMenu->addSeparator();
+    appearanceMenu->addAction(getUI()->getClearSelectionAction());
 }
 
-void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
-    seqArea = new McaEditorSequenceArea(this, shBar, cvBar);
+void McaEditor::addNavigationMenu(QMenu *menu) {
+    QMenu *navigationMenu = menu->addMenu(tr("Navigation"));
+    navigationMenu->menuAction()->setObjectName(MCAE_MENU_NAVIGATION);
+
+    navigationMenu->addAction(getUI()->getSequenceArea()->getAmbiguousCharactersController()->getPreviousAction());
+    navigationMenu->addAction(getUI()->getSequenceArea()->getAmbiguousCharactersController()->getNextAction());
+    navigationMenu->addSeparator();
+    navigationMenu->addAction(getUI()->getConsensusArea()->getMismatchController()->getPrevMismatchAction());
+    navigationMenu->addAction(getUI()->getConsensusArea()->getMismatchController()->getNextMismatchAction());
 }
 
-void McaEditorWgt::initOverviewArea() {
-    overviewArea = new McaEditorOverviewArea(this);
+void McaEditor::addEditMenu(QMenu* menu) {
+    QMenu* editMenu = menu->addMenu(tr("Edit"));
+    editMenu->menuAction()->setObjectName(MCAE_MENU_EDIT);
+
+    editMenu->addAction(getUI()->getSequenceArea()->getInsertAction());
+    editMenu->addAction(getUI()->getSequenceArea()->getReplaceCharacterAction());
+    editMenu->addAction(getUI()->getDelSelectionAction());
+    editMenu->addSeparator();
+    editMenu->addAction(getUI()->getSequenceArea()->getInsertGapAction());
+    editMenu->addAction(getUI()->getSequenceArea()->getRemoveGapBeforeSelectionAction());
+    editMenu->addAction(getUI()->getSequenceArea()->getRemoveColumnsOfGapsAction());
+    editMenu->addSeparator();
+    editMenu->addAction(getUI()->getSequenceArea()->getTrimLeftEndAction());
+    editMenu->addAction(getUI()->getSequenceArea()->getTrimRightEndAction());
+    editMenu->addSeparator();
+    editMenu->addAction(getUI()->getEditorNameList()->getEditSequenceNameAction());
+    editMenu->addAction(getUI()->getEditorNameList()->getRemoveSequenceAction());
+    editMenu->addSeparator();
+    editMenu->addAction(getUI()->getUndoAction());
+    editMenu->addAction(getUI()->getRedoAction());
 }
 
-void McaEditorWgt::initNameList(QScrollBar* nhBar) {
-    nameList = new McaEditorNameList(this, nhBar);
-}
-
-void McaEditorWgt::initConsensusArea() {
-    consArea = new McaEditorConsensusArea(this);
-}
-
-} // namespace
+}   // namespace U2

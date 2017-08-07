@@ -48,6 +48,12 @@ AlignToReferenceBlastDialogFiller::AlignToReferenceBlastDialogFiller(const Setti
 
 }
 
+AlignToReferenceBlastDialogFiller::AlignToReferenceBlastDialogFiller(HI::GUITestOpStatus &os, CustomScenario* c)
+: Filler(os, "AlignToReferenceBlastDialog", c)
+{
+
+}
+
 #define GT_METHOD_NAME "commonScenario"
 void AlignToReferenceBlastDialogFiller::commonScenario() {
     QWidget* dialog = QApplication::activeModalWidget();

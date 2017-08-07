@@ -1144,8 +1144,8 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0004){
     CHECK_SET_ERR(line2 != NULL, "lineEdit 2 not found");
     GTLineEdit::setText(os, line2, "wrong name");
     CHECK_SET_ERR(GTBaseCompleter::isEmpty(os), "Completer is not empty");
-
-    GTKeyboardDriver::keyClick( Qt::Key_Escape);
+	GTKeyboardDriver::keyClick(Qt::Key_Escape);
+	GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: empty popup helper appeared
 }
 
@@ -1399,6 +1399,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0008){
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
     GTLogTracer l;
     const QString fileName = "pairwise_alignment_test_0009.aln";
+	const QString dirName = "pairwise_alignment_test_0009";
 //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1409,21 +1410,27 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
 //    4. Add Isophya_altaica_EF540820 sequence
 //    5. Select some existing read-only file as output
-    QString s = sandBoxDir + fileName;
+    QString s = sandBoxDir + "pairwise_alignment_test_0009";
+
+    QDir().mkpath(s);
+
+    s += "/" + fileName;
     QFile f(s);
     bool created = f.open(QFile::ReadWrite);
     CHECK_SET_ERR(created, "file not created");
     f.close();
     GTFile::setReadOnly(os, s);
 
-    setOutputPath(os, sandBoxDir,  fileName);
+	setOutputPath(os, sandBoxDir + dirName, fileName);
     align(os);
     GTGlobals::sleep(500);
-//    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'COI_transl.aln' file.
+//    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'pairwise_alignment_test_0009.aln' file.
     QString error = l.getError();
     QString expected;
     expected = QString("Task {Pairwise alignment task} finished with error: No permission to write to \'%1\' file.").arg(fileName);
     CHECK_SET_ERR(error.contains(expected), QString("enexpected error: %1").arg(error));
+
+    GTFile::setReadWrite(os, s);
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010){
@@ -1453,7 +1460,10 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010){
     QString error = l.getError();
     QString expected = QString("Task {Pairwise alignment task} finished with error: No permission to write to \'%1\' file.").arg(fileName);
     CHECK_SET_ERR(error == expected, QString("enexpected error: %1").arg(error));
+
+    GTFile::setReadWrite(os, s);
 }
+
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0011){
 //1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
@@ -1951,8 +1961,12 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. Open export consensus option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
-//    3. Select some existing read-only file as output
-    QString s = sandBoxDir + fileName;
+//    3. Select existing read-only file "export_consensus_test_0002.aln" as output
+
+    QString s = sandBoxDir + "export_consensus_test_0002";
+    QDir().mkpath(s);
+
+    s += "/" + fileName;
     QFile f(s);
     bool created = f.open(QFile::ReadWrite);
     CHECK_SET_ERR(created, "file not created");
@@ -1960,15 +1974,17 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002){
 
     GTFile::setReadOnly(os, s);
 
-    setConsensusOutputPath(os, sandBoxDir + fileName);
+    setConsensusOutputPath(os, s);
 //    4. Press export button
     GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
     GTGlobals::sleep(300);
 //    Expected state: error in log: Task {Save document} finished with error: No permission to write to 'COI_transl.aln' file.
     QString error = l.getError();
     QString expected;
-    expected = QString("Task {Export consensus to MSA} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(fileName);
-    CHECK_SET_ERR(error.contains(expected), QString("enexpected error: %1").arg(error));
+    expected = QString("Task {Export consensus} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(fileName);
+    CHECK_SET_ERR(error.contains(expected), QString("Unexpected error: %1").arg(error));
+
+    GTFile::setReadWrite(os, s);
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003){
@@ -1980,7 +1996,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. Open export consensus option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
-//    3. Select some existing read-only file as output
+//    3. Select some existing file in read-only directory as output
     QString s = sandBoxDir + dirName;
     bool ok = QDir().mkpath(s);
     CHECK_SET_ERR(ok, "subfolder not created");
@@ -1992,8 +2008,10 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003){
     GTGlobals::sleep(300);
 //    Expected state: error in log: Task {Pairwise Alignment Task} finished with error: No permission to write to 'COI_transl.aln' file.
     QString error = l.getError();
-    QString expected = QString("Task {Export consensus to MSA} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(fileName);
-    CHECK_SET_ERR(error == expected, QString("enexpected error: %1").arg(error));
+    QString expected = QString("Task {Export consensus} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(fileName);
+    CHECK_SET_ERR(error == expected, QString("Unexpected error: %1").arg(error));
+
+    GTFile::setReadWrite(os, s);
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004){

@@ -125,35 +125,6 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
     }
 }
 
-void MaEditor::buildStaticToolbar(QToolBar* tb) {
-    // SANGER_TODO: the first three actions are not yet valid for MCA!!
-    tb->addAction(ui->getCopyFormattedSelectionAction());
-
-    tb->addAction(saveAlignmentAction);
-    tb->addAction(saveAlignmentAsAction);
-
-    tb->addAction(zoomInAction);
-    tb->addAction(zoomOutAction);
-    tb->addAction(zoomToSelectionAction);
-    tb->addAction(resetZoomAction);
-
-    tb->addAction(showOverviewAction);
-    tb->addAction(changeFontAction);
-}
-
-void MaEditor::buildStaticMenu(QMenu* m) {
-    addCopyMenu(m);
-    addEditMenu(m);
-    addExportMenu(m);
-    addViewMenu(m);
-    addLoadMenu(m);
-    addAlignMenu(m);
-
-    GObjectView::buildStaticMenu(m);
-
-    GUIUtils::disableEmptySubmenus(m);
-}
-
 int MaEditor::getAlignmentLen() const {
     return maObject->getLength();
 }
@@ -374,12 +345,14 @@ void MaEditor::initActions() {
     saveScreenshotAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export as image"), this);
     saveScreenshotAction->setObjectName("Export as image");
     connect(saveScreenshotAction, SIGNAL(triggered()), ui, SLOT(sl_saveScreenshot()));
+    ui->addAction(saveScreenshotAction);
 
     showOverviewAction = new QAction(QIcon(":/core/images/msa_show_overview.png"), tr("Overview"), this);
     showOverviewAction->setObjectName("Show overview");
     showOverviewAction->setCheckable(true);
     showOverviewAction->setChecked(true);
     connect(showOverviewAction, SIGNAL(triggered()), ui->getOverviewArea(), SLOT(sl_show()));
+    ui->addAction(showOverviewAction);
 }
 
 void MaEditor::addCopyMenu(QMenu* m) {

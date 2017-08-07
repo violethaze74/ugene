@@ -38,6 +38,7 @@ namespace U2 {
 const QString MsaColorScheme::EMPTY                 = "COLOR_SCHEME_EMPTY";
 
 const QString MsaColorScheme::UGENE_NUCL            = "COLOR_SCHEME_UGENE_NUCL";
+const QString MsaColorScheme::UGENE_SANGER_NUCL     = "COLOR_SCHEME_UGENE_SANGER_NUCL";
 const QString MsaColorScheme::JALVIEW_NUCL          = "COLOR_SCHEME_JALVIEW_NUCL";
 const QString MsaColorScheme::IDENTPERC_NUCL        = "COLOR_SCHEME_IDENTPERC_NUCL";
 const QString MsaColorScheme::IDENTPERC_NUCL_GRAY   = "COLOR_SCHEME_IDENTPERC_NUCL_GRAY";
@@ -297,6 +298,17 @@ void addUgeneNucleotide(QVector<QColor> &colorsPerChar) {
     SET_C('N', "#FCFCFC");
 }
 
+void addUgeneSangerNucleotide(QVector<QColor> &colorsPerChar) {
+    Q_UNUSED(colorsPerChar);
+
+    SET_C('A', "#36D695");
+    SET_C('C', "#3C9DD0");
+    SET_C('G', "#DADADA");
+    SET_C('T', "#FE7276");
+    SET_C('N', Qt::magenta);
+    SET_C(U2Msa::GAP_CHAR, "#FF9700");
+}
+
 void addZappoAmino(QVector<QColor> &colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
@@ -523,6 +535,10 @@ void MsaColorSchemeRegistry::initBuiltInSchemes() {
     fillLightColorsColorScheme(colorsPerChar);
     addUgeneNucleotide(colorsPerChar);
     addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::UGENE_NUCL, U2_APP_TITLE, DNAAlphabet_NUCL | DNAAlphabet_RAW, colorsPerChar));
+
+    ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
+    addUgeneSangerNucleotide(colorsPerChar);
+    addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::UGENE_SANGER_NUCL, tr("UGENE Sanger"), DNAAlphabet_NUCL | DNAAlphabet_RAW, colorsPerChar));
 
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
     addJalviewNucleotide(colorsPerChar);

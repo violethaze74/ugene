@@ -57,6 +57,8 @@
 
 namespace U2 {
 
+const QChar MaEditorSequenceArea::emDash = QChar(0x2015);
+
 MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb)
     : editor(ui->getEditor()),
       ui(ui),
@@ -107,9 +109,6 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
     addAction(redoAction);
 
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
-    connect(editor, SIGNAL(si_buildStaticMenu(GObjectView*, QMenu*)), SLOT(sl_buildStaticMenu(GObjectView*, QMenu*)));
-    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*, QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*, QToolBar*)));
-    connect(editor, SIGNAL(si_buildPopupMenu(GObjectView* , QMenu*)), SLOT(sl_buildContextMenu(GObjectView*, QMenu*)));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_completeUpdate()));
     connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
     connect(hb, SIGNAL(actionTriggered(int)), SLOT(sl_hScrollBarActionPerfermed()));
@@ -160,25 +159,6 @@ int MaEditorSequenceArea::getNumDisplayableSequences() const {
     MSACollapsibleItemModel *model = ui->getCollapseModel();
     SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
     return model->getDisplayableRowsCount();
-}
-
-QPair<QString, int> MaEditorSequenceArea::getGappedColumnInfo() const{
-    QPair<QString, int> p;
-    CHECK(getEditor() != NULL, p);
-    CHECK(qobject_cast<MSAEditor*>(editor) != NULL, p); // SANGER_TODO: no ungappedLen and ungappedPosition for MCA
-    if (isAlignmentEmpty()) {
-        return QPair<QString, int>(QString::number(0), 0);
-    }
-
-    const MultipleSequenceAlignmentRow row = qobject_cast<MSAEditor*>(editor)->getMaObject()->getMsaRow(getSelectedRows().startPos);
-    int len = row->getUngappedLength();
-    QChar current = row->charAt(selection.topLeft().x());
-    if(current == U2Msa::GAP_CHAR){
-        return QPair<QString, int>(QString("gap"),len);
-    }else{
-        int pos = row->getUngappedPosition(selection.topLeft().x());
-        return QPair<QString, int>(QString::number(pos + 1),len);
-    }
 }
 
 bool MaEditorSequenceArea::isAlignmentEmpty() const {
@@ -245,7 +225,7 @@ void MaEditorSequenceArea::updateSelection() {
         return;
     }
     MSACollapsibleItemModel* m = ui->getCollapseModel();
-    CHECK_EXT(NULL != m, cancelSelection(), );
+    CHECK_EXT(NULL != m, sl_cancelSelection(), );
 
     int startPos = baseSelection.y();
     int endPos = startPos + baseSelection.height();
@@ -254,7 +234,7 @@ void MaEditorSequenceArea::updateSelection() {
     int newStart = m->rowToMap(startPos);
     int newEnd = m->rowToMap(endPos);
 
-    SAFE_POINT_EXT(newStart >= 0 && newEnd >= 0, cancelSelection(), );
+    SAFE_POINT_EXT(newStart >= 0 && newEnd >= 0, sl_cancelSelection(), );
 
     int selectionHeight = newEnd - newStart;
     // accounting of collapsing children items
@@ -270,7 +250,7 @@ void MaEditorSequenceArea::updateSelection() {
         MaEditorSelection s(selection.topLeft().x(), newStart, selection.width(), selectionHeight);
         setSelection(s);
     } else {
-        cancelSelection();
+        sl_cancelSelection();
     }
 }
 
@@ -345,11 +325,6 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
     ui->getScrollController()->scrollToMovedSelection(dx, dy);
 }
 
-void MaEditorSequenceArea::cancelSelection() {
-    MaEditorSelection emptySelection;
-    setSelection(emptySelection);
-}
-
 U2Region MaEditorSequenceArea::getSelectedRows() const {
     return ui->getCollapseModel()->mapSelectionRegionToRows(U2Region(selection.y(), selection.height()));
 }
@@ -400,7 +375,7 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
             return;
         }
     }
-    cancelSelection();
+    sl_cancelSelection();
 }
 
 bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
@@ -646,6 +621,10 @@ bool MaEditorSequenceArea::getUseDotsCheckedState() const {
     return useDotsAction->isChecked();
 }
 
+QAction *MaEditorSequenceArea::getReplaceCharacterAction() const {
+    return replaceCharacterAction;
+}
+
 void MaEditorSequenceArea::sl_changeColorSchemeOutside(const QString &id) {
     QAction* a = GUIUtils::findActionByData(QList<QAction*>() << colorSchemeMenuActions << customColorSchemeMenuActions << highlightingSchemeMenuActions, id);
     if (a != NULL) {
@@ -673,24 +652,17 @@ void MaEditorSequenceArea::sl_delCurrentSelection() {
     emit si_stopMaChanging(true);
 }
 
+void MaEditorSequenceArea::sl_cancelSelection() {
+    MaEditorSelection emptySelection;
+    setSelection(emptySelection);
+}
+
 void MaEditorSequenceArea::sl_fillCurrentSelectionWithGaps() {
     if(!isAlignmentLocked()) {
         emit si_startMaChanging();
         insertGapsBeforeSelection();
         emit si_stopMaChanging(true);
     }
-}
-
-void MaEditorSequenceArea::sl_buildStaticMenu(GObjectView*, QMenu* m) {
-    buildMenu(m);
-}
-
-void MaEditorSequenceArea::sl_buildStaticToolbar(GObjectView* , QToolBar* ) {
-
-}
-
-void MaEditorSequenceArea::sl_buildContextMenu(GObjectView*, QMenu* m) {
-    buildMenu(m);
 }
 
 void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &modInfo) {
@@ -706,7 +678,7 @@ void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const 
     editor->updateReference();
 
     if ((selection.x() > aliLen - 1) || (selection.y() > nSeq - 1)) {
-        cancelSelection();
+        sl_cancelSelection();
     } else {
         const QPoint selTopLeft(qMin(selection.x(), aliLen - 1),
             qMin(selection.y(), nSeq - 1));
@@ -718,15 +690,11 @@ void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const 
         setSelection(newSelection);
     }
 
-    ui->getScrollController()->updateScrollBars();
+    ui->getScrollController()->sl_updateScrollBars();
 
     completeRedraw = true;
     updateActions();
     update();
-}
-
-void MaEditorSequenceArea::buildMenu(QMenu* ) {
-
 }
 
 void MaEditorSequenceArea::sl_completeUpdate(){
@@ -830,6 +798,7 @@ void MaEditorSequenceArea::sl_replaceSelectedCharacter() {
     maMode = ReplaceCharMode;
     editModeAnimationTimer.start(500);
     highlightCurrentSelection();
+    updateActions();
 }
 
 void MaEditorSequenceArea::sl_changeSelectionColor() {
@@ -880,7 +849,7 @@ void MaEditorSequenceArea::setCursorPos(int pos) {
 
 void MaEditorSequenceArea::resizeEvent(QResizeEvent *e) {
     completeRedraw = true;
-    ui->getScrollController()->updateScrollBars();
+    ui->getScrollController()->sl_updateScrollBars();
     emit si_visibleRangeChanged();
     QWidget::resizeEvent(e);
 }
@@ -938,7 +907,7 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
             if (isMSAEditor) {
                 rubberBand->show();
             }
-            cancelSelection();
+            sl_cancelSelection();
         }
     }
 
@@ -1035,7 +1004,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
     int endX, endY;
     switch(key) {
         case Qt::Key_Escape:
-             cancelSelection();
+             sl_cancelSelection();
              break;
         case Qt::Key_Left:
             if(!shift || !enlargeSelection) {
@@ -1487,19 +1456,21 @@ void MaEditorSequenceArea::applyColorScheme(const QString &id) {
         action->setChecked(action->data() == id);
     }
 
-    switch (ui->getEditor()->getMaObject()->getAlphabet()->getType()) {
-    case DNAAlphabet_RAW:
-        AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, id);
-        break;
-    case DNAAlphabet_NUCL:
-        AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL, id);
-        break;
-    case DNAAlphabet_AMINO:
-        AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_AMINO, id);
-        break;
-    default:
-        FAIL(tr("Unknown alphabet"), );
-        break;
+    if (qobject_cast<MSAEditor*>(getEditor()) != NULL) { // to avoid setting of sanger scheme
+        switch (ui->getEditor()->getMaObject()->getAlphabet()->getType()) {
+        case DNAAlphabet_RAW:
+            AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, id);
+            break;
+        case DNAAlphabet_NUCL:
+            AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL, id);
+            break;
+        case DNAAlphabet_AMINO:
+            AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_AMINO, id);
+            break;
+        default:
+            FAIL(tr("Unknown alphabet"), );
+            break;
+        }
     }
 
     completeRedraw = true;
@@ -1515,18 +1486,13 @@ void MaEditorSequenceArea::processCharacterInEditMode(QKeyEvent *e) {
 
     QString text = e->text().toUpper();
     if (1 == text.length()) {
-        QChar emDash(0x2015);
-        QRegExp latinCharacterOrGap(QString("([A-Z]| |-|%1)").arg(emDash));
-        if (latinCharacterOrGap.exactMatch(text)) {
+        if (isCharacterAcceptable(text)) {
             QChar newChar = text.at(0);
             newChar = (newChar == '-' || newChar == emDash || newChar == ' ') ? U2Msa::GAP_CHAR : newChar;
             processCharacterInEditMode(newChar.toLatin1());
-        }
-        else {
+        } else {
             MainWindow *mainWindow = AppContext::getMainWindow();
-            const QString message = tr("It is not possible to insert the character into the alignment."
-                                       "Please use a character from set A-Z (upper-case or lower-case) or the gap character ('Space', '-' or '%1').").arg(emDash);
-            mainWindow->addNotification(message, Error_Not);
+            mainWindow->addNotification(getInacceptableCharacterErrorMessage(), Error_Not);
             exitFromEditCharacterMode();
         }
     }
@@ -1578,8 +1544,20 @@ void MaEditorSequenceArea::exitFromEditCharacterMode() {
         highlightSelection = false;
         selectionColor = Qt::black;
         maMode = ViewMode;
+        updateActions();
         update();
     }
+}
+
+bool MaEditorSequenceArea::isCharacterAcceptable(const QString &text) const {
+    static const QRegExp latinCharacterOrGap(QString("([A-Z]| |-|%1)").arg(emDash));
+    return latinCharacterOrGap.exactMatch(text);
+}
+
+const QString &MaEditorSequenceArea::getInacceptableCharacterErrorMessage() const {
+    static const QString message = tr("It is not possible to insert the character into the alignment. "
+                                      "Please use a character from set A-Z (upper-case or lower-case) or the gap character ('Space', '-' or '%1').").arg(emDash);
+    return message;
 }
 
 void MaEditorSequenceArea::deleteOldCustomSchemes() {

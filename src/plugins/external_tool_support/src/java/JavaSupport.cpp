@@ -68,7 +68,7 @@ void JavaSupport::getAdditionalParameters(const QString& output) {
 }
 
 JavaSupport::Architecture JavaSupport::getArchitecture() const {
-    return string2architecture(additionalInfo.value(ARCHITECTURE).toString());
+    return string2architecture(additionalInfo.value(ARCHITECTURE));
 }
 
 void JavaSupport::sl_toolValidationStatusChanged(bool isValid) {

@@ -23,6 +23,7 @@
 #define _U2_IMPORT_DIR_TO_DATABASE_TASK_H_
 
 #include <U2Core/ImportToDatabaseOptions.h>
+#include <U2Core/StrPackUtils.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Type.h>
 

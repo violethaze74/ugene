@@ -81,7 +81,7 @@ void DistanceMatrixMSAProfileDialog::initSaveController() {
         return;
     }
     QString domain = "plugin_dna_stat";
-    LastUsedDirHelper lod(domain);
+    LastUsedDirHelper lod(domain, GUrlUtils::getDefaultDataPath());
     QString fileName = GUrlUtils::fixFileName(msaObj->getGObjectName());
 
     SaveDocumentControllerConfig config;
@@ -91,7 +91,7 @@ void DistanceMatrixMSAProfileDialog::initSaveController() {
     config.fileDialogButton = fileButton;
     config.fileNameEdit = fileEdit;
     config.parentWidget = this;
-    config.saveTitle = tr("Select file to save report to..");
+    config.saveTitle = tr("Save file");
     
     SaveDocumentController::SimpleFormatsInfo formats;
     formats.addFormat(HTML, HTML.toUpper(), QStringList() << HTML);

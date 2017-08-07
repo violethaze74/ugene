@@ -32,10 +32,11 @@
 
 namespace U2 {
 
-MaOverview::MaOverview(MaEditorWgt *_ui)
-    : editor(_ui->getEditor()),
-      ui(_ui),
-      sequenceArea(_ui->getSequenceArea()),
+MaOverview::MaOverview(MaEditorWgt *ui)
+    : QWidget(ui),
+      editor(ui->getEditor()),
+      ui(ui),
+      sequenceArea(ui->getSequenceArea()),
       stepX(0),
       stepY(0)
 {
@@ -104,8 +105,16 @@ void MaOverview::setVisibleRangeForEmptyAlignment() {
 }
 
 void MaOverview::recalculateScale() {
-    stepX = static_cast<double>(ui->getBaseWidthController()->getTotalAlignmentWidth()) / width();
-    stepY = static_cast<double>(ui->getRowHeightController()->getTotalAlignmentHeight()) / height();
+    stepX = static_cast<double>(ui->getBaseWidthController()->getTotalAlignmentWidth()) / getContentWidgetWidth();
+    stepY = static_cast<double>(ui->getRowHeightController()->getTotalAlignmentHeight()) / getContentWidgetHeight();
+}
+
+int MaOverview::getContentWidgetWidth() const {
+    return width();
+}
+
+int MaOverview::getContentWidgetHeight() const {
+    return height();
 }
 
 } // namespace

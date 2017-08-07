@@ -23,10 +23,9 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/FormatUtils.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -43,14 +42,12 @@
 #include <U2Lang/WorkflowMonitor.h>
 
 #include "AlignToReferenceBlastWorker.h"
-
+#include "align_worker_subtasks/BlastReadsSubTask.h"
+#include "align_worker_subtasks/ComposeResultSubTask.h"
+#include "align_worker_subtasks/FormatDBSubTask.h"
+#include "align_worker_subtasks/PrepareReferenceSequenceTask.h"
 #include "blast/BlastAllSupport.h"
 #include "blast/FormatDBSupport.h"
-
-#include "align_worker_subtasks/BlastReadsSubTask.h"
-#include "align_worker_subtasks/FormatDBSubTask.h"
-#include "align_worker_subtasks/ComposeResultSubTask.h"
-
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -120,7 +117,7 @@ void AlignToReferenceBlastWorkerFactory::init() {
         delegates[IDENTITY_ID] = new SpinBoxDelegate(m);
     }
 
-    Descriptor desc(ACTOR_ID, AlignToReferenceBlastWorker::tr("Align to Reference"),
+    Descriptor desc(ACTOR_ID, AlignToReferenceBlastWorker::tr("Map to Reference"),
         AlignToReferenceBlastWorker::tr("Align input sequences (e.g. Sanger reads) to the reference sequence."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
@@ -156,45 +153,20 @@ QString AlignToReferenceBlastPrompter::composeRichDoc() {
 /* AlignToReferenceBlastWorker */
 /************************************************************************/
 AlignToReferenceBlastWorker::AlignToReferenceBlastWorker(Actor *a)
-: BaseDatasetWorker(a, BasePorts::IN_SEQ_PORT_ID(), OUT_PORT_ID), referenceDoc(NULL)
+    : BaseDatasetWorker(a, BasePorts::IN_SEQ_PORT_ID(), OUT_PORT_ID)
 {
 
 }
 
-void AlignToReferenceBlastWorker::cleanup() {
-    delete referenceDoc;
-    referenceDoc = NULL;
-    BaseDatasetWorker::cleanup();
-}
-
-Task * AlignToReferenceBlastWorker::createPrepareTask(U2OpStatus &os) const {
-    QString referenceUrl = getValue<QString>(REF_ATTR_ID);
-    QVariantMap hints;
-    hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(context->getDataStorage()->getDbiRef());
-    LoadDocumentTask *task = LoadDocumentTask::getDefaultLoadDocTask(referenceUrl, hints);
-    if (NULL == task) {
-        os.setError(tr("Can not read the reference file: ") + referenceUrl);
-    }
-    return task;
+Task *AlignToReferenceBlastWorker::createPrepareTask(U2OpStatus & /*os*/) const {
+    const QString referenceUrl = getValue<QString>(REF_ATTR_ID);
+    return new PrepareReferenceSequenceTask(referenceUrl, context->getDataStorage()->getDbiRef());
 }
 
 void AlignToReferenceBlastWorker::onPrepared(Task *task, U2OpStatus &os) {
-    LoadDocumentTask *loadTask = qobject_cast<LoadDocumentTask*>(task);
-    CHECK_EXT(NULL != loadTask, os.setError(L10N::internalError("Unexpected prepare task")), );
-
-    QScopedPointer<Document> doc(loadTask->takeDocument());
-    CHECK_EXT(!doc.isNull(), os.setError(tr("Can't read the file: ") + loadTask->getURLString()), );
-    QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
-    CHECK_EXT(!objects.isEmpty(), os.setError(tr("No reference sequence in the file: ") + loadTask->getURLString()), );
-    CHECK_EXT(1 == objects.size(), os.setError(tr("More than one sequence in the reference file: ") + loadTask->getURLString()), );
-
-    U2SequenceObject* so = qobject_cast<U2SequenceObject*>(objects.first());
-    CHECK_EXT(so != NULL, os.setError(tr("Unable to cast gobject to sequence object")), );
-    CHECK_EXT(so->getAlphabet()->isDNA(), os.setError(tr("The input reference sequence '%1' contains characters that don't belong to DNA alphabet.").arg(so->getSequenceName())), );
-
-    referenceDoc = doc.take();
-    referenceDoc->setDocumentOwnsDbiResources(false);
-    reference = context->getDataStorage()->getDataHandler(objects.first()->getEntityRef());
+    PrepareReferenceSequenceTask *prepareTask = qobject_cast<PrepareReferenceSequenceTask *>(task);
+    CHECK_EXT(NULL != prepareTask, os.setError(L10N::internalError("Unexpected prepare task")), );
+    reference = context->getDataStorage()->getDataHandler(prepareTask->getReferenceEntityRef());
 }
 
 Task * AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) const {
@@ -227,7 +199,7 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) c
     algoLog.info(QString("Total reads processed by the mapper: %1").arg(acceptedReads.count() + discardedReads.count()));
 
     if (0 != discardedReads.count()) {
-        monitor()->addInfo(QString("%1 reads were not mapped").arg(discardedReads.count()), actor->getId(), Problem::U2_INFO);
+        monitor()->addInfo(QString("%1 %2 not mapped").arg(discardedReads.count()).arg(discardedReads.count() == 1 ? "read was" : "reads were"), actor->getId(), Problem::U2_WARNING);
     }
 
     const QString resultUrl = alignTask->getResultUrl();
@@ -244,8 +216,7 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) c
 }
 
 MessageMetadata AlignToReferenceBlastWorker::generateMetadata(const QString &datasetName) const {
-    SAFE_POINT(NULL != referenceDoc, L10N::nullPointerError("Reference sequence document"), BaseDatasetWorker::generateMetadata(datasetName));
-    return MessageMetadata(referenceDoc->getURLString(), datasetName);
+    return MessageMetadata(getValue<QString>(REF_ATTR_ID), datasetName);
 }
 
 /************************************************************************/
@@ -330,13 +301,15 @@ QString AlignToReferenceBlastTask::generateReport() const {
         result += "<tr><td width=50>" + tr("") + "</td><td>" + read + "</td></tr>";
     }
 
-    result += "</table><br>";
-    result += "<u>" + tr("Filtered by quality (%1):").arg(filtredReads.size()) + "</u>";
-    result += "<table>";
-    foreach (const QString &readName, filtredReads) {
-        result += "<tr><td width=50></td><td width=300 nowrap>" + readName + "</td></tr>";
-    }
     result += "</table>";
+    if (!filtredReads.isEmpty()) {
+        result += "<br><u>" + tr("Filtered by quality (%1):").arg(filtredReads.size()) + "</u>";
+        result += "<table>";
+        foreach (const QString &readName, filtredReads) {
+            result += "<tr><td width=50></td><td width=300 nowrap>" + readName + "</td></tr>";
+        }
+        result += "</table>";
+    }
 
     return result;
 }
@@ -353,6 +326,7 @@ SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
 
 QMap<QString, bool> AlignToReferenceBlastTask::getAcceptedReads() const {
     QMap<QString, bool> acceptedReads;
+    CHECK(NULL != blastTask, acceptedReads);
     foreach (BlastAndSwReadTask *subTask, blastTask->getBlastSubtasks()) {
         if (subTask->getReadIdentity() >= minIdentityPercent) {
             acceptedReads.insert(subTask->getReadName(), subTask->isComplement());
@@ -363,6 +337,7 @@ QMap<QString, bool> AlignToReferenceBlastTask::getAcceptedReads() const {
 
 QStringList AlignToReferenceBlastTask::getDiscardedReads() const {
     QStringList discardedReads;
+    CHECK(NULL != blastTask, discardedReads);
     foreach (BlastAndSwReadTask* subTask, blastTask->getBlastSubtasks()) {
         if (subTask->getReadIdentity() < minIdentityPercent) {
             discardedReads << subTask->getReadName();

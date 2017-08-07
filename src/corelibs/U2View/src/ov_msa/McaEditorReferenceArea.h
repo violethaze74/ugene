@@ -46,12 +46,15 @@ public slots:
 private slots:
     void sl_visibleRangeChanged();
     void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
-    void sl_onSelectionChanged();
+    void sl_onSelectionChanged(LRegionsSelection *selection, const QVector<U2Region> &addedRegions, const QVector<U2Region> &removedRegions);
     void sl_clearSelection();
     void sl_fontChanged(const QFont &newFont);
     void sl_update();
 
 private:
+    void keyPressEvent(QKeyEvent *event);
+    void updateScrollBar();
+
     McaEditor* editor;
     McaEditorWgt* ui;
     McaReferenceAreaRenderer *renderer;

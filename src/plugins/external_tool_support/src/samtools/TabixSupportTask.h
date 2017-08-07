@@ -52,20 +52,6 @@ private:
     void initTabixTask();
 };
 
-/**
- * If output file already exists, CopyFileTask tries to rename existing file and to complete copying.
- */
-class CopyFileTask : public Task {
-    Q_OBJECT
-public:
-    CopyFileTask(const GUrl& from, const GUrl& to);
-    void run();
-    QString generateReport() const;
-private:
-    GUrl from;
-    GUrl to;
-};
-
-} // namespace U2
+}   // namespace U2
 
 #endif // _U2_TABIX_TASK_H_

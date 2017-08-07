@@ -70,7 +70,7 @@ GObject * MultipleChromatogramAlignmentObject::clone(const U2DbiRef &dstDbiRef, 
     MultipleChromatogramAlignment mca = getMcaCopy();
     MultipleChromatogramAlignmentObject *clonedObject = MultipleChromatogramAlignmentImporter::createAlignment(os, dstDbiRef, dstFolder, mca);
     CHECK_OP(os, NULL);
-    
+
     QScopedPointer<MultipleChromatogramAlignmentObject> p(clonedObject);
 
     DbiConnection srcCon(getEntityRef().dbiRef, os);
@@ -142,7 +142,7 @@ void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int row
     if (newChar != U2Msa::GAP_CHAR) {
         McaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
     } else {
-        McaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
+        McaDbiUtils::removeCharacters(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
         MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os, true);
     }
     SAFE_POINT_OP(os, );
@@ -204,7 +204,46 @@ void MultipleChromatogramAlignmentObject::deleteColumnsWithGaps(U2OpStatus &os, 
         os.setProgress(100 * (n - i) / n);
     }
 
+    const int length = getLength();
+    int coloumnsRemoved = 0;
+    for (int i = 0; i < regionsToDelete.size(); i++) {
+        coloumnsRemoved += regionsToDelete[i].length;
+    }
+    const int newLength = length - coloumnsRemoved;
+    changeLength(os, newLength);
+    CHECK_OP(os, );
+
     updateCachedMultipleAlignment();
+}
+
+void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int currentPos, U2OpStatus& os, TrimEdge edge) {
+    U2EntityRef entityRef = getEntityRef();
+    MultipleAlignmentRow row = getRow(rowIndex);
+    int rowId = row->getRowId();
+    int pos = 0;
+    int count = 0;
+    switch (edge) {
+        case Left:
+            pos = row->getCoreStart();
+            count = currentPos - pos;
+            break;
+            case Right:
+                pos = currentPos + 1;
+                int lengthWithoutTrailing = row->getRowLengthWithoutTrailing();
+                count = lengthWithoutTrailing - currentPos;
+                break;
+    }
+    McaDbiUtils::removeRegion(entityRef, rowId, pos, count, os);
+    U2Region region(rowIndex, 1);
+    if (edge == Left) {
+        insertGap(region, 0, count);
+
+    }
+
+    MaModificationInfo modificationInfo;
+    modificationInfo.rowContentChanged = true;
+    modificationInfo.rowListChanged = false;
+    updateCachedMultipleAlignment(modificationInfo);
 }
 
 void MultipleChromatogramAlignmentObject::loadAlignment(U2OpStatus &os) {
@@ -238,7 +277,7 @@ void MultipleChromatogramAlignmentObject::removeRowPrivate(U2OpStatus &os, const
 
 void MultipleChromatogramAlignmentObject::removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef,
                                                               const QList<qint64> &rows, int startPos, int nBases) {
-    McaDbiUtils::removeRegion(maRef, rows, startPos, nBases, os);
+    McaDbiUtils::removeCharacters(maRef, rows, startPos, nBases, os);
 }
 
 }   // namespace U2

@@ -40,6 +40,7 @@ public:
 
     static const QString EstimateTtRatio;
     static const QString TtRatio;
+    static const QString TtRatioCheckbox;
 
     static const QString EstimateSitesProportion;
     static const QString InvariableSitesProportion;
@@ -74,7 +75,9 @@ public:
 
 private:
     void createWidgetsControllers();
-    void fillComboBoxes(const MultipleSequenceAlignment& ma);
+    void fillComboBoxes();
+    // Enables/disables all transition ratio related controls.
+    void makeTTRatioControlsAvailable(bool enabled);
 
     QStringList generatePhyMlSettingsScript();
 
@@ -86,6 +89,10 @@ private slots:
     void sl_checkTreeImprovement(int newIndex);
     void sl_checkSubModelType(const QString& newModel);
     void sl_inputPathButtonClicked();
+    void sl_optTopologyCheckboxClicked(bool checked);
+
+private:
+    bool optBranchCheckboxSavedState;    
 };
 
 }//namespace

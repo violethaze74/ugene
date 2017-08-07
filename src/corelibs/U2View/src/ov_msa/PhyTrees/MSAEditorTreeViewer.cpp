@@ -118,7 +118,7 @@ bool MSAEditorTreeViewer::sync() {
         treeViewerUI->setSynchronizeMode(syncMode);
 
         CHECK(msa != NULL, false);
-        MSAEditorUI* msaUI = msa->getUI();
+        MsaEditorWgt* msaUI = msa->getUI();
         connect(msaUI->editor->getMaObject(),  SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
                 this,                           SLOT(sl_alignmentChanged(MultipleAlignment,MaModificationInfo)));
         connect(msaUI,                          SIGNAL(si_stopMaChanging(bool)),
@@ -137,7 +137,7 @@ void MSAEditorTreeViewer::desync() {
     disconnectSignals();
 
     CHECK(msa != NULL, );
-    MSAEditorUI* msaUI = msa->getUI();
+    MsaEditorWgt* msaUI = msa->getUI();
     CHECK(msaUI != NULL, );
     msaUI->getEditorNameList()->clearGroupsSelections();
     msaUI->getEditorNameList()->update();
@@ -155,7 +155,7 @@ bool MSAEditorTreeViewer::isSynchronized() const {
 void MSAEditorTreeViewer::connectSignals() {
     CHECK(slotsAreConnected == false, );
     CHECK(msa != NULL, );
-    MSAEditorUI* msaUI = msa->getUI();
+    MsaEditorWgt* msaUI = msa->getUI();
     CHECK(msaUI != NULL, );
     MSAEditorTreeViewerUI* treeViewerUI = qobject_cast<MSAEditorTreeViewerUI*>(ui);
     CHECK(treeViewerUI != NULL, );
@@ -186,7 +186,7 @@ void MSAEditorTreeViewer::connectSignals() {
 void MSAEditorTreeViewer::disconnectSignals() {
     CHECK(slotsAreConnected == true, );
     CHECK(msa != NULL, );
-    MSAEditorUI* msaUI = msa->getUI();
+    MsaEditorWgt* msaUI = msa->getUI();
     CHECK(msaUI != NULL, );
     MSAEditorTreeViewerUI* treeViewerUI = qobject_cast<MSAEditorTreeViewerUI*>(ui);
     CHECK(treeViewerUI != NULL, );
@@ -215,7 +215,7 @@ void MSAEditorTreeViewer::disconnectSignals() {
 
 void MSAEditorTreeViewer::sl_startTracking(bool changed) {
     CHECK(msa != NULL, );
-    MSAEditorUI* msaUI = msa->getUI();
+    MsaEditorWgt* msaUI = msa->getUI();
     CHECK(msaUI != NULL, );
     disconnect(msaUI,   SIGNAL(si_stopMaChanging(bool)),
                this,    SLOT(sl_startTracking(bool)));
@@ -296,7 +296,7 @@ void MSAEditorTreeViewer::sl_alignmentChanged(const MultipleAlignment &/*ma*/, c
 
         // the change outside the current msa editor detected -- desync the tree
         CHECK(msa != NULL, );
-        MSAEditorUI* msaUI = msa->getUI();
+        MsaEditorWgt* msaUI = msa->getUI();
         CHECK(msaUI != NULL, );
         disconnect(msaUI->editor->getMaObject(),   SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
                    this,                            SLOT(sl_alignmentChanged(MultipleAlignment,MaModificationInfo)));

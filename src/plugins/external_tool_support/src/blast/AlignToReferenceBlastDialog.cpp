@@ -33,6 +33,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -52,7 +53,6 @@ AlignToReferenceBlastCmdlineTask::Settings::Settings()
     : minIdentity(60),
       minLength(0),
       qualityThreshold(30),
-      trimBothEnds(true),
       addResultToProject(true)
 {
 
@@ -116,7 +116,7 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
         config.arguments << argString.arg(MIN_IDENTITY_ARG).arg(settings.minIdentity);
         config.arguments << argString.arg(MIN_LEN_ARG).arg(settings.minLength);
         config.arguments << argString.arg(THRESHOLD_ARG).arg(settings.qualityThreshold);
-        config.arguments << argString.arg(TRIM_ARG).arg(settings.trimBothEnds);
+        config.arguments << argString.arg(TRIM_ARG).arg(true);
         config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(settings.outAlignment);
 
         config.reportFile = reportFile.fileName();
@@ -154,7 +154,6 @@ Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
     return ReportResult_Finished;
 }
 
-QStringList AlignToReferenceBlastDialog::lastUsedReadsUrls;
 const QString AlignToReferenceBlastDialog::defaultOutputName("sanger_reads_alignment.ugenedb");
 
 AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
@@ -171,11 +170,10 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
 
     connectSlots();
     initSaveController();
+    readsListWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
-    foreach (const QString& read, lastUsedReadsUrls) {
-        readsListWidget->addItem(read);
-    }
+    saveController->setPath(outputLineEdit->text());
 }
 
 void AlignToReferenceBlastDialog::initSaveController() {
@@ -217,12 +215,10 @@ void AlignToReferenceBlastDialog::accept() {
         readUrls.append(s);
     }
     settings.readUrls = readUrls;
-    lastUsedReadsUrls = readUrls;
 
     settings.minIdentity = minIdentitySpinBox->value();
-    settings.minLength = minLenSpinBox->value();
+    settings.minLength = 0;
     settings.qualityThreshold = qualitySpinBox->value();
-    settings.trimBothEnds = trimCheckBox->isChecked();
 
     if (outputLineEdit->text().isEmpty()) {
         QMessageBox::warning(this, tr("Error"),
@@ -231,6 +227,27 @@ void AlignToReferenceBlastDialog::accept() {
     }
     settings.outAlignment = outputLineEdit->text();
     settings.addResultToProject = addToProjectCheckbox->isChecked();
+
+    QString outUrl = saveController->getSaveFileName();
+    QFile outFile(outUrl);
+    if (outFile.exists()) {
+        QMessageBox::StandardButtons buttons = QMessageBox::Yes | QMessageBox::Cancel;
+        QObjectScopedPointer<QMessageBox> messageBox = new QMessageBox(QMessageBox::Question,
+            tr("Overwrite the file?"),
+            tr("The result file already exists. Would you like to overwrite it?"),
+            buttons,
+            this);
+        messageBox->setIcon(QMessageBox::Question);
+        messageBox->exec();
+        CHECK(!messageBox.isNull(), )
+        if (messageBox->result() == QMessageBox::Cancel) {
+            return;
+        }
+        if (!outFile.remove()) {
+            QMessageBox::critical(this, tr("Error"), tr("Unable to delete the file."));
+            return;
+        }
+    }
 
     QDialog::accept();
 }
@@ -272,7 +289,6 @@ void AlignToReferenceBlastDialog::sl_removeRead() {
     qDeleteAll(selection);
 }
 
-
 void AlignToReferenceBlastDialog::sl_referenceChanged(const QString &newRef) {
     QFileInfo outFileFi(outputLineEdit->text());
     if (!fitsDefaultPattern(outFileFi.fileName())) {
@@ -281,7 +297,8 @@ void AlignToReferenceBlastDialog::sl_referenceChanged(const QString &newRef) {
     
     QFileInfo referenceFileInfo(newRef);
     QString newOutFileName = referenceFileInfo.baseName() + "_" + defaultOutputName;
-    outputLineEdit->setText(outFileFi.dir().absolutePath() + "/" + newOutFileName);
+    QString outUrl = outFileFi.dir().absolutePath() + "/" + newOutFileName;
+    saveController->setPath(outUrl);
 }
 
 void AlignToReferenceBlastDialog::connectSlots() {

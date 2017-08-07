@@ -50,6 +50,7 @@ private:
     QMap<QString, QList<SharedAnnotationData> > annotationTablesData;
 
     static const QString CHROM_QUALIFIER_NAME;
+    static const QString LOCATION_QUALIFIER_NAME;
     static const QString REFERENCE_QUALIFIER_NAME;
     static const QString ALTERNATE_QUALIFIER_NAME;
     static const QString ALLELE_QUALIFIER_NAME;

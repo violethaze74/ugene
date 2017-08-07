@@ -51,7 +51,7 @@ class MsaEditorSimilarityColumn : public MaEditorNameList, public UpdatedWidgetI
     friend class GTUtilsMSAEditorSequenceArea;
     Q_OBJECT
 public:
-    MsaEditorSimilarityColumn(MSAEditorUI* ui, QScrollBar* nhBar, const SimilarityStatisticsSettings* _settings);
+    MsaEditorSimilarityColumn(MsaEditorWgt* ui, QScrollBar* nhBar, const SimilarityStatisticsSettings* _settings);
     virtual ~MsaEditorSimilarityColumn();
 
     void setSettings(const UpdatedWidgetSettings* _settings);
@@ -79,8 +79,6 @@ private slots:
     void onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MaModificationInfo& modInfo);
     void sl_createMatrixTaskFinished(Task*);
 private:
-    void sl_buildStaticMenu(GObjectView*, QMenu*) {}
-    void sl_buildContextMenu(GObjectView*, QMenu*) {}
     void updateDistanceMatrix();
 
     MSADistanceMatrix* matrix;

@@ -20,8 +20,6 @@
  */
 
 #include "McaEditorOverviewArea.h"
-
-#include "Overview/MaGraphOverview.h"
 #include "Overview/MaSangerOverview.h"
 
 namespace U2 {
@@ -29,20 +27,14 @@ namespace U2 {
 const QString McaEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME  = "mca_overview_area";
 
 McaEditorOverviewArea::McaEditorOverviewArea(MaEditorWgt *ui)
-    : MaEditorOverviewArea(ui, OVERVIEW_AREA_OBJECT_NAME) {
+    : MaEditorOverviewArea(ui, OVERVIEW_AREA_OBJECT_NAME)
+{
+    isWidgetResizable = true;
+
     sangerOverview = new MaSangerOverview(ui);
     sangerOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_sanger"));
 
     addOverview(sangerOverview);
-    // SANGER_TODO: temporary hidden
-//    addOverview(graphOverview);
 }
 
-bool McaEditorOverviewArea::isOverviewWidget(QWidget *wgt) const {
-    if (MaEditorOverviewArea::isOverviewWidget(wgt) || wgt == sangerOverview) {
-        return true;
-    }
-    return false;
-}
-
-} // namespace
+}   // namespace U2

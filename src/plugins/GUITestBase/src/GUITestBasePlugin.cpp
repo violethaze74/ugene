@@ -25,7 +25,9 @@
 #include <U2Gui/ToolsMenu.h>
 
 #include "GUITestBasePlugin.h"
-#include "tests/GUIInitialChecks.h"
+#include "tests/PosteriorActions.h"
+#include "tests/PosteriorChecks.h"
+#include "tests/PreliminaryActions.h"
 #include "tests/common_scenarios/Assembling/Assembly_browser/GTTestsAssemblyBrowser.h"
 #include "tests/common_scenarios/Assembling/bowtie2/GTTestsBowtie2.h"
 #include "tests/common_scenarios/Assembling/dna_assembly/GTTestsDnaAssembly.h"
@@ -43,6 +45,7 @@
 #include "tests/common_scenarios/cloning/GTTestsCloning.h"
 #include "tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h"
 #include "tests/common_scenarios/dp_view/GTTestsDpView.h"
+#include "tests/common_scenarios/mca_editor/GTTestsMcaEditor.h"
 #include "tests/common_scenarios/msa_editor/GTTestsMsaEditor.h"
 #include "tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h"
 #include "tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h"
@@ -55,6 +58,7 @@
 #include "tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.h"
 #include "tests/common_scenarios/pcr/GTTestsInSilicoPcr.h"
 #include "tests/common_scenarios/pcr/GTTestsPrimerLibrary.h"
+#include "tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.h"
 #include "tests/common_scenarios/project/GTTestsProject.h"
 #include "tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.h"
 #include "tests/common_scenarios/project/bookmarks/GTTestsBookmarks.h"
@@ -145,7 +149,7 @@ GUITestBasePlugin::GUITestBasePlugin() : Plugin(tr("GUITestBase"), tr("GUI Test 
     UGUITestBase *guiTestBase = AppContext::getGUITestBase();
 
     registerTests(guiTestBase);
-    registerAdditionalChecks(guiTestBase);
+    registerAdditionalActions(guiTestBase);
 
     openGUITestRunnerAction = new QAction(tr("GUI Test runner"), this);
     openGUITestRunnerAction->setObjectName("GUI_TEST_RUNNER");
@@ -1160,6 +1164,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4588_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4591);
     REGISTER_TEST(GUITest_regression_scenarios::test_4591_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4591_2);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_4606);
     REGISTER_TEST(GUITest_regression_scenarios::test_4620);
@@ -1319,6 +1324,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5636);
     REGISTER_TEST(GUITest_regression_scenarios::test_5659);
 
+    REGISTER_TEST(GUITest_regression_scenarios::test_5716);
+
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
     //////////////////////////////////////////////////////////////////////////
@@ -1455,6 +1462,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sanger::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_sanger::test_0003);
     REGISTER_TEST(GUITest_common_scenarios_sanger::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_sanger::test_0005);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/Sequence view/
@@ -1864,7 +1872,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0064);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0065);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0066);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0068);
+    //REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0068); removed as obsolete
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0069);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0070);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0071);
@@ -2030,6 +2038,26 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0020);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0021);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0022);
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/mca_editor
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0008);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0010);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0011);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0012_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0012_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0013_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0013_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0013_3);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0014);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0015_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0015_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0016);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0019);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0021);
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/document_from_text/
     //////////////////////////////////////////////////////////////////////////
@@ -2799,6 +2827,16 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0016);
 
     /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/phyml
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_phyml::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_phyml::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_phyml::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_phyml::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_phyml::test_0005);
+    REGISTER_TEST(GUITest_common_scenarios_phyml::test_0006);
+
+    /////////////////////////////////////////////////////////////////////////
     // common_scenarios/start_page
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_start_page::test_0001);
@@ -2809,24 +2847,23 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_start_page::test_0008);
 }
 
-void GUITestBasePlugin::registerAdditionalChecks(UGUITestBase *guiTestBase) {
+void GUITestBasePlugin::registerAdditionalActions(UGUITestBase *guiTestBase) {
     if (guiTestBase) {
-        guiTestBase->registerTest(new GUITest_initial_checks::pre_action_0000, UGUITestBase::PreAdditional);
-        guiTestBase->registerTest(new GUITest_initial_checks::pre_action_0001, UGUITestBase::PreAdditional);
-        guiTestBase->registerTest(new GUITest_initial_checks::pre_action_0002, UGUITestBase::PreAdditional);
-        guiTestBase->registerTest(new GUITest_initial_checks::pre_action_0003, UGUITestBase::PreAdditional);
-        guiTestBase->registerTest(new GUITest_initial_checks::pre_action_0004, UGUITestBase::PreAdditional);
-        guiTestBase->registerTest(new GUITest_initial_checks::pre_action_0005, UGUITestBase::PreAdditional);
-        guiTestBase->registerTest(new GUITest_initial_checks::pre_action_0006, UGUITestBase::PreAdditional);
+        guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0000, UGUITestBase::PreAdditional);
+        guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0001, UGUITestBase::PreAdditional);
+        guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0002, UGUITestBase::PreAdditional);
+        guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0003, UGUITestBase::PreAdditional);
+        guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0004, UGUITestBase::PreAdditional);
+        guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0005, UGUITestBase::PreAdditional);
 
-        guiTestBase->registerTest(new GUITest_initial_checks::post_check_0000, UGUITestBase::PostAdditionalChecks);
-        //guiTestBase->registerTest(new GUITest_initial_checks::post_check_0001, UGUITestBase::PostAdditionalChecks);
-        //temporary ignored. Causes problems on mac
+        guiTestBase->registerTest(new GUITest_posterior_checks::post_check_0000, UGUITestBase::PostAdditionalChecks);
+        guiTestBase->registerTest(new GUITest_posterior_checks::post_check_0001, UGUITestBase::PostAdditionalChecks);
 
-        guiTestBase->registerTest(new GUITest_initial_checks::post_action_0000, UGUITestBase::PostAdditionalActions);
-        guiTestBase->registerTest(new GUITest_initial_checks::post_action_0001, UGUITestBase::PostAdditionalActions);
-        guiTestBase->registerTest(new GUITest_initial_checks::post_action_0002, UGUITestBase::PostAdditionalActions);
-        guiTestBase->registerTest(new GUITest_initial_checks::post_action_0003, UGUITestBase::PostAdditionalActions);
+        guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0000, UGUITestBase::PostAdditionalActions);
+        guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0001, UGUITestBase::PostAdditionalActions);
+        guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0002, UGUITestBase::PostAdditionalActions);
+        guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0003, UGUITestBase::PostAdditionalActions);
+        guiTestBase->registerTest(new GUITest_posterior_actions::post_action_0004, UGUITestBase::PostAdditionalActions);
     }
 }
 
