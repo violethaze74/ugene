@@ -58,7 +58,7 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-
+#include "GTUtilsSequenceView.h"
 
 namespace U2 {
 
@@ -1808,7 +1808,6 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     //6. Using 'drag'n drop' move the name in the another place and release mouse button
     const QRect sequenceNameRect = GTUtilsMcaEditor::getReadNameRect(os, firstVisibleRow);
-    GTMouseDriver::click();
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, QPoint(sequenceNameRect.center().x() , sequenceNameRect.y() + (2 *sequenceNameRect.height())));
 
     //Expected state : The read is replaced in another place
@@ -1823,6 +1822,117 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     }
     CHECK_SET_ERR(isNewOrder, "The order was not change");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_0021) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+
+            //Expected state : "Min read length" option by default = 0
+            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
+            expected = "0";
+            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
+
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+
+            //Expected state : "Trim both ends" option is checked by default
+            bool trim = GTCheckBox::getState(os, "trimCheckBox");
+            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
+
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //5. Select any read
+    QStringList visibleRows = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
+    QString firstVisibleRow = visibleRows.first();
+    GTUtilsMcaEditor::clickReadName(os, firstVisibleRow);
+    GTGlobals::sleep(500);
+
+    //6. Push Esc
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep(500);
+
+    //Expected state : There is no selection
+    int selectedRows = GTUtilsMcaEditorSequenceArea::getSelectedRowsNum(os);
+    CHECK_SET_ERR(selectedRows == 0, "Some reads are selected");
+
+    //7. Select any region in the reference
+    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 500);
+    GTGlobals::sleep(500);
+
+    //8. Push Esc
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep(500);
+
+    //Expected state : There is no selection
+    qint64 selectedNum = GTUtilsMcaEditorSequenceArea::getReferenceSelectedNum(os);
+    CHECK_SET_ERR(selectedNum == -1, "Some reference character is lselected");
+
+    //9. Select any symbol in the read
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
+    GTGlobals::sleep(500);
+
+    //10. Push Esc
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep(500);
+
+    //Expected state : There is no selection
+    QRect selection = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selection == QRect(), "Some character in alignent is lselected");
+}
+
 
 }//namespace U2
 

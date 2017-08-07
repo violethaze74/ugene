@@ -456,7 +456,7 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceSelected(GUITestOpStatus &os, const
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME
+#define GT_METHOD_NAME "getSelectedSequencesNum"
 int GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(GUITestOpStatus &os) {
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>
         (GTWidget::findWidget(os, "msa_editor_sequence_area"));
