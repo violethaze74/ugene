@@ -246,10 +246,10 @@ void GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(HI::GUIT
 
     const QRect sequenceNameRect = GTUtilsMcaEditor::getReadNameRect(os, firstVisible);
     GTMouseDriver::moveTo(QPoint (sequenceNameRect.right() + 2, sequenceNameRect.center().y()));
-    GTMouseDriver::press(Qt::MouseButton::LeftButton);
+    GTMouseDriver::press(Qt::LeftButton);
     GTGlobals::sleep(1000);
     GTMouseDriver::moveTo(QPoint(sequenceNameRect.right() + 2 + shift, sequenceNameRect.center().y()));
-    GTMouseDriver::release(Qt::MouseButton::LeftButton);
+    GTMouseDriver::release(Qt::LeftButton);
 }
 #undef GT_METHOD_NAME
 
@@ -257,10 +257,10 @@ void GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(HI::GUIT
 void GTUtilsMcaEditorSequenceArea::dragAndDrop(HI::GUITestOpStatus &os, const QPoint p) {
     GTMouseDriver::click();
     GTGlobals::sleep(1000);
-    GTMouseDriver::press(Qt::MouseButton::LeftButton);
+    GTMouseDriver::press(Qt::LeftButton);
     GTGlobals::sleep(1000);
     GTMouseDriver::moveTo(p);
-    GTMouseDriver::release(Qt::MouseButton::LeftButton);
+    GTMouseDriver::release(Qt::LeftButton);
 }
 #undef GT_METHOD_NAME
 

@@ -589,7 +589,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
 //    4. Click "Predefined group names" button.
 //    Expected state: nothing happens, there is no popup menus.
-            GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new EscapeClicker(os));
+            GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new EscapeClicker(os));
             clickSelectGroupButton(os, dialog);
 
 //    5. Set the annotation name. Accept the dialog.
@@ -635,7 +635,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
 //    4. Click "Predefined group names" button.
 //    Expected state: nothing happens, there is no popup menus.
-            GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new EscapeClicker(os));
+            GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new EscapeClicker(os));
             clickSelectGroupButton(os, dialog);
 
 //    5. Set the annotation name. Accept the dialog.
@@ -674,7 +674,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
 //    4. Click "Predefined group names" button.
 //    Expected state: nothing happens, there is no popup menus.
-    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new EscapeClicker(os));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new EscapeClicker(os));
     clickSelectGroupButton(os);
 
 //    5. Set the annotation name. Create annotations.
@@ -2812,7 +2812,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 //    21. Cancel the dialog.
             // Dialog is applied to check boundaries.
             setSimpleLocation(os, 199950, 1, false, dialog);
-            GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location! Location must be in GenBank format."));
+            GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location! Location must be in GenBank format."));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
