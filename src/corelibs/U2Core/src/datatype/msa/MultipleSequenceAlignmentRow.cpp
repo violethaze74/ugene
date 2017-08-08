@@ -549,9 +549,7 @@ void MultipleSequenceAlignmentRowData::removeTrailingGaps() {
     }
 
     // If the last char in the row is gap, remove the last gap
-    if (U2Msa::GAP_CHAR == charAt(MsaRowUtils::getRowLength(sequence.constData(), gaps) - 1)) {
-        gaps.removeLast();
-    }
+    MsaRowUtils::removeTrailingGapsFromModel(sequence.length(), gaps);
 }
 
 void MultipleSequenceAlignmentRowData::getStartAndEndSequencePositions(int pos, int count, int &startPosInSeq, int &endPosInSeq) {
