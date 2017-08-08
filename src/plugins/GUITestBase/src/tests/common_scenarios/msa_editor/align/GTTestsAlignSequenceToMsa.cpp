@@ -369,8 +369,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Ensure that MAFFT tool is set.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Align with MAFFT..."));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align");
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getByName("MAFFT");
+    CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
+    CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
 //    3. Click "Align sequence to this alignment" button on the toolbar.
 //    4. Select "_common_data/scenarios/msa/add_and_align_1.fa" in the dialog.
@@ -410,8 +411,9 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Ensure that MAFFT tool is set.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Align with MAFFT..."));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align");
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getByName("MAFFT");
+    CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
+    CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
 //    3. Click "Align sequence to this alignment" button on the toolbar.
 //    4. Select "_common_data/scenarios/msa/add_and_align_2.fa" in the dialog.
@@ -451,8 +453,9 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Ensure that MAFFT tool is set.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Align with MAFFT..."));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align");
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getByName("MAFFT");
+    CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
+    CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
 //    3. Click "Align sequence to this alignment" button on the toolbar.
 //    4. Select "_common_data/scenarios/msa/add_and_align_1.fa" in the dialog.
@@ -484,8 +487,9 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Ensure that MAFFT tool is set.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Align with MAFFT..."));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align");
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getByName("MAFFT");
+    CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
+    CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
 //    3. Click "Align sequence to this alignment" button on the toolbar.
 //    4. Select "_common_data/scenarios/msa/add_and_align_3.fa" in the dialog.
