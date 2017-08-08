@@ -90,11 +90,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -108,10 +103,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -150,7 +141,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state :
@@ -200,11 +191,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -218,10 +204,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -280,7 +262,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : No Еrrors in the Log
@@ -330,11 +312,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -348,10 +325,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -411,7 +384,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTLogTracer trace;
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Error: More than one sequence in the reference file:  <path>/alphabets/standard_dna_rna_amino_1000.fa
@@ -426,11 +399,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -444,10 +412,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -507,7 +471,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTLogTracer trace;
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
@@ -522,11 +486,6 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -540,10 +499,6 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -582,7 +537,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select "SZYD_Cas9_5B71" read
@@ -620,11 +575,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -638,10 +588,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -680,7 +626,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : "Show/Hide Chromatograms" button is in pressed state
@@ -720,11 +666,6 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -738,10 +679,6 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -780,7 +717,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select "SZYD_Cas9_5B71" read
@@ -887,11 +824,6 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -905,10 +837,6 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -947,7 +875,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select "SZYD_Cas9_5B71" read
@@ -1016,11 +944,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -1034,10 +957,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -1076,7 +995,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select "SZYD_Cas9_CR50" read
@@ -1154,11 +1073,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -1172,10 +1086,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -1214,7 +1124,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select "SZYD_Cas9_CR50" read
@@ -1288,11 +1198,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013_3) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -1306,10 +1211,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013_3) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -1348,7 +1249,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_3) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select any symbol  in the "SZYD_Cas9_CR50" read
@@ -1376,11 +1277,6 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -1394,10 +1290,6 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -1436,7 +1328,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select vertical slider between reads named and read area
@@ -1468,11 +1360,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -1486,10 +1373,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -1528,7 +1411,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. In Option panelSelect consensuns mode = Strict
@@ -1564,11 +1447,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -1582,10 +1460,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -1612,7 +1486,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(5000);
 
@@ -1632,11 +1506,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -1650,10 +1519,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -1692,7 +1557,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. In Option panelSelect consensuns mode = Strict
@@ -1738,11 +1603,6 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -1756,10 +1616,6 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -1798,7 +1654,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select any read name by mouse
@@ -1831,11 +1687,6 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Min read length" option by default = 0
-            int minLen = GTSpinBox::getValue(os, "minLenSpinBox");
-            expected = "0";
-            CHECK_SET_ERR(QString::number(minLen) == expected, QString("incorrect min Lenght value: expected 0, got %1").arg(minLen));
-
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
             expected = "30";
@@ -1849,10 +1700,6 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             bool checkOutput = output.isEmpty();
             CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Trim both ends" option is checked by default
-            bool trim = GTCheckBox::getState(os, "trimCheckBox");
-            CHECK_SET_ERR(trim, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -1891,7 +1738,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
     //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select any read
