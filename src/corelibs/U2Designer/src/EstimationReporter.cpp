@@ -21,6 +21,7 @@
 
 #include <QApplication>
 #include <QWebFrame>
+#include <QTextStream>
 
 #include <U2Core/U2SafePoints.h>
 

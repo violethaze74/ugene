@@ -45,6 +45,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
     : MaEditorSequenceArea(ui, hb, vb) {
     initRenderer();
 
+    setObjectName("mca_editor_sequence_area");
     connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_cancelSelection()));
 
     // TEST - remove the variable after fix
@@ -426,12 +427,13 @@ void McaEditorSequenceArea::insertChar(char newCharacter) {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
+    int xSelection = selection.x();
     maObj->changeLength(os, maObj->getLength() + 1);
-    maObj->insertCharacter(selection.y(), selection.x(), newCharacter);
+    maObj->insertCharacter(selection.y(), xSelection, newCharacter);
 
     // insert char into the reference
     U2SequenceObject* ref = getEditor()->getMaObject()->getReferenceObj();
-    U2Region region = U2Region(selection.x(), 0);
+    U2Region region = U2Region(xSelection, 0);
     ref->replaceRegion(maObj->getEntityRef().entityId, region, DNASequence(QByteArray(1, U2Msa::GAP_CHAR)), os);
     SAFE_POINT_OP(os, );
 

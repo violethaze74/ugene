@@ -33,6 +33,7 @@
 #include <QWebFrame>
 #include <QWebView>
 #include <QWizard>
+#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>

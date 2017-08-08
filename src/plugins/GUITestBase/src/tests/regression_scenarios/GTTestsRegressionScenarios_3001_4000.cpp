@@ -34,6 +34,7 @@
 #include <QWebFrame>
 #include <QWebView>
 #include <QWizard>
+#include <QTextStream>
 
 #include <GTGlobals.h>
 #include <base_dialogs/DefaultDialogFiller.h>

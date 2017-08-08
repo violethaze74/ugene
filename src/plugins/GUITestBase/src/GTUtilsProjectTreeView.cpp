@@ -444,6 +444,13 @@ void GTUtilsProjectTreeView::checkFilteredGroup(HI::GUITestOpStatus &os, const Q
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "ensureFilteringIsDisabled"
+void GTUtilsProjectTreeView::ensureFilteringIsDisabled(GUITestOpStatus &os) {
+    openView(os);
+    GTLineEdit::checkText(os, "nameFilterEdit", NULL, "");
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "checkItem"
 bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
     QTreeView *treeView = getTreeView(os);
@@ -637,6 +644,26 @@ void GTUtilsProjectTreeView::expandProjectView(HI::GUITestOpStatus &os){
 void GTUtilsProjectTreeView::markSequenceAsCircular(HI::GUITestOpStatus &os, const QString &sequenceObjectName) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Mark as circular"));
     click(os, sequenceObjectName, Qt::RightButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getDocuments"
+QMap<QString, QStringList> GTUtilsProjectTreeView::getDocuments(GUITestOpStatus &os) {
+    ensureFilteringIsDisabled(os);
+    GTGlobals::FindOptions options(false, Qt::MatchContains, 1);
+    const QModelIndexList documentsItems = findIndecies(os, "", QModelIndex(), 0, options);
+
+    QMap<QString, QStringList> documents;
+    foreach (const QModelIndex &documentItem, documentsItems) {
+        const QModelIndexList objectsItems = findIndecies(os, "", documentItem, 0, options);
+        QStringList objects;
+        foreach (const QModelIndex &objectItem, objectsItems) {
+            objects << objectItem.data().toString();
+        }
+        documents.insert(documentItem.data().toString(), objects);
+    }
+
+    return documents;
 }
 #undef GT_METHOD_NAME
 

@@ -33,12 +33,18 @@
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 
-#include "../../../runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "GTTestsSanger.h"
+#include "GTUtilsDashboard.h"
 #include "GTUtilsLog.h"
+#include "GTUtilsMcaEditor.h"
+#include "GTUtilsMdi.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "GTUtilsWizard.h"
+#include "GTUtilsWorkflowDesigner.h"
+#include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 
 namespace U2 {
 
@@ -167,7 +173,145 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsLog::check(os, l);
 }
 
-} // namespace GUITest_common_scenarios_sanger
+GUI_TEST_CLASS_DEFINITION(test_0005) {
+    GTLogTracer logTracer;
 
-} // namespace U2
+//    1. Select "Tools>Workflow Designer"
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
+//    2. Open "Trim and аlign Sanger reads" sample
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+//    Expected state: "Trim and Align Sanger Reads" dialog has appered
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
+            const QString expectedTitle = "Trim and Align Sanger Reads";
+            const QString actualTitle = wizard->windowTitle();
+            CHECK_SET_ERR(expectedTitle == actualTitle, QString("Wizard title is incorrect: expected '%1', got '%2'").arg(expectedTitle).arg(actualTitle));
+
+            GTWidget::click(os, wizard);
+
+//    3. Select Reference .../test/general/_common_data/sanger/reference.gb
+            GTUtilsWizard::setParameter(os, "Reference", testDir + "_common_data/sanger/reference.gb");
+
+//    4. Push Next
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+//    5. On page "Input Sanger reads" add: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files) and click "Next" button
+            QStringList readsList;
+            for (int i = 1; i <= 20; i++) {
+                readsList << testDir + QString("_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+            }
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << readsList);
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+//    6. Push Next on "Trim and Filtering" page
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+//    7. Push Run on Results page where "alignment.ugenedb" is result database by default
+            const QString expectedResultFileName = "alignment.ugenedb";
+            QString actualResultFileName = GTUtilsWizard::getParameter(os, "Aligned reads file").toString();
+            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'")
+                          .arg(expectedResultFileName).arg(actualResultFileName));
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Trim and Align Sanger Reads", new Scenario()));
+
+    GTUtilsWorkflowDesigner::addSample(os, "Trim and align Sanger reads");
+
+//    Expected state: The workflow task has been finished successfully; "alignment.ugenedb" has created
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(1 == outputFiles.size(), QString("Too many output files, exptected 1, got %1").arg(outputFiles.size()));
+
+    const QString expectedResultFileName = "alignment.ugenedb";
+    const QString actualResultFileName = outputFiles.first();
+    CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect output file name, exptected '%1', got '%2'")
+                  .arg(expectedResultFileName).arg(actualResultFileName));
+
+//    8. Click to "alignment.ugenedb" on the dashboard.
+    GTUtilsDashboard::clickOutputFile(os, actualResultFileName);
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state:
+//        "alignment.ugenedb" in the Project View with object:
+//        -{[mc] Aligned reads} for multiple chromatogram alignment object in Project View
+    QMap<QString, QStringList> documents = GTUtilsProjectTreeView::getDocuments(os);
+    CHECK_SET_ERR(1 == documents.count(), QString("An incorrect documents count: expected 1, got %1").arg(documents.count()));
+
+    const QString actualDocumentName = documents.keys().first();
+    CHECK_SET_ERR(expectedResultFileName == actualDocumentName, QString("An unexpected document name: expected '%1', got '%2'")
+                  .arg(expectedResultFileName).arg(actualDocumentName));
+
+    CHECK_SET_ERR(1 == documents.first().count(), QString("An incorrect objects count in '%1' document: expected 1, got %2")
+                     .arg(documents.keys().first()).arg(documents.first().count()));
+
+    const QString expectedObjectName = "[mc] Aligned reads";
+    const QString actualObjectName = documents.first().first();
+    CHECK_SET_ERR(expectedObjectName == actualObjectName, QString("An inexpected object name: expected '%1', got '%2'")
+                  .arg(expectedObjectName).arg(actualObjectName));
+
+//    Expected state: Aligment editor has been opened
+    GTUtilsMcaEditor::getEditorUi(os);
+
+//    Expected state: Reference name is  "Reference KM099231:" at the editor left corner
+    const QString expectedReferenceLabelText = "Reference KM099231:";
+    const QString actualReferenceLabelText = GTUtilsMcaEditor::getReferenceLabelText(os);
+    CHECK_SET_ERR(expectedReferenceLabelText == actualReferenceLabelText, QString("An unexpected reference label text: expected '%1', got '%2'")
+                  .arg(expectedReferenceLabelText).arg(actualReferenceLabelText));
+
+//    Expected state: "Consensus" is placed under reference name
+    // untestable
+
+//    Expected state: 16 reads are present
+    const int readsCount = GTUtilsMcaEditor::getReadsCount(os);
+    CHECK_SET_ERR(16 == readsCount, QString("Unexpected count of reads: expected 16, got %1").arg(readsCount));
+
+//                    8 reads with names "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66" and "SZYD_Cas9_5B71"
+    const QSet<QString> expectedDirectReadsNames = QSet<QString>() << "SZYD_Cas9_5B71"
+                                                                   << "SZYD_Cas9_CR60"
+                                                                   << "SZYD_Cas9_CR61"
+                                                                   << "SZYD_Cas9_CR62"
+                                                                   << "SZYD_Cas9_CR63"
+                                                                   << "SZYD_Cas9_CR64"
+                                                                   << "SZYD_Cas9_CR65"
+                                                                   << "SZYD_Cas9_CR66";
+    const QStringList actualDirectReadsNames = GTUtilsMcaEditor::getDirectReadsNames(os);
+    CHECK_SET_ERR(expectedDirectReadsNames == actualDirectReadsNames.toSet(), "Direct reads names are incorrect");
+
+//                    8 reverse reads with names "SZYD_Cas9_CR50"... "SZYD_Cas9_CR56" and "SZYD_Cas9_5B70"
+    const QSet<QString> expectedReverseComplementReadsNames = QSet<QString>() << "SZYD_Cas9_CR50"
+                                                                              << "SZYD_Cas9_CR51"
+                                                                              << "SZYD_Cas9_CR52"
+                                                                              << "SZYD_Cas9_CR53"
+                                                                              << "SZYD_Cas9_CR54"
+                                                                              << "SZYD_Cas9_CR55"
+                                                                              << "SZYD_Cas9_CR56"
+                                                                              << "SZYD_Cas9_5B70";
+    const QStringList actualReverseComplementReadsNames = GTUtilsMcaEditor::getReverseComplementReadsNames(os);
+    CHECK_SET_ERR(expectedReverseComplementReadsNames == actualReverseComplementReadsNames.toSet(), "Reverse complement reads names are incorrect");
+
+//                    No Еrrors in the Log
+    GTUtilsLog::check(os, logTracer);
+
+//    9. Close active view
+    GTUtilsMdi::closeActiveWindow(os);
+
+//    10. Select "Open view" from context menu and select "Open new view: "Alignment Editor" from context view
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view" << "Open new view: Alignment Editor", GTGlobals::UseMouse));
+    GTUtilsProjectTreeView::callContextMenu(os, "Aligned reads");
+
+//    Expected state:  Chromatogram sanger view is opened
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::getEditorUi(os);
+}
+
+}   // namespace GUITest_common_scenarios_sanger
+}   // namespace U2

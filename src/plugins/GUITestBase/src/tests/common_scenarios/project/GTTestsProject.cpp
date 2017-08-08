@@ -23,6 +23,8 @@
 #include <QWebElement>
 #include <QApplication>
 #include <QTreeWidget>
+#include <QDebug>
+#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>

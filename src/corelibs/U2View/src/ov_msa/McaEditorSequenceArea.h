@@ -45,7 +45,7 @@ public:
     bool drawTraceT;
 };
 
-class McaEditorSequenceArea : public MaEditorSequenceArea {
+class U2VIEW_EXPORT McaEditorSequenceArea : public MaEditorSequenceArea {
     Q_OBJECT
 public:
     McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar* hb, GScrollBar* vb);

@@ -291,6 +291,12 @@ void ChromatogramUtils::insertBase(DNAChromatogram &chromatogram, int posUngappe
     int leadingGap = gapModel.isEmpty() ? 0 : gapModel.first().offset == 0 ? gapModel.first().gap : 0;
     DNAChromatogram gappedChrom = getGappedChromatogram(chromatogram, gapModel);
 
+    //when you try to insert a character before the first symbol of the row,
+    //because of features of the gap model, leading gap will accept an incorrect value.
+    //To aviod an error in this case, the following check is purposed
+    if (posWithGaps - leadingGap == -1) {
+        leadingGap--;
+    }
     SAFE_POINT(posWithGaps- leadingGap >= 0 && posWithGaps - leadingGap < gappedChrom.seqLength,
                QString("Incorrect gapped position for ChromatogramUtils::insertBase: pos - %1, gapped chrom.len - %2")
                .arg(posWithGaps).arg(gappedChrom.seqLength), );

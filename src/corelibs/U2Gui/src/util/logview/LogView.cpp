@@ -69,7 +69,7 @@ void LogViewWidget::init() {
 
     settings.reinitAll();
 
-    showSettingsAction = new QAction(tr("Settings"), this);
+    showSettingsAction = new QAction(tr("Settings..."), this);
     showSettingsAction->setIcon(QIcon(":ugene/images/log_settings.png"));
     connect(showSettingsAction, SIGNAL(triggered()), SLOT(sl_openSettingsDialog()));
     

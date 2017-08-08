@@ -19,16 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-
 #include <QApplication>
+#include <QDir>
+#include <QFileInfo>
 #include <QLabel>
 #include <QScrollArea>
 #include <QToolButton>
 #include <QWizard>
 
+#include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTDoubleSpinBox.h>
-#include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
@@ -37,6 +38,8 @@
 #include "GTUtilsWizard.h"
 
 namespace U2 {
+using namespace HI;
+
 QMap<QString, GTUtilsWizard::WizardButton> GTUtilsWizard::initButtonMap(){
    QMap<QString, WizardButton> result;
    result.insert("&Next >", Next);
@@ -53,28 +56,33 @@ const QMap<QString, GTUtilsWizard::WizardButton> GTUtilsWizard::buttonMap = GTUt
 #define GT_CLASS_NAME "GTUtilsWizard"
 
 #define GT_METHOD_NAME "setInputFiles"
-void GTUtilsWizard::setInputFiles(HI::GUITestOpStatus &os, QList<QStringList> inputFiles){
+void GTUtilsWizard::setInputFiles(HI::GUITestOpStatus &os, const QList<QStringList> &inputFiles){
     QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "wizard not found");
     int i = 0;
-    foreach (QStringList datasetFiles, inputFiles) {
+    foreach (const QStringList &datasetFiles, inputFiles) {
         QTabWidget* tabWidget = dialog->findChild<QTabWidget*>();
         GT_CHECK(tabWidget != NULL, "tabWidget not found");
         GTTabWidget::setCurrentIndex(os, tabWidget, i);
-        foreach (QString s, datasetFiles) {
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, s));
-            QList<QWidget*> adds = dialog->findChildren<QWidget*>("addFileButton");
+
+        QMap<QString, QStringList> dir2files;
+        foreach (const QString &datasetFile, datasetFiles) {
+            const QFileInfo fileInfo(datasetFile);
+            dir2files[fileInfo.absoluteDir().path()] << fileInfo.fileName();
+        }
+
+        foreach (const QString &dir, dir2files.keys()) {
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, dir, dir2files[dir]));
+            QList<QWidget*> adds = dialog->findChildren<QWidget *>("addFileButton");
             foreach (QWidget* add, adds) {
-                if(add->isVisible()){
+                if (add->isVisible()) {
                     GTWidget::click(os, add);
                     break;
                 }
             }
-            //GTWidget::click(os, GTWidget::findWidget(os, "addFileButton", dialog));
         }
+
         i++;
-        //QTabWidget* tabWidget = GTWidget::
-        //GTWidget::getAllWidgetsInfo(os, dialog);
     }
 }
 #undef GT_METHOD_NAME
@@ -234,4 +242,4 @@ QString GTUtilsWizard::getPageTitle(HI::GUITestOpStatus &os){
 
 #undef GT_CLASS_NAME
 
-}
+}   // namespace U2

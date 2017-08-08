@@ -29,6 +29,7 @@
 #include <QMessageBox>
 #include <QToolBar>
 #include <QVBoxLayout>
+#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineCoreOptions.h>
