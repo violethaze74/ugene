@@ -154,7 +154,7 @@ void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus &os, QS
 
     int rowNum = getVisibleNames(os).indexOf(rowName);
     GT_CHECK(rowNum != -1, "sequence not found in nameList");
-    QWidget* nameList = GTWidget::findWidget(os, "msa_editor_name_list");
+    QWidget* nameList = GTWidget::findWidget(os, "mca_editor_name_list");
     int yPos = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowScreenCenterByNumber(rowNum);
     if (showChromatogram) {
         yPos -= 65;
