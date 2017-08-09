@@ -44,6 +44,8 @@
 
 namespace U2 {
 
+#define TOP_INDENT 10
+
 McaEditorWgt::McaEditorWgt(McaEditor *editor)
     : MaEditorWgt(editor)
 {
@@ -68,7 +70,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     QString name = getEditor()->getReferenceContext()->getSequenceObject()->getSequenceName();
     QWidget *refName = createHeaderLabelWidget(tr("Reference %1:").arg(name),
                                                Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), refArea);
-
+    refName->setContentsMargins(0, TOP_INDENT, 0, 0);
 
     nameAreaLayout->insertWidget(0, refName);
 
@@ -85,6 +87,8 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
 
     McaEditorConsensusArea* mcaConsArea = qobject_cast<McaEditorConsensusArea*>(consArea);
     SAFE_POINT(mcaConsArea != NULL, "Failed to cast consensus area to MCA consensus area", );
+    seqAreaHeaderLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
+    seqAreaHeader->setStyleSheet("background-color: white;");
     connect(mcaConsArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
 }
 
