@@ -608,4 +608,17 @@ bool MsaRowUtils::hasLeadingGaps(const U2MsaRowGapModel &gapModel) {
     return !gapModel.isEmpty() && gapModel.first().offset == 0;
 }
 
+void MsaRowUtils::removeTrailingGapsFromModel(qint64 length, U2MsaRowGapModel &gapModel) {
+    for (int i = 0; i < gapModel.size(); i++) {
+        const U2MsaGap &gap = gapModel.at(i);
+        if (gap.offset >= length) {
+            while (gapModel.size() > i) {
+                gapModel.removeLast();
+            } 
+        } else {
+            length += gap.gap;
+        }
+    }
+}
+
 }   // namespace U2

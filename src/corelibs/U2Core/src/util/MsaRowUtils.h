@@ -71,6 +71,7 @@ public:
     static U2MsaRowGapModel subtitudeGapModel(const U2MsaRowGapModel &minuendGapModel, const U2MsaRowGapModel &subtrahendGapModel);
     static U2MsaRowGapModel reverseGapModel(const U2MsaRowGapModel &gapModel, qint64 rowLengthWithoutTrailing);    // this method reverses only core gaps. Leading and trailing gaps are not involved to calculations
     static bool hasLeadingGaps(const U2MsaRowGapModel &gapModel);
+    static void removeTrailingGapsFromModel(qint64 length, U2MsaRowGapModel &gapModel);
 };
 
 } // U2
