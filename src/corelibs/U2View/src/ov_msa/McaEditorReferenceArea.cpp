@@ -201,7 +201,11 @@ McaEditorReferenceRenderArea::McaEditorReferenceRenderArea(McaEditorWgt *_ui, Pa
 }
 
 qint64 McaEditorReferenceRenderArea::coordToPos(int x) const {
-    return ui == NULL ? 0 : ui->getBaseWidthController()->screenXPositionToBase(x);
+    qint64 res = 0;
+    if (ui != NULL) {
+        res = qBound(0, ui->getBaseWidthController()->screenXPositionToColumn(x), ui->getEditor()->getAlignmentLen());
+    }
+    return res;
 }
 
 McaEditorReferenceRenderAreaFactory::McaEditorReferenceRenderAreaFactory(McaEditorWgt *_ui, McaEditor *_editor)
