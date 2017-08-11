@@ -363,7 +363,13 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != NULL, "editMenu", );
     QList<QAction*> actions;
-    actions << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction << reverseAction << complementAction << delColAction << removeAllGapsAction;
+
+    MsaEditorWgt* msaWgt = getEditor()->getUI();
+    QAction* editSequenceNameAction = msaWgt->getEditorNameList()->getEditSequenceNameAction();
+    if (getSelection().height() != 1) {
+        editSequenceNameAction->setDisabled(true);
+    }
+    actions << editSequenceNameAction << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction << reverseAction << complementAction << delColAction << removeAllGapsAction;
     editMenu->insertActions(editMenu->isEmpty() ? NULL : editMenu->actions().first(), actions);
     editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
 
