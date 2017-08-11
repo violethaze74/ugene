@@ -146,8 +146,10 @@ void ProjectUpdater::updateAccessedObjects() {
             const U2EntityRef ref = object->getEntityRef();
             if (!dbiRef2Connections.contains(ref.dbiRef)) {
                 dbiRef2Connections.insert(ref.dbiRef, new DbiConnection(ref.dbiRef, os));
+                CHECK_CONTINUE(!os.hasError());
             }
             DbiConnection *con = dbiRef2Connections.value(ref.dbiRef);
+            SAFE_POINT(con->dbi != NULL, "Error: connection is NULL!", );
             con->dbi->getObjectDbi()->updateObjectAccessTime(ref.entityId, os);
         }
     }
