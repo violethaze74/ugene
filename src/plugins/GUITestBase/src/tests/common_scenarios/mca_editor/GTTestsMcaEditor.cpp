@@ -1002,7 +1002,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
 
     //6. Push Remove seuence(s) button on main menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Editing" << "Remove read"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Remove read"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1024,7 +1024,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     //8. Push Remove seuence(s) button
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Editing" << "Remove read"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Remove read"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1131,7 +1131,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
 
     //6. Push Remove seuence(s) button on context menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Editing" << "Remove read");;
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Remove read");;
 
     //Expected state : the read is deleted
     QStringList reads = GTUtilsMcaEditor::getReadsNames(os);
@@ -1151,7 +1151,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     //8. Push Remove seuence(s) button
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Editing" << "Remove read");;
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Remove read");;
 
     //Expected state : 3 reads are deleted
     //Expected state : No corresponding reads in the map
@@ -1256,7 +1256,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_3) {
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(5500, 2));
 
     //6. Push Remove seuence(s) from main or context menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Editing" << "Remove read");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Remove read");
 
     //Expected state: the read is deleted
     QStringList reads = GTUtilsMcaEditor::getReadsNames(os);

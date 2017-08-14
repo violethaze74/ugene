@@ -111,6 +111,13 @@ void McaEditorReferenceArea::sl_update() {
     completeUpdate();
 }
 
+void McaEditorReferenceArea::mousePressEvent(QMouseEvent* e) {
+    if (e->button() == Qt::LeftButton) {
+        emit ui->si_clearSelection();
+    }
+    PanView::mousePressEvent(e);
+}
+
 void McaEditorReferenceArea::keyPressEvent(QKeyEvent *event) {
     const int key = event->key();
     bool accepted = false;
