@@ -169,6 +169,8 @@ protected slots:
     void sl_completeUpdate();
     void sl_completeRedraw();
 
+    virtual void sl_updateActions() = 0;
+
     void sl_triggerUseDots();
     void sl_useDots();
 
@@ -210,7 +212,6 @@ protected:
     void keyReleaseEvent(QKeyEvent *);
 
     virtual void initRenderer() = 0;
-    virtual void updateActions() = 0;
     virtual void drawBackground(QPainter& p);
 
     /**

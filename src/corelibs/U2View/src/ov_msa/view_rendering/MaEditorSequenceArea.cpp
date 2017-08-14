@@ -110,6 +110,7 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
 
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_completeUpdate()));
+    connect(editor, SIGNAL(si_updateActions()), SLOT(sl_updateActions()));
     connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
     connect(hb, SIGNAL(actionTriggered(int)), SLOT(sl_hScrollBarActionPerfermed()));
 
@@ -293,7 +294,7 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHigh
     emit si_selectionChanged(selectedRowNames);
     emit si_selectionChanged(selection, prevSelection);
     update();
-    updateActions();
+    sl_updateActions();
 
     CHECK(!selection.isNull(), );
 }
@@ -693,13 +694,13 @@ void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const 
     ui->getScrollController()->sl_updateScrollBars();
 
     completeRedraw = true;
-    updateActions();
+    sl_updateActions();
     update();
 }
 
 void MaEditorSequenceArea::sl_completeUpdate(){
     completeRedraw = true;
-    updateActions();
+    sl_updateActions();
     update();
     onVisibleRangeChanged();
 }
@@ -798,7 +799,7 @@ void MaEditorSequenceArea::sl_replaceSelectedCharacter() {
     maMode = ReplaceCharMode;
     editModeAnimationTimer.start(500);
     highlightCurrentSelection();
-    updateActions();
+    sl_updateActions();
 }
 
 void MaEditorSequenceArea::sl_changeSelectionColor() {
@@ -836,7 +837,7 @@ void MaEditorSequenceArea::setCursorPos(const QPoint& p) {
     cursorPos = p;
 
     highlightSelection = false;
-    updateActions();
+    sl_updateActions();
 }
 
 void MaEditorSequenceArea::setCursorPos(int x, int y) {
@@ -1544,7 +1545,7 @@ void MaEditorSequenceArea::exitFromEditCharacterMode() {
         highlightSelection = false;
         selectionColor = Qt::black;
         maMode = ViewMode;
-        updateActions();
+        sl_updateActions();
         update();
     }
 }

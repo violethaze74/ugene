@@ -106,6 +106,7 @@ signals:
     void si_referenceSeqChanged(qint64 referenceId);
     void si_sizeChanged(int newHeight, bool isMinimumSize, bool isMaximumSize);
     void si_completeUpdate();
+    void si_updateActions();
 
 protected slots:
     virtual void sl_onContextMenuRequested(const QPoint & pos) = 0;

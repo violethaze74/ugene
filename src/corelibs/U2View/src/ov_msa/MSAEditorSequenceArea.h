@@ -172,12 +172,12 @@ private slots:
 
     void sl_alphabetChanged(const MaModificationInfo &mi, const DNAAlphabet *prevAlphabet);
 
+    void sl_updateActions();
+
 private:
     void initRenderer();
 
     void buildMenu(QMenu* m);
-
-    void updateActions();
 
     void reverseComplementModification(ModificationType& type);
 
