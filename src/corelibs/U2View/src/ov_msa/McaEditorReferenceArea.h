@@ -52,6 +52,7 @@ private slots:
     void sl_update();
 
 private:
+    void mousePressEvent(QMouseEvent* e);
     void keyPressEvent(QKeyEvent *event);
     void updateScrollBar();
 
