@@ -129,7 +129,6 @@ void McaReferenceCharController::initRegions() {
     SAFE_POINT(refObject != NULL, "MCA reference object is NULL", );
 
     U2OpStatusImpl os;
-    refObject->forceCachedSequenceUpdate();
     QByteArray data = refObject->getWholeSequenceData(os);
 
     SAFE_POINT_OP(os, );

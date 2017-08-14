@@ -465,7 +465,7 @@ void U2SequenceObject::updateCachedValues() const {
     SAFE_POINT(cachedAlphabet != NULL, "Invalid sequence alphabet", );
 }
 
-void U2SequenceObject::forceCachedSequenceUpdate() {
+void U2SequenceObject::sl_resetDataCaches() {
     cachedLastAccessedRegion = QPair<U2Region, QByteArray>();
     cachedLength = -1;
 }

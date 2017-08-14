@@ -49,7 +49,6 @@ private slots:
     void sl_onSelectionChanged(LRegionsSelection *selection, const QVector<U2Region> &addedRegions, const QVector<U2Region> &removedRegions);
     void sl_clearSelection();
     void sl_fontChanged(const QFont &newFont);
-    void sl_update();
 
 private:
     void keyPressEvent(QKeyEvent *event);
