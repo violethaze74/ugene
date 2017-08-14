@@ -31,6 +31,8 @@
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include "McaEditorSequenceArea.h"
 #include "helpers/MaAmbiguousCharactersController.h"
 #include "helpers/ScrollController.h"
@@ -112,13 +114,11 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
 
     scaleBar->getPlusAction()->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
     addAction(scaleBar->getPlusAction());
-    QAbstractButton *plusButton = scaleBar->getPlusButton();
-    plusButton->setToolTip(QString("%1 (%2)").arg(plusButton->text()).arg(scaleBar->getPlusAction()->shortcut().toString(QKeySequence::NativeText)));
+    GUIUtils::updateButtonToolTip(scaleBar->getPlusButton(), scaleBar->getPlusAction()->shortcut());
 
     scaleBar->getMinusAction()->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Down));
     addAction(scaleBar->getMinusAction());
-    QAbstractButton *minusButton = scaleBar->getMinusButton();
-    minusButton->setToolTip(QString("%1 (%2)").arg(minusButton->text()).arg(scaleBar->getMinusAction()->shortcut().toString(QKeySequence::NativeText)));
+    GUIUtils::updateButtonToolTip(scaleBar->getMinusButton(), scaleBar->getMinusAction()->shortcut());
 
     scaleAction = NULL;
 

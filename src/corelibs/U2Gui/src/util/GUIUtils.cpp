@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QAbstractButton>
 #include <QApplication>
 #include <QDesktopServices>
 #include <QFile>
@@ -100,6 +101,12 @@ void GUIUtils::updateActionToolTip(QAction *action) {
     const QString actionShortcutString = action->shortcut().toString(QKeySequence::NativeText);
     const QString toolTip = actionShortcutString.isEmpty() ? action->text() : QString("%1 (%2)").arg(action->text()).arg(actionShortcutString);
     action->setToolTip(toolTip);
+}
+
+void GUIUtils::updateButtonToolTip(QAbstractButton *button, const QKeySequence &shortcut) {
+    const QString actionShortcutString = shortcut.toString(QKeySequence::NativeText);
+    const QString toolTip = actionShortcutString.isEmpty() ? button->text() : QString("%1 (%2)").arg(button->text()).arg(actionShortcutString);
+    button->setToolTip(toolTip);
 }
 
 void GUIUtils::disableEmptySubmenus(QMenu* m) {
