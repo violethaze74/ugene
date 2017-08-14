@@ -93,9 +93,10 @@ private slots:
     void sl_trimLeftEnd();
     void sl_trimRightEnd();
 
+    void sl_updateActions();
+
 private:
     void initRenderer();
-    void updateActions();
     void drawBackground(QPainter &p);
 
     void getColorAndHighlightingIds(QString &csid, QString &hsid);

@@ -53,11 +53,21 @@ McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
 
 void McaEditorNameList::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection &oldSelection) {
     setSelection(current.y(), current.height());
-    updateActions();
+    sl_updateActions();
 }
 
 void McaEditorNameList::sl_clearSelection() {
     setSelection(0, 0);
+}
+
+void McaEditorNameList::sl_updateActions() {
+    MaEditorNameList::sl_updateActions();
+
+    const bool hasSequenceSelection = !ui->getSequenceArea()->getSelection().isEmpty();
+    const bool hasRowSelection = !getSelection().isEmpty();
+    const bool isWholeReadSelected = hasRowSelection && !hasSequenceSelection;
+
+    removeSequenceAction->setShortcut(isWholeReadSelected ? QKeySequence::Delete : QKeySequence());
 }
 
 void McaEditorNameList::drawCollapsibileSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool selected, bool collapsed, bool isReference) {
@@ -75,7 +85,7 @@ void McaEditorNameList::setSelection(int startSeq, int count) {
     localSelection = U2Region(startSeq, count);
     completeRedraw = true;
     update();
-    updateActions();
+    sl_updateActions();
     emit si_selectionChanged();
 }
 
@@ -128,16 +138,6 @@ int McaEditorNameList::getMinimumWidgetWidth() const {
 int McaEditorNameList::getIconColumnWidth() const {
     static int iconColumnWidth = MARGIN_ARROW_LEFT + ARROW_LENGTH + MARGIN_ARROW_RIGHT;
     return iconColumnWidth;
-}
-
-void McaEditorNameList::updateActions() {
-    MaEditorNameList::updateActions();
-
-    const bool hasSequenceSelection = !ui->getSequenceArea()->getSelection().isEmpty();
-    const bool hasRowSelection = !getSelection().isEmpty();
-    const bool isWholeReadSelected = hasRowSelection && !hasSequenceSelection;
-
-    removeSequenceAction->setShortcut(isWholeReadSelected ? QKeySequence::Delete : QKeySequence());
 }
 
 }   // namespace U2

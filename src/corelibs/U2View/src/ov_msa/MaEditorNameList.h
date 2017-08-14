@@ -71,6 +71,7 @@ private slots:
 
 protected slots:
     virtual void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
+    virtual void sl_updateActions();
 
 protected:
     virtual void updateScrollBar();
@@ -110,7 +111,6 @@ protected:
     virtual void setSelection(int startSeq, int count);
     virtual bool isRowInSelection(int row) const;
 
-    virtual void updateActions();
     void updateSelection(int newSeqNum);
     void moveSelectedRegion( int shift );
     void drawAll();

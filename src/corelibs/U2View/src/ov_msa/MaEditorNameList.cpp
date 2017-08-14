@@ -95,13 +95,14 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     connect(ui->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeRedraw()));
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
+    connect(editor, SIGNAL(si_updateActions()), SLOT(sl_updateActions()));
     connect(ui, SIGNAL(si_completeRedraw()), SLOT(sl_completeRedraw()));
     connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_completeRedraw()));
     connect(ui->getScrollController()->getVerticalScrollBar(), SIGNAL(actionTriggered(int)), SLOT(sl_vScrollBarActionPerfermed()));
 
     nhBar->setParent(this);
     nhBar->setVisible(false);
-    updateActions();
+    sl_updateActions();
 
     QObject *labelsParent = new QObject(this);
     labelsParent->setObjectName("labels_parent");
@@ -175,22 +176,6 @@ bool MaEditorNameList::isRowInSelection(int seqnum) const {
     return seqnum >= s.y() && seqnum <= endPos;
 }
 
-void MaEditorNameList::updateActions() {
-    SAFE_POINT(NULL != ui, tr("MSA Editor UI is NULL"), );
-    MaEditorSequenceArea* seqArea = ui->getSequenceArea();
-    SAFE_POINT(NULL != seqArea, tr("MSA Editor sequence area is NULL"), );
-
-    copyCurrentSequenceAction->setEnabled(!seqArea->isAlignmentEmpty());
-
-    MultipleAlignmentObject* maObj = editor->getMaObject();
-    if (maObj){
-        removeSequenceAction->setEnabled(!maObj->isStateLocked() && getSelectedRow() != -1);
-        editSequenceNameAction->setEnabled(!maObj->isStateLocked() && getSelectedRow() != -1);
-        addAction(ui->getCopySelectionAction());
-        addAction(ui->getPasteAction());
-    }
-}
-
 void MaEditorNameList::updateScrollBar() {
     nhBar->disconnect(this);
 
@@ -248,7 +233,7 @@ void MaEditorNameList::sl_copyCurrentSequence() {
 void MaEditorNameList::sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo& mi) {
     if (mi.rowListChanged) {
         completeRedraw = true;
-        updateActions();
+        sl_updateActions();
         updateScrollBar();
         update();
     }
@@ -285,7 +270,7 @@ void MaEditorNameList::sl_selectReferenceSequence() {
 }
 
 void MaEditorNameList::sl_lockedStateChanged() {
-    updateActions();
+    sl_updateActions();
 }
 
 void MaEditorNameList::resizeEvent(QResizeEvent* e) {
@@ -558,7 +543,23 @@ void MaEditorNameList::sl_selectionChanged(const MaEditorSelection& current, con
     }
     completeRedraw = true;
     update();
-    updateActions();
+    sl_updateActions();
+}
+
+void MaEditorNameList::sl_updateActions() {
+    SAFE_POINT(NULL != ui, tr("MSA Editor UI is NULL"), );
+    MaEditorSequenceArea* seqArea = ui->getSequenceArea();
+    SAFE_POINT(NULL != seqArea, tr("MSA Editor sequence area is NULL"), );
+
+    copyCurrentSequenceAction->setEnabled(!seqArea->isAlignmentEmpty());
+
+    MultipleAlignmentObject* maObj = editor->getMaObject();
+    if (maObj){
+        removeSequenceAction->setEnabled(!maObj->isStateLocked() && getSelectedRow() != -1);
+        editSequenceNameAction->setEnabled(!maObj->isStateLocked() && getSelectedRow() != -1);
+        addAction(ui->getCopySelectionAction());
+        addAction(ui->getPasteAction());
+    }
 }
 
 void MaEditorNameList::sl_vScrollBarActionPerfermed() {

@@ -39,6 +39,7 @@ protected slots:
 
 private slots:
     void sl_clearSelection();
+    void sl_updateActions();
 
 signals:
     void si_selectionChanged();
@@ -61,8 +62,6 @@ private:
     int getMinimumWidgetWidth() const;
 
     int getIconColumnWidth() const;
-
-    void updateActions();
 
     U2Region localSelection;
 
