@@ -1809,6 +1809,33 @@ GUI_TEST_CLASS_DEFINITION(test_5716) {
     CHECK_SET_ERR(currentOutputFormat == expectedOutputFormat, QString("Output format is incorrect: expected '%1', got '%2'").arg(expectedOutputFormat).arg(currentOutputFormat));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5747) {
+    //1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select any sequence
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "Gampsocleis_sedakovii_EF540828");
+
+    //3. Call contest menu -> Edit -> Edit sequence name
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os,  QStringList() << "Edit" << "Edit sequence name"));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    //4. Set new name and press enter
+    GTKeyboardDriver::keySequence("New name");
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+
+    //5. Select another sequence
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "Conocephalus_sp.");
+
+    //6. Edit name by HotKey F2
+    GTKeyboardDriver::keyClick(Qt::Key_F2);
+
+    //7. Set new name and press enter
+    GTKeyboardDriver::keySequence("New name 2");
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
