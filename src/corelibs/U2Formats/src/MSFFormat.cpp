@@ -256,6 +256,48 @@ void MSFFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
     CHECK_EXT(!os.isCoR(), os.setError(L10N::errorWritingFile(d->getURL())), );
 }
 
+namespace {
+
+const QString SUFFIX_SEPARATOR = "_";
+
+void splitCompleteName(const QString &completeName, QString &baseName, QString &suffix) {
+    const int separatorIndex = completeName.lastIndexOf(SUFFIX_SEPARATOR);
+    if (-1 == separatorIndex) {
+        baseName = completeName;
+        suffix = QString();
+        return;
+    }
+
+    suffix = completeName.mid(separatorIndex + 1);
+    bool ok = false;
+    suffix.toInt(&ok);
+    if (!ok) {
+        baseName = completeName;
+        suffix = QString();
+    } else {
+        baseName = completeName.left(separatorIndex);
+    }
+}
+
+QString increaseSuffix(const QString &completeName) {
+    QString baseName;
+    QString suffix;
+    splitCompleteName(completeName, baseName, suffix);
+    if (suffix.isEmpty()) {
+        return completeName + SUFFIX_SEPARATOR + QString::number(1);
+    }
+    return baseName + SUFFIX_SEPARATOR + QString("%1").arg(suffix.toInt() + 1, suffix.length(), 10, QChar('0'));
+}
+
+QString rollRowName(QString rowName, const QList<QString> &nonUniqueNames) {
+    while (nonUniqueNames.contains(rowName)) {
+        rowName = increaseSuffix(rowName);
+    }
+    return rowName;
+}
+
+}
+
 void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os) {
     SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "MSF entry storing: no alignment", );
     const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
@@ -266,16 +308,24 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
 
     const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
 
+    // Make row names unique
+    QMap<qint64, QString> uniqueRowNames;
+    int maxNameLen = 0;
+    foreach (const MultipleSequenceAlignmentRow &row , msa->getMsaRows()) {
+        uniqueRowNames.insert(row->getRowId(), rollRowName(row->getName().replace(' ', '_'), uniqueRowNames.values()));
+        maxNameLen = qMax(maxNameLen, uniqueRowNames.last().length());
+    }
+
     //precalculate seq writing params
-    int maxNameLen = 0, maLen = msa->getLength(), checkSum = 0;
+    int maLen = msa->getLength();
+    int checkSum = 0;
     static int maxCheckSumLen = 4;
-    QMap <QString, int> checkSums;
+    QMap <qint64, int> checkSums;
     foreach(const MultipleSequenceAlignmentRow& row , msa->getMsaRows()) {
         QByteArray sequence = row->toByteArray(os, maLen).replace(U2Msa::GAP_CHAR, '.');
         int seqCheckSum = getCheckSum(sequence);
-        checkSums.insert(row->getName(), seqCheckSum);
+        checkSums.insert(row->getRowId(), seqCheckSum);
         checkSum = (checkSum + seqCheckSum) % CHECK_SUM_MOD;
-        maxNameLen = qMax(maxNameLen, row->getName().length());
     }
     int maxLengthLen = QString::number(maLen).length();
 
@@ -294,11 +344,11 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
     //write info
     foreach(const MultipleSequenceAlignmentRow& row, msa->getMsaRows()) {
         QByteArray line = " " + NAME_FIELD;
-        line += " " + QString(row->getName()).replace(' ', '_').leftJustified(maxNameLen+1); // since ' ' is a delimeter for MSF parser spaces in name not suppoted
+        line += " " + uniqueRowNames[row->getRowId()].leftJustified(maxNameLen + 1);
         line += "  " + LEN_FIELD;
         line += " " + QString("%1").arg(maLen, -maxLengthLen);
         line += "  " + CHECK_FIELD;
-        line += " " + QString("%1").arg(checkSums[row->getName()], -maxCheckSumLen);
+        line += " " + QString("%1").arg(checkSums[row->getRowId()], -maxCheckSumLen);
         line += "  " + WEIGHT_FIELD;
         line += " " + QByteArray::number(WEIGHT_VALUE) + "\n";
         if (writeBlock(io, os, line)) {
@@ -336,9 +386,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
         QList<MultipleSequenceAlignmentRow>::ConstIterator ri = rows.constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
             const MultipleSequenceAlignmentRow &row = *ri;
-            QByteArray line = row->getName().toLocal8Bit();
-            line.replace(' ', '_'); // since ' ' is a delimiter for MSF parser spaces in name not supported
-            line = line.leftJustified(maxNameLen+1);
+            QByteArray line = uniqueRowNames[row->getRowId()].leftJustified(maxNameLen + 1).toLocal8Bit();
 
             for (int j = 0; j < CHARS_IN_ROW && i + j < maLen; j += CHARS_IN_WORD) {
                 line += ' ';

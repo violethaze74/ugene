@@ -202,6 +202,7 @@ void GTest_SaveDocument::init(XMLTestFormat* tf, const QDomElement& el) {
         return ;
     }
 
+    formatId = el.attribute("format");
 }
 
 void GTest_SaveDocument::prepare(){
@@ -209,9 +210,18 @@ void GTest_SaveDocument::prepare(){
     Document* doc = getContext<Document>(this, docContextName);
     if (doc == NULL) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
-        return ;
+        return;
     }
-    saveTask = new SaveDocumentTask(doc, iof, url);
+
+    SaveDocFlags saveTaskFlags = SaveDoc_Overwrite;
+    if (!formatId.isEmpty() && formatId != doc->getDocumentFormatId()) {
+        DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
+        CHECK_EXT(NULL != format, stateInfo.setError(QString("Document format not found: %1").arg(formatId)), );
+        doc = doc->getSimpleCopy(format, iof, url);
+        saveTaskFlags |= SaveDoc_DestroyButDontUnload;
+    }
+
+    saveTask = new SaveDocumentTask(doc, iof, url, saveTaskFlags);
     addSubTask(saveTask);
     /////////////////////////
 }
