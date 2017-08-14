@@ -65,7 +65,10 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
 
     editSequenceNameAction = new QAction(tr("Edit sequence name"), this);
+    editSequenceNameAction->setObjectName("edit_sequence_name");
+    editSequenceNameAction->setShortcut(QKeySequence(Qt::Key_F2));
     connect(editSequenceNameAction, SIGNAL(triggered()), SLOT(sl_editSequenceName()));
+    addAction(editSequenceNameAction);
 
     copyCurrentSequenceAction = new QAction(tr("Copy current sequence"), this);
     copyCurrentSequenceAction->setObjectName("Copy current sequence");
