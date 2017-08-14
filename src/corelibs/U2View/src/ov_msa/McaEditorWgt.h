@@ -32,7 +32,7 @@ class McaEditorReferenceArea;
 class McaEditorSequenceArea;
 class McaReferenceCharController;
 
-class McaEditorWgt : public MaEditorWgt {
+class U2VIEW_EXPORT McaEditorWgt : public MaEditorWgt {
     Q_OBJECT
 public:
     McaEditorWgt(McaEditor* editor);

@@ -70,7 +70,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     QString name = getEditor()->getReferenceContext()->getSequenceObject()->getSequenceName();
     QWidget *refName = createHeaderLabelWidget(tr("Reference %1:").arg(name),
                                                Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), refArea);
-    refName->setContentsMargins(0, TOP_INDENT, 0, 0);
+    refName->setObjectName("reference label container widget");
 
     nameAreaLayout->insertWidget(0, refName);
 

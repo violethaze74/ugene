@@ -37,6 +37,8 @@ public:
     virtual QStringList header();
     virtual QList<QStringList> data();
 
+    static const QString ID;
+
 private slots:
     void sl_workerInfoChanged(const QString &actor, const U2::Workflow::Monitor::WorkerInfo &info);
     void sl_update();

@@ -200,7 +200,7 @@ public:
     HANDLE m_hProcess;
     LPSTR m_szSymPath;
 
-    typedef struct IMAGEHLP_MODULE64_V2 {
+    typedef struct _IMAGEHLP_MODULE64_V2 {
         DWORD    SizeOfStruct;           // set to sizeof(IMAGEHLP_MODULE64)
         DWORD64  BaseOfImage;            // base load address of module
         DWORD    ImageSize;              // virtual size of the loaded module
@@ -211,7 +211,7 @@ public:
         CHAR     ModuleName[32];         // module name
         CHAR     ImageName[256];         // image name
         CHAR     LoadedImageName[256];   // symbol file name
-    };
+    } IMAGEHLP_MODULE64_V2;
 
 
     // SymCleanup()

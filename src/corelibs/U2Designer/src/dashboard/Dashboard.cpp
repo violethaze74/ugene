@@ -27,6 +27,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QWebFrame>
+#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>
@@ -359,8 +360,11 @@ void Dashboard::sl_hideLoadBtnHint() {
 /************************************************************************/
 /* DashboardWidget */
 /************************************************************************/
-DashboardWidget::DashboardWidget(const QWebElement &_container, Dashboard *parent)
-: QObject(parent), dashboard(parent), container(_container)
+DashboardWidget::DashboardWidget(const QWebElement &_container, const QString &id, Dashboard *parent)
+    : QObject(parent),
+      dashboard(parent),
+      container(_container),
+      id(id)
 {
 
 }

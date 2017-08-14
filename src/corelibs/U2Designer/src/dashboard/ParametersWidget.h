@@ -40,6 +40,8 @@ public:
     ParametersWidget(const QWebElement &container, Dashboard *parent);
 
     void createWidget(const QList<WorkerParamsInfo> &workersParamsInfo);
+
+    static const QString ID;
 };
 
 } // namespace U2

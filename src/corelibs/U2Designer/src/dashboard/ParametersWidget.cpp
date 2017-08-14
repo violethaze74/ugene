@@ -31,8 +31,10 @@
 
 namespace U2 {
 
+const QString ParametersWidget::ID = "parameters";
+
 ParametersWidget::ParametersWidget(const QWebElement &container, Dashboard *parent)
-    : DashboardWidget(container, parent)
+    : DashboardWidget(container, ID, parent)
 {
     const WorkflowMonitor *workflowMonitor = dashboard->monitor();
     SAFE_POINT(NULL != workflowMonitor, "NULL workflow monitor!", );

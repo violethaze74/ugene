@@ -616,7 +616,7 @@ void maketree()
 void neighbour_init(int num, U2::MemoryLocker& memLocker, const QString& filename) 
 {
     int argc = 1;                
-    char* argv[] = { "Neighbor" };
+    const char* argv[] = { "Neighbor" };
     spp = num;
     //openfile(&infile,INFILE,"input file", "r",argv[0],infilename);
     //openfile(&outfile,OUTFILE,"output file", "w",argv[0],outfilename);

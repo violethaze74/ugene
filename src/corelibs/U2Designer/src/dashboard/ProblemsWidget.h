@@ -39,6 +39,8 @@ public:
 
     static QString problemImage(const Problem &info);
 
+    static const QString ID;
+
 private slots:
     void sl_newProblem(const Problem &info);
 

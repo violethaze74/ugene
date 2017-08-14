@@ -110,7 +110,7 @@ void main_loop_opt( struct plan7_s * hmm_, const char * seq_, int seqlen, struct
 
             if ( sc >= thresh->domT && evalue <= thresh->domE ) {
                 // This function adds new results to dhit->unsrt. They are added right after 'last_hit_index'
-                sc = PostprocessSignificantHit( ghit, dhit, tr, hmm, curSeqAddr, curSeqLen,  "seq", 0, 0, do_forward, sc, do_null2, thresh, FALSE );
+                sc = PostprocessSignificantHit( ghit, dhit, tr, hmm, curSeqAddr, curSeqLen,  (char *)"seq", 0, 0, do_forward, sc, do_null2, thresh, FALSE );
 
                 //shifting results 
                 for( int hi = last_hit_index; hi < dhit->num; ++hi ) {

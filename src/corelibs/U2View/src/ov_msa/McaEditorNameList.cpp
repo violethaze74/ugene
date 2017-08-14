@@ -41,6 +41,8 @@ const QColor McaEditorNameList::ARROW_REVERSE_COLOR = "green"; // another possib
 McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
     : MaEditorNameList(ui, nhBar)
 {
+    setObjectName("mca_editor_name_list");
+
     connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
 
     editSequenceNameAction->setText(tr("Rename read"));

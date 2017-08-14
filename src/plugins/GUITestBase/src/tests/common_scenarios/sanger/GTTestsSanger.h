@@ -35,11 +35,11 @@ GUI_TEST_CLASS_DECLARATION(test_0001)
 GUI_TEST_CLASS_DECLARATION(test_0002)
 GUI_TEST_CLASS_DECLARATION(test_0003)
 GUI_TEST_CLASS_DECLARATION(test_0004)
+GUI_TEST_CLASS_DECLARATION(test_0005)
 
 #undef GUI_TEST_SUITE
 
-} // namespace GUITest_common_scenarios_sanger
-
-} // namespace U2
+}   // namespace GUITest_common_scenarios_sanger
+}   // namespace U2
 
 #endif // _U2_GUI_TEST_SANGER_H_
