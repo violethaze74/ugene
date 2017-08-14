@@ -36,7 +36,6 @@ public:
     DNAChromatogram chromatogram;
     U2MsaRowGapModel gapModel;
     DNASequence sequence;
-    U2Region workingArea;
     qint64 rowLength;
     QVariantMap additionalInfo;
 };
@@ -48,7 +47,6 @@ public:
     U2Chromatogram chromatogram;
     U2Sequence sequence;
     U2MsaRowGapModel gapModel;
-    U2Region workingArea;
     qint64 rowLength;
     QVariantMap additionalInfo;
 };

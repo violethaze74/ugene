@@ -148,7 +148,6 @@ QList<McaRowDatabaseData> MultipleChromatogramAlignmentImporter::importRowChildO
         CHECK_OP(os, mcaRowsDatabaseData);
 
         mcaRowDatabaseData.gapModel = row->getGapModel();
-        mcaRowDatabaseData.workingArea = row->getCoreRegion();
         mcaRowDatabaseData.rowLength = row->getRowLengthWithoutTrailing();
 
         mcaRowsDatabaseData << mcaRowDatabaseData;
@@ -168,8 +167,8 @@ QList<U2McaRow> MultipleChromatogramAlignmentImporter::importRows(U2OpStatus &os
         row.chromatogramId = mcaRowDatabaseData.chromatogram.id;
         row.sequenceId = mcaRowDatabaseData.sequence.id;
         row.gaps = mcaRowDatabaseData.gapModel;
-        row.gstart = mcaRowDatabaseData.workingArea.startPos;
-        row.gend = mcaRowDatabaseData.workingArea.endPos();
+        row.gstart = 0;
+        row.gend = mcaRowDatabaseData.sequence.length;
         row.length = mcaRowDatabaseData.rowLength;
 
         rows << row;

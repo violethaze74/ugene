@@ -121,7 +121,6 @@ QList<McaRowMemoryData> MultipleChromatogramAlignmentExporter::exportDataOfRows(
         mcaRowMemoryData.additionalInfo = exportRowAdditionalInfo(os, row.chromatogramId);
 
         mcaRowMemoryData.gapModel = row.gaps;
-        mcaRowMemoryData.workingArea = U2Region(row.gstart, row.gend - row.gstart);
         mcaRowMemoryData.rowLength = row.length;
 
         mcaRowsMemoryData << mcaRowMemoryData;
