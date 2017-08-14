@@ -31,9 +31,9 @@
 
 #include "MaConsensusMismatchController.h"
 #include "MaEditorFactory.h"
-#include "MaEditorNameList.h"
 #include "McaEditor.h"
 #include "McaEditorConsensusArea.h"
+#include "McaEditorNameList.h"
 #include "McaEditorSequenceArea.h"
 #include "ExportConsensus/MaExportConsensusTabFactory.h"
 #include "General/McaGeneralTabFactory.h"

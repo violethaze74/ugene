@@ -100,6 +100,10 @@ McaEditorConsensusArea *McaEditorWgt::getConsensusArea() const {
     return qobject_cast<McaEditorConsensusArea *>(consArea);
 }
 
+McaEditorNameList *McaEditorWgt::getEditorNameList() const {
+    return qobject_cast<McaEditorNameList *>(nameList);
+}
+
 McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
     return qobject_cast<McaEditorSequenceArea*>(seqArea);
 }
@@ -140,7 +144,7 @@ void McaEditorWgt::initConsensusArea() {
 }
 
 void McaEditorWgt::initStatusBar() {
-    statusBar = new McaEditorStatusBar(editor->getMaObject(), seqArea, refCharController);
+    statusBar = new McaEditorStatusBar(editor->getMaObject(), seqArea, getEditorNameList(), refCharController);
 }
 
 }   // namespace U2

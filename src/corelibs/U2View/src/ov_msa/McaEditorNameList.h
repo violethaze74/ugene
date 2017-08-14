@@ -34,6 +34,8 @@ class U2VIEW_EXPORT McaEditorNameList : public MaEditorNameList {
 public:
     McaEditorNameList(McaEditorWgt* ui, QScrollBar* nhBar);
 
+    U2Region getSelection() const;
+
 protected slots:
     void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& oldSelection);
 
@@ -46,7 +48,6 @@ signals:
 
 protected:
     void drawCollapsibileSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool selected, bool collapsed, bool isReference);
-    U2Region getSelection() const;
 
     void setSelection(int startSeq, int count);
     bool isRowInSelection(int row) const;
