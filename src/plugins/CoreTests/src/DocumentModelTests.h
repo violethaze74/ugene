@@ -70,6 +70,7 @@ public:
 
 private:
      QString             url;
+     DocumentFormatId    formatId;
      IOAdapterFactory*   iof;
 
 
