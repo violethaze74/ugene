@@ -133,15 +133,15 @@ void MaEditorStatusBar::updateLock() {
     lockLabel->setToolTip(locked ? tr("Alignment object is locked") : tr("Alignment object is not locked"));
 }
 
-void MaEditorStatusBar::updateLinePositionLabels() {
+void MaEditorStatusBar::updateLineLabel() {
     MaEditorSelection selection = seqArea->getSelection();
-    const QPoint& pos = selection.topLeft();
-
-    lineLabel->update(selection.isEmpty() ? MaEditorStatusBar::NONE_MARK : QString::number(pos.y() + 1),
+    lineLabel->update(selection.isEmpty() ? MaEditorStatusBar::NONE_MARK : QString::number(selection.y() + 1),
                       QString::number(aliObj->getNumRows()));
+}
 
-
-    QPair<QString, QString> pp = getGappedPositionInfo(pos);
+void MaEditorStatusBar::updatePositionLabel() {
+    MaEditorSelection selection = seqArea->getSelection();
+    QPair<QString, QString> pp = getGappedPositionInfo(selection.topLeft());
     positionLabel->update(pp.first, pp.second);
     positionLabel->updateMinWidth(QString::number(aliObj->getLength()));
 }

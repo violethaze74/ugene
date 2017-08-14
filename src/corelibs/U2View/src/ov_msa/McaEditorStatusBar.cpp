@@ -19,10 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "McaEditor.h"
-#include "McaEditorReferenceArea.h"
-#include "McaEditorStatusBar.h"
-#include "McaReferenceCharController.h"
+#include <QHBoxLayout>
 
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
@@ -30,18 +27,24 @@
 
 #include <U2View/SequenceObjectContext.h>
 
+#include "McaEditor.h"
+#include "McaEditorNameList.h"
+#include "McaEditorReferenceArea.h"
+#include "McaEditorStatusBar.h"
+#include "McaReferenceCharController.h"
 #include "view_rendering/MaEditorSelection.h"
 #include "view_rendering/MaEditorSequenceArea.h"
-
-#include <QHBoxLayout>
 
 namespace U2 {
 
 McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject* mobj,
                                        MaEditorSequenceArea* seqArea,
+                                       McaEditorNameList* nameList,
                                        McaReferenceCharController* refCharController)
     : MaEditorStatusBar(mobj, seqArea),
-      refCharController(refCharController) {
+      refCharController(refCharController),
+      nameList(nameList)
+{
     setObjectName("mca_editor_status_bar");
 
     colomnLabel->setPatterns(tr("RefPos %1 / %2"),
@@ -49,6 +52,8 @@ McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject* mobj,
     positionLabel->setPatterns(tr("ReadPos %1 / %2"),
                                tr("Read position %1 of %2"));
     selectionLabel->hide();
+
+    connect(nameList, SIGNAL(si_selectionChanged()), SLOT(sl_update()));
 
     updateLabels();
     setupLayout();
@@ -62,7 +67,8 @@ void McaEditorStatusBar::setupLayout() {
 }
 
 void McaEditorStatusBar::updateLabels() {
-    updateLinePositionLabels();
+    updateLineLabel();
+    updatePositionLabel();
 
     McaEditor* editor = qobject_cast<McaEditor*>(seqArea->getEditor());
     SAFE_POINT(editor->getReferenceContext() != NULL, "Reference context is NULL", );
@@ -77,6 +83,12 @@ void McaEditorStatusBar::updateLabels() {
         int refPos = refCharController->getUngappedPosition(startSelection);
         colomnLabel->update(refPos == -1 ? "gap" : QString::number(refPos + 1), ungappedRefLen);
     }
+}
+
+void McaEditorStatusBar::updateLineLabel() {
+    const U2Region selection = nameList->getSelection();
+    lineLabel->update(selection.isEmpty() ? MaEditorStatusBar::NONE_MARK : QString::number(selection.startPos + 1),
+                      QString::number(aliObj->getNumRows()));
 }
 
 } // namespace

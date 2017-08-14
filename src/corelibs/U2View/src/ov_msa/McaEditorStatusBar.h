@@ -26,20 +26,24 @@
 
 namespace U2 {
 
+class McaEditorNameList;
 class McaReferenceCharController;
 
 class McaEditorStatusBar : public MaEditorStatusBar {
     Q_OBJECT
 public:
     McaEditorStatusBar(MultipleAlignmentObject* mobj,
-                       MaEditorSequenceArea* seqArea,
+                       MaEditorSequenceArea *seqArea,
+                       McaEditorNameList *nameList,
                        McaReferenceCharController* refCharController);
 
 private:
     void setupLayout();
     void updateLabels();
+    void updateLineLabel();
 
     McaReferenceCharController* refCharController;
+    McaEditorNameList *nameList;
 };
 
 } // namespace

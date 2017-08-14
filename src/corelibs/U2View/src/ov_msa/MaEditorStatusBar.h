@@ -67,7 +67,8 @@ protected:
     QPair<QString, QString> getGappedPositionInfo(const QPoint& pos) const;
 
     void updateLock();
-    void updateLinePositionLabels();
+    virtual void updateLineLabel();
+    void updatePositionLabel();
     void updateColumnLabel();
     void updateSelectionLabel();
 

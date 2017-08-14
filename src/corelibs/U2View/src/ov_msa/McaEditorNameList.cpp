@@ -51,6 +51,10 @@ McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
     setMinimumWidth(getMinimumWidgetWidth());
 }
 
+U2Region McaEditorNameList::getSelection() const {
+    return localSelection;
+}
+
 void McaEditorNameList::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection &oldSelection) {
     setSelection(current.y(), current.height());
     sl_updateActions();
@@ -75,10 +79,6 @@ void McaEditorNameList::drawCollapsibileSequenceItem(QPainter &painter, int rowI
     const QRectF arrowRect = calculateArrowRect(U2Region(rect.y(), rect.height()));
     MaEditorNameList::drawCollapsibileSequenceItem(painter, rowIndex, name, rect, selected, collapsed, isReference);
     drawArrow(painter, isReversed, arrowRect);
-}
-
-U2Region McaEditorNameList::getSelection() const {
-    return localSelection;
 }
 
 void McaEditorNameList::setSelection(int startSeq, int count) {
