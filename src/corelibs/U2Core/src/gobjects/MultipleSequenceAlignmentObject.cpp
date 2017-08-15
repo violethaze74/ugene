@@ -161,21 +161,32 @@ void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowInde
     const MultipleSequenceAlignment msa = getMultipleAlignment();
     SAFE_POINT(rowIndex >= 0 && startPos + 1 <= msa->getLength(), "Invalid parameters", );
     qint64 modifiedRowId = msa->getRow(rowIndex)->getRowId();
+    qint64 rowLength = msa->getRow(rowIndex)->getCoreLength();
 
     U2OpStatus2Log os;
+    bool wasRowRemoved = false;
     if (newChar != U2Msa::GAP_CHAR) {
         MsaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
     } else {
-        MsaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
-        MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os, false);
+        if (rowLength == 1) {
+            MsaDbiUtils::removeRow(entityRef, modifiedRowId, os);
+            wasRowRemoved = true;
+        } else {
+            MsaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
+            MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os, false);
+        }
     }
     SAFE_POINT_OP(os, );
 
     MaModificationInfo mi;
-    mi.rowContentChanged = true;
-    mi.rowListChanged = false;
-    mi.alignmentLengthChanged = false;
-    mi.modifiedRowIds << modifiedRowId;
+    if (wasRowRemoved) {
+        mi.rowListChanged = true;
+    } else {
+        mi.rowContentChanged = true;
+        mi.rowListChanged = false;
+        mi.alignmentLengthChanged = false;
+        mi.modifiedRowIds << modifiedRowId;
+    }
 
     if (newChar != ' ' && !msa->getAlphabet()->contains(newChar)) {
         const DNAAlphabet *alp = U2AlphabetUtils::findBestAlphabet(QByteArray(1, newChar));
@@ -189,7 +200,11 @@ void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowInde
         }
     }
 
-    updateCachedMultipleAlignment(mi);
+    if (wasRowRemoved) {
+        updateCachedMultipleAlignment(mi, QList<qint64>() << modifiedRowId);
+    } else {
+        updateCachedMultipleAlignment(mi);
+    }
 }
 
 void MultipleSequenceAlignmentObject::deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount) {
