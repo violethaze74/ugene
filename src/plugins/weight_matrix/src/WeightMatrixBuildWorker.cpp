@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,30 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#include "WeightMatrixWorkers.h"
-#include "WeightMatrixIOWorkers.h"
-#include "WeightMatrixPlugin.h"
-#include "PWMBuildDialogController.h"
-
 #include <U2Algorithm/BuiltInPWMConversionAlgorithms.h>
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Designer/DelegateEditors.h>
+
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/Datatype.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BasePorts.h>
-#include <U2Lang/BaseActorCategories.h>
-#include <U2Designer/DelegateEditors.h>
-#include <U2Lang/CoreLibConstants.h>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/MAlignment.h>
-
-/* TRANSLATOR U2::WeightMatrixIO */
-/* TRANSLATOR U2::LocalWorkflow::PWMatrixBuildWorker */
+#include "PWMBuildDialogController.h"
+#include "WeightMatrixIOWorkers.h"
+#include "WeightMatrixPlugin.h"
+#include "WeightMatrixWorkers.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -138,11 +137,10 @@ Task* PWMatrixBuildWorker::tick() {
 
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-        QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &msa = msaObj->getMAlignment();
 
-        Task* t = new PWMatrixBuildTask(cfg, msa);
+        Task* t = new PWMatrixBuildTask(cfg, msaObj->getMultipleAlignment());
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {
@@ -228,11 +226,10 @@ Task* PFMatrixBuildWorker::tick() {
 
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-        QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &msa = msaObj->getMAlignment();
 
-        Task* t = new PFMatrixBuildTask(cfg, msa);
+        Task* t = new PFMatrixBuildTask(cfg, msaObj->getMultipleAlignment());
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {

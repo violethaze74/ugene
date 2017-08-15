@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -283,11 +283,9 @@ QStringList ImportToDatabaseDialog::getFilesToImport() {
 
     QFileDialog::Options additionalOptions;
     Q_UNUSED(additionalOptions);
-#if defined(Q_OS_MAC) || (QT_VERSION >= 0x050000)
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         additionalOptions = QFileDialog::DontUseNativeDialog;
     }
-#endif
 
     const QStringList fileList = U2FileDialog::getOpenFileNames(this,
                                                                tr("Select files to import"),
@@ -598,7 +596,7 @@ void ImportToDatabaseDialog::setFolderTooltip(QTreeWidgetItem *item) {
               "\n";
 
     if (currentOptions.processFoldersRecursively) {
-        tooltip += "\n" + tr("The directory will be processed recursively");
+        tooltip += "\n" + tr("The folder will be processed recursively");
     }
 
     if (currentOptions.createSubfolderForEachFile) {

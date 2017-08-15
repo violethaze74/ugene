@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MsaColorSchemePercentageIdentity : public MsaColorScheme {
     Q_OBJECT
 public:
-    MsaColorSchemePercentageIdentity(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj);
+    MsaColorSchemePercentageIdentity(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj);
 
     QColor getColor(int seq, int pos, char c) const;
 
@@ -54,9 +54,9 @@ protected:
 class MsaColorSchemePercentageIdentityFactory : public MsaColorSchemeFactory {
     Q_OBJECT
 public:
-    MsaColorSchemePercentageIdentityFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes);
+    MsaColorSchemePercentageIdentityFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
 
-    MsaColorScheme * create(QObject *parent, MAlignmentObject *maObj) const;
+    MsaColorScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
 };
 
 

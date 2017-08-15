@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -99,7 +99,7 @@ void ExportMSA2MSADialog::initSaveController(const QString& defaultFileName, con
     config.saveTitle = tr("Export alignment");
 
     DocumentFormatConstraints formatConstraints;
-    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_ALIGNMENT;
+    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     formatConstraints.addFlagToSupport(DocumentFormatFlag_SupportWriting);
 
     saveController = new SaveDocumentController(config, formatConstraints, this);

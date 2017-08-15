@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 #include <ui_SiteconBuildDialog.h>
 #include "SiteconAlgorithm.h"
 #include <U2Core/Task.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
@@ -64,13 +64,13 @@ private:
 class SiteconBuildTask : public Task {
     Q_OBJECT
 public:
-    SiteconBuildTask(const SiteconBuildSettings& s, const MAlignment& ma, const QString& origin = QString());
+    SiteconBuildTask(const SiteconBuildSettings& s, const MultipleSequenceAlignment& ma, const QString& origin = QString());
     void run();
     SiteconModel getResult() const {return m;}
 
 private:
     SiteconBuildSettings    settings;
-    MAlignment              ma;
+    MultipleSequenceAlignment              ma;
     SiteconModel            m;
 };
 

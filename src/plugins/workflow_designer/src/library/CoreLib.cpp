@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,8 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
-#include <qdom.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
@@ -50,7 +48,6 @@
 #include <U2Lang/WorkflowManager.h>
 #include <U2Lang/WorkflowSettings.h>
 
-#include "AlignToReferenceWorker.h"
 #include "AminoTranslationWorker.h"
 #include "AssemblyToSequenceWorker.h"
 #include "BaseDocWriter.h"
@@ -86,6 +83,7 @@
 #include "ReverseComplementWorker.h"
 #include "RmdupBamWorker.h"
 #include "ScriptWorker.h"
+#include "SequenceQualityTrimWorker.h"
 #include "SequenceSplitWorker.h"
 #include "SequencesToMSAWorker.h"
 #include "SortBamWorker.h"
@@ -171,7 +169,7 @@ void CoreLib::init() {
         QList<PortDescriptor*> p; QList<Attribute*> a;
         a << new Attribute(BaseAttributes::READ_BY_LINES_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, false);
 
-        Descriptor acd(CoreLibConstants::READ_TEXT_PROTO_ID, tr("Read Plain Text"), tr("Reads text from local or remote files."));
+        Descriptor acd(CoreLibConstants::READ_TEXT_PROTO_ID, tr("Read Plain Text"), tr("Reads text from local or remote files. All text file formats supported by UGENE are allowed as input to this element."));
         p << new PortDescriptor(Descriptor(BasePorts::OUT_TEXT_PORT_ID(), tr("Plain text"), ""), dtl, false, true);
         ReadDocActorProto* proto = new ReadDocActorProto(BaseDocumentFormats::PLAIN_TEXT, acd, p, a);
         proto->setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::TEXT);
@@ -204,7 +202,7 @@ void CoreLib::init() {
     // GENERIC WRITE MSA actor proto
     {
         DocumentFormatConstraints constr;
-        constr.supportedObjectTypes.insert( GObjectTypes::MULTIPLE_ALIGNMENT );
+        constr.supportedObjectTypes.insert( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT );
         constr.addFlagToSupport(DocumentFormatFlag_SupportWriting);
         constr.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
         QList<DocumentFormatId> supportedFormats = AppContext::getDocumentFormatRegistry()->selectFormats( constr );
@@ -223,7 +221,7 @@ void CoreLib::init() {
 
             QVariantMap m;
             foreach( const DocumentFormatId & fid, supportedFormats ) {
-                m[fid] = fid;
+                m[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = fid;
             }
             proto->getEditor()->addDelegate(new ComboBoxDelegate(m), BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
             proto->setPrompter(new WriteDocPrompter(tr("Save all MSAs from <u>%1</u> to <u>%2</u>."), BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()));
@@ -268,7 +266,7 @@ void CoreLib::init() {
 
             QVariantMap m;
             foreach( const DocumentFormatId & fid, supportedFormats ) {
-                m[fid] = fid;
+                m[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = fid;
             }
 
             ComboBoxDelegate *comboDelegate = new ComboBoxDelegate(m);
@@ -283,7 +281,6 @@ void CoreLib::init() {
             r->registerProto(BaseActorCategories::CATEGORY_DATASINK(), proto);
         }
     }
-    AlignToReferenceWorkerFactory::init();
     Alignment2SequenceWorkerFactory::init();
     AminoTranslationWorkerFactory::init();
     AssemblyToSequencesWorkerFactory::init();
@@ -297,6 +294,7 @@ void CoreLib::init() {
     ExtractConsensusWorkerFactory::init();
     ExtractMSAConsensusSequenceWorkerFactory::init();
     ExtractMSAConsensusStringWorkerFactory::init();
+    FastqQualityTrimWorkerFactory::init();
     FetchSequenceByIdFromAnnotationFactory::init();
     FilterAnnotationsByQualifierWorkerFactory::init();
     FilterAnnotationsWorkerFactory::init();
@@ -310,14 +308,14 @@ void CoreLib::init() {
     MergeFastqWorkerFactory::init();
     MultiplexerWorkerFactory::init();
     PassFilterWorkerFactory::init();
-    QualityTrimWorkerFactory::init();
     RCWorkerFactory::init();
     ReadAnnotationsWorkerFactory::init();
     ReadAssemblyWorkerFactory::init();
     ReadVariationWorkerFactory::init();
-    RenameChomosomeInVariationWorkerFactory::init();
     RemoteDBFetcherFactory::init();
+    RenameChomosomeInVariationWorkerFactory::init();
     RmdupBamWorkerFactory::init();
+    SequenceQualityTrimWorkerFactory::init();
     SequenceSplitWorkerFactory::init();
     SequencesToMSAWorkerFactory::init();
     SortBamWorkerFactory::init();
@@ -335,7 +333,7 @@ void CoreLib::initUsersWorkers() {
 
     QDir dir(path);
     if(!dir.exists()) {
-        //log.info(tr("There isn't directory with users workflow elements"));
+        //log.info(tr("There isn't folder with users workflow elements"));
         return;
     }
     dir.setNameFilters(QStringList() << "*.usa"); //think about file extension // Answer: Ok :)

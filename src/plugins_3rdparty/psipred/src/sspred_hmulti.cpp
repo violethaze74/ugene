@@ -5,12 +5,11 @@
 
 /* 2nd Level Prediction Module */
 
-#include <QtGlobal>
-#include <QtCore/QByteArray>
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
-#include <QtCore/QString>
-#include <QtCore/QDir>
+#include <QByteArray>
+#include <QFile>
+#include <QTextStream>
+#include <QString>
+#include <QDir>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/UserApplicationsSettings.h>

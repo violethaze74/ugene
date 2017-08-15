@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 
 #include <ui_HMMBuildDialog.h>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Task.h>
 
 #include "uhmmbuild.h"
@@ -41,7 +41,7 @@ class SaveDocumentController;
 class HMMBuildDialogController : public QDialog, public Ui_HMMBuildDialog {
     Q_OBJECT
 public:
-    HMMBuildDialogController(const QString& profileName, const MAlignment& ma, QWidget* p = NULL);
+    HMMBuildDialogController(const QString& profileName, const MultipleSequenceAlignment& ma, QWidget* p = NULL);
     
 public slots:
     void reject();
@@ -56,7 +56,7 @@ private slots:
 private:
     void initSaveController();
 
-    MAlignment  ma;
+    MultipleSequenceAlignment  ma;
     QString     profileName;
     Task*       task;
     QPushButton* okButton;
@@ -71,14 +71,14 @@ private:
 class HMMBuildTask: public Task {
     Q_OBJECT
 public:
-    HMMBuildTask(const UHMMBuildSettings& s, const MAlignment& ma);
+    HMMBuildTask(const UHMMBuildSettings& s, const MultipleSequenceAlignment& ma);
     ~HMMBuildTask();
 
     void run();
     void _run();
     plan7_s* getHMM() const {return hmm;}
 private:
-    MAlignment ma;
+    MultipleSequenceAlignment ma;
     UHMMBuildSettings settings;
     plan7_s* hmm;
 };
@@ -88,7 +88,7 @@ class HMMBuildToFileTask : public Task {
 public:
     HMMBuildToFileTask(const QString& inFile, const QString& outFile, const UHMMBuildSettings& s);
 
-    HMMBuildToFileTask(const MAlignment& ma, const QString& outFile, const UHMMBuildSettings& s);
+    HMMBuildToFileTask(const MultipleSequenceAlignment& ma, const QString& outFile, const UHMMBuildSettings& s);
 
     virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
@@ -100,7 +100,7 @@ public:
 private:
     UHMMBuildSettings   settings;
     QString             outFile;
-    MAlignment          ma;
+    MultipleSequenceAlignment          ma;
     LoadDocumentTask*   loadTask;
     HMMBuildTask*       buildTask;
 };

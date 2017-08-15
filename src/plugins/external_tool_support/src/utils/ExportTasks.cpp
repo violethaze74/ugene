@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,9 +35,8 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -53,9 +52,9 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // DNAExportAlignmentTask
-SaveAlignmentTask::SaveAlignmentTask(const MAlignment& _ma, const QString& _fileName, DocumentFormatId _f, const QVariantMap& _hints)
+SaveAlignmentTask::SaveAlignmentTask(const MultipleSequenceAlignment& _ma, const QString& _fileName, DocumentFormatId _f, const QVariantMap& _hints)
 : Task("", TaskFlag_None),
-  ma(_ma),
+  ma(_ma->getCopy()),
   fileName(_fileName),
   hints(_hints),
   format(_f)
@@ -64,7 +63,7 @@ SaveAlignmentTask::SaveAlignmentTask(const MAlignment& _ma, const QString& _file
     setTaskName(tr("Export alignment to '%1'").arg(QFileInfo(fileName).fileName()));
     setVerboseLogMode(true);
 
-    if (ma.isEmpty()) {
+    if (ma->isEmpty()) {
         setError(tr("An alignment is empty"));
     }
 }
@@ -75,7 +74,7 @@ void SaveAlignmentTask::run() {
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(fileName));
     doc.reset(f->createNewLoadedDocument(iof, fileName, stateInfo));
 
-    MAlignmentObject* obj = MAlignmentImporter::createAlignment(doc->getDbiRef(), ma, stateInfo);
+    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
     GHints* docHints = doc->getGHints();
@@ -90,22 +89,20 @@ void SaveAlignmentTask::run() {
 Document * SaveAlignmentTask::getDocument() const {
     return doc.data();
 }
-
-const MAlignment & SaveAlignmentTask::getMAlignment() const {
-    return ma;
-}
-
-const QString &SaveAlignmentTask::getUrl() const {
+const QString & SaveAlignmentTask::getUrl() const {
     return fileName;
 }
 
+const MultipleSequenceAlignment & SaveAlignmentTask::getMAlignment() const {
+    return ma;
+}
 
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format
 
-SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MAlignment& _ma, const QString& _url, bool _trimAli, DocumentFormatId _format)
+SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MultipleSequenceAlignment& _ma, const QString& _url, bool _trimAli, DocumentFormatId _format)
 : Task(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None),
-ma(_ma), url(_url), trimAli(_trimAli), format(_format)
+ma(_ma->getCopy()), url(_url), trimAli(_trimAli), format(_format)
 {
     GCOUNTER( cvar, tvar, "ExportMSA2SequencesTask" );
     setVerboseLogMode(true);
@@ -126,7 +123,7 @@ void SaveMSA2SequencesTask::run() {
         if (usedNames.contains(name)) {
             name = TextUtils::variate(name, " ", usedNames, false, 1);
         }
-        U2EntityRef seqRef = U2SequenceUtils::import(doc->getDbiRef(), s, stateInfo);
+        U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, doc->getDbiRef(), s);
         CHECK_OP(stateInfo, );
         doc->addObject(new U2SequenceObject(name, seqRef));
         usedNames.insert(name);

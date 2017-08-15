@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,29 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#include "DocumentModelTests.h"
+#include <QCoreApplication>
+#include <QDir>
+#include <QStringList>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObject.h>
+#include <U2Core/DocumentUtils.h>
 #include <U2Core/GHints.h>
+#include <U2Core/GObject.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
+#include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
+#include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Core/LoadDocumentTask.h>
-#include <U2Core/SaveDocumentTask.h>
-#include <U2Core/DocumentUtils.h>
+#include <U2Formats/SAMFormat.h>
 
 #include <U2Test/GTest.h>
 
-#include <U2Formats/SAMFormat.h>
-
-#include <QStringList>
+#include "DocumentModelTests.h"
 
 namespace U2 {
 
@@ -201,6 +202,7 @@ void GTest_SaveDocument::init(XMLTestFormat* tf, const QDomElement& el) {
         return ;
     }
 
+    formatId = el.attribute("format");
 }
 
 void GTest_SaveDocument::prepare(){
@@ -208,9 +210,18 @@ void GTest_SaveDocument::prepare(){
     Document* doc = getContext<Document>(this, docContextName);
     if (doc == NULL) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
-        return ;
+        return;
     }
-    saveTask = new SaveDocumentTask(doc, iof, url);
+
+    SaveDocFlags saveTaskFlags = SaveDoc_Overwrite;
+    if (!formatId.isEmpty() && formatId != doc->getDocumentFormatId()) {
+        DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
+        CHECK_EXT(NULL != format, stateInfo.setError(QString("Document format not found: %1").arg(formatId)), );
+        doc = doc->getSimpleCopy(format, iof, url);
+        saveTaskFlags |= SaveDoc_DestroyButDontUnload;
+    }
+
+    saveTask = new SaveDocumentTask(doc, iof, url, saveTaskFlags);
     addSubTask(saveTask);
     /////////////////////////
 }
@@ -864,7 +875,7 @@ QByteArray GTest_CompareFiles::getLine(IOAdapter* io) {
         CHECK(len != 0, "");
         CHECK_EXT(lineOk, setError("Line is too long"), "");
 
-        line = (QByteArray::fromRawData(buff, len)).trimmed();
+        line = (QByteArray(buff, len)).trimmed();
         commentString = false;
         foreach(const QString& comment, commentsStartWith){
             if (line.startsWith(comment.toLatin1())){
@@ -994,7 +1005,7 @@ QString GTest_Compare_VCF_Files::getLine(IOAdapter* io) {
         CHECK(len != 0, "");
         CHECK_EXT(lineOk, setError("Line is too long"), "");
 
-        line = (QByteArray::fromRawData(buff, len)).trimmed();
+        line = (QByteArray(buff, len)).trimmed();
     } while (line.startsWith(COMMENT_MARKER));
 
     return QString(line);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,14 +31,14 @@ namespace U2{
 class U2ALGORITHM_EXPORT PhyTreeGeneratorTask: public Task{
     Q_OBJECT
 public:
-    PhyTreeGeneratorTask(const MAlignment& ma, const CreatePhyTreeSettings& _settings);
-    ~PhyTreeGeneratorTask(){};
+    PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings);
+    ~PhyTreeGeneratorTask(){}
     void run();
     PhyTree getResult() { return result; }
     const CreatePhyTreeSettings& getSettings() { return settings; }
     ReportResult report();
 protected:
-    const MAlignment&           inputMA;
+    const MultipleSequenceAlignment inputMA;
     PhyTree                     result;
     CreatePhyTreeSettings       settings;
 };
@@ -47,7 +47,7 @@ class SeqNamesConvertor {
 public:
     SeqNamesConvertor() : lastIdStr("a") {}
 
-    void replaceNamesWithAlphabeticIds(MAlignment& ma);
+    void replaceNamesWithAlphabeticIds(MultipleSequenceAlignment& ma);
     void restoreNames(const PhyTree& tree);
 
 private:
@@ -60,7 +60,7 @@ private:
 class U2ALGORITHM_EXPORT PhyTreeGeneratorLauncherTask: public Task{
     Q_OBJECT
 public:
-    PhyTreeGeneratorLauncherTask(const MAlignment& ma, const CreatePhyTreeSettings& _settings);
+    PhyTreeGeneratorLauncherTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings);
     ~PhyTreeGeneratorLauncherTask(){};
     PhyTree getResult() { return result; }
     void prepare();
@@ -69,7 +69,7 @@ public:
 private slots:
     void sl_onCalculationCanceled();
 private:
-    MAlignment                  inputMA;
+    MultipleSequenceAlignment                  inputMA;
     PhyTree                     result;
     CreatePhyTreeSettings       settings;
     PhyTreeGeneratorTask*       task;

@@ -22,12 +22,12 @@
 #ifndef _U2_MSA_SCHEMES_MENU_BUILDER_H_
 #define _U2_MSA_SCHEMES_MENU_BUILDER_H_
 
-#include <QAction>
 #include <QList>
+#include <QAction>
 
 #include <U2Core/global.h>
 
-#define SECTION_TOKEN QString("SEPARATOR")
+#define SECTION_TOKEN         QString("SEPARATOR")
 
 namespace U2 {
 
@@ -42,7 +42,7 @@ public:
         Custom
     };
 
-    MsaSchemesMenuBuilder();
+    MsaSchemesMenuBuilder(): QObject() {};
 
     static void createAndFillColorSchemeMenuActions(QList<QAction*> &actions, ColorSchemeType type, DNAAlphabetType alphabet, QObject *actionsParent);
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,11 +19,14 @@
  * MA 02110-1301, USA.
  */
 
+#include <QPushButton>
+
 #include "AnnotHighlightWidget.h"
 
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/U2SafePoints.h>
@@ -280,10 +283,12 @@ QList<AnnotatedRegion> AnnotHighlightWidget::getAllAnnotatedRegionsByStartPos(qi
 }
 
 void AnnotHighlightWidget::sl_onNextAnnotationClick() {
+    GCOUNTER(cvar, tvar, "Annotations navigation: next annotation");
     selectNextAnnotation(true);
 }
 
 void AnnotHighlightWidget::sl_onPrevAnnotationClick() {
+    GCOUNTER(cvar, tvar, "Annotations navigation: previous annotation");
     selectNextAnnotation(false);
 }
 

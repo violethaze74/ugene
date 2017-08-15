@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,9 +45,9 @@
 #include <U2Algorithm/SmithWatermanResult.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
 
-#include <QtCore/QMutexLocker>
-#include <QtCore/QMap>
-#include <QtCore/QVariant>
+#include <QMutexLocker>
+#include <QMap>
+#include <QVariant>
 
 using namespace std;
 

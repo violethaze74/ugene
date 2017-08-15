@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,8 @@
 #ifndef _U2_SNPEFF_INFO_PARSER_H_
 #define _U2_SNPEFF_INFO_PARSER_H_
 
+#include <QMap>
+
 #include <U2Core/AnnotationData.h>
 
 namespace U2 {
@@ -31,6 +33,7 @@ class InfoPartParser;
 class U2OpStatus;
 
 class U2FORMATS_EXPORT SnpeffInfoParser : public QObject {
+    Q_OBJECT
 public:
     SnpeffInfoParser();
     ~SnpeffInfoParser();
@@ -52,6 +55,7 @@ private:
 };
 
 class InfoPartParser : public QObject {
+    Q_OBJECT
 public:
     InfoPartParser(const QString &keyWord, bool canStoreMessages = false);
 

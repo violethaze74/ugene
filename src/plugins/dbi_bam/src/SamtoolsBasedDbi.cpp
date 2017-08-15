@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
+#include <QFile>
+#include <QFileInfo>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
@@ -356,6 +356,15 @@ void SamtoolsBasedObjectDbi::renameObject(const U2DataId & /*id*/, const QString
 }
 
 void SamtoolsBasedObjectDbi::setObjectRank(const U2DataId & /*objectId*/, U2DbiObjectRank /*newRank*/, U2OpStatus &os) {
+    os.setError("Not implemented!");
+}
+
+U2DbiObjectRank SamtoolsBasedObjectDbi::getObjectRank(const U2DataId & /*objectId*/, U2OpStatus &os) {
+    os.setError("Not implemented!");
+    return U2DbiObjectRank_TopLevel;
+}
+
+void SamtoolsBasedObjectDbi::setParent(const U2DataId& /*parentId*/, const U2DataId& /*childId*/, U2OpStatus& os){
     os.setError("Not implemented!");
 }
 

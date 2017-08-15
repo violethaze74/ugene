@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,15 +26,15 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/Task.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <algorithm>
 #include <cctype>
 
-#include <QtCore/QVector>
-#include <QtCore/QMutex>
-#include <QtCore/QMutexLocker>
+#include <QVector>
+#include <QMutex>
+#include <QMutexLocker>
 
 extern "C" {
 #include "kalign2/kalign2.h"
@@ -43,7 +43,7 @@ extern "C" {
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-void KalignAdapter::align(const MAlignment& ma, MAlignment& res, TaskStateInfo& ti) {
+void KalignAdapter::align(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
     if(ti.cancelFlag)  {
         return;
     }
@@ -80,12 +80,12 @@ void cleanupMemory(float **submatrix, unsigned int numseq, float **dm, struct al
 }
 
 void throwCancellingException() {
-    throwKalignException("Align task has been cancelled");
+    throwKalignException((char *) "Align task has been cancelled");
 }
 
 }
 
-void KalignAdapter::alignUnsafe(const MAlignment& ma, MAlignment& res, TaskStateInfo& ti) {
+void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
     ti.progress = 0;
     int* tree = 0;
     quint32 a, b, c;
@@ -102,7 +102,7 @@ void KalignAdapter::alignUnsafe(const MAlignment& ma, MAlignment& res, TaskState
     unsigned int &numseq = ctx->numseq;
     unsigned int &numprofiles = ctx->numprofiles;
 
-    if (ma.getNumRows() < 2){
+    if (ma->getNumRows() < 2){
         if (!numseq){
             k_printf("No sequences found.\n\n");
         } else {
@@ -129,13 +129,13 @@ void KalignAdapter::alignUnsafe(const MAlignment& ma, MAlignment& res, TaskState
     /* Convert MA to aln                                                    */
     /************************************************************************/
     k_printf("Prepare data");
-    numseq = ma.getNumRows();
+    numseq = ma->getNumRows();
     numprofiles = (numseq << 1) - 1;
     aln = aln_alloc(aln);
     for(quint32 i = 0 ; i < numseq; i++) {
-        const MAlignmentRow& row= ma.getRow(i);
-        aln->sl[i] = row.getUngappedLength(); //row.getCoreLength() - row.getCore().count('-');
-        aln->lsn[i] = row.getName().length();
+        const MultipleSequenceAlignmentRow row= ma->getMsaRow(i);
+        aln->sl[i] = row->getUngappedLength();
+        aln->lsn[i] = row->getName().length();
     }
 
     for (quint32 i = 0; i < numseq;i++) {
@@ -154,9 +154,9 @@ void KalignAdapter::alignUnsafe(const MAlignment& ma, MAlignment& res, TaskState
 
     int aacode[26] = {0,1,2,3,4,5,6,7,8,-1,9,10,11,12,23,13,14,15,16,17,17,18,19,20,21,22};
     for(quint32 i = 0; i < numseq; i++) {
-        const MAlignmentRow& row= ma.getRow(i);
-        qstrncpy(aln->sn[i], row.getName().toLatin1(), row.getName().length() + 1); //+1 to include '\0'
-        QString gapless = QString(row.getCore()).remove('-');
+        const MultipleSequenceAlignmentRow row= ma->getMsaRow(i);
+        qstrncpy(aln->sn[i], row->getName().toLatin1(), row->getName().length() + 1); //+1 to include '\0'
+        QString gapless = QString(row->getCore()).remove('-');
         qstrncpy(aln->seq[i], gapless.toLatin1(), gapless.length() + 1);	//+1 to include '\0'
         for (quint32 j = 0; j < aln->sl[i]; j++) {
             if (isalpha((int)aln->seq[i][j])){
@@ -414,7 +414,7 @@ void KalignAdapter::alignUnsafe(const MAlignment& ma, MAlignment& res, TaskState
     /************************************************************************/
     /* Convert aln to MA                                                    */
     /************************************************************************/
-    res.setAlphabet(ma.getAlphabet());
+    res->setAlphabet(ma->getAlphabet());
     for (quint32 i = 0; i < numseq;i++){
         int f = aln->nsip[i];
         QString seq;
@@ -422,8 +422,7 @@ void KalignAdapter::alignUnsafe(const MAlignment& ma, MAlignment& res, TaskState
             seq += QString(aln->s[f][j],'-') + aln->seq[f][j];
         }
         seq += QString(aln->s[f][aln->sl[f]],'-');
-        U2OpStatus2Log os;
-        res.addRow(QString(aln->sn[f]), seq.toLatin1(), os);
+        res->addRow(QString(aln->sn[f]), seq.toLatin1());
     }
 
     //output(aln,param);

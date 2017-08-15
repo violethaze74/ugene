@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ namespace U2 {
 namespace Workflow {
 
 DataTypeRegistry * WorkflowEnvImpl::initDataRegistry() {
-    qRegisterMetaTypeStreamOperators<QStrStrMap>("QStrStrMap");
+    qRegisterMetaTypeStreamOperators<StrStrMap>("StrStrMap");
     qRegisterMetaTypeStreamOperators<CfgMap>("CfgMap");
     qRegisterMetaTypeStreamOperators<IterationCfg>("IterationCfg");
     qRegisterMetaType<U2::Workflow::Monitor::FileInfo>( "U2::Workflow::Monitor::FileInfo" );

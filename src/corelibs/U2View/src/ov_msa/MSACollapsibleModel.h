@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,10 @@
 #ifndef _U2_MSA_COLLAPSIBLE_MODEL_H_
 #define _U2_MSA_COLLAPSIBLE_MODEL_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QVector>
+#include <QObject>
+#include <QVector>
 
-#include <U2Core/global.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
@@ -37,20 +37,26 @@ public:
     MSACollapsableItem();
     MSACollapsableItem(int startPos, int length);
 
+    bool isValid() const;
+
     int row;
     int numRows;
     bool isCollapsed;
 };
 
+class MaEditorWgt;
+class MaModificationInfo;
 class U2Region;
-class MSAEditorUI;
-class MAlignment;
-class MAlignmentModInfo;
 
 class U2VIEW_EXPORT MSACollapsibleItemModel : public QObject {
     Q_OBJECT
 public:
-    MSACollapsibleItemModel(MSAEditorUI *p);
+    enum TrivialGroupsPolicy {
+        Allow,
+        Forbid
+    };
+
+    MSACollapsibleItemModel(MaEditorWgt *p);
 
     // creates model with every item collapsed
     // 'itemRegions' has to be sorted list of non-intersecting regions
@@ -67,42 +73,69 @@ public:
     U2Region mapToRows(int pos) const;
 
     U2Region mapSelectionRegionToRows(const U2Region &selectionRegion) const;
+    QList<int> numbersToIndexes(const U2Region &rowNumbers);        // invisible rows are not included to the result list
+    QList<int> getDisplayableRowsIndexes() const;
 
     /**
     * The method converts the row position in the whole msa into its "visible" position (i.e.
     * the row position that takes into account collapsed items).
     * Returns -1 if the row is inside a collapsed item and @failIfNotVisible is true.
     */
-    int rowToMap(int row, bool failIfNotVisible = false) const;
+    int rowToMap(int rowIndex, bool failIfNotVisible = false) const;
 
+    /**
+     * Returns rows indexes that are visible (that are not collapsed) grouped corresponding to the collapsing model
+     * for the positions between @startPos and @endPos.
+     */
     void getVisibleRows(int startPos, int endPos, QVector<U2Region> &rows) const;
 
-    bool isTopLevel(int pos) const;
+    bool isTopLevel(int rowNumber) const;
+    bool isRowInGroup(int rowNumber) const;
+    bool isItemCollapsed(int rowIndex) const;
+    bool isRowVisible(int rowIndex) const;
 
-    int itemAt(int pos) const;
+    /**
+     * Returns the item which contains the row defined by @rowNumber
+     * or -1, if the row is not in a collapsing group
+     */
+    int itemForRow(int rowNumber) const;
 
     int getItemPos(int index) const;
 
     MSACollapsableItem getItem(int index) const;
+    MSACollapsableItem getItemByRowIndex(int rowIndex) const;
 
-    int displayedRowsCount() const;
+    /**
+     * Returns count of rows that can be viewed (that are not collapsed).
+     * Every group has at least one row to view.
+     */
+    int getDisplayableRowsCount() const;
 
     /** If there is a collapsible item at 'pos' position, it is removed. */
     void removeCollapsedForPosition(int pos);
 
     bool isEmpty() const;
 
+    void setTrivialGroupsPolicy(TrivialGroupsPolicy policy);
+
+    void setFakeCollapsibleModel(bool fakeModel);
+
+    bool isFakeModel() const;
+
 signals:
-    void toggled();
+    void si_aboutToBeToggled();
+    void si_toggled();
 
 private:
     void triggerItem(int index);
     int mapToRow(int lastItem, int pos) const;
 
 private:
-    MSAEditorUI* ui;
+    MaEditorWgt* ui;
     QVector<MSACollapsableItem> items;
     QVector<int> positions;
+    TrivialGroupsPolicy trivialGroupsPolicy;
+    bool fakeModel;
 };
 
 } //namespace

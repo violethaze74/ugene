@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,6 +31,7 @@
 #include <QTableWidget>
 #include <QWebEngineView>
 #include <QWizard>
+#include <QTextStream>
 
 #include <GTGlobals.h>
 #include <base_dialogs/DefaultDialogFiller.h>
@@ -65,6 +66,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ProjectViewModel.h>
 #include <U2Gui/ToolsMenu.h>
@@ -76,7 +78,7 @@
 #include <U2View/AssemblyNavigationWidget.h>
 #include <U2View/DetView.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTDatabaseConfig.h"
@@ -176,7 +178,6 @@
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3SearchDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
@@ -208,7 +209,7 @@ GUI_TEST_CLASS_DEFINITION(test_3006){
 //    Expected state: the sequence list should be sorted, collapsing should be updated
     CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
                   "2 Mecopoda_elongata__Sumatra_ is not collapsed");
-    GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Mecopoda_elongata__Ishigaki__J");
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Mecopoda_elongata__Ishigaki__J");
     CHECK_SET_ERR(!GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
                   "3 Mecopoda_elongata__Sumatra_ is unexpectidly collapsed");
 
@@ -1157,15 +1158,12 @@ GUI_TEST_CLASS_DEFINITION(test_3170) {
 
 GUI_TEST_CLASS_DEFINITION(test_3175) {
     // 1. Open "_common_data/scenarios/msa/ma.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(200);
+
     // Expected: the first sequence is "TAAGACTTCTAA".
-    GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 0, 0 ), QPoint( 12, 0 ) );
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
-    GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::text( os );
-    CHECK_SET_ERR( "TAAGACTTCTAA" == selectionContent, "MSA changing is failed" );
+    const QString firstSequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
+    CHECK_SET_ERR("TAAGACTTCTAA" == firstSequence, "MSA changing is failed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3180) {
@@ -1519,7 +1517,7 @@ GUI_TEST_CLASS_DEFINITION(test_3229){
     QString s = table.toInnerXml();
     int i = s.count("test.fa");
 
-    CHECK_SET_ERR( i==4, "unexpected table content: " + s);
+    CHECK_SET_ERR( i==3, "unexpected table content: " + s);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3245) {
@@ -1909,7 +1907,7 @@ GUI_TEST_CLASS_DEFINITION(test_3279){
     QString num1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);
     QString num3 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 3);
     CHECK_SET_ERR(num1 == "19%", "unexpected sumilarity value an line 1: " + num1);
-    CHECK_SET_ERR(num3 == "11%", "unexpected sumilarity value an line 3: " + num3);
+    CHECK_SET_ERR(num3 == "12%", "unexpected sumilarity value an line 3: " + num3);
 //    Current state: the addition column is shown, it contains sequence names.
 
 
@@ -1934,7 +1932,7 @@ GUI_TEST_CLASS_DEFINITION(test_3287) {
     ImageExportFormFiller::Parameters params;
     params.graphOverviewChecked = false;
     params.fileName = testDir + "_common_data/scenarios/sandbox/test_3287.bmp";
-    params.format = "bmp";
+    params.format = "BMP";
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export as image"));
     GTUtilsDialog::waitForDialog(os, new ImageExportFormFiller(os, params));
 
@@ -2459,7 +2457,7 @@ GUI_TEST_CLASS_DEFINITION(test_3357) {
 GUI_TEST_CLASS_DEFINITION(test_3373) {
 //    1. Launch WD
 //    2. Create the following workflow: "Read Sequence" -> "Reverse Complement" -> "Write Sequence"
-//    3. Set output format "genbank" (to prevent warnings about annotation support) and the "result.gb" output file name
+//    3. Set output format "GenBank" (to prevent warnings about annotation support) and the "result.gb" output file name
 //    4. Set input file "test/_common_data/fasta/seq1.fa"
 //    5. Run the workflow
 //    Expected state: workflow is successfully finished. "result.gb" contains reverse complement sequence for "seq1.fa"
@@ -2480,7 +2478,7 @@ GUI_TEST_CLASS_DEFINITION(test_3373) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, "Write Sequence" ) );
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "genbank", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GenBank", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", "result.gb", GTUtilsWorkflowDesigner::textValue);
     GTWidget::click( os, GTUtilsMdi::activeWindow( os ) );
 
@@ -2712,28 +2710,20 @@ GUI_TEST_CLASS_DEFINITION(test_3402){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3414){
-//check time on dashboard
-//    1. Open WD
+/*  check time on dashboard
+ *  1. Open WD
+ *  2. Select "Remote BLASTing" sample
+ *  3. Set input file samples/FASTA/human_T1.fa
+ *  4. Execute workflow
+ *  5. Check elapsed time
+ * */
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    2. Select "tuxedo" sample
-//    3. Set proper input data(_common_data/NIAID_pipelines/tuxedo).
-    QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/index"));
-    map.insert("Bowtie index basename", "chr6");
-    map.insert("Bowtie version", "Bowtie1");
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QList<QStringList>()<<(QStringList()<<
-                                                     testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq"),
-                                                      map));
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
-                                                                   "Single-sample"<<"Single-end"));
-    GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
+    GTUtilsWorkflowDesigner::addSample(os, "Remote BLASTing");
     GTGlobals::sleep();
 
-    GTUtilsWorkflowDesigner::click(os, "Assemble Transcripts with Cufflinks");
-    GTKeyboardDriver::keyClick( Qt::Key_Delete);
-    GTGlobals::sleep(200);
+    GTUtilsWorkflowDesigner::click(os, "Read Sequence(s)");
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dataDir + "samples/FASTA/human_T1.fa" );
 
-    //    Launch pipeline
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(1000);
     HIWebElement initEl = GTUtilsDashboard::findElement(os, "00:00:0", "SPAN");
@@ -2742,6 +2732,7 @@ GUI_TEST_CLASS_DEFINITION(test_3414){
     HIWebElement finalEl = GTUtilsDashboard::findElement(os, "00:00:0", "SPAN");
     QString s1 = finalEl.toPlainText();
     CHECK_SET_ERR(s!=s1, "timer not changed");
+    GTUtilsTask::cancelTask(os, "Execute workflow");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3428){
@@ -2975,11 +2966,11 @@ GUI_TEST_CLASS_DEFINITION(test_3451) {
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR( dialog, "activeModalWidget is NULL");
 
-            QSpinBox *startPos = dialog->findChild<QSpinBox*>("startPosBox");
-            CHECK_SET_ERR( startPos != NULL, "startPosBox is NULL");
+            QSpinBox *startPos = dialog->findChild<QSpinBox*>("startLineEdit");
+            CHECK_SET_ERR( startPos != NULL, "startLineEdit is NULL");
 
-            QSpinBox *endPos = dialog->findChild<QSpinBox*>("endPosBox");
-            CHECK_SET_ERR( endPos != NULL, "endPosBox is NULL");
+            QSpinBox *endPos = dialog->findChild<QSpinBox*>("endLineEdit");
+            CHECK_SET_ERR( endPos != NULL, "endLineEdit is NULL");
 
             GTSpinBox::checkLimits(os, startPos, 1, 603);
             GTSpinBox::checkLimits(os, endPos, 2, 604);
@@ -3592,7 +3583,7 @@ GUI_TEST_CLASS_DEFINITION(test_3555) {
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     CHECK_SET_ERR(editor != NULL, "MsaEditor not found");
 
-    MSAEditorNameList* nameList = editor->getUI()->getEditorNameList();
+    MaEditorNameList* nameList = editor->getUI()->getEditorNameList();
     CHECK_SET_ERR(nameList != NULL, "MSANameList is empty");
     GTWidget::click(os, nameList, Qt::LeftButton, QPoint(10, nameList->height() - 1));
 
@@ -3800,7 +3791,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3589) {
-    // 0. Copy "data/samples/Assembly/chrM.sam" to a new directory to avoid UGENE conversion cache.
+    // 0. Copy "data/samples/Assembly/chrM.sam" to a new folder to avoid UGENE conversion cache.
     // 1. Create a workflow: Read assembly.
     // 2. Set an input file: that copied chrM.sam.
     // 3. Run the workflow.
@@ -3982,7 +3973,7 @@ GUI_TEST_CLASS_DEFINITION(test_3612) {
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
 //    3. Expand "Conocephalus_discolor" group.
-    GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Conocephalus_discolor");
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_discolor");
 
 //    4. Open "Pairwise alignment" options panel tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
@@ -4199,7 +4190,7 @@ GUI_TEST_CLASS_DEFINITION(test_3629) {
     GTUtilsProjectTreeView::doubleClickItem(os, "human_T1.fa");
     GTThread::waitForMainThread();
     QList<QTreeWidgetItem*> list = GTUtilsAnnotationsTreeView::findItems(os, "misc_feature", GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(list.isEmpty(), QString("%1 annotation(s) unexpectidly found").arg(list.isEmpty()));
+    CHECK_SET_ERR(list.isEmpty(), QString("%1 annotation(s) unexpectidly found").arg(list.count()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3645) {
@@ -4532,7 +4523,7 @@ GUI_TEST_CLASS_DEFINITION(test_3697){
     GTUtilsDialog::waitForDialog(os, new EditConnectionDialogFiller(os, params2, EditConnectionDialogFiller::MANUAL));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Connect to UGENE shared database...");
 
-    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new MessageBoxDialogFiller(os, "Ok"));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, "Ok"));
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addElement(os, "Read Alignment");
     GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
@@ -4651,14 +4642,14 @@ GUI_TEST_CLASS_DEFINITION(test_3724) {
 
 //    3. Click "Generate".
 //    Expected state: the "Multiple Sequence Alignment Distance Matrix" view has appeared.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Statistics" << "Generate distance matrix..."));
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
 //    4. Click right mouse button on the view.
 //    Expected state: nothing happens.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new PopupChecker(os, QStringList()));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new PopupChecker(os, QStringList()));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 }
@@ -4778,7 +4769,7 @@ GUI_TEST_CLASS_DEFINITION(test_3738) {
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList()<<testDir + "_common_data/scf/Sequence A.scf"
                                                                  <<testDir + "_common_data/scf/Sequence B.scf",
                                                                  sandBoxDir + "test_3738.ace"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Contig assembly with CAP3...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" <<  "Reads quality control and de novo assembly (with CAP3)...");
 
 //    menu item in the main menu.
 //    Set sequences "_common_data/scf/Sequence A.scf" and "_common_data/scf/Sequence B.scf" as input, set any valid output path and run the task.
@@ -4804,13 +4795,16 @@ GUI_TEST_CLASS_DEFINITION(test_3744) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
     GTGlobals::sleep(500);
+   
+    GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Regular expression");
 
-    QComboBox* algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
-    GTComboBox::setIndexWithText(os, algorithmBox, "Regular expression");
-
-    GTKeyboardDriver::keySequence("ACT.G");
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "ACG.T", true);
+    GTGlobals::sleep(200);
 
     QWidget* createButton = GTWidget::findWidget(os, "getAnnotationsPushButton");
+
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "", true);
+
     CHECK_SET_ERR(!createButton->isEnabled(), "prevPushButton is unexpectidly enabled")
 
 
@@ -4959,7 +4953,7 @@ GUI_TEST_CLASS_DEFINITION(test_3770) {
 //    Expected state: the task cancels within a half of a minute.
 //    Current state: the task doesn't cancel.
 
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "NW_003943623", 0, true, false,
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "NW_003943623", 0, true, true, false,
                                                                         sandBoxDir));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
     GTUtilsTaskTreeView::cancelTask(os, "Download remote documents");
@@ -5004,8 +4998,10 @@ GUI_TEST_CLASS_DEFINITION(test_3773) {
  *   Expected state: Log not have errors
 */
     GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Plain text"));
     GTFileDialog::openFile(os, dataDir + "samples/HMM", "aligment15900.hmm");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTGlobals::sleep(200);
     GTUtilsProjectTreeView::click(os, "aligment15900.hmm");
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
@@ -5016,7 +5012,7 @@ GUI_TEST_CLASS_DEFINITION(test_3773) {
 GUI_TEST_CLASS_DEFINITION(test_3773_1) {
     class OkClicker : public Filler {
     public:
-        OkClicker(HI::GUITestOpStatus& _os) : Filler(_os, "UHMM3BuildDialog"){}
+        OkClicker(HI::GUITestOpStatus& _os) : Filler(_os, "HmmerBuildDialog"){}
         virtual void run() {
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK(dialog, );
@@ -5486,7 +5482,7 @@ GUI_TEST_CLASS_DEFINITION(test_3843) {
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     // 3. Expand one of the collapsed sequences.
-    GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Conocephalus_discolor");
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_discolor");
 
     // 4. Select some region within a sequence from the chosen collapsed group.
     // 5. Click "Ctrl+C"
@@ -5589,9 +5585,9 @@ GUI_TEST_CLASS_DEFINITION(test_3870) {
         GTUtilsMSAEditorSequenceArea::getNameList(os), length - 60, length - 1, true, false, false, false, true, "FASTA"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os,"msa_editor_sequence_area"));
 
-    QFile resFile(testDir + "_common_data/scenarios/sandbox/3870.fa");
-    QFile templateFile(testDir + "_common_data/scenarios/_regression/3870/3870.fa");
-    CHECK_SET_ERR(resFile.size() == templateFile.size(), "Result file is incorrect");
+   // QFile resFile(testDir + "_common_data/scenarios/sandbox/3870.fa");
+   // QFile templateFile(testDir + "_common_data/scenarios/_regression/3870/3870.fa");
+   // CHECK_SET_ERR(resFile.size() == templateFile.size(), "Result file is incorrect");
 }
 
 
@@ -5916,7 +5912,7 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
     GTUtilsWorkflowDesigner::click(os, "Align reads with BWA MEM");
     GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", sandBoxDir + "test_3950.fa", GTUtilsWorkflowDesigner::textValue);
     QDir sandBox;
-    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", sandBox.absoluteFilePath(sandBoxDir), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output folder", sandBox.absoluteFilePath(sandBoxDir), GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os, 480000);
@@ -6002,7 +5998,7 @@ GUI_TEST_CLASS_DEFINITION(test_3960) {
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/3960", "all.gb"));
 
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Genbank"));
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GenBank"));
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge));
 

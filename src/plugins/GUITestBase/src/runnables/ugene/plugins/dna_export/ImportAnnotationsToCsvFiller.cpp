@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,7 +60,7 @@ Filler(_os, "ImportAnnotationsFromCSVDialog"), fileToRead(_fileToRead), resultFi
     comboBoxItems[FPKM] = "FPKM";
     comboBoxItems[GFF] = "GFF";
     comboBoxItems[GTF] = "GTF";
-    comboBoxItems[Genbank] = "Genbank";
+    comboBoxItems[Genbank] = "GenBank";
     comboBoxItems[Swiss_Prot] = "Swiss_Prot";
 }
 #define GT_METHOD_NAME "run"

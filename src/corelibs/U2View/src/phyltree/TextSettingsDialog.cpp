@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,12 +20,8 @@
  */
 
 #include <QColorDialog>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QPlastiqueStyle>
-#else
 #include <QProxyStyle>
 #include <QStyleFactory>
-#endif
 
 #include <U2Gui/HelpButton.h>
 
@@ -43,11 +39,7 @@ TextSettingsDialog::TextSettingsDialog(QWidget *parent, const OptionsMap& settin
 
     curColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
 
-#if (QT_VERSION < 0x050000) //Qt 5
-    QStyle *buttonStyle = new QPlastiqueStyle;
-#else
     QStyle *buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
-#endif
     buttonStyle->setParent(colorButton);
     colorButton->setStyle(buttonStyle);
 

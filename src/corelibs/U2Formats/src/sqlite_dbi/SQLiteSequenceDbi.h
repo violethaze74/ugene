@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -66,9 +66,11 @@ public:
         //TODO think about annotations: should we fix locations automatically?? If yes, emit notifications??
     */
     virtual void updateSequenceData(const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os);
+    virtual void updateSequenceData(const U2DataId &masterId, const U2DataId &sequenceId,
+                                    const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os);
 
     /** The same as above, except passed modification action is used */
-    void updateSequenceData(ModificationAction &updateAction, const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os);
+    void updateSequenceData(SQLiteModificationAction &updateAction, const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os);
 
     virtual void initSqlSchema(U2OpStatus& os);
 

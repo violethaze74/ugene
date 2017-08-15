@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,6 +36,7 @@ public:
     LogLevel            logLevel;
     bool                withPluginList;
     QStringList         pluginList;
+    QString             reportFile;
 };
 
 class U2CORE_EXPORT CmdlineTaskRunner : public Task {
@@ -45,6 +46,8 @@ public:
 
     void prepare();
     ReportResult report();
+
+    static const QString REPORT_FILE_ARG;
 
 protected:
     virtual bool isCommandLogLine(const QString &logLine) const;

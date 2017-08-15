@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
  */
 
 #include <QApplication>
+#include <QDir>
 #include <QTableView>
 
 #include <U2Core/GUrlUtils.h>
@@ -456,7 +457,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsWorkflowDesigner::clickParameter(os, "Output file");
     URLWidget *urlWidget = qobject_cast<URLWidget *>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<URLWidget *>());
     GTKeyboardDriver::keySequence("aaa");
-    GTGlobals::sleep(1000);
+	GTKeyboardDriver::keyPress(Qt::Key_Enter);
     CHECK_SET_ERR(NULL != urlWidget, "Output file url widget was not found");
     QTreeWidget *completer = urlWidget->findChild<QTreeWidget *>();
     CHECK_SET_ERR(completer != NULL, "auto completer widget was not found");
@@ -571,7 +572,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     GTUtilsProjectTreeView::click(os, "chrM.fa");
 
     //6. Click "Set reference sequence".
-    //7. Choose the file "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq".
+    //7. Choose the file "assembly_test_0018.fa" from sanbox.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir + "assembly_test_0018.fa"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
 
@@ -915,10 +916,12 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
 //    1. Open assembly
     GTFile::copy(os, testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "chrM.sorted.bam.ugenedb");
     GTFileDialog::openFile(os, sandBoxDir + "chrM.sorted.bam.ugenedb");
+	GTUtilsProjectTreeView::click(os, "chrM");
+
 //    2. Rename assembly object
     GTUtilsProjectTreeView::rename(os, "chrM", "new_name");
 //    Check UGENE title
-    GTUtilsApp::checkUGENETitle(os, "-* UGENE - [chrM.sorted.bam [as] new_name]");
+    GTUtilsApp::checkUGENETitle(os, "-* UGENE");
     GTGlobals::sleep(500);
 }
 
@@ -985,7 +988,6 @@ GUI_TEST_CLASS_DEFINITION(test_0036){
     QScrollBar* ver = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical);
     QScrollBar* hor = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal);
 
-    int initVer = ver->value();
     int initHor = hor->value();
 
     for(int i = 0; i < 3; i++){

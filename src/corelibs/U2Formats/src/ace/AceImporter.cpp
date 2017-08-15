@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QTemporaryFile>
+#include <QDir>
+#include <QTemporaryFile>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -28,14 +28,14 @@
 #include <U2Core/CloneObjectTask.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Formats/AceFormat.h>
-
-#include <U2Core/QObjectScopedPointer.h>
 
 #include "AceImporter.h"
 #include "CloneAssemblyWithReferenceToDbiTask.h"

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,34 +27,71 @@
 #include <U2Core/DocumentProviderTask.h>
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleAlignmentObject;
 class UnloadedObject;
+class MaEditor;
+class MaEditorFactory;
 class MSAEditor;
 
-class OpenMSAEditorTask : public ObjectViewTask {
+/*!
+ * \brief The OpenMaEditorTask class
+ */
+class OpenMaEditorTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenMSAEditorTask(MAlignmentObject* obj);
-    OpenMSAEditorTask(UnloadedObject* obj);
-    OpenMSAEditorTask(Document* doc);
+    OpenMaEditorTask(MultipleAlignmentObject* obj, GObjectViewFactoryId fid, GObjectType type);
+    OpenMaEditorTask(UnloadedObject* obj, GObjectViewFactoryId fid, GObjectType type);
+    OpenMaEditorTask(Document* doc, GObjectViewFactoryId fid, GObjectType type);
 
     virtual void open();
 
     static void updateTitle(MSAEditor* msaEd);
 
-private:
-    QPointer<MAlignmentObject>  msaObject;
-    GObjectReference            unloadedReference;
+    virtual MaEditor* getEditor(const QString& viewName, GObject* obj) = 0;
+
+protected:
+    GObjectType                         type;
+    QPointer<MultipleAlignmentObject>   maObject;
+    GObjectReference                    unloadedReference;
+};
+
+/*!
+ * \brief The OpenMsaEditorTaskOpenMsaEditorTask class
+ */
+class OpenMsaEditorTask : public OpenMaEditorTask {
+    Q_OBJECT
+public:
+    OpenMsaEditorTask(MultipleAlignmentObject* obj);
+    OpenMsaEditorTask(UnloadedObject* obj);
+    OpenMsaEditorTask(Document* doc);
+
+    MaEditor* getEditor(const QString &viewName, GObject *obj);
+};
+
+/*!
+ * \brief The OpenMcaEditorTask class
+ */
+class OpenMcaEditorTask : public OpenMaEditorTask {
+    Q_OBJECT
+public:
+    OpenMcaEditorTask(MultipleAlignmentObject* obj);
+    OpenMcaEditorTask(UnloadedObject* obj);
+    OpenMcaEditorTask(Document* doc);
+
+    MaEditor* getEditor(const QString &viewName, GObject *obj);
 };
 
 class OpenSavedMSAEditorTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenSavedMSAEditorTask(const QString& viewName, const QVariantMap& stateData);
+    OpenSavedMSAEditorTask(GObjectType type, MaEditorFactory* factory,
+                           const QString& viewName, const QVariantMap& stateData);
     virtual void open();
 
-    static void updateRanges(const QVariantMap& stateData, MSAEditor* ctx);
-    static void addAnnotations(const QVariantMap& stateData, MSAEditor* ctx);
+    static void updateRanges(const QVariantMap& stateData, MaEditor* ctx);
+private:
+    GObjectType         type;
+    MaEditorFactory* factory;
 };
 
 
@@ -65,42 +102,43 @@ public:
     virtual void update();
 };
 
-class ExportMSAConsensusTaskSettings {
+class ExportMaConsensusTaskSettings {
 public:
-    ExportMSAConsensusTaskSettings();
+    ExportMaConsensusTaskSettings();
 
-    bool keepGaps;
-    MSAEditor* msa;
-    QString url;
-    DocumentFormatId format;
-    QString name;
+    bool                keepGaps;
+    MaEditor*           ma;
+    QString             url;
+    DocumentFormatId    format;
+    QString             name;
 };
 
 class ExtractConsensusTask : public Task {
     Q_OBJECT
 public:
-    ExtractConsensusTask( bool keepGaps, MSAEditor* msa);
+    ExtractConsensusTask( bool keepGaps, MaEditor* ma);
     void run();
     const QByteArray& getExtractedConsensus() const;
 private:
-    bool keepGaps;
-    MSAEditor* msa;
-    QByteArray filteredConsensus;
+    bool        keepGaps;
+    MaEditor*   ma;
+    QByteArray  filteredConsensus;
 };
 
-class ExportMSAConsensusTask : public DocumentProviderTask {
+class ExportMaConsensusTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMSAConsensusTask(const ExportMSAConsensusTaskSettings& s);
+    ExportMaConsensusTask(const ExportMaConsensusTaskSettings& s);
 
     void prepare();
 protected:
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:
     Document* createDocument();
-    ExportMSAConsensusTaskSettings settings;
-    ExtractConsensusTask *extractConsensus;
-    QByteArray filteredConsensus;
+
+    ExportMaConsensusTaskSettings   settings;
+    ExtractConsensusTask*           extractConsensus;
+    QByteArray                      filteredConsensus;
 };
 
 } // namespace

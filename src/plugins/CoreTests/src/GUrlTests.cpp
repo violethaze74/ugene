@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,14 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include "GUrlTests.h"
+#include <QDir>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/GObject.h>
+#include <U2Core/AppFileStorage.h>
 #include <U2Core/GHints.h>
+#include <U2Core/GObject.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/AppFileStorage.h>
+
+#include "GUrlTests.h"
 
 namespace U2 {
 
@@ -84,7 +86,7 @@ Task::ReportResult GTest_CreateTmpDir::report() {
     if (!exists) {
         bool created = tmpDir.mkdir(url);
         if (!created) {
-            setError("Can not create a directory: " + url);
+            setError("Can not create a folder: " + url);
         }
     }
     return ReportResult_Finished;

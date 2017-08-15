@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,9 +23,10 @@
 #define _U2_SEC_STRUCT_PREDICT_ALG_REGISTRY_H_
 
 #include <QList>
-#include <QString>
+#include <QMap>
 #include <QMutex>
 #include <QObject>
+#include <QString>
 
 #include <U2Core/global.h>
 

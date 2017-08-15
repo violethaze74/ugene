@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ Filler(_os, "CreateDocumentFromTextDialog"), customSettings(_customSettings), al
     QString __documentLocation = QDir::cleanPath(QDir::currentPath() + "/" + _documentLocation);
     documentLocation = QDir::toNativeSeparators(__documentLocation);
     comboBoxItems[FASTA] = "FASTA";
-    comboBoxItems[Genbank] = "Genbank";
+    comboBoxItems[Genbank] = "GenBank";
     comboBoxAlphabetItems[StandardDNA] = "Standard DNA";
     comboBoxAlphabetItems[StandardRNA] = "Standard RNA";
     comboBoxAlphabetItems[ExtendedDNA] = "Extended DNA";
@@ -156,7 +156,7 @@ Filler(_os, "CreateDocumentFromTextDialog"), customSettings(_customSettings), al
     QString __documentLocation = QDir::cleanPath(QDir::currentPath() + "/" + _documentLocation);
     documentLocation = __documentLocation;
     comboBoxItems[FASTA] = "FASTA";
-    comboBoxItems[Genbank] = "Genbank";
+    comboBoxItems[Genbank] = "GenBank";
     comboBoxAlphabetItems[StandardDNA] = "Standard DNA";
     comboBoxAlphabetItems[StandardRNA] = "Standard RNA";
     comboBoxAlphabetItems[ExtendedDNA] = "Extended DNA";

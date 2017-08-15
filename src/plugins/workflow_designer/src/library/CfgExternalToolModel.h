@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #ifndef _CFG_EXTERNAL_TOOL_MODEL_H_
 #define _CFG_EXTERNAL_TOOL_MODEL_H_
 
-#include <QtCore/QAbstractTableModel>
+#include <QAbstractTableModel>
 
 #include <U2Lang/ExternalToolCfg.h>
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QEventLoop>
-#include <QtCore/QTimer>
-#include <QtCore/QUrl>
+#include <QDir>
+#include <QEventLoop>
+#include <QTimer>
+#include <QUrl>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -93,7 +93,7 @@ void BaseLoadRemoteDocumentTask::prepare(){
     }
 
     if (!prepareDownloadDirectory(fullPath)) {
-        setError(QString("Directory %1 does not exist").arg(fullPath));
+        setError(QString("Folder %1 does not exist").arg(fullPath));
         return;
     }
 
@@ -109,7 +109,7 @@ Task::ReportResult BaseLoadRemoteDocumentTask::report()
 bool BaseLoadRemoteDocumentTask::prepareDownloadDirectory( QString &path ){
     if (!QDir(path).exists()) {
         if (path == getDefaultDownloadDirectory()) {
-            // Creating default directory if it doesn't exist
+            // Creating default folder if it doesn't exist
             if (!QDir().mkpath(path)) {
                 return false;
             }

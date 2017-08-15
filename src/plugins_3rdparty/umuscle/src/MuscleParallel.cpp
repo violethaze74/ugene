@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,9 +32,9 @@
 #include <U2Core/Log.h>
 #include <U2Core/AppResources.h>
 
-#include <QtCore/QMutex>
-#include <QtCore/QMutexLocker>
-#include <QtCore/QSemaphore>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QSemaphore>
 
 #include <limits>
 #include "muscle/scorehistory.h"
@@ -48,10 +48,10 @@ struct Range {
 
 /////////////////////////////////////////////////////////////////////
 
-MuscleParallelTask::MuscleParallelTask(const MAlignment& ma, MAlignment& res, const MuscleTaskSettings& _config, MuscleContext* ctx)
+MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, const MuscleTaskSettings& _config, MuscleContext* ctx)
     : Task(tr("MuscleParallelTask"), TaskFlags_NR_FOSCOE), progAlignTask(NULL), refineTreeTask(NULL), refineTask(NULL)
 {
-    //assert(ma.isNormalized()); //not required to be normalized    assert(_config.op == MuscleTaskOp_Align || _config.op == MuscleTaskOp_Refine);    workpool = NULL;
+    //assert(ma->isNormalized()); //not required to be normalized    assert(_config.op == MuscleTaskOp_Align || _config.op == MuscleTaskOp_Refine);    workpool = NULL;
     setMaxParallelSubtasks(1);
     workpool = new MuscleWorkPool(ctx, _config, stateInfo, _config.nThreads, ma, res, _config.regionToAlign.startPos == 0);
     prepareTask = new MusclePrepareTask(workpool);
@@ -63,10 +63,10 @@ MuscleParallelTask::MuscleParallelTask(const MAlignment& ma, MAlignment& res, co
     addTaskResource(resourseUsage);
 }
 
-int MuscleParallelTask::estimateMemoryUsageInMb(const MAlignment& ma) {
+int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment& ma) {
     QList<int> rowsLengths;
-    foreach(const MAlignmentRow& row, ma.getRows()) {
-        rowsLengths.append(row.getCoreLength());
+    foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
+        rowsLengths.append(row->getCoreLength());
     }
     qSort(rowsLengths.begin(), rowsLengths.end(), qGreater<int>());
 
@@ -88,7 +88,7 @@ QList<Task*> MuscleParallelTask::onSubTaskFinished(Task* subTask) {
         return res;
     }
 
-    if (subTask == prepareTask && workpool->res.isEmpty()) {
+    if (subTask == prepareTask && workpool->res->isEmpty()) {
         foreach(Task* task, prepareTask->res)
             res << task;
     }
@@ -153,7 +153,7 @@ void MusclePrepareTask::alignPrepareUnsafe()
     MuscleContext* ctx = workpool->ctx;
     SetSeqWeightMethod(ctx->params.g_SeqWeight1);
 
-    setupAlphaAndScore(workpool->ma.getAlphabet(), stateInfo);
+    setupAlphaAndScore(workpool->ma->getAlphabet(), stateInfo);
     if (stateInfo.hasError()) {
         return;
     }
@@ -275,7 +275,7 @@ void MusclePrepareTask::refinePrepareUnsafe() {
 
     SetSeqWeightMethod(ctx->params.g_SeqWeight1);
 
-    setupAlphaAndScore(workpool->ma.getAlphabet(), workpool->ti);
+    setupAlphaAndScore(workpool->ma->getAlphabet(), workpool->ti);
     if (workpool->ti.hasError()) {
         return;
     }
@@ -336,12 +336,12 @@ void ProgressiveAlignTask::run() {
 }
     TaskLocalData::detachMuscleTLSContext();
 #ifdef TRACE    
-    log.info(tr("alignment \"%1\" Parallel MUSCLE Iter 1 accomplished. Time elapsed %2 ms").arg(workpool->ma.name).arg(timer.elapsed()));
+    log.info(tr("alignment \"%1\" Parallel MUSCLE Iter 1 accomplished. Time elapsed %2 ms").arg(workpool->ma->name).arg(timer.elapsed()));
 #endif
 }
 
 void ProgressiveAlignTask::_run() {
-    if (!workpool->res.isEmpty())  {
+    if (!workpool->res->isEmpty())  {
         return;// no more need in align
     }
 	if (workpool->ti.hasError())  {
@@ -377,8 +377,8 @@ void ProgressiveAlignTask::_run() {
     ValidateMuscleIds(workpool->a);
 
     if (1 == ctx->params.g_uMaxIters || 2 == uSeqCount) {
-        assert(int(workpool->a.GetSeqCount()) == workpool->ma.getNumRows());
-        prepareAlignResults(workpool->a, workpool->ma.getAlphabet(), workpool->res, workpool->mhack);
+        assert(int(workpool->a.GetSeqCount()) == workpool->ma->getNumRows());
+        prepareAlignResults(workpool->a, workpool->ma->getAlphabet(), workpool->res, workpool->mhack);
     }
 }
 
@@ -545,7 +545,7 @@ void RefineTreeTask::run() {
 }
 
 void RefineTreeTask::_run() {
-    if (!workpool->res.isEmpty())  {
+    if (!workpool->res->isEmpty())  {
         return;// no more need in align
     }
     MuscleContext* ctx = workpool->ctx;
@@ -608,7 +608,7 @@ void RefineTask::run() {
 }
 
 void RefineTask::_run() {
-    if (!workpool->res.isEmpty())  {
+    if (!workpool->res->isEmpty())  {
         return;// no more need in align
     }
     MuscleContext* ctx = workpool->ctx;
@@ -630,10 +630,10 @@ void RefineTask::_run() {
     ValidateMuscleIds(workpool->GuideTree);
     
     if(workpool->config.op != MuscleTaskOp_Refine) {
-        //assert(int(msa.GetSeqCount()) == workpool->ma.getNumSequences());
-        prepareAlignResults(msa, workpool->ma.getAlphabet(), workpool->res, workpool->mhack);
+        //assert(int(msa.GetSeqCount()) == workpool->ma->getNumSequences());
+        prepareAlignResults(msa, workpool->ma->getAlphabet(), workpool->res, workpool->mhack);
     } else {
-        prepareAlignResults(msa, workpool->ma.getAlphabet(), workpool->res, false);
+        prepareAlignResults(msa, workpool->ma->getAlphabet(), workpool->res, false);
     }
 }
 ////////////////////////////////////////////////////////////////////////////

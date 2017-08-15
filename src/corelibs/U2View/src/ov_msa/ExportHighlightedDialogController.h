@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ class SaveDocumentController;
 class ExportHighligtingDialogController : public QDialog{
     Q_OBJECT
 public:
-    ExportHighligtingDialogController(MSAEditorUI *msaui_, QWidget* p);
+    ExportHighligtingDialogController(MaEditorWgt *msaui_, QWidget* p);
     ~ExportHighligtingDialogController();
 
     virtual void accept();
@@ -55,7 +55,7 @@ private slots:
 private:
     void initSaveController();
 
-    MSAEditorUI *msaui;
+    MaEditorWgt *msaui;
     SaveDocumentController *saveController;
     Ui_ExportHighlightedDialog* ui;
 };

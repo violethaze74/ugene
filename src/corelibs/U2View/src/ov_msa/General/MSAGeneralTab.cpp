@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,18 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/AppContext.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/MAlignmentObject.h>
-
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
 #include "MSAGeneralTab.h"
@@ -64,58 +64,9 @@ MSAGeneralTab::MSAGeneralTab(MSAEditor* _msa)
 
 }
 
-void MSAGeneralTab::sl_alignmentChanged(const MAlignment& al, const MAlignmentModInfo& modInfo) {
-    Q_UNUSED(al);
-    Q_UNUSED(modInfo);
+void MSAGeneralTab::sl_alignmentChanged() {
     alignmentLength->setText(QString::number(msa->getAlignmentLen()));
     alignmentHeight->setText(QString::number(msa->getNumSequences()));
-}
-
-void MSAGeneralTab::sl_algorithmChanged(const QString& algoId) {
-    // Update state for the current algorithm
-    const DNAAlphabet* alphabet = msa->getMSAObject()->getAlphabet();
-    if (curAlphabetId != alphabet->getId()) {
-        disconnect(consensusType, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_algorithmSelectionChanged(int)));
-        consensusType->clear();
-        initConsensusTypeCombo();
-        connect(consensusType, SIGNAL(currentIndexChanged(int)), SLOT(sl_algorithmSelectionChanged(int)));
-    } else {
-        consensusType->setCurrentIndex(consensusType->findData(algoId));
-        updateState();
-    }
-}
-
-void MSAGeneralTab::sl_thresholdChanged(int value) {
-    thresholdSpinBox->setValue(value);    // Slider updates automatically
-}
-
-void MSAGeneralTab::sl_algorithmSelectionChanged(int index) {
-    SAFE_POINT(index >= 0, "Incorrect consensus algorithm index is detected",);
-    QString selectedAlgorithmId = consensusType->itemData(index).toString();
-    updateState();
-    emit si_algorithmChanged(selectedAlgorithmId);
-}
-
-void MSAGeneralTab::sl_thresholdSliderChanged(int value) {
-    thresholdSpinBox->disconnect(this);
-    thresholdSpinBox->setValue(value);
-    connect(thresholdSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_thresholdSpinBoxChanged(int)));
-    emit si_thresholdChanged(value);
-}
-
-void MSAGeneralTab::sl_thresholdSpinBoxChanged(int value) {
-    thresholdSlider->disconnect(this);
-    thresholdSlider->setValue(value);
-    connect(thresholdSlider, SIGNAL(valueChanged(int)), SLOT(sl_thresholdSliderChanged(int)));
-    emit si_thresholdChanged(value);
-}
-
-void MSAGeneralTab::sl_thresholdResetClicked(bool newState) {
-    Q_UNUSED(newState);
-    MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
-    MSAConsensusAlgorithmFactory* factory = reg->getAlgorithmFactory(consensusType->itemData(consensusType->currentIndex()).toString());
-    SAFE_POINT(NULL != factory, "Consensus alorithm factory is NULL", );
-    sl_thresholdChanged(factory->getDefaultThreshold());
 }
 
 void MSAGeneralTab::sl_copyFormatSelectionChanged(int index) {
@@ -133,37 +84,22 @@ void MSAGeneralTab::sl_copyFormatStatusChanged(bool enabled){
 
 void MSAGeneralTab::connectSignals() {
     // Inner signals
-    connect(consensusType,          SIGNAL(currentIndexChanged(int)),   SLOT(sl_algorithmSelectionChanged(int)));
-    connect(thresholdSlider,        SIGNAL(valueChanged(int)),          SLOT(sl_thresholdSliderChanged(int)));
-    connect(thresholdSpinBox,       SIGNAL(valueChanged(int)),          SLOT(sl_thresholdSpinBoxChanged(int)));
-    connect(thresholdResetButton,   SIGNAL(clicked(bool)),              SLOT(sl_thresholdResetClicked(bool)));
     connect(copyType,               SIGNAL(currentIndexChanged(int)),   SLOT(sl_copyFormatSelectionChanged(int)));
     connect(copyButton,             SIGNAL(clicked()),                  SLOT(sl_copyFormatted()));
 
     // Extern signals
-    connect(msa->getMSAObject(),
-            SIGNAL(si_alignmentChanged(MAlignment, MAlignmentModInfo)),
-            SLOT(sl_alignmentChanged(MAlignment, MAlignmentModInfo)));
+    connect(msa->getMaObject(),
+            SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)),
+            SLOT(sl_alignmentChanged()));
 
-        //out
-    connect(this, SIGNAL(si_algorithmChanged(QString)),
-            msa->getUI()->getConsensusArea(), SLOT(sl_changeConsensusAlgorithm(QString)));
-    connect(this, SIGNAL(si_thresholdChanged(int)),
-            msa->getUI()->getConsensusArea(), SLOT(sl_changeConsensusThreshold(int)));
-
+    //out
     connect(this, SIGNAL(si_copyFormatChanged(QString)),
             msa->getUI()->getSequenceArea(), SLOT(sl_changeCopyFormat(QString)));
 
     connect(this, SIGNAL(si_copyFormatted()),
             msa->getUI()->getSequenceArea(), SLOT(sl_copyFormattedSelection()));
 
-        //in
-    connect(msa->getUI()->getConsensusArea(),
-            SIGNAL(si_consensusAlgorithmChanged(QString)),
-            SLOT(sl_algorithmChanged(QString)));
-    connect(msa->getUI()->getConsensusArea(),
-            SIGNAL(si_consensusThresholdChanged(int)),
-            SLOT(sl_thresholdChanged(int)));
+    //in
     connect(msa->getUI()->getSequenceArea(), SIGNAL(si_copyFormattedChanging(bool)),
             SLOT(sl_copyFormatStatusChanged(bool)));
 
@@ -175,11 +111,11 @@ void MSAGeneralTab::initializeParameters() {
     alignmentHeight->setText(QString::number(msa->getNumSequences()));
 
     // Consensus type combobox
-    initConsensusTypeCombo();
+    consensusModeWidget->init(msa->getMaObject(), msa->getUI()->getConsensusArea());
 
     //Copy formatted
     DocumentFormatConstraints constr;
-    constr.supportedObjectTypes.insert( GObjectTypes::MULTIPLE_ALIGNMENT );
+    constr.supportedObjectTypes.insert( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT );
     constr.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     constr.addFlagToSupport(DocumentFormatFlag_SupportWriting);
     DocumentFormatRegistry* freg = AppContext::getDocumentFormatRegistry();
@@ -199,50 +135,9 @@ void MSAGeneralTab::initializeParameters() {
 }
 
 void MSAGeneralTab::updateState() {
-    const MSAConsensusAlgorithm* algo = msa->getUI()->getConsensusArea()->getConsensusAlgorithm();
-    updateThresholdState(algo->supportsThreshold(),
-                         algo->getMinThreshold(),
-                         algo->getMaxThreshold(),
-                         algo->getThreshold());
-    consensusType->setToolTip(algo->getDescription());
+    consensusModeWidget->updateState();
 
     copyButton->setEnabled(!msa->getUI()->getSequenceArea()->getSelection().isNull());
-}
-
-void MSAGeneralTab::updateThresholdState(bool enable, int minVal, int maxVal, int value) {
-    if (false == enable) {
-        minVal = 0;
-        maxVal = 0;
-        value = 0;
-    }
-
-    thresholdLabel->setEnabled(enable);
-    thresholdSlider->setEnabled(enable);
-    thresholdSpinBox->setEnabled(enable);
-    thresholdResetButton->setEnabled(enable);
-
-    thresholdSlider->setRange(minVal, maxVal);
-    thresholdSpinBox->setRange(minVal, maxVal);
-
-    thresholdSpinBox->setValue(qBound(minVal, value, maxVal));
-    thresholdSlider->setValue(qBound(minVal, value, maxVal));
-}
-
-void MSAGeneralTab::initConsensusTypeCombo() {
-    MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
-    SAFE_POINT(NULL != reg, "Consensus algorithm registry is NULL.", );
-
-    const DNAAlphabet* alphabet = msa->getMSAObject()->getAlphabet();
-    curAlphabetId = alphabet->getId();
-    QList<MSAConsensusAlgorithmFactory*> algos = reg->getAlgorithmFactories(MSAConsensusAlgorithmFactory::getAphabetFlags(alphabet));
-    foreach(const MSAConsensusAlgorithmFactory* algo, algos) {
-        consensusType->addItem(algo->getName(), algo->getId());
-    }
-    QString currentAlgorithmName = msa->getUI()->getConsensusArea()->getConsensusAlgorithm()->getName();
-    consensusType->setCurrentIndex(consensusType->findText(currentAlgorithmName));
-
-    // Update state for the current algorithm
-    updateState();
 }
 
 }   // namespace

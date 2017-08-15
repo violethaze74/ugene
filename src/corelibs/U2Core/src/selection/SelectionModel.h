@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,12 +22,13 @@
 #ifndef _U2_SELECTION_MODEL_H_
 #define _U2_SELECTION_MODEL_H_
 
+#include <QObject>
+
 #include <U2Core/global.h>
 
 namespace U2 {
 
 typedef QString GSelectionType;
-
 
 class U2CORE_EXPORT GSelection : public QObject {
     Q_OBJECT

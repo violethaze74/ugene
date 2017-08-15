@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,6 +29,7 @@
 #endif
 #endif
 
+#include <QObject>
 #include <QVector>
 
 #include <U2Core/global.h>
@@ -112,11 +113,13 @@ public:
             FormatBrackets  "[100, 200)"
             FormatDash      "100 - 200"
             FormatPlusMinus "150 &plusmn; 50" - for html only
+            FormatDots      "100..199"
     */
     enum Format {
         FormatBrackets,
         FormatDash,
-        FormatPlusMinus
+        FormatPlusMinus,
+        FormatDots
     };
 
     /** Converts region to its string represenation using given format. */
@@ -202,7 +205,7 @@ U2CORE_EXPORT QDataStream &operator>>(QDataStream &in, U2Region &myObj);
 }//namespace
 
 Q_DECLARE_TYPEINFO(U2::U2Region, Q_PRIMITIVE_TYPE);
-Q_DECLARE_METATYPE( U2::U2Region)
-Q_DECLARE_METATYPE( QVector< U2::U2Region >)
+Q_DECLARE_METATYPE(U2::U2Region)
+Q_DECLARE_METATYPE(QVector< U2::U2Region >)
 
 #endif

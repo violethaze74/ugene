@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,6 +56,7 @@ public:
 class U2AssemblyReadsImportInfo {
 public:
     U2AssemblyReadsImportInfo(U2AssemblyReadsImportInfo *parentInfo = NULL) : nReads(0), packed(false), parentInfo(parentInfo) {}
+    virtual ~U2AssemblyReadsImportInfo() {}
 
     /** Number of reads added during import */
     qint64 nReads;

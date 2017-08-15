@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
  */
 
 #include <U2Core/AppContext.h>
+#include <U2Core/U2DbiPackUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
@@ -147,6 +148,25 @@ void RawDataUdrSchema::writeContent(const QByteArray &data, const U2EntityRef &o
     QScopedPointer<OutputStream> oStream(con.dbi->createOutputStream(id, CONTENT, data.size(), os));
     CHECK_OP(os, );
     oStream->write(data.data(), data.size(), os);
+}
+
+void RawDataUdrSchema::writeContent(const U2DataId &masterId, const QByteArray &data, const U2EntityRef &objRef, U2OpStatus &os) {
+    DbiHelper con(objRef.dbiRef, os);
+    CHECK_OP(os, );
+    QScopedPointer<ModificationAction> updateAction(con.dbi->getModificationAction(masterId));
+    U2TrackModType trackMod = updateAction->prepare(os);
+    CHECK_OP(os, );
+
+    QByteArray modDetails;
+    if (trackMod == TrackOnUpdate) {
+        QByteArray olderData = readAllContent(objRef, os);
+        modDetails = U2DbiPackUtils::packUdr(olderData, data);
+    }
+
+    writeContent(data, objRef, os);
+
+    updateAction->addModification(objRef.entityId, U2ModType::udrUpdated, modDetails, os);
+    updateAction->complete(os);
 }
 
 QByteArray RawDataUdrSchema::readAllContent(const U2EntityRef &objRef, U2OpStatus &os) {

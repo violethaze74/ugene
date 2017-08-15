@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,7 +53,7 @@ class U2CORE_EXPORT SequenceDbiWalkerTask : public Task {
     Q_OBJECT
 public:
     SequenceDbiWalkerTask(const SequenceDbiWalkerConfig& config, SequenceDbiWalkerCallback* callback,
-        const QString& name, TaskFlags tf = TaskFlags_NR_FOSCOE);
+        const QString& name, TaskFlags tf = TaskFlags_NR_FOSE_COSC);
 
     SequenceDbiWalkerCallback*     getCallback() const {return callback;}
     const SequenceDbiWalkerConfig& getConfig() const {return config;}

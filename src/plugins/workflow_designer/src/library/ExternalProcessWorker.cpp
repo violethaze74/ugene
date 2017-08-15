@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,8 +28,8 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/AnnotationTableObject.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/GObjectRelationRoles.h>
@@ -48,7 +48,7 @@
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <QtCore/QDateTime>
+#include <QDateTime>
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -103,14 +103,14 @@ namespace {
         return annsObj;
     }
 
-    static MAlignmentObject * toAlignment(const QVariantMap &data, WorkflowContext *context, U2OpStatus &os) {
+    static MultipleSequenceAlignmentObject * toAlignment(const QVariantMap &data, WorkflowContext *context, U2OpStatus &os) {
         QString slot = BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId();
         if (!data.contains(slot)) {
             os.setError(QObject::tr("Empty alignment slot"));
             return NULL;
         }
         SharedDbiDataHandler msaId = data[slot].value<SharedDbiDataHandler>();
-        MAlignmentObject *msaObj = StorageUtils::getMsaObject(context->getDataStorage(), msaId);
+        MultipleSequenceAlignmentObject *msaObj = StorageUtils::getMsaObject(context->getDataStorage(), msaId);
         if (NULL == msaObj) {
             os.setError(QObject::tr("Error with alignment object"));
         }
@@ -182,7 +182,7 @@ namespace {
             CHECK_OP(os,);
             d->addObject(annsObj);
         } else if (dataCfg.isAlignment()) {
-            MAlignmentObject *msaObj = toAlignment(data, context, os);
+            MultipleSequenceAlignmentObject *msaObj = toAlignment(data, context, os);
             CHECK_OP(os,);
             d->addObject(msaObj);
         } else if (dataCfg.isAnnotatedSequence()) {
@@ -320,10 +320,10 @@ static GObject * getObject(Document *d, GObjectType t, U2OpStatus &os) {
 }
 
 static SharedDbiDataHandler getAlignment(Document *d, WorkflowContext *context, U2OpStatus &os) {
-    GObject *obj = getObject(d, GObjectTypes::MULTIPLE_ALIGNMENT, os);
+    GObject *obj = getObject(d, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, os);
     CHECK_OP(os, SharedDbiDataHandler());
 
-    MAlignmentObject *msaObj =  static_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject *msaObj =  static_cast<MultipleSequenceAlignmentObject*>(obj);
     if (NULL == msaObj) {
         os.setError(QObject::tr("Error with alignment object"));
         return SharedDbiDataHandler();
@@ -454,7 +454,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
             foreach(const U2EntityRef &eRef, refs) {
                 QScopedPointer<U2SequenceObject> obj(new U2SequenceObject("tmp_name", eRef));
                 if (first) {
-                    seqImporter.startSequence(context->getDataStorage()->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, slotId, false, os);
+                    seqImporter.startSequence(os, context->getDataStorage()->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, slotId, false);
                     first = false;
                 }
                 U2Region wholeSeq(0, obj->getSequenceLength());

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,6 +35,7 @@
 #include <U2Core/SnpeffDictionary.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
@@ -115,13 +116,13 @@ void SnpEffFactory::init() {
     QList<Attribute*> a;
     {
 
-        Descriptor outDir(SnpEffWorker::OUT_MODE_ID, SnpEffWorker::tr("Output directory"),
-            SnpEffWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(SnpEffWorker::OUT_MODE_ID, SnpEffWorker::tr("Output folder"),
+            SnpEffWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(SnpEffWorker::CUSTOM_DIR_ID, SnpEffWorker::tr("Custom directory"),
-            SnpEffWorker::tr("Select the custom output directory."));
+        Descriptor customDir(SnpEffWorker::CUSTOM_DIR_ID, SnpEffWorker::tr("Custom folder"),
+            SnpEffWorker::tr("Select the custom output folder."));
 
         Descriptor inpFormat(SnpEffWorker::INPUT_FORMAT, SnpEffWorker::tr("Input format"),
             SnpEffWorker::tr("Select the input format of variations."));
@@ -325,7 +326,7 @@ void SnpEffWorker::sendResult(const QString &url) {
     outputUrlPort->put(message);
 }
 
-const QStrStrMap SnpEffLogProcessor::wellKnownMessages = SnpEffLogProcessor::initWellKnownMessages();
+const StrStrMap SnpEffLogProcessor::wellKnownMessages = SnpEffLogProcessor::initWellKnownMessages();
 const QMap<QString, QRegExp> SnpEffLogProcessor::messageCatchers = SnpEffLogProcessor::initWellKnownCatchers();
 
 SnpEffLogProcessor::SnpEffLogProcessor(WorkflowMonitor *monitor, const QString &actor) :
@@ -350,7 +351,7 @@ void SnpEffLogProcessor::addNotification(const QString &key, int count) {
     monitor->addError(warningMessage, actor, Problem::U2_WARNING);
 }
 
-QStrStrMap SnpEffLogProcessor::initWellKnownMessages() {
+StrStrMap SnpEffLogProcessor::initWellKnownMessages() {
     return SnpeffDictionary::messageDescriptions;
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,20 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#include "RepeatFinderTests.h"
+#include <QFile>
 
-#include "FindRepeatsTask.h"
-#include "RF_SArray_TandemFinder.h"
-#include <U2Core/DNAAlphabet.h>
+#include <U2Algorithm/SArrayBasedFindTask.h>
+#include <U2Algorithm/SArrayIndex.h>
+
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/U2SafePoints.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
-#include <U2Algorithm/SArrayIndex.h>
-#include <U2Algorithm/SArrayBasedFindTask.h>
+#include "RepeatFinderTests.h"
+#include "FindRepeatsTask.h"
+#include "RF_SArray_TandemFinder.h"
 
 namespace U2 {
 

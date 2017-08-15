@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,19 +22,20 @@
 #ifndef _U2_GENOME_ALIGNER_FIND_TASK_H_
 #define _U2_GENOME_ALIGNER_FIND_TASK_H_
 
+#include <QMutex>
+#include <QMutex>
+#include <QSemaphore>
+#include <QVector>
+
+#include <U2Core/DNASequence.h>
+#include <U2Core/Task.h>
+#include <U2Core/U2AssemblyUtils.h>
+#include <U2Core/U2Region.h>
+#include <U2Core/U2SafePoints.h>
+
 #include "GenomeAlignerSearchQuery.h"
 #include "GenomeAlignerWriteTask.h"
 #include "DataBunch.h"
-
-#include <U2Core/Task.h>
-#include <U2Core/U2Region.h>
-#include <U2Core/DNASequence.h>
-#include <U2Core/U2AssemblyUtils.h>
-
-#include <QtCore/QMutex>
-#include <QtCore/QVector>
-#include <QtCore/QMutex>
-#include <QtCore/QSemaphore>
 
 #define BinarySearchResult qint64
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -47,7 +47,7 @@ QString MSADistanceAlgorithmFactoryHammingRevCompl::getName() const {
 }
 
 
-MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHammingRevCompl::createAlgorithm(const MAlignment& ma, QObject* ) {
+MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHammingRevCompl::createAlgorithm(const MultipleSequenceAlignment& ma, QObject* ) {
     return new MSADistanceAlgorithmHammingRevCompl(this, ma);
 }
 
@@ -55,25 +55,24 @@ MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHammingRevCompl::createAlgorith
 // Algorithm
 
 void MSADistanceAlgorithmHammingRevCompl::run() {
-    DNATranslation* compTT = AppContext::getDNATranslationRegistry()->
-        lookupComplementTranslation(ma.getAlphabet());
+    DNATranslation* compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(ma->getAlphabet());
 
     assert (compTT != NULL);
 
     DNATranslation* trans = compTT ;
-    int nSeq = ma.getNumRows();
-    MAlignment revtransl;
-    revtransl.setAlphabet(ma.getAlphabet());
+    int nSeq = ma->getNumRows();
+    MultipleSequenceAlignment revtransl;
+    revtransl->setAlphabet(ma->getAlphabet());
     U2OpStatus2Log os;
     for (int i = 0; i < nSeq; i++) {
         if (isCanceled()) {
             return;
         }
-        QByteArray arr = ma.getRow(i).toByteArray(ma.getLength(), os);
+        QByteArray arr = ma->getMsaRow(i)->toByteArray(os, ma->getLength());
         trans->translate(arr.data(), arr.length());
         TextUtils::reverse(arr.data(), arr.length());
 
-        revtransl.addRow(ma.getRow(i).getName(), arr, os);
+        revtransl->addRow(ma->getMsaRow(i)->getName(), arr);
 
         CHECK_OP_EXT(os, setError(tr("An unexpected error has occurred during running"
                                       " the Hamming reverse-complement algorithm.")),);
@@ -82,11 +81,11 @@ void MSADistanceAlgorithmHammingRevCompl::run() {
     for (int i = 0; i < nSeq; i++) {
         for (int j = i; j < nSeq; j++) {
             int sim = 0;
-            for (int k = 0; k < ma.getLength(); k++) {
+            for (int k = 0; k < ma->getLength(); k++) {
                 if (isCanceled()) {
                     return;
                 }
-                if (ma.charAt(i, k) == revtransl.charAt(j, k)) {
+                if (ma->charAt(i, k) == revtransl->charAt(j, k)) {
                     sim++;
                 }
             }

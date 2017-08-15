@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,12 @@
 #ifndef _U2_BWA_TESTS_H_
 #define _U2_BWA_TESTS_H_
 
-#include <U2Test/XMLTestUtils.h>
-#include <U2Core/GObject.h>
-#include <QtXml/QDomElement>
+#include <QDomElement>
 #include <QFileInfo>
+
+#include <U2Core/GObject.h>
+
+#include <U2Test/XMLTestUtils.h>
 
 #include "bwa/BwaTask.h"
 
@@ -33,8 +35,7 @@ namespace U2 {
 
 class BwaGObjectTask;
 class DnaAssemblyMultiTask;
-class MAlignmentObject;
-class MAlignment;
+class MultipleSequenceAlignmentObject;
 
 class GTest_Bwa : public GTest {
     Q_OBJECT

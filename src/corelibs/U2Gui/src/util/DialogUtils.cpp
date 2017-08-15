@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -80,11 +80,9 @@ void FileLineEdit::sl_onBrowse() {
     LastUsedDirHelper lod(type);
 
     QFileDialog::Options options = 0;
-#if defined(Q_OS_MAC) || (QT_VERSION >= 0x050000)
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         options |= QFileDialog::DontUseNativeDialog;
     }
-#endif
 
     QString name;
     if (multi) {

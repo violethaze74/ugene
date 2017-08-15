@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,11 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include "EnzymesTests.h"
-
-#include "EnzymesIO.h"
-#include "FindEnzymesTask.h"
-#include "CloningUtilTasks.h"
+#include <QFileInfo>
+#include <QTemporaryFile>
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
@@ -34,6 +31,11 @@
 
 #include <U2Formats/GenbankLocationParser.h>
 #include <U2Formats/GenbankPlainTextFormat.h>
+
+#include "CloningUtilTasks.h"
+#include "EnzymesIO.h"
+#include "EnzymesTests.h"
+#include "FindEnzymesTask.h"
 
 namespace U2 {
 

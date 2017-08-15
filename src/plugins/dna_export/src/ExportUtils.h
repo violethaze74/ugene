@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,8 @@
 #ifndef _U2_EXPORT_UTILS_H_
 #define _U2_EXPORT_UTILS_H_
 
+#include <QObject>
+
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -31,6 +33,7 @@ class Annotation;
 class DocumentProviderTask;
 class ExportSequenceTaskSettings;
 class ExportSequencesDialog;
+class MultipleChromatogramAlignmentObject;
 class Task;
 
 class ExportUtils: public QObject {
@@ -43,6 +46,8 @@ public:
 
     // generates unique name using prefix + numbers
     static QString genUniqueName(const QSet<QString>& names, QString prefix);
+
+    static void launchExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject);
 };
 
 }//namespace

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,20 +39,20 @@
 
 namespace U2 {
 
-MuscleAlignDialogController::MuscleAlignDialogController(QWidget* w, const MAlignment& _ma, MuscleTaskSettings& _settings) 
-    : QDialog(w), ma(_ma), settings(_settings)
+MuscleAlignDialogController::MuscleAlignDialogController(QWidget* w, const MultipleSequenceAlignment& _ma, MuscleTaskSettings& _settings) 
+    : QDialog(w), ma(_ma->getCopy()), settings(_settings)
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759695");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    translateCheckBox->setEnabled(ma.getAlphabet()->isNucleic());
+    translateCheckBox->setEnabled(ma->getAlphabet()->isNucleic());
     inputGroupBox->setVisible(false);
     this->adjustSize();
 
-    rangeEndSB->setMaximum(ma.getLength());
-    rangeEndSB->setValue(ma.getLength());
+    rangeEndSB->setMaximum(ma->getLength());
+    rangeEndSB->setValue(ma->getLength());
 
     if (settings.alignRegion) {
         customRangeRB->setChecked(true);
@@ -94,7 +94,7 @@ void MuscleAlignDialogController::accept() {
     settings.stableMode = stableCB->isChecked();
 
     if (wholeRangeRB->isChecked()) {
-        settings.regionToAlign = U2Region(0, ma.getLength());
+        settings.regionToAlign = U2Region(0, ma->getLength());
         settings.alignRegion = false;
     } else {
         int startPos = rangeStartSB->value() - 1;
@@ -163,7 +163,7 @@ MuscleAlignWithExtFileSpecifyDialogController::MuscleAlignWithExtFileSpecifyDial
 void MuscleAlignWithExtFileSpecifyDialogController::sl_inputPathButtonClicked() {
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(this, tr("Open an alignment file"), lod.dir,
-        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true));
+        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
     if (lod.url.isEmpty()) {
         return;
     }

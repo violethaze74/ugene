@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -20,10 +20,9 @@
 */
 
 #include <QFileInfo>
-
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QSplitter>
-#include <QtWidgets/QGroupBox>
+#include <QGroupBox>
+#include <QMessageBox>
+#include <QSplitter>
 
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -92,7 +91,7 @@ public:
         : dirUrl(NULL), dbFolderUrl(url) {}
 
     virtual void visit(DirectoryItem *item) {
-        SAFE_POINT(NULL != dirUrl, "NULL directory url", );
+        SAFE_POINT(NULL != dirUrl, "NULL folder url", );
         dirUrl->setIncludeFilter(item->getIncludeFilter());
         dirUrl->setExcludeFilter(item->getExcludeFilter());
         dirUrl->setRecursive(item->isRecursive());
@@ -107,7 +106,7 @@ public:
     }
 
     virtual void visit(DbFolderItem *item) {
-        SAFE_POINT(NULL != dbFolderUrl, "NULL directory url", );
+        SAFE_POINT(NULL != dbFolderUrl, "NULL folder url", );
         dbFolderUrl->setRecursive(item->isRecursive());
     }
 
@@ -767,7 +766,7 @@ void URLListController::replaceUrl(int pos, int newPos) {
 void URLListController::addUrl(const QString &url, U2OpStatus &os) {
     URLContainer *urlCont = URLContainerFactory::createUrlContainer(url);
     if (NULL == urlCont) {
-        os.setError(tr("This file or directory does not exist: %1").arg(url));
+        os.setError(tr("This file or folder does not exist: %1").arg(url));
         return;
     }
 

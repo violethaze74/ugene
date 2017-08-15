@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITe
     QString __saveToFile = QDir::cleanPath(QDir::currentPath() + "/" + _saveToFile);
     saveToFile = QDir::toNativeSeparators(__saveToFile);
     comboBoxItems[FASTA] = "FASTA";
-    comboBoxItems[Genbank] = "Genbank";
+    comboBoxItems[Genbank] = "GenBank";
 }
 
 RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os, RemoveType _removeType)

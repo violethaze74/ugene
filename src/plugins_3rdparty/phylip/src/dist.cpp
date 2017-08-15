@@ -1,7 +1,7 @@
 #include "phylip.h"
 #include "dist.h"
 
-#include <QtCore/QString>
+#include <QString>
 
 /* version 3.696.
 Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.

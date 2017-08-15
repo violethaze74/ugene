@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -208,7 +208,7 @@ void ExportSequencesDialog::updateModel() {
     file = saveController->getSaveFileName();
     QFileInfo fi(file);
     if( fi.isRelative() ) {
-        // save it in root sequence directory
+        // save it in root sequence folder
         file = QFileInfo(defaultFileName).absoluteDir().absolutePath() + "/" + file;
     }
     sequenceName = ( customSeqNameBox->isChecked( ) ) ? sequenceNameEdit->text( ) : QString( );

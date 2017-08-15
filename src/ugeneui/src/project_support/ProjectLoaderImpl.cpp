@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,7 +20,11 @@
  */
 
 #include <QAction>
+#include <QDesktopServices>
+#include <QMainWindow>
+#include <QMessageBox>
 #include <QPushButton>
+#include <QToolBar>
 
 #include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
@@ -35,6 +39,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/ProjectModel.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/ServiceTypes.h>
 #include <U2Core/Settings.h>
@@ -53,7 +58,6 @@
 #include <U2Gui/ProjectView.h>
 #include <U2Gui/SearchGenbankSequenceDialogController.h>
 #include <U2Gui/SharedConnectionsDialog.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2View/DnaAssemblyGUIExtension.h>
@@ -223,13 +227,11 @@ void ProjectLoaderImpl::sl_openProject() {
 
     QStringList files;
 
-#if defined(Q_OS_MAC) || (QT_VERSION >= 0x050000)
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         files = U2FileDialog::getOpenFileNames(QApplication::activeWindow(), tr("Select files to open"), h.dir,  filter, 0, QFileDialog::DontUseNativeDialog);
-    } else
-#endif
-
-    files = U2FileDialog::getOpenFileNames(QApplication::activeWindow(), tr("Select files to open"), h.dir,  filter);
+    } else {
+        files = U2FileDialog::getOpenFileNames(QApplication::activeWindow(), tr("Select files to open"), h.dir,  filter);
+    }
 
     if (files.isEmpty()) {
         return;
@@ -807,6 +809,9 @@ void CreateSequenceWelcomePageAction::perform() {
 SaveProjectDialogController::SaveProjectDialogController(QWidget *w) : QDialog(w) {
     setupUi(this);
     setModal(true);
+    buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Yes"));
+    buttonBox->button(QDialogButtonBox::No)->setText(tr("No"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));    
 
     connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(sl_clicked(QAbstractButton *)));
 }
@@ -882,7 +887,7 @@ void ProjectDialogController::keyPressEvent(QKeyEvent* event) {
 }
 
 void ProjectDialogController::sl_folderSelectClicked() {
-    QString folder = U2FileDialog::getExistingDirectory(this, tr("Choose directory"), projectFolderEdit->text());
+    QString folder = U2FileDialog::getExistingDirectory(this, tr("Choose folder"), projectFolderEdit->text());
     if (folder.isEmpty()) return;
     projectFolderEdit->setText(folder);
     updateState();

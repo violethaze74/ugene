@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -257,7 +257,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     SQLiteDbi* sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
 
     // "Attribute"
-    SQLiteQuery qAttr("SELECT COUNT(*) FROM Attribute WHERE name = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qAttr("SELECT COUNT(*) FROM Attribute WHERE name = ?1", sqliteDbi->getDbRef(), os);
     qAttr.bindString(1, "MSA1 info key");
     qint64 msa1AttrNum = qAttr.selectInt64();
     CHECK_EQUAL(0, msa1AttrNum, "MSA1 attributes number");
@@ -268,7 +268,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     CHECK_EQUAL(1, msa2AttrNum, "MSA2 attributes number");
 
     // "StringAttribute"
-    SQLiteQuery qStringAttr("SELECT COUNT(*) FROM StringAttribute WHERE value = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qStringAttr("SELECT COUNT(*) FROM StringAttribute WHERE value = ?1", sqliteDbi->getDbRef(), os);
     qStringAttr.bindString(1, "MSA1 info value");
     qint64 msa1StrAttrNum = qStringAttr.selectInt64();
     CHECK_EQUAL(0, msa1StrAttrNum, "MSA1 string attributes number");
@@ -279,7 +279,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     CHECK_EQUAL(1, msa2StrAttrNum, "MSA2 string attributes number");
 
     // "MsaRow"
-    SQLiteQuery qMsaRow("SELECT COUNT(*) FROM MsaRow WHERE msa = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qMsaRow("SELECT COUNT(*) FROM MsaRow WHERE msa = ?1", sqliteDbi->getDbRef(), os);
     qMsaRow.bindDataId(1, msaId);
     qint64 msa1Rows = qMsaRow.selectInt64();
     CHECK_EQUAL(0, msa1Rows, "number of rows in MSA1");
@@ -290,7 +290,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     CHECK_EQUAL(1, msa2Rows, "number of rows in MSA2");
 
     // "MsaRowGap"
-    SQLiteQuery qMsaRowGap("SELECT COUNT(*) FROM MsaRowGap WHERE msa = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qMsaRowGap("SELECT COUNT(*) FROM MsaRowGap WHERE msa = ?1", sqliteDbi->getDbRef(), os);
     qMsaRowGap.bindDataId(1, msaId);
     qint64 msa1Gaps = qMsaRowGap.selectInt64();
     CHECK_EQUAL(0, msa1Gaps, "number of gaps in MSA1 rows");
@@ -301,7 +301,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     CHECK_EQUAL(1, msa2Gaps, "number of gaps in MSA2 rows");
 
     // "Sequence"
-    SQLiteQuery qSeq("SELECT COUNT(*) FROM Sequence WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qSeq("SELECT COUNT(*) FROM Sequence WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qSeq.bindDataId(1, seq1.id);
     qint64 msa1seq1 = qSeq.selectInt64();
     CHECK_EQUAL(0, msa1seq1, "seq1 of msa1");
@@ -317,7 +317,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     CHECK_EQUAL(1, msa2seq, "seq of msa2");
 
     // "Msa"
-    SQLiteQuery qMsa("SELECT COUNT(*) FROM Msa WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qMsa("SELECT COUNT(*) FROM Msa WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qMsa.bindDataId(1, msaId);
     qint64 msa1records = qMsa.selectInt64();
     CHECK_EQUAL(0, msa1records, "number of MSA1 records");
@@ -328,7 +328,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     CHECK_EQUAL(1, msa2records, "number of MSA2 records");
 
     // "Object"
-    SQLiteQuery qObj("SELECT COUNT(*) FROM Object WHERE id = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qObj("SELECT COUNT(*) FROM Object WHERE id = ?1", sqliteDbi->getDbRef(), os);
     qObj.bindDataId(1, msaId);
     qint64 msa1objects = qObj.selectInt64();
     CHECK_EQUAL(0, msa1objects, "number of MSA1 objects");
@@ -551,7 +551,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_user3Multi) {
     }
 
     // Verify version in the userModStep
-    SQLiteQuery qVersion("SELECT version FROM UserModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qVersion("SELECT version FROM UserModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qVersion.bindDataId(1, msaId);
     if (qVersion.step()) {
         qint64 userStepVersion = qVersion.getInt64(0);
@@ -640,7 +640,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionAfterUndo) {
     SQLiteObjectDbiTestData::addTestRow(msaId, os);
 
     // Check there is no obsolete steps
-    SQLiteQuery qUser("SELECT COUNT(*) FROM UserModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qUser("SELECT COUNT(*) FROM UserModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qUser.bindDataId(1, msaId);
     if (qUser.step()) {
         CHECK_EQUAL(1, qUser.getInt64(0), "number of user steps");
@@ -650,7 +650,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionAfterUndo) {
     }
     CHECK_NO_ERROR(os);
 
-    SQLiteQuery qSingle("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qSingle("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qSingle.bindDataId(1, msaId);
     if (qSingle.step()) {
         CHECK_EQUAL(1, qSingle.getInt64(0), "number of single steps");
@@ -729,7 +729,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo1) {
     }
 
     // Check there is no obsolete steps
-    SQLiteQuery qUser("SELECT COUNT(*) FROM UserModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qUser("SELECT COUNT(*) FROM UserModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qUser.bindDataId(1, msaId);
     if (qUser.step()) {
         CHECK_EQUAL(1, qUser.getInt64(0), "number of user steps");
@@ -739,7 +739,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo1) {
     }
     CHECK_NO_ERROR(os);
 
-    SQLiteQuery qSingle("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qSingle("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qSingle.bindDataId(1, msaId);
     if (qSingle.step()) {
         CHECK_EQUAL(1, qSingle.getInt64(0), "number of single steps");
@@ -789,7 +789,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo2) {
     SQLiteObjectDbiTestData::addTestRow(msaId, os);
 
     // Check there is no obsolete steps
-    SQLiteQuery qUser("SELECT COUNT(*) FROM UserModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qUser("SELECT COUNT(*) FROM UserModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qUser.bindDataId(1, msaId);
     if (qUser.step()) {
         CHECK_EQUAL(1, qUser.getInt64(0), "number of user steps");
@@ -799,7 +799,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo2) {
     }
     CHECK_NO_ERROR(os);
 
-    SQLiteQuery qSingle("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qSingle("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qSingle.bindDataId(1, msaId);
     if (qSingle.step()) {
         CHECK_EQUAL(1, qSingle.getInt64(0), "number of single steps");
@@ -856,7 +856,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo3) {
     }
 
     // Check there is no obsolete steps
-    SQLiteQuery qUser("SELECT COUNT(*) FROM UserModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qUser("SELECT COUNT(*) FROM UserModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qUser.bindDataId(1, msaId);
     if (qUser.step()) {
         CHECK_EQUAL(1, qUser.getInt64(0), "number of user steps");
@@ -866,7 +866,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo3) {
     }
     CHECK_NO_ERROR(os);
 
-    SQLiteQuery qSingle("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qSingle("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qSingle.bindDataId(1, msaId);
     if (qSingle.step()) {
         CHECK_EQUAL(1, qSingle.getInt64(0), "number of single steps");
@@ -923,7 +923,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo4) {
     SQLiteObjectDbiTestData::addTestRow(msaId, os);
 
     // Check there is no obsolete steps
-    SQLiteQuery qUser("SELECT COUNT(*) FROM UserModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qUser("SELECT COUNT(*) FROM UserModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qUser.bindDataId(1, msaId);
     if (qUser.step()) {
         CHECK_EQUAL(1, qUser.getInt64(0), "number of user steps");
@@ -933,7 +933,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo4) {
     }
     CHECK_NO_ERROR(os);
 
-    SQLiteQuery qSingle("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qSingle("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qSingle.bindDataId(1, msaId);
     if (qSingle.step()) {
         CHECK_EQUAL(1, qSingle.getInt64(0), "number of single steps");

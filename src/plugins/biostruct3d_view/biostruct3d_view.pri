@@ -26,5 +26,9 @@ win32-msvc2013|win32-msvc2015 {
     LIBS += opengl32.lib
 }
 
+win32-msvc2015 {
+    LIBS += opengl32.lib
+}
+
 win32 : LIBS += -lGLU32
 unix_not_mac() : LIBS += -lGLU

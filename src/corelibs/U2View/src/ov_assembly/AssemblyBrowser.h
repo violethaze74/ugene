@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,9 +24,9 @@
 
 #include <assert.h>
 
-#include <QtCore/QSharedPointer>
-#include <QtCore/QByteArray>
-#include <QtCore/QListIterator>
+#include <QSharedPointer>
+#include <QByteArray>
+#include <QListIterator>
 #include <U2Core/U2Dbi.h>
 #include <U2Core/U2Assembly.h>
 #include <U2Core/AssemblyObject.h>

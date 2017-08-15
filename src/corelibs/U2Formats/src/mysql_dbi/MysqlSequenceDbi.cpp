@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -205,10 +205,14 @@ static QList<QByteArray> quantify(const QList<QByteArray>& input) {
 }   // unnamed namespace
 
 void MysqlSequenceDbi::updateSequenceData(const U2DataId& sequenceId, const U2Region& regionToReplace, const QByteArray& dataToInsert, const QVariantMap &hints, U2OpStatus& os) {
+    updateSequenceData(sequenceId, sequenceId, regionToReplace, dataToInsert, hints, os);
+}
+
+void MysqlSequenceDbi::updateSequenceData(const U2DataId &masterId, const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
-    MysqlModificationAction updateAction(dbi, sequenceId);
+    MysqlModificationAction updateAction(dbi, masterId);
     updateAction.prepare(os);
     CHECK_OP(os, );
 
@@ -228,7 +232,7 @@ void MysqlSequenceDbi::updateSequenceData(MysqlModificationAction& updateAction,
     if (TrackOnUpdate == updateAction.getTrackModType()) {
         QByteArray oldSeq = dbi->getSequenceDbi()->getSequenceData(sequenceId, regionToReplace, os);
         CHECK_OP(os, );
-        modDetails = PackUtils::packSequenceDataDetails(regionToReplace, oldSeq, dataToInsert, hints);
+        modDetails = U2DbiPackUtils::packSequenceDataDetails(regionToReplace, oldSeq, dataToInsert, hints);
     }
 
     updateSequenceDataCore(sequenceId, regionToReplace, dataToInsert, hints, os);
@@ -383,7 +387,7 @@ void MysqlSequenceDbi::undoUpdateSequenceData(const U2DataId& sequenceId, const 
     QByteArray newData;
     QVariantMap hints;
 
-    bool ok = PackUtils::unpackSequenceDataDetails(modDetails, replacedRegion, oldData, newData, hints);
+    bool ok = U2DbiPackUtils::unpackSequenceDataDetails(modDetails, replacedRegion, oldData, newData, hints);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during reverting replacing sequence data")), );
 
     hints.remove(U2SequenceDbiHints::EMPTY_SEQUENCE);
@@ -398,7 +402,7 @@ void MysqlSequenceDbi::redoUpdateSequenceData(const U2DataId& sequenceId, const 
     QByteArray newData;
     QVariantMap hints;
 
-    bool ok = PackUtils::unpackSequenceDataDetails(modDetails, replacedRegion, oldData, newData, hints);
+    bool ok = U2DbiPackUtils::unpackSequenceDataDetails(modDetails, replacedRegion, oldData, newData, hints);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during replacing sequence data")), );
 
     replacedByRegion = U2Region(replacedRegion.startPos, newData.length());

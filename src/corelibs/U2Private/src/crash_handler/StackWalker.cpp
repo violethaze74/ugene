@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,8 +62,8 @@
 #include <fstream>
 
 #include <dbghelp.h>
-#include <QtCore/QFile>
-#include <QtCore/QStringList>
+#include <QFile>
+#include <QStringList>
 
 #define USED_CONTEXT_FLAGS CONTEXT_ALL
 
@@ -200,7 +200,7 @@ public:
     HANDLE m_hProcess;
     LPSTR m_szSymPath;
 
-    typedef struct IMAGEHLP_MODULE64_V2 {
+    typedef struct _IMAGEHLP_MODULE64_V2 {
         DWORD    SizeOfStruct;           // set to sizeof(IMAGEHLP_MODULE64)
         DWORD64  BaseOfImage;            // base load address of module
         DWORD    ImageSize;              // virtual size of the loaded module
@@ -211,7 +211,7 @@ public:
         CHAR     ModuleName[32];         // module name
         CHAR     ImageName[256];         // image name
         CHAR     LoadedImageName[256];   // symbol file name
-    };
+    } IMAGEHLP_MODULE64_V2;
 
 
     // SymCleanup()
@@ -619,7 +619,7 @@ BOOL StackWalker::LoadModules() {
 
         const size_t nTempLen = 1024;
         char szTemp[nTempLen];
-        // Now add the current directory:
+        // Now add the current folder:
         if (GetCurrentDirectoryA(nTempLen, szTemp) > 0) {
             szTemp[nTempLen-1] = 0;
             strcat_s(szSymPath, nSymPathLen, szTemp);
@@ -655,7 +655,7 @@ BOOL StackWalker::LoadModules() {
             szTemp[nTempLen-1] = 0;
             strcat_s(szSymPath, nSymPathLen, szTemp);
             strcat_s(szSymPath, nSymPathLen, ";");
-            // also add the "system32"-directory:
+            // also add the "system32"-folder:
             strcat_s(szTemp, nTempLen, "\\system32");
             strcat_s(szSymPath, nSymPathLen, szTemp);
             strcat_s(szSymPath, nSymPathLen, ";");

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,6 +48,8 @@ ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragm
     saveController(NULL) {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759668");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     tabWidget->setCurrentIndex(0);
     const QString coreLengthStr = ConstructMoleculeDialog::tr("core length");

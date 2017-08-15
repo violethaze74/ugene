@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,24 +36,50 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportAnnotationsFiller"
 ExportAnnotationsFiller::ExportAnnotationsFiller(const QString &exportToFile, fileFormat format, HI::GUITestOpStatus &os)
-: Filler(os, "U2__ExportAnnotationsDialog"), softMode(true), format(format), saveSequencesUnderAnnotations(false), saveSequenceNames(false), useMethod(GTGlobals::UseMouse)
+    : Filler(os, "U2__ExportAnnotationsDialog"),
+      softMode(true), format(format),
+      saveSequencesUnderAnnotations(false),
+      saveSequenceNames(false),
+      useMethod(GTGlobals::UseMouse)
 {
     init(exportToFile);
 }
 
 
-ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &_os, const QString &_exportToFile, fileFormat _format, bool _saveSequencesUnderAnnotations,
-    bool _saveSequenceNames, GTGlobals::UseMethod method):
-Filler(_os, "U2__ExportAnnotationsDialog"), softMode(false), format(_format), saveSequencesUnderAnnotations(_saveSequencesUnderAnnotations), saveSequenceNames(_saveSequenceNames), useMethod(method)
+ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &_os,
+                                                 const QString &_exportToFile,
+                                                 fileFormat _format,
+                                                 bool _addToProject,
+                                                 bool _saveSequencesUnderAnnotations,
+                                                 bool _saveSequenceNames,
+                                                 GTGlobals::UseMethod method)
+    : Filler(_os, "U2__ExportAnnotationsDialog"),
+      softMode(false),
+      format(_format),
+      addToProject(_addToProject),
+      saveSequencesUnderAnnotations(_saveSequencesUnderAnnotations),
+      saveSequenceNames(_saveSequenceNames),
+      useMethod(method)
 {
     init(_exportToFile);
 }
 
+ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+    : Filler(os, "U2__ExportAnnotationsDialog", scenario),
+      softMode(false),
+      format(genbank),
+      saveSequencesUnderAnnotations(false),
+      saveSequenceNames(false),
+      useMethod(GTGlobals::UseMouse)
+{
+
+}
+
 void ExportAnnotationsFiller::init(const QString &exportToFile) {
-    this->exportToFile = QDir::toNativeSeparators(QDir::cleanPath(QDir::currentPath() + "/" + exportToFile));
+    this->exportToFile = QDir::toNativeSeparators(QDir::cleanPath(exportToFile));
 
     comboBoxItems[bed] = "BED";
-    comboBoxItems[genbank] = "Genbank";
+    comboBoxItems[genbank] = "GenBank";
     comboBoxItems[gff] = "GFF";
     comboBoxItems[gtf] = "GTF";
     comboBoxItems[csv] = "CSV";
@@ -76,6 +102,13 @@ void ExportAnnotationsFiller::commonScenario()
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
     if (comboBox->currentIndex() != index){
         GTComboBox::setCurrentIndex(os, comboBox, index, true, useMethod);
+    }
+    if (!addToProject){
+        QCheckBox *addToProjectButton = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjectCheck"));
+        GT_CHECK(addToProjectButton != NULL, "Check box not found");
+        if (addToProjectButton->isEnabled()) {
+            GTCheckBox::setChecked(os, addToProjectButton, false);
+        }
     }
 
     if (!softMode) {

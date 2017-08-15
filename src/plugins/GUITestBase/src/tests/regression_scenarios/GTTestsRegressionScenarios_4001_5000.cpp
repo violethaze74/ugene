@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QClipboard>
 #include <QFile>
 #include <QGroupBox>
 #include <QListWidget>
@@ -61,8 +62,23 @@
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
+
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/ToolsMenu.h>
+
+#include <U2View/ADVConstants.h>
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/DetView.h>
+#include <U2View/MaEditorNameList.h>
+#include <U2View/MSAEditorTreeViewer.h>
+#include <U2View/MaGraphOverview.h>
+#include <U2View/ScrollController.h>
 
 #include "GTTestsRegressionScenarios_4001_5000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -91,7 +107,6 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-
 #include "runnables/ugene/corelibs/U2Gui/AddNewDocumentDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
@@ -175,7 +190,7 @@ GUI_TEST_CLASS_DEFINITION(test_4007) {
 
 
     GTGlobals::FindOptions murineOptions(false);
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findFirstAnnotation(os, murineOptions) == NULL, "Annotations are connected to murine.gb");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findFirstAnnotation(os, murineOptions) != NULL, "Annotations are connected to murine.gb");
 
     //    Expected state: the file is reloaded, annotations object still have an association only with human_T1 sequence (if annotations object exists and has the same name as before reloading),
     //there is no errors in the log.
@@ -682,27 +697,28 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
 
     QWidget *hSeqScroll = GTWidget::findWidget(os, "horizontal_sequence_scroll");
     CHECK_SET_ERR(hSeqScroll != NULL, "No scroll bar at the bottom of sequence area");
-    CHECK_SET_ERR(hSeqScroll->isVisible(), "Scroll bat at the bottom of sequence area is invisible");
+    CHECK_SET_ERR(hSeqScroll->isVisible(), "Scroll bar at the bottom of sequence area is invisible");
 
     QWidget *vSeqScroll = GTWidget::findWidget(os, "vertical_sequence_scroll");
+
     CHECK_SET_ERR(vSeqScroll != NULL, "No scroll bar at the bottom of sequence area");
-    CHECK_SET_ERR(!vSeqScroll->isVisible(), "Scroll bat at the rigth side of sequence area is visible");
+    CHECK_SET_ERR(!vSeqScroll->isVisible(), "Scroll bar at the rigth side of sequence area is visible");
 
     QWidget* hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll");
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area");
     CHECK_SET_ERR(!hNameScroll->isVisible(), "Scroll bar at the botton of name list area is visible");
 
-    QSplitter* splitter = qobject_cast<QSplitter*>(GTWidget::findWidget(os, "msa_editor_horizontal_splitter"));
+    QSplitter* splitter = qobject_cast<QSplitter *>(GTWidget::findWidget(os, "msa_editor_horizontal_splitter"));
     CHECK_SET_ERR(splitter != NULL, "MSA Splitter not found");
-    QSplitterHandle* handle = splitter->handle(1);
+    QSplitterHandle *handle = splitter->handle(1);
     CHECK_SET_ERR(handle != NULL, "MSA Splitter handle is NULL");
 
-    QWidget* nameList = GTWidget::findWidget(os, "msa_editor_name_list");
+    QWidget *nameList = GTWidget::findWidget(os, "msa_editor_name_list");
     CHECK_SET_ERR(nameList != NULL, "MSA Editor name list not found");
 
     GTWidget::click(os, handle);
     QPoint p = GTMouseDriver::getMousePosition();
-    p.setX( p.x() - 2*nameList->width()/3);
+    p.setX(p.x() - 2 * nameList->width() / 3);
     GTMouseDriver::press();
     GTMouseDriver::moveTo(p);
     GTMouseDriver::release();
@@ -711,9 +727,7 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
 
     CHECK_SET_ERR(hNameScroll->isVisible(), "Scroll bar at the botton of name list area is invisible");
 
-
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/fungal - all.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll");
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area");
@@ -1028,9 +1042,8 @@ GUI_TEST_CLASS_DEFINITION(test_4106){
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    MSAEditorSequenceArea* msaEdistorSequenceAres = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-
-    int endPos = msaEdistorSequenceAres->getLastVisibleSequence(false);
+    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getLastVisibleRowNumber(msaEdistorSequenceArea->height());
 
     GTUtilsMSAEditorSequenceArea::click( os, QPoint( -5, endPos-1 ) );
     GTGlobals::sleep(200);
@@ -1328,7 +1341,7 @@ GUI_TEST_CLASS_DEFINITION(test_4124) {
     QFile::remove(sandBoxDir+"out.ugenedb");
     GTGlobals::sleep();
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, new Scenario_test_4124()));
-    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
@@ -1810,7 +1823,7 @@ GUI_TEST_CLASS_DEFINITION(test_4218) {
     GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Annotations",
-        testDir + "_common_data/NIAID_pipelines/Chip-seq/data_to_compare_with/test_0001/Default_peaks1.bed");
+        testDir + "_common_data/bedtools/introns.bed");
     GTUtilsWorkflowDesigner::click(os, "Write Annotations");
     const QString outputFilePath = QDir(sandBoxDir).absolutePath() +"/out.bed";
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", outputFilePath, GTUtilsWorkflowDesigner::textValue);
@@ -2080,9 +2093,8 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    MSAEditorSequenceArea* msaEdistorSequenceAres = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-
-    int endPos = msaEdistorSequenceAres->getLastVisibleSequence(false);
+    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getLastVisibleRowNumber(msaEdistorSequenceArea->height());
 
     GTUtilsMSAEditorSequenceArea::click( os, QPoint( -5, endPos-1 ) );
     GTGlobals::sleep(200);
@@ -2102,8 +2114,10 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( 0, endPos-1, 1234, 4 ) );
 
-    CHECK_SET_ERR(msaEdistorSequenceAres->getFirstVisibleSequence() == 1, "MSA not scrolled");
+    const int firstVisibleSequence = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getFirstVisibleRowNumber(false);
+    CHECK_SET_ERR(firstVisibleSequence == 1, "MSA not scrolled");
 }
+
 GUI_TEST_CLASS_DEFINITION(test_4295) {
 /* 1. Open Workflow Designer
  * 2. Add elements Read File List and Write Plain Text
@@ -2216,10 +2230,9 @@ GUI_TEST_CLASS_DEFINITION(test_4306_1) {
 
 //    3. Use context menu on tree view.
 //    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
-    QList<QStringList> items;
-    items << (QStringList() << "Zoom In");
-    items << (QStringList() << "Zoom Out");
-    items << (QStringList() << "Reset Zooming");
+    QStringList items = QStringList() << "Zoom In"
+                                      << "Zoom Out"
+                                      << "Reset Zooming";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, items));
     GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
     GTGlobals::sleep();
@@ -2232,11 +2245,10 @@ GUI_TEST_CLASS_DEFINITION(test_4306_2) {
 
 //    2. Use context menu on the tree view.
 //    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
-    QList<QStringList> items;
-    items << (QStringList() << "Zoom In");
-    items << (QStringList() << "Zoom Out");
-    items << (QStringList() << "Reset Zooming");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, items));
+    QStringList items = QStringList() << "Zoom In"
+                                      << "Zoom Out"
+                                      << "Reset Zooming";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), items));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTGlobals::sleep();
 }
@@ -2329,8 +2341,11 @@ GUI_TEST_CLASS_DEFINITION(test_4309_1) {
 
     QComboBox* box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
     CHECK_SET_ERR(box, "QComboBox not found. Widget in this cell might be not QComboBox");
-    CHECK_SET_ERR(GTComboBox::getValues(os, box).contains(BaseDocumentFormats::VECTOR_NTI_SEQUENCE) == false, "Vector NTI format is present in WriteAnnotations worker");
-    CHECK_SET_ERR(GTComboBox::getValues(os, box).contains(BaseDocumentFormats::PLAIN_GENBANK), "Vector NTI format is present in WriteAnnotations worker");
+    QString vectorNtiFormatName = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::VECTOR_NTI_SEQUENCE)->getFormatName();
+    QString genbankFormatName = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK)->getFormatName();
+    QStringList boxData = GTComboBox::getValues(os, box);
+    CHECK_SET_ERR(boxData.contains(vectorNtiFormatName) == false, "Vector NTI format is present in WriteAnnotations worker");
+    CHECK_SET_ERR(boxData.contains(genbankFormatName), "GenBank format isn't present in WriteAnnotations worker");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4323_1) {
@@ -2739,8 +2754,8 @@ GUI_TEST_CLASS_DEFINITION(test_4391) {
     WorkflowProcessItem *cutAdapter = GTUtilsWorkflowDesigner::addElement(os, "Cut Adapter");
     GTUtilsWorkflowDesigner::connect(os, fileList, cutAdapter);
 
-//    2. Set "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq" as input.
-    GTUtilsWorkflowDesigner::addInputFile(os, "File List", testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq");
+//    2. Set "_common_data/fastq/illumina.fastq" as input.
+    GTUtilsWorkflowDesigner::addInputFile(os, "File List", testDir + "_common_data/fastq/illumina.fastq");
 
 //    3. Run the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -2858,7 +2873,7 @@ GUI_TEST_CLASS_DEFINITION(test_4440) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4463) {
-//    1. Open attached file in "Genbank" format
+//    1. Open attached file in "GenBank" format
 //    2. Modify sequence
 //    3. Unload document
 //    Expected state: "Save document" dialog appeared
@@ -3080,7 +3095,7 @@ GUI_TEST_CLASS_DEFINITION(test_4524) {
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
 
     // Export the msa to SVG.
-    GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, sandBoxDir + "test_4524.svg", "svg", 0));
+    GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, sandBoxDir + "test_4524.svg", "SVG", 0));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export" << "Export as image"));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(10, 10));
     GTMouseDriver::click(Qt::RightButton);
@@ -3186,7 +3201,7 @@ GUI_TEST_CLASS_DEFINITION(test_4587) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4587/", "extended_dna.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::checkObjectTypes(os,
-        QSet<GObjectType>() << GObjectTypes::MULTIPLE_ALIGNMENT,
+        QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
         GTUtilsProjectTreeView::findIndex(os, "Contig1"));
     CHECK_SET_ERR(!l.hasError(), "logfile shouldn't contain errors");
 }
@@ -3311,6 +3326,91 @@ GUI_TEST_CLASS_DEFINITION(test_4588_2) {
         testDir + "_common_data/scenarios/sandbox/4588_1_fetched.fa"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "fetchMenu" << "fetchSequenceById"));
     GTMouseDriver::click(Qt::RightButton);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4591) {
+    
+    //1. Open a circular sequence of length N.
+    GTFileDialog::openFile(os, dataDir  + "samples/Genbank/NC_014267.1.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    SelectSequenceRegionDialogFiller* filler = new SelectSequenceRegionDialogFiller(os, 140425, 2);
+    filler->setCircular(true);
+    GTUtilsDialog::waitForDialog(os, filler);
+    GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
+    //2. Open "Region selection" dialog {Ctrl+a} fill it with next data:
+    //        {Single range selection} checked
+    //        {Region:} 140425..2
+    
+    //3. Press 'Go' button
+    //Expected state: this regions are selected on the view
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ADV_MENU_COPY<<"Copy sequence"));
+    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
+    GTGlobals::sleep(500);
+    QString text = GTClipboard::text(os);
+    CHECK_SET_ERR(text == "ATTG", "unexpected selection: " + text);
+}
+      
+      
+GUI_TEST_CLASS_DEFINITION(test_4591_1) {
+    //1) Open samples/FASTA/human_T1.fa
+        GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    //2) Select 100..10 region of the sequence
+        class Scenario : public CustomScenario {
+        public:
+            void run(HI::GUITestOpStatus &os) {
+                QWidget *dialog = QApplication::activeModalWidget();
+                
+                QLineEdit *startEdit = dialog->findChild<QLineEdit*>("startEdit");
+                QLineEdit *endEdit = dialog->findChild<QLineEdit*>("endEdit");
+                CHECK_SET_ERR(startEdit != NULL, "QLineEdit \"startEdit\" not found");
+                CHECK_SET_ERR(endEdit != NULL, "QLineEdit \"endEdit\" not found");
+                
+                GTLineEdit::setText(os, startEdit, QString::number(321));
+                GTLineEdit::setText(os, endEdit, QString::number(123));
+                                
+                QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox"));
+                QPushButton* goButton = box->button(QDialogButtonBox::Ok);
+                CHECK_SET_ERR(goButton!= NULL, "Go button not found");
+                CHECK_SET_ERR(!goButton->isEnabled(), "Go button is enabled");
+                
+                GTLineEdit::setText(os, startEdit, QString::number(123));
+                GTLineEdit::setText(os, endEdit, QString::number(321));
+                CHECK_SET_ERR(goButton!= NULL, "Go button not found");
+                CHECK_SET_ERR(goButton->isEnabled(), "Go button is notenabled");
+
+                GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            }
+        };
+        GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, new Scenario));
+        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));
+        GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0")); 
+        
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4591_2) {
+    
+    //1. Open a circular sequence of length N.
+    GTFileDialog::openFile(os, dataDir  + "samples/Genbank/NC_014267.1.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    SelectSequenceRegionDialogFiller* filler = new SelectSequenceRegionDialogFiller(os, 3, 3);
+    filler->setCircular(true);
+    GTUtilsDialog::waitForDialog(os, filler);
+    GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
+    //2. Open "Region selection" dialog {Ctrl+a} fill it with next data:
+    //        {Single range selection} checked
+    //        {Region:} 140425..2
+    
+    //3. Press 'Go' button
+    //Expected state: this regions are selected on the view
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ADV_MENU_COPY<<"Copy sequence"));
+    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
+    GTGlobals::sleep(500);
+    QString text = GTClipboard::text(os);
+    CHECK_SET_ERR(text == "G", "unexpected selection: " + text);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4606) {
@@ -3592,6 +3692,94 @@ GUI_TEST_CLASS_DEFINITION(test_4674_2) {
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(10, 10));
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4682) {
+    // Check find from status bar
+
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
+    CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
+
+    QLineEdit *searchEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "searchEdit", msaEditorStatusBar));
+    QWidget *findForward = GTWidget::findWidget(os, "Find forward", msaEditorStatusBar);
+
+    // 2. Put '34c---t A' in text field at status bar. Click Find next button.
+    GTLineEdit::setText(os, searchEdit, "34c---t A", true);
+    CHECK_SET_ERR(searchEdit->text() == "CTA", "Wrong search pattern, validator does not work.");
+
+    GTWidget::click(os, findForward);
+    // Expected state: find result sequence Isophya_altaica_EF540820 region 8..10
+    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(7, 1, 3, 1));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4682_1) {
+    // Check find from status bar
+
+    // 1. Open document data/samples/Stockholm/CBS.sto
+    GTFileDialog::openFile(os, dataDir + "samples/Stockholm" , "CBS.sto");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
+    CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
+
+    QLineEdit *searchEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "searchEdit", msaEditorStatusBar));
+    QWidget *findForward = GTWidget::findWidget(os, "Find forward", msaEditorStatusBar);
+
+    // 2. Put ' Nn--G34..f' in text field at status bar. Click Find next button.
+    GTLineEdit::setText(os, searchEdit, " Nn--G34..f", true);
+    CHECK_SET_ERR(searchEdit->text() == "NNGF", "Wrong search pattern, validator does not work.");
+
+    GTWidget::click(os, findForward);
+    // Expected state: find result sequence O31698/88-139 region 25..30
+    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(24, 3, 6, 1));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4682_2) {
+    // Check find from status bar
+
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Add AMINO.fa to ma2_gapped.aln
+    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/fasta/" , "AMINO.fa");
+    GTUtilsDialog::waitForDialog(os, ob);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<MSAE_MENU_LOAD<<"Sequence from file"));
+    GTMenu::showContextMenu(os,GTWidget::findWidget(os, "msa_editor_sequence_area"));
+
+    QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
+    CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
+
+    QLineEdit *searchEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "searchEdit", msaEditorStatusBar));
+    QWidget *findForward = GTWidget::findWidget(os, "Find forward", msaEditorStatusBar);
+
+    // 3. Put ' eE--F f' in text field at status bar. Click Find next button.
+    GTLineEdit::setText(os, searchEdit, " eE--F f", true);
+    CHECK_SET_ERR(searchEdit->text() == "EEFF", "Wrong search pattern, validator does not work.(EEFF)");
+
+    GTWidget::click(os, findForward);
+    // Expected state: find result sequence AMINO263 region 39..42
+    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(38, 10, 4, 1));
+
+    // 4. Undo changes
+    GTKeyboardDriver::keyClick( 'z', Qt::ControlModifier);
+    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(searchEdit->text() == "", "Search field should be cleared.");
+
+    // 5. Put '34c---t A' in text field at status bar. Click Find next button.
+    GTLineEdit::setText(os, searchEdit, "34c---t A", true);
+    CHECK_SET_ERR(searchEdit->text() == "CTA", "Wrong search pattern, validator does not work.(CTA)");
+
+    GTWidget::click(os, findForward);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4687) {
@@ -3982,14 +4170,14 @@ GUI_TEST_CLASS_DEFINITION(test_4714_1) {
     CHECK_SET_ERR(1 == sequencesCount, QString("An incorrect vount of sequences in the view: expect %1, got %2")
                   .arg(1).arg(sequencesCount));
 
-    const QList<QStringList> visibleItems = QList<QStringList>() << (QStringList() << "Edit new sequence")
-                                                                 << (QStringList() << "Edit existing sequence");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, visibleItems));
+    const QStringList visibleItems = QStringList() << "Edit new sequence"
+                                                   << "Edit existing sequence";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), visibleItems));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 
-    const QList<QStringList> invisibleItems = QList<QStringList>() << (QStringList() << "Remove edited sequence")
-                                                                   << (QStringList() << "Undo changes");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, invisibleItems, PopupChecker::CheckOptions(PopupChecker::NotExists)));
+    const QStringList invisibleItems = QStringList() << "Remove edited sequence"
+                                                     << "Undo changes";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), invisibleItems, PopupChecker::CheckOptions(PopupChecker::NotExists)));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 }
 
@@ -4022,14 +4210,14 @@ GUI_TEST_CLASS_DEFINITION(test_4714_2) {
     CHECK_SET_ERR(1 == sequencesCount, QString("An incorrect vount of sequences in the view: expect %1, got %2")
                   .arg(1).arg(sequencesCount));
 
-    const QList<QStringList> visibleItems = QList<QStringList>() << (QStringList() << "Edit new sequence")
-                                                                 << (QStringList() << "Edit existing sequence");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, visibleItems));
+    const QStringList visibleItems = QStringList() << "Edit new sequence"
+                                                   << "Edit existing sequence";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), visibleItems));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 
-    const QList<QStringList> invisibleItems = QList<QStringList>() << (QStringList() << "Remove edited sequence")
-                                                                   << (QStringList() << "Undo changes");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, invisibleItems, PopupChecker::CheckOptions(PopupChecker::NotExists)));
+    const QStringList invisibleItems = QStringList() << "Remove edited sequence"
+                                                     << "Undo changes";
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), invisibleItems, PopupChecker::CheckOptions(PopupChecker::NotExists)));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 }
 
@@ -4068,12 +4256,12 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: "No colors" color scheme is selected, "No highlighting" highlight scheme is selected
+    //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "No colors");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
-
+    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
+    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
+ 
     //    4. Undo changes
     GTUtilsMsaEditor::undo(os);
     GTGlobals::sleep(500);
@@ -4084,6 +4272,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
     GTComboBox::checkCurrentValue(os, colorScheme, "UGENE");
     GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4719_2) {
@@ -4099,11 +4288,11 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: "No colors" color scheme is selected, "No highlighting" highlight scheme is selected
+    //    Expected state: "UGENE" color scheme is selected, "UGENE" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "No colors");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
+    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
+    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
 
     //    4. Undo changes
     GTUtilsMsaEditor::undo(os);
@@ -4305,51 +4494,53 @@ GUI_TEST_CLASS_DEFINITION(test_4735) {
 
 GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     //1. Open "COI.aln"
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Add some gaps
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(5, 5));
-    GTKeyboardDriver::keyClick( ' ');
+    GTKeyboardDriver::keyClick(' ');
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(5, 6));
-    GTKeyboardDriver::keyClick( ' ');
-    GTKeyboardDriver::keyClick( ' ');
-    GTKeyboardDriver::keyClick( ' ');
+    GTKeyboardDriver::keyClick(' ');
+    GTKeyboardDriver::keyClick(' ');
+    GTKeyboardDriver::keyClick(' ');
 
     //3. Select region with edited sequences, one of sequences should starts with gap
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5,5), QPoint(16, 9));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
 
     //4. Copy this subalignment
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy formatted"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(500);
 
-    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor* editor = mw->findChild<MSAEditor*>();
+    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
+    MSAEditor *editor = mw->findChild<MSAEditor *>();
     QWidget *nameListWidget = editor->getUI()->getEditorNameList();
 
     //5. Open conext menu by right clicking "Name list area". Paste this subaliment throu context menu {Copy/Paste->Paste}
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Paste"));
     GTWidget::click(os, nameListWidget, Qt::RightButton);
-    GTGlobals::sleep();
+    GTGlobals::sleep(500);
 
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).size() == 23, "Number of sequences should be 26");
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 18), QPoint(11, 27));
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).size() == 23, "Number of sequences should be 23");
+
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 18), QPoint(11, 27), GTGlobals::UseMouse);
+
+    QString expectedClipboard = "-CTACTAATTCG\n---TTATTAATT\nTTGCTAATTCGA\nTTATTAATCCGG\nCTATTAATTCGA";
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy selection"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep();
+    GTGlobals::sleep(500);
 
-    //Expected state subalignment pasted correctly
-    QString expectedClipboard = "-CTACTAATTCG\n---TTATTAATT\nTTGCTAATTCGA\nTTATTAATCCGG\nCTATTAATTCGA";
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     QString clipboardText = GTClipboard::text(os);
-    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 
-    GTGlobals::sleep(11000);
+    //Expected state subalignment pasted correctly
+    GTKeyboardUtils::copy(os);
+    GTGlobals::sleep(200);
+    clipboardText = GTClipboard::text(os);
+    GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4764_2) {
@@ -4363,7 +4554,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     QWidget *sequenceAreaWidget = editor->getUI()->getSequenceArea();
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0));
+	GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy selection"));
     GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
     GTGlobals::sleep();
@@ -4458,10 +4649,10 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_1) {
-    QFile::copy(testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa", sandBoxDir + "regression_test_4784_1.fa");
+    QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_1.fa");
 
     //1. Click the menu Tools -> BLAST-> BLAST Search...
-    //2. Select "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa" as input file.
+    //2. Select "_common_data/fasta/chr6,fa" as input file.
     //3. Press "Select a database file".
     //4. Choose "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr".
     //6. Press "Search".
@@ -4483,9 +4674,9 @@ GUI_TEST_CLASS_DEFINITION(test_4784_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_2) {
-    QFile::copy(testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa", sandBoxDir + "regression_test_4784_2.fa");
+    QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_2.fa");
 
-    //1. Open "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa".
+    //1. Open "_common_data/fasta/chr6.fa".
     GTFileDialog::openFile(os, sandBoxDir + "regression_test_4784_2.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4510,9 +4701,9 @@ GUI_TEST_CLASS_DEFINITION(test_4784_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_3) {
-    QFile::copy(testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa", sandBoxDir + "regression_test_4784_3.fa");
+    QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_3.fa");
 
-    //1. Open "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa".
+    //1. Open "_common_data/fasta/chr6.fa".
     GTFileDialog::openFile(os, sandBoxDir + "regression_test_4784_3.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4534,10 +4725,10 @@ GUI_TEST_CLASS_DEFINITION(test_4784_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_4) {
-    QFile::copy(testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa", sandBoxDir + "regression_test_4784_4.fa");
+    QFile::copy(testDir + "_common_data/fasta/chr6.fa", sandBoxDir + "regression_test_4784_4.fa");
 
     //1. Click the menu Tools -> BLAST-> BLAST+ Search...
-    //2. Select "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa" as input file.
+    //2. Select "_common_data/fasta/chr6" as input file.
     //3. Press "Select a database file".
     //4. Choose "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr".
     //5. Press "Search".
@@ -4622,11 +4813,11 @@ GUI_TEST_CLASS_DEFINITION(test_4795) {
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    //    Expected state: "No colors" color scheme is selected, "No highlighting" highlight scheme is selected
+    //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "No colors");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
+    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
+    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4803_1) {
@@ -5095,7 +5286,7 @@ GUI_TEST_CLASS_DEFINITION(test_4885_2) {
 
 //    3. Doubleclick the first symbol of the first sequence.
 //    Expected state: UGENE doesn't ask about confirmation of the modification.
-    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new MessageBoxDialogFiller(os, QMessageBox::Cancel, "The alignment has been modified"));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, QMessageBox::Cancel, "The alignment has been modified"));
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
     GTMouseDriver::doubleClick();

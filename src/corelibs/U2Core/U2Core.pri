@@ -5,8 +5,7 @@ include( ../../ugene_lib_common.pri )
 
 UGENE_RELATIVE_DESTDIR = ''
 
-QT += network xml
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += network xml widgets
 
 DEFINES+=UGENE_MIN_VERSION_SQLITE=$${UGENE_MIN_VERSION_SQLITE}
 DEFINES+=UGENE_MIN_VERSION_MYSQL=$${UGENE_MIN_VERSION_MYSQL}

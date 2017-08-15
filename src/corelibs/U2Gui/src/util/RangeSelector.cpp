@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,9 +65,6 @@ RangeSelector::RangeSelector(QWidget* p, int s, int e)
 
 void RangeSelector::init() {
     int w = qMax(((int)log10((double)rangeEnd))*10, 70);
-
-
-
     startEdit = new QLineEdit(this);
     startEdit->setValidator(new QIntValidator(1, len, startEdit));
     if (dialog == NULL) {
@@ -244,7 +241,6 @@ MultipleRangeSelector::MultipleRangeSelector(QWidget* _parent, const QVector<U2R
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Go"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-
     {
         ui->startEdit->setValidator(new QIntValidator(1, seqLen, ui->startEdit));
         ui->endEdit->setValidator(new QIntValidator(1, seqLen, ui->endEdit));
@@ -280,6 +276,11 @@ MultipleRangeSelector::MultipleRangeSelector(QWidget* _parent, const QVector<U2R
 
         connect(ui->startEdit, SIGNAL(returnPressed()), SLOT(sl_returnPressed()));
         connect(ui->endEdit, SIGNAL(returnPressed()), SLOT(sl_returnPressed()));
+        connect(ui->startEdit, SIGNAL(textEdited(QString)), SLOT(sl_textEdited(const QString &)));
+        connect(ui->endEdit, SIGNAL(textEdited(QString)), SLOT(sl_textEdited(const QString &)));
+        connect(ui->startEdit, SIGNAL(textChanged(QString)), SLOT(sl_textEdited(const QString &)));
+        connect(ui->endEdit, SIGNAL(textChanged(QString)), SLOT(sl_textEdited(const QString &)));
+
         connect(ui->multipleRegionEdit, SIGNAL(returnPressed()), SLOT(sl_returnPressed()));
         connect(ui->minButton, SIGNAL(clicked()), SLOT(sl_minButton()));
         connect(ui->maxButton, SIGNAL(clicked()), SLOT(sl_maxButton()));
@@ -302,7 +303,7 @@ void MultipleRangeSelector::accept(){
             return;
         }
         int v2 = ui->endEdit->text().toInt(&ok);
-        if (!ok || v2 < v1 || v2 > seqLen) {
+        if (!ok || (v2 < v1 && !isCircular) || v2 > seqLen) {
             return;
         }    
         QDialog::accept();
@@ -319,6 +320,20 @@ void MultipleRangeSelector::accept(){
         }
         QDialog::accept();        
     }
+}
+
+void MultipleRangeSelector::sl_textEdited(const QString &) {
+    int min = ui->startEdit->text().toInt();
+    int max = ui->endEdit->text().toInt();
+    QPalette p = normalPalette;
+    if (min > max && !isCircular) {
+        p.setColor(QPalette::Base, QColor(255,200,200));
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
+    } else {
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+    }
+    ui->startEdit->setPalette(p);
+    ui->endEdit->setPalette(p);
 }
 
 void MultipleRangeSelector::sl_buttonClicked(QAbstractButton* b){
@@ -346,8 +361,13 @@ QVector<U2Region> MultipleRangeSelector::getSelectedRegions(){
         int en = ui->endEdit->text().toInt(&ok);
         assert(ok);
 
-        U2Region r(st-1, en - st + 1);
-        currentRegions.append(r);
+        if (isCircular && st > en ) {
+            currentRegions.append(U2Region(0, en));
+            currentRegions.append(U2Region(st - 1, seqLen - st + 1));
+            }
+        else {
+            currentRegions.append(U2Region(st - 1, en - st + 1));
+        }
 
     }else{
         QByteArray locEditText = ui->multipleRegionEdit->text().toLatin1();

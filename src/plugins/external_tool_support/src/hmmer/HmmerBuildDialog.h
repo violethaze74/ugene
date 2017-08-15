@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 
 #include <QDialog>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include "HmmerBuildTask.h"
 #include "ui_HmmerBuildDialog.h"
@@ -35,18 +35,20 @@ class SaveDocumentController;
 
 class UHMM3BuildDialogModel {
 public:
+    UHMM3BuildDialogModel();
+
     HmmerBuildSettings buildSettings;
     
     /* one of this is used */
     QString                 inputFile;
-    MAlignment              alignment;
+    MultipleSequenceAlignment alignment;
     bool                    alignmentUsing;
 };
 
 class HmmerBuildDialog : public QDialog, public Ui_HmmerBuildDialog {
     Q_OBJECT
 public:
-    HmmerBuildDialog(const MAlignment &ma, QWidget *parent = NULL);
+    HmmerBuildDialog(const MultipleSequenceAlignment &ma, QWidget *parent = NULL);
     
     static const QString MA_FILES_DIR_ID;
     static const QString HMM_FILES_DIR_ID;

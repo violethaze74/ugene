@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,9 +47,9 @@
 
 #include <U2Formats/GenbankLocationParser.h>
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
-#include <QtCore/QTextStream>
+#include <QCoreApplication>
+#include <QDir>
+#include <QTextStream>
 #include <QVBoxLayout>
 #include <QTreeWidget>
 #include <QMessageBox>
@@ -517,6 +517,8 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* sctx)
 : QDialog(sctx->getAnnotatedDNAView()->getWidget()), seqCtx(sctx) {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759658");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     maxHitSB->setMaximum(INT_MAX);
     minHitSB->setMaximum(INT_MAX);

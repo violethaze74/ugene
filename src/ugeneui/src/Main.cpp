@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,9 +20,11 @@
  */
 
 #include <QApplication>
-#include <QStyleFactory>
-#include <QMessageBox>
+#include <QDesktopWidget>
 #include <QIcon>
+#include <QMessageBox>
+#include <QStyleFactory>
+#include <QTranslator>
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/AssemblyConsensusAlgorithmRegistry.h>
@@ -115,7 +117,8 @@
 #include <U2View/ColorSchemaSettingsController.h>
 #include <U2View/DnaAssemblyUtils.h>
 #include <U2View/FindPatternWidgetFactory.h>
-#include <U2View/MSAExportConsensusTabFactory.h>
+#include <U2View/McaGeneralTabFactory.h>
+#include <U2View/MaExportConsensusTabFactory.h>
 #include <U2View/MSAGeneralTabFactory.h>
 #include <U2View/MSAHighlightingTabFactory.h>
 #include <U2View/PairAlignFactory.h>
@@ -168,7 +171,7 @@ static void setDataSearchPaths() {
     QStringList dataSearchPaths;
     const static char * RELATIVE_DATA_DIR = "/data";
     const static char * RELATIVE_DEV_DATA_DIR = "/../../data";
-    //on windows data is normally located in the application directory
+    //on windows data is normally located in the application folder
     QString appDirPath = AppContext::getWorkingDirectoryPath();
     if( QDir(appDirPath+RELATIVE_DATA_DIR).exists() ) {
         dataSearchPaths.push_back( appDirPath+RELATIVE_DATA_DIR );
@@ -177,7 +180,7 @@ static void setDataSearchPaths() {
     }
 
 #if (defined(Q_OS_UNIX)) && defined( UGENE_DATA_DIR )
-    //using directory which is set during installation process on Linux
+    //using folder which is set during installation process on Linux
     QString ugene_data_dir( UGENE_DATA_DIR );
     if( QDir(ugene_data_dir).exists() ) {
         dataSearchPaths.push_back( QString(UGENE_DATA_DIR) );
@@ -262,7 +265,7 @@ static void initOptionsPanels() {
     opWidgetFactoryRegistry->registerFactory(new PairAlignFactory());
     opWidgetFactoryRegistry->registerFactory(new MSATreeOptionsWidgetFactory());
     opWidgetFactoryRegistry->registerFactory(new AddTreeWidgetFactory());
-    opWidgetFactoryRegistry->registerFactory(new MSAExportConsensusFactoryTab());
+    opWidgetFactoryRegistry->registerFactory(new MsaExportConsensusTabFactory());
 
     SeqStatisticsWidgetFactory *msaSeqStatisticvsFactory = new SeqStatisticsWidgetFactory();
     QString msaSeqStatisticsId = msaSeqStatisticvsFactory->getOPGroupParameters().getGroupId();
@@ -276,6 +279,10 @@ static void initOptionsPanels() {
 
     //Tree View groups
     opWidgetFactoryRegistry->registerFactory(new TreeOptionsWidgetFactory());
+
+    //MCA groups
+    opWidgetFactoryRegistry->registerFactory(new McaGeneralTabFactory());
+    opWidgetFactoryRegistry->registerFactory(new McaExportConsensusTabFactory());
 }
 
 static void initProjectFilterTaskRegistry() {

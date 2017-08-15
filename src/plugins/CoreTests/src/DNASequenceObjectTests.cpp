@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,16 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include "DNASequenceObjectTests.h"
-
-#include <U2Core/MAlignmentObject.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/IOAdapter.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObject.h>
+#include <U2Core/IOAdapter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
-#include <U2Core/DNASequenceObject.h>
+#include "DNASequenceObjectTests.h"
 
 namespace U2 {
 
@@ -506,7 +506,7 @@ Task::ReportResult GTest_DNAMulSequenceAlphabetId::report() {
         return ReportResult_Finished;
     }
 
-    MAlignmentObject* myMSequence= qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject* myMSequence= qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(myMSequence==NULL){
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -549,7 +549,7 @@ Task::ReportResult GTest_DNAMulSequenceSize::report() {
         return ReportResult_Finished;
     }
 
-    MAlignmentObject* myMSequence= qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject* myMSequence= qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(myMSequence==NULL){
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -604,7 +604,7 @@ Task::ReportResult GTest_DNAMulSequencePart::report() {
         return ReportResult_Finished;
     }
 
-    MAlignmentObject* myMSequence= qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject* myMSequence= qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(myMSequence==NULL){
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -620,11 +620,11 @@ Task::ReportResult GTest_DNAMulSequencePart::report() {
     }
     bool ok_flag=false;
     U2OpStatus2Log os;
-    const MAlignment ma = myMSequence->getMAlignment();
-    foreach(const MAlignmentRow& myItem , ma.getRows()){
-        if (myItem.getName() == seqName){
+    const MultipleSequenceAlignment ma = myMSequence->getMultipleAlignment();
+    foreach(const MultipleSequenceAlignmentRow& myItem , ma->getMsaRows()){
+        if (myItem->getName() == seqName){
             ok_flag=true;
-            QByteArray objSubSeq = myItem.mid(startPos, subseq.length(), os).toByteArray(subseq.length(), os);
+            QByteArray objSubSeq = myItem->mid(startPos, subseq.length(), os)->toByteArray(os, subseq.length());
             if (objSubSeq != subseq){
                 stateInfo.setError(QString("region not matched: %1, expected %2").arg(objSubSeq.constData()).arg(subseq.constData()));
                 return ReportResult_Finished;
@@ -671,15 +671,15 @@ Task::ReportResult GTest_DNAMulSequenceQuality::report() {
         return ReportResult_Finished;
     }
 
-    MAlignmentObject* myMSequence= qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject* myMSequence= qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(myMSequence==NULL){
         stateInfo.setError(QString("Can not cast to alignment from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
 
     bool ok_flag=false;
-    foreach(const MAlignmentRow& myItem , myMSequence->getMAlignment().getRows()){
-        if (myItem.getName() == seqName){
+    foreach(const MultipleSequenceAlignmentRow& myItem , myMSequence->getMsa()->getMsaRows()){
+        if (myItem->getName() == seqName){
             ok_flag = true;
             //QByteArray qualityCodes = myItem.getCoreQuality().qualCodes;
             //if (qualityCodes != expectedQuality){
@@ -728,7 +728,7 @@ Task::ReportResult GTest_DNASequencInMulSequence::report() {
         return ReportResult_Finished;
     }
 
-    MAlignmentObject* myMSequence= qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject* myMSequence= qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(myMSequence==NULL){
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -774,36 +774,36 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
     const QList<GObject*>& objs2 = doc2->getObjects();
     GObject*obj=NULL;
     GObject*obj2=NULL;
-    MAlignmentObject * myMSequence = 0;
-    MAlignmentObject * myMSequence2 = 0;
+    MultipleSequenceAlignmentObject * myMSequence = 0;
+    MultipleSequenceAlignmentObject * myMSequence2 = 0;
 
     for(int i=0;(i!=objs.size())&&(i!=objs2.size());i++){
         obj = objs.at(i);
         obj2 = objs2.at(i);
 
-        if(obj->getGObjectType()== GObjectTypes::MULTIPLE_ALIGNMENT){
-            myMSequence = qobject_cast<MAlignmentObject*>(obj);
+        if(obj->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
+            myMSequence = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
             if(myMSequence==NULL){
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
         }
-        if(obj2->getGObjectType()== GObjectTypes::MULTIPLE_ALIGNMENT){
-            myMSequence2 = qobject_cast<MAlignmentObject*>(obj2);
+        if(obj2->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
+            myMSequence2 = qobject_cast<MultipleSequenceAlignmentObject*>(obj2);
             if(myMSequence2==NULL){
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj2->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
         }
         if (myMSequence->getLength() != myMSequence2->getLength()) {
-           stateInfo.setError(QString("sequences size not matched: size1=%1, size2=%2").arg(myMSequence->getLength()).arg(myMSequence2->getMAlignment().getLength()));
+           stateInfo.setError(QString("sequences size not matched: size1=%1, size2=%2").arg(myMSequence->getLength()).arg(myMSequence2->getMultipleAlignment()->getLength()));
            return ReportResult_Finished;
         }
 
-        const MAlignment &one = myMSequence->getMAlignment();
-        const MAlignment &two = myMSequence2->getMAlignment();
-        const QList <MAlignmentRow>& alignedSeqs1 = one.getRows();
-        const QList <MAlignmentRow>& alignedSeqs2 = two.getRows();
+        MultipleSequenceAlignment one = myMSequence->getMultipleAlignment();
+        MultipleSequenceAlignment two = myMSequence2->getMultipleAlignment();
+        const QList <MultipleSequenceAlignmentRow> alignedSeqs1 = one->getMsaRows();
+        const QList <MultipleSequenceAlignmentRow> alignedSeqs2 = two->getMsaRows();
 
         if( alignedSeqs1.size() != alignedSeqs2.size() ) {
             stateInfo.setError(QString( "different_sequences_number_in_msa_in_%1_object" ).arg( i ));
@@ -811,21 +811,19 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
         }
 
         if (sortValue == "true") {
-            MAlignment first = myMSequence->getMAlignment();
-            first.sortRowsByName();
-            MAlignment second = myMSequence2->getMAlignment();
-            second.sortRowsByName();
+            one->sortRowsByName();
+            two->sortRowsByName();
         }
 
         int seqSz = alignedSeqs1.size();
         for(int n = 0; n < seqSz; n++ ) {
-            const MAlignmentRow& myItem1=alignedSeqs1.at(i);
-            const MAlignmentRow& myItem2=alignedSeqs2.at(i);
-            if(myItem1.getName()!= myItem2.getName()){
-                stateInfo.setError(QString("names of regions in position %1 not matched: %2, expected %3").arg(n).arg(myItem2.getName()).arg(myItem1.getName()));
+            const MultipleSequenceAlignmentRow &myItem1 = alignedSeqs1.at(i);
+            const MultipleSequenceAlignmentRow &myItem2 = alignedSeqs2.at(i);
+            if (myItem1->getName() != myItem2->getName()){
+                stateInfo.setError(QString("names of regions in position %1 not matched: %2, expected %3").arg(n).arg(myItem2->getName()).arg(myItem1->getName()));
                 return ReportResult_Finished;
             }
-            if( myItem1 != myItem2) {
+            if (*myItem1 != *myItem2) {
                 stateInfo.setError(QString( "sequence_#%1_in_msa_in_object_#%2_not_matched" ).arg( n ).arg( i ));
             }
         }
@@ -868,22 +866,22 @@ Task::ReportResult GTest_DNAcompareMulSequencesNamesInTwoObjects::report() {
     const QList<GObject*>& objs2 = doc2->getObjects();
     GObject*obj=NULL;
     GObject*obj2=NULL;
-    MAlignmentObject * myMSequence = 0;
-    MAlignmentObject * myMSequence2 = 0;
+    MultipleSequenceAlignmentObject * myMSequence = 0;
+    MultipleSequenceAlignmentObject * myMSequence2 = 0;
 
     for(int i=0;(i!=objs.size())&&(i!=objs2.size());i++){
         obj = objs.at(i);
         obj2 = objs2.at(i);
 
-        if(obj->getGObjectType()== GObjectTypes::MULTIPLE_ALIGNMENT){
-            myMSequence = qobject_cast<MAlignmentObject*>(obj);
+        if(obj->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
+            myMSequence = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
             if(myMSequence==NULL){
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
         }
-        if(obj2->getGObjectType()== GObjectTypes::MULTIPLE_ALIGNMENT){
-            myMSequence2 = qobject_cast<MAlignmentObject*>(obj2);
+        if(obj2->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
+            myMSequence2 = qobject_cast<MultipleSequenceAlignmentObject*>(obj2);
             if(myMSequence2==NULL){
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj2->getGObjectName()).arg(i));
                 return ReportResult_Finished;
@@ -891,19 +889,19 @@ Task::ReportResult GTest_DNAcompareMulSequencesNamesInTwoObjects::report() {
         }
 ////////////////////////////////////////
      if (myMSequence->getLength() != myMSequence2->getLength()) {
-        stateInfo.setError(QString("sequences size not matched: size1=%1, size2=%").arg(myMSequence->getLength(), myMSequence2->getMAlignment().getLength()));
+        stateInfo.setError(QString("sequences size not matched: size1=%1, size2=%").arg(myMSequence->getLength(), myMSequence2->getMultipleAlignment()->getLength()));
         return ReportResult_Finished;
     }
-    const MAlignment &one = myMSequence->getMAlignment();
-    const MAlignment &two = myMSequence2->getMAlignment();
-    const QList <MAlignmentRow>& myQList1 = one.getRows();
-    const QList <MAlignmentRow>& myQList2 = two.getRows();
+    const MultipleSequenceAlignment one = myMSequence->getMultipleAlignment();
+    const MultipleSequenceAlignment two = myMSequence2->getMultipleAlignment();
+    const QList<MultipleSequenceAlignmentRow> &myQList1 = one->getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> &myQList2 = two->getMsaRows();
 
-    for(int n=0;(n!=myQList1.size())||(n!=myQList2.size());n++){
-        const MAlignmentRow& myItem1 = myQList1.at(i);
-        const MAlignmentRow&  myItem2=myQList2.at(i);
-        if(myItem1.getName() != myItem2.getName()){
-            stateInfo.setError(QString("names of regions in position %1 not matched: %2, expected %3").arg(n).arg(myItem2.getName()).arg(myItem1.getName()));
+    for (int n = 0; (n != myQList1.size()) || (n != myQList2.size()); n++) {
+        const MultipleSequenceAlignmentRow &myItem1 = myQList1.at(i);
+        const MultipleSequenceAlignmentRow &myItem2 = myQList2.at(i);
+        if (myItem1->getName() != myItem2->getName()) {
+            stateInfo.setError(QString("names of regions in position %1 not matched: %2, expected %3").arg(n).arg(myItem2->getName()).arg(myItem1->getName()));
             return ReportResult_Finished;
         }
     }
@@ -1123,22 +1121,22 @@ Task::ReportResult GTest_DNAcompareMulSequencesAlphabetIdInTwoObjects::report() 
     const QList<GObject*>& objs2 = doc2->getObjects();
     GObject*obj=NULL;
     GObject*obj2=NULL;
-    MAlignmentObject * myMSequence = 0;
-    MAlignmentObject * myMSequence2 = 0;
+    MultipleSequenceAlignmentObject * myMSequence = 0;
+    MultipleSequenceAlignmentObject * myMSequence2 = 0;
 
     for(int i=0;(i!=objs.size())&&(i!=objs2.size());i++){
         obj = objs.at(i);
         obj2 = objs2.at(i);
 
-        if(obj->getGObjectType()== GObjectTypes::MULTIPLE_ALIGNMENT){
-            myMSequence = qobject_cast<MAlignmentObject*>(obj);
+        if(obj->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
+            myMSequence = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
             if(myMSequence==NULL){
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
         }
-        if(obj2->getGObjectType()== GObjectTypes::MULTIPLE_ALIGNMENT){
-            myMSequence2 = qobject_cast<MAlignmentObject*>(obj2);
+        if(obj2->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
+            myMSequence2 = qobject_cast<MultipleSequenceAlignmentObject*>(obj2);
             if(myMSequence2==NULL){
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj2->getGObjectName()).arg(i));
                 return ReportResult_Finished;

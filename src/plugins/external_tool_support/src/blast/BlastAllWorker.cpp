@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -109,8 +109,8 @@ void BlastAllWorkerFactory::init() {
                    BlastAllWorker::tr("Name for annotations."));
     Descriptor etp(BLASTALL_EXT_TOOL_PATH, BlastAllWorker::tr("Tool Path"),
                    BlastAllWorker::tr("External tool path."));
-    Descriptor tdp(BLASTALL_TMP_DIR_PATH, BlastAllWorker::tr("Temporary directory"),
-                   BlastAllWorker::tr("Directory for temporary files."));
+    Descriptor tdp(BLASTALL_TMP_DIR_PATH, BlastAllWorker::tr("Temporary folder"),
+                   BlastAllWorker::tr("Folder for temporary files."));
 
     Descriptor output(BLASTALL_ORIGINAL_OUT, BlastAllWorker::tr("BLAST output"),
                    BlastAllWorker::tr("Location of BLAST output file."));
@@ -211,7 +211,7 @@ void BlastAllWorkerFactory::init() {
         m["not use"] = false;
         delegates[BLASTALL_GAPPED_ALN] = new ComboBoxDelegate(m);
     }
-    delegates[BLASTALL_DATABASE_PATH] = new URLDelegate("", "Database Directory", false, true, false);
+    delegates[BLASTALL_DATABASE_PATH] = new URLDelegate("", "Database Folder", false, true, false);
     delegates[BLASTALL_ORIGINAL_OUT] = new URLDelegate("", "out file", false, false);
     delegates[BLASTALL_EXT_TOOL_PATH] = new URLDelegate("", "executable", false, false, false);
     delegates[BLASTALL_TMP_DIR_PATH] = new URLDelegate("", "TmpDir", false, true);

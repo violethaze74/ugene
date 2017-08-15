@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
+#include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/IOAdapter.h>
@@ -438,7 +438,7 @@ void GTest_PDBFormatStressTest::init(XMLTestFormat *tf, const QDomElement& el) {
     QFileInfoList fileList  = dir.entryInfoList();
 
     if (fileList.empty()) {
-        stateInfo.setError(QString("Directory %1 is_empty").arg(dirName));
+        stateInfo.setError(QString("Folder %1 is_empty").arg(dirName));
         return;
     }
 
@@ -502,7 +502,7 @@ void GTest_ASNFormatStressTest::init(XMLTestFormat *tf, const QDomElement& el) {
     QFileInfoList fileList  = dir.entryInfoList();
 
     if (fileList.empty()) {
-        stateInfo.setError(QString("Directory %1 is_empty").arg(dirName));
+        stateInfo.setError(QString("Folder %1 is_empty").arg(dirName));
         return;
     }
 

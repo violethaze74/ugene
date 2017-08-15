@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #ifndef _U2_SIMPLE_ADDING_TO_ALIGNMENT_H_
 #define _U2_SIMPLE_ADDING_TO_ALIGNMENT_H_
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Algorithm/AlignSequencesToAlignmentTaskSettings.h>
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
@@ -41,19 +41,19 @@ private:
     AlignSequencesToAlignmentTaskSettings settings;
     QMap<QString, int>            sequencePositions;
 
-    MAlignment                  inputMsa;
+    MultipleSequenceAlignment                  inputMsa;
 };
 
 class BestPositionFindTask : public Task{
     Q_OBJECT
 public:
-    BestPositionFindTask(const MAlignment& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId);
+    BestPositionFindTask(const MultipleSequenceAlignment& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId);
     void run();
 
     int getPosition() const;
     const QString& getSequenceId() const;
 private:
-    const MAlignment& inputMsa;
+    const MultipleSequenceAlignment& inputMsa;
     U2EntityRef sequenceRef;
     QString sequenceId;
     int bestPosition;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,13 +29,17 @@
 
 namespace U2 {
 
-StateLockableItem::StateLockableItem(QObject* p)  : QObject(p), itemIsModified(false), mainThreadModificationOnly(false),  modificationVersion(0)
+StateLockableItem::StateLockableItem(QObject* p)
+    : QObject(p),
+      itemIsModified(false),
+      trackModifications(true),
+      mainThreadModificationOnly(false),
+      modificationVersion(0)
 {
     QThread* appThread = QCoreApplication::instance()->thread();
     QThread* objectThread = thread();
     bool mainThread = appThread == objectThread;
     setMainThreadModificationOnly(mainThread);
-
 }
 
 StateLockableItem::~StateLockableItem(){
@@ -85,6 +89,7 @@ void StateLockableItem::unlockState(StateLock* lock) {
 
 void StateLockableItem::setModified(bool newModifiedState, const QString& modType) {
     SAFE_POINT(newModifiedState == false || isModificationAllowed(modType), "Item modification not allowed", );
+    CHECK(isModificationTracked(), );
     checkThread(this);
     if (newModifiedState) {
         modificationVersion++;
@@ -94,6 +99,14 @@ void StateLockableItem::setModified(bool newModifiedState, const QString& modTyp
     }
     itemIsModified = newModifiedState;
     emit si_modifiedStateChanged();
+}
+
+bool StateLockableItem::isModificationAllowed(const QString& ) {
+    return !isStateLocked();
+}
+
+void StateLockableItem::setModificationTrack(bool track) {
+    trackModifications = track;
 }
 
 bool StateLockableItem::isMainThreadObject() const {
@@ -119,6 +132,13 @@ bool StateLockableTreeItem::isMainThreadModificationOnly() const {
     StateLockableTreeItem* parentItem = qobject_cast<StateLockableTreeItem*>(parent());
     return StateLockableItem::isMainThreadModificationOnly() ||
             (NULL != parentItem && parentItem->isMainThreadModificationOnly());
+}
+
+void StateLockableTreeItem::setModificationTrack(bool track) {
+    StateLockableItem::setModificationTrack(track);
+    foreach (StateLockableTreeItem* item, childItems) {
+        item->setModificationTrack(track);
+    }
 }
 
 void StateLockableTreeItem::lockState(StateLock* lock) {
@@ -204,6 +224,7 @@ void StateLockableTreeItem::setParentStateLockItem(StateLockableTreeItem* newPar
     bool treeMod = isTreeItemModified();
     if (newParent!=NULL) {
         setMainThreadModificationOnly(newParent->isMainThreadModificationOnly());
+        setModificationTrack(newParent->isModificationTracked());
         checkThread(this);
         newParent->childItems.insert(this);
         newParent->setModified(true, StateLockModType_AddChild);
@@ -220,9 +241,10 @@ void StateLockableTreeItem::setParentStateLockItem(StateLockableTreeItem* newPar
     }
 }
 
-
 void StateLockableTreeItem::setModified(bool newModifiedState, const QString& modType) {
     SAFE_POINT(newModifiedState == false || isModificationAllowed(modType), "Item modification not allowed", );
+    CHECK(isModificationTracked(), );
+
     checkThread(this);
     if (newModifiedState) {
         modificationVersion++;
@@ -249,6 +271,10 @@ void StateLockableTreeItem::setModified(bool newModifiedState, const QString& mo
         checkThread(this);
         emit si_modifiedStateChanged();
     }
+}
+
+bool StateLockableTreeItem::isTreeItemModified () const {
+    return (numModifiedChildren > 0 || itemIsModified);
 }
 
 void StateLockableTreeItem::increaseNumModifiedChilds(int n) {

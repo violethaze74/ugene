@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,11 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2View/MSAEditorFactory.h>
+#include <QDir>
+
 #include <U2View/AnnotatedDNAViewFactory.h>
+#include <U2View/MaEditorFactory.h>
+
+#include <GTGlobals.h>
+#include <base_dialogs/GTFileDialog.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTMenu.h>
+#include <primitives/GTTreeWidget.h>
+#include <utils/GTUtilsApp.h>
+#include <utils/GTUtilsToolTip.h>
 
 #include "GTTestsProjectRemoteRequest.h"
-#include "utils/GTUtilsApp.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -32,15 +42,8 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "utils/GTUtilsToolTip.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include <base_dialogs/GTFileDialog.h>
-#include "GTGlobals.h"
-#include <drivers/GTKeyboardDriver.h>
-#include "primitives/GTMenu.h"
-#include <drivers/GTMouseDriver.h>
 #include "api/GTSequenceReadingModeDialogUtils.h"
-#include <primitives/GTTreeWidget.h>
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/ugeneui/NCBISearchDialogFiller.h"
 
@@ -74,7 +77,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 //    2. Fill the dialog:
 //        Resource ID: NC_017775
 //        Database: NCBI GenBank (DNA sequence)
-//        Save to directory: any valid path
+//        Save to folder: any valid path
 //        Force download the appropriate sequence: unchecked
 //    and accept it.
 //    Expected state: after the downloading task finish a new document appears in the project, it contains an annotation table only.
@@ -104,7 +107,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 //    2. Fill the dialog:
 //        Resource ID: NC_017775
 //        Database: NCBI GenBank (DNA sequence)
-//        Save to directory: any valid path
+//        Save to folder: any valid path
 //        Force download the appropriate sequence: checked
 //    and accept it.
 //    Expected state: after the downloading task finish a new document appears in the project, it contains both a sequence and an annotation table.
@@ -115,65 +118,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << "NC_017775");
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "NCBI GenBank (DNA sequence)");
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "remote_request/test_0004");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetForceSequenceDownload, true);
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
-
-    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
-    GTGlobals::sleep();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsDocument::isDocumentLoaded(os, "NC_017775.gb");
-    GTUtilsDocument::checkDocument(os, "NC_017775.gb", AnnotatedDNAViewFactory::ID);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0005) {
-//    1. Select {File -> Access remote database} menu item in the main menu.
-
-//    2. Fill the dialog:
-//        Resource ID: NC_017775
-//        Database: NCBI protein sequence database
-//        Save to directory: any valid path
-//        Force download the appropriate sequence: unchecked
-//    and accept it.
-//    Expected state: after the downloading task finish a new document appears in the project, it contains an annotation table only.
-
-    QDir().mkpath(sandBoxDir + "remote_request/test_0005");
-    QList<DownloadRemoteFileDialogFiller::Action> actions;
-
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << "NC_017775");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "NCBI protein sequence database");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "remote_request/test_0005");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetForceSequenceDownload, false);
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
-
-    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
-    GTGlobals::sleep();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    QSet<GObjectType> acceptableTypes;
-    acceptableTypes.insert(GObjectTypes::ANNOTATION_TABLE);
-    GTUtilsProjectTreeView::checkObjectTypes(os, acceptableTypes, GTUtilsProjectTreeView::findIndex(os, "NC_017775.gb"));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0006) {
-//    1. Select {File -> Access remote database} menu item in the main menu.
-
-//    2. Fill the dialog:
-//        Resource ID: NC_017775
-//        Database: NCBI protein sequence database
-//        Save to directory: any valid path
-//        Force download the appropriate sequence: checked
-//    and accept it.
-//    Expected state: after the downloading task finish a new document appears in the project, it contains both a sequence and an annotation table.
-
-    QDir().mkpath(sandBoxDir + "remote_request/test_0006");
-    QList<DownloadRemoteFileDialogFiller::Action> actions;
-
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << "NC_017775");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "NCBI protein sequence database");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "remote_request/test_0006");
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetForceSequenceDownload, true);
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
 
@@ -228,7 +172,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QList<NcbiSearchDialogFiller::Action> searchActions;
     QList<DownloadRemoteFileDialogFiller::Action> downloadActions;
 
-    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, qVariantFromValue(intStringPair(0, "human")));
+    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, qVariantFromValue(intStrStrPair(0, "human")));
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetDatabase, "nucleotide");
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickSearch, "");
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::WaitTasksFinish, "");
@@ -266,7 +210,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     QList<NcbiSearchDialogFiller::Action> searchActions;
     QList<DownloadRemoteFileDialogFiller::Action> downloadActions;
 
-    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, qVariantFromValue(intStringPair(0, "human")));
+    searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, qVariantFromValue(intStrStrPair(0, "human")));
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetDatabase, "protein");
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickSearch, "");
     searchActions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::WaitTasksFinish, "");
@@ -299,7 +243,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 //        Read resource ID(s) from source: required, "List of IDs";
 //        Resource ID(s): required, visible;
 //        File with resource IDs: invisible;
-//        Save file to directory: required.
+//        Save file to folder: required.
 
 //    2. Set parameter "Read resource ID(s) from source" to "File with IDs".
 //    Expected state:
@@ -317,7 +261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterRequired(os, "Database"), "The 'Database' parameter is not required unexpectedly");
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterRequired(os, "Read resource ID(s) from source"), "The 'Read resource ID(s) from source' parameter is not required unexpectedly");
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterRequired(os, "Resource ID(s)"), "The 'Resource ID(s)' parameter is not required unexpectedly");
-    CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterRequired(os, "Save file to directory"), "The 'Save file to directory' parameter is not required unexpectedly");
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterRequired(os, "Save file to folder"), "The 'Save file to folder' parameter is not required unexpectedly");
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterVisible(os, "Resource ID(s)"), "The 'Resource ID(s)' parameter is not visible unexpectedly");
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isParameterVisible(os, "File with resource IDs"), "The 'File with resource IDs' parameter is visible unexpectedly");
 
@@ -325,6 +269,46 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isParameterVisible(os, "Resource ID(s)"), "The 'Resource ID(s)' parameter is visible unexpectedly");
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterRequired(os, "File with resource IDs"), "The 'File with resource IDs' parameter is not required unexpectedly");
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterVisible(os, "File with resource IDs"), "The 'File with resource IDs' parameter is not visible unexpectedly");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0011) {
+    
+    //    1.  File->Access remote database...
+    //    2.  Fill    "Resource ID": 1ezg
+    //                "Database": PDB
+    //                "Add to project": true
+    //        Open.
+    //    3.  Expected state: 1ezg appears in a project view. 
+
+        GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, true, true, false,
+                                                                            sandBoxDir));
+        GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
+        
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+        GTGlobals::sleep(20000);
+        GTUtilsDocument::isDocumentLoaded(os, "1ezg.pdb");
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0012) {
+    //    1.  File->Access remote database...
+    //    2.  Fill    "Resource ID": 1ezg
+    //                "Database": PDB
+    //                "Add to project": false
+    //        Open.
+    //    3.  Expected state: 1ezg doesn't appear in a project view. 
+
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, false, true, false, sandBoxDir));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
+    
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1CRN", 3, true, true, false, sandBoxDir));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
+
+    GTGlobals::sleep(10000);//some time needed for request
+    GTUtilsDocument::isDocumentLoaded(os, "1CRN.pdb");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!GTUtilsProjectTreeView::checkItem(os, "1ezg.pdb"), "Object shound not be in the project");
 }
 
 } // namespace

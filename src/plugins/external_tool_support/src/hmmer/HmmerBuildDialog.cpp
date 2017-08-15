@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #include <QPushButton>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
@@ -35,6 +36,12 @@
 #include "HmmerBuildFromMsaTask.h"
 
 namespace U2 {
+
+UHMM3BuildDialogModel::UHMM3BuildDialogModel()
+    : alignmentUsing(false)
+{
+
+}
 
 const QString HmmerBuildDialog::MA_FILES_DIR_ID     = "uhmmer3_build_ma_files_dir";
 const QString HmmerBuildDialog::HMM_FILES_DIR_ID    = "uhmmer3_build_hmm_files_dir";
@@ -83,13 +90,13 @@ void HmmerBuildDialog::initSaveController() {
     saveController = new SaveDocumentController(config, formatsInfo, this);
 }
 
-HmmerBuildDialog::HmmerBuildDialog(const MAlignment &ma, QWidget * parent)
+HmmerBuildDialog::HmmerBuildDialog(const MultipleSequenceAlignment &ma, QWidget * parent)
     : QDialog(parent),
       saveController(NULL)
 {
     initialize();
-    model.alignment = ma;
-    model.alignmentUsing = !model.alignment.isEmpty();
+    model.alignment = ma->getCopy();
+    model.alignmentUsing = !model.alignment->isEmpty();
     
     if (model.alignmentUsing) {
         maLoadFromFileEdit->hide();
@@ -118,7 +125,7 @@ void HmmerBuildDialog::setModelValues() {
 void HmmerBuildDialog::sl_maOpenFileButtonClicked() {
     LastUsedDirHelper helper(MA_FILES_DIR_ID);
     helper.url = U2FileDialog::getOpenFileName(this, tr("Select multiple alignment file"),
-        helper, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true));
+        helper, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT , true));
     if (!helper.url.isEmpty()) {
         maLoadFromFileEdit->setText(helper.url);
     }

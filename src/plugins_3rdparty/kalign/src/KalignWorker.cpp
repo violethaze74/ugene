@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,27 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#include "KalignWorker.h"
-#include "KalignConstants.h"
-#include "TaskLocalStorage.h"
-#include "KalignDialogController.h"
-
 #include <U2Core/Log.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Lang/IntegralBusModel.h>
-#include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
+#include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/NoFailTaskWrapper.h>
+#include <U2Lang/WorkflowEnv.h>
 
-/* TRANSLATOR U2::LocalWorkflow::KalignWorker */
+#include "KalignConstants.h"
+#include "KalignDialogController.h"
+#include "KalignWorker.h"
+#include "TaskLocalStorage.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -82,7 +81,7 @@ void KalignWorkerFactory::init() {
 
     Descriptor desc(ACTOR_ID, KalignWorker::tr("Align with Kalign"),
         KalignWorker::tr("Aligns multiple sequence alignments (MSAs) supplied with Kalign."
-		"<p>Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on <a href=\"http://msa.sbc.su.se\">http://msa.sbc.su.se</a>."));
+        "<p>Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on <a href=\"http://msa->sbc.su.se\">http://msa->sbc.su.se</a>."));
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
 
@@ -152,12 +151,12 @@ Task* KalignWorker::tick() {
 
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-        QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &msa = msaObj->getMAlignment();
+        const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
-        if (msa.isEmpty()) {
-            algoLog.error(tr("An empty MSA '%1' has been supplied to Kalign.").arg(msa.getName()));
+        if (msa->isEmpty()) {
+            algoLog.error(tr("An empty MSA '%1' has been supplied to Kalign.").arg(msa->getName()));
             return NULL;
         }
         Task *t = new NoFailTaskWrapper(new KalignTask(msa, cfg));
@@ -185,13 +184,13 @@ void KalignWorker::sl_taskFinished() {
 
     SAFE_POINT(NULL != output, "NULL output!", );
     send(t->resultMA);
-    algoLog.info(tr("Aligned %1 with Kalign").arg(t->resultMA.getName()));
+    algoLog.info(tr("Aligned %1 with Kalign").arg(t->resultMA->getName()));
 }
 
 void KalignWorker::cleanup() {
 }
 
-void KalignWorker::send(const MAlignment &msa) {
+void KalignWorker::send(const MultipleSequenceAlignment &msa) {
     SAFE_POINT(NULL != output, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;

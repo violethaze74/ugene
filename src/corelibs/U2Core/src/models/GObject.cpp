@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QMutexLocker>
+#include <QMutexLocker>
 
 #include "GObject.h"
 #include "DocumentModel.h"
@@ -340,7 +340,7 @@ void GObject::updateDocInRelations(const QString& oldDocUrl, const QString& newD
 }
 
 void GObject::ensureDataLoaded() const {
-    U2OpStatusImpl os;
+    U2OpStatus2Log os;
     ensureDataLoaded(os);
 }
 

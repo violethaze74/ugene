@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -125,6 +125,11 @@
     Code style hint: use CHECK macro only to make error processing more compact but not all if {break;} patterns !
 */
 #define CHECK_BREAK(condition) CHECK_OPERATION(condition, break)
+
+/**
+    Checks condition is false and continue the cycle if it is.
+*/
+#define CHECK_CONTINUE(condition) CHECK_OPERATION(condition, continue)
 
 /**
     Checks condition is false and breaks if it is.

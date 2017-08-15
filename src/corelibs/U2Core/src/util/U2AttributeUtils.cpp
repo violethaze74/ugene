@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -148,6 +148,14 @@ void U2AttributeUtils::copyObjectAttributes(const U2DataId &srcObjId, const U2Da
         }
         CHECK_OP(os, );
     }
+}
+
+void U2AttributeUtils::copyObjectAttributes(const U2EntityRef &srcObjRef, const U2EntityRef &dstObjRef, U2OpStatus &os) {
+    DbiConnection srcCon(srcObjRef.dbiRef, os);
+    CHECK_OP(os, );
+    DbiConnection dstCon(dstObjRef.dbiRef, os);
+    CHECK_OP(os, );
+    copyObjectAttributes(srcObjRef.entityId, dstObjRef.entityId, srcCon.dbi->getAttributeDbi(), dstCon.dbi->getAttributeDbi(), os);
 }
 
 }   // namespace U2

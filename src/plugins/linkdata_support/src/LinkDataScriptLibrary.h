@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,9 +21,12 @@
 #ifndef _U2_LINKDATA_SCRIPT_LIBRARY_H_
 #define _U2_LINKDATA_SCRIPT_LIBRARY_H_
 
-#include <QtScript>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QAuthenticator>
+#include <QAuthenticator>
+#include <QNetworkAccessManager>
+#include <QScriptValue>
+
+class QEventLoop;
+class QScriptContext;
 
 namespace U2 {
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,17 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include "CAP3Support.h"
-#include "CAP3Worker.h"
-#include "TaskLocalStorage.h"
-
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/FailTask.h>
 #include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/FailTask.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Designer/DelegateEditors.h>
@@ -44,6 +41,9 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
+#include "CAP3Support.h"
+#include "CAP3Worker.h"
+#include "TaskLocalStorage.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -233,8 +233,8 @@ void CAP3WorkerFactory::init() {
         CAP3Worker::tr("The path to the CAP3 external tool in UGENE."));
 
     Descriptor tmpDir(TMP_DIR_PATH,
-        CAP3Worker::tr("Temporary directory"),
-        CAP3Worker::tr("The directory for temporary files."));
+        CAP3Worker::tr("Temporary folder"),
+        CAP3Worker::tr("The folder for temporary files."));
 
     attributes << new Attribute(outputFile, BaseTypes::STRING_TYPE(), true, "result.ace");
     attributes << new Attribute(clippingCutoff, BaseTypes::NUM_TYPE(), false, QVariant(CAP3SupportTaskSettings::defaultBaseQualityClipCutoff));

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,12 +21,12 @@
 
 #include <QPushButton>
 #include <QMessageBox>
-#include <ui_ExportHighlightedDialog.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/HelpButton.h>
@@ -34,10 +34,11 @@
 
 #include "ExportHighlightedDialogController.h"
 #include "ov_msa/MSAEditorSequenceArea.h"
+#include "ui_ExportHighlightedDialog.h"
 
 namespace U2{
 
-ExportHighligtingDialogController::ExportHighligtingDialogController(MSAEditorUI *msaui_, QWidget* p )
+ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt *msaui_, QWidget* p )
     : QDialog(p),
       msaui(msaui_),
       saveController(NULL),
@@ -52,13 +53,13 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MSAEditorUI
     CHECK(AppContext::getAppSettings(), );
     CHECK(AppContext::getAppSettings()->getUserAppsSettings(), );
     CHECK(msaui->getEditor(), );
-    CHECK(msaui->getEditor()->getMSAObject(), );
+    CHECK(msaui->getEditor()->getMaObject(), );
 
     initSaveController();
 
-    connect(ui->endPosBox, SIGNAL(valueChanged(int)), SLOT(endPosValueChanged()));
+    connect(ui->endLineEdit, SIGNAL(valueChanged(int)), SLOT(endPosValueChanged()));
 
-    int alignLength = msaui->getEditor()->getMSAObject()->getLength();
+    int alignLength = msaui->getEditor()->getMaObject()->getLength();
     QRect selection = msaui->getSequenceArea()->getSelection().getRect();
 
     int startPos = -1;
@@ -71,22 +72,22 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MSAEditorUI
         endPos = selection.x() + selection.width();
     }
 
-    ui->startPosBox->setMaximum(endPos);
-    ui->endPosBox->setMaximum(alignLength);
+    ui->startLineEdit->setMaximum(endPos);
+    ui->endLineEdit->setMaximum(alignLength);
 
-    ui->startPosBox->setMinimum(1);
-    ui->endPosBox->setMinimum(2);
+    ui->startLineEdit->setMinimum(1);
+    ui->endLineEdit->setMinimum(2);
 
-    ui->startPosBox->setValue(startPos);
-    ui->endPosBox->setValue(endPos);
+    ui->startLineEdit->setValue(startPos);
+    ui->endLineEdit->setValue(endPos);
 }
 ExportHighligtingDialogController::~ExportHighligtingDialogController(){
     delete ui;
 }
 
 void ExportHighligtingDialogController::accept(){
-    startPos = ui->startPosBox->value();
-    endPos = ui->endPosBox->value();
+    startPos = ui->startLineEdit->value();
+    endPos = ui->endLineEdit->value();
     if(ui->oneIndexRB->isChecked()){
         startingIndex = 1;
     }else{
@@ -110,12 +111,12 @@ void ExportHighligtingDialogController::lockKeepGaps(){
 }
 
 void ExportHighligtingDialogController::endPosValueChanged(){
-    ui->startPosBox->setMaximum(ui->endPosBox->value() - 1);
+    ui->startLineEdit->setMaximum(ui->endLineEdit->value() - 1);
 }
 
 void ExportHighligtingDialogController::initSaveController() {
     SaveDocumentControllerConfig config;
-    config.defaultFileName = GUrlUtils::getDefaultDataPath() + "/" + msaui->getEditor()->getMSAObject()->getGObjectName() + "_highlighting.txt";
+    config.defaultFileName = GUrlUtils::getDefaultDataPath() + "/" + msaui->getEditor()->getMaObject()->getGObjectName() + "_highlighting.txt";
     config.defaultFormatId = BaseDocumentFormats::PLAIN_TEXT;
     config.fileDialogButton = ui->fileButton;
     config.fileNameEdit = ui->fileNameEdit;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,6 +32,9 @@ class MysqlUdrDbi : public UdrDbi, public MysqlChildDbiCommon {
 public:
     MysqlUdrDbi(MysqlDbi *dbi);
 
+    void undo(const U2SingleModStep& modStep, U2OpStatus& os);
+    void redo(const U2SingleModStep& modStep, U2OpStatus& os);
+
     UdrRecordId addRecord(const UdrSchemaId &schemaId, const QList<UdrValue> &data, U2OpStatus &os);
     void updateRecord(const UdrRecordId &recordId, const QList<UdrValue> &data, U2OpStatus &os);
     UdrRecord getRecord(const UdrRecordId &recordId, U2OpStatus &os);
@@ -42,6 +45,8 @@ public:
     InputStream * createInputStream(const UdrRecordId &recordId, int fieldNum, U2OpStatus &os);
     OutputStream * createOutputStream(const UdrRecordId &recordId, int fieldNum, qint64 size, U2OpStatus &os);
     void initSqlSchema(U2OpStatus &os);
+
+    ModificationAction* getModificationAction(const U2DataId &id);
 
 private:
     void initSchema(const UdrSchema *schema, U2OpStatus &os);

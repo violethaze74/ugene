@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -302,7 +302,7 @@ QByteArray SamReader::readString(bool &eof) {
     if (len == -1) {
         eof = true;
     } else {
-        result = QByteArray::fromRawData(buff, len);
+        result = QByteArray(buff, len);
     }
 
     return result;
@@ -324,7 +324,7 @@ void SamReader::readHeader() {
                 break;
             }
 
-            QByteArray line = QByteArray::fromRawData(buff, len);
+            QByteArray line = QByteArray(buff, len);
             if(line.isEmpty()) {
                 continue;
             }

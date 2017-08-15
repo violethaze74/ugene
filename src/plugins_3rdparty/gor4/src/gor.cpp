@@ -5,8 +5,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#include <QtGlobal>
-#include <QtCore/QTextStream>
+#include <QTextStream>
 
 #include <U2Core/U2SafePoints.h>
 

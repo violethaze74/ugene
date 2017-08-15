@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,8 +43,12 @@
 
 namespace U2 {
 
-GSequenceGraphView::GSequenceGraphView(QWidget* p, ADVSequenceObjectContext* ctx, GSequenceLineView* _baseView, const QString& _vName)
-: GSequenceLineView(p, ctx), baseView(_baseView), vName(_vName), graphDrawer(NULL)
+GSequenceGraphView::GSequenceGraphView(QWidget* p, SequenceObjectContext* ctx,
+                                       GSequenceLineView* _baseView, const QString& _vName)
+    : GSequenceLineView(p, ctx),
+      baseView(_baseView),
+      vName(_vName),
+      graphDrawer(NULL)
 {
     GCOUNTER(cvar, tvar, "GSequenceGraphView");
     assert(baseView);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,27 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#include "FormatDBSupportTask.h"
-#include "FormatDBSupport.h"
-
 #include <QCoreApplication>
-#include <QtCore/QDir>
+#include <QDir>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/AddDocumentTask.h>
+#include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
-#include <U2Core/MAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
+#include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Formats/ConvertFileTask.h>
 
+#include "PrepareInputFastaFilesTask.h"
+#include "FormatDBSupport.h"
+#include "FormatDBSupportTask.h"
 
 namespace U2 {
 
@@ -51,48 +51,44 @@ void FormatDBSupportTaskSettings::reset() {
 }
 
 FormatDBSupportTask::FormatDBSupportTask(const QString& name, const FormatDBSupportTaskSettings& _settings) :
-        Task(tr("Run NCBI FormatDB task"), TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled), toolName(name),
-        settings(_settings),
-        convertSubTaskCounter(0)
+        Task(tr("Run NCBI FormatDB task"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
+        prepareTask(NULL),
+        formatDBTask(NULL),
+        toolName(name),
+        settings(_settings)
 {
-    GCOUNTER( cvar, tvar, "FormatDBSupportTask" );
-    formatDBTask = NULL;
+    GCOUNTER(cvar, tvar, "FormatDBSupportTask");
 }
 
 void FormatDBSupportTask::prepare(){
-    prepareInputFastaFiles();
-    if (convertSubTaskCounter == 0) {
-        createFormatDbTask();
-        addSubTask(formatDBTask);
-    }
+    const QString tempDir = prepareTempDir();
+    CHECK_OP(stateInfo, );
+
+    prepareTask = new PrepareInputFastaFilesTask(settings.inputFilesPath, tempDir);
+    addSubTask(prepareTask);
 }
 
-QList<Task*> FormatDBSupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task*> result;
+QList<Task *> FormatDBSupportTask::onSubTaskFinished(Task *subTask) {
+    QList<Task *> result;
     CHECK(subTask != NULL, result);
     CHECK(!subTask->isCanceled() && !subTask->hasError(), result);
 
-    DefaultConvertFileTask* convertTask = qobject_cast<DefaultConvertFileTask*>(subTask);
-    if (convertTask != NULL) {
-        convertSubTaskCounter--;
-        inputFastaFiles << convertTask->getResult();
-        fastaTmpFiles << convertTask->getResult();
-
-        if (convertSubTaskCounter == 0) {
-            createFormatDbTask();
-            result << formatDBTask;
-        }
+    if (prepareTask == subTask) {
+        inputFastaFiles << prepareTask->getFastaFiles();
+        fastaTmpFiles << prepareTask->getTempFiles();
+        createFormatDbTask();
+        result << formatDBTask;
     }
 
     return result;
 }
 
-Task::ReportResult FormatDBSupportTask::report(){
+Task::ReportResult FormatDBSupportTask::report() {
     // remove tmp files
     if (!fastaTmpFiles.isEmpty()) {
         QDir dir(QFileInfo(fastaTmpFiles.first()).absoluteDir());
         if (!dir.removeRecursively()) {
-            stateInfo.addWarning(tr("Can not remove directory for temporary files."));
+            stateInfo.addWarning(tr("Can not remove folder for temporary files."));
             emit si_stateChanged();
         }
     }
@@ -135,33 +131,24 @@ QString FormatDBSupportTask::generateReport() const {
     return res;
 }
 
-void FormatDBSupportTask::prepareInputFastaFiles() {
-    QString tmpDirName = "FormatDB_"+QString::number(this->getTaskId())+"_"+
-                         QDate::currentDate().toString("dd.MM.yyyy")+"_"+
-                         QTime::currentTime().toString("hh.mm.ss.zzz")+"_"+
-                         QString::number(QCoreApplication::applicationPid())+"/";
-    QString tmpDir = GUrlUtils::prepareDirLocation(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(FORMATDB_TMP_DIR) + "/"+ tmpDirName,
+namespace {
+
+QString getTempDirName(qint64 taskId) {
+    return "FormatDB_" + QString::number(taskId) + "_" +
+            QDate::currentDate().toString("dd.MM.yyyy") + "_" +
+            QTime::currentTime().toString("hh.mm.ss.zzz") + "_" +
+            QString::number(QCoreApplication::applicationPid()) + "/";
+}
+
+}
+
+QString FormatDBSupportTask::prepareTempDir() {
+    const QString tmpDirName = getTempDirName(getTaskId());
+    const QString tmpDir = GUrlUtils::prepareDirLocation(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(FORMATDB_TMP_DIR) + "/"+ tmpDirName,
                                                    stateInfo);
-    CHECK_OP(stateInfo, );
-    CHECK_EXT(!tmpDir.isEmpty(), setError(tr("Cannot create temp directory")), );
-
-    for(int i = 0; i < settings.inputFilesPath.length(); i++){
-        GUrl url(settings.inputFilesPath[i]);
-
-        QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(url);
-        if (formats.isEmpty()) {
-            stateInfo.addWarning(tr("File '%1' was skipped. Cannot detect file format.").arg(url.getURLString()));
-            continue;
-        }
-        QString firstFormat = formats.first().format->getFormatId();
-        if (firstFormat != BaseDocumentFormats::FASTA) {
-            DefaultConvertFileTask* convertTask = new DefaultConvertFileTask(url, firstFormat, BaseDocumentFormats::FASTA, tmpDir);
-            addSubTask(convertTask);
-            convertSubTaskCounter++;
-        } else {
-            inputFastaFiles << url.getURLString();
-        }
-    }
+    CHECK_OP(stateInfo, "");
+    CHECK_EXT(!tmpDir.isEmpty(), setError(tr("Cannot create temp folder")), "");
+    return tmpDir;
 }
 
 QString FormatDBSupportTask::prepareLink( const QString &path ) const {
@@ -212,4 +199,4 @@ void FormatDBSupportTask::createFormatDbTask() {
     formatDBTask->setSubtaskProgressWeight(95);
 }
 
-}//namespace
+}   // namespace U2

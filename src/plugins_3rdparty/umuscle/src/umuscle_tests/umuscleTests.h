@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,21 +22,20 @@
 #ifndef _U2_MUSCLE_TESTS_H_
 #define _U2_MUSCLE_TESTS_H_
 
+#include <QDomElement>
+#include <QFileInfo>
+
 #include <U2Core/GObject.h>
+
 #include <U2Test/XMLTestUtils.h>
-
-#include <QtXml/QDomElement>
-#include <QtCore/QFileInfo>
-
 
 #include "MuscleTask.h"
 
 namespace U2 {
 
+class MultipleSequenceAlignmentObject;
 class MuscleGObjectTask;
-class MAlignmentObject;
 class LoadDocumentTask;
-class MAlignment;
 
 class GTest_uMuscle : public GTest {
     Q_OBJECT
@@ -52,7 +51,7 @@ private:
     QString resultCtxName;
     Document* doc;
     MuscleGObjectTask* mTask;
-    MAlignmentObject *ma_result;
+    MultipleSequenceAlignmentObject *ma_result;
     bool ctxAdded;
     bool refineOnly;
     int maxIters;
@@ -86,7 +85,7 @@ private:
     QString                 seqDocName;
     int                     resultAliLen;
     QList< QList<int> >     gapPositionsForSeqs;
-    MAlignmentObject*       aliObj;
+    MultipleSequenceAlignmentObject*       aliObj;
     int                     origAliSeqs;
     int                     resultAliSeqs;
 };
@@ -101,7 +100,7 @@ public:
     Task::ReportResult report();
 	void run();
 	QList<Task*> onSubTaskFinished(Task* subTask);
-	MAlignment dna_to_ma(QList<GObject*> dnaSeqs);
+	MultipleSequenceAlignment dna_to_ma(QList<GObject*> dnaSeqs);
 
 public slots:
 		void sl_muscleProgressChg() {stateInfo.progress = muscleTask->getProgress();}
@@ -115,8 +114,8 @@ private:
 	LoadDocumentTask*           loadTask2;
 	Task*                       muscleTask; 
 	MuscleTaskSettings          config;
-	MAlignmentObject*           ma1;
-	MAlignmentObject*           ma2;
+	MultipleSequenceAlignmentObject*           ma1;
+	MultipleSequenceAlignmentObject*           ma2;
 };
 
 class  Muscle_Load_Align_Compare_Task : public Task {
@@ -135,15 +134,15 @@ public slots:
     void sl_muscleProgressChg() {stateInfo.progress = muscleTask->getProgress();}
 
 private:
-    MAlignment dna_to_ma(QList<GObject*> dnaSeqs);
+    MultipleSequenceAlignment dna_to_ma(QList<GObject*> dnaSeqs);
     QString str_inFileURL;
     QString str_patFileURL;
     LoadDocumentTask*           loadTask1;
     LoadDocumentTask*           loadTask2;
     Task*                       muscleTask; 
     MuscleTaskSettings          config;
-    MAlignmentObject*           ma1;
-    MAlignmentObject*           ma2;
+    MultipleSequenceAlignmentObject*           ma1;
+    MultipleSequenceAlignmentObject*           ma2;
 };
 
 class GTest_Muscle_Load_Align_Compare: public GTest {

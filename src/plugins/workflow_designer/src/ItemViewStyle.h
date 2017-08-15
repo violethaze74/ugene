@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,16 +22,10 @@
 #ifndef _U2_WORKFLOW_ITEM_STYLE_H_
 #define _U2_WORKFLOW_ITEM_STYLE_H_
 
-#include <QtGui/QTextDocument>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsItem>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QGraphicsScene>
-#include <QtWidgets/QGraphicsItem>
-#endif
+#include <QTextDocument>
+#include <QAction>
+#include <QGraphicsScene>
+#include <QGraphicsItem>
 
 class QDomElement;
 

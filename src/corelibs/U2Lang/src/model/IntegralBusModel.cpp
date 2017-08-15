@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,8 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
-#include <QtCore/QDebug>
 
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -41,7 +39,7 @@ namespace Workflow {
 /*******************************
  * IntegralBusPort
  *******************************/
-static void filterAmbiguousSlots(QList<Descriptor>& keys, const QMap<Descriptor, DataTypePtr>& map, QStrStrMap& result) {
+static void filterAmbiguousSlots(QList<Descriptor>& keys, const QMap<Descriptor, DataTypePtr>& map, StrStrMap& result) {
     foreach(const Descriptor &slot, map.keys()) {
         DataTypePtr val = map[slot];
         const QList<Descriptor> lst = IntegralBusUtils::getSlotsByType(map, slot, val);
@@ -71,7 +69,7 @@ static Actor* getLinkedActor(ActorId id, Port* output, QList<Actor*> visitedActo
     return NULL;
 }
 
-static QMap<QString, QStringList> getListSlotsMappings(const QStrStrMap& bm, const Port* p) {
+static QMap<QString, QStringList> getListSlotsMappings(const StrStrMap& bm, const Port* p) {
     assert(p->isInput());
     DataTypePtr dt = p->getType();
     QMap<QString, QStringList> res;
@@ -135,7 +133,7 @@ QList<Actor*> IntegralBusPort::getProducers(const QString& slot) {
     if(at == NULL) {
         return res;
     }
-    QStrStrMap busMap = at->getAttributeValueWithoutScript<QStrStrMap>();
+    StrStrMap busMap = at->getAttributeValueWithoutScript<StrStrMap>();
     QString slotValue = busMap.value(slot);
     QStringList vals = slotValue.split(";");
     foreach(QString val, vals) {
@@ -211,9 +209,9 @@ void IntegralBusPort::clearPaths() {
 void IntegralBusPort::remap(const QMap<ActorId, ActorId>& m) {
     Attribute* busAttr = getParameter(BUS_MAP_ATTR_ID);
     if (busAttr) {
-        QStrStrMap busMap = busAttr->getAttributeValueWithoutScript<QStrStrMap>();
+        StrStrMap busMap = busAttr->getAttributeValueWithoutScript<StrStrMap>();
         IntegralBusType::remap(busMap, m);
-        setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<QStrStrMap>(busMap));
+        setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
     }
 
     Attribute* pathsAttr = getParameter(PATHS_ATTR_ID);
@@ -231,7 +229,7 @@ void IntegralBusPort::updateBindings(const QMap<ActorId, ActorId> &actorsMapping
     }
     U2OpStatusImpl os;
     QMap<Descriptor, DataTypePtr> incomingType = WorkflowUtils::getBusType(this);
-    QStrStrMap busMap = getBusMap();
+    StrStrMap busMap = getBusMap();
     SlotPathMap pathMap = getPathsMap();
     IntegralBusType::remap(busMap, actorsMapping);
     IntegralBusType::remapPaths(pathMap, actorsMapping);
@@ -269,7 +267,7 @@ void IntegralBusPort::updateBindings(const QMap<ActorId, ActorId> &actorsMapping
         busMap[dstSlot] = IntegralBusSlot::listToString(validSrcs);
     }
 
-    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<QStrStrMap>(busMap));
+    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
     setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(pathMap));
 }
 
@@ -279,7 +277,7 @@ void IntegralBusPort::replaceActor(Actor *oldActor, Actor *newActor, const QList
         return;
     }
 
-    QStrStrMap busMap = getBusMap();
+    StrStrMap busMap = getBusMap();
     foreach (Port *p, oldActor->getEnabledOutputPorts()) {
         U2OpStatus2Log os;
         PortMapping pm = PortMapping::getMappingBySrcPort(p->getId(), mappings, os);
@@ -288,7 +286,7 @@ void IntegralBusPort::replaceActor(Actor *oldActor, Actor *newActor, const QList
         }
         IntegralBusUtils::remapBus(busMap, oldActor->getId(), newActor->getId(), pm);
     }
-    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<QStrStrMap>(busMap));
+    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
 
     SlotPathMap pathMap = getPathsMap();
     QMap<ActorId, ActorId> actorsMapping;
@@ -300,13 +298,13 @@ void IntegralBusPort::replaceActor(Actor *oldActor, Actor *newActor, const QList
 void IntegralBusPort::copyInput(IntegralBusPort *port, const PortMapping &mapping) {
     CHECK(isInput(), );
     CHECK(port->isInput(), );
-    QStrStrMap myBusMap;
-    QStrStrMap busMap = port->getBusMap();
+    StrStrMap myBusMap;
+    StrStrMap busMap = port->getBusMap();
     foreach (const QString &slotId, busMap.keys()) {
         U2OpStatus2Log os;
         myBusMap[mapping.getDstSlotId(slotId, os)] = busMap[slotId];
     }
-    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<QStrStrMap>(myBusMap));
+    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(myBusMap));
 
     SlotPathMap myPathMap;
     SlotPathMap pathMap = port->getPathsMap();
@@ -318,10 +316,10 @@ void IntegralBusPort::copyInput(IntegralBusPort *port, const PortMapping &mappin
     setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(myPathMap));
 }
 
-QStrStrMap IntegralBusPort::getBusMap() const {
+StrStrMap IntegralBusPort::getBusMap() const {
     Attribute *busAttr = getParameter(BUS_MAP_ATTR_ID);
-    CHECK(NULL != busAttr, QStrStrMap());
-    return busAttr->getAttributeValueWithoutScript<QStrStrMap>();
+    CHECK(NULL != busAttr, StrStrMap());
+    return busAttr->getAttributeValueWithoutScript<StrStrMap>();
 }
 
 SlotPathMap IntegralBusPort::getPathsMap() const {
@@ -334,13 +332,13 @@ void IntegralBusPort::setBusMapValue(const QString & slotId, const QString & val
     if( !isInput() ) {
         return;
     }
-    QStrStrMap busMap = getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<QStrStrMap>();
+    StrStrMap busMap = getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
     if(busMap[slotId].isEmpty()) {
         busMap[slotId] = value;
     } else {
         busMap[slotId] = busMap[slotId] + ";" + value;
     }
-    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<QStrStrMap>(busMap));
+    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
 }
 
 void IntegralBusPort::setupBusMap() {
@@ -353,7 +351,7 @@ void IntegralBusPort::setupBusMap() {
 
     DataTypePtr from = bindings.uniqueKeys().first()->getType();
     QList<Descriptor> keys = to->getAllDescriptors();
-    QStrStrMap busMap = getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<QStrStrMap>();
+    StrStrMap busMap = getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
     filterAmbiguousSlots(keys, to->getDatatypesMap(), busMap);
     foreach(const Descriptor & key, keys) {
         // FIXME: hack for not binding 'Location' slot
@@ -413,7 +411,7 @@ void IntegralBusPort::setupBusMap() {
 
     SlotPathMap pathMap;
     WorkflowUtils::extractPathsFromBindings(busMap, pathMap);
-    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<QStrStrMap>(busMap));
+    setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
     setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(pathMap));
 }
 
@@ -436,7 +434,7 @@ bool ScreenedSlotValidator::validate( const QStringList& screenedSlots, const In
             problemList.append(Problem(IntegralBusPort::tr("No input data supplied")));
             return false;
         }
-        QStrStrMap bm = vport->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<QStrStrMap>();
+        StrStrMap bm = vport->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
         SlotPathMap pm = vport->getParameter(IntegralBusPort::PATHS_ATTR_ID)->getAttributeValueWithoutScript<SlotPathMap>();
         WorkflowUtils::applyPathsToBusMap(bm, pm);
         int busWidth = bm.size();
@@ -539,7 +537,7 @@ QString ScreenedParamValidator::validate(const Configuration * cfg) const {
     assert(p->isInput());
 
     QVariant busMap = p->getParameter(Workflow::IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributePureValue();
-    QString slotVal = busMap.value<QStrStrMap>().value(slot);
+    QString slotVal = busMap.value<StrStrMap>().value(slot);
     const bool noParam = ( val.isNull() || val.toString().isEmpty() ) && param->getAttributeScript().isEmpty();
     const bool noSlot = slotVal.isNull() || slotVal.isEmpty();
 
@@ -645,8 +643,8 @@ bool PortValidator::validate(const Configuration *cfg, ProblemList &problemList)
     return validate(port, problemList);
 }
 
-QStrStrMap PortValidator::getBusMap(const IntegralBusPort *port) {
-    return port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<QStrStrMap>();
+StrStrMap PortValidator::getBusMap(const IntegralBusPort *port) {
+    return port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
 }
 
 QString PortValidator::slotName(const IntegralBusPort *port, const QString &slotId) {
@@ -657,7 +655,7 @@ bool PortValidator::isBinded(const IntegralBusPort *port, const QString &slotId)
     return isBinded(getBusMap(port), slotId);
 }
 
-bool PortValidator::isBinded(const QStrStrMap &busMap, const QString &slotId) {
+bool PortValidator::isBinded(const StrStrMap &busMap, const QString &slotId) {
     return (!busMap.value(slotId, "").isEmpty());
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 
 #include <U2Core/global.h>
 #include <U2Core/Task.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <QHash>
 #include <QSet>
@@ -76,7 +76,7 @@ public:
     QString                         algoName;    // selected algorithm
     QString                         profileName; // usually object name
     QString                         profileURL;  // document url
-    MAlignment                      ma;
+    MultipleSequenceAlignment                      ma;
     bool                            usePercents; //report percents but not counts
     bool                            excludeGaps; //exclude gaps when calculate distance
     bool                            showGroupStatistic;
@@ -91,8 +91,10 @@ public:
     DistanceMatrixMSAProfileTask(const DistanceMatrixMSAProfileTaskSettings& s);
 
     virtual void prepare();
+    QString generateReport() const;
+    virtual bool isReportingEnabled() const;
 
-    void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MAlignmentRow> &rows, QFile *f);
+    void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MultipleSequenceAlignmentRow> &rows, QFile *f);
 
     QList<Task*> createStatisticsDocument(Task* subTask);
 

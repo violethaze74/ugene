@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,15 +22,9 @@
 #ifndef __ASSEMBLY_REFERENCE_AREA_H__
 #define __ASSEMBLY_REFERENCE_AREA_H__
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QMenu>
-#endif
-#include <QtCore/QSharedPointer>
+#include <QWidget>
+#include <QMenu>
+#include <QSharedPointer>
 
 #include "AssemblyCellRenderer.h"
 #include "AssemblyModel.h"

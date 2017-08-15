@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,47 +22,37 @@
 #ifndef _U2_MSA_EDITOR_SEQUENCE_AREA_H_
 #define _U2_MSA_EDITOR_SEQUENCE_AREA_H_
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#include <QtGui/QMenu>
-#include <QtGui/QToolBar>
-#include <QtGui/QRubberBand>
-#else
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QToolBar>
-#include <QtWidgets/QRubberBand>
-#endif
-#include <QTimer>
+#include <QMenu>
+#include <QToolBar>
+#include <QWidget>
 
-#include <U2Core/global.h>
-#include <U2Core/U2Region.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Task.h>
-#include <U2Gui/GScrollBar.h>
-
+#include <U2Core/U2Region.h>
 
 #include "DeleteGapsDialog.h"
+#include "ExportHighlightedDialogController.h"
 #include "MSACollapsibleModel.h"
 #include "MsaEditorUserModStepController.h"
 #include "SaveSelectedSequenceFromMSADialogController.h"
-#include "ExportHighlightedDialogController.h"
+
+#include "view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
 
-class MSAEditor;
-class MSAEditorUI;
 class GObjectView;
 class MsaColorScheme;
-class MsaHighlightingScheme;
-class MAlignment;
-class MAlignmentModInfo;
-class MAlignmentObject;
 class MsaColorSchemeFactory;
-class MsaHighlightingSchemeFactory;
 class MsaColorSchemeRegistry;
+class MSAEditor;
+class MsaEditorWgt;
+class MsaHighlightingScheme;
+class MsaHighlightingSchemeFactory;
 class MsaHighlightingSchemeRegistry;
+class MaModificationInfo;
+class MultipleSequenceAlignmentObject;
 class Settings;
+class SequenceAreaRenderer;
 
 class ModificationType {
 public:
@@ -118,243 +108,33 @@ private:
     int type;
 };
 
-class U2VIEW_EXPORT MSAEditorSelection {
-public:
-    MSAEditorSelection() { }
-    MSAEditorSelection(int left, int top, int width, int height) : selArea(left,top,width,height) { }
-    MSAEditorSelection(const QPoint& topLeft, const QPoint& bottomRight) : selArea(topLeft, bottomRight) { }
-    MSAEditorSelection(const QPoint& topLeft, int width, int height) : selArea(topLeft, QSize(width,height)) { }
-
-    // consider that selection may consist of several unconnected areas
-    bool isContiniuous() const { return true; }
-
-    bool isNull() const {return selArea.isNull(); }
-
-    QPoint topLeft() const { return selArea.topLeft(); }
-
-    const QRect& getRect() const {return selArea; }
-
-    int x() const { return selArea.x(); }
-
-    int y() const { return selArea.y(); }
-
-    int width() const { return selArea.width(); }
-
-    int height() const { return selArea.height(); }
-
-    bool operator==(const MSAEditorSelection& other) const {
-        return selArea == other.selArea;
-    }
-
-    MSAEditorSelection intersected(const MSAEditorSelection& selection) const {
-        QRect r = selArea.intersected(selection.selArea);
-        return MSAEditorSelection(r);
-    }
-
-private:
-    explicit MSAEditorSelection(QRect& rect) : selArea(rect) { }
-    QRect selArea;
-};
-
-class U2VIEW_EXPORT MSAEditorSequenceArea : public QWidget {
+class U2VIEW_EXPORT MSAEditorSequenceArea : public MaEditorSequenceArea {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorSequenceArea)
+    friend class SequenceAreaRenderer;
+    friend class SequenceWithChromatogramAreaRenderer;
+
 public:
-    MSAEditorSequenceArea(MSAEditorUI* ui, GScrollBar* hb, GScrollBar* vb);
-    ~MSAEditorSequenceArea();
+    MSAEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScrollBar* vb);
 
-    // x dimension -> positions
-    int countWidthForBases(bool countClipped, bool forOffset = false) const;
-
-    int getFirstVisibleBase() const {return startPos;}
-
-    int getLastVisibleBase(bool countClipped, bool forOffset = false) const;
-
-    int getNumVisibleBases(bool countClipped, bool forOffset = false) const;
-
-    U2Region getBaseXRange(int pos, bool useVirtualCoords) const;
-    U2Region getBaseXRange(int pos, int firstVisiblePos, bool useVirtualCoords) const;
-
-    int getColumnNumByX(int x, bool selecting = false) const;
-    int getXByColumnNum(int columnNum) const;
-
-    void setFirstVisibleBase(int pos);
-
-
-    // y dimension -> sequences
-    int countHeightForSequences(bool countClipped) const;
-
-    int getFirstVisibleSequence() const {return startSeq;}
-
-    int getLastVisibleSequence(bool countClipped) const;
-    /*
-     * Returns count of sequences that are visible on a screen.
-     * @countClipped specifies whether include to result count or not last partially displayed row.
-     */
-    int getNumVisibleSequences(bool countClipped) const;
-    /*
-     * Returns count of sequences that are drawn on the widget by taking into account
-     * collapsed rows.
-     */
-    int getNumDisplayedSequences() const;
-
-    U2Region getSequenceYRange(int seqNum, bool useVirtualCoords) const;
-    U2Region getSequenceYRange(int seqNum, int firstVisibleRow, bool useVirtualCoords) const;
-
-    int getSequenceNumByY(int y) const;
-    int getYBySequenceNum(int sequenceNum) const;
-
-    void setFirstVisibleSequence(int seq);
-
-    bool isAlignmentEmpty() const { return editor->isAlignmentEmpty(); }
-
-    bool isPosInRange(int p) const;
-
-    bool isSeqInRange(int s) const;
-
-    bool isInRange(const QPoint& p) const;
-
-    bool isVisible(const QPoint& p, bool countClipped) const;
-
-    bool isPosVisible(int pos, bool countClipped) const;
-
-    bool isSeqVisible(int seq, bool countClipped) const;
-
-    int coordToPos(int x) const;
-
-    // returns valid position only for visible area
-    QPoint coordToPos(const QPoint& coord) const;
-
-    // returns valid position if coords are out of visible area
-    QPoint coordToAbsolutePos(const QPoint& coord) const;
-    QPoint coordToAbsolutePosOutOfRange(const QPoint& coord) const;
-
-    const MSAEditorSelection& getSelection() const;
-
-    void updateSelection(const QPoint& newMousePos);
-
-    // update selection when collapsible model changed
-    void updateSelection();
-
-    void setSelection(const MSAEditorSelection& sel, bool newHighlightSelection = false);
-
-    void moveSelection(int dx, int dy, bool allowSelectionResize = false);
-
-    /**
-     * Shifts currently selected region to @shift.
-     * If @shift > 0, the region is moved to the right and "true" is returned.
-     * If @shift <= 0, the region is moved to the left only for the available number
-     * of columns (i.e. the columns with gaps). The returned value specifies
-     * whether the region was actually moved in this case.
-     */
-    bool shiftSelectedRegion(int shift);
-
-    void cancelSelection();
-
-    void deleteCurrentSelection();
-
-    void processCharacterInEditMode(QKeyEvent *e);
-    void replaceSelectedCharacter(char newCharacter);
-
-    void addRowToSelection(int rowNumber);
-    void deleteRowFromSelection(int rowNumber);
-    void clearSelection();
-
-    U2Region getSelectedRows() const;
-
-    U2Region getRowsAt(int seq) const;
-
-    QPair<QString, int> getGappedColumnInfo() const;
-
-    int getHeight();
+    MSAEditor *getEditor() const;
 
     QStringList getAvailableHighlightingSchemes() const;
 
     bool hasAminoAlphabet();
 
-    QString getCopyFormatedAlgorithmId() const;
-    void setCopyFormatedAlgorithmId(const QString& algoId);
-
-    MSAEditor *getEditor() const;
-
 private:
     // emulating cursor mode with
-
-    void setCursorPos(const QPoint& p);
-
-    void setCursorPos(int x, int y);
-
-    void setCursorPos(int pos);
-
     void moveCursor(int dx, int dy);
 
-    void highlightCurrentSelection();
-
 public:
-    void centerPos(const QPoint& pos);
-
-    void centerPos(int pos);
-
-    void setFont(const QFont& f);
-
-    GScrollBar* getVBar() const {return svBar;}
-
-    GScrollBar* getHBar() const {return shBar;}
-
-    void updateHBarPosition(int base, bool repeatAction = false);
-
-    void updateVBarPosition(int seq, bool repeatAction = false);
-
-    void drawVisibleContent(QPainter& p);
-    bool drawContent(QPainter &p, const QRect &area);
-    bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx);
-
-    bool drawContent(QPainter& p);
-    bool drawContent(QPixmap& pixmap);
-    bool drawContent(QPixmap& pixmap, const U2Region& region, const QList<qint64>& seqIdx);
-
-    QString exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
-
-    MsaColorScheme * getCurrentColorScheme() const;
-    MsaHighlightingScheme * getCurrentHighlightingScheme() const;
-    bool getUseDotsCheckedState() const;
-
-    void onVisibleRangeChanged();
-
-    bool isAlignmentLocked();
-signals:
-    void si_startChanged(const QPoint& p, const QPoint& prev);
-    void si_selectionChanged(const MSAEditorSelection& current, const MSAEditorSelection& prev);
-    void si_selectionChanged(const QStringList& selectedRows);
-    void si_highlightingChanged();
-    void si_visibleRangeChanged(QStringList visibleSequences, int reqHeight);
-    void si_visibleRangeChanged();
-    void si_startMsaChanging();
-    void si_stopMsaChanging(bool msaUpdated);
-    void si_copyFormattedChanging(bool enabled);
-
-public slots:
-    void sl_changeColorSchemeOutside(const QString &id);
-    void sl_doUseDots();
-    void sl_changeCopyFormat(const QString& alg);
-    void sl_delCurrentSelection();
+    QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
 protected:
-    void resizeEvent(QResizeEvent *);
-    void paintEvent(QPaintEvent *);
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*);
-    void keyPressEvent(QKeyEvent *);
-    void keyReleaseEvent(QKeyEvent *);
     void focusOutEvent(QFocusEvent* fe);
     void focusInEvent(QFocusEvent* fe);
 
 private slots:
-    void sl_onHScrollMoved(int pos);
-    void sl_onVScrollMoved(int pos);
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&);
-
     void sl_buildStaticMenu(GObjectView* v, QMenu* m);
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
     void sl_buildContextMenu(GObjectView* v, QMenu* m);
@@ -362,12 +142,10 @@ private slots:
     void sl_addSeqFromFile();
     void sl_addSeqFromProject();
 
-    void sl_replaceSelectedCharacter();
     void sl_copyCurrentSelection();
     void sl_copyFormattedSelection();
     void sl_paste();
     void sl_pasteFinished(Task* pasteTask);
-    void sl_fillCurrentSelectionWithGaps();
     void sl_delCol();
     void sl_goto();
     void sl_removeAllGaps();
@@ -378,133 +156,35 @@ private slots:
     void sl_reverseCurrentSelection();
     void sl_complementCurrentSelection();
 
-    void sl_onPosChangeRequest(int pos);
+    void sl_onPosChangeRequest(int position);
 
     void sl_createSubaligniment();
 
     void sl_saveSequence();
 
-    void sl_registerCustomColorSchemes();
-    void sl_colorSchemeFactoryUpdated();
-    void sl_setDefaultColorScheme();
-    void sl_changeColorScheme();
-    void sl_changeHighlightScheme();
-
-    void sl_zoomOperationPerformed(bool resizeModeChanged);
-
     void sl_modelChanged();
 
     void sl_showCustomSettings();
-    void sl_referenceSeqChanged(qint64);
 
     void sl_resetCollapsibleModel();
     void sl_setCollapsingRegions(const QList<QStringList>&);
-    void sl_useDots();
     void sl_fontChanged(QFont font);
 
-    void sl_alphabetChanged(const MAlignmentModInfo &mi, const DNAAlphabet *prevAlphabet);
+    void sl_alphabetChanged(const MaModificationInfo &mi, const DNAAlphabet *prevAlphabet);
 
-    void sl_changeSelectionColor();
-
-
-protected:
-    virtual void wheelEvent (QWheelEvent * event);
+    void sl_updateActions();
 
 private:
-    enum MsaMode {
-        ViewMode,
-        EditCharacterMode
-    };
+    void initRenderer();
 
     void buildMenu(QMenu* m);
-    void updateColorAndHighlightSchemes();
-
-    void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);
-    void registerCommonColorSchemes();
-    void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf);
-
-    MsaColorSchemeFactory * getDefaultColorSchemeFactory();
-    MsaHighlightingSchemeFactory * getDefaultHighlightingSchemeFactory() const;
-
-    void getColorAndHighlightingIds(QString &csid, QString &hsid);
-    void applyColorScheme(const QString &id);
-
-    void exitFromEditCharacterMode();
-
-    void updateActions();
-
-    void updateHScrollBar();
-    void updateVScrollBar();
-
-    void drawAll();
-    void drawFocus(QPainter& p);
-    void drawSelection(QPainter &p);
-
-    /**
-     * Inserts a region consisting of gaps only before the selection. The inserted region width
-     * is specified by @countOfGaps parameter if 0 < @countOfGaps, its height is equal to the
-     * current selection's height.
-     *
-     * If there is no selection in MSA then the method does nothing.
-     *
-     * If -1 == @countOfGaps then the inserting region width is equal to
-     * the selection's width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
-     */
-    void insertGapsBeforeSelection( int countOfGaps = -1 );
-
-    /**
-     * Reverse operation for @insertGapsBeforeSelection( ),
-     * removes the region preceding the selection if it consists of gaps only.
-     *
-     * If there is no selection in MSA then the method does nothing.
-     *
-     * @countOfGaps specifies maximum width of the removed region.
-     * If -1 == @countOfGaps then count of removed gap columns is equal to
-     * the selection width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
-     */
-    void removeGapsPrecedingSelection( int countOfGaps = -1 );
-
-    void deleteOldCustomSchemes();
-
-    bool checkState() const;
-    void validateRanges();          //called on resize/refont like events
 
     void reverseComplementModification(ModificationType& type);
 
-    /*
-     * Interrupts the tracking of MSA modifications caused by a region shifting,
-     * also stops shifting. The method is used to keep consistence of undo/redo stack.
-     */
-    void cancelShiftTracking( );
-
-    void updateCollapsedGroups(const MAlignmentModInfo& modInfo);
-
-    MSAEditor*      editor;
-    MSAEditorUI*    ui;
-    GScrollBar*     shBar;
-    GScrollBar*     svBar;
-    QRubberBand*    rubberBand;
-
-    int             startPos; //first visible x pos
-    int             startSeq; //first visible y pos
-    MsaMode         msaMode;
-    QTimer          editModeAnimationTimer;
-    QColor          selectionColor;
-
-    bool                shifting;
-    bool                selecting;
-    Qt::MouseButton     prevPressedButton;
-    QPoint              origin; // global window coordinates
-    QPoint              cursorPos; // mouse cursor position in alignment coordinates
-    MSAEditorSelection  selection; // selection with rows indexes in collapsible model coordinates
-    MSAEditorSelection  baseSelection; // selection with rows indexes in absolute coordinates
-    QList<int>          selectedRows;
-    QStringList         selectedRowNames;
-    int                 msaVersionBeforeShifting;
+    void updateCollapsedGroups(const MaModificationInfo& modInfo);
 
     QAction*        copySelectionAction;
     QAction*        delColAction;
-    QAction*        insSymAction;
     QAction*        removeAllGapsAction;
     QAction*        gotoAction;
     QAction*        createSubaligniment;
@@ -514,35 +194,17 @@ private:
     QAction*        sortByNameAction;
     QAction*        collapseModeSwitchAction;
     QAction*        collapseModeUpdateAction;
-    QAction*        replaceCharacterAction;
     QAction*        reverseComplementAction;
     QAction*        reverseAction;
     QAction*        complementAction;
     QAction*        lookMSASchemesSettingsAction;
-    QAction*        useDotsAction;
-
-    QPixmap*        cachedView;
-    bool            completeRedraw;
-
-    MsaColorScheme* colorScheme;
-    MsaHighlightingScheme* highlightingScheme;
-    bool            highlightSelection;
-
-    QList<QAction*> colorSchemeMenuActions;
-    QList<QAction* > customColorSchemeMenuActions;
-    QList<QAction* > highlightingSchemeMenuActions;
-
-    // The member is intended for tracking MSA changes (handling U2UseCommonUserModStep objects)
-    // that does not fit into one method, e.g. shifting MSA region with mouse.
-    // If the changing action fits within one method it's recommended using
-    // the U2UseCommonUserModStep object explicitly.
-    MsaEditorUserModStepController changeTracker;
 };
 
+// SANGER_TODO: move to EditorTasks?
 class U2VIEW_EXPORT ExportHighligtningTask : public Task {
     Q_OBJECT
 public:
-    ExportHighligtningTask(ExportHighligtingDialogController *dialog, MSAEditorSequenceArea *msaese_);
+    ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditorSequenceArea *msaese_);
 
     void run();
     QString generateReport() const;
@@ -556,7 +218,7 @@ private:
     bool dots;
     bool transpose;
     GUrl url;
-    MSAEditorSequenceArea *msaese;
+    MaEditorSequenceArea *msaese;
 };
 
 }//namespace

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,22 +46,22 @@
 
 namespace U2{
 
-CreateSubalignmentDialogController::CreateSubalignmentDialogController(MAlignmentObject *_mobj, const QRect& selection, QWidget *p)
+CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleSequenceAlignmentObject *_mobj, const QRect& selection, QWidget *p)
 : QDialog(p), mobj(_mobj), saveController(NULL){
     setupUi(this);
     new HelpButton(this, buttonBox, "19759575");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Extract"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    startPosBox->setValidator(new QIntValidator(1, mobj->getLength(), startPosBox));
-    endPosBox->setValidator(new QIntValidator(1, mobj->getLength(), endPosBox));
+	startLineEdit->setValidator(new QIntValidator(1, mobj->getLength(), startLineEdit));
+	endLineEdit->setValidator(new QIntValidator(1, mobj->getLength(), endLineEdit));
     
     connect(allButton, SIGNAL(clicked()), SLOT(sl_allButtonClicked()));
     connect(noneButton, SIGNAL(clicked()), SLOT(sl_noneButtonClicked()));
     connect(invertButton, SIGNAL(clicked()), SLOT(sl_invertButtonClicked()));
 
-    connect(startPosBox, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
-    connect(endPosBox, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
+	connect(startLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
+	connect(endLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
     
     
     int rowNumber = mobj->getNumRows();
@@ -92,11 +92,11 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MAlignmen
         startPos = selection.x() + 1;
         endPos = selection.x() + selection.width();
     }
-    startPosBox->setText(QString::number(startPos));
-    endPosBox->setText(QString::number(endPos));
+	startLineEdit->setText(QString::number(startPos));
+	endLineEdit->setText(QString::number(endPos));
 
     for (int i=0; i<rowNumber; i++) {
-        QCheckBox *cb = new QCheckBox(mobj->getMAlignment().getRow(i).getName(), this);
+        QCheckBox *cb = new QCheckBox(mobj->getMsa()->getMsaRow(i)->getName(), this);
         cb->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
         if ( (i >= startSeq) && (i <= endSeq)) {
             cb->setChecked(true);
@@ -150,22 +150,22 @@ void CreateSubalignmentDialogController::sl_noneButtonClicked(){
 }
 
 void CreateSubalignmentDialogController::sl_regionChanged() {
-    int start = startPosBox->text().toInt();
-    int end = endPosBox->text().toInt();
+    int start = startLineEdit->text().toInt();
+    int end = endLineEdit->text().toInt();
 
     QPalette happyP = filepathEdit->palette();
-    startPosBox->setPalette(happyP);
-    endPosBox->setPalette(happyP);
+    startLineEdit->setPalette(happyP);
+    endLineEdit->setPalette(happyP);
     
     if (start <= 0) {
-        QPalette p = startPosBox->palette();
+        QPalette p = startLineEdit->palette();
         p.setColor(QPalette::Base, QColor(255,200,200));
-        startPosBox->setPalette(p);
+        startLineEdit->setPalette(p);
     }
     if (end <= start || end > mobj->getLength()) {
-        QPalette p = endPosBox->palette();
+        QPalette p = endLineEdit->palette();
         p.setColor(QPalette::Base, QColor(255,200,200));
-        endPosBox->setPalette(p);
+        endLineEdit->setPalette(p);
     }
 }
 
@@ -179,7 +179,7 @@ void CreateSubalignmentDialogController::initSaveController() {
     config.parentWidget = this;
 
     DocumentFormatConstraints formatConstraints;
-    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_ALIGNMENT;
+    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     formatConstraints.addFlagToExclude(DocumentFormatFlag_SingleObjectFormat);
     formatConstraints.addFlagToSupport(DocumentFormatFlag_SupportWriting);
 
@@ -190,11 +190,11 @@ void CreateSubalignmentDialogController::accept(){
     QFileInfo fi(saveController->getSaveFileName());
     QDir dirToSave(fi.dir());
     if (!dirToSave.exists()){
-        QMessageBox::critical(this, this->windowTitle(), tr("Directory to save does not exist"));
+        QMessageBox::critical(this, this->windowTitle(), tr("Folder to save does not exist"));
         return;
     }
     if (!TmpDirChecker::checkWritePermissions(dirToSave.absolutePath())) {
-        QMessageBox::critical(this, this->windowTitle(), tr("No write permission to '%1' directory").arg(dirToSave.absolutePath()));
+        QMessageBox::critical(this, this->windowTitle(), tr("No write permission to '%1' folder").arg(dirToSave.absolutePath()));
         return;
     }
     if(saveController->getSaveFileName().isEmpty()){
@@ -211,8 +211,8 @@ void CreateSubalignmentDialogController::accept(){
     }
 
     // '-1' because in memory positions start from 0 not 1
-    int start = startPosBox->text().toInt() - 1;
-    int end = endPosBox->text().toInt() - 1;
+    int start = startLineEdit->text().toInt() - 1;
+    int end = endLineEdit->text().toInt() - 1;
     int seqLen = mobj->getLength();
 
     if( start > end ) {
@@ -255,7 +255,7 @@ void CreateSubalignmentDialogController::selectSeqNames(){
 }
 
 
-CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask( MAlignmentObject* maObj, const CreateSubalignmentSettings& settings )
+CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask( MultipleSequenceAlignmentObject* maObj, const CreateSubalignmentSettings& settings )
 :Task(tr("Create sub-alignment and open view: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE)
 {
     csTask = new CreateSubalignmentTask(maObj, settings);

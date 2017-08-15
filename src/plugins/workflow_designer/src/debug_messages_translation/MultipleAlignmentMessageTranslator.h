@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,11 @@
 #ifndef _U2_MULTIPLE_ALIGNMENT_MESSAGE_TRANSLATOR_H_
 #define _U2_MULTIPLE_ALIGNMENT_MESSAGE_TRANSLATOR_H_
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include "BaseMessageTranslator.h"
 
 namespace U2 {
-
-class MAlignment;
 
 class MultipleAlignmentMessageTranslator : public BaseMessageTranslator {
 public:
@@ -38,7 +36,7 @@ public:
     QString getTranslation( ) const;
 
 protected:
-    MAlignment malignment;
+    MultipleSequenceAlignment malignment;
 };
 
 } // namespace U2

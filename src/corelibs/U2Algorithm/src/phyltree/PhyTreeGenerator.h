@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 
 #include <U2Core/Task.h>
 #include <U2Core/PhyTree.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include "CreatePhyTreeSettings.h"
 
@@ -37,8 +37,8 @@ class U2ALGORITHM_EXPORT PhyTreeGenerator {
 public:
     virtual ~PhyTreeGenerator() {}
 
-    virtual Task * createCalculatePhyTreeTask(const MAlignment &ma, const CreatePhyTreeSettings &s) = 0;
-    virtual CreatePhyTreeWidget * createPhyTreeSettingsWidget(const MAlignment &ma, QWidget *parent = NULL) = 0;
+    virtual Task * createCalculatePhyTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s) = 0;
+    virtual CreatePhyTreeWidget * createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent = NULL) = 0;
 };
 
 }   // namespace U2

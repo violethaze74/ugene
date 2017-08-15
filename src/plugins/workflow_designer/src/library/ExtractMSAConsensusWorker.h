@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@ public:
     Task * tick();
     void cleanup();
 protected:
-    virtual ExtractMSAConsensusTaskHelper* createTask(const MAlignment &msa) = 0;
+    virtual ExtractMSAConsensusTaskHelper* createTask(const MultipleSequenceAlignment &msa) = 0;
     virtual void finish() = 0;
     virtual void sendResult(const SharedDbiDataHandler &seqId) = 0;
     ExtractMSAConsensusTaskHelper *extractMsaConsensus;
@@ -52,7 +52,7 @@ private slots:
 
 private:
     bool hasMsa() const;
-    MAlignment takeMsa(U2OpStatus &os);
+    MultipleSequenceAlignment takeMsa(U2OpStatus &os);
 };
 
 class ExtractMSAConsensusStringWorker : public ExtractMSAConsensusWorker {
@@ -60,7 +60,7 @@ class ExtractMSAConsensusStringWorker : public ExtractMSAConsensusWorker {
 public:
     ExtractMSAConsensusStringWorker(Actor *actor);
 protected:
-    virtual ExtractMSAConsensusTaskHelper* createTask(const MAlignment &msa);
+    virtual ExtractMSAConsensusTaskHelper* createTask(const MultipleSequenceAlignment &msa);
     virtual void finish();
     virtual void sendResult(const SharedDbiDataHandler &seqId);
 };
@@ -70,7 +70,7 @@ class ExtractMSAConsensusSequenceWorker : public ExtractMSAConsensusWorker {
 public:
     ExtractMSAConsensusSequenceWorker(Actor *actor);
 protected:
-    virtual ExtractMSAConsensusTaskHelper* createTask(const MAlignment &msa);
+    virtual ExtractMSAConsensusTaskHelper* createTask(const MultipleSequenceAlignment &msa);
     virtual void finish();
     virtual void sendResult(const SharedDbiDataHandler &seqId);
 };
@@ -78,7 +78,7 @@ protected:
 class ExtractMSAConsensusTaskHelper : public Task {
     Q_OBJECT
 public:
-    ExtractMSAConsensusTaskHelper(const QString &algoId, int threshold, bool keepGaps, const MAlignment &msa, const U2DbiRef &targetDbi);
+    ExtractMSAConsensusTaskHelper(const QString &algoId, int threshold, bool keepGaps, const MultipleSequenceAlignment &msa, const U2DbiRef &targetDbi);
 
 
     void prepare();
@@ -92,7 +92,7 @@ private:
     const QString algoId;
     const int threshold;
     const bool keepGaps;
-    MAlignment msa;
+    MultipleSequenceAlignment msa;
     const U2DbiRef targetDbi;
     U2Sequence resultSequence;
     QByteArray resultText;

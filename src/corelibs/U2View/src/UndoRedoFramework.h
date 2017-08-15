@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,24 +22,19 @@
 #ifndef _U2_UNDO_REDO_FRAMEWORK_H_
 #define _U2_UNDO_REDO_FRAMEWORK_H_
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
-#include <QtCore/QObject>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#else
-#include <QtWidgets/QAction>
-#endif
-
+#include <QObject>
+#include <QAction>
 
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleAlignmentObject;
 
 class MsaUndoRedoFramework : public QObject {
     Q_OBJECT
 public:
-    MsaUndoRedoFramework(QObject *p, MAlignmentObject* _maObj);
+    MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject* _maObj);
 
     QAction* getUndoAction() const { return undoAction; }
     QAction* getRedoAction() const { return redoAction; }
@@ -55,7 +50,7 @@ private slots:
 private:
     void checkUndoRedoEnabled();
 
-    MAlignmentObject*   maObj;
+    MultipleAlignmentObject*   maObj;
     bool                stateComplete;
 
     QAction*   undoAction;

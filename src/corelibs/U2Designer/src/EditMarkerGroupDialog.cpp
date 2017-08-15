@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,13 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+#include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Designer/MarkerEditor.h>
 #include <U2Designer/MarkerEditorWidget.h>
 
 #include <U2Gui/HelpButton.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Lang/Marker.h>
 #include <U2Lang/MarkerUtils.h>
@@ -60,7 +62,6 @@ EditMarkerGroupDialog::EditMarkerGroupDialog(bool isNew, Marker *marker, Workflo
 
         table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
         table->horizontalHeader()->setSectionsClickable(false);
-
         table->horizontalHeader()->setStretchLastSection(true);
         table->verticalHeader()->hide();
         table->verticalHeader()->setDefaultSectionSize(QFontMetrics(QFont()).height() + 6);

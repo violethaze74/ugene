@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -102,14 +102,14 @@ Task::ReportResult ModifySequenceContentTask::report() {
     return ReportResult_Finished;
 }
 
-typedef QPair<QString, QString> QStringPair;
+typedef QPair<QString, QString> QStrStrPair;
 
 namespace {
 
-QString formatPairList(const QList<QStringPair> &pairList, bool useFirst) {
+QString formatPairList(const QList<QStrStrPair> &pairList, bool useFirst) {
     QString result;
     const QString lineSeparator = "<br>";
-    foreach (const QStringPair &pair, pairList) {
+    foreach (const QStrStrPair &pair, pairList) {
         result += useFirst ? pair.first : pair.second;
         result += lineSeparator;
     }
@@ -269,7 +269,7 @@ void ModifySequenceContentTask::fixAnnotationQualifiers(Annotation *an) {
                     newQualifierValue.replace(oldRegionPos, matchedRegion.length(), newRegionsStr);
                     lastModifiedPos = oldRegionPos + newRegionsStr.length();
                 } else {
-                    annotationForReport[an].append(QStringPair(qual.name, matchedRegion));
+                    annotationForReport[an].append(QStrStrPair(qual.name, matchedRegion));
                     if (!isReportingEnabled()) {
                         setReportingEnabled(true);
                     }

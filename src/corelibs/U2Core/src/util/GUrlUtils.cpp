@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
+#include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -148,7 +148,8 @@ bool GUrlUtils::renameFileWithNameRoll(const QString& original, TaskStateInfo& t
     }
 }
 
-static void getPreNPost(const QString &originalUrl, QString &pre, QString &post) {
+static void getPreNPost(const QString &originalUrl, QString &pre, QString &post, int &i, const QString &rolledSuffix) {
+    i = 0;
     pre = originalUrl;
     int idx = pre.lastIndexOf(".");
 
@@ -166,21 +167,30 @@ static void getPreNPost(const QString &originalUrl, QString &pre, QString &post)
             post = extSuffix;
             pre.chop(extSuffix.length());
         }
+        idx = pre.lastIndexOf(rolledSuffix);
+        if (idx != -1) {
+            QString possibleNumber = pre.mid(idx + rolledSuffix.length());
+            i = possibleNumber.toInt();
+            if (i > 0) {
+                pre = pre.left(idx);
+            }
+        }
     }
 }
 
 QString GUrlUtils::insertSuffix(const QString &originalUrl, const QString &suffix) {
     QString pre, post;
-    getPreNPost(originalUrl, pre, post);
+    int i = 0;
+    getPreNPost(originalUrl, pre, post, i,suffix);
     return pre + suffix + post;
 }
 
 QStringList GUrlUtils::getRolledFilesList(const QString& originalUrl, const QString& rolledSuffix) {
     QString pre, post; //pre and post url parts. A number will be placed between
-    getPreNPost(originalUrl, pre, post);
+    int i = 0;
+    getPreNPost(originalUrl, pre, post, i, rolledSuffix);
 
     QString resultUrl = originalUrl;
-    int i = 0;
     QStringList urls;
     while (QFile::exists(resultUrl)) {
         urls << resultUrl;
@@ -191,10 +201,10 @@ QStringList GUrlUtils::getRolledFilesList(const QString& originalUrl, const QStr
 
 QString GUrlUtils::rollFileName(const QString& originalUrl, const QString& rolledSuffix, const QSet<QString>& excludeList) {
     QString pre, post; //pre and post url parts. A number will be placed between
-    getPreNPost(originalUrl, pre, post);
+    int i = 0;
+    getPreNPost(originalUrl, pre, post, i, rolledSuffix);
 
     QString resultUrl = originalUrl;
-    int i = 0;
     while (QFile::exists(resultUrl) || excludeList.contains(resultUrl)) {
         resultUrl = pre + rolledSuffix + QString("%1").arg(++i) + post;
     }
@@ -269,8 +279,8 @@ QString GUrlUtils::prepareFileName(const QString& url, const QString& baseSuffix
     return result;
 }
 
-// checks that file path is valid: creates required directory if needed.
-// Returns canonical path to file. Does not create nor remove file, affects just directory
+// checks that file path is valid: creates required folder if needed.
+// Returns canonical path to file. Does not create nor remove file, affects just folder
 // Sample usage: processing URLs in "save file" inputs
 QString GUrlUtils::prepareFileLocation(const QString& filePath, U2OpStatus& os) {
     QFileInfo fi(filePath);
@@ -282,22 +292,22 @@ QString GUrlUtils::prepareFileLocation(const QString& filePath, U2OpStatus& os) 
     return result;
 }
 
-// checks that dir path is valid. Creates the directory if needed.
-// Returns absolute (without "." or ".." but with symlinks) directory path.
-// Does not affect directory if already exists.
+// checks that dir path is valid. Creates the folder if needed.
+// Returns absolute (without "." or ".." but with symlinks) folder path.
+// Does not affect folder if already exists.
 // Sample usage: processing URLs in "save dir" inputs
 QString GUrlUtils::prepareDirLocation(const QString& dirPath, U2OpStatus& os) {
-    CHECK_EXT(!dirPath.isEmpty(), os.setError(tr("Directory is not specified")), QString());
+    CHECK_EXT(!dirPath.isEmpty(), os.setError(tr("Folder is not specified")), QString());
     QDir targetDir(dirPath);
     if (!targetDir.exists()) {
         QString absPath = targetDir.absolutePath();
         if (!targetDir.mkpath(absPath)) {
-            os.setError(tr("Directory can't be created: %1").arg(absPath));
+            os.setError(tr("Folder can't be created: %1").arg(absPath));
             return QString();
         }
         targetDir = QDir(absPath); //It looks like QT caches results for QDir? Create new QDir instance in this case!
         if (!targetDir.isReadable()) {
-            os.setError(tr("Directory can't be read: %1").arg(absPath));
+            os.setError(tr("Folder can't be read: %1").arg(absPath));
             return QString();
         }
     }
@@ -342,7 +352,7 @@ void GUrlUtils::removeFile( const QString& filePath, U2OpStatus& os ){
     CHECK_EXT(!filePath.isEmpty(), os.setError(tr("File path is not specified")), );
     QFileInfo info(filePath);
 
-    CHECK_EXT(!info.isDir(), os.setError(tr("Directory path instead of file path")), );
+    CHECK_EXT(!info.isDir(), os.setError(tr("Folder path instead of file path")), );
 
     if(info.exists()){
         QFile::remove(info.absoluteFilePath());
@@ -400,7 +410,7 @@ QString GUrlUtils::createDirectory(const QString &path, const QString &suffix, U
     QDir dir(newPath);
     bool created = dir.mkpath(newPath);
     if (!created) {
-        os.setError(tr("Can not create a directory: %1").arg(newPath));
+        os.setError(tr("Can not create a folder: %1").arg(newPath));
     }
     return newPath;
 }
@@ -459,20 +469,27 @@ void GUrlUtils::validateLocalFileUrl(const GUrl &url, U2OpStatus &os, const QStr
         QString dirUrl = info.dir().absolutePath();
         bool created = QDir().mkpath(dirUrl);
         if (!created) {
-            os.setError(tr("Can not create a directory [%1].").arg(dirUrl));
+            os.setError(tr("Can not create a folder [%1].").arg(dirUrl));
         }
         return;
     }
     if (info.isDir()) {
-        os.setError(tr("%1 is a directory [%2].").arg(urlName).arg(urlStr));
+        os.setError(tr("%1 is a folder [%2].").arg(urlName).arg(urlStr));
         return;
     }
 }
 
+/* Maximum file name length for Linux, Windows and MacOS X is 255 characters. */
+#define MAX_OS_FILE_NAME_LENGTH 255
+
 QString GUrlUtils::fixFileName(const QString &fileName) {
     QString result = fileName;
     result.replace(QRegExp("[^0-9a-zA-Z._\\-]"), "_");
-    return result.replace(QRegExp("_+"), "_");
+    result.replace(QRegExp("_+"), "_");
+
+    /* We truncate long file names a little bit more to allow suffix adjustments (rolling) later. */
+    result.truncate(MAX_OS_FILE_NAME_LENGTH - 50);
+    return result;
 }
 
 }//namespace

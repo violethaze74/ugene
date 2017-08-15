@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,17 +21,19 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
-
+#include <QDir>
 #include <QGuiApplication>
+#include <QScreen>
+
+#include <core/GUITest.h>
+#include <core/GUITestOpStatus.h>
+#include <core/MainThreadRunnable.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "core/MainThreadRunnable.h"
-
-#include <core/GUITest.h>
 #include "UGUITestBase.h"
-#include <core/GUITestOpStatus.h>
 #include "GUITestService.h"
 #include "GUITestTeamcityLogger.h"
 #include "GUITestThread.h"
@@ -58,17 +60,17 @@ void GUITestThread::run() {
 
     clearSandbox();
 
-    QTimer* timer = new QTimer(this);
-    timer->connect(timer, SIGNAL(timeout()), this, SLOT(sl_getMemory()));
-    timer->start(1000);
+    QTimer timer;
+    connect(&timer, SIGNAL(timeout()), this, SLOT(sl_getMemory()), Qt::DirectConnection);
+    timer.start(1000);
 
     const QString error = launchTest(tests);
 
-    if(needCleanup){
+    if (needCleanup) {
         cleanup();
     }
 
-    timer->stop();
+    timer.stop();
 
     saveMemoryInfo();
 
@@ -213,6 +215,7 @@ void GUITestThread::saveScreenshot() {
 }
 
 void GUITestThread::cleanup() {
+    test->cleanup();
     foreach (HI::GUITest *postAction, postActions()) {
         HI::GUITestOpStatus os;
         try {

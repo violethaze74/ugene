@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 #include <U2Core/Task.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/U2Region.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentProviderTask.h>
 
@@ -49,15 +49,15 @@ public:
 class U2ALGORITHM_EXPORT CreateSubalignmentTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    CreateSubalignmentTask(MAlignmentObject* _maObj, const CreateSubalignmentSettings& settings );
+    CreateSubalignmentTask(MultipleSequenceAlignmentObject* _maObj, const CreateSubalignmentSettings& settings );
 
     virtual void prepare();
     const CreateSubalignmentSettings& getSettings() { return cfg; }
 
 private:
     Document*                   origDoc;
-    MAlignmentObject*           origMAObj;
-    MAlignmentObject*           resultMAObj;
+    MultipleSequenceAlignmentObject*           origMAObj;
+    MultipleSequenceAlignmentObject*           resultMAObj;
 
     CreateSubalignmentSettings  cfg;
     bool                        createCopy;

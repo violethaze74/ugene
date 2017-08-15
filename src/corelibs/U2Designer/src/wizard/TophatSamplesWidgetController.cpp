@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,17 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QFocusEvent>
-
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListWidget>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QScrollBar>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QVBoxLayout>
+#include <QFocusEvent>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QMessageBox>
+#include <QScrollArea>
+#include <QScrollBar>
+#include <QToolButton>
+#include <QVBoxLayout>
 
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/WizardController.h>
 

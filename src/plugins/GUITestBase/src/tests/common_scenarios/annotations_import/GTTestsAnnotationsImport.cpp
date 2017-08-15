@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+
 #include <base_dialogs/MessageBoxFiller.h>
 #include "GTTestsAnnotationsImport.h"
 #include <drivers/GTMouseDriver.h>
@@ -36,7 +37,6 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsSequenceView.h"
-//#include <QtGui/QApplication>
 #include "primitives/PopupChooser.h"
 #include "runnables/ugene/plugins/dna_export/ImportAnnotationsToCsvFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"

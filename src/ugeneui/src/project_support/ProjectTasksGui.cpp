@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
  */
 
 #include <QDomDocument>
+#include <QMainWindow>
 #include <QMessageBox>
 #include <QMutex>
 
@@ -38,6 +39,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/RemoveDocumentTask.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Settings.h>
@@ -47,7 +49,6 @@
 
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/ProjectParsing.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/UnloadDocumentTask.h>
 
 #include "ProjectImpl.h"
@@ -485,12 +486,12 @@ void GTest_ExportProject::prepare(){
     QDir qd(url);
     if(qd.exists(url)){
         if(!removeDir(qd)){
-            stateInfo.setError(tr("GTest_ExportProject::prepare unable to clean directory for exporting"));
+            stateInfo.setError(tr("GTest_ExportProject::prepare unable to clean folder for exporting"));
             return;
         }
     }   
     if(!qd.mkpath(url)){
-        stateInfo.setError(tr("GTest_ExportProject::prepare unable to create directory for exporting"));
+        stateInfo.setError(tr("GTest_ExportProject::prepare unable to create folder for exporting"));
         return;
     }
     exportTask = new ExportProjectTask(url, "");

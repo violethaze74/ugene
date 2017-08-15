@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,8 +25,8 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -138,20 +138,20 @@ QList<Task*> SimpleInOutWorkflowTask::onSubTaskFinished(Task* subTask) {
 
 //////////////////////////////////////////////////////////////////////////
 // RunSimpleMSAWorkflow4GObject
-SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& taskName, MAlignmentObject* _maObj, const SimpleMSAWorkflowTaskConfig& _conf)
+SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& taskName, MultipleSequenceAlignmentObject* _maObj, const SimpleMSAWorkflowTaskConfig& _conf)
 : Task(taskName, TaskFlags_NR_FOSCOE),
   obj(_maObj),
   lock(NULL),
   conf(_conf)
 {
-    SAFE_POINT(NULL != obj, "NULL MAlignmentObject!",);
+    SAFE_POINT(NULL != obj, "NULL MultipleSequenceAlignmentObject!",);
 
     U2OpStatus2Log os;
     userModStep = new U2UseCommonUserModStep(obj->getEntityRef(), os);
 
-    MAlignment al = MSAUtils::setUniqueRowNames( obj->getMAlignment() );
+    MultipleSequenceAlignment al = MSAUtils::setUniqueRowNames(obj->getMultipleAlignment());
 
-    MAlignmentObject *msaObject = MAlignmentImporter::createAlignment(obj->getEntityRef().dbiRef, al, os);
+    MultipleSequenceAlignmentObject *msaObject = MultipleSequenceAlignmentImporter::createAlignment(obj->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os,);
 
     SimpleInOutWorkflowTaskConfig sioConf;
@@ -199,11 +199,11 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
     CHECK_EXT(!obj.isNull(), releaseModStep(tr("Object '%1' removed").arg(docName)), ReportResult_Finished);
     CHECK_EXT(!obj->isStateLocked(), releaseModStep(tr("Object '%1' is locked").arg(docName)), ReportResult_Finished);
 
-    MAlignment res = getResult();
-    const MAlignment &originalAlignment = obj->getMAlignment();
-    MSAUtils::restoreRowNames(res, originalAlignment.getRowNames());
-    res.setName(originalAlignment.getName());
-    obj->setMAlignment(res);
+    MultipleSequenceAlignment res = getResult();
+    const MultipleSequenceAlignment originalAlignment = obj->getMultipleAlignment();
+    MSAUtils::restoreRowNames(res, originalAlignment->getRowNames());
+    res->setName(originalAlignment->getName());
+    obj->setMultipleAlignment(res);
 
     releaseModStep();
 
@@ -218,17 +218,17 @@ void SimpleMSAWorkflow4GObjectTask::releaseModStep(const QString error) {
     userModStep = NULL;
 }
 
-MAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
-    MAlignment res;
+MultipleSequenceAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
+    MultipleSequenceAlignment res;
     CHECK_OP(stateInfo, res);
 
     SAFE_POINT(runWorkflowTask!=NULL,"SimpleMSAWorkflow4GObjectTask::getResult. No task has been created.",res);
     Document* d = runWorkflowTask->getDocument();
     CHECK_EXT(d!=NULL, setError(tr("Result document not found!")), res);
     CHECK_EXT(d->getObjects().size() == 1, setError(tr("Result document content not matched! %1").arg(d->getURLString())), res);
-    MAlignmentObject* maObj = qobject_cast<MAlignmentObject*>(d->getObjects().first());
+    MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first());
     CHECK_EXT(maObj!=NULL, setError(tr("Result document contains no MSA! %1").arg(d->getURLString())), res);
-    return maObj->getMAlignment();
+    return maObj->getMsaCopy();
 }
 
 

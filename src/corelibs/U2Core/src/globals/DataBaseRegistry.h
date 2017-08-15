@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,10 @@
 #ifndef _DATABASE_REGISTRY_
 #define _DATABASE_REGISTRY_
 
-#include <QtCore/QMap>
-#include <QtCore/QString>
-#include <QtCore/QList>
-#include <QtCore/QObject>
+#include <QMap>
+#include <QString>
+#include <QList>
+#include <QObject>
 
 #include <U2Core/global.h>
 #include <U2Core/AnnotationData.h>

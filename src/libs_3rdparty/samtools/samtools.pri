@@ -6,7 +6,7 @@ CONFIG +=thread debug_and_release staticlib warn_off
 INCLUDEPATH += src src/samtools ../../include /usr/include
 win32 : INCLUDEPATH += src/samtools/win32
 DEFINES+="_FILE_OFFSET_BITS=64" _LARGEFILE64_SOURCE _USE_KNETFILE
-win32 : DEFINES += _USE_MATH_DEFINES "inline=__inline" "__func__=__FUNCTION__" "R_OK=4" "atoll=_atoi64" "alloca=_alloca"
+win32 : DEFINES += _USE_MATH_DEFINES "__func__=__FUNCTION__" "R_OK=4" "atoll=_atoi64" "alloca=_alloca"
 LIBS += -L../../_release
 
 use_bundled_zlib() {
@@ -56,6 +56,12 @@ win32 {
 
 win32-msvc2013 {
     DEFINES += NOMINMAX _XKEYCHECK_H
+}
+
+win32 {
+    !win32-msvc2015 {
+        DEFINES += "inline=__inline"
+    }
 }
 
 #unix {

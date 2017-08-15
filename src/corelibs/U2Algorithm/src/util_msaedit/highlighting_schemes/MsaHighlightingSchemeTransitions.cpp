@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-MsaHighlightingSchemeTransitions::MsaHighlightingSchemeTransitions(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj)
+MsaHighlightingSchemeTransitions::MsaHighlightingSchemeTransitions(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : MsaHighlightingScheme(parent, factory, maObj)
 {
 
@@ -60,13 +60,13 @@ void MsaHighlightingSchemeTransitions::process(const char refChar, char &seqChar
     MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
-MsaHighlightingSchemeTransitionsFactory::MsaHighlightingSchemeTransitionsFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes)
-    : MsaHighlightingSchemeFactory(parent, id, name, alphabetTypes)
+MsaHighlightingSchemeTransitionsFactory::MsaHighlightingSchemeTransitionsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+    : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets)
 {
 
 }
 
-MsaHighlightingScheme * MsaHighlightingSchemeTransitionsFactory::create(QObject *parent, MAlignmentObject *maObj ) const {
+MsaHighlightingScheme * MsaHighlightingSchemeTransitionsFactory::create(QObject *parent, MultipleAlignmentObject *maObj ) const {
     return new MsaHighlightingSchemeTransitions(parent, this, maObj);
 }
 

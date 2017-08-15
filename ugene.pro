@@ -114,7 +114,7 @@ without_non_free() {
     SUBDIRS -= src/plugins_3rdparty/psipred
 }
 
-# create target build & plugin directories (to copy licenses/descriptors to)
+# create target build & plugin folders (to copy licenses/descriptors to)
 mkpath($$OUT_PWD/src/_debug/plugins)
 mkpath($$OUT_PWD/src/_release/plugins)
 
@@ -154,7 +154,7 @@ for( i, UGENE_TRANSL_IDX ) {
     curTranslFile = $$member( UGENE_TRANSL_FILES, $$i )
     curTranslTag  = $$member( UGENE_TRANSL_TAG, $$i )
 
-    #foreach project directory
+    #foreach project folder
     for( prj_dir, SUBDIRS ) {
         #look for file and add it to translation list if it exists
         translFile = $$prj_dir/$$UGENE_TRANSL_DIR/$$curTranslFile   # 'project/transl/english.ts' etc.
@@ -181,7 +181,7 @@ unix {
     binscript.files += ugene
     binscript.path = $$UGENE_INSTALL_BINDIR
 
-# to copy ugene executable to /usr/lib/ugene directory
+# to copy ugene executable to /usr/lib/ugene folder
     ugene_starter.files = ./src/_release/ugene
     ugene_starter.path = $$UGENE_INSTALL_DIR
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ private:
     U2Qualifier createQualifier(const QString &qualifierName, const QString &qualifierValue, bool containsDoubleQuotes) const;
     U2FeatureType getFeatureType(const QString &typeString) const;
     QString getFeatureTypeString(U2FeatureType featureType, bool isAmino) const;
-    QStrStrMap parseComments(const QStringList &comments) const;
+    StrStrMap parseComments(const QStringList &comments) const;
     static QString parseDate(int date);
     QList<SharedAnnotationData> prepareAnnotations(const QList<GObject *> &tablesList, bool isAmino, U2OpStatus &os) const;
     void writeAnnotations(IOAdapter *io, const QList<GObject *> &aos, bool isAmino, U2OpStatus &os);
@@ -238,7 +238,7 @@ private:
 
     static const QString vntiCreationDateKey;
     static const QString vntiModificationDateKey;
-    static const QStrStrMap vntiMetaKeys;                                               // keys in the comment section
+    static const StrStrMap vntiMetaKeys;                                               // keys in the comment section
     static const QMap<U2FeatureType, VntiDnaFeatureTypes> dnaFeatureTypesMap;           // UGENE feature type - vntifkey qualifier value for DNA sequences
     static const QMap<U2FeatureType, VntiProteinFeatureTypes> proteinFeatureTypesMap;   // UGENE feature type - vntifkey qualifier value for protein sequences
     static const QMap<VntiDnaFeatureTypes, QString> dnaFeatureType2StringMap;           // vntifkey qualifier value - feature type name in vnti file for DNA files
@@ -247,7 +247,7 @@ private:
     static const QString QUALIFIER_LABEL;
     static const QString VNTIFKEY_QUALIFIER_NAME;
 
-    static QStrStrMap initVntiMetaKeys();
+    static StrStrMap initVntiMetaKeys();
     static QMap<U2FeatureType, VntiDnaFeatureTypes> initDnaFeatureTypesMap();
     static QMap<U2FeatureType, VntiProteinFeatureTypes> initProteinFeatureTypesMap();
     static QMap<VntiDnaFeatureTypes, QString> initDnaFeatureType2StringMap();

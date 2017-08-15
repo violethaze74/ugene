@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,20 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/GObject.h>
+#include <QTemporaryFile>
+
 #include <U2Core/AppContext.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNATranslation.h>
+#include <U2Core/DocumentUtils.h>
+#include <U2Core/GObject.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/DNATranslation.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/MAlignmentObject.h>
-#include <U2Core/GUrlUtils.h>
-#include <U2Core/DocumentUtils.h>
-
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
-#include "ImportQualityScoresTask.h"
 #include "DNAExportPluginTests.h"
+#include "ImportQualityScoresTask.h"
 
 namespace U2 {
 
@@ -170,21 +171,25 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
         return;
     }
 
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(GTest::tr(" container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+        stateInfo.setError(GTest::tr(" container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MAlignmentObject* alObj = qobject_cast<MAlignmentObject*>(list.first());
-    srcAl = MAlignment(alObj->getMAlignment());
+    MultipleSequenceAlignmentObject* alObj = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
+    srcAl = alObj->getMsaCopy();
 
     QList<DNATranslation*> trans;
     QString trid = DNATranslationID(0);
     trid.replace("0", QString("%1").arg(transTable));
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(trid);
 
-    exportTask = new ExportMSA2MSATask(srcAl, selectedRows.length ? selectedRows.startPos : 0, selectedRows.length ? selectedRows.length : srcAl.getNumRows(), outputFileName,
-         trans, BaseDocumentFormats::CLUSTAL_ALN);
+    exportTask = new ExportMSA2MSATask(srcAl,
+                                       selectedRows.length ? selectedRows.startPos : 0,
+                                       selectedRows.length ? selectedRows.length : srcAl->getNumRows(),
+                                       outputFileName,
+                                       trans,
+                                       BaseDocumentFormats::CLUSTAL_ALN);
     addSubTask(exportTask);
 }
 
@@ -207,13 +212,13 @@ QList<Task*> GTest_ExportNucleicToAminoAlignmentTask::onSubTaskFinished(Task* su
             return res;
         }
 
-        QList<GObject*> reslist = resdoc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+        QList<GObject*> reslist = resdoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (reslist.size() == 0) {
-            stateInfo.setError(GTest::tr("container  of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+            stateInfo.setError(GTest::tr("container  of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
             return res;
         }
-        MAlignmentObject * resAlign = qobject_cast<MAlignmentObject*>(reslist.first());
-        resAl = resAlign->getMAlignment();
+        MultipleSequenceAlignmentObject * resAlign = qobject_cast<MultipleSequenceAlignmentObject*>(reslist.first());
+        resAl = resAlign->getMsaCopy();
     }
     return res;
 }
@@ -230,35 +235,35 @@ Task::ReportResult GTest_ExportNucleicToAminoAlignmentTask::report() {
         return ReportResult_Finished;
     }
 
-    QList<GObject*> explist = expdoc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> explist = expdoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (explist.size() == 0) {
-        stateInfo.setError(GTest::tr("container of  object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+        stateInfo.setError(GTest::tr("container of  object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return ReportResult_Finished;
     }
-    MAlignmentObject * expAlign = qobject_cast<MAlignmentObject*>(explist.first());
-    const MAlignment &expAl = expAlign->getMAlignment();
+    MultipleSequenceAlignmentObject * expAlign = qobject_cast<MultipleSequenceAlignmentObject*>(explist.first());
+    const MultipleSequenceAlignment expAl = expAlign->getMultipleAlignment();
 
-    if (resAl.getLength() != expAl.getLength()) {
-        stateInfo.setError(GTest::tr("Unexpected alignment length %1, expected %2").arg(resAl.getLength()).arg(expAl.getLength()));
-        return ReportResult_Finished;
-    }
-
-    if (resAl.getNumRows() != expAl.getNumRows()) {
-        stateInfo.setError(GTest::tr("Unexpected alignment size %1, expected %2").arg(resAl.getNumRows()).arg(expAl.getNumRows()));
+    if (resAl->getLength() != expAl->getLength()) {
+        stateInfo.setError(GTest::tr("Unexpected alignment length %1, expected %2").arg(resAl->getLength()).arg(expAl->getLength()));
         return ReportResult_Finished;
     }
 
-    QStringList resNames = resAl.getRowNames();
-    QStringList expNames = expAl.getRowNames();
+    if (resAl->getNumRows() != expAl->getNumRows()) {
+        stateInfo.setError(GTest::tr("Unexpected alignment size %1, expected %2").arg(resAl->getNumRows()).arg(expAl->getNumRows()));
+        return ReportResult_Finished;
+    }
 
-    for (int i = 0; i < resAl.getNumRows(); i++) {
+    QStringList resNames = resAl->getRowNames();
+    QStringList expNames = expAl->getRowNames();
+
+    for (int i = 0; i < resAl->getNumRows(); i++) {
         if (resNames[i] != expNames[i]) {
             stateInfo.setError(GTest::tr("Invalid name for row %1: %2, expected %3").arg(i+1).arg(resNames[i]).arg(expNames[i]));
             return ReportResult_Finished;
         }
-        for (int j = 0; j < resAl.getLength(); j++) {
-            if (resAl.charAt(i, j) != expAl.charAt(i, j)) {
-                stateInfo.setError(GTest::tr("Invalid char at row %1 column %2: %3, expected %4").arg(i+1).arg(j+1).arg(resAl.charAt(i, j)).arg(expAl.charAt(i, j)));
+        for (int j = 0; j < resAl->getLength(); j++) {
+            if (resAl->charAt(i, j) != expAl->charAt(i, j)) {
+                stateInfo.setError(GTest::tr("Invalid char at row %1 column %2: %3, expected %4").arg(i+1).arg(j+1).arg(resAl->charAt(i, j)).arg(expAl->charAt(i, j)));
                 return ReportResult_Finished;
             }
         }

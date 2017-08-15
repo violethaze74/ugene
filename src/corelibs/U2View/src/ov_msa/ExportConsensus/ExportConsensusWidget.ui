@@ -25,8 +25,11 @@
    </property>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <property name="spacing">
+     <property name="horizontalSpacing">
       <number>1</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>6</number>
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
@@ -50,7 +53,7 @@
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
      <property name="verticalSpacing">
-      <number>1</number>
+      <number>6</number>
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
@@ -65,17 +68,10 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
      <property name="bottomMargin">
       <number>6</number>
      </property>
-     <item>
-      <widget class="QCheckBox" name="keepGapsChb">
-       <property name="text">
-        <string>Keep gaps</string>
-       </property>
-      </widget>
-     </item>
      <item>
       <widget class="QLabel" name="hintLabel">
        <property name="text">
@@ -86,12 +82,19 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QCheckBox" name="keepGapsChb">
+       <property name="text">
+        <string>Keep gaps</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item alignment="Qt::AlignHCenter">
     <widget class="QToolButton" name="exportBtn">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>

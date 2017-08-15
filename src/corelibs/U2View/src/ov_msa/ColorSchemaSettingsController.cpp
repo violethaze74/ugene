@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -72,10 +72,9 @@ static void setSchemaColors(const ColorSchemeData& customSchema){
 
     const QMap<char, QColor> & alphColors = customSchema.alpColors;
     const QString& file  = customSchema.name + ColorSchemeUtils::COLOR_SCHEME_NAME_FILTERS;
-    DNAAlphabetType type = customSchema.alphabetType;
     bool defaultType = customSchema.defaultAlpType;
 
-    QString keyword(type == DNAAlphabet_AMINO ? ColorSchemeUtils::COLOR_SCHEME_AMINO_KEYWORD : (defaultType ? ColorSchemeUtils::COLOR_SCHEME_NUCL_DEFAULT_KEYWORD : ColorSchemeUtils::COLOR_SCHEME_NUCL_EXTENDED_KEYWORD));
+    QString keyword(customSchema.type == DNAAlphabet_AMINO ? ColorSchemeUtils::COLOR_SCHEME_AMINO_KEYWORD : (defaultType ? ColorSchemeUtils::COLOR_SCHEME_NUCL_DEFAULT_KEYWORD : ColorSchemeUtils::COLOR_SCHEME_NUCL_EXTENDED_KEYWORD));
 
     io->open(dir.filePath(file), IOAdapterMode_Write);
     // write header

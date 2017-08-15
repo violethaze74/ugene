@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,15 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QStyleFactory>
-#else
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QStyleFactory>
-#endif
+#include <QFile>
+#include <QDialogButtonBox>
+#include <QStyleFactory>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -85,13 +79,13 @@ void DirectoriesSettingsPageController::saveState(AppSettingsGUIPageState* s) {
     DirectoriesSettingsPageUtils::setIndexDir(state->indexDirectory);
     TmpDirChecker tmpDirChecker;
     if (!tmpDirChecker.checkPath(state->temporaryDirPath)) {
-        uiLog.error(tr("You do not have permission to write to \"%1\" directory\"").arg(state->temporaryDirPath));
+        uiLog.error(tr("You do not have permission to write to \"%1\" folder\"").arg(state->temporaryDirPath));
     }else{
         st->setUserTemporaryDirPath(state->temporaryDirPath);
     }
 
     if (!tmpDirChecker.checkPath(state->fileStorageDirPath)) {
-        uiLog.error(tr("You do not have permission to write to \"%1\" directory\"").arg(state->temporaryDirPath));
+        uiLog.error(tr("You do not have permission to write to \"%1\" folder\"").arg(state->temporaryDirPath));
     }else{
         st->setFileStorageDir(state->fileStorageDirPath);
     }
@@ -139,7 +133,7 @@ AppSettingsGUIPageState* DirectoriesSettingsPageWidget::getState(QString& err) c
 
 void DirectoriesSettingsPageWidget::sl_browseDownloadsDirButtonClicked() {
     QString path = downloadsDirPathEdit->text();
-    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Directory"), path,
+    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Folder"), path,
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!dir.isEmpty()) {
         downloadsDirPathEdit->setText(dir);
@@ -149,7 +143,7 @@ void DirectoriesSettingsPageWidget::sl_browseDownloadsDirButtonClicked() {
 
 void DirectoriesSettingsPageWidget::sl_browseDocumentsDirButtonClicked() {
     QString path = documentsDirectoryEdit->text();
-    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Directory"), path,
+    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Folder"), path,
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!dir.isEmpty()) {
         documentsDirectoryEdit->setText(dir);
@@ -159,7 +153,7 @@ void DirectoriesSettingsPageWidget::sl_browseDocumentsDirButtonClicked() {
 
 void DirectoriesSettingsPageWidget::sl_browseTmpDirButtonClicked() {
     QString path = tmpDirPathEdit->text();
-    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Directory"), path,
+    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Folder"), path,
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!dir.isEmpty()) {
         tmpDirPathEdit->setText(dir);
@@ -169,7 +163,7 @@ void DirectoriesSettingsPageWidget::sl_browseTmpDirButtonClicked() {
 
 void DirectoriesSettingsPageWidget::sl_browseFileStorageButtonClicked() {
     QString path = fileStorageDirPathEdit->text();
-    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Directory"), path,
+    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Folder"), path,
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!dir.isEmpty()) {
         fileStorageDirPathEdit->setText(dir);
@@ -183,7 +177,7 @@ void DirectoriesSettingsPageWidget::sl_cleanupStorage() {
 
 void DirectoriesSettingsPageWidget::sl_onIndexDirButton() {
     QString path = indexDirectoryEdit->text();
-    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Directory"), path,
+    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Folder"), path,
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!dir.isEmpty()) {
         indexDirectoryEdit->setText(dir);

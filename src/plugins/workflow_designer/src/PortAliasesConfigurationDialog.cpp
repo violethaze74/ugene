@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,12 +26,7 @@
 
 #include "PortAliasesConfigurationDialog.h"
 #include <U2Gui/HelpButton.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#else
-#include <QtWidgets/QPushButton>
-#endif
-
+#include <QPushButton>
 
 namespace U2 {
 namespace Workflow {
@@ -41,6 +36,8 @@ PortAliasesConfigurationDialog::PortAliasesConfigurationDialog( const Schema & s
     setupUi(this);
     new HelpButton(this, buttonBox, "19759845");
 
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     QPushButton* cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
     QPushButton* okPushButton = buttonBox->button(QDialogButtonBox::Ok);
 
@@ -52,11 +49,7 @@ PortAliasesConfigurationDialog::PortAliasesConfigurationDialog( const Schema & s
     okPushButton->setDefault(true);
     portAliasesTableWidget->verticalHeader()->hide();
 
-#if (QT_VERSION < 0x050000) //Qt 5
-    portAliasesTableWidget->horizontalHeader()->setClickable(false);
-#else
     portAliasesTableWidget->horizontalHeader()->setSectionsClickable(false);
-#endif
     portAliasesTableWidget->horizontalHeader()->setStretchLastSection( true );
 
     foreach (Actor *actor, schema.getProcesses()) {
@@ -74,7 +67,6 @@ PortAliasesConfigurationDialog::PortAliasesConfigurationDialog( const Schema & s
             QListWidgetItem *item = new QListWidgetItem(itemName);
             portListWidget->insertItem(pos, item);
             portListMap.insert(pos, port);
-            int pointSz = item->font().pointSize();
         }
     }
     if (portListMap.isEmpty()) {

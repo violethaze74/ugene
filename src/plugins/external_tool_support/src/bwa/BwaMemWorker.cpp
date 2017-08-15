@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedPointer>
+#include <QScopedPointer>
 
 #include <U2Algorithm/DnaAssemblyTask.h>
 
@@ -61,6 +61,8 @@ static const QString SCORE_THRESHOLD = "score-threshold";
 
 static const QString BASE_BWA_SUBDIR("bwa");
 static const QString BASE_BWA_OUTFILE("out.sam");
+
+const QString OUTPUT_SUBDIR("BWA-MEM");
 
 /************************************************************************/
 /* Worker */
@@ -118,6 +120,10 @@ void BwaMemWorker::setGenomeIndex(DnaAssemblyToRefTaskSettings& settings) {
     if (!settings.prebuiltIndex) {
         settings.indexFileName = QDir(settings.refSeqUrl.dirPath()).filePath(settings.refSeqUrl.baseFileName());
     }
+}
+
+QString BwaMemWorker::getAlignerSubdir() const {
+    return OUTPUT_SUBDIR;
 }
 
 /************************************************************************/

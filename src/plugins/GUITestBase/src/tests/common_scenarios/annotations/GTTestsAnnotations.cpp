@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -749,8 +749,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::selectItems(os, annList);
 
-    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_3.gtf",
-                                                                 ExportAnnotationsFiller::gtf, os));
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0010_3.gtf", 
+                                                                 ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
@@ -860,7 +860,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
-
+	GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTUtilsLog::check(os, l);
 }
 
@@ -1004,8 +1004,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
 
     GTUtilsAnnotationsTreeView::selectItems(os, annList);
 
-    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0012_3.gtf",
-                                                                 ExportAnnotationsFiller::gtf, os));
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0012_3.gtf",
+                                                                 ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();

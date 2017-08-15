@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,18 +27,12 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QSettings>
-#include <QtCore/QDir>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleFactory>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QStyle>
-#include <QtWidgets/QStyleFactory>
-#endif
-#include <QtGui/QColor>
+#include <QSettings>
+#include <QDir>
+#include <QApplication>
+#include <QStyle>
+#include <QStyleFactory>
+#include <QColor>
 #include <U2Core/GUrl.h>
 
 namespace U2 {

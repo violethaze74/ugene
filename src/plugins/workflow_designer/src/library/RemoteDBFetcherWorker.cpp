@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,6 +29,7 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadRemoteDocumentTask.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
@@ -37,11 +38,11 @@
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
+#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
@@ -92,7 +93,7 @@ QString RemoteDBFetcherPrompter::composeRichDoc()
 
     QString saveDir = getParameter(PATH_ID).value<QString>();
     saveDir = getHyperlink(PATH_ID, saveDir);
-    QString saveDirStr = RemoteDBFetcherWorker::tr("Save result to <u>%1</u> directory.").arg(saveDir);
+    QString saveDirStr = RemoteDBFetcherWorker::tr("Save result to <u>%1</u> folder.").arg(saveDir);
 
     return RemoteDBFetcherWorker::tr("Reads %1 %2 from <u>%3</u> remote database. %4").
         arg(sourceDescString).
@@ -140,7 +141,7 @@ bool RemoteDBFetcherWorker::isReady() const {
 Task* RemoteDBFetcherWorker::tick() {
     if(!QDir(fullPathDir).exists()) {
         if(!QDir().mkpath(fullPathDir)) {
-            return new FailTask(tr("Cannot create directory '%1'").arg(fullPathDir));
+            return new FailTask(tr("Cannot create folder '%1'").arg(fullPathDir));
         }
     }
 
@@ -338,8 +339,8 @@ void RemoteDBFetcherFactory::init()
         attrs << idsListAttr;
 
         Descriptor fullpathd(PATH_ID,
-                         RemoteDBFetcherWorker::tr("Save file to directory"),
-                         RemoteDBFetcherWorker::tr("The directory to store sequence files loaded from a database."));
+                         RemoteDBFetcherWorker::tr("Save file to folder"),
+                         RemoteDBFetcherWorker::tr("The folder to store sequence files loaded from a database."));
         attrs << new Attribute(fullpathd, BaseTypes::STRING_TYPE(), true, DEFAULT_PATH);
     }
 
@@ -412,7 +413,7 @@ QString FetchSequenceByIdFromAnnotationPrompter::composeRichDoc()
 Task* FetchSequenceByIdFromAnnotationWorker::tick() {
 
     if (!QDir(fullPathDir).exists() && !QDir().mkpath(fullPathDir)) {
-        return new FailTask(tr("Cannot create directory '%1'").arg(fullPathDir));
+        return new FailTask(tr("Cannot create folder '%1'").arg(fullPathDir));
     }
 
     if (input->hasMessage()) {
@@ -550,8 +551,8 @@ void FetchSequenceByIdFromAnnotationFactory::init()
     {
 
         Descriptor fullpathd(PATH_ID,
-                         RemoteDBFetcherWorker::tr("Save file to directory"),
-                         RemoteDBFetcherWorker::tr("The directory to store sequence files loaded from a database."));
+                         RemoteDBFetcherWorker::tr("Save file to folder"),
+                         RemoteDBFetcherWorker::tr("The folder to store sequence files loaded from a database."));
         attrs << new Attribute(fullpathd, BaseTypes::STRING_TYPE(), true, DEFAULT_PATH);
 
         Descriptor dbidd(DBID_ID,

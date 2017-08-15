@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,21 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSA2SequenceWorker.h"
-
 #include <U2Core/AppContext.h>
 #include <U2Core/FailTask.h>
-#include <U2Lang/CoreLibConstants.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BasePorts.h>
-#include <U2Lang/BaseActorCategories.h>
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Core/MSAUtils.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Core/MAlignment.h>
-#include <U2Core/MSAUtils.h>
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/CoreLibConstants.h>
+#include <U2Lang/WorkflowEnv.h>
+
+#include "MSA2SequenceWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -62,14 +64,14 @@ Task * Alignment2SequenceWorker::tick() {
 
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-        QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &ma = msaObj->getMAlignment();
+        const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
-        if(ma.isEmpty()) {
+        if(msa->isEmpty()) {
             return new FailTask(tr("empty input alignment"));
         }
-        QList<DNASequence> seqs = MSAUtils::ma2seq(ma,true);
+        QList<DNASequence> seqs = MSAUtils::ma2seq(msa,true);
         QVariantMap channelContext = output->getContext();
         foreach(const DNASequence &seq, seqs) {
             QVariantMap msgData;

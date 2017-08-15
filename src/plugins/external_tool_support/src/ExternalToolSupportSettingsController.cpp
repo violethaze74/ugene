@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,30 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#include "ExternalToolSupportSettingsController.h"
-#include "ExternalToolSupportSettings.h"
-#include "utils/ExternalToolValidateTask.h"
+#include <QMessageBox>
+#include <QToolButton>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/ScriptingToolRegistry.h>
-#include <U2Core/MultiTask.h>
 #include <U2Core/L10n.h>
+#include <U2Core/MultiTask.h>
+#include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/GUIUtils.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QtGui>
-#else
-#include <QtWidgets/QtWidgets>
-#endif
-
-#include <blast/BlastAllSupport.h>
-#include <blast/FormatDBSupport.h>
-#include <blast_plus/BlastPlusSupport.h>
-
-
+#include "ExternalToolSupportSettings.h"
+#include "ExternalToolSupportSettingsController.h"
+#include "blast/BlastAllSupport.h"
+#include "blast/FormatDBSupport.h"
+#include "blast_plus/BlastPlusSupport.h"
+#include "utils/ExternalToolValidateTask.h"
 
 namespace U2 {
 
@@ -540,7 +534,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolKitPath(){
     LastUsedDirHelper lod("toolkit path");
     QString dir;
 
-    lod.url = dir = U2FileDialog::getExistingDirectory(this, tr("Choose Directory With Executables"), lod.dir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    lod.url = dir = U2FileDialog::getExistingDirectory(this, tr("Choose Folder With Executables"), lod.dir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!dir.isEmpty()) {
         assert(treeWidget->selectedItems().isEmpty() == 0);
         QString toolKitName = treeWidget->selectedItems().first()->text(0);
@@ -548,7 +542,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolKitPath(){
         assert(listOfItems.length() != 0);
 
         QStringList toolNames;
-        QStrStrMap toolPaths;
+        StrStrMap toolPaths;
         foreach (QTreeWidgetItem* item, listOfItems) {
             if (!externalToolsItems.values().contains(item)) {
                 continue;
@@ -595,14 +589,14 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
     LastUsedDirHelper lod("toolpack path");
     QString dirPath;
     bool isPathValid = false;
-    lod.url = dirPath = U2FileDialog::getExistingDirectory(this, tr("Choose Directory With External Tools Pack"), lod.dir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    lod.url = dirPath = U2FileDialog::getExistingDirectory(this, tr("Choose Folder With External Tools Pack"), lod.dir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
     if (!dirPath.isEmpty()) {
         QDir dir = QDir(dirPath);
         QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("" , Qt::MatchContains | Qt::MatchRecursive);
         assert(listOfItems.length() != 0);
         QStringList toolNames;
-        QStrStrMap toolPaths;
+        StrStrMap toolPaths;
 
         foreach (ExternalTool* et, AppContext::getExternalToolRegistry()->getAllEntries()) {
             if (et->isModule()) {
@@ -648,7 +642,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
 
         if (!isPathValid) {
             QMessageBox::warning(this, L10N::warningTitle(),
-                                            tr("Not a valid external tools directory"),
+                                            tr("Not a valid external tools folder"),
                                             QMessageBox::Ok);
         }
         if (!toolNames.isEmpty()) {

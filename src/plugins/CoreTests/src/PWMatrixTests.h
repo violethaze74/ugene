@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 
 #include <U2Test/XMLTestUtils.h>
 
-#include <QtXml/QDomElement>
+#include <QDomElement>
 
 #include <U2Core/PFMatrix.h>
 #include <U2Core/PWMatrix.h>

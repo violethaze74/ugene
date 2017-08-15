@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,16 +28,9 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Gui/HelpButton.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#include <QtGui/QTableWidget>
-#include <QtGui/QTableWidgetItem>
-#else
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QTableWidget>
-#include <QtWidgets/QTableWidgetItem>
-#endif
-
+#include <QPushButton>
+#include <QTableWidget>
+#include <QTableWidgetItem>
 
 namespace U2 {
 
@@ -89,7 +82,7 @@ MatrixAndLogoController::MatrixAndLogoController( PFMatrix matrix, QWidget *p):Q
     }
 
     const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MAlignment ma(QString("Temporary alignment"), al);
+    MultipleSequenceAlignment ma(QString("Temporary alignment"), al);
     for (int i = 0; i < size; i++) {
         QByteArray arr;
         for (int j = 0; j < len; j++) {
@@ -109,9 +102,7 @@ MatrixAndLogoController::MatrixAndLogoController( PFMatrix matrix, QWidget *p):Q
                 }
             }
         }
-        U2OpStatus2Log os;
-        ma.addRow(QString("Row %1").arg(i), arr, os);
-        CHECK_OP(os, );
+        ma->addRow(QString("Row %1").arg(i), arr);
     }
     AlignmentLogoSettings logoSettings(ma);
     logoWidget->resize(logowidth, logoheight);

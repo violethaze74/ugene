@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,14 +22,13 @@
 #ifndef _U2_HTTP_FILE_ADAPTER_H_
 #define _U2_HTTP_FILE_ADAPTER_H_
 
+#include <QAuthenticator>
+#include <QEventLoop>
+#include <QLinkedList>
+#include <QMutex>
+#include <QNetworkProxy>
+
 #include <U2Core/IOAdapter.h>
-#include <U2Core/NetworkConfiguration.h>
-
-#include <QtCore/QEventLoop>
-#include <QtCore/QLinkedList>
-#include <QtCore/QMutex>
-#include <QtNetwork/QAuthenticator>
-
 
 class QNetworkAccessManager;
 class QNetworkReply;

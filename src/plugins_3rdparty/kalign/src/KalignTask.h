@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,14 +22,13 @@
 #ifndef _U2_KALIGN_TASK_H_
 #define _U2_KALIGN_TASK_H_
 
+#include <U2Algorithm/MsaUtilTasks.h>
 
 #include <U2Core/Task.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TLSTask.h>
-#include <U2Algorithm/MAlignmentUtilTasks.h>
 #include <U2Core/U2Mod.h>
-
 
 #define KALIGN_CONTEXT_ID "kalign"
 
@@ -38,7 +37,7 @@ struct kalign_context;
 namespace U2 {
 
 class StateLock;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class LoadDocumentTask;
 
 class KalignContext : public TLSContext {
@@ -63,28 +62,28 @@ public:
 class KalignTask : public TLSTask {
     Q_OBJECT
 public:
-    KalignTask(const MAlignment& ma, const KalignTaskSettings& config);
+    KalignTask(const MultipleSequenceAlignment& ma, const KalignTaskSettings& config);
     
     void _run();
     void doAlign();
     ReportResult report();
     
     KalignTaskSettings          config;
-    MAlignment                  inputMA;
-    MAlignment                  resultMA;
+    MultipleSequenceAlignment                  inputMA;
+    MultipleSequenceAlignment                  resultMA;
     
-    MAlignment                  inputSubMA;
-    MAlignment                  resultSubMA;
+    MultipleSequenceAlignment                  inputSubMA;
+    MultipleSequenceAlignment                  resultSubMA;
     
 protected:
     TLSContext* createContextInstance();
 };
 
-//locks MAlignment object and propagate KalignTask results to it
+//locks MultipleSequenceAlignment object and propagate KalignTask results to it
 class  KalignGObjectTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    KalignGObjectTask(MAlignmentObject* obj, const KalignTaskSettings& config);
+    KalignGObjectTask(MultipleSequenceAlignmentObject* obj, const KalignTaskSettings& config);
     ~KalignGObjectTask();     
 
     virtual void prepare();
@@ -112,10 +111,10 @@ public:
 class KalignGObjectRunFromSchemaTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    KalignGObjectRunFromSchemaTask(MAlignmentObject * obj, const KalignTaskSettings & config);
+    KalignGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject * obj, const KalignTaskSettings & config);
 
     void prepare();
-    void setMAObject(MAlignmentObject* maobj);
+    void setMAObject(MultipleSequenceAlignmentObject* maobj);
 private:
     KalignTaskSettings      config;
 };
@@ -130,7 +129,7 @@ public:
     void prepare();
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:
-    MAlignmentObject*   mAObject;
+    MultipleSequenceAlignmentObject*   mAObject;
     Document*           currentDocument;
     bool                cleanDoc;
     SaveDocumentTask*   saveDocumentTask;

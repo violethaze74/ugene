@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -86,9 +86,9 @@ void ModSQLiteSpecificTestData::shutdown() {
 void ModSQLiteSpecificTestData::cleanUpAllModSteps() {
     if (NULL != sqliteDbi) {
         U2OpStatusImpl os;
-        SQLiteQuery qSingle("DELETE FROM SingleModStep", sqliteDbi->getDbRef(), os);
-        SQLiteQuery qMulti("DELETE FROM MultiModStep", sqliteDbi->getDbRef(), os);
-        SQLiteQuery qUser("DELETE FROM UserModStep", sqliteDbi->getDbRef(), os);
+        SQLiteWriteQuery qSingle("DELETE FROM SingleModStep", sqliteDbi->getDbRef(), os);
+        SQLiteWriteQuery qMulti("DELETE FROM MultiModStep", sqliteDbi->getDbRef(), os);
+        SQLiteWriteQuery qUser("DELETE FROM UserModStep", sqliteDbi->getDbRef(), os);
 
         qSingle.execute();
         qMulti.execute();
@@ -108,7 +108,7 @@ void ModSQLiteSpecificTestData::getAllSteps(QList<U2SingleModStep>& singleSteps,
     multiSteps.clear();
     userSteps.clear();
 
-    SQLiteQuery qSingle("SELECT id, object, otype, oextra, version, modType, details, multiStepId FROM SingleModStep", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qSingle("SELECT id, object, otype, oextra, version, modType, details, multiStepId FROM SingleModStep", sqliteDbi->getDbRef(), os);
     SAFE_POINT_OP(os, );
     while (qSingle.step()) {
         U2SingleModStep singleStep;
@@ -121,7 +121,7 @@ void ModSQLiteSpecificTestData::getAllSteps(QList<U2SingleModStep>& singleSteps,
         singleSteps.append(singleStep);
     }
 
-    SQLiteQuery qMulti("SELECT id, userStepId FROM MultiModStep", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qMulti("SELECT id, userStepId FROM MultiModStep", sqliteDbi->getDbRef(), os);
     SAFE_POINT_OP(os, );
     while (qMulti.step()) {
         U2MultiModStep4Test multiStep;
@@ -130,7 +130,7 @@ void ModSQLiteSpecificTestData::getAllSteps(QList<U2SingleModStep>& singleSteps,
         multiSteps.append(multiStep);
     }
 
-    SQLiteQuery qUser("SELECT id, object, otype, oextra, version FROM UserModStep", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qUser("SELECT id, object, otype, oextra, version FROM UserModStep", sqliteDbi->getDbRef(), os);
     SAFE_POINT_OP(os, );
     while (qUser.step()) {
         U2UserModStep4Test userStep;
@@ -152,7 +152,7 @@ U2SingleModStep ModSQLiteSpecificTestData::prepareSingleStep(qint64 modVersion, 
     step.objectId = objId;
     step.version = modVersion;
     step.modType = U2ModType::objUpdatedName;
-    step.details = PackUtils::packObjectNameDetails("Test object", "Test object");
+    step.details = U2DbiPackUtils::packObjectNameDetails("Test object", "Test object");
 
     return step;
 }
@@ -170,14 +170,14 @@ U2DataId ModSQLiteSpecificTestData::createObject(U2OpStatus& os) {
 }
 
 qint64 ModSQLiteSpecificTestData::getModStepsNum(const U2DataId& objId, U2OpStatus& os) {
-    SQLiteQuery qModSteps("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qModSteps("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qModSteps.bindDataId(1, objId);
     return qModSteps.selectInt64();
 }
 
 U2SingleModStep ModSQLiteSpecificTestData::getLastModStep(const U2DataId& objId, U2OpStatus& os) {
     U2SingleModStep res;
-    SQLiteQuery qModStep("SELECT id, object, otype, oextra, version, modType, details FROM SingleModStep WHERE object = ?1 ORDER BY version DESC LIMIT 1", sqliteDbi->getDbRef(), os);
+    SQLiteReadQuery qModStep("SELECT id, object, otype, oextra, version, modType, details FROM SingleModStep WHERE object = ?1 ORDER BY version DESC LIMIT 1", sqliteDbi->getDbRef(), os);
     CHECK_OP(os, res);
 
     qModStep.bindDataId(1, objId);
@@ -193,7 +193,7 @@ U2SingleModStep ModSQLiteSpecificTestData::getLastModStep(const U2DataId& objId,
 
 QList<U2SingleModStep> ModSQLiteSpecificTestData::getAllModSteps(const U2DataId& objId, U2OpStatus& os) {
     QList<U2SingleModStep> res;
-    SQLiteQuery qModStep("SELECT id, object, otype, oextra, version, modType, details"
+    SQLiteReadQuery qModStep("SELECT id, object, otype, oextra, version, modType, details"
         " FROM SingleModStep WHERE object = ?1 ORDER BY version", sqliteDbi->getDbRef(), os);
     CHECK_OP(os, res);
 
@@ -995,14 +995,14 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
         rowModStep.modType = U2ModType::msaUpdatedRowInfo;
         rowModStep.objectId = msaId;
         rowModStep.version = baseMsaVersion + i;
-        rowModStep.details = PackUtils::packRowInfoDetails(rowInfoList[i], rowInfoList[i + 1]);
+        rowModStep.details = U2DbiPackUtils::packRowInfoDetails(rowInfoList[i], rowInfoList[i + 1]);
         msaModSteps << rowModStep;
 
         U2SingleModStep gapModStep;
         gapModStep.modType = U2ModType::msaUpdatedGapModel;
         gapModStep.objectId = msaId;
         gapModStep.version = baseMsaVersion + i;
-        gapModStep.details = PackUtils::packGapDetails(baseRows[rowNumber].rowId,
+        gapModStep.details = U2DbiPackUtils::packGapDetails(baseRows[rowNumber].rowId,
                                                                rowInfoList[i].gaps,
                                                                rowInfoList[i + 1].gaps);
         msaModSteps << gapModStep;
@@ -1016,7 +1016,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
         modStep.modType = U2ModType::sequenceUpdatedData;
         modStep.objectId = baseRows[rowNumber].sequenceId;
         modStep.version = baseSeqVersion + i;
-        modStep.details = PackUtils::packSequenceDataDetails(U2_REGION_MAX,
+        modStep.details = U2DbiPackUtils::packSequenceDataDetails(U2_REGION_MAX,
                                                                      seqDataList[i],
                                                                      seqDataList[i + 1],
                                                                      QVariantMap());
@@ -1143,14 +1143,14 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
         rowModStep.modType = U2ModType::msaUpdatedRowInfo;
         rowModStep.objectId = msaId;
         rowModStep.version = baseMsaVersion + i;
-        rowModStep.details = PackUtils::packRowInfoDetails(rowInfoList[i], rowInfoList[i + 1]);
+        rowModStep.details = U2DbiPackUtils::packRowInfoDetails(rowInfoList[i], rowInfoList[i + 1]);
         msaModSteps << rowModStep;
 
         U2SingleModStep gapModStep;
         gapModStep.modType = U2ModType::msaUpdatedGapModel;
         gapModStep.objectId = msaId;
         gapModStep.version = baseMsaVersion + i;
-        gapModStep.details = PackUtils::packGapDetails(baseRows[rowNumber].rowId,
+        gapModStep.details = U2DbiPackUtils::packGapDetails(baseRows[rowNumber].rowId,
                                                                rowInfoList[i].gaps,
                                                                rowInfoList[i + 1].gaps);
         msaModSteps << gapModStep;
@@ -1163,7 +1163,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
         modStep.modType = U2ModType::sequenceUpdatedData;
         modStep.objectId = baseRows[rowNumber].sequenceId;
         modStep.version = baseSeqVersion + i;
-        modStep.details = PackUtils::packSequenceDataDetails(U2_REGION_MAX,
+        modStep.details = U2DbiPackUtils::packSequenceDataDetails(U2_REGION_MAX,
                                                                      seqDataList[i],
                                                                      seqDataList[i + 1],
                                                                      QVariantMap());
@@ -1182,7 +1182,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
     actionSeqModStep.modType = U2ModType::sequenceUpdatedData;
     actionSeqModStep.objectId = baseRows[rowNumber].sequenceId;
     actionSeqModStep.version = baseSeqVersion + expectedIndex;
-    actionSeqModStep.details = PackUtils::packSequenceDataDetails(U2_REGION_MAX,
+    actionSeqModStep.details = U2DbiPackUtils::packSequenceDataDetails(U2_REGION_MAX,
                                                                           seqDataList[expectedIndex],
                                                                           newSeqData,
                                                                           QVariantMap());
@@ -1190,13 +1190,13 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
     actionRowModStep.modType = U2ModType::msaUpdatedRowInfo;
     actionRowModStep.objectId = msaId;
     actionRowModStep.version = baseMsaVersion + expectedIndex;
-    actionRowModStep.details = PackUtils::packRowInfoDetails(rowInfoList[expectedIndex], newRow);
+    actionRowModStep.details = U2DbiPackUtils::packRowInfoDetails(rowInfoList[expectedIndex], newRow);
 
     U2SingleModStep actionGapModStep;
     actionGapModStep.modType = U2ModType::msaUpdatedGapModel;
     actionGapModStep.objectId = msaId;
     actionGapModStep.version = baseMsaVersion + expectedIndex;
-    actionGapModStep.details = PackUtils::packGapDetails(baseRows[rowNumber].rowId,
+    actionGapModStep.details = U2DbiPackUtils::packGapDetails(baseRows[rowNumber].rowId,
                                                                  rowInfoList[expectedIndex].gaps,
                                                                  newRow.gaps);
 

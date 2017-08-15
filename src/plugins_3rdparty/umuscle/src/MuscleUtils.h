@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@
 
 #include <U2Core/Task.h>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 class MuscleContext;
 
@@ -60,10 +60,10 @@ private:
 int ugene_printf(FILE *f, const char *format, ...);
 ALPHA convertAlpha(const DNAAlphabet* al);
 void setupAlphaAndScore(const DNAAlphabet* al, TaskStateInfo& ti);
-void convertMAlignment2MSA(MSA& muscleMSA, const MAlignment& ma, bool fixAlpha);
-void convertMAlignment2SecVect(SeqVect& sv, const MAlignment& ma, bool fixAlpha);
-void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MAlignment& res);
-void prepareAlignResults(MSA& msa, const DNAAlphabet* al, MAlignment& ma, bool mhack);
+void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, bool fixAlpha);
+void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma, bool fixAlpha);
+void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignment& res);
+void prepareAlignResults(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignment& ma, bool mhack);
 
 } //namespace
 

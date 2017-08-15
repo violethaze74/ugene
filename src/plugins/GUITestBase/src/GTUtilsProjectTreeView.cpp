@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -218,6 +218,18 @@ void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString& itemN
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "callContextMenu"
+void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus &os, const QString &itemName) {
+    click(os, itemName, Qt::RightButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getTreeWidget"
+void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus &os, const QString &itemName, const QString &parentName) {
+    click(os, itemName, parentName, Qt::RightButton);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getTreeWidget"
 QTreeView* GTUtilsProjectTreeView::getTreeView(HI::GUITestOpStatus &os) {
 
@@ -268,6 +280,16 @@ QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, QTreeView
 
     treeView->scrollTo(foundIndexes.at(0));
     return foundIndexes.at(0);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "findIndex"
+QModelIndex GTUtilsProjectTreeView::findIndex(GUITestOpStatus &os, const QStringList &itemPath, const GTGlobals::FindOptions &options) {
+    QModelIndex item;
+    foreach (const QString &itemName, itemPath) {
+        item = findIndex(os, itemName, item, options);
+    }
+    return item;
 }
 #undef GT_METHOD_NAME
 
@@ -422,6 +444,13 @@ void GTUtilsProjectTreeView::checkFilteredGroup(HI::GUITestOpStatus &os, const Q
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "ensureFilteringIsDisabled"
+void GTUtilsProjectTreeView::ensureFilteringIsDisabled(GUITestOpStatus &os) {
+    openView(os);
+    GTLineEdit::checkText(os, "nameFilterEdit", NULL, "");
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "checkItem"
 bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
     QTreeView *treeView = getTreeView(os);
@@ -560,14 +589,25 @@ bool GTUtilsProjectTreeView::isVisible( HI::GUITestOpStatus &os ){
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "dragAndDrop"
 void GTUtilsProjectTreeView::dragAndDrop(HI::GUITestOpStatus &os, const QModelIndex &from, const QModelIndex &to) {
     sendDragAndDrop(os, getItemCenter(os, from), getItemCenter(os, to));
 }
+#undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "dragAndDrop"
 void GTUtilsProjectTreeView::dragAndDrop(HI::GUITestOpStatus &os, const QModelIndex &from, QWidget *to) {
     sendDragAndDrop(os, getItemCenter(os, from), to);
 }
+#undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "dragAndDrop"
+void GTUtilsProjectTreeView::dragAndDrop(GUITestOpStatus &os, const QStringList &from, QWidget *to) {
+    dragAndDrop(os, findIndex(os, from), to);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isVisible"
 void GTUtilsProjectTreeView::dragAndDropSeveralElements(HI::GUITestOpStatus &os, QModelIndexList from, QModelIndex to) {
     QTreeView *treeView = getTreeView(os);
 
@@ -584,6 +624,7 @@ void GTUtilsProjectTreeView::dragAndDropSeveralElements(HI::GUITestOpStatus &os,
 
     sendDragAndDrop(os, enterPos, dropPos);
 }
+#undef GT_METHOD_NAME
 
 void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus &os, const QPoint &enterPos, const QPoint &dropPos) {
     GTMouseDriver::dragAndDrop(enterPos, dropPos);
@@ -603,6 +644,26 @@ void GTUtilsProjectTreeView::expandProjectView(HI::GUITestOpStatus &os){
 void GTUtilsProjectTreeView::markSequenceAsCircular(HI::GUITestOpStatus &os, const QString &sequenceObjectName) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Mark as circular"));
     click(os, sequenceObjectName, Qt::RightButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getDocuments"
+QMap<QString, QStringList> GTUtilsProjectTreeView::getDocuments(GUITestOpStatus &os) {
+    ensureFilteringIsDisabled(os);
+    GTGlobals::FindOptions options(false, Qt::MatchContains, 1);
+    const QModelIndexList documentsItems = findIndecies(os, "", QModelIndex(), 0, options);
+
+    QMap<QString, QStringList> documents;
+    foreach (const QModelIndex &documentItem, documentsItems) {
+        const QModelIndexList objectsItems = findIndecies(os, "", documentItem, 0, options);
+        QStringList objects;
+        foreach (const QModelIndex &objectItem, objectsItems) {
+            objects << objectItem.data().toString();
+        }
+        documents.insert(documentItem.data().toString(), objects);
+    }
+
+    return documents;
 }
 #undef GT_METHOD_NAME
 

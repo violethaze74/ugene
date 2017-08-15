@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,20 +22,20 @@
 #ifndef _U2_KALIGN_TESTS_H_
 #define _U2_KALIGN_TESTS_H_
 
-#include "KalignTask.h"
+#include <QDomElement>
+#include <QFileInfo>
 
-#include <U2Test/XMLTestUtils.h>
 #include <U2Core/GObject.h>
 
-#include <QtXml/QDomElement>
-#include <QtCore/QFileInfo>
+#include <U2Test/XMLTestUtils.h>
+
+#include "KalignTask.h"
 
 namespace U2 {
 
 class KalignGObjectTask;
-class MAlignmentObject;
 class LoadDocumentTask;
-class MAlignment;
+class MultipleSequenceAlignmentObject;
 
 class  Kalign_Load_Align_Compare_Task : public Task {
 	Q_OBJECT
@@ -53,15 +53,15 @@ public:
 		void sl_kalignProgressChg() {stateInfo.progress = kalignTask->getProgress();}
 
 private:
-	MAlignment dna_to_ma(QList<GObject*> dnaSeqs);
+	MultipleSequenceAlignment dna_to_ma(QList<GObject*> dnaSeqs);
 	QString str_inFileURL;
 	QString str_patFileURL;
 	LoadDocumentTask*           loadTask1;
 	LoadDocumentTask*           loadTask2;
 	Task*                       kalignTask; 
 	KalignTaskSettings          config;
-	MAlignmentObject*           ma1;
-	MAlignmentObject*           ma2;
+	MultipleSequenceAlignmentObject*           ma1;
+	MultipleSequenceAlignmentObject*           ma2;
 };
 
 class GTest_Kalign_Load_Align_Compare: public GTest {
@@ -87,7 +87,7 @@ public:
 	Task::ReportResult report();
 	void run();
 	QList<Task*> onSubTaskFinished(Task* subTask);
-	MAlignment dna_to_ma(QList<GObject*> dnaSeqs);
+	MultipleSequenceAlignment dna_to_ma(QList<GObject*> dnaSeqs);
 
 	public slots:
 		void sl_kalignProgressChg() {stateInfo.progress = kalignTask->getProgress();}
@@ -101,8 +101,8 @@ private:
 	LoadDocumentTask*           loadTask2;
 	Task*                       kalignTask; 
 	KalignTaskSettings          config;
-	MAlignmentObject*           ma1;
-	MAlignmentObject*           ma2;
+	MultipleSequenceAlignmentObject*           ma1;
+	MultipleSequenceAlignmentObject*           ma2;
 };
 
 class KalignTests {

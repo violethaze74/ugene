@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtSql/QSqlError>
+#include <QSqlError>
 
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -164,6 +164,10 @@ MysqlObjectDbi* MysqlDbi::getMysqlObjectDbi() {
 
 MysqlSequenceDbi* MysqlDbi::getMysqlSequenceDbi() {
     return sequenceDbi;
+}
+
+MysqlUdrDbi* MysqlDbi::getMysqlUdrDbi() {
+    return udrDbi;
 }
 
 MysqlVariantDbi * MysqlDbi::getMysqlVariantDbi() {

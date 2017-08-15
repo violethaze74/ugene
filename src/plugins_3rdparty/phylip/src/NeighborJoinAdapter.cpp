@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ namespace U2 {
 
 QMutex NeighborJoinCalculateTreeTask::runLock;
 
-void createPhyTreeFromPhylipTree(const MAlignment &ma, node *p, double m, boolean njoin, node *start, PhyNode* root, int bootstrap_repl)
+void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, double m, boolean njoin, node *start, PhyNode* root, int bootstrap_repl)
 {
     /* used in fitch & neighbor */
     long i=0;
@@ -60,8 +60,8 @@ void createPhyTreeFromPhylipTree(const MAlignment &ma, node *p, double m, boolea
             if(bootstrap_repl != 0){
                 current->setName(QString::fromLatin1(p->nayme));
             }else{
-                assert(p->index - 1 < ma.getNumRows());
-                current->setName(QString(ma.getRow(p->index - 1).getName()));
+                assert(p->index - 1 < ma->getNumRows());
+                current->setName(QString(ma->getMsaRow(p->index - 1)->getName()));
             }
         } else {
             current->setName(QString("node %1").arg(counter++));
@@ -97,15 +97,15 @@ void replacePhylipRestrictedSymbols(QByteArray& name) {
     }
 }
 
-Task* NeighborJoinAdapter::createCalculatePhyTreeTask(const MAlignment& ma, const CreatePhyTreeSettings& s){
+Task* NeighborJoinAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s){
     return new PhylipCmdlineTask(ma, s);
 }
 
-CreatePhyTreeWidget * NeighborJoinAdapter::createPhyTreeSettingsWidget(const MAlignment &ma, QWidget *parent) {
+CreatePhyTreeWidget * NeighborJoinAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent) {
     return new NeighborJoinWidget(ma, parent);
 }
 
-NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const MAlignment& ma, const CreatePhyTreeSettings& s)
+NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s)
 :PhyTreeGeneratorTask(ma, s), memLocker(stateInfo){
     setTaskName("NeighborJoin algorithm");
 }
@@ -118,7 +118,7 @@ void NeighborJoinCalculateTreeTask::run(){
 
     PhyTree phyTree(NULL);
 
-    if (inputMA.getNumRows() < 3) {
+    if (inputMA->getNumRows() < 3) {
         setError("Neighbor-Joining runs must have at least 3 species");
         result = phyTree;
         return;
@@ -151,7 +151,7 @@ void NeighborJoinCalculateTreeTask::run(){
             for (int i = 0; i < settings.replicates; i++){
                 stateInfo.progress = (int)(i/(float)settings.replicates * 100);
 
-                const MAlignment& curMSA = seqBoot->getMSA(i);
+                const MultipleSequenceAlignment& curMSA = seqBoot->getMSA(i);
                 QScopedPointer<DistanceMatrix> distanceMatrix(new DistanceMatrix);
                 distanceMatrix->calculateOutOfAlignment(curMSA,settings);
 
@@ -185,8 +185,8 @@ void NeighborJoinCalculateTreeTask::run(){
 
                 naym* nayme = getNayme();
                 for (int i = 0; i < sz; ++i) {
-                    const MAlignmentRow& row = inputMA.getRow(i);
-                    QByteArray name = row.getName().toLatin1();
+                    const MultipleSequenceAlignmentRow row = inputMA->getMsaRow(i);
+                    QByteArray name = row->getName().toLatin1();
                     replacePhylipRestrictedSymbols(name);
                     qstrncpy(nayme[i], name.constData(), sizeof(naym));
 
@@ -265,8 +265,8 @@ void NeighborJoinCalculateTreeTask::run(){
 
             naym* nayme = getNayme();
             for (int i = 0; i < sz; ++i) {
-                const MAlignmentRow& row = inputMA.getRow(i);
-                QByteArray name = row.getName().toLatin1();
+                const MultipleSequenceAlignmentRow row = inputMA->getMsaRow(i);
+                QByteArray name = row->getName().toLatin1();
                 replacePhylipRestrictedSymbols(name);
                 qstrncpy(nayme[i], name.constData(), sizeof(naym));
             }
@@ -290,7 +290,7 @@ void NeighborJoinCalculateTreeTask::run(){
         }
     }
     catch (const std::bad_alloc &) {
-        setError(QString("Not enough memory to calculate tree for alignment \"%1\"").arg(inputMA.getName()));
+        setError(QString("Not enough memory to calculate tree for alignment \"%1\"").arg(inputMA->getName()));
     }
     catch (const char* message) {
         stateInfo.setError(QString("Phylip error %1").arg(message));

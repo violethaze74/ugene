@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,6 +49,7 @@
 #include "GTTestsMSAEditorEdit.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsProjectTreeView.h"
 #include "runnables/ugene/corelibs/U2Gui/util/RenameSequenceFiller.h"
@@ -147,100 +148,97 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2){
 //Expected state: DIFFERENCE: Mecopoda_elongata__Ishigaki__J AAGTCTTT---TA-A, sequence length 15, right offset 14
 }
 
-void test_4(HI::GUITestOpStatus &os, int startPos, int endPos, QString expectedSeq, int i=0, int context=0){
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(startPos,i), QPoint(endPos, i));
+void test_4(HI::GUITestOpStatus &os, int startPos, int endPos, const QString &expectedSeq, int i = 0, int context = 0) {
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(startPos, i), QPoint(endPos, i));
 
-    if(context){
-        QWidget* seq=GTWidget::findWidget(os, "msa_editor_sequence_area");
+    if (0 != context) {
+        QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT" << "Remove selection"));
-        GTMenu::showContextMenu(os,seq);
+        GTMenu::showContextMenu(os, seq);
+    } else {
+        GTKeyboardDriver::keyClick(Qt::Key_Delete);
     }
-    else{
-        GTKeyboardDriver::keyClick( Qt::Key_Delete);
-    }
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,i), QPoint(14, i));
-    GTKeyboardDriver::keyClick( 'c',Qt::ControlModifier);
-
-    GTGlobals::sleep(500);
-    QString clipboardTest = GTClipboard::text(os);
-
-    CHECK_SET_ERR(clipboardTest==expectedSeq,clipboardTest);
+    const QString rowData = GTUtilsMSAEditorSequenceArea::getSequenceData(os, i);
+    CHECK_SET_ERR(rowData == expectedSeq, "Incorrect row:" + rowData);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0004){
+GUI_TEST_CLASS_DEFINITION(test_0004) {
 //    1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Select 1..5 region for Phaneroptera_falcata sequence. Press "delete".
-    test_4(os,0,4,"TTCTTTTAA-----");
 //    Expected state: Phaneroptera_falcata TTCTTTTAA-----, sequence length 14, right offset 9
+    test_4(os, 0, 4, "TTCTTTTAA-----");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0004_1){
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+GUI_TEST_CLASS_DEFINITION(test_0004_1) {
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    test_4(os,0,4,"---TATTAA-----",3);
 //    Expected state: DIFFERENCE: Tettigonia_viridissima ---TATTAA-----, sequence length 14, right offset 9
+    test_4(os, 0, 4, "---TATTAA-----", 3);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0004_2){
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+GUI_TEST_CLASS_DEFINITION(test_0004_2) {
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    test_4(os,0,4,"TTT---TAA-----",7);
 //    Expected state: DIFFERENCE: Mecopoda_elongata__Ishigaki__J TTT---TAA-----, sequence length 14, right offset 9
+    test_4(os, 0, 4, "TTT---TAA-----", 7);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0005){
+GUI_TEST_CLASS_DEFINITION(test_0005) {
 //    1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Select 6..9 symbol for Phaneroptera_falcata sequence. Use context menu {Edit->Delete selection}.
-    test_4(os,5,8,"AAGACTTTAA----");
 //    Expected state: Phaneroptera_falcata AAGACTTTAA----, sequence length 14, right offsets 10
+    test_4(os, 5, 8, "AAGACTTTAA----");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0005_1){
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+GUI_TEST_CLASS_DEFINITION(test_0005_1) {
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    test_4(os,5,8,"AAGTCATTAA----",3);
 //    Expected state: DIFFERENCE: Tettigonia_viridissima AAGTCATTAA----, sequence length 14, right offset 10
+    test_4(os, 5, 8, "AAGTCATTAA----", 3);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0005_2){
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+GUI_TEST_CLASS_DEFINITION(test_0005_2) {
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    test_4(os,5,8,"AAGTC--TAA----",7);
 //    Expected state: DIFFERENCE: Mecopoda_elongata__Ishigaki__J AAGTC--TAA----, sequence length 14, right offset 10
+    test_4(os, 5, 8, "AAGTC--TAA----", 7);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0006){
+GUI_TEST_CLASS_DEFINITION(test_0006) {
 //    1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //2. Select 13..14 symbol for Phaneroptera_falcata sequence. Use context menu {Edit->Delete selection}.
-    test_4(os,12,13,"AAGACTTCTTTT--",0,1);
 //    Expected state: Phaneroptera_falcata AAGACTTCTTTT--, sequence length 14, right offsets 12
+    test_4(os, 12, 13, "AAGACTTCTTTT--", 0, 1);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0006_1){
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+GUI_TEST_CLASS_DEFINITION(test_0006_1) {
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    test_4(os,12,13,"AAGTC---TATT--",3,1);
 //    Expected state: DIFFERENCE: Tettigonia_viridissima AAGTC---TATT--, sequence length 14, right offsets 12
+    test_4(os, 12, 13, "AAGTC---TATT--", 3, 1);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0006_2){
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+GUI_TEST_CLASS_DEFINITION(test_0006_2) {
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    test_4(os,12,13,"AAGTCTTT---T--",7,1);
 //    Expected state: DIFFERENCE: Mecopoda_elongata__Ishigaki__J AAGTCTTT---T--, sequence length 14, right offsets 12
+    test_4(os, 12, 13, "AAGTCTTT---T--", 7, 1);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007){
@@ -426,114 +424,98 @@ Hetrodes_pupus_EF540832            AAGCTTTTAA---
 */
 }
 
-
-void test_9(HI::GUITestOpStatus &os, int i=0){
-    QWidget* seq=GTWidget::findWidget(os, "msa_editor_sequence_area");
+void test_9(HI::GUITestOpStatus &os, int i = 0) {
+    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     QString gaps;
-    QString expectedSeq;
 
-    if(i){
-        GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(i,0), QPoint(i, 9));
-    }
-    else{
-        GTUtilsMSAEditorSequenceArea::click(os,QPoint(13,0));
+    if (0 != i) {
+        GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(i, 0), QPoint(i, 9));
+    } else {
+        GTUtilsMSAEditorSequenceArea::click(os, QPoint(13, 0));
     }
 
     GTKeyboardDriver::keyClick( Qt::Key_Space);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick( Qt::Key_Space);
-    GTGlobals::sleep(100);
-    GTWidget::click(os,seq);
+    GTWidget::click(os, seq);
 
-    if(i){
-        GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(i,0), QPoint(i+1, 9));
-        GTKeyboardDriver::keyClick( 'c',Qt::ControlModifier);
-
-        gaps=QString("--\n--\n--\n--\n--\n--\n--\n--\n--\n--");
-    }
-    else{
-        GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(14,0), QPoint(15, 9));
-        GTKeyboardDriver::keyClick( 'c',Qt::ControlModifier);
-        gaps=QString("-A\n--\n--\n--\n--\n--\n--\n--\n--\n--");
-    }
-
-    GTGlobals::sleep(500);
-    QString clipboardTest = GTClipboard::text(os);
-
-
-    CHECK_SET_ERR(clipboardTest==gaps,"\n Expected: \n" + gaps + "\nFound:\n" + clipboardTest);
 //Expected state: two columns with gaps added to the end of sequence.
+    if (0 != i) {
+        GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(i, 0), QPoint(i + 1, 9));
+        GTKeyboardUtils::copy(os);
+        gaps = QString("--\n--\n--\n--\n--\n--\n--\n--\n--\n--");
+    } else {
+        GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(14, 0), QPoint(15, 9));
+        GTKeyboardUtils::copy(os);
+        gaps = QString("-A\n--\n--\n--\n--\n--\n--\n--\n--\n--");
+    }
+
+    const QString clipboardText = GTClipboard::text(os);
+    CHECK_SET_ERR(clipboardText == gaps, "Expected:\n" + gaps + "\nFound:\n" + clipboardText);
+
 //3. Move cursor at 15th symbol in first sequence. Use msa editor context menu {Edit->Delete column of gaps}.
-
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT" << "remove_columns_of_gaps"));
-    GTUtilsDialog::waitForDialog(os,new DeleteGapsDialogFiller(os,1));
-    GTMenu::showContextMenu(os,seq);
+    GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os, 1));
+    GTMenu::showContextMenu(os, seq);
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14, 9));
-    GTKeyboardDriver::keyClick( 'c',Qt::ControlModifier);
-
-    GTGlobals::sleep(500);
-    clipboardTest = GTClipboard::text(os);
-    if(i){
-        expectedSeq=QString("AAGACTTCTTTTAA\n"
-                            "AAGCTTACTAA---\n"
-                            "TAGT---TTATTAA\n"
-                            "AAGTC---TATTAA\n"
-                            "TAGCTTATTAA---\n"
-                            "TAGCTTATTAA---\n"
-                            "TAGCTTATTAA---\n"
-                            "AAGTCTTT---TAA\n"
-                            "A---AGAATAATTA\n"
-                            "AAGCCTTTTAA---");
-    }
-    else{
-        expectedSeq=QString("AAGACTTCTTTTA-A\n"
-                            "AAGCTTACTAA----\n"
-                            "TAGT---TTATTAA-\n"
-                            "AAGTC---TATTAA-\n"
-                            "TAGCTTATTAA----\n"
-                            "TAGCTTATTAA----\n"
-                            "TAGCTTATTAA----\n"
-                            "AAGTCTTT---TAA-\n"
-                            "A---AGAATAATTA-\n"
-                            "AAGCCTTTTAA----");
-    }
-    CHECK_SET_ERR(clipboardTest==expectedSeq,"\n Expected: \n"+ expectedSeq  +"\nFound:\n" + clipboardTest);
-/*Expected state:
-Phaneroptera_falcata               AAGACTTCTTTTA-A
-Isophya_altaica_EF540820           AAGCTTACTAA----
-Bicolorana_bicolor_EF540830        TAGT---TTATTAA-
-Tettigonia_viridissima             AAGTC---TATTAA-
-Conocephalus_discolor              TAGCTTATTAA----
-Conocephalus_sp.                   TAGCTTATTAA----
-Conocephalus_percaudata            TAGCTTATTAA----
-Mecopoda_elongata__Ishigaki__J     AAGTCTTT---TAA-
-Podisma_sapporensis                A---AGAATAATTA-
-Hetrodes_pupus_EF540832            AAGCCTTTTAA----
-*/
+//    Expected state:
+//    Phaneroptera_falcata               AAGACTTCTTTTA-A
+//    Isophya_altaica_EF540820           AAGCTTACTAA----
+//    Bicolorana_bicolor_EF540830        TAGT---TTATTAA-
+//    Tettigonia_viridissima             AAGTC---TATTAA-
+//    Conocephalus_discolor              TAGCTTATTAA----
+//    Conocephalus_sp.                   TAGCTTATTAA----
+//    Conocephalus_percaudata            TAGCTTATTAA----
+//    Mecopoda_elongata__Ishigaki__J     AAGTCTTT---TAA-
+//    Podisma_sapporensis                A---AGAATAATTA-
+//    Hetrodes_pupus_EF540832            AAGCCTTTTAA----
+    const QStringList msa = GTUtilsMsaEditor::getWholeData(os);
+    const QStringList expectedMsa = (0 != i ? QStringList() << "AAGACTTCTTTTAA"
+                                                            << "AAGCTTACTAA---"
+                                                            << "TAGT---TTATTAA"
+                                                            << "AAGTC---TATTAA"
+                                                            << "TAGCTTATTAA---"
+                                                            << "TAGCTTATTAA---"
+                                                            << "TAGCTTATTAA---"
+                                                            << "AAGTCTTT---TAA"
+                                                            << "A---AGAATAATTA"
+                                                            << "AAGCCTTTTAA---"
+                                            : QStringList() << "AAGACTTCTTTTA-A"
+                                                            << "AAGCTTACTAA----"
+                                                            << "TAGT---TTATTAA-"
+                                                            << "AAGTC---TATTAA-"
+                                                            << "TAGCTTATTAA----"
+                                                            << "TAGCTTATTAA----"
+                                                            << "TAGCTTATTAA----"
+                                                            << "AAGTCTTT---TAA-"
+                                                            << "A---AGAATAATTA-"
+                                                            << "AAGCCTTTTAA----");
+    CHECK_SET_ERR(msa == expectedMsa, "Expected:\n" + expectedMsa.join("\n") + "\nFound:\n" + msa.join("\n"));
 }
-GUI_TEST_CLASS_DEFINITION(test_0009){
+
+GUI_TEST_CLASS_DEFINITION(test_0009) {
 //Check remove columns with gaps
 //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //2. Put cursor at last symbol in first sequence, click "Space" two times.
     test_9(os);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0009_1){
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+GUI_TEST_CLASS_DEFINITION(test_0009_1) {
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-//DIFFERENCE: 2. Select column 3, click "Space" two times.
-    test_9(os,2);
 
+//DIFFERENCE: 2. Select column 3, click "Space" two times.
+    test_9(os, 2);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0009_2){
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+GUI_TEST_CLASS_DEFINITION(test_0009_2) {
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //DIFFERENCE: 2. Select column 9, click "Space" two times.
-    test_9(os,8);
+    test_9(os, 8);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010){

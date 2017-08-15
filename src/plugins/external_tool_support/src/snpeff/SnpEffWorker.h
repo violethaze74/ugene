@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -96,13 +96,13 @@ public:
 
 private:
     void addNotification(const QString &key, int count);
-    static QStrStrMap initWellKnownMessages();
+    static StrStrMap initWellKnownMessages();
     static QMap<QString, QRegExp> initWellKnownCatchers();
 
     WorkflowMonitor *monitor;
     const QString actor;
 
-    static const QStrStrMap wellKnownMessages;
+    static const StrStrMap wellKnownMessages;
     static const QMap<QString, QRegExp> messageCatchers;
 };
 

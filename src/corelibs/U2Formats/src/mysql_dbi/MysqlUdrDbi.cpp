@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,15 +20,18 @@
  */
 
 #include <U2Core/AppContext.h>
+#include <U2Core/RawDataUdrSchema.h>
+#include <U2Core/U2DbiPackUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UdrSchemaRegistry.h>
 
 #include "MysqlBlobInputStream.h"
 #include "MysqlBlobOutputStream.h"
-
-#include "util/MysqlHelpers.h"
 #include "MysqlObjectDbi.h"
 #include "MysqlUdrDbi.h"
+
+#include "util/MysqlHelpers.h"
+#include "util/MysqlModificationAction.h"
 
 static const QString PLACEHOLDER_MARK = ":";
 
@@ -46,6 +49,34 @@ MysqlUdrDbi::MysqlUdrDbi(MysqlDbi *dbi)
     : UdrDbi(dbi), MysqlChildDbiCommon(dbi)
 {
 
+}
+
+void MysqlUdrDbi::undo(const U2SingleModStep& modStep, U2OpStatus& os) {
+    SAFE_POINT_EXT(modStep.modType == U2ModType::udrUpdated, os.setError("Unknown modStep"), );
+
+    MysqlTransaction t(db, os);
+    Q_UNUSED(t);
+
+    QByteArray oldData;
+    QByteArray newData;
+    bool ok =  U2DbiPackUtils::unpackUdr(modStep.details, oldData, newData);
+    CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating UDR")), );
+
+    RawDataUdrSchema::writeContent(oldData, U2EntityRef(getRootDbi()->getDbiRef(), modStep.objectId), os);
+}
+
+void MysqlUdrDbi::redo(const U2SingleModStep& modStep, U2OpStatus& os) {
+    SAFE_POINT_EXT(modStep.modType == U2ModType::udrUpdated, os.setError("Unknown modStep"), );
+
+    MysqlTransaction t(db, os);
+    Q_UNUSED(t);
+
+    QByteArray oldData;
+    QByteArray newData;
+    bool ok = U2DbiPackUtils::unpackUdr(modStep.details, oldData, newData);
+    CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating UDR")), );
+
+    RawDataUdrSchema::writeContent(newData, U2EntityRef(getRootDbi()->getDbiRef(), modStep.objectId), os);
 }
 
 UdrRecordId MysqlUdrDbi::addRecord(const UdrSchemaId &schemaId, const QList<UdrValue> &data, U2OpStatus &os) {
@@ -196,6 +227,10 @@ OutputStream * MysqlUdrDbi::createOutputStream(const UdrRecordId &recordId, int 
     CHECK_OP(os, NULL);
 
     return new MysqlBlobOutputStream(db, tableName(recordId.getSchemaId()).toLatin1(), field.getName(), recordId.getRecordId(), (int)size, os);
+}
+
+ModificationAction* MysqlUdrDbi::getModificationAction(const U2DataId &id) {
+    return new MysqlModificationAction(dbi, id);
 }
 
 /************************************************************************/

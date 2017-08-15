@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,8 +58,8 @@ public:
     static U2Sequence copySequence(const DNASequence& srcSeq, const U2DbiRef& dstDbi, const QString &dstFolder, U2OpStatus& os);
     static U2Sequence copySequence(const U2EntityRef& srcSeq, const U2DbiRef& dstDbi, const QString &dstFolder, U2OpStatus& os);
 
-    static U2EntityRef import(const U2DbiRef &dbiRef, const DNASequence &seq, U2OpStatus &os);
-    static U2EntityRef import(const U2DbiRef& dbiRef, const QString &folder, const DNASequence& seq, U2OpStatus& os);
+    static U2EntityRef import(U2OpStatus &os, const U2DbiRef &dbiRef, const DNASequence &seq, const U2AlphabetId &alphabetId = U2AlphabetId());
+    static U2EntityRef import(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const DNASequence &seq, const U2AlphabetId &alphabetId = U2AlphabetId());
 
     static void setQuality(const U2EntityRef& entityRef, const DNAQuality& quality);
 
@@ -75,7 +75,7 @@ public:
         bool lazyMode = false, bool singleThread = true);
     virtual ~U2SequenceImporter();
 
-    void startSequence(const U2DbiRef& dbiRef, const QString &folder, const QString& visualName, bool circular, U2OpStatus& os);
+    void startSequence(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const QString &visualName, bool circular, const U2AlphabetId &alphabetId = U2AlphabetId());
     virtual void addBlock(const char* data, qint64 len, U2OpStatus& os);
     void addSequenceBlock(const U2EntityRef& seqId, const U2Region& r, U2OpStatus& os);
     virtual void addDefaultSymbolsBlock(int n, U2OpStatus& os);

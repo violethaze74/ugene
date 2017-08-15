@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,16 +22,14 @@
 #ifndef _U2_TREE_VIEWER_H_
 #define _U2_TREE_VIEWER_H_
 
-#include <qglobal.h>
-
 #include <QGraphicsView>
 #include <QToolBar>
 #include <QToolButton>
 #include <QScrollBar>
 
-#include <QtCore/QMap>
-#include <U2Core/MAlignment.h>
-#include <U2Core/MAlignmentObject.h>
+#include <QMap>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/PhyTree.h>
 #include <U2Core/Task.h>
@@ -40,7 +38,7 @@
 
 #include "TreeSettings.h"
 
-#include <QtGui/QTransform>
+#include <QTransform>
 
 namespace U2 {
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,6 +40,7 @@
 namespace U2 {
 
 const QString ConvertSnpeffVariationsToAnnotationsTask::CHROM_QUALIFIER_NAME = "chrom";
+const QString ConvertSnpeffVariationsToAnnotationsTask::LOCATION_QUALIFIER_NAME = "Location";
 const QString ConvertSnpeffVariationsToAnnotationsTask::REFERENCE_QUALIFIER_NAME = "Reference_bases";
 const QString ConvertSnpeffVariationsToAnnotationsTask::ALTERNATE_QUALIFIER_NAME = "Alternate_bases";
 const QString ConvertSnpeffVariationsToAnnotationsTask::ALLELE_QUALIFIER_NAME = "Allele";
@@ -79,6 +80,8 @@ void ConvertSnpeffVariationsToAnnotationsTask::run() {
             entryAnnotationData->location->regions << U2Region(variant.startPos, variant.endPos - variant.startPos + 1);
             entryAnnotationData->qualifiers << U2Qualifier(REFERENCE_QUALIFIER_NAME, variant.refData);
             entryAnnotationData->qualifiers << U2Qualifier(ALTERNATE_QUALIFIER_NAME, variant.obsData);
+            entryAnnotationData->qualifiers << U2Qualifier(LOCATION_QUALIFIER_NAME,
+                                                           U2Region(variant.startPos + 1, variant.endPos - variant.startPos + 1).toString(U2Region::FormatDots));
             if (!variant.publicId.isEmpty()) {
                 entryAnnotationData->qualifiers << U2Qualifier(ID_QUALIFIER_NAME, variant.publicId);
             }

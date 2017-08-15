@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@ void MysqlUpgraderFrom_1_16_To_1_24::upgradeVariantDbi(U2OpStatus &os) const {
 namespace {
 
 QString convertInfo(const QString &additionalInfo, const QStringList &header) {
-    QStrStrMap convertedInfoMap;
+    StrStrMap convertedInfoMap;
     CHECK(!additionalInfo.isEmpty(), QString());
     QStringList splittedInfo = additionalInfo.split("\t", QString::SkipEmptyParts);
     CHECK(!splittedInfo.isEmpty(), QString());
@@ -93,7 +93,7 @@ QString convertInfo(const QString &additionalInfo, const QStringList &header) {
         convertedInfoMap.insert(QString::number(qMax(maxVcf4MandatoryColumnNumber, header.size()) + 1), splittedInfo.join("\t"));
     }
 
-    return U2DbiUtils::packMap(convertedInfoMap);
+    return StrPackUtils::packMap(convertedInfoMap);
 }
 
 }
@@ -176,7 +176,7 @@ void MysqlUpgraderFrom_1_16_To_1_24::extractAttributes(U2OpStatus &os, QMap<U2Da
 
         addStringAttribute(os, variantTrack, U2VariantTrack::META_INFO_ATTIBUTE, metaInfo);
         CHECK_OP(os, );
-        addStringAttribute(os, variantTrack, U2VariantTrack::HEADER_ATTIBUTE, U2DbiUtils::packStringList(header));
+        addStringAttribute(os, variantTrack, U2VariantTrack::HEADER_ATTIBUTE, StrPackUtils::packStringList(header));
         CHECK_OP(os, );
 
         number++;

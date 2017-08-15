@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include "MuscleAdapter.h"
 
 #include <algorithm>
-#include <QtCore/QVector>
+#include <QVector>
 
 namespace U2 {
 
@@ -98,22 +98,22 @@ void setupAlphaAndScore(const DNAAlphabet* al, TaskStateInfo& ti) {
     }
 }
 
-void convertMAlignment2MSA(MSA& muscleMSA, const MAlignment& ma, bool fixAlpha) {    
+void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, bool fixAlpha) {    
     MuscleContext *ctx = getMuscleContext();
-    ctx->fillUidsVectors(ma.getNumRows());
-    for (int i=0, n = ma.getNumRows(); i<n; i++) {
-        const MAlignmentRow& row = ma.getRow(i);
+    ctx->fillUidsVectors(ma->getNumRows());
+    for (int i=0, n = ma->getNumRows(); i<n; i++) {
+        const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
         
-        int coreLen = row.getCoreLength();
-        int maLen = ma.getLength();
+        int coreLen = row->getCoreLength();
+        int maLen = ma->getLength();
         char* seq  = new char[maLen + 1];
-        memcpy(seq, row.getCore().constData(), coreLen);
+        memcpy(seq, row->getCore().constData(), coreLen);
         memset(seq + coreLen, '-', maLen - coreLen + 1);
         seq[maLen] = 0;
 
-        char* name = new char[row.getName().length() + 1];
-        memcpy(name, row.getName().toLocal8Bit().constData(), row.getName().length());
-        name[row.getName().length()] = '\0';
+        char* name = new char[row->getName().length() + 1];
+        memcpy(name, row->getName().toLocal8Bit().constData(), row->getName().length());
+        name[row->getName().length()] = '\0';
         
         muscleMSA.AppendSeq(seq, maLen, name);
         ctx->tmp_uIds[i] = ctx->input_uIds[i];
@@ -123,20 +123,20 @@ void convertMAlignment2MSA(MSA& muscleMSA, const MAlignment& ma, bool fixAlpha) 
     }
 }
 
-void convertMAlignment2SecVect(SeqVect& sv, const MAlignment& ma, bool fixAlpha) {
+void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma, bool fixAlpha) {
     sv.Clear();
 
     MuscleContext *ctx = getMuscleContext();
-    ctx->fillUidsVectors(ma.getNumRows());
+    ctx->fillUidsVectors(ma->getNumRows());
 
     unsigned i=0;
     unsigned seq_count = 0;
-    foreach(const MAlignmentRow& row, ma.getRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
         Seq *ptrSeq = new Seq();
-        QByteArray name =  row.getName().toLocal8Bit();
-        ptrSeq->FromString(row.getCore().constData(), name.constData());
+        QByteArray name =  row->getName().toLocal8Bit();
+        ptrSeq->FromString(row->getCore().constData(), name.constData());
         //stripping gaps, original Seq::StripGaps fails on MSVC9
-        Seq::iterator newEnd = std::remove(ptrSeq->begin(), ptrSeq->end(), MAlignment_GapChar);
+        Seq::iterator newEnd = std::remove(ptrSeq->begin(), ptrSeq->end(), U2Msa::GAP_CHAR);
         ptrSeq->erase(newEnd, ptrSeq->end());
         if (ptrSeq->Length()!=0) {
             ctx->tmp_uIds[seq_count] = ctx->input_uIds[i];
@@ -150,10 +150,10 @@ void convertMAlignment2SecVect(SeqVect& sv, const MAlignment& ma, bool fixAlpha)
     }
 }
 
-void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MAlignment& res) {
-    assert(res.isEmpty());
+void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignment& res) {
+    assert(res->isEmpty());
     MuscleContext *ctx = getMuscleContext();
-    res.setAlphabet(al);
+    res->setAlphabet(al);
     ctx->output_uIds.clear();
 
     for(int i=0, n = msa.GetSeqCount(); i < n; i++) {
@@ -165,12 +165,11 @@ void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MAlignment& res) {
             seq.append(c);
         }
         ctx->output_uIds.append(ctx->tmp_uIds[msa.GetSeqId(i)]);
-        U2OpStatus2Log os;
-        res.addRow(name, seq, os);
+        res->addRow(name, seq);
     }
 }
 
-void prepareAlignResults(MSA& msa, const DNAAlphabet* al, MAlignment& ma, bool mhack) {
+void prepareAlignResults(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignment& ma, bool mhack) {
     if (mhack) {
         MHackEnd(msa);
     }

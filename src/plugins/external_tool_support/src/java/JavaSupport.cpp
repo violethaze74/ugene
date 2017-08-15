@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,21 +65,15 @@ void JavaSupport::getAdditionalParameters(const QString& output) {
         architecture = x64;
     }
     additionalInfo.insert(ARCHITECTURE, architecture2string(architecture));
-    coreLog.details(tr("Java architecture: %1").arg(architecture2string(architecture)));
 }
 
 JavaSupport::Architecture JavaSupport::getArchitecture() const {
-    return string2architecture(additionalInfo.value(ARCHITECTURE).toString());
+    return string2architecture(additionalInfo.value(ARCHITECTURE));
 }
 
 void JavaSupport::sl_toolValidationStatusChanged(bool isValid) {
     Q_UNUSED(isValid);
     ScriptingTool::onPathChanged(this, QStringList() << "-jar");
-}
-
-void JavaSupport::setAdditionalInfo(const QVariantMap &newAdditionalInfo) {
-    ExternalTool::setAdditionalInfo(newAdditionalInfo);
-    coreLog.details(tr("Java architecture: %1").arg(architecture2string(getArchitecture())));
 }
 
 QString JavaSupport::architecture2string(Architecture architecture) {

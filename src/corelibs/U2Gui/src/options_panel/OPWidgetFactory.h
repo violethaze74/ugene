@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,11 +24,17 @@
 
 #include <U2Gui/ObjectViewModel.h>
 
-#include <QtGui/QPixmap>
+#include <QPixmap>
 
 namespace U2 {
 
-enum ObjectViewType {ObjViewType_SequenceView, ObjViewType_AlignmentEditor, ObjViewType_AssemblyBrowser, ObjViewType_PhylogeneticTree};
+enum ObjectViewType {
+    ObjViewType_SequenceView,
+    ObjViewType_AlignmentEditor,
+    ObjViewType_AssemblyBrowser,
+    ObjViewType_PhylogeneticTree,
+    ObjViewType_ChromAlignmentEditor
+};
 
 struct U2GUI_EXPORT OPGroupParameters
 {

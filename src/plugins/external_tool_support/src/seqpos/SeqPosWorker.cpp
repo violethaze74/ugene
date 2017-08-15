@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -244,8 +244,8 @@ void SeqPosWorkerFactory::init() {
     QList<Attribute*> attrs;
     {
          Descriptor outDir(OUTPUT_DIR,
-             SeqPosWorker::tr("Output directory"),
-             SeqPosWorker::tr("The directory to store seqpos results."));
+             SeqPosWorker::tr("Output folder"),
+             SeqPosWorker::tr("The folder to store seqpos results."));
          Descriptor genAssembly(GENOME_ASSEMBLY,
              SeqPosWorker::tr("Genome assembly version"),
              SeqPosWorker::tr("UCSC database version (GENOME)."));
@@ -364,7 +364,7 @@ QString SeqPosPrompter::composeRichDoc() {
          res.append(tr(" Uses <u>%1</u> known motifs.").arg(motifDb));
      }
 
-     res.append(tr(" Outputs all result files to <u>%1</u> directory").arg(dir.isEmpty() ? unsetStr : dir));
+     res.append(tr(" Outputs all result files to <u>%1</u> folder").arg(dir.isEmpty() ? unsetStr : dir));
      res.append(".");
 
     return res;

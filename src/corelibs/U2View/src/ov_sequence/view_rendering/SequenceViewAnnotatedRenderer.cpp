@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -79,7 +79,7 @@ const int SequenceViewAnnotatedRenderer::CUT_SITE_HALF_HEIGHT = 2;
 
 const int SequenceViewAnnotatedRenderer::MAX_VIRTUAL_RANGE = 10000;
 
-SequenceViewAnnotatedRenderer::SequenceViewAnnotatedRenderer(ADVSequenceObjectContext* ctx)
+SequenceViewAnnotatedRenderer::SequenceViewAnnotatedRenderer(SequenceObjectContext* ctx)
     : SequenceViewRenderer(ctx) {
 
 }

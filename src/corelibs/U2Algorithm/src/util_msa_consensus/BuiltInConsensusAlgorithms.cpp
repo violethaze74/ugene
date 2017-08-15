@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,9 +23,10 @@
 
 namespace U2 {
 
-const QString BuiltInConsensusAlgorithms::DEFAULT_ALGO("Default");
-const QString BuiltInConsensusAlgorithms::CLUSTAL_ALGO("Clustal");
-const QString BuiltInConsensusAlgorithms::STRICT_ALGO("Strict");
-const QString BuiltInConsensusAlgorithms::LEVITSKY_ALGO("Levitsky");
+const QString BuiltInConsensusAlgorithms::DEFAULT_ALGO = "Default";
+const QString BuiltInConsensusAlgorithms::CLUSTAL_ALGO = "Clustal";
+const QString BuiltInConsensusAlgorithms::STRICT_ALGO = "Strict";
+const QString BuiltInConsensusAlgorithms::LEVITSKY_ALGO = "Levitsky";
+const QString BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO = "Simple extended";
 
-}//namespace
+}   // namespace U2

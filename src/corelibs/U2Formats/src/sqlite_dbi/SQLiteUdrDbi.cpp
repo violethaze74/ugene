@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,8 @@
  */
 
 #include <U2Core/AppContext.h>
+#include <U2Core/RawDataUdrSchema.h>
+#include <U2Core/U2DbiPackUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UdrSchemaRegistry.h>
 
@@ -45,13 +47,35 @@ SQLiteUdrDbi::SQLiteUdrDbi(SQLiteDbi *dbi)
 
 }
 
+void SQLiteUdrDbi::undo(const U2SingleModStep &modStep, U2OpStatus &os) {
+    SAFE_POINT_EXT(modStep.modType == U2ModType::udrUpdated, os.setError("Unknown modStep"), );
+
+    QByteArray oldData;
+    QByteArray newData;
+    bool ok = U2DbiPackUtils::unpackUdr(modStep.details, oldData, newData);
+    CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating UDR")), );
+
+    RawDataUdrSchema::writeContent(oldData, U2EntityRef(getRootDbi()->getDbiRef(), modStep.objectId), os);
+}
+
+void SQLiteUdrDbi::redo(const U2SingleModStep &modStep, U2OpStatus &os) {
+    SAFE_POINT_EXT(modStep.modType == U2ModType::udrUpdated, os.setError("Unknown modStep"), );
+
+    QByteArray oldData;
+    QByteArray newData;
+    bool ok = U2DbiPackUtils::unpackUdr(modStep.details, oldData, newData);
+    CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating UDR")), );
+
+    RawDataUdrSchema::writeContent(newData, U2EntityRef(getRootDbi()->getDbiRef(), modStep.objectId), os);
+}
+
 UdrRecordId SQLiteUdrDbi::addRecord(const UdrSchemaId &schemaId, const QList<UdrValue> &data, U2OpStatus &os) {
     UdrRecordId result("", "");
     const UdrSchema *schema = udrSchema(schemaId, os);
     CHECK_OP(os, result);
     CHECK_EXT(data.size() == schema->size(), os.setError("Size mismatch"), result);
 
-    SQLiteQuery q(insertDef(schema, os), db, os);
+    SQLiteWriteQuery q(insertDef(schema, os), db, os);
     CHECK_OP(os, result);
 
     bindData(data, schema, q, os);
@@ -66,7 +90,7 @@ void SQLiteUdrDbi::updateRecord(const UdrRecordId &recordId, const QList<UdrValu
     CHECK_OP(os, );
     CHECK_EXT(data.size() == schema->size(), os.setError("Size mismatch"), );
 
-    SQLiteQuery q(updateDef(schema, os), db, os);
+    SQLiteWriteQuery q(updateDef(schema, os), db, os);
     CHECK_OP(os, );
 
     bindData(data, schema, q, os);
@@ -82,7 +106,7 @@ UdrRecord SQLiteUdrDbi::getRecord(const UdrRecordId &recordId, U2OpStatus &os) {
     const UdrSchema *schema = udrSchema(recordId.getSchemaId(), os);
     CHECK_OP(os, result);
 
-    SQLiteQuery q(selectDef(schema, os), db, os);
+    SQLiteReadQuery q(selectDef(schema, os), db, os);
     CHECK_OP(os, result);
 
     q.bindDataId(1, recordId.getRecordId());
@@ -111,7 +135,7 @@ QList<U2DataId> SQLiteUdrDbi::getObjectRecordIds(const UdrSchema *schema, const 
     QList<U2DataId> result;
     SAFE_POINT_EXT(schema->hasObjectReference(), os.setError("No object reference"), result);
 
-    SQLiteQuery q("SELECT " + UdrSchema::RECORD_ID_FIELD_NAME + " FROM " + tableName(schema->getId()) + " WHERE " + UdrSchema::OBJECT_FIELD_NAME + " = ?1", db, os);
+    SQLiteReadQuery q("SELECT " + UdrSchema::RECORD_ID_FIELD_NAME + " FROM " + tableName(schema->getId()) + " WHERE " + UdrSchema::OBJECT_FIELD_NAME + " = ?1", db, os);
     q.bindDataId(1, objectId);
 
     while (q.step()) {
@@ -141,7 +165,7 @@ QList<UdrRecord> SQLiteUdrDbi::getRecords(const UdrSchemaId &schemaId, U2OpStatu
     const UdrSchema *schema = udrSchema(schemaId, os);
     CHECK_OP(os, result);
 
-    SQLiteQuery q(selectAllDef(schema, os), db, os);
+    SQLiteReadQuery q(selectAllDef(schema, os), db, os);
     CHECK_OP(os, result);
 
     while (q.step()) {
@@ -156,7 +180,7 @@ QList<UdrRecord> SQLiteUdrDbi::getRecords(const UdrSchemaId &schemaId, U2OpStatu
 }
 
 void SQLiteUdrDbi::removeRecord(const UdrRecordId &recordId, U2OpStatus &os) {
-    SQLiteQuery q("DELETE FROM " + tableName(recordId.getSchemaId()) + " WHERE " + UdrSchema::RECORD_ID_FIELD_NAME + " = ?1", db, os);
+    SQLiteWriteQuery q("DELETE FROM " + tableName(recordId.getSchemaId()) + " WHERE " + UdrSchema::RECORD_ID_FIELD_NAME + " = ?1", db, os);
     q.bindDataId(1, recordId.getRecordId());
     q.execute();
 }
@@ -175,6 +199,10 @@ OutputStream * SQLiteUdrDbi::createOutputStream(const UdrRecordId &recordId, int
     CHECK_OP(os, NULL);
 
     return new SQLiteBlobOutputStream(db, tableName(recordId.getSchemaId()).toLatin1(), field.getName(), recordId.getRecordId(), (int)size, os);
+}
+
+ModificationAction* SQLiteUdrDbi::getModificationAction(const U2DataId& id) {
+    return new SQLiteModificationAction(dbi, id);
 }
 
 /************************************************************************/
@@ -218,7 +246,7 @@ void SQLiteUdrDbi::createTable(const UdrSchema *schema, U2OpStatus &os) {
     CHECK_OP(os, );
     query += ")";
 
-    SQLiteQuery(query, db, os).execute();
+    SQLiteWriteQuery(query, db, os).execute();
 }
 
 void SQLiteUdrDbi::createIndex(const UdrSchemaId &schemaId, const QStringList &fields, U2OpStatus &os) {
@@ -229,7 +257,7 @@ void SQLiteUdrDbi::createIndex(const UdrSchemaId &schemaId, const QStringList &f
         + fields.join(", ")
         + ")";
 
-    SQLiteQuery(query, db, os).execute();
+    SQLiteWriteQuery(query, db, os).execute();
 }
 
 /************************************************************************/

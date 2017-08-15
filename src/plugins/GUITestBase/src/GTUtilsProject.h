@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -63,8 +63,13 @@ public:
      * Verifies that the sequence name is @seqName.
      * Returns the sequence widget.
      */
-    static ADVSingleSequenceWidget * openFileExpectSequence(HI::GUITestOpStatus &os, const QString &path, const QString &fileName,
-        const QString &seqName);
+    static ADVSingleSequenceWidget *openFileExpectSequence(HI::GUITestOpStatus &os,
+                                                            const QString &dirPath,
+                                                            const QString &fileName,
+                                                            const QString &seqName);
+    static ADVSingleSequenceWidget *openFileExpectSequence(HI::GUITestOpStatus &os,
+                                                            const QString &filePath,
+                                                            const QString &seqName);
 
      /**
      * Opens file @path\@fileName and expects a sequence with raw alphabet to be opened.
@@ -72,8 +77,14 @@ public:
      * Verifies that the sequence name is @seqName.
      * Returns the sequence widget.
      */
-    static ADVSingleSequenceWidget * openFileExpectRawSequence(HI::GUITestOpStatus &os, const QString &path, const QString &fileName,
-        const QString &seqName);
+    static ADVSingleSequenceWidget *openFileExpectRawSequence(HI::GUITestOpStatus &os,
+                                                              const QString &dirPath,
+                                                              const QString &fileName,
+                                                              const QString &seqName);
+
+    static ADVSingleSequenceWidget *openFileExpectRawSequence(HI::GUITestOpStatus &os,
+                                                              const QString &filePath,
+                                                              const QString &seqName);
 
     /**
      * Opens file @path\@fileName.

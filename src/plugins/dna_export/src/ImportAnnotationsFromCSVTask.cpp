@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedPointer>
+#include <QScopedPointer>
 
-#include <QtScript/QScriptEngine>
-#include <QtScript/QScriptValueIterator>
+#include <QScriptEngine>
+#include <QScriptValueIterator>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>

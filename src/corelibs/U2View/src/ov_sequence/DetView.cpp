@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,7 @@ namespace U2 {
 /************************************************************************/
 /* DetView */
 /************************************************************************/
-DetView::DetView(QWidget* p, ADVSequenceObjectContext* ctx)
+DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     : GSequenceLineViewAnnotated(p, ctx)
 {
     showComplementAction = new QAction(tr("Show complement strand"), this);

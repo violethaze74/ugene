@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,19 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDebug>
+#include <QDebug>
 
 #include <U2Core/Log.h>
-#include <U2Lang/URLAttribute.h>
-#include <U2Lang/WorkflowUtils.h>
-#include <U2Lang/WorkflowSettings.h>
-#include <U2Lang/IntegralBusType.h>
-#include <U2Lang/Datatype.h>
-#include <U2Lang/BaseTypes.h>
+#include <U2Core/U2SafePoints.h>
 
-#include "WorkflowEditorDelegates.h"
-#include "WorkflowEditor.h"
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/Datatype.h>
+#include <U2Lang/IntegralBusType.h>
+#include <U2Lang/URLAttribute.h>
+#include <U2Lang/WorkflowSettings.h>
+#include <U2Lang/WorkflowUtils.h>
+
 #include "ActorCfgModel.h"
+#include "WorkflowEditor.h"
+#include "WorkflowEditorDelegates.h"
 
 namespace U2 {
 

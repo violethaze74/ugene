@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,14 +22,14 @@
 #ifndef _U2_MSA_GENERAL_TAB_H_
 #define _U2_MSA_GENERAL_TAB_H_
 
-#include "ui_GeneralTabOptionsPanelWidget.h"
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include "../MsaOpSavableTab.h"
+#include "ui_GeneralTabOptionsPanelWidget.h"
 
 namespace U2 {
 
-class MAlignment;
-class MAlignmentModInfo;
+class MaModificationInfo;
 class MSAEditor;
 
 class MSAGeneralTab : public QWidget, public Ui_GeneralTabOptionsPanelWidget {
@@ -44,13 +44,7 @@ signals:
     void si_copyFormatted();
 
 public slots:
-    void sl_alignmentChanged(const MAlignment& al, const MAlignmentModInfo& modInfo);
-    void sl_algorithmChanged(const QString& algoId);
-    void sl_thresholdChanged(int value);
-    void sl_algorithmSelectionChanged(int index);
-    void sl_thresholdSliderChanged(int value);
-    void sl_thresholdSpinBoxChanged(int value);
-    void sl_thresholdResetClicked(bool newState);
+    void sl_alignmentChanged();
     void sl_copyFormatSelectionChanged(int value);
     void sl_copyFormatted();
     void sl_copyFormatStatusChanged(bool enabled);
@@ -59,8 +53,6 @@ private:
     void connectSignals();
     void initializeParameters();
     void updateState();
-    void updateThresholdState(bool enable, int minVal = 0, int maxVal = 0, int value = 0);
-    void initConsensusTypeCombo();
 
     MSAEditor* msa;
     QString curAlphabetId;

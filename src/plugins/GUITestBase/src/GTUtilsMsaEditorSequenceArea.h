@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,79 +22,83 @@
 #ifndef GTUTILSMSAEDITORSEQUENCEAREA_H
 #define GTUTILSMSAEDITORSEQUENCEAREA_H
 
-#include "GTGlobals.h"
-#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include <GTGlobals.h>
+
 #include <U2View/MSAEditorSequenceArea.h>
+
+#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 
 namespace U2 {
 
 class GTUtilsMSAEditorSequenceArea {
 public:
-    static MSAEditorSequenceArea * getSequenceArea(HI::GUITestOpStatus &os);
-    static void callContextMenu(HI::GUITestOpStatus &os, const QPoint &innerCoords = QPoint());  // zero-based position
+    static MSAEditorSequenceArea * getSequenceArea(GUITestOpStatus &os);
+    static void callContextMenu(GUITestOpStatus &os, const QPoint &innerCoords = QPoint());  // zero-based position
 
-    static void checkSelectedRect(HI::GUITestOpStatus &os, const QRect &expectedRect);
-    static void checkSorted(HI::GUITestOpStatus &os, bool sortedState = true);
+    static void checkSelectedRect(GUITestOpStatus &os, const QRect &expectedRect);
+    static void checkSorted(GUITestOpStatus &os, bool sortedState = true);
 
-    static void checkConsensus(HI::GUITestOpStatus &os, QString cons);
+    static void checkConsensus(GUITestOpStatus &os, QString cons);
     // may be used for selecting visible columns only
-    static void selectColumnInConsensus( HI::GUITestOpStatus &os, int columnNumber );
+    static void selectColumnInConsensus( GUITestOpStatus &os, int columnNumber );
 
     // MSAEditorNameList
-    static QStringList getNameList(HI::GUITestOpStatus &os);
-    static QStringList getVisibleNames(HI::GUITestOpStatus &os);
-    static QString getSimilarityValue(HI::GUITestOpStatus &os, int row);
-    static void clickCollapceTriangle(HI::GUITestOpStatus &os, QString seqName);
-    static bool isCollapsed(HI::GUITestOpStatus &os, QString seqName);
-    static bool collapsingMode(HI::GUITestOpStatus &os);
+    static QStringList getNameList(GUITestOpStatus &os);
+    static QStringList getVisibleNames(GUITestOpStatus &os);
+    static QString getSimilarityValue(GUITestOpStatus &os, int row);
+    static void clickCollapseTriangle(GUITestOpStatus &os, QString seqName);
+    static bool isCollapsed(GUITestOpStatus &os, QString seqName);
+    static bool collapsingMode(GUITestOpStatus &os);
 
-    static int getLeftOffset(HI::GUITestOpStatus &os);
-    static int getRightOffset(HI::GUITestOpStatus &os);
+    static int getLeftOffset(GUITestOpStatus &os);
+    static int getRightOffset(GUITestOpStatus &os);
 
-    static int getLength(HI::GUITestOpStatus &os);
-    static int getNumVisibleBases(HI::GUITestOpStatus &os);
+    static int getLength(GUITestOpStatus &os);
+    static int getNumVisibleBases(GUITestOpStatus &os);
 
-    static QRect getSelectedRect(HI::GUITestOpStatus &os);
+    static QRect getSelectedRect(GUITestOpStatus &os);
+    static void dragAndDropSelection(GUITestOpStatus &os, const QPoint &fromMaPosition, const QPoint &toMaPosition);
 
-    static void moveTo(HI::GUITestOpStatus &os, const QPoint &p);
+    static void moveTo(GUITestOpStatus &os, const QPoint &p);
 
     // selects area in MSA coordinats, if some p coordinate less than 0, it becomes max valid coordinate
     // zero-based position
-    static void selectArea(HI::GUITestOpStatus &os, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1));
-    static void cancelSelection(HI::GUITestOpStatus &os);
-    static QPoint convertCoordinates(HI::GUITestOpStatus &os, const QPoint p);
-    static void click(HI::GUITestOpStatus &os, QPoint p = QPoint(0, 0));
+    static void selectArea(GUITestOpStatus &os, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1), GTGlobals::UseMethod method = GTGlobals::UseKey);
+    static void cancelSelection(GUITestOpStatus &os);
+    static QPoint convertCoordinates(GUITestOpStatus &os, const QPoint p);
+    static void click(GUITestOpStatus &os, const QPoint &screenMaPoint = QPoint(0, 0));
 
     // scrolls to the position (in the MSA zero-based coordinates)
-    static void scrollToPosition(HI::GUITestOpStatus &os, const QPoint& position);
-    static void scrollToBottom(HI::GUITestOpStatus &os);
-    static void clickToPosition(HI::GUITestOpStatus &os, const QPoint& position);
+    static void scrollToPosition(GUITestOpStatus &os, const QPoint& position);
+    static void scrollToBottom(GUITestOpStatus &os);
+    static void clickToPosition(GUITestOpStatus &os, const QPoint& globalMaPosition);
 
-    static void selectSequence(HI::GUITestOpStatus &os, const QString &seqName);
-    static bool isSequenceSelected(HI::GUITestOpStatus &os, const QString &seqName);
-    static void removeSequence(HI::GUITestOpStatus &os, const QString &sequenceName);
-    static int getSelectedSequencesNum(HI::GUITestOpStatus &os);
-    static bool isSequenceVisible(HI::GUITestOpStatus &os, const QString &seqName);
-    static QString getSequenceData(HI::GUITestOpStatus &os, const QString &sequenceName);
+    static void selectSequence(GUITestOpStatus &os, const QString &seqName);
+    static bool isSequenceSelected(GUITestOpStatus &os, const QString &seqName);
+    static void removeSequence(GUITestOpStatus &os, const QString &sequenceName);
+    static int getSelectedSequencesNum(GUITestOpStatus &os);
+    static bool isSequenceVisible(GUITestOpStatus &os, const QString &seqName);
+    static QString getSequenceData(GUITestOpStatus &os, const QString &sequenceName);
+    static QString getSequenceData(GUITestOpStatus &os, int rowNumber);
 
-    static bool offsetsVisible(HI::GUITestOpStatus &os);
+    static bool offsetsVisible(GUITestOpStatus &os);
 
-    static bool hasAminoAlphabet(HI::GUITestOpStatus &os);
-    static bool isSequenceHightighted(HI::GUITestOpStatus &os, const QString& seqName);
-    static QString getColor(HI::GUITestOpStatus &os, QPoint p);
-    static bool checkColor(HI::GUITestOpStatus &os, const QPoint& p, const QString& expectedColor);
-    static int getRowHeight(HI::GUITestOpStatus &os);
+    static bool hasAminoAlphabet(GUITestOpStatus &os);
+    static bool isSequenceHightighted(GUITestOpStatus &os, const QString& seqName);
+    static QString getColor(GUITestOpStatus &os, QPoint p);
+    static bool checkColor(GUITestOpStatus &os, const QPoint& p, const QString& expectedColor);
+    static int getRowHeight(GUITestOpStatus &os, int rowNumber);
 
-    static void renameSequence(HI::GUITestOpStatus &os, const QString& seqToRename, const QString& newName);
+    static void renameSequence(GUITestOpStatus &os, const QString& seqToRename, const QString& newName);
+    static void replaceSymbol(GUITestOpStatus &os, const QPoint &maPoint, char newSymbol);
 
-    static void createColorScheme(HI::GUITestOpStatus &os, const QString& schemeName, const NewColorSchemeCreator::alphabet al);
-    static void deleteColorScheme(HI::GUITestOpStatus &os, const QString& schemeName);
+    static void createColorScheme(GUITestOpStatus &os, const QString& schemeName, const NewColorSchemeCreator::alphabet al);
+    static void deleteColorScheme(GUITestOpStatus &os, const QString& schemeName);
 
-    static void checkSelection(HI::GUITestOpStatus &os, const QPoint& start, const QPoint& end, const QString& expected);
+    static void checkSelection(GUITestOpStatus &os, const QPoint& start, const QPoint& end, const QString& expected);
 
     static const QString highlightningColorName;
 };
-
 
 } // namespace
 #endif // GTUTILSMSAEDITORSEQUENCEAREA_H

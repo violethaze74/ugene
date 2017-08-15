@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,35 +18,35 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#include "SamtoolMpileupWorker.h"
 
-#include <U2Lang/IntegralBusModel.h>
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BasePorts.h>
-#include <U2Lang/BaseActorCategories.h>
-#include <U2Lang/BaseAttributes.h>
-#include <U2Lang/WorkflowMonitor.h>
+#include <limits.h>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNASequence.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNATranslation.h>
+#include <U2Core/FailTask.h>
+#include <U2Core/GObjectTypes.h>
+#include <U2Core/GUrlUtils.h>
+#include <U2Core/L10n.h>
+#include <U2Core/Log.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Core/DNASequence.h>
-#include <U2Core/DNATranslation.h>
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/GUrlUtils.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/L10n.h>
-#include <U2Core/Log.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/FailTask.h>
-#include <U2Core/U2OpStatusUtils.h>
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BaseAttributes.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/IntegralBusModel.h>
+#include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowMonitor.h>
 
-//#include <QtGui/QApplication>
-
-#include "limits.h"
+#include "SamtoolMpileupWorker.h"
 
 namespace U2 {
 
@@ -123,7 +123,7 @@ public:
         const IntegralBusPort* vport = static_cast<const IntegralBusPort*>(cfg);
         assert(vport);
 
-        QStrStrMap bm = vport->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<QStrStrMap>();
+        StrStrMap bm = vport->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
         QMapIterator<QString,QString> it(bm);
         while (it.hasNext()){
             it.next();

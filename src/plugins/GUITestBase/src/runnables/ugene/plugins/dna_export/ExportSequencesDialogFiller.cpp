@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -126,7 +126,7 @@ ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFi
     comboBoxItems[Fasta] = "FASTA";
     comboBoxItems[Fastq] = "FASTQ";
     comboBoxItems[Gff] = "GFF";
-    comboBoxItems[Genbank] = "Genbank";
+    comboBoxItems[Genbank] = "GenBank";
 
     mergeRadioButtons[SaveAsSeparate] = "separateButton";
     mergeRadioButtons[Merge] = "mergeButton";

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QCoreApplication>
+#include <QDir>
 
-#include <QtXml/QDomDocument>
+#include <QDomDocument>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
@@ -72,11 +72,11 @@ BlastPlusSupportCommonTask::BlastPlusSupportCommonTask(const BlastTaskSettings& 
 
 void BlastPlusSupportCommonTask::prepare(){
     if(settings.databaseNameAndPath.contains(" ")){
-        stateInfo.setError("Database path have space(s). Try select any other directory without spaces.");
+        stateInfo.setError("Database path have space(s). Try select any other folder without spaces.");
         return;
     }
     //Add new subdir for temporary files
-    //Directory name is ExternalToolName + CurrentDate + CurrentTime
+    //Folder name is ExternalToolName + CurrentDate + CurrentTime
 
     QString tmpDirName = "BlastPlus_"+QString::number(this->getTaskId())+"_"+
                          QDate::currentDate().toString("dd.MM.yyyy")+"_"+
@@ -90,12 +90,12 @@ void BlastPlusSupportCommonTask::prepare(){
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Subdirectory for temporary files exists. Can not remove this directory."));
+            stateInfo.setError(tr("Subfolder for temporary files exists. Can not remove this folder."));
             return;
         }
     }
     if(!tmpDir.mkpath(tmpDirPath)){
-        stateInfo.setError(tr("Can not create directory for temporary files."));
+        stateInfo.setError(tr("Can not create folder for temporary files."));
         return;
     }
     //Create ncbi.ini for windows or .ncbirc for unix like systems
@@ -115,14 +115,14 @@ void BlastPlusSupportCommonTask::prepare(){
     }
     url = tmpDirPath + "tmp.fa";
     if (url.contains(" ")){
-        stateInfo.setError("Temporary directory path have space(s). Try select any other directory without spaces.");
+        stateInfo.setError("Temporary folder path have space(s). Try select any other folder without spaces.");
         return;
     }
     DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
     tmpDoc = df->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(url), stateInfo);
     CHECK_OP(stateInfo,);
 
-    U2EntityRef seqRef = U2SequenceUtils::import(tmpDoc->getDbiRef(), DNASequence(settings.querySequence, settings.alphabet), stateInfo);
+    U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, tmpDoc->getDbiRef(), DNASequence(settings.querySequence, settings.alphabet));
     CHECK_OP(stateInfo,);
     sequenceObject = new U2SequenceObject("input sequence", seqRef);
     tmpDoc->addObject(sequenceObject);
@@ -200,7 +200,7 @@ Task::ReportResult BlastPlusSupportCommonTask::report(){
         tmpDir.remove(file);
     }
     if(!tmpDir.rmdir(tmpDir.absolutePath())){
-        stateInfo.setError(tr("Can not remove directory for temporary files."));
+        stateInfo.setError(tr("Can not remove folder for temporary files."));
         emit si_stateChanged();
     }
     return ReportResult_Finished;

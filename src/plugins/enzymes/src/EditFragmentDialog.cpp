@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,13 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QMessageBox>
-#endif
-#include <QtCore/QDir>
+#include <QMessageBox>
+#include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNATranslation.h>
@@ -50,6 +45,8 @@ EditFragmentDialog::EditFragmentDialog( DNAFragment& fragment, QWidget* p )
 
     setupUi(this);
     new HelpButton(this, buttonBox, "19759673");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     connect(lBluntButton, SIGNAL(toggled(bool)), SLOT(sl_onLeftBluntButtonToogled(bool)));
     connect(rBluntButton, SIGNAL(toggled(bool)), SLOT(sl_onRightBluntButtonToggled(bool)));

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -185,7 +185,7 @@ ReadVariationProto::ReadVariationProto()
     setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::VARIANT_TRACK);
 
     setDisplayName(ReadVariationWorker::tr("Read Variations"));
-    setDocumentation(ReadVariationWorker::tr("Reads variations from files and produces variations tracks."));
+    setDocumentation(ReadVariationWorker::tr("Reads variations from files and produces variations tracks. All variation file formats supported by UGENE are allowed as input to this element."));
     {
         QMap<Descriptor, DataTypePtr> outTypeMap;
         outTypeMap[BaseSlots::VARIATION_TRACK_SLOT()] = BaseTypes::VARIATION_TRACK_TYPE();

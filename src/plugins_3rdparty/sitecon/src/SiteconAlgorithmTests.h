@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 #include "SiteconSearchTask.h"
 #include <U2Test/XMLTestUtils.h>
 #include <U2Core/GObject.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 
 namespace U2 {
@@ -42,7 +42,7 @@ public:
 private:
     QString docName;
     SiteconBuildSettings s;
-    MAlignment ma;
+    MultipleSequenceAlignment ma;
     int expectedACGT[4];
 };
 
@@ -58,7 +58,7 @@ public:
 private:
     QString docName;
     SiteconBuildSettings s;
-    MAlignment ma;
+    MultipleSequenceAlignment ma;
     QVector<PositionStats> result;
     QVector<ResultVector> expectedResults;    
 };
@@ -75,7 +75,7 @@ private:
     QString docName;
     int offset;
     SiteconBuildSettings s;
-    MAlignment ma;
+    MultipleSequenceAlignment ma;
     QVector<float> result;
     QVector<int> expectedResult;    
 };
@@ -92,7 +92,7 @@ private:
     QString docName;
     int offset;
     SiteconBuildSettings s;
-    MAlignment ma;
+    MultipleSequenceAlignment ma;
     QVector<float> result;
     QVector<int> expectedResult;    
 };

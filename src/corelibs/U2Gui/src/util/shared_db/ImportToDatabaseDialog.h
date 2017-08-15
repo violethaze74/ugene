@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,17 +22,13 @@
 #ifndef _U2_IMPORT_TO_DATABASE_DIALOG_H_
 #define _U2_IMPORT_TO_DATABASE_DIALOG_H_
 
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDialog>
-#else
-#include <QtWidgets/QDialog>
-#endif
+#include <QDialog>
+#include <QMap>
 
 #include <U2Core/ImportToDatabaseOptions.h>
 
-class Ui_ImportToDatabaseDialog;
 class QTreeWidgetItem;
+class Ui_ImportToDatabaseDialog;
 
 namespace U2 {
 
@@ -40,6 +36,7 @@ class Document;
 class GObject;
 class ProjectTreeController;
 class Task;
+
 class ImportToDatabaseDialog : public QDialog {
     Q_OBJECT
 

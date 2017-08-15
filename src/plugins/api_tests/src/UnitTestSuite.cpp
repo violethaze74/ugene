@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDomElement>
+#include <QTextStream>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 
@@ -32,7 +35,7 @@
 #include "core/format/sqlite_msa_dbi/MsaDbiSQLiteSpecificUnitTests.h"
 #include "core/gobjects/DNAChromatogramObjectUnitTests.h"
 #include "core/gobjects/FeaturesTableObjectUnitTest.h"
-#include "core/gobjects/MAlignmentObjectUnitTests.h"
+#include "core/gobjects/MsaObjectUnitTests.h"
 #include "core/gobjects/TextObjectUnitTests.h"
 
 namespace U2 {
@@ -98,11 +101,7 @@ void UnitTestSuite::prepare() {
     tests_run();
 }
 void UnitTestSuite::test_run(const QString& testName) {
-#if (QT_VERSION < 0x050000) //Qt 5
-    UnitTest* t = (UnitTest*)QMetaType::construct(QMetaType::type(testName.toStdString().c_str()));
-#else
     UnitTest* t = (UnitTest*)QMetaType::create(QMetaType::type(testName.toStdString().c_str()));
-#endif
     if (t != NULL) {
         t->SetUp();
         t->Test();
@@ -137,7 +136,7 @@ void UnitTestSuite::cleanup() {
     DNAChromatogramObjectTestData::shutdown();
     FeatureTestData::shutdown();
     FeaturesTableObjectTestData::shutdown();
-    MAlignmentObjectTestData::shutdown();
+    MsaObjectTestData::shutdown();
     MsaSQLiteSpecificTestData::shutdown();
     RawDataUdrSchemaTestData::shutdown();
     SequenceTestData::shutdown();

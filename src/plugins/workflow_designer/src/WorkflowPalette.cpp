@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,6 +40,7 @@
 #include <U2Core/Log.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -70,7 +71,7 @@ WorkflowPalette::WorkflowPalette(ActorPrototypeRegistry* reg, QWidget *parent)
     vl->addLayout(nameFilter);
     vl->addWidget(elementsList);
 
-    connect(elementsList, SIGNAL(processSelected(Workflow::ActorPrototype*)), SIGNAL(processSelected(Workflow::ActorPrototype*)));
+    connect(elementsList, SIGNAL(processSelected(Workflow::ActorPrototype*, bool)), SIGNAL(processSelected(Workflow::ActorPrototype*, bool)));
     connect(elementsList, SIGNAL(si_protoDeleted(const QString &)), SIGNAL(si_protoDeleted(const QString &)));
     connect(elementsList, SIGNAL(si_protoChanged()), SIGNAL(si_protoChanged()));
     connect(elementsList, SIGNAL(si_protoListModified()), SIGNAL(si_protoListModified()));
@@ -215,11 +216,7 @@ WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry* reg, QW
     setMouseTracking(true);
     setColumnCount(1);
     header()->hide();
-#if (QT_VERSION < 0x050000) //Qt 5
-    header()->setResizeMode(QHeaderView::Stretch);
-#else
     header()->setSectionResizeMode(QHeaderView::Stretch);
-#endif
 
     //setTextElideMode (Qt::ElideMiddle);
     setContent(reg);
@@ -232,6 +229,8 @@ QMenu * WorkflowPaletteElements::createMenu(const QString &name) {
     createMenu(menu);
     return menu;
 }
+
+#define MENU_ACTION_MARKER  QString("menu-action")
 
 void WorkflowPaletteElements::createMenu(QMenu *menu) {
     menu->clear();
@@ -248,7 +247,11 @@ void WorkflowPaletteElements::createMenu(QMenu *menu) {
         QMapIterator<QString, QAction *> jt(map);
         while(jt.hasNext()) {
             jt.next();
-            grpMenu->addAction(jt.value());
+            QAction* elementAction = jt.value();
+            QAction* menuAction = new QAction(elementAction->icon(), elementAction->text(), elementAction);
+            menuAction->setData(MENU_ACTION_MARKER);
+            connect(menuAction, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
+            grpMenu->addAction(menuAction);
         }
         if(it.key() == BaseActorCategories::CATEGORY_DATASRC().getDisplayName()) {
             dataSource = grpMenu;
@@ -462,14 +465,22 @@ void WorkflowPaletteElements::sl_selectProcess(bool checked) {
     if (currentAction && currentAction != sender()) {
         currentAction->setChecked(false);
     }
-    if (!checked) {
-        currentAction = NULL;
+
+    QAction * senderAction= qobject_cast<QAction*>(sender());
+    bool fromMenu = false;
+    if (senderAction->data() == MENU_ACTION_MARKER) {
+        fromMenu = true;
+        currentAction = qobject_cast<QAction*>(senderAction->parent());
+    } else if (checked) {
+        currentAction = senderAction;
     } else {
-        currentAction = qobject_cast<QAction*>(sender());
-        assert(currentAction);
+        currentAction = NULL;
     }
-    emit processSelected(currentAction ?
-        (currentAction->data().value<Workflow::ActorPrototype*>()) : NULL );
+    if (currentAction) {
+        Workflow::ActorPrototype* actor =  currentAction->data().value<Workflow::ActorPrototype*>();
+        emit processSelected(actor, fromMenu);
+    }
+
 }
 
 void WorkflowPaletteElements::editElement() {

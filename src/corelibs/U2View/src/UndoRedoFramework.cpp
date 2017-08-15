@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,19 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#include "UndoRedoFramework.h"
-#include "ov_msa/MSACollapsibleModel.h"
-
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
+
+#include "UndoRedoFramework.h"
+#include "ov_msa/MSACollapsibleModel.h"
 
 namespace U2 {
 
-MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MAlignmentObject *_maObj)
+MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject *_maObj)
 : QObject(p),
   maObj(_maObj),
   undoStepsAvailable(0),
@@ -43,17 +44,17 @@ MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MAlignmentObject *_maObj)
     undoAction->setText("Undo");
     undoAction->setIcon(QIcon(":core/images/undo.png"));
     undoAction->setShortcut(QKeySequence::Undo);
-    undoAction->setToolTip(QString("%1 (%2)").arg(undoAction->text()).arg(undoAction->shortcut().toString()));
+    GUIUtils::updateActionToolTip(undoAction);
 
     redoAction = new QAction(this);
     redoAction->setText("Redo");
     redoAction->setIcon(QIcon(":core/images/redo.png"));
     redoAction->setShortcut(QKeySequence::Redo);
-    redoAction->setToolTip(QString("%1 (%2)").arg(redoAction->text()).arg(redoAction->shortcut().toString()));
+    GUIUtils::updateActionToolTip(redoAction);
 
     checkUndoRedoEnabled();
 
-    connect(maObj, SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)),
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
                    SLOT(sl_alignmentChanged()));
     connect(maObj, SIGNAL(si_completeStateChanged(bool)), SLOT(sl_completeStateChanged(bool)));
     connect(maObj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
@@ -117,9 +118,9 @@ void MsaUndoRedoFramework::sl_undo() {
     objDbi->undo(msaRef.entityId, os);
     SAFE_POINT_OP(os, );
 
-    MAlignmentModInfo modInfo;
-    modInfo.type = MAlignmentModType_Undo;
-    maObj->updateCachedMAlignment(modInfo);
+    MaModificationInfo modInfo;
+    modInfo.type = MaModificationType_Undo;
+    maObj->updateCachedMultipleAlignment(modInfo);
 }
 
 void MsaUndoRedoFramework::sl_redo() {
@@ -140,9 +141,9 @@ void MsaUndoRedoFramework::sl_redo() {
     objDbi->redo(msaRef.entityId, os);
     SAFE_POINT_OP(os, );
 
-    MAlignmentModInfo modInfo;
-    modInfo.type = MAlignmentModType_Redo;
-    maObj->updateCachedMAlignment(modInfo);
+    MaModificationInfo modInfo;
+    modInfo.type = MaModificationType_Redo;
+    maObj->updateCachedMultipleAlignment(modInfo);
 }
 
 

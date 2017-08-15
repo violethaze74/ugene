@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,19 +39,11 @@
 
 #include <U2Core/DocumentModel.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QComboBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QRadioButton>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QRadioButton>
-#include <QtWidgets/QDialogButtonBox>
-#endif
+#include <QApplication>
+#include <QComboBox>
+#include <QPushButton>
+#include <QRadioButton>
+#include <QDialogButtonBox>
 
 namespace U2 {
 

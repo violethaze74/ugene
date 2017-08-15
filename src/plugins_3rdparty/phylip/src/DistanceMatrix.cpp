@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 #include "U2Core/global.h"
 #include <U2Core/DNAAlphabet.h>
 
-#include <QtCore/QSharedData>
+#include <QSharedData>
 
 #include "dnadist.h"
 #include "protdist.h"
@@ -33,16 +33,16 @@
 
 namespace U2{
 
-void DistanceMatrix::calculateOutOfAlignment( const MAlignment& ma, const CreatePhyTreeSettings& settings ) {
+void DistanceMatrix::calculateOutOfAlignment( const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings ) {
     try {
         malignment = &ma;
         int index = 0;
-        int size = ma.getNumRows();
+        int size = ma->getNumRows();
         this->size = size;
         printdata = false;
 
-        foreach(const MAlignmentRow& r, ma.getRows()) {
-            const QString& str = r.getName();
+        foreach(const MultipleSequenceAlignmentRow& r, ma->getMsaRows()) {
+            const QString& str = r->getName();
             index_map.insert(str, index);
             index++;
             unprocessed_taxa.append(str);
@@ -61,11 +61,11 @@ void DistanceMatrix::calculateOutOfAlignment( const MAlignment& ma, const Create
 
             rawMatrix.append(row);
         }
-        spp = ma.getNumRows();
-        sites = ma.getLength();
+        spp = ma->getNumRows();
+        sites = ma->getLength();
         chars = sites;
         nonodes = 2*sites - 1;
-        DNAAlphabetType alphabetType = ma.getAlphabet()->getType();
+        DNAAlphabetType alphabetType = ma->getAlphabet()->getType();
 
         ibmpc = IBMCRT;
         ansi = ANSICRT;
@@ -86,8 +86,7 @@ void DistanceMatrix::calculateOutOfAlignment( const MAlignment& ma, const Create
 
             for (int k=0; k<spp; k++){
                 for(int j=0; j<sites; j++) {
-                    const MAlignmentRow& rowK = ma.getRow(k);
-                    y[k][j] = rowK.charAt(j);
+                    y[k][j] = ma->getMsaRow(k)->charAt(j);
                 }
             }
             makeweights();
@@ -132,8 +131,7 @@ void DistanceMatrix::calculateOutOfAlignment( const MAlignment& ma, const Create
 
             for (int k=0; k<spp; k++){
                 for(int j=0; j<sites; j++){
-                    const MAlignmentRow& rowK = ma.getRow(k);
-                    charstate = rowK.charAt(j);
+                    charstate = ma->getMsaRow(k)->charAt(j);
                     switch (charstate) {
                         case 'A':
                             aa = ala;
@@ -256,7 +254,7 @@ void DistanceMatrix::calculateOutOfAlignment( const MAlignment& ma, const Create
             }
         }
     } catch(const std::bad_alloc &) {
-        errorMessage = QString("Not enough memory to calculate distance matrix for alignment \"%1\"").arg(ma.getName());
+        errorMessage = QString("Not enough memory to calculate distance matrix for alignment \"%1\"").arg(ma->getName());
         if(NULL != gnode) {
             for (int i = 0; i < spp; i++) {
                 free(gnode[i]);

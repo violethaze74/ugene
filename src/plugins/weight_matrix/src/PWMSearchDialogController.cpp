@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,16 +38,17 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/CreateAnnotationDialog.h>
 #include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
@@ -431,7 +432,7 @@ void PWMSearchDialogController::sl_onClearQueue() {
 
 void PWMSearchDialogController::sl_onLoadFolder() {
     LastUsedDirHelper lod(WeightMatrixIO::WEIGHT_MATRIX_ID);
-    lod.dir = U2FileDialog::getExistingDirectory(this, tr("Select directory with frequency or weight matrices"), lod);
+    lod.dir = U2FileDialog::getExistingDirectory(this, tr("Select folder with frequency or weight matrices"), lod);
     if (lod.dir.isEmpty()) {
         return;
     }

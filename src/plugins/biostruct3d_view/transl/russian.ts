@@ -68,26 +68,26 @@
         <translation>Шаростержневая модель</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DColorScheme.cpp" line="80"/>
-        <location filename="../src/deprecated/BioStruct3DColorScheme.cpp" line="80"/>
+        <location filename="../src/BioStruct3DColorScheme.cpp" line="79"/>
+        <location filename="../src/deprecated/BioStruct3DColorScheme.cpp" line="79"/>
         <source>Molecular Chains</source>
         <translation>Молекулярные цепи</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DColorScheme.cpp" line="81"/>
-        <location filename="../src/deprecated/BioStruct3DColorScheme.cpp" line="81"/>
+        <location filename="../src/BioStruct3DColorScheme.cpp" line="80"/>
+        <location filename="../src/deprecated/BioStruct3DColorScheme.cpp" line="80"/>
         <source>Chemical Elements</source>
         <translation>Химические элементы</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DColorScheme.cpp" line="82"/>
-        <location filename="../src/deprecated/BioStruct3DColorScheme.cpp" line="82"/>
+        <location filename="../src/BioStruct3DColorScheme.cpp" line="81"/>
+        <location filename="../src/deprecated/BioStruct3DColorScheme.cpp" line="81"/>
         <source>Secondary Structure</source>
         <translation>Вторичная структура</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DColorScheme.cpp" line="83"/>
-        <location filename="../src/deprecated/BioStruct3DColorScheme.cpp" line="83"/>
+        <location filename="../src/BioStruct3DColorScheme.cpp" line="82"/>
+        <location filename="../src/deprecated/BioStruct3DColorScheme.cpp" line="82"/>
         <source>Simple colors</source>
         <translation>Простые цвета</translation>
     </message>
@@ -200,91 +200,91 @@
     <name>U2::BioStruct3DGLWidget</name>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="765"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="777"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="770"/>
         <source>Spin</source>
         <translation>Вращение</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="754"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="766"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="759"/>
         <source>Off</source>
         <translation>Нет</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="761"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="773"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="766"/>
         <source>Models..</source>
         <translation>Модели..</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="784"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="796"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="789"/>
         <source>Align With...</source>
         <translation>Выровнять с...</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="805"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="817"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="810"/>
         <source>Molecular Surface Render Style</source>
         <translation>Стиль отрисовки поверхности</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="809"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="821"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="814"/>
         <source>Molecular Surface</source>
         <translation>Молекулярная поверхность</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="582"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="594"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="587"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="582"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="594"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="587"/>
         <source>Unable to open file %1 for writing</source>
         <translation>Невозможно открыть файл %1 для записи</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="769"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="781"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="774"/>
         <source>Settings...</source>
         <translation>Настройки...</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="772"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="784"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="777"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="775"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="787"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="780"/>
         <source>Export Image...</source>
         <translation>Экспортировать изображение...</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="788"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="800"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="793"/>
         <source>Reset</source>
         <translation>Сбросить</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="795"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="807"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="800"/>
         <source>Render Style</source>
         <translation>Стиль отрисовки</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="800"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="812"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="805"/>
         <source>Coloring Scheme</source>
         <translation>Цветовая схема</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="834"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="846"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="839"/>
         <source>Structural Alignment</source>
         <translation>Структурное выравнивание</translation>
     </message>
@@ -354,8 +354,8 @@
 <context>
     <name>U2::BioStruct3DViewContext</name>
     <message>
-        <location filename="../src/BioStruct3DViewPlugin.cpp" line="194"/>
-        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="194"/>
+        <location filename="../src/BioStruct3DViewPlugin.cpp" line="189"/>
+        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="189"/>
         <source>Close 3D Structure Viewer</source>
         <translation>Закрыть визуализатор 3D структур</translation>
     </message>
@@ -363,8 +363,8 @@
 <context>
     <name>U2::BioStruct3DViewPlugin</name>
     <message>
-        <location filename="../src/BioStruct3DViewPlugin.cpp" line="92"/>
-        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="92"/>
+        <location filename="../src/BioStruct3DViewPlugin.cpp" line="87"/>
+        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="87"/>
         <source>Unfortunately, your system does not have OpenGL Support.
 The 3D Structure Viewer is not available.
 You may try to upgrade your system by updating the video card driver.</source>
@@ -373,14 +373,14 @@ The 3D Structure Viewer is not available.
 You may try to upgrade your system by updating the video card driver.</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DViewPlugin.cpp" line="98"/>
-        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="98"/>
+        <location filename="../src/BioStruct3DViewPlugin.cpp" line="93"/>
+        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="93"/>
         <source>3D Structure Viewer</source>
         <translation>Визуализатор 3D структур</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DViewPlugin.cpp" line="98"/>
-        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="98"/>
+        <location filename="../src/BioStruct3DViewPlugin.cpp" line="93"/>
+        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="93"/>
         <source>Visualizes 3D structures of biological molecules.</source>
         <translation>Визуализирует 3D структуры биологических молекул.</translation>
     </message>
@@ -388,38 +388,38 @@ You may try to upgrade your system by updating the video card driver.</translati
 <context>
     <name>U2::SelectModelsDialog</name>
     <message>
-        <location filename="../src/SelectModelsDialog.cpp" line="40"/>
-        <location filename="../src/deprecated/SelectModelsDialog.cpp" line="40"/>
+        <location filename="../src/SelectModelsDialog.cpp" line="36"/>
+        <location filename="../src/deprecated/SelectModelsDialog.cpp" line="36"/>
         <source>All</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.cpp" line="41"/>
-        <location filename="../src/deprecated/SelectModelsDialog.cpp" line="41"/>
+        <location filename="../src/SelectModelsDialog.cpp" line="37"/>
+        <location filename="../src/deprecated/SelectModelsDialog.cpp" line="37"/>
         <source>Invert</source>
         <translation>Инвертировать</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.cpp" line="42"/>
-        <location filename="../src/deprecated/SelectModelsDialog.cpp" line="42"/>
+        <location filename="../src/SelectModelsDialog.cpp" line="38"/>
+        <location filename="../src/deprecated/SelectModelsDialog.cpp" line="38"/>
         <source>OK</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.cpp" line="43"/>
-        <location filename="../src/deprecated/SelectModelsDialog.cpp" line="43"/>
+        <location filename="../src/SelectModelsDialog.cpp" line="39"/>
+        <location filename="../src/deprecated/SelectModelsDialog.cpp" line="39"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.cpp" line="94"/>
-        <location filename="../src/deprecated/SelectModelsDialog.cpp" line="94"/>
+        <location filename="../src/SelectModelsDialog.cpp" line="90"/>
+        <location filename="../src/deprecated/SelectModelsDialog.cpp" line="90"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/SelectModelsDialog.cpp" line="94"/>
-        <location filename="../src/deprecated/SelectModelsDialog.cpp" line="94"/>
+        <location filename="../src/SelectModelsDialog.cpp" line="90"/>
+        <location filename="../src/deprecated/SelectModelsDialog.cpp" line="90"/>
         <source>At least one model shoud be selected.</source>
         <translation>Выберите как минимум одну модель.</translation>
     </message>

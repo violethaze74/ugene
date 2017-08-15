@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 #include <U2Algorithm/AlignSequencesToAlignmentTaskSettings.h>
 #include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/LoadDocumentTask.h>
 #include "MafftAddToAlignmentTask.h"
 #include "MAFFTSupportTask.h"
@@ -50,7 +50,7 @@ private:
 
     AlignSequencesToAlignmentTaskSettings settings;
 
-    MAlignment                  inputMsa;
+    MultipleSequenceAlignment                  inputMsa;
 
     QSharedPointer<Document>    tmpDoc;
     QString                     url;

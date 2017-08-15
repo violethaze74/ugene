@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
  */
 
 #include <QColor>
+#include <QVariantMap>
 
 #include "MsaHighlightingScheme.h"
 #include "MsaHighlightingSchemeAgreements.h"
@@ -32,18 +33,18 @@
 
 namespace U2 {
 
-const QString MsaHighlightingScheme::EMPTY             = "HIGHLIGHT_SCHEME_EMPTY";
-const QString MsaHighlightingScheme::AGREEMENTS        = "HIGHLIGHT_SCHEME_AGREEMENTS";
-const QString MsaHighlightingScheme::DISAGREEMENTS     = "HIGHLIGHT_SCHEME_DISAGREEMENTS";
-const QString MsaHighlightingScheme::TRANSITIONS       = "HIGHLIGHT_SCHEME_TRANSITIONS";
-const QString MsaHighlightingScheme::TRANSVERSIONS     = "HIGHLIGHT_SCHEME_TRANSVERSIONS";
-const QString MsaHighlightingScheme::GAPS              = "HIGHLIGHT_SCHEME_GAPS";
-const QString MsaHighlightingScheme::CONSERVATION      = "CONSERVATION_SCHEME_GAPS";
+const QString MsaHighlightingScheme::EMPTY          = "HIGHLIGHT_SCHEME_EMPTY";
+const QString MsaHighlightingScheme::AGREEMENTS     = "HIGHLIGHT_SCHEME_AGREEMENTS";
+const QString MsaHighlightingScheme::DISAGREEMENTS  = "HIGHLIGHT_SCHEME_DISAGREEMENTS";
+const QString MsaHighlightingScheme::TRANSITIONS    = "HIGHLIGHT_SCHEME_TRANSITIONS";
+const QString MsaHighlightingScheme::TRANSVERSIONS  = "HIGHLIGHT_SCHEME_TRANSVERSIONS";
+const QString MsaHighlightingScheme::GAPS           = "HIGHLIGHT_SCHEME_GAPS";
+const QString MsaHighlightingScheme::CONSERVATION   = "CONSERVATION_SCHEME_GAPS";
 
 const QString MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME           = "threshold";
 const QString MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME = "less_than_threshold";
 
-MsaHighlightingScheme::MsaHighlightingScheme(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj)
+MsaHighlightingScheme::MsaHighlightingScheme(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : QObject(parent),
       factory(factory),
       maObj(maObj),
@@ -78,36 +79,21 @@ QVariantMap MsaHighlightingScheme::getSettings() const {
     return QVariantMap();
 }
 
-MsaHighlightingSchemeFactory::MsaHighlightingSchemeFactory(QObject *parent,
-                                                           const QString &id,
-                                                           const QString &name,
-                                                           const DNAAlphabetTypes &alphabetTypes,
-                                                           bool refFree,
-                                                           bool needThreshold)
+MsaHighlightingSchemeFactory::MsaHighlightingSchemeFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets, bool refFree, bool needThreshold)
     : QObject(parent),
       id(id),
       name(name),
-      alphabetTypes(alphabetTypes),
       refFree(refFree),
-      needThreshold(needThreshold)
-{
-
+      needThreshold(needThreshold),
+      supportedAlphabets(supportedAlphabets) {
 }
 
 const QString & MsaHighlightingSchemeFactory::getId() const {
     return id;
 }
 
-const QString & MsaHighlightingSchemeFactory::getName() const {
+const QString& MsaHighlightingSchemeFactory::getName() const {
     return name;
-}
-
-bool MsaHighlightingSchemeFactory::isAlphabetTypeSupported(DNAAlphabetType alphabetType) const {
-    return alphabetTypes.testFlag(alphabetType);
-}
-
-const DNAAlphabetTypes &MsaHighlightingSchemeFactory::getAlphabetTypes() const {
-    return alphabetTypes;
 }
 
 bool MsaHighlightingSchemeFactory::isRefFree() const {
@@ -118,21 +104,30 @@ bool MsaHighlightingSchemeFactory::isNeedThreshold() const {
     return needThreshold;
 }
 
-MsaHighlightingSchemeRegistry::MsaHighlightingSchemeRegistry(){
-    schemes.append(new MsaHighlightingSchemeNoColorsFactory(this, MsaHighlightingScheme::EMPTY, tr("No highlighting"), DNAAlphabet_RAW | DNAAlphabet_NUCL | DNAAlphabet_AMINO));
-    schemes.append(new MsaHighlightingSchemeAgreementsFactory(this, MsaHighlightingScheme::AGREEMENTS, tr("Agreements"), DNAAlphabet_RAW | DNAAlphabet_NUCL | DNAAlphabet_AMINO));
-    schemes.append(new MsaHighlightingSchemeDisagreementsFactory(this, MsaHighlightingScheme::DISAGREEMENTS, tr("Disagreements"), DNAAlphabet_RAW | DNAAlphabet_NUCL | DNAAlphabet_AMINO));
-    schemes.append(new MsaHighlightingSchemeGapsFactory(this, MsaHighlightingScheme::GAPS, tr("Gaps"), DNAAlphabet_RAW | DNAAlphabet_NUCL | DNAAlphabet_AMINO));
-    schemes.append(new MsaHighlightingSchemeConservationFactory(this, MsaHighlightingScheme::CONSERVATION, tr("Conservation level"), DNAAlphabet_RAW | DNAAlphabet_NUCL | DNAAlphabet_AMINO));
-    schemes.append(new MsaHighlightingSchemeTransitionsFactory(this, MsaHighlightingScheme::TRANSITIONS, tr("Transitions"), DNAAlphabet_RAW | DNAAlphabet_NUCL));
-    schemes.append(new MsaHighlightingSchemeTransversionsFactory(this, MsaHighlightingScheme::TRANSVERSIONS, tr("Transversions"), DNAAlphabet_RAW | DNAAlphabet_NUCL));
+bool MsaHighlightingSchemeFactory::isAlphabetTypeSupported(DNAAlphabetType alphabetType) const {
+    return supportedAlphabets.testFlag(alphabetType);
+}
+
+const AlphabetFlags& MsaHighlightingSchemeFactory::getSupportedAlphabets() const
+{
+    return supportedAlphabets;
+}
+
+MsaHighlightingSchemeRegistry::MsaHighlightingSchemeRegistry() {
+    schemes.append(new MsaHighlightingSchemeNoColorsFactory(this, MsaHighlightingScheme::EMPTY, tr("No highlighting"), DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeAgreementsFactory(this, MsaHighlightingScheme::AGREEMENTS, tr("Agreements"), DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeDisagreementsFactory(this, MsaHighlightingScheme::DISAGREEMENTS, tr("Disagreements"), DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeGapsFactory(this, MsaHighlightingScheme::GAPS, tr("Gaps"), DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeConservationFactory(this, MsaHighlightingScheme::CONSERVATION, tr("Conservation level"), DNAAlphabet_NUCL | DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeTransitionsFactory(this, MsaHighlightingScheme::TRANSITIONS, tr("Transitions"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
+    schemes.append(new MsaHighlightingSchemeTransversionsFactory(this, MsaHighlightingScheme::TRANSVERSIONS, tr("Transversions"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
 }
 
 MsaHighlightingSchemeRegistry::~MsaHighlightingSchemeRegistry() {
     qDeleteAll(schemes);
 }
 
-MsaHighlightingSchemeFactory *MsaHighlightingSchemeRegistry::getSchemeFactoryById(const QString& id) const {
+MsaHighlightingSchemeFactory * MsaHighlightingSchemeRegistry::getSchemeFactoryById(const QString& id) const {
     foreach (MsaHighlightingSchemeFactory *factory, schemes) {
         if (factory->getId() == id) {
             return factory;
@@ -141,24 +136,24 @@ MsaHighlightingSchemeFactory *MsaHighlightingSchemeRegistry::getSchemeFactoryByI
     return NULL;
 }
 
-MsaHighlightingSchemeFactory *MsaHighlightingSchemeRegistry::getEmptySchemeFactory() const {
+MsaHighlightingSchemeFactory * MsaHighlightingSchemeRegistry::getEmptySchemeFactory() const {
     return getSchemeFactoryById(MsaHighlightingScheme::EMPTY);
 }
 
-QList<MsaHighlightingSchemeFactory *> MsaHighlightingSchemeRegistry::getSchemes(DNAAlphabetType alphabetType) const {
-    QList<MsaHighlightingSchemeFactory *> acceptableSchemes;
+QList<MsaHighlightingSchemeFactory *> MsaHighlightingSchemeRegistry::getAllSchemes(DNAAlphabetType alphabetType) const {
+    QList<MsaHighlightingSchemeFactory *> res;
     foreach(MsaHighlightingSchemeFactory *factory, schemes) {
         if (factory->isAlphabetTypeSupported(alphabetType)) {
-            acceptableSchemes << factory;
+            res.append(factory);
         }
     }
-    return acceptableSchemes;
+    return res;
 }
 
-QMap<DNAAlphabetTypes, QList<MsaHighlightingSchemeFactory *> > MsaHighlightingSchemeRegistry::getSchemesGrouped() const {
-    QMap<DNAAlphabetTypes, QList<MsaHighlightingSchemeFactory *> > result;
+QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > MsaHighlightingSchemeRegistry::getAllSchemesGrouped() const {
+    QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > result;
     foreach(MsaHighlightingSchemeFactory *factory, schemes) {
-        result[factory->getAlphabetTypes()] << factory;
+        result[factory->getSupportedAlphabets()].append(factory);
     }
     return result;
 }

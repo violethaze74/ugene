@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,23 +32,13 @@
 
 #include <U2Core/Log.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QListWidget>
-#include <QtGui/QToolButton>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QComboBox>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QAbstractButton>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QListWidget>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QTreeWidget>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QAbstractButton>
-#endif
+#include <QApplication>
+#include <QListWidget>
+#include <QToolButton>
+#include <QTreeWidget>
+#include <QComboBox>
+#include <QDialogButtonBox>
+#include <QAbstractButton>
 
 #include <QTextBrowser>
 
@@ -62,7 +52,7 @@ QMap<AppSettingsDialogFiller::Tabs, QString> AppSettingsDialogFiller::initMap(){
         result.insert(Resourses, "  Resources");
         result.insert(Network, "  Network");
         result.insert(FileFormat, "  File Format");
-        result.insert(Directories, "  Directories");
+        result.insert(Directories, "  Folders");
         result.insert(Logging, "  Logging");
         result.insert(AlignmentColorScheme, "  Alignment Color Scheme");
         result.insert(GenomeAligner, "  Genome Aligner");

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,6 +67,9 @@ public:
     const DNAAlphabet* getAlphabet() const;
 
     void replaceRegion(const U2Region& region, const DNASequence& seq, U2OpStatus& os);
+    void replaceRegion(const U2DataId &masterId, const U2Region &region, const DNASequence &seq, U2OpStatus &os);
+
+    void removeRegion(U2OpStatus &os, const U2Region &region);
 
     GObject* clone(const U2DbiRef& ref, U2OpStatus& os, const QVariantMap &hints = QVariantMap()) const;
 
@@ -95,6 +98,8 @@ public:
     QByteArray getByteArrayAttribute(const QString& seqAttr) const;
 
     void setByteArrayAttribute(const QByteArray& newByteArrayAttributeValue, const QString& type);
+
+    void forceCachedSequenceUpdate();
 
     static bool lessThan( const U2SequenceObject *one, const U2SequenceObject *two){return one->name < two->name;}
 

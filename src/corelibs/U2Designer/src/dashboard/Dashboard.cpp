@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
+#include <QDir>
 #include <QFile>
 #include <QMessageBox>
 #include <QWebChannel>
@@ -238,7 +239,7 @@ void Dashboard::sl_serialize() {
     if (!d.exists(reportDir)) {
         bool created = d.mkpath(reportDir);
         if (!created) {
-            coreLog.error(tr("Can not create a directory: ") + reportDir);
+            coreLog.error(tr("Can not create a folder: ") + reportDir);
             return;
         }
     }
@@ -649,7 +650,7 @@ DashboardWidget::DashboardWidget(const QString &container, Dashboard *parent)
 /* LoadDashboardsTask */
 /************************************************************************/
 ScanDashboardsDirTask::ScanDashboardsDirTask()
-: Task(tr("Scan dashboards directory"), TaskFlag_None)
+: Task(tr("Scan dashboards folder"), TaskFlag_None)
 {
 
 }

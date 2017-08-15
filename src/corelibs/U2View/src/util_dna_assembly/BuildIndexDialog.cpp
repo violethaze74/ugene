@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -123,8 +123,7 @@ void BuildIndexDialog::updateState() {
 }
 
 void BuildIndexDialog::addGuiExtension() {
-    int insertPos = verticalLayout->count() - 2;
-
+    
     // cleanup previous extension
     if (customGUI != NULL) {
         layout()->removeWidget(customGUI);
@@ -142,6 +141,7 @@ void BuildIndexDialog::addGuiExtension() {
     DnaAssemblyGUIExtensionsFactory* gui = env->getGUIExtFactory();
     if (gui!=NULL && gui->hasBuildIndexWidget()) {
         customGUI = gui->createBuildIndexWidget(this);
+        int insertPos = verticalLayout->count() - 1;
         verticalLayout->insertWidget(insertPos, customGUI);
         if (!refSeqEdit->text().isEmpty()) {
             buildIndexUrl(refSeqEdit->text());

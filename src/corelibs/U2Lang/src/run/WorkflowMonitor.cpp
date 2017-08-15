@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/HRSchemaSerializer.h>
@@ -94,6 +96,10 @@ const QMap<QString, Monitor::WorkerLogInfo> & WorkflowMonitor::getWorkersLog() c
     return workersLog;
 }
 
+const QMap<QString, StrStrMap> &WorkflowMonitor::getWorkersReports() const {
+    return workersReports;
+}
+
 QString WorkflowMonitor::actorName(const QString &id) const {
     SAFE_POINT(procMap.contains(id), QString("Unknown actor id %1").arg(id), "");
     QPointer<Actor> actor = procMap[id];
@@ -109,6 +115,10 @@ void WorkflowMonitor::addOutputFile(const QString &url, const QString &producer,
 
     outputFiles << info;
     emit si_newOutputFile(info);
+}
+
+void WorkflowMonitor::addInfo(const QString &message, const QString &actor, const QString &type) {
+    addProblem(Problem(message, actor, type));
 }
 
 void WorkflowMonitor::addError(const QString &message, const QString &actor, const QString &type) {
@@ -170,6 +180,7 @@ bool WorkflowMonitor::isExternalToolScheme() const {
 void WorkflowMonitor::registerTask(Task *task, const QString &actor) {
     SAFE_POINT(procMap.contains(actor), "Unknown actor id", );
     taskMap[task] = procMap[actor];
+    connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_workerTaskFinished(Task *)));
 }
 
 void WorkflowMonitor::setOutputDir(const QString &dir) {
@@ -201,15 +212,24 @@ void WorkflowMonitor::sl_taskStateChanged() {
         } else if (task->hasError()) {
             state = FAILED;
         } else if (!problems.isEmpty()) {
-            if (!hasErrors()) {
+            if (hasErrors()) {
+                state = FAILED;
+            } else if (hasWarnings()) {
                 state = FINISHED_WITH_PROBLEMS;
             } else {
-                state = FAILED;
+                state = SUCCESS;
             }
         }
         emit si_taskStateChanged(state);
         emit si_report();
     }
+}
+
+void WorkflowMonitor::sl_workerTaskFinished(Task *workerTask) {
+    Actor *actor = taskMap.value(workerTask, NULL);
+    SAFE_POINT(NULL != actor, QString("An unknown task finished: %1").arg(workerTask->getTaskName()), );
+    CHECK(workerTask->isReportingEnabled(), );
+    workersReports[actor->getId()].insert(workerTask->getTaskName(), workerTask->generateReport());
 }
 
 void WorkflowMonitor::setWorkerInfo(const QString &actorId, const WorkerInfo &info) {
@@ -250,6 +270,13 @@ void WorkflowMonitor::addProblem(const Problem &problem) {
         }
     }
     emit si_newProblem(problem, count);
+}
+
+bool WorkflowMonitor::hasWarnings() const {
+    foreach (Problem problem, problems) {
+        CHECK(problem.type != Problem::U2_WARNING, true);
+    }
+    return false;
 }
 
 bool WorkflowMonitor::hasErrors() const {

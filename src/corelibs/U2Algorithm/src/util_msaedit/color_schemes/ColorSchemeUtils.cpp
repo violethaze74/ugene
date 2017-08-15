@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -82,7 +82,7 @@ bool ColorSchemeUtils::getSchemaColors(ColorSchemeData &customScheme) {
     QString dirPath = getColorsDir();
     QDir dir(dirPath);
     if (!dir.exists()) {
-        coreLog.info(QString("%1: no such directory").arg(dirPath));
+        coreLog.info(QString("%1: no such folder").arg(dirPath));
         return false;
     }
 

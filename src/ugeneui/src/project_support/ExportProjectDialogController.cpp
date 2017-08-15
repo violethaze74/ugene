@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,14 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#include <QtGui/QPushButton>
-#else
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QPushButton>
-#endif
+#include <QMessageBox>
+#include <QPushButton>
 
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/ProjectModel.h>
@@ -56,6 +50,7 @@ ExportProjectDialogController::ExportProjectDialogController(QWidget *p, const Q
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759389");
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     setModal(true);
     projectFile = fixProjectFile(defaultProjectFileName);
@@ -88,7 +83,7 @@ void ExportProjectDialogController::accept(){
 
 void ExportProjectDialogController::sl_onBrowseButton(){
 	LastUsedDirHelper h;
-	QString folder = U2FileDialog::getExistingDirectory(this, tr("Choose Directory"), h.dir);
+	QString folder = U2FileDialog::getExistingDirectory(this, tr("Choose Folder"), h.dir);
     if (folder.isEmpty()) {
         return;
     }

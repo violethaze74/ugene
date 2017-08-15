@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -78,23 +78,23 @@ void SingleTableAssemblyAdapter::createReadsTables(U2OpStatus& os) {
     static QString q = "CREATE TABLE IF NOT EXISTS %1 (id INTEGER PRIMARY KEY AUTOINCREMENT, name INTEGER NOT NULL, prow INTEGER NOT NULL, "
         "gstart INTEGER NOT NULL, elen INTEGER NOT NULL, flags INTEGER NOT NULL, mq INTEGER NOT NULL, data BLOB NOT NULL)";
 
-    SQLiteQuery(q.arg(readsTable), db, os).execute();
+    SQLiteWriteQuery(q.arg(readsTable), db, os).execute();
 }
 
 void SingleTableAssemblyAdapter::createReadsIndexes(U2OpStatus& os) {
     static QString q1 = "CREATE INDEX IF NOT EXISTS %1_gstart ON %1(gstart)";
-    SQLiteQuery(q1.arg(readsTable), db, os).execute();
+    SQLiteWriteQuery(q1.arg(readsTable), db, os).execute();
 
     static QString q2 = "CREATE INDEX IF NOT EXISTS %1_name ON %1(name)";
-    SQLiteQuery(q2.arg(readsTable), db, os).execute();
+    SQLiteWriteQuery(q2.arg(readsTable), db, os).execute();
 }
 
 void SingleTableAssemblyAdapter::dropReadsIndexes(U2OpStatus& os) {
     static QString q1 = "DROP INDEX IF EXISTS %1_gstart";
-    SQLiteQuery(q1.arg(readsTable), db, os).execute();
+    SQLiteWriteQuery(q1.arg(readsTable), db, os).execute();
 
     static QString q2 = "DROP INDEX IF EXISTS %1_name";
-    SQLiteQuery(q2.arg(readsTable), db, os).execute();
+    SQLiteWriteQuery(q2.arg(readsTable), db, os).execute();
 }
 
 
@@ -114,10 +114,10 @@ void SingleTableAssemblyAdapter::bindRegion(SQLiteQuery& q, const U2Region& r, b
 
 qint64 SingleTableAssemblyAdapter::countReads(const U2Region& r, U2OpStatus& os) {
     if (r == U2_REGION_MAX) {
-        return SQLiteQuery(QString("SELECT COUNT(*) FROM %1").arg(readsTable), db, os).selectInt64();
+        return SQLiteReadQuery(QString("SELECT COUNT(*) FROM %1").arg(readsTable), db, os).selectInt64();
     }
     QString qStr = QString("SELECT COUNT(*) FROM %1 WHERE " + rangeConditionCheckForCount).arg(readsTable);
-    SQLiteQuery q(qStr, db, os);
+    SQLiteReadQuery q(qStr, db, os);
     bindRegion(q, r, true);
     return q.selectInt64();
 }
@@ -128,19 +128,19 @@ qint64 SingleTableAssemblyAdapter::countReadsPrecise(const U2Region& r, U2OpStat
     }
     //here we use not-optimized rangeConditionCheck but not rangeConditionCheckForCount
     QString qStr = QString("SELECT COUNT(*) FROM %1 WHERE " + rangeConditionCheck).arg(readsTable);
-    SQLiteQuery q(qStr, db, os);
+    SQLiteReadQuery q(qStr, db, os);
     bindRegion(q, r, false);
     return q.selectInt64();
 }
 
 qint64 SingleTableAssemblyAdapter::getMaxPackedRow(const U2Region& r, U2OpStatus& os) {
-    SQLiteQuery q(QString("SELECT MAX(prow) FROM %1 WHERE " + rangeConditionCheck).arg(readsTable), db, os);
+    SQLiteReadQuery q(QString("SELECT MAX(prow) FROM %1 WHERE " + rangeConditionCheck).arg(readsTable), db, os);
     bindRegion(q, r);
     return q.selectInt64();
 }
 
 qint64 SingleTableAssemblyAdapter::getMaxEndPos(U2OpStatus& os) {
-    return SQLiteQuery(QString("SELECT MAX(gstart + elen) FROM %1").arg(readsTable), db, os).selectInt64();
+    return SQLiteReadQuery(QString("SELECT MAX(gstart + elen) FROM %1").arg(readsTable), db, os).selectInt64();
 }
 
 U2DbiIterator<U2AssemblyRead>* SingleTableAssemblyAdapter::getReads(const U2Region& r, U2OpStatus& os, bool sortedHint) {
@@ -149,35 +149,35 @@ U2DbiIterator<U2AssemblyRead>* SingleTableAssemblyAdapter::getReads(const U2Regi
         qStr += SORTED_READS;
     }
 
-    QSharedPointer<SQLiteQuery> q (new SQLiteQuery(qStr, db, os));
+    QSharedPointer<SQLiteReadQuery> q (new SQLiteReadQuery(qStr, db, os));
     bindRegion(*q, r);
-    return new SqlRSIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
+    return new SQLiteResultSetIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
 }
 
 U2DbiIterator<U2AssemblyRead>* SingleTableAssemblyAdapter::getReadsByRow(const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os) {
     int rowFieldPos = rangeMode ? 4 : 3;
     QString qStr = QString("SELECT " + ALL_READ_FIELDS + " FROM %1 WHERE " + rangeConditionCheck
         + " AND (prow >= ?%2 AND prow < ?%3)").arg(readsTable).arg(rowFieldPos).arg(rowFieldPos + 1);
-    QSharedPointer<SQLiteQuery> q ( new SQLiteQuery(qStr, db, os) );
+    QSharedPointer<SQLiteReadQuery> q ( new SQLiteReadQuery(qStr, db, os) );
     bindRegion(*q, r);
     q->bindInt64(rowFieldPos, minRow);
     q->bindInt64(rowFieldPos + 1, maxRow);
-    return new SqlRSIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
+    return new SQLiteResultSetIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
 }
 
 U2DbiIterator<U2AssemblyRead>* SingleTableAssemblyAdapter::getReadsByName(const QByteArray& name, U2OpStatus& os) {
     QString qStr = QString("SELECT " + ALL_READ_FIELDS + " FROM %1 WHERE name = ?1").arg(readsTable);
-    QSharedPointer<SQLiteQuery> q (new SQLiteQuery(qStr, db, os));
+    QSharedPointer<SQLiteReadQuery> q (new SQLiteReadQuery(qStr, db, os));
     int hash = qHash(name);
     q->bindInt64(1, hash);
-    return new SqlRSIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(),
+    return new SQLiteResultSetIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(),
         new SQLiteAssemblyNameFilter(name), U2AssemblyRead(), os);
 }
 
 void SingleTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& ii, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     QString q = "INSERT INTO %1(name, prow, flags, gstart, elen, mq, data) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)";
-    SQLiteQuery insertQ(q.arg(readsTable), db, os);
+    SQLiteWriteQuery insertQ(q.arg(readsTable), db, os);
     while (it->hasNext() && !os.isCoR()) {
         U2AssemblyRead read = it->next();
         bool dnaExt = false; //TODO:
@@ -226,7 +226,7 @@ void SingleTableAssemblyAdapter::removeReads(const QList<U2DataId>& readIds, U2O
 
 void SingleTableAssemblyAdapter::dropReadsTables(U2OpStatus &os) {
     QString queryString = "DROP TABLE IF EXISTS %1";
-    SQLiteQuery(queryString.arg(readsTable), db, os).execute();
+    SQLiteWriteQuery(queryString.arg(readsTable), db, os).execute();
     CHECK_OP(os, );
     SQLiteObjectDbi::incrementVersion(assemblyId, db, os);
 }
@@ -243,7 +243,7 @@ void SingleTableAssemblyAdapter::calculateCoverage(const U2Region& r, U2Assembly
     if (rangeArgs) {
         queryString+=" WHERE " + rangeConditionCheck;
     }
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     if (rangeArgs) {
         bindRegion(q, r, false);
     }
@@ -254,8 +254,8 @@ void SingleTableAssemblyAdapter::calculateCoverage(const U2Region& r, U2Assembly
 // pack adapter
 
 U2DbiIterator<PackAlgorithmData>* SingleTablePackAlgorithmAdapter::selectAllReads(U2OpStatus& os) {
-    QSharedPointer<SQLiteQuery> q (new SQLiteQuery("SELECT id, gstart, elen FROM " + readsTable + " ORDER BY gstart", db, os));
-    return new SqlRSIterator<PackAlgorithmData>(q, new SimpleAssemblyReadPackedDataLoader(), NULL, PackAlgorithmData(), os);
+    QSharedPointer<SQLiteReadQuery> q (new SQLiteReadQuery("SELECT id, gstart, elen FROM " + readsTable + " ORDER BY gstart", db, os));
+    return new SQLiteResultSetIterator<PackAlgorithmData>(q, new SimpleAssemblyReadPackedDataLoader(), NULL, PackAlgorithmData(), os);
 }
 
 SingleTablePackAlgorithmAdapter::~SingleTablePackAlgorithmAdapter() {
@@ -264,7 +264,7 @@ SingleTablePackAlgorithmAdapter::~SingleTablePackAlgorithmAdapter() {
 
 void SingleTablePackAlgorithmAdapter::assignProw(const U2DataId& readId, qint64 prow, U2OpStatus& os) {
     if (updateQuery == NULL) {
-        updateQuery = new SQLiteQuery("UPDATE " + readsTable + " SET prow = ?1 WHERE id = ?2", db, os);
+        updateQuery = new SQLiteWriteQuery("UPDATE " + readsTable + " SET prow = ?1 WHERE id = ?2", db, os);
     }
     updateQuery->setOpStatus(os);
     updateQuery->reset();

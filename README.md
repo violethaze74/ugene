@@ -23,12 +23,16 @@ Make sure the Qt (>= 5.2.1 and < 5.6) development libraries are installed:
 To build with devenv (Visual Studio)
 
 1. `qmake -r -tp vc ugene.pro`
+   1.1. add "CONFIG+=x64" to qmake command for 64-bit build
 2. open ugene.sln from Visual Studio or run `devenv.exe ugene.sln /Build` from MSVC command line
 
 To build with nmake.exe:
 
 1. `qmake -r ugene.pro`
+   1.1. add "CONFIG+=x64" to qmake command for 64-bit build
 2. run `nmake`, `nmake debug` or `nmake release` to build UGENE
+
+Also you need to add "libeay.dll" and "ssleay.dll" from OpenSSL ToolKit to "../ugene/src/_debug" folder
 
 ### For *nix users:
 

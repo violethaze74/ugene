@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,14 +22,8 @@
 #ifndef __U2_ASSEMBLY_READS_AREA_HINT_H__
 #define __U2_ASSEMBLY_READS_AREA_HINT_H__
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QFrame>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QFrame>
-#endif
+#include <QLabel>
+#include <QFrame>
 
 #include <U2Core/U2Assembly.h>
 

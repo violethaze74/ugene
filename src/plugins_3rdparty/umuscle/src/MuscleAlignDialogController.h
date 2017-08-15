@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -76,7 +76,7 @@ class MuscleAlignDialogController : public QDialog, public Ui_MuscleAlignmentDia
     Q_OBJECT
 
 public:
-    MuscleAlignDialogController(QWidget* w, const MAlignment& ma, MuscleTaskSettings& settings);
+    MuscleAlignDialogController(QWidget* w, const MultipleSequenceAlignment& ma, MuscleTaskSettings& settings);
     bool translateToAmino();
     QString getTranslationId();    
 public slots:
@@ -88,7 +88,7 @@ private slots:
 private:
     void initPresets();
 
-    MAlignment                          ma;
+    MultipleSequenceAlignment                          ma;
     MuscleTaskSettings&                 settings;
     GAutoDeleteList<MuscleAlignPreset>  presets;
 

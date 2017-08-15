@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,6 +60,8 @@ DigestSequenceDialog::DigestSequenceDialog(ADVSequenceObjectContext* ctx, QWidge
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759666");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     okButton = buttonBox->button(QDialogButtonBox::Ok);
     tabWidget->setCurrentIndex(0);
@@ -194,7 +196,7 @@ void DigestSequenceDialog::addAnnotationWidget()
     acm.data->name = ANNOTATION_GROUP_FRAGMENTS;
     ac = new CreateAnnotationWidgetController(acm, this);
     QWidget* caw = ac->getWidget();
-    QVBoxLayout* l = new QVBoxLayout(this);
+    QVBoxLayout* l = new QVBoxLayout();
     l->setMargin(0);
     l->addWidget(caw);
     l->addStretch(1);

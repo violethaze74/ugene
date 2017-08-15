@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,9 @@
 #ifndef _U2_EXPORT_SEQUENCE_VIEW_ITEMS_H_
 #define _U2_EXPORT_SEQUENCE_VIEW_ITEMS_H_
 
-#include <U2Core/global.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
+
 #include <U2Gui/ObjectViewModel.h>
 
 namespace U2 {
@@ -33,7 +34,6 @@ class AnnotatedDNAView;
 class AnnotationSelection;
 class Annotation;
 class LRegionsSelection;
-class MAlignment;
 class U2OpStatus;
 
 class ExportSequenceViewItemsController : public GObjectViewWindowContext {
@@ -78,9 +78,9 @@ protected slots:
     void updateActions();
 
 private:
-    void prepareMAFromBlastAnnotations(MAlignment& ma, const QString& nameQualId, bool includeRef, U2OpStatus& os);
-    void prepareMAFromAnnotations(MAlignment& ma, bool translate, U2OpStatus& os);
-    void prepareMAFromSequences(MAlignment& ma, bool translate, U2OpStatus& os);
+    void prepareMAFromBlastAnnotations(MultipleSequenceAlignment& ma, const QString& nameQualId, bool includeRef, U2OpStatus& os);
+    void prepareMAFromAnnotations(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os);
+    void prepareMAFromSequences(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os);
     void fetchSequencesFromRemoteDB(const QString & listId);
 
     void selectionToAlignment(const QString& title, bool annotations, bool translate);

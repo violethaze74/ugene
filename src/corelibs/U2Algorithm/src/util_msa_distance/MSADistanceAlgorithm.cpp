@@ -1,6 +1,6 @@
 ﻿/**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,14 +56,14 @@ void MSADistanceAlgorithmFactory::resetFlag( DistanceAlgorithmFlag flag ){
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory* _factory, const MAlignment& _ma)
+MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory* _factory, const MultipleSequenceAlignment& _ma)
 : Task(tr("MSA distance algorithm \"%1\" task").arg(_factory->getName()), TaskFlag_None)
 , factory(_factory)
-, ma(_ma)
+, ma(_ma->getCopy())
 , excludeGaps(true)
 , isSimilarity(true)
 {
-    int rowsNumber = ma.getNumRows();
+    int rowsNumber = ma->getNumRows();
     qint64 requiredMemory = sizeof(int) * rowsNumber * rowsNumber / 2 + sizeof(QVarLengthArray<int>) * rowsNumber;
     bool memoryAcquired = memoryLocker.tryAcquire(requiredMemory);
     CHECK_EXT(memoryAcquired, setError(QString("There is not enough memory to calculating distances matrix, required %1 megabytes").arg(requiredMemory / 1024 / 1024)), );
@@ -91,7 +91,7 @@ void MSADistanceAlgorithm::setDistanceValue(int row1, int row2, int distance) {
 }
 
 void MSADistanceAlgorithm::fillTable() {
-    int nSeq = ma.getNumRows();
+    int nSeq = ma->getNumRows();
     for (int i = 0; i < nSeq; i++) {
         for (int j = i; j < nSeq; j++) {
             if (isCanceled()) {
@@ -110,18 +110,18 @@ void MSADistanceAlgorithm::setExcludeGaps(bool _excludeGaps) {
     distanceMatrix.excludeGaps = _excludeGaps;
 }
 
-MSADistanceMatrix::MSADistanceMatrix()
+MSADistanceMatrix::MSADistanceMatrix() 
 : usePercents(true), excludeGaps(false), alignmentLength(0) {
 }
 
-MSADistanceMatrix::MSADistanceMatrix(const MAlignment &ma, bool _excludeGaps, bool _usePercents)
-: usePercents(_usePercents), excludeGaps(_excludeGaps), alignmentLength(ma.getLength()) {
-    int nSeq = ma.getNumRows();
+MSADistanceMatrix::MSADistanceMatrix(const MultipleSequenceAlignment& ma, bool _excludeGaps, bool _usePercents)
+: usePercents(_usePercents), excludeGaps(_excludeGaps), alignmentLength(ma->getLength()) {
+    int nSeq = ma->getNumRows();
     table.reserve(nSeq);
     for (int i = 0; i < nSeq; i++) {
         table.append(QVarLengthArray<int>(i + 1));
         memset(table[i].data(), 0, (i + 1) * sizeof(int));
-        seqsUngappedLenghts.append(ma.getRow(i).getUngappedLength());
+        seqsUngappedLenghts.append(ma->getMsaRow(i)->getUngappedLength());
     }
 }
 

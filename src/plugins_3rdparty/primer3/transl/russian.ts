@@ -2106,17 +2106,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::Primer3ADVContext</name>
     <message>
-        <location filename="../src/Primer3Plugin.cpp" line="92"/>
+        <location filename="../src/Primer3Plugin.cpp" line="93"/>
         <source>Primer3...</source>
         <translation>Primer3: Подбор праймеров...</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Plugin.cpp" line="146"/>
+        <location filename="../src/Primer3Plugin.cpp" line="147"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Plugin.cpp" line="146"/>
+        <location filename="../src/Primer3Plugin.cpp" line="147"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
     </message>
@@ -2257,12 +2257,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::Primer3Plugin</name>
     <message>
-        <location filename="../src/Primer3Plugin.cpp" line="55"/>
+        <location filename="../src/Primer3Plugin.cpp" line="56"/>
         <source>Primer3</source>
         <translation>Primer3</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Plugin.cpp" line="55"/>
+        <location filename="../src/Primer3Plugin.cpp" line="56"/>
         <source>Integrated tool for PCR primers design.</source>
         <translation>Инструмент для дизайна праймеров.</translation>
     </message>

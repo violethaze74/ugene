@@ -35,10 +35,12 @@ Makefile.Debug
 # Jetbrains tools (CLion, etc..)
 .idea
 
-# Directories with tests and QSpec
+# Directories with tests
 /test
-/src/libs_3rdparty/QSpec/
 
 
 # QtCreator files
 ugene.pro.user
+
+# CLion build dir
+cmake-build-*

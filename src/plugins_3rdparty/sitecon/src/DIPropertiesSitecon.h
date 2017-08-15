@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #ifndef _U2_DI_PROPERTIES_SITECON_H_
 #define _U2_DI_PROPERTIES_SITECON_H_
 
-#include <QtCore/QMap>
-#include <QtCore/QList>
-#include <QtCore/QString>
+#include <QMap>
+#include <QList>
+#include <QString>
 
 #include <U2Core/DIProperties.h>
 

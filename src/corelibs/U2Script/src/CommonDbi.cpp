@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFileInfo>
+#include <QCoreApplication>
+#include <QFileInfo>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
@@ -66,7 +66,7 @@ static ObjectType toObjectType( U2::GObjectType type ) {
     ObjectType result = UNSUPPORTED;
     if ( U2::GObjectTypes::SEQUENCE == type ) {
         result = SEQUENCE;
-    } else if ( U2::GObjectTypes::MULTIPLE_ALIGNMENT == type ) {
+    } else if ( U2::GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT == type ) {
         result = MSA;
     }
     return result;
@@ -143,7 +143,7 @@ U2SCRIPT_EXPORT void saveObjectsToFile( UgeneDbHandle *objects, int objectCount,
         QCoreApplication::applicationDirPath( ) + "/" + QString( url ) );
     U2OpStatusImpl stateInfo;
     adoptedUrl =  GUrlUtils::prepareFileLocation( adoptedUrl.getURLString( ), stateInfo );
-    CHECK_OP_EXT( stateInfo, coreLog.error( QString( "Could not prepare directory"
+    CHECK_OP_EXT( stateInfo, coreLog.error( QString( "Could not prepare folder"
         " according to supplied path \"%1\"" ).arg( url ) ), );
     Document *doc = docFormat->createNewLoadedDocument( IOAdapterUtils::get(
         BaseIOAdapters::LOCAL_FILE ), adoptedUrl, stateInfo );

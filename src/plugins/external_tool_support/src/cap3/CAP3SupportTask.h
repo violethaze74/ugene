@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #ifndef _U2_CAP3_SUPPORT_TASK_H_
 #define _U2_CAP3_SUPPORT_TASK_H_
 
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <U2Formats/StreamSequenceReader.h>
 #include <U2Formats/StreamSequenceWriter.h>
@@ -30,7 +30,7 @@
 #include "utils/ExportTasks.h"
 
 #include <U2Core/ExternalToolRunTask.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 namespace U2 {
 

@@ -4,8 +4,8 @@
 
 #include <BALL/DATATYPE/string.h>
 
-#include <QtCore/QString>
-#include <QtCore/QByteArray>
+#include <QString>
+#include <QByteArray>
 
 #include <cstdio>
 #include <cstdarg>

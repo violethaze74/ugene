@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -138,7 +138,7 @@ void EditSequenceDialogController::accept(){
         QFileInfo fi(url);
         QDir dirToSave(fi.dir());
         if (!dirToSave.exists()){
-            QMessageBox::critical(this, this->windowTitle(), tr("Directory to save is not exists"));
+            QMessageBox::critical(this, this->windowTitle(), tr("Folder to save is not exists"));
             return;
         }
         if(url.isEmpty()){

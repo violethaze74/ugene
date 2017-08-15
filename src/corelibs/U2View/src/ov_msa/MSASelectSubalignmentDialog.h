@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,24 +24,24 @@
 
 #include "ui_SelectSubalignmentDialog.h"
 
-#include <U2Core/global.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 
-class MSAEditorUI;
+class MaEditor;
 
 class SelectSubalignmentDialog : public QDialog, Ui_SelectSubalignmentDialog {
     Q_OBJECT
 public:
-    SelectSubalignmentDialog( MSAEditorUI *ui, const U2Region& region = U2Region(), const QList<qint64>& selectedIndexes = QList<qint64>(), QWidget *p = NULL);
+    SelectSubalignmentDialog( MaEditor *editor, const U2Region& region = U2Region(), const QList<int>& selectedIndexes = QList<int>(), QWidget *p = NULL);
 
     void accept();
 
     const U2Region getRegion() const { return window; }
 
     const QStringList& getSelectedSeqNames() const { return selectedNames; }
-    const QList<qint64>& getSelectedSeqIndexes() const { return selectedIndexes; }
+    const QList<int>& getSelectedSeqIndexes() const { return selectedIndexes; }
 
 public slots:
     void sl_allButtonClicked();
@@ -51,11 +51,11 @@ public slots:
 private:
     void init();
 
-    MSAEditorUI *ui;
+    MaEditor* editor;
 
     U2Region window;
     QStringList selectedNames;
-    QList<qint64> selectedIndexes;
+    QList<int> selectedIndexes;
 };
 
 } // namespace

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,6 +39,8 @@ QString U2Region::toString(Format format) const {
         return QString("%1 - %2").arg(start, end);
     case FormatPlusMinus:
         return QString("%1 &plusmn; %2").arg(middle, halfLength);
+    case FormatDots:
+        return QString("%1..%2").arg(start, FormatUtils::splitThousands(endPos() - 1));
     case FormatBrackets:
     default:
         return QString("[%1, %2)").arg(start, end);

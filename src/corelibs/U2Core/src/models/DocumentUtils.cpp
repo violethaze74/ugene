@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,10 +26,11 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SequenceUtils.h>
+#include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -246,14 +247,14 @@ Document* DocumentUtils::createCopyRestructuredWithHints(Document* doc, U2OpStat
     }
 
     if (hints.value(DocumentReadingMode_SequenceAsAlignmentHint, false).toBool()) {
-        MAlignmentObject* maObj = MSAUtils::seqObjs2msaObj(doc->getObjects(), hints, os, shallowCopy);
+        MultipleSequenceAlignmentObject* maObj = MSAUtils::seqObjs2msaObj(doc->getObjects(), hints, os, shallowCopy);
         CHECK_OP(os, NULL);
         CHECK(maObj != NULL, resultDoc);
         QList<GObject*> objects;
         objects << maObj;
 
         DocumentFormatConstraints objTypeConstraints;
-        objTypeConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_ALIGNMENT;
+        objTypeConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
         bool makeReadOnly = !doc->getDocumentFormat()->checkConstraints(objTypeConstraints);
 
         resultDoc = new Document(doc->getDocumentFormat(), doc->getIOAdapterFactory(), doc->getURL(), doc->getDbiRef(), objects, hints,

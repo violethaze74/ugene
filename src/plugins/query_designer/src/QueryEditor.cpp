@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@
 #include <U2Lang/WorkflowUtils.h>
 
 
-#include <QtGui/QRegExpValidator>
+#include <QRegExpValidator>
 
 
 namespace U2 {
@@ -47,11 +47,7 @@ QueryEditor::QueryEditor(QWidget* parent/* =0 */) : QWidget(parent), current(NUL
 
     cfgModel = new QueryProcCfgModel(this);
     table->setModel(cfgModel);
-#if (QT_VERSION < 0x050000)
-    table->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-#else
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-#endif
     table->horizontalHeader()->setStretchLastSection(true);
     table->verticalHeader()->hide();
     table->verticalHeader()->setDefaultSectionSize(QFontMetrics(QFont()).height() + 6);

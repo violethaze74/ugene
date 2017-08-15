@@ -1,7 +1,7 @@
 
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,9 +20,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QTextStream>
-#include <QtCore/QFileInfo>
+#include <QDir>
+#include <QTextStream>
+#include <QFileInfo>
 
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentUtils.h>
@@ -58,7 +58,7 @@ SpadesTask::SpadesTask(const  GenomeAssemblyTaskSettings &settings):
 void SpadesTask::prepare() {
     const QDir outDir = QFileInfo(settings.outDir.getURLString()).absoluteDir();
     if (!outDir.exists()) {
-        stateInfo.setError(tr("Directory does not exist: ") + outDir.absolutePath());
+        stateInfo.setError(tr("Folder does not exist: ") + outDir.absolutePath());
         return ;
     }
     writeYamlReads();
@@ -115,7 +115,7 @@ Task::ReportResult SpadesTask::report() {
     if(!FileAndDirectoryUtils::isFileEmpty(res)){
         resultUrl = res;
     }else{
-        stateInfo.setError(QString("File %1 has not been found in output directory %2").arg(SpadesTask::SCAFFOLDS_NAME).arg(settings.outDir.getURLString()));
+        stateInfo.setError(QString("File %1 has not been found in output folder %2").arg(SpadesTask::SCAFFOLDS_NAME).arg(settings.outDir.getURLString()));
     }
 
 

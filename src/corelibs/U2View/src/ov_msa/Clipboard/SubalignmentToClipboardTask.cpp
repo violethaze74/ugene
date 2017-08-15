@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LocalFileAdapter.h>
 #include <U2Core/Log.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -69,7 +69,7 @@ PrepareMsaClipboardDataTask * MsaClipboardDataTaskFactory::getInstance(MSAEditor
     if ("RTF" == formatId) {
         return new RichTextMsaClipboardTask(context, window, names);
     } else {
-        return new FormatsMsaClipboardTask(context->getMSAObject(), window, names, formatId);
+        return new FormatsMsaClipboardTask(context->getMaObject(), window, names, formatId);
     }
 }
 
@@ -77,21 +77,21 @@ U2Region MsaClipboardDataTaskFactory::getWindowBySelection(const QRect &selectio
     return U2Region (selection.x(), selection.width());;
 }
 
-QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MSAEditor *context, const QRect &selection){
+QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MaEditor *context, const QRect &selection){
     QStringList names;
     MSACollapsibleItemModel* m = context->getUI()->getCollapseModel();
     U2Region sel(m->mapToRow(selection.y()), m->mapToRow(selection.y() + selection.height()) - m->mapToRow(selection.y()));
-    MAlignmentObject* msaObj = context->getMSAObject();
+    MultipleAlignmentObject* msaObj = context->getMaObject();
     for (int i = sel.startPos; i < sel.endPos(); ++i) {
         if (m->rowToMap(i, true) < 0) {
             continue;
         }
-        names.append(msaObj->getMAlignment().getRow(i).getName());
+        names.append(msaObj->getMultipleAlignment()->getRow(i)->getName());
     }
     return names;
 }
 
-FormatsMsaClipboardTask::FormatsMsaClipboardTask(MAlignmentObject *msaObj, const U2Region &window, const QStringList &names, const DocumentFormatId &formatId)
+FormatsMsaClipboardTask::FormatsMsaClipboardTask(MultipleSequenceAlignmentObject *msaObj, const U2Region &window, const QStringList &names, const DocumentFormatId &formatId)
     :PrepareMsaClipboardDataTask(window, names), createSubalignmentTask(NULL), msaObj(msaObj), formatId(formatId){
 
 }
@@ -154,13 +154,13 @@ CreateSubalignmentSettings FormatsMsaClipboardTask::defineSettings(const QString
     return CreateSubalignmentSettings(window, names, path, true, false, formatId);
 }
 
-RichTextMsaClipboardTask::RichTextMsaClipboardTask(MSAEditor *context, const U2Region &window, const QStringList &names)
+RichTextMsaClipboardTask::RichTextMsaClipboardTask(MaEditor *context, const U2Region &window, const QStringList &names)
     :PrepareMsaClipboardDataTask(window, names), context(context){
 
 }
 
 void RichTextMsaClipboardTask::run(){
-    MAlignmentObject* obj = context->getMSAObject();
+    MultipleAlignmentObject* obj = context->getMaObject();
     const DNAAlphabet* al = obj->getAlphabet();
     if (!al){
         return;
@@ -190,49 +190,46 @@ void RichTextMsaClipboardTask::run(){
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
 
-    const MAlignment &msa = obj->getMAlignment();
+    const MultipleAlignment msa = obj->getMultipleAlignment();
+
     U2OpStatusImpl os;
-    const int refSeq = msa.getRowIndexByRowId(context->getReferenceRowId(), os);
-    const MAlignmentRow *r = NULL;
-    if (MAlignmentRow::invalidRowId() != refSeq) {
-        r = &(msa.getRow(refSeq));
-    }
+    const int refSeq = msa->getRowIndexByRowId(context->getReferenceRowId(), os);
 
     result.append(QString("<span style=\"font-size:%1pt; font-family:%2;\">\n").arg(pointSize).arg(fontFamily).toLatin1());
-        const MAlignment& ma = obj->getMAlignment();
-        int numRows = ma.getNumRows();
-        for (int seq = 0; seq < numRows; seq++){
-            QString res;
-            const MAlignmentRow& row = ma.getRow(seq);
-            if (!names.contains(row.getName())){
-                continue;
-            }
-
-            result.append("<p>");
-            for (int pos = window.startPos; pos < window.endPos(); pos++){
-                char c = row.charAt(pos);
-                bool highlight = false;
-                QColor color = colorScheme->getColor(seq, pos, c);
-                if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
-                    const char refChar = '\n';
-                    highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-                } else if (seq == refSeq || MAlignmentRow::invalidRowId() == refSeq) {
-                    highlight = true;
-                } else {
-                    const char refChar = r->charAt(pos);
-                    highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-                }
-
-                if (color.isValid() && highlight) {
-                    res.append(QString("<span style=\"background-color:%1;\">%2</span>").arg(color.name()).arg(c));
-                } else {
-                    res.append(QString("%1").arg(c));
-                }
-            }
-
-            result.append(res.toLatin1());
-            result.append("</p>\n");
+    int numRows = msa->getNumRows();
+    for (int seq = 0; seq < numRows; seq++){
+        QString res;
+        const MultipleAlignmentRow row = msa->getRow(seq);
+        if (!names.contains(row->getName())){
+            continue;
         }
+
+        result.append("<p>");
+        for (int pos = window.startPos; pos < window.endPos(); pos++){
+            char c = row->charAt(pos);
+            bool highlight = false;
+            QColor color = colorScheme->getColor(seq, pos, c);
+            if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
+                const char refChar = '\n';
+                highlightingScheme->process(refChar, c, color, highlight, pos, seq);
+            } else if (seq == refSeq || U2MsaRow::INVALID_ROW_ID == refSeq) {
+                highlight = true;
+            } else {
+                SAFE_POINT_EXT(NULL != row, setError("MSA row is NULL"), );
+                const char refChar = row->charAt(pos);
+                highlightingScheme->process(refChar, c, color, highlight, pos, seq);
+            }
+
+            if (color.isValid() && highlight) {
+                res.append(QString("<span style=\"background-color:%1;\">%2</span>").arg(color.name()).arg(c));
+            } else {
+                res.append(QString("%1").arg(c));
+            }
+        }
+
+        result.append(res.toLatin1());
+        result.append("</p>\n");
+    }
     result.append("</span>");
 
     delete colorScheme;

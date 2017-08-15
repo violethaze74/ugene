@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,11 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include "SMatrix.h"
+#include <QVariant>
 
-#include <U2Core/TextUtils.h>
-#include <U2Core/Log.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/Log.h>
+#include <U2Core/TextUtils.h>
+
+#include "SMatrix.h"
 
 namespace U2 {
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,8 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView* currentADV, int 
     setupUi(this);
 
     new HelpButton(this, buttonBox, "19759528");
-    startButton = buttonBox->button(QDialogButtonBox::Ok);
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     SAFE_POINT(adv != NULL, "DotPlotDialog called without view context!", );
 
@@ -202,7 +203,7 @@ bool DotPlotDialog::isInverted() const {
 
 void DotPlotDialog::sl_directInvertedCheckBox() {
 
-    startButton->setEnabled(directCheckBox->isChecked() || invertedCheckBox->isChecked());
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(directCheckBox->isChecked() || invertedCheckBox->isChecked());
 }
 
 static const QString COLOR_STYLE("QPushButton { background-color: %1 }");

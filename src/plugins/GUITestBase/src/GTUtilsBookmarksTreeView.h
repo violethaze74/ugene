@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #ifndef _U2_GUI_BOOKMARKS_TREE_VIEW_UTILS_H_
 #define _U2_GUI_BOOKMARKS_TREE_VIEW_UTILS_H_
 
-#include "GTGlobals.h"
+#include <GTGlobals.h>
 
 class QTreeWidget;
 class QTreeWidgetItem;
@@ -36,13 +36,16 @@ public:
 
     // returns center or item's rect
     // fails if the item wasn't found
-    static QPoint getItemCenter(HI::GUITestOpStatus &os, const QString &itemName);
+    static QPoint getItemCenter(GUITestOpStatus &os, const QString &itemName);
 
-    static QTreeWidgetItem* findItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
-    static QString getSelectedItem(HI::GUITestOpStatus &os);
-//	static QString getBookmarkItemName(HI::GUITestOpStatus &os, AVItem* avItem);
+    static QTreeWidgetItem* findItem(GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static QString getSelectedItem(GUITestOpStatus &os);
 
-    static void addBookmark(HI::GUITestOpStatus &os, const QString &viewName, const QString &bookmarkName);
+    static void addBookmark(GUITestOpStatus &os, const QString &viewName, const QString &bookmarkName = QString());
+    static void deleteBookmark(GUITestOpStatus &os, const QString &bookmarkName);
+
+    static void clickBookmark(GUITestOpStatus &os, const QString &bookmarkName);
+    static void doubleClickBookmark(GUITestOpStatus &os, const QString &bookmarkName);
 
     static const QString widgetName;
 };

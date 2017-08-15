@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,19 +22,21 @@
 #ifndef _U2_MUSCLE_TASK_H_
 #define _U2_MUSCLE_TASK_H_
 
-#include <QtCore/QPointer>
-#include <U2Core/Task.h>
-#include <U2Core/MAlignmentObject.h>
+#include <QPointer>
+
+#include <U2Algorithm/MsaUtilTasks.h>
+
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Algorithm/MAlignmentUtilTasks.h>
 #include <U2Core/U2Mod.h>
+#include <U2Core/U2Region.h>
 
 class MuscleContext;
 
 namespace U2 {
 
 class StateLock;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class LoadDocumentTask;
 class MuscleParallelTask;
 
@@ -68,7 +70,7 @@ public:
     U2Region         regionToAlign;
 
     //used only for MuscleTaskOp_AddUnalignedToProfile and MuscleTaskOp_ProfileToProfile
-    MAlignment      profile;
+    MultipleSequenceAlignment      profile;
 
     //number of threads: 0 - auto, 1 - serial
     int nThreads;
@@ -79,7 +81,7 @@ public:
 class MuscleTask : public Task {
     Q_OBJECT
 public:
-    MuscleTask(const MAlignment& ma, const MuscleTaskSettings& config);
+    MuscleTask(const MultipleSequenceAlignment& ma, const MuscleTaskSettings& config);
 
     void run();
 
@@ -90,11 +92,11 @@ public:
     ReportResult report();
 
     MuscleTaskSettings          config;
-    MAlignment                  inputMA;
-    MAlignment                  resultMA;
+    MultipleSequenceAlignment                  inputMA;
+    MultipleSequenceAlignment                  resultMA;
 
-    MAlignment                  inputSubMA;
-    MAlignment                  resultSubMA;
+    MultipleSequenceAlignment                  inputSubMA;
+    MultipleSequenceAlignment                  resultSubMA;
 
     MuscleContext*              ctx;
     MuscleParallelTask*         parallelSubTask;
@@ -104,22 +106,22 @@ class MuscleAddSequencesToProfileTask : public Task {
     Q_OBJECT
 public:
     enum MMode {Profile2Profile, Sequences2Profile};
-    MuscleAddSequencesToProfileTask(MAlignmentObject* obj, const QString& fileWithSequencesOrProfile, MMode mode);
+    MuscleAddSequencesToProfileTask(MultipleSequenceAlignmentObject* obj, const QString& fileWithSequencesOrProfile, MMode mode);
 
     QList<Task*> onSubTaskFinished(Task* subTask);
 
     ReportResult report();
     
-    QPointer<MAlignmentObject>  maObj;
+    QPointer<MultipleSequenceAlignmentObject>  maObj;
     LoadDocumentTask*           loadTask;
     MMode                       mode;
 };
 
-//locks MAlignment object and propagate MuscleTask results to it
+//locks MultipleSequenceAlignment object and propagate MuscleTask results to it
 class  MuscleGObjectTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    MuscleGObjectTask(MAlignmentObject* obj, const MuscleTaskSettings& config);
+    MuscleGObjectTask(MultipleSequenceAlignmentObject* obj, const MuscleTaskSettings& config);
     ~MuscleGObjectTask();
 
     virtual void prepare();
@@ -141,7 +143,7 @@ public:
 
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:
-    MAlignmentObject*   mAObject;
+    MultipleSequenceAlignmentObject*   mAObject;
     Document*           currentDocument;
     bool                cleanDoc;
 
@@ -166,10 +168,10 @@ private:
 class MuscleGObjectRunFromSchemaTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    MuscleGObjectRunFromSchemaTask(MAlignmentObject * obj, const MuscleTaskSettings & config);
+    MuscleGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject * obj, const MuscleTaskSettings & config);
 
     void prepare();
-    void setMAObject(MAlignmentObject* maobj);
+    void setMAObject(MultipleSequenceAlignmentObject* maobj);
 private:
     MuscleTaskSettings config;
 };

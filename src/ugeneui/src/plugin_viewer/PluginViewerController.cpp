@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,14 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-#include "PluginViewerController.h"
+#include <QMessageBox>
 
 #include <U2Core/AppContext.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Task.h>
+
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
+
 #include <PluginDescriptor.h>
+
+#include "PluginViewerController.h"
 
 namespace U2 {
 

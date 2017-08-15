@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -154,7 +154,7 @@ void BuildTreeDialogFillerPhyML::commonScenario() {
 
     if (bootstrap >= 0) {
         GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "twSettings", dialog), 1);
-        GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "bootstrapCheckBox"), true);
+        GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "bootstrapRadioButton"));
         GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "bootstrapSpinBox"), bootstrap);
     }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,9 +25,9 @@
 #include "MuscleParallel.h"
 #include "MuscleUtils.h"
 
-#include <QtCore/QMutex>
-#include <QtCore/QMutexLocker>
-#include <QtCore/QSemaphore>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QSemaphore>
 
 #include "muscle/scorehistory.h"
 
@@ -48,7 +48,7 @@ namespace U2 {
     };
 
     struct MuscleWorkPool {
-        MuscleWorkPool(MuscleContext *_ctx, const MuscleTaskSettings  &_config, TaskStateInfo& _ti, int _nThreads, const MAlignment& _ma, MAlignment& _res, bool _mhack);
+        MuscleWorkPool(MuscleContext *_ctx, const MuscleTaskSettings  &_config, TaskStateInfo& _ti, int _nThreads, const MultipleSequenceAlignment& _ma, MultipleSequenceAlignment& _res, bool _mhack);
             
         ~MuscleWorkPool() ;
 
@@ -57,8 +57,8 @@ namespace U2 {
 
         MuscleContext       *ctx;
         const MuscleTaskSettings  &config;
-        MAlignment          ma;
-        MAlignment&         res;
+        MultipleSequenceAlignment          ma;
+        MultipleSequenceAlignment&         res;
         bool                mhack;
         SeqVect             v;
         Tree                GuideTree;

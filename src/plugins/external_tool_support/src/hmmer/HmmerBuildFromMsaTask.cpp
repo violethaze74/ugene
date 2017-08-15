@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include "HmmerBuildFromMsaTask.h"
@@ -34,7 +35,7 @@
 
 namespace U2 {
 
-HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, const MAlignment &msa)
+HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, const MultipleSequenceAlignment &msa)
     : ExternalToolSupportTask(tr("Build HMMER profile from msa"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
       msa(msa),
@@ -66,7 +67,7 @@ void HmmerBuildFromMsaTask::prepare() {
     prepareWorkingDir();
     CHECK_OP(stateInfo, );
 
-    QString msaUrl = settings.workingDir + "/" + GUrlUtils::fixFileName(msa.getName()) + ".sto";
+    QString msaUrl = settings.workingDir + "/" + GUrlUtils::fixFileName(msa->getName()) + ".sto";
     saveTask = new SaveAlignmentTask(msa, msaUrl, BaseDocumentFormats::STOCKHOLM);
     saveTask->setSubtaskProgressWeight(5);
     addSubTask(saveTask);
@@ -101,7 +102,7 @@ void HmmerBuildFromMsaTask::prepareWorkingDir() {
         CHECK_OP(stateInfo, );
     }
     if (!workingDir.mkpath(settings.workingDir)){
-        setError(tr("Cannot create a directory for temporary files."));
+        setError(tr("Cannot create a folder for temporary files."));
         return;
     }
 }

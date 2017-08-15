@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ extern "C" {
 // http://sourceforge.net/p/predef/wiki/Compilers/
 
 #ifdef _MSC_VER
-#if _MSC_VER <= 1800 && UGENE_X86_64
+#if _MSC_VER <= 1900 && UGENE_X86_64
 #define LAME_MSC
 #endif
 #endif

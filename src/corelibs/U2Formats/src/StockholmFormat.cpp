@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,17 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QTextStream>
+#include <QFileInfo>
+#include <QTextStream>
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentInfo.h>
-#include <U2Core/MAlignmentObject.h>
-#include <U2Core/MAlignmentWalker.h>
+#include <U2Core/MultipleAlignmentInfo.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
@@ -414,12 +414,12 @@ static bool blockEnded( IOAdapter* io ) {
     return 1 < nl_count;
 }
 
-static bool nameWasBefore( const MAlignment& msa, const QString& name ) {
-    int n = msa.getNumRows();
+static bool nameWasBefore( const MultipleSequenceAlignment& msa, const QString& name ) {
+    int n = msa->getNumRows();
     bool ret = false;
 
     for( int i = 0; i < n; ++i ) {
-        if ( name == msa.getRow(i).getName()) {
+        if ( name == msa->getMsaRow(i)->getName()) {
             ret = true;
             break;
         }
@@ -437,7 +437,7 @@ static void changeGaps( QByteArray& seq ) {
 }
 
 // returns true if operation was not canceled
-static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MAlignment& msa, AnnotationBank& ann_bank ) {
+static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MultipleSequenceAlignment& msa, AnnotationBank& ann_bank ) {
     assert( NULL != io );
 
     QByteArray buf( BUF_SZ, TERM_SYM );
@@ -485,8 +485,8 @@ static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MAlignment& msa, Annotat
                 if ( nameWasBefore( msa, QString( name.data() ) ) ) {
                     throw StockholmFormat::BadFileData( StockholmFormat::tr( "invalid file: equal sequence names in one block" ) );
                 }
-                U2OpStatus2Log os;
-                msa.addRow(name.data(), seq, os);
+
+                msa->addRow(name.data(), seq);
                 if (blockSize == -1) {
                     blockSize = seq.size();
                 } else if (blockSize != seq.size() ) {
@@ -494,11 +494,10 @@ static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MAlignment& msa, Annotat
                 }
             }
             else {
-                const MAlignmentRow& row = msa.getRow(seq_ind);
-                if( name != row.getName()) {
+                if( name != msa->getMsaRow(seq_ind)->getName()) {
                     throw StockholmFormat::BadFileData( StockholmFormat::tr( "invalid file: sequence names are not equal in blocks" ) );
                 }
-                msa.appendChars(seq_ind, currentLen, seq.constData(), seq.size());
+                msa->appendChars(seq_ind, currentLen, seq.constData(), seq.size());
                 if (blockSize == -1) {
                     blockSize = seq.size();
                 } else if (blockSize != seq.size() ) {
@@ -515,62 +514,62 @@ static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MAlignment& msa, Annotat
     readEofMsa( io );
     skipBlankLines( io );
 
-    if ( msa.getNumRows() == 0 ) {
+    if ( msa->getNumRows() == 0 ) {
         throw StockholmFormat::BadFileData( StockholmFormat::tr( "invalid file: empty sequence alignment" ) );
     }
     U2AlphabetUtils::assignAlphabet(msa);
-    if (msa.getAlphabet() == NULL) {
+    if (msa->getAlphabet() == NULL) {
         throw StockholmFormat::BadFileData( StockholmFormat::tr( "invalid file: unknown alphabet" ) );
     }
     return true;
 }
 
-static void setMsaInfoCutoffs( QVariantMap& info, const QString& string, MAlignmentInfo::Cutoffs cof1,
-                               MAlignmentInfo::Cutoffs cof2 ) {
+static void setMsaInfoCutoffs( QVariantMap& info, const QString& string, MultipleAlignmentInfo::Cutoffs cof1,
+                               MultipleAlignmentInfo::Cutoffs cof2 ) {
     QByteArray str = string.toLatin1();
     QTextStream txtStream( str );
     float val1 = .0f;
     float val2 = .0f;
     txtStream >> val1 >> val2;
-    MAlignmentInfo::setCutoff( info, cof1, val1 );
-    MAlignmentInfo::setCutoff( info, cof2, val2 );
+    MultipleAlignmentInfo::setCutoff( info, cof1, val1 );
+    MultipleAlignmentInfo::setCutoff( info, cof2, val2 );
 }
 
-static void setMsaInfo( const QHash< QString, QString>& annMap, MAlignment& ma ) {
-    QVariantMap info = ma.getInfo();
+static void setMsaInfo( const QHash< QString, QString>& annMap, MultipleSequenceAlignment& ma ) {
+    QVariantMap info = ma->getInfo();
 
     if (annMap.contains( StockholmFormat::FILE_ANNOTATION_AC ) ) {
-        MAlignmentInfo::setAccession( info, annMap[StockholmFormat::FILE_ANNOTATION_AC] );
+        MultipleAlignmentInfo::setAccession( info, annMap[StockholmFormat::FILE_ANNOTATION_AC] );
     }
     if (annMap.contains( StockholmFormat::FILE_ANNOTATION_DE ) ) {
-        MAlignmentInfo::setDescription( info, annMap[StockholmFormat::FILE_ANNOTATION_DE] );
+        MultipleAlignmentInfo::setDescription( info, annMap[StockholmFormat::FILE_ANNOTATION_DE] );
     }
     if (annMap.contains( StockholmFormat::COLUMN_ANNOTATION_SS_CONS ) ) {
-        MAlignmentInfo::setSSConsensus( info, annMap[StockholmFormat::COLUMN_ANNOTATION_SS_CONS] );
+        MultipleAlignmentInfo::setSSConsensus( info, annMap[StockholmFormat::COLUMN_ANNOTATION_SS_CONS] );
     }
     if (annMap.contains( StockholmFormat::COLUMN_ANNOTATION_RF ) ) {
-        MAlignmentInfo::setReferenceLine( info, annMap[StockholmFormat::COLUMN_ANNOTATION_RF] );
+        MultipleAlignmentInfo::setReferenceLine( info, annMap[StockholmFormat::COLUMN_ANNOTATION_RF] );
     }
     if (annMap.contains( StockholmFormat::FILE_ANNOTATION_GA ) ) {
-        setMsaInfoCutoffs( info, annMap[StockholmFormat::FILE_ANNOTATION_GA], MAlignmentInfo::CUTOFF_GA1,
-                                                                              MAlignmentInfo::CUTOFF_GA2 );
+        setMsaInfoCutoffs( info, annMap[StockholmFormat::FILE_ANNOTATION_GA], MultipleAlignmentInfo::CUTOFF_GA1,
+                                                                              MultipleAlignmentInfo::CUTOFF_GA2 );
     }
     if (annMap.contains( StockholmFormat::FILE_ANNOTATION_NC ) ) {
-        setMsaInfoCutoffs( info, annMap[StockholmFormat::FILE_ANNOTATION_NC], MAlignmentInfo::CUTOFF_NC1,
-                                                                              MAlignmentInfo::CUTOFF_NC2 );
+        setMsaInfoCutoffs( info, annMap[StockholmFormat::FILE_ANNOTATION_NC], MultipleAlignmentInfo::CUTOFF_NC1,
+                                                                              MultipleAlignmentInfo::CUTOFF_NC2 );
     }
     if (annMap.contains( StockholmFormat::FILE_ANNOTATION_TC ) ) {
-        setMsaInfoCutoffs( info, annMap[StockholmFormat::FILE_ANNOTATION_TC], MAlignmentInfo::CUTOFF_TC1,
-                                                                              MAlignmentInfo::CUTOFF_TC2 );
+        setMsaInfoCutoffs( info, annMap[StockholmFormat::FILE_ANNOTATION_TC], MultipleAlignmentInfo::CUTOFF_TC1,
+                                                                              MultipleAlignmentInfo::CUTOFF_TC2 );
     }
-    ma.setInfo(info);
+    ma->setInfo(info);
 }
 
 static void load( IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& l, const QVariantMap& fs, U2OpStatus& tsi, bool& uni_file) {
     QStringList names_list;
     QString filename = io->getURL().baseFileName();
     while( !io->isEof() ) {
-        MAlignment msa;
+        MultipleSequenceAlignment msa;
         AnnotationBank ann_bank;
         QString name;
         bool notCanceled = true;
@@ -586,27 +585,27 @@ static void load( IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& l, con
         name = ( QString::null == name || names_list.contains( name ) )?
             filename + "_" + QString::number( l.size() ): name;
         names_list.append( name );
-        msa.setName( name );
+        msa->setName( name );
 
         annMap = getAnnotationMap( ann_bank );
         setMsaInfo( annMap, msa );
 
         U2OpStatus2Log os;
         const QString folder = fs.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-        MAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, msa, os);
+        MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, msa, os);
         CHECK_OP(os, );
         obj->setIndexInfo(annMap);
         l.append( obj );
     }
 }
 
-static int getMaxNameLen( const MAlignment& msa ) {
-    assert( msa.getNumRows() != 0 );
-    int sz = msa.getNumRows();
-    int max_len = msa.getRow(0).getName().size();
+static int getMaxNameLen( const MultipleSequenceAlignment& msa ) {
+    assert( msa->getNumRows() != 0 );
+    int sz = msa->getNumRows();
+    int max_len = msa->getMsaRow(0)->getName().size();
 
     for( int i = 0; i < sz; ++i ) {
-        int name_len =  msa.getRow(i).getName().size();
+        int name_len =  msa->getMsaRow(i)->getName().size();
         max_len = ( max_len < name_len )? name_len: max_len;
     }
     return max_len;
@@ -621,9 +620,9 @@ static QByteArray getNameSeqGap( int diff ) {
     return ret;
 }
 
-static void save( IOAdapter* io, const MAlignment& msa, QString name, U2OpStatus &os ) {
+static void save( IOAdapter* io, const MultipleSequenceAlignment& msa, QString name, U2OpStatus &os ) {
     assert( NULL != io );
-    assert( msa.getNumRows() );
+    assert( msa->getNumRows() );
     int ret = 0;
 
     QByteArray header( HEADER );
@@ -638,9 +637,9 @@ static void save( IOAdapter* io, const MAlignment& msa, QString name, U2OpStatus
 
     //write sequences
     int name_max_len = getMaxNameLen( msa );
-    int seq_len = msa.getLength();
+    int seq_len = msa->getLength();
     int cur_seq_pos = 0;
-    MAlignmentWalker walker(msa);
+    MultipleSequenceAlignmentWalker walker(msa);
     CHECK_OP(os, );
     while ( 0 < seq_len ) {
         int block_len = ( WRITE_BLOCK_LENGTH >= seq_len )? seq_len: WRITE_BLOCK_LENGTH;
@@ -650,12 +649,13 @@ static void save( IOAdapter* io, const MAlignment& msa, QString name, U2OpStatus
         //write block
         U2OpStatus2Log os;
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MAlignmentRow>::ConstIterator ri = msa.getRows().constBegin();
+        const QList<MultipleSequenceAlignmentRow> rows = msa->getMsaRows();
+        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = rows.constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
-            const MAlignmentRow &row = *ri;
-            QByteArray name = row.getName().toLatin1();
+            const MultipleSequenceAlignmentRow &row = *ri;
+            QByteArray name = row->getName().toLatin1();
             TextUtils::replace(name.data(), name.length(), TextUtils::WHITES, '_');
-            name += getNameSeqGap( name_max_len - row.getName().size() );
+            name += getNameSeqGap( name_max_len - row->getName().size() );
             ret = io->writeBlock( name );
             checkValThrowException<int>( true, name.size(), ret, StockholmFormat::WriteError(io->getURL()) );
             QByteArray seq = *si + NEW_LINE;
@@ -676,7 +676,7 @@ namespace U2 {
 StockholmFormat::StockholmFormat( QObject *obj ) : DocumentFormat( obj , DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "sto") {
     format_name = tr( "Stockholm" );
     formatDescription = tr("A multiple sequence alignments file format");
-    supportedObjectTypes+=GObjectTypes::MULTIPLE_ALIGNMENT;
+    supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
 
@@ -705,9 +705,9 @@ Document* StockholmFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, c
 void StockholmFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
     try {
         foreach( GObject* p_obj, doc->getObjects() ) {
-            const MAlignmentObject* aln_obj = qobject_cast<const MAlignmentObject*>( p_obj );
+            const MultipleSequenceAlignmentObject* aln_obj = qobject_cast<const MultipleSequenceAlignmentObject*>( p_obj );
             assert( NULL != aln_obj );
-            save( io, aln_obj->getMAlignment(), aln_obj->getGObjectName(), os );
+            save( io, aln_obj->getMultipleAlignment(), aln_obj->getGObjectName(), os );
             CHECK_OP(os, );
         }
     } catch( const StockholmBaseException& ex ) {
@@ -725,7 +725,7 @@ FormatCheckResult StockholmFormat::checkRawData(const QByteArray& data, const GU
 bool StockholmFormat::isObjectOpSupported( const Document *doc, DocObjectOp op, GObjectType t ) const {
     Q_UNUSED( op ); Q_UNUSED( doc );
     assert( NULL != doc );
-    if ( GObjectTypes::MULTIPLE_ALIGNMENT != t  ) {
+    if ( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT != t  ) {
         return false;
     }
     /*if (op == DocumentFormat::DocObjectOp_Add) {

@@ -4,7 +4,7 @@ UGENE_RELATIVE_DESTDIR = ''
 MODULE_ID=U2Private
 include( ../../ugene_lib_common.pri )
 
-QT += xml
+QT += xml widgets network
 DEFINES += QT_FATAL_ASSERT BUILDING_U2PRIVATE_DLL
 LIBS += -L../../_release -lU2Core -lU2Formats -lbreakpad
 INCLUDEPATH += ../../libs_3rdparty/breakpad/src

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -69,6 +69,7 @@ public:
      * Updates the data of the object by provided @objRef.
      */
     static void writeContent(const QByteArray &data, const U2EntityRef &objRef, U2OpStatus &os);
+    static void writeContent(const U2DataId& masterId, const QByteArray &data, const U2EntityRef &objRef, U2OpStatus &os);
 
     /**
      * Returns the data of the object by provided @objRef.

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QTextStream>
+#include <QTextStream>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -29,7 +29,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
@@ -56,7 +56,7 @@ FastaFormat::FastaFormat(QObject* p)
 {
     formatName = tr("FASTA");
     supportedObjectTypes+=GObjectTypes::SEQUENCE;
-    supportedObjectTypes+=GObjectTypes::MULTIPLE_ALIGNMENT;
+    supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     formatDescription = tr("FASTA format is a text-based format for representing either nucleotide sequences or peptide sequences, "
         "in which base pairs or amino acids are represented using single-letter codes. "
         "The format also allows for sequence names and comments to precede the sequences.");
@@ -82,7 +82,7 @@ static QVariantMap analyzeRawData(const QByteArray& data) {
             len = 0;
         } else {
             len += line.length();
-            if (!hasGaps && line.contains(MAlignment_GapChar)) {
+            if (!hasGaps && line.contains(U2Msa::GAP_CHAR)) {
                 hasGaps = true;
             }
         }
@@ -178,7 +178,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
         }
         CHECK_EXT_BREAK(lineOk, os.setError(FastaFormat::tr("Line is too long")));
 
-        QString headerLine = QString(QByteArray::fromRawData(buff+1, len-1)).trimmed();
+        QString headerLine = QString(QByteArray(buff+1, len-1)).trimmed();
         CHECK_EXT_BREAK(buff[0] == FastaFormat::FASTA_HEADER_START_SYMBOL, os.setError(FastaFormat::tr("First line is not a FASTA header")));
 
         //read sequence
@@ -194,7 +194,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
                 CHECK_OP_BREAK(os);
                 uniqueNames.insert(objName);
             }
-            seqImporter.startSequence(dbiRef, folder, objName, false, os);
+            seqImporter.startSequence(os, dbiRef, folder, objName, false);
             CHECK_OP_BREAK(os);
 
             sequenceRef = GObjectReference(io->getURL().getURLString(), objName, GObjectTypes::SEQUENCE);

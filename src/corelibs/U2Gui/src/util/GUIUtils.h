@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,27 +22,22 @@
 #ifndef _U2_GUI_UTILS_H_
 #define _U2_GUI_UTILS_H_
 
+#include <QAction>
+#include <QList>
+#include <QMenu>
+#include <QTreeWidgetItem>
+
 #include <U2Core/global.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
-#include <QtGui/QTreeWidgetItem>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QTreeWidgetItem>
-#endif
-
-#include <QtCore/QList>
 #include "U2FileDialog.h"
+
+class QAbstractButton;
 
 namespace U2 {
 
 class U2GUI_EXPORT GUIUtils : public QObject {
     Q_OBJECT
 public:
-    
     static QAction* findAction(const QList<QAction*>& actions, const QString& name);
 
     static QAction* getCheckedAction(QList<QAction*> actions);
@@ -51,6 +46,9 @@ public:
     static QAction* findActionAfter(const QList<QAction*>& actions, const QString& name);
 
     static QMenu* findSubMenu(QMenu* m, const QString& name);
+
+    static void updateActionToolTip(QAction *action);
+    static void updateButtonToolTip(QAbstractButton *button, const QKeySequence &shortcut);
 
     static void disableEmptySubmenus(QMenu* m);
 
@@ -70,6 +68,6 @@ public:
     static void showMessage(QWidget *widgetToPaintOn, QPainter& painter, const QString& message);
 };
 
-} //namespace
+}   // namespace U2
 
 #endif

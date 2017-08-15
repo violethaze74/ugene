@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -70,7 +70,7 @@ QString BlastDBSelectorWidgetController::getDatabasePath()const {
 }
 
 void BlastDBSelectorWidgetController::sl_onBrowseDatabasePath() {
-    LastUsedDirHelper lod("Database Directory");
+    LastUsedDirHelper lod("Database Folder");
 
     QFileDialog::Options options = 0;
     QString name = U2FileDialog::getOpenFileName(NULL, tr("Select a database file"), lod.dir, "", NULL, options);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,21 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
+#include <QFile>
+#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
+
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/HRSchemaSerializer.h>
 #include <U2Lang/WorkflowUtils.h>
 
-#include "WorkflowElementFacade.h"
 #include "SchemeWrapper.h"
+#include "WorkflowElementFacade.h"
 
 static const QString TMP_FILE_NAME_BASE =   "scheme_for_script";
 static QString NAME_ATTR_PATTERN =          "\\s" + U2::WorkflowSerialize::Constants::NAME_ATTR + "\\s*"

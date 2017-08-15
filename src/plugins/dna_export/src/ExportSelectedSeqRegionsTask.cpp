@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -125,7 +125,7 @@ void CreateExportItemsFromSeqRegionsTask::run() {
         ExportSequenceItem ei;
 
         U2SequenceImporter seqImporter(QVariantMap(), true);
-        seqImporter.startSequence(dbiRef, U2ObjectDbi::ROOT_FOLDER, name, false, stateInfo);
+        seqImporter.startSequence(stateInfo, dbiRef, U2ObjectDbi::ROOT_FOLDER, name, false);
         SAFE_POINT_OP(stateInfo, );
         for (qint64 pos = r.startPos; pos < r.endPos(); pos += sequenceChunkMaxLength) {
             const qint64 currentChunkSize = qMin(sequenceChunkMaxLength, r.endPos() - pos);

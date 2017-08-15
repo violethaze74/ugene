@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,51 +19,40 @@
  * MA 02110-1301, USA.
  */
 
-#include "WorkflowSamples.h"
-#include "WorkflowViewController.h"
-#include <util/SaveSchemaImageUtils.h>
-#include <U2Core/Log.h>
+#include <QAbstractItemModel>
+#include <QApplication>
+#include <QContextMenuEvent>
+#include <QDir>
+#include <QHeaderView>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMenu>
+#include <QPainter>
+#include <QStyle>
+#include <QStyledItemDelegate>
+#include <QTextDocument>
+#include <QTextStream>
+#include <QToolButton>
+#include <QTreeView>
+#include <QUrl>
+#include <QVBoxLayout>
+
 #include <U2Core/L10n.h>
+#include <U2Core/Log.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/WorkflowGUIUtils.h>
 
 #include <U2Lang/HRSchemaSerializer.h>
-#include <U2Lang/WorkflowUtils.h>
 #include <U2Lang/WorkflowSettings.h>
+#include <U2Lang/WorkflowUtils.h>
 
-#include <QtCore/QDir>
-#include <QtCore/QUrl>
-#include <QtCore/QTextStream>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QStyle>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QMenu>
-#include <QtGui/QToolButton>
-#include <QtGui/QHeaderView>
-#include <QtGui/QTreeView>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QStyledItemDelegate>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QStyle>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QTreeView>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QStyledItemDelegate>
-#endif
-#include <QtCore/QAbstractItemModel>
-#include <QtGui/QPainter>
-#include <QtGui/QContextMenuEvent>
-#include <QtGui/QTextDocument>
+#include "WorkflowSamples.h"
+#include "WorkflowViewController.h"
+#include "util/SaveSchemaImageUtils.h"
 
-Q_DECLARE_METATYPE(QTextDocument*);
+Q_DECLARE_METATYPE(QTextDocument*)
 
 namespace U2 {
 

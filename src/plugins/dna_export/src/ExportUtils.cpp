@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,18 +19,28 @@
  * MA 02110-1301, USA.
  */
 
+#include <QMainWindow>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SaveDocumentTask.h>
+#include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/MainWindow.h>
 
 #include "ExportSequenceTask.h"
 #include "ExportSequencesDialog.h"
 #include "ExportTasks.h"
 #include "ExportUtils.h"
+#include "dialogs/ExportMca2MsaDialog.h"
+#include "tasks/ExportMca2MsaTask.h"
 
 namespace U2 {
 
@@ -68,4 +78,24 @@ QString ExportUtils::genUniqueName(const QSet<QString>& names, QString prefix) {
     return name;
 }
 
-}//namespace
+void ExportUtils::launchExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject) {
+    SAFE_POINT(NULL != mcaObject, "Can't cast the object to MultipleChromatogramAlignmentObject", );
+
+    Document *document = mcaObject->getDocument();
+    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(document->getURL(), mcaObject->getGObjectName(), BaseDocumentFormats::UGENEDB, "");
+
+    QObjectScopedPointer<ExportMca2MsaDialog> dialog = new ExportMca2MsaDialog(defaultUrl, AppContext::getMainWindow()->getQMainWindow());
+    const int result = dialog->exec();
+    CHECK(!dialog.isNull(), );
+    CHECK(result != QDialog::Rejected, );
+
+    Task *task = ExportUtils::wrapExportTask(new ExportMca2MsaTask(mcaObject,
+                                                                   dialog->getSavePath(),
+                                                                   dialog->getFormatId(),
+                                                                   dialog->getIncludeReferenceOption()),
+                                             dialog->getAddToProjectOption());
+    TaskWatchdog::trackResourceExistence(mcaObject, task, tr("A problem occurred during export MCA to MSA. The MCA is no more available."));
+    AppContext::getTaskScheduler()->registerTopLevelTask(task);
+}
+
+}   // namespace U2

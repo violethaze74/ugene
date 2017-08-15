@@ -79,7 +79,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h \
-            src/runnables/ugene/plugins_3rdparty/hmm3/UHMM3SearchDialogFiller.h \
+            src/runnables/ugene/plugins_3rdparty/hmm3/HmmerSearchDialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h \
@@ -109,6 +109,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins/enzymes/EditFragmentDialogFiller.h \
             src/runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h \
 #   Runnables / UGENE / plugins / external_tools
+            src/runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h \
@@ -150,10 +151,13 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsEscClicker.h \
             src/GTUtilsExternalTools.h \
             src/GTUtilsLog.h \
+            src/GTUtilsMcaEditor.h \
+            src/GTUtilsMcaEditorSequenceArea.h \
             src/GTUtilsMdi.h \
             src/GTUtilsMsaEditor.h \
             src/GTUtilsMsaEditorSequenceArea.h \
             src/GTUtilsNotifications.h \
+            src/GTUtilsOptionPanelMca.h \
             src/GTUtilsOptionPanelMSA.h \
             src/GTUtilsOptionPanelSequenceView.h \
             src/GTUtilsOptionsPanel.h \
@@ -171,7 +175,9 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsWorkflowDesigner.h \
             src/GTUtilsStartPage.h \
 #   Tests
-            src/tests/GUIInitialChecks.h \
+            src/tests/PosteriorActions.h \
+            src/tests/PosteriorChecks.h \
+            src/tests/PreliminaryActions.h \
 #   Tests/Regression Scenarios
             src/tests/regression_scenarios/GTTestsRegressionScenarios_1_1000.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_1001_2000.h \
@@ -197,6 +203,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/cloning/GTTestsCloning.h \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h \
             src/tests/common_scenarios/dp_view/GTTestsDpView.h \
+            src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.h \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.h \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h \
             src/tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h \
@@ -209,6 +216,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.h \
             src/tests/common_scenarios/pcr/GTTestsInSilicoPcr.h \
             src/tests/common_scenarios/pcr/GTTestsPrimerLibrary.h \
+            src/tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.h \
             src/tests/common_scenarios/project/GTTestsProject.h \
             src/tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.h \
             src/tests/common_scenarios/project/bookmarks/GTTestsBookmarks.h \
@@ -221,6 +229,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/project/sequence_exporting/from_project_view/GTTestsFromProjectView.h \
             src/tests/common_scenarios/project/user_locking/GTTestsProjectUserLocking.h \
             src/tests/common_scenarios/repeat_finder/GTTestsRepeatFinder.h \
+            src/tests/common_scenarios/sanger/GTTestsSanger.h \
             src/tests/common_scenarios/sequence_edit/GTTestsSequenceEdit.h \
             src/tests/common_scenarios/sequence_view/GTTestsSequenceView.h \
             src/tests/common_scenarios/shared_database/GTTestsSharedDatabase.h \
@@ -322,7 +331,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.cpp \
-            src/runnables/ugene/plugins_3rdparty/hmm3/UHMM3SearchDialogFiller.cpp \
+            src/runnables/ugene/plugins_3rdparty/hmm3/HmmerSearchDialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.cpp \
@@ -352,6 +361,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins/enzymes/EditFragmentDialogFiller.cpp \
             src/runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.cpp \
 #   Runnables / UGENE / plugins / external_tools
+            src/runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/FormatDBDialogFiller.cpp \
@@ -393,10 +403,13 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsEscClicker.cpp \
             src/GTUtilsExternalTools.cpp \
             src/GTUtilsLog.cpp \
+            src/GTUtilsMcaEditor.cpp \
+            src/GTUtilsMcaEditorSequenceArea.cpp \
             src/GTUtilsMdi.cpp \
             src/GTUtilsMsaEditor.cpp \
             src/GTUtilsMsaEditorSequenceArea.cpp \
             src/GTUtilsNotifications.cpp \
+            src/GTUtilsOptionPanelMca.cpp \
             src/GTUtilsOptionPanelMSA.cpp \
             src/GTUtilsOptionPanelSequenceView.cpp \
             src/GTUtilsOptionsPanel.cpp \
@@ -414,7 +427,9 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsWorkflowDesigner.cpp \
             src/GTUtilsStartPage.cpp \
 #   Tests
-            src/tests/GUIInitialChecks.cpp \
+            src/tests/PreliminaryActions.cpp \
+            src/tests/PosteriorActions.cpp \
+            src/tests/PosteriorChecks.cpp \
 #   Tests/Regression Scenarios
             src/tests/regression_scenarios/GTTestsRegressionScenarios_1001_2000.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_1_1000.cpp \
@@ -440,6 +455,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/cloning/GTTestsCloning.cpp \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.cpp \
             src/tests/common_scenarios/dp_view/GTTestsDpView.cpp \
+            src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.cpp \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.cpp \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.cpp \
             src/tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.cpp \
@@ -452,6 +468,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.cpp \
             src/tests/common_scenarios/pcr/GTTestsInSilicoPcr.cpp \
             src/tests/common_scenarios/pcr/GTTestsPrimerLibrary.cpp \
+            src/tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.cpp \
             src/tests/common_scenarios/project/GTTestsProject.cpp \
             src/tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.cpp \
             src/tests/common_scenarios/project/bookmarks/GTTestsBookmarks.cpp \
@@ -464,6 +481,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/project/sequence_exporting/from_project_view/GTTestsFromProjectView.cpp \
             src/tests/common_scenarios/project/user_locking/GTTestsProjectUserLocking.cpp \
             src/tests/common_scenarios/repeat_finder/GTTestsRepeatFinder.cpp \
+            src/tests/common_scenarios/sanger/GTTestsSanger.cpp \
             src/tests/common_scenarios/sequence_edit/GTTestsSequenceEdit.cpp \
             src/tests/common_scenarios/sequence_view/GTTestsSequenceView.cpp \
             src/tests/common_scenarios/shared_database/GTTestsSharedDatabase.cpp \

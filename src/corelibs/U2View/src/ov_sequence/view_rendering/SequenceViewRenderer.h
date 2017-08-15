@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-class ADVSequenceObjectContext;
+class SequenceObjectContext;
 class U2Region;
 
 struct CommonSequenceViewMetrics {
@@ -50,7 +50,7 @@ struct CommonSequenceViewMetrics {
 /************************************************************************/
 class SequenceViewRenderer {
 public:
-    SequenceViewRenderer(ADVSequenceObjectContext* ctx);
+    SequenceViewRenderer(SequenceObjectContext* ctx);
 
     virtual qint64 coordToPos(const QPoint& p, const QSize& canvasSize, const U2Region& visibleRange) const = 0;
 
@@ -70,7 +70,7 @@ public:
     virtual QSize getBaseCanvasSize(const U2Region& visibleRange) const = 0;
 
 protected:
-    ADVSequenceObjectContext*   ctx;
+    SequenceObjectContext*      ctx;
     CommonSequenceViewMetrics   commonMetrics;
 
 };

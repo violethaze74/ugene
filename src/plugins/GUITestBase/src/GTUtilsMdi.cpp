@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 
 #include <QApplication>
 #include <QMainWindow>
+#include <QMdiArea>
 #include <QMdiSubWindow>
 #include <QMenu>
 
@@ -32,6 +33,7 @@
 #include "GTGlobals.h"
 #include "primitives/GTMenu.h"
 #include <drivers/GTMouseDriver.h>
+#include <drivers/GTKeyboardDriver.h>
 #include "utils/GTThread.h"
 #include <base_dialogs/MessageBoxFiller.h>
 
@@ -55,7 +57,21 @@ void GTUtilsMdi::click(HI::GUITestOpStatus &os, GTGlobals::WindowAction action) 
 //    }
 
 #ifndef Q_OS_MAC
-    GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
+	switch (action) {
+	case GTGlobals::Close: {
+#ifdef Q_OS_UNIX
+        GTMenu::clickMainMenuItem(os, QStringList() << "Window" << "Close active view");
+#else
+        GTKeyboardDriver::keyPress(Qt::Key_Control);
+		GTKeyboardDriver::keyClick(Qt::Key_F4);
+		GTKeyboardDriver::keyRelease(Qt::Key_Control);
+#endif
+		break;
+	}
+	default:
+		GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
+		break;
+	}
 #else
     MWMDIWindow *mdiWindow = mw->getMDIManager()->getActiveWindow();
     GT_CHECK(mdiWindow != NULL, "MDIWindow == NULL");
@@ -116,6 +132,12 @@ QWidget * GTUtilsMdi::findWindow(HI::GUITestOpStatus &os, const QString &windowN
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "closeActiveWindow"
+void GTUtilsMdi::closeActiveWindow(GUITestOpStatus &os) {
+    closeWindow(os, activeWindowTitle(os));
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "closeWindow"
 void GTUtilsMdi::closeWindow(HI::GUITestOpStatus &os, const QString &windowName, const GTGlobals::FindOptions& options) {
     GT_CHECK(windowName.isEmpty() == false, "windowname is empty");
@@ -155,17 +177,25 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
     QWidget *mdiWindow = NULL;
     GTGlobals::FindOptions options(false);
 
+    bool tabbedView = isTabbedLayout(os);
+
     while (NULL != (mdiWindow = GTUtilsMdi::activeWindow(os, options))) {
         GT_CHECK(prevWindow != mdiWindow, "Can't close MDI window");
         prevWindow = mdiWindow;
 
-        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
+        MessageBoxDialogFiller *filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
+        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
 
-        const QPoint closeButtonPos = GTWidget::getWidgetGlobalTopLeftPoint(os, mdiWindow) + QPoint(10, 5);
-        GTMouseDriver::moveTo(closeButtonPos);
-        GTMouseDriver::click();
+        if (!tabbedView) {
+            const QPoint closeButtonPos = GTWidget::getWidgetGlobalTopLeftPoint(os, mdiWindow) + QPoint(10, 5);
+            GTMouseDriver::moveTo(closeButtonPos);
+            GTMouseDriver::click();
+        } else {
+            GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Close active view");
+        }
         GTGlobals::sleep(100);
         GTThread::waitForMainThread();
+        GTUtilsDialog::removeRunnable(filler);
     }
 #endif
 }
@@ -191,6 +221,16 @@ void GTUtilsMdi::waitWindowOpened(HI::GUITestOpStatus &os, const QString &window
     if (!found) {
         os.setError(QString("Cannot find MDI window with part of name '%1', timeout").arg(windowNamePart));
     }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isTabbedLayout"
+bool GTUtilsMdi::isTabbedLayout(HI::GUITestOpStatus &os) {
+    MainWindow* mainWindow = AppContext::getMainWindow();
+    GT_CHECK_RESULT(mainWindow != NULL, "MainWindow == NULL", NULL);
+    QMdiArea *mdiArea = GTWidget::findExactWidget<QMdiArea *>(os, "MDI_Area", mainWindow->getQMainWindow());
+    GT_CHECK_RESULT(mdiArea != NULL, "mdiArea == NULL", NULL);
+    return mdiArea->viewMode() == QMdiArea::TabbedView;
 }
 #undef GT_METHOD_NAME
 

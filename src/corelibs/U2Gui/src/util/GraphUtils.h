@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,13 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#if !defined(GRAPHUTILS_H)
-#define GRAPHUTILS_H
+#ifndef _U2_GRAPH_UTILS_H_
+#define _U2_GRAPH_UTILS_H_
+
+#include <QColor>
 
 #include <U2Core/global.h>
 
-#include <QtGui/QPainter>
-#include <QtGui/QFont>
+class QPainter;
 
 namespace U2 {
 
@@ -33,11 +34,18 @@ namespace U2 {
 
 class U2GUI_EXPORT GraphUtils {
 public:
+    enum Direction {
+        LeftToRight,
+        RightToLeft,
+        BottomToTop,
+        TopToBottom
+    };
 
-    enum Direction { LTR, RTL, BTT, TTB };
+    enum TextPos {
+        LEFT,
+        RIGHT
+    };
 
-    enum TextPos { LEFT, RIGHT };
-    
     struct RulerConfig {
         RulerConfig() {
             drawArrow = false;
@@ -50,7 +58,7 @@ public:
             drawBorderNotches = true;
             singleSideNotches = false;
             drawAxis = true;
-            direction = LTR;
+            direction = LeftToRight;
             textPosition = RIGHT;
             extraAxisLenBefore =0;
             extraAxisLenAfter =0;
@@ -79,6 +87,17 @@ public:
         TextPos   textPosition;
     };
 
+    struct U2GUI_EXPORT ArrowConfig {
+        ArrowConfig();
+
+        qreal lineWidth;
+        qreal lineLength;
+        qreal arrowHeadWidth;
+        qreal arrowHeadLength;
+        QColor color;
+        Direction direction;
+    };
+
     static void drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 start, qint64 end, const QFont& f, const RulerConfig& config);
     static int calculateChunk(qint64 start, qint64 end, qint64 len, const QPainter &p);
     static int findChunk(qint64 len, qint64 span, int N);
@@ -87,17 +106,19 @@ public:
 
     static QColor proposeLightColorByKey(const QString& key);
 
-	/* 
-	   The method is designed to be used by different algorithms that needs to 
-	   select some "nice looking" number in range to be presented to user.
+    /*
+       The method is designed to be used by different algorithms that needs to
+       select some "nice looking" number in range to be presented to user.
 
-	   Selects "nice looking" number below maxVal.
-	   Example (input, result) : (231, 200), (49, 40), (12421452, 12000000)
-	   Works only for positive numbers, returns maxVal for negative or zero
-	*/
-	static qint64 pickRoundedNumberBelow(qint64 maxVal);
+       Selects "nice looking" number below maxVal.
+       Example (input, result) : (231, 200), (49, 40), (12421452, 12000000)
+       Works only for positive numbers, returns maxVal for negative or zero
+    */
+    static qint64 pickRoundedNumberBelow(qint64 maxVal);
+
+    static void drawArrow(QPainter &painter, const QRectF &rect, const ArrowConfig &config);
 };
 
-} //namespace
+}   // namespace U2
 
-#endif
+#endif // _U2_GRAPH_UTILS_H_

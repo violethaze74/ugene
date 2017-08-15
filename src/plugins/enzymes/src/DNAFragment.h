@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #ifndef _U2_DNA_FRAGMENT_H_
 #define _U2_DNA_FRAGMENT_H_
 
-#include <QtCore/QList>
+#include <QList>
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/U2Region.h>
