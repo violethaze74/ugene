@@ -105,7 +105,7 @@ public:
 
     virtual void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
-    virtual void adjustReferenceLength(U2OpStatus& os) {}
+    virtual void adjustReferenceLength(U2OpStatus& os) { Q_UNUSED(os); }
 
     U2Region getSelectedRows() const;
 
@@ -152,7 +152,6 @@ public:
     bool getUseDotsCheckedState() const;
 
     QAction *getReplaceCharacterAction() const;
-    const QAction * const getRemoveSAction() const;
 
 public slots:
     void sl_changeColorSchemeOutside(const QString &id);
