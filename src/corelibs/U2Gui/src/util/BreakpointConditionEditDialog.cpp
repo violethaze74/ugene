@@ -35,7 +35,7 @@ BreakpointConditionEditDialog::BreakpointConditionEditDialog(QWidget *parent,
 {
     ui = new Ui_BreakpointConditionEditDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "19760043");
+    new HelpButton(this, ui->buttonBox, "19767300");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
