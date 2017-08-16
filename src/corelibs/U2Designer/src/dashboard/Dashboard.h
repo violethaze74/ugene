@@ -22,7 +22,7 @@
 #ifndef _U2_DASHBOARD_H_
 #define _U2_DASHBOARD_H_
 
-#include <qglobal.h>
+#include <QJsonArray>
 
 #if (QT_VERSION < 0x050500)
 #include <QWebChannel>

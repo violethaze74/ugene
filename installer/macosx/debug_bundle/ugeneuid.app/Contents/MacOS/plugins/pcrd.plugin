@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<ugene-plugin id="pcrd" version="1.27.0" ugene-version="1.27.0" qt-version="5.7.1"    >
-    <name>In silico PCR</name>
-    <plugin-vendor>Unipro</plugin-vendor>
-    <plugin-mode>console,ui</plugin-mode>
-    <library>libpcrd.dylib</library>
-    <platform name="macx" arch="64"/>
-    <debug-build>true</debug-build>
-</ugene-plugin>

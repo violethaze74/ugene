@@ -20,7 +20,6 @@
  */
 
 #include <QApplication>
-#include <QWebFrame>
 #include <QTextStream>
 
 #include "EstimationReporter.h"

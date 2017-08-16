@@ -23,7 +23,6 @@
 #define _U2_ESTIMATION_REPORTER_H_
 
 #include <QMessageBox>
-#include <QWebView>
 
 #include <U2Core/global.h>
 #include <U2Lang/SchemaEstimationTask.h>

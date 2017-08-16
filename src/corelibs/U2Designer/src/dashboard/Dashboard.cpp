@@ -24,7 +24,10 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QMessageBox>
+#include <QSettings>
 #include <QWebChannel>
 #include <QWebSocketServer>
 
