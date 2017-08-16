@@ -1524,6 +1524,10 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
     if (maObj == NULL || maObj->isStateLocked()) {
         return;
     }
+    if (maObj->getNumRows() == 1 && maObj->getRow(selection.y())->getCoreLength() == 1 && newCharacter == U2Msa::GAP_CHAR) {
+        exitFromEditCharacterMode();
+        return;
+    }
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);

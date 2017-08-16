@@ -63,7 +63,7 @@ AppSettingsGUIPageWidget* ExternalToolSupportSettingsPageController::createWidge
     return r;
 }
 
-const QString ExternalToolSupportSettingsPageController::helpPageId = QString("19759445");
+const QString ExternalToolSupportSettingsPageController::helpPageId = QString("19766701");
 
 /////////////////////////////////////////////
 ////ExternalToolSupportSettingsPageWidget

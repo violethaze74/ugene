@@ -39,14 +39,13 @@
 
 namespace U2 {
 
-
 const int MaSangerOverview::READ_HEIGHT = 9;
 const int MaSangerOverview::MINIMUM_HEIGHT = 100;
 const qreal MaSangerOverview::ARROW_LINE_WIDTH = 2;
 const qreal MaSangerOverview::ARROW_HEAD_WIDTH = 6;
 const qreal MaSangerOverview::ARROW_HEAD_LENGTH = 7;
-const QColor MaSangerOverview::ARROW_DIRECT_COLOR = "blue"; // another possible color: "#4EADE1";
-const QColor MaSangerOverview::ARROW_REVERSE_COLOR = "green"; // another possible color: "#03c03c";
+const QColor MaSangerOverview::ARROW_DIRECT_COLOR = "blue";
+const QColor MaSangerOverview::ARROW_REVERSE_COLOR = "green";
 
 MaSangerOverview::MaSangerOverview(MaEditorWgt *ui)
     : MaOverview(ui),
@@ -219,12 +218,14 @@ void MaSangerOverview::drawVisibleRange(QPainter &painter) {
 
         cachedVisibleRange.setX(qRound(screenPosition.x() / stepX));
         cachedVisibleRange.setWidth(qRound(screenSize.width() / stepX));
-        cachedVisibleRange.setY(qMax(qRound(screenPosition.y() / stepY + getReferenceHeight() - getScrollBarValue()), getReferenceHeight()));
+        cachedVisibleRange.setY(qRound(screenPosition.y() / stepY) + getReferenceHeight() - getScrollBarValue());
         cachedVisibleRange.setHeight(qMin(qRound(screenSize.height() / stepY), renderArea->height() - getReferenceHeight()));
     }
 
+    painter.setClipRect(0, getReferenceHeight(), getContentWidgetWidth(), renderArea->height() - getReferenceHeight());
     painter.fillRect(cachedVisibleRange, VISIBLE_RANGE_COLOR);
     painter.drawRect(cachedVisibleRange.adjusted(0, 0, -1, -1));
+    painter.setClipping(false);
 }
 
 void MaSangerOverview::drawReference() {

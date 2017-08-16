@@ -31,7 +31,7 @@ namespace U2 {
 TreeSettingsDialog::TreeSettingsDialog(QWidget *parent, const OptionsMap &settings, bool isRectLayout)
 : BaseSettingsDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759626");
+    new HelpButton(this, buttonBox, "19766882");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

@@ -371,6 +371,14 @@ void Document::makeClean() {
     }
 }
 
+void Document::setModificationTrack(bool track) {
+    if (df != NULL && df->checkFlags(DocumentFormatFlag_DirectWriteOperations)) {
+        StateLockableTreeItem::setModificationTrack(false);
+    } else {
+        StateLockableTreeItem::setModificationTrack(track);
+    }
+}
+
 GObject * Document::findGObjectByNameInDb(const QString &name) const {
     U2OpStatusImpl os;
     DbiConnection con(dbiRef, os);

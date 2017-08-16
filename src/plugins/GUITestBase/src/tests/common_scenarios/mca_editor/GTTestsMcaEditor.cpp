@@ -749,6 +749,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //8. Select "A"
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Show/hide trace" << "A"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -757,12 +758,14 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     //9. Select "C"
     //Expected state : "A" is unchecked
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     QStringList intermediateCheck;
     intermediateCheck << "A";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsUnchecked)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Show/hide trace" << "C"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -771,11 +774,13 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     //10. Select "G"
     //Expected state : "A" and "C"  are unchecked
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     intermediateCheck << "C";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsUnchecked)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Show/hide trace" << "G"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -784,11 +789,13 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     //11. Select "T"
     //Expected state : "A", "C", "G"  are unchecked
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));\
     intermediateCheck << "G";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsUnchecked)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Show/hide trace" << "T"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -797,11 +804,13 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     //12. Select "All"
     //Expected state : All four traces are restored for all chromatograms
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     intermediateCheck << "T";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsUnchecked)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Show/hide trace" << "Show all"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -809,6 +818,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     //13. Expand combo once more
     //Expected state : All four letters are checked
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, intermediateCheck, PopupChecker::CheckOptions(PopupChecker::IsChecked)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -891,6 +901,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     GTMenu::checkMainMenuItemsState(os, menuPath, itemsNames, PopupChecker::CheckOption(PopupChecker::Exists));
 
     //8. Select "A"
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "A");;
 
     //Expected state : Green trace vanished from all chromatograms
@@ -900,6 +911,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     QStringList intermediateCheck = QStringList() << "A";
     GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "C");;
 
     //Expected state : Blue trace vanished from all chromatograms
@@ -909,15 +921,18 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     intermediateCheck << "C";
     GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "G");;
 
     //Expected state : Grey trace vanished from all chromatograms
 
     //11. Select "T"
     //Expected state : "A", "C", "G"  are unchecked
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     intermediateCheck << "G";
     GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "T");;
 
     //Expected state : Red trace vanished from all chromatograms; there are no any traces on the screen
@@ -927,6 +942,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     intermediateCheck << "T";
     GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show/hide trace" << "Show all");;
 
     //13. Expand combo once more
