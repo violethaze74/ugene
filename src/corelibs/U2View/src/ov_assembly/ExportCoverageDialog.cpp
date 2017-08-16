@@ -97,7 +97,7 @@ void ExportCoverageDialog::sl_formatChanged(const QString &format) {
 
 void ExportCoverageDialog::initLayout() {
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
-    new HelpButton(this, buttonBox, "19759614");
+    new HelpButton(this, buttonBox, "19766870");
     gbAdditionalOptions->hide();
     setMaximumHeight(layout()->minimumSize().height());
     adjustSize();

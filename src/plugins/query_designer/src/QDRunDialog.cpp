@@ -79,7 +79,7 @@ QDRunDialog::QDRunDialog(QDScheme* _scheme, QWidget* parent, const QString& defa
       saveController(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759357");
+    new HelpButton(this, buttonBox, "19766614");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -293,7 +293,7 @@ QList<Task*> QDRunDialogTask::onSubTaskFinished(Task* subTask) {
 QDDialog::QDDialog(ADVSequenceObjectContext* _ctx)
 : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), ctx(_ctx), scheme(NULL), txtDoc(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759358");
+    new HelpButton(this, buttonBox, "19766615");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

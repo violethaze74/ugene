@@ -33,7 +33,7 @@ namespace U2 {
 
 const QString SeqStatisticsWidgetFactory::GROUP_ID = "OP_SEQ_STATISTICS_WIDGET";
 const QString SeqStatisticsWidgetFactory::GROUP_ICON_STR = ":core/images/chart_bar.png";
-const QString SeqStatisticsWidgetFactory::GROUP_DOC_PAGE = "19759588";
+const QString SeqStatisticsWidgetFactory::GROUP_DOC_PAGE = "19766844";
 
 
 SeqStatisticsWidgetFactory::SeqStatisticsWidgetFactory() {

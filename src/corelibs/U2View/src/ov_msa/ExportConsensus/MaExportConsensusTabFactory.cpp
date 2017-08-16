@@ -35,7 +35,7 @@
 namespace U2 {
 
 const QString GROUP_ICON_STR = ":core/images/consensus.png";
-const QString GROUP_DOC_PAGE = "19759549";
+const QString GROUP_DOC_PAGE = "19766805";
 const QString MsaExportConsensusTabFactory::GROUP_ID = "OP_EXPORT_CONSENSUS";
 const QString McaExportConsensusTabFactory::GROUP_ID = "OP_CONSENSUS";
 

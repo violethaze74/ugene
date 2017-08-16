@@ -48,7 +48,7 @@ SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(GSequenceGrap
       gd(_gd)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759526");
+    new HelpButton(this, buttonBox, "19766782");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Save"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
