@@ -44,10 +44,3 @@ ugene.pro.user
 
 # CLion build dir
 cmake-build-*
-/ugene.VC.VC.opendb
-/ugene.VC.db
-/ugene-build.log
-/data/samples/Assembly/chrM.sam.ugenedb
-/data/samples/Assembly/chrM.sam.bam.bai
-/data/samples/Assembly/chrM.sam.bam
-/src/corelibs/U2Private/StackRollbackX64.obj
