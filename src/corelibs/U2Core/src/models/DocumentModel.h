@@ -390,6 +390,8 @@ public:
 
     void makeClean();
 
+    void setModificationTrack(bool track);
+
     // avoid using this method against shared databases documents,
     // since databases allow many objects with the same name. The method returns
     // first matched GObject. Use `getObjectById` instead.
