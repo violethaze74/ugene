@@ -67,12 +67,12 @@ DnaAssemblyDialog::DnaAssemblyDialog(QWidget* p, const QStringList& shortReadsUr
 {
     setupUi(this);
     QMap<QString,QString> helpPagesMap;
-    helpPagesMap.insert("BWA","19766958");
-    helpPagesMap.insert("BWA-MEM","19766992");
-    helpPagesMap.insert("BWA-SW","19766986");
-    helpPagesMap.insert("Bowtie","19766955");
-    helpPagesMap.insert("Bowtie2","19766983");
-    helpPagesMap.insert("UGENE Genome Aligner","19766961");
+    helpPagesMap.insert("BWA","20875114");
+    helpPagesMap.insert("BWA-MEM","20875148");
+    helpPagesMap.insert("BWA-SW","20875142");
+    helpPagesMap.insert("Bowtie","20875111");
+    helpPagesMap.insert("Bowtie2","20875139");
+    helpPagesMap.insert("UGENE Genome Aligner","20875117");
     new ComboboxDependentHelpButton(this, buttonBox, methodNamesBox, helpPagesMap);
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
