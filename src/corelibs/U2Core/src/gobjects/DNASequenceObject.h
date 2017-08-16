@@ -99,9 +99,10 @@ public:
 
     void setByteArrayAttribute(const QByteArray& newByteArrayAttributeValue, const QString& type);
 
-    void forceCachedSequenceUpdate();
-
     static bool lessThan( const U2SequenceObject *one, const U2SequenceObject *two){return one->name < two->name;}
+
+private slots:
+    void sl_resetDataCaches();
 
 signals:
     void si_sequenceChanged();

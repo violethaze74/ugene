@@ -109,8 +109,10 @@ U2SequenceObject* MultipleChromatogramAlignmentObject::getReferenceObj() const {
         GObject* obj = GObjectUtils::createObject(con.dbi->getDbiRef(), attribute.value, "reference object");
 
         referenceObj = qobject_cast<U2SequenceObject*> (obj);
-
+        connect(this, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), referenceObj, SLOT(sl_resetDataCaches()));
+        connect(this, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), referenceObj, SIGNAL(si_sequenceChanged()));
     }
+
     return referenceObj;
 }
 

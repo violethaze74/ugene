@@ -163,7 +163,7 @@ protected slots:
     void sl_changeColorScheme();
     void sl_fillCurrentSelectionWithGaps();
 
-    virtual void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
+    void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
 
     void sl_completeUpdate();
     void sl_completeRedraw();
