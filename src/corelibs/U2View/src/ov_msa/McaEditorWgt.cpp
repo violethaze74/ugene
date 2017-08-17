@@ -71,6 +71,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     QWidget *refName = createHeaderLabelWidget(tr("Reference %1:").arg(name),
                                                Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), refArea);
     refName->setObjectName("reference label container widget");
+    refName->setContentsMargins(0, TOP_INDENT, 0, 0);
 
     nameAreaLayout->insertWidget(0, refName);
 
