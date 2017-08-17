@@ -196,6 +196,7 @@ void MaEditorWgt::initWidgets() {
 
     nameAreaContainer = new QWidget();
     nameAreaContainer->setLayout(nameAreaLayout);
+    nameAreaContainer->setStyleSheet("background-color: white;");
 
     maSplitter.addWidget(nameAreaContainer, 0, 0.1);
     maSplitter.addWidget(seqAreaContainer, 1, 3);
