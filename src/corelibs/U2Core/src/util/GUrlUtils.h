@@ -137,6 +137,8 @@ public:
     * so file name will both POSIX-compatible and Windows-compatible.
     */
     static QString fixFileName(const QString &fileName);
+
+    static QString getSlashEndedPath(const QString &dirPath);
 };
 
 } //namespace
