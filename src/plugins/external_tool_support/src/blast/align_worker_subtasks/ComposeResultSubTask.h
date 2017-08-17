@@ -62,6 +62,7 @@ private:
     void insertShiftedGapsIntoReference();
     void insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps);
     void createAlignmentAndAnnotations();
+    void enlargeReferenceByGaps();
     U2Region getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const U2MsaRowGapModel &referenceGapModel) const;
     U2Location getLocation(const U2Region &region, bool isComplement);
 
