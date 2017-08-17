@@ -30,7 +30,7 @@ namespace U2 {
 const QString McaGeneralTabFactory::GROUP_ID = "OP_MCA_GENERAL";
 const QString McaGeneralTabFactory::GROUP_ICON_STR = ":core/images/settings2.png";
 const QString McaGeneralTabFactory::GROUP_TITLE = QString(QObject::tr("General"));
-const QString McaGeneralTabFactory::GROUP_DOC_PAGE = "19766804"; // SANGER_TODO: add documentation link
+const QString McaGeneralTabFactory::GROUP_DOC_PAGE = "20873516";
 
 McaGeneralTabFactory::McaGeneralTabFactory() {
     objectViewOfWidget = ObjViewType_ChromAlignmentEditor;

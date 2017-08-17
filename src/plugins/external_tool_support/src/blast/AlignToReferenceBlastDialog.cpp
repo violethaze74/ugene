@@ -163,8 +163,7 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
 {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "19766975"); //! TODO: help link
-
+    new HelpButton(this, buttonBox, "20873538"); 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
