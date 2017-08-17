@@ -25,6 +25,7 @@
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/ExternalToolRunTask.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -57,7 +58,7 @@ void FormatDBSubTask::prepare() {
     settings.isInputAmino = refObject->getAlphabet()->isAmino();
     settings.databaseTitle = refObject->getSequenceName();
 
-    settings.outputPath = ExternalToolSupportUtils::createTmpDir("align_to_ref", stateInfo);
+    settings.outputPath = GUrlUtils::getSlashEndedPath(ExternalToolSupportUtils::createTmpDir("align_to_ref", stateInfo)) + QFileInfo(referenceUrl).completeBaseName();
     CHECK_OP(stateInfo, );
 
     FormatDBSupportTask* formatTask = new FormatDBSupportTask(ET_FORMATDB, settings);
