@@ -1,6 +1,7 @@
 /*Problem {
     QString message;
-    QString actor;
+    QString actorId;
+    QString actorName;
     QString type;
     QString port;
 
@@ -22,7 +23,6 @@ function ProblemsWidget(containerId){ // may be add first problem as second argu
                   "<span lang=\"en\" class=\"translatable\">Element</span>" + "<span lang=\"ru\" class=\"translatable\">Элемент</span>",
                   "<span lang=\"en\" class=\"translatable\">Message</span>" + "<span lang=\"ru\" class=\"translatable\">Сообщение</span>"
                   ];
-  
   this.sl_newProblem = function (problemInfo, count){
     if (!self._isContainerExists()) {
       agent.sl_onJsError("Can't find container by id = " + self._containerId + "!");
@@ -34,6 +34,7 @@ function ProblemsWidget(containerId){ // may be add first problem as second argu
         self._addRow(id(problemInfo), createRow(problemInfo));
     }
   };
+
   this.problemImage = function (problemInfo){
     var image = "qrc:///U2Lang/images/";
     if ("error" === problemInfo.type) {
@@ -69,7 +70,7 @@ function ProblemsWidget(containerId){ // may be add first problem as second argu
     }
 
     result.push(self.problemImage(info));
-    result.push(self.wrapLongText(/*m->actorName(*/info.actor));
+    result.push(self.wrapLongText(info.actorName));
     result.push(getTextWithWordBreaks(prefix + info.message));
 
     return result;
@@ -80,7 +81,7 @@ function ProblemsWidget(containerId){ // may be add first problem as second argu
     return textWithBreaks;
   }
   function id(info){
-    return info.actor + info.message;
+    return info.actorId + info.message;
   }
   //constructor code
   this._createTable();

@@ -367,8 +367,10 @@ void DashboardPageController::sl_taskStateChanged(U2::Workflow::Monitor::TaskSta
 }
 
 void DashboardPageController::sl_newProblem(const Problem &info, int count){
+    SAFE_POINT(NULL != monitor, "WorkflowMonitor is NULL", );
     QJsonObject infoJS;
-    infoJS["actor"] = info.actor;
+    infoJS["actorId"] = info.actorId;
+    infoJS["actorName"] = monitor->actorName(info.actorId);
     infoJS["type"] = info.type;
     infoJS["message"] = info.message;
     infoJS["count"] = count;

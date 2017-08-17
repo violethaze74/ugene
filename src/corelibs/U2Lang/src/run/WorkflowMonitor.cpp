@@ -49,6 +49,7 @@ WorkflowMonitor::WorkflowMonitor(WorkflowAbstractIterationRunner *_task, Schema 
 {
     foreach (Actor *p, schema->getProcesses()) {
         procMap[p->getId()] = p;
+        processNames[p->getId()] = p->getLabel();
         addTime(0, p->getId());
     }
 
@@ -101,10 +102,8 @@ const QMap<QString, StrStrMap> &WorkflowMonitor::getWorkersReports() const {
 }
 
 QString WorkflowMonitor::actorName(const QString &id) const {
-    SAFE_POINT(procMap.contains(id), QString("Unknown actor id %1").arg(id), "");
-    QPointer<Actor> actor = procMap[id];
-    SAFE_POINT(NULL != actor, QString("Actor has already deleted: %1").arg(id), "");
-    return actor->getLabel();
+    SAFE_POINT(processNames.contains(id), QString("Unknown actor id: '%1'").arg(id), "");
+    return processNames[id];
 }
 
 void WorkflowMonitor::addOutputFile(const QString &url, const QString &producer, bool openBySystem) {
@@ -117,8 +116,12 @@ void WorkflowMonitor::addOutputFile(const QString &url, const QString &producer,
     emit si_newOutputFile(info);
 }
 
-void WorkflowMonitor::addInfo(const QString &message, const QString &actor, const QString &type) {
-    addProblem(Problem(message, actor, type));
+void WorkflowMonitor::addInfo(const QString &message, const QString &actor) {
+    addProblem(Problem(message, actor, Problem::U2_INFO));
+}
+
+void WorkflowMonitor::addWarning(const QString &message, const QString &actor) {
+    addProblem(Problem(message, actor, Problem::U2_WARNING));
 }
 
 void WorkflowMonitor::addError(const QString &message, const QString &actor, const QString &type) {

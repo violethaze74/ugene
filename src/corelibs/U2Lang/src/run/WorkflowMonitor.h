@@ -105,7 +105,8 @@ public:
     bool containsOutputFile(const QString &url) const;
 
     void addOutputFile(const QString &url, const QString &producer, bool openBySystem = false);
-    void addInfo(const QString &message, const QString &actor, const QString &type = Problem::U2_INFO);
+    void addInfo(const QString &message, const QString &actor);
+    void addWarning(const QString &message, const QString &actor);
     void addError(const QString &message, const QString &actor, const QString &type = Problem::U2_ERROR);
     /** Can be called only one time for the task */
     void addTaskError(Task *task, const QString &message = "");
@@ -154,6 +155,7 @@ private:
     QScopedPointer<Metadata>                    meta;
     QPointer<WorkflowAbstractIterationRunner>   task;
     QMap<QString, QPointer<Actor> >             procMap;
+    StrStrMap                                   processNames;
     QMap<Task*, Actor*>                         taskMap;
     QList<Task*>                                errorTasks;
     QList<Monitor::FileInfo>                    outputFiles;

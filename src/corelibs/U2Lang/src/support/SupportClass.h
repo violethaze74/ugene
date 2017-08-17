@@ -40,9 +40,9 @@ typedef QList<Problem> ProblemList;
 
 class U2LANG_EXPORT Problem {
 public:
-    Problem(const QString &message = "", const QString &actor = "", const QString &_type = U2_ERROR);
+    Problem(const QString &message = "", const QString &actorId = "", const QString &_type = U2_ERROR);
     QString message;
-    QString actor;
+    QString actorId;
     QString type;
     QString port;
 
