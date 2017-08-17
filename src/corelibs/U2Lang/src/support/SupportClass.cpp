@@ -30,14 +30,14 @@ const QString Problem::U2_ERROR = "error";
 const QString Problem::U2_WARNING = "warning";
 const QString Problem::U2_INFO = "info";
 
-Problem::Problem(const QString &_message, const QString &_actor, const QString& _type)
-    : message(_message),
-      actor(_actor),
-      type(_type) {
+Problem::Problem(const QString &message, const QString &actorId, const QString& type)
+    : message(message),
+      actorId(actorId),
+      type(type) {
 }
 
 bool Problem::operator== (const Problem &other) const {
-    return (actor == other.actor) &&
+    return (actorId == other.actorId) &&
             (message == other.message) &&
             (type == other.type);
 }

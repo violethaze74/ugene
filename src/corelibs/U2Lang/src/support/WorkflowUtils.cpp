@@ -168,7 +168,7 @@ bool validateParameters(const Schema &schema, ProblemList &infoList) {
         const int problemCountBefore = infoList.size();
         good &= a->validate(infoList);
         for (int i = problemCountBefore; i < infoList.size(); ++i) {
-            infoList[i].actor = a->getId();
+            infoList[i].actorId = a->getId();
         }
     }
     return good;
@@ -208,7 +208,7 @@ bool validatePorts(Actor *a, ProblemList &infoList) {
                 Problem item;
                 item.message = QString("%1 : %2").arg(a->getLabel()).arg(problem.message);
                 item.port = p->getId();
-                item.actor = a->getId();
+                item.actorId = a->getId();
                 item.type = problem.type;
                 infoList << item;
             }
@@ -263,7 +263,7 @@ bool validateScript(Actor *a, ProblemList &infoList) {
         problem.message = QObject::tr("Script syntax check failed! Line: %1, error: %2")
             .arg(syntaxResult.errorLineNumber())
             .arg(syntaxResult.errorMessage());
-        problem.actor = a->getId();
+        problem.actorId = a->getId();
         problem.type = Problem::U2_ERROR;
         infoList << problem;
         return false;
@@ -299,10 +299,10 @@ bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem*> &info
 
     foreach (const Problem &problem, problems) {
         QListWidgetItem *item = NULL;
-        if (problem.actor.isEmpty()) {
+        if (problem.actorId.isEmpty()) {
             item = new QListWidgetItem(problem.type + ": " + problem.message);
         } else {
-            Actor *a = schema.actorById(problem.actor);
+            Actor *a = schema.actorById(problem.actorId);
             item = new QListWidgetItem(QString("%1: %2").arg(a->getLabel()).arg(problem.message));
 
             if (problem.type == Problem::U2_ERROR) {
@@ -314,11 +314,10 @@ bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem*> &info
             }
         }
 
-        item->setData(ACTOR_ID_REF, problem.actor);
+        item->setData(ACTOR_ID_REF, problem.actorId);
         item->setData(PORT_REF, problem.port);
         item->setData(TEXT_REF, problem.message);
         item->setData(TYPE_REF, problem.type);
-        item->setData(ACTOR_NAME_REF, schema.actorById(problem.actor)->getLabel());
 
         infoList << item;
     }
@@ -333,10 +332,10 @@ bool WorkflowUtils::validate(const Workflow::Schema &schema, QStringList &errs) 
 
     foreach (const Problem &problem, problems) {
         QString res = QString();
-        if (problem.actor.isEmpty()) {
+        if (problem.actorId.isEmpty()) {
             res = problem.message;
         } else {
-            Actor *a = schema.actorById(problem.actor);
+            Actor *a = schema.actorById(problem.actorId);
             QString message = problem.message;
             res = QString("%1: %2").arg(a->getLabel()).arg(message);
 
