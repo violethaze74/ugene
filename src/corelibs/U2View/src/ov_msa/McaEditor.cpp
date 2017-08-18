@@ -107,6 +107,10 @@ bool McaEditor::isChromVisible(int rowIndex) const {
     return !ui->getCollapseModel()->isItemCollapsed(rowIndex);
 }
 
+bool McaEditor::isChromatogramButtonChecked() const {
+    return showChromatogramsAction->isChecked();
+}
+
 QString McaEditor::getReferenceRowName() const {
     return getMaObject()->getReferenceObj()->getSequenceName();
 }
