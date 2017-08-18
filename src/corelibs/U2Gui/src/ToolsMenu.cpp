@@ -43,6 +43,7 @@ const QString ToolsMenu::NGS_CONTROL = "NGS_CONTROL";
 const QString ToolsMenu::NGS_DENOVO = "NGS_DENOVO";
 const QString ToolsMenu::NGS_MAP = "NGS_MAP";
 const QString ToolsMenu::NGS_INDEX = "NGS_INDEX";
+const QString ToolsMenu::NGS_SCAFFOLD = "NGS_SCAFFOLD";
 const QString ToolsMenu::NGS_RAW_DNA = "NGS_RAW_DNA";
 const QString ToolsMenu::NGS_CALL_VARIANTS = "NGS_CALL_VARIANTS";
 const QString ToolsMenu::NGS_CALL_VARIANTS_AND_EFFECT = "NGS_CALL_VARIANTS_AND_EFFECT";
@@ -121,9 +122,11 @@ void ToolsMenu::init() {
     {
         subMenuAction[NGS_MENU] << NGS_CONTROL;
         subMenuAction[NGS_MENU] << LINE;
-        subMenuAction[NGS_MENU] << NGS_DENOVO;
-        subMenuAction[NGS_MENU] << NGS_MAP;
         subMenuAction[NGS_MENU] << NGS_INDEX;
+        subMenuAction[NGS_MENU] << NGS_MAP;
+        subMenuAction[NGS_MENU] << LINE;
+        subMenuAction[NGS_MENU] << NGS_DENOVO;
+        subMenuAction[NGS_MENU] << NGS_SCAFFOLD;
         subMenuAction[NGS_MENU] << LINE;
         subMenuAction[NGS_MENU] << NGS_RAW_DNA;
         subMenuAction[NGS_MENU] << NGS_CALL_VARIANTS;
