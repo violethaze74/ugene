@@ -328,6 +328,8 @@ void WorkflowDesignerService::initSampleActions() {
 
     SampleAction ngsControl(ToolsMenu::NGS_CONTROL, ToolsMenu::NGS_MENU, "NGS/fastqc.uwl", SampleAction::OpenWizard, tr("Reads quality control..."));
     ngsControl.requiredPlugins << externalToolsPlugin;
+    SampleAction ngsScaffold(ToolsMenu::NGS_SCAFFOLD, ToolsMenu::NGS_MENU, "Scenarios/length_filter.uwl", SampleAction::OpenWizard, tr("Filter short scaffolds..."));
+    ngsScaffold.requiredPlugins << externalToolsPlugin;
     SampleAction ngsRawDna(ToolsMenu::NGS_RAW_DNA, ToolsMenu::NGS_MENU, "NGS/raw_dna.uwl", SampleAction::Select, tr("Raw DNA-Seq data processing"));
     ngsRawDna.requiredPlugins << externalToolsPlugin;
     SampleAction ngsVariants(ToolsMenu::NGS_CALL_VARIANTS, ToolsMenu::NGS_MENU, "NGS/call_variants.uwl", SampleAction::Select, tr("Variant calling"));
@@ -357,6 +359,7 @@ void WorkflowDesignerService::initSampleActions() {
     blastNcbi.requiredPlugins << "remote_blast";
 
     samples->registerAction(ngsControl);
+    samples->registerAction(ngsScaffold);
     samples->registerAction(ngsRawDna);
     samples->registerAction(ngsVariants);
     samples->registerAction(ngsVariantsAndEffect);
