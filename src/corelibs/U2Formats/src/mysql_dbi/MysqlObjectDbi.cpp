@@ -769,7 +769,7 @@ void MysqlObjectDbi::setObjectRank(const U2DataId &objectId, U2DbiObjectRank new
     query.bindInt32(":rank", newRank);
     query.bindDataId(":id", objectId);
     const qint64 modifiedRowsNumber = query.update();
-    if (modifiedRowsNumber != 1) {
+    if (modifiedRowsNumber > 1) {
         os.setError(QObject::tr("Unexpected number of modified objects. Expected: 1, actual: %1").arg(modifiedRowsNumber));
     }
 }

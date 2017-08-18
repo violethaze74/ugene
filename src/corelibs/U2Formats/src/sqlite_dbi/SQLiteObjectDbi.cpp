@@ -989,7 +989,8 @@ void SQLiteObjectDbi::setObjectRank(const U2DataId &objectId, U2DbiObjectRank ne
     CHECK_OP(os, );
     query->bindInt32(1, newRank);
     query->bindDataId(2, objectId);
-    query->update(1);
+    const int affectedRowsCount = query->update(-1);
+    SAFE_POINT_EXT(0 == affectedRowsCount || affectedRowsCount == 1, U2DbiL10n::tr("Unexpected row count! Query: '%1', rows: %2").arg(query->getQueryText()).arg(affectedRowsCount), );
 }
 
 U2DbiObjectRank SQLiteObjectDbi::getObjectRank(const U2DataId &objectId, U2OpStatus& os) {
