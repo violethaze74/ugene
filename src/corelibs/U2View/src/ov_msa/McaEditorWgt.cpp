@@ -73,6 +73,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     refName->setObjectName("reference label container widget");
 
     nameAreaLayout->insertWidget(0, refName);
+    nameAreaLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
 
     QVector<U2Region> itemRegions;
     for (int i = 0; i < editor->getNumSequences(); i++) {
@@ -90,6 +91,23 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     seqAreaHeaderLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
     seqAreaHeader->setStyleSheet("background-color: white;");
     connect(mcaConsArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
+    MultipleChromatogramAlignmentObject* mcaObj = editor->getMaObject();
+    connect(mcaObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
+}
+
+void McaEditorWgt::sl_alignmentChanged() {
+    int size = editor->getNumSequences();
+    int collapseSize = collapseModel->getItemSize();
+    if (size > collapseSize) {
+        QVector<U2Region> itemRegions;
+        for (int i = 0; i < size; i++) {
+            itemRegions << U2Region(i, 1);
+        }
+        collapseModel->reset(itemRegions);
+        McaEditor* mcaEditor = getEditor();
+        bool isButtonChecked = mcaEditor->isChromatogramButtonChecked();
+        collapseModel->collapseAll(!isButtonChecked);
+    }
 }
 
 McaEditor *McaEditorWgt::getEditor() const {

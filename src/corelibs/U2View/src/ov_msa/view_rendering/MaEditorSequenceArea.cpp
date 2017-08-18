@@ -398,6 +398,9 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
 
         const int resultShift = maObj->shiftRegion(x, y, selectionWidth, height, shift);
         if (0 != resultShift) {
+            U2OpStatus2Log os;
+            adjustReferenceLength(os);
+
             int newCursorPosX = (cursorPos.x() + resultShift >= 0) ? cursorPos.x() + resultShift : 0;
             setCursorPos(newCursorPosX);
 
@@ -409,9 +412,6 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
             } else {
                 ui->getScrollController()->scrollToBase(newSelection.x(), width());
             }
-
-            U2OpStatus2Log os;
-            adjustReferenceLength(os);
 
             return true;
         } else {

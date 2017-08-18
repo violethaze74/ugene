@@ -122,6 +122,8 @@ public:
 
     bool isFakeModel() const;
 
+    int getItemSize() const;
+
 signals:
     void si_aboutToBeToggled();
     void si_toggled();

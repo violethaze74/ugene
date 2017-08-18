@@ -56,6 +56,7 @@ public:
 
     bool isChromVisible(qint64 rowId) const;
     bool isChromVisible(int rowIndex) const;
+    bool isChromatogramButtonChecked() const;
 
     QString getReferenceRowName() const;
 

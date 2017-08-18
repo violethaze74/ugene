@@ -374,4 +374,8 @@ bool MSACollapsibleItemModel::isFakeModel() const {
     return fakeModel;
 }
 
+int MSACollapsibleItemModel::getItemSize() const {
+    return items.size();
+}
+
 } // namespace U2
