@@ -278,6 +278,10 @@ protected:
         InsertCharMode
     };
 
+public:
+    MaMode getModInfo();
+
+protected:
     MaEditor*       editor;
     MaEditorWgt*    ui;
 

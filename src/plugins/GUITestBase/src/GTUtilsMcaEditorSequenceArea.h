@@ -49,6 +49,15 @@ public:
     static QRect getSelectedRect(GUITestOpStatus &os);
     static qint64 getReferenceSelectedNum(GUITestOpStatus &os);
     static void clickToReferencePosition(GUITestOpStatus &os, const qint64 num);
+    /**
+    *0 - ViewMode
+    *1 - ReplaceCharMode
+    *2 - InsertCharMode
+    *Return value of this function is not enum "MaMode" to avoid encapsulation violation
+    */
+    static short getCharacterModificationMode(GUITestOpStatus &os);
+    static char getSelectedReadChar(GUITestOpStatus &os);
+    static char getReadCharByPos(GUITestOpStatus &os, const QPoint p);
 };
 
 }//namespace
