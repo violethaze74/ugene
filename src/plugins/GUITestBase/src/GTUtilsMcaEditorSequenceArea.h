@@ -56,7 +56,8 @@ public:
     *Return value of this function is not enum "MaMode" to avoid encapsulation violation
     */
     static short getCharacterModificationMode(GUITestOpStatus &os);
-    static char getSelectedChar(GUITestOpStatus &os);
+    static char getSelectedReadChar(GUITestOpStatus &os);
+    static char getReadCharByPos(GUITestOpStatus &os, const QPoint p);
 };
 
 }//namespace
