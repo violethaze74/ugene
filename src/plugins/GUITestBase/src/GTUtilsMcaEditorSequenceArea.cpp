@@ -315,6 +315,39 @@ void GTUtilsMcaEditorSequenceArea::clickToReferencePosition(GUITestOpStatus &os,
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getCharacterModificationMode"
+short GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(GUITestOpStatus &os) {
+    McaEditorSequenceArea* mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
+    GT_CHECK_RESULT(mcaSeqArea != NULL, "MCA Editor sequence area is not found", 3);
+
+    short mod = mcaSeqArea->getModInfo();
+    return mod;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getSelectedChar"
+char GTUtilsMcaEditorSequenceArea::getSelectedChar(GUITestOpStatus &os) {
+    QRect selection = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
+    GT_CHECK_RESULT(selection.width() == 1 && selection.height() == 1, "Multiple selection", U2Mca::INVALID_CHAR);
+    int rowNum = selection.y();
+    qint64 pos = selection.x();
+
+    McaEditorSequenceArea* mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
+    GT_CHECK_RESULT(mcaSeqArea != NULL, "MCA Editor sequence area is not found", U2Mca::INVALID_CHAR);
+
+    McaEditor* mcaEditor = mcaSeqArea->getEditor();
+    GT_CHECK_RESULT(mcaSeqArea != NULL, "MCA Editor is not found", U2Mca::INVALID_CHAR);
+
+    MultipleChromatogramAlignmentObject* mcaObj = mcaEditor->getMaObject();
+    GT_CHECK_RESULT(mcaObj != NULL, "MCA Object is not found", U2Mca::INVALID_CHAR);
+
+    const MultipleChromatogramAlignmentRow mcaRow = mcaObj->getRow(rowNum);
+
+    char selectedChar = mcaRow->charAt(pos);
+    return selectedChar;
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }//namespace
