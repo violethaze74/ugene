@@ -2068,6 +2068,18 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0024_1);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0024_2);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0024_3);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0025_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0025_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0025_3);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0026_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0026_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0026_3);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0027_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0027_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0027_3);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0028);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0029);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0030);
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/document_from_text/
     //////////////////////////////////////////////////////////////////////////

@@ -58,6 +58,9 @@ public:
 
     static void undo(HI::GUITestOpStatus &os);
     static void redo(HI::GUITestOpStatus &os);
+    static void zoomIn(HI::GUITestOpStatus &os);
+    static void zoomOut(HI::GUITestOpStatus &os);
+    static void resetZoom(HI::GUITestOpStatus &os);
 };
 
 }   // namespace U2
