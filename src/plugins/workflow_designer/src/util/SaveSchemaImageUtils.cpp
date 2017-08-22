@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-Logger log("Save workflow image task");
+static Logger log("Save workflow image task");
 
 /********************************
  * ProduceSchemaImageLinkTask
