@@ -56,6 +56,9 @@ public:
     *Return value of this function is not enum "MaMode" to avoid encapsulation violation
     */
     static short getCharacterModificationMode(GUITestOpStatus &os);
+    /**
+    *Valid just if one character in sequence area selected
+    */
     static char getSelectedReadChar(GUITestOpStatus &os);
     static char getReadCharByPos(GUITestOpStatus &os, const QPoint p);
     static qint64 getRowLength(GUITestOpStatus &os, const int numRow);
