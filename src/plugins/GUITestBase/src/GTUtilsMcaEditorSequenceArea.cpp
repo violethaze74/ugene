@@ -369,6 +369,40 @@ char GTUtilsMcaEditorSequenceArea::getReadCharByPos(GUITestOpStatus &os, const Q
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getRowLength"
+qint64 GTUtilsMcaEditorSequenceArea::getRowLength(GUITestOpStatus &os, const int numRow) {
+    McaEditorSequenceArea* mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
+    GT_CHECK_RESULT(mcaSeqArea != NULL, "MCA Editor sequence area is not found", U2Mca::INVALID_CHAR);
+
+    McaEditor* mcaEditor = mcaSeqArea->getEditor();
+    GT_CHECK_RESULT(mcaSeqArea != NULL, "MCA Editor is not found", U2Mca::INVALID_CHAR);
+
+    MultipleChromatogramAlignmentObject* mcaObj = mcaEditor->getMaObject();
+    GT_CHECK_RESULT(mcaObj != NULL, "MCA Object is not found", U2Mca::INVALID_CHAR);
+
+    const MultipleChromatogramAlignmentRow mcaRow = mcaObj->getRow(numRow);
+
+    qint64 rowLength = mcaRow->getCoreLength();
+    return rowLength;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getReferenceLength"
+qint64 GTUtilsMcaEditorSequenceArea::getReferenceLength(GUITestOpStatus &os) {
+    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
+    GT_CHECK_RESULT(mw != NULL, "QMainWindow not found", 0);
+    McaEditor* editor = mw->findChild<McaEditor*>();
+    GT_CHECK_RESULT(editor != NULL, "McaEditor not found", 0);
+    MultipleChromatogramAlignmentObject* obj = editor->getMaObject();
+    GT_CHECK_RESULT(obj != NULL, "MultipleChromatogramAlignmentObject not found", 0);
+
+    U2OpStatus2Log status;
+    qint64 refLength = obj->getReferenceObj()->getSequenceLength();
+
+    return refLength;
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }//namespace

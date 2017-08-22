@@ -58,6 +58,8 @@ public:
     static short getCharacterModificationMode(GUITestOpStatus &os);
     static char getSelectedReadChar(GUITestOpStatus &os);
     static char getReadCharByPos(GUITestOpStatus &os, const QPoint p);
+    static qint64 getRowLength(GUITestOpStatus &os, const int numRow);
+    static qint64 getReferenceLength(GUITestOpStatus &os);
 };
 
 }//namespace
