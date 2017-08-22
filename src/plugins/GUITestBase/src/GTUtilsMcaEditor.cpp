@@ -196,6 +196,24 @@ void GTUtilsMcaEditor::redo(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "zoomIn"
+void GTUtilsMcaEditor::zoomIn(HI::GUITestOpStatus &os) {
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom In"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "zoomOut"
+void GTUtilsMcaEditor::zoomOut(HI::GUITestOpStatus &os) {
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "resetZoom"
+void GTUtilsMcaEditor::resetZoom(HI::GUITestOpStatus &os) {
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Reset Zoom"));
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }   // namespace U2
