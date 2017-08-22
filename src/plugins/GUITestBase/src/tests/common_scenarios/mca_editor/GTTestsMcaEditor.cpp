@@ -2504,7 +2504,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
     GTKeyboardDriver::keyClick('I', Qt::ShiftModifier);
     GTGlobals::sleep();
 
-    //Expected state : Dashed frame appears instead of selected symbol;
+    //Expected state :  the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 2, "Incorrect modification state");
 
@@ -2651,7 +2651,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    //Expected state : the character is selected in the replacement mode.
+    //Expected state : the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 2, "Incorrect modification state");
 
@@ -2786,14 +2786,14 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     GTGlobals::sleep();
 
     //6. Open the main menu in the sequence area.
-    //Expected state: the menu contains an item "Actions > Edit > Replace character". The item is enabled.
+    //Expected state: the menu contains an item "Actions > Edit > Insert character/gap". The item is enabled.
     GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions" << "Edit", QStringList() << "Insert character/gap", PopupChecker::CheckOption(PopupChecker::IsEnabled));
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
 
     //7. Select the item.
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Insert character/gap");
 
-    //Expected state : the character is selected in the replacement mode.
+    //Expected state : the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 2, "Incorrect modification state");
 
@@ -2851,6 +2851,292 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
     GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0025_1) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
+
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //5. Select one character in the ane read (e.g. this is character 'A')
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+
+    //Expected state: his is character 'A'
+    char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
+    CHECK_SET_ERR(selectedChar == 'A', "Incorrect selected character");
+
+    //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
+    short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
+    CHECK_SET_ERR(modState == 0, "Incorrect modification state");
+    GTGlobals::sleep();
+
+    //6. Press Shift + I keys on the keyboard.
+    GTKeyboardDriver::keyClick('I', Qt::ShiftModifier);
+    GTGlobals::sleep();
+
+    //Expected state: the character is selected in the insertion mode.
+    modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
+    CHECK_SET_ERR(modState == 2, "Incorrect modification state");
+
+    //7. Press wrong symbol "\"
+    GTKeyboardDriver::keyClick('\\');
+    GTGlobals::sleep();
+
+    //Expected state: Frame is vanished and error notification appears:
+    GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0025_2) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
+
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //5. Select one character in the ane read (e.g. this is character 'A')
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+
+    //Expected state: his is character 'A'
+    char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
+    CHECK_SET_ERR(selectedChar == 'A', "Incorrect selected character");
+
+    //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
+    short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
+    CHECK_SET_ERR(modState == 0, "Incorrect modification state");
+    GTGlobals::sleep();
+
+    //6. Open the context menu in the sequence area.
+    //Expected state: the menu contains an item "Edit > Insert character/gap".The item is enabled.A hotkey Shift + I is shown nearby.
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit" << "Insert character/gap", PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+
+    //7. Select the item.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Insert character/gap"));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    //Expected state: the character is selected in the insertion mode.
+    modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
+    CHECK_SET_ERR(modState == 2, "Incorrect modification state");
+
+    //8. Push wrong symbol "$"
+    GTKeyboardDriver::keyClick('$');
+    GTGlobals::sleep();
+
+    //Expected state: Frame is vanished and error notification appears:
+    GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0025_3) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
+
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //5. Select one character in the ane read (e.g. this is character 'A')
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+
+    //Expected state: his is character 'A'
+    char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
+    CHECK_SET_ERR(selectedChar == 'A', "Incorrect selected character");
+
+    //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
+    short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
+    CHECK_SET_ERR(modState == 0, "Incorrect modification state");
+    GTGlobals::sleep();
+
+    //6. Open the main menu in the sequence area.
+    //Expected state: the menu contains an item "Actions > Edit > Insert character/gap". The item is enabled. A hotkey Shift+I is shown nearby.
+    GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions" << "Edit", QStringList() << "Insert character/gap", PopupChecker::CheckOption(PopupChecker::IsEnabled));
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
+
+    //7. Select the item.
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Insert character/gap");
+
+    //Expected state : the character is selected in the insertion mode.
+    modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
+    CHECK_SET_ERR(modState == 2, "Incorrect modification state");
+
+    //8. Push wrong symbol "@"
+    GTKeyboardDriver::keyClick('@');
+    GTGlobals::sleep();
+
+    //Expected state: Frame is vanished and error notification appears:
+    GTUtilsNotifications::waitForNotification(os, true, "It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 }//namespace U2
