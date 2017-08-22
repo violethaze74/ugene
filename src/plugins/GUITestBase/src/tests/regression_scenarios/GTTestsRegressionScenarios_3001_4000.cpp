@@ -4772,7 +4772,7 @@ GUI_TEST_CLASS_DEFINITION(test_3738) {
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList()<<testDir + "_common_data/scf/Sequence A.scf"
                                                                  <<testDir + "_common_data/scf/Sequence B.scf",
                                                                  sandBoxDir + "test_3738.ace"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" <<  "Reads quality control and de novo assembly (with CAP3)...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" <<  "Reads de novo assembly (with CAP3)...");
 
 //    menu item in the main menu.
 //    Set sequences "_common_data/scf/Sequence A.scf" and "_common_data/scf/Sequence B.scf" as input, set any valid output path and run the task.
