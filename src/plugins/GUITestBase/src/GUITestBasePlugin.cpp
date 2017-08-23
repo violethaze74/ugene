@@ -2045,6 +2045,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0003);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0006);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0007);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0008);
