@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-Logger log( FOREVER_TASK_LOG_CAT );
+static Logger log( FOREVER_TASK_LOG_CAT );
 
 ForeverTask::ForeverTask() : Task( "Forever task", TaskFlag_None ) {
     log.trace( tr( "Forever task created" ) );
