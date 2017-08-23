@@ -449,6 +449,147 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsMcaEditor::getEditorUi(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0004) {
+    //    1. Select "Tools>Workflow Designer"
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //    2. Open "Trim and аlign Sanger reads" sample
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            //    Expected state: "Trim and Align Sanger Reads" dialog has appered
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
+            const QString expectedTitle = "Trim and Map Sanger Reads";
+            const QString actualTitle = wizard->windowTitle();
+            CHECK_SET_ERR(expectedTitle == actualTitle, QString("Wizard title is incorrect: expected '%1', got '%2'").arg(expectedTitle).arg(actualTitle));
+
+            GTWidget::click(os, wizard);
+
+            //    3. Select Reference .../test/general/_common_data/alphabets/extended_amino_1000.fa
+            GTUtilsWizard::setParameter(os, "Reference", testDir + "_common_data/alphabets/extended_amino_1000.fa");
+
+            //    4. Push Next
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            //    5. On page "Input Sanger reads" add: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files) and click "Next" button
+            QStringList readsList;
+            for (int i = 1; i <= 20; i++) {
+                readsList << testDir + QString("_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+            }
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << readsList);
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            //    6. Push Next on "Trim and Filtering" page
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            //    7. Push Run on Results page where "alignment.ugenedb" is result database by default
+            const QString expectedResultFileName = "alignment.ugenedb";
+            QString actualResultFileName = GTUtilsWizard::getParameter(os, "Mapped reads file").toString();
+            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'")
+                .arg(expectedResultFileName).arg(actualResultFileName));
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTLogTracer trace;
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Trim and Map Sanger Reads", new Scenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: Error:The input reference sequence 'seq6' contains characters that don't belong to DNA alphabet.
+    GTUtilsLog::checkContainsError(os, trace, QString("The input reference sequence 'seq6' contains characters that don't belong to DNA alphabet."));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0005) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+
+            //2. Select reference  /test/general/_common_data/alphabets/extended_amino_1000.fa
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/extended_amino_1000.fa");
+
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
+
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Uncheck "Add to project" option
+            GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
+
+            //5. Push "..." in "Result aligment"
+            GTLineEdit::setText(os, "outputLineEdit", "...", QApplication::activeModalWidget());
+
+            //6. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            QStringList path;
+            path << sandBoxDir + "Sanger";
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
+
+            //7.Push Save
+            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+
+            //Expected state : "Result alignment" is filled <path> / Sanger.ugenedb
+            output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutputContains = output.contains("Sanger.ugenedb");
+            CHECK_SET_ERR(checkOutputContains, QString("incorrect output line"));
+
+            //8. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTLogTracer trace;
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
+    GTUtilsLog::checkContainsError(os, trace, QString("Task {Align Sanger reads to reference} finished with error: The input reference sequence 'seq6' contains characters that don't belong to DNA alphabet."));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -536,6 +677,60 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsLog::checkContainsError(os, trace, QString("Task {Align Sanger reads to reference} finished with error: More than one sequence in the reference file:"));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0007) {
+    //    1. Select "Tools>Workflow Designer"
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //    2. Open "Trim and аlign Sanger reads" sample
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            //    Expected state: "Trim and Align Sanger Reads" dialog has appered
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
+            const QString expectedTitle = "Trim and Map Sanger Reads";
+            const QString actualTitle = wizard->windowTitle();
+            CHECK_SET_ERR(expectedTitle == actualTitle, QString("Wizard title is incorrect: expected '%1', got '%2'").arg(expectedTitle).arg(actualTitle));
+
+            GTWidget::click(os, wizard);
+
+            //    3. Select Reference .../test/general/_common_data/alphabets/standard_dna_rna_amino_1000.fa
+            GTUtilsWizard::setParameter(os, "Reference", testDir + "_common_data/alphabets/standard_dna_rna_amino_1000.fa");
+
+            //    4. Push Next
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            //    5. On page "Input Sanger reads" add: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files) and click "Next" button
+            QStringList readsList;
+            for (int i = 1; i <= 20; i++) {
+                readsList << testDir + QString("_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+            }
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << readsList);
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            //    6. Push Next on "Trim and Filtering" page
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            //    7. Push Run on Results page where "alignment.ugenedb" is result database by default
+            const QString expectedResultFileName = "alignment.ugenedb";
+            QString actualResultFileName = GTUtilsWizard::getParameter(os, "Mapped reads file").toString();
+            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'")
+                .arg(expectedResultFileName).arg(actualResultFileName));
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTLogTracer trace;
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Trim and Map Sanger Reads", new Scenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: Error: More than one sequence in the reference file:  <path>/alphabets/standard_dna_rna_amino_1000.fa
+    GTUtilsLog::checkContainsError(os, trace, QString("More than one sequence in the reference file:"));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -621,6 +816,60 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     //Expected state: Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
     GTUtilsLog::checkContainsError(os, trace, QString("Task {Align Sanger reads to reference} finished with error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet."));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0009) {
+    //    1. Select "Tools>Workflow Designer"
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //    2. Open "Trim and аlign Sanger reads" sample
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            //    Expected state: "Trim and Align Sanger Reads" dialog has appered
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
+            const QString expectedTitle = "Trim and Map Sanger Reads";
+            const QString actualTitle = wizard->windowTitle();
+            CHECK_SET_ERR(expectedTitle == actualTitle, QString("Wizard title is incorrect: expected '%1', got '%2'").arg(expectedTitle).arg(actualTitle));
+
+            GTWidget::click(os, wizard);
+
+            //    3. Select Reference .../test/general/_common_data/alphabets/standard_rna_1000.fa
+            GTUtilsWizard::setParameter(os, "Reference", testDir + "_common_data/alphabets/standard_rna_1000.fa");
+
+            //    4. Push Next
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            //    5. On page "Input Sanger reads" add: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files) and click "Next" button
+            QStringList readsList;
+            for (int i = 1; i <= 20; i++) {
+                readsList << testDir + QString("_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+            }
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << readsList);
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            //    6. Push Next on "Trim and Filtering" page
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            //    7. Push Run on Results page where "alignment.ugenedb" is result database by default
+            const QString expectedResultFileName = "alignment.ugenedb";
+            QString actualResultFileName = GTUtilsWizard::getParameter(os, "Mapped reads file").toString();
+            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'")
+                .arg(expectedResultFileName).arg(actualResultFileName));
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTLogTracer trace;
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Trim and Map Sanger Reads", new Scenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
+    GTUtilsLog::checkContainsError(os, trace, QString("The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet."));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
@@ -1577,19 +1826,24 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
 
     //5. In Option panelSelect consensuns mode = Strict
     GTUtilsOptionPanelMca::setConsensusType(os, "Strict");
+    GTGlobals::sleep();
 
     //6. Push "Ctrl+Alt+v"
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
-    GTGlobals::sleep(1000);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTKeyboardDriver::keyClick('v', Qt::AltModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+    GTGlobals::sleep();
 
     //Expected state : first difference between reference "A" and consensus "T"
-    QString referenceChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, 2059, 1);
+    QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
 
     //7. Push "Jump to next variation" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+    GTGlobals::sleep();
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
 
     //Expected state : difference between reference "T" and consensus "A"
-    referenceChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, 2061, 1);
+    referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
 
     //8. Push "Jump to next variation" from context menu
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next variation"));
@@ -1597,7 +1851,13 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : difference between reference "A" and consensus "T"
-    referenceChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, 2062, 1);
+    referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+
+    //9. Push "Jump to next variation" from main menu
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to next variation");
+
+    //Expected state : difference between reference "T" and consensus "C"
+    referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0015_2) {
@@ -1659,7 +1919,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0016) {
+GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             //Expected state : "Min read identity" option by default = 80 %
@@ -1723,19 +1983,26 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     //5. In Option panelSelect consensuns mode = Strict
     GTUtilsOptionPanelMca::setConsensusType(os, "Strict");
+    GTGlobals::sleep();
 
     //6. Push "Ctrl+Alt+Shift+v"
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
-    GTGlobals::sleep(1000);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTKeyboardDriver::keyPress(Qt::Key_Alt);
+    GTKeyboardDriver::keyClick('v', Qt::ShiftModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Alt);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+    GTGlobals::sleep();
 
     //Expected state : first difference between reference "A" and consensus "T"
-    QString referenceChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, 2059, 1);
+    QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
 
     //7. Push "Jump to previous variation" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
+    GTGlobals::sleep();
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
 
     //Expected state : difference between reference "T" and consensus "A"
-    referenceChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, 2061, 1);
+    referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
 
     //8. Push "Jump to previous variation" from context menu
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to previous variation"));
@@ -1743,17 +2010,72 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : difference between reference "A" and consensus "T"
-    referenceChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, 2062, 1);
+    referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
 
-    //9. Push "Jump to next variation" button 3 times
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
-    GTGlobals::sleep(1000);
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
-    GTGlobals::sleep(1000);
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
-    GTGlobals::sleep(1000);
+    //9. Push "Jump to next variation" from main menu
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to previous variation");
 
-    //Expected state : The cursor jumps to the begining at the first difference reference "A" and  consensus "T"
+    //Expected state : difference between reference "T" and consensus "C"
+    referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_2) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+
+            //2. Select reference  .../test/general/_common_data/sanger/sanger_01.ab1
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/sanger_01.ab1");
+
+            //3. Select Read: .../test/general/_common_data/sanger/sanger_01.ab1
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils* d = new GTFileDialogUtils(os, testDir + "_common_data/sanger/sanger_01.ab1");
+            GTUtilsDialog::waitForDialog(os, d);
+
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(5000);
+
+    //5. Push "Jump to next variation" button
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
+
+    //Expected state : Notification "There are no variations in the consensus sequence" will be shown
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0019) {

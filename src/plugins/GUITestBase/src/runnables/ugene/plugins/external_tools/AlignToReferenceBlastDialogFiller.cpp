@@ -77,11 +77,7 @@ void AlignToReferenceBlastDialogFiller::commonScenario() {
         GTGlobals::sleep();
     }
 
-    QSpinBox* settingSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "minLenSpinBox", dialog));
-    GT_CHECK(settingSpinBox, "minLenSpinBox is NULL");
-    GTSpinBox::setValue(os, settingSpinBox, settings.minLength);
-
-    settingSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "minIdentitySpinBox", dialog));
+    QSpinBox* settingSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "minIdentitySpinBox", dialog));
     GT_CHECK(settingSpinBox, "minIdentitySpinBox is NULL");
     GTSpinBox::setValue(os, settingSpinBox, settings.minIdentity);
 
@@ -89,11 +85,7 @@ void AlignToReferenceBlastDialogFiller::commonScenario() {
     GT_CHECK(settingSpinBox, "qualitySpinBox is NULL");
     GTSpinBox::setValue(os, settingSpinBox, settings.qualityThreshold);
 
-    QCheckBox* checkBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "trimCheckBox", dialog));
-    GT_CHECK(checkBox, "trimCheckBox is NULL");
-    GTCheckBox::setChecked(os, checkBox, settings.trimBothEnds);
-
-    checkBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "addToProjectCheckbox", dialog));
+    QCheckBox* checkBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "addToProjectCheckbox", dialog));
     GT_CHECK(checkBox, "addToProjectCheckbox is NULL");
     GTCheckBox::setChecked(os, checkBox, settings.addResultToProject);
 

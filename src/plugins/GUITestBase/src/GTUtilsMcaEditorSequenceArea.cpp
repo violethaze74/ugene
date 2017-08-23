@@ -232,7 +232,27 @@ QString GTUtilsMcaEditorSequenceArea::getReferenceReg(GUITestOpStatus &os, int n
     GT_CHECK_RESULT(obj != NULL, "MultipleChromatogramAlignmentObject not found", QString());
 
     U2OpStatus2Log status;
-    QByteArray seq = obj->getReferenceObj()->getSequenceData(U2Region(num, 1), status);
+    QByteArray seq = obj->getReferenceObj()->getSequenceData(U2Region(num, length), status);
+
+    return seq;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getReferenceReg"
+QString GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(GUITestOpStatus &os) {
+    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
+    GT_CHECK_RESULT(mw != NULL, "QMainWindow not found", QString());
+    McaEditor* editor = mw->findChild<McaEditor*>();
+    GT_CHECK_RESULT(editor != NULL, "McaEditor not found", QString());
+    MultipleChromatogramAlignmentObject* obj = editor->getMaObject();
+    GT_CHECK_RESULT(obj != NULL, "MultipleChromatogramAlignmentObject not found", QString());
+
+    QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
+    int num = sel.x();
+    int length = sel.width();
+
+    U2OpStatus2Log status;
+    QByteArray seq = obj->getReferenceObj()->getSequenceData(U2Region(num, length), status);
 
     return seq;
 }

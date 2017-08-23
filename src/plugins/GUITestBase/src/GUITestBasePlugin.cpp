@@ -2044,8 +2044,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0007);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0008);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0010);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0011);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0012_1);
@@ -2056,7 +2060,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0015_1);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0015_2);
-    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0016);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0016_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0016_2);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0019);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0021);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0022_1);
