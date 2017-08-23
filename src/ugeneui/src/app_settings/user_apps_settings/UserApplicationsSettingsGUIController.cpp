@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,15 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QStyleFactory>
-#else
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QStyleFactory>
-#endif
+#include <QFile>
+#include <QDialogButtonBox>
+#include <QStyleFactory>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -93,7 +87,7 @@ void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState* 
     st->setOpenLastProjectAtStartup(state->openLastProjectFlag);
     st->setAskToSaveProject(state->askToSaveProject);
     st->setEnableCollectingStatistics(state->enableStatistics);
-    st->setTabbedWindowLayout(state->tabbedWindowLayout);
+    //st->setTabbedWindowLayout(state->tabbedWindowLayout);
     st->setResetSettings(state->resetSettings);
     st->setUpdatesEnabled(state->updatesEnabled);
 
@@ -110,7 +104,7 @@ AppSettingsGUIPageWidget* UserApplicationsSettingsPageController::createWidget(A
     return r;
 }
 
-const QString UserApplicationsSettingsPageController::helpPageId = QString("19759437");
+const QString UserApplicationsSettingsPageController::helpPageId = QString("19766694");
 
 UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserApplicationsSettingsPageController* ctrl) {
     setupUi(this);
@@ -126,9 +120,7 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
 void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
     UserApplicationsSettingsPageState* state = qobject_cast<UserApplicationsSettingsPageState*>(s);
     enableStatisticsEdit->setChecked(state->enableStatistics);
-    tabbedButton->setChecked(state->tabbedWindowLayout);
-    mdiButton->setChecked(!state->tabbedWindowLayout);
-    
+
     int idx = langCombo->findData(state->translFile);
     if (idx < 0) {
         idx = langCombo->count();
@@ -158,7 +150,6 @@ AppSettingsGUIPageState* UserApplicationsSettingsPageWidget::getState(QString& /
     state->askToSaveProject = askToSaveProject->itemData(askToSaveProject->currentIndex()).toInt();
     state->style = styleCombo->currentText();
     state->enableStatistics = enableStatisticsEdit->isChecked();
-    state->tabbedWindowLayout = tabbedButton->isChecked();
     state->resetSettings = resetSettingsBox->isChecked();
     state->updatesEnabled = updatesCheckBox->isChecked();
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,18 +24,20 @@
 
 #include <U2Core/DNASequence.h>
 #include <U2Core/U2OpStatus.h>
-
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 
-enum DnaSequencesMatchStatus {MatchExactly, DoNotMatch};
-
+enum DnaSequencesMatchStatus {
+    MatchExactly,
+    DoNotMatch
+};
 
 /** Utilities for DNASequences */
 class U2CORE_EXPORT DNASequenceUtils {
 public:
     /** Appends "appendedSequence" to "sequence" */
-    static void append(DNASequence& sequence, const DNASequence& appendedSequence, U2OpStatus& os);
+    static void append(DNASequence& sequence, const DNASequence& appendedSequence);
 
     /** Compares two sequences */
     static DnaSequencesMatchStatus compare(const DNASequence& firstSeq, const DNASequence& secondSec);
@@ -64,6 +66,10 @@ public:
 
     /** Returns the reverse-complement DNA sequence */
     static QByteArray reverseComplement(const QByteArray &sequence);
+
+    static void crop(DNASequence &sequence, int startPos, int length);
+
+    static U2Region trimByQuality(DNASequence &sequence, int qualityThreshold, int minSequenceLength, bool trimBothEnds);
 };
 
 } // namespace

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ void TmpDirChecker::run()
     if (!checkPath(commonTempDirPath)) {
         if (!AppContext::isGUIMode()) {
             QString message = "You do not have permission to write to \"" + commonTempDirPath +
-                "\" directory. Use --tmp-dir=<path_to_file> to set new temporary directory";
+                "\" folder. Use --tmp-dir=<path_to_file> to set new temporary folder";
             coreLog.error((message));
         }
         else {
@@ -50,8 +50,8 @@ void TmpDirChecker::run()
 
     if (!checkPath(ugeneTempDirPath)) {
         if (!AppContext::isGUIMode()) {
-            QString message = "UGENE hasn't permitions to write to its temporary directory \"" + ugeneTempDirPath +
-                "\". Use --tmp-dir=<path_to_file> to set another temporary directory";
+            QString message = "UGENE hasn't permitions to write to its temporary folder \"" + ugeneTempDirPath +
+                "\". Use --tmp-dir=<path_to_file> to set another temporary folder";
             coreLog.error((message));
         }
         else {

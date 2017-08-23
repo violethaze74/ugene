@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-MsaColorSchemeStatic::MsaColorSchemeStatic(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj, const QVector<QColor> &colorsPerChar)
+MsaColorSchemeStatic::MsaColorSchemeStatic(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj, const QVector<QColor> &colorsPerChar)
     : MsaColorScheme(parent, factory, maObj),
       colorsPerChar(colorsPerChar)
 {
@@ -34,14 +34,14 @@ QColor MsaColorSchemeStatic::getColor(int /*seq*/, int /*pos*/, char c) const {
     return colorsPerChar[(quint8)c];
 }
 
-MsaColorSchemeStaticFactory::MsaColorSchemeStaticFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes, const QVector<QColor> &colorsPerChar)
-    : MsaColorSchemeFactory(parent, id, name, alphabetTypes),
+MsaColorSchemeStaticFactory::MsaColorSchemeStaticFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets, const QVector<QColor> &colorsPerChar)
+    : MsaColorSchemeFactory(parent, id, name, supportedAlphabets),
       colorsPerChar(colorsPerChar)
 {
 
 }
 
-MsaColorScheme * MsaColorSchemeStaticFactory::create(QObject *parent, MAlignmentObject *maObj) const {
+MsaColorScheme * MsaColorSchemeStaticFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaColorSchemeStatic(parent, this, maObj, colorsPerChar);
 }
 

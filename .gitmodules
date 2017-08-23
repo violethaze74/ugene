@@ -1,0 +1,4 @@
+[submodule "QSpec"]
+	path = src/libs_3rdparty/QSpec
+	url = https://github.com/ugeneunipro/QSpec.git
+	branch = ugene

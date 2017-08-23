@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,27 +26,27 @@
 
 #include <U2Gui/WidgetWithLocalToolbar.h>
 
-#include <QtCore/QFlag>
+#include <QFlag>
 #include <QHBoxLayout>
 #include <QMenu>
 #include <QWidget>
 #include <QToolButton>
 
-#include <QtGui/QMouseEvent>
-#include <QtGui/QWheelEvent>
-#include <QtGui/QFocusEvent>
-#include <QtGui/QPainter>
+#include <QMouseEvent>
+#include <QWheelEvent>
+#include <QFocusEvent>
+#include <QPainter>
 
 
 namespace U2 {
 
-class GSequenceLineViewRenderArea;
 class DNASequenceSelection;
 class LRegionsSelection;
 class GScrollBar;
-class ADVSequenceObjectContext;
-class GObjectViewOpConstraints;
+class GSequenceLineViewRenderArea;
 class GObject;
+class GObjectViewOpConstraints;
+class SequenceObjectContext;
 class U2SequenceObject;
 
 enum GSLV_UpdateFlag {
@@ -70,11 +70,11 @@ typedef QFlags<GSLV_FeatureFlag> GSLV_FeatureFlags;
 class U2VIEW_EXPORT GSequenceLineView : public WidgetWithLocalToolbar {
     Q_OBJECT
 public:
-    GSequenceLineView(QWidget* p, ADVSequenceObjectContext* ctx);
+    GSequenceLineView(QWidget* p, SequenceObjectContext* ctx);
 
     const U2Region& getVisibleRange() const {return visibleRange;}
 
-    ADVSequenceObjectContext* getSequenceContext() const {return ctx;}
+    SequenceObjectContext* getSequenceContext() const {return ctx;}
 
     GSequenceLineViewRenderArea* getRenderArea() const {return renderArea;}
 
@@ -149,7 +149,7 @@ protected slots:
 
 protected:
     QPoint toRenderAreaPoint(const QPoint& p);
-    void updateScrollBar();
+    virtual void updateScrollBar();
     void setSelection(const U2Region& r);
     void addSelection(const U2Region& r);
     void removeSelection(const U2Region& r);
@@ -157,7 +157,7 @@ protected:
     virtual int getSingleStep() const;
     virtual int getPageStep() const;
 
-    ADVSequenceObjectContext*       ctx;
+    SequenceObjectContext*          ctx;
     GSequenceLineViewRenderArea*    renderArea;
     U2Region                        visibleRange;
     GScrollBar*                     scrollBar;
@@ -172,6 +172,7 @@ protected:
     // special flag setup by child classes that tells to this class do or skip
     // any changes to selection on mouse ops
     bool                            ignoreMouseSelectionEvents;
+    bool                            singleBaseSelection;
 };
 
 class U2VIEW_EXPORT GSequenceLineViewRenderArea : public QWidget  {

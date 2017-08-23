@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -150,28 +150,28 @@ void ExportImageDialog::init() {
 
     switch (source) {
     case WD:
-        new HelpButton(this, ui->buttonBox, "19759825");
+        new HelpButton(this, ui->buttonBox, "19767081");
         break;
     case CircularView:
-        new HelpButton(this, ui->buttonBox, "19759503");
+        new HelpButton(this, ui->buttonBox, "19766759");
         break;
     case MSA:
-        new HelpButton(this, ui->buttonBox, "19759576");
+        new HelpButton(this, ui->buttonBox, "19766832");
         break;
     case SequenceView:
-        new HelpButton(this, ui->buttonBox, "19759463");
+        new HelpButton(this, ui->buttonBox, "19766719");
         break;
     case AssemblyView:
-        new HelpButton(this, ui->buttonBox, "19759612");
+        new HelpButton(this, ui->buttonBox, "19766868");
         break;
     case PHYTreeView:
-        new HelpButton(this, ui->buttonBox, "19759641");
+        new HelpButton(this, ui->buttonBox, "19766897");
         break;
     case DotPlot:
-        new HelpButton(this, ui->buttonBox, "19759534");
+        new HelpButton(this, ui->buttonBox, "19766790");
         break;
     case MolView:
-        new HelpButton(this, ui->buttonBox, "19759517");
+        new HelpButton(this, ui->buttonBox, "19766773");
         break;
     default:
         FAIL("Can't find help Id",);

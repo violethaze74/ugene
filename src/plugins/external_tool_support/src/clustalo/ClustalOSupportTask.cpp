@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QCoreApplication>
+#include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -32,7 +32,7 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -56,9 +56,9 @@ void ClustalOSupportTaskSettings::reset() {
     numberOfProcessors=1;
 }
 
-ClustalOSupportTask::ClustalOSupportTask(const MAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalOSupportTaskSettings& _settings)
+ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalOSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run ClustalO alignment task", TaskFlags_NR_FOSCOE),
-      inputMsa(_inputMsa),
+      inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
       settings(_settings),
       lock(NULL)
@@ -68,8 +68,8 @@ ClustalOSupportTask::ClustalOSupportTask(const MAlignment& _inputMsa, const GObj
     loadTemporyDocumentTask=NULL;
     clustalOTask=NULL;
     tmpDoc=NULL;
-    resultMA.setName(inputMsa.getName());
-    resultMA.setAlphabet(inputMsa.getAlphabet());
+    resultMA->setName(inputMsa->getName());
+    resultMA->setAlphabet(inputMsa->getAlphabet());
 }
 
 ClustalOSupportTask::~ClustalOSupportTask() {
@@ -81,7 +81,7 @@ ClustalOSupportTask::~ClustalOSupportTask() {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (NULL != obj) {
-                MAlignmentObject* alObj = dynamic_cast<MAlignmentObject*>(obj);
+                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 CHECK(NULL != alObj, );
                 if(alObj->isStateLocked()) {
                     alObj->unlockState(lock);
@@ -99,15 +99,15 @@ void ClustalOSupportTask::prepare(){
     if (objRef.isValid()) {
         GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
         if (NULL != obj) {
-            MAlignmentObject* alObj = dynamic_cast<MAlignmentObject*>(obj);
-            SAFE_POINT(NULL != alObj, "Failed to convert GObject to MAlignmentObject during applying ClustalW results!",);
+            MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+            SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!",);
             lock = new StateLock("ClustalWAligment");
             alObj->lockState(lock);
         }
     }
 
     //Add new subdir for temporary files
-    //Directory name is ExternalToolName + CurrentDate + CurrentTime
+    //Folder name is ExternalToolName + CurrentDate + CurrentTime
 
     QString tmpDirName = "ClustalO_"+QString::number(this->getTaskId())+"_"+
                          QDate::currentDate().toString("dd.MM.yyyy")+"_"+
@@ -124,12 +124,12 @@ void ClustalOSupportTask::prepare(){
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Subdirectory for temporary files exists. Can not remove this directory."));
+            stateInfo.setError(tr("Subfolder for temporary files exists. Can not remove this folder."));
             return;
         }
     }
     if(!tmpDir.mkpath(tmpDirPath)){
-        stateInfo.setError(tr("Can not create directory for temporary files."));
+        stateInfo.setError(tr("Can not create folder for temporary files."));
         return;
     }
 
@@ -200,19 +200,19 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(tmpDoc->getObjects().length()==1, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), res);
 
         // Get the result alignment
-        MAlignmentObject* newMAligmentObject = qobject_cast<MAlignmentObject*>(tmpDoc->getObjects().first());
-        SAFE_POINT(newMAligmentObject!=NULL, "newDocument->getObjects().first() is not a MAlignmentObject", res);
+        MultipleSequenceAlignmentObject* newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(tmpDoc->getObjects().first());
+        SAFE_POINT(newMAligmentObject!=NULL, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
 
-        resultMA=newMAligmentObject->getMAlignment();
-        bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa.getRowNames());
+        resultMA = newMAligmentObject->getMsaCopy();
+        bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT( renamed, "Failed to restore initial row names!", res);
 
         // If an alignment object has been specified, save the result to it
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (NULL != obj) {
-                MAlignmentObject* alObj = dynamic_cast<MAlignmentObject*>(obj);
-                SAFE_POINT(NULL != alObj, "Failed to convert GObject to MAlignmentObject during applying ClustalO results!", res);
+                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+                SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalO results!", res);
 
                 QList<qint64> rowsOrder = MSAUtils::compareRowsAfterAlignment(inputMsa, resultMA, stateInfo);
                 CHECK_OP(stateInfo, res);
@@ -227,42 +227,42 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
                         lock = NULL;
                     }
                     else {
-                        stateInfo.setError("MAlignment object has been changed");
+                        stateInfo.setError("MultipleSequenceAlignment object has been changed");
                         return res;
                     }
                     U2OpStatus2Log os;
                     U2UseCommonUserModStep userModStep(obj->getEntityRef(), os);
+                    Q_UNUSED(userModStep);
                     if (os.hasError()) {
                         stateInfo.setError("Failed to apply the result of the alignment!");
                         return res;
                     }
 
-                    if (rowsOrder.count() != inputMsa.getNumRows()) {
+                    if (rowsOrder.count() != inputMsa->getNumRows()) {
                         // Find rows that were removed by ClustalO and remove them from MSA
-                        for (int i = inputMsa.getNumRows() - 1; i >= 0; i--) {
-                            const MAlignmentRow& alRow = inputMsa.getRow(i);
-                            qint64 rowId = alRow.getRowDBInfo().rowId;
+                        for (int i = inputMsa->getNumRows() - 1; i >= 0; i--) {
+                            qint64 rowId = inputMsa->getMsaRow(i)->getRowDbInfo().rowId;
                             if (!rowsOrder.contains(rowId)) {
                                 alObj->removeRow(i);
                             }
                         }
-                        MAlignmentModInfo mi;
-                        mi.sequenceContentChanged = false;
-                        alObj->updateCachedMAlignment(mi);
+                        MaModificationInfo mi;
+                        mi.rowContentChanged = false;
+                        alObj->updateCachedMultipleAlignment(mi);
                     }
 
                     QMap<qint64, QList<U2MsaGap> > rowsGapModel;
-                    for (int i = 0, n = resultMA.getNumRows(); i < n; ++i) {
-                        qint64 rowId = resultMA.getRow(i).getRowDBInfo().rowId;
-                        const QList<U2MsaGap>& newGapModel = resultMA.getRow(i).getGapModel();
+                    for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
+                        qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
+                        const QList<U2MsaGap>& newGapModel = resultMA->getMsaRow(i)->getGapModel();
                         rowsGapModel.insert(rowId, newGapModel);
                     }
 
-                    alObj->updateGapModel(rowsGapModel, stateInfo);
+                    alObj->updateGapModel(stateInfo, rowsGapModel);
                     SAFE_POINT_OP(stateInfo, res);
 
-                    if (rowsOrder != inputMsa.getRowsIds()) {
-                        alObj->updateRowsOrder(rowsOrder, stateInfo);
+                    if (rowsOrder != inputMsa->getRowsIds()) {
+                        alObj->updateRowsOrder(stateInfo, rowsOrder);
                         SAFE_POINT_OP(stateInfo, res);
                     }
                 }
@@ -290,7 +290,7 @@ Task::ReportResult ClustalOSupportTask::report(){
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Can not remove directory for temporary files."));
+            stateInfo.setError(tr("Can not remove folder for temporary files."));
             emit si_stateChanged();
         }
     }
@@ -322,7 +322,7 @@ ClustalOWithExtFileSpecifySupportTask::~ClustalOWithExtFileSpecifySupportTask(){
 void ClustalOWithExtFileSpecifySupportTask::prepare(){
     DocumentFormatConstraints c;
     c.checkRawData = true;
-    c.supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    c.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     c.rawData = IOAdapterUtils::readFileHeader(settings.inputFilePath);
     c.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     QList<DocumentFormatId> formats = AppContext::getDocumentFormatRegistry()->selectFormats(c);
@@ -355,18 +355,18 @@ QList<Task*> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subT
         SAFE_POINT(currentDocument != NULL, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
 
-        mAObject = qobject_cast<MAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        clustalOSupportTask=new ClustalOSupportTask(mAObject->getMAlignment(), GObjectReference(), settings);
+        clustalOSupportTask = new ClustalOSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
         res.append(clustalOSupportTask);
     }
     else if (subTask == clustalOSupportTask) {
         // Set the result alignment to the alignment object of the current document
-        mAObject=qobject_cast<MAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->copyGapModel(clustalOSupportTask->resultMA.getRows());
+        mAObject->updateGapModel(clustalOSupportTask->resultMA->getMsaRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

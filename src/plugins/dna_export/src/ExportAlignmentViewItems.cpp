@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,14 +30,16 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
+//#include <U2View/ma
 
 #include "ExportAlignmentViewItems.h"
 #include "ExportMSA2MSADialog.h"
@@ -51,14 +53,14 @@ namespace U2 {
 // ExportAlignmentViewItemsController
 
 ExportAlignmentViewItemsController::ExportAlignmentViewItemsController(QObject* p)
-    : GObjectViewWindowContext(p, MSAEditorFactory::ID)
+    : GObjectViewWindowContext(p, MsaEditorFactory::ID)
 {
 }
 
 
 void ExportAlignmentViewItemsController::initViewContext(GObjectView* v) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
-    assert(msaed!=NULL);
+    SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
     MSAExportContext* mc= new MSAExportContext(msaed);
     addViewResource(msaed, mc);
 }
@@ -81,30 +83,30 @@ MSAExportContext::MSAExportContext(MSAEditor* e) : editor(e) {
     translateMSAAction = new QAction(tr("Amino translation..."), this);
     translateMSAAction->setObjectName("amino_translation_of_alignment_rows");
     translateMSAAction->setEnabled(!e->isAlignmentEmpty());
-    connect(e->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), translateMSAAction, SLOT(setDisabled(bool)));
+    connect(e->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), translateMSAAction, SLOT(setDisabled(bool)));
     connect(translateMSAAction, SIGNAL(triggered()), SLOT(sl_exportNucleicMsaToAmino()));
 }
 
 void MSAExportContext::updateActions() {
-    translateMSAAction->setEnabled(editor->getMSAObject()->getAlphabet()->isNucleic() &&
+    translateMSAAction->setEnabled(editor->getMaObject()->getAlphabet()->isNucleic() &&
                                    !editor->isAlignmentEmpty());
 }
 
 void MSAExportContext::buildMenu(QMenu* m) {
     QMenu* exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != NULL, "exportMenu", );
-    MAlignmentObject* mObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* mObject = editor->getMaObject();
     if (mObject->getAlphabet()->isNucleic()) {
         exportMenu->addAction(translateMSAAction);
     }
 }
 
 void MSAExportContext::sl_exportNucleicMsaToAmino() {
-    const MAlignment& ma = editor->getMSAObject()->getMAlignment();
-    assert(ma.getAlphabet()->isNucleic());
+    const MultipleSequenceAlignment ma = editor->getMaObject()->getMultipleAlignment();
+    assert(ma->getAlphabet()->isNucleic());
 
-    GUrl msaUrl = editor->getMSAObject()->getDocument()->getURL();
-    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(msaUrl, editor->getMSAObject()->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
+    GUrl msaUrl = editor->getMaObject()->getDocument()->getURL();
+    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(msaUrl, editor->getMaObject()->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
 
     QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, editor->getCurrentSelection().height() < 1, AppContext::getMainWindow()->getQMainWindow());
     d->setWindowTitle(tr("Export Amino Translation"));
@@ -119,7 +121,7 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
 
     int offset = d->exportWholeAlignment ? 0 : editor->getCurrentSelection().top();
-    int len = d->exportWholeAlignment ? ma.getNumRows() : editor->getCurrentSelection().height();
+    int len = d->exportWholeAlignment ? ma->getNumRows() : editor->getCurrentSelection().height();
 
     Task* t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma, offset, len, d->file, trans, d->formatId), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);

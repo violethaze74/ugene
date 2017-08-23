@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 
 
 #include <U2Test/XMLTestUtils.h>
-#include <QtXml/QDomElement>
+#include <QDomElement>
 #include <U2Core/U2Region.h>
 #include "ExportTasks.h"
 
@@ -32,7 +32,7 @@
 namespace U2 {
 
 class U2SequenceObject;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 
 class GTest_ImportPhredQualityScoresTask : public GTest {
     Q_OBJECT
@@ -65,8 +65,8 @@ public:
     U2Region             selectedRows;
     ExportMSA2MSATask*  exportTask;
     LoadDocumentTask*   resultLoadTask;
-    MAlignment          srcAl;
-    MAlignment          resAl;
+    MultipleSequenceAlignment          srcAl;
+    MultipleSequenceAlignment          resAl;
 };
 
 class DNAExportPluginTests {

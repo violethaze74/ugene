@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,43 +19,33 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSAEditorOverviewArea.h"
+#include <QActionGroup>
+#include <QContextMenuEvent>
+#include <QVBoxLayout>
 
 #include "MSAEditor.h"
+#include "MSAEditorOverviewArea.h"
 #include "MSAEditorSequenceArea.h"
-#include "Overview/MSASimpleOverview.h"
-#include "Overview/MSAGraphOverview.h"
-#include "Overview/MSAOverviewContextMenu.h"
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QActionGroup>
-#else
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QActionGroup>
-#endif
+#include "Overview/MaGraphOverview.h"
+#include "Overview/MaOverviewContextMenu.h"
+#include "Overview/MaSimpleOverview.h"
 
 namespace U2 {
 
 const QString MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME  = "msa_overview_area";
 
-MSAEditorOverviewArea::MSAEditorOverviewArea(MSAEditorUI *ui) {
-    setObjectName(OVERVIEW_AREA_OBJECT_NAME);
-
-    simpleOverview = new MSASimpleOverview(ui);
-    graphOverview = new MSAGraphOverview(ui);
-
-    simpleOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_simple"));
+MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui)
+    : MaEditorOverviewArea(ui, OVERVIEW_AREA_OBJECT_NAME)
+{
+    graphOverview = new MaGraphOverview(ui);
     graphOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_graph"));
 
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->setMargin(0);
-    layout->setSpacing(0);
-    layout->addWidget(simpleOverview);
-    layout->addWidget(graphOverview);
-    setLayout(layout);
+    simpleOverview = new MaSimpleOverview(ui);
+    simpleOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_simple"));
 
-    connect(ui, SIGNAL(customContextMenuRequested(QPoint)), SLOT(sl_onContextMenuRequested(QPoint)));
+    addOverview(simpleOverview);
+    addOverview(graphOverview);
+
     connect(ui->getSequenceArea(), SIGNAL(si_highlightingChanged()),
             simpleOverview, SLOT(sl_highlightingChanged()));
     connect(ui->getSequenceArea(), SIGNAL(si_highlightingChanged()),
@@ -65,40 +55,32 @@ MSAEditorOverviewArea::MSAEditorOverviewArea(MSAEditorUI *ui) {
     connect(ui->getEditor(), SIGNAL(si_referenceSeqChanged(qint64)),
             simpleOverview, SLOT(sl_highlightingChanged()));
 
-    contextMenu =  new MSAOverviewContextMenu(ui->getEditor(), simpleOverview, graphOverview);
+    contextMenu = new MaOverviewContextMenu(this, simpleOverview, graphOverview);
+    setContextMenuPolicy(Qt::DefaultContextMenu);
 
-    connect(contextMenu, SIGNAL(si_graphTypeSelected(MSAGraphOverviewDisplaySettings::GraphType)),
-            graphOverview, SLOT(sl_graphTypeChanged(MSAGraphOverviewDisplaySettings::GraphType)));
+    connect(contextMenu, SIGNAL(si_graphTypeSelected(MaGraphOverviewDisplaySettings::GraphType)),
+            graphOverview, SLOT(sl_graphTypeChanged(MaGraphOverviewDisplaySettings::GraphType)));
     connect(contextMenu, SIGNAL(si_colorSelected(QColor)),
             graphOverview, SLOT(sl_graphColorChanged(QColor)));
-    connect(contextMenu, SIGNAL(si_graphOrientationSelected(MSAGraphOverviewDisplaySettings::OrientationMode)),
-            graphOverview, SLOT(sl_graphOrientationChanged(MSAGraphOverviewDisplaySettings::OrientationMode)));
-    connect(contextMenu, SIGNAL(si_calculationMethodSelected(MSAGraphCalculationMethod)),
-            graphOverview, SLOT(sl_calculationMethodChanged(MSAGraphCalculationMethod)));
+    connect(contextMenu, SIGNAL(si_graphOrientationSelected(MaGraphOverviewDisplaySettings::OrientationMode)),
+            graphOverview, SLOT(sl_graphOrientationChanged(MaGraphOverviewDisplaySettings::OrientationMode)));
+    connect(contextMenu, SIGNAL(si_calculationMethodSelected(MaGraphCalculationMethod)),
+            graphOverview, SLOT(sl_calculationMethodChanged(MaGraphCalculationMethod)));
 
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     setMaximumHeight( graphOverview->FIXED_HEIGHT + simpleOverview->FIXED_HEIGTH + 5 );
+}
+
+void MSAEditorOverviewArea::contextMenuEvent(QContextMenuEvent *event) {
+    contextMenu->exec(event->globalPos());
 }
 
 void MSAEditorOverviewArea::cancelRendering() {
     graphOverview->cancelRendering();
-}
-
-bool MSAEditorOverviewArea::isOverviewWidget(QWidget *wgt) const {
-    if (wgt == simpleOverview || wgt == graphOverview || wgt == this) {
-        return true;
-    }
-    return false;
-}
-
-void MSAEditorOverviewArea::sl_onContextMenuRequested(const QPoint &p) {
-    if (geometry().contains(p)) {
-        contextMenu->exec(QCursor::pos());
-    }
+    MaEditorOverviewArea::cancelRendering();
 }
 
 void MSAEditorOverviewArea::sl_show() {
-    setVisible( !isVisible() );
+    MaEditorOverviewArea::sl_show();
     if (graphOverview->isVisible()) {
         graphOverview->sl_unblockRendering(true);
     } else {
@@ -107,4 +89,4 @@ void MSAEditorOverviewArea::sl_show() {
     }
 }
 
-} // namespace
+}   // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -94,7 +94,7 @@ void ExportObjectUtils::exportAnnotations(const AnnotationTableObject *aObj, con
         }
         t = new ExportAnnotations2CSVTask(annotations, seqData, seqName, NULL, d->exportSequence(), d->exportSequenceNames(), d->filePath());
     } else {
-        t = saveAnnotationsTask(d->filePath(), d->fileFormat(), annotations);
+        t = saveAnnotationsTask(d->filePath(), d->fileFormat(), annotations, d->addToProject());
     }
     SAFE_POINT(NULL != t, "Invalid task detected!",);
 
@@ -166,9 +166,13 @@ void ExportObjectUtils::export2Document(const QObjectScopedPointer<ExportDocumen
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
-Task * ExportObjectUtils::saveAnnotationsTask(const QString &filepath, const DocumentFormatId &format, const QList<Annotation *> &annList) {
+Task * ExportObjectUtils::saveAnnotationsTask(const QString &filepath, const DocumentFormatId &format, const QList<Annotation *> &annList, bool addToProject) {
     SaveDocFlags fl(SaveDoc_Roll);
-    fl |= SaveDoc_DestroyAfter;
+    if (addToProject) {
+        fl |= SaveDoc_OpenAfter;
+    } else {
+        fl |= SaveDoc_DestroyAfter;
+    }
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(
         IOAdapterUtils::url2io(filepath));
     CHECK_EXT(NULL != iof,

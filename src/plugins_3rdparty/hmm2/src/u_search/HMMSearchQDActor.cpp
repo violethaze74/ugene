@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,22 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#include "HMMSearchQDActor.h"
-#include "uhmmsearch.h"
-#include "HMMIO.h"
-#include "HMMSearchTask.h"
+#include <math.h>
 
-#include <U2Core/FailTask.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/DNASequenceObject.h>
-
-#include <U2Gui/DialogUtils.h>
+#include <U2Core/FailTask.h>
+#include <U2Core/TaskSignalMapper.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/DialogUtils.h>
+
 #include <U2Lang/BaseTypes.h>
 
+#include "HMMIO.h"
+#include "HMMSearchQDActor.h"
+#include "HMMSearchTask.h"
+#include "uhmmsearch.h"
 
 namespace U2 {
 

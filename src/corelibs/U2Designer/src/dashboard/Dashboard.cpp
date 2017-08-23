@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,12 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
+#include <QDir>
 #include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QMessageBox>
+#include <QSettings>
 #include <QWebChannel>
 #include <QWebSocketServer>
 
@@ -238,7 +242,7 @@ void Dashboard::sl_serialize() {
     if (!d.exists(reportDir)) {
         bool created = d.mkpath(reportDir);
         if (!created) {
-            coreLog.error(tr("Can not create a directory: ") + reportDir);
+            coreLog.error(tr("Can not create a folder: ") + reportDir);
             return;
         }
     }
@@ -363,8 +367,10 @@ void DashboardPageController::sl_taskStateChanged(U2::Workflow::Monitor::TaskSta
 }
 
 void DashboardPageController::sl_newProblem(const Problem &info, int count){
+    SAFE_POINT(NULL != monitor, "WorkflowMonitor is NULL", );
     QJsonObject infoJS;
-    infoJS["actor"] = info.actor;
+    infoJS["actorId"] = info.actorId;
+    infoJS["actorName"] = monitor->actorName(info.actorId);
     infoJS["type"] = info.type;
     infoJS["message"] = info.message;
     infoJS["count"] = count;
@@ -649,7 +655,7 @@ DashboardWidget::DashboardWidget(const QString &container, Dashboard *parent)
 /* LoadDashboardsTask */
 /************************************************************************/
 ScanDashboardsDirTask::ScanDashboardsDirTask()
-: Task(tr("Scan dashboards directory"), TaskFlag_None)
+: Task(tr("Scan dashboards folder"), TaskFlag_None)
 {
 
 }

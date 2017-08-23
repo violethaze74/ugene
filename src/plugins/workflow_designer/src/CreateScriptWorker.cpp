@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -300,7 +300,7 @@ public:
         if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
             switch(section) {
                 case 0: return CreateScriptElementDialog::tr("Name");
-                case 1: return CreateScriptElementDialog::tr("type");
+                case 1: return CreateScriptElementDialog::tr("Type");
                 default: return QVariant();
             }
         }
@@ -358,7 +358,9 @@ private:
 
 CreateScriptElementDialog::CreateScriptElementDialog(QWidget *p, ActorPrototype* proto): QDialog(p), editing(false) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759833");
+    new HelpButton(this, buttonBox, "19767089");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     inputList->setModel(new CfgListModel());
     inputList->setItemDelegate(new ProxyDelegate());
@@ -596,7 +598,7 @@ void CreateScriptElementDialog::changeDirectoryForActors() {
 
         QDir dir(url);
         if(!dir.exists()) {
-            //coreLog.info(tr("There isn't directory with users workflow elements"));
+            //coreLog.info(tr("There isn't folder with users workflow elements"));
             return;
         }
         dir.setNameFilters(QStringList() << "*.usa");

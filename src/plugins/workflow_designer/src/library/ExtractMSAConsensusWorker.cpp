@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,15 +19,16 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MSAConsensusUtils.h>
-#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
@@ -69,7 +70,7 @@ void ExtractMSAConsensusWorker::init() {
 Task* ExtractMSAConsensusWorker::tick() {
     if (hasMsa()) {
         U2OpStatusImpl os;
-        MAlignment msa = takeMsa(os);
+        MultipleSequenceAlignment msa = takeMsa(os);
         CHECK_OP(os, new FailTask(os.getError()));
         extractMsaConsensus = createTask(msa);
         return extractMsaConsensus;
@@ -98,20 +99,20 @@ bool ExtractMSAConsensusWorker::hasMsa() const {
     return port->hasMessage();
 }
 
-MAlignment ExtractMSAConsensusWorker::takeMsa(U2OpStatus &os) {
+MultipleSequenceAlignment ExtractMSAConsensusWorker::takeMsa(U2OpStatus &os) {
     const Message m = getMessageAndSetupScriptValues(ports[BasePorts::IN_MSA_PORT_ID()]);
     const QVariantMap data = m.getData().toMap();
     if (!data.contains(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId())) {
         os.setError(tr("Empty msa slot"));
-        return MAlignment();
+        return MultipleSequenceAlignment();
     }
     const SharedDbiDataHandler dbiId = data[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()].value<SharedDbiDataHandler>();
-    const MAlignmentObject *obj = StorageUtils::getMsaObject(context->getDataStorage(), dbiId);
+    const MultipleSequenceAlignmentObject *obj = StorageUtils::getMsaObject(context->getDataStorage(), dbiId);
     if (NULL == obj) {
         os.setError(tr("Error with msa object"));
-        return MAlignment();
+        return MultipleSequenceAlignment();
     }
-    return obj->getMAlignment();
+    return obj->getMultipleAlignment();
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -139,7 +140,7 @@ void ExtractMSAConsensusStringWorker::sendResult(const SharedDbiDataHandler & /*
     outPort->put(Message(outPort->getBusType(), data));
 }
 
-ExtractMSAConsensusTaskHelper* ExtractMSAConsensusStringWorker::createTask(const MAlignment &msa){
+ExtractMSAConsensusTaskHelper* ExtractMSAConsensusStringWorker::createTask(const MultipleSequenceAlignment &msa){
     const QString algoId = getValue<QString>(ALGO_ATTR_ID);
     const int threshold = getValue<int>(THRESHOLD_ATTR_ID);
     extractMsaConsensus = new ExtractMSAConsensusTaskHelper(algoId, threshold, true, msa, context->getDataStorage()->getDbiRef());
@@ -171,7 +172,7 @@ void ExtractMSAConsensusSequenceWorker::sendResult(const SharedDbiDataHandler &s
     outPort->put(Message(outPort->getBusType(), data));
 }
 
-ExtractMSAConsensusTaskHelper* ExtractMSAConsensusSequenceWorker::createTask(const MAlignment &msa){
+ExtractMSAConsensusTaskHelper* ExtractMSAConsensusSequenceWorker::createTask(const MultipleSequenceAlignment &msa){
     const QString algoId = getValue<QString>(ALGO_ATTR_ID);
     const int threshold = getValue<int>(THRESHOLD_ATTR_ID);
     const bool keepGaps = getValue<bool>(GAPS_ATTR_ID);
@@ -182,12 +183,12 @@ ExtractMSAConsensusTaskHelper* ExtractMSAConsensusSequenceWorker::createTask(con
 
 ///////////////////////////////////////////////////////////////////////
 //ExtractMSAConsensusTaskHelper
-ExtractMSAConsensusTaskHelper::ExtractMSAConsensusTaskHelper(const QString &algoId, int threshold, bool keepGaps, const MAlignment &msa, const U2DbiRef &targetDbi)
+ExtractMSAConsensusTaskHelper::ExtractMSAConsensusTaskHelper(const QString &algoId, int threshold, bool keepGaps, const MultipleSequenceAlignment &msa, const U2DbiRef &targetDbi)
 : Task(ExtractMSAConsensusTaskHelper::tr("Extract consensus"), TaskFlags_NR_FOSCOE),
   algoId(algoId),
   threshold(threshold),
   keepGaps(keepGaps),
-  msa(msa),
+  msa(msa->getCopy()),
   targetDbi(targetDbi)
   //,resultText("")
 {
@@ -196,7 +197,7 @@ ExtractMSAConsensusTaskHelper::ExtractMSAConsensusTaskHelper(const QString &algo
 
 QString ExtractMSAConsensusTaskHelper::getResultName () const {
     QString res;
-    res = msa.getName();
+    res = msa->getName();
     res+="_consensus";
     return res;
 }
@@ -212,7 +213,7 @@ void ExtractMSAConsensusTaskHelper::prepare() {
 
     if (algo->getFactory()->isSequenceLikeResult()) {
         U2SequenceImporter seqImporter;
-        seqImporter.startSequence(targetDbi, U2ObjectDbi::ROOT_FOLDER, getResultName(), false, stateInfo);
+        seqImporter.startSequence(stateInfo, targetDbi, U2ObjectDbi::ROOT_FOLDER, getResultName(), false);
         seqImporter.addBlock(resultText.data(), resultText.length(), stateInfo);
         resultSequence = seqImporter.finalizeSequence(stateInfo);
     }

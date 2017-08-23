@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef U2_GTUTILS_OPTION_PANEL_MSA_H
-#define U2_GTUTILS_OPTION_PANEL_MSA_H
+#ifndef _U2_GT_UTILS_OPTION_PANEL_MSA_H_
+#define _U2_GT_UTILS_OPTION_PANEL_MSA_H_
 
-#include "GTGlobals.h"
+#include <GTGlobals.h>
 
 class QLineEdit;
 class QPushButton;
@@ -30,10 +30,26 @@ class QToolButton;
 
 namespace U2 {
 
-class GTUtilsOptionPanelMsa{
+class GTUtilsOptionPanelMsa {
 public:
-    enum Tabs{General, Highlighting, PairwiseAlignment, TreeSettings, ExportConsensus, Statistics};
-    enum AddRefMethod{Button, Completer};
+    enum Tabs {
+        General,
+        Highlighting,
+        PairwiseAlignment,
+        TreeSettings,
+        ExportConsensus,
+        Statistics
+    };
+
+    enum AddRefMethod {
+        Button,
+        Completer
+    };
+
+    enum ThresholdComparison {
+        LessOrEqual,
+        GreaterOrEqual
+    };
 
     static const QMap<Tabs, QString> tabsNames;
     static const QMap<Tabs, QString> innerWidgetNames;
@@ -55,27 +71,41 @@ public:
     static void setColorScheme(HI::GUITestOpStatus &os, const QString &colorSchemeName);
     static QString getColorScheme(HI::GUITestOpStatus &os);
 
-    //functions for accessing PA gui elements
+    static void setHighlightingScheme(HI::GUITestOpStatus &os, const QString &highlightingSchemeName);
+
+    // functions for accessing PA gui elements
     static QToolButton* getAddButton(HI::GUITestOpStatus &os, int number);
     static QLineEdit* getSeqLineEdit(HI::GUITestOpStatus &os, int number);
     static QToolButton* getDeleteButton(HI::GUITestOpStatus &os, int number);
     static QPushButton *getAlignButton(HI::GUITestOpStatus &os);
     static void setPairwiseAlignmentAlgorithm(HI::GUITestOpStatus &os, const QString &algorithm);
 
+    // functions for accessing Highlighting schemes options elements
+    static void setThreshold(HI::GUITestOpStatus &os, int threshold);
+    static int getThreshold(HI::GUITestOpStatus &os);
+
+    static void setThresholdComparison(HI::GUITestOpStatus &os, ThresholdComparison comparison);
+    static ThresholdComparison getThresholdComparison(HI::GUITestOpStatus &os);
+
+    static void setUseDotsOption(HI::GUITestOpStatus &os, bool useDots);
+    static bool isUseDotsOptionSet(HI::GUITestOpStatus &os);
+
+    // functions for accessing "Export consensus" options elements
+    static void setExportConsensusOutputPath(HI::GUITestOpStatus &os, const QString &filePath);
+    static QString getExportConsensusOutputPath(HI::GUITestOpStatus &os);
+
+    static void setExportConsensusOutputFormat(HI::GUITestOpStatus &os, const QString &format);
+    static QString getExportConsensusOutputFormat(HI::GUITestOpStatus &os);
+
 private:
     static QWidget* getWidget(HI::GUITestOpStatus &os, const QString& widgetName, int number);
 
     static void addSeqToPA(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method, int number);
 
-
-private:
     static QMap<Tabs, QString> initNames();
     static QMap<Tabs, QString> initInnerWidgetNames();
 };
 
-
 }
 
-
-
-#endif // GTUTILSOPTIONPANELMSA_H
+#endif // _U2_GT_UTILS_OPTION_PANEL_MSA_H_

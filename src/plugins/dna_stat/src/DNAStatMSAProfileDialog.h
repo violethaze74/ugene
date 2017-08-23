@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,11 +26,11 @@
 #include <QSet>
 
 #include <U2Core/global.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Task.h>
 #include <U2Core/global.h>
 #include <U2Core/Task.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include "ui_DNAStatMSAProfileDialog.h"
 
@@ -69,7 +69,7 @@ enum DNAStatMSAProfileOutputFormat {
 
 class DNAStatMSAProfileTaskSettings {
 public:
-    DNAStatMSAProfileTaskSettings(){
+    DNAStatMSAProfileTaskSettings() {
         outFormat = DNAStatMSAProfileOutputFormat_Show;
         usePercents = false;
         reportGaps = false;
@@ -79,7 +79,7 @@ public:
 
     QString                         profileName; // usually object name
     QString                         profileURL;  // document url
-    MAlignment                      ma;
+    MultipleSequenceAlignment       ma;
     bool                            usePercents; //report percents but not counts
     DNAStatMSAProfileOutputFormat   outFormat;
     QString                         outURL;
@@ -94,6 +94,8 @@ public:
     DNAStatMSAProfileTask(const DNAStatMSAProfileTaskSettings& s);
 
     void run();
+    QString generateReport() const;
+    virtual bool isReportingEnabled() const;
 
     ReportResult report();
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -125,12 +125,19 @@ void GTUtilsProject::openFilesWithDialog(HI::GUITestOpStatus &os, const QList<QU
 }
 
 #define GT_METHOD_NAME "openFileExpectSequence"
-ADVSingleSequenceWidget * GTUtilsProject::openFileExpectSequence(HI::GUITestOpStatus &os,
-                                                                const QString &path,
+ADVSingleSequenceWidget *GTUtilsProject::openFileExpectSequence(HI::GUITestOpStatus &os,
+                                                                const QString &dirPath,
                                                                 const QString &fileName,
-                                                                const QString &seqName)
-{
-    GTFileDialog::openFile(os, path, fileName);
+                                                                const QString &seqName) {
+    return openFileExpectSequence(os, dirPath + "/" + fileName, seqName);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "openFileExpectSequence"
+ADVSingleSequenceWidget *GTUtilsProject::openFileExpectSequence(GUITestOpStatus &os,
+                                                                const QString &filePath,
+                                                                const QString &seqName) {
+    GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GT_CHECK_OP_RESULT(os, "Error opening file!", NULL);
 
@@ -153,18 +160,23 @@ ADVSingleSequenceWidget * GTUtilsProject::openFileExpectSequence(HI::GUITestOpSt
 }
 #undef GT_METHOD_NAME
 
-
 #define GT_METHOD_NAME "openFileExpectRawSequence"
-ADVSingleSequenceWidget * GTUtilsProject::openFileExpectRawSequence(HI::GUITestOpStatus &os,
-                                                                 const QString &path,
+ADVSingleSequenceWidget *GTUtilsProject::openFileExpectRawSequence(HI::GUITestOpStatus &os,
+                                                                 const QString &dirPath,
                                                                  const QString &fileName,
-                                                                 const QString &seqName)
-{
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-    return openFileExpectSequence(os, path, fileName, seqName);
+                                                                 const QString &seqName) {
+    return openFileExpectRawSequence(os, dirPath + "/" + fileName, seqName);
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "openFileExpectRawSequence"
+ADVSingleSequenceWidget *GTUtilsProject::openFileExpectRawSequence(GUITestOpStatus &os,
+                                                                   const QString &filePath,
+                                                                   const QString &seqName) {
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    return openFileExpectSequence(os, filePath, seqName);
+}
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openFileExpectSequences"
 QList<ADVSingleSequenceWidget*> GTUtilsProject::openFileExpectSequences(HI::GUITestOpStatus &os,

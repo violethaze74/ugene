@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
@@ -51,9 +51,9 @@
 
 namespace U2 {
 
-CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, const MAlignmentObject* mobj, CreatePhyTreeSettings& _settings) :
+CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, const MultipleSequenceAlignmentObject* mobj, CreatePhyTreeSettings& _settings) :
     QDialog(parent),
-    msa(mobj->getMAlignment()),
+    msa(mobj->getMsaCopy()),
     settings(_settings),
     settingsWidget(NULL),
     ui(new Ui_CreatePhyTree),
@@ -62,9 +62,9 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, co
     ui->setupUi(this);
 
     QMap<QString, QString> helpPagesMap;
-    helpPagesMap.insert("PHYLIP Neighbor Joining","19759585");
-    helpPagesMap.insert("MrBayes","19759586");
-    helpPagesMap.insert("PhyML Maximum Likelihood","19759584");
+    helpPagesMap.insert("PHYLIP Neighbor Joining","19766841");
+    helpPagesMap.insert("MrBayes","19766842");
+    helpPagesMap.insert("PhyML Maximum Likelihood","19766840");
     new ComboboxDependentHelpButton(this, ui->buttonBox, ui->algorithmBox, helpPagesMap);
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
@@ -170,7 +170,7 @@ bool CreatePhyTreeDialogController::checkMemory() {
     return true;
 }
 
-void CreatePhyTreeDialogController::initSaveController(const MAlignmentObject *mobj) {
+void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAlignmentObject *mobj) {
     SaveDocumentControllerConfig config;
     config.defaultFileName = GUrlUtils::getNewLocalUrlByExtention(mobj->getDocument()->getURLString(), mobj->getGObjectName(), ".nwk", "");
     config.defaultFormatId = BaseDocumentFormats::NEWICK;

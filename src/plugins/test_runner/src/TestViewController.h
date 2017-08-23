@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,14 +26,9 @@
 #include <ui_TestView.h>
 #include <U2Core/CMDLineRegistry.h>
 
-#include <QtCore/QTime>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTreeWidgetItem>
-#include <QtGui/QMainWindow>
-#else
-#include <QtWidgets/QTreeWidgetItem>
-#include <QtWidgets/QMainWindow>
-#endif
+#include <QTime>
+#include <QTreeWidgetItem>
+#include <QMainWindow>
 
 namespace U2 {
 

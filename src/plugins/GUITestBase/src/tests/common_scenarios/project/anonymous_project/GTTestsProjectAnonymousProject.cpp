@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 // 2. Use menu {File->Export Project}
 // Expected state: "Export Project" dialog has appeared
 // 3. Fill the next field in dialog:
-//     {Destination Directory} _common_data/scenarios/sandbox
+//     {Destination folder} _common_data/scenarios/sandbox
 //     {Project file name} proj2.uprj
 // 4. Click OK button
 // 5. Click NO in opened messagebox

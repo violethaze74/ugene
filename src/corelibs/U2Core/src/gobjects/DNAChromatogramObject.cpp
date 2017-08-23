@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DatatypeSerializeUtils.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
@@ -42,6 +43,12 @@ U2Chromatogram::U2Chromatogram(const U2DbiRef &dbiRef) : U2RawData(dbiRef) {
 
 }
 
+U2Chromatogram::U2Chromatogram(const U2RawData &rawData)
+    : U2RawData(rawData)
+{
+
+}
+
 U2DataType U2Chromatogram::getType() const {
     return U2Type::Chromatogram;
 }
@@ -51,20 +58,9 @@ U2DataType U2Chromatogram::getType() const {
 DNAChromatogramObject * DNAChromatogramObject::createInstance(const DNAChromatogram &chroma,
     const QString &objectName, const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hintsMap)
 {
-    U2Chromatogram object(dbiRef);
-    object.visualName = objectName;
-    object.serializer = DNAChromatogramSerializer::ID;
-
     const QString folder = hintsMap.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    RawDataUdrSchema::createObject(dbiRef, folder, object, os);
-    CHECK_OP(os, NULL);
-
-    U2EntityRef entRef(dbiRef, object.id);
-    QByteArray data = DNAChromatogramSerializer::serialize(chroma);
-    RawDataUdrSchema::writeContent(data, entRef, os);
-    CHECK_OP(os, NULL);
-
-    return new DNAChromatogramObject(objectName, entRef, hintsMap);
+    const U2EntityRef chromatogramRef = ChromatogramUtils::import(os, dbiRef, folder, chroma);
+    return new DNAChromatogramObject(objectName, chromatogramRef, hintsMap);
 }
 
 DNAChromatogramObject::DNAChromatogramObject(const QString &objectName, const U2EntityRef &chromaRef, const QVariantMap &hintsMap)
@@ -76,6 +72,12 @@ DNAChromatogramObject::DNAChromatogramObject(const QString &objectName, const U2
 const DNAChromatogram & DNAChromatogramObject::getChromatogram() const {
     ensureDataLoaded();
     return cache;
+}
+
+void DNAChromatogramObject::setChromatogram(U2OpStatus &os, const DNAChromatogram &chromatogram) {
+    ChromatogramUtils::updateChromatogramData(os, getEntityRef(), chromatogram);
+    CHECK_OP(os, );
+    cache = chromatogram;
 }
 
 void DNAChromatogramObject::loadDataCore(U2OpStatus &os) {

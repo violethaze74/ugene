@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,33 +22,34 @@
 #ifndef _U2_UMUSCLE_ADAPTER_H_
 #define _U2_UMUSCLE_ADAPTER_H_
 
-#include <QtCore/QObject>
+#include <QObject>
+
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
-class MAlignment;
 class TaskStateInfo;
 
 class MuscleAdapter : public QObject {
 Q_OBJECT
 public:
-    static void align(const MAlignment& ma, MAlignment& res, TaskStateInfo& ti, bool mhack = true);
+    static void align(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti, bool mhack = true);
 
-    static void refine(const MAlignment& ma, MAlignment& res, TaskStateInfo& ti);
+    static void refine(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti);
 
-    static void align2Profiles(const MAlignment& ma1, const MAlignment& ma2, MAlignment& res, TaskStateInfo& ti);
+    static void align2Profiles(const MultipleSequenceAlignment& ma1, const MultipleSequenceAlignment& ma2, MultipleSequenceAlignment& res, TaskStateInfo& ti);
     
-    static void addUnalignedSequencesToProfile( const MAlignment& ma, const MAlignment& unalignedSeqs, MAlignment& res, TaskStateInfo& ti);
+    static void addUnalignedSequencesToProfile( const MultipleSequenceAlignment& ma, const MultipleSequenceAlignment& unalignedSeqs, MultipleSequenceAlignment& res, TaskStateInfo& ti);
     static QString getBadAllocError();
 
 private:
-    static void alignUnsafe(const MAlignment& ma, MAlignment& res, TaskStateInfo& ti, bool mhack);
+    static void alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti, bool mhack);
     
-    static void refineUnsafe(const MAlignment& ma, MAlignment& res, TaskStateInfo& ti);
+    static void refineUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti);
 
-    static void align2ProfilesUnsafe(const MAlignment& ma1, const MAlignment& ma2, MAlignment& res, TaskStateInfo& ti);
+    static void align2ProfilesUnsafe(const MultipleSequenceAlignment& ma1, const MultipleSequenceAlignment& ma2, MultipleSequenceAlignment& res, TaskStateInfo& ti);
 
-    static void addUnalignedSequencesToProfileUnsafe(const MAlignment& ma, const MAlignment& unalignedSeqs, MAlignment& res, TaskStateInfo& ti);
+    static void addUnalignedSequencesToProfileUnsafe(const MultipleSequenceAlignment& ma, const MultipleSequenceAlignment& unalignedSeqs, MultipleSequenceAlignment& res, TaskStateInfo& ti);
 };
 
 }//namespace

@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -20,15 +20,17 @@
 */
 
 #include <QFile>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/CmdlineInOutTaskRunner.h>
 #include <U2Core/DeleteObjectsTask.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2DbiRegistry.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include "PhylipCmdlineTask.h"
@@ -46,7 +48,7 @@ const QString PhylipCmdlineTask::SEED_ARG = "seed";
 const QString PhylipCmdlineTask::FRACTION_ARG = "fraction";
 const QString PhylipCmdlineTask::CONSENSUS_ARG = "consensus";
 
-PhylipCmdlineTask::PhylipCmdlineTask(const MAlignment &msa, const CreatePhyTreeSettings &settings)
+PhylipCmdlineTask::PhylipCmdlineTask(const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings)
 : PhyTreeGeneratorTask(msa, settings), cmdlineTask(NULL), msaObject(NULL), treeObject(NULL)
 {
     setTaskName(tr("PHYLIP command line wrapper task"));
@@ -84,7 +86,7 @@ Task::ReportResult PhylipCmdlineTask::report() {
 void PhylipCmdlineTask::createCmdlineTask() {
     CmdlineInOutTaskConfig config;
     CHECK_OP(stateInfo, );
-    msaObject = MAlignmentImporter::createAlignment(dbiRef, const_cast<MAlignment&>(inputMA), stateInfo);
+    msaObject = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, const_cast<MultipleSequenceAlignment&>(inputMA), stateInfo);
     CHECK_OP(stateInfo, );
     msaObject->setParent(this);
     config.inputObjects << msaObject;

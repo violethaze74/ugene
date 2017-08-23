@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,9 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include "LoadRemoteDocumentTests.h"
+#include <QDomElement>
 
 #include <U2Core/LoadRemoteDocumentTask.h>
+
+#include "LoadRemoteDocumentTests.h"
 
 #define DB_ATTR "database"
 #define DOC_ID_ATTR "document_id"

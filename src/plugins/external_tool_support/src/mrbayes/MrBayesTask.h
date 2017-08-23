@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,12 +38,12 @@ class LoadDocumentTask;
 class MrBayesPrepareDataForCalculation :public Task{
     Q_OBJECT
 public:
-    MrBayesPrepareDataForCalculation(const MAlignment& _ma, const CreatePhyTreeSettings& s, const QString& url);
+    MrBayesPrepareDataForCalculation(const MultipleSequenceAlignment& _ma, const CreatePhyTreeSettings& s, const QString& url);
     void prepare();
     QList<Task*> onSubTaskFinished(Task* subTask);
     QString getInputFileUrl() {return inputFileForMrBayes;}
 private:
-    const MAlignment&           ma;
+    const MultipleSequenceAlignment&           ma;
     CreatePhyTreeSettings       settings;
     QString                     tmpDirUrl;
     SaveAlignmentTask*          saveDocumentTask;
@@ -82,7 +82,7 @@ private:
 class MrBayesSupportTask : public PhyTreeGeneratorTask{
     Q_OBJECT
 public:
-    MrBayesSupportTask(const MAlignment& _ma, const CreatePhyTreeSettings& s);
+    MrBayesSupportTask(const MultipleSequenceAlignment& _ma, const CreatePhyTreeSettings& s);
     void prepare();
     Task::ReportResult report();
     QList<Task*> onSubTaskFinished(Task* subTask);

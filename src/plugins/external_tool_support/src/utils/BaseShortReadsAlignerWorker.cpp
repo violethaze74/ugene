@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,6 +68,8 @@ const QString OUT_PORT_DESCR("out-data");
 
 const QString OUTPUT_DIR("output-dir");
 
+const QString OUTPUT_SUBDIR("short-reads-aligner");
+
 const QString OUTPUT_NAME = "outname";
 
 const QString BASE_OUTFILE = "out.sam";
@@ -128,7 +130,12 @@ DnaAssemblyToRefTaskSettings BaseShortReadsAlignerWorker::getSettings(U2OpStatus
     //settings.refSeqUrl = GUrl(settings.indexFileName).baseFileName();
     settings.algName = algName;
 
+    QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
+    tmpDir = GUrlUtils::createDirectory(tmpDir + getAlignerSubdir() , "_", os);
+
     settings.setCustomSettings(getCustomParameters());
+    settings.cleanTmpDir = false;
+    settings.tmpDirPath = tmpDir;
 
     return settings;
 }
@@ -251,11 +258,15 @@ QString BaseShortReadsAlignerWorker::checkPairedReads() const {
     return "";
 }
 
+QString BaseShortReadsAlignerWorker::getAlignerSubdir() const {
+    return OUTPUT_SUBDIR;
+}
+
 //////////////////////////////////////////////////////////////////////////
 //ShortReadsAlignerSlotsValidator
 bool ShortReadsAlignerSlotsValidator::validate(const IntegralBusPort *port, ProblemList &problemList) const {
     QVariant busMap = port->getParameter(Workflow::IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributePureValue();
-    bool data = isBinded(busMap.value<QStrStrMap>(), READS_URL_SLOT_ID);
+    bool data = isBinded(busMap.value<StrStrMap>(), READS_URL_SLOT_ID);
     if (!data){
         QString dataName = slotName(port, READS_URL_SLOT_ID);
         problemList.append(Problem(IntegralBusPort::tr("The slot must be not empty: '%1'").arg(dataName)));
@@ -281,8 +292,8 @@ int BaseShortReadsAlignerWorkerFactory::getThreadsCount(){
 void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates) {
     {
         Descriptor outDir(OUTPUT_DIR,
-            BaseShortReadsAlignerWorker::tr("Output directory"),
-            BaseShortReadsAlignerWorker::tr("Directory to save output files."));
+            BaseShortReadsAlignerWorker::tr("Output folder"),
+            BaseShortReadsAlignerWorker::tr("Folder to save output files."));
 
         Descriptor refGenome(REFERENCE_GENOME,
             BaseShortReadsAlignerWorker::tr("Reference genome"),

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
 #define _U2_BIOSTRUCT3D_OBJECT_TESTS_H_
 
 #include <U2Test/XMLTestUtils.h>
-#include <QtXml/QDomElement>
-#include <QtCore/QHash>
+#include <QDomElement>
+#include <QHash>
 
 namespace U2 {
 

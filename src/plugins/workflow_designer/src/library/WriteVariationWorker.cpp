@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -147,7 +147,7 @@ void WriteVariationWorkerFactory::init() {
 
         QVariantMap formatsMap;
         foreach (const DocumentFormatId &fid, supportedFormats) {
-            formatsMap[fid] = fid;
+            formatsMap[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = fid;
         }
         proto->getEditor()->addDelegate(new ComboBoxDelegate(formatsMap), BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
         proto->setPrompter(new WriteDocPrompter(WriteVariationWorker::tr("Save all variations from <u>%1</u> to <u>%2</u>."),

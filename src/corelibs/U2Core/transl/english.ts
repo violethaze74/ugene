@@ -64,14 +64,12 @@
         <translation>Loaded sequences have different alphabets. That&apos;s why several sequence objects are created, each for specified alphabet. All sequences at one object have the same alphabet and sequences from different objects have different alphabets.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="606"/>
-        <location filename="../src/datatype/Annotation.cpp" line="609"/>
+        <location filename="../src/datatype/Annotation.cpp" line="598"/>
         <source>Sequence</source>
         <translation>Sequence</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="617"/>
-        <location filename="../src/datatype/Annotation.cpp" line="620"/>
+        <location filename="../src/datatype/Annotation.cpp" line="604"/>
         <source>Translation</source>
         <translation>Translation</translation>
     </message>
@@ -86,17 +84,17 @@
         <translation>Invalid database type: %1</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectUtils.cpp" line="427"/>
+        <location filename="../src/gobjects/GObjectUtils.cpp" line="430"/>
         <source>Unsupported object type: %1</source>
         <translation>Unsupported object type: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="409"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="415"/>
         <source>Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty.</source>
         <translation>Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty.</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="564"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="570"/>
         <source>Invalid number of symbols: %1</source>
         <translation>Invalid number of symbols: %1</translation>
     </message>
@@ -551,12 +549,12 @@
         <translation>Unexpected feature operator value detected.</translation>
     </message>
     <message>
-        <location filename="../src/util/MAlignmentImporter.cpp" line="45"/>
+        <location filename="../src/util/MultipleSequenceAlignmentImporter.cpp" line="46"/>
         <source>Unexpected number of sequences in a multiple alignment</source>
         <translation>Unexpected number of sequences in a multiple alignment</translation>
     </message>
     <message>
-        <location filename="../src/util/MAlignmentImporter.cpp" line="83"/>
+        <location filename="../src/util/MultipleSequenceAlignmentImporter.cpp" line="84"/>
         <source>Unexpected error on MSA rows import</source>
         <translation>Unexpected error on MSA rows import</translation>
     </message>
@@ -564,6 +562,11 @@
         <location filename="../src/util/U2AlphabetUtils.h" line="101"/>
         <source>Symbol is not belong to alphabet</source>
         <translation>Symbol is not belong to alphabet</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MultipleChromatogramAlignmentImporter.cpp" line="72"/>
+        <source>Unexpected error on MCA rows import</source>
+        <translation>Unexpected error on MCA rows import</translation>
     </message>
 </context>
 <context>
@@ -609,22 +612,22 @@
 <context>
     <name>U2::AddSequenceObjectsToAlignmentTask</name>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="49"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="55"/>
         <source>Object is empty.</source>
         <translation>Object is empty.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="54"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="60"/>
         <source>Object is locked for modifications.</source>
         <translation>Object is locked for modifications.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="155"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="161"/>
         <source>Some sequences have wrong alphabet: </source>
         <translation>Some sequences have wrong alphabet: </translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="158"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="164"/>
         <source> and others</source>
         <translation> and others</translation>
     </message>
@@ -920,12 +923,12 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::DBXRefRegistry</name>
     <message>
-        <location filename="../src/globals/DBXRefRegistry.cpp" line="42"/>
+        <location filename="../src/globals/DBXRefRegistry.cpp" line="37"/>
         <source>File with db_xref mappings not found: %1</source>
         <translation>File with db_xref mappings not found: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/DBXRefRegistry.cpp" line="53"/>
+        <location filename="../src/globals/DBXRefRegistry.cpp" line="48"/>
         <source>Illegal db_xref file entry: %1</source>
         <translation></translation>
     </message>
@@ -1245,12 +1248,12 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::DbiDocumentFormat</name>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="46"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="47"/>
         <source>ugenedb is a internal UGENE database file format</source>
         <translation>ugenedb is a internal UGENE database file format</translation>
     </message>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="129"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="153"/>
         <source>Invalid destination database reference</source>
         <translation>Invalid destination database reference</translation>
     </message>
@@ -1274,27 +1277,27 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="550"/>
+        <location filename="../src/models/DocumentModel.cpp" line="553"/>
         <source>Document is not loaded</source>
         <translation>Document is not loaded</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="563"/>
+        <location filename="../src/models/DocumentModel.cpp" line="566"/>
         <source>IO adapter does not support write operation</source>
         <translation>IO adapter does not support write operation</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="569"/>
+        <location filename="../src/models/DocumentModel.cpp" line="572"/>
         <source>No write support for document format</source>
         <translation>No write support for document format</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="639"/>
+        <location filename="../src/models/DocumentModel.cpp" line="642"/>
         <source>Locked by user</source>
         <translation>Locked by user</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="663"/>
+        <location filename="../src/models/DocumentModel.cpp" line="666"/>
         <source>Lock is NULL</source>
         <translation>Lock is NULL</translation>
     </message>
@@ -1302,8 +1305,8 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::DocumentFormat</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="125"/>
-        <location filename="../src/models/DocumentModel.cpp" line="130"/>
+        <location filename="../src/models/DocumentModel.cpp" line="127"/>
+        <location filename="../src/models/DocumentModel.cpp" line="132"/>
         <source>Writing is not supported for this format (%1). Feel free to send a feature request though.</source>
         <translation>Writing is not supported for this format (%1). Feel free to send a feature request though.</translation>
     </message>
@@ -1319,12 +1322,12 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::DocumentUtils</name>
     <message>
-        <location filename="../src/models/DocumentUtils.cpp" line="260"/>
+        <location filename="../src/models/DocumentUtils.cpp" line="261"/>
         <source>Format does not support writing of alignments</source>
         <translation>Format does not support writing of alignments</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentUtils.cpp" line="271"/>
+        <location filename="../src/models/DocumentUtils.cpp" line="272"/>
         <source>File content was merged</source>
         <translation>File content was merged</translation>
     </message>
@@ -1366,23 +1369,23 @@ The session database file is removed after closing of UGENE.</translation>
     <name>U2::ExternalToolSupportUtils</name>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="350"/>
-        <source>Can not remove temporary directory: path is empty.</source>
-        <translation>Can not remove temporary directory: path is empty.</translation>
+        <source>Can not remove temporary folder: path is empty.</source>
+        <translation>Can not remove temporary folder: path is empty.</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="356"/>
-        <source>Can not remove files from temporary directory.</source>
-        <translation>Can not remove files from temporary directory.</translation>
+        <source>Can not remove files from temporary folder.</source>
+        <translation>Can not remove files from temporary folder.</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="361"/>
-        <source>Can not remove directory for temporary files.</source>
-        <translation>Can not remove directory for temporary files.</translation>
+        <source>Can not remove folder for temporary files.</source>
+        <translation>Can not remove folder for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="374"/>
-        <source>Can not create directory for temporary files: %1</source>
-        <translation>Can not create directory for temporary files: %1</translation>
+        <source>Can not create folder for temporary files: %1</source>
+        <translation>Can not create folder for temporary files: %1</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="405"/>
@@ -1401,8 +1404,8 @@ The session database file is removed after closing of UGENE.</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="469"/>
-        <source>Working directory is &quot;%1&quot;</source>
-        <translation>Working directory is &quot;%1&quot;</translation>
+        <source>Working folder is &quot;%1&quot;</source>
+        <translation>Working folder is &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="478"/>
@@ -1484,42 +1487,44 @@ The session database file is removed after closing of UGENE.</translation>
         <translation>Chromatograms</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="49"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="50"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="51"/>
         <source>Alignment</source>
         <translation>Alignment</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="49"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="50"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="51"/>
         <source>Alignments</source>
         <translation>Alignments</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="50"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="52"/>
         <source>Tree</source>
         <translation>Tree</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="50"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="52"/>
         <source>Trees</source>
         <translation>Trees</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="51"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="53"/>
         <source>3D model</source>
         <translation>3D model</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="51"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="53"/>
         <source>3D models</source>
         <translation>3D models</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="52"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="54"/>
         <source>Assembly</source>
         <translation>Assembly</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="52"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="54"/>
         <source>Assemblies</source>
         <translation>Assemblies</translation>
     </message>
@@ -1538,18 +1543,18 @@ The session database file is removed after closing of UGENE.</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="290"/>
-        <source>Directory is not specified</source>
-        <translation>Directory is not specified</translation>
+        <source>Folder is not specified</source>
+        <translation>Folder is not specified</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="295"/>
-        <source>Directory can&apos;t be created: %1</source>
-        <translation>Directory can&apos;t be created: %1</translation>
+        <source>Folder can&apos;t be created: %1</source>
+        <translation>Folder can&apos;t be created: %1</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="300"/>
-        <source>Directory can&apos;t be read: %1</source>
-        <translation>Directory can&apos;t be read: %1</translation>
+        <source>Folder can&apos;t be read: %1</source>
+        <translation>Folder can&apos;t be read: %1</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="342"/>
@@ -1558,13 +1563,13 @@ The session database file is removed after closing of UGENE.</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="345"/>
-        <source>Directory path instead of file path</source>
-        <translation>Directory path instead of file path</translation>
+        <source>Folder path instead of file path</source>
+        <translation>Folder path instead of file path</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="403"/>
-        <source>Can not create a directory: %1</source>
-        <translation>Can not create a directory: %1</translation>
+        <source>Can not create a folder: %1</source>
+        <translation>Can not create a folder: %1</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="453"/>
@@ -1573,13 +1578,13 @@ The session database file is removed after closing of UGENE.</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="462"/>
-        <source>Can not create a directory [%1].</source>
-        <translation>Can not create a directory [%1].</translation>
+        <source>Can not create a folder [%1].</source>
+        <translation>Can not create a folder [%1].</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="467"/>
-        <source>%1 is a directory [%2].</source>
-        <translation>%1 is a directory [%2].</translation>
+        <source>%1 is a folder [%2].</source>
+        <translation>%1 is a folder [%2].</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.h" line="133"/>
@@ -1590,7 +1595,7 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::GzippedHttpFileAdapterFactory</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="52"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="51"/>
         <source>HTTP GZIP adaptor</source>
         <translation>HTTP GZIP adaptor</translation>
     </message>
@@ -1606,7 +1611,7 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::HttpFileAdapter</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="110"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="109"/>
         <source>Incorrect url string has been passed to HttpFileAdapter::open()</source>
         <translation>Incorrect url string has been passed to HttpFileAdapter::open()</translation>
     </message>
@@ -1614,7 +1619,7 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::HttpFileAdapterFactory</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="43"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="42"/>
         <source>HTTP file</source>
         <translation>HTTP file</translation>
     </message>
@@ -1623,13 +1628,13 @@ The session database file is removed after closing of UGENE.</translation>
     <name>U2::ImportDirToDatabaseTask</name>
     <message>
         <location filename="../src/tasks/shared_db/ImportDirToDatabaseTask.cpp" line="36"/>
-        <source>Import directory %1 to the database</source>
-        <translation>Import directory %1 to the database</translation>
+        <source>Import folder %1 to the database</source>
+        <translation>Import folder %1 to the database</translation>
     </message>
     <message>
         <location filename="../src/tasks/shared_db/ImportDirToDatabaseTask.cpp" line="43"/>
-        <source>It is not a directory: </source>
-        <translation>It is not a directory:</translation>
+        <source>It is not a folder: </source>
+        <translation>It is not a folder:</translation>
     </message>
     <message>
         <location filename="../src/tasks/shared_db/ImportDirToDatabaseTask.cpp" line="44"/>
@@ -1856,18 +1861,18 @@ The session database file is removed after closing of UGENE.</translation>
     </message>
     <message>
         <location filename="../src/globals/L10n.h" line="53"/>
-        <source>Directory not found: &apos;%1&apos;</source>
-        <translation>Directory not found: &apos;%1&apos;</translation>
+        <source>Folder not found: &apos;%1&apos;</source>
+        <translation>Folder not found: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/globals/L10n.h" line="54"/>
-        <source>Error opening directory: &apos;%1&apos;</source>
-        <translation>Error opening directory: &apos;%1&apos;</translation>
+        <source>Error opening folder: &apos;%1&apos;</source>
+        <translation>Error opening folder: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/globals/L10n.h" line="55"/>
-        <source>&apos;%1&apos; is not a directory</source>
-        <translation>&apos;%1&apos; is not a directory</translation>
+        <source>&apos;%1&apos; is not a folder</source>
+        <translation>&apos;%1&apos; is not a folder</translation>
     </message>
     <message>
         <location filename="../src/globals/L10n.h" line="58"/>
@@ -1972,43 +1977,43 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::LoadDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="230"/>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="245"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="225"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="240"/>
         <source>Read document: &apos;%1&apos;</source>
         <translation>Read document: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="266"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="261"/>
         <source>Document format is NULL!</source>
         <translation>Document format is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="267"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="262"/>
         <source>IO adapter factory is NULL!</source>
         <translation>IO adapter factory is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="447"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="442"/>
         <source>Document not found %1</source>
         <translation>Document not found %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="467"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="462"/>
         <source>Not enough memory to load document %1</source>
         <translation>Not enough memory to load document %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="483"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="478"/>
         <source>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</source>
         <translation>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="513"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="508"/>
         <source>Object not found: %1</source>
         <translation>Object not found: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="520"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="515"/>
         <source>Can&apos;t add object. Document format constraints check failed: %1</source>
         <translation>Can&apos;t add object. Document format constraints check failed: %1</translation>
     </message>
@@ -2029,37 +2034,37 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::LoadUnloadedDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="89"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="84"/>
         <source>Load &apos;%1&apos;</source>
         <translation>Load &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="97"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="92"/>
         <source>Document not found</source>
         <translation>Document not found</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="104"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="99"/>
         <source>Starting load document from %1, document format %2</source>
         <translation>Starting load document from %1, document format %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="130"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="125"/>
         <source>Document was removed</source>
         <translation>Document was removed</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="163"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="158"/>
         <source>Document is locked</source>
         <translation>Document is locked</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="182"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="177"/>
         <source>Project Document:</source>
         <translation>Project Document:</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="200"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="195"/>
         <source>Annotation object not found</source>
         <translation>Annotation object not found</translation>
     </message>
@@ -2073,65 +2078,45 @@ The session database file is removed after closing of UGENE.</translation>
     </message>
 </context>
 <context>
-    <name>U2::MAlignmentObject</name>
-    <message>
-        <location filename="../src/util/MAlignmentWalker.cpp" line="77"/>
-        <source>Unexpected gap start</source>
-        <translation>Unexpected gap start</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MAlignmentWalker.cpp" line="86"/>
-        <source>Unexpected gap start (too small)</source>
-        <translation>Unexpected gap start (too small)</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MAlignmentWalker.cpp" line="87"/>
-        <source>Unexpected gap start (too big)</source>
-        <translation>Unexpected gap start (too big)</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MAlignmentWalker.cpp" line="101"/>
-        <source> Incorrect gap splitting</source>
-        <translation> Incorrect gap splitting</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MAlignmentWalker.cpp" line="136"/>
-        <source> Alignment walker is ended</source>
-        <translation> Alignment walker is ended</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MAlignmentWalker.cpp" line="137"/>
-        <source> Alignment changed</source>
-        <translation> Alignment changed</translation>
-    </message>
-</context>
-<context>
     <name>U2::MSAUtils</name>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="183"/>
+        <location filename="../src/util/MSAUtils.cpp" line="182"/>
         <source>Alphabets of the alignment and the sequence cannot be derived</source>
         <translation>Alphabets of the alignment and the sequence cannot be derived</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="191"/>
+        <location filename="../src/util/MSAUtils.cpp" line="190"/>
         <source>Sequences have different alphabets.</source>
         <translation>Sequences have different alphabets.</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="219"/>
-        <location filename="../src/util/MSAUtils.cpp" line="224"/>
+        <location filename="../src/util/MSAUtils.cpp" line="218"/>
+        <location filename="../src/util/MSAUtils.cpp" line="223"/>
         <source>Alignment is empty!</source>
         <translation>Alignment is empty!</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="231"/>
+        <location filename="../src/util/MSAUtils.cpp" line="229"/>
         <source>Sequences in alignment have different sizes!</source>
         <translation>Sequences in alignment have different sizes!</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="340"/>
+        <location filename="../src/util/MSAUtils.cpp" line="337"/>
         <source>Can&apos;t find a row in an alignment!</source>
         <translation>Can&apos;t find a row in an alignment!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaDbiUtils</name>
+    <message>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="157"/>
+        <source>Can&apos;t rename an alignment to an empty name!</source>
+        <translation>Can&apos;t rename an alignment to an empty name!</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="197"/>
+        <source>Can&apos;t rename a row to an empty name!</source>
+        <translation>Can&apos;t rename a row to an empty name!</translation>
     </message>
 </context>
 <context>
@@ -2185,18 +2170,17 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::MsaDbiUtils</name>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="865"/>
         <source>Can&apos;t rename an alignment to an empty name!</source>
-        <translation>Can&apos;t rename an alignment to an empty name!</translation>
+        <translation type="vanished">Can&apos;t rename an alignment to an empty name!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="894"/>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="901"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="935"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="942"/>
         <source>Failed to insert gaps into an alignment!</source>
         <translation>Failed to insert gaps into an alignment!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1070"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1104"/>
         <source>Failed to crop an alignment!</source>
         <translation>Failed to crop an alignment!</translation>
     </message>
@@ -2205,9 +2189,41 @@ The session database file is removed after closing of UGENE.</translation>
         <translation type="obsolete">Failed to add a row to an alignment!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1195"/>
         <source>Can&apos;t rename a row to an empty name!</source>
-        <translation>Can&apos;t rename a row to an empty name!</translation>
+        <translation type="vanished">Can&apos;t rename a row to an empty name!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MultipleSequenceAlignmentObject</name>
+    <message>
+        <location filename="../src/util/MultipleSequenceAlignmentWalker.cpp" line="79"/>
+        <source>Unexpected gap start</source>
+        <translation>Unexpected gap start</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MultipleSequenceAlignmentWalker.cpp" line="88"/>
+        <source>Unexpected gap start (too small)</source>
+        <translation>Unexpected gap start (too small)</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MultipleSequenceAlignmentWalker.cpp" line="89"/>
+        <source>Unexpected gap start (too big)</source>
+        <translation>Unexpected gap start (too big)</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MultipleSequenceAlignmentWalker.cpp" line="103"/>
+        <source> Incorrect gap splitting</source>
+        <translation> Incorrect gap splitting</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MultipleSequenceAlignmentWalker.cpp" line="138"/>
+        <source> Alignment walker is ended</source>
+        <translation> Alignment walker is ended</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MultipleSequenceAlignmentWalker.cpp" line="139"/>
+        <source> Alignment changed</source>
+        <translation> Alignment changed</translation>
     </message>
 </context>
 <context>
@@ -2525,48 +2541,48 @@ UGENE contains unsaved modifications.</translation>
         <translation>Found more results than expected!</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="175"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="174"/>
         <source>Unexpected query result code: %1 (%2)</source>
         <translation>Unexpected query result code: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="193"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="192"/>
         <source>Error binding NULL value! Query: &apos;%1&apos;, idx: %2</source>
         <translation>Error binding NULL value! Query: &apos;%1&apos;, idx: %2</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="305"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="304"/>
         <source>Error binding text value! Query: &apos;%1&apos;, idx: %2, value: &apos;%3&apos;</source>
         <translation>Error binding text value! Query: &apos;%1&apos;, idx: %2, value: &apos;%3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="317"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="316"/>
         <source>Error binding int32 value! Query: &apos;%1&apos;, idx: %2, value: %3</source>
         <translation>Error binding int32 value! Query: &apos;%1&apos;, idx: %2, value: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="329"/>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="341"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="328"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="340"/>
         <source>Error binding int64 value! Query: &apos;%1&apos;, idx: %2, value: %3</source>
         <translation>Error binding int64 value! Query: &apos;%1&apos;, idx: %2, value: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="354"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="353"/>
         <source>Error binding boolean value! Query: &apos;%1&apos;, idx: %2, value: %3</source>
         <translation>Error binding boolean value! Query: &apos;%1&apos;, idx: %2, value: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="371"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="370"/>
         <source>Error binding blob value! Query: &apos;%1&apos;, idx: %2, size: %3</source>
         <translation>Error binding blob value! Query: &apos;%1&apos;, idx: %2, size: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="383"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="382"/>
         <source>Error binding blob value! Query: &apos;%1&apos;, idx: %2</source>
         <translation>Error binding blob value! Query: &apos;%1&apos;, idx: %2</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="396"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="395"/>
         <source>Unexpected row count! Query: &apos;%1&apos;, rows: %2</source>
         <translation>Unexpected row count! Query: &apos;%1&apos;, rows: %2</translation>
     </message>
@@ -2619,7 +2635,7 @@ UGENE contains unsaved modifications.</translation>
         <translation>Internal error, sequence alphabet id &apos;%1&apos; is invalid</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/DNASequenceObject.cpp" line="209"/>
+        <location filename="../src/gobjects/DNASequenceObject.cpp" line="213"/>
         <source>Modified sequence &amp; region have different alphabet</source>
         <translation>Modified sequence &amp; region have different alphabet</translation>
     </message>
@@ -2633,13 +2649,13 @@ UGENE contains unsaved modifications.</translation>
     </message>
     <message>
         <location filename="../src/util/U2SequenceUtils.cpp" line="102"/>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="115"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="118"/>
         <source>Invalid sequence DBI</source>
         <translation>Invalid sequence DBI</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="374"/>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="553"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="380"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="559"/>
         <source>Failed to derive sequence alphabet!</source>
         <translation>Failed to derive sequence alphabet!</translation>
     </message>
@@ -2647,7 +2663,7 @@ UGENE contains unsaved modifications.</translation>
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/globals/UserApplicationsSettings.cpp" line="81"/>
+        <location filename="../src/globals/UserApplicationsSettings.cpp" line="71"/>
         <source>Cleaning temp dir: %1</source>
         <translation>Cleaning temp dir: %1</translation>
     </message>
@@ -2663,7 +2679,7 @@ UGENE contains unsaved modifications.</translation>
 <context>
     <name>U2SequenceImporter</name>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="296"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="301"/>
         <source>Sequence was not imported. Probably, this is because the sequence is empty.</source>
         <translation>Sequence was not imported. Probably, this is because the sequence is empty.</translation>
     </message>

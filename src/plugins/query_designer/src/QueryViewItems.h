@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,19 +27,12 @@
 #include "QueryPalette.h"
 #include "QDDocument.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QGraphicsTextItem>
-#include <QtGui/QGraphicsSceneMouseEvent>
-#else
-#include <QtWidgets/QGraphicsItem>
-#include <QtWidgets/QGraphicsTextItem>
-#include <QtWidgets/QGraphicsSceneMouseEvent>
-#endif
-#include <QtGui/QFontMetricsF>
-#include <QtGui/QKeyEvent>
-
-#include <QtCore/QFlag>
+#include <QGraphicsItem>
+#include <QGraphicsTextItem>
+#include <QGraphicsSceneMouseEvent>
+#include <QFontMetricsF>
+#include <QKeyEvent>
+#include <QFlag>
 
 #define GRID_STEP 40
 

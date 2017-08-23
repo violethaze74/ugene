@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedArrayPointer>
+#include <QScopedArrayPointer>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/DNASequenceObject.h>
@@ -141,7 +141,7 @@ U2SequenceObject *importSequence(DNASequence &sequence,
                                  const QString& folder,
                                  U2OpStatus& os)
 {
-    seqImporter.startSequence(dbiRef, folder, sequence.getName(), sequence.circular, os);
+    seqImporter.startSequence(os, dbiRef, folder, sequence.getName(), sequence.circular);
     CHECK_OP(os, NULL);
     seqImporter.addBlock(sequence.seq.constData(), sequence.seq.length(), os);
     CHECK_OP(os, NULL);

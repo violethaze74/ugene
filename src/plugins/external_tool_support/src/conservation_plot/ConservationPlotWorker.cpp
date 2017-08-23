@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -206,7 +206,7 @@ void ConservationPlotWorkerFactory::init() {
              ConservationPlotWorker::tr("Label of data in the figure (--bed-label)."));
          Descriptor assemblyVersion(ASSEMBLY_VER,
              ConservationPlotWorker::tr("Assembly version"),
-             ConservationPlotWorker::tr("The directory to store phastcons scores (--phasdb)."));
+             ConservationPlotWorker::tr("The folder to store phastcons scores (--phasdb)."));
          Descriptor windowSizeDescr(WINDOW_S,
              ConservationPlotWorker::tr("Window width"),
              ConservationPlotWorker::tr("Window width centered at middle of regions (-w)."));

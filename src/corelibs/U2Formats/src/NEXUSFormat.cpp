@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,14 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QStack>
+#include <QStack>
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -49,7 +49,7 @@ NEXUSFormat::NEXUSFormat(QObject *p) :
 {
     formatName = tr("NEXUS");
     formatDescription = tr("Nexus is a multiple alignment and phylogenetic trees file format");
-    supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     supportedObjectTypes += GObjectTypes::PHYLOGENETIC_TREE;
 }
 
@@ -418,7 +418,7 @@ bool NEXUSParser::readDataContents(Context &ctx) {
 
                 // Replace gaps
                 if (ctx.contains("gap")) {
-                    value.replace(ctx["gap"], QChar(MAlignment_GapChar));
+                    value.replace(ctx["gap"], QChar(U2Msa::GAP_CHAR));
                 }
 
                 U2OpStatus2Log os;
@@ -433,37 +433,35 @@ bool NEXUSParser::readDataContents(Context &ctx) {
                 reportProgress();
             }
 
-            // Build MAlignment object
-            U2OpStatus2Log os;
-            MAlignment ma(tz.getIO()->getURL().baseFileName());
-            foreach (QString name, rows.keys()) {
-                ma.addRow(name, rows[name], os);
-                CHECK_OP(os, false);
+            // Build MultipleSequenceAlignment object
+            MultipleSequenceAlignment ma(tz.getIO()->getURL().baseFileName());
+            foreach (const QString &name, rows.keys()) {
+                ma->addRow(name, rows[name]);
             }
 
             // Determine alphabet & replace missing chars
             if (ctx.contains("missing")) {
                 char missing = ctx["missing"].toLatin1()[0];
                 U2AlphabetUtils::assignAlphabet(ma, missing);
-                CHECK_EXT(ma.getAlphabet() != NULL, errors.append("Unknown alphabet"), false);
+                CHECK_EXT(ma->getAlphabet() != NULL, errors.append("Unknown alphabet"), false);
 
-                char ourMissing = ma.getAlphabet()->getDefaultSymbol();
+                char ourMissing = ma->getAlphabet()->getDefaultSymbol();
 
                 // replace missing
-                for (int i = 0; i < ma.getNumRows(); ++i) {
-                    ma.replaceChars(i, missing, ourMissing);
+                for (int i = 0; i < ma->getNumRows(); ++i) {
+                    ma->replaceChars(i, missing, ourMissing);
                 }
             } else {
                 U2AlphabetUtils::assignAlphabet(ma);
-                CHECK_EXT(ma.getAlphabet() != NULL, errors.append("Unknown alphabet"), false);
+                CHECK_EXT(ma->getAlphabet() != NULL, errors.append("Unknown alphabet"), false);
             }
 
-            if (ma.getAlphabet() == 0) {
+            if (ma->getAlphabet() == 0) {
                 errors.append("Unknown alphabet");
                 return false;
             }
 
-            MAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, ma, ti);
+            MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, ma, ti);
             CHECK_OP(ti, false);
             addObject(obj);
         } else if (cmd == END) {
@@ -725,7 +723,7 @@ void writeHeader(IOAdapter *io, U2OpStatus&) {
     io->writeBlock(line);
 }
 
-void writeMAligment(const MAlignment &ma, bool simpleName, IOAdapter *io, U2OpStatus&) {
+void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdapter *io, U2OpStatus&) {
     QByteArray line;
     QByteArray tabs, tab(4, ' ');
 
@@ -736,8 +734,8 @@ void writeMAligment(const MAlignment &ma, bool simpleName, IOAdapter *io, U2OpSt
     tabs.append(tab);
 
     int ntax, nchar;
-    ntax = ma.getNumRows();
-    nchar = ma.getLength();
+    ntax = ma->getNumRows();
+    nchar = ma->getLength();
 
     QTextStream(&line) << tabs << "dimensions ntax=" << ntax << " nchar=" << nchar << ";\n";
     io->writeBlock(line);
@@ -745,7 +743,7 @@ void writeMAligment(const MAlignment &ma, bool simpleName, IOAdapter *io, U2OpSt
 
     //datatype for MrBayes files
     QString dataType;
-    const QString& alphabetId = ma.getAlphabet()->getId();
+    const QString& alphabetId = ma->getAlphabet()->getId();
     if(alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() || alphabetId == BaseDNAAlphabetIds::NUCL_DNA_EXTENDED()){
         dataType = "dna";
     }else if(alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT() || alphabetId == BaseDNAAlphabetIds::NUCL_RNA_EXTENDED()){
@@ -756,7 +754,7 @@ void writeMAligment(const MAlignment &ma, bool simpleName, IOAdapter *io, U2OpSt
         dataType = "standard";
     }
 
-    QTextStream(&line) << tabs << "format datatype="<<dataType<<" gap=" << MAlignment_GapChar << ";\n";
+    QTextStream(&line) << tabs << "format datatype="<<dataType<<" gap=" << U2Msa::GAP_CHAR << ";\n";
     io->writeBlock(line);
     line.clear();
 
@@ -766,19 +764,19 @@ void writeMAligment(const MAlignment &ma, bool simpleName, IOAdapter *io, U2OpSt
 
     tabs.append(tab);
 
-    const QList<MAlignmentRow> &rows = ma.getRows();
+    const QList<MultipleSequenceAlignmentRow> rows = ma->getMsaRows();
 
     int nameMaxLen = 0;
-    foreach (MAlignmentRow row, rows) {
-        if (row.getName().size() > nameMaxLen) {
-            nameMaxLen = row.getName().size();
+    foreach (const MultipleSequenceAlignmentRow &row, rows) {
+        if (row->getName().size() > nameMaxLen) {
+            nameMaxLen = row->getName().size();
         }
     }
     nameMaxLen += 2;    // quotes may appear
 
-    foreach (const MAlignmentRow& row, rows)
+    foreach (const MultipleSequenceAlignmentRow& row, rows)
     {
-        QString name = row.getName();
+        QString name = row->getName();
 
         if (name.contains(QRegExp("\\s|\\W"))){
             if (simpleName){
@@ -795,7 +793,7 @@ void writeMAligment(const MAlignment &ma, bool simpleName, IOAdapter *io, U2OpSt
         name = name.leftJustified(nameMaxLen);
 
         U2OpStatus2Log os;
-        QTextStream(&line) << tabs << name << " " << row.toByteArray(nchar, os) << "\n";
+        QTextStream(&line) << tabs << name << " " << row->toByteArray(os, nchar) << "\n";
         io->writeBlock(line);
         line.clear();
     }
@@ -887,10 +885,10 @@ void NEXUSFormat::storeObjects( QList<GObject*> objects, bool simpleNames, IOAda
     writeHeader(io, ti);
 
     foreach (GObject *object, objects) {
-        MAlignmentObject *mao = qobject_cast<MAlignmentObject*> (object);
+        MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*> (object);
         PhyTreeObject *pto = qobject_cast<PhyTreeObject*> (object);
         if (mao) {
-            writeMAligment(mao->getMAlignment(), simpleNames, io, ti);
+            writeMAligment(mao->getMultipleAlignment(), simpleNames, io, ti);
             io->writeBlock(QByteArray("\n"));
         } else if (pto) {
             writePhyTree(pto->getTree(), pto->getGObjectName(), io, ti);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,16 +28,11 @@
 #include <U2Core/U2Region.h>
 #include <U2Gui/RegionSelector.h>
 
-#include <QtCore/QList>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTreeWidget>
-#include <QtGui/QTreeWidgetItem>
-#else
-#include <QtWidgets/QTreeWidget>
-#include <QtWidgets/QTreeWidgetItem>
-#endif
-#include <QtGui/QCloseEvent>
-#include <QtCore/QTimer>
+#include <QList>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
+#include <QCloseEvent>
+#include <QTimer>
 
 #include <U2Algorithm/ORFAlgorithmTask.h>
 

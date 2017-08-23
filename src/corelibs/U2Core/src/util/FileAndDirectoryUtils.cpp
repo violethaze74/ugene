@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
+#include <QDir>
 
 #include <U2Core/Log.h>
 
@@ -55,7 +55,7 @@ QString FileAndDirectoryUtils::createWorkingDir(const QString &fileUrl, int dirM
                 result += "/";
             }
         } else {
-            algoLog.error("Result directory is empty, default workflow directory is used");
+            algoLog.error("Result folder is empty, default workflow folder is used");
             useInternal = true;
         }
     } else {

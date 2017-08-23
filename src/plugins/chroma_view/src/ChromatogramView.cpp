@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,42 +19,42 @@
  * MA 02110-1301, USA.
  */
 
-#include "ChromatogramView.h"
+#include <QMessageBox>
 
-#include <U2Core/GObject.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/ProjectModel.h>
+#include <U2Core/DNAChromatogram.h>
+#include <U2Core/DNAChromatogramObject.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNASequenceSelection.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/DocumentUtils.h>
+#include <U2Core/GObject.h>
+#include <U2Core/GObjectTypes.h>
+#include <U2Core/GObjectUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
+#include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
-#include <U2Core/GUrlUtils.h>
-#include <U2Core/DocumentUtils.h>
+#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/DNAChromatogram.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/DNAChromatogramObject.h>
-#include <U2Core/GObjectUtils.h>
 
-#include <U2Core/DNASequenceSelection.h>
+#include <U2Gui/AddNewDocumentDialogController.h>
+#include <U2Gui/GScrollBar.h>
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/MainWindow.h>
+#include <U2Gui/ProjectTreeController.h>
+#include <U2Gui/ProjectTreeItemSelectorDialog.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 
-#include <U2Gui/GScrollBar.h>
-#include <U2Gui/GUIUtils.h>
-#include <U2Gui/AddNewDocumentDialogController.h>
-#include <U2Gui/ProjectTreeController.h>
-#include <U2Gui/ProjectTreeItemSelectorDialog.h>
-#include <U2Core/TaskSignalMapper.h>
-#include <U2Core/LoadDocumentTask.h>
-
+#include "ChromatogramView.h"
 
 namespace U2 {
 
@@ -65,6 +65,8 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
 {
     const QString objectName = "chromatogram_view_" + (NULL == v ? "" : v->getSequenceGObject()->getGObjectName());
     setObjectName(objectName);
+
+    dnaView = v->getAnnotatedDNAView();
 
     showQVAction = new QAction(tr("Show quality bars"), this);
     showQVAction->setIcon(QIcon(":chroma_view/images/bars.png"));
@@ -87,8 +89,8 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     renderArea = new ChromatogramViewRenderArea(this, chroma);
 
     scaleBar = new ScaleBar();
-    scaleBar->slider()->setRange(100, 1000);
-    scaleBar->slider()->setTickInterval(100);
+    scaleBar->setRange(100, 1000);
+    scaleBar->setTickInterval(100);
     connect(scaleBar,SIGNAL(valueChanged(int)),SLOT(setRenderAreaHeight(int)));
 
     ra = static_cast<ChromatogramViewRenderArea *>(renderArea);
@@ -119,7 +121,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     removeChanges = new QAction(tr("Undo changes"),this);
     connect(removeChanges, SIGNAL(triggered()), SLOT(sl_removeChanges()));
 
-    connect(ctx->getAnnotatedDNAView(), SIGNAL(si_objectRemoved(GObjectView*, GObject*)), SLOT(sl_onObjectRemoved(GObjectView*, GObject*)));
+    connect(dnaView, SIGNAL(si_objectRemoved(GObjectView*, GObject*)), SLOT(sl_onObjectRemoved(GObjectView*, GObject*)));
     pack();
 
     addActionToLocalToolbar(showQVAction);
@@ -287,7 +289,7 @@ void ChromatogramView::sl_addNewSequenceObject() {
     currentBaseCalls = editDNASeq->getWholeSequenceData(os);
     CHECK_OP(os, );
     doc->addObject(editDNASeq);
-    ctx->getAnnotatedDNAView()->addObject(editDNASeq);
+    dnaView->addObject(editDNASeq);
     indexOfChangedChars.clear();
 }
 
@@ -305,7 +307,7 @@ void ChromatogramView::sl_onAddExistingSequenceObject() {
     ac.alphabetType = ctx->getSequenceObject()->getAlphabet()->getType();
     s.groupMode = ProjectTreeGroupMode_ByDocument;
     s.ignoreRemoteObjects = true;
-    foreach (GObject* o, ctx->getAnnotatedDNAView()->getObjects()) {
+    foreach (GObject* o, dnaView->getObjects()) {
         s.excludeObjectList.append(o);
     }
 
@@ -314,7 +316,7 @@ void ChromatogramView::sl_onAddExistingSequenceObject() {
         GObject* go = objs.first();
         if (go->getGObjectType() == GObjectTypes::SEQUENCE) {
             editDNASeq = qobject_cast<U2SequenceObject*>(go);
-            QString err = ctx->getAnnotatedDNAView()->addObject(editDNASeq);
+            QString err = dnaView->addObject(editDNASeq);
             assert(err.isEmpty());
             indexOfChangedChars.clear();
         } else if (go->getGObjectType() == GObjectTypes::UNLOADED) {
@@ -333,7 +335,7 @@ void ChromatogramView::sl_onSequenceObjectLoaded(Task* t) {
     assert(go);
     if (go) {
         editDNASeq = qobject_cast<U2SequenceObject*>(go);
-        QString err = ctx->getAnnotatedDNAView()->addObject(editDNASeq);
+        QString err = dnaView->addObject(editDNASeq);
         assert(err.isEmpty());
         indexOfChangedChars.clear();
         update();
@@ -348,7 +350,7 @@ void ChromatogramView::sl_clearEditableSequence() {
     if (editDNASeq == NULL) {
         return;
     }
-    ctx->getAnnotatedDNAView()->removeObject(editDNASeq);
+    dnaView->removeObject(editDNASeq);
 }
 
 void ChromatogramView::sl_removeChanges()   {
@@ -483,7 +485,7 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
     const U2Region& visible = view->getVisibleRange();
     assert(!visible.isEmpty());
 
-    ADVSequenceObjectContext* seqCtx = view->getSequenceContext();
+    SequenceObjectContext* seqCtx = view->getSequenceContext();
     U2OpStatusImpl os;
     QByteArray seq = seqCtx->getSequenceObject()->getWholeSequenceData(os);
     SAFE_POINT_OP(os, );

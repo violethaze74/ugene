@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,36 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#include <qmath.h>
-#include <QtGui/QBitmap>
-#include <QtGui/QPainter>
-#include <QtGui/QRadialGradient>
-#include <QtGui/QTextDocument>
-#include <QtGui/QAbstractTextDocumentLayout>
-
-#include <QtXml/QDomDocument>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsTextItem>
-#include <QtGui/QGraphicsSimpleTextItem>
-#include <QtGui/QStyleOptionGraphicsItem>
-#include <QtGui/QGraphicsView>
-#include <QtGui/QColorDialog>
-#include <QtGui/QFontDialog>
-#include <QtGui/QGraphicsSceneMouseEvent>
-#else
-#include <QtWidgets/QGraphicsTextItem>
-#include <QtWidgets/QGraphicsSimpleTextItem>
-#include <QtWidgets/QStyleOptionGraphicsItem>
-#include <QtWidgets/QGraphicsView>
-#include <QtWidgets/QColorDialog>
-#include <QtWidgets/QFontDialog>
-#include <QtWidgets/QGraphicsSceneMouseEvent>
-#endif
+#include <QAbstractTextDocumentLayout>
+#include <QBitmap>
+#include <QColorDialog>
+#include <QDomDocument>
+#include <QFontDialog>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSimpleTextItem>
+#include <QGraphicsTextItem>
+#include <QGraphicsView>
+#include <QPainter>
+#include <QRadialGradient>
+#include <QStyleOptionGraphicsItem>
+#include <QTextDocument>
+#include <QtMath>
 
 #include <U2Core/Log.h>
+#include <U2Core/QVariantUtils.h>
+
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/WorkflowSettings.h>
-#include <U2Core/QVariantUtils.h>
 
 #include "WorkflowViewItems.h"
 #include "WorkflowViewController.h"
@@ -176,11 +166,7 @@ void SimpleProcStyle::paint(QPainter *painter,
     painter->save();
     QTextDocument d;
     d.setDefaultFont(defFont);
-#if (QT_VERSION < 0x050000) //Qt 5
-    d.setHtml("<center>" + Qt::escape(owner->getProcess()->getLabel()) + "</center>");
-#else
     d.setHtml("<center>" + owner->getProcess()->getLabel().toHtmlEscaped() + "</center>");
-#endif
     d.setTextWidth(R*2);
     //d.setDefaultTextOption(QTextOption(Qt::AlignHCenter));
     painter->translate(-d.size().width()/2, -d.size().height()/2);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ public:
     static ActorId parseSlotDesc(const QString& id);
     static QString parseAttributeIdFromSlotDesc(const QString & str);
     // when schema is deeply copied we need to remap actorIds in busmap
-    static void remap(QStrStrMap& busMap, const QMap<ActorId, ActorId>&);
+    static void remap(StrStrMap& busMap, const QMap<ActorId, ActorId>&);
     static void remapPaths(SlotPathMap &pathsMap, const QMap<ActorId, ActorId> &actorIdsMap);
     static void remapSlotString(QString &slotStr, const QMap<ActorId, ActorId> &actorIdsMap);
 

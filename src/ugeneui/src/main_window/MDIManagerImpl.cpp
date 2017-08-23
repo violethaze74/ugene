@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,20 +28,11 @@
 #include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QSet>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QToolBar>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QToolBar>
-#endif
-//#include <QtGui/QApplication>
-#include <QtGui/QtEvents>
+#include <QSet>
+#include <QAction>
+#include <QMenu>
+#include <QHBoxLayout>
+#include <QToolBar>
 #include <QShortcut>
 
 namespace U2 {
@@ -80,6 +71,21 @@ void MWMDIManagerImpl::prepareGUI() {
     closeAllAct->setObjectName("Close all windows");
     closeAllAct->setStatusTip(tr("Close all windows"));
     connect(closeAllAct, SIGNAL(triggered()), mdiArea, SLOT(closeAllSubWindows()));
+
+    windowLayout = new QMenu(tr("Window layout"));
+    windowLayout->setObjectName("Window layout");
+    windowLayout->setStatusTip(tr("Window layout"));
+
+    bool tabbedLayout = AppContext::getAppSettings()->getUserAppsSettings()->tabbedWindowLayout();
+    multipleDocsAct = new QAction(tr("Multiple documents"), this);
+    multipleDocsAct->setCheckable(true);
+    multipleDocsAct->setChecked(!tabbedLayout);
+    connect(multipleDocsAct, SIGNAL(triggered()), SLOT(sl_setWindowLayoutToMultiDoc()));
+
+    tabbedDocsAct = new QAction(tr("Tabbed documents"), this);
+    tabbedDocsAct->setCheckable(true);
+    tabbedDocsAct->setChecked(tabbedLayout);
+    connect(tabbedDocsAct, SIGNAL(triggered()), SLOT(sl_setWindowLayoutToTabbed()));
 
     tileAct = new QAction(QIcon(":ugene/images/window_tile.png"), tr("Tile windows"), this);
     tileAct->setObjectName("Tile windows");
@@ -188,8 +194,12 @@ void MWMDIManagerImpl::updateActions() {
 void MWMDIManagerImpl::sl_updateWindowMenu() {
     QMenu* windowMenu = mw->getTopLevelMenu(MWMENU_WINDOW);
     windowMenu->clear();//TODO: avoid cleaning 3rd party actions
+    windowMenu->addMenu(windowLayout);
+    windowLayout->addAction(multipleDocsAct);
+    windowLayout->addAction(tabbedDocsAct);
     windowMenu->addAction(closeAct);
     windowMenu->addAction(closeAllAct);
+
     if (mdiArea->viewMode() == QMdiArea::SubWindowView) {
         windowMenu->addSeparator();
         windowMenu->addAction(tileAct);
@@ -310,8 +320,7 @@ MDIItem* MWMDIManagerImpl::getMDIItem(QMdiSubWindow* qw) const {
 
 void MWMDIManagerImpl::activateWindow(MWMDIWindow* w)  {
     MDIItem* i = getMDIItem(w);
-    assert(i);
-    if (i==0) {
+    if (i == NULL) {
         return;
     }
     AppContext::setActiveWindowName(w->windowTitle());
@@ -417,11 +426,22 @@ MWMDIWindow* MWMDIManagerImpl::getActiveWindow() const {
 }
 
 void MWMDIManagerImpl::sl_updateWindowLayout() {
-    if (AppContext::getAppSettings()->getUserAppsSettings()->tabbedWindowLayout()) {
-        mdiArea->setViewMode(QMdiArea::TabbedView);
-    } else {
-        mdiArea->setViewMode(QMdiArea::SubWindowView);
-    }
+    bool tabbed = AppContext::getAppSettings()->getUserAppsSettings()->tabbedWindowLayout();
+    mdiArea->setViewMode(tabbed? QMdiArea::TabbedView : QMdiArea::SubWindowView);
+    multipleDocsAct->setChecked(!tabbed);
+    tabbedDocsAct->setChecked(tabbed);
+}
+
+void MWMDIManagerImpl::sl_setWindowLayoutToMultiDoc() {
+    UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
+    st->setTabbedWindowLayout(false);
+    sl_updateWindowLayout();
+}
+
+void MWMDIManagerImpl::sl_setWindowLayoutToTabbed() {
+    UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
+    st->setTabbedWindowLayout(true);
+    sl_updateWindowLayout();
 }
 
 }//namespace

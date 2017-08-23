@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,10 +24,9 @@
 
 #include "ui_CreateSubalignmentDialog.h"
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Task.h>
-#include <U2Core/global.h>
-#include <QLineEdit>
+#include <U2Core/U2Region.h>
 
 namespace U2{
 
@@ -36,7 +35,7 @@ class SaveDocumentController;
 class U2VIEW_EXPORT CreateSubalignmentDialogController : public QDialog, private Ui_CreateSubalignmentDialog {
     Q_OBJECT
 public:
-    CreateSubalignmentDialogController( MAlignmentObject *_mobj, const QRect& selection, QWidget *p = NULL);
+    CreateSubalignmentDialogController( MultipleSequenceAlignmentObject *_mobj, const QRect& selection, QWidget *p = NULL);
 
     void accept();
 
@@ -57,7 +56,7 @@ private:
     void initSaveController();
     void selectSeqNames();
 
-    MAlignmentObject *mobj;
+    MultipleSequenceAlignmentObject *mobj;
     U2Region window;
     QStringList selectedNames;
     SaveDocumentController* saveController;
@@ -70,7 +69,7 @@ class CreateSubalignmentSettings;
 class U2VIEW_EXPORT CreateSubalignmentAndOpenViewTask : public Task {
     Q_OBJECT
 public:
-    CreateSubalignmentAndOpenViewTask(MAlignmentObject* mobj, const CreateSubalignmentSettings& settings);
+    CreateSubalignmentAndOpenViewTask(MultipleSequenceAlignmentObject* mobj, const CreateSubalignmentSettings& settings);
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:
     CreateSubalignmentTask* csTask;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@ ColorSchemaDialogController::ColorSchemaDialogController(QMap<char, QColor>& col
 
 int ColorSchemaDialogController::adjustAlphabetColors(){
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759545");
+    new HelpButton(this, buttonBox, "19766801");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     alphabetColorsView = new QPixmap(alphabetColorsFrame->size());
@@ -178,7 +178,7 @@ void ColorSchemaDialogController::mouseReleaseEvent(QMouseEvent * event){
 
 CreateColorSchemaDialog::CreateColorSchemaDialog(ColorSchemeData* _newSchema, QStringList _usedNames) : usedNames(_usedNames), newSchema(_newSchema) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759545");
+    new HelpButton(this, buttonBox, "19766801");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -308,7 +308,7 @@ void CreateColorSchemaDialog::sl_createSchema(){
     }
 
     newSchema->name = schemeName->text();
-    newSchema->alphabetType = type;
+    newSchema->type = type;
     newSchema->defaultAlpType = defaultAlpType;
 
     QMapIterator<char, QColor> it(alpColors);
@@ -367,7 +367,7 @@ void ColorSchemaSettingsPageWidget::sl_schemaChanged(int index){
 
 void ColorSchemaSettingsPageWidget::sl_onColorsDirButton() {
     QString path = colorsDirEdit->text();
-    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Directory"), path,
+    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Folder"), path,
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!dir.isEmpty()) {
         colorsDirEdit->setText(dir);

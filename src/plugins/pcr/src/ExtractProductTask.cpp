@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -224,7 +224,7 @@ void ExtractProductTask::run() {
 
     DNASequence productSequence = getProductSequence();
     CHECK_OP(stateInfo, );
-    U2EntityRef productRef = U2SequenceUtils::import(dbiRef, productSequence, stateInfo);
+    U2EntityRef productRef = U2SequenceUtils::import(stateInfo, dbiRef, productSequence);
     CHECK_OP(stateInfo, );
 
     U2SequenceObject *sequenceObject = new U2SequenceObject(productSequence.getName(), productRef);

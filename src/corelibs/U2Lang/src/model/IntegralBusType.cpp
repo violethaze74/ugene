@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -69,7 +69,7 @@ void IntegralBusType::remapSlotString(QString &slotStr, const QMap<ActorId, Acto
     }
 }
 
-void IntegralBusType::remap(QStrStrMap& busMap, const QMap<ActorId, ActorId>& m) {
+void IntegralBusType::remap(StrStrMap& busMap, const QMap<ActorId, ActorId>& m) {
     foreach(QString key, busMap.uniqueKeys()) {
         QStringList newValList;
         foreach(QString val, busMap.value(key).split(";")) {

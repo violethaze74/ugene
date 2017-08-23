@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,8 +21,8 @@
 
 #include "SWMulAlignExternalPropTag.h"
 
-#include <QtCore/QDate>
-#include <QtCore/QTime>
+#include <QDate>
+#include <QTime>
 
 const QString timeFormat = "hh.mm.ss";
 

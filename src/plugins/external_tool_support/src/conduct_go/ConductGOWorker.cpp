@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -152,8 +152,8 @@ void ConductGOWorkerFactory::init() {
     QList<Attribute*> attrs;
     {
          Descriptor outDir(OUTPUT_DIR,
-             ConductGOWorker::tr("Output directory"),
-             ConductGOWorker::tr("The directory to store Conduct GO results."));
+             ConductGOWorker::tr("Output folder"),
+             ConductGOWorker::tr("The folder to store Conduct GO results."));
          Descriptor titleDescr(TITLE,
              ConductGOWorker::tr("Title"),
              ConductGOWorker::tr("Title is used to name the output files - so make it meaningful."));
@@ -221,7 +221,7 @@ QString ConductGOPrompter::composeRichDoc() {
 
     res.append(tr("Uses annotations from <u>%1</u> as gene list to conduct GO.").arg(annUrl));
 
-    res.append(tr(" Outputs all result files to <u>%1</u> directory").arg(dir));
+    res.append(tr(" Outputs all result files to <u>%1</u> folder").arg(dir));
     res.append(".");
 
     return res;

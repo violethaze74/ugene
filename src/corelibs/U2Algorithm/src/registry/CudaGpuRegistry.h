@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #ifndef __CUDA_GPU_REGISTRY_H__
 #define __CUDA_GPU_REGISTRY_H__
 
-#include <QtCore/QHash>
+#include <QHash>
 #include <U2Core/global.h>
 
 namespace U2 {

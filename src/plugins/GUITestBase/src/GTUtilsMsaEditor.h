@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,12 +30,12 @@ namespace U2 {
 
 class MSAEditor;
 class MSAEditorConsensusArea;
-class MSAEditorNameList;
+class MaEditorNameList;
 class MSAEditorSequenceArea;
 class MSAEditorTreeViewerUI;
-class MSAEditorUI;
-class MSAGraphOverview;
-class MSASimpleOverview;
+class MsaEditorWgt;
+class MaGraphOverview;
+class MaSimpleOverview;
 
 // If you can't find an appropriate method check the GTUtilsMsaEditorSequenceArea class
 class GTUtilsMsaEditor {
@@ -44,22 +44,34 @@ public:
     static QColor getSimpleOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point);
 
     static MSAEditor * getEditor(HI::GUITestOpStatus &os);
-    static MSAEditorUI * getEditorUi(HI::GUITestOpStatus &os);
-    static MSAGraphOverview * getGraphOverview(HI::GUITestOpStatus &os);
-    static MSASimpleOverview * getSimpleOverview(HI::GUITestOpStatus &os);
+    static MsaEditorWgt * getEditorUi(HI::GUITestOpStatus &os);
+    static MaGraphOverview * getGraphOverview(HI::GUITestOpStatus &os);
+    static MaSimpleOverview * getSimpleOverview(HI::GUITestOpStatus &os);
     static MSAEditorTreeViewerUI * getTreeView(HI::GUITestOpStatus &os);
-    static MSAEditorNameList * getNameListArea(HI::GUITestOpStatus &os);
+    static MaEditorNameList * getNameListArea(HI::GUITestOpStatus &os);
     static MSAEditorConsensusArea * getConsensusArea(HI::GUITestOpStatus &os);
     static MSAEditorSequenceArea * getSequenceArea(HI::GUITestOpStatus &os);
 
     static QRect getSequenceNameRect(HI::GUITestOpStatus &os, const QString &sequenceName);
+    static QRect getSequenceNameRect(HI::GUITestOpStatus &os, int rowNumber);
     static QRect getColumnHeaderRect(HI::GUITestOpStatus &os, int column);
 
     static void replaceSequence(HI::GUITestOpStatus &os, const QString &sequenceToReplace, int targetPosition);
+    static void replaceSequence(HI::GUITestOpStatus &os, int rowNumber, int targetPosition);
     static void removeColumn(HI::GUITestOpStatus &os, int column);
+    static void removeRows(HI::GUITestOpStatus &os, int firstRowNumber, int lastRowNumber);
 
+    static void moveToSequence(HI::GUITestOpStatus &os, int rowNumber);
+    static void moveToSequenceName(HI::GUITestOpStatus &os, const QString &sequenceName);
+    static void clickSequence(HI::GUITestOpStatus &os, int rowNumber, Qt::MouseButton mouseButton = Qt::LeftButton);
     static void clickSequenceName(HI::GUITestOpStatus &os, const QString &sequenceName, Qt::MouseButton mouseButton = Qt::LeftButton);
+    static void moveToColumn(HI::GUITestOpStatus &os, int column);
     static void clickColumn(HI::GUITestOpStatus &os, int column, Qt::MouseButton mouseButton = Qt::LeftButton);
+
+    static void selectRows(HI::GUITestOpStatus &os, int firstRowNumber, int lastRowNumber, GTGlobals::UseMethod method = GTGlobals::UseKey);
+    static void selectColumns(HI::GUITestOpStatus &os, int firstColumnNumber, int lastColumnNumber, GTGlobals::UseMethod method = GTGlobals::UseKey);
+
+    static void clearSelection(HI::GUITestOpStatus &os);
 
     static QString getReferenceSequenceName(HI::GUITestOpStatus &os);
     static void setReference(HI::GUITestOpStatus &os, const QString &sequenceName);
@@ -69,11 +81,14 @@ public:
     static bool isSequenceCollapsed(HI::GUITestOpStatus &os, const QString &seqName);
 
     static int getSequencesCount(HI::GUITestOpStatus &os);
+    static QStringList getWholeData(HI::GUITestOpStatus &os);
 
     static void undo(HI::GUITestOpStatus &os);
     static void redo(HI::GUITestOpStatus &os);
 
     static void buildPhylogeneticTree(HI::GUITestOpStatus &os, const QString &pathToSave);
+
+    static void dragAndDropSequenceFromProject(HI::GUITestOpStatus &os, const QStringList &pathToSequence);
 };
 
 }   // namespace U2

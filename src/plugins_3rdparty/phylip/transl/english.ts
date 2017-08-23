@@ -137,12 +137,12 @@ It could cause an error. Do you want to continue?</translation>
 <context>
     <name>U2::PhylipCmdlineTask</name>
     <message>
-        <location filename="../src/PhylipCmdlineTask.cpp" line="52"/>
+        <location filename="../src/PhylipCmdlineTask.cpp" line="54"/>
         <source>PHYLIP command line wrapper task</source>
         <translation>PHYLIP command line wrapper task</translation>
     </message>
     <message>
-        <location filename="../src/PhylipCmdlineTask.cpp" line="74"/>
+        <location filename="../src/PhylipCmdlineTask.cpp" line="76"/>
         <source>No tree objects found.</source>
         <translation>No tree objects found.</translation>
     </message>

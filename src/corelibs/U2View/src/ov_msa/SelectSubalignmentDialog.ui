@@ -24,7 +24,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="startPosBox">
+      <widget class="QSpinBox" name="startLineEdit">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -50,7 +50,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="endPosBox">
+      <widget class="QSpinBox" name="endLineEdit">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>

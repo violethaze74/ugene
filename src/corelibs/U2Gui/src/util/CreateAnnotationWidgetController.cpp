@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -169,15 +169,17 @@ void CreateAnnotationWidgetController::commonWidgetUpdate(const CreateAnnotation
     if (!model.data->location->isEmpty()) {
         w->setLocation(model.data->location);
     }
-
-    if (model.defaultIsNewDoc || w->isExistingTablesListEmpty()) {
+    
+    if (w->isExistingTablesListEmpty()) {
         w->setExistingTableOptionEnable(false);
         w->selectNewTableOption();
-    }
-    else {
+    } else {
         w->setExistingTableOptionEnable(true);
+        if (model.defaultIsNewDoc) {
+            w->selectNewTableOption();
+        }
     }
-
+    
     w->setAnnotationTableOptionVisible(!model.hideAnnotationTableOption);
     w->setAutoTableOptionVisible(!model.hideAutoAnnotationsOption);
     if (!model.hideAutoAnnotationsOption) {

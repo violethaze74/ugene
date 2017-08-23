@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,12 +23,12 @@
 
 #include <U2Lang/Descriptor.h>
 
-#include <QtGui/QPainter>
-#include <QtGui/QPalette>
-#include <QtGui/QTextDocument>
-#include <QtGui/QAbstractTextDocumentLayout>
+#include <QPainter>
+#include <QPalette>
+#include <QTextDocument>
+#include <QAbstractTextDocumentLayout>
 
-#include <QtCore/QUrl>
+#include <QUrl>
 
 
 namespace U2 {
@@ -145,7 +145,6 @@ void DesignerGUIUtils::setupSamplesDocument(const Descriptor& d, const QIcon& ic
     }
 
     QString body = d.getDocumentation().toHtmlEscaped().replace("\n", "<br>");
-
     int brk = body.indexOf("<br><br>");
     int shift = 8;
     if (brk <= 0) {

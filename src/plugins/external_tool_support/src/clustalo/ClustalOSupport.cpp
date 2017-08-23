@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -37,7 +37,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "ClustalOSupport.h"
 #include "ClustalOSupportRunDialog.h"
@@ -70,7 +70,7 @@ ClustalOSupport::ClustalOSupport(const QString& name, const QString& path) : Ext
 }
 
 void ClustalOSupport::sl_runWithExtFileSpecify(){
-    //Check that Clustal and tempory directory path defined
+    //Check that Clustal and tempory folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -117,17 +117,16 @@ void ClustalOSupport::sl_runWithExtFileSpecify(){
 
 ////////////////////////////////////////
 //ExternalToolSupportMSAContext
-ClustalOSupportContext::ClustalOSupportContext(QObject* p) : GObjectViewWindowContext(p, MSAEditorFactory::ID) {
+ClustalOSupportContext::ClustalOSupportContext(QObject* p) : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 
 }
 
 void ClustalOSupportContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    assert(msaed!=NULL);
-    if (msaed->getMSAObject() == NULL) {
-        return;
-    }
-    bool objLocked = msaed->getMSAObject()->isStateLocked();
+    SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
+    CHECK(msaed->getMaObject() != NULL, );
+
+    bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
     AlignMsaAction* alignAction = new AlignMsaAction(this, ET_CLUSTALO, view, tr("Align with ClustalO..."), 2000);
@@ -136,8 +135,8 @@ void ClustalOSupportContext::initViewContext(GObjectView* view) {
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
 
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_ClustalO()));
 }
 
@@ -151,7 +150,7 @@ void ClustalOSupportContext::buildMenu(GObjectView* view, QMenu* m) {
 }
 
 void ClustalOSupportContext::sl_align_with_ClustalO() {
-    //Check that Clustal and tempory directory path defined
+    //Check that Clustal and tempory folder path defined
     if (AppContext::getExternalToolRegistry()->getByName(ET_CLUSTALO)->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(ET_CLUSTALO);
@@ -185,14 +184,14 @@ void ClustalOSupportContext::sl_align_with_ClustalO() {
     AlignMsaAction* action = qobject_cast<AlignMsaAction *>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMsaEditor();
-    MAlignmentObject* obj = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
     if (obj == NULL) {
         return;
     }
     assert(!obj->isStateLocked());
 
     ClustalOSupportTaskSettings settings;
-    QObjectScopedPointer<ClustalOSupportRunDialog> clustalORunDialog = new ClustalOSupportRunDialog(obj->getMAlignment(), settings, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ClustalOSupportRunDialog> clustalORunDialog = new ClustalOSupportRunDialog(obj->getMultipleAlignment(), settings, AppContext::getMainWindow()->getQMainWindow());
     clustalORunDialog->exec();
     CHECK(!clustalORunDialog.isNull(), );
 
@@ -200,7 +199,7 @@ void ClustalOSupportContext::sl_align_with_ClustalO() {
         return;
     }
 
-    ClustalOSupportTask* clustalOSupportTask = new ClustalOSupportTask(obj->getMAlignment(), GObjectReference(obj), settings);
+    ClustalOSupportTask* clustalOSupportTask = new ClustalOSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), clustalOSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalOSupportTask);
 

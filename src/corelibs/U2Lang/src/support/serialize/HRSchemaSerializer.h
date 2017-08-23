@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,10 @@
 #ifndef _U2_WORKFLOW_HR_SCHEMA_SERIALIZER_H_
 #define _U2_WORKFLOW_HR_SCHEMA_SERIALIZER_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QByteArray>
+#include <QObject>
+#include <QString>
+#include <QStringList>
+#include <QByteArray>
 #include <U2Core/global.h>
 #include <U2Lang/Aliasing.h>
 #include <U2Lang/Dataset.h>
@@ -119,7 +119,7 @@ public:
 
 private:
     static GrouperSlotAction parseAction(Tokenizer &tokenizer);
-    static QList<Dataset> parseUrlAttribute(const QString attrId, QList<StringPair> &blockPairs);
+    static QList<Dataset> parseUrlAttribute(const QString attrId, QList<StrStrPair> &blockPairs);
     static void deprecatedUrlAttribute(Actor *proc, const QString &urls);
     static URLContainer * parseDirectoryUrl(Tokenizer &tokenizer);
     static URLContainer * parseDbSelectUrl(Tokenizer &tokenizer);

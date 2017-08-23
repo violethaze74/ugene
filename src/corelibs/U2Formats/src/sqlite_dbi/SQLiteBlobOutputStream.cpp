@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ void SQLiteBlobOutputStream::write(const char *buffer, int length, U2OpStatus &o
 }
 
 void SQLiteBlobOutputStream::update(DbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, int size, U2OpStatus &os) {
-    SQLiteQuery q("UPDATE " + tableId + " SET " + columnId + " = ?1 WHERE " + UdrSchema::RECORD_ID_FIELD_NAME + " = ?2", db, os);
+    SQLiteWriteQuery q("UPDATE " + tableId + " SET " + columnId + " = ?1 WHERE " + UdrSchema::RECORD_ID_FIELD_NAME + " = ?2", db, os);
     CHECK_OP(os, );
 
     q.bindZeroBlob(1, size);

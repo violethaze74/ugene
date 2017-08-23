@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include "GUIUtils.h"
+#include <QAbstractButton>
+#include <QApplication>
+#include <QDesktopServices>
+#include <QFile>
+#include <QMessageBox>
+#include <QPainter>
+#include <QProcess>
+#include <QUrl>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -32,20 +39,7 @@
 #include <U2Gui/AppSettingsGUI.h>
 #include <U2Gui/MainWindow.h>
 
-#include <QtCore/QFile>
-#include <QtCore/QProcess>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QMessageBox>
-#endif
-#include <QtGui/QPainter>
-
-#include <QUrl>
-#include <QDesktopServices>
+#include "GUIUtils.h"
 
 namespace U2 {
 
@@ -101,6 +95,18 @@ QMenu* GUIUtils::findSubMenu(QMenu* m, const QString& name) {
         return NULL;
     }
     return action->menu();
+}
+
+void GUIUtils::updateActionToolTip(QAction *action) {
+    const QString actionShortcutString = action->shortcut().toString(QKeySequence::NativeText);
+    const QString toolTip = actionShortcutString.isEmpty() ? action->text() : QString("%1 (%2)").arg(action->text()).arg(actionShortcutString);
+    action->setToolTip(toolTip);
+}
+
+void GUIUtils::updateButtonToolTip(QAbstractButton *button, const QKeySequence &shortcut) {
+    const QString actionShortcutString = shortcut.toString(QKeySequence::NativeText);
+    const QString toolTip = actionShortcutString.isEmpty() ? button->text() : QString("%1 (%2)").arg(button->text()).arg(actionShortcutString);
+    button->setToolTip(toolTip);
 }
 
 void GUIUtils::disableEmptySubmenus(QMenu* m) {

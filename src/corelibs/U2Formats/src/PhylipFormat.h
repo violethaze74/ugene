@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MAlignment.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 
 namespace U2 {
@@ -37,12 +37,12 @@ public:
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
 protected:
-    MAlignmentObject* load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap &fs, U2OpStatus& os);
+    MultipleSequenceAlignmentObject* load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap &fs, U2OpStatus& os);
     bool parseHeader(QByteArray data, int &species, int &characters) const;
     void removeSpaces(QByteArray &data) const;
     virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
-    virtual MAlignment parse(IOAdapter* io, U2OpStatus &os) const = 0;
+    virtual MultipleSequenceAlignment parse(IOAdapter* io, U2OpStatus &os) const = 0;
 
     QString formatName;
 };
@@ -57,7 +57,7 @@ public:
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 protected:
-    virtual MAlignment parse(IOAdapter* io, U2OpStatus &os) const;
+    virtual MultipleSequenceAlignment parse(IOAdapter* io, U2OpStatus &os) const;
 };
 
 
@@ -71,7 +71,7 @@ public:
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 protected:
-    MAlignment parse(IOAdapter *io, U2OpStatus &os) const;
+    MultipleSequenceAlignment parse(IOAdapter *io, U2OpStatus &os) const;
 };
 
 } // namespace

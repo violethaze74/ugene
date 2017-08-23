@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,13 +35,13 @@ class SaveDocumentController;
 class ClustalOSupportRunDialog : public QDialog, public Ui_ClustalOSupportRunDialog {
     Q_OBJECT
 public:
-    ClustalOSupportRunDialog(const MAlignment& ma, ClustalOSupportTaskSettings& settings, QWidget* parent);
+    ClustalOSupportRunDialog(const MultipleSequenceAlignment& ma, ClustalOSupportTaskSettings& settings, QWidget* parent);
 
 private slots:
     void accept();
 
 private:
-    MAlignment                      ma;
+    MultipleSequenceAlignment                      ma;
     ClustalOSupportTaskSettings&    settings;
 
 };

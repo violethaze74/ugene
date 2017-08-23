@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -110,7 +110,7 @@ static void setDataSearchPaths( ) {
     }
 
 #if (defined(Q_OS_UNIX)) && defined( UGENE_DATA_DIR )
-    //using directory which is set during installation process on Linux
+    //using folder which is set during installation process on Linux
     const QString ugene_data_dir( UGENE_DATA_DIR );
     if( QDir( ugene_data_dir ).exists( ) ) {
         dataSearchPaths.push_back( QString( UGENE_DATA_DIR ) );

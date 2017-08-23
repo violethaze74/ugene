@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,16 +24,11 @@
 
 #include <U2Core/global.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MAlignment.h>
-#include <U2Core/MAlignmentInfo.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleAlignmentInfo.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMainWindow>
-#include <QtGui/QGraphicsItem>
-#else
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QGraphicsItem>
-#endif
+#include <QMainWindow>
+#include <QGraphicsItem>
 
 namespace U2 {
 
@@ -46,25 +41,25 @@ enum SequenceType {Auto, NA, AA};
 class U2VIEW_EXPORT AlignmentLogoSettings {
 public:
 
-    AlignmentLogoSettings(const MAlignment& _ma) : ma(_ma) {
+    AlignmentLogoSettings(const MultipleSequenceAlignment& _ma) : ma(_ma->getCopy()) {
         for (int i = 0; i < 256; i++) {
             colorScheme[i] = Qt::black;
         }
 
-        if (ma.getAlphabet()->isNucleic()) {
+        if (ma->getAlphabet()->isNucleic()) {
             sequenceType = NA;
             colorScheme['G'] = QColor(255, 128, 0);
             colorScheme['T'] = Qt::red;
             colorScheme['C'] = Qt::blue;
             colorScheme['A'] = Qt::green;
             colorScheme['U'] = Qt::red;
-        } else if (ma.getAlphabet()->isAmino()) {
+        } else if (ma->getAlphabet()->isAmino()) {
             sequenceType = AA;
         } else {
             sequenceType = Auto;
         }
 
-        if (!ma.getAlphabet()->isNucleic()) {
+        if (!ma->getAlphabet()->isNucleic()) {
             colorScheme['G'] = Qt::green;
             colorScheme['S'] = Qt::green;
             colorScheme['T'] = Qt::green;
@@ -87,7 +82,7 @@ public:
             colorScheme['V'] = Qt::black;
         }
         startPos = 0;
-        len = ma.getLength();
+        len = ma->getLength();
 
         /*colorScheme.insert('S', Qt::green);
         colorScheme.insert('G', Qt::green);
@@ -105,11 +100,14 @@ public:
         colorScheme.insert('W', Qt::blue);*/
     }
 
-    MAlignment              ma;
+    MultipleSequenceAlignment              ma;
     SequenceType            sequenceType;
     int                     startPos;
     int                     len;
     QColor                  colorScheme[256];
+
+private:
+    AlignmentLogoSettings();
 };
 
 /************************************************************************/

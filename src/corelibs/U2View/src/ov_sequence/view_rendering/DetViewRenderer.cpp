@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-DetViewRenderer::DetViewRenderer(DetView* detView, ADVSequenceObjectContext* ctx)
+DetViewRenderer::DetViewRenderer(DetView* detView, SequenceObjectContext* ctx)
     : SequenceViewAnnotatedRenderer(ctx),
       detView(detView)   {
 
@@ -43,7 +43,7 @@ qint64 DetViewRenderer::getSymbolsPerLine(const qint64 width) const {
     return width / commonMetrics.charWidth;
 }
 
-DetViewRenderer* DetViewRendererFactory::createRenderer(DetView *detView, ADVSequenceObjectContext *ctx, bool multiLine) {
+DetViewRenderer* DetViewRendererFactory::createRenderer(DetView *detView, SequenceObjectContext *ctx, bool multiLine) {
     if (multiLine) {
         return new DetViewMultiLineRenderer(detView, ctx);
     } else {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 #include <U2Core/Counter.h>
 #include <U2Algorithm/BinaryFindOpenCL.h>
 #include <U2Algorithm/SyncSort.h>
-#include <QtCore/QFile>
+#include <QFile>
 #include <QtEndian>
 #include "GenomeAlignerFindTask.h"
 #include "GenomeAlignerTask.h"

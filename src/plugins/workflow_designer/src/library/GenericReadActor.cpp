@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 #include <limits.h>
 
 /* TRANSLATOR U2::Workflow::SeqReadPrompter */
@@ -86,7 +86,7 @@ GenericSeqActorProto::GenericSeqActorProto() : GenericReadDocProto(CoreLibConsta
     setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::SEQUENCE);
 
     setDisplayName(U2::Workflow::CoreLib::tr("Read Sequence"));
-    desc = U2::Workflow::CoreLib::tr("Reads sequences and annotations if any from local or remote files.");
+    desc = U2::Workflow::CoreLib::tr("Reads sequences and annotations if any from local or remote files. All sequence file formats supported by UGENE (e.g. GenBank, FASTA) are allowed as input to this element.");
     QMap<Descriptor, DataTypePtr> m;
     m[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();
     m[BaseSlots::DATASET_SLOT()] = BaseTypes::STRING_TYPE();
@@ -143,10 +143,10 @@ GenericSeqActorProto::GenericSeqActorProto() : GenericReadDocProto(CoreLibConsta
 
 GenericMAActorProto::GenericMAActorProto() : GenericReadDocProto(CoreLibConstants::GENERIC_READ_MA_PROTO_ID)
 {
-    setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::MULTIPLE_ALIGNMENT);
+    setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
 
     setDisplayName(U2::Workflow::CoreLib::tr("Read Alignment"));
-    desc = U2::Workflow::CoreLib::tr("Reads multiple sequence alignments (MSAs) from local or remote files."
+    desc = U2::Workflow::CoreLib::tr("Reads multiple sequence alignments (MSAs) from local or remote files. All MSA file formats supported by UGENE are allowed as input to this element."
         "<p>Besides recognized alignment formats, it supports aligning from a set of sequences in a corresponding file (e.g. FASTA or Genbank).");
 
     QMap<Descriptor, DataTypePtr> m;
@@ -171,7 +171,7 @@ bool GenericMAActorProto::isAcceptableDrop(const QMimeData* md, QVariantMap* par
     QList<DocumentFormat*> fs;
     QString url = WorkflowUtils::getDropUrl(fs, md);
     foreach(DocumentFormat* f, fs) {
-        if (f->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_ALIGNMENT)) {
+        if (f->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             if (params != NULL) {
                 params->insert(BaseAttributes::URL_IN_ATTRIBUTE().getId(), url);
             }

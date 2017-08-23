@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,20 +21,23 @@
 
 #include <QApplication>
 
-#include "DocActors.h"
-#include "CoreLib.h"
-#include "../util/DatasetValidator.h"
-
-#include <U2Designer/DelegateEditors.h>
-#include <U2Lang/CoreLibConstants.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BaseAttributes.h>
-#include <U2Lang/SharedDbUrlUtils.h>
-#include <U2Lang/URLAttribute.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/SaveDocumentTask.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Designer/DelegateEditors.h>
+
+#include <U2Lang/BaseAttributes.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/CoreLibConstants.h>
+#include <U2Lang/SharedDbUrlUtils.h>
+#include <U2Lang/URLAttribute.h>
+
+#include "../util/DatasetValidator.h"
+#include "CoreLib.h"
+#include "DocActors.h"
 
 namespace U2 {
 namespace Workflow {

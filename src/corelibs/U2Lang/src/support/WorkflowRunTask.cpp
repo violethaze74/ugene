@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,15 +20,18 @@
  */
 
 #include <QCoreApplication>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/U2SafePoints.h>
+
 #include <U2Lang/HRSchemaSerializer.h>
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowDebugMessageParser.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
+#include "WorkflowDebugStatus.h"
 #include "WorkflowRunTask.h"
 
 namespace U2 {
@@ -57,7 +60,9 @@ WorkflowRunTask::WorkflowRunTask(const Schema& sh, const QMap<ActorId, ActorId>&
     TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_OnlyNotificationReport), rmap(remap), flows(sh.getFlows())
 {
     GCOUNTER( cvar, tvar, "WorkflowRunTask" );
-    Q_ASSERT(NULL != debugInfo);
+    if (NULL == debugInfo) {
+        debugInfo = new WorkflowDebugStatus;
+    }
     if (NULL == debugInfo->parent()) {
         debugInfo->setParent(this);
     }
@@ -109,6 +114,22 @@ int WorkflowRunTask::getMsgPassed(const Link* l) {
         ret += qobject_cast<WorkflowIterationRunTask*>(t)->getMsgPassed(l);
     }
     return ret;
+}
+
+QString WorkflowRunTask::generateReport() const {
+    QString report;
+    foreach (WorkflowMonitor *monitor, getMonitors()) {
+        const QMap<QString, StrStrMap> workersReports = monitor->getWorkersReports();
+        foreach (const QString &worker, workersReports.keys()) {
+            const StrStrMap tasksReports = workersReports[worker];
+            QString workerReport;
+            foreach (const QString &taskName, tasksReports.keys()) {
+                workerReport += QString("<div class=\"task\" id=\"%1\">%2</div>").arg(taskName).arg(tasksReports[taskName]);
+            }
+            report += QString("<div class=\"worker\" id=\"%1\">%2</div>").arg(worker).arg(workerReport);
+        }
+    }
+    return report;
 }
 
 QString WorkflowRunTask::getTaskError() const {

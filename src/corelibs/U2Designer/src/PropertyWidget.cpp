@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,14 +22,15 @@
 #include <QLayout>
 #include <QListView>
 #include <QMessageBox>
+#include <QStandardItemModel>
 
 #include <U2Core/L10n.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/EditConnectionDialog.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2Lang/SchemaConfig.h>
@@ -311,7 +312,7 @@ void ComboBoxWithUrlWidget::sl_browse(){
 
     QString name;
     if (isPath){
-        lod.dir = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a directory"), lastDir);
+        lod.dir = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder"), lastDir);
         if (!name.isEmpty()) {
             setValue(name);
         }

@@ -125,7 +125,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/shared_db/SharedConnectionsDialog.h \
            src/util/webchannel/WebSocketClientWrapper.h \
            src/util/webchannel/WebSocketTransport.h
-           
+
 FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/AuthenticationDialog.ui \
          src/util/AuthenticationWidget.ui \
@@ -276,6 +276,7 @@ SOURCES += src/MainWindow.cpp \
            src/util/shared_db/SharedConnectionsDialog.cpp \
            src/util/webchannel/WebSocketClientWrapper.cpp \
            src/util/webchannel/WebSocketTransport.cpp
+
 RESOURCES += U2Gui.qrc
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

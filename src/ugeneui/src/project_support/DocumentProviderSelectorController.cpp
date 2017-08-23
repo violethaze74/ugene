@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/AssemblyBrowserFactory.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "DocumentProviderSelectorController.h"
 
@@ -99,7 +99,7 @@ DocumentProviderSelectorController::DocumentProviderSelectorController(const QLi
     formatDetectionResults(formatDetectionResults)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759624");
+    new HelpButton(this, buttonBox, "19766880");
 }
 
 int DocumentProviderSelectorController::getSelectedFormatIdx() const {
@@ -118,8 +118,8 @@ QString DocumentProviderSelectorController::getViewName(const GObjectType &objec
     QString id;
     if (GObjectTypes::ASSEMBLY == objectType) {
         id = AssemblyBrowserFactory::ID;
-    } else if (GObjectTypes::MULTIPLE_ALIGNMENT == objectType) {
-        id = MSAEditorFactory::ID;
+    } else if (GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT == objectType) {
+        id = MsaEditorFactory::ID;
     }
 
     GObjectViewFactory *factory = objectViewFactoriesRegistry->getFactoryById(id);
@@ -130,7 +130,7 @@ QString DocumentProviderSelectorController::getViewName(const GObjectType &objec
 QString DocumentProviderSelectorController::getTypeName(const GObjectType &objectType) {
     if (GObjectTypes::ASSEMBLY == objectType) {
         return "Short reads assembly";
-    } else if (GObjectTypes::MULTIPLE_ALIGNMENT == objectType) {
+    } else if (GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT == objectType) {
         return "Multiple sequence alignment";
     }
     FAIL("An unexpected type", "");

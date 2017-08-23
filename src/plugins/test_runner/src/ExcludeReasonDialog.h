@@ -1,7 +1,7 @@
 #ifndef EXCLUDERESAONDIALOG_H
 #define EXCLUDERESAONDIALOG_H
 
-#include <QtWidgets/QDialog>
+#include <QDialog>
 
 class Ui_ExcludeReasonDialog;
 

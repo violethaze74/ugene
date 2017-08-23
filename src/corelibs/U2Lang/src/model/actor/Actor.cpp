@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/ActorPrototype.h>
 #include <U2Lang/BaseTypes.h>
@@ -30,10 +31,9 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowUtils.h>
 
+#include "Actor.h"
 #include "ActorDocument.h"
 #include "support/IntegralBusUtils.h"
-
-#include "Actor.h"
 
 namespace U2 {
 namespace Workflow {

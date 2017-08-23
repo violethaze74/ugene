@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -35,7 +35,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
@@ -67,7 +67,7 @@ MAFFTSupport::MAFFTSupport(const QString& name, const QString& path) : ExternalT
 }
 
 void MAFFTSupport::sl_runWithExtFileSpecify(){
-    //Check that Clustal and tempory directory path defined
+    //Check that Clustal and tempory folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -114,18 +114,16 @@ void MAFFTSupport::sl_runWithExtFileSpecify(){
 
 ////////////////////////////////////////
 //ExternalToolSupportMSAContext
-MAFFTSupportContext::MAFFTSupportContext(QObject* p) : GObjectViewWindowContext(p, MSAEditorFactory::ID) {
+MAFFTSupportContext::MAFFTSupportContext(QObject* p) : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 
 }
 
 void MAFFTSupportContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    assert(msaed!=NULL);
-    if (msaed->getMSAObject() == NULL) {
-            return;
-    }
+    SAFE_POINT(msaed != NULL, "Invalid GObjectGiew", );
+    CHECK(msaed->getMaObject() != NULL, );
 
-    bool objLocked = msaed->getMSAObject()->isStateLocked();
+    bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
     AlignMsaAction* alignAction = new AlignMsaAction(this, ET_MAFFT, view, tr("Align with MAFFT..."), 2000);
@@ -134,8 +132,8 @@ void MAFFTSupportContext::initViewContext(GObjectView* view) {
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
 
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_MAFFT()));
 }
 
@@ -149,7 +147,7 @@ void MAFFTSupportContext::buildMenu(GObjectView* view, QMenu* m) {
 }
 
 void MAFFTSupportContext::sl_align_with_MAFFT() {
-    //Check that MAFFT and tempory directory path defined
+    //Check that MAFFT and tempory folder path defined
     if (AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(ET_MAFFT);
@@ -183,7 +181,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
     AlignMsaAction *action = qobject_cast<AlignMsaAction *>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMsaEditor();
-    MAlignmentObject* alignmentObject = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* alignmentObject = ed->getMaObject();
     SAFE_POINT(NULL != alignmentObject, "Alignment object is NULL during aligning with MAFFT!",);
     SAFE_POINT(!alignmentObject->isStateLocked(), "Alignment object is locked during aligning with MAFFT!",);
 
@@ -196,7 +194,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
         return;
     }
 
-    MAFFTSupportTask* mAFFTSupportTask = new MAFFTSupportTask(alignmentObject->getMAlignment(), GObjectReference(alignmentObject), settings);
+    MAFFTSupportTask* mAFFTSupportTask = new MAFFTSupportTask(alignmentObject->getMultipleAlignment(), GObjectReference(alignmentObject), settings);
     connect(alignmentObject, SIGNAL(destroyed()), mAFFTSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(mAFFTSupportTask);
 

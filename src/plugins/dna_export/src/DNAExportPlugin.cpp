@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,9 +21,9 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GAutoDeleteList.h>
+#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Gui/ToolsMenu.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
 #include <U2Test/XMLTestFormat.h>
@@ -37,6 +37,7 @@
 #include "ExportSequenceViewItems.h"
 #include "GenerateDNAWorker.h"
 #include "ImportQualityScoresWorker.h"
+#include "McaEditorContext.h"
 
 namespace U2 {
 
@@ -88,6 +89,7 @@ DNAExportService::DNAExportService()
     projectViewController = NULL;
     sequenceViewController = NULL;
     alignmentViewController = NULL;
+    mcaEditorContext = NULL;
 }
 
 void DNAExportService::serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged) {
@@ -98,16 +100,28 @@ void DNAExportService::serviceStateChangedCallback(ServiceState oldState, bool e
     }
     if (isEnabled()) {
         projectViewController = new ExportProjectViewItemsContoller(this);
+
         sequenceViewController = new ExportSequenceViewItemsController(this);
         sequenceViewController->init();
+
         alignmentViewController = new ExportAlignmentViewItemsController(this);
         alignmentViewController->init();
+
+        mcaEditorContext = new McaEditorContext(this);
+        mcaEditorContext->init();
     } else {
-        delete projectViewController; projectViewController = NULL;
-        delete sequenceViewController; sequenceViewController = NULL;
-        delete alignmentViewController; alignmentViewController = NULL;
+        delete projectViewController;
+        projectViewController = NULL;
+
+        delete sequenceViewController;
+        sequenceViewController = NULL;
+
+        delete alignmentViewController;
+        alignmentViewController = NULL;
+
+        delete mcaEditorContext;
+        mcaEditorContext = NULL;
     }
 }
 
-
-}//namespace
+}   // namespace U2

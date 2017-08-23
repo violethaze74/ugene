@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,8 +26,8 @@
 #include <U2Core/GObjectReference.h>
 #include <U2Core/DocumentProviderTask.h>
 
-#include <QtCore/QPointer>
-#include <QtCore/QVariantMap>
+#include <QPointer>
+#include <QVariantMap>
 
 namespace U2 {
 
@@ -90,8 +90,9 @@ private:
 class U2CORE_EXPORT LoadDocumentTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    static LoadDocumentTask * getDefaultLoadDocTask( const GUrl & url, const QVariantMap & hints = QVariantMap() );
-    static DocumentProviderTask * getCommonLoadDocTask( const GUrl & url );
+    static LoadDocumentTask *getDefaultLoadDocTask(const GUrl &url, const QVariantMap &hints = QVariantMap());
+    static LoadDocumentTask *getDefaultLoadDocTask(U2OpStatus &os, const GUrl &url, const QVariantMap &hints = QVariantMap());
+    static DocumentProviderTask *getCommonLoadDocTask(const GUrl &url);
 
 public:
     LoadDocumentTask(DocumentFormatId format, const GUrl& url,

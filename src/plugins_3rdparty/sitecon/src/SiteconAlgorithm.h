@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,14 +22,14 @@
 #ifndef _U2_SITECON_ALG_H_
 #define _U2_SITECON_ALG_H_
 
-#include <U2Core/U2Region.h>
-#include <U2Core/Task.h>
+#include <QVector>
 
-#include <QtCore/QVector>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Task.h>
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 
-class MAlignment;
 class DiPropertySitecon;
 
 //average and deviation for one property
@@ -88,21 +88,21 @@ class DNATranslation;
 class SiteconAlgorithm : public QObject {
     Q_OBJECT
 public:
-    static QVector<PositionStats> calculateDispersionAndAverage(const MAlignment& ma, const SiteconBuildSettings& s, TaskStateInfo& ts);
+    static QVector<PositionStats> calculateDispersionAndAverage(const MultipleSequenceAlignment& ma, const SiteconBuildSettings& s, TaskStateInfo& ts);
 
     static float calculatePSum(const char* seq, int len, const QVector<PositionStats>& normalizedMatrix, 
                                const SiteconBuildSettings& settings, float devThreshold, DNATranslation* complMap = NULL);
         
-    static QVector<float> calculateFirstTypeError(const MAlignment& ma, const SiteconBuildSettings& s, TaskStateInfo& ts);
+    static QVector<float> calculateFirstTypeError(const MultipleSequenceAlignment& ma, const SiteconBuildSettings& s, TaskStateInfo& ts);
 
     static QVector<float> calculateSecondTypeError(const QVector<PositionStats>& matrix, const SiteconBuildSettings& s, TaskStateInfo& ts);
 
     static QVector<PositionStats> normalize(const QVector<PositionStats>& matrix, const SiteconBuildSettings& s);
 
-    static int calculateWeights(const MAlignment& ma, QVector<PositionStats>& matrix, 
+    static int calculateWeights(const MultipleSequenceAlignment& ma, QVector<PositionStats>& matrix, 
                                 const SiteconBuildSettings& settings, bool matrixIsNormalized, TaskStateInfo& s);
 
-    static void calculateACGTContent(const MAlignment& ma, SiteconBuildSettings& bs);
+    static void calculateACGTContent(const MultipleSequenceAlignment& ma, SiteconBuildSettings& bs);
 
     static QByteArray generateRandomSequence(const int* actgContent, int seqLen, TaskStateInfo& ts);
 };

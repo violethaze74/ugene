@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,24 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include "MsaSchemeComboBoxController.h"
+#ifndef _U2_ESTIMATION_DIALOG_H_
+#define _U2_ESTIMATION_DIALOG_H_
+
+#include <QDialog>
+
+#include <U2Lang/SchemaEstimationTask.h>
 
 namespace U2 {
 
-ComboBoxSignalHandler::ComboBoxSignalHandler(QWidget *parent)
-    : QObject(parent)
-{
-    comboBox = new QComboBox(parent);
-    comboBox->setItemDelegate(new GroupedComboBoxDelegate(comboBox));
-    connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_indexChanged(int)));
+class EstimationDialog : public QDialog {
+    Q_OBJECT
+public:
+    EstimationDialog(const Workflow::EstimationResult &er, QWidget *parent);
+};
+
 }
 
-QComboBox *ComboBoxSignalHandler::getComboBox() {
-    return comboBox;
-}
-
-void ComboBoxSignalHandler::sl_indexChanged(int index) {
-    emit si_dataChanged(comboBox->itemData(index).toString());
-}
-
-}   // namespace U2
+#endif // _U2_ESTIMATION_DIALOG_H_

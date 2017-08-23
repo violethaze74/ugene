@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,10 @@
 #ifndef _U2_BIOSTRUCT3D_WORMS_RENDERER_H_
 #define _U2_BIOSTRUCT3D_WORMS_RENDERER_H_
 
-#include <QtCore/QSharedDataPointer>
-#include <QtCore/QVector>
-#include <QtCore/QMap>
-#include <QtCore/QPair>
+#include <QSharedDataPointer>
+#include <QVector>
+#include <QMap>
+#include <QPair>
 
 #include <U2Core/Vector3D.h>
 #include "BioStruct3DGLRender.h"

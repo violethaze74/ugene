@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,6 +29,7 @@ namespace {
     const QString SEQUENCE("sequence");
     const QString ANNOTATION_TABLE("annotation_table");
     const QString PHYLOGENETIC_TREE("phylogenetic_tree");
+    const QString REFERENCE_SEQUENCE("reference_sequence");
 }
 
 QString GObjectRelationRoleCompatibility::toString(GObjectRelationRole role) {
@@ -39,6 +40,8 @@ QString GObjectRelationRoleCompatibility::toString(GObjectRelationRole role) {
             return ANNOTATION_TABLE;
         case ObjectRole_PhylogeneticTree:
             return PHYLOGENETIC_TREE;
+        case ObjectRole_ReferenceSequence:
+            return REFERENCE_SEQUENCE;
         default:
             FAIL("Unknown role", "");
     }
@@ -51,6 +54,8 @@ GObjectRelationRole GObjectRelationRoleCompatibility::fromString(const QString &
         return ObjectRole_AnnotationTable;
     } else if (PHYLOGENETIC_TREE == str) {
         return ObjectRole_PhylogeneticTree;
+    } else if (REFERENCE_SEQUENCE == str) {
+        return ObjectRole_ReferenceSequence;
     } else {
         FAIL("Unknown role string", ObjectRole_Sequence);
     }

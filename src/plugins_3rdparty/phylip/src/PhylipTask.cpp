@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -20,7 +20,7 @@
 */
 
 #include <U2Core/CmdlineInOutTaskRunner.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2SafePoints.h>
 #include "NeighborJoinAdapter.h"
@@ -35,10 +35,10 @@ PhylipTask::PhylipTask(const U2EntityRef &msaRef, const U2DbiRef &outDbiRef, con
 }
 
 void PhylipTask::prepare() {
-    MAlignmentObject *msaObject = new MAlignmentObject("msa", msaRef);
+    MultipleSequenceAlignmentObject *msaObject = new MultipleSequenceAlignmentObject("msa", msaRef);
     msaObject->setParent(this);
 
-    treeTask = new NeighborJoinCalculateTreeTask(msaObject->getMAlignment(), settings);
+    treeTask = new NeighborJoinCalculateTreeTask(msaObject->getMultipleAlignment(), settings);
     addSubTask(treeTask);
 }
 

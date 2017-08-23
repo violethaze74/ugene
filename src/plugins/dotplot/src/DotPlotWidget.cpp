@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <math.h>
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QToolTip>
@@ -71,6 +72,8 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
     nearestRepeat(NULL),
     clearedByRepitSel(false)
 {
+    textSpace = w = h = 0; // values are used and will be initialized in drawAll.
+    
     dpDirectResultListener = new DotPlotResultsListener();
     dpRevComplResultsListener = new DotPlotRevComplResultsListener();
     dpFilteredResults = QSharedPointer<QList<DotPlotResults> >( new QList<DotPlotResults>() );
@@ -83,18 +86,6 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
         dpFilteredResultsRevCompl->append(dpR);
     }
 
-    QFontMetrics fm = QPainter(this).fontMetrics();
-    int minTextSpace = fm.width(" 00000 ");
-
-    if (defaultTextSpace < minTextSpace) {
-        textSpace = minTextSpace;
-    } else {
-        textSpace = defaultTextSpace;
-    }
-
-    // border around view
-    w = width() - 2*textSpace;
-    h = height() - 2*textSpace;
 
     SAFE_POINT(dnaView, "dnaView is NULL", );
     this->dnaView = dnaView;
@@ -327,7 +318,7 @@ void DotPlotWidget::sl_panViewChanged() {
     }
 
     U2Region lr = panView->getVisibleRange();
-    ADVSequenceObjectContext* ctx = lw->getSequenceContext();
+    SequenceObjectContext* ctx = lw->getSequenceContext();
 
     if (!ctx || ignorePanView) {
         return;
@@ -972,9 +963,6 @@ void DotPlotWidget::drawAll(QPainter &p, QSize &size, qreal fontScale, DotPlotIm
     float shiftY_saved = shiftY;
 
     // adapt sizes to provided w and h
-    QFontMetrics fm = p.fontMetrics();
-    int minTextSpace = fm.width(" 00000 ");
-    textSpace = minTextSpace;
     w = size.width() - 2 * textSpace;
     h = size.height() - 2 * textSpace;
     miniMap->updatePosition(w, h);
@@ -1001,10 +989,17 @@ void DotPlotWidget::drawAll(QPainter &p, QSize &size, qreal fontScale, DotPlotIm
 // draw everything
 void DotPlotWidget::drawAll(QPainter& p, qreal rulerFontScale, bool _drawFocus,
                             bool drawAreaSelection, bool drawRepeatSelection) {
-    if (sequenceX == NULL || sequenceY == NULL || w <= 0 || h <= 0) {
+    if (sequenceX == NULL || sequenceY == NULL) {
         return;
     }
 
+    QFontMetrics fm = p.fontMetrics();
+    // min textSpace is 4 characters: this is important for sequence name labels 
+    textSpace = fm.width("0") * qMax(4, qRound(1 + log10(sequenceX->getSequenceLength())));
+    // border around view
+    w = width() - 2 * textSpace;
+    h = height() - 2 * textSpace;
+    
     if (dotPlotIsCalculating) {
         GUIUtils::showMessage(this, p, tr("Dotplot is calculating..."));
     } else {
@@ -1145,7 +1140,6 @@ QString DotPlotWidget::getRoundedText(QPainter &p, int num, int size) const {
 }
 
 void DotPlotWidget::drawRulers(QPainter &p, qreal fontScale) const{
-
     GraphUtils::RulerConfig rConf;
 
     rConf.notchSize = rulerNotchSize;
@@ -1170,10 +1164,10 @@ void DotPlotWidget::drawRulers(QPainter &p, qreal fontScale) const{
 
         extraLen = QPoint(0.5*ratioX, 0.5*ratioY);
     }
-
+    
     GraphUtils::drawRuler(p, QPoint(textSpace + extraLen.x(), textSpace), w - 2*extraLen.x(), startX+1, endX, rulerFont, rConf);
 
-    rConf.direction = GraphUtils::TTB;
+    rConf.direction = GraphUtils::TopToBottom;
     rConf.textBorderEnd = 10;
     GraphUtils::drawRuler(p, QPoint(textSpace, textSpace + extraLen.y()), h - 2*extraLen.y(), startY+1, endY, rulerFont, rConf);
 }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,21 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QTabWidget>
-#include <QtGui/QTableView>
-#include <QtGui/QHeaderView>
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QTabWidget>
-#include <QtWidgets/QTableView>
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QMenu>
-#endif
-#include <QtGui/QClipboard>
+#include <QApplication>
+#include <QClipboard>
+#include <QHeaderView>
+#include <QMenu>
+#include <QTabWidget>
+#include <QTableView>
+#include <QtMath>
 
 #include "InvestigationDataModel.h"
 #include "WorkflowInvestigationWidgetsController.h"
@@ -97,11 +89,7 @@ bool WorkflowInvestigationWidgetsController::eventFilter(QObject *watched, QEven
     {
         if(NULL == investigationView->model() && NULL != investigatedLink) {
             createInvestigationModel();
-#if (QT_VERSION < 0x050000) //Qt 5
-            investigationView->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-#else
             investigationView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-#endif
             adjustInvestigationColumnWidth(investigationView);
         }
     }

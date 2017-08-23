@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-GSequenceLineView::GSequenceLineView(QWidget* p, ADVSequenceObjectContext* _ctx)
+GSequenceLineView::GSequenceLineView(QWidget* p, SequenceObjectContext* _ctx)
     : WidgetWithLocalToolbar(p),
       ctx(_ctx),
       renderArea(NULL),
@@ -50,7 +50,8 @@ GSequenceLineView::GSequenceLineView(QWidget* p, ADVSequenceObjectContext* _ctx)
       featureFlags(GSLV_FF_SupportsCustomRange),
       frameView(NULL),
       coherentRangeView(NULL),
-      ignoreMouseSelectionEvents(false)
+      ignoreMouseSelectionEvents(false),
+      singleBaseSelection(false)
 {
     GCOUNTER( cvar, tvar, "SequenceLineView" );
     seqLen = ctx->getSequenceLength();
@@ -188,7 +189,7 @@ void GSequenceLineView::mouseReleaseEvent(QMouseEvent* me) {
     if (!ignoreMouseSelectionEvents) {
         //click with 'alt' selects a single base
         Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
-        bool singleBaseSelectionMode = km.testFlag(Qt::AltModifier);
+        bool singleBaseSelectionMode = km.testFlag(Qt::AltModifier) || singleBaseSelection;
         if (me->button() == Qt::LeftButton && singleBaseSelectionMode) {
             QPoint areaPoint = toRenderAreaPoint(me->pos());
             qint64 pos = renderArea->coordToPos(areaPoint);
@@ -561,7 +562,7 @@ qint64 GSequenceLineViewRenderArea::coordToPos(int _x) const {
     int x = qBound(0, _x, width());
     const U2Region &vr = view->getVisibleRange();
     double scale = getCurrentScale();
-    qint64 pos = vr.startPos + x / scale + 0.5;
+    qint64 pos = vr.startPos + x / scale;
     pos = qMax(pos, vr.startPos);
     pos = qMin(pos, vr.endPos());
     return pos;

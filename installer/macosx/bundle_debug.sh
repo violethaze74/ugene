@@ -3,8 +3,7 @@ PRODUCT_NAME="ugeneuid"
 
 VERSION=`cat ../../src/ugene_version.pri | grep UGENE_VERSION | awk -F'=' '{print $2}'`
 BUILD_DIR=./debug_bundle
-#DEBUG_DIR=../../src/_debug
-DEBUG_DIR=/Users/atiunov/root/projects/trunk_3_shadow_debug/src/_debug/
+DEBUG_DIR=../../src/_debug
 TARGET_APP_DIR="$BUILD_DIR/${PRODUCT_NAME}.app"
 TARGET_EXE_DIR="${TARGET_APP_DIR}/Contents/MacOS"
 

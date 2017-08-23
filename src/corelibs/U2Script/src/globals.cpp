@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@ U2SCRIPT_EXPORT const wchar_t *getErrorString( U2ErrorType type ) {
     case U2_FAILED_TO_CREATE_FILE :
         return L"unable to create file";
     case U2_FAILED_TO_CREATE_DIR :
-        return L"unable to create directory";
+        return L"unable to create folder";
     case U2_ELEMENT_NOT_SUIT_SAS :
         return L"the requested algorithm cannot be used in SAS";
     case U2_FAILED_TO_READ_FILE :

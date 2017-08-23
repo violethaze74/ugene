@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,15 +52,15 @@
 #ifndef _STACK_WALKER_H_
 #define _STACK_WALKER_H_
 
-#include <QtCore/qglobal.h>
+#include <qglobal.h>
 
 #if defined (Q_OS_WIN)
 
 #include <windows.h>
 #include <wtypes.h>
 
-#include <QtCore/QString>
-#include <QtCore/QMap>
+#include <QString>
+#include <QMap>
 
 namespace U2 {
 
@@ -152,7 +152,7 @@ protected:
         CHAR loadedImageName[STACKWALK_MAX_NAMELEN];
     } CallstackEntry;
 
-    typedef enum CallstackEntryType {firstEntry, nextEntry, lastEntry};
+    typedef enum {firstEntry, nextEntry, lastEntry} CallstackEntryType;
 
     virtual void OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUserName);
     virtual void OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion);

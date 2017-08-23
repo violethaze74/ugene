@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,10 @@
 
 #include <QDir>
 #include <QFileInfo>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include "DnaAssemblyTask.h"
 
@@ -106,7 +110,17 @@ QList<GUrl> DnaAssemblyToRefTaskSettings::getShortReadUrls() const
     return res;
 }
 
-void DnaAssemblyToRefTaskSettings::setCustomSettings( const QMap<QString, QVariant>& settings ) {
+DnaAssemblyToRefTaskSettings::DnaAssemblyToRefTaskSettings() 
+    : pairedReads(false),
+    filterUnpaired(false),
+    prebuiltIndex(false),
+    openView(false),
+    samOutput(true),
+    tmpDirPath(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath()),
+    cleanTmpDir(true) {
+}
+
+void DnaAssemblyToRefTaskSettings::setCustomSettings(const QMap<QString, QVariant>& settings) {
     customSettings = settings;
 }
 } // U2

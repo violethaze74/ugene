@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@ public:
     virtual void setSeq2(const QByteArray &value);
     virtual void setSeqs(const QByteArray &value1, const QByteArray &value2);
 
-    MAlignment align();
+    MultipleSequenceAlignment align();
 
 private:
     SMatrix sMatrix;

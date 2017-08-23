@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,12 +22,12 @@
 #ifndef _U2_MAFFT_SUPPORT_TASK_H
 #define _U2_MAFFT_SUPPORT_TASK_H
 
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/GObjectReference.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Task.h>
 
@@ -67,7 +67,7 @@ class MAFFTSupportTask : public ExternalToolSupportTask {
     Q_OBJECT
     Q_DISABLE_COPY(MAFFTSupportTask)
 public:
-    MAFFTSupportTask(const MAlignment& _inputMsa, const GObjectReference& _objRef, const MAFFTSupportTaskSettings& settings);
+    MAFFTSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const MAFFTSupportTaskSettings& settings);
     ~MAFFTSupportTask();
 
     void prepare();
@@ -75,13 +75,13 @@ public:
 
     QList<Task*> onSubTaskFinished(Task* subTask);
 
-    MAlignment                  resultMA;
+    MultipleSequenceAlignment                  resultMA;
 
 private slots:
     void sl_progressUndefined();
 
 private:
-    MAlignment                  inputMsa;
+    MultipleSequenceAlignment                  inputMsa;
     GObjectReference            objRef;
     QPointer<Document>          tmpDoc;
     QString                     url;
@@ -94,7 +94,7 @@ private:
     QPointer<StateLock>         lock;
 };
 
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 
 class MAFFTWithExtFileSpecifySupportTask : public Task {
     Q_OBJECT
@@ -107,7 +107,7 @@ public:
 
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:
-    MAlignmentObject*           mAObject;
+    MultipleSequenceAlignmentObject*           mAObject;
     Document*                   currentDocument;
     bool                        cleanDoc;
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCryptographicHash>
-
-#include <QtSql/QSqlError>
-#include <QtSql/QSqlQuery>
+#include <QCryptographicHash>
+#include <QSqlError>
+#include <QSqlQuery>
 
 #include <U2Core/Folder.h>
 #include <U2Core/U2DbiPackUtils.h>
@@ -245,7 +244,7 @@ QList<U2DataId> MysqlObjectDbi::getObjects(const QString& folder, qint64 offset,
     const QString canonicalFolder = U2DbiUtils::makeFolderCanonical(folder);
     const QByteArray hash = QCryptographicHash::hash(canonicalFolder.toLatin1(), QCryptographicHash::Md5).toHex();
 
-    static const QString queryString = "SELECT o.id, o.type, '' FROM Object AS o, FolderContent AS fc, Folder AS f WHERE f.hash = :hash AND fc.folder = f.id AND fc.object = o.id";
+    static const QString queryString = "SELECT o.id, o.type, '' FROM Object AS o, FolderContent AS fc, Folder AS f WHERE f.hash = :hash AND fc.folder = f.id AND fc.object = o.id AND o." + TOP_LEVEL_FILTER;
     U2SqlQuery q(queryString, offset, count, db, os);
     q.bindString(":hash", hash);
     return q.selectDataIdsExt();
@@ -277,6 +276,13 @@ qint64 MysqlObjectDbi::getFolderGlobalVersion(const QString& folder, U2OpStatus&
     U2SqlQuery q(queryString, db, os);
     q.bindString(":hash", hash);
     return q.selectInt64();
+}
+
+U2DbiObjectRank MysqlObjectDbi::getObjectRank(const U2DataId &objectId, U2OpStatus& os) {
+    static const QString queryString("SELECT rank FROM Object WHERE id = :id");
+    U2SqlQuery q(queryString, db, os);
+    q.bindDataId(":id", objectId);
+    return static_cast<U2DbiObjectRank> (q.selectInt32());
 }
 
 
@@ -763,7 +769,7 @@ void MysqlObjectDbi::setObjectRank(const U2DataId &objectId, U2DbiObjectRank new
     query.bindInt32(":rank", newRank);
     query.bindDataId(":id", objectId);
     const qint64 modifiedRowsNumber = query.update();
-    if (modifiedRowsNumber != 1) {
+    if (modifiedRowsNumber > 1) {
         os.setError(QObject::tr("Unexpected number of modified objects. Expected: 1, actual: %1").arg(modifiedRowsNumber));
     }
 }
@@ -1033,6 +1039,7 @@ void MysqlObjectDbi::removeObjectSpecificData(const U2DataId &objectId, U2OpStat
     case U2Type::VariantTrack:
         // nothing has to be done for objects of these types
         break;
+    case U2Type::Mca:
     case U2Type::Msa:
         dbi->getMysqlMsaDbi()->deleteRowsData(objectId, os);
         break;
@@ -1082,7 +1089,9 @@ void MysqlObjectDbi::setVersion(const U2DataId& id, qint64 version, U2OpStatus& 
 }
 
 void MysqlObjectDbi::undoSingleModStep(const U2SingleModStep& modStep, U2OpStatus& os) {
-    if (U2ModType::isMsaModType(modStep.modType)) {
+    if (U2ModType::isUdrModType(modStep.modType)) {
+        dbi->getMysqlUdrDbi()->undo(modStep, os);
+    } else if (U2ModType::isMsaModType(modStep.modType)) {
         dbi->getMysqlMsaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
     } else if (U2ModType::isSequenceModType(modStep.modType)) {
         dbi->getMysqlSequenceDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
@@ -1095,7 +1104,9 @@ void MysqlObjectDbi::undoSingleModStep(const U2SingleModStep& modStep, U2OpStatu
 }
 
 void MysqlObjectDbi::redoSingleModStep(const U2SingleModStep& modStep, U2OpStatus &os) {
-    if (U2ModType::isMsaModType(modStep.modType)) {
+    if (U2ModType::isUdrModType(modStep.modType)) {
+        dbi->getMysqlUdrDbi()->redo(modStep, os);
+    } else if (U2ModType::isMsaModType(modStep.modType)) {
         dbi->getMysqlMsaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
     } else if (U2ModType::isSequenceModType(modStep.modType)) {
         dbi->getMysqlSequenceDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
@@ -1132,7 +1143,7 @@ void MysqlObjectDbi::undoUpdateObjectName(const U2DataId& id, const QByteArray& 
     QString oldName;
     QString newName;
 
-    bool ok = PackUtils::unpackObjectNameDetails(modDetails, oldName, newName);
+    bool ok = U2DbiPackUtils::unpackObjectNameDetails(modDetails, oldName, newName);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an object name")), );
 
     // Update the value
@@ -1150,7 +1161,7 @@ void MysqlObjectDbi::redoUpdateObjectName(const U2DataId& id, const QByteArray& 
     QString oldName;
     QString newName;
 
-    bool ok = PackUtils::unpackObjectNameDetails(modDetails, oldName, newName);
+    bool ok = U2DbiPackUtils::unpackObjectNameDetails(modDetails, oldName, newName);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating an object name!")), );
 
     U2Object obj;

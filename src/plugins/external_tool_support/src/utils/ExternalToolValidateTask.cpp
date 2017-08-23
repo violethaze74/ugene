@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QString>
+#include <QString>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
@@ -79,7 +79,7 @@ void ExternalToolJustValidateTask::run() {
             stateInfo.setError(QString("The tool %1 that runs %2 is not installed. "
                                        "Please set the path to the executable file of the"
                                        " tool in the External Tools settings. Some of the tools "
-                                       "may be located in UGENE/Tools directory")
+                                       "may be located in UGENE/Tools folder")
                                .arg(originalValidation.toolRunnerProgram)
                                .arg(toolName));
         } else {

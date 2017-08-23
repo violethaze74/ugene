@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ PrimerLibrarySelector::PrimerLibrarySelector(QWidget *parent)
 {
     GCOUNTER(cvar, tvar, "PrimerLibrarySelector");
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759739");
+    new HelpButton(this, buttonBox, "19766995");
 
     connect(primerTable, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(accept()));
     connect(primerTable->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), SLOT(sl_selectionChanged()));

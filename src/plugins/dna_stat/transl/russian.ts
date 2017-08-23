@@ -339,7 +339,7 @@
 <context>
     <name>U2::DNAStatsWindow</name>
     <message>
-        <location filename="../src/DNAStatsWindow.cpp" line="44"/>
+        <location filename="../src/DNAStatsWindow.cpp" line="37"/>
         <source>Statistics for %1</source>
         <translation>Статистика для %1</translation>
     </message>
@@ -417,7 +417,7 @@
     </message>
     <message>
         <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="202"/>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="234"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="235"/>
         <source>There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser.</source>
         <translation>There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser.</translation>
     </message>
@@ -427,28 +427,28 @@
         <translation>Групповая статистика множественного выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="241"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="242"/>
         <source>Legend:</source>
         <translation>Легенда:</translation>
     </message>
     <message>
         <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="174"/>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="260"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="261"/>
         <source>Can&apos;t open file for write: %1</source>
         <translation>Не могу открыть файл для записи: %1</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="302"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="303"/>
         <source>There is not enough groups to create distance matrix!</source>
         <translation>Недостаточно групп для того, чтобы создать матрицу расстояний!</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="356"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="352"/>
         <source>Distance matrix</source>
         <translation>Матрица расстояний</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="356"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="352"/>
         <source>Distance matrix for %1</source>
         <translation>Матрица расстояний для %1</translation>
     </message>

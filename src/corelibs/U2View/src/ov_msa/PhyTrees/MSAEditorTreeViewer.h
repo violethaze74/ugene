@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,15 +23,10 @@
 #define _U2_MSAEditor_TREE_VIEWER_H_
 
 #include "U2View/TreeViewer.h"
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsLineItem>
-#else
-#include <QtWidgets/QGraphicsLineItem>
-#endif
+#include <QGraphicsLineItem>
 
-#include <QtCore/QMap>
+#include <QMap>
 #include <U2Algorithm/CreatePhyTreeSettings.h>
-
 
 namespace U2 {
 
@@ -90,7 +85,7 @@ private slots:
 
     void sl_stopTracking();
     void sl_startTracking(bool changed);
-    void sl_alignmentChanged(const MAlignment& ma, const MAlignmentModInfo& modInfo);
+    void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo& modInfo);
 
 signals:
     void si_refreshTree(MSAEditorTreeViewer* treeViewer);
@@ -106,7 +101,7 @@ private:
     MSAEditor*            msa;
     SynchronizationMode   syncMode;
     bool                  slotsAreConnected;
-    MAlignmentModInfo     cachedModification;
+    MaModificationInfo     cachedModification;
 };
 
 class U2VIEW_EXPORT MSAEditorTreeViewerUI: public TreeViewerUI {

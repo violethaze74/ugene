@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -101,9 +101,9 @@ void GTest_CreateSubalignimentTask::prepare(){
         return;
     }
 
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
@@ -113,31 +113,31 @@ void GTest_CreateSubalignimentTask::prepare(){
         return;
     }
 
-    QList<GObject*> expList = expectedDoc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> expList = expectedDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
-    expectedMaobj = (MAlignmentObject*)expList.first();
+    expectedMaobj = (MultipleSequenceAlignmentObject*)expList.first();
 
-    maobj = (MAlignmentObject*)list.first();
+    maobj = (MultipleSequenceAlignmentObject*)list.first();
     t = new CreateSubalignmentTask(maobj, CreateSubalignmentSettings(window, seqNames, doc->getURL(), false,false, DocumentFormatId()));
     addSubTask(t);
 }
 
 Task::ReportResult GTest_CreateSubalignimentTask::report(){
-    const MAlignment &actual = maobj->getMAlignment(),
-                expected = expectedMaobj->getMAlignment();
-    if (actual.getRows().size() != expected.getRows().size()){
+    const MultipleSequenceAlignment actual = maobj->getMultipleAlignment();
+    const MultipleSequenceAlignment expected = expectedMaobj->getMultipleAlignment();
+    if (actual->getMsaRows().size() != expected->getMsaRows().size()){
         stateInfo.setError(GTest::tr("Expected and actual alignment sizes are different: %1 , %2")
-            .arg(expected.getRows().size())
-            .arg(actual.getRows().size()));
+            .arg(expected->getMsaRows().size())
+            .arg(actual->getMsaRows().size()));
         return ReportResult_Finished;
     }
-    for(int i = 0; i < actual.getRows().size(); i++){
-        const MAlignmentRow& actItem = actual.getRow(i), expItem = expected.getRow(i);
-        if (actItem != expItem){
+    for(int i = 0; i < actual->getMsaRows().size(); i++){
+        const MultipleSequenceAlignmentRow actItem = actual->getMsaRow(i), expItem = expected->getMsaRow(i);
+        if (*actItem != *expItem){
             stateInfo.setError(GTest::tr("Expected and actual alignments not equal"));
             return ReportResult_Finished;
         }
@@ -239,9 +239,9 @@ void GTest_RemoveAlignmentRegion::prepare(){
         return;
     }
 
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
@@ -251,15 +251,15 @@ void GTest_RemoveAlignmentRegion::prepare(){
         return;
     }
 
-    QList<GObject*> expList = expectedDoc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> expList = expectedDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
-    expectedMaobj = (MAlignmentObject*)expList.first();
+    expectedMaobj = (MultipleSequenceAlignmentObject*)expList.first();
 
-    maobj = (MAlignmentObject*)list.first();
+    maobj = (MultipleSequenceAlignmentObject*)list.first();
 
 }
 
@@ -268,10 +268,10 @@ Task::ReportResult GTest_RemoveAlignmentRegion::report(){
     if (!hasError()) {
 
         maobj->removeRegion(startBase, startSeq, width, height, true);
-        const MAlignment &actual = maobj->getMAlignment(),
-            expected = expectedMaobj->getMAlignment();
+        const MultipleSequenceAlignment actual = maobj->getMultipleAlignment();
+        const MultipleSequenceAlignment expected = expectedMaobj->getMultipleAlignment();
 
-        if (actual != expected) {
+        if (*actual != *expected) {
             stateInfo.setError(GTest::tr("Expected and actual alignments not equal"));
         }
     }
@@ -318,9 +318,9 @@ void GTest_AddSequenceToAlignment::prepare(){
         return;
     }
 
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
@@ -330,14 +330,14 @@ void GTest_AddSequenceToAlignment::prepare(){
         return;
     }
 
-    QList<GObject*> expList = expectedDoc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> expList = expectedDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
-    expectedMaobj = (MAlignmentObject*)expList.first();
-    maobj = (MAlignmentObject*)list.first();
+    expectedMaobj = (MultipleSequenceAlignmentObject*)expList.first();
+    maobj = (MultipleSequenceAlignmentObject*)list.first();
 
     if (seqFileName.isEmpty()) {
         stateInfo.setError(GTest::tr("File with sequences has empty name"));
@@ -355,10 +355,10 @@ Task::ReportResult GTest_AddSequenceToAlignment::report(){
 
     if (!hasError()) {
 
-        const MAlignment& actual = maobj->getMAlignment();
-        const MAlignment& expected = expectedMaobj->getMAlignment();
+        const MultipleSequenceAlignment actual = maobj->getMultipleAlignment();
+        const MultipleSequenceAlignment expected = expectedMaobj->getMultipleAlignment();
 
-        if (actual != expected) {
+        if (*actual != *expected) {
             stateInfo.setError(GTest::tr("Expected and actual alignments not equal"));
         }
     }
@@ -382,26 +382,26 @@ void GTest_RemoveColumnsOfGaps::prepare(){
         return;
     }
 
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+        stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
     GObject *obj = list.first();
     if (NULL == obj) {
-        stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+        stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
     assert(NULL != obj);
 
-    MAlignmentObject *maObj = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject *maObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (NULL == maObj) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;
     }
 
-    maObj->deleteColumnWithGaps(stateInfo);
+    maObj->deleteColumnsWithGaps(stateInfo);
 }
 
 

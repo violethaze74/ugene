@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,8 @@
 
 #ifndef _U2_TYPE_H_
 #define _U2_TYPE_H_
+
+#include <QObject>
 
 #include <U2Core/global.h>
 
@@ -72,6 +74,7 @@ public:
     static const U2DataType FilterTableType             = 7;
     static const U2DataType KnownMutationsTrackType     = 8;
     static const U2DataType AnnotationTable             = 10;
+    static const U2DataType Mca                         = 11;
     /** UDR object types 101..199 */
     static const U2DataType Text                        = 101;
     static const U2DataType PhyTree                     = 102;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,10 +24,10 @@
 
 #include <U2Core/U2Assembly.h>
 
-#include <QtCore/QFlags>
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QVariant>
+#include <QFlags>
+#include <QList>
+#include <QMap>
+#include <QVariant>
 
 namespace U2 {
 namespace BAM {

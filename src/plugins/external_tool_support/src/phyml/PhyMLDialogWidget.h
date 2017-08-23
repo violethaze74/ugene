@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 #include "PhyMLSupport.h"
 
 #include <U2Gui/InputWidgetsControllers.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/AppContext.h>
 #include <U2View/CreatePhyTreeWidget.h>
 
@@ -40,6 +40,7 @@ public:
 
     static const QString EstimateTtRatio;
     static const QString TtRatio;
+    static const QString TtRatioCheckbox;
 
     static const QString EstimateSitesProportion;
     static const QString InvariableSitesProportion;
@@ -65,7 +66,7 @@ public:
 class PhyMlWidget : public CreatePhyTreeWidget, public Ui_PhyMLDialog{
    Q_OBJECT
 public:
-    PhyMlWidget(const MAlignment &ma, QWidget *parent);
+    PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent);
 
     void fillSettings(CreatePhyTreeSettings& settings);
     void storeSettings();
@@ -74,7 +75,9 @@ public:
 
 private:
     void createWidgetsControllers();
-    void fillComboBoxes(const MAlignment& ma);
+    void fillComboBoxes();
+    // Enables/disables all transition ratio related controls.
+    void makeTTRatioControlsAvailable(bool enabled);
 
     QStringList generatePhyMlSettingsScript();
 
@@ -86,6 +89,10 @@ private slots:
     void sl_checkTreeImprovement(int newIndex);
     void sl_checkSubModelType(const QString& newModel);
     void sl_inputPathButtonClicked();
+    void sl_optTopologyCheckboxClicked(bool checked);
+
+private:
+    bool optBranchCheckboxSavedState;    
 };
 
 }//namespace

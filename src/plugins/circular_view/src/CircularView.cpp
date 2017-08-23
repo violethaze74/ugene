@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,8 +21,8 @@
 
 #include <math.h>
 
-#include <QtGui/QFontMetrics>
-#include <QtGui/QPainter>
+#include <QFontMetrics>
+#include <QPainter>
 
 #include <QApplication>
 #include <QDialog>
@@ -427,9 +427,9 @@ void CircularView::adaptSizes() {
 qreal CircularView::coordToAngle(const QPoint point) {
     float norm = sqrt((double)point.x()*point.x() + point.y()*point.y());
     float arcsin = 0.0;
-    if (abs(norm) > 1.0)
+    if (qAbs(norm) > 1.0)
     {
-        arcsin = asin(abs((double)point.y())/norm);
+        arcsin = asin(qAbs((double)point.y())/norm);
     }
 
     if(point.x() < 0) {
@@ -612,7 +612,7 @@ void CircularViewRenderArea::drawAll(QPaintDevice* pd) {
 }
 
 void CircularViewRenderArea::drawAnnotationsSelection(QPainter& p) {
-    ADVSequenceObjectContext* ctx = view->getSequenceContext();
+    SequenceObjectContext* ctx = view->getSequenceContext();
 
     if(ctx->getAnnotationsSelection()->getSelection().isEmpty()) {
         return;
@@ -648,7 +648,7 @@ namespace {
 void CircularViewRenderArea::drawSequenceName(QPainter& p) {
     QPen boldPen(Qt::black);
     boldPen.setWidth(3);
-    ADVSequenceObjectContext* ctx = view->getSequenceContext();
+    SequenceObjectContext* ctx = view->getSequenceContext();
 
     assert(ctx->getSequenceGObject() != NULL);
 
@@ -696,7 +696,7 @@ void CircularViewRenderArea::drawSequenceName(QPainter& p) {
 }
 
 void CircularViewRenderArea::drawSequenceSelection(QPainter& p) {
-    ADVSequenceObjectContext* ctx = view->getSequenceContext();
+    SequenceObjectContext* ctx = view->getSequenceContext();
     int seqLen = ctx->getSequenceLength();
     const QVector<U2Region>& selection = view->getSequenceContext()->getSequenceSelection()->getSelectedRegions();
     if (selection.isEmpty()) {
@@ -816,7 +816,7 @@ qreal CircularViewRenderArea::getVisibleAngle() const {
 }
 
 QPair<int,int> CircularViewRenderArea::getVisibleRange() const {
-    ADVSequenceObjectContext* ctx = view->getSequenceContext();
+    SequenceObjectContext* ctx = view->getSequenceContext();
     int seqLen = ctx->getSequenceObject()->getSequenceLength();
     if (verticalOffset <= parentWidget()->height()) {
         return qMakePair<int,int>(0, seqLen);
@@ -835,7 +835,7 @@ void CircularViewRenderArea::drawRuler(QPainter& p) {
     normalizeAngle(rotationDegree);
 
     if (settings->showRulerCoordinates) {
-        ADVSequenceObjectContext* ctx = view->getSequenceContext();
+        SequenceObjectContext* ctx = view->getSequenceContext();
         U2Region range(0, ctx->getSequenceLength());
         QFont font = p.font();
         font.setPointSize(settings->rulerFontSize);
@@ -916,7 +916,7 @@ void CircularViewRenderArea::buildAnnotationItem(DrawAnnotationPass pass, Annota
         return;
     }
 
-    ADVSequenceObjectContext* ctx = view->getSequenceContext();
+    SequenceObjectContext* ctx = view->getSequenceContext();
     SAFE_POINT(ctx != NULL, "Sequence object context is NULL", );
     int seqLen = ctx->getSequenceLength();
 
@@ -952,7 +952,7 @@ void CircularViewRenderArea::buildAnnotationItem(DrawAnnotationPass pass, Annota
 }
 
 void CircularViewRenderArea::buildItems(QFont labelFont) {
-    ADVSequenceObjectContext *ctx = view->getSequenceContext();
+    SequenceObjectContext *ctx = view->getSequenceContext();
 
     qDeleteAll(circItems);
     circItems.clear();
@@ -1135,7 +1135,7 @@ void CircularViewRenderArea::buildAnnotationLabel(const QFont &font, Annotation 
         return;
     }
 
-    ADVSequenceObjectContext *ctx = view->getSequenceContext();
+    SequenceObjectContext *ctx = view->getSequenceContext();
     U2Region seqReg(0, ctx->getSequenceLength());
 
     int seqLen = seqReg.length;

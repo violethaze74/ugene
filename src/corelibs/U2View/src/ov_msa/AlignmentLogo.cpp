@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,9 +23,9 @@
 
 #include <U2View/MSAEditor.h>
 
-#include <QtGui/QPainter>
+#include <QPainter>
 #include <QHBoxLayout>
-#include "U2Core/MAlignment.h"
+#include "U2Core/MultipleSequenceAlignment.h"
 #include "U2Core/DNAAlphabet.h"
 #include <math.h>
 
@@ -56,9 +56,9 @@ AlignmentLogoRenderArea::AlignmentLogoRenderArea(const AlignmentLogoSettings& _s
             s = 4.0;
             break;
         default:
-            QByteArray chars = settings.ma.getAlphabet()->getAlphabetChars();
+            QByteArray chars = settings.ma->getAlphabet()->getAlphabetChars();
             foreach(char ch, chars) {
-                if(ch!=MAlignment_GapChar)
+                if(ch!=U2Msa::GAP_CHAR)
                     acceptableChars->append(ch);
             }
             s = 20.0;
@@ -81,9 +81,9 @@ void AlignmentLogoRenderArea::replaceSettings(const AlignmentLogoSettings& _s) {
             s = 4.0;
             break;
         default:
-            QByteArray chars = settings.ma.getAlphabet()->getAlphabetChars();
+            QByteArray chars = settings.ma->getAlphabet()->getAlphabetChars();
             foreach(char ch, chars) {
-                if(ch!=MAlignment_GapChar)
+                if(ch!=U2Msa::GAP_CHAR)
                     acceptableChars->append(ch);
             }
             s = 20.0;
@@ -126,15 +126,15 @@ void AlignmentLogoRenderArea::paintEvent(QPaintEvent* e) {
 }
 
 void AlignmentLogoRenderArea::resizeEvent(QResizeEvent* e) {
-    bitWidth = qMax(width() / settings.ma.getLength() - SPACER, MIN_WIDTH);
+    bitWidth = qMax(width() / settings.ma->getLength() - SPACER, MIN_WIDTH);
     bitHeight = (height() - s) * log(2.0) / log(s);
 
     QWidget::resizeEvent(e);
 }
 
 void AlignmentLogoRenderArea::evaluateHeights() {
-    const MAlignment& ma = settings.ma;
-    int numRows = ma.getNumRows();
+    const MultipleSequenceAlignment& ma = settings.ma;
+    int numRows = ma->getNumRows();
     error = (s - 1)/(2*log(2.0)*numRows);
 
     foreach (char ch, *acceptableChars) {
@@ -147,9 +147,9 @@ void AlignmentLogoRenderArea::evaluateHeights() {
 
     for (int pos = settings.startPos; pos < settings.len + settings.startPos; pos++) {
         for (int idx = 0; idx < numRows; idx++) {
-            const MAlignmentRow& row = ma.getRow(idx);
-            assert(pos < ma.getLength());
-            char ch = row.charAt(pos);
+            const MultipleSequenceAlignmentRow row = ma->getMsaRow(idx);
+            assert(pos < ma->getLength());
+            char ch = row->charAt(pos);
             if(acceptableChars->contains(ch)) {
                 int arrIdx = pos - settings.startPos;
                 assert(arrIdx >= 0);
@@ -162,7 +162,7 @@ void AlignmentLogoRenderArea::evaluateHeights() {
         }
     }
 
-    int rows = settings.ma.getNumRows();
+    int rows = settings.ma->getNumRows();
     for(int pos=0; pos < settings.len; pos++) {
         qreal h = getH(pos);
         foreach(char c, columns[pos]) {
@@ -174,7 +174,7 @@ void AlignmentLogoRenderArea::evaluateHeights() {
 
 qreal AlignmentLogoRenderArea::getH(int pos) {
     qreal h = 0.0;
-    int rows = settings.ma.getNumRows();
+    int rows = settings.ma->getNumRows();
     foreach(char ch, columns.at(pos)) {
         qreal freq = frequencies[(int)uchar(ch)][pos] / rows;
         h += -freq * log(freq) / log(2.0);

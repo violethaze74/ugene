@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtSql/QSqlError>
+#include <QSqlError>
 
 #include <U2Core/Log.h>
 #include <U2Core/U2DbiUtils.h>
@@ -309,6 +309,18 @@ U2DataId U2SqlQuery::insert(U2DataType type, const QByteArray& dbExtra) {
     CHECK(!hasError(), emptyId);
 
     return U2DbiUtils::toU2DataId(lastRowId, type, dbExtra);
+}
+
+qint32 U2SqlQuery::selectInt32() {
+    execute();
+    CHECK(!hasError(), -1);
+
+    if (step()) {
+        return getInt32(0);
+    }
+    else {
+        return -1;
+    }
 }
 
 qint64 U2SqlQuery::selectInt64() {

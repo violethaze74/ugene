@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,6 +57,7 @@ protected:
     bool isReadyToRun() const;
     bool dataFinished() const;
     QString checkPairedReads() const;
+    virtual QString getAlignerSubdir() const;
 
 protected:
     QString      algName;

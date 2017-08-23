@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,8 @@
 #ifndef _U2_WORKFLOW_BREAKPOINT_HIT_COUNTER_SHARED_INFO_H_
 #define _U2_WORKFLOW_BREAKPOINT_HIT_COUNTER_SHARED_INFO_H_
 
-#include <QtCore/QtGlobal>
-#include <QtCore/QMap>
-#include <QtCore/QString>
+#include <QMap>
+#include <QString>
 
 #include <U2Core/global.h>
 #include <U2Lang/Attribute.h>

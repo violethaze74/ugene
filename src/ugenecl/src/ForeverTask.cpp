@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,7 +20,7 @@
  */
 
 
-#include <QtCore/QEventLoop>
+#include <QEventLoop>
 
 #include <U2Core/Log.h>
 
@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-Logger log( FOREVER_TASK_LOG_CAT );
+static Logger log( FOREVER_TASK_LOG_CAT );
 
 ForeverTask::ForeverTask() : Task( "Forever task", TaskFlag_None ) {
     log.trace( tr( "Forever task created" ) );

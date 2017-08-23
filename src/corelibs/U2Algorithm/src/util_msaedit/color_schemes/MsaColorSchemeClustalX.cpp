@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,13 +21,13 @@
 
 #include <U2Algorithm/MSAConsensusUtils.h>
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 
 #include "MsaColorSchemeClustalX.h"
 
 namespace U2 {
 
-MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj)
+MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : MsaColorScheme(parent, factory, maObj),
       objVersion(1),
       cacheVersion(0),
@@ -42,7 +42,7 @@ MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject *parent, const MsaColorSc
     colorByIdx[ClustalColor_CYAN]    = "#15a4a4";
     colorByIdx[ClustalColor_YELLOW]  = "#c0c000";
 
-    connect(maObj, SIGNAL(si_alignmentChanged(const MAlignment &, const MAlignmentModInfo &)), SLOT(sl_alignmentChanged()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
 }
 
 QColor MsaColorSchemeClustalX::getColor(int seq, int pos, char) const {
@@ -79,8 +79,8 @@ void MsaColorSchemeClustalX::updateCache() const {
 
     // compute colors for whole ali
     // use 4 bits per color
-    const MAlignment &ma = maObj->getMAlignment();
-    int nSeq = ma.getNumRows();
+    const MultipleAlignment msa = maObj->getMultipleAlignment();
+    int nSeq = msa->getNumRows();
     aliLen = maObj->getLength();
     cacheVersion = objVersion;
 
@@ -121,14 +121,14 @@ void MsaColorSchemeClustalX::updateCache() const {
 
     for (int pos = 0; pos < aliLen; pos++) {
         int nonGapChars = 0;
-        MSAConsensusUtils::getColumnFreqs(ma, pos, freqsByChar, nonGapChars);
+        MSAConsensusUtils::getColumnFreqs(msa, pos, freqsByChar, nonGapChars);
         int content50 = int(nonGapChars * 50.0 / 100);
         int content60 = int(nonGapChars * 60.0 / 100);
         int content80 = int(nonGapChars * 80.0 / 100);
         int content85 = int(nonGapChars * 85.0 / 100);
 
         for (int seq = 0; seq < nSeq; seq++) {
-            char c = ma.charAt(seq, pos);
+            char c = msa->charAt(seq, pos);
             int colorIdx = ClustalColor_NO_COLOR;
             switch(c) {
             case 'W': //(W,L,V,I,M,F): {50%, P}{60%, WLVIMAFCYHP} -> BLUE
@@ -251,13 +251,12 @@ void MsaColorSchemeClustalX::setColorIdx(int seq, int pos, int colorIdx) const {
     colorsCache[cacheIdx] = val;
 }
 
-MsaColorSchemeClustalXFactory::MsaColorSchemeClustalXFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes)
-    : MsaColorSchemeFactory(parent, id, name, alphabetTypes)
+MsaColorSchemeClustalXFactory::MsaColorSchemeClustalXFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets) : MsaColorSchemeFactory(parent, id, name, supportedAlphabets)
 {
 
 }
 
-MsaColorScheme * MsaColorSchemeClustalXFactory::create(QObject *parent, MAlignmentObject *maObj) const {
+MsaColorScheme * MsaColorSchemeClustalXFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaColorSchemeClustalX(parent, this, maObj);
 }
 

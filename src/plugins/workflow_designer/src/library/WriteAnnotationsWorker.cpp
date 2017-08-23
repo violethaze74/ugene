@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedPointer>
+#include <QScopedPointer>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -63,6 +63,7 @@ const QString WriteAnnotationsWorkerFactory::ACTOR_ID("write-annotations");
 
 static const QString WRITE_ANNOTATIONS_IN_TYPE_ID("write-annotations-in-type");
 static const QString CSV_FORMAT_ID("csv");
+static const QString CSV_FORMAT_NAME("CSV");
 static const QString ANN_TABLE_NAME_4_LOCAL_ST("annotations-name");
 static const QString ANN_TABLE_NAME_4_SHARED_ST("ann-obj-name");
 static const QString ANNOTATIONS_NAME_DEF_VAL("Unknown features");
@@ -384,9 +385,12 @@ void WriteAnnotationsWorkerFactory::init() {
     constr.supportedObjectTypes.insert( GObjectTypes::ANNOTATION_TABLE );
     constr.addFlagToSupport(DocumentFormatFlag_SupportWriting);
     constr.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
-    QList<DocumentFormatId> supportedFormats = AppContext::getDocumentFormatRegistry()->selectFormats( constr );
-    supportedFormats.removeOne(BaseDocumentFormats::VECTOR_NTI_SEQUENCE);
-    supportedFormats.append(CSV_FORMAT_ID);
+    constr.formatsToExclude.insert(BaseDocumentFormats::VECTOR_NTI_SEQUENCE);
+    QMap<DocumentFormatId, QString> supportedFormats;
+    foreach(const DocumentFormatId &id, AppContext::getDocumentFormatRegistry()->selectFormats(constr)) {
+        supportedFormats.insert(id, AppContext::getDocumentFormatRegistry()->getFormatById(id)->getFormatName());
+    }
+    supportedFormats.insert(CSV_FORMAT_ID, CSV_FORMAT_NAME);
     DocumentFormatId format = supportedFormats.contains(BaseDocumentFormats::PLAIN_GENBANK) ? BaseDocumentFormats::PLAIN_GENBANK : supportedFormats.first();
     // attributes description
     QList<Attribute*> attrs;
@@ -482,8 +486,8 @@ void WriteAnnotationsWorkerFactory::init() {
     QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap m;
-        foreach( const DocumentFormatId & fid, supportedFormats ) {
-            m[fid] = fid;
+        foreach(const QString &key, supportedFormats.keys()) {
+            m[supportedFormats.value(key)] = key;
         }
         delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = new ComboBoxDelegate(m);
         delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] =
@@ -544,12 +548,13 @@ QString WriteAnnotationsPrompter::composeRichDoc() {
         FAIL("Unexpected attribute value", QString());
     }
 
-    const QString format = getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()).value<QString>();
+    const QString formatId = getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()).value<QString>();
+    QString formatName = formatId == CSV_FORMAT_ID ? CSV_FORMAT_NAME : AppContext::getDocumentFormatRegistry()->getFormatById(formatId)->getFormatName();
 
     return tr("Save all annotations from <u>%1</u> to %2")
         .arg(annName)
         .arg(getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url))
-        + (storeToFs ? tr(" in %1 format.").arg(getHyperlink(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId(), format))
+        + (storeToFs ? tr(" in %1 format.").arg(getHyperlink(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId(), formatName))
         : tr(" in the ") + QString("<u>%1</u>").arg(dbName) + tr(" database."));
 }
 

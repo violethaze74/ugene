@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,8 +26,8 @@
 #include <U2Core/DNASequence.h>
 #include <U2Lang/Configuration.h>
 
-#include <QtCore/QSharedData>
-#include <QtCore/QPair>
+#include <QSharedData>
+#include <QPair>
 
 
 namespace U2 {
@@ -98,7 +98,7 @@ class QDActor;
 class U2LANG_EXPORT QDActorPrototype {
 public:
     QDActorPrototype() : editor(NULL) {}
-    virtual ~QDActorPrototype() { qDeleteAll(attributes); delete editor; }
+    virtual ~QDActorPrototype();
     const QList<Attribute*>& getParameters() const { return attributes; }
     ConfigurationEditor* getEditor() const { return editor; }
 

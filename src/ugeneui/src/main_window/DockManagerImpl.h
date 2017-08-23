@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,11 @@
 #ifndef _DOCK_MANAGER_IMPL_H_
 #define _DOCK_MANAGER_IMPL_H_
 
+#include <QIcon>
+
 #include <U2Gui/MainWindow.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QtGui>
-#else
-#include <QtWidgets/QtWidgets>
-#endif
+class QLabel;
 
 namespace U2 {
 

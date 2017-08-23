@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 
 class FeatureKeyFilterTask : public AbstractProjectFilterTask {
+    Q_OBJECT
 public:
     FeatureKeyFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
 

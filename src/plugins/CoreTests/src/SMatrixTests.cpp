@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,14 +19,15 @@
  * MA 02110-1301, USA.
  */
 
-#include "SMatrixTests.h"
+#include <QDomElement>
 
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/AppContext.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/SMatrix.h>
 
+#include "SMatrixTests.h"
 
 namespace U2 {
 

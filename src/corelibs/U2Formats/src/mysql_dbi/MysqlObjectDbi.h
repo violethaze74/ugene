@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -99,6 +99,9 @@ public:
             to the specified folder or any of its child folders
         */
     virtual qint64 getFolderGlobalVersion(const QString& folder, U2OpStatus& os);
+
+    /** Returns object rank of the given object */
+    virtual U2DbiObjectRank getObjectRank(const U2DataId &objectId, U2OpStatus& os);
 
     // Write methods for objects
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,8 +42,8 @@ public:
 
 class MrBayesAdapter : public PhyTreeGenerator{
 public:
-    Task * createCalculatePhyTreeTask(const MAlignment &ma, const CreatePhyTreeSettings &s) ;
-    CreatePhyTreeWidget *createPhyTreeSettingsWidget(const MAlignment &ma, QWidget *parent = NULL);
+    Task * createCalculatePhyTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s) ;
+    CreatePhyTreeWidget *createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent = NULL);
 };
 
 class MrBayesModelTypes{

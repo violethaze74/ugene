@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,6 +77,8 @@ public:
     WorkflowAbstractRunner* getRunner() const {return runner;}
     void setRunner(WorkflowAbstractRunner* r) {runner = r;}
 
+    const QPointF& getLastMousePressPoint() const {return lastMousePressPoint;}
+
     QList<Actor*> getSelectedActors() const;
 
     void clearScene();
@@ -126,6 +128,10 @@ private:
     WorkflowAbstractRunner* runner;
     int hint;
     QAction* openDocumentsAction;
+
+
+    /* Point stores last mouse press position on the scene.  Used to insert new elements from context menu */
+    QPointF lastMousePressPoint;
 }; // WorkflowScene
 
 class WorkflowView : public MWMDIWindow, public SchemaConfig {
@@ -189,7 +195,7 @@ private slots:
     void sl_editItem();
     void sl_onSelectionChanged();
     void sl_showEditor();
-    void sl_selectPrototype(Workflow::ActorPrototype*);
+    void sl_selectPrototype(Workflow::ActorPrototype*, bool);
     void sl_procItemAdded();
     void sl_exportScene();
     void sl_saveScene();

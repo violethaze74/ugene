@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,21 +25,23 @@
 #include <QTextEdit>
 #include <QTreeWidget>
 
-#include <U2Core/global.h>
-#include "GTUtilsMdi.h"
-#include "GTUtilsMsaEditorSequenceArea.h"
-#include "GTUtilsOptionPanelSequenceView.h"
-#include "GTUtilsTaskTreeView.h"
-#include <primitives/GTCheckBox.h>
-#include "system/GTClipboard.h"
-#include <primitives/GTComboBox.h>
 #include <drivers/GTKeyboardDriver.h>
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTableView.h>
 #include <primitives/GTTextEdit.h>
-#include "utils/GTThread.h"
 #include <primitives/GTWidget.h>
+#include <system/GTClipboard.h>
+#include <utils/GTThread.h>
+
+#include <U2Core/U2SafePoints.h>
+
+#include "GTUtilsMdi.h"
+#include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsTaskTreeView.h"
 
 namespace U2 {
 using namespace HI;

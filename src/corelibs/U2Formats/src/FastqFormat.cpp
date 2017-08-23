@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/qmath.h>
+#include <QtMath>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppResources.h>
@@ -281,7 +281,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
                 objName.squeeze();
                 uniqueNames.insert(objName);
             }
-            seqImporter.startSequence(dbiRef, folder, objName, false, warningOs);
+            seqImporter.startSequence(warningOs, dbiRef, folder, objName, false);
             if(errorLoggingBreak(warningOs, skippedLines, sequenceName)){
                 U2OpStatusImpl seqOs;
                 seqImporter.finalizeSequenceAndValidate(seqOs);

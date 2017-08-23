@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 
 #include <SamtoolsAdapter.h>
 
-#include <QtCore/QVarLengthArray>
+#include <QVarLengthArray>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Timer.h>
@@ -56,7 +56,7 @@ void SQLiteAssemblyDbi::initSqlSchema(U2OpStatus& os) {
     // cmethod - method used to handle compression of reads data
     // idata - additional indexing method data
     // cdata - additional compression method data
-    SQLiteQuery(getCreateAssemblyTableQuery(), db, os).execute();
+    SQLiteWriteQuery(getCreateAssemblyTableQuery(), db, os).execute();
 }
 
 void SQLiteAssemblyDbi::shutdown(U2OpStatus& os) {
@@ -74,7 +74,7 @@ AssemblyAdapter* SQLiteAssemblyDbi::getAdapter(const U2DataId& assemblyId, U2OpS
         return res;
     }
 
-    SQLiteQuery q("SELECT imethod, cmethod FROM Assembly WHERE object = ?1", db, os);
+    SQLiteReadQuery q("SELECT imethod, cmethod FROM Assembly WHERE object = ?1", db, os);
     q.bindDataId(1, assemblyId);
     if (!q.step()) {
         os.setError(U2DbiL10n::tr("There is no assembly object with the specified id."));
@@ -109,7 +109,7 @@ U2Assembly SQLiteAssemblyDbi::getAssemblyObject(const U2DataId& assemblyId, U2Op
 
     CHECK_OP(os, res);
 
-    SQLiteQuery q("SELECT Assembly.reference, Object.type, '' FROM Assembly, Object "
+    SQLiteReadQuery q("SELECT Assembly.reference, Object.type, '' FROM Assembly, Object "
                   " WHERE Assembly.object = ?1 AND Object.id = Assembly.reference", db, os);
 
     q.bindDataId(1, assemblyId);
@@ -211,7 +211,7 @@ void SQLiteAssemblyDbi::createAssemblyObject(U2Assembly& assembly, const QString
     QString elenMethod = dbi->getProperty(SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY, SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_MULTITABLE_V1, os);
     //QString elenMethod = dbi->getProperty(SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_KEY, SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_SINGLE_TABLE, os);
 
-    SQLiteQuery q("INSERT INTO Assembly(object, reference, imethod, cmethod) VALUES(?1, ?2, ?3, ?4)", db, os);
+    SQLiteWriteQuery q("INSERT INTO Assembly(object, reference, imethod, cmethod) VALUES(?1, ?2, ?3, ?4)", db, os);
     q.bindDataId(1, assembly.id);
     q.bindDataId(2, assembly.referenceId);
     q.bindString(3, elenMethod);
@@ -257,7 +257,7 @@ void SQLiteAssemblyDbi::updateAssemblyObject(U2Assembly& assembly, U2OpStatus& o
     SQLiteTransaction t(db, os);
     Q_UNUSED(t);
 
-    SQLiteQuery q("UPDATE Assembly SET reference = ?1 WHERE object = ?2", db, os);
+    SQLiteWriteQuery q("UPDATE Assembly SET reference = ?1 WHERE object = ?2", db, os);
     q.bindDataId(1, assembly.referenceId);
     q.bindDataId(2, assembly.id);
     q.execute();
@@ -304,7 +304,7 @@ void SQLiteAssemblyDbi::removeTables(const U2DataId &assemblyId, U2OpStatus &os)
 
 void SQLiteAssemblyDbi::removeAssemblyEntry(const U2DataId &assemblyId, U2OpStatus &os) {
     static const QString queryString("DELETE FROM Assembly WHERE object = ?1");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteWriteQuery q(queryString, db, os);
     CHECK_OP(os, );
     q.bindDataId(1, assemblyId);
     q.execute();
@@ -558,7 +558,7 @@ int removeAll(QVector<U2CigarOp> *vector,const U2CigarOp &t)
 }
 }
 #endif
-void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
+void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     int csize = coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 
@@ -636,7 +636,6 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const 
     int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
     int endPos = (int)((read->leftmostPos + read->effectiveLen) / ii.coverageBasesPerPoint) - 1;
     if(endPos > csize - 1) {
-        coreLog.trace(QString("addToCoverage: endPos > csize - 1: %1 > %2").arg(endPos).arg(csize-1));
         endPos = csize - 1;
     }
     int* coverageData = ii.coverage.data();

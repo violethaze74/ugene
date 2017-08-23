@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -71,7 +71,7 @@ DetViewSingleLineRenderer::TranslationMetrics::TranslationMetrics(DetView* detVi
     fontIS.setItalic(true);
 }
 
-DetViewSingleLineRenderer::DetViewSingleLineRenderer(DetView *detView, ADVSequenceObjectContext *ctx)
+DetViewSingleLineRenderer::DetViewSingleLineRenderer(DetView *detView, SequenceObjectContext *ctx)
     : DetViewRenderer(detView, ctx) {
 
 }

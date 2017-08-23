@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,11 @@
 #ifndef GENOMEASSEMBLYREGISTRY_H
 #define GENOMEASSEMBLYREGISTRY_H
 
-#include <QtCore/QList>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QMutex>
-#include <QtCore/QObject>
+#include <QList>
+#include <QString>
+#include <QStringList>
+#include <QMutex>
+#include <QObject>
 
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/global.h>

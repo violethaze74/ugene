@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/SequenceUtils.h>
@@ -54,13 +54,8 @@
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2DbiUtils.h>
 
-#include <QtCore/QFileInfo>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
+#include <QApplication>
+#include <QFileInfo>
 
 #include "LoadDocumentTask.h"
 
@@ -272,20 +267,23 @@ void LoadDocumentTask::init() {
     }
 }
 
-LoadDocumentTask * LoadDocumentTask::getDefaultLoadDocTask(const GUrl &url, const QVariantMap &hints) {
-    if( url.isEmpty() ) {
-        return NULL;
-    }
-    IOAdapterFactory * iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById( IOAdapterUtils::url2io( url ) );
-    if ( iof == NULL ) {
-        return NULL;
-    }
+LoadDocumentTask *LoadDocumentTask::getDefaultLoadDocTask(const GUrl &url, const QVariantMap &hints) {
+    U2OpStatusImpl os;
+    return getDefaultLoadDocTask(os, url, hints);
+}
+
+LoadDocumentTask *LoadDocumentTask::getDefaultLoadDocTask(U2OpStatus &os, const GUrl &url, const QVariantMap &hints) {
+    CHECK_EXT(!url.isEmpty(), os.setError(tr("The fileURL  to load is empty")), NULL);
+
+    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    CHECK_EXT(NULL != iof, os.setError(tr("Cannot get an IO file adapter factory for the file URL: %1").arg(url.getURLString())), NULL);
+
     QList<FormatDetectionResult> dfs = DocumentUtils::detectFormat(url);
-    if( dfs.isEmpty() ) {
-        return NULL;
-    }
-    DocumentFormat * df = dfs.first().format;
-    return new LoadDocumentTask( df->getFormatId(), url, iof, hints );
+    CHECK_EXT(!dfs.isEmpty(), os.setError(tr("Cannot detect the file format: %1").arg(url.getURLString())), NULL);
+
+    DocumentFormat *df = dfs.first().format;
+    SAFE_POINT_EXT(NULL != df, os.setError(tr("Document format is NULL (format ID: '%1', file URL: '%2')").arg(df->getFormatId()).arg(url.getURLString())), NULL);
+    return new LoadDocumentTask(df->getFormatId(), url, iof, hints);
 }
 
 DocumentProviderTask * LoadDocumentTask::getCommonLoadDocTask( const GUrl & url ) {
@@ -419,7 +417,7 @@ static Document* loadFromMultipleFiles(IOAdapterFactory* iof, QVariantMap& fs, U
         newObjects << sequences;
     }
     else if(fs.value(DocumentReadingMode_SequenceAsAlignmentHint).toBool()){
-        MAlignmentObject* msaObject = MSAUtils::seqDocs2msaObj(docs, fs, os);
+        MultipleSequenceAlignmentObject* msaObject = MSAUtils::seqDocs2msaObj(docs, fs, os);
         CHECK_OP(os, NULL);
         SAFE_POINT_EXT(NULL != msaObject, os.setError("The alignment object is NULL!"), NULL);
         newObjects << msaObject;

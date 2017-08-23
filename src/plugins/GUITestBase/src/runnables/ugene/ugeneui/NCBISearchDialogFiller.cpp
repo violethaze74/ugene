@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -353,7 +353,7 @@ void NCBISearchDialogFillerDeprecated::commonScenario(){
         return;
     }
 
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "", 0, false, false, "", GTGlobals::UseMouse, 1));
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "", 0, true, false, false, "", GTGlobals::UseMouse, 1));
     QTreeWidget* w = dialog->findChild<QTreeWidget*>("treeWidget");
     GT_CHECK(w, "treeWidget not found");
 

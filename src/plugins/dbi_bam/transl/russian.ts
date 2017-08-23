@@ -404,8 +404,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/ConvertToSQLiteDialog.cpp" line="322"/>
-        <source>Destination URL directory has not write permissions</source>
-        <translation>Нет прав на запись в указанную директорию</translation>
+        <source>Destination URL folder has not write permissions</source>
+        <translation>Нет прав на запись в указанную папку</translation>
     </message>
     <message>
         <location filename="../src/ConvertToSQLiteDialog.cpp" line="332"/>
@@ -415,8 +415,8 @@ Close it or choose different file</source>
     </message>
     <message>
         <location filename="../src/ConvertToSQLiteDialog.cpp" line="341"/>
-        <source>Destination directory &apos;%1&apos; is not writable, please choose different destination URL</source>
-        <translation>Невозможно записать в указанную директорию &apos;%1&apos; , укажите другую директорию</translation>
+        <source>Destination folder &apos;%1&apos; is not writable, please choose different destination URL</source>
+        <translation>Невозможно записать в указанную папку &apos;%1&apos; , укажите другую папку</translation>
     </message>
     <message>
         <location filename="../src/ConvertToSQLiteDialog.cpp" line="347"/>

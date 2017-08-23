@@ -38,7 +38,7 @@
 #include "common/using_std_string.h"
 
 // This class describes how a crash dump should be generated, either:
-// - Writing a full minidump to a file in a given directory (the actual path,
+// - Writing a full minidump to a file in a given folder (the actual path,
 //   inside the directory, is determined by this class).
 // - Writing a full minidump to a given fd.
 // - Writing a reduced microdump to the console (logcat on Android).

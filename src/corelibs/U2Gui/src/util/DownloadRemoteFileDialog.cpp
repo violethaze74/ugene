@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,17 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
-#include <QtXml/QXmlInputSource>
+#include <QXmlInputSource>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QMessageBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>
@@ -60,7 +56,7 @@ QString DownloadRemoteFileDialog::defaultDB("");
 DownloadRemoteFileDialog::DownloadRemoteFileDialog(QWidget *p):QDialog(p), isQueryDB(false) {
     ui = new Ui_DownloadRemoteFileDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "19759435");
+    new HelpButton(this, ui->buttonBox, "19766692");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -97,7 +93,7 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog( const QString& id, const QSt
 {
     ui = new Ui_DownloadRemoteFileDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "19759448");
+    new HelpButton(this, ui->buttonBox, "19766704");
 
     ui->formatBox->addItem(GENBANK_FORMAT);
     ui->formatBox->addItem(FASTA_FORMAT);
@@ -124,7 +120,7 @@ const QString DOWNLOAD_REMOTE_FILE_DOMAIN = "DownloadRemoteFileDialog";
 
 void DownloadRemoteFileDialog::sl_saveFilenameButtonClicked() {
     LastUsedDirHelper lod(DOWNLOAD_REMOTE_FILE_DOMAIN);
-    QString filename = U2FileDialog::getExistingDirectory(this, tr("Select directory to save"), lod.dir);
+    QString filename = U2FileDialog::getExistingDirectory(this, tr("Select folder to save"), lod.dir);
     if(!filename.isEmpty()) {
         ui->saveFilenameLineEdit->setText(filename);
         lod.url = filename;
@@ -171,7 +167,7 @@ void DownloadRemoteFileDialog::accept()
     }
     QString fullPath = getFullpath();
     if( ui->saveFilenameLineEdit->text().isEmpty() ) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("No directory selected for saving file!"));
+        QMessageBox::critical(this, L10N::errorTitle(), tr("No folder selected for saving file!"));
         ui->saveFilenameLineEdit->setFocus();
         return;
     }

@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Settings.h>
 
 #include "NeighborJoinWidget.h"
@@ -62,7 +62,7 @@ QList<QString> ConsensusModelTypes::getConsensusModelTypes() {
     return list;
 }
 
-NeighborJoinWidget::NeighborJoinWidget(const MAlignment &ma, QWidget *parent) :
+NeighborJoinWidget::NeighborJoinWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
     CreatePhyTreeWidget(parent)
 {
     setupUi(this);
@@ -122,7 +122,7 @@ void NeighborJoinWidget::restoreDefault() {
     displayOptions->restoreDefault();
 }
 
-bool NeighborJoinWidget::checkMemoryEstimation(QString &msg, const MAlignment &msa, const CreatePhyTreeSettings &settings) {
+bool NeighborJoinWidget::checkMemoryEstimation(QString &msg, const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings) {
     AppResourcePool *s = AppContext::getAppSettings()->getAppResourcePool();
     const qint64 appMemMb = s->getMaxMemorySizeInMB();
 
@@ -138,8 +138,8 @@ bool NeighborJoinWidget::checkMemoryEstimation(QString &msg, const MAlignment &m
     //sizeof(sitelike) = 32
     //sizeof(ratelike) = 4
 
-    const qint64 spp = msa.getNumRows();
-    const qint64 endsite = msa.getLength();
+    const qint64 spp = msa->getNumRows();
+    const qint64 endsite = msa->getLength();
     const qint64 ugeneLowestMemoryUsageMb = 50;
     const qint64 minMemoryForDistanceMatrixMb = (qint64)(spp * endsite * 32 + endsite * 4) / (1024 * 1024);
 
@@ -184,8 +184,8 @@ void NeighborJoinWidget::sl_onConsensusTypeChanged(const QString &consensusTypeN
     }
 }
 
-void NeighborJoinWidget::init(const MAlignment &ma) {
-    const DNAAlphabetType alphabetType = ma.getAlphabet()->getType();
+void NeighborJoinWidget::init(const MultipleSequenceAlignment &ma) {
+    const DNAAlphabetType alphabetType = ma->getAlphabet()->getType();
     if ((alphabetType == DNAAlphabet_RAW) || (alphabetType == DNAAlphabet_NUCL)) {
         cbModel->addItems(DNADistModelTypes::getDNADistModelTypes());
     } else {

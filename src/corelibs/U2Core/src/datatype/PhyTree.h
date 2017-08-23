@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,12 +22,13 @@
 #ifndef _U2_PHYTREE_H_
 #define _U2_PHYTREE_H_
 
-#include <U2Core/global.h>
+#include <QMap>
+#include <QObject>
+#include <QSet>
+#include <QSharedData>
+#include <QVector>
 
-#include <QtCore/QSet>
-#include <QtCore/QMap>
-#include <QtCore/QVector>
-#include <QtCore/QSharedData>
+#include <U2Core/global.h>
 
 namespace U2 {
 

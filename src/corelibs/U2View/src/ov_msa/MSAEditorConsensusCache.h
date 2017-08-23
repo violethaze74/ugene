@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,29 +22,35 @@
 #ifndef _U2_MSA_EDITOR_CONSENSUS_CACHE_H_
 #define _U2_MSA_EDITOR_CONSENSUS_CACHE_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QVector>
-#include <QtCore/QBitArray>
+#include <QBitArray>
+#include <QObject>
+#include <QVector>
+
+#include <U2Core/MultipleSequenceAlignment.h>
+
 
 namespace U2 {
 
-class MAlignmentObject;
-class MAlignment;
-class MAlignmentModInfo;
+class MaEditor;
+
 class MSAConsensusAlgorithm;
 class MSAConsensusAlgorithmFactory;
+class MaModificationInfo;
+class MultipleAlignmentObject;
 class U2OpStatus;
 
-class MSAEditorConsensusCache : public QObject {
+class U2VIEW_EXPORT MSAEditorConsensusCache : public QObject {
+    friend class MaConsensusMismatchController;
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusCache)
 public:
-    MSAEditorConsensusCache(QObject* p, MAlignmentObject* aliObj, MSAConsensusAlgorithmFactory* algo);
+    MSAEditorConsensusCache(QObject* p, MultipleAlignmentObject* aliObj, MSAConsensusAlgorithmFactory* algo);
     ~MSAEditorConsensusCache();
 
     char getConsensusChar(int pos);
 
     int getConsensusCharPercent(int pos);
+    QList<int> getConsensusPercents(const U2Region &region);
 
     int getConsensusLength() const { return cache.size(); }
 
@@ -52,9 +58,15 @@ public:
 
     MSAConsensusAlgorithm* getConsensusAlgorithm() const {return algorithm;}
 
+    QByteArray getConsensusLine(const U2Region &region, bool withGaps);
     QByteArray getConsensusLine(bool withGaps);
+
+signals:
+    void si_cachedItemUpdated(int pos, char c);
+    void si_cacheResized(int newSize);
+
 private slots:
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&);
+    void sl_alignmentChanged();
     void sl_thresholdChanged(int newValue);
     void sl_invalidateAlignmentObject();
 
@@ -65,14 +77,13 @@ private:
         char    topPercent;
     };
 
-
     void updateCacheItem(int pos);
 
-    int                     curCacheSize;
-    QVector<CacheItem>      cache;
-    QBitArray               updateMap;
-    MAlignmentObject*       aliObj;
-    MSAConsensusAlgorithm*  algorithm;
+    int                         curCacheSize;
+    QVector<CacheItem>          cache;
+    QBitArray                   updateMap;
+    MultipleAlignmentObject*    aliObj;
+    MSAConsensusAlgorithm*      algorithm;
 };
 
 }//namespace;

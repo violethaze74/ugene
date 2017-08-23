@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,13 +24,8 @@
 #include <U2Lang/ActorModel.h>
 #include "SchemaAliasesConfigurationDialogImpl.h"
 #include <U2Gui/HelpButton.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#else
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QHeaderView>
-#endif
-
+#include <QPushButton>
+#include <QHeaderView>
 
 namespace U2 {
 namespace Workflow {
@@ -38,8 +33,10 @@ namespace Workflow {
 SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl( const Schema & schema, QWidget * p )
 : QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759845");
-
+    new HelpButton(this, buttonBox, "19767101");
+    
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     QPushButton* cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
     QPushButton* okPushButton = buttonBox->button(QDialogButtonBox::Ok);
 
@@ -48,12 +45,7 @@ SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl( cons
 
     okPushButton->setDefault(true);
     paramAliasesTableWidget->verticalHeader()->hide();
-
-#if (QT_VERSION < 0x050000) //Qt 5
-    paramAliasesTableWidget->horizontalHeader()->setClickable(false);
-#else
     paramAliasesTableWidget->horizontalHeader()->setSectionsClickable(false);
-#endif
     paramAliasesTableWidget->horizontalHeader()->setStretchLastSection( true );
 
     foreach( Actor * actor, schema.getProcesses() ) {
@@ -62,7 +54,6 @@ SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl( cons
         QListWidgetItem * item = new QListWidgetItem( actor->getLabel() );
         procsListWidget->insertItem( pos, item );
         procListMap.insert( pos, actor->getId() );
-        int pointSz = item->font().pointSize();
     }
 
     connect( procsListWidget, SIGNAL(currentRowChanged( int )), SLOT(sl_procSelected( int )) );

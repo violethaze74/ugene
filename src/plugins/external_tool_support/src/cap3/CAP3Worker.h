@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -64,7 +64,7 @@ private:
     /** Use data filled by a user to init the CAP3 settings */
     void initSettings();
 
-    /** Init external tool and temporary directory paths */
+    /** Init external tool and temporary folder paths */
     void initPaths();
 
     /**

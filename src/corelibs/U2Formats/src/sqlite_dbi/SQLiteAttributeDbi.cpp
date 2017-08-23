@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,47 +42,47 @@ void SQLiteAttributeDbi::initSqlSchema(U2OpStatus& os) {
     // oextra, cextra -> object and child db extra
     // version -> object version is attribute is valid for
     // name -> name of the attribute
-    SQLiteQuery("CREATE TABLE Attribute (id INTEGER PRIMARY KEY AUTOINCREMENT, type INTEGER NOT NULL, "
+    SQLiteWriteQuery("CREATE TABLE Attribute (id INTEGER PRIMARY KEY AUTOINCREMENT, type INTEGER NOT NULL, "
         "object INTEGER, child INTEGER, otype INTEGER NOT NULL, ctype INTEGER, oextra BLOB NOT NULL, cextra BLOB, "
         "version INTEGER NOT NULL, name TEXT NOT NULL, "
         "FOREIGN KEY(object) REFERENCES Object(id) ON DELETE CASCADE)" , db, os).execute();
 
     //TODO: check if index is efficient for getting attribute for specific object
-    SQLiteQuery("CREATE INDEX Attribute_name on Attribute(name)" , db, os).execute();
-    SQLiteQuery("CREATE INDEX Attribute_object on Attribute(object)" , db, os).execute();
+    SQLiteWriteQuery("CREATE INDEX Attribute_name on Attribute(name)" , db, os).execute();
+    SQLiteWriteQuery("CREATE INDEX Attribute_object on Attribute(object)" , db, os).execute();
 
-    SQLiteQuery("CREATE TABLE IntegerAttribute (attribute INTEGER, value INTEGER NOT NULL, "
+    SQLiteWriteQuery("CREATE TABLE IntegerAttribute (attribute INTEGER, value INTEGER NOT NULL, "
         "FOREIGN KEY(attribute) REFERENCES Attribute(id) ON DELETE CASCADE)" , db, os).execute();
-    SQLiteQuery("CREATE INDEX IntegerAttribute_attribute on IntegerAttribute(attribute)" , db, os).execute();
+    SQLiteWriteQuery("CREATE INDEX IntegerAttribute_attribute on IntegerAttribute(attribute)" , db, os).execute();
 
-    SQLiteQuery("CREATE TABLE RealAttribute (attribute INTEGER, value REAL NOT NULL, "
+    SQLiteWriteQuery("CREATE TABLE RealAttribute (attribute INTEGER, value REAL NOT NULL, "
         "FOREIGN KEY(attribute) REFERENCES Attribute(id) ON DELETE CASCADE)" , db, os).execute();
-    SQLiteQuery("CREATE INDEX RealAttribute_attribute on RealAttribute(attribute)" , db, os).execute();
+    SQLiteWriteQuery("CREATE INDEX RealAttribute_attribute on RealAttribute(attribute)" , db, os).execute();
 
-    SQLiteQuery("CREATE TABLE StringAttribute (attribute INTEGER, value TEXT NOT NULL, "
+    SQLiteWriteQuery("CREATE TABLE StringAttribute (attribute INTEGER, value TEXT NOT NULL, "
         "FOREIGN KEY(attribute) REFERENCES Attribute(id) ON DELETE CASCADE)" , db, os).execute();
-    SQLiteQuery("CREATE INDEX StringAttribute_attribute on StringAttribute(attribute)" , db, os).execute();
+    SQLiteWriteQuery("CREATE INDEX StringAttribute_attribute on StringAttribute(attribute)" , db, os).execute();
 
-    SQLiteQuery("CREATE TABLE ByteArrayAttribute (attribute INTEGER, value BLOB NOT NULL, "
+    SQLiteWriteQuery("CREATE TABLE ByteArrayAttribute (attribute INTEGER, value BLOB NOT NULL, "
         "FOREIGN KEY(attribute) REFERENCES Attribute(id) ON DELETE CASCADE)" , db, os).execute();
-    SQLiteQuery("CREATE INDEX ByteArrayAttribute_attribute on ByteArrayAttribute(attribute)" , db, os).execute();
+    SQLiteWriteQuery("CREATE INDEX ByteArrayAttribute_attribute on ByteArrayAttribute(attribute)" , db, os).execute();
 }
 
 /** Returns all attribute names available in the database */
 QStringList SQLiteAttributeDbi::getAvailableAttributeNames(U2OpStatus& os) {
-    return SQLiteQuery("SELECT DISTINCT name FROM Attribute", db, os).selectStrings();
+    return SQLiteReadQuery("SELECT DISTINCT name FROM Attribute", db, os).selectStrings();
 }
 
 /** Returns all attribute ids for the given object */
 QList<U2DataId> SQLiteAttributeDbi::getObjectAttributes(const U2DataId& objectId, const QString& name, U2OpStatus& os) {
     if (name.isEmpty()) {
         static const QString queryString("SELECT id, type, '' FROM Attribute WHERE object = ?1 ORDER BY id");
-        SQLiteQuery q(queryString, db, os);
+        SQLiteReadQuery q(queryString, db, os);
         q.bindDataId(1, objectId);
         return q.selectDataIdsExt();
     }
     static const QString queryString("SELECT id, type, '' FROM Attribute WHERE object = ?1 AND name = ?2 ORDER BY id");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     q.bindDataId(1, objectId);
     q.bindString(2, name);
     return q.selectDataIdsExt();
@@ -92,13 +92,13 @@ QList<U2DataId> SQLiteAttributeDbi::getObjectAttributes(const U2DataId& objectId
 QList<U2DataId> SQLiteAttributeDbi::getObjectPairAttributes(const U2DataId& objectId, const U2DataId& childId, const QString& name, U2OpStatus& os) {
     if (name.isEmpty()) {
         static const QString queryString("SELECT id, type, '' FROM Attribute WHERE object = ?1 AND child = ?2 ORDER BY id");
-        SQLiteQuery q(queryString, db, os);
+        SQLiteReadQuery q(queryString, db, os);
         q.bindDataId(1, objectId);
         q.bindDataId(2, childId);
         return q.selectDataIdsExt();
     }
     static const QString queryString("SELECT id, type, '' FROM Attribute WHERE object = ?1 AND child = ?2 AND name = ?3 ORDER BY id");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     q.bindDataId(1, objectId);
     q.bindDataId(2, childId);
     q.bindString(3, name);
@@ -108,7 +108,7 @@ QList<U2DataId> SQLiteAttributeDbi::getObjectPairAttributes(const U2DataId& obje
 /** Loads int64 attribute by id */
 U2IntegerAttribute SQLiteAttributeDbi::getIntegerAttribute(const U2DataId& attributeId, U2OpStatus& os) {
     static const QString queryString(buildSelectAttributeQuery("IntegerAttribute"));
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     q.bindDataId(1, attributeId);
     U2IntegerAttribute res;
     readAttribute(q, res);
@@ -120,7 +120,7 @@ U2IntegerAttribute SQLiteAttributeDbi::getIntegerAttribute(const U2DataId& attri
 /** Loads real64 attribute by id */
 U2RealAttribute SQLiteAttributeDbi::getRealAttribute(const U2DataId& attributeId, U2OpStatus& os) {
     static const QString queryString(buildSelectAttributeQuery("RealAttribute"));
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     q.bindDataId(1, attributeId);
     U2RealAttribute res;
     readAttribute(q, res);
@@ -132,7 +132,7 @@ U2RealAttribute SQLiteAttributeDbi::getRealAttribute(const U2DataId& attributeId
 /** Loads String attribute by id */
 U2StringAttribute SQLiteAttributeDbi::getStringAttribute(const U2DataId& attributeId, U2OpStatus& os) {
     static const QString queryString(buildSelectAttributeQuery("StringAttribute"));
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     q.bindDataId(1, attributeId);
     U2StringAttribute res;
     readAttribute(q, res);
@@ -144,7 +144,7 @@ U2StringAttribute SQLiteAttributeDbi::getStringAttribute(const U2DataId& attribu
 /** Loads byte attribute by id */
 U2ByteArrayAttribute SQLiteAttributeDbi::getByteArrayAttribute(const U2DataId& attributeId, U2OpStatus& os) {
     static const QString queryString(buildSelectAttributeQuery("ByteArrayAttribute"));
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     q.bindDataId(1, attributeId);
     U2ByteArrayAttribute res;
     readAttribute(q, res);
@@ -159,7 +159,7 @@ QString SQLiteAttributeDbi::buildSelectAttributeQuery(const QString& attributeTa
             " FROM Attribute AS a, " + attributeTable + " AS t WHERE a.id = ?1 AND t.attribute = a.id";
 }
 
-void SQLiteAttributeDbi::readAttribute(SQLiteQuery &q, U2Attribute& attr) {
+void SQLiteAttributeDbi::readAttribute(SQLiteReadQuery &q, U2Attribute& attr) {
     if (q.hasError()) {
         return;
     }

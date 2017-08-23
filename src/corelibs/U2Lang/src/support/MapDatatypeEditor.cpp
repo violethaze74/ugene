@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,31 +22,16 @@
 #include <assert.h>
 
 #include <QPainter>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QListWidget>
-#include <QtGui/QTableWidget>
-#include <QtGui/QHeaderView>
-#include <QtGui/QComboBox>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QTextEdit>
-#include <QtGui/QToolButton>
-#include <QtGui/QPrinter>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListWidget>
-#include <QtWidgets/QTableWidget>
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QTextEdit>
-#include <QtWidgets/QToolButton>
-#include <QtPrintSupport/QPrinter>
-#endif
-#include <QtGui/QStandardItemModel>
+#include <QLabel>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QTableWidget>
+#include <QHeaderView>
+#include <QComboBox>
+#include <QVBoxLayout>
+#include <QTextEdit>
+#include <QToolButton>
+#include <QStandardItemModel>
 
 #include <U2Lang/IntegralBus.h>
 #include <U2Lang/IntegralBusModel.h>
@@ -92,12 +77,7 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
         table->setItemDelegateForColumn(VALUE_COLUMN, new DescriptorListEditorDelegate(this));
     }
 
-#if (QT_VERSION < 0x050000) //Qt 5
-    table->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-#else
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-#endif
-
     table->horizontalHeader()->setStretchLastSection(true);
     table->verticalHeader()->hide();
     QSizePolicy sizePolicy5(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -171,7 +151,7 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
 }
 
 QMap<QString, QString> MapDatatypeEditor::getBindingsMap() {
-    QMap<QString, QString> bindingsMap = cfg->getParameter(propertyName)->getAttributeValueWithoutScript<QStrStrMap>();
+    QMap<QString, QString> bindingsMap = cfg->getParameter(propertyName)->getAttributeValueWithoutScript<StrStrMap>();
     return bindingsMap;
 }
 
@@ -219,7 +199,7 @@ void MapDatatypeEditor::commit() {
             map[key] = val;
         }
     }
-    cfg->setParameter(propertyName, qVariantFromValue<QStrStrMap>(map));
+    cfg->setParameter(propertyName, qVariantFromValue<StrStrMap>(map));
     sl_showDoc();
 }
 
@@ -278,13 +258,13 @@ void BusPortEditor::commit() {
             busMap[key] = srcs.join(";");
         }
     }
-    cfg->setParameter(IntegralBusPort::BUS_MAP_ATTR_ID, qVariantFromValue<QStrStrMap>(busMap));
+    cfg->setParameter(IntegralBusPort::BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
     cfg->setParameter(IntegralBusPort::PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(pathMap));
     sl_showDoc();
 }
 
 QMap<QString, QString> BusPortEditor::getBindingsMap() {
-    QMap<QString, QString> bindingsMap = cfg->getParameter(propertyName)->getAttributeValueWithoutScript<QStrStrMap>();
+    QMap<QString, QString> bindingsMap = cfg->getParameter(propertyName)->getAttributeValueWithoutScript<StrStrMap>();
     SlotPathMap pathMap = cfg->getParameter(IntegralBusPort::PATHS_ATTR_ID)->getAttributeValueWithoutScript<SlotPathMap>();
     WorkflowUtils::applyPathsToBusMap(bindingsMap, pathMap);
 

@@ -204,7 +204,7 @@
 <context>
     <name>U2::CustomAutoAnnotationDialog</name>
     <message>
-        <location filename="../src/CustomAutoAnnotationDialog.cpp" line="47"/>
+        <location filename="../src/CustomAutoAnnotationDialog.cpp" line="42"/>
         <source>Annotate</source>
         <translation>Аннотировать</translation>
     </message>

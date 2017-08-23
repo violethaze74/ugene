@@ -26,12 +26,17 @@ p, li { white-space: pre-wrap; }
              amount of memory used during the alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/BuildSuffixArraySettings.ui" line="103"/>
+        <location filename="../src/BuildSuffixArraySettings.ui" line="92"/>
+        <source>Resources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/BuildSuffixArraySettings.ui" line="109"/>
         <source>Total memory usage:</source>
         <translation>Total memory usage:</translation>
     </message>
     <message>
-        <location filename="../src/BuildSuffixArraySettings.ui" line="130"/>
+        <location filename="../src/BuildSuffixArraySettings.ui" line="145"/>
         <source>System memory size:</source>
         <translation>System memory size:</translation>
     </message>
@@ -159,9 +164,18 @@ p, li { white-space: pre-wrap; }
         <translation>Index memory usage size:</translation>
     </message>
     <message>
+        <location filename="../src/GenomeAlignerSettings.ui" line="513"/>
+        <source>You can choose a temporary directory for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="545"/>
         <source>Directory for index files:</source>
-        <translation>Directory for index files:</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Folder for index files:</source>
+        <translation type="vanished">Folder for index files:</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="201"/>
@@ -202,9 +216,8 @@ p, li { white-space: pre-wrap; }
                  amount of memory used during the alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettings.ui" line="513"/>
-        <source>You can choose a temporary directory for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary directory.</source>
-        <translation>You can choose a temporary directory for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary directory.</translation>
+        <source>You can choose a temporary folder for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary folder.</source>
+        <translation type="vanished">You can choose a temporary folder for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary folder.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="535"/>
@@ -235,12 +248,12 @@ p, li { white-space: pre-wrap; }
         <translation>Genome aligner settings</translation>
     </message>
     <message>
-        <source>Directories</source>
-        <translation type="vanished">Directories</translation>
+        <source>Folders</source>
+        <translation type="vanished">Folders</translation>
     </message>
     <message>
-        <source>Directory for built indexes</source>
-        <translation type="vanished">Directory for built indexes</translation>
+        <source>Folder for built indexes</source>
+        <translation type="vanished">Folder for built indexes</translation>
     </message>
 </context>
 <context>
@@ -307,10 +320,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/GenomeAlignerCMDLineTask.cpp" line="185"/>
-        <source>  --%1    Path to prebuilt index (base file name or with .idx extension). If not set, index is searched in system temporary directory. If --build-index option is applied, index will be saved to specified path.
+        <source>  --%1    Path to prebuilt index (base file name or with .idx extension). If not set, index is searched in system temporary folder. If --build-index option is applied, index will be saved to specified path.
 
 </source>
-        <translation>  --%1    Path to prebuilt index (base file name or with .idx extension). If not set, index is searched in system temporary directory. If --build-index option is applied, index will be saved to specified path.
+        <translation>  --%1    Path to prebuilt index (base file name or with .idx extension). If not set, index is searched in system temporary folder. If --build-index option is applied, index will be saved to specified path.
 
 </translation>
     </message>
@@ -399,13 +412,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::GenomeAlignerIndexTask</name>
     <message>
-        <location filename="../src/GenomeAlignerIndexTask.cpp" line="90"/>
-        <location filename="../src/GenomeAlignerIndexTask.cpp" line="136"/>
+        <location filename="../src/GenomeAlignerIndexTask.cpp" line="89"/>
+        <location filename="../src/GenomeAlignerIndexTask.cpp" line="135"/>
         <source>File %1 is not found. Try to create index another time.</source>
         <translation>File %1 is not found. Try to create index another time.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerIndexTask.cpp" line="183"/>
+        <location filename="../src/GenomeAlignerIndexTask.cpp" line="182"/>
         <source>Can not init short reads loader. %1</source>
         <translation>Can not init short reads loader. %1</translation>
     </message>
@@ -476,19 +489,19 @@ ugene --genome-aligner --reference=/path/to/ref --short-reads=/path/to/reads --r
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettingsWidget.cpp" line="164"/>
-        <source>The index directory has already contain the prebuilt index. But its reference fragmentation parameter is %1 and it doesn&apos;t equal to the parameter you have chosen (%2).
+        <source>The index folder has already contain the prebuilt index. But its reference fragmentation parameter is %1 and it doesn&apos;t equal to the parameter you have chosen (%2).
 
 Press &quot;Ok&quot; to delete this index file and create a new during the aligning.
-Press &quot;Cancel&quot; to change this parameter or the index directory.</source>
-        <translation>The index directory has already contain the prebuilt index. But its reference fragmentation parameter is %1 and it doesn&apos;t equal to the parameter you have chosen (%2).
+Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
+        <translation>The index folder has already contain the prebuilt index. But its reference fragmentation parameter is %1 and it doesn&apos;t equal to the parameter you have chosen (%2).
 
 Press &quot;Ok&quot; to delete this index file and create a new during the aligning.
-Press &quot;Cancel&quot; to change this parameter or the index directory.</translation>
+Press &quot;Cancel&quot; to change this parameter or the index folder.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettingsWidget.cpp" line="180"/>
-        <source>Set index files directory</source>
-        <translation>Set index files directory</translation>
+        <source>Set index files folder</source>
+        <translation>Set index files folder</translation>
     </message>
 </context>
 <context>
@@ -753,13 +766,13 @@ Press &quot;Cancel&quot; to change this parameter or the index directory.</trans
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="294"/>
-        <source>Output directory</source>
-        <translation>Output directory</translation>
+        <source>Output folder</source>
+        <translation>Output folder</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="295"/>
-        <source>Directory to save UGENE genome aligner output files.</source>
-        <translation>Directory to save UGENE genome aligner output files.</translation>
+        <source>Folder to save UGENE genome aligner output files.</source>
+        <translation>Folder to save UGENE genome aligner output files.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="298"/>

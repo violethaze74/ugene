@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,24 +28,15 @@
 
 #include <U2Core/QVariantUtils.h>
 
-#include <QtGui/QPainter>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsSceneMouseEvent>
-#include <QtGui/QStyleOptionGraphicsItem>
-#include <QtGui/QGraphicsView>
-#include <QtGui/QInputDialog>
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QGraphicsScene>
-#include <QtWidgets/QGraphicsSceneMouseEvent>
-#include <QtWidgets/QStyleOptionGraphicsItem>
-#include <QtWidgets/QGraphicsView>
-#include <QtWidgets/QInputDialog>
-#include <QtWidgets/QMenu>
-#endif
-#include <QtGui/QTextDocument>
+#include <QPainter>
+#include <QApplication>
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
+#include <QStyleOptionGraphicsItem>
+#include <QGraphicsView>
+#include <QInputDialog>
+#include <QMenu>
+#include <QTextDocument>
 
 #define ANNOTATION_MIN_SIZE GRID_STEP
 #define ANNOTATION_MAX_SIZE 4 * GRID_STEP

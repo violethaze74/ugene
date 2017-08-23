@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,16 +29,16 @@ namespace U2 {
 class MsaHighlightingSchemeTransversions : public MsaHighlightingScheme {
     Q_OBJECT
 public:
-    MsaHighlightingSchemeTransversions(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj);
+    MsaHighlightingSchemeTransversions(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj);
 
     void process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const;
 };
 
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeTransversionsFactory : public MsaHighlightingSchemeFactory {
 public:
-    MsaHighlightingSchemeTransversionsFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes);
+    MsaHighlightingSchemeTransversionsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
 
-    MsaHighlightingScheme * create(QObject *parent, MAlignmentObject *maObj) const;
+    MsaHighlightingScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
 };
 
 

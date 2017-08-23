@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
-#include <U2Core/MAlignmentWalker.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -52,7 +52,7 @@ const char MegaFormat::MEGA_END_COMMENT=';';
 MegaFormat::MegaFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("meg")) {
     formatName = tr("Mega");
     formatDescription = tr("Mega is a file format of native MEGA program");
-    supportedObjectTypes+=GObjectTypes::MULTIPLE_ALIGNMENT;
+    supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
 Document* MegaFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os){
@@ -66,16 +66,16 @@ void MegaFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
     CHECK_EXT(d!=NULL, os.setError(L10N::badArgument("doc")), );
     CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
 
-    MAlignmentObject* obj = NULL;
+    MultipleSequenceAlignmentObject* obj = NULL;
     if( (d->getObjects().size() != 1)
-        || ((obj = qobject_cast<MAlignmentObject*>(d->getObjects().first())) == NULL)) {
+        || ((obj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first())) == NULL)) {
             os.setError("No data to write;");
             return;
     }
 
     QList<GObject*> als; als << obj;
     QMap< GObjectType, QList<GObject*> > objectsMap;
-    objectsMap[GObjectTypes::MULTIPLE_ALIGNMENT] = als;
+    objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT] = als;
     storeEntry(io, objectsMap, os);
     CHECK_EXT(!os.isCoR(), os.setError(L10N::errorWritingFile(d->getURL())), );
 }
@@ -217,22 +217,22 @@ bool MegaFormat::skipComments(IOAdapter *io, QByteArray &line, U2OpStatus &ti) {
     return eof;
 }
 
-void MegaFormat::workUpIndels(MAlignment& al) {
-    QByteArray firstSequence=al.getRow(0).getData();
+void MegaFormat::workUpIndels(MultipleSequenceAlignment& al) {
+    QByteArray firstSequence=al->getMsaRow(0)->getData();
 
-    for (int i=1; i<al.getNumRows(); i++) {
-        QByteArray newSeq=al.getRow(i).getData();
+    for (int i=1; i<al->getNumRows(); i++) {
+        QByteArray newSeq=al->getMsaRow(i)->getData();
         for (int j=0; j<newSeq.length(); j++) {
-            if (MEGA_IDENTICAL==al.charAt(i, j)) {
+            if (MEGA_IDENTICAL==al->charAt(i, j)) {
                 newSeq[j]=firstSequence[j];
             }
         }
-        al.setRowContent(i, newSeq);
+        al->setRowContent(i, newSeq);
     }
 }
 
 void MegaFormat::load(U2::IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &objects, const QVariantMap& fs, U2::U2OpStatus &os) {
-    MAlignment al(io->getURL().baseFileName());
+    MultipleSequenceAlignment al(io->getURL().baseFileName());
     QByteArray line;
     bool eof=false;
     bool firstBlock=true;
@@ -275,8 +275,8 @@ void MegaFormat::load(U2::IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*>
         }
 
         if (firstBlock) {
-            for (int i=0; i<al.getNumRows(); i++) {
-                if (al.getRow(i).getName()==name) {
+            for (int i=0; i<al->getNumRows(); i++) {
+                if (al->getMsaRow(i)->getName()==name) {
                     firstBlock=false;
                     sequenceIdx=0;
                     break;
@@ -285,33 +285,30 @@ void MegaFormat::load(U2::IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*>
         }
         //add the sequence to the list
         if (firstBlock) {
-            al.addRow(name, value, os);
+            al->addRow(name, value);
             rowLens.append(value.size());
-            CHECK_OP(os, );
             sequenceIdx++;
         } else {
-            if (sequenceIdx<al.getNumRows()) {
-                const MAlignmentRow *item=&al.getRow(sequenceIdx);
-
-                if (item->getName()!=name) {
+            if (sequenceIdx<al->getNumRows()) {
+                if (al->getMsaRow(sequenceIdx)->getName() != name) {
                     os.setError(MegaFormat::tr("Incorrect order of sequences' names"));
                     return;
                 }
-                al.appendChars(sequenceIdx, rowLens[sequenceIdx], value.constData(), value.size());
+                al->appendChars(sequenceIdx, rowLens[sequenceIdx], value.constData(), value.size());
                 rowLens[sequenceIdx] = rowLens[sequenceIdx] + value.size();
             } else {
                 os.setError( MegaFormat::tr("Incorrect sequence") );
                 break;
             }
             sequenceIdx++;
-            if (sequenceIdx == al.getNumRows()) {
+            if (sequenceIdx == al->getNumRows()) {
                 sequenceIdx = 0;
             }
         }
     }
 
     foreach (int rowLen, rowLens) {
-        if (rowLen != al.getLength()) {
+        if (rowLen != al->getLength()) {
             os.setError( MegaFormat::tr("Found sequences of different sizes"));
             break;
         }
@@ -320,25 +317,25 @@ void MegaFormat::load(U2::IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*>
     CHECK_OP(os, );
 
     U2AlphabetUtils::assignAlphabet(al);
-    CHECK_EXT(al.getAlphabet() != NULL, os.setError( tr("Alphabet is unknown")), );
+    CHECK_EXT(al->getAlphabet() != NULL, os.setError( tr("Alphabet is unknown")), );
 
     workUpIndels(al); //replace '.' by symbols from the first sequence
 
     const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
     CHECK_OP(os, );
     objects.append(obj);
 }
 
 void MegaFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &ti) {
-    SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_ALIGNMENT), "Mega entry storing: no alignment", );
-    const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_ALIGNMENT];
+    SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "Mega entry storing: no alignment", );
+    const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(1 == als.size(), "Mega entry storing: alignment objects count error", );
 
-    const MAlignmentObject* obj = dynamic_cast<MAlignmentObject*>(als.first());
+    const MultipleSequenceAlignmentObject* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "Mega entry storing: NULL alignment object", );
 
-    const MAlignment& ma = obj->getMAlignment();
+    const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
 
     //write header
     QByteArray header;
@@ -350,26 +347,27 @@ void MegaFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObjec
     }
 
     int maxNameLength=0;
-    foreach (MAlignmentRow item, ma.getRows()) {
-        maxNameLength = qMax(maxNameLength, item.getName().length());
+    foreach (const MultipleSequenceAlignmentRow &item, msa->getMsaRows()) {
+        maxNameLength = qMax(maxNameLength, item->getName().length());
     }
 
     //write data
-    int seqLength=ma.getLength();
+    int seqLength=msa->getLength();
     int writtenLength=0;
-    MAlignmentWalker walker(ma);
+    MultipleSequenceAlignmentWalker walker(msa);
     while (writtenLength<seqLength) {
         QList<QByteArray> seqs = walker.nextData(BLOCK_LENGTH, ti);
         CHECK_OP(ti, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MAlignmentRow>::ConstIterator ri = ma.getRows().constBegin();
+        QList<MultipleSequenceAlignmentRow> rows = msa->getMsaRows();
+        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = rows.constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
-            const MAlignmentRow &item = *ri;
+            const MultipleSequenceAlignmentRow &item = *ri;
             QByteArray line;
-            line.append(MEGA_SEPARATOR).append(item.getName());
+            line.append(MEGA_SEPARATOR).append(item->getName());
             TextUtils::replace(line.data(), line.length(), TextUtils::WHITES, '_');
 
-            for (int i=0; i<maxNameLength-item.getName().length()+1; i++) {
+            for (int i=0; i<maxNameLength-item->getName().length()+1; i++) {
                 line.append(' ');
             }
 

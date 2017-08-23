@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,19 +22,21 @@
 #ifndef _U2_MSA_HIGHLIGHTING_SCHEME_H_
 #define _U2_MSA_HIGHLIGHTING_SCHEME_H_
 
+#include <QObject>
+
 #include <U2Core/global.h>
 
 class QColor;
 
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleAlignmentObject;
 class MsaHighlightingSchemeFactory;
 
 class U2ALGORITHM_EXPORT MsaHighlightingScheme : public QObject {
     Q_OBJECT
 public:
-    MsaHighlightingScheme(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj);
+    MsaHighlightingScheme(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj);
 
     virtual void process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const;
     const MsaHighlightingSchemeFactory * getFactory() const;
@@ -58,35 +60,30 @@ public:
 
 protected:
     const MsaHighlightingSchemeFactory *factory;
-    MAlignmentObject *maObj;
+    MultipleAlignmentObject *maObj;
     bool useDots;
 };
 
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeFactory : public QObject {
     Q_OBJECT
 public:
-    MsaHighlightingSchemeFactory(QObject *parent,
-                                 const QString &id,
-                                 const QString &name,
-                                 const DNAAlphabetTypes &alphabetTypes,
-                                 bool refFree = false,
-                                 bool needThreshold = false);
+    MsaHighlightingSchemeFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets,
+                                 bool refFree = false, bool needThreshold = false);
 
-    virtual MsaHighlightingScheme * create(QObject *parent, MAlignmentObject *maObj) const = 0;
+    virtual MsaHighlightingScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const = 0;
 
     const QString & getId() const;
-    const QString & getName() const;
-    bool isAlphabetTypeSupported(DNAAlphabetType alphabetType) const;
-    const DNAAlphabetTypes &getAlphabetTypes() const;
+    const QString& getName() const;
     bool isRefFree() const;
     bool isNeedThreshold() const;
-
+    bool isAlphabetTypeSupported(DNAAlphabetType alphabetType) const;
+    const AlphabetFlags& getSupportedAlphabets() const;
 private:
     QString         id;
     QString         name;
-    DNAAlphabetTypes alphabetTypes;
     bool            refFree;
     bool            needThreshold;
+    AlphabetFlags supportedAlphabets;
 };
 
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeRegistry : public QObject {
@@ -95,11 +92,10 @@ public:
     MsaHighlightingSchemeRegistry();
     ~MsaHighlightingSchemeRegistry();
 
-    MsaHighlightingSchemeFactory *getSchemeFactoryById(const QString &id) const;
+    MsaHighlightingSchemeFactory * getSchemeFactoryById(const QString &id) const;
     MsaHighlightingSchemeFactory *getEmptySchemeFactory() const;
-    QList<MsaHighlightingSchemeFactory *> getSchemes(DNAAlphabetType alphabetType) const;
-    QMap<DNAAlphabetTypes, QList<MsaHighlightingSchemeFactory *> > getSchemesGrouped() const;
-
+    QList<MsaHighlightingSchemeFactory *> getAllSchemes(DNAAlphabetType alphabetType) const;
+    QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > getAllSchemesGrouped() const;
 private:
     QList<MsaHighlightingSchemeFactory *> schemes;
 };

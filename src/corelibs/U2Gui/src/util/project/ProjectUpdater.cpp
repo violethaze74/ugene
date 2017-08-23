@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,17 +41,10 @@ ProjectUpdater::ProjectUpdater()
 }
 
 void ProjectUpdater::run() {
-#if (QT_VERSION < 0x050000) //Qt 5
-    while (0 == stopped) {
-        readData();
-        msleep(U2ObjectDbi::OBJECT_ACCESS_UPDATE_INTERVAL);
-    }
-#else
     while (0 == stopped.loadAcquire()) {
         readData();
         msleep(U2ObjectDbi::OBJECT_ACCESS_UPDATE_INTERVAL);
     }
-#endif
 }
 
 void ProjectUpdater::stop() {
@@ -153,8 +146,10 @@ void ProjectUpdater::updateAccessedObjects() {
             const U2EntityRef ref = object->getEntityRef();
             if (!dbiRef2Connections.contains(ref.dbiRef)) {
                 dbiRef2Connections.insert(ref.dbiRef, new DbiConnection(ref.dbiRef, os));
+                CHECK_CONTINUE(!os.hasError());
             }
             DbiConnection *con = dbiRef2Connections.value(ref.dbiRef);
+            SAFE_POINT(con->dbi != NULL, "Error: connection is NULL!", );
             con->dbi->getObjectDbi()->updateObjectAccessTime(ref.entityId, os);
         }
     }

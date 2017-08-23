@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QCoreApplication>
+#include <QDir>
 
 #include "MAFFTSupportTask.h"
 #include "MAFFTSupport.h"
@@ -35,7 +35,7 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -55,9 +55,9 @@ void MAFFTSupportTaskSettings::reset() {
     inputFilePath="";
 }
 
-MAFFTSupportTask::MAFFTSupportTask(const MAlignment& _inputMsa, const GObjectReference& _objRef, const MAFFTSupportTaskSettings& _settings)
+MAFFTSupportTask::MAFFTSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const MAFFTSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run MAFFT alignment task", TaskFlags_NR_FOSCOE),
-      inputMsa(_inputMsa),
+      inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
       tmpDoc(NULL),
       logParser(NULL),
@@ -68,8 +68,8 @@ MAFFTSupportTask::MAFFTSupportTask(const MAlignment& _inputMsa, const GObjectRef
       lock(NULL)
 {
     GCOUNTER( cvar, tvar, "MAFFTSupportTask" );
-    resultMA.setAlphabet(inputMsa.getAlphabet());
-    resultMA.setName(inputMsa.getName());
+    resultMA->setAlphabet(inputMsa->getAlphabet());
+    resultMA->setName(inputMsa->getName());
 }
 
 MAFFTSupportTask::~MAFFTSupportTask() {
@@ -81,7 +81,7 @@ MAFFTSupportTask::~MAFFTSupportTask() {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (NULL != obj) {
-                MAlignmentObject* alObj = dynamic_cast<MAlignmentObject*>(obj);
+                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 CHECK(NULL != alObj, );
                 if(alObj->isStateLocked()) {
                     alObj->unlockState(lock);
@@ -99,15 +99,15 @@ void MAFFTSupportTask::prepare(){
     if (objRef.isValid()) {
         GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
         if (NULL != obj) {
-            MAlignmentObject* alObj = dynamic_cast<MAlignmentObject*>(obj);
-            SAFE_POINT(NULL != alObj, "Failed to convert GObject to MAlignmentObject during applying ClustalW results!",);
+            MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+            SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!",);
             lock = new StateLock("ClustalWAligment");
             alObj->lockState(lock);
         }
     }
 
     //Add new subdir for temporary files
-    //Directory name is ExternalToolName + CurrentDate + CurrentTime
+    //Folder name is ExternalToolName + CurrentDate + CurrentTime
 
     QString tmpDirName = "MAFFT_"+QString::number(this->getTaskId())+"_"+
                          QDate::currentDate().toString("dd.MM.yyyy")+"_"+
@@ -124,12 +124,12 @@ void MAFFTSupportTask::prepare(){
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Subdir for temporary files exists. Can not remove this directory."));
+            stateInfo.setError(tr("Subdir for temporary files exists. Can not remove this folder."));
             return;
         }
     }
     if (!tmpDir.mkpath(tmpDirPath)){
-        stateInfo.setError(tr("Can not create directory for temporary files."));
+        stateInfo.setError(tr("Can not create folder for temporary files."));
         return;
     }
 
@@ -171,7 +171,7 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
             arguments <<"--maxiterate"<<QString::number(settings.maxNumberIterRefinement);
         }
         arguments <<url;
-        logParser = new MAFFTLogParser(inputMsa.getNumRows(), settings.maxNumberIterRefinement, outputUrl);
+        logParser = new MAFFTLogParser(inputMsa->getNumRows(), settings.maxNumberIterRefinement, outputUrl);
         connect(logParser, SIGNAL(si_progressUndefined()), SLOT(sl_progressUndefined()));
         mAFFTTask = new ExternalToolRunTask(ET_MAFFT, arguments, logParser);
         setListenerForTask(mAFFTTask);
@@ -208,28 +208,28 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
             emit si_stateChanged(); //TODO: task can't emit this signal!
             return res;
         }
-        bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa.getRowNames());
+        bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT( renamed, "Failed to restore initial row names!", res);
 
         // If an alignment object has been specified, save the result to it
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (NULL != obj) {
-                MAlignmentObject* alObj = dynamic_cast<MAlignmentObject*>(obj);
-                SAFE_POINT(NULL != alObj, "Failed to convert GObject to MAlignmentObject during applying MAFFT results!", res);
+                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+                SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying MAFFT results!", res);
 
                 QList<qint64> rowsOrder = MSAUtils::compareRowsAfterAlignment(inputMsa, resultMA, stateInfo);
                 CHECK_OP(stateInfo, res);
 
-                if (rowsOrder.count() != inputMsa.getNumRows()) {
+                if (rowsOrder.count() != inputMsa->getNumRows()) {
                     stateInfo.setError("Unexpected number of rows in the result multiple alignment!");
                     return res;
                 }
 
                 QMap<qint64, QList<U2MsaGap> > rowsGapModel;
-                for (int i = 0, n = resultMA.getNumRows(); i < n; ++i) {
-                    qint64 rowId = resultMA.getRow(i).getRowDBInfo().rowId;
-                    const QList<U2MsaGap>& newGapModel = resultMA.getRow(i).getGapModel();
+                for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
+                    qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
+                    const QList<U2MsaGap>& newGapModel = resultMA->getMsaRow(i)->getGapModel();
                     rowsGapModel.insert(rowId, newGapModel);
                 }
 
@@ -243,7 +243,7 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
                         lock = NULL;
                     }
                     else {
-                        stateInfo.setError("MAlignment object has been changed");
+                        stateInfo.setError("MultipleSequenceAlignment object has been changed");
                         return res;
                     }
 
@@ -255,11 +255,11 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
                         return res;
                     }
 
-                    alObj->updateGapModel(rowsGapModel, stateInfo);
+                    alObj->updateGapModel(stateInfo, rowsGapModel);
                     SAFE_POINT_OP(stateInfo, res);
 
-                    if (rowsOrder != inputMsa.getRowsIds()) {
-                        alObj->updateRowsOrder(rowsOrder, stateInfo);
+                    if (rowsOrder != inputMsa->getRowsIds()) {
+                        alObj->updateRowsOrder(stateInfo, rowsOrder);
                         SAFE_POINT_OP(stateInfo, res);
                     }
                 }
@@ -293,7 +293,7 @@ Task::ReportResult MAFFTSupportTask::report() {
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Can not remove directory for temporary files."));
+            stateInfo.setError(tr("Can not remove folder for temporary files."));
             emit si_stateChanged();
         }
     }
@@ -322,7 +322,7 @@ MAFFTWithExtFileSpecifySupportTask::~MAFFTWithExtFileSpecifySupportTask(){
 void MAFFTWithExtFileSpecifySupportTask::prepare(){
     DocumentFormatConstraints c;
     c.checkRawData = true;
-    c.supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    c.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     c.rawData = IOAdapterUtils::readFileHeader(settings.inputFilePath);
     c.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     QList<DocumentFormatId> formats = AppContext::getDocumentFormatRegistry()->selectFormats(c);
@@ -353,18 +353,18 @@ QList<Task*> MAFFTWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask
         currentDocument = loadDocumentTask->takeDocument();
         SAFE_POINT(currentDocument != NULL, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject=qobject_cast<MAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        mAFFTSupportTask = new MAFFTSupportTask(mAObject->getMAlignment(), GObjectReference(), settings);
+        mAFFTSupportTask = new MAFFTSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
         res.append(mAFFTSupportTask);
     }
     else if (subTask == mAFFTSupportTask) {
         // Set the result alignment to the alignment object of the current document
-        mAObject=qobject_cast<MAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->copyGapModel(mAFFTSupportTask->resultMA.getRows());
+        mAObject->updateGapModel(mAFFTSupportTask->resultMA->getMsaRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

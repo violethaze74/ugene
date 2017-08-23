@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,8 +30,17 @@ static const QString SOLEXA("Solexa/Illumina 1.0");
 
 const QString DNAQuality::QUAL_FORMAT("PHRED");
 const QString DNAQuality::ENCODED("Encoded");
+const int DNAQuality::MAX_PHRED33_VALUE = 74;
+const int DNAQuality::MIN_PHRED64_VALUE = 59;
 
-DNAQuality::DNAQuality( const QByteArray& qualScore, DNAQualityType t /* = DNAQualityType_Sanger*/ )
+DNAQuality::DNAQuality(const QByteArray &qualScore)
+    : qualCodes(qualScore),
+      type(detectTypeByCodes(qualCodes))
+{
+
+}
+
+DNAQuality::DNAQuality( const QByteArray& qualScore, DNAQualityType t)
 : qualCodes(qualScore), type(t)
 {
 
@@ -88,6 +97,20 @@ QStringList DNAQuality::getDNAQualityTypeNames()
     QStringList res;
     res << SANGER << ILLUMINA << SOLEXA;
     return res;
+}
+
+DNAQualityType DNAQuality::detectTypeByCodes(const QByteArray &qualCodes) {
+    int maxQualityValue = 33;
+    int minQualityValue = 126;
+    for (int i = 0; i < qualCodes.size(); i++){
+        maxQualityValue = qMax(static_cast<int>(qualCodes.at(i)), maxQualityValue);
+        minQualityValue = qMin(static_cast<int>(qualCodes.at(i)), minQualityValue);
+    }
+    return detectTypeByMinMaxQualityValues(minQualityValue, maxQualityValue);
+}
+
+DNAQualityType DNAQuality::detectTypeByMinMaxQualityValues(int minQualityValue, int maxQualityValue) {
+    return ( maxQualityValue >= MAX_PHRED33_VALUE && minQualityValue >= MIN_PHRED64_VALUE ) ? DNAQualityType_Illumina : DNAQualityType_Sanger;
 }
 
 } // U2

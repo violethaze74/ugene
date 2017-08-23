@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,6 +31,7 @@
 #include <QTableWidget>
 #include <QWebEngineView>
 #include <QWizard>
+#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
@@ -47,7 +48,7 @@
 #include <U2View/DetView.h>
 #include <U2View/GSequenceGraphView.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTDatabaseConfig.h"
@@ -180,7 +181,6 @@
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3SearchDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
@@ -896,7 +896,7 @@ GUI_TEST_CLASS_DEFINITION(test_0659){
 //    Write annotations worker is broken
 //    1. Open WD. Create simple scheme "read sequence"->"Write annotations"
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    2. Set "genbank" as output document format for "Write annotations" worker.
+//    2. Set "GenBank" as output document format for "Write annotations" worker.
     WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
     WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Annotations");
     GTUtilsWorkflowDesigner::connect(os, read, write);
@@ -906,7 +906,7 @@ GUI_TEST_CLASS_DEFINITION(test_0659){
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/sars.gb");
     GTUtilsWorkflowDesigner::click(os, write);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_659", GTUtilsWorkflowDesigner::textValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "genbank", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GenBank", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: annotations has been written in single file
@@ -920,7 +920,7 @@ GUI_TEST_CLASS_DEFINITION(test_0659){
 // check csv format
     GTUtilsWorkflowDesigner::click(os, write);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() +"/test_659_1", GTUtilsWorkflowDesigner::textValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "csv", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "CSV", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: annotations has been written in single file
@@ -932,7 +932,7 @@ GUI_TEST_CLASS_DEFINITION(test_0659){
 // check gff format
     GTUtilsWorkflowDesigner::click(os, write);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() +"/test_659_2", GTUtilsWorkflowDesigner::textValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "gff", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GFF", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: annotations has been written in single file
@@ -1068,7 +1068,7 @@ GUI_TEST_CLASS_DEFINITION(test_0684) {
             CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
 
 //       Add created fragment.
-            GTListWidget::click(os, GTWidget::findExactWidget<QListWidget *>(os, "fragmentListWidget", dialog), "NC_004718 (sars.gb) Fragment (2000-9000) [7001 bp]");
+            GTListWidget::click(os, GTWidget::findExactWidget<QListWidget *>(os, "fragmentListWidget", dialog), "NC_004718 (sars.gb) Fragment (2000-9000) [core length - 7001 bp]");
             GTWidget::click(os, GTWidget::findWidget(os, "takeButton", dialog));
 
 //       Set "Make circular" option selected
@@ -1076,7 +1076,7 @@ GUI_TEST_CLASS_DEFINITION(test_0684) {
 
 //       The overhangs should be highlighted in green
             QTreeWidgetItem *item = GTTreeWidget::findItem(os, GTWidget::findExactWidget<QTreeWidget *>(os, "molConstructWidget", dialog),
-                                                            "NC_004718 (sars.gb) Fragment (2000-9000) [7001 bp]", NULL, 1);
+                                                            "NC_004718 (sars.gb) Fragment (2000-9000) [core length - 7001 bp]", NULL, 1);
             CHECK_SET_ERR(NULL != item, "Item is NULL");
 
             const QColor color1 = item->textColor(0);
@@ -1227,7 +1227,7 @@ GUI_TEST_CLASS_DEFINITION(test_0729){
     GTUtilsWorkflowDesigner::click(os, item);
 //    Expected state: Dataset view opened
     GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/FASTA");
-//    4) Click "Add directory", select data/samples/Genbank
+//    4) Click "Add folder", select data/samples/Genbank
     QListWidget* itemsArea = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea");
     GTListWidget::click(os, itemsArea, "FASTA", Qt::RightButton);
 //    5) Click on appeared item in the file list
@@ -1253,14 +1253,14 @@ GUI_TEST_CLASS_DEFINITION(test_0733) {
 
     //Expected state: Property editor appears, {parameters->Document format} is "fasta"
     QString format = GTUtilsWorkflowDesigner::getParameter(os, "Document format");
-    CHECK_SET_ERR("fasta" == format, "Wrong format");
+    CHECK_SET_ERR("FASTA" == format, "Wrong format");
 
     //3. Change {Parameters->Output file} to "result.gb".
     //Expected state: {Parameters->Output file} is "%some_path%/result.gb", {Parameters->Document format} is "fasta".
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", "result.gb", GTUtilsWorkflowDesigner::textValue);
 
-    //4. Change {Parameters->Document Format} to "genbank" and press Enter.
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "genbank", GTUtilsWorkflowDesigner::comboValue);
+    //4. Change {Parameters->Document Format} to "GenBank" and press Enter.
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GenBank", GTUtilsWorkflowDesigner::comboValue);
 
     //Expected state: {Parameters->Output file} changes to "%some_path%/result.gb".
     QString url = GTUtilsWorkflowDesigner::getParameter(os, "utput file");
@@ -1494,7 +1494,7 @@ GUI_TEST_CLASS_DEFINITION(test_0776) {
     GTUtilsWorkflowDesigner::connect(os, search, write);
 
     GTUtilsWorkflowDesigner::click(os, write);
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "genbank", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GenBank", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_0776.gb", GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -1561,12 +1561,12 @@ GUI_TEST_CLASS_DEFINITION(test_0779) {
     // The Read sequence element
     // The Write annotations element
     // 2. Connect the elements.
-    // 3. Switch the "File format" property of the Write annotations element from "genbank" (defualt) to "csv".
+    // 3. Switch the "File format" property of the Write annotations element from "GenBank" (defualt) to "csv".
     // 4. Click on the scheme area and you will get the crash.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Annotations");
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "csv", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "CSV", GTUtilsWorkflowDesigner::comboValue);
     GTGlobals::sleep(500);
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"), GTUtilsWorkflowDesigner::getWorker(os, "Write Annotations"));
 
@@ -1582,7 +1582,7 @@ GUI_TEST_CLASS_DEFINITION(test_0782){
 //    3. Press right mouse button in the graph area, choose {Graph -> Graph settings...}.
     QWidget* graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
     GTWidget::click(os, graphView);
-    QImage init = QPixmap::grabWidget(graphView).toImage();
+    QImage init = GTWidget::getImage(os, graphView);
     init.save("/home/vmalin/init", "BMP");
     class custom: public CustomScenario{
     public:
@@ -1598,7 +1598,7 @@ GUI_TEST_CLASS_DEFINITION(test_0782){
 //    4. In "Graph Settings" dialog change graph's color, then press "Cancel".
 
 //    Expected result: Graph's color didn't change.
-    QImage final = QPixmap::grabWidget(graphView).toImage();
+    QImage final = GTWidget::getImage(os, graphView);
     final.save("/home/vmalin/final", "BMP");
     CHECK_SET_ERR(final == init, "graph view changed");
 //    5. Repeat the third step, then check "Cutoff for minimum and maximum values".
@@ -1637,7 +1637,7 @@ GUI_TEST_CLASS_DEFINITION(test_0792) {
     GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
 //    Expected state: Dataset view opened
 
-//    3) Click "Add directory", select data/samples/Genbank
+//    3) Click "Add folder", select data/samples/Genbank
     GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/Genbank");
 //    4) Click on appeared item in the file list
     QWidget* datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
@@ -1657,7 +1657,7 @@ GUI_TEST_CLASS_DEFINITION(test_0798){
 //    1. File -> Open As.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os,
         SequenceReadingModeSelectorDialogFiller::Merge));
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Genbank"));
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GenBank"));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/798", "1.gb"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Open as...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2022,7 +2022,7 @@ GUI_TEST_CLASS_DEFINITION(test_0830) {
         << testDir + "_common_data/scenarios/CAP3/region2.fa"
         << testDir + "_common_data/scenarios/CAP3/region4.fa",
         outUrl));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Contig assembly with CAP3...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and de novo assembly (with CAP3)...");
 
     //3) wait for task error, ensure that no output files are in the project
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2261,6 +2261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0846) {
 
 //    2. Add any annotations;
     GTUtilsAnnotationsTreeView::createAnnotation(os, "", "", "1..100");
+	GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    3. Use popup menu {Export->Export annotations}
 //    4. Chose "csv" in combobox "File format"
@@ -2743,7 +2744,7 @@ GUI_TEST_CLASS_DEFINITION(test_0899){
             //        1) opened dialog have File formats: {FASTA, FASTQ, GFF, Genbank, Vector NTI sequence}
             QComboBox* documentFormatComboBox = GTWidget::findExactWidget<QComboBox*>(os, "documentFormatComboBox", dialog);
             QStringList comboList;
-            comboList<<"FASTA"<<"FASTQ"<<"GFF"<<"Genbank"<<"Vector NTI sequence";
+            comboList<<"FASTA"<<"FASTQ"<<"GFF"<<"GenBank"<<"Vector NTI sequence";
             GTComboBox::checkValuesPresence(os, documentFormatComboBox, comboList);
 
             //        2) region: {whole sequence, visible, custom}
@@ -2752,7 +2753,7 @@ GUI_TEST_CLASS_DEFINITION(test_0899){
             regionComboList<<"Whole sequence"<<"Visible"<<"Custom region";
             GTComboBox::checkValuesPresence(os, region_type_combo, regionComboList);
 
-            GTComboBox::setIndexWithText(os, documentFormatComboBox, "Genbank");
+            GTComboBox::setIndexWithText(os, documentFormatComboBox, "GenBank");
             GTComboBox::setIndexWithText(os, region_type_combo, "Whole sequence");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -3082,7 +3083,7 @@ GUI_TEST_CLASS_DEFINITION(test_0952) {
     //1. Start UGENE.
     //2. Press "Ctrl+O" or "Open" button on the main toolbar.
     //Expected state: "Select files to open..." dialog appears.
-    //3. Explore to the directory "data/samples/Genbank", then choose "CVU55762.gb" and "murine.gb" using Ctrl key
+    //3. Explore to the folder "data/samples/Genbank", then choose "CVU55762.gb" and "murine.gb" using Ctrl key
     //and press "Open" button.
     //Expected state: "Multiple sequence reading mode" dialog appears.
     //4. Set radio button "Merge sequence mode", set "New document name" if you need, then press "OK".

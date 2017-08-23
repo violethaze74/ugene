@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,17 +24,10 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QToolButton>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QDialogButtonBox>
-#endif
+#include <QApplication>
+#include <QPushButton>
+#include <QToolButton>
+#include <QDialogButtonBox>
 
 namespace U2 {
 
@@ -49,9 +42,10 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     length = 0;
     len = _len;
     multipleRange = QString();
+    circular = false;
 }
 
-SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os) : Filler(_os, "RangeSelectionDialog")
+SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, CustomScenario* scenario) : Filler(_os, "RangeSelectionDialog", scenario)
 {
     rangeType = Single;
     selectAll = true;
@@ -61,6 +55,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     length = 0;
     len = NULL;
     multipleRange = QString();
+    circular = false;
 }
 
 SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int _minVal, int _maxVal) : Filler(_os, "RangeSelectionDialog")
@@ -73,6 +68,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     length = 0;
     len = NULL;
     multipleRange = QString();
+    circular = false;
 }
 
 SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, const QString &range) : Filler(_os, "RangeSelectionDialog")
@@ -85,6 +81,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     length = 0;
     len = NULL;
     multipleRange = range;
+    circular = false;
 }
 
 SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOpStatus &_os, int _length, bool selectFromBegin) : Filler(_os, "RangeSelectionDialog")
@@ -97,7 +94,13 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     length = _length;
     len = NULL;
     multipleRange = QString();
+    circular = false;
 }
+
+void SelectSequenceRegionDialogFiller::setCircular(bool v) {
+    circular = v;
+}
+
 
 #define GT_METHOD_NAME "commonScenario"
 void SelectSequenceRegionDialogFiller::commonScenario()
@@ -123,7 +126,7 @@ void SelectSequenceRegionDialogFiller::commonScenario()
             *len = endEdit->text().toInt();
         }
     } else if (rangeType == Single) {
-        GT_CHECK(minVal <= maxVal, "Value \"min\" greater then \"max\"");
+        GT_CHECK(circular || minVal <= maxVal, "Value \"min\" greater then \"max\"");
 
         QLineEdit *startEdit = dialog->findChild<QLineEdit*>("startEdit");
         QLineEdit *endEdit = dialog->findChild<QLineEdit*>("endEdit");

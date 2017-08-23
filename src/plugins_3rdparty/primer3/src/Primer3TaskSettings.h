@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,12 +22,12 @@
 #ifndef PRIMER3TASKSETTINGS_H
 #define PRIMER3TASKSETTINGS_H
 
-#include <QtCore/QMap>
-#include <QtCore/QList>
-#include <QtCore/QString>
-#include <QtCore/QByteArray>
-#include <QtCore/QVector>
-#include <QtCore/QPair>
+#include <QMap>
+#include <QList>
+#include <QString>
+#include <QByteArray>
+#include <QVector>
+#include <QPair>
 #include <U2Core/U2Region.h>
 #include <U2Core/U2Range.h>
 #include "primer3_core/primer3.h"

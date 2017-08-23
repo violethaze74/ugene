@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+#include <QApplication>
+#include <QTextStream>
 
-#include <QtWidgets/QApplication>
 #include "EstimationReporter.h"
 
 namespace U2 {

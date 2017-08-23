@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 
 #include <U2View/SimpleTextObjectView.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 #include <U2View/TreeViewerFactory.h>
 #include <U2View/AssemblyBrowserFactory.h>
 
@@ -42,7 +42,10 @@ void ProjectViewImpl::registerBuiltInObjectViews() {
     f =  new AnnotatedDNAViewFactory();
     reg->registerGObjectViewFactory(f);
 
-    f = new MSAEditorFactory();
+    f = new MsaEditorFactory();
+    reg->registerGObjectViewFactory(f);
+
+    f = new McaEditorFactory();
     reg->registerGObjectViewFactory(f);
 
     f = new TreeViewerFactory();
@@ -65,7 +68,7 @@ void ProjectViewImpl::unregisterBuiltInObjectViews() {
     reg->unregisterGObjectViewFactory(f);
     delete f;
 
-    f = reg->getFactoryById(MSAEditorFactory::ID);
+    f = reg->getFactoryById(MsaEditorFactory::ID);
     assert(f!=NULL);
     reg->unregisterGObjectViewFactory(f);
     delete f;

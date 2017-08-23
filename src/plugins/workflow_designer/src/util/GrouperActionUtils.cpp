@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedPointer>
+#include <QScopedPointer>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/QVariantUtils.h>
@@ -119,30 +119,29 @@ bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1
         SharedDbiDataHandler alId1 = data1.value<SharedDbiDataHandler>();
         SharedDbiDataHandler alId2 = data2.value<SharedDbiDataHandler>();
 
-        QScopedPointer<MAlignmentObject> alObj1(StorageUtils::getMsaObject(context->getDataStorage(), alId1));
+        QScopedPointer<MultipleSequenceAlignmentObject> alObj1(StorageUtils::getMsaObject(context->getDataStorage(), alId1));
         SAFE_POINT(NULL != alObj1.data(), "NULL MSA Object!", false);
 
-        QScopedPointer<MAlignmentObject> alObj2(StorageUtils::getMsaObject(context->getDataStorage(), alId2));
+        QScopedPointer<MultipleSequenceAlignmentObject> alObj2(StorageUtils::getMsaObject(context->getDataStorage(), alId2));
         SAFE_POINT(NULL != alObj2.data(), "NULL MSA Object!", false);
 
 
-        const MAlignment &al1 = alObj1->getMAlignment();
-        const MAlignment &al2 = alObj2->getMAlignment();
+        const MultipleSequenceAlignment al1 = alObj1->getMultipleAlignment();
+        const MultipleSequenceAlignment al2 = alObj2->getMultipleAlignment();
 
         if (GroupOperations::BY_NAME() == groupOp) {
-            return al1.getName() == al2.getName();
+            return al1->getName() == al2->getName();
         } else { // id or value
-            if (al1.getRows().size() != al2.getRows().size()) {
+            if (al1->getMsaRows().size() != al2->getMsaRows().size()) {
                 return false;
             }
 
-            QList<MAlignmentRow> rows1 = al1.getRows();
-            QList<MAlignmentRow> rows2 = al2.getRows();
-            QList<MAlignmentRow>::const_iterator it1 = rows1.constBegin();
-            QList<MAlignmentRow>::const_iterator it2 = rows2.constBegin();
+            QList<MultipleSequenceAlignmentRow> rows1 = al1->getMsaRows();
+            QList<MultipleSequenceAlignmentRow> rows2 = al2->getMsaRows();
+            QList<MultipleSequenceAlignmentRow>::const_iterator it1 = rows1.constBegin();
+            QList<MultipleSequenceAlignmentRow>::const_iterator it2 = rows2.constBegin();
             for (; it1 != rows1.constEnd(); ++it1, ++it2) {
-                bool equal = *it1 == *it2;
-                if (!equal) {
+                if (**it1 != **it2) {
                     return false;
                 }
             }
@@ -236,7 +235,7 @@ bool MergeSequencePerformer::applyAction(const QVariant &newData) {
         } else {
             name = "Merged sequence";
         }
-        importer.startSequence(context->getDataStorage()->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, name, false, os);
+        importer.startSequence(os, context->getDataStorage()->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, name, false);
         CHECK_OP(os, false);
         started = true;
     } else {
@@ -272,7 +271,7 @@ QVariantMap MergeSequencePerformer::getParameters() const {
 QString MergeSequencePerformer::PREV_SEQ_LENGTH = QString("prev-seq-length");
 
 Sequence2MSAPerformer::Sequence2MSAPerformer(const QString &outSlot, const GrouperSlotAction &action, WorkflowContext *context)
-: ActionPerformer(outSlot, action, context)
+    : ActionPerformer(outSlot, action, context)
 {
 
 }
@@ -296,8 +295,8 @@ bool Sequence2MSAPerformer::applyAction(const QVariant &newData) {
         } else {
             name = "Grouped alignment";
         }
-        result.setName(name);
-        result.setAlphabet(seqObj->getAlphabet());
+        result->setName(name);
+        result->setAlphabet(seqObj->getAlphabet());
         started = true;
     }
 
@@ -307,15 +306,15 @@ bool Sequence2MSAPerformer::applyAction(const QVariant &newData) {
     }
 
     if (unique) {
-        foreach (MAlignmentRow currRow, result.getRows()) {
-            if ((currRow.getName() == rowName) &&
-                (currRow.getData() == bytes)) {
+        foreach (const MultipleSequenceAlignmentRow &currRow, result->getMsaRows()) {
+            if ((currRow->getName() == rowName) &&
+                (currRow->getData() == bytes)) {
                     return true;
             }
         }
     }
 
-    result.addRow(rowName, bytes, os);
+    result->addRow(rowName, bytes);
 
     return true;
 }
@@ -326,16 +325,16 @@ QVariant Sequence2MSAPerformer::finishAction(U2OpStatus &) {
 }
 
 MergerMSAPerformer::MergerMSAPerformer(const QString &outSlot, const GrouperSlotAction &action, WorkflowContext *context)
-: ActionPerformer(outSlot, action, context)
+    : ActionPerformer(outSlot, action, context)
 {
 
 }
 
 bool MergerMSAPerformer::applyAction(const QVariant &newData) {
     SharedDbiDataHandler newAlId = newData.value<SharedDbiDataHandler>();
-    QScopedPointer<MAlignmentObject> newAlObj(StorageUtils::getMsaObject(context->getDataStorage(), newAlId));
+    QScopedPointer<MultipleSequenceAlignmentObject> newAlObj(StorageUtils::getMsaObject(context->getDataStorage(), newAlId));
     SAFE_POINT(NULL != newAlObj.data(), "NULL MSA Object!", false);
-    const MAlignment &newAl = newAlObj->getMAlignment();
+    const MultipleSequenceAlignment newAl = newAlObj->getMultipleAlignment();
 
     if (!started) {
         QString name;
@@ -344,8 +343,8 @@ bool MergerMSAPerformer::applyAction(const QVariant &newData) {
         } else {
             name = "Grouped alignment";
         }
-        result.setName(name);
-        result.setAlphabet(newAl.getAlphabet());
+        result->setName(name);
+        result->setAlphabet(newAl->getAlphabet());
         started = true;
     }
 
@@ -355,14 +354,14 @@ bool MergerMSAPerformer::applyAction(const QVariant &newData) {
     }
 
     U2OpStatus2Log os;
-    const QList<MAlignmentRow> &rows = result.getRows();
-    foreach (const MAlignmentRow &newRow, newAl.getRows()) {
+    const QList<MultipleSequenceAlignmentRow> rows = result->getMsaRows();
+    foreach (const MultipleSequenceAlignmentRow &newRow, newAl->getMsaRows()) {
         if (unique) {
             if (!rows.contains(newRow)) {
-                result.addRow(newRow.getRowDBInfo(), newRow.getSequence(), os);
+                result->addRow(newRow->getRowDbInfo(), newRow->getSequence(), os);
             }
         } else {
-            result.addRow(newRow.getRowDBInfo(), newRow.getSequence(), os);
+            result->addRow(newRow->getRowDbInfo(), newRow->getSequence(), os);
         }
     }
 

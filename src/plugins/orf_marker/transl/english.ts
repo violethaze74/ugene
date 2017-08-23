@@ -392,6 +392,14 @@ Ignore boundary ORFs which last beyond the search region
         <source>Sequence object is NULL</source>
         <translation>Sequence object is NULL</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::ORFMarkerPlugin</name>

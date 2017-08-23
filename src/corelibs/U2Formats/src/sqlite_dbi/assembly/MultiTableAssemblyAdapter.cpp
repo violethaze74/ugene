@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,7 +61,7 @@ void MultiTableAssemblyAdapter::syncTables(U2OpStatus& os) {
     if (versionInDb <= version) {
         return;
     }
-    SQLiteQuery q("SELECT idata FROM Assembly WHERE object = ?1", db, os);
+    SQLiteReadQuery q("SELECT idata FROM Assembly WHERE object = ?1", db, os);
     q.bindDataId(1, assemblyId);
     if (q.step()) {
         QByteArray data = q.getBlob(0);
@@ -195,7 +195,7 @@ void MultiTableAssemblyAdapter::flushTables(U2OpStatus& os)  {
     }
     idata.append('|').append(QByteArray::number(rowsPerRange)).append(',').append(QByteArray::number(adaptersGrid.size()));
 
-    SQLiteQuery q("UPDATE Assembly SET idata = ?1 WHERE object = ?2", db, os);
+    SQLiteWriteQuery q("UPDATE Assembly SET idata = ?1 WHERE object = ?2", db, os);
     q.bindBlob(1, idata);
     q.bindDataId(2, assemblyId);
     q.execute();
@@ -233,7 +233,7 @@ MTASingleTableAdapter* MultiTableAssemblyAdapter::createAdapter(int rowPos, int 
 }
 
 void MultiTableAssemblyAdapter::createReadsIndexes(U2OpStatus& os) {
-    SQLiteQuery("PRAGMA temp_store = FILE", db, os).execute();
+    SQLiteWriteQuery("PRAGMA temp_store = FILE", db, os).execute();
     CHECK_OP(os, );
     foreach(MTASingleTableAdapter* a, adapters) {
         a->singleTableAdapter->createReadsIndexes(os);
@@ -241,7 +241,7 @@ void MultiTableAssemblyAdapter::createReadsIndexes(U2OpStatus& os) {
             break;
         }
     }
-    SQLiteQuery("PRAGMA temp_store = MEMORY", db, os).execute();
+    SQLiteWriteQuery("PRAGMA temp_store = MEMORY", db, os).execute();
 }
 
 QByteArray MultiTableAssemblyAdapter::getIdExtra(int rowPos, int elenPos) {
@@ -661,8 +661,8 @@ void MultiTablePackAlgorithmAdapter::migrate(MTASingleTableAdapter* newA, const 
         QString idsTable = "tmp_mig_" + oldTable; //TODO
 
 #ifdef _DEBUG
-        qint64 nOldReads1 = SQLiteQuery("SELECT COUNT(*) FROM " + oldTable, db, os).selectInt64();
-        qint64 nNewReads1 = SQLiteQuery("SELECT COUNT(*) FROM " + newTable, db, os).selectInt64();
+        qint64 nOldReads1 = SQLiteReadQuery("SELECT COUNT(*) FROM " + oldTable, db, os).selectInt64();
+        qint64 nNewReads1 = SQLiteReadQuery("SELECT COUNT(*) FROM " + newTable, db, os).selectInt64();
         int readsMoved = migData.size();
         int rowsPerRange = multiTableAdapter->getRowsPerRange();
         U2Region newProwRegion(newA->rowPos * rowsPerRange, rowsPerRange);
@@ -673,8 +673,8 @@ void MultiTablePackAlgorithmAdapter::migrate(MTASingleTableAdapter* newA, const 
 
         { //nested block is needed to ensure all queries are finalized
 
-            SQLiteQuery(QString("CREATE TEMPORARY TABLE %1(id INTEGER PRIMARY KEY, prow INTEGER NOT NULL)").arg(idsTable), db, os).execute();
-            SQLiteQuery insertIds(QString("INSERT INTO %1(id, prow) VALUES(?1, ?2)").arg(idsTable), db, os);
+            SQLiteWriteQuery(QString("CREATE TEMPORARY TABLE %1(id INTEGER PRIMARY KEY, prow INTEGER NOT NULL)").arg(idsTable), db, os).execute();
+            SQLiteWriteQuery insertIds(QString("INSERT INTO %1(id, prow) VALUES(?1, ?2)").arg(idsTable), db, os);
             foreach(const SQLiteReadTableMigrationData& d, migData) {
                 insertIds.reset(false);
                 insertIds.bindInt64(1, d.readId);
@@ -686,15 +686,15 @@ void MultiTablePackAlgorithmAdapter::migrate(MTASingleTableAdapter* newA, const 
                 }
             }
 
-            SQLiteQuery(QString("INSERT INTO %1(prow, name, gstart, elen, flags, mq, data) "
+            SQLiteWriteQuery(QString("INSERT INTO %1(prow, name, gstart, elen, flags, mq, data) "
                 "SELECT %3.prow, name, gstart, elen, flags, mq, data FROM %2, %3 WHERE %2.id = %3.id")
                 .arg(newTable).arg(oldTable).arg(idsTable), db, os).execute();
 
-            SQLiteQuery(QString("DELETE FROM %1 WHERE id IN (SELECT id FROM %2)").arg(oldTable).arg(idsTable), db, os).execute();
+            SQLiteWriteQuery(QString("DELETE FROM %1 WHERE id IN (SELECT id FROM %2)").arg(oldTable).arg(idsTable), db, os).execute();
 
         }
         U2OpStatusImpl osStub; // using stub here -> this operation must be performed even if any of internal queries failed
-        SQLiteQuery(QString("DROP TABLE IF EXISTS %1").arg(idsTable), db, osStub).execute();
+        SQLiteWriteQuery(QString("DROP TABLE IF EXISTS %1").arg(idsTable), db, osStub).execute();
 
         qint64 nMigrated = migratedBefore + migData.size();
         perfLog.trace(QString("Assembly: reads migration from %1 to %2 finished, time %3 seconds, progress: %4/%5 (%6%)")
@@ -702,8 +702,8 @@ void MultiTablePackAlgorithmAdapter::migrate(MTASingleTableAdapter* newA, const 
             .arg(nMigrated).arg(totalMigrationCount).arg(100*nMigrated/totalMigrationCount));
 
 #ifdef _DEBUG
-        qint64 nOldReads2 = SQLiteQuery("SELECT COUNT(*) FROM " + oldTable, db, os).selectInt64();
-        qint64 nNewReads2 = SQLiteQuery("SELECT COUNT(*) FROM " + newTable, db, os).selectInt64();
+        qint64 nOldReads2 = SQLiteReadQuery("SELECT COUNT(*) FROM " + oldTable, db, os).selectInt64();
+        qint64 nNewReads2 = SQLiteReadQuery("SELECT COUNT(*) FROM " + newTable, db, os).selectInt64();
         assert(nOldReads1 + nNewReads1 == nOldReads2 + nNewReads2);
         assert(nNewReads1 + readsMoved == nNewReads2);
 #endif

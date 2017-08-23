@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,11 @@
 #ifndef _U2_IMPORT_QUALITY_SCORES_TASK_H_
 #define _U2_IMPORT_QUALITY_SCORES_TASK_H_
 
-#include <U2Core/Task.h>
-#include <U2Core/DNAQuality.h>
+#include <QMap>
+#include <QPointer>
 
-#include <QtCore/QPointer>
+#include <U2Core/DNAQuality.h>
+#include <U2Core/Task.h>
 
 namespace U2 {
 
@@ -41,7 +42,6 @@ public:
     QString             dstFileName;
 
 };
-
 
 class ReadQualityScoresTask : public Task {
     Q_OBJECT

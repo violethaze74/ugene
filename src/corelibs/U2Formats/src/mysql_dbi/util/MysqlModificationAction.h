@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,14 +24,14 @@
 
 #include <U2Core/U2Mod.h>
 
-#include <QtCore/QSet>
+#include <QSet>
 
 namespace U2 {
 
 class MysqlDbi;
 
 /** Helper class to track info about an object */
-class MysqlModificationAction {
+class MysqlModificationAction : public ModificationAction {
 public:
     MysqlModificationAction(MysqlDbi* dbi, const U2DataId& masterObjId);
 
@@ -55,15 +55,8 @@ public:
      */
     void complete(U2OpStatus& os);
 
-    /** Returns modification tracking type of the master object. */
-    U2TrackModType getTrackModType() const;
-
 private:
-    MysqlDbi*               dbi;
-    U2DataId                masterObjId;
-    U2TrackModType          trackMod;
-    QSet<U2DataId>          objIds;
-    QList<U2SingleModStep>  singleSteps;
+    MysqlDbi* getDbi() const;
 };
 
 }   // namespace U2

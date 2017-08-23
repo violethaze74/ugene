@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,14 +26,14 @@
 #include <U2Core/GObject.h>
 #include <U2Algorithm/PhyTreeGeneratorTask.h>
 
-#include <QtXml/QDomElement>
-#include <QtCore/QFileInfo>
-#include <QtCore/QList>
+#include <QDomElement>
+#include <QFileInfo>
+#include <QList>
 
 namespace U2{
 
 class PhyTreeObject;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 
 class GTest_PhyML : public GTest {
     Q_OBJECT
@@ -51,7 +51,7 @@ private:
     Document* maDoc;
     Document* treeDoc;
     PhyTreeGeneratorLauncherTask* task;
-    MAlignmentObject* input;
+    MultipleSequenceAlignmentObject* input;
     PhyTreeObject* treeObjFromDoc;
     CreatePhyTreeSettings settings;
 };

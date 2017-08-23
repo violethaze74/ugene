@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QCoreApplication>
+#include <QDir>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -32,7 +32,7 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/AddDocumentTask.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -55,9 +55,9 @@ void TCoffeeSupportTaskSettings::reset() {
     inputFilePath="";
 }
 
-TCoffeeSupportTask::TCoffeeSupportTask(const MAlignment& _inputMsa, const GObjectReference& _objRef, const TCoffeeSupportTaskSettings& _settings)
+TCoffeeSupportTask::TCoffeeSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const TCoffeeSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run T-Coffee alignment task", TaskFlags_NR_FOSCOE),
-      inputMsa(_inputMsa),
+      inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
       settings(_settings),
       lock(NULL)
@@ -67,8 +67,8 @@ TCoffeeSupportTask::TCoffeeSupportTask(const MAlignment& _inputMsa, const GObjec
     loadTmpDocumentTask=NULL;
     tCoffeeTask=NULL;
     tmpDoc=NULL;
-    resultMA.setAlphabet(inputMsa.getAlphabet());
-    resultMA.setName(inputMsa.getName());
+    resultMA->setAlphabet(inputMsa->getAlphabet());
+    resultMA->setName(inputMsa->getName());
 }
 
 TCoffeeSupportTask::~TCoffeeSupportTask() {
@@ -80,7 +80,7 @@ TCoffeeSupportTask::~TCoffeeSupportTask() {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (NULL != obj) {
-                MAlignmentObject* alObj = dynamic_cast<MAlignmentObject*>(obj);
+                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 CHECK(NULL != alObj, );
                 if(alObj->isStateLocked()) {
                     alObj->unlockState(lock);
@@ -93,9 +93,9 @@ TCoffeeSupportTask::~TCoffeeSupportTask() {
 }
 
 void TCoffeeSupportTask::prepare(){
-    if (inputMsa.getAlphabet()->getId() == BaseDNAAlphabetIds::RAW() ||
-            inputMsa.getAlphabet()->getId() == BaseDNAAlphabetIds::AMINO_EXTENDED()) {
-        setError(tr("Unsupported alphabet: %1").arg(inputMsa.getAlphabet()->getName()));
+    if (inputMsa->getAlphabet()->getId() == BaseDNAAlphabetIds::RAW() ||
+            inputMsa->getAlphabet()->getId() == BaseDNAAlphabetIds::AMINO_EXTENDED()) {
+        setError(tr("Unsupported alphabet: %1").arg(inputMsa->getAlphabet()->getName()));
         return;
     }
 
@@ -104,15 +104,15 @@ void TCoffeeSupportTask::prepare(){
     if (objRef.isValid()) {
         GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
         if (NULL != obj) {
-            MAlignmentObject* alObj = dynamic_cast<MAlignmentObject*>(obj);
-            SAFE_POINT(NULL != alObj, "Failed to convert GObject to MAlignmentObject during applying ClustalW results!",);
+            MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+            SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!",);
             lock = new StateLock("ClustalWAligment");
             alObj->lockState(lock);
         }
     }
 
     //Add new subdir for temporary files
-    //Directory name is ExternalToolName + CurrentDate + CurrentTime
+    //Folder name is ExternalToolName + CurrentDate + CurrentTime
 
     QString tmpDirName = "TCoffee_"+QString::number(this->getTaskId())+"_"+
                          QDate::currentDate().toString("dd.MM.yyyy")+"_"+
@@ -129,12 +129,12 @@ void TCoffeeSupportTask::prepare(){
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Subdir for temporary files exists. Can not remove this directory."));
+            stateInfo.setError(tr("Subdir for temporary files exists. Can not remove this folder."));
             return;
         }
     }
     if(!tmpDir.mkpath(tmpDirPath)){
-        stateInfo.setError(tr("Can not create directory for temporary files."));
+        stateInfo.setError(tr("Can not create folder for temporary files."));
         return;
     }
 
@@ -156,7 +156,7 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
     if(subTask==saveTemporaryDocumentTask){
         QStringList arguments;
         if(url.contains(" ")){
-            stateInfo.setError("Temporary directory path have space(s). Try select any other directory without spaces.");
+            stateInfo.setError("Temporary folder path have space(s). Try select any other folder without spaces.");
             return res;
         }
         arguments <<url;
@@ -206,32 +206,32 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
         const QList<GObject*>& newDocumentObjects = tmpDoc->getObjects();
         SAFE_POINT(!newDocumentObjects.empty(), "No objects in the temporary document!", res);
 
-        MAlignmentObject* newMAligmentObject = qobject_cast<MAlignmentObject*>(newDocumentObjects.first());
+        MultipleSequenceAlignmentObject* newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(newDocumentObjects.first());
         SAFE_POINT(NULL != newMAligmentObject, "Failed to cast object from temporary document to an alignment!", res);
 
-        resultMA = newMAligmentObject->getMAlignment();
-        bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa.getRowNames());
+        resultMA = newMAligmentObject->getMsaCopy();
+        bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT( renamed, "Failed to restore initial row names!", res);
 
         // If an alignment object has been specified, save the result to it
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (NULL != obj) {
-                MAlignmentObject* alObj = dynamic_cast<MAlignmentObject*>(obj);
-                SAFE_POINT(NULL != alObj, "Failed to convert GObject to MAlignmentObject during applying TCoffee results!", res);
+                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+                SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying TCoffee results!", res);
 
                 QList<qint64> rowsOrder = MSAUtils::compareRowsAfterAlignment(inputMsa, resultMA, stateInfo);
                 CHECK_OP(stateInfo, res);
 
-                if (rowsOrder.count() != inputMsa.getNumRows()) {
+                if (rowsOrder.count() != inputMsa->getNumRows()) {
                     stateInfo.setError("Unexpected number of rows in the result multiple alignment!");
                     return res;
                 }
 
                 QMap<qint64, QList<U2MsaGap> > rowsGapModel;
-                for (int i = 0, n = resultMA.getNumRows(); i < n; ++i) {
-                    qint64 rowId = resultMA.getRow(i).getRowDBInfo().rowId;
-                    const QList<U2MsaGap>& newGapModel = resultMA.getRow(i).getGapModel();
+                for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
+                    qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
+                    const QList<U2MsaGap>& newGapModel = resultMA->getMsaRow(i)->getGapModel();
                     rowsGapModel.insert(rowId, newGapModel);
                 }
 
@@ -245,7 +245,7 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
                         lock = NULL;
                     }
                     else {
-                        stateInfo.setError("MAlignment object has been changed");
+                        stateInfo.setError("MultipleSequenceAlignment object has been changed");
                         return res;
                     }
 
@@ -256,11 +256,11 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
                         return res;
                     }
 
-                    alObj->updateGapModel(rowsGapModel, stateInfo);
+                    alObj->updateGapModel(stateInfo, rowsGapModel);
                     SAFE_POINT_OP(stateInfo, res);
 
-                    if (rowsOrder != inputMsa.getRowsIds()) {
-                        alObj->updateRowsOrder(rowsOrder, stateInfo);
+                    if (rowsOrder != inputMsa->getRowsIds()) {
+                        alObj->updateRowsOrder(stateInfo, rowsOrder);
                         SAFE_POINT_OP(stateInfo, res);
                     }
                 }
@@ -288,7 +288,7 @@ Task::ReportResult TCoffeeSupportTask::report(){
             tmpDir.remove(file);
         }
         if(!tmpDir.rmdir(tmpDir.absolutePath())){
-            stateInfo.setError(tr("Can not remove directory for temporary files."));
+            stateInfo.setError(tr("Can not remove folder for temporary files."));
             emit si_stateChanged();
         }
     }
@@ -317,7 +317,7 @@ TCoffeeWithExtFileSpecifySupportTask::~TCoffeeWithExtFileSpecifySupportTask(){
 void TCoffeeWithExtFileSpecifySupportTask::prepare(){
     DocumentFormatConstraints c;
     c.checkRawData = true;
-    c.supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    c.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     c.rawData = IOAdapterUtils::readFileHeader(settings.inputFilePath);
     c.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     QList<DocumentFormatId> formats = AppContext::getDocumentFormatRegistry()->selectFormats(c);
@@ -348,18 +348,18 @@ QList<Task*> TCoffeeWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTa
         currentDocument=loadDocumentTask->takeDocument();
         SAFE_POINT(currentDocument != NULL, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject=qobject_cast<MAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        tCoffeeSupportTask = new TCoffeeSupportTask(mAObject->getMAlignment(), GObjectReference(), settings);
+        tCoffeeSupportTask = new TCoffeeSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
         res.append(tCoffeeSupportTask);
     }
     else if (subTask == tCoffeeSupportTask) {
         // Set the result alignment to the alignment object of the current document
-        mAObject=qobject_cast<MAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->copyGapModel(tCoffeeSupportTask->resultMA.getRows());
+        mAObject->updateGapModel(tCoffeeSupportTask->resultMA->getMsaRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -72,44 +72,44 @@ protected:
 };
 
 //////////////////////////////////////////////////
-//QualityTrim
-class QualityTrimPrompter;
-typedef PrompterBase<QualityTrimPrompter> QualityTrimBase;
-class QualityTrimPrompter : public QualityTrimBase {
+//FastqQualityTrim
+class FastqQualityTrimPrompter;
+typedef PrompterBase<FastqQualityTrimPrompter> QualityTrimBase;
+class FastqQualityTrimPrompter : public QualityTrimBase {
     Q_OBJECT
 public:
-    QualityTrimPrompter(Actor* p = 0) : QualityTrimBase(p) {}
+    FastqQualityTrimPrompter(Actor* p = 0) : QualityTrimBase(p) {}
 protected:
     QString composeRichDoc();
-}; //QualityTrimPrompter
+}; //FastqQualityTrimPrompter
 
-class QualityTrimWorker: public BaseNGSWorker {
+class FastqQualityTrimWorker: public BaseNGSWorker {
     Q_OBJECT
 public:
-    QualityTrimWorker(Actor *a);
+    FastqQualityTrimWorker(Actor *a);
 protected:
     QVariantMap getCustomParameters() const;
     QString getDefaultFileName() const;
     Task *getTask(const BaseNGSSetting &settings) const;
 
-}; //QualityTrimWorker
+}; //FastqQualityTrimWorker
 
-class QualityTrimWorkerFactory : public DomainFactory {
+class FastqQualityTrimWorkerFactory : public DomainFactory {
     static const QString ACTOR_ID;
 public:
     static void init();
-    QualityTrimWorkerFactory() : DomainFactory(ACTOR_ID) {}
-    Worker* createWorker(Actor* a) { return new QualityTrimWorker(a); }
-}; //QualityTrimWorkerFactory
+    FastqQualityTrimWorkerFactory() : DomainFactory(ACTOR_ID) {}
+    Worker* createWorker(Actor* a) { return new FastqQualityTrimWorker(a); }
+}; //FastqQualityTrimWorkerFactory
 
-class QualityTrimTask : public BaseNGSTask{
+class FastqQualityTrimTask : public BaseNGSTask{
     Q_OBJECT
 public:
-    QualityTrimTask (const BaseNGSSetting &settings);
+    FastqQualityTrimTask (const BaseNGSSetting &settings);
 
 protected:
     void runStep();
-    int getMaxQualityValue();
+    DNAQualityType detectQualityType();
     QStringList getParameters(U2OpStatus& os);
 };
 

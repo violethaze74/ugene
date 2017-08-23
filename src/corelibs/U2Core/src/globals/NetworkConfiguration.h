@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,16 +22,15 @@
 #ifndef _U2_NETWORK_CONFIGURATION_H_
 #define _U2_NETWORK_CONFIGURATION_H_
 
+#include <QMap>
+#include <QNetworkProxy>
+#include <QStringList>
 
-#include <QtNetwork/QNetworkProxy>
-#include <QtCore/QStringList>
-#include <QtCore/QMap>
 #include <U2Core/global.h>
 
 #ifndef QT_NO_OPENSSL
-#include <QtNetwork/QSslConfiguration>
+#include <QSslConfiguration>
 #endif
-
 
 namespace U2
 {

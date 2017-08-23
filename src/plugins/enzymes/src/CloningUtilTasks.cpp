@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -660,7 +660,7 @@ void LigateFragmentsTask::createDocument(const QByteArray& seq, const QList<Shar
     resultDoc = df->createNewLoadedDocument(iof, cfg.docUrl, stateInfo);
     CHECK_OP(stateInfo,);
 
-    U2EntityRef seqRef = U2SequenceUtils::import(resultDoc->getDbiRef(), dna, stateInfo);
+    U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, resultDoc->getDbiRef(), dna);
     CHECK_OP_EXT(stateInfo, delete resultDoc; resultDoc = NULL,);
 
     U2SequenceObject* dnaObj = new U2SequenceObject(seqName, seqRef);

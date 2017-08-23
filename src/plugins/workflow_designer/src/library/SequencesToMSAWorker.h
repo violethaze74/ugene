@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/DNASequence.h>
 
 namespace U2 {
@@ -68,12 +68,12 @@ class MSAFromSequencesTask : public Task {
     Q_OBJECT
 public:
     MSAFromSequencesTask(const QList<DNASequence>& sequences)
-        : Task(tr("MSAFromSequencesTask"), TaskFlag_None), sequences_(sequences), ma(NULL) {}
+        : Task(tr("MSAFromSequencesTask"), TaskFlag_None), sequences_(sequences) {}
     void run();
-    MAlignment getResult() const { return ma; }
+    MultipleSequenceAlignment getResult() const { return ma; }
 private:
     QList<DNASequence> sequences_;
-    MAlignment ma;
+    MultipleSequenceAlignment ma;
 };
 
 } //LocalWorkflow namespace

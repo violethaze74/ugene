@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,15 +22,15 @@
 #ifndef _U2_MSAEDITOR_TREE_MANAGER_H_
 #define _U2_MSAEDITOR_TREE_MANAGER_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
+#include <QObject>
+#include <QPointer>
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 #include <U2Core/PhyTree.h>
 
 namespace U2 {
 
 class MSAEditor;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class PhyTreeGeneratorLauncherTask;
 class Task;
 class GObjectViewWindow;
@@ -69,7 +69,7 @@ private:
     MSAEditorMultiTreeViewer* getMultiTreeViewer() const;
 
     MSAEditor*                    editor;
-    QPointer<MAlignmentObject>   msaObject;
+    QPointer<MultipleSequenceAlignmentObject>   msaObject;
     CreatePhyTreeSettings         settings;
     bool                          addExistingTree;
     PhyTree                       phyTree;

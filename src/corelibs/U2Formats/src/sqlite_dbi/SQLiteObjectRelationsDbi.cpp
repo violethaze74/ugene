@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,19 +33,19 @@ SQLiteObjectRelationsDbi::SQLiteObjectRelationsDbi( SQLiteDbi *dbi )
 }
 
 void SQLiteObjectRelationsDbi::initSqlSchema( U2OpStatus &os ) {
-    SQLiteQuery( "CREATE TABLE IF NOT EXISTS ObjectRelation (object INTEGER NOT NULL, "
+    SQLiteWriteQuery( "CREATE TABLE IF NOT EXISTS ObjectRelation (object INTEGER NOT NULL, "
         "reference INTEGER NOT NULL, role INTEGER NOT NULL, "
         "PRIMARY KEY(object, reference), "
         "FOREIGN KEY(object) REFERENCES Object(id) ON DELETE CASCADE,"
         "FOREIGN KEY(reference) REFERENCES Object(id) ON DELETE CASCADE)", db, os ).execute( );
     CHECK_OP( os, );
 
-    SQLiteQuery( "CREATE INDEX IF NOT EXISTS ObjectRelationRole ON ObjectRelation(role)", db, os ).execute( );
+    SQLiteWriteQuery( "CREATE INDEX IF NOT EXISTS ObjectRelationRole ON ObjectRelation(role)", db, os ).execute( );
 }
 
 void SQLiteObjectRelationsDbi::createObjectRelation( U2ObjectRelation &relation, U2OpStatus &os ) {
     static const QString queryString( "INSERT INTO ObjectRelation (object, reference, role) VALUES(?1, ?2, ?3)" );
-    SQLiteQuery q( queryString, db, os );
+    SQLiteWriteQuery q( queryString, db, os );
     CHECK_OP(os, );
     q.bindDataId( 1, relation.id );
     q.bindDataId( 2, relation.referencedObject );
@@ -60,7 +60,7 @@ QList<U2ObjectRelation> SQLiteObjectRelationsDbi::getObjectRelations( const U2Da
 
     static const QString queryString = "SELECT o.type, o.name, o_r.object, o_r.reference, o_r.role FROM ObjectRelation AS o_r "
         "INNER JOIN Object AS o ON o.id = o_r.reference WHERE o_r.object = ?1";
-    SQLiteQuery q( queryString, db, os );
+    SQLiteReadQuery q( queryString, db, os );
     CHECK_OP(os, result);
     q.bindDataId( 1, object );
     while ( q.step( ) ) {
@@ -86,7 +86,7 @@ QList<U2DataId> SQLiteObjectRelationsDbi::getReferenceRelatedObjects( const U2Da
 
     static const QString queryString = "SELECT o.id, o.type FROM Object AS o INNER JOIN ObjectRelation AS o_r "
         "ON o.id = o_r.object WHERE o_r.reference = ?1 AND o_r.role = ?2";
-    SQLiteQuery q( queryString, db, os );
+    SQLiteReadQuery q( queryString, db, os );
     CHECK_OP(os, result);
     q.bindDataId( 1, reference );
     q.bindInt32( 2, relationRole );
@@ -102,7 +102,7 @@ QList<U2DataId> SQLiteObjectRelationsDbi::getReferenceRelatedObjects( const U2Da
 void SQLiteObjectRelationsDbi::removeObjectRelation( U2ObjectRelation &relation, U2OpStatus &os ) {
     static const QString queryString( "DELETE FROM ObjectRelation "
         "WHERE object = ?1 AND reference = ?2" );
-    SQLiteQuery q( queryString, db, os );
+    SQLiteWriteQuery q( queryString, db, os );
     CHECK_OP(os, );
     q.bindDataId( 1, relation.id );
     q.bindDataId( 2, relation.referencedObject );
@@ -111,7 +111,7 @@ void SQLiteObjectRelationsDbi::removeObjectRelation( U2ObjectRelation &relation,
 
 void SQLiteObjectRelationsDbi::removeAllObjectRelations( const U2DataId &object, U2OpStatus &os ) {
     static const QString queryString( "DELETE FROM ObjectRelation WHERE object = ?1 OR reference = ?1" );
-    SQLiteQuery q( queryString, db, os );
+    SQLiteWriteQuery q( queryString, db, os );
     CHECK_OP(os, );
     q.bindDataId( 1, object );
     q.execute( );
@@ -119,7 +119,7 @@ void SQLiteObjectRelationsDbi::removeAllObjectRelations( const U2DataId &object,
 
 void SQLiteObjectRelationsDbi::removeReferencesForObject( const U2DataId &object, U2OpStatus &os ) {
     static const QString queryString( "DELETE FROM ObjectRelation WHERE object = ?1" );
-    SQLiteQuery q( queryString, db, os );
+    SQLiteWriteQuery q( queryString, db, os );
     CHECK_OP(os, );
     q.bindDataId( 1, object );
     q.execute( );

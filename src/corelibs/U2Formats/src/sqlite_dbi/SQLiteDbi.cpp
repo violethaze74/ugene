@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@
 #include <U2Core/Version.h>
 #include <U2Core/GUrl.h>
 
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <3rdparty/sqlite3/sqlite3.h>
 
@@ -157,7 +157,7 @@ SQLiteFeatureDbi* SQLiteDbi::getSQLiteFeatureDbi() const {
 }
 
 QString SQLiteDbi::getProperty(const QString& name, const QString& defaultValue, U2OpStatus& os) {
-    SQLiteQuery q("SELECT value FROM Meta WHERE name = ?1", db, os);
+    SQLiteReadQuery q("SELECT value FROM Meta WHERE name = ?1", db, os);
     q.bindString(1, name);
     bool found = q.step();
     if (os.hasError()) {
@@ -173,11 +173,11 @@ void SQLiteDbi::setProperty(const QString& name, const QString& value, U2OpStatu
     if (os.hasError()) {
         return;
     }
-    SQLiteQuery q1("DELETE FROM Meta WHERE name = ?1", db, os);
+    SQLiteWriteQuery q1("DELETE FROM Meta WHERE name = ?1", db, os);
     q1.bindString(1, name);
     q1.execute();
 
-    SQLiteQuery q2("INSERT INTO Meta(name, value) VALUES (?1, ?2)", db, os);
+    SQLiteWriteQuery q2("INSERT INTO Meta(name, value) VALUES (?1, ?2)", db, os);
     q2.bindString(1, name);
     q2.bindString(2, value);
     q2.execute();
@@ -242,7 +242,7 @@ bool SQLiteDbi::isInitialized(U2OpStatus &os) {
 
 void SQLiteDbi::populateDefaultSchema(U2OpStatus& os) {
     // meta table, stores general db info
-    SQLiteQuery("CREATE TABLE Meta(name TEXT NOT NULL, value TEXT NOT NULL)", db, os).execute();
+    SQLiteWriteQuery("CREATE TABLE Meta(name TEXT NOT NULL, value TEXT NOT NULL)", db, os).execute();
 
     objectDbi->initSqlSchema(os);
     objectRelationsDbi->initSqlSchema(os);
@@ -351,18 +351,18 @@ void SQLiteDbi::init(const QHash<QString, QString>& props, const QVariantMap&, U
             break;
         }
 
-        SQLiteQuery("PRAGMA synchronous = OFF", db, os).execute();
+        SQLiteWriteQuery("PRAGMA synchronous = OFF", db, os).execute();
         QString lockingMode = props.value(U2DbiOptions::U2_DBI_LOCKING_MODE, "exclusive");
         if (lockingMode == "normal") {
-            SQLiteQuery("PRAGMA main.locking_mode = NORMAL", db, os).execute();
+            SQLiteWriteQuery("PRAGMA main.locking_mode = NORMAL", db, os).execute();
         } else {
-            SQLiteQuery("PRAGMA main.locking_mode = EXCLUSIVE", db, os).execute();
+            SQLiteWriteQuery("PRAGMA main.locking_mode = EXCLUSIVE", db, os).execute();
         }
-        SQLiteQuery("PRAGMA temp_store = MEMORY", db, os).execute();
-        SQLiteQuery("PRAGMA journal_mode = MEMORY", db, os).execute();
-        SQLiteQuery("PRAGMA cache_size = 50000", db, os).execute();
-        SQLiteQuery("PRAGMA recursive_triggers = ON", db, os).execute();
-        SQLiteQuery("PRAGMA foreign_keys = ON", db, os).execute();
+        SQLiteWriteQuery("PRAGMA temp_store = MEMORY", db, os).execute();
+        SQLiteWriteQuery("PRAGMA journal_mode = MEMORY", db, os).execute();
+        SQLiteWriteQuery("PRAGMA cache_size = 50000", db, os).execute();
+        SQLiteWriteQuery("PRAGMA recursive_triggers = ON", db, os).execute();
+        SQLiteWriteQuery("PRAGMA foreign_keys = ON", db, os).execute();
         //SQLiteQuery("PRAGMA page_size = 4096", db, os).execute();
         //TODO: int sqlite3_enable_shared_cache(int);
         //TODO: read_uncommitted

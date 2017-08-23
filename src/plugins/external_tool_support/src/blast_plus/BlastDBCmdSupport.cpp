@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "BlastDBCmdDialog.h"
 #include "BlastDBCmdSupport.h"
@@ -70,7 +70,7 @@ BlastDbCmdSupport::BlastDbCmdSupport(const QString& path) : ExternalTool(ET_BLAS
 }
 
 void BlastDbCmdSupport::sl_runWithExtFileSpecify(){
-    //Check that BlastDBCmd directory path defined
+    //Check that BlastDBCmd folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle("BLAST+ " +name);

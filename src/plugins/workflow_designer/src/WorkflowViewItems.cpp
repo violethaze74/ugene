@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,43 +19,34 @@
  * MA 02110-1301, USA.
  */
 
-#include "WorkflowViewItems.h"
-#include "ItemViewStyle.h"
-#include "WorkflowViewController.h"
-#include "WorkflowEditor.h"
+#include <QBitmap>
+#include <QDomElement>
+#include <QGraphicsItem>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSimpleTextItem>
+#include <QGraphicsTextItem>
+#include <QGraphicsView>
+#include <QPainter>
+#include <QRadialGradient>
+#include <QStyleOptionGraphicsItem>
+#include <QTextDocument>
+#include <QtMath>
 
-#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Core/Log.h>
+#include <U2Core/QVariantUtils.h>
+
 #include <U2Lang/ActorModel.h>
-#include <U2Lang/IntegralBusModel.h>
+#include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/IntegralBus.h>
+#include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowRunTask.h>
 #include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/WorkflowUtils.h>
 
-#include <U2Core/Log.h>
-#include <QtGui/QBitmap>
-#include <QtGui/QPainter>
-#include <QtGui/QRadialGradient>
-#include <QtGui/QTextDocument>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsTextItem>
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QGraphicsSimpleTextItem>
-#include <QtGui/QGraphicsSceneMouseEvent>
-#include <QtGui/QStyleOptionGraphicsItem>
-#include <QtGui/QGraphicsView>
-#else
-#include <QtWidgets/QGraphicsTextItem>
-#include <QtWidgets/QGraphicsItem>
-#include <QtWidgets/QGraphicsSimpleTextItem>
-#include <QtWidgets/QGraphicsSceneMouseEvent>
-#include <QtWidgets/QStyleOptionGraphicsItem>
-#include <QtWidgets/QGraphicsView>
-#endif
-#include <QtCore/qmath.h>
-
-#include <U2Core/QVariantUtils.h>
-#include <QtXml/qdom.h>
+#include "ItemViewStyle.h"
+#include "WorkflowEditor.h"
+#include "WorkflowViewController.h"
+#include "WorkflowViewItems.h"
 
 namespace U2 {
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,9 @@ DashboardsManagerDialog::DashboardsManagerDialog(ScanDashboardsDirTask *_task, Q
 : QDialog(parent), task(_task)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759831");
+    new HelpButton(this, buttonBox, "19767087");
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
 
     setupList();
 
@@ -57,13 +59,9 @@ DashboardsManagerDialog::DashboardsManagerDialog(ScanDashboardsDirTask *_task, Q
 
 void DashboardsManagerDialog::setupList() {
     QStringList header;
-    header << tr("Name") << tr("Directory");
+    header << tr("Name") << tr("Folder");
     listWidget->setHeaderLabels(header);
-#if (QT_VERSION < 0x050000) //Qt 5
-    listWidget->header()->setMovable(false);
-#else
     listWidget->header()->setSectionsMovable(false);
-#endif
 
     const int defaultNameColumnWidth = 250;
     listWidget->header()->resizeSection(0, defaultNameColumnWidth);

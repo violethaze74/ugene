@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,11 +27,11 @@
 #include <U2Core/AnnotationData.h>
 #include <U2Core/Matrix44.h>
 
-#include <QtCore/QString>
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QSharedData>
-#include <QtCore/QMultiMap>
+#include <QString>
+#include <QList>
+#include <QMap>
+#include <QSharedData>
+#include <QMultiMap>
 
 namespace U2 {
 

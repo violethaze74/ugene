@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,27 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#include "AssemblySamtoolsMpileup.h"
+#include <QDir>
 
-#include <U2Core/Timer.h>
-#include <U2Core/Counter.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/UserApplicationsSettings.h>
-#include <U2Core/U2SafePoints.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/VariantTrackObject.h>
+#include <U2Core/DocumentUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/Timer.h>
+#include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
+#include <U2Core/VariantTrackObject.h>
 
-#include <U2Lang/DbiDataHandler.h>
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
+#include <U2Lang/DbiDataHandler.h>
 #include <U2Lang/WorkflowEnv.h>
+
+#include "AssemblySamtoolsMpileup.h"
 
 #define CALL_VARIANTS_DIR "variants"
 
@@ -183,7 +185,7 @@ void SamtoolsMpileupTask::prepare(){
     if (!outDir.exists()) {
         const bool created = outDir.mkpath(outDir.absolutePath());
         if (!created) {
-            setError(tr("Can not create the directory: ") + outDir.absolutePath());
+            setError(tr("Can not create the folder: ") + outDir.absolutePath());
         }
     }
 }

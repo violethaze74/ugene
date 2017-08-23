@@ -1,4 +1,4 @@
-char *SAB_Ids[] =
+const char *SAB_Ids[] =
 	{
 	"sf1",
 	"sf10",

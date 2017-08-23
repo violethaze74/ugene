@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,14 +23,18 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Lang/WorkflowUtils.h>
+#include <QPushButton>
 
 #include "ChooseItemDialog.h"
+
 
 namespace U2 {
 
 ChooseItemDialog::ChooseItemDialog(QWidget* p) : QDialog(p)
 {
     setupUi(this);
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     connect(listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(accept()));
 
 }

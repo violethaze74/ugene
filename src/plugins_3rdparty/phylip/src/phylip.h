@@ -240,7 +240,7 @@ void phyFillScreenColor(void);
 #include <math.h>
 #include <ctype.h>
 
-/* directory delimiters */
+/* folder delimiters */
 #ifdef MAC
 #define DELIMITER ':'
 #else
@@ -265,8 +265,16 @@ typedef void *Anyptr;
 
 typedef unsigned char boolean;
 
-#define true    1
-#define false   0
+#ifdef _MSC_VER
+#  if _MSC_VER < 1900
+#    define true    1
+#    define false   0
+#  endif
+#else
+#  define true    1
+#  define false   0
+#endif
+
 
 /* Number of items per machine word in set.
  * Used in consensus programs and clique */

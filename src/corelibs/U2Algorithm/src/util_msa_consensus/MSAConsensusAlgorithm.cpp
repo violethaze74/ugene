@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,9 +23,10 @@
 #include "MSAConsensusUtils.h"
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/U2OpStatusUtils.h>
 
-#include <QtCore/QVector>
+#include <QVector>
 
 namespace U2 {
 
@@ -50,13 +51,16 @@ ConsensusAlgorithmFlags MSAConsensusAlgorithmFactory::getAphabetFlags(const DNAA
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _factory, QObject* p)
-: QObject(p), factory(_factory) , threshold(0)
-{
+char MSAConsensusAlgorithm::INVALID_CONS_CHAR = '\0';
+MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _factory, bool ignoreTrailingLeadingGaps, QObject* p)
+    : QObject(p), factory(_factory),
+      threshold(0),
+      ignoreTrailingAndLeadingGaps(ignoreTrailingLeadingGaps) {
+
 }
 
-char MSAConsensusAlgorithm::getConsensusCharAndScore(const MAlignment& ma, int column, int& score,
-                                                     const QVector<qint64>& seqIdx) const {
+char MSAConsensusAlgorithm::getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score,
+                                                     QVector<int> seqIdx) const {
     char consensusChar = getConsensusChar(ma, column, seqIdx);
 
     //now compute score using most freq character
@@ -75,6 +79,25 @@ void MSAConsensusAlgorithm::setThreshold(int val) {
     }
     threshold = newThreshold;
     emit si_thresholdChanged(newThreshold);
+}
+
+bool MSAConsensusAlgorithm::filterIdx(QVector<int> &seqIdx, const MultipleAlignment& ma, const int pos) const {
+    CHECK(ignoreTrailingAndLeadingGaps, true);
+
+    QVector<int> tmp;
+    int nSeq = seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size();
+    for (int seq = 0; seq < nSeq; seq++) {
+        int rowNum = seqIdx.isEmpty() ? seq : seqIdx[ seq ];
+        const MultipleAlignmentRow& row = ma->getRow(rowNum);
+        if (row->isTrailingOrLeadingGap(pos)) {
+            continue;
+        }
+        tmp << rowNum;
+    }
+    if (tmp.size() != nSeq) {
+        seqIdx = tmp;
+    }
+    return !tmp.isEmpty();
 }
 
 } //namespace

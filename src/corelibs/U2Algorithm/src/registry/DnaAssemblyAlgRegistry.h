@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,11 @@
 #ifndef _U2_DNA_ASSEMBLY_ALG_REGISTRY_H_
 #define _U2_DNA_ASSEMBLY_ALG_REGISTRY_H_
 
-#include <QtCore/QList>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QMutex>
-#include <QtCore/QObject>
+#include <QList>
+#include <QMap>
+#include <QMutex>
+#include <QObject>
+#include <QStringList>
 
 #include <U2Core/global.h>
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -28,7 +28,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2AssemblyDbi.h>
@@ -141,7 +141,7 @@ SharedDbiDataHandler DbiDataStorage::putSequence(const DNASequence &dnaSeq) {
     assert(NULL != dbiHandle);
 
     U2OpStatusImpl os;
-    U2EntityRef ent = U2SequenceUtils::import(dbiHandle->getDbiRef(), dnaSeq, os);
+    U2EntityRef ent = U2SequenceUtils::import(os, dbiHandle->getDbiRef(), dnaSeq);
     CHECK_OP(os, SharedDbiDataHandler());
 
     DbiConnection *connection = this->getConnection(dbiHandle->getDbiRef(), os);
@@ -152,12 +152,31 @@ SharedDbiDataHandler DbiDataStorage::putSequence(const DNASequence &dnaSeq) {
     return handler;
 }
 
-SharedDbiDataHandler DbiDataStorage::putAlignment(const MAlignment &al) {
+SharedDbiDataHandler DbiDataStorage::putSequence(const U2SequenceObject *sequenceObject) {
+    SAFE_POINT(NULL != dbiHandle, "Invalid DBI handle", SharedDbiDataHandler());
+    SAFE_POINT(NULL != sequenceObject, L10N::nullPointerError("Sequence object"), SharedDbiDataHandler());
+
+    U2OpStatusImpl os;
+
+    U2EntityRef entityRef = sequenceObject->getEntityRef();
+    if (sequenceObject->getEntityRef().dbiRef != dbiHandle->getDbiRef()) {
+        QScopedPointer<U2SequenceObject> clonedSequenceObject(qobject_cast<U2SequenceObject *>(sequenceObject->clone(dbiHandle->getDbiRef(), os)));
+        SAFE_POINT_OP(os, SharedDbiDataHandler());
+        entityRef = clonedSequenceObject->getEntityRef();
+    }
+
+    DbiConnection *connection = getConnection(dbiHandle->getDbiRef(), os);
+    SAFE_POINT_OP(os, SharedDbiDataHandler());
+
+    return SharedDbiDataHandler(new DbiDataHandler(entityRef, connection->dbi->getObjectDbi(), true));
+}
+
+SharedDbiDataHandler DbiDataStorage::putAlignment(const MultipleSequenceAlignment &al) {
     assert(NULL != dbiHandle);
 
     U2OpStatus2Log os;
-    MAlignment copiedAlignment = al;
-    QScopedPointer<MAlignmentObject> obj(MAlignmentImporter::createAlignment(dbiHandle->getDbiRef(), copiedAlignment, os));
+    MultipleSequenceAlignment copiedAlignment = al->getCopy();
+    QScopedPointer<MultipleSequenceAlignmentObject> obj(MultipleSequenceAlignmentImporter::createAlignment(dbiHandle->getDbiRef(), copiedAlignment, os));
     CHECK_OP(os, SharedDbiDataHandler());
 
     DbiConnection *connection = this->getConnection(dbiHandle->getDbiRef(), os);
@@ -307,16 +326,16 @@ AssemblyObject *StorageUtils::getAssemblyObject(DbiDataStorage *storage, const S
     return new AssemblyObject(objName, assemblyRef);
 }
 
-MAlignmentObject *StorageUtils::getMsaObject(DbiDataStorage *storage, const SharedDbiDataHandler &handler) {
+MultipleSequenceAlignmentObject *StorageUtils::getMsaObject(DbiDataStorage *storage, const SharedDbiDataHandler &handler) {
     CHECK(NULL != handler.constData(), NULL);
-    //QScopedPointer<U2Msa> msa(dynamic_cast<U2Msa*>(storage->getObject(handler, U2Type::Msa)));
+    //QScopedPointer<U2Ma> msa(dynamic_cast<U2Ma*>(storage->getObject(handler, U2Type::Msa)));
     QScopedPointer<U2Msa> msa(dynamic_cast<U2Msa*>(storage->getObject(handler, 2)));
     CHECK(NULL != msa.data(), NULL);
 
     U2EntityRef msaRef(handler->getDbiRef(), msa->id);
     QString objName = msa->visualName;
 
-    return new MAlignmentObject(objName, msaRef);
+    return new MultipleSequenceAlignmentObject(objName, msaRef);
 }
 
 AnnotationTableObject *StorageUtils::getAnnotationTableObject(DbiDataStorage *storage, const SharedDbiDataHandler &handler) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,10 +27,10 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/Task.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <algorithm>
-#include <QtCore/QVector>
+#include <QVector>
 
 class MuscleContext;
 class MSA;
@@ -47,11 +47,11 @@ struct MuscleWorkPool;
 class MuscleParallelTask: public Task {
     Q_OBJECT
 public:
-    MuscleParallelTask(const MAlignment& ma, MAlignment& res, const MuscleTaskSettings& config, MuscleContext* ctx);
+    MuscleParallelTask(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, const MuscleTaskSettings& config, MuscleContext* ctx);
     ~MuscleParallelTask() {cleanup();}
     void cleanup();
     QList<Task*> onSubTaskFinished(Task* subTask);
-    int estimateMemoryUsageInMb(const MAlignment& ma);
+    int estimateMemoryUsageInMb(const MultipleSequenceAlignment& ma);
 
 private:
     MuscleWorkPool *workpool;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ void NWAligner::setSeqs(const QByteArray &value1, const QByteArray &value2) {
     reassignSMatrixByAlphabet(value1 + value2);
 }
 
-MAlignment NWAligner::align() {
+MultipleSequenceAlignment NWAligner::align() {
     GTIMER(cvar, tvar, "NWAligner::align");
     float gapPenalty = -5;
 
@@ -103,11 +103,11 @@ MAlignment NWAligner::align() {
             i--; j--;
         } else if (score == scoreLeft + gapPenalty) {
             aligned1.prepend(seq1[i-1]);
-            aligned2.prepend(MAlignment_GapChar);
+            aligned2.prepend(U2Msa::GAP_CHAR);
             i--;
         } else {
             assert(score == scoreUp + gapPenalty);
-            aligned1.prepend(MAlignment_GapChar);
+            aligned1.prepend(U2Msa::GAP_CHAR);
             aligned2.prepend(seq2[j-1]);
             j--;
         }
@@ -115,23 +115,19 @@ MAlignment NWAligner::align() {
 
     while (i>0) {
         aligned1.prepend(seq1[i-1]);
-        aligned2.prepend(MAlignment_GapChar);
+        aligned2.prepend(U2Msa::GAP_CHAR);
         i--;
     }
 
     while (j>0) {
-        aligned1.prepend(MAlignment_GapChar);
+        aligned1.prepend(U2Msa::GAP_CHAR);
         aligned2.prepend(seq2[j-1]);
         j--;
     }
 
-    MAlignment result(MA_OBJECT_NAME, sMatrix.getAlphabet());
-    U2OpStatus2Log os;
-    result.addRow("seq1", aligned1, os);
-    CHECK_OP(os, MAlignment());
-
-    result.addRow("seq2", aligned2, os);
-    CHECK_OP(os, MAlignment());
+    MultipleSequenceAlignment result(MA_OBJECT_NAME, sMatrix.getAlphabet());
+    result->addRow("seq1", aligned1);
+    result->addRow("seq2", aligned2);
 
     return result;
 }

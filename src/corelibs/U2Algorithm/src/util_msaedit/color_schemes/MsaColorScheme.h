@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,11 +23,13 @@
 #define _U2_MSA_COLOR_SCHEME_H_
 
 #include <QColor>
+#include <QMap>
+
 #include <U2Core/global.h>
 
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleAlignmentObject;
 class MsaColorSchemeCustomFactory;
 class MsaColorSchemeFactory;
 
@@ -36,15 +38,15 @@ public:
     ColorSchemeData();
 
     QString name;
-    DNAAlphabetType alphabetType;
     bool defaultAlpType;
     QMap<char, QColor> alpColors;
+    DNAAlphabetType type;
 };
 
 class U2ALGORITHM_EXPORT MsaColorScheme : public QObject {
     Q_OBJECT
 public:
-    MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj);
+    MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj);
 
     //Get color for symbol "c" on position [seq, pos]. Variable "c" has been added for optimization.
     virtual QColor getColor(int seq, int pos, char c) const = 0;
@@ -54,6 +56,7 @@ public:
     static const QString EMPTY;
 
     static const QString UGENE_NUCL;
+    static const QString UGENE_SANGER_NUCL;
     static const QString JALVIEW_NUCL;
     static const QString IDENTPERC_NUCL;
     static const QString IDENTPERC_NUCL_GRAY;
@@ -73,28 +76,28 @@ public:
     static const QString CUSTOM_AMINO;
 
 protected:
-    const MsaColorSchemeFactory * factory;
-    MAlignmentObject *      maObj;
+    const MsaColorSchemeFactory *   factory;
+    MultipleAlignmentObject *       maObj;
 };
 
 class U2ALGORITHM_EXPORT MsaColorSchemeFactory : public QObject {
     Q_OBJECT
 public:
-    MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes);
-    virtual MsaColorScheme * create(QObject *p, MAlignmentObject *obj) const = 0;
+    MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
+    virtual MsaColorScheme * create(QObject *p, MultipleAlignmentObject *obj) const = 0;
 
     const QString & getId() const;
-    const QString & getName() const;
-    bool isAlphabetTypeSupported(DNAAlphabetType alphabetType) const;
-    const DNAAlphabetTypes &getAlphabetTypes() const;
+    const QString getName() const;
 
+    bool isAlphabetTypeSupported(const DNAAlphabetType& alphabetType) const;
+    const AlphabetFlags getSupportedAlphabets() const;
 signals:
     void si_factoryChanged();
 
 protected:
     QString         id;
     QString         name;
-    DNAAlphabetTypes alphabetTypes;
+    AlphabetFlags supportedAlphabets;
 };
 
 class U2ALGORITHM_EXPORT MsaColorSchemeRegistry : public QObject {
@@ -103,16 +106,16 @@ public:
     MsaColorSchemeRegistry();
     ~MsaColorSchemeRegistry();
 
-    const QList<MsaColorSchemeFactory *> &getCommonSchemes() const;
-    const QList<MsaColorSchemeCustomFactory *> &getCustomSchemes() const;
+    const QList<MsaColorSchemeFactory *> & getSchemes() const;
+    const QList<MsaColorSchemeCustomFactory *> &getCustomColorSchemes() const;
 
+    QList<MsaColorSchemeFactory *> getAllSchemes(DNAAlphabetType alphabetType) const;
     QList<MsaColorSchemeFactory *> getSchemes(DNAAlphabetType alphabetType) const;
-    QList<MsaColorSchemeFactory *> getCommonSchemes(DNAAlphabetType alphabetType) const;
     QList<MsaColorSchemeFactory *> getCustomSchemes(DNAAlphabetType alphabetType) const;
 
-    QMap<DNAAlphabetTypes, QList<MsaColorSchemeFactory *> > getSchemesGrouped() const;
-    QMap<DNAAlphabetTypes, QList<MsaColorSchemeFactory *> > getCommonSchemesGrouped() const;
-    QMap<DNAAlphabetTypes, QList<MsaColorSchemeFactory *> > getCustomSchemesGrouped() const;
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > getAllSchemesGrouped() const;
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > getSchemesGrouped() const;
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory *> > getCustomSchemesGrouped() const;
 
     MsaColorSchemeCustomFactory * getCustomSchemeFactoryById(const QString &id) const;
     MsaColorSchemeFactory * getSchemeFactoryById(const QString &id) const;
@@ -125,6 +128,7 @@ private slots:
     void sl_onCustomSettingsChanged();
 
 private:
+    QList<MsaColorSchemeFactory *> customSchemesToCommon() const;
     void addCustomScheme(const ColorSchemeData& scheme);
     void addMsaColorSchemeFactory(MsaColorSchemeFactory *commonFactory);
     void addMsaCustomColorSchemeFactory(MsaColorSchemeCustomFactory *customFactory);

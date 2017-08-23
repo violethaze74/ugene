@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -105,8 +105,8 @@ private:
 
 }   // namespace U2
 
-typedef QPair<int, QString> intStringPair;
-Q_DECLARE_METATYPE(intStringPair)
+typedef QPair<int, QString> intStrStrPair;
+Q_DECLARE_METATYPE(intStrStrPair)
 Q_DECLARE_METATYPE(QList<int>)
 
 #endif // _U2_NCBI_SEARCH_DIALOG_FILLER_H_

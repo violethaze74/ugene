@@ -2,9 +2,8 @@
 
 /* Copyright (C) 2000 D.T. Jones */
 
-#include <QtGlobal>
-#include <QtCore/QTemporaryFile>
-#include <QtCore/QTextStream>
+#include <QTemporaryFile>
+#include <QTextStream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,16 +21,12 @@
 
 #include <QColorDialog>
 #include <QMainWindow>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QPlastiqueStyle>
-#else
 #include <QProxyStyle>
 #include <QStyleFactory>
-#endif
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
@@ -101,11 +97,7 @@ TreeOptionsWidget::~TreeOptionsWidget()
 }
 
 void TreeOptionsWidget::initColorButtonsStyle() {
-#if (QT_VERSION < 0x050000) //Qt 5
-    QStyle *buttonStyle = new QPlastiqueStyle;
-#else
     QStyle *buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
-#endif
     buttonStyle->setParent(this);
     labelsColorButton->setStyle(buttonStyle);
     branchesColorButton->setStyle(buttonStyle);
@@ -395,18 +387,27 @@ AddTreeWidget::AddTreeWidget(MSAEditor* msa)
     buildTreeButton->setFixedWidth(102);
     buttonLayout->addWidget(buildTreeButton);
     buildTreeButton->setObjectName( "BuildTreeButton" );
-
+    
+    buildTreeButton->setDisabled(editor->getNumSequences() < 2);
+    
     mainLayout->addLayout(buttonLayout);
 
     connect(openTreeButton, SIGNAL(clicked()), SLOT(sl_onOpenTreeTriggered()));
     connect(buildTreeButton, SIGNAL(clicked()), SLOT(sl_onBuildTreeTriggered()));
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), 
+            SLOT(sl_msaChanged(const MultipleAlignment&, const MaModificationInfo&)));
 }
+
 void AddTreeWidget::sl_onOpenTreeTriggered() {
     editor->getTreeManager()->openTreeFromFile();
 }
 
 void AddTreeWidget::sl_onBuildTreeTriggered() {
     editor->getTreeManager()->buildTreeWithDialog();
+}
+
+void AddTreeWidget::sl_msaChanged(const MultipleAlignment&, const MaModificationInfo&) {
+    buildTreeButton->setDisabled(editor->getNumSequences() < 2);
 }
 
 }

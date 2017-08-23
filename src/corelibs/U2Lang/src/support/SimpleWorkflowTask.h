@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,11 +25,13 @@
 #ifndef _SIMPLE_WORKFLOW_TASK_H_
 #define _SIMPLE_WORKFLOW_TASK_H_
 
-#include <U2Core/Task.h>
+#include <QTemporaryFile>
+
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentProviderTask.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/Task.h>
 
 #include <U2Lang/Schema.h>
 #include <U2Lang/WorkflowIOTasks.h>
@@ -40,7 +42,7 @@ using namespace Workflow;
 
 class CmdlineTaskRunner;
 class LoadDocumentTask;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 
 class U2LANG_EXPORT SimpleInOutWorkflowTaskConfig {
 public:
@@ -99,17 +101,17 @@ class U2LANG_EXPORT SimpleMSAWorkflow4GObjectTask : public Task {
     Q_OBJECT
 
 public:
-    SimpleMSAWorkflow4GObjectTask(const QString& taskName, MAlignmentObject* maObj, const SimpleMSAWorkflowTaskConfig& conf);
+    SimpleMSAWorkflow4GObjectTask(const QString& taskName, MultipleSequenceAlignmentObject* maObj, const SimpleMSAWorkflowTaskConfig& conf);
     ~SimpleMSAWorkflow4GObjectTask();
 
     void prepare();
     ReportResult report();
-    MAlignment getResult();
+    MultipleSequenceAlignment getResult();
 
 private:
     void releaseModStep(const QString error = QString());
 
-    QPointer<MAlignmentObject>  obj;
+    QPointer<MultipleSequenceAlignmentObject>  obj;
     QPointer<StateLock>         lock;
     QString                     docName;
     SimpleMSAWorkflowTaskConfig conf;

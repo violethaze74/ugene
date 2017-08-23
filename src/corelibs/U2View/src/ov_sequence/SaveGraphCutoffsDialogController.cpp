@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,17 +31,24 @@
 #include <U2Gui/HelpButton.h>
 
 #include <U2View/ADVAnnotationCreation.h>
+#include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 
 #include "SaveGraphCutoffsDialogController.h"
 
 namespace U2{
 
-SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(GSequenceGraphDrawer *_d, QSharedPointer<GSequenceGraphData>& _gd, QWidget *parent, ADVSequenceObjectContext* _ctx)
-    :QDialog(parent), ctx(_ctx), d(_d), gd(_gd)
+SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(GSequenceGraphDrawer *_d,
+                                                                   QSharedPointer<GSequenceGraphData>& _gd,
+                                                                   QWidget *parent,
+                                                                   SequenceObjectContext* ctx)
+    : QDialog(parent),
+      ctx(ctx),
+      d(_d),
+      gd(_gd)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759526");
+    new HelpButton(this, buttonBox, "19766782");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Save"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -135,7 +142,7 @@ void SaveGraphCutoffsDialogController::accept(){
         data.append(d);
     }
     AnnotationTableObject *aobj = mm.getAnnotationObject();
-    ctx->getAnnotatedDNAView()->tryAddObject(aobj);
+    tryAddObject(aobj);
     Task *t  = new CreateAnnotationsTask(aobj, data, mm.groupName);
     AppContext::getTaskScheduler()->registerTopLevelTask(t) ;
     QDialog::accept();
@@ -159,6 +166,12 @@ bool SaveGraphCutoffsDialogController::validate(){
         return false;
     }
     return true;
+}
+
+void SaveGraphCutoffsDialogController::tryAddObject(AnnotationTableObject *annotationTableObject) {
+    ADVSequenceObjectContext *advContext = qobject_cast<ADVSequenceObjectContext *>(ctx);
+    CHECK(NULL != advContext, );
+    advContext->getAnnotatedDNAView()->tryAddObject(annotationTableObject);
 }
 
 }

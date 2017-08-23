@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -283,16 +283,9 @@ void BioStruct3DGLWidget::draw() {
     foreach (const BioStruct3DRendererContext &ctx, contexts) {
         glPushMatrix();
 
-#if defined(GL_VERSION_1_3) && (QT_VERSION < 0x050000)
-        // glMultTransposeMatrixf is deprecated since Qt 5
-        glMultTransposeMatrixf(ctx.biostruct->getTransform().data());
-#else
-        // on OpenGL versions below 1.3 glMultTransposeMatrix not suported
-        // see http://www.opengl.org/resources/faq/technical/extensions.htm
         Matrix44 colmt = ctx.biostruct->getTransform();
         colmt.transpose();
         glMultMatrixf(colmt.data());
-#endif
 
         ctx.renderer->drawBioStruct3D();
         glPopMatrix();

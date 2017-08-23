@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,25 +28,13 @@
 #include <drivers/GTMouseDriver.h>
 #include <drivers/GTKeyboardDriver.h>
 
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QComboBox>
-#include <QtGui/QSpinBox>
-#include <QtGui/QCheckBox>
-#include <QtGui/QTableWidget>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QSpinBox>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QTableWidget>
-#include <QtWidgets/QDialogButtonBox>
-#endif
-
+#include <QApplication>
+#include <QPushButton>
+#include <QComboBox>
+#include <QSpinBox>
+#include <QCheckBox>
+#include <QTableWidget>
+#include <QDialogButtonBox>
 
 namespace U2 {
 using namespace HI;
@@ -59,15 +47,15 @@ void ExtractSelectedAsMSADialogFiller::commonScenario() {
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
     if(from){
-        QSpinBox *fromSpin=dialog->findChild<QSpinBox*>("startPosBox");
+        QLineEdit *fromSpin = dialog->findChild<QLineEdit*>("startLineEdit");
         GT_CHECK(fromSpin!=NULL, "fromSpin is NULL")
-        GTSpinBox::setValue(os,fromSpin,from,GTGlobals::UseKey);
+        GTLineEdit::setText(os, fromSpin, QString::number(from));
     }
 
     if(to){
-        QSpinBox *toSpin=dialog->findChild<QSpinBox*>("endPosBox");
+        QLineEdit *toSpin = dialog->findChild<QLineEdit*>("endLineEdit");
         GT_CHECK(toSpin!=NULL, "toSpin is NULL")
-        GTSpinBox::setValue(os,toSpin,to,GTGlobals::UseKey);
+        GTLineEdit::setText(os,toSpin, QString::number(to));
     }
 
     QLineEdit *filepathEdit=dialog->findChild<QLineEdit*>("filepathEdit");

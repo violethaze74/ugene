@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+
+#include <QFileInfo>
 
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -253,7 +255,7 @@ FSItem * RunFileSystem::createPath(const QStringList &path, U2OpStatus &os) {
         }
         pathStr += "/" + dirName;
         if (!item->isDir()) {
-            os.setError(pathStr + " is a file, not a directory");
+            os.setError(pathStr + " is a file, not a folder");
             return root;
         }
         current = item;

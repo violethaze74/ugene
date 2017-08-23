@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -144,11 +144,7 @@ QueryPalette::QueryPalette(QWidget* parent/* =NULL */)
     setRootIsDecorated(false);
     setColumnCount(1);
     header()->hide();
-#if (QT_VERSION < 0x050000)
-    header()->setResizeMode(QHeaderView::Stretch);
-#else
     header()->setSectionResizeMode(QHeaderView::Stretch);
-#endif
     setMouseTracking(true);
     setContent();
     setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored));

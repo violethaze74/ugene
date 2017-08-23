@@ -153,14 +153,14 @@
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
            <layout class="QGridLayout" name="gridLayout_2" rowminimumheight="20,20,20,20">
+            <property name="topMargin">
+             <number>0</number>
+            </property>
             <property name="horizontalSpacing">
              <number>3</number>
             </property>
             <property name="verticalSpacing">
              <number>9</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
             </property>
             <item row="1" column="0">
              <widget class="QCheckBox" name="reverseBox">

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
  */
 
 #include <QDialogButtonBox>
+#include <QDomDocument>
 #include <QFormLayout>
 #include <QHBoxLayout>
 #include <QLineEdit>
@@ -28,15 +29,16 @@
 #include <QMessageBox>
 #include <QToolBar>
 #include <QVBoxLayout>
+#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Log.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2Test/GTest.h>
@@ -267,7 +269,7 @@ void TestViewController::addTestSuite(GTestSuite* ts) {
         excludedSorted.insert(dynamic_cast<GTestRef*>(iter.key())->getShortName(), dynamic_cast<GTestRef*>(iter.key()) );
     }
     foreach(GTestRef* t, excludedSorted.values()) {
-        QString firstDirName=t->getShortName().section('/', 0 , 0 );//find first directory name
+        QString firstDirName=t->getShortName().section('/', 0 , 0 );//find first folder name
         if(t->getShortName()==firstDirName){
             addTest(tsi, t, ts->getExcludedTests().value(t));
         } else {
@@ -284,7 +286,7 @@ void TestViewController::addTestSuite(GTestSuite* ts) {
     }
     //add to tree Tests to run
     foreach(GTestRef* t, ts->getTests()) {
-        QString firstDirName=t->getShortName().section('/', 0 , 0 );//find first directory name
+        QString firstDirName=t->getShortName().section('/', 0 , 0 );//find first folder name
         if (t->getShortName()==firstDirName){
             addTest(tsi, t,"");
         } else {

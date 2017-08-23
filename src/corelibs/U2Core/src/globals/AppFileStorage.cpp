@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,13 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
-
+#include <QApplication>
 #include <QDir>
 
 #include <U2Core/AppContext.h>
@@ -99,7 +93,7 @@ QString WorkflowProcess::getTempDirectory() const {
     if (!dir.exists()) {
         bool created = dir.mkpath(tempDirectory);
         if (!created) {
-            coreLog.error(QString("Can not create a directory: %1").arg(tempDirectory));
+            coreLog.error(QString("Can not create a folder: %1").arg(tempDirectory));
         }
     }
     return tempDirectory;
@@ -143,7 +137,7 @@ void AppFileStorage::init(U2OpStatus &os) {
     QDir dir(storageDir);
     if (!dir.exists()) {
         bool created = dir.mkpath(storageDir);
-        CHECK_EXT(created, os.setError(QString("Can not create a directory: %1").arg(storageDir)), );
+        CHECK_EXT(created, os.setError(QString("Can not create a folder: %1").arg(storageDir)), );
     }
     QString storageUrl = storageDir + "/" + DB_FILE_NAME;
 
@@ -207,7 +201,7 @@ void AppFileStorage::registerWorkflowProcess(FileStorage::WorkflowProcess &proce
     QDir wdDir(wdDirPath);
     bool created = wdDir.mkpath(wdDirPath);
     if (!created) {
-        os.setError(QString("Can not create a directory: %1").arg(wdDirPath));
+        os.setError(QString("Can not create a folder: %1").arg(wdDirPath));
         return;
     }
 
@@ -299,7 +293,7 @@ QString AppFileStorage::createDirectory() const {
     QDir storageRoot(storageDir + "/" + WD_DIR_NAME);
     if (!storageRoot.exists()) {
         bool created = storageRoot.mkpath(storageRoot.path());
-        SAFE_POINT(created, QString("Can not create a directory: %1").arg(storageRoot.path()), "");
+        SAFE_POINT(created, QString("Can not create a folder: %1").arg(storageRoot.path()), "");
     }
     uint time = QDateTime::currentDateTime().toTime_t();
     QString baseDirName = QByteArray::number(time);

@@ -38,9 +38,9 @@ void MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(QList<QAction*> 
     MsaColorSchemeFactory *noColorsFactory = msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::EMPTY);
 
     if (alphabet == DNAAlphabet_RAW) {
-        QMap<DNAAlphabetTypes, QList<MsaColorSchemeFactory*> > factories;
+        QMap<AlphabetFlags, QList<MsaColorSchemeFactory*> > factories;
         if (type == Common) {
-            factories = msaColorSchemeRegistry->getCommonSchemesGrouped();
+            factories = msaColorSchemeRegistry->getSchemesGrouped();
         } else if (type == Custom) {
             factories = msaColorSchemeRegistry->getCustomSchemesGrouped();
         } else {
@@ -79,7 +79,7 @@ void MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(QList<QAction*>
     MsaHighlightingSchemeFactory* nohighlightingFactory = msaHighlightingSchemeRegistry->getEmptySchemeFactory();
 
     if (alphabet == DNAAlphabet_RAW) {
-        QMap<DNAAlphabetTypes, QList<MsaHighlightingSchemeFactory*> > highlightingSchemesFactories = msaHighlightingSchemeRegistry->getSchemesGrouped();
+        QMap<AlphabetFlags, QList<MsaHighlightingSchemeFactory*> > highlightingSchemesFactories = msaHighlightingSchemeRegistry->getAllSchemesGrouped();
         QList<MsaHighlightingSchemeFactory *> commonHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
         QList<MsaHighlightingSchemeFactory *> aminoHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO];
         QList<MsaHighlightingSchemeFactory *> nucleotideHighlightSchemesFactories = highlightingSchemesFactories[DNAAlphabet_RAW | DNAAlphabet_NUCL];
@@ -91,7 +91,7 @@ void MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(QList<QAction*>
         fillHighlightingMenuSectionForCurrentAlphabet(aminoHighlightSchemesFactories, actions, tr("Amino acid alphabet"), actionsParent);
         fillHighlightingMenuSectionForCurrentAlphabet(nucleotideHighlightSchemesFactories, actions, tr("Nucleotide alphabet"), actionsParent);
     } else {
-        QList<MsaHighlightingSchemeFactory*> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getSchemes(alphabet);
+        QList<MsaHighlightingSchemeFactory*> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getAllSchemes(alphabet);
         highlightingSchemesFactories.removeAll(nohighlightingFactory);
         highlightingSchemesFactories.prepend(nohighlightingFactory);
         fillHighlightingSchemeMenuActions(actions, highlightingSchemesFactories, actionsParent);
@@ -149,5 +149,6 @@ void MsaSchemesMenuBuilder::fillHighlightingMenuSectionForCurrentAlphabet(QList<
         fillHighlightingSchemeMenuActions(actions, highlightSchemesFactories, actionsParent);
     }
 }
+
 
 }

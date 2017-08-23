@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,6 +26,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/AppSettingsGUI.h>
 #include <U2Gui/GUIUtils.h>
@@ -37,7 +38,7 @@
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "ExternalToolSupportSettingsController.h"
 #include "HmmerBuildDialog.h"
@@ -81,16 +82,16 @@ void HmmerSupport::sl_buildProfile() {
         return;
     }
 
-    MAlignment ma;
+    MultipleSequenceAlignment ma;
     MWMDIWindow *activeWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     if (NULL != activeWindow) {
         GObjectViewWindow *objectViewWindow = qobject_cast<GObjectViewWindow *>(activeWindow);
         if (NULL != objectViewWindow) {
             MSAEditor *msaEditor = qobject_cast<MSAEditor *>(objectViewWindow->getObjectView());
             if (NULL != msaEditor) {
-                MAlignmentObject *maObj = msaEditor->getMSAObject();
+                MultipleSequenceAlignmentObject *maObj = msaEditor->getMaObject();
                 if (maObj != NULL) {
-                    ma = maObj->getMAlignment();
+                    ma = maObj->getMultipleAlignment();
                 }
             }
         }
@@ -271,7 +272,7 @@ bool HmmerSupport::isToolSet(const QString &name) const {
 }
 
 HmmerMsaEditorContext::HmmerMsaEditorContext(QObject *parent)
-    : GObjectViewWindowContext(parent, MSAEditorFactory::ID)
+    : GObjectViewWindowContext(parent, MsaEditorFactory::ID)
 {
 
 }
@@ -279,7 +280,7 @@ HmmerMsaEditorContext::HmmerMsaEditorContext(QObject *parent)
 void HmmerMsaEditorContext::initViewContext(GObjectView *view) {
     MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
-    CHECK(NULL != msaEditor->getMSAObject(), );
+    CHECK(NULL != msaEditor->getMaObject(), );
 
     GObjectViewAction *action = new GObjectViewAction(this, view, tr("Build HMMER3 profile"));
     action->setObjectName("Build HMMER3 profile");
@@ -292,7 +293,7 @@ void HmmerMsaEditorContext::buildMenu(GObjectView *view, QMenu *menu) {
     MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
     SAFE_POINT(NULL != menu, "Menu is NULL", );
-    CHECK(NULL != msaEditor->getMSAObject(), );
+    CHECK(NULL != msaEditor->getMaObject(), );
 
     QList<GObjectViewAction *> list = getViewActions(view);
     SAFE_POINT(1 == list.size(), "List size is incorrect", );
@@ -307,9 +308,9 @@ void HmmerMsaEditorContext::sl_build() {
     MSAEditor *msaEditor = qobject_cast<MSAEditor *>(action->getObjectView());
     SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
 
-    MAlignmentObject *obj = msaEditor->getMSAObject();
+    MultipleSequenceAlignmentObject *obj = msaEditor->getMaObject();
     if (obj != NULL) {
-        QObjectScopedPointer<HmmerBuildDialog> buildDlg = new HmmerBuildDialog(obj->getMAlignment());
+        QObjectScopedPointer<HmmerBuildDialog> buildDlg = new HmmerBuildDialog(obj->getMultipleAlignment  ());
         buildDlg->exec();
         CHECK(!buildDlg.isNull(), );
     }

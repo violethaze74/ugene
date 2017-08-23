@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,8 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrl.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PFMatrixObject.h>
 #include <U2Core/PWMatrixObject.h>
 #include <U2Core/PhyTreeObject.h>
@@ -401,8 +402,10 @@ GObject *GObjectUtils::createObject(const U2DbiRef &ref, const U2DataId &id, con
     switch (type) {
     case U2Type::Sequence:
         return new U2SequenceObject(name, entityRef);
+    case U2Type::Mca:
+        return new MultipleChromatogramAlignmentObject(name, entityRef);
     case U2Type::Msa:
-        return new MAlignmentObject(name, entityRef);
+        return new MultipleSequenceAlignmentObject(name, entityRef);
     case U2Type::Assembly:
         return new AssemblyObject(name, entityRef);
     case U2Type::VariantTrack:

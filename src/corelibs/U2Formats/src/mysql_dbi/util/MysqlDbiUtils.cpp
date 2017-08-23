@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -143,7 +143,7 @@ void MysqlDbiUtils::renameObject(MysqlModificationAction& updateAction, MysqlDbi
 
     QByteArray modDetails;
     if (TrackOnUpdate == updateAction.getTrackModType()) {
-        modDetails = PackUtils::packObjectNameDetails(object.visualName, newName);
+        modDetails = U2DbiPackUtils::packObjectNameDetails(object.visualName, newName);
     }
 
     object.visualName = newName;

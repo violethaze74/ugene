@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFileInfo>
+#include <QCoreApplication>
+#include <QFileInfo>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AssemblyObject.h>
@@ -129,7 +129,7 @@ void CloneObjectsTask::run() {
         if(df->isObjectOpSupported(dstDoc, DocumentFormat::DocObjectOp_Add, srcObj->getGObjectType())){
             GObject *dstObj = srcObj->clone(dstDoc->getDbiRef(), stateInfo);
             CHECK_OP(stateInfo, );
-            if (dstObj->getGObjectType() == GObjectTypes::MULTIPLE_ALIGNMENT){
+            if (dstObj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
                 QString name = QFileInfo(dstDoc->getURLString()).baseName();
                 dstObj->setGObjectName(name);
                 dstObj->setModified(false);

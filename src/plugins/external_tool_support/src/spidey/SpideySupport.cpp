@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -135,7 +135,7 @@ void SpideySupportContext::sl_align_with_Spidey() {
 
     QWidget* parent = QApplication::activeWindow();
 
-    //Check that Spidey and tempory directory path defined
+    //Check that Spidey and tempory folder path defined
     if (AppContext::getExternalToolRegistry()->getByName(ET_SPIDEY)->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(parent);
         msgBox->setWindowTitle(ET_SPIDEY);

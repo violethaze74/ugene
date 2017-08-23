@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,13 +28,8 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/HelpButton.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#include <QtGui/QToolButton>
-#else
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QToolButton>
-#endif
+#include <QPushButton>
+#include <QToolButton>
 
 namespace U2 {
 
@@ -44,7 +39,7 @@ FormatDBSupportRunDialog::FormatDBSupportRunDialog(const QString &_name, FormatD
         QDialog(_parent), name(_name), settings(_settings)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759718");
+    new HelpButton(this, buttonBox, "19766974");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Format"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     formatButton = buttonBox->button(QDialogButtonBox::Ok);
@@ -100,7 +95,7 @@ void FormatDBSupportRunDialog::sl_onBrowseInputDir(){
     LastUsedDirHelper lod("");
 
     QString name;
-    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a directory with input files"), lod.dir);
+    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder with input files"), lod.dir);
     if (!name.isEmpty()) {
         inputDirLineEdit->setText(name);
     }
@@ -108,10 +103,10 @@ void FormatDBSupportRunDialog::sl_onBrowseInputDir(){
 }
 
 void FormatDBSupportRunDialog::sl_onBrowseDatabasePath(){
-    LastUsedDirHelper lod("Database Directory");
+    LastUsedDirHelper lod("Database folder");
 
     QString name;
-    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a directory to save database files"), lod.dir);
+    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder to save database files"), lod.dir);
     if (!name.isEmpty()) {
         databasePathLineEdit->setText(name);
     }

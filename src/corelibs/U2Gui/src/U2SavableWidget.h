@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
 #ifndef _U2_SAVABLE_WIDGET_H_
 #define _U2_SAVABLE_WIDGET_H_
 
-#include <QtCore/QSet>
-#include <QtCore/QVariant>
+#include <QSet>
+#include <QVariant>
 
 #include <U2Core/global.h>
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,17 +22,18 @@
 #ifndef _U2_CREATE_SCRIPT_WORKER_DIALOG_H_
 #define _U2_CREATE_SCRIPT_WORKER_DIALOG_H_
 
-#include "ui_CreateScriptBlockDialog.h"
-#include <U2Lang/ActorModel.h>
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Designer/DelegateEditors.h>
-#include <U2Lang/BaseTypes.h>
+#include <QDomDocument>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Settings.h>
 
-#include <QtXml/qdom.h>
+#include <U2Designer/DelegateEditors.h>
+#include <U2Lang/ActorModel.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/WorkflowEnv.h>
+
+#include "ui_CreateScriptBlockDialog.h"
 
 namespace U2 {
 using namespace Workflow;

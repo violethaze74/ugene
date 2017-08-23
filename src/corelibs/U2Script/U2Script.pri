@@ -8,7 +8,7 @@ UGENE_RELATIVE_DESTDIR = ''
 
 DEFINES +=          QT_FATAL_ASSERT BUILDING_U2SCRIPT_DLL
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += network xml widgets
 
 INCLUDEPATH +=      ../../include \
                     ../U2Private/src

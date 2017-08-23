@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,12 @@
 #ifndef _U2_WORKFLOW_UTILS_H_
 #define _U2_WORKFLOW_UTILS_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QVariant>
+#include <QObject>
+#include <QProcess>
+#include <QVariant>
+
 #include <U2Lang/Dataset.h>
 #include <U2Lang/Descriptor.h>
-#include <U2Lang/ActorModel.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/Schema.h>
 #include <U2Lang/SupportClass.h>
@@ -36,6 +37,7 @@
 class QListWidgetItem;
 
 namespace U2 {
+
 class Descriptor;
 class DocumentFormat;
 class Folder;
@@ -68,7 +70,7 @@ public:
     static QList<Descriptor> findMatchingCandidates(DataTypePtr from, DataTypePtr to, const Descriptor & key);
     static QList<Descriptor> findMatchingCandidates(DataTypePtr from, DataTypePtr elementDatatype);
     static Descriptor getCurrentMatchingDescriptor(const QList<Descriptor> & candidates, DataTypePtr to, const Descriptor & key,
-        const QStrStrMap & bindings);
+        const StrStrMap & bindings);
     static DataTypePtr getToDatatypeForBusport(IntegralBusPort * p);
     static DataTypePtr getFromDatatypeForBusport(IntegralBusPort * p, DataTypePtr to);
 
@@ -91,9 +93,9 @@ public:
 
     static bool validateSchemaForIncluding(const Schema &s, QString &error);
 
-    static void extractPathsFromBindings(QStrStrMap &busMap, SlotPathMap &pathMap);
+    static void extractPathsFromBindings(StrStrMap &busMap, SlotPathMap &pathMap);
 
-    static void applyPathsToBusMap(QStrStrMap &busMap, const SlotPathMap &pathMap);
+    static void applyPathsToBusMap(StrStrMap &busMap, const SlotPathMap &pathMap);
 
     static bool startExternalProcess(QProcess *process, const QString &program, const QStringList &arguments);
 
@@ -127,11 +129,11 @@ public:
     static bool checkSharedDbConnection(const QString &fullDbUrl);
 
     /**
-     * Validation of input files/directories.
+     * Validation of input files/folders.
      * Empty input string is considered valid.
      * Otherwise, the input string is split into separate URL(s) by ';'.
      * For each input file: the URL must exist, be a file and have permissions to read from it.
-     * For each input directory: the URL must exist and be a directory.
+     * For each input folder: the URL must exist and be a folder.
      * For each object from a database: DB URL must be available, object must exist
      * For each folder from a database: DB URL must be available, folder must exist
      */
@@ -142,10 +144,10 @@ public:
     static bool validateInputDbFolders(QString urls, ProblemList &problemList);
 
     /**
-     * Validation of output file/directory.
+     * Validation of output file/folder.
      * Empty URL is considered valid.
      * For output URL it is verified that it is accessible for
-     * writing (the path can be absolute or relative to the Workflow Output Directory).
+     * writing (the path can be absolute or relative to the Workflow Output Folder).
      */
     static bool validateOutputFile(const QString &url, ProblemList &problemList);
     static bool validateOutputDir(const QString &url, ProblemList &problemList);
@@ -155,7 +157,7 @@ public:
 
     /**
      * Validates input files in datasets are present and readable (i.e.
-     * filtered files in input directories are verified).
+     * filtered files in input folders are verified).
      */
     static bool validateDatasets(const QList<Dataset> &sets, ProblemList &problemList);
 
@@ -240,4 +242,3 @@ protected:
 }//namespace
 
 #endif
-

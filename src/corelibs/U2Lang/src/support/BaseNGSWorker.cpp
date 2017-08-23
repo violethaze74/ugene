@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FailTask.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
@@ -31,14 +32,17 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Designer/DelegateEditors.h>
+
 #include <U2Formats/BAMUtils.h>
-#include <U2Core/FileAndDirectoryUtils.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseAttributes.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BaseAttributes.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
@@ -131,17 +135,10 @@ QString BaseNGSWorker::getTargetName (const QString &fileUrl, const QString &out
         name = QFileInfo(fileUrl).fileName();
         name = name + getDefaultFileName();
     }
-    if(outUrls.contains(outDir + name)){
-        name.append(QString("_%1").arg(outUrls.size()));
-    }
-    QString originalName = name;
-    while (QFile::exists(outDir + name) || outUrls.contains(outDir + name)){
-        outUrls.append(outDir+name);
-        name = originalName;
-        name.append(QString("_%1").arg(outUrls.size()));
-    }
-
-    return name;
+    QString rolledUrl = GUrlUtils::rollFileName(outDir + name, "_", outUrls.toSet());
+    outUrls.append(rolledUrl);
+    QFileInfo fi(rolledUrl);
+    return fi.fileName();
 }
 
 
@@ -206,7 +203,7 @@ void BaseNGSTask::prepare(){
 
     const QDir outDir = QFileInfo(settings.outDir).absoluteDir();
     if (!outDir.exists()) {
-        setError(tr("Directory does not exist: ") + outDir.absolutePath());
+        setError(tr("Folder does not exist: ") + outDir.absolutePath());
         return ;
     }
 

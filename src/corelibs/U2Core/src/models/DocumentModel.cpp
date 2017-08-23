@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,12 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFileInfo>
-#include <QtCore/QScopedPointer>
-#include <QtCore/QThread>
+#include <QCoreApplication>
+#include <QFileInfo>
+#include <QScopedPointer>
+#include <QThread>
 
-#include <QtScript/QScriptEngine>
+#include <QScriptEngine>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
@@ -68,6 +68,7 @@ Document* DocumentFormat::createNewLoadedDocument(IOAdapterFactory* iof, const G
         hints, QString());
     doc->setLoaded(true);
     doc->setDocumentOwnsDbiResources(true);
+    doc->setModificationTrack(!checkFlags(DocumentFormatFlag_DirectWriteOperations));
     return doc;
 }
 
@@ -79,6 +80,7 @@ Document* DocumentFormat::createNewUnloadedDocument(IOAdapterFactory* iof, const
     Q_UNUSED(os);
     U2DbiRef dbiRef = (hints[DocumentFormat::DBI_REF_HINT]).value<U2DbiRef>();
     Document* doc = new Document(this, iof, url, dbiRef, info, hints, instanceModLockDesc);
+    doc->setModificationTrack(!checkFlags(DocumentFormatFlag_DirectWriteOperations));
     return doc;
 }
 
@@ -369,6 +371,14 @@ void Document::makeClean() {
     }
 }
 
+void Document::setModificationTrack(bool track) {
+    if (df != NULL && df->checkFlags(DocumentFormatFlag_DirectWriteOperations)) {
+        StateLockableTreeItem::setModificationTrack(false);
+    } else {
+        StateLockableTreeItem::setModificationTrack(track);
+    }
+}
+
 GObject * Document::findGObjectByNameInDb(const QString &name) const {
     U2OpStatusImpl os;
     DbiConnection con(dbiRef, os);
@@ -505,6 +515,7 @@ void Document::loadFrom(Document* sourceDoc) {
 
     dbiRef = sourceDoc->dbiRef;
     documentOwnsDbiResources = sourceDoc->isDocumentOwnsDbiResources();
+    trackModifications = sourceDoc->isModificationTracked();
     sourceDoc->dbiRef = U2DbiRef();
     sourceDoc->setDocumentOwnsDbiResources(false);
 

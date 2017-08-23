@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,12 +24,12 @@
 
 #include <U2Core/global.h>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/DNASequence.h>
 
-#include <QtCore/QVarLengthArray>
-#include <QtCore/QList>
-#include <QtCore/QMap>
+#include <QVarLengthArray>
+#include <QList>
+#include <QMap>
 
 namespace U2 {
 
@@ -70,7 +70,7 @@ public:
     PFMatrix(const QVarLengthArray<int>& data, const PFMatrixType type);
 
     //create matrix from alignment (without gaps)
-    PFMatrix(const MAlignment& data, const PFMatrixType type);
+    PFMatrix(const MultipleSequenceAlignment& data, const PFMatrixType type);
 
     //create matrix from set of sequences with equal length
     PFMatrix(const QList<DNASequence*>& data, const PFMatrixType type);

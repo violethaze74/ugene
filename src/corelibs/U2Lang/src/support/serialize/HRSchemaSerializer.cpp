@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -328,10 +328,10 @@ void HRSchemaSerializer::deprecatedUrlAttribute(Actor *proc, const QString &urls
     }
 }
 
-QList<Dataset> HRSchemaSerializer::parseUrlAttribute(const QString attrId, QList<StringPair> &blockPairs) {
+QList<Dataset> HRSchemaSerializer::parseUrlAttribute(const QString attrId, QList<StrStrPair> &blockPairs) {
     QList<Dataset> sets;
     QStringList setBlocks;
-    foreach (const StringPair &pair, blockPairs) {
+    foreach (const StrStrPair &pair, blockPairs) {
         if (attrId == pair.first) {
             setBlocks << pair.second;
             blockPairs.removeOne(pair);
@@ -483,7 +483,7 @@ URLContainer * HRSchemaSerializer::parseDirectoryUrl(Tokenizer &tokenizer) {
 
         return new DirUrlContainer(path, incFilter, excFilter, recursive);
     } else {
-        throw ReadFailed(tr("Directory url definition: '%1' or '%2' are expected, '%3' is found")
+        throw ReadFailed(tr("folder url definition: '%1' or '%2' are expected, '%3' is found")
             .arg(Constants::BLOCK_START).arg(Constants::EQUALS_SIGN).arg(sign));
     }
 }
@@ -1234,7 +1234,7 @@ void HRSchemaSerializer::addEmptyValsToBindings(const QList<Actor*> & procs) {
     foreach(Actor * actor, procs) {
         foreach(Port * p, actor->getInputPorts()) {
             IntegralBusPort * port = qobject_cast<IntegralBusPort*>(p);
-            QStrStrMap busMap = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<QStrStrMap>();
+            StrStrMap busMap = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
             DataTypePtr t = port->Port::getType();
             assert(t->isMap());
             QMap<Descriptor, DataTypePtr> typeMap = t->getDatatypesMap();
@@ -1745,7 +1745,7 @@ QString HRSchemaSerializer::dataflowDefinition(const QList<Actor*> & procs, cons
     QString res;
     foreach(Actor * actor, procs) {
         foreach(Port * inputPort, actor->getEnabledInputPorts()) {
-            QStrStrMap busMap = inputPort->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<QStrStrMap>();
+            StrStrMap busMap = inputPort->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
             IntegralBusPort *busPort = qobject_cast<IntegralBusPort*>(inputPort);
 
             foreach( const QString & key, busMap.keys() ) {

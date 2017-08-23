@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -88,6 +88,9 @@ public:
 
     /**  Returns all folders this object must be shown in  */
     virtual QStringList getObjectFolders(const U2DataId& objectId, U2OpStatus& os);
+
+    /** Returns object rank of the given object */
+    virtual U2DbiObjectRank getObjectRank(const U2DataId &objectId, U2OpStatus& os);
 
     // Write methods for objects
 
@@ -272,9 +275,9 @@ public:
 };
 
 /** Helper class to track info about an object */
-class U2FORMATS_EXPORT ModificationAction {
+class U2FORMATS_EXPORT SQLiteModificationAction : public ModificationAction {
 public:
-    ModificationAction(SQLiteDbi* dbi, const U2DataId& masterObjId);
+    SQLiteModificationAction(SQLiteDbi* dbi, const U2DataId& masterObjId);
 
     /**
         Verifies if modification tracking is enabled for the object.
@@ -296,15 +299,8 @@ public:
      */
     void complete(U2OpStatus& os);
 
-    /** Returns modification tracking type of the master object. */
-    U2TrackModType getTrackModType() const { return trackMod; }
-
 private:
-    SQLiteDbi* dbi;
-    U2DataId masterObjId;
-    U2TrackModType trackMod;
-    QSet<U2DataId> objIds;
-    QList<U2SingleModStep> singleSteps;
+    SQLiteDbi* getDbi() const;
 };
 
 class SQLiteObjectDbiUtils {
@@ -315,7 +311,7 @@ public:
      * Applies all changes to @object too.
      */
     static void renameObject(SQLiteDbi *dbi, U2Object &object, const QString &newName, U2OpStatus &os);
-    static void renameObject(ModificationAction& updateAction, SQLiteDbi *dbi, U2Object &object, const QString &newName, U2OpStatus &os);
+    static void renameObject(SQLiteModificationAction& updateAction, SQLiteDbi *dbi, U2Object &object, const QString &newName, U2OpStatus &os);
 };
 
 } //namespace

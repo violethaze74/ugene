@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ public:
         res.refData = q->getBlob(3);
         res.obsData = q->getBlob(4);
         res.publicId = q->getString(5);
-        res.additionalInfo = U2DbiUtils::unpackMap(q->getString(6));
+        res.additionalInfo = StrPackUtils::unpackMap(q->getString(6));
 
         return res;
     }
@@ -199,7 +199,7 @@ void MysqlVariantDbi::addVariantsToTrack(const U2VariantTrack& track, U2DbiItera
         q.bindBlob(":refData", var.refData);
         q.bindBlob(":obsData", var.obsData);
         q.bindString(":publicId", var.publicId);
-        q.bindString(":additionalInfo", U2DbiUtils::packMap(var.additionalInfo));
+        q.bindString(":additionalInfo", StrPackUtils::packMap(var.additionalInfo));
 
         var.id = q.insert(U2Type::VariantType);
         CHECK_OP(os, );

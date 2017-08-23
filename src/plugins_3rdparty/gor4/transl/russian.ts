@@ -27,23 +27,23 @@
 <context>
     <name>U2::GorIVAlgTask</name>
     <message>
-        <location filename="../src/gor.cpp" line="152"/>
+        <location filename="../src/gor.cpp" line="151"/>
         <source>%1 errors</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gor.cpp" line="228"/>
+        <location filename="../src/gor.cpp" line="227"/>
         <source>The value of MAXRES should be increased: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gor.cpp" line="237"/>
+        <location filename="../src/gor.cpp" line="236"/>
         <source>protein: %1 residue: %2
 Invalid amino acid type or secondary structure state : ==&gt;%3&lt;==</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gor.cpp" line="552"/>
+        <location filename="../src/gor.cpp" line="551"/>
         <source>Error invalid value of np= %1</source>
         <translation></translation>
     </message>
@@ -51,12 +51,12 @@ Invalid amino acid type or secondary structure state : ==&gt;%3&lt;==</source>
 <context>
     <name>U2::SecStructPredictPlugin</name>
     <message>
-        <location filename="../src/GorIVPlugin.cpp" line="58"/>
+        <location filename="../src/GorIVPlugin.cpp" line="51"/>
         <source>GORIV</source>
         <translation>GORIV</translation>
     </message>
     <message>
-        <location filename="../src/GorIVPlugin.cpp" line="58"/>
+        <location filename="../src/GorIVPlugin.cpp" line="51"/>
         <source>GORIV protein secondary structure prediction</source>
         <translation>Предсказание вторичной структуры протеинов GORIV</translation>
     </message>

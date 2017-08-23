@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ public:
 
     QString                     defaultFileName;    // filename set by default
     DocumentFormatId            defaultFormatId;    // format selected by default
-    QString                     defaultDomain;      // domain for the last directory
+    QString                     defaultDomain;      // domain for the last folder
 
     QString                     saveTitle;          // a title for save file dialog
     QWidget*                    parentWidget;       // parent widget for file dialog

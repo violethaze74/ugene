@@ -57,7 +57,7 @@ workflow "New workflow"{
                 alias:keep_gaps;
             }
             extract-msa-consensus-sequence.threshold {
-                alias:threshhold;
+                alias:threshold;
             }
         }
         visual {

@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -19,29 +19,29 @@
 * MA 02110-1301, USA.
 */
 
-#include "GenerateDNAWorker.h"
-#include "DNASequenceGenerator.h"
-
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BasePorts.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseAttributes.h>
-#include <U2Lang/BaseActorCategories.h>
-#include <U2Lang/ActorModel.h>
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/CoreLibConstants.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
+#include <U2Core/FailTask.h>
+#include <U2Core/L10n.h>
+#include <U2Core/TaskSignalMapper.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Gui/GUIUtils.h>
 
-#include <U2Core/L10n.h>
-#include <U2Core/FailTask.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/TaskSignalMapper.h>
+#include <U2Lang/ActorModel.h>
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BaseAttributes.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/CoreLibConstants.h>
+#include <U2Lang/WorkflowEnv.h>
 
+#include "DNASequenceGenerator.h"
+#include "GenerateDNAWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {

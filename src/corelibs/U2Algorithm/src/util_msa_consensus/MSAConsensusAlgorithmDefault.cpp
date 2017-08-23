@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,8 +21,8 @@
 
 #include "MSAConsensusAlgorithmDefault.h"
 
-#include <U2Core/MAlignment.h>
-#include <QtCore/QVector>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <QVector>
 
 namespace U2 {
 
@@ -42,20 +42,22 @@ QString MSAConsensusAlgorithmFactoryDefault::getName() const {
 }
 
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MAlignment&, QObject* p) {
-    return new MSAConsensusAlgorithmDefault(this, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
+    return new MSAConsensusAlgorithmDefault(this, ignoreTrailingLeadingGaps, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MAlignment& msa, int pos, int& cnt, const QVector<qint64> &seqIdx) const {
+char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignment& msa, int pos, int& cnt, QVector<int> seqIdx) const {
+    CHECK(filterIdx(seqIdx, msa, pos), INVALID_CONS_CHAR);
+
     //TODO: use var-length array!
     QVector<QPair<int, char> > freqs(32);
-    int ch = MAlignment_GapChar;
-    int nSeq = seqIdx.isEmpty() ? msa.getNumRows() : seqIdx.size();
+    int ch = U2Msa::GAP_CHAR;
+    int nSeq = seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
-        uchar c = (uchar)msa.charAt( seqIdx.isEmpty() ? seq : seqIdx[ seq ],
+        uchar c = (uchar)msa->charAt( seqIdx.isEmpty() ? seq : seqIdx[ seq ],
                                      pos);
         if (c >= 'A' && c <= 'Z') {
             int idx = c - 'A';
@@ -68,7 +70,7 @@ char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MAlignment& ms
     int p1 = freqs[freqs.size()-1].first;
     int p2 = freqs[freqs.size()-2].first;
     if (p1 == 0 || (p1 == 1 && nSeq > 1)) {
-        ch = MAlignment_GapChar;
+        ch = U2Msa::GAP_CHAR;
         cnt = 0;
     } else {
         int c1 = freqs[freqs.size()-1].second;

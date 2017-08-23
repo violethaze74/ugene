@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,7 +53,7 @@ OutputFileDialog::OutputFileDialog(RunFileSystem *_rfs, bool _saveDir, Completio
 
     if (saveDir) {
         nameWidget->setVisible(false);
-        setWindowTitle(tr("Save a directory"));
+        setWindowTitle(tr("Save a folder"));
     } else {
         setWindowTitle(tr("Save a file"));
         if (NULL != filler) {

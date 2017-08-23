@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@
 #include <U2Gui/GraphUtils.h>
 
 #include "GSequenceLineViewAnnotated.h"
+#include "view_rendering/PanViewRenderer.h"
 
 namespace U2 {
 
@@ -41,8 +42,6 @@ class GObjectView;
 class PVRowsManager;
 class ADVSingleSequenceWidget;
 class PVRowData;
-class PanViewRenderer;
-
 
 class RulerInfo {
 public:
@@ -98,7 +97,7 @@ public:
         PanView *panView;
     };
 
-    PanView(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx);
+    PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderAreaFactory &rendererFactory = PanViewRenderAreaFactory());
     ~PanView();
 
     const U2Region& getFrameRange() const {return frameView->getVisibleRange();}
@@ -149,6 +148,7 @@ protected:
     virtual void registerAnnotations(const QList<Annotation *> &l);
     virtual void unregisterAnnotations(const QList<Annotation *> &l);
     virtual void ensureVisible(Annotation *a, int locationIdx);
+
 protected slots:
     virtual void sl_sequenceChanged();
     void sl_onAnnotationsModified(const AnnotationModification& md);
@@ -190,7 +190,7 @@ public:
 
     PanViewRenderArea* getRenderArea() const;
 
-    U2Region             frameRange;
+    U2Region            frameRange;
     int                 minNuclsPerScreen;
 
     QAction*            zoomInAction;
@@ -207,8 +207,6 @@ public:
     PanViewLinesSettings*     settings;
 
     int zoomUsing;
-
-    ADVSingleSequenceWidget*    seqWidget;
 };
 
 
@@ -216,7 +214,7 @@ class PanViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
     friend class PanView;
     Q_OBJECT
 public:
-    PanViewRenderArea(PanView* d);
+    PanViewRenderArea(PanView *d, PanViewRenderer *renderer);
     ~PanViewRenderArea();
 
     PanViewRenderer* getRenderer() { return renderer; }
@@ -224,6 +222,8 @@ public:
     virtual U2Region getAnnotationYRange(Annotation *a, int region, const AnnotationSettings *as) const;
 
     int getRowLineHeight() const;
+
+    void setRenderer(PanViewRenderer *renderer);
 
 protected:
     virtual void drawAll(QPaintDevice* pd);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 #define _U2_GT_MSAEDITOR_STATUSWIDGET_H_
 
 #include "GTGlobals.h"
-#include <U2View/MSAEditorStatusBar.h>
+#include <U2View/MaEditorStatusBar.h>
 
 namespace U2 {
 using namespace HI;

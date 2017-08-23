@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,19 +28,12 @@
 #include <U2Core/Timer.h>
 #include <U2Core/Counter.h>
 
-#include <QtCore/QDate>
-#include <QtCore/QThread>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
-#include <QtGui/QVBoxLayout>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QVBoxLayout>
-#endif
+#include <QDate>
+#include <QThread>
+#include <QApplication>
+#include <QAction>
+#include <QMenu>
+#include <QVBoxLayout>
 
 namespace U2 {
 
@@ -76,7 +69,7 @@ void LogViewWidget::init() {
 
     settings.reinitAll();
 
-    showSettingsAction = new QAction(tr("Settings"), this);
+    showSettingsAction = new QAction(tr("Settings..."), this);
     showSettingsAction->setIcon(QIcon(":ugene/images/log_settings.png"));
     connect(showSettingsAction, SIGNAL(triggered()), SLOT(sl_openSettingsDialog()));
     

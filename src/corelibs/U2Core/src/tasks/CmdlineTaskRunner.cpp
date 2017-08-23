@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -94,6 +94,8 @@ namespace {
     }
 }
 
+const QString CmdlineTaskRunner::REPORT_FILE_ARG = "ugene-write-task-report-to-file";
+
 CmdlineTaskRunner::CmdlineTaskRunner(const CmdlineTaskConfig &config)
 : Task(tr("Run UGENE command line: %1").arg(config.command), TaskFlag_NoRun), config(config), process(NULL)
 {
@@ -107,6 +109,11 @@ void CmdlineTaskRunner::prepare() {
     args << QString("--%1").arg(OUTPUT_PROGRESS_ARG);
     args << QString("--%1").arg(OUTPUT_ERROR_ARG);
     args << QString("--ini-file=\"%1\"").arg(AppContext::getSettings()->fileName());
+
+    if (!config.reportFile.isEmpty()) {
+        args << QString("--%1=\"%2\"").arg(REPORT_FILE_ARG).arg(config.reportFile);
+    }
+
     args << config.arguments;
     if (config.withPluginList) {
         args << QString("--%1=\"%2\"").arg(CMDLineRegistry::PLUGINS_ARG).arg(config.pluginList.join(";"));

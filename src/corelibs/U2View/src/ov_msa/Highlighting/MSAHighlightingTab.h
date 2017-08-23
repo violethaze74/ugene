@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,12 +22,12 @@
 #ifndef _U2_MSA_HIGHLIGHTING_TAB_H_
 #define _U2_MSA_HIGHLIGHTING_TAB_H_
 
+#include "MsaHighlightingSavableTab.h"
+#include "MsaSchemeComboBoxController.h"
+
 #include <QWidget>
 
 #include <U2Gui/U2SavableWidget.h>
-
-#include "MsaHighlightingSavableTab.h"
-#include "MsaSchemeComboBoxController.h"
 
 class QCheckBox;
 class QComboBox;
@@ -39,11 +39,11 @@ class QToolButton;
 
 namespace U2 {
 
-class MsaColorSchemeFactory;
-class MsaColorSchemeRegistry;
 class MSAEditor;
-class MSAEditorSequenceArea;
+class MaEditorSequenceArea;
+class MsaColorSchemeFactory;
 class MsaHighlightingSchemeFactory;
+class MsaColorSchemeRegistry;
 class MsaHighlightingSchemeRegistry;
 
 class U2VIEW_EXPORT MSAHighlightingTab : public QWidget
@@ -65,7 +65,7 @@ private:
     QWidget* createHighlightingGroup();
 
     MSAEditor *msa;
-    MSAEditorSequenceArea *seqArea;
+    MaEditorSequenceArea *seqArea;
     MsaSchemeComboBoxController<MsaColorSchemeFactory, MsaColorSchemeRegistry> *colorSchemeController;
     MsaSchemeComboBoxController<MsaHighlightingSchemeFactory, MsaHighlightingSchemeRegistry> *highlightingSchemeController;
     QLabel *hint;

@@ -4,8 +4,7 @@ MODULE_ID=U2Lang
 include( ../../ugene_lib_common.pri )
 UGENE_RELATIVE_DESTDIR = ''
 
-QT += xml
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += xml widgets
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2LANG_DLL
 
 LIBS += -L../../_release -lU2Core

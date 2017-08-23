@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #ifndef _U2_STD_RESIDUE_DICTIONARY_H_
 #define _U2_STD_RESIDUE_DICTIONARY_H_
 
-#include <QtCore/QByteArray>
-#include <QtCore/QHash>
-#include <QtCore/QMutex>
+#include <QByteArray>
+#include <QHash>
+#include <QMutex>
 
 namespace U2 {
 

@@ -310,12 +310,12 @@ void openfile(FILE **fp,const char *filename,const char *filedesc,
   unsigned char bundlePath[FNMLNGTH];
   
   if(!fixedpath){
-    // change path to the bundle location instead of root directory
+    // change path to the bundle location instead of root folder
     GetCurrentProcess(&myProcess);
     GetProcessBundleLocation(&myProcess, &bundleLocation);
     FSRefMakePath(&bundleLocation, bundlePath, FNMLNGTH);
     chdir((const char*)bundlePath);
-    chdir(".."); // get out of the .app directory
+    chdir(".."); // get out of the .app folder
     
     fixedpath = true;
   }

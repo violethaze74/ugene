@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@
 namespace U2 {
 
 class MSAEditor;
-class MSAEditorUI;
+class MsaEditorWgt;
 class SimilarityStatisticsSettings;
 
 class U2VIEW_EXPORT SeqStatisticsWidget : public QWidget {
@@ -59,7 +59,7 @@ private:
     Ui_MSADistanceColumnSettingsForm ui;
 
     MSAEditor*      msa;
-    MSAEditorUI*    msaUI;
+    MsaEditorWgt*    msaUI;
 
     QWidget*        distancesStatisticsGroup;
 

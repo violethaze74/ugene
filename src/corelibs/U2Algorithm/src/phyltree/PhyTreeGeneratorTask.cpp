@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-PhyTreeGeneratorTask::PhyTreeGeneratorTask(const MAlignment& ma, const CreatePhyTreeSettings& _settings)
+PhyTreeGeneratorTask::PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings)
 : Task(PhyTreeGeneratorTask::tr("Calculating Phylogenetic Tree"), TaskFlag_FailOnSubtaskError), inputMA(ma), settings(_settings)
 {
     tpm = Task::Progress_Manual;
@@ -41,8 +41,8 @@ Task::ReportResult PhyTreeGeneratorTask::report() {
     return ReportResult_Finished;
 }
 
-PhyTreeGeneratorLauncherTask::PhyTreeGeneratorLauncherTask(const MAlignment& ma, const CreatePhyTreeSettings& _settings)
-:Task(PhyTreeGeneratorLauncherTask::tr("Calculating Phylogenetic Tree"), TaskFlag_FailOnSubtaskError), inputMA(ma), settings(_settings), task(NULL){
+PhyTreeGeneratorLauncherTask::PhyTreeGeneratorLauncherTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings)
+:Task(PhyTreeGeneratorLauncherTask::tr("Calculating Phylogenetic Tree"), TaskFlag_FailOnSubtaskError), inputMA(ma->getCopy()), settings(_settings), task(NULL){
     tpm = Task::Progress_SubTasksBased;
 }
 void PhyTreeGeneratorLauncherTask::prepare(){
@@ -54,8 +54,8 @@ void PhyTreeGeneratorLauncherTask::prepare(){
         stateInfo.setError(PhyTreeGeneratorLauncherTask::tr("Tree construction algorithm %1 not found").arg(algId));
     }else{
         const QStringList& rowsOrder = settings.rowsOrder;
-        if(rowsOrder.size() >= inputMA.getRowNames().size()) {
-            inputMA.sortRowsByList(rowsOrder);
+        if(rowsOrder.size() >= inputMA->getRowNames().size()) {
+            inputMA->sortRowsByList(rowsOrder);
         }
 
         namesConvertor.replaceNamesWithAlphabeticIds(inputMA);
@@ -77,13 +77,13 @@ void PhyTreeGeneratorLauncherTask::sl_onCalculationCanceled() {
     cancel();
 }
 
-void SeqNamesConvertor::replaceNamesWithAlphabeticIds(MAlignment& ma) {
-    QStringList rows = ma.getRowNames();
+void SeqNamesConvertor::replaceNamesWithAlphabeticIds(MultipleSequenceAlignment& ma) {
+    QStringList rows = ma->getRowNames();
 
-    int rowsNum = ma.getNumRows();
+    int rowsNum = ma->getNumRows();
     for(int i = 0; i < rowsNum; i++) {
         namesMap[generateNewAlphabeticId()] = rows.at(i);
-        ma.renameRow(i, lastIdStr);
+        ma->renameRow(i, lastIdStr);
     }
 }
 void SeqNamesConvertor::restoreNames(const PhyTree& tree) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 
 #include <U2Core/global.h>
 
-#include <QtGui/QIcon>
+#include <QIcon>
 
 namespace U2 {
 
@@ -52,7 +52,8 @@ public:
     static const GObjectType ANNOTATION_TABLE;
     static const GObjectType VARIANT_TRACK;
     static const GObjectType CHROMATOGRAM;
-    static const GObjectType MULTIPLE_ALIGNMENT;
+    static const GObjectType MULTIPLE_CHROMATOGRAM_ALIGNMENT;
+    static const GObjectType MULTIPLE_SEQUENCE_ALIGNMENT;
     static const GObjectType PHYLOGENETIC_TREE;
     static const GObjectType BIOSTRUCTURE_3D;
     static const GObjectType UINDEX;
