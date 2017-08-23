@@ -35,17 +35,13 @@ public:
     struct Settings {
         Settings()
             : minIdentity(80),
-              minLength(0),
               qualityThreshold(30),
-              trimBothEnds(false),
               addResultToProject(true)
         {}
         QString referenceUrl;
         QStringList readUrls;
         int minIdentity;
-        int minLength;
         int qualityThreshold;
-        bool trimBothEnds;
         QString outAlignment;
         bool addResultToProject;
     };
