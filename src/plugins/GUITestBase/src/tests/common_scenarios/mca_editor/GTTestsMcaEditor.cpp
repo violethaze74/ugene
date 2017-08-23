@@ -449,6 +449,62 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsMcaEditor::getEditorUi(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0004) {
+    GTLogTracer logTracer;
+
+    //    1. Select "Tools>Workflow Designer"
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //    2. Open "Trim and аlign Sanger reads" sample
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            //    Expected state: "Trim and Align Sanger Reads" dialog has appered
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
+            const QString expectedTitle = "Trim and Map Sanger Reads";
+            const QString actualTitle = wizard->windowTitle();
+            CHECK_SET_ERR(expectedTitle == actualTitle, QString("Wizard title is incorrect: expected '%1', got '%2'").arg(expectedTitle).arg(actualTitle));
+
+            GTWidget::click(os, wizard);
+
+            //    3. Select Reference .../test/general/_common_data/alphabets/extended_amino_1000.fa
+            GTUtilsWizard::setParameter(os, "Reference", testDir + "_common_data/alphabets/extended_amino_1000.fa");
+
+            //    4. Push Next
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            //    5. On page "Input Sanger reads" add: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files) and click "Next" button
+            QStringList readsList;
+            for (int i = 1; i <= 20; i++) {
+                readsList << testDir + QString("_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+            }
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << readsList);
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            //    6. Push Next on "Trim and Filtering" page
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            //    7. Push Run on Results page where "alignment.ugenedb" is result database by default
+            const QString expectedResultFileName = "alignment.ugenedb";
+            QString actualResultFileName = GTUtilsWizard::getParameter(os, "Mapped reads file").toString();
+            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'")
+                .arg(expectedResultFileName).arg(actualResultFileName));
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTLogTracer trace;
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Trim and Map Sanger Reads", new Scenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: Error:The input reference sequence 'seq6' contains characters that don't belong to DNA alphabet.
+    GTUtilsLog::checkContainsError(os, trace, QString("The input reference sequence 'seq6' contains characters that don't belong to DNA alphabet."));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
