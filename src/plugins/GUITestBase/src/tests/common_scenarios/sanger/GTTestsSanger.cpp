@@ -61,7 +61,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     settings.outAlignment = QFileInfo(sandBoxDir + "sanger_test_0001").absoluteFilePath();
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -111,7 +111,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     settings.readUrls << testDir + "_common_data/sanger/sanger_05.ab1";
 
     GTUtilsDialog::waitForDialog(os, new CheckerFiller(os, settings));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -129,7 +129,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     settings.outAlignment = QFileInfo(sandBoxDir + "sanger_test_0003").absoluteFilePath();
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::checkContainsError(os, l, "No read satisfy minimum identity criteria");
@@ -138,7 +138,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     settings.minIdentity = 30;
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::checkItem(os, "sanger_test_0003");
@@ -156,7 +156,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     settings.addResultToProject = false;
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
@@ -165,7 +165,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     settings.outAlignment = QFileInfo(sandBoxDir + "sanger_test_0004_1").absoluteFilePath();
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and alignment...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::checkItem(os, "sanger_test_0004_4");
