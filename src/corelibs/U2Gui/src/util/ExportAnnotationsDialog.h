@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,11 +45,13 @@ public:
     QString                         filePath( ) const;
     bool                            exportSequence( ) const;
     bool                            exportSequenceNames( ) const;
+    bool                            addToProject() const;
 
     static const QString            CSV_FORMAT_ID;
 
 private slots:
     void sl_formatChanged(const QString &newFormatId);
+    void sl_addToProjectStateChanged(bool state);
 
 private:
     void                            initSaveController(const QString &filename);
@@ -57,6 +59,8 @@ private:
     QList<QString>                  supportedFormatsExts;
     SaveDocumentController *        saveController;
     Ui_ExportAnnotationsDialog *    ui;
+    bool                            lastAddToProjectState;
+    
 };
 
 } // namespace U2

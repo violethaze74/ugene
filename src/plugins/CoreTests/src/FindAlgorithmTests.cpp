@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -19,11 +19,13 @@
 * MA 02110-1301, USA.
 */
 
-#include "FindAlgorithmTests.h"
+#include <QDomElement>
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
+
+#include "FindAlgorithmTests.h"
 
 namespace U2 {
 

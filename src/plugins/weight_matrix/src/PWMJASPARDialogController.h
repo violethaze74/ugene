@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,15 +24,9 @@
 
 #include <ui_SearchJASPARDatabase.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDialog>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QTreeWidgetItem>
-#else
-#include <QtWidgets/QDialog>
-#include <QtWidgets/QTreeWidget>
-#include <QtWidgets/QTreeWidgetItem>
-#endif
+#include <QDialog>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 
 #include <U2Core/PFMatrix.h>
 

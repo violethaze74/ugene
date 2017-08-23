@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,15 +47,9 @@
 
 #include <assert.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMenu>
-#include <QtGui/QMessageBox>
-#include <QtGui/QTreeView>
-#else
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QTreeView>
-#endif
+#include <QMenu>
+#include <QMessageBox>
+#include <QTreeView>
 
 #include "ORFMarkerTask.h"
 
@@ -79,7 +73,9 @@ ORFDialog::ORFDialog(ADVSequenceObjectContext* _ctx)
 : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), aaUpdateTask(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759650");
+    new HelpButton(this, buttonBox, "19766906");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     tabWidget->setCurrentIndex(0);
 

@@ -5,8 +5,7 @@ PLUGIN_NAME=GUI Test Base
 PLUGIN_VENDOR=Unipro
 include( ../../ugene_plugin_common.pri )
 
-QT += testlib
-greaterThan(QT_MAJOR_VERSION, 4): QT += webkitwidgets
+QT += testlib webkitwidgets
 
 INCLUDEPATH += ../../corelibs/U2View/_tmp/ ../../libs_3rdparty/QSpec/src
 LIBS +=-L../../_release -lhumimit
@@ -30,6 +29,7 @@ unix {
 
 win32 {
     LIBS += User32.lib Gdi32.lib
+    QMAKE_CXXFLAGS += -bigobj
 }
 
 macx {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,12 +21,12 @@
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
-
-#include "../ProjectFilterNames.h"
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "MsaContentFilterTask.h"
+#include "../ProjectFilterNames.h"
 
 namespace U2 {
 
@@ -41,7 +41,7 @@ MsaContentFilterTask::MsaContentFilterTask(const ProjectTreeControllerModeSettin
 }
 
 bool MsaContentFilterTask::filterAcceptsObject(GObject *obj) {
-    MAlignmentObject *msaObject = qobject_cast<MAlignmentObject *>(obj);
+    MultipleSequenceAlignmentObject *msaObject = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
     CHECK(NULL != msaObject, false);
 
     foreach(const QString &pattern, settings.tokensToShow) {
@@ -52,7 +52,7 @@ bool MsaContentFilterTask::filterAcceptsObject(GObject *obj) {
     return false;
 }
 
-bool MsaContentFilterTask::patternFitsMsaAlphabet(MAlignmentObject *msaObject, const QString &pattern) {
+bool MsaContentFilterTask::patternFitsMsaAlphabet(MultipleSequenceAlignmentObject *msaObject, const QString &pattern) {
     SAFE_POINT(NULL != msaObject, L10N::nullPointerError("MSA object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
@@ -63,19 +63,19 @@ bool MsaContentFilterTask::patternFitsMsaAlphabet(MAlignmentObject *msaObject, c
     return alphabet->containsAll(searchStr.constData(), searchStr.length());
 }
 
-bool MsaContentFilterTask::msaContainsPattern(MAlignmentObject *msaObject, const QString &pattern) {
+bool MsaContentFilterTask::msaContainsPattern(MultipleSequenceAlignmentObject *msaObject, const QString &pattern) {
     SAFE_POINT(NULL != msaObject, L10N::nullPointerError("MSA object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
-    const MAlignment &ma = msaObject->getMAlignment();
+    const MultipleSequenceAlignment msa = msaObject->getMultipleAlignment();
     const QByteArray searchStr = pattern.toUpper().toLatin1();
 
-    for (int i = 0, n = ma.getNumRows(); i < n; ++i) {
-        const MAlignmentRow &row = ma.getRow(i);
-        for (int j = 0; j < (ma.getLength() - searchStr.length() + 1); ++j) {
-            const char c = row.charAt(j);
+    for (int i = 0, n = msa->getNumRows(); i < n; ++i) {
+        const MultipleSequenceAlignmentRow row = msa->getMsaRow(i);
+        for (int j = 0; j < (msa->getLength() - searchStr.length() + 1); ++j) {
+            const char c = row->charAt(j);
             int altenateLength = 0;
-            if (MAlignment_GapChar != c && MSAUtils::equalsIgnoreGaps(row, j, searchStr, altenateLength)) {
+            if (U2Msa::GAP_CHAR != c && MSAUtils::equalsIgnoreGaps(row, j, searchStr, altenateLength)) {
                 return true;
             }
         }

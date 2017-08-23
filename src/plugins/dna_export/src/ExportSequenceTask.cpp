@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -192,7 +192,7 @@ ExportSequenceItem toRevComplement(ExportSequenceItem &ei, const U2DbiRef &resul
     CHECK_EXT(NULL != ei.complTT, os.setError(ExportSequenceTask::tr("Complement translation not found")), complEi);
 
     U2SequenceImporter importer(QVariantMap(), true);
-    importer.startSequence(resultDbiRef, U2ObjectDbi::ROOT_FOLDER, ei.name +"|rev-compl", ei.circular, os);
+    importer.startSequence(os, resultDbiRef, U2ObjectDbi::ROOT_FOLDER, ei.name +"|rev-compl", ei.circular);
     CHECK_OP(os, complEi);
 
     // translate
@@ -242,7 +242,7 @@ QList<ExportSequenceItem> toAmino(ExportSequenceItem &ei, bool allFrames, const 
         const QString transName = ei.name + "|transl" + (nFrames == 1 ? "" : " " + QString::number(frameNumber));
 
         frameImporters.append(U2SequenceImporter(QVariantMap(), true));
-        frameImporters[frameNumber].startSequence(resultDbiRef, U2ObjectDbi::ROOT_FOLDER, transName, false, os);
+        frameImporters[frameNumber].startSequence(os, resultDbiRef, U2ObjectDbi::ROOT_FOLDER, transName, false);
         CHECK_OP(os, res);
     }
 
@@ -303,7 +303,7 @@ ExportSequenceItem backToNucleic(ExportSequenceItem &ei, bool mostProbable, cons
     SAFE_POINT(ei.backTT->isOne2Three(), "Invalid reverse translation", backEi);
 
     U2SequenceImporter importer(QVariantMap(), true);
-    importer.startSequence(resultDbiRef, U2ObjectDbi::ROOT_FOLDER, ei.name + "|revtransl", false, os);
+    importer.startSequence(os, resultDbiRef, U2ObjectDbi::ROOT_FOLDER, ei.name + "|revtransl", false);
     CHECK_OP(os, backEi);
 
     // translate
@@ -533,7 +533,7 @@ U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedA
     QVector<U2Region> &resultRegions, U2OpStatus &os)
 {
     U2SequenceImporter importer(QVariantMap(), true);
-    importer.startSequence(resultDbiRef, U2ObjectDbi::ROOT_FOLDER, ad->name, false, os);
+    importer.startSequence(os, resultDbiRef, U2ObjectDbi::ROOT_FOLDER, ad->name, false);
     CHECK_OP(os, U2Sequence());
 
     foreach(const U2Region &annotatedRegion, ad->location->regions) {

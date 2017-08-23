@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,12 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QMessageBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -33,6 +28,7 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
+#include <QPushButton>
 
 #include "GetSequenceByIdDialog.h"
 
@@ -40,7 +36,9 @@ namespace U2 {
 
 GetSequenceByIdDialog::GetSequenceByIdDialog(QWidget *w): QDialog(w) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759652");
+    new HelpButton(this, buttonBox, "19766908");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     connect(toolButton, SIGNAL(clicked()), SLOT(sl_saveFilenameButtonClicked()));
     QString defaultPath = AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath();
@@ -52,7 +50,7 @@ const QString DOWNLOAD_REMOTE_FILE_DOMAIN = "DownloadRemoteFileDialog";
 
 void GetSequenceByIdDialog::sl_saveFilenameButtonClicked() {
     LastUsedDirHelper lod(DOWNLOAD_REMOTE_FILE_DOMAIN);
-    QString dirName = U2FileDialog::getExistingDirectory(this, tr("Select directory to save"), lod.dir);
+    QString dirName = U2FileDialog::getExistingDirectory(this, tr("Select folder to save"), lod.dir);
     if(!dirName.isEmpty()) {
         directoryEdit->setText(dirName);
         dir = dirName;
@@ -67,7 +65,7 @@ void GetSequenceByIdDialog::accept() {
     QDir downloadDir(dir);
     if (!downloadDir.exists()) {
         if (QMessageBox::Yes == QMessageBox::question(this,
-            windowTitle(), tr("Directory doesn't exist. Do you want to create it?"),
+            windowTitle(), tr("Folder doesn't exist. Do you want to create it?"),
             QMessageBox::Yes, QMessageBox::No))
         {
             downloadDir.mkpath(dir);

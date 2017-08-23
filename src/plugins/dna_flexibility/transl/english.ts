@@ -75,23 +75,23 @@
 <context>
     <name>U2::DNAFlexDialog</name>
     <message>
-        <location filename="../src/DNAFlexDialog.cpp" line="51"/>
+        <location filename="../src/DNAFlexDialog.cpp" line="45"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.cpp" line="52"/>
+        <location filename="../src/DNAFlexDialog.cpp" line="46"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.cpp" line="103"/>
-        <location filename="../src/DNAFlexDialog.cpp" line="108"/>
+        <location filename="../src/DNAFlexDialog.cpp" line="97"/>
+        <location filename="../src/DNAFlexDialog.cpp" line="102"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.cpp" line="108"/>
+        <location filename="../src/DNAFlexDialog.cpp" line="102"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>

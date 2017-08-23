@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,12 +22,8 @@
 #ifndef _CIRCULAR_ITEMS_H_
 #define _CIRCULAR_ITEMS_H_
 
-#include <QtGui/QFont>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsPathItem>
-#else
-#include <QtWidgets/QGraphicsPathItem>
-#endif
+#include <QFont>
+#include <QGraphicsPathItem>
 
 #include <U2Core/Annotation.h>
 

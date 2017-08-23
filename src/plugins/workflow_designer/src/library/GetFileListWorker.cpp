@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -107,7 +107,7 @@ void GetFileListWorkerFactory::init() {
 
     Descriptor protoDesc(GetFileListWorkerFactory::ACTOR_ID,
         GetFileListWorker::tr("File List"),
-        GetFileListWorker::tr("Produces URL(s) to files from specified directories."));
+        GetFileListWorker::tr("Produces URL(s) to files from specified folders."));
 
     ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
     proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));

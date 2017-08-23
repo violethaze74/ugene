@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,12 +23,8 @@
 #include <primitives/GTWidget.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <core/GUITest.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QFileDialog>
-#else
-#include <QtWidgets/QFileDialog>
-#endif
-#include <QtCore/QDirIterator>
+#include <QFileDialog>
+#include <QDirIterator>
 #include <U2Core/U2SafePoints.h>
 #include <U2Test/UGUITest.h>
 

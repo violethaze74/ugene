@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,16 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedPointer>
-#include <QtCore/QStringList>
-#include <QtCore/QVariantMap>
+#include <QScopedPointer>
+#include <QStringList>
+#include <QVariantMap>
 
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/TextObject.h>
-#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/ExportObjectUtils.h>
 
@@ -36,13 +37,12 @@
 #include <U2Lang/WorkflowContext.h>
 #include <U2Lang/WorkflowTransport.h>
 
-#include "BaseMessageTranslator.h"
-#include "SequenceMessageTranslator.h"
 #include "AnnotationsMessageTranslator.h"
-#include "MultipleAlignmentMessageTranslator.h"
 #include "AssemblyMessageTranslator.h"
+#include "BaseMessageTranslator.h"
+#include "MultipleAlignmentMessageTranslator.h"
+#include "SequenceMessageTranslator.h"
 #include "VariationTrackMessageTranslator.h"
-
 #include "WorkflowDebugMessageParserImpl.h"
 
 const QString PRODUCING_ACTOR_AND_DATA_TYPE_SEPARATOR = ":";

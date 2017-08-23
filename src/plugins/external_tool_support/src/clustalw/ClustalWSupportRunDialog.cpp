@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,11 +38,11 @@
 namespace U2 {
 ////////////////////////////////////////
 //ClustalWSupportRunDialog
-ClustalWSupportRunDialog::ClustalWSupportRunDialog(const MAlignment& _ma, ClustalWSupportTaskSettings& _settings, QWidget* _parent) :
-        QDialog(_parent), ma(_ma), settings(_settings)
+ClustalWSupportRunDialog::ClustalWSupportRunDialog(const MultipleSequenceAlignment& _ma, ClustalWSupportTaskSettings& _settings, QWidget* _parent) :
+        QDialog(_parent), ma(_ma->getCopy()), settings(_settings)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759721");
+    new HelpButton(this, buttonBox, "19766977");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -51,7 +51,7 @@ ClustalWSupportRunDialog::ClustalWSupportRunDialog(const MAlignment& _ma, Clusta
 
     connect(this->iterationTypeCheckBox,SIGNAL(toggled(bool)),this,SLOT(sl_iterationTypeEnabled(bool)));
 
-    if(ma.getAlphabet()->isAmino()){
+    if(ma->getAlphabet()->isAmino()){
         gapOpenSpinBox->setValue(10.0);
         gapExtSpinBox->setValue(0.2);
         proteinGapParamGroupBox->setEnabled(true);
@@ -119,7 +119,7 @@ ClustalWWithExtFileSpecifySupportRunDialog::ClustalWWithExtFileSpecifySupportRun
     saveController(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759721");
+    new HelpButton(this, buttonBox, "19766977");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -139,7 +139,7 @@ ClustalWWithExtFileSpecifySupportRunDialog::ClustalWWithExtFileSpecifySupportRun
 void ClustalWWithExtFileSpecifySupportRunDialog::sl_inputPathButtonClicked() {
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(this, tr("Open an alignment file"), lod.dir,
-        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true));
+        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
     if (lod.url.isEmpty()) {
         return;
     }

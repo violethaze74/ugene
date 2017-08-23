@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -49,7 +49,7 @@ const QString ACEFormat::BQ = "BQ";
 ACEFormat::ACEFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlags(0), QStringList("ace")) {
     formatName = tr("ACE");
     formatDescription = tr("ACE is a format used for storing information about genomic confgurations");
-    supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
 static int modifyLine(QString &line, int pos){
@@ -246,7 +246,7 @@ static inline void parseConsensus(U2::IOAdapter *io, U2OpStatus &ti, char* buff,
         ti.setProgress(io->getProgress());
     } while (!ti.isCoR() && !ok);
     len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &ok);
-    line = QString(QByteArray::fromRawData(buff, len)).trimmed();
+    line = QString(QByteArray(buff, len)).trimmed();
     if(!line.startsWith("BQ")){
         ti.setError(ACEFormat::tr("BQ keyword hasn't been found"));
         return ;
@@ -256,7 +256,7 @@ static inline void parseConsensus(U2::IOAdapter *io, U2OpStatus &ti, char* buff,
         ti.setError(ACEFormat::tr("Bad consensus data"));
         return ;
     }
-    consensus.replace('*',MAlignment_GapChar);
+    consensus.replace('*',U2Msa::GAP_CHAR);
 }
 
 static inline void parseAFTag(U2::IOAdapter *io, U2OpStatus &ti, char* buff, int count, QMap< QString, int> &posMap, QMap< QString, bool> &complMap, QSet<QString> &names){
@@ -273,7 +273,7 @@ static inline void parseAFTag(U2::IOAdapter *io, U2OpStatus &ti, char* buff, int
             if(ti.hasError()){
                 return;
             }
-            readLine = QString(QByteArray::fromRawData(buff, len)).trimmed();
+            readLine = QString(QByteArray(buff, len)).trimmed();
         }while (!readLine.startsWith("AF"));
 
         name = getName(readLine);
@@ -323,7 +323,7 @@ static inline void parseRDandQATag(U2::IOAdapter *io, U2OpStatus &ti, char* buff
         if(ti.hasError()){
             return;
         }
-        line = QString(QByteArray::fromRawData(buff, len)).trimmed();
+        line = QString(QByteArray(buff, len)).trimmed();
     }while (!line.startsWith("RD"));
 
     name = getName(line);
@@ -345,7 +345,7 @@ static inline void parseRDandQATag(U2::IOAdapter *io, U2OpStatus &ti, char* buff
         ti.setProgress(io->getProgress());
     } while (!ti.isCoR() && !ok);
     len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &ok);
-    line = QString(QByteArray::fromRawData(buff, len)).trimmed();
+    line = QString(QByteArray(buff, len)).trimmed();
     if(!line.startsWith("QA")){
         ti.setError(ACEFormat::tr("QA keyword hasn't been found"));
         return ;
@@ -384,9 +384,9 @@ static inline void parseRDandQATag(U2::IOAdapter *io, U2OpStatus &ti, char* buff
         names.remove(name);
     }
 
-    sequence.replace('*',MAlignment_GapChar);
-    sequence.replace('N',MAlignment_GapChar);
-    sequence.replace('X',MAlignment_GapChar);
+    sequence.replace('*',U2Msa::GAP_CHAR);
+    sequence.replace('N',U2Msa::GAP_CHAR);
+    sequence.replace('X',U2Msa::GAP_CHAR);
 }
 
 /**
@@ -418,7 +418,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
     if(os.hasError()){
         return;
     }
-    QString headerLine = QString(QByteArray::fromRawData(buff, len)).trimmed();
+    QString headerLine = QString(QByteArray(buff, len)).trimmed();
 
     if (!headerLine.startsWith(AS)) {
         os.setError(ACEFormat::tr("First line is not an ace header"));
@@ -438,7 +438,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
             if(os.hasError()){
                 return;
             }
-            headerLine = QString(QByteArray::fromRawData(buff, len)).trimmed();
+            headerLine = QString(QByteArray(buff, len)).trimmed();
             if (!headerLine.startsWith(CO)) {
                 os.setError(ACEFormat::tr("Must be CO keyword"));
                 return ;
@@ -449,7 +449,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
                 if(os.hasError()){
                     return;
                 }
-                headerLine = QString(QByteArray::fromRawData(buff, len)).trimmed();
+                headerLine = QString(QByteArray(buff, len)).trimmed();
             }while (!headerLine.startsWith(CO));
         }
         count = readsCount(headerLine);
@@ -467,9 +467,8 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
             return;
         }
 
-        MAlignment al(consName);
-        al.addRow(consName, consensus, os);
-        CHECK_OP(os, );
+        MultipleSequenceAlignment al(consName);
+        al->addRow(consName, consensus);
 
         //AF
         QMap< QString, int> posMap;
@@ -478,7 +477,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
 
         int smallestOffset = getSmallestOffset(posMap);
         if (smallestOffset < 0) {
-            al.insertGaps(0, 0, qAbs(smallestOffset), os);
+            al->insertGaps(0, 0, qAbs(smallestOffset), os);
             CHECK_OP(os, );
         }
 
@@ -498,20 +497,19 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
             }
 
             QByteArray offsetGaps;
-            offsetGaps.fill(MAlignment_GapChar, pos);
+            offsetGaps.fill(U2Msa::GAP_CHAR, pos);
             sequence.prepend(offsetGaps);
-            al.addRow(rowName, sequence, os);
-            CHECK_OP(os, );
+            al->addRow(rowName, sequence);
 
             count--;
             os.setProgress(io->getProgress());
         }
         U2AlphabetUtils::assignAlphabet(al);
-        CHECK_EXT(al.getAlphabet() != NULL, ACEFormat::tr("Alphabet unknown"), );
+        CHECK_EXT(al->getAlphabet() != NULL, ACEFormat::tr("Alphabet unknown"), );
 
         const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
-        MAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+        MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
         CHECK_OP(os, );
         objects.append(obj);
     }

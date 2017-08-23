@@ -27,9 +27,13 @@ HEADERS += src/CSVColumnConfiguration.h \
            src/ImportAnnotationsFromCSVDialog.h \
            src/ImportAnnotationsFromCSVTask.h \
            src/ImportQualityScoresTask.h \
-           src/ImportQualityScoresWorker.h
-FORMS += src/BaseContentDialog.ui \
-         src/CSVColumnConfigurationDialog.ui \
+           src/ImportQualityScoresWorker.h \
+           src/McaEditorContext.h \
+           src/dialogs/ExportMca2MsaDialog.h \
+           src/tasks/ConvertMca2MsaTask.h \
+           src/tasks/ExportMca2MsaTask.h
+
+FORMS += src/CSVColumnConfigurationDialog.ui \
          src/DNASequenceGeneratorDialog.ui \
          src/ExportBlastResultDialog.ui \
          src/ExportChromatogramDialog.ui \
@@ -38,7 +42,9 @@ FORMS += src/BaseContentDialog.ui \
          src/ExportSequences2MSADialog.ui \
          src/ExportSequencesDialog.ui \
          src/GetSequenceByIdDialog.ui \
-         src/ImportAnnotationsFromCSVDialog.ui
+         src/ImportAnnotationsFromCSVDialog.ui \
+         src/dialogs/ExportMca2MsaDialog.ui
+
 SOURCES += src/CSVColumnConfigurationDialog.cpp \
            src/DNAExportPlugin.cpp \
            src/DNAExportPluginTests.cpp \
@@ -64,5 +70,10 @@ SOURCES += src/CSVColumnConfigurationDialog.cpp \
            src/ImportAnnotationsFromCSVDialog.cpp \
            src/ImportAnnotationsFromCSVTask.cpp \
            src/ImportQualityScoresTask.cpp \
-           src/ImportQualityScoresWorker.cpp
+           src/ImportQualityScoresWorker.cpp \
+           src/McaEditorContext.cpp \
+           src/dialogs/ExportMca2MsaDialog.cpp \
+           src/tasks/ConvertMca2MsaTask.cpp \
+           src/tasks/ExportMca2MsaTask.cpp
+
 TRANSLATIONS += transl/english.ts transl/russian.ts

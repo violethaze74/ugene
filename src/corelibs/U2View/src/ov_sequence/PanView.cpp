@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,6 @@
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
 #include "PanViewRows.h"
-#include "view_rendering/PanViewRenderer.h"
 
 #include <U2Core/AnnotationModification.h>
 #include <U2Core/AnnotationSettings.h>
@@ -141,15 +140,14 @@ void PanView::ZoomUseObject::releaseZoom() {
 }
 
 #define MAX_VISIBLE_ROWS_ON_START 10
-PanView::PanView(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx)
-    : GSequenceLineViewAnnotated(p, ctx),
-    seqWidget(p)
+PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderAreaFactory &renderFactory)
+    : GSequenceLineViewAnnotated(p, ctx)
 {
     rowBar = new QScrollBar(this);
-
+    setObjectName("pan_view");
     settings = new PanViewLinesSettings();
     rowsManager = new PVRowsManager();
-    renderArea = new PanViewRenderArea(this);
+    renderArea = renderFactory.createRenderArea(this);
 
     updateNumVisibleRows();
 
@@ -216,7 +214,7 @@ void PanView::pack() {
     layout->setMargin(0);
     layout->setSpacing(0);
     layout->addWidget(renderArea, 0, 0, 1, 1);
-    layout->addWidget(rowBar, 0, 1, 2, 1);
+    layout->addWidget(rowBar, 0, 1, 1, 1);
     layout->addWidget(scrollBar, 1, 0, 1, 1);
     setContentLayout(layout);
 }
@@ -495,7 +493,7 @@ void PanView::setNumBasesVisible(qint64 n) {
 }
 
 PanViewRenderArea* PanView::getRenderArea() const {
-    return static_cast<PanViewRenderArea*>(renderArea);
+    return qobject_cast<PanViewRenderArea*>(renderArea);
 }
 
 QList<RulerInfo> PanView::getCustomRulers() const {
@@ -594,8 +592,12 @@ void PanView::sl_updateRows(){
 
 //////////////////////////////////////////////////////////////////////////
 /// render
-PanViewRenderArea::PanViewRenderArea(PanView* d) : GSequenceLineViewAnnotatedRenderArea(d, false), panView(d) {
-    renderer = new PanViewRenderer(d, d->getSequenceContext());
+PanViewRenderArea::PanViewRenderArea(PanView* d, PanViewRenderer *renderer)
+    : GSequenceLineViewAnnotatedRenderArea(d, false),
+      panView(d),
+      renderer(renderer)
+{
+    SAFE_POINT(NULL != renderer, "Renderer is NULL", );
 }
 
 PanViewRenderArea::~PanViewRenderArea() {
@@ -617,12 +619,13 @@ void PanViewRenderArea::drawAll(QPaintDevice* pd) {
 
     p.drawPixmap(0, 0, *cachedView);
 
-    ADVSingleSequenceWidget* ssw = panView->seqWidget;
-    SAFE_POINT(ssw != NULL, "ADVSingleSequenceWidget is NULL", );
-    if (!ssw->isOverviewCollapsed()) {
-        //! VIEW_RENDERER_REFACTORING: consider to move frame drawing to renderer
-        drawFrame(p);
-    }
+    // SANGER_TODO: should not be this kind of connection
+//    ADVSingleSequenceWidget* ssw = panView->seqWidget;
+//    SAFE_POINT(ssw != NULL, "ADVSingleSequenceWidget is NULL", );
+//    if (!ssw->isOverviewCollapsed()) {
+//        //! VIEW_RENDERER_REFACTORING: consider to move frame drawing to renderer
+//        drawFrame(p);
+//    }
 
     renderer->drawSelection(p, QSize(pd->width(), pd->height()), view->getVisibleRange());
 
@@ -639,6 +642,12 @@ U2Region PanViewRenderArea::getAnnotationYRange(Annotation *a, int r, const Anno
 
 int PanViewRenderArea::getRowLineHeight() const {
     return renderer->getRowLineHeight();
+}
+
+void PanViewRenderArea::setRenderer(PanViewRenderer *newRenderer) {
+    SAFE_POINT(NULL != newRenderer, "New renderer is NULL", );
+    delete renderer;
+    renderer = newRenderer;
 }
 
 bool PanViewRenderArea::isSequenceCharsVisible() const {

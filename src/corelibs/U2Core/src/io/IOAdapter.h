@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,8 @@
 
 #ifndef _U2_IOADAPTER_H_
 #define _U2_IOADAPTER_H_
+
+#include <QObject>
 
 #include <U2Core/global.h>
 #include <U2Core/GUrl.h>
@@ -51,8 +53,6 @@ public:
     virtual TriState isResourceAvailable(const GUrl& url) const = 0;
 
 };
-
-
 
 class U2CORE_EXPORT IOAdapter : public QObject {
     Q_OBJECT

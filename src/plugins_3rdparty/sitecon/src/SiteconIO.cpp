@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,27 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#include "SiteconIO.h"
-#include "DIPropertiesSitecon.h"
-#include "SiteconMath.h"
-#include "SiteconPlugin.h"
+#include <QFile>
+#include <QFileInfo>
+#include <QTextStream>
+#include <QVector>
+#include <QtMath>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-
-#include <U2Core/TextUtils.h>
 #include <U2Core/SaveDocumentTask.h>
+#include <U2Core/TextUtils.h>
 
 #include <U2Gui/DialogUtils.h>
 
-#include <QtCore/QVector>
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
-#include <QtCore/QTextStream>
-#include <QtCore/qmath.h>
+#include "DIPropertiesSitecon.h"
+#include "SiteconIO.h"
+#include "SiteconMath.h"
+#include "SiteconPlugin.h"
 
 /* TRANSLATOR U2::IOAdapter */
 
@@ -89,7 +88,7 @@ SiteconModel SiteconIO::readModel(IOAdapterFactory* iof, const QString& url, Tas
     QByteArray block(BUFF_SIZE, '\0');
     qint64 blockLen = 0;
     while ((blockLen = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
-        text.append(QByteArray::fromRawData(block.data(), blockLen));
+        text.append(QByteArray(block.data(), blockLen));
         if (text.size() > 1000*1000) {
             si.setError(L10N::errorFileTooLarge(url));
             break;

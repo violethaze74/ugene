@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -354,7 +354,7 @@ GUrl BAMUtils::mergeBam(const QStringList &bamUrls, const QString &mergetBamTarg
 
     bam_merge_core(0, mergetBamTargetUrl.toLocal8Bit().constData(), 0, urlsSize, mergeArgv, 0, 0);
 
-    delete mergeArgv;
+    delete [] mergeArgv;
 
     return QString(mergetBamTargetUrl);
 }
@@ -770,7 +770,7 @@ KSEQ_INIT(gzFile, gzread)
 FASTQIterator::FASTQIterator(const QString &fileUrl, U2OpStatus &os)
     : seq(NULL)
 {
-    fp = gzopen(fileUrl.toUtf8().constData(), "r");
+    fp = gzopen(fileUrl.toLocal8Bit().constData(), "r");
     if (fp == NULL) {
         os.setError(QObject::tr("Can't open file with given url: %1.").arg(fileUrl));
         return;

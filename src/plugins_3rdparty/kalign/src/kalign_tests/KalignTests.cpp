@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,34 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#include "KalignTests.h"
-#include "KalignTask.h"
-#include "KalignConstants.h"
+#include <QDir>
+#include <QtMath>
 
-//#include <kalign_local_task/KalignLocalTask.h>
-
-#include <U2Core/LoadDocumentTask.h>
-#include <U2Core/SaveDocumentTask.h>
-
-#include <U2Core/DocumentModel.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
+#include <U2Core/LoadDocumentTask.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/SaveDocumentTask.h>
+#include <U2Core/U2SafePoints.h>
 
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
-#include <U2Core/DNASequenceObject.h>
-
-#include <QtCore/QDir>
-
-
-/* TRANSLATOR U2::GTest*/
+#include "KalignConstants.h"
+#include "KalignTask.h"
+#include "KalignTests.h"
 
 namespace U2 {
 
-extern double QScore(const MAlignment& maTest, const MAlignment& maRef, TaskStateInfo& ti);
+extern double QScore(const MultipleSequenceAlignment& maTest, const MultipleSequenceAlignment& maRef, TaskStateInfo& ti);
 
 #define OUT_FILE_NAME_ATTR "out"
 #define IN_FILE_NAME_ATTR "in"
@@ -106,11 +101,11 @@ void Kalign_Load_Align_Compare_Task::prepare() {
     loadTask1->setSubtaskProgressWeight(0);
 }
 
-MAlignment Kalign_Load_Align_Compare_Task::dna_to_ma(QList<GObject*> dnaSeqs) {
+MultipleSequenceAlignment Kalign_Load_Align_Compare_Task::dna_to_ma(QList<GObject*> dnaSeqs) {
 
     int seqCount = dnaSeqs.count();
     U2SequenceObject *seq = qobject_cast<U2SequenceObject *>(dnaSeqs[0]);
-    MAlignment ma("Alignment",seq->getAlphabet());
+    MultipleSequenceAlignment ma("Alignment", seq->getAlphabet());
     for(int i=0; i<seqCount; i++) {
         seq = qobject_cast<U2SequenceObject *>(dnaSeqs[i]);
         if(seq == NULL) {
@@ -118,9 +113,8 @@ MAlignment Kalign_Load_Align_Compare_Task::dna_to_ma(QList<GObject*> dnaSeqs) {
             return ma;
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
-        SAFE_POINT_OP(stateInfo, MAlignment());
-        ma.addRow(seq->getSequenceName(), seqData, stateInfo);
-        SAFE_POINT_OP(stateInfo, MAlignment());
+        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
+        ma->addRow(seq->getSequenceName(), seqData);
     }
     return ma;
 }
@@ -146,16 +140,16 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        MAlignment malign = dna_to_ma(list);
+        MultipleSequenceAlignment malign = dna_to_ma(list);
         if(hasError()) {
             return res;
         }
 
-        ma1 = MAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma1 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if(ma1 == NULL){
-            stateInfo.setError(  QString("can't convert dna sequences to MAlignment") );
+            stateInfo.setError(  QString("can't convert dna sequences to MultipleSequenceAlignment") );
             return res;
         }
 
@@ -170,7 +164,7 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
         }
         KalignTask * localKalign = qobject_cast<KalignTask*>( subTask );
         assert( NULL != localKalign );
-        ma1->copyGapModel(localKalign->resultMA.getRows());
+        ma1->updateGapModel(localKalign->resultMA->getMsaRows());
     }
     else if (subTask == loadTask2) {
         if (loadTask2->hasError()) {
@@ -189,16 +183,16 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        MAlignment malign = dna_to_ma(list);
+        MultipleSequenceAlignment malign = dna_to_ma(list);
         if(hasError()) {
             return res;
         }
 
-        ma2 = MAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma2 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if(ma2 == NULL){
-            stateInfo.setError(  QString("can't convert dna sequences to MAlignment") );
+            stateInfo.setError(  QString("can't convert dna sequences to MultipleSequenceAlignment") );
             return res;
         }
     }
@@ -207,26 +201,26 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
 
 void Kalign_Load_Align_Compare_Task::run() {
 
-    const QList<MAlignmentRow> &alignedSeqs1 = ma1->getMAlignment().getRows();
-    const QList<MAlignmentRow> &alignedSeqs2 = ma2->getMAlignment().getRows();
+    const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getMsaRows();
 
-    foreach(const MAlignmentRow &maItem1, alignedSeqs1) {
+    foreach(const MultipleSequenceAlignmentRow &maItem1, alignedSeqs1) {
         bool nameFound = false;
-        foreach(const MAlignmentRow &maItem2, alignedSeqs2) {
-            if (maItem1.getName() == maItem2.getName()) {
+        foreach(const MultipleSequenceAlignmentRow &maItem2, alignedSeqs2) {
+            if (maItem1->getName() == maItem2->getName()) {
                 nameFound = true;
-                if(maItem2.getCoreEnd() != maItem1.getCoreEnd()) {
-                    stateInfo.setError(  QString("Aligned sequences \"%1\" length not matched \"%2\", expected \"%3\"").arg(maItem1.getName()).arg(maItem1.getCoreEnd()).arg(maItem2.getCoreEnd()) );
+                if(maItem2->getCoreEnd() != maItem1->getCoreEnd()) {
+                    stateInfo.setError(  QString("Aligned sequences \"%1\" length not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(maItem1->getCoreEnd()).arg(maItem2->getCoreEnd()) );
                     return;
                 }
                 if (maItem1 != maItem2) {
-                    stateInfo.setError(  QString("Aligned sequences \"%1\" not matched \"%2\", expected \"%3\"").arg(maItem1.getName()).arg(QString(maItem1.getCore())).arg(QString(maItem2.getCore())) );
+                    stateInfo.setError(  QString("Aligned sequences \"%1\" not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(QString(maItem1->getCore())).arg(QString(maItem2->getCore())) );
                     return;
                 }
             }
         }
         if (!nameFound) {
-            stateInfo.setError(  QString("aligned sequence not found \"%1\"").arg(maItem1.getName()) );
+            stateInfo.setError(  QString("aligned sequence not found \"%1\"").arg(maItem1->getName()) );
         }
     }
 }
@@ -360,11 +354,11 @@ void GTest_Kalign_Load_Align_QScore::prepare() {
     loadTask1->setSubtaskProgressWeight(0);
 }
 
-MAlignment GTest_Kalign_Load_Align_QScore::dna_to_ma(QList<GObject*> dnaSeqs) {
+MultipleSequenceAlignment GTest_Kalign_Load_Align_QScore::dna_to_ma(QList<GObject*> dnaSeqs) {
 
     int seqCount = dnaSeqs.count();
     U2SequenceObject *seq = qobject_cast<U2SequenceObject *>(dnaSeqs[0]);
-    MAlignment ma("Alignment",seq->getAlphabet());
+    MultipleSequenceAlignment ma("Alignment", seq->getAlphabet());
     for(int i=0; i<seqCount; i++) {
         seq = qobject_cast<U2SequenceObject *>(dnaSeqs[i]);
         if(seq == NULL) {
@@ -372,9 +366,8 @@ MAlignment GTest_Kalign_Load_Align_QScore::dna_to_ma(QList<GObject*> dnaSeqs) {
             return ma;
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
-        SAFE_POINT_OP(stateInfo, MAlignment());
-        ma.addRow(seq->getSequenceName(), seqData, stateInfo);
-        SAFE_POINT_OP(stateInfo, MAlignment());
+        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
+        ma->addRow(seq->getSequenceName(), seqData);
     }
     return ma;
 }
@@ -400,20 +393,20 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        MAlignment malign = dna_to_ma(list);
+        MultipleSequenceAlignment malign = dna_to_ma(list);
         if(hasError()) {
             return res;
         }
 
-        ma1 = MAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma1 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if(ma1 == NULL){
-            stateInfo.setError(  QString("can't convert dna sequences to MAlignment") );
+            stateInfo.setError(  QString("can't convert dna sequences to MultipleSequenceAlignment") );
             return res;
         }
 
-        kalignTask = new KalignTask(ma1->getMAlignment(),config);
+        kalignTask = new KalignTask(ma1->getMultipleAlignment(), config);
         res << kalignTask;
         this->connect(kalignTask,SIGNAL(si_progressChanged()),SLOT(sl_kalignProgressChg()));
     }
@@ -424,7 +417,7 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
         }
         KalignTask * localKalign = qobject_cast<KalignTask*>( subTask );
         assert( NULL != localKalign );
-        ma1->copyGapModel(localKalign->resultMA.getRows());
+        ma1->updateGapModel(localKalign->resultMA->getMsaRows());
     }
     else if (subTask == loadTask2) {
         if (loadTask2->hasError()) {
@@ -443,16 +436,16 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        MAlignment malign = dna_to_ma(list);
+        MultipleSequenceAlignment malign = dna_to_ma(list);
         if(hasError()) {
             return res;
         }
 
-        ma2 = MAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma2 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if(ma2 == NULL){
-            stateInfo.setError(  QString("can't convert dna sequences to MAlignment") );
+            stateInfo.setError(  QString("can't convert dna sequences to MultipleSequenceAlignment") );
             return res;
         }
     }
@@ -460,7 +453,7 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
 }
 
 void GTest_Kalign_Load_Align_QScore::run() {
-    double qscore = QScore(ma1->getMAlignment(), ma2->getMAlignment(), stateInfo);
+    double qscore = QScore(ma1->getMultipleAlignment(), ma2->getMultipleAlignment(), stateInfo);
     if (stateInfo.hasError()) {
         return;
     }

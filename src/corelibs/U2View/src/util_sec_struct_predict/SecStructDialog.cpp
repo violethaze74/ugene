@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ namespace U2 {
 SecStructDialog::SecStructDialog( ADVSequenceObjectContext* _ctx, QWidget *p ) : QDialog(p), rangeStart(0), rangeEnd(0), ctx(_ctx), task(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759678");
+    new HelpButton(this, buttonBox, "19766934");
 
     sspr = AppContext::getSecStructPredictAlgRegistry();
     algorithmComboBox->addItems(sspr->getAlgNameList());

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -84,11 +84,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
 
 //4. Use "Capture tree" button on toolbar to make screenshots
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"Screen Capture"));
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/image.svg", "jpeg",50));
+    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/image.svg", "JPG",50));
     GTWidget::click(os,GTWidget::findWidget(os,"cameraMenu"));
     GTGlobals::sleep();
 
-    GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/image.jpeg");
+    GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/image.jpg");
 //Expected state: images on screenshots same as on your screen
 }
 
@@ -113,10 +113,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1){
 
 //4. Use "Capture tree" button on toolbar to make screenshots
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"Export Tree Image"<<"Screen Capture"));
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/image.svg", "jpeg",50));
+    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/image.svg", "JPG",50));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os,"treeView"));
 
-    GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/image.jpeg");
+    GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/image.jpg");
 //Expected state: images on screenshots same as on your screen
 }
 
@@ -139,10 +139,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2){
 //Expected state: philogenetic tree appears
 
 //4. Use "Capture tree" button on toolbar to make screenshots
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/image.svg", "jpeg",50));
+    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/image.svg", "JPG",50));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Export Tree Image" << "Screen Capture...");
 
-    GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/image.jpeg");
+    GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/image.jpg");
 //Expected state: images on screenshots same as on your screen
 }
 
@@ -689,28 +689,27 @@ GUI_TEST_CLASS_DEFINITION(test_0009){
 //Expected state: UGENE not crash
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0010){
+GUI_TEST_CLASS_DEFINITION(test_0010) {
 //PhyTree branch settings
 
 //1. Open file _common_data/scenario/tree_view/COI.nwk
-    GTFileDialog::openFile(os,testDir + "_common_data/scenarios/tree_view/", "COI.nwk");
+    GTFileDialog::openFile(os,testDir + "_common_data/scenarios/tree_view/COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
 //Expected state: phylogenetic tree appears
 
 //2. Open context menu on branch and  select {change settings} menu item
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    QList<QGraphicsItem*> list = treeView->scene()->items();
-    QList<GraphicsButtonItem*> nodeList;
+    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
+    QList<QGraphicsItem *> list = treeView->scene()->items();
+    QList<GraphicsButtonItem *> nodeList;
 
-    foreach(QGraphicsItem* item, list){
-        GraphicsButtonItem* buttonItem = dynamic_cast<GraphicsButtonItem*>(item);
-        if(NULL != buttonItem){
+    foreach (QGraphicsItem *item, list) {
+        GraphicsButtonItem *buttonItem = dynamic_cast<GraphicsButtonItem *>(item);
+        if (NULL != buttonItem){
             nodeList.append(buttonItem);
         }
     }
 
-    QGraphicsItem* node = nodeList.last();
+    QGraphicsItem *node = nodeList.last();
     QPointF sceneCoord = node->mapToScene(node->boundingRect().center());
     QPoint viewCord = treeView->mapFromScene(sceneCoord);
     QPoint globalCoord = treeView->mapToGlobal(viewCord);
@@ -719,21 +718,15 @@ GUI_TEST_CLASS_DEFINITION(test_0010){
 
     //3. Change thickness and collor to differ than standard. Click OK
     //Expected state: selected branch changed
-
     GTUtilsDialog::waitForDialog(os, new BranchSettingsDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Branch Settings"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Branch Settings"));
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();
     GTMouseDriver::click(Qt::RightButton);
 
+    globalCoord.setX(globalCoord.x() - 10);
 
-    globalCoord.setX(globalCoord.x()-10);
-    QPixmap content;
-    content = QPixmap::grabWidget(treeView,treeView->rect());
-
-    QRgb rgb = content.toImage().pixel(treeView->mapFromGlobal(globalCoord));
-    QColor color(rgb);
-
+    const QColor color = GTWidget::getColor(os, treeView, treeView->mapFromGlobal(globalCoord));
     CHECK_SET_ERR(color.name()=="#0000ff","Expected: #0000ff, found: " + color.name());
 }
 
@@ -1059,7 +1052,7 @@ GUI_TEST_CLASS_DEFINITION( test_0024 ) {
     // it does automatically
     GTUtilsProjectTreeView::openView(os);
     GTUtilsProjectTreeView::toggleView(os);
-    MSAEditorUI* ui = AppContext::getMainWindow()->getQMainWindow()->findChild<MSAEditorUI*>();
+    MsaEditorWgt* ui = AppContext::getMainWindow()->getQMainWindow()->findChild<MsaEditorWgt*>();
     QSplitter* splitter = ui->findChild<QSplitter*>();
     splitter->setSizes(QList<int>()<<100<<0<<0);
     GTGlobals::sleep(500);

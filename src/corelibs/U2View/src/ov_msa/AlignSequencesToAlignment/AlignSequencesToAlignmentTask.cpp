@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@
 
 #include "AlignSequencesToAlignmentTask.h"
 
-#include <QtCore/QDir>
+#include <QDir>
 #include <QMessageBox>
 
 namespace U2 {
@@ -81,18 +81,18 @@ void SequenceObjectsExtractor::extractSequencesFromObjects(const QList<GObject*>
             }
         }
 
-        if(object->getGObjectType() == GObjectTypes::MULTIPLE_ALIGNMENT) {
+        if(object->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
             extractFromMsa = true;
-            MAlignmentObject* curObj = qobject_cast<MAlignmentObject*>(object);
-            SAFE_POINT(curObj != NULL, "MAlignmentObject is null",);
+            MultipleSequenceAlignmentObject* curObj = qobject_cast<MultipleSequenceAlignmentObject*>(object);
+            SAFE_POINT(curObj != NULL, "MultipleSequenceAlignmentObject is null",);
 
             checkAlphabet(curObj->getAlphabet(), curObj->getGObjectName());
             sequencesMaxLength = qMax(sequencesMaxLength, curObj->getLength());
 
-            foreach(const MAlignmentRow& row, curObj->getMAlignment().getRows()) {
-                U2EntityRef seqRef(curObj->getEntityRef().dbiRef, row.getRowDBInfo().sequenceId);
+            foreach(const MultipleSequenceAlignmentRow& row, curObj->getMsa()->getMsaRows()) {
+                U2EntityRef seqRef(curObj->getEntityRef().dbiRef, row->getRowDbInfo().sequenceId);
                 sequenceRefs << seqRef;
-                sequenceNames << row.getName();
+                sequenceNames << row->getName();
             }
         } else if(object->getGObjectType() == GObjectTypes::SEQUENCE) {
             U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(object);
@@ -221,7 +221,7 @@ const SequenceObjectsExtractor& LoadSequencesTask::getExtractor() const {
 /************************************************************************/
 /* AlignSequencesToAlignmentTask */
 /************************************************************************/
-AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MAlignmentObject* obj, const SequenceObjectsExtractor& extractor)
+AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const SequenceObjectsExtractor& extractor)
     : Task(tr("Align sequences to alignment task"), TaskFlags_NR_FOSE_COSC), maObj(obj), stateLock(NULL), docStateLock(NULL),
     sequencesMaxLength(extractor.getMaxSequencesLength()), extr(extractor)
 {
@@ -231,7 +231,7 @@ AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MAlignmentObject* o
     settings.maxSequenceLength = extractor.getMaxSequencesLength();
     settings.alphabet = extractor.getAlphabet()->getId();
     usedDocuments = extractor.getUsedDocuments();
-    initialMAlignmentAlphabet = obj->getAlphabet();
+    initialMsaAlphabet = obj->getAlphabet();
 }
 
 void AlignSequencesToAlignmentTask::prepare()
@@ -267,7 +267,7 @@ void AlignSequencesToAlignmentTask::fillSettingsByDefault() {
     AlignmentAlgorithmsRegistry* alignmentRegistry = AppContext::getAlignmentAlgorithmsRegistry();
     SAFE_POINT(NULL != alignmentRegistry, "AlignmentAlgorithmsRegistry is NULL.", );
     if(alignmentRegistry->getAvailableAlgorithmIds(AddToAlignment).contains(BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT)
-        && maObj->getMAlignment().getNumRows() != 0) {
+        && maObj->getMultipleAlignment()->getNumRows() != 0) {
         settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT;
     } else {
         settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
@@ -293,11 +293,11 @@ Task::ReportResult AlignSequencesToAlignmentTask::report() {
 
         delete docStateLock;
     }
-    MAlignmentModInfo mi;
-    mi.alphabetChanged = extr.getAlphabet()->getId() != initialMAlignmentAlphabet->getId();
-    mi.sequenceListChanged = true;
+    MaModificationInfo mi;
+    mi.alphabetChanged = extr.getAlphabet()->getId() != initialMsaAlphabet->getId();
+    mi.rowListChanged = true;
     if(!hasError() && !isCanceled()) {
-        maObj->updateCachedMAlignment(mi);
+        maObj->updateCachedMultipleAlignment(mi);
     }
 
     return ReportResult_Finished;
@@ -306,9 +306,9 @@ Task::ReportResult AlignSequencesToAlignmentTask::report() {
 /************************************************************************/
 /* LoadSequencesAndAlignToAlignmentTask */
 /************************************************************************/
-LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(MAlignmentObject* obj, const QStringList& urls)
+LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls)
 : Task(tr("Load sequences and add to alignment task"), TaskFlag_NoRun), urls(urls), maObj(obj), loadSequencesTask(NULL) {
-    SAFE_POINT_EXT(obj != NULL, setError("MAlignmentObject is null"), );
+    SAFE_POINT_EXT(obj != NULL, setError("MultipleSequenceAlignmentObject is null"), );
     loadSequencesTask = new LoadSequencesTask(obj->getAlphabet(), urls);
     loadSequencesTask->setSubtaskProgressWeight(5);
     addSubTask(loadSequencesTask);

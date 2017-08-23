@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,27 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#include "TCoffeeWorker.h"
-#include "TaskLocalStorage.h"
-#include "TCoffeeSupport.h"
-
-#include <U2Lang/IntegralBusModel.h>
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BasePorts.h>
-#include <U2Lang/BaseActorCategories.h>
-#include <U2Lang/NoFailTaskWrapper.h>
-#include <U2Designer/DelegateEditors.h>
-#include <U2Lang/CoreLibConstants.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/FailTask.h>
+#include <U2Core/Log.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Core/ExternalToolRegistry.h>
-#include <U2Core/Log.h>
-#include <U2Core/FailTask.h>
+#include <U2Designer/DelegateEditors.h>
+
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/CoreLibConstants.h>
+#include <U2Lang/IntegralBusModel.h>
+#include <U2Lang/NoFailTaskWrapper.h>
+#include <U2Lang/WorkflowEnv.h>
+
+#include "TCoffeeSupport.h"
+#include "TCoffeeWorker.h"
+#include "TaskLocalStorage.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -75,8 +77,8 @@ void TCoffeeWorkerFactory::init() {
                                      "0 - no iteration, -1 - Nseq iterations."));
     Descriptor etp(EXT_TOOL_PATH, TCoffeeWorker::tr("Tool Path"),
                    TCoffeeWorker::tr("External tool path."));
-    Descriptor tdp(TMP_DIR_PATH, TCoffeeWorker::tr("Temporary directory"),
-                   TCoffeeWorker::tr("Directory for temporary file.s"));
+    Descriptor tdp(TMP_DIR_PATH, TCoffeeWorker::tr("Temporary folder"),
+                   TCoffeeWorker::tr("folder for temporary file.s"));
 
     a << new Attribute(gop, BaseTypes::NUM_TYPE(), false, QVariant(-50));
     a << new Attribute(gep, BaseTypes::NUM_TYPE(), false, QVariant(0));
@@ -162,12 +164,12 @@ Task* TCoffeeWorker::tick() {
 
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-        QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &msa = msaObj->getMAlignment();
+        const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
-        if (msa.isEmpty()) {
-            algoLog.error(tr("An empty MSA '%1' has been supplied to T-Coffee.").arg(msa.getName()));
+        if (msa->isEmpty()) {
+            algoLog.error(tr("An empty MSA '%1' has been supplied to T-Coffee.").arg(msa->getName()));
             return NULL;
         }
         TCoffeeSupportTask* supportTask = new TCoffeeSupportTask(msa, GObjectReference(), cfg);
@@ -199,7 +201,7 @@ void TCoffeeWorker::sl_taskFinished() {
     QVariantMap msgData;
     msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);
     output->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), msgData));
-    algoLog.info(tr("Aligned %1 with T-Coffee").arg(t->resultMA.getName()));
+    algoLog.info(tr("Aligned %1 with T-Coffee").arg(t->resultMA->getName()));
 }
 
 void TCoffeeWorker::cleanup() {

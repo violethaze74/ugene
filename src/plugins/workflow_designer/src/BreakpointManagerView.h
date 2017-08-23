@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,12 +22,7 @@
 #ifndef _U2_BREAKPOINT_MANAGER_VIEW_H_
 #define _U2_BREAKPOINT_MANAGER_VIEW_H_
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#else
-#include <QtWidgets/QWidget>
-#endif
+#include <QWidget>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/Schema.h>

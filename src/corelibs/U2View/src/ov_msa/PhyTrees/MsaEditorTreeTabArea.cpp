@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -94,9 +94,10 @@ void MsaEditorTreeTab::deleteTree(int index) {
     Document* doc = obj->getDocument();
     GObjectReference treeRef(doc->getURLString(), "", GObjectTypes::PHYLOGENETIC_TREE);
     treeRef.objName = obj->getGObjectName();
-    msa->getMSAObject()->removeObjectRelation(GObjectRelation(treeRef, ObjectRole_PhylogeneticTree));
+    msa->getMaObject()->removeObjectRelation(GObjectRelation(treeRef, ObjectRole_PhylogeneticTree));
 
     removeTab(index);
+    delete win;
     emit si_tabsCountChanged(count());
 }
 

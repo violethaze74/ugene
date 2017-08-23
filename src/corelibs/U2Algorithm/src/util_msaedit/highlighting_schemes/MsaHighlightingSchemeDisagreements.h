@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,16 +29,16 @@ namespace U2 {
 class MsaHighlightingSchemeDisagreements : public MsaHighlightingScheme{
     Q_OBJECT
 public:
-    MsaHighlightingSchemeDisagreements(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj);
+    MsaHighlightingSchemeDisagreements(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj);
 
     void process(const char refChar, char &seqChar, QColor &color, bool &hightlight, int refCharColumn, int refCharRow) const;
 };
 
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeDisagreementsFactory : public MsaHighlightingSchemeFactory {
 public:
-    MsaHighlightingSchemeDisagreementsFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes);
+    MsaHighlightingSchemeDisagreementsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
 
-    MsaHighlightingScheme * create(QObject *parent, MAlignmentObject *maObj) const;
+    MsaHighlightingScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
 };
 
 }   // nmaespace U2

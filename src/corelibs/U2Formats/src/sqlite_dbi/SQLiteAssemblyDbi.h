@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-class SQLiteQuery;
+class SQLiteWriteQuery;
 class AssemblyAdapter;
 
 class SQLiteAssemblyDbi : public U2AssemblyDbi, public SQLiteChildDBICommon {
@@ -163,12 +163,12 @@ public:
 
     static void unpackData(const QByteArray& packed, U2AssemblyRead &read, U2OpStatus& os);
 
-    static void calculateCoverage(SQLiteQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
+    static void calculateCoverage(SQLiteReadQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
     static void addToCoverage(U2AssemblyCoverageImportInfo& cii, const U2AssemblyRead& read);
 };
 
-class SQLiteAssemblyNameFilter : public SqlRSFilter<U2AssemblyRead> {
+class SQLiteAssemblyNameFilter : public SQLiteResultSetFilter<U2AssemblyRead> {
 public:
     SQLiteAssemblyNameFilter(const QByteArray& expectedName) : name (expectedName) {}
     virtual bool filter(const U2AssemblyRead& r)  {return name == r->name;}
@@ -177,12 +177,12 @@ protected:
 
 };
 
-class SimpleAssemblyReadLoader: public SqlRSLoader<U2AssemblyRead> {
+class SimpleAssemblyReadLoader: public SQLiteResultSetLoader<U2AssemblyRead> {
 public:
     U2AssemblyRead load(SQLiteQuery* q);
 };
 
-class SimpleAssemblyReadPackedDataLoader : public SqlRSLoader<PackAlgorithmData> {
+class SimpleAssemblyReadPackedDataLoader : public SQLiteResultSetLoader<PackAlgorithmData> {
 public:
     virtual PackAlgorithmData load(SQLiteQuery* q);
 };

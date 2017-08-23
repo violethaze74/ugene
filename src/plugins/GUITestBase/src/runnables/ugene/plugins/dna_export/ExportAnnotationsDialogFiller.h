@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,24 +27,41 @@
 namespace U2 {
 using namespace HI;
 
-    class ExportAnnotationsFiller : public Filler {
-    public:
-        enum fileFormat {bed, genbank, gff, gtf, csv};
-        ExportAnnotationsFiller(const QString &exportToFile, fileFormat format, HI::GUITestOpStatus &os);
-        ExportAnnotationsFiller(HI::GUITestOpStatus &_os, const QString &_exportToFile, fileFormat _format, bool _saveSequencesUnderAnnotations = true,
-                                bool _saveSequenceNames = true, GTGlobals::UseMethod method = GTGlobals::UseMouse);
-        void commonScenario();
-    private:
-        void init(const QString &exportToFile);
-        bool softMode;
-        QString exportToFile;
-        fileFormat format;
-        QMap<fileFormat, QString> comboBoxItems;
-        bool saveSequencesUnderAnnotations;
-        bool saveSequenceNames;
-
-        GTGlobals::UseMethod useMethod;
+class ExportAnnotationsFiller : public Filler {
+public:
+    enum fileFormat {
+        bed,
+        genbank,
+        gff,
+        gtf,
+        csv
     };
+
+    ExportAnnotationsFiller(const QString &exportToFile, fileFormat format, HI::GUITestOpStatus &os);
+    ExportAnnotationsFiller(HI::GUITestOpStatus &_os,
+                            const QString &_exportToFile,
+                            fileFormat _format,
+                            bool _addToProject = false,
+                            bool _saveSequencesUnderAnnotations = true,
+                            bool _saveSequenceNames = true,
+                            GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    ExportAnnotationsFiller(GUITestOpStatus &os, CustomScenario *scenario);
+
+    void commonScenario();
+
+private:
+    void init(const QString &exportToFile);
+
+    bool softMode;
+    QString exportToFile;
+    fileFormat format;
+    QMap<fileFormat, QString> comboBoxItems;
+    bool addToProject;
+    bool saveSequencesUnderAnnotations;
+    bool saveSequenceNames;
+
+    GTGlobals::UseMethod useMethod;
+};
 
 }
 

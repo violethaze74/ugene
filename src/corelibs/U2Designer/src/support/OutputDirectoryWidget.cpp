@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,21 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QEvent>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QToolButton>
-#include <QtGui/QVBoxLayout>
-#else
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QVBoxLayout>
-#endif
+#include <QEvent>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QToolButton>
+#include <QVBoxLayout>
 
 #include <U2Core/U2SafePoints.h>
 
@@ -46,9 +37,9 @@
 namespace U2 {
 
 const QString OutputDirectoryWidget::INFO = QObject::tr(
-    "The Workflow Output Directory is a common directory that is used to store all output files in the Workflow Designer."
-    " A separate subdirectory of the directory is created for each run of a workflow."
-    "\n\nSet up the directory:"
+    "The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer."
+    " A separate subdirectory of the folder is created for each run of a workflow."
+    "\n\nSet up the folder:"
     );
 
 OutputDirectoryWidget::OutputDirectoryWidget(QWidget *parent, bool commitOnHide)
@@ -77,7 +68,7 @@ OutputDirectoryWidget::OutputDirectoryWidget(QWidget *parent, bool commitOnHide)
 }
 
 void OutputDirectoryWidget::sl_browse() {
-    QString dir = U2FileDialog::getExistingDirectory(this, tr("Select a directory"), pathEdit->text());
+    QString dir = U2FileDialog::getExistingDirectory(this, tr("Select a folder"), pathEdit->text());
 
     if(!dir.isEmpty()) {
         dir = QDir::toNativeSeparators(dir);

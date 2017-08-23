@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,16 +23,16 @@
 #define _U2_EXPORT_PLUGIN_TASKS_H_
 
 #include <U2Core/BaseDocumentFormats.h>
-
-#include <U2Core/Task.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MAlignment.h>
 #include <U2Core/DocumentProviderTask.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Task.h>
 
 namespace U2 {
 
 class DNATranslation;
 class LoadDocumentTask;
+class MultipleSequenceAlignmentObject;
 
 /** A task to adds exported document to project and open view*/
 //TODO: make this task a general purpose routine
@@ -51,12 +51,12 @@ private:
 class ExportAlignmentTask : public DocumentProviderTask  {
     Q_OBJECT
 public:
-    ExportAlignmentTask(const MAlignment& ma, const QString& fileName, DocumentFormatId f);
+    ExportAlignmentTask(const MultipleSequenceAlignment& ma, const QString& fileName, DocumentFormatId f);
 
     void run();
 
 private:
-    MAlignment              ma;
+    MultipleSequenceAlignment              ma;
     QString                 fileName;
     DocumentFormatId        format;
 };
@@ -66,12 +66,12 @@ private:
 class ExportMSA2SequencesTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMSA2SequencesTask(const MAlignment& ma, const QString& url, bool trimAli, DocumentFormatId format);
+    ExportMSA2SequencesTask(const MultipleSequenceAlignment& ma, const QString& url, bool trimAli, DocumentFormatId format);
 
     void run();
 
 private:
-    MAlignment              ma;
+    MultipleSequenceAlignment              ma;
     QString                 url;
     bool                    trimAli;
     QString                 format;
@@ -80,13 +80,13 @@ private:
 class ExportMSA2MSATask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMSA2MSATask(const MAlignment& ma, int offset, int len, const QString& url,
+    ExportMSA2MSATask(const MultipleSequenceAlignment& ma, int offset, int len, const QString& url,
         const QList<DNATranslation*>& aminoTranslations, DocumentFormatId format);
 
     void run();
 
 private:
-    MAlignment              ma;
+    MultipleSequenceAlignment              ma;
     int                     offset;
     int                     len;
     QString                 url;

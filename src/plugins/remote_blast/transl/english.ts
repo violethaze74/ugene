@@ -478,22 +478,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CheckNCBISequenceCircularityTask</name>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="552"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="557"/>
         <source>Check NCBI sequence circularity</source>
         <translation>Check NCBI sequence circularity</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="557"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="562"/>
         <source>ID is empty</source>
         <translation>ID is empty</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="583"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="588"/>
         <source>Can not check if sequence is circular! Sequence is considered to be linear.</source>
         <translation>Can not check if sequence is circular! Sequence is considered to be linear.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="587"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="592"/>
         <source>Can not remove temporary file.</source>
         <translation>Can not remove temporary file.</translation>
     </message>
@@ -501,33 +501,33 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CreateAnnotationsFromHttpBlastResultTask</name>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="239"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="244"/>
         <source>Create annotations from BLAST results</source>
         <translation>Create annotations from BLAST results</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="244"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="249"/>
         <source>HttpBlastResult list is empty</source>
         <translation>HttpBlastResult list is empty</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="256"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="261"/>
         <source>HttpRequest is NULL!</source>
         <translation>HttpRequest is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="481"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="482"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="486"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="487"/>
         <source>Wrong number of annotations</source>
         <translation>Wrong number of annotations</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="538"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="543"/>
         <source>Invalid subtask</source>
         <translation>Invalid subtask</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="539"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="544"/>
         <source>No corresponding annotations</source>
         <translation>No corresponding annotations</translation>
     </message>
@@ -712,38 +712,38 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::Merge</name>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="630"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="635"/>
         <source>Qualifier %1 not found</source>
         <translation>Qualifier %1 not found</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="631"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="636"/>
         <source>Can not merge %1 qualifiers: values are not the same.</source>
         <translation>Can not merge %1 qualifiers: values are not the same.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="638"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="644"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="668"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="674"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="643"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="649"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="673"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="679"/>
         <source>Can not find &apos;%1&apos; qualifier</source>
         <translation>Can not find &apos;%1&apos; qualifier</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="671"/>
         <location filename="../src/RemoteBLASTTask.cpp" line="676"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="686"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="690"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="681"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="691"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="695"/>
         <source>Can not convert qualifier value &apos;%1&apos; to double</source>
         <translation>Can not convert qualifier value &apos;%1&apos; to double</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="683"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="688"/>
         <source>Can not find &apos;E-value&apos; qualifier</source>
         <translation>Can not find &apos;E-value&apos; qualifier</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="694"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="699"/>
         <source>Can not convert qualifier value &apos;%1&apos; to int</source>
         <translation>Can not convert qualifier value &apos;%1&apos; to int</translation>
     </message>
@@ -819,12 +819,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::RemoteBLASTPlugin</name>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="62"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="63"/>
         <source>Performs remote database queries: BLAST, CDD, etc...</source>
         <translation>Performs remote database queries: BLAST, CDD, etc...</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="62"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="63"/>
         <source>Remote BLAST</source>
         <translation>Remote BLAST</translation>
     </message>
@@ -832,7 +832,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::RemoteBLASTTask</name>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="110"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="115"/>
         <source>RemoteBLASTTask</source>
         <translation>RemoteBLASTTask</translation>
     </message>
@@ -851,7 +851,7 @@ p, li { white-space: pre-wrap; }
         <translation>The object was removed</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="90"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="96"/>
         <source>File %1 already exists</source>
         <translation>File %1 already exists</translation>
     </message>
@@ -859,12 +859,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::RemoteBLASTViewContext</name>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="100"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="101"/>
         <source>Query NCBI BLAST database...</source>
         <translation>Query NCBI BLAST database...</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="137"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="138"/>
         <source>Sequence objects is NULL</source>
         <translation>Sequence objects is NULL</translation>
     </message>
@@ -872,12 +872,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::RemoteBlastHttpRequestTask</name>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="153"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="158"/>
         <source>Http Blast requests task</source>
         <translation>Http Blast requests task</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="164"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="169"/>
         <source>Incorrect database</source>
         <translation>Incorrect database</translation>
     </message>
@@ -895,20 +895,18 @@ p, li { white-space: pre-wrap; }
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="219"/>
-        <location filename="../src/SendSelectionDialog.cpp" line="319"/>
-        <location filename="../src/SendSelectionDialog.cpp" line="432"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="303"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="416"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="219"/>
-        <location filename="../src/SendSelectionDialog.cpp" line="432"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="416"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="406"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="390"/>
         <source>You chose to search nucleotide sequence in protein database. This sequence will be converted into 6 sequences(3 translations for both strands).Therefore this search may take some time. Continue?</source>
         <translation>You chose to search nucleotide sequence in protein database. This sequence will be converted into 6 sequences(3 translations for both strands).Therefore this search may take some time. Continue?</translation>
     </message>

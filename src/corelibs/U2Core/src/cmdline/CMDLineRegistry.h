@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,11 @@
 #ifndef _U2_CMD_LINE_REGISTRY_
 #define _U2_CMD_LINE_REGISTRY_
 
-#include <U2Core/global.h>
+#include <QMap>
+#include <QStringList>
 
-#include <QtCore/QStringList>
-#include <QtCore/QMap>
+#include <U2Core/global.h>
+#include <U2Core/StrPackUtils.h>
 
 namespace U2 {
 
@@ -47,7 +48,7 @@ public:
     CMDLineRegistry(const QStringList& arguments);
     virtual ~CMDLineRegistry();
 
-    const QList<StringPair> & getParameters() const;
+    const QList<StrStrPair> & getParameters() const;
     // as they were in cmdline. Empty keys also here
     QStringList getOrderedParameterNames() const;
 
@@ -62,7 +63,7 @@ public:
     const QList<CMDLineHelpProvider* >& listCMDLineHelpProviders() const { return helpProviders; }
 
 private:
-    QList<StringPair>                   params; // pairs (paramName, paramValue) ordered as in the cmdline
+    QList<StrStrPair>                   params; // pairs (paramName, paramValue) ordered as in the cmdline
     QList<CMDLineHelpProvider* >        helpProviders; // sorted by section name
 
 }; // CMDLineRegistry

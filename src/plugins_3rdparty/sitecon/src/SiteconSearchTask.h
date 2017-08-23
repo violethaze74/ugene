@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include <U2Core/AnnotationData.h>
 #include <U2Core/SequenceWalkerTask.h>
 
-#include <QtCore/QMutex>
+#include <QMutex>
 
 namespace U2 {
 

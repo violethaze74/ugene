@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, basic_align ) {
     CHECK_U2_ERROR( error );
     error = addElementToScheme( scheme, L"muscle", MAX_ELEMENT_NAME_LENGTH, muscle );
     CHECK_U2_ERROR( error );
-    error = setSchemeElementAttribute( scheme, writeMsa, L"document-format", L"clustal" );
+    error = setSchemeElementAttribute( scheme, writeMsa, L"document-format", L"CLUSTAL" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, writeMsa, L"url-out", L"muscle_alignment.aln" );
     CHECK_U2_ERROR( error );
@@ -82,7 +82,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, faqual2fastq ) {
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, readSequence, L"url-in.dataset", L"Dataset 1" );
     CHECK_U2_ERROR( error );
-    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"fastq" );
+    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"FASTQ" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, writeSequence, L"url-out", L"qualified_sequence.fastq" );
     CHECK_U2_ERROR( error );
@@ -118,7 +118,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, msa2clustal ) {
     CHECK_U2_ERROR( error );
     error = addElementToScheme( scheme, L"write-msa", MAX_ELEMENT_NAME_LENGTH, writeMsa );
     CHECK_U2_ERROR( error );
-    error = setSchemeElementAttribute( scheme, writeMsa, L"document-format", L"clustal" );
+    error = setSchemeElementAttribute( scheme, writeMsa, L"document-format", L"CLUSTAL" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, writeMsa, L"write-mode", L"2" );
     CHECK_U2_ERROR( error );
@@ -180,7 +180,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, query2alignment ) {
     error = setSchemeElementAttribute( scheme, extractAnnotatedSequence, L"translate", L"false" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, writeMsa, L"document-format", L"clustal" );
+    error = setSchemeElementAttribute( scheme, writeMsa, L"document-format", L"CLUSTAL" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, writeMsa, L"write-mode", L"2" );
     CHECK_U2_ERROR( error );
@@ -231,7 +231,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, seq2gen ) {
     error = setSchemeElementAttribute( scheme, readSequence, L"mode", L"0" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"genbank" );
+    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"Genbank" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, writeSequence, L"accumulate", L"true" );
     CHECK_U2_ERROR( error );
@@ -279,7 +279,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, tfbs ) {
     error = addElementToScheme( scheme, L"wmatrix-read", MAX_ELEMENT_NAME_LENGTH, wmatrixRead );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"genbank" );
+    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"Genbank" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, writeSequence, L"url-out", L"tfbs.gb" );
     CHECK_U2_ERROR( error );
@@ -394,7 +394,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, build_test_HMM ) {
     error = setSchemeElementAttribute( scheme, hmm2Search, L"seqs-num", L"1" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"genbank" );
+    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"Genbank" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, writeSequence, L"accumulate", L"true" );
     CHECK_U2_ERROR( error );
@@ -463,7 +463,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, search_HMM ) {
     error = setSchemeElementAttribute( scheme, hmm2Search, L"seqs-num", L"1" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"genbank" );
+    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"Genbank" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, writeSequence, L"accumulate", L"true" );
     CHECK_U2_ERROR( error );
@@ -522,7 +522,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, search_TFBS ) {
     error = addElementToScheme( scheme, L"sitecon-read", MAX_ELEMENT_NAME_LENGTH, siteconRead2 );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"genbank" );
+    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"Genbank" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, writeSequence, L"url-out", L"output.gb" );
     CHECK_U2_ERROR( error );
@@ -617,9 +617,9 @@ IMPLEMENT_TEST( CInterfaceManualTests, call_variants ) {
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, readAssembly, L"url-in.dataset", L"Dataset" );
     CHECK_U2_ERROR( error );
-    error = setSchemeElementAttribute( scheme, convertSequence, L"document-format", L"fasta" );
+    error = setSchemeElementAttribute( scheme, convertSequence, L"document-format", L"FASTA" );
     CHECK_U2_ERROR( error );
-    error = setSchemeElementAttribute( scheme, convertBam, L"document-format", L"bam" );
+    error = setSchemeElementAttribute( scheme, convertBam, L"document-format", L"BAM" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, callVariants, L"variants-url", L"variations.vcf" );
     CHECK_U2_ERROR( error );
@@ -924,7 +924,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, tuxedo_main ) {
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, cuffdiff, L"out-dir", L"tools_output" );
     CHECK_U2_ERROR( error );
-    error = setSchemeElementAttribute( scheme, filesConversion, L"document-format", L"fastq" );
+    error = setSchemeElementAttribute( scheme, filesConversion, L"document-format", L"FASTQ" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, filesConversion, L"excluded-formats", L"fasta" );
     CHECK_U2_ERROR( error );
@@ -1021,12 +1021,12 @@ IMPLEMENT_TEST( CInterfaceManualTests, tuxedo_main_paired ) {
     error = setSchemeElementAttribute( scheme, getFileList2, L"url-in.dataset", L"Dataset 2" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, filesConversion1, L"document-format", L"fastq" );
+    error = setSchemeElementAttribute( scheme, filesConversion1, L"document-format", L"FASTQ" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, filesConversion1, L"excluded-formats", L"fasta" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, filesConversion2, L"document-format", L"fastq" );
+    error = setSchemeElementAttribute( scheme, filesConversion2, L"document-format", L"FASTQ" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, filesConversion2, L"excluded-formats", L"fasta" );
     CHECK_U2_ERROR( error );
@@ -1114,7 +1114,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, tuxedo_multiple_dataset ) {
     error = setSchemeElementAttribute( scheme, getFileList, L"url-in.dataset", L"Dataset 2" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, filesConversion, L"document-format", L"fastq" );
+    error = setSchemeElementAttribute( scheme, filesConversion, L"document-format", L"FASTQ" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, filesConversion, L"excluded-formats", L"fasta" );
     CHECK_U2_ERROR( error );
@@ -1194,12 +1194,12 @@ IMPLEMENT_TEST( CInterfaceManualTests, tuxedo_multiple_dataset_paired ) {
     error = setSchemeElementAttribute( scheme, getFileList2, L"url-in.dataset", L"Dataset 2" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, filesConversion1, L"document-format", L"fastq" );
+    error = setSchemeElementAttribute( scheme, filesConversion1, L"document-format", L"FASTQ" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, filesConversion1, L"excluded-formats", L"fasta" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, filesConversion2, L"document-format", L"fastq" );
+    error = setSchemeElementAttribute( scheme, filesConversion2, L"document-format", L"FASTQ" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, filesConversion2, L"excluded-formats", L"fasta" );
     CHECK_U2_ERROR( error );
@@ -1273,7 +1273,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, tuxedo_single_dataset ) {
     error = setSchemeElementAttribute( scheme, getFileList, L"url-in.dataset", L"Dataset 1" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, filesConversion, L"document-format", L"fastq" );
+    error = setSchemeElementAttribute( scheme, filesConversion, L"document-format", L"FASTQ" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, filesConversion, L"excluded-formats", L"fasta" );
     CHECK_U2_ERROR( error );
@@ -1338,12 +1338,12 @@ IMPLEMENT_TEST( CInterfaceManualTests, tuxedo_single_dataset_paired ) {
     error = setSchemeElementAttribute( scheme, getFileList2, L"url-in.dataset", L"Dataset 1" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, filesConversion1, L"document-format", L"fastq" );
+    error = setSchemeElementAttribute( scheme, filesConversion1, L"document-format", L"FASTQ" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, filesConversion1, L"excluded-formats", L"fasta" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, filesConversion2, L"document-format", L"fastq" );
+    error = setSchemeElementAttribute( scheme, filesConversion2, L"document-format", L"FASTQ" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, filesConversion2, L"excluded-formats", L"fasta" );
     CHECK_U2_ERROR( error );
@@ -1407,7 +1407,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, find_sequences ) {
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, search, L"use-names", L"true" );
     CHECK_U2_ERROR( error );
-    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"genbank" );
+    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"Genbank" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, writeSequence, L"write-mode", L"0" );
     CHECK_U2_ERROR( error );
@@ -1458,7 +1458,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, gene_by_gene_report ) {
 
     error = setSchemeElementAttribute( scheme, readSequence, L"url-in.dataset", L"Dataset" );
     CHECK_U2_ERROR( error );
-    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"genbank" );
+    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"Genbank" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, writeSequence, L"url-out", L"annotated_sequence.gb" );
     CHECK_U2_ERROR( error );
@@ -1520,7 +1520,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, merge_sequence_annotation ) {
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, readAnnotations, L"url-in.dataset", L"Dataset" );
     CHECK_U2_ERROR( error );
-    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"genbank" );
+    error = setSchemeElementAttribute( scheme, writeSequence, L"document-format", L"Genbank" );
     CHECK_U2_ERROR( error );
     error = setSchemeElementAttribute( scheme, writeSequence, L"url-out", L"merged.gb" );
     CHECK_U2_ERROR( error );

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -35,7 +35,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
@@ -69,7 +69,7 @@ TCoffeeSupport::TCoffeeSupport(const QString& name, const QString& path) : Exter
 }
 
 void TCoffeeSupport::sl_runWithExtFileSpecify(){
-    //Check that T-Coffee and tempory directory path defined
+    //Check that T-Coffee and tempory folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -117,18 +117,16 @@ void TCoffeeSupport::sl_runWithExtFileSpecify(){
 
 ////////////////////////////////////////
 //TCoffeeSupportContext
-TCoffeeSupportContext::TCoffeeSupportContext(QObject* p) : GObjectViewWindowContext(p, MSAEditorFactory::ID) {
+TCoffeeSupportContext::TCoffeeSupportContext(QObject* p) : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 
 }
 
 void TCoffeeSupportContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    assert(msaed!=NULL);
-    if (msaed->getMSAObject() == NULL) {
-            return;
-    }
+    SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
+    CHECK(msaed->getMaObject() != NULL, );
 
-    bool objLocked = msaed->getMSAObject()->isStateLocked();
+    bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
     AlignMsaAction* alignAction = new AlignMsaAction(this, ET_TCOFFEE, view, tr("Align with T-Coffee..."), 2000);
@@ -137,8 +135,8 @@ void TCoffeeSupportContext::initViewContext(GObjectView* view) {
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
 
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_TCoffee()));
 }
 
@@ -152,7 +150,7 @@ void TCoffeeSupportContext::buildMenu(GObjectView* view, QMenu* m) {
 }
 
 void TCoffeeSupportContext::sl_align_with_TCoffee() {
-    //Check that T-Coffee and temporary directory path defined
+    //Check that T-Coffee and temporary folder path defined
     if (AppContext::getExternalToolRegistry()->getByName(ET_TCOFFEE)->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(ET_TCOFFEE);
@@ -186,7 +184,7 @@ void TCoffeeSupportContext::sl_align_with_TCoffee() {
     AlignMsaAction* action = qobject_cast<AlignMsaAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMsaEditor();
-    MAlignmentObject* obj = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
     if (obj == NULL)
             return;
     assert(!obj->isStateLocked());
@@ -200,7 +198,7 @@ void TCoffeeSupportContext::sl_align_with_TCoffee() {
         return;
     }
 
-    TCoffeeSupportTask* tCoffeeSupportTask = new TCoffeeSupportTask(obj->getMAlignment(), GObjectReference(obj), settings);
+    TCoffeeSupportTask* tCoffeeSupportTask = new TCoffeeSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), tCoffeeSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(tCoffeeSupportTask);
 

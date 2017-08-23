@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,8 +32,6 @@
 #include "FindExonRegionsTask.h"
 
 namespace U2 {
-
-extern Logger log;
 
 FindExonRegionsTask::FindExonRegionsTask(U2SequenceObject *dObj, const QString &annName)
     : Task("FindExonRegionsTask", TaskFlags_NR_FOSCOE), dnaObj(dObj), exonAnnName(annName)

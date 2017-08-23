@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,18 +27,14 @@
 #include "SWMulAlignExternalPropTag.h"
 #include "SmithWatermanReportCallback.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QMutex>
-#include <QtCore/QHash>
-#include <QtCore/QString>
-#include <QtCore/QList>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#else
-#include <QtWidgets/QPushButton>
-#endif
-#include <QtCore/QBitArray>
-#include <QtCore/QStringList>
+#include <QBitArray>
+#include <QHash>
+#include <QList>
+#include <QMutex>
+#include <QObject>
+#include <QPushButton>
+#include <QString>
+#include <QStringList>
 
 const char OPEN_SQUARE_BRACKET = '[';
 const char CLOSE_SQUARE_BRACKET = ']';

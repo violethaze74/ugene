@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,23 +21,27 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DNAQuality.h>
+#include <U2Core/DNASequenceUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/GUrlUtils.h>
-#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/TaskSignalMapper.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Designer/DelegateEditors.h>
+
 #include <U2Formats/BAMUtils.h>
 #include <U2Formats/FastqFormat.h>
-#include <U2Designer/DelegateEditors.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BaseAttributes.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
-#include <U2Lang/BaseAttributes.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
 
 #include "FASTQWorkersLibrary.h"
 
@@ -97,13 +101,13 @@ void CASAVAFilterWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, CASAVAFilterWorker::tr("Output directory"),
-            CASAVAFilterWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, CASAVAFilterWorker::tr("Output folder"),
+            CASAVAFilterWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, CASAVAFilterWorker::tr("Custom directory"),
-            CASAVAFilterWorker::tr("Select the custom output directory."));
+        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, CASAVAFilterWorker::tr("Custom folder"),
+            CASAVAFilterWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, CASAVAFilterWorker::tr("Output file name"),
             CASAVAFilterWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));
@@ -206,7 +210,7 @@ QStringList CASAVAFilterTask::getParameters(U2OpStatus &/*os*/) {
 
 ///////////////////////////////////////////////////////////////
 //QualityTrim
-const QString QualityTrimWorkerFactory::ACTOR_ID("QualityTrim");
+const QString FastqQualityTrimWorkerFactory::ACTOR_ID("QualityTrim");
 
 static const QString QUALITY_ID("qual-id");
 static const QString LEN_ID("len-id");
@@ -215,7 +219,7 @@ static const QString BOTH_ID("both-ends");
 /************************************************************************/
 /* QualityTrimPrompter */
 /************************************************************************/
-QString QualityTrimPrompter::composeRichDoc() {
+QString FastqQualityTrimPrompter::composeRichDoc() {
     IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BaseNGSWorker::INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>"+tr("unset")+"</font>";
@@ -228,18 +232,18 @@ QString QualityTrimPrompter::composeRichDoc() {
 /************************************************************************/
 /* QualityTrimWorkerFactory */
 /************************************************************************/
-void QualityTrimWorkerFactory::init() {
-    Descriptor desc( ACTOR_ID, QualityTrimWorker::tr("FASTQ Quality Trimmer"),
-        QualityTrimWorker::tr("The workflow scans each input sequence from the end to find the first position where the quality is greater or equal to the minimum quality threshold. "
+void FastqQualityTrimWorkerFactory::init() {
+    Descriptor desc( ACTOR_ID, FastqQualityTrimWorker::tr("FASTQ Quality Trimmer"),
+        FastqQualityTrimWorker::tr("The workflow scans each input sequence from the end to find the first position where the quality is greater or equal to the minimum quality threshold. "
                               "Then it trims the sequence to that position. If a the whole sequence has quality less than the threshold or the length of the output sequence less than "
                               "the minimum length threshold then the sequence is skipped.") );
 
     QList<PortDescriptor*> p;
     {
-        Descriptor inD(BaseNGSWorker::INPUT_PORT, QualityTrimWorker::tr("Input File"),
-            QualityTrimWorker::tr("Set of FASTQ reads files"));
-        Descriptor outD(BaseNGSWorker::OUTPUT_PORT, QualityTrimWorker::tr("Output File"),
-            QualityTrimWorker::tr("Output FASTQ files"));
+        Descriptor inD(BaseNGSWorker::INPUT_PORT, FastqQualityTrimWorker::tr("Input File"),
+            FastqQualityTrimWorker::tr("Set of FASTQ reads files"));
+        Descriptor outD(BaseNGSWorker::OUTPUT_PORT, FastqQualityTrimWorker::tr("Output File"),
+            FastqQualityTrimWorker::tr("Output FASTQ files"));
 
         QMap<Descriptor, DataTypePtr> inM;
         inM[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();
@@ -252,25 +256,25 @@ void QualityTrimWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, QualityTrimWorker::tr("Output directory"),
-            QualityTrimWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, FastqQualityTrimWorker::tr("Output folder"),
+            FastqQualityTrimWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, QualityTrimWorker::tr("Custom directory"),
-            QualityTrimWorker::tr("Select the custom output directory."));
+        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, FastqQualityTrimWorker::tr("Custom folder"),
+            FastqQualityTrimWorker::tr("Select the custom output folder."));
 
-        Descriptor outName(BaseNGSWorker::OUT_NAME_ID, QualityTrimWorker::tr("Output file name"),
-            QualityTrimWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));
+        Descriptor outName(BaseNGSWorker::OUT_NAME_ID, FastqQualityTrimWorker::tr("Output file name"),
+            FastqQualityTrimWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));
 
-        Descriptor qualT(QUALITY_ID, QualityTrimWorker::tr("Quality threshold"),
-            QualityTrimWorker::tr("Quality threshold for trimming."));
+        Descriptor qualT(QUALITY_ID, FastqQualityTrimWorker::tr("Quality threshold"),
+            FastqQualityTrimWorker::tr("Quality threshold for trimming."));
 
-        Descriptor lenT(LEN_ID, QualityTrimWorker::tr("Min Length"),
-            QualityTrimWorker::tr("Too short reads are discarded by the filter."));
+        Descriptor lenT(LEN_ID, FastqQualityTrimWorker::tr("Min Length"),
+            FastqQualityTrimWorker::tr("Too short reads are discarded by the filter."));
 
-        Descriptor bothD(BOTH_ID, QualityTrimWorker::tr("Trim both ends"),
-            QualityTrimWorker::tr("Trim the both ends of a read or not. Usually, you need to set <b>True</b> for <b>Sanger</b> sequencing and <b>False</b> for <b>NGS</b>"));
+        Descriptor bothD(BOTH_ID, FastqQualityTrimWorker::tr("Trim both ends"),
+            FastqQualityTrimWorker::tr("Trim the both ends of a read or not. Usually, you need to set <b>True</b> for <b>Sanger</b> sequencing and <b>False</b> for <b>NGS</b>"));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
         Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
@@ -285,9 +289,9 @@ void QualityTrimWorkerFactory::init() {
     QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap directoryMap;
-        QString fileDir = QualityTrimWorker::tr("Input file");
-        QString workflowDir = QualityTrimWorker::tr("Workflow");
-        QString customD = QualityTrimWorker::tr("Custom");
+        QString fileDir = FastqQualityTrimWorker::tr("Input file");
+        QString workflowDir = FastqQualityTrimWorker::tr("Workflow");
+        QString customD = FastqQualityTrimWorker::tr("Custom");
         directoryMap[fileDir] = FileAndDirectoryUtils::FILE_DIRECTORY;
         directoryMap[workflowDir] = FileAndDirectoryUtils::WORKFLOW_INTERNAL;
         directoryMap[customD] = FileAndDirectoryUtils::CUSTOM;
@@ -302,23 +306,23 @@ void QualityTrimWorkerFactory::init() {
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setPrompter(new QualityTrimPrompter());
+    proto->setPrompter(new FastqQualityTrimPrompter());
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
-    localDomain->registerEntry(new QualityTrimWorkerFactory());
+    localDomain->registerEntry(new FastqQualityTrimWorkerFactory());
 }
 
 /************************************************************************/
 /* QualityTrimWorker */
 /************************************************************************/
-QualityTrimWorker::QualityTrimWorker(Actor *a)
+FastqQualityTrimWorker::FastqQualityTrimWorker(Actor *a)
 :BaseNGSWorker(a)
 {
 
 }
 
-QVariantMap QualityTrimWorker::getCustomParameters() const{
+QVariantMap FastqQualityTrimWorker::getCustomParameters() const{
     QVariantMap res;
     res.insert(QUALITY_ID, getValue<int>(QUALITY_ID));
     res.insert(LEN_ID, getValue<int>(LEN_ID));
@@ -326,17 +330,17 @@ QVariantMap QualityTrimWorker::getCustomParameters() const{
     return res;
 }
 
-QString QualityTrimWorker::getDefaultFileName() const{
+QString FastqQualityTrimWorker::getDefaultFileName() const{
     return ".trimmed.fastq";
 }
 
-Task *QualityTrimWorker::getTask(const BaseNGSSetting &settings) const {
-    return new QualityTrimTask(settings);
+Task *FastqQualityTrimWorker::getTask(const BaseNGSSetting &settings) const {
+    return new FastqQualityTrimTask(settings);
 }
 
 //////////////////////////////////////////////////////
 //QualityTrimTask
-QualityTrimTask::QualityTrimTask(const BaseNGSSetting &settings)
+FastqQualityTrimTask::FastqQualityTrimTask(const BaseNGSSetting &settings)
     :BaseNGSTask(settings){
 
     GCOUNTER(cvar, tvar, "NGS:FASTQQualityTrimmerTask");
@@ -362,92 +366,67 @@ QualityTrimTask::QualityTrimTask(const BaseNGSSetting &settings)
 //  I - Illumina 1.3+ Phred+64,  raw reads typically (0, 40)
 //  J - Illumina 1.5+ Phred+64,  raw reads typically (3, 40) with 0=unused, 1=unused, 2=Read Segment Quality Control Indicator (bold)
 //  L - Illumina 1.8+ Phred+33,  raw reads typically (0, 41)
-int QualityTrimTask::getMaxQualityValue(){
+DNAQualityType FastqQualityTrimTask::detectQualityType(){
     int maxValue = 33;
+    int minValue = 126;
     FASTQIterator iter_qual(settings.inputUrl, stateInfo);
-    CHECK(!stateInfo.hasError(), -1);
+    CHECK(!stateInfo.hasError(), DNAQualityType_Sanger);
 
     int counter = 0;
-    while(iter_qual.hasNext()){
-        CHECK(!stateInfo.isCoR(), -1);
+    while (iter_qual.hasNext()) {
+        CHECK(!stateInfo.isCoR(), DNAQualityType_Sanger);
 
-        if(counter > 1000) {//check only first 1000 reads in file
+        if (counter > 1000) {   // check only first 1000 reads in file
             break;
         }
 
         DNASequence dna = iter_qual.next();
         int seqLen = dna.length();
-        if(seqLen > dna.quality.qualCodes.length()){
+        if (seqLen > dna.quality.qualCodes.length()) {
             continue;
-        }else{
-            for (int pos = 0; pos <= seqLen - 1; pos++){
+        } else {
+            for (int pos = 0; pos <= seqLen - 1; pos++) {
                 maxValue = qMax(static_cast<int>(dna.quality.qualCodes.at(pos)), maxValue);
+                minValue = qMin(static_cast<int>(dna.quality.qualCodes.at(pos)), minValue);
             }
         }
         counter++;
     }
-    return maxValue;
+    return DNAQuality::detectTypeByMinMaxQualityValues(minValue, maxValue);
 }
 
-namespace {
-DNAQualityType getQualityType(int maxQualityValue){
-    return (maxQualityValue >= MAX_PHRED33_VALUE) ? DNAQualityType_Illumina : DNAQualityType_Sanger; //also see description in getMaxQualityValue()
-}
-}//anonymous namespace
-
-void QualityTrimTask::runStep(){
+void FastqQualityTrimTask::runStep(){
     int ncount = 0;
     int ycount = 0;
 
-    QScopedPointer<IOAdapter> io  (IOAdapterUtils::open(settings.outDir + settings.outName, stateInfo, IOAdapterMode_Append));
+    QScopedPointer<IOAdapter> io(IOAdapterUtils::open(settings.outDir + settings.outName, stateInfo, IOAdapterMode_Append));
 
     int quality = settings.customParameters.value(QUALITY_ID, 20).toInt();
     int minLen = settings.customParameters.value(LEN_ID, 0).toInt();
     bool bothEnds = settings.customParameters.value(BOTH_ID, false).toInt();
-    int maxQualityValue = getMaxQualityValue();
-    CHECK(maxQualityValue != -1, );
+    DNAQualityType qualityType = detectQualityType();
+    CHECK_OP(stateInfo, );
 
     FASTQIterator iter(settings.inputUrl, stateInfo);
-    if (stateInfo.hasError()) {
-        return;
-    }
-    while(iter.hasNext()){
-        if(stateInfo.isCoR()){
-            return;
-        }
+    CHECK_OP(stateInfo, );
+
+    while (iter.hasNext()) {
+        CHECK_OP(stateInfo, );
+
         DNASequence dna = iter.next();
-        QString comment = DNAInfo::getFastqComment(dna.info);
-        int seqLen = dna.length();
-        dna.quality.type = getQualityType(maxQualityValue);
-        if(seqLen > dna.quality.qualCodes.length()){
+        const int initialLength = dna.length();
+
+        dna.quality.type = qualityType;
+
+        const U2Region acceptedRegion = DNASequenceUtils::trimByQuality(dna, quality, minLen, bothEnds);
+
+        if (acceptedRegion.length < initialLength) {
+            ycount++;
+        } else {
             ncount++;
-            continue;
-        }else{
-            int endPosition = seqLen-1;
-            for (; endPosition>=0; endPosition--){
-                if(dna.quality.getValue(endPosition) >= quality){
-                    break;
-                }
-            }
-            int beginPosition = 0;
-            if (bothEnds) {
-                for (; beginPosition<=endPosition; beginPosition++) {
-                    if (dna.quality.getValue(beginPosition) >= quality) {
-                        break;
-                    }
-                }
-            }
-            if(endPosition>=beginPosition && endPosition-beginPosition+1 >= minLen){
-                DNASequence trimmed(dna.getName(), dna.seq.left(endPosition+1).mid(beginPosition), dna.alphabet);
-                trimmed.quality = dna.quality;
-                trimmed.quality.qualCodes = trimmed.quality.qualCodes.left(endPosition+1).mid(beginPosition);
-                FastqFormat::writeEntry(trimmed.getName(), trimmed, io.data(), "Writing error", stateInfo, false);
-                ycount++;
-            }else{
-                ncount++;
-                continue;
-            }
         }
+
+        FastqFormat::writeEntry(dna.getName(), dna, io.data(), "Writing error", stateInfo, false);
     }
 
     algoLog.info(QString("Discarded by trimmer %1").arg(ncount));
@@ -455,7 +434,7 @@ void QualityTrimTask::runStep(){
     algoLog.info(QString("Total by trimmer %1").arg(ncount + ycount));
 }
 
-QStringList QualityTrimTask::getParameters(U2OpStatus &/*os*/){
+QStringList FastqQualityTrimTask::getParameters(U2OpStatus &/*os*/){
     QStringList res;
     return res;
 }
@@ -504,13 +483,13 @@ void MergeFastqWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, MergeFastqWorker::tr("Output directory"),
-            MergeFastqWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, MergeFastqWorker::tr("Output folder"),
+            MergeFastqWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, MergeFastqWorker::tr("Custom directory"),
-            MergeFastqWorker::tr("Select the custom output directory."));
+        Descriptor customDir(BaseNGSWorker::CUSTOM_DIR_ID, MergeFastqWorker::tr("Custom folder"),
+            MergeFastqWorker::tr("Select the custom output folder."));
 
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, MergeFastqWorker::tr("Output file name"),
             MergeFastqWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention."));

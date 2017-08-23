@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ DotPlotFilesDialog::DotPlotFilesDialog(QWidget *parent)
 : QDialog(parent)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759528");
+    new HelpButton(this, buttonBox, "19766784");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Next"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -51,7 +51,7 @@ DotPlotFilesDialog::DotPlotFilesDialog(QWidget *parent)
     connect(mergeFirstCheckBox, SIGNAL(clicked()), SLOT(sl_mergeFirst()));
     connect(mergeSecondCheckBox, SIGNAL(clicked()), SLOT(sl_mergeSecond()));
 
-    filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true).append("\n").append(
+    filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true).append("\n").append(
         DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, false));
 
 }

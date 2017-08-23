@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
 #ifndef _U2_GUI_MAFFT_SUPPORT_RUN_DIALOG_FILLER_H_
 #define _U2_GUI_MAFFT_SUPPORT_RUN_DIALOG_FILLER_H_
  
-#include "utils/GTUtilsDialog.h"
 #include <base_dialogs/GTFileDialog.h>
+#include <utils/GTUtilsDialog.h>
 
 namespace U2 {
 using namespace HI;
@@ -31,14 +31,8 @@ using namespace HI;
 class MAFFTSupportRunDialogFiller : public Filler {
 public:
     class Parameters {
-        public:
-        Parameters():
-            ckeckBox_gapOpenCheckBox_checked(0),
-            doubleSpin_gapOpenSpinBox_value(1.53),
-            ckeckBox_gapExtCheckBox_checked(0),
-            doubleSpin_gapExtSpinBox_value(0),
-            ckeckBox_maxNumberIterRefinementCheckBox_checked(0),
-            spin_maxNumberIterRefinementSpinBox_value(0){}
+    public:
+        Parameters();
 
         bool ckeckBox_gapOpenCheckBox_checked;
         double doubleSpin_gapOpenSpinBox_value;
@@ -48,23 +42,17 @@ public:
         int spin_maxNumberIterRefinementSpinBox_value;
     };
 
+    MAFFTSupportRunDialogFiller(GUITestOpStatus &os, Parameters* parameters);
+    MAFFTSupportRunDialogFiller(GUITestOpStatus &os, CustomScenario *scenario);
 
-    MAFFTSupportRunDialogFiller(HI::GUITestOpStatus &os, Parameters* parameters) :
-        Filler(os, "MAFFTSupportRunDialog"),
-        parameters(parameters) {
-            CHECK_SET_ERR(parameters, "Invalid filler parameters: NULL pointer");
-    }
-
-void commonScenario();
+    void commonScenario();
 
 private:
 
-Parameters* parameters;
+    Parameters* parameters;
 
 };
 
-}
+}   // namespace U2
 
-#endif
-
- 
+#endif // _U2_GUI_MAFFT_SUPPORT_RUN_DIALOG_FILLER_H_

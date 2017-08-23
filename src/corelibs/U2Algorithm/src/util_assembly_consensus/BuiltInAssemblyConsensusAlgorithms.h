@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 #define _U2_BUILT_IN_ASSEMBLY_CONSENSUS_ALGORITHMS_H_
 
 #include <U2Core/global.h>
-#include <QtCore/QString>
+#include <QString>
 
 namespace U2 {
 

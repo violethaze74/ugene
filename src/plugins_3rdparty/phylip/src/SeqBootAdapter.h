@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 #include "seqboot.h"
 #include "cons.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/PhyTree.h>
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 #include <QVector>
@@ -35,8 +35,8 @@ typedef QVector<matrixrow> matrix;
 
 class SeqBoot{
 private:
-    const MAlignment* malignment;
-    QVector<MAlignment*> generatedSeq;
+    MultipleSequenceAlignment malignment;
+    QVector<MultipleSequenceAlignment> generatedSeq;
     int seqLen;
     int seqRowCount;
 
@@ -44,9 +44,9 @@ private:
 public:
     QString getTmpFileTemplate();
     void clearGenratedSequences(); //to free memory
-    void generateSequencesFromAlignment( const MAlignment& ma, const CreatePhyTreeSettings& settings );
+    void generateSequencesFromAlignment( const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings );
 
-    const MAlignment& getMSA(int pos) const;
+    const MultipleSequenceAlignment& getMSA(int pos) const;
 
     void initGenerSeq(int reps, int rowC, int seqLen);
 

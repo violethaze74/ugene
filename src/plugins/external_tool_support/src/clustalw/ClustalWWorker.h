@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,7 @@ private:
     ClustalWSupportTaskSettings cfg;
 
 private:
-    void send(const MAlignment &msa);
+    void send(const MultipleSequenceAlignment &msa);
 };
 
 class ClustalWWorkerFactory : public DomainFactory {

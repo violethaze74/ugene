@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,16 +22,16 @@
 #ifndef _HTTP_REQUEST_H_
 #define _HTTP_REQUEST_H_
 
+#include <QBuffer>
+#include <QDomDocument>
+#include <QDomNode>
+#include <QThread>
 
-#include <U2Core/Log.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/Task.h>
 #include <U2Core/DataBaseRegistry.h>
-
-#include <QtCore/QtCore>
-#include <QtXml/QDomNode>
-#include <QtXml/QDomDocument>
+#include <U2Core/IOAdapter.h>
+#include <U2Core/Log.h>
+#include <U2Core/Task.h>
 
 #include "RemoteBLASTConsts.h"
 

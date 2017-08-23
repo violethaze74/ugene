@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,9 +24,9 @@
 
 #include <U2Core/U2Dbi.h>
 
-#include <QtCore/QHash>
-#include <QtCore/QMutex>
-#include <QtCore/QTimer>
+#include <QHash>
+#include <QMutex>
+#include <QTimer>
 
 namespace U2 {
 

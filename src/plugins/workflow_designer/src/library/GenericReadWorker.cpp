@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,8 +35,8 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -226,7 +226,7 @@ void LoadMSATask::run() {
     DocumentFormat* format = NULL;
     QList<DocumentFormat*> fs = DocumentUtils::toFormats(DocumentUtils::detectFormat(url));
     foreach(DocumentFormat* f, fs) {
-        if (f->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_ALIGNMENT)) {
+        if (f->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             format = f;
             break;
         }
@@ -252,16 +252,16 @@ void LoadMSATask::run() {
     CHECK_OP(stateInfo,);
     doc->setDocumentOwnsDbiResources(false);
 
-    if (!doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT).isEmpty()) {
-        foreach(GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT)) {
+    if (!doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).isEmpty()) {
+        foreach(GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             SharedDbiDataHandler handler = storage->getDataHandler(go->getEntityRef());
             QVariant res = qVariantFromValue<SharedDbiDataHandler>(handler);
             results.append(res);
         }
     } else {
-        MAlignment ma = MSAUtils::seq2ma(doc->findGObjectByType(GObjectTypes::SEQUENCE), stateInfo);
+        MultipleSequenceAlignment ma = MSAUtils::seq2ma(doc->findGObjectByType(GObjectTypes::SEQUENCE), stateInfo);
 
-        QScopedPointer<MAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), ma, stateInfo));
+        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), ma, stateInfo));
         CHECK_OP(stateInfo,);
 
         SharedDbiDataHandler handler = storage->getDataHandler(msaObj->getEntityRef());
@@ -331,7 +331,7 @@ void LoadSeqTask::prepare() {
     QList<DocumentFormat*> fs = DocumentUtils::toFormats(DocumentUtils::detectFormat(url));
     foreach (DocumentFormat *f, fs) {
         const QSet<GObjectType>& types = f->getSupportedObjectTypes();
-        if (types.contains(GObjectTypes::SEQUENCE) || types.contains(GObjectTypes::MULTIPLE_ALIGNMENT)) {
+        if (types.contains(GObjectTypes::SEQUENCE) || types.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             format = f;
             break;
         }
@@ -408,13 +408,13 @@ void LoadSeqTask::run() {
         //             bool merge = cfg.contains(mergeToken);
         //             int gaps = cfg.value(mergeToken).toInt();
         U2OpStatus2Log os;
-        foreach(GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT)) {
-            foreach(const DNASequence& s, MSAUtils::ma2seq(((MAlignmentObject*)go)->getMAlignment(), false)) {
+        foreach(GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
+            foreach(const DNASequence& s, MSAUtils::ma2seq((qobject_cast<MultipleSequenceAlignmentObject *>(go))->getMsa(), false)) {
                 if (!selector->matches(s)) {
                     continue;
                 }
                 QVariantMap m;
-                U2EntityRef seqRef = U2SequenceUtils::import(storage->getDbiRef(), s, os);
+                U2EntityRef seqRef = U2SequenceUtils::import(os, storage->getDbiRef(), s);
                 CHECK_OP(os,);
                 m[BaseSlots::URL_SLOT().getId()] = url;
                 m[BaseSlots::DATASET_SLOT().getId()] = cfg.value(BaseSlots::DATASET_SLOT().getId(), "");

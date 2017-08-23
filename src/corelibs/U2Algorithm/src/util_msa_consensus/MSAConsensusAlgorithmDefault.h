@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryDefault: public MSAConsensu
 public:
     MSAConsensusAlgorithmFactoryDefault(QObject* p = NULL);
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MAlignment& ma, QObject* parent);
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent);
 
     virtual QString getDescription() const;
 
@@ -54,15 +54,15 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmDefault : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmDefault(MSAConsensusAlgorithmFactoryDefault* f, QObject* p = NULL)
-        : MSAConsensusAlgorithm(f, p){}
+    MSAConsensusAlgorithmDefault(MSAConsensusAlgorithmFactoryDefault* f, bool ignoreTrailingLeadingGaps, QObject* p = NULL)
+        : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {}
 
-    virtual char getConsensusChar(const MAlignment& ma, int column, const QVector<qint64> &seqIdx) const {
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const {
         int countStub = 0;
         return getConsensusCharAndScore(ma, column, countStub, seqIdx);
     }
 
-    virtual char getConsensusCharAndScore(const MAlignment& ma, int column, int& score, const QVector<qint64> &seqIdx = QVector<qint64>()) const;
+    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<int> seqIdx = QVector<int>()) const;
 };
 
 }//namespace

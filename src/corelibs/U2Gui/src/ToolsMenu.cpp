@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,6 +43,7 @@ const QString ToolsMenu::NGS_CONTROL = "NGS_CONTROL";
 const QString ToolsMenu::NGS_DENOVO = "NGS_DENOVO";
 const QString ToolsMenu::NGS_MAP = "NGS_MAP";
 const QString ToolsMenu::NGS_INDEX = "NGS_INDEX";
+const QString ToolsMenu::NGS_SCAFFOLD = "NGS_SCAFFOLD";
 const QString ToolsMenu::NGS_RAW_DNA = "NGS_RAW_DNA";
 const QString ToolsMenu::NGS_CALL_VARIANTS = "NGS_CALL_VARIANTS";
 const QString ToolsMenu::NGS_CALL_VARIANTS_AND_EFFECT = "NGS_CALL_VARIANTS_AND_EFFECT";
@@ -111,8 +112,8 @@ void ToolsMenu::init() {
     {
         subMenuAction[SANGER_MENU] << SANGER_CONTROL;
         subMenuAction[SANGER_MENU] << LINE;
-        subMenuAction[SANGER_MENU] << SANGER_DENOVO;
         subMenuAction[SANGER_MENU] << SANGER_ALIGN;
+        subMenuAction[SANGER_MENU] << SANGER_DENOVO;
     }
 
     actionText[NGS_MENU] = tr("NGS data analysis");
@@ -121,9 +122,11 @@ void ToolsMenu::init() {
     {
         subMenuAction[NGS_MENU] << NGS_CONTROL;
         subMenuAction[NGS_MENU] << LINE;
-        subMenuAction[NGS_MENU] << NGS_DENOVO;
-        subMenuAction[NGS_MENU] << NGS_MAP;
         subMenuAction[NGS_MENU] << NGS_INDEX;
+        subMenuAction[NGS_MENU] << NGS_MAP;
+        subMenuAction[NGS_MENU] << LINE;
+        subMenuAction[NGS_MENU] << NGS_DENOVO;
+        subMenuAction[NGS_MENU] << NGS_SCAFFOLD;
         subMenuAction[NGS_MENU] << LINE;
         subMenuAction[NGS_MENU] << NGS_RAW_DNA;
         subMenuAction[NGS_MENU] << NGS_CALL_VARIANTS;

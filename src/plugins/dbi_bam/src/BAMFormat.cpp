@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/Version.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -49,7 +49,10 @@ BAMFormat::BAMFormat()
     DocumentFormatFlags(DocumentFormatFlag_NoPack) | DocumentFormatFlag_NoFullMemoryLoad
     | DocumentFormatFlag_Hidden | DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed)
 {
-
+    // DbiDocumentFormat adds a set of object types that are supported by DBI but have no relation to BAM.
+    // Reset these formats and add BAM related object types only.
+    supportedObjectTypes.clear();
+    supportedObjectTypes += GObjectTypes::ASSEMBLY;
 }
 
 void BAMFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {

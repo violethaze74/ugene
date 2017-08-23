@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ GUITestRunner::GUITestRunner(UGUITestBase* _guiTestBase, QWidget *parent) :
 {
     setupUi(this);
     setWindowIcon(QIcon(QString(":gui_test/images/open_gui_test_runner.png")));
-    tree->setColumnWidth(0,300);
+    tree->setColumnWidth(0,550);
 
     const GUITests tests = guiTestBase->getTests();
     foreach(HI::GUITest* t, tests) {

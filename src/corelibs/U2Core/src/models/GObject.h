@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #ifndef _U2_GOBJECT_H_
 #define _U2_GOBJECT_H_
 
-#include <QtCore/QMimeData>
-#include <QtCore/QMutex>
-#include <QtCore/QPointer>
+#include <QMimeData>
+#include <QMutex>
+#include <QPointer>
 
 #include <U2Core/global.h>
 #include "StateLockableDataModel.h"

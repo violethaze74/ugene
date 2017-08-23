@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,28 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#include "SiteconWorkers.h"
-#include "SiteconIOWorkers.h"
-#include "SiteconPlugin.h"
-#include "SiteconBuildDialogController.h"
+#include <U2Core/FailTask.h>
+#include <U2Core/Log.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
+#include <U2Designer/DelegateEditors.h>
+
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/Datatype.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BasePorts.h>
-#include <U2Lang/BaseActorCategories.h>
-#include <U2Designer/DelegateEditors.h>
-#include <U2Lang/CoreLibConstants.h>
-#include <U2Core/FailTask.h>
 
-#include <U2Core/Log.h>
-#include <U2Core/MAlignmentObject.h>
-
-/* TRANSLATOR U2::SiteconIO */
-/* TRANSLATOR U2::LocalWorkflow::SiteconBuildWorker */
+#include "SiteconBuildDialogController.h"
+#include "SiteconIOWorkers.h"
+#include "SiteconPlugin.h"
+#include "SiteconWorkers.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -148,14 +147,13 @@ Task* SiteconBuildWorker::tick() {
         }
         mtype = SiteconWorkerFactory::SITECON_MODEL_TYPE();
         QVariantMap data = inputMessage.getData().toMap();
-        SiteconModel model = data.value(SiteconWorkerFactory::SITECON_MODEL_TYPE_ID).value<SiteconModel>();
         QString url = data.value(BaseSlots::URL_SLOT().getId()).toString();
         
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-        QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &msa = msaObj->getMAlignment();
+        const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
         Task* t = new SiteconBuildTask(cfg, msa, url);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));

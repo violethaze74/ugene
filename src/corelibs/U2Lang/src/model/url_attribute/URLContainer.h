@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -90,7 +90,7 @@ public:
     virtual void accept(URLContainerVisitor *visitor);
 
     /**
-    * Validates filtered files inside the directory
+    * Validates filtered files inside the folder
     * are present and accessible for reading.
     */
     virtual bool validateUrl(ProblemList &problemList);

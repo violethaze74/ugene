@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,13 +27,8 @@
 
 #include <ui_PaletteWidget.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QTreeWidget>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QTreeWidget>
-#endif
+#include <QAction>
+#include <QTreeWidget>
 
 namespace U2 {
 using namespace Workflow;
@@ -60,7 +55,7 @@ public slots:
     void resetSelection();
 
 signals:
-    void processSelected(Workflow::ActorPrototype*);
+    void processSelected(Workflow::ActorPrototype*, bool);
     void si_protoDeleted(const QString &);
     void si_protoChanged();
     void si_protoListModified();
@@ -87,7 +82,7 @@ public slots:
     void sl_nameFilterChanged(const QString &filter);
 
 signals:
-    void processSelected(Workflow::ActorPrototype*);
+    void processSelected(Workflow::ActorPrototype*, bool putToScene);
     void si_protoDeleted(const QString &);
     void si_protoChanged();
     void si_protoListModified();
@@ -100,7 +95,7 @@ protected:
 
 private slots:
     void handleItemAction();
-    void sl_selectProcess(bool checked = false);
+    void sl_selectProcess(bool checked);
     void rebuild();
     void editElement();
     bool removeElement();

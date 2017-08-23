@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,12 +22,11 @@
 #ifndef _U2_MSA_CONSENSUS_ALGORITHM_H_
 #define _U2_MSA_CONSENSUS_ALGORITHM_H_
 
-#include <U2Core/global.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2Region.h>
 
 namespace U2 {
 
-class MAlignment;
 class MSAConsensusAlgorithm;
 class DNAAlphabet;
 
@@ -36,9 +35,12 @@ enum ConsensusAlgorithmFlag {
     ConsensusAlgorithmFlag_Amino = 1 << 1,
     ConsensusAlgorithmFlag_Raw = 1 << 2,
     ConsensusAlgorithmFlag_SupportThreshold = 1 << 3,
+    ConsensusAlgorithmFlag_AvailableForChromatogram = 1 << 4
 };
 
-typedef QFlags<ConsensusAlgorithmFlag> ConsensusAlgorithmFlags;
+Q_DECLARE_FLAGS(ConsensusAlgorithmFlags, ConsensusAlgorithmFlag)
+Q_DECLARE_OPERATORS_FOR_FLAGS(ConsensusAlgorithmFlags)
+
 #define ConsensusAlgorithmFlags_AllAlphabets (ConsensusAlgorithmFlags(ConsensusAlgorithmFlag_Nucleic) | ConsensusAlgorithmFlag_Amino | ConsensusAlgorithmFlag_Raw)
 #define ConsensusAlgorithmFlags_NuclAmino    (ConsensusAlgorithmFlags(ConsensusAlgorithmFlag_Nucleic) | ConsensusAlgorithmFlag_Amino)
 
@@ -47,7 +49,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactory : public QObject {
 public:
     MSAConsensusAlgorithmFactory(const QString& algoId, ConsensusAlgorithmFlags flags, QObject* p = NULL);
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MAlignment& ma, QObject* parent = NULL) = 0;
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps = false, QObject* parent = NULL) = 0;
 
     QString getId() const {return algorithmId;}
 
@@ -81,16 +83,16 @@ private:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithm : public QObject {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory, QObject* p = NULL);
+    MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory, bool ignoreTrailingLeadingGaps, QObject* p = NULL);
 
     /**
         Returns consensus char and score for the given row
         Score is a number: [0, num] sequences. Usually is means count of the char in the row
         Note that consensus character may be out of the to MSA alphabet symbols range
     */
-    virtual char getConsensusCharAndScore(const MAlignment& ma, int column, int& score, const QVector<qint64> &seqIdx = QVector<qint64>()) const;
+    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<int> seqIdx = QVector<int>()) const;
 
-    virtual char getConsensusChar(const MAlignment& ma, int column, const QVector<qint64> &seqIdx = QVector<qint64>()) const = 0;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const = 0;
 
     virtual QString getDescription() const {return factory->getDescription();}
 
@@ -114,12 +116,19 @@ public:
 
     MSAConsensusAlgorithmFactory* getFactory() const {return factory;}
 
+    static char INVALID_CONS_CHAR;
+
 signals:
     void si_thresholdChanged(int);
 
+protected:
+    // returns true if there are meaningful symbols on @pos, depending on @ignoreTrailingleadingGaps flag
+    bool filterIdx(QVector<int> &seqIdx, const MultipleAlignment& ma, const int pos) const;
+
 private:
     MSAConsensusAlgorithmFactory* factory;
-    int threshold;
+    int     threshold;
+    bool    ignoreTrailingAndLeadingGaps;
 
 };
 

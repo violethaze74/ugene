@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,51 +22,50 @@
 #include "MSAConsensusUtils.h"
 #include "MSAConsensusAlgorithm.h"
 
-#include <U2Core/MAlignment.h>
-
-#include <QtCore/QVector>
-#include <QtCore/QPair>
+#include <QVector>
+#include <QPair>
 
 namespace U2 {
 
-void MSAConsensusUtils::updateConsensus(const MAlignment& msa, QByteArray& cons, MSAConsensusAlgorithm* algo) {
-    U2Region r(0, msa.getLength());
-    updateConsensus(msa, r, cons, algo);
+void MSAConsensusUtils::updateConsensus(const MultipleAlignment& ma, QByteArray& cons, MSAConsensusAlgorithm* algo) {
+    U2Region r(0, ma->getLength());
+    updateConsensus(ma, r, cons, algo);
 }
 
-void MSAConsensusUtils::updateConsensus(const MAlignment& msa, const U2Region& region, QByteArray& cons, MSAConsensusAlgorithm* algo) {
+void MSAConsensusUtils::updateConsensus(const MultipleAlignment& ma, const U2Region& region, QByteArray& cons, MSAConsensusAlgorithm* algo) {
     QVector<U2Region> l;
     l.append(region);
-    updateConsensus(msa, l, cons, algo);
+    updateConsensus(ma, l, cons, algo);
 }
 
-void MSAConsensusUtils::updateConsensus(const MAlignment& msa, const QVector<U2Region>& regions, QByteArray& cons, MSAConsensusAlgorithm* algo) {
-    if (msa.isEmpty()) {
+void MSAConsensusUtils::updateConsensus(const MultipleAlignment& ma, const QVector<U2Region>& regions, QByteArray& cons, MSAConsensusAlgorithm* algo) {
+    if (ma->isEmpty()) {
         return;
     }
-    int aliLen = msa.getLength();
+    int aliLen = ma->getLength();
     if (cons.length()!=aliLen) {
         cons.resize(aliLen);
     }
+
     foreach(const U2Region& r, regions) {
         for (int i = r.startPos, n = r.endPos(); i < n ; i++) {
-            cons[i] = algo->getConsensusChar(msa, i);
+            cons[i] = algo->getConsensusChar(ma, i);
         }
     }
 }
 
 
-QString MSAConsensusUtils::getConsensusPercentTip(const MAlignment& msa, int pos, int minReportPercent, int maxReportChars) {
+QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment& ma, int pos, int minReportPercent, int maxReportChars) {
     QVector<QPair<int, char> > freqs(32); //TODO: try QVarLengthArray?
-    assert(pos>=0 && pos < msa.getLength());
-    int nSeq = msa.getNumRows();
+    assert(pos>=0 && pos < ma->getLength());
+    int nSeq = ma->getNumRows();
     assert(nSeq > 0);
     if (nSeq == 0) {
         return QString();
     }
     int gaps = 0;
     for (int seq = 0; seq < nSeq; seq++) {
-        uchar c = (uchar)msa.charAt(seq, pos);
+        uchar c = (uchar)ma->charAt(seq, pos);
         if (c >= 'A' && c <= 'Z') {
             int idx = c - 'A';
             freqs[idx].first++;
@@ -125,36 +124,36 @@ void MSAConsensusUtils::unpackConsensusCharsFromInt(quint32 val, char* charVal, 
     }
 }
 
-uchar MSAConsensusUtils::getColumnFreqs(const MAlignment& ma, int pos, QVector<int>& freqsByChar,
-                                        int& nonGapChars, const QVector<qint64>& seqIdx) {
+uchar MSAConsensusUtils::getColumnFreqs(const MultipleAlignment& ma, int pos, QVector<int>& freqsByChar,
+                                        int& nonGapChars, const QVector<int>& seqIdx) {
     assert(freqsByChar.size() == 256);
     freqsByChar.fill(0);
     nonGapChars = 0;
     uchar maxC = 0;
     int  maxCFreq = 0;
     int* freqs = freqsByChar.data();
-    int nSeq = seqIdx.isEmpty() ? ma.getNumRows() : seqIdx.size();
+    int nSeq = seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size();
     for (qint64 seq = 0; seq < nSeq; seq++) {
-        uchar c = (uchar)ma.charAt( seqIdx.isEmpty() ? seq : seqIdx[ seq ],
+        uchar c = (uchar)ma->charAt( seqIdx.isEmpty() ? seq : seqIdx[ seq ],
                                     pos);
         freqs[c]++;
-        if (c!=MAlignment_GapChar && freqs[c] > maxCFreq) {
+        if (c!=U2Msa::GAP_CHAR && freqs[c] > maxCFreq) {
             maxCFreq = freqs[c];
             maxC = c;
         }
-        if (c!=MAlignment_GapChar) {
+        if (c!=U2Msa::GAP_CHAR) {
             nonGapChars++;
         }
     }
     return maxC;
 }
 
-quint32 MSAConsensusUtils::packConsensusCharsToInt(const MAlignment& msa, int pos, const int* mask4, bool gapsAffectPercents) {
+quint32 MSAConsensusUtils::packConsensusCharsToInt(const MultipleAlignment& ma, int pos, const int* mask4, bool gapsAffectPercents) {
     QVector<QPair<int, char> > freqs(32);
     int numNoGaps = 0;
-    int nSeq = msa.getNumRows();
+    int nSeq = ma->getNumRows();
     for (int seq = 0; seq < nSeq; seq++) {
-        uchar c = (uchar)msa.charAt(seq, pos);
+        uchar c = (uchar)ma->charAt(seq, pos);
         if (c >= 'A' && c <= 'Z') {
             int idx = c - 'A';
             freqs[idx].first++;

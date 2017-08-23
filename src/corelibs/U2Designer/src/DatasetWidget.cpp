@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,16 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QContextMenuEvent>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QInputDialog>
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QDesktopWidget>
-#include <QtWidgets/QInputDialog>
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QContextMenuEvent>
+#include <QDesktopWidget>
+#include <QInputDialog>
+#include <QMessageBox>
 
 #include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
@@ -110,12 +104,11 @@ void URLListWidget::addUrlItem(UrlItem *urlItem) {
 void URLListWidget::sl_addFileButton() {
     LastUsedDirHelper lod;
     QStringList files;
-#if defined(Q_OS_MAC) || (QT_VERSION >= 0x050000)
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         files = U2FileDialog::getOpenFileNames(NULL, tr("Select file"), lod.dir, "", 0, QFileDialog::DontUseNativeDialog);
-    } else
-#endif
-    files = U2FileDialog::getOpenFileNames(NULL, tr("Select file"), lod.dir);
+    } else {
+        files = U2FileDialog::getOpenFileNames(NULL, tr("Select file"), lod.dir);
+    }
     foreach (const QString &file, files) {
         lod.url = file;
         addUrl(file);
@@ -124,7 +117,7 @@ void URLListWidget::sl_addFileButton() {
 
 void URLListWidget::sl_addDirButton() {
     LastUsedDirHelper lod;
-    QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a directory"), lod.dir);
+    QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder"), lod.dir);
     if (!dir.isEmpty()) {
         lod.dir = dir;
         addUrl(dir);

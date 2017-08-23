@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #ifndef _U2_HMMER_BUILD_FROM_MSA_TASK_H_
 #define _U2_HMMER_BUILD_FROM_MSA_TASK_H_
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include "HmmerBuildTask.h"
 
@@ -31,7 +31,7 @@ namespace U2 {
 class HmmerBuildFromMsaTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, const MAlignment &msa);
+    HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, const MultipleSequenceAlignment &msa);
 
     const QString & getHmmUrl() const;
 
@@ -44,7 +44,7 @@ private:
     void removeTempDir();
 
     HmmerBuildSettings settings;
-    const MAlignment msa;
+    const MultipleSequenceAlignment msa;
 
     SaveAlignmentTask *saveTask;
     HmmerBuildTask *hmmerTask;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@ ExportPrimersToDatabaseTask::ExportPrimersToDatabaseTask(const QList<Primer> &pr
 void ExportPrimersToDatabaseTask::run() {
     foreach (const Primer &primer, primers) {
         U2SequenceImporter importer;
-        importer.startSequence(dbiRef, folder, primer.name, false, stateInfo);
+        importer.startSequence(stateInfo, dbiRef, folder, primer.name, false);
         CHECK_OP(stateInfo, );
         importer.addBlock(primer.sequence.toLocal8Bit().constData(), primer.sequence.length(), stateInfo);
         CHECK_OP(stateInfo, );

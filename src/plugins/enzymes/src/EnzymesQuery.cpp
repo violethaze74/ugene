@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,19 +27,14 @@
 #include <U2Core/Log.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QCoreApplication>
+#include <QDir>
 
 #include <U2Lang/BaseTypes.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QInputDialog>
-#else
-#include <QtWidgets/QInputDialog>
-#endif
+#include <QInputDialog>
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
-
 
 namespace U2 {
 
@@ -145,7 +140,9 @@ QString EnzymesSelectorDialogHandler::getSelectedString(QDialog* dlg) {
 EnzymesSelectorDialog::EnzymesSelectorDialog(EnzymesSelectorDialogHandler* parent)
 : factory(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759658");
+    new HelpButton(this, buttonBox, "19766914");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     QVBoxLayout* vl = new QVBoxLayout();
     enzSel = new EnzymesSelectorWidget();

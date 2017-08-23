@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,15 +20,9 @@
  */
 
 #include <limits>
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QMessageBox>
-#endif
-#include <QtGui/QIntValidator>
+#include <QIntValidator>
+#include <QMessageBox>
+#include <QPushButton>
 
 #include "ui_BreakpointHitCountDialog.h"
 #include "BreakpointHitCountDialog.h"
@@ -57,7 +51,7 @@ BreakpointHitCountDialog::BreakpointHitCountDialog(const QStringList &hitCountCo
 {
     ui = new Ui_BreakpointHitCountDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "19760043");
+    new HelpButton(this, ui->buttonBox, "19767300");
 
     ui->hitConditionCombo->addItems(hitCountConditions);
     ui->hitConditionCombo->setCurrentIndex(hitCountConditions.indexOf(conditionOnLaunch));

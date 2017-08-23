@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -36,7 +36,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "CAP3Support.h"
 #include "CAP3SupportDialog.h"
@@ -73,7 +73,7 @@ CAP3Support::CAP3Support(const QString& name, const QString& path) : ExternalToo
 }
 
 void CAP3Support::sl_runWithExtFileSpecify(){
-    //Check that CAP3 and temporary directory path defined
+    //Check that CAP3 and temporary folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);

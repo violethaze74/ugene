@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,11 @@
 #ifndef _U2_ACTOR_CFG_H_
 #define _U2_ACTOR_CFG_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
-#include <QtCore/QPair>
-#include <QtCore/QString>
-#include <QtCore/QAbstractTableModel>
+#include <QObject>
+#include <QList>
+#include <QPair>
+#include <QString>
+#include <QAbstractTableModel>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/IntegralBusModel.h>

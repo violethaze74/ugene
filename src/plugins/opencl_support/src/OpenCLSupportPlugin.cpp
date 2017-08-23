@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <QtCore/QLibrary>
+#include <QLibrary>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
@@ -42,7 +42,7 @@ extern "C" Q_DECL_EXPORT Plugin * U2_PLUGIN_INIT_FUNC() {
 
 extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
     {
-        volatile OpenCLSupportPlugin plug();
+        volatile QScopedPointer<OpenCLSupportPlugin> plug(new OpenCLSupportPlugin());
         Q_UNUSED(plug);
     }
     return true;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,12 +26,11 @@
 
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 
-#include <U2Core/global.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
 class CreatePhyTreeSettings;
-class MAlignment;
 class PhyTreeDisplayOptionsWidget;
 
 class U2VIEW_EXPORT CreatePhyTreeWidget : public QWidget {
@@ -42,7 +41,7 @@ public:
     virtual void storeSettings() = 0;
     virtual void restoreDefault() = 0;
     virtual bool checkSettings(QString &message, const CreatePhyTreeSettings &settings);
-    virtual bool checkMemoryEstimation(QString &message, const MAlignment &ma, const CreatePhyTreeSettings &settings);
+    virtual bool checkMemoryEstimation(QString &message, const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &settings);
     virtual bool insertOutputOptionWidget(PhyTreeDisplayOptionsWidget *outputOptionsWidget);
 
     static QString settingsPath();

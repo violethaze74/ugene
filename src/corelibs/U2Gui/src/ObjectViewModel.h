@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,15 +25,10 @@
 #include <U2Core/SelectionModel.h>
 #include "MainWindow.h"
 
-#include <QtCore/QMap>
-#include <QtCore/QVariantMap>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenu>
-#endif
+#include <QMap>
+#include <QVariantMap>
+#include <QAction>
+#include <QMenu>
 
 namespace U2 {
 
@@ -47,7 +42,7 @@ class GObjectViewObjectHandler;
 
 class U2GUI_EXPORT GObjectViewFactoryRegistry: public QObject {
 public:
-    GObjectViewFactoryRegistry(QObject* p = NULL) : QObject(p){};
+    GObjectViewFactoryRegistry(QObject* p = NULL) : QObject(p){}
 
     void registerGObjectViewFactory(GObjectViewFactory* f);
 

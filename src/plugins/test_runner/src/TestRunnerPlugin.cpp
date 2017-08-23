@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,14 +31,8 @@
 
 #include <U2Test/GTest.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QMenu>
-#endif
-
-#include <QtXml/QtXml>
-#include <QtCore/QProcess>
+#include <QMenu>
+#include <QProcess>
 
 #define SETTINGS_ROOT QString("test_runner/")
 #define NUM_THREADS_VAR_VALUE "10"

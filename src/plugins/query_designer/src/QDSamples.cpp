@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,9 +26,9 @@
 
 #include <U2Designer/WorkflowGUIUtils.h>
 
-#include <QtCore/QDir>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QTextDocument>
+#include <QDir>
+#include <QMouseEvent>
+#include <QTextDocument>
 
 
 Q_DECLARE_METATYPE(QTextDocument*);

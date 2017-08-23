@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,29 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#include "MuscleWorker.h"
-#include "MuscleConstants.h"
-#include "TaskLocalStorage.h"
-#include "MuscleAlignDialogController.h"
-
 #include <U2Core/FailTask.h>
 #include <U2Core/Log.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Lang/IntegralBusModel.h>
-#include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
+#include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/NoFailTaskWrapper.h>
+#include <U2Lang/WorkflowEnv.h>
 
-
-/* TRANSLATOR U2::LocalWorkflow::MuscleWorker */
+#include "MuscleAlignDialogController.h"
+#include "MuscleConstants.h"
+#include "MuscleWorker.h"
+#include "TaskLocalStorage.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -167,18 +165,18 @@ Task* MuscleWorker::tick() {
         
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-        QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &msa = msaObj->getMAlignment();
+        const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
-        if( msa.isEmpty() ) {
-            algoLog.error(tr("An empty MSA '%1' has been supplied to MUSCLE.").arg(msa.getName()));
+        if( msa->isEmpty() ) {
+            algoLog.error(tr("An empty MSA '%1' has been supplied to MUSCLE.").arg(msa->getName()));
             return NULL;
         }
         QString range = actor->getParameter(RANGE_ATTR)->getAttributeValue<QString>(context);
         if( range.isEmpty() || range == RANGE_ATTR_DEFAULT_VALUE ) {
             cfg.alignRegion = false;
-            cfg.regionToAlign = U2Region(0, msa.getLength());
+            cfg.regionToAlign = U2Region(0, msa->getLength());
         } else {
             QStringList words = range.split(".", QString::SkipEmptyParts);
             if( words.size() != 2 ) {
@@ -198,7 +196,7 @@ Task* MuscleWorker::tick() {
             if(end < start) {
                 return new FailTask(tr("Region end position should be greater than start position"));
             }
-            end = qMin(end, msa.getLength());
+            end = qMin(end, msa->getLength());
             
             cfg.alignRegion = true;
             cfg.regionToAlign = U2Region(start,  end - start + 1);
@@ -230,7 +228,7 @@ void MuscleWorker::sl_taskFinished() {
     QVariantMap msgData;
     msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);
     output->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), msgData));
-    algoLog.info(tr("Aligned %1 with MUSCLE").arg(t->resultMA.getName()));
+    algoLog.info(tr("Aligned %1 with MUSCLE").arg(t->resultMA->getName()));
 }
 
 void MuscleWorker::cleanup() {

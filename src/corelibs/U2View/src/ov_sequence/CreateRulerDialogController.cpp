@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,25 +23,14 @@
 
 #include <U2Core/TextUtils.h>
 
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QLineEdit>
-#include <QtGui/QSpinBox>
-#include <QtGui/QMessageBox>
-#include <QtGui/QColorDialog>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QSpinBox>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QColorDialog>
-#endif
-#include <QtGui/QPalette>
+#include <QLabel>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QSpinBox>
+#include <QMessageBox>
+#include <QColorDialog>
+#include <QPalette>
 #include <U2Gui/HelpButton.h>
-
 
 namespace U2 {
 
@@ -50,7 +39,7 @@ CreateRulerDialogController::CreateRulerDialogController(const QSet<QString>& na
 : QDialog(p)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759465");
+    new HelpButton(this, buttonBox, "19766721");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

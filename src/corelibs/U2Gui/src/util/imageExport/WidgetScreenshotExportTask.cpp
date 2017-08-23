@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,18 +23,12 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QFile>
-#include <QtGui/QPainter>
-#include <QtSvg/QSvgGenerator>
-#include <QtXml/QDomDocument>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPrinter>
-#include <QtGui/QWidget>
-#else
-#include <QtWidgets/QWidget>
-#include <QtPrintSupport/QPrinter>
-#endif
-
+#include <QFile>
+#include <QPainter>
+#include <QSvgGenerator>
+#include <QDomDocument>
+#include <QWidget>
+#include <QPrinter>
 
 namespace U2 {
 

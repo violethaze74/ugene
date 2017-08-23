@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -90,6 +90,8 @@ public:
      * Do not forget to release the memory.
      */
     virtual OutputStream * createOutputStream(const UdrRecordId &recordId, int fieldNum, qint64 size, U2OpStatus &os) = 0;
+
+    virtual ModificationAction* getModificationAction(const U2DataId& id) = 0;
 };
 
 } // U2

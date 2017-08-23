@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,13 +36,13 @@ static QString      emptyString;
 qint64 SQLiteUtils::remove(const QString& table, const QString& field, const U2DataId& id, qint64 expectedRows, DbRef* db, U2OpStatus& os) {
     QMutexLocker m(&db->lock); // lock db in order to retrieve valid row id for insert
 
-    SQLiteQuery q(QString("DELETE FROM %1 WHERE %2 = ?1").arg(table).arg(field), db, os);
+    SQLiteWriteQuery q(QString("DELETE FROM %1 WHERE %2 = ?1").arg(table).arg(field), db, os);
     q.bindDataId(1, id);
     return q.update(expectedRows);
 }
 
 bool SQLiteUtils::isTableExists(const QString& tableName, DbRef* db, U2OpStatus& os) {
-    SQLiteQuery q("SELECT name FROM sqlite_master WHERE type='table' AND name=?1", db, os);
+    SQLiteReadQuery q("SELECT name FROM sqlite_master WHERE type='table' AND name=?1", db, os);
     q.bindString(1, tableName);
     return q.step();
 }
@@ -68,7 +68,7 @@ QString U2DbiL10n::tooManyResults() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-// SQLiteQuery
+// SQLiteReadOnlyQuery
 
 //#define U2_TRACE_SQLITE_QUERIES
 
@@ -87,7 +87,7 @@ static void traceQueryDestroy(const QString& q) {
 #endif
 
 SQLiteQuery::SQLiteQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
-: db(d), os(&_os), st(NULL), sql(_sql), locker(&d->lock)
+: db(d), os(&_os), st(NULL), sql(_sql)
 {
     prepare();
 
@@ -97,7 +97,7 @@ SQLiteQuery::SQLiteQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
 }
 
 SQLiteQuery::SQLiteQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
-: db(d), os(&_os), st(NULL), sql(_sql), locker(&d->lock)
+: db(d), os(&_os), st(NULL), sql(_sql)
 {
     U2DbiUtils::addLimit(sql, offset, count);
     prepare();
@@ -160,12 +160,11 @@ bool SQLiteQuery::reset(bool clearBindings) {
     return true;
 }
 
-bool SQLiteQuery::step() {
+bool SQLiteQuery::stepImpl() {
     if (hasError()) {
         return false;
     }
     assert(st != NULL);
-
     int rc = sqlite3_step(st);
     if (rc == SQLITE_DONE || rc == SQLITE_READONLY) {
         return false;
@@ -416,6 +415,13 @@ U2DataId SQLiteQuery::insert(U2DataType type, const QByteArray& dbExtra) {
     return U2DbiUtils::toU2DataId(lastRowId, type, dbExtra);
 }
 
+qint32 SQLiteQuery::selectInt32() {
+    if (step()) {
+        return getInt32(0);
+    }
+    return -1;
+}
+
 qint64 SQLiteQuery::selectInt64() {
     if (step()) {
         return getInt64(0);
@@ -461,6 +467,41 @@ QStringList SQLiteQuery::selectStrings() {
 qint64 SQLiteQuery::getLastRowId() {
     qint64 sqliteId = sqlite3_last_insert_rowid(db->handle);
     return sqliteId;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///SQLiteReadQuery
+SQLiteReadQuery::SQLiteReadQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
+: SQLiteQuery(_sql, d, _os)
+{
+}
+
+SQLiteReadQuery::SQLiteReadQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
+: SQLiteQuery(_sql, offset, count, d, _os)
+{
+}
+
+bool SQLiteReadQuery::step(){
+    QReadLocker locker(&db->rwLock);
+    return stepImpl();
+}
+
+//////////////////////////////////////////////////////////////////////////
+///SQLiteWriteQuery
+SQLiteWriteQuery::SQLiteWriteQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
+: SQLiteQuery(_sql, d, _os)
+{
+}
+
+SQLiteWriteQuery::SQLiteWriteQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
+: SQLiteQuery(_sql, offset, count, d, _os)
+{
+}
+
+bool SQLiteWriteQuery::step(){
+    QMutexLocker mutexLocker(&db->lock);
+    QWriteLocker writeLocker(&db->rwLock);
+    return stepImpl();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -540,7 +581,7 @@ QSharedPointer<SQLiteQuery> SQLiteTransaction::getPreparedQuery(const QString &s
         result->reset(false);
         return result;
     }
-    QSharedPointer<SQLiteQuery> result (new SQLiteQuery(sql, d, os));
+    QSharedPointer<SQLiteQuery> result (new SQLiteWriteQuery(sql, d, os));
     CHECK_OP(os, QSharedPointer<SQLiteQuery>());
     if(cacheQueries){
         db->preparedQueries[sql] = result;
@@ -555,7 +596,7 @@ QSharedPointer<SQLiteQuery> SQLiteTransaction::getPreparedQuery(const QString &s
         result->reset(false);
         return result;
     }
-    QSharedPointer<SQLiteQuery> result (new SQLiteQuery(sql, offset, count, d, os));
+    QSharedPointer<SQLiteWriteQuery> result (new SQLiteWriteQuery(sql, offset, count, d, os));
     CHECK_OP(os, QSharedPointer<SQLiteQuery>());
     if(cacheQueries){
         db->preparedQueries[sql] = result;

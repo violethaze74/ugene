@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,12 +22,7 @@
 #ifndef _U2_TABLE_VIEW_TAB_KEY_H_
 #define _U2_TABLE_VIEW_TAB_KEY_H_
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTableView>
-#else
-#include <QtWidgets/QTableView>
-#endif
+#include <QTableView>
 
 namespace U2 {
 class TableViewTabKey : public QTableView

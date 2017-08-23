@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -131,7 +131,7 @@ AceReader::AceReader(IOAdapter& _io, U2OpStatus &_os) :
 
     skipBreaks(io, buff, &len);
     CHECK_OP((*os), );
-    QByteArray headerLine = (QByteArray::fromRawData(buff, len)).trimmed();
+    QByteArray headerLine = (QByteArray(buff, len)).trimmed();
     CHECK_EXT(headerLine.startsWith(AS), os->setError(DocumentFormatUtils::tr("First line is not an ace header")), );
 
     contigsCount = getContigCount(headerLine);
@@ -157,7 +157,7 @@ Assembly AceReader::getAssembly() {
     do {
         skipBreaks(io, buff, &len);
         CHECK_OP((*os), result);
-        headerLine = (QByteArray::fromRawData(buff, len)).trimmed();
+        headerLine = (QByteArray(buff, len)).trimmed();
     } while (!headerLine.startsWith(CO));
 
     readsCount = getReadsCount(headerLine);
@@ -275,7 +275,7 @@ void AceReader::parseConsensus(IOAdapter *io, char *buff, QSet<QByteArray> &name
     } while (!ok);
 
     len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &ok);
-    line = (QByteArray::fromRawData(buff, len)).trimmed();
+    line = (QByteArray(buff, len)).trimmed();
     CHECK_EXT(line.startsWith(BQ), os->setError(DocumentFormatUtils::tr("BQ keyword hasn't been found")), );
 
     formatSequence(consensus.data);
@@ -327,14 +327,14 @@ void AceReader::parseAfTag(U2::IOAdapter *io, char *buff, int count, QMap<QByteA
     do {    // skip unused BQ part
         skipBreaks(io, buff, &len);
         CHECK_OP((*os), );
-        readLine = (QByteArray::fromRawData(buff, len)).trimmed();
+        readLine = (QByteArray(buff, len)).trimmed();
     } while (!readLine.startsWith(AF));
 
     do {    // Read all AF entries
         afBlock += readLine + " ";
         skipBreaks(io, buff, &len);
         CHECK_OP((*os), );
-        readLine = (QByteArray::fromRawData(buff, len)).trimmed();
+        readLine = (QByteArray(buff, len)).trimmed();
     } while (!readLine.startsWith(BS));
     afBlock = afBlock.simplified();
 
@@ -456,7 +456,7 @@ void AceReader::parseRdAndQaTag(U2::IOAdapter *io, char *buff, QSet<QByteArray> 
     do {    // skip unused BS part
         skipBreaks(io, buff, &len);
         CHECK_OP((*os), );
-        rdBlock = (QByteArray::fromRawData(buff, len)).trimmed();
+        rdBlock = (QByteArray(buff, len)).trimmed();
     } while (!rdBlock.startsWith(RD));
     CHECK_EXT(rdBlock.startsWith(RD), os->setError(DocumentFormatUtils::tr("There is no read note")), );
 
@@ -480,7 +480,7 @@ void AceReader::parseRdAndQaTag(U2::IOAdapter *io, char *buff, QSet<QByteArray> 
     }
 
     len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &ok);
-    QByteArray qaBlock = (QByteArray::fromRawData(buff, len)).trimmed();
+    QByteArray qaBlock = (QByteArray(buff, len)).trimmed();
     CHECK_EXT(qaBlock.startsWith(QA), os->setError(DocumentFormatUtils::tr("QA keyword hasn't been found")), );
 
     int clearRangeStart = getClearRangeStart(qaBlock);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,6 @@
 #define _RF_SUFFIX_ARRAY_H_
 
 #include "RF_BitMask.h"
-#include <QtCore/QtGlobal>
 #include <ctime>
 
 // Attention! Currently constructs suffix array sorted by prefix up to 32 symbols in length

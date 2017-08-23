@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,15 +23,12 @@
 #define _U2_GSCROLL_BAR_H_
 
 #include <U2Core/global.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QScrollBar>
-#else
-#include <QtWidgets/QScrollBar>
-#endif
+#include <QScrollBar>
 
 namespace U2 {
 
 class U2GUI_EXPORT GScrollBar : public QScrollBar {
+    Q_OBJECT
 public:
     GScrollBar(Qt::Orientation o, QWidget *p=0) : QScrollBar(o, p){}
 

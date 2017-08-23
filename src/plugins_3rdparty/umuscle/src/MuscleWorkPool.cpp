@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,10 +24,8 @@
 
 namespace U2 {
 
-    extern Logger log;
-
-    MuscleWorkPool::MuscleWorkPool(MuscleContext *_ctx, const MuscleTaskSettings  &_config, TaskStateInfo& _ti, int _nThreads, const MAlignment& _ma, MAlignment& _res, bool _mhack)
-        :ctx(_ctx), config(_config), ma(_ma), res(_res), mhack(_mhack), Weights(NULL), ProgNodes(NULL), ph(NULL), ti(_ti),
+    MuscleWorkPool::MuscleWorkPool(MuscleContext *_ctx, const MuscleTaskSettings  &_config, TaskStateInfo& _ti, int _nThreads, const MultipleSequenceAlignment& _ma, MultipleSequenceAlignment& _res, bool _mhack)
+        :ctx(_ctx), config(_config), ma(_ma->getCopy()), res(_res), mhack(_mhack), Weights(NULL), ProgNodes(NULL), ph(NULL), ti(_ti),
         treeNodeStatus(NULL), treeNodeIndexes(NULL), nThreads(_nThreads), uJoin(0), ptrbOscillating(NULL), bAnyAccepted(false), InternalNodeIndexes(NULL), uInternalNodeCount(0),
         bReversed(false), bRight(false), History(NULL), bLockLeft(NULL), bLockRight(false), msaIn(NULL)
     {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,23 +34,13 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include "../../src/corelibs/U2Designer/src/wizard/WDWizardPage.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QLabel>
-#include <QtGui/QRadioButton>
-#include <QtGui/QToolButton>
-#include <QtGui/QWizard>
-#include <QtGui/QScrollArea>
-#include <QtGui/QComboBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QRadioButton>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QWizard>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QComboBox>
-#endif
+#include <QApplication>
+#include <QLabel>
+#include <QRadioButton>
+#include <QToolButton>
+#include <QWizard>
+#include <QScrollArea>
+#include <QComboBox>
 #include <QDir>
 
 #include "GTUtilsWizard.h"

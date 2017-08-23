@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
-#include <QtCore/QVarLengthArray>
+#include <QFile>
+#include <QVarLengthArray>
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNAChromatogramObject.h>
@@ -1211,6 +1211,8 @@ bool SCFFormat::loadSCFObjects( IOAdapter* io, DNASequence& dna, DNAChromatogram
     if (sampleName.isEmpty()) {
         sampleName = url.baseFileName();
     }
+
+    cd.name = sampleName + " chromatogram";
 
     dna.setName(sampleName);
     dna.seq = sequence;

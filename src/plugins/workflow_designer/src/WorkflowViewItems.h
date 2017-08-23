@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,17 +25,10 @@
 #include <U2Lang/ActorModel.h>
 #include "U2Lang/LocalDomain.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QWidget>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsItem>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QGraphicsScene>
-#include <QtWidgets/QGraphicsItem>
-#endif
+#include <QAction>
+#include <QWidget>
+#include <QGraphicsScene>
+#include <QGraphicsItem>
 
 class QDomElement;
 

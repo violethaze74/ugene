@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,7 +65,7 @@ void MysqlUpgraderFrom_1_14_To_1_15::upgradeObjectDbi(U2OpStatus &os, MysqlDbRef
 
     const QStringList folders = dbi->getObjectDbi()->getFolders(os);
     const QString recycleBinPrefix = U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::RECYCLE_BIN_FOLDER + U2ObjectDbi::PATH_SEP;
-    QStrStrMap oldAndNewPathes;
+    StrStrMap oldAndNewPathes;
 
     foreach (const QString &folder, folders) {
         if (folder.startsWith(recycleBinPrefix)) {

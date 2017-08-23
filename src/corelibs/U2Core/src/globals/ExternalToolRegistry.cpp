@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ ExternalTool::ExternalTool(QString _name, QString _path) : name(_name), path(_pa
 ExternalTool::~ExternalTool() {
 }
 
-const QVariantMap &ExternalTool::getAdditionalInfo() const {
+const StrStrMap &ExternalTool::getAdditionalInfo() const {
     return additionalInfo;
 }
 
@@ -59,7 +59,7 @@ void ExternalTool::setVersion(const QString& _version) {
     version=_version;
 }
 
-void ExternalTool::setAdditionalInfo(const QVariantMap &newAdditionalInfo) {
+void ExternalTool::setAdditionalInfo(const StrStrMap &newAdditionalInfo) {
     additionalInfo = newAdditionalInfo;
 }
 
@@ -169,7 +169,7 @@ ExternalToolValidation DefaultExternalToolValidations::pythonValidation(){
     QStringList pythonArgs;
     pythonArgs << "--version";
     QString pmsg = "Python";
-    QStrStrMap perrMsgs;
+    StrStrMap perrMsgs;
     perrMsgs.insert(ExternalToolValidation::DEFAULT_DESCR_KEY, "Python 2 required for this tool. Please install Python or set your PATH variable if you have it installed.");
 
     ExternalToolValidation pythonValidation("", pythonExecutable, pythonArgs, pmsg, perrMsgs);
@@ -181,7 +181,7 @@ ExternalToolValidation DefaultExternalToolValidations::rValidation(){
     QStringList rArgs;
     rArgs << "--version";
     QString rmsg = "R";
-    QStrStrMap rerrMsgs;
+    StrStrMap rerrMsgs;
     rerrMsgs.insert(ExternalToolValidation::DEFAULT_DESCR_KEY, "R Script required for this tool. Please install R Script or set your PATH variable if you have it installed.");
 
     ExternalToolValidation rValidation("", rExecutable, rArgs, rmsg, rerrMsgs);

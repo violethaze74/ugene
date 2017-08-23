@@ -1,7 +1,7 @@
 #ifndef __UHMMSEARCH_OPT_H__
 #define __UHMMSEARCH_OPT_H__
 
-#include <QtCore/QVector>
+#include <QVector>
 
 #include <hmmer2/config.h>
 #include <hmmer2/structs.h>

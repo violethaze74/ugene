@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,12 @@
 #ifndef _U2_PLUGINMODEL_H_
 #define _U2_PLUGINMODEL_H_
 
+#include <QList>
+#include <QObject>
+#include <QString>
+
 #include <U2Core/global.h>
 #include <U2Core/GUrl.h>
-
-#include <QtCore/QString>
-#include <QtCore/QList>
 
 namespace U2 {
 //BUG:417: add API version check

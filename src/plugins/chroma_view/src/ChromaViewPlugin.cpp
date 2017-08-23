@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,13 +40,8 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QMenu>
-#endif
+#include <QMessageBox>
+#include <QMenu>
 
 namespace U2 {
 
@@ -132,7 +127,9 @@ void ChromaViewContext::sl_showChromatogram() {
         CHECK(a->view!=NULL, );
         GObject* editSeq = a->view->getEditedSequence();
         if (editSeq!=NULL) {
-            a->view->getSequenceContext()->getAnnotatedDNAView()->removeObject(editSeq);
+            //! SANGER_RED_TODO: check that it does not brake anything
+            adv->removeObject(editSeq);
+//            a->view->getSequenceContext()->getAnnotatedDNAView()->removeObject(editSeq);
         }
         adv->removeObject(chromaObj);
         delete a->view;

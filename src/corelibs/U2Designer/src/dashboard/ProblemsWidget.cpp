@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,8 +25,10 @@
 
 namespace U2 {
 
+const QString ProblemsWidget::ID = "problems";
+
 ProblemsWidget::ProblemsWidget(const QWebElement &content, Dashboard *parent)
-: TableWidget(content, parent)
+    : TableWidget(content, ID, parent)
 {
     createTable();
     foreach (const Problem &info, dashboard->monitor()->getProblems()) {

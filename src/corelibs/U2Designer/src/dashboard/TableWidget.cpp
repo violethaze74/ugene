@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,14 +25,15 @@ namespace U2 {
 
 static const int MIN_ROW_COUNT = 3;
 
-TableWidget::TableWidget(const QWebElement &container, Dashboard *parent)
-: DashboardWidget(container, parent), useEmptyRows(true)
+TableWidget::TableWidget(const QWebElement &container, const QString &id, Dashboard *parent)
+    : DashboardWidget(container, id, parent),
+      useEmptyRows(true)
 {
 
 }
 
 void TableWidget::createTable() {
-    QString table = "<table class=\"table table-bordered table-fixed\">";
+    QString table = QString("<table class=\"table table-bordered table-fixed\" id=\"%1\">").arg(id);
     foreach (int w, widths()) {
         table += "<col width=\"" + QString("%1").arg(w) + "%\" />";
     }
@@ -73,9 +74,9 @@ void TableWidget::addEmptyRows() {
     }
 }
 
-void TableWidget::addRow(const QString &dataId, const QStringList &ds) {
+void TableWidget::addRow(const QString &dataId, const QStringList &ds, const QString &rowId) {
     QString row;
-    row += "<tr class=\"filled-row\">";
+    row += QString("<tr class=\"filled-row\" %1>").arg(rowId.isEmpty() ? "" : "id=\"" + rowId + "\"");
     row += createRow(ds);
     row += "</tr>";
 

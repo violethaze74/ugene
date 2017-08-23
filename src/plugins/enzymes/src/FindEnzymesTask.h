@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,9 +24,9 @@
 
 #include <limits>
 
-#include <QtCore/QList>
-#include <QtCore/QMutex>
-#include <QtCore/QObject>
+#include <QList>
+#include <QMutex>
+#include <QObject>
 
 #include <U2Algorithm/EnzymeModel.h>
 

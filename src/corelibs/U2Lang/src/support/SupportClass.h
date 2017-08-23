@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,10 @@
 #ifndef _U2_SUPPORT_CLASS_H_
 #define _U2_SUPPORT_CLASS_H_
 
-#include <U2Core/global.h>
+#include <QMetaType>
+#include <QString>
 
-#include <QtCore/QString>
+#include <U2Core/global.h>
 
 namespace U2 {
 
@@ -53,6 +54,6 @@ public:
 
 }   // namespace U2
 
-Q_DECLARE_METATYPE( U2::Problem )
+Q_DECLARE_METATYPE(U2::Problem)
 
 #endif // _U2_SUPPORT_CLASS_H_

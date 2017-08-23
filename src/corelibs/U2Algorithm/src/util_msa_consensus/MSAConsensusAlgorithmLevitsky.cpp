@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,13 +21,13 @@
 
 #include "MSAConsensusAlgorithmLevitsky.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
 MSAConsensusAlgorithmFactoryLevitsky::MSAConsensusAlgorithmFactoryLevitsky(QObject* p)
 : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO,
-                               ConsensusAlgorithmFlags(ConsensusAlgorithmFlag_Nucleic ) | ConsensusAlgorithmFlag_SupportThreshold,
+                               ConsensusAlgorithmFlag_Nucleic | ConsensusAlgorithmFlag_SupportThreshold,
                                p)
 {
 }
@@ -44,8 +44,8 @@ QString MSAConsensusAlgorithmFactoryLevitsky::getName() const  {
     return tr("Levitsky");
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MAlignment& ma, QObject* p) {
-    return new MSAConsensusAlgorithmLevitsky(this, ma, p);
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p) {
+    return new MSAConsensusAlgorithmLevitsky(this, ma, ignoreTrailingLeadingGaps, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -115,38 +115,39 @@ static void registerHit(int* data, char c) {
     }
 }
 
-MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MAlignment& ma,  QObject* p)
-: MSAConsensusAlgorithm(f, p)
+MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p)
+: MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p)
 {
     globalFreqs.resize(256);
     memset(globalFreqs.data(), 0, globalFreqs.size() * 4);
 
     int* freqsData = globalFreqs.data();
-    int len = ma.getLength();
-    foreach (const MAlignmentRow& row, ma.getRows()) {
+    int len = ma->getLength();
+    foreach (const MultipleAlignmentRow& row, ma->getRows()) {
         for (int i = 0; i < len; i++) {
-            char c = row.charAt(i);
+            char c = row->charAt(i);
             registerHit(freqsData, c);
         }
     }
 }
 
+char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const {
+    CHECK(filterIdx(seqIdx, ma, column), INVALID_CONS_CHAR);
 
-char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MAlignment& msa, int column, const QVector<qint64> &seqIdx) const {
     // count local freqs first
     QVarLengthArray<int> localFreqs(256);
     memset(localFreqs.data(), 0, localFreqs.size() * 4);
 
     int* freqsData = localFreqs.data();
-    int nSeq =( seqIdx.isEmpty() ? msa.getNumRows() : seqIdx.size());
+    int nSeq =( seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size());
     for (int seq = 0; seq < nSeq; seq++) {
-        char c = msa.charAt( seqIdx.isEmpty() ? seq : seqIdx [seq] , column);
+        char c = ma->charAt( seqIdx.isEmpty() ? seq : seqIdx [seq] , column);
         registerHit(freqsData, c);
     }
 
     //find all symbols with freq > threshold, select one with the lowest global freq
-    char selectedChar = MAlignment_GapChar;
-    int selectedGlobalFreq = nSeq * msa.getLength();
+    char selectedChar = U2Msa::GAP_CHAR;
+    int selectedGlobalFreq = nSeq * ma->getLength();
     int thresholdScore = getThreshold();
     int minFreq = int(float(nSeq) * thresholdScore / 100);
     for (int c = 'A'; c <= 'Y'; c++) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,9 +34,39 @@
 #include <QWebView>
 #include <QWizard>
 
+#include <GTGlobals.h>
+#include <base_dialogs/DefaultDialogFiller.h>
+#include <base_dialogs/GTFileDialog.h>
+#include <base_dialogs/MessageBoxFiller.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTLineEdit.h>
+#include <primitives/GTListWidget.h>
+#include <primitives/GTMenu.h>
+#include <primitives/GTRadioButton.h>
+#include <primitives/GTSlider.h>
+#include <primitives/GTSpinBox.h>
+#include <primitives/GTTabWidget.h>
+#include <primitives/GTTableView.h>
+#include <primitives/GTToolbar.h>
+#include <primitives/GTTreeWidget.h>
+#include <primitives/GTWebView.h>
+#include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
+#include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
+#include <utils/GTThread.h>
+#include <utils/GTUtilsDialog.h>
+#include <utils/GTUtilsToolTip.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ProjectViewModel.h>
 #include <U2Gui/ToolsMenu.h>
@@ -47,7 +77,7 @@
 #include <U2View/AnnotationsTreeView.h>
 #include <U2View/AssemblyNavigationWidget.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTDatabaseConfig.h"
@@ -58,7 +88,6 @@
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
-#include "utils/GTUtilsDialog.h"
 #include "GTUtilsEscClicker.h"
 #include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
@@ -76,38 +105,11 @@
 #include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
-#include "utils/GTUtilsToolTip.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "primitives/GTAction.h"
-#include <primitives/GTCheckBox.h>
-#include "system/GTClipboard.h"
-#include <primitives/GTComboBox.h>
-#include "system/GTFile.h"
-#include <base_dialogs/GTFileDialog.h>
-#include "GTGlobals.h"
-#include <drivers/GTKeyboardDriver.h>
-#include "utils/GTKeyboardUtils.h"
-#include <primitives/GTLineEdit.h>
-#include <primitives/GTListWidget.h>
-#include "primitives/GTMenu.h"
-#include <drivers/GTMouseDriver.h>
-#include <primitives/GTRadioButton.h>
 #include "api/GTSequenceReadingModeDialog.h"
 #include "api/GTSequenceReadingModeDialogUtils.h"
-#include <primitives/GTSlider.h>
-#include <primitives/GTSpinBox.h>
-#include <primitives/GTTabWidget.h>
-#include <primitives/GTTableView.h>
-#include "utils/GTThread.h"
-#include <primitives/GTToolbar.h>
-#include <primitives/GTTreeWidget.h>
-#include <primitives/GTWebView.h>
-#include <primitives/GTWidget.h>
-#include <base_dialogs/DefaultDialogFiller.h>
 #include "runnables/qt/EscapeClicker.h"
-#include <base_dialogs/MessageBoxFiller.h>
-#include "primitives/PopupChooser.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/BuildIndexDialogFiller.h"
@@ -176,7 +178,6 @@
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3SearchDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
@@ -635,10 +636,11 @@ GUI_TEST_CLASS_DEFINITION( test_2026 ) {
     }
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTGlobals::sleep(3000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: 5 sequences are selected
     CHECK_SET_ERR( 5 == GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os),
-        "Unexpected number of selected sequences");
+		QString("Unexpected number of selected sequences1. Got %1, Expected %2").arg(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os)).arg(5));
     CHECK_SET_ERR( GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Montana_montana")),
         "Expected sequence is not selected");
     CHECK_SET_ERR( GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Zychia_baranovi")),
@@ -650,10 +652,11 @@ GUI_TEST_CLASS_DEFINITION( test_2026 ) {
     GTGlobals::sleep( 500 );
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTGlobals::sleep(3000);
+	GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: 6 sequences selected
     CHECK_SET_ERR( 6 == GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os),
-        "Unexpected number of selected sequences");
+		QString("Unexpected number of selected sequences2. Got %1, Expected %2").arg(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os)).arg(6));
     CHECK_SET_ERR( GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Montana_montana")),
         "Expected sequence is not selected");
     CHECK_SET_ERR( GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Zychia_baranovi")),
@@ -910,7 +913,7 @@ GUI_TEST_CLASS_DEFINITION( test_2089 )
     GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os, "!@#$%^&*()_+\";:?/", false));
 
     // 2. Open WD
-    // 3. Set any folder without write access as workflow output directory. Click OK.
+    // 3. Set any folder without write access as workflow output folder. Click OK.
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Workflow Designer...");
     GTGlobals::sleep();
 }
@@ -1504,11 +1507,11 @@ GUI_TEST_CLASS_DEFINITION( test_2192 ){
 //    3. Set valid input data.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.sorted.bam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/chrM.sorted.bam");
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/cmdline/call-variations/chrM.fa");
 //    4. Start the scheme.
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1541,10 +1544,10 @@ GUI_TEST_CLASS_DEFINITION( test_2202 )
 //    1. Open Workflow Designer first time (e.g. remove UGENE.ini before it).
 //    Expected: the dialog appears.
 
-//    2. Write the path to the directory which does not exist.
+//    2. Write the path to the folder which does not exist.
 
 //    3. Click OK.
-//    Expected: the directory is created, there are no error messages about write access.
+//    Expected: the folder is created, there are no error messages about write access.
 
     QDir workflowOutputDir(testDir + "_common_data/scenarios/sandbox/regression_test_2202/1/2/3/4/");
     CHECK_SET_ERR(!workflowOutputDir.exists(), "Dir already exists");
@@ -1730,7 +1733,7 @@ GUI_TEST_CLASS_DEFINITION( test_2268 ) {
     toolDir.cdUp();
 #endif
 
-//    1. Forbid write access to the t-coffee directory (chmod 555 %t-coffee-dir%).
+//    1. Forbid write access to the t-coffee folder (chmod 555 %t-coffee-dir%).
     // Permissions will be returned to the original state, if UGENE won't crash.
     GTFile::setReadOnly(os, toolDir.path());
 
@@ -1867,26 +1870,25 @@ GUI_TEST_CLASS_DEFINITION( test_2270 ){
     GTUtilsLog::check(os, lt);
 }
 
-GUI_TEST_CLASS_DEFINITION( test_2281 ){
+GUI_TEST_CLASS_DEFINITION(test_2281) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    QTabWidget* tabs = qobject_cast<QTabWidget*>(GTWidget::findWidget(os,"tabs"));
-    CHECK_SET_ERR(tabs!=NULL, "tabs widget not found");
+    QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs"));
+    CHECK_SET_ERR(tabs != NULL, "tabs widget not found");
 
     //2. Click the "samples" bar. The samples hint is shown
-    GTTabWidget::setCurrentIndex(os,tabs,1);
+    GTTabWidget::setCurrentIndex(os, tabs, 1);
     GTGlobals::sleep(500);
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView"));
+    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
 
-    QPixmap pixmap = QPixmap::grabWidget(sceneView, sceneView->rect());
-    QImage img = pixmap.toImage();
+    QImage img = GTWidget::getImage(os, sceneView);
 
+    const QColor yc = QColor(255, 255, 160);
     bool found = false;
-    for(int i=sceneView->rect().left(); i< sceneView->rect().right(); i+=10){
-        for(int j=sceneView->rect().top(); j< sceneView->rect().bottom(); j+=10){
-            QRgb rgb = img.pixel(QPoint(i,j));
-            QColor c(rgb);
-            QColor yc = QColor(255,255,160);
+    for (int i = sceneView->rect().left(); i < sceneView->rect().right(); i += 10) {
+        for (int j = sceneView->rect().top(); j < sceneView->rect().bottom(); j += 10) {
+            const QRgb rgb = img.pixel(QPoint(i,j));
+            const QColor c(rgb);
             if (c == yc){
                 found = true;
                 break;
@@ -1896,19 +1898,17 @@ GUI_TEST_CLASS_DEFINITION( test_2281 ){
     CHECK_SET_ERR(found, "hint not found");
 
     //3. Click the "elements" bar.
-    GTTabWidget::setCurrentIndex(os,tabs,0);
+    GTTabWidget::setCurrentIndex(os, tabs, 0);
     GTGlobals::sleep(500);
 
     //Expected: the samples hint is hidden
-    pixmap = QPixmap::grabWidget(sceneView, sceneView->rect());
-    img = pixmap.toImage();
+    img = GTWidget::getImage(os, sceneView);
     bool notFound = true;
-    for(int i=sceneView->rect().left(); i< sceneView->rect().right(); i+=10){
-        for(int j=sceneView->rect().top(); j< sceneView->rect().bottom(); j+=10){
-            QRgb rgb = img.pixel(QPoint(i,j));
-            QColor c(rgb);
-            QColor yc = QColor(255,255,160);
-            if (c == yc){
+    for (int i = sceneView->rect().left(); i < sceneView->rect().right(); i += 10) {
+        for (int j = sceneView->rect().top(); j < sceneView->rect().bottom(); j += 10) {
+            const QRgb rgb = img.pixel(QPoint(i, j));
+            const QColor c(rgb);
+            if (c == yc) {
                 notFound = false;
                 break;
             }
@@ -1916,7 +1916,6 @@ GUI_TEST_CLASS_DEFINITION( test_2281 ){
     }
 
     CHECK_SET_ERR(notFound, "hint is found");
-    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2292) {
@@ -2080,7 +2079,7 @@ GUI_TEST_CLASS_DEFINITION( test_2285 ){
     CHECK_SET_ERR(visableNamesNum == 17,
                   QString("unexpected visable sequences number. Expected 17, actual: %1").arg(visableNamesNum));
 //    3. Expand the collapsed group ("Mecopoda_elongata__Ishigaki__J" is the head sequence).
-    GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Mecopoda_elongata__Ishigaki__J");
+    GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Mecopoda_elongata__Ishigaki__J");
     GTGlobals::sleep(1000);
 
 //    4. Set the cursor to the 14 line (the "Mecopoda_elongata__Ishigaki__J" sequence), 45 base.
@@ -2543,7 +2542,7 @@ GUI_TEST_CLASS_DEFINITION( test_2377 ) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, assemblyReaderName ) );
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile( os, testDir + "_common_data/sambroken_without_reads.sam" );
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, testDir + "_common_data/sam/broken_without_reads.sam" );
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, assemblyWriterName ) );
     GTMouseDriver::click();
@@ -2918,7 +2917,7 @@ GUI_TEST_CLASS_DEFINITION( test_2406 ) {
 
 //    3. Change the file format to the genbank
 //    Expected: TEST.gb file name appears in the output file name field
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "genbank", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "GenBank", GTUtilsWorkflowDesigner::comboValue);
 
     const QString expectedPostValue = "TEST.gb";
     const QString resultPostValue = GTUtilsWorkflowDesigner::getParameter(os, "Output file", true);
@@ -3233,29 +3232,28 @@ GUI_TEST_CLASS_DEFINITION(test_2459) {
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
 }
 
-GUI_TEST_CLASS_DEFINITION( test_2460 ) {
+GUI_TEST_CLASS_DEFINITION(test_2460) {
     //1. Open "COI.aln".
-    //2. Remove all sequences except the first one.
-    //3. Align the result one-line-msa by kalign with default values.
-    //Expected state: Kalign task finishes with error. Redo button is disabled.
 
     GTLogTracer l;
-    GTFileDialog::openFile(os, dataDir+"samples/CLUSTALW/", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    //2. Remove all sequences except the first one.
     QStringList list = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 1), QPoint(-5, list.size() - 1));
-    GTKeyboardDriver::keyPress(Qt::Key_Delete);
+    GTUtilsMsaEditor::removeRows(os, 1, list.size() - 1);
 
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-5, 0));
+    GTGlobals::sleep(500);
 
+    //3. Align the result one-line-msa by kalign with default values.
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR( l.hasError() == true, "There is no error in the log");
+    //Expected state: Kalign task finishes with error. Redo button is disabled.
+    CHECK_SET_ERR(l.hasError() == true, "There is no error in the log");
 
     QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
     CHECK_SET_ERR( NULL != redo, "There is no REDO button");
@@ -3271,7 +3269,7 @@ GUI_TEST_CLASS_DEFINITION(test_2470) {
     class OkClicker : public Filler {
     public:
         OkClicker(HI::GUITestOpStatus& _os, const QString &dbPath, const QString &outputPath)
-            : Filler(_os, "BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath){};
+            : Filler(_os, "BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath){}
         virtual void run() {
             QWidget *w = QApplication::activeWindow();
             CHECK(NULL != w, );
@@ -3369,7 +3367,7 @@ GUI_TEST_CLASS_DEFINITION( test_2475 ) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Find Splice Junctions with TopHat"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setParameter(os, "Bowtie index directory", testDir + "_common_data/bowtie2/index", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Bowtie index folder", testDir + "_common_data/bowtie2/index", GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Bowtie index basename", "human_T1_cutted", GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
@@ -3538,29 +3536,29 @@ GUI_TEST_CLASS_DEFINITION( test_2519 ) {
     GTGlobals::sleep(5000);
 }
 
-GUI_TEST_CLASS_DEFINITION( test_2538 ){
+GUI_TEST_CLASS_DEFINITION( test_2538 ) {
 //    1. Open file "_common_data/scenarios/tree_view/COI.nwk"
     GTFileDialog::openFile(os, dataDir + "/samples/Newick/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Call context menu on node just near root. Click "Collapse"
-    GTGlobals::sleep(1000);
     GTMouseDriver::moveTo(GTUtilsPhyTree::getGlobalCoord(os, GTUtilsPhyTree::getNodes(os).at(1)));
     GTMouseDriver::click();
     GTGlobals::sleep(1000);
 
-    QWidget* treeView = GTWidget::findWidget(os, "treeView");
+    QWidget *treeView = GTWidget::findWidget(os, "treeView");
 
-    QPixmap pixmap = QPixmap::grabWidget(treeView, treeView->rect());
-    QImage initImg = pixmap.toImage();
+    const QImage initImg = GTWidget::getImage(os, treeView);
 
     GTMouseDriver::doubleClick();
     GTGlobals::sleep(1000);
+
 //    3. Call context menu on node just near root. Click "Expand"
     GTMouseDriver::doubleClick();
     GTGlobals::sleep(1000);
+
 //    Expected state: tree has the same view as at the beginning
-    pixmap = QPixmap::grabWidget(treeView, treeView->rect());
-    QImage finalImg = pixmap.toImage();
+    const QImage finalImg = GTWidget::getImage(os, treeView);
 
     //images have several pixels differ. so sizes are compared
     CHECK_SET_ERR(initImg.size() == finalImg.size(), "different images");
@@ -3864,11 +3862,11 @@ GUI_TEST_CLASS_DEFINITION( test_2568 ){
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.fa"));
             QWidget* browse = GTWidget::findWidget(os, "browseButton", GTWidget::findWidget(os, "Reference sequence file labeledWidget", dialog));
             GTWidget::click(os, browse);
-            //    Expected: the file is chosen. (The file's directory is DIR)
+            //    Expected: the file is chosen. (The file's folder is DIR)
 
             //    5. Click to browse a BAM/SAM file
 
-            //    Expected: the open file dialog is opened with the directory DIR
+            //    Expected: the open file dialog is opened with the folder DIR
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, new customFileDialog()));
             GTWidget::click(os, GTWidget::findWidget(os, "addFileButton"));
 
@@ -3889,11 +3887,11 @@ GUI_TEST_CLASS_DEFINITION( test_2569 ){
 //    3. Set valid input data.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.sorted.bam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/chrM.sorted.bam");
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/cmdline/call-variations/chrM.fa");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    4. Click "External Tools" on the appeared Dashboard.
@@ -4299,10 +4297,10 @@ GUI_TEST_CLASS_DEFINITION(test_2632){
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
-            //    3. Set bowtie index and a known transcript file.(_common_data/NIAID_pipelines/tuxedo)
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/index/chr6.1.ebwt"));
+            //    3. Set bowtie index and a known transcript file.
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/bowtie/index/e_coli.1.ebwt"));
             GTWidget::click(os, GTWidget::findButtonByText(os, "Select\nbowtie index file", dialog));
-            GTUtilsWizard::setParameter(os, "Known transcript file", QVariant(QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/hg19_chr6_refFlat_noRandomHapUn.gtf")));
+            GTUtilsWizard::setParameter(os, "Known transcript file", QVariant(QDir().absoluteFilePath(testDir + "_common_data/gtf/valid.gtf")));
 
             //    4. Revern to first page, then click next again
             //    UGENE crashes
@@ -4323,13 +4321,13 @@ GUI_TEST_CLASS_DEFINITION(test_2638){
 //    1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Select "tuxedo" sample
-//    3. Set proper input data(_common_data/NIAID_pipelines/tuxedo).
+//    3. Set proper input data.
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/index"));
-    map.insert("Bowtie index basename", "chr6");
+    map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index"));
+    map.insert("Bowtie index basename", "e_coli");
     map.insert("Bowtie version", "Bowtie1");
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QList<QStringList>()<<(QStringList()<<
-                                                     testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq"),
+                                                     testDir + "_common_data/e_coli/e_coli_1000.fastq"),
                                                       map));
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
                                                                    "Single-sample"<<"Single-end"));
@@ -4350,7 +4348,7 @@ GUI_TEST_CLASS_DEFINITION(test_2638){
     GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "Find Splice Junctions with TopHat", "LI"));
     GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "index", "BUTTON"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-//    Expected state: "Bowtie index directory" parameter's value is folder, it is not tried to be opened bu UGENE when clicking
+//    Expected state: "Bowtie index folder" parameter's value is folder, it is not tried to be opened bu UGENE when clicking
     QString finalTitle = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(initTitle == finalTitle, "New window was opened unexpectidly: " + finalTitle);
 }
@@ -4376,7 +4374,7 @@ GUI_TEST_CLASS_DEFINITION(test_2640){
 //    1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Select "tuxedo" sample
-//    3. Set proper input data(_common_data/NIAID_pipelines/tuxedo).
+//    3. Set proper input data
     QString expected;
 #ifdef Q_OS_MAC
     expected = "tophat-2.0.9/tophat -p 94 --output-dir";
@@ -4385,11 +4383,11 @@ GUI_TEST_CLASS_DEFINITION(test_2640){
 #endif
     GTLogTracer l(expected);
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index directory", QDir().absoluteFilePath(testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/index"));
-    map.insert("Bowtie index basename", "chr6");
+    map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index"));
+    map.insert("Bowtie index basename", "e_coli");
     map.insert("Bowtie version", "Bowtie1");
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Tuxedo Wizard", QList<QStringList>()<<(QStringList()<<
-                                                     testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/lymph_aln.fastq"),
+                                                     testDir + "_common_data/e_coli/e_coli_1000.fastq"),
                                                       map));
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList()<<
                                                                    "Single-sample"<<"Single-end"));
@@ -4520,11 +4518,11 @@ GUI_TEST_CLASS_DEFINITION( test_2662 ){
 //    3. Set valid input data.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.sorted.bam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/chrM.sorted.bam");
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chrM/chrM.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/cmdline/call-variations/chrM.fa");
 //    4. Start the scheme.
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4631,7 +4629,7 @@ GUI_TEST_CLASS_DEFINITION(test_2701) {
 //    3. Select vector format (svg, pdf or ps)
 //    Expected state: Quality tuning slider is not showed.
 
-//    4. Select jpeg format
+//    4. Select jpg format
 //    Expected state: Quality tuning slider is showed.
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "CVU55762.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4650,18 +4648,16 @@ GUI_TEST_CLASS_DEFINITION(test_2701) {
             QComboBox* formatsBox = dialog->findChild<QComboBox*>("formatsBox");
             QWidget* spin = dialog->findChild<QSpinBox*>("qualitySpinBox");
 
-            GTComboBox::setIndexWithText(os, formatsBox, "svg");
+            GTComboBox::setIndexWithText(os, formatsBox, "SVG");
             CHECK_SET_ERR( !spin->isVisible(), "Quality spin box is visible!");
-            GTComboBox::setIndexWithText(os, formatsBox, "pdf");
+            GTComboBox::setIndexWithText(os, formatsBox, "PDF");
             CHECK_SET_ERR( !spin->isVisible(), "Quality spin box is visible!");
-            GTComboBox::setIndexWithText(os, formatsBox, "ps");
+            GTComboBox::setIndexWithText(os, formatsBox, "PS");
             CHECK_SET_ERR( !spin->isVisible(), "Quality spin box is visible!");
 
-            GTComboBox::setIndexWithText(os, formatsBox, "jpg");
+            GTComboBox::setIndexWithText(os, formatsBox, "JPG");
             CHECK_SET_ERR( spin->isVisible(), "Quality spin box not visible!");
-            GTComboBox::setIndexWithText(os, formatsBox, "jpeg");
-            CHECK_SET_ERR( spin->isVisible(), "Quality spin box not visible!");
-
+            
             QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
             CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
             QPushButton* button = box->button(QDialogButtonBox::Cancel);
@@ -4803,7 +4799,7 @@ GUI_TEST_CLASS_DEFINITION(test_2721){
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-        //Expected state: wizard appeared - on the first page "Cistrome data directory" is set to "data/cistrome".
+        //Expected state: wizard appeared - on the first page "Cistrome data folder" is set to "data/cistrome".
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog!=NULL, "activeModalWidget is NULL");
 
@@ -4840,17 +4836,17 @@ GUI_TEST_CLASS_DEFINITION(test_2726) {
 
 GUI_TEST_CLASS_DEFINITION(test_2729) {
 //    1. Open {_common_data/fasta/AMINO.fa}
-//    Expected state: there is a "Graphs" button on the sequence toolbar, it is enabled.
+//    Expected state: there is no a "Graphs" button on the sequence toolbar for amino, it is invisible and disabled.
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "AMINO.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QAbstractButton *graphsButton = GTAction::button(os, "GraphMenuAction", GTUtilsSequenceView::getSeqWidgetByNumber(os));
     CHECK_SET_ERR(NULL != graphsButton, "Graphs button is NULL");
-    CHECK_SET_ERR(graphsButton->isEnabled(), "Graphs button is unexpectedly disabled");
+    CHECK_SET_ERR(!graphsButton->isEnabled(), "Graphs button is unexpectedly enabled");
 
 //    2. Click the "Graphs" button.
 //    Expected state: menu is shown.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()));
-    GTWidget::click(os, graphsButton);
+//    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()));
+//    GTWidget::click(os, graphsButton);
 
     GTGlobals::sleep();
 }
@@ -5001,7 +4997,7 @@ GUI_TEST_CLASS_DEFINITION(test_2761_2) {
             customFiller(HI::GUITestOpStatus &os): ExtractSelectedAsMSADialogFiller(os,testDir + "_common_data/scenarios/sandbox/test_2761_2/2761.aln",
                                                            QStringList() << "Bicolorana_bicolor_EF540830" << "Roeseliana_roeseli"){}
             void run(){
-                GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Directory to save does not exist"));
+                GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Folder to save does not exist"));
                 ExtractSelectedAsMSADialogFiller::run();
                 GTGlobals::sleep(1000);
                 GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
@@ -5531,18 +5527,18 @@ GUI_TEST_CLASS_DEFINITION(test_2887) {
 
 GUI_TEST_CLASS_DEFINITION(test_2891) {
     // 1. Open file "data/samples/workflow_samples/NGS/cistrome/chip_seq.uwl"
-    // 2. Set input file for the "Read Tags" element to "test/_common_data/NIAID_pipelines/Chip-seq/input_data/chr2.bed"
+    // 2. Set input file for the "Read Tags" element to "test/_common_data/bed/valid_input/tophat_output.bed"
     // 3. Press the "Validate workflow" button on the main toolbar
     // Expected state: the message box about workflow errors has appeared. The "Error list" tab has appeared below the workflow
     // 4. Press "OK"
     // Expected state: there is no messages about the "Read tags" element on the "Error list" tab
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, dataDir + "/workflow_samples/NGS/cistrome/", "chip_seq.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::click(os, "Read Tags");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Chip-seq/input_data/chr2.bed");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bed/valid_input/tophat_output.bed");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTWidget::click(os,GTAction::button(os, "Validate workflow"));
@@ -5553,18 +5549,18 @@ GUI_TEST_CLASS_DEFINITION(test_2891) {
 }GUI_TEST_CLASS_DEFINITION(test_2891_1) {
 
     // 1. Open file "data/samples/workflow_samples/NGS/cistrome/chip_seq.uwl"
-    // 2. Set input file for the "Read Tags" element to "test/_common_data/NIAID_pipelines/Chip-seq/input_data/some_image.png"
+    // 2. Set input file for the "Read Tags" element to "test/_common_data/regression/1587/some_image.png"
     // 3. Press the "Validate workflow" button on the main toolbar
     // Expected state: the message box about workflow errors has appeared. The "Error list" tab has appeared below the workflow
     // 4. Press "OK"
     // Expected state: there is a warning about possible incompatibilities of the "Read tags" element on the "Error list" tab
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, dataDir + "/workflow_samples/NGS/cistrome/", "chip_seq.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::click(os, "Read Tags");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Chip-seq/input_data/some_image.png");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/regression/1587/some_image.png");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTWidget::click(os,GTAction::button(os, "Validate workflow"));
@@ -5692,11 +5688,11 @@ GUI_TEST_CLASS_DEFINITION(test_2899){
                 GTUtilsWizard::clickButton(os, GTUtilsWizard::Back);
             }
 
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index/NC_010473.1.bt2"));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/bowtie2/index/human_T1_cutted.2.bt2"));
             GTWidget::click(os, GTWidget::findButtonByText(os, "Select\nbowtie index file", dialog));
             //    Expected state: index is set if it is valid (file has valid extension), no crash
-            bool basename = GTUtilsWizard::getParameter(os, "Bowtie index basename").toString() == "NC_010473";
-            bool dir = GTUtilsWizard::getParameter(os, "Bowtie index directory").toString().contains("_common_data/NIAID_pipelines/tuxedo_pipeline/data/test_0004/bowtie2_index");
+            bool basename = GTUtilsWizard::getParameter(os, "Bowtie index basename").toString() == "human_T1_cutted";
+            bool dir = GTUtilsWizard::getParameter(os, "Bowtie index folder").toString().contains("_common_data/bowtie2/index");
             CHECK_SET_ERR(basename, "unexpected basename");
             CHECK_SET_ERR(dir, "unexpected dir");
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
@@ -6220,12 +6216,16 @@ GUI_TEST_CLASS_DEFINITION(test_2972){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. Click the menu Tools -> HMMER tools -> HMM3 -> Search with HMM3 phmmer.
     GTUtilsDialog::waitForDialog(os, new UHMM3PhmmerDialogFiller(os, dataDir + "samples/Newick/COI.nwk"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "HMMER tools" << "Search with HMMER3 phmmer...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "HMMER tools" << "Search with phmmer...");
     GTGlobals::sleep();
 
     CHECK_SET_ERR(l.hasError(), "no error in log");
     QString error = l.getError();
-    QString expectedError = "No dna sequence objects found in document querySeq sequence";
+#ifdef Q_OS_WIN
+    QString expectedError = "Task {Search with phmmer} finished with error: Subtask {PHMMER search tool} is failed";
+#else
+    QString expectedError = "is empty or misformatted";
+#endif
 
     CHECK_SET_ERR(error.contains(expectedError), "actual error is " + error);
 //    3. Choose the query sequence file: any non-sequence format file (e.g. *.mp3).
@@ -6259,7 +6259,7 @@ GUI_TEST_CLASS_DEFINITION(test_2981) {
 //    2. Click a "Build Tree" button on the main toolbar.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_3276_COI.wnk", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
-    GTGlobals::sleep(1000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: a "Build Phyligenetic Tree" dialog appears.
 
 //    3. Set any acceptable path and build a tree with default parameters.

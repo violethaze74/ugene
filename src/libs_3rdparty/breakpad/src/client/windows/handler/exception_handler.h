@@ -69,7 +69,7 @@
 #include <string>
 #include <vector>
 
-#include <qglobal.h>
+#include <QtGlobal>
 
 #include "client/windows/common/ipc_protocol.h"
 #include "client/windows/crash_generation/crash_generation_client.h"
@@ -388,7 +388,7 @@ class Q_DECL_EXPORT ExceptionHandler{
 
   scoped_ptr<CrashGenerationClient> crash_generation_client_;
 
-  // The directory in which a minidump will be written, set by the dump_path
+  // The folder in which a minidump will be written, set by the dump_path
   // argument to the constructor, or set_dump_path.
   wstring dump_path_;
 

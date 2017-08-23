@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -300,7 +300,6 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U
     int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
     int endPos = (int)((read->leftmostPos + read->effectiveLen - 1) / ii.coverageBasesPerPoint);
     if(endPos > csize - 1) {
-        coreLog.trace(QString("addToCoverage: endPos > csize - 1: %1 > %2").arg(endPos).arg(csize-1));
         endPos = csize - 1;
     }
     int* coverageData = ii.coverage.data();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,9 +29,9 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QString>
-#include <QtCore/QPair>
-#include <QtCore/QSet>
+#include <QString>
+#include <QPair>
+#include <QSet>
 
 #include <QAction>
 #include <QVBoxLayout>
@@ -141,11 +141,11 @@ void DotPlotSplitter::removeView(DotPlotWidget* view) {
     checkLockButtonState();
 }
 
-typedef QPair<QString,QString> QStringPair;
+typedef QPair<QString,QString> QStrStrPair;
 
 void DotPlotSplitter::checkLockButtonState() {
 
-    QSet<QStringPair> dotPlots;
+    QSet<QStrStrPair> dotPlots;
 
     bool enableLockButton = false;
 
@@ -157,7 +157,7 @@ void DotPlotSplitter::checkLockButtonState() {
 
         if (!nameX.isEmpty() && !nameY.isEmpty()) {
 
-            QStringPair p;
+            QStrStrPair p;
             p.first = nameX;
             p.second = nameY;
 

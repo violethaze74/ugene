@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,17 +21,10 @@
 
 #include "ExportReadsDialogFiller.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QLineEdit>
-#include <QtGui/QComboBox>
-#include <QtGui/QCheckBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QCheckBox>
-#endif
+#include <QApplication>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QCheckBox>
 
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTComboBox.h>

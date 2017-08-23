@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ DatabaseConnectionFormat::DatabaseConnectionFormat(QObject *p) :
     formatDescription = DocumentFormat::tr("A fake format that was added to implement shared database connection within existing document model.");
 
     supportedObjectTypes << GObjectTypes::SEQUENCE
-                         << GObjectTypes::MULTIPLE_ALIGNMENT
+                         << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT
                          << GObjectTypes::UNKNOWN
                          << GObjectTypes::UNLOADED
                          << GObjectTypes::TEXT
@@ -59,7 +59,7 @@ DatabaseConnectionFormat::DatabaseConnectionFormat(QObject *p) :
                          << GObjectTypes::ANNOTATION_TABLE
                          << GObjectTypes::VARIANT_TRACK
                          << GObjectTypes::CHROMATOGRAM
-                         << GObjectTypes::MULTIPLE_ALIGNMENT
+                         << GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT
                          << GObjectTypes::PHYLOGENETIC_TREE
                          << GObjectTypes::BIOSTRUCTURE_3D
                          << GObjectTypes::ASSEMBLY;

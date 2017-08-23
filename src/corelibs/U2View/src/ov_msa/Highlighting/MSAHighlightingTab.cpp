@@ -97,11 +97,13 @@ QWidget* MSAHighlightingTab::createHighlightingGroup() {
     exportHighlightning = new QToolButton();
     exportHighlightning->setText(tr("Export"));
     exportHighlightning->setObjectName("exportHighlightning");
+    exportHighlightning->setMinimumWidth(198);
+    exportHighlightning->setMinimumHeight(23);
 
     QWidget *buttonAndSpacer = new QWidget(this);
     QHBoxLayout * layout2 = initHBoxLayout(buttonAndSpacer);
     layout2->addWidget(exportHighlightning);
-    layout2->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    //layout2->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
     lessMoreLabel = new QLabel(tr("Highlight characters with conservation level:"));
     lessMoreLabel->setWordWrap(true);
@@ -164,7 +166,7 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
 
     connect(colorSchemeController, SIGNAL(si_dataChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
     connect(highlightingSchemeController, SIGNAL(si_dataChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
-    connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_doUseDots()));
+    connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_triggerUseDots()));
 
     connect(seqArea, SIGNAL(si_highlightingChanged()), SLOT(sl_sync()));
 
@@ -172,7 +174,7 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_refreshSchemes()));
 
     connect(m, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateHint()));
-    connect(m->getMSAObject(), SIGNAL(si_alphabetChanged(MAlignmentModInfo, const DNAAlphabet *)), SLOT(sl_refreshSchemes()));
+    connect(m->getMaObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet *)), SLOT(sl_refreshSchemes()));
 
     connect(highlightingSchemeController->getComboBox(), SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateHint()));
     connect(exportHighlightning, SIGNAL(clicked()), SLOT(sl_exportHighlightningClicked()));
@@ -235,10 +237,10 @@ void MSAHighlightingTab::sl_updateHint() {
         thresholdMoreRb->hide();
         lessMoreLabel->hide();
     }
-    if (MAlignmentRow::invalidRowId() == msa->getReferenceRowId()
+    if (U2MsaRow::INVALID_ROW_ID == msa->getReferenceRowId()
         && !seqArea->getCurrentHighlightingScheme()->getFactory()->isRefFree())
     {
-        hint->setText(tr("Hint: select a reference above"));
+        hint->setText(tr("Info: set a reference sequence."));
         hint->setStyleSheet(
             "color: green;"
             "font: bold;");
@@ -247,6 +249,10 @@ void MSAHighlightingTab::sl_updateHint() {
     }
     hint->setText("");
     if(s->getFactory()->isRefFree()){
+        hint->setText(tr("Info: export is not available for the selected highlighting."));
+        hint->setStyleSheet(
+            "color: green;"
+            "font: bold;");
         exportHighlightning->setDisabled(true);
     }else{
         exportHighlightning->setEnabled(true);
@@ -274,4 +280,4 @@ void MSAHighlightingTab::sl_refreshSchemes() {
     sl_sync();
 }
 
-}   // namespace U2
+}//ns

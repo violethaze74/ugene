@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,53 +19,44 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDir>
 #include <QMessageBox>
+#include <QMenu>
 
-#include "WorkflowDesignerPlugin.h"
-#include "WorkflowViewController.h"
-#include "WorkflowDocument.h"
-#include "WorkflowSettingsController.h"
-#include "WorkflowSamples.h"
-#include "tasks/ReadAssemblyTask.h"
+#include <U2Core/AppContext.h>
+#include <U2Core/CMDLineHelpProvider.h>
+#include <U2Core/CMDLineRegistry.h>
+#include <U2Core/CMDLineUtils.h>
+#include <U2Core/GAutoDeleteList.h>
+#include <U2Core/L10n.h>
+#include <U2Core/ServiceTypes.h>
+#include <U2Core/Settings.h>
+#include <U2Core/Task.h>
+#include <U2Core/TaskStarter.h>
+#include <U2Core/U2SafePoints.h>
 
-#include "library/CoreLib.h"
-#include "library/IncludedProtoFactoryImpl.h"
-
-#include <util/SaveSchemaImageUtils.h>
-#include <util/DatasetsCountValidator.h>
+#include <U2Gui/ToolsMenu.h>
 
 #include <U2Lang/IncludedProtoFactory.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowTasksRegistry.h>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/L10n.h>
-#include <U2Core/Settings.h>
-#include <U2Core/Task.h>
-#include <U2Core/ServiceTypes.h>
-
-#include <U2Core/CMDLineRegistry.h>
-#include <U2Core/CMDLineHelpProvider.h>
-#include <U2Core/CMDLineUtils.h>
-#include <cmdline/WorkflowCMDLineTasks.h>
-#include <cmdline/GalaxyConfigTask.h>
-
-#include <U2Gui/ToolsMenu.h>
-
-#include <U2Core/TaskStarter.h>
-#include <U2Core/GAutoDeleteList.h>
-#include <U2Test/XMLTestFormat.h>
 #include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>
+#include <U2Test/XMLTestFormat.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QMenu>
-#endif
-
-/* TRANSLATOR U2::LocalWorkflow::WorkflowView */
-/* TRANSLATOR U2::LocalWorkflow::WorkflowDesignerPlugin */
+#include "WorkflowDesignerPlugin.h"
+#include "WorkflowDocument.h"
+#include "WorkflowSamples.h"
+#include "WorkflowSettingsController.h"
+#include "WorkflowViewController.h"
+#include "cmdline/GalaxyConfigTask.h"
+#include "cmdline/WorkflowCMDLineTasks.h"
+#include "library/CoreLib.h"
+#include "library/IncludedProtoFactoryImpl.h"
+#include "tasks/ReadAssemblyTask.h"
+#include "util/DatasetsCountValidator.h"
+#include "util/SaveSchemaImageUtils.h"
 
 namespace U2 {
 
@@ -335,10 +326,10 @@ void WorkflowDesignerService::initSampleActions() {
 
     const QString externalToolsPlugin = "external_tool_support";
 
-    SampleAction sangerAlign(ToolsMenu::SANGER_CONTROL, ToolsMenu::SANGER_MENU, "Sanger sequencing/trim-and-align.uwl", SampleAction::Select, tr("Reads quality control and alignment"));
-
     SampleAction ngsControl(ToolsMenu::NGS_CONTROL, ToolsMenu::NGS_MENU, "NGS/fastqc.uwl", SampleAction::OpenWizard, tr("Reads quality control..."));
     ngsControl.requiredPlugins << externalToolsPlugin;
+    SampleAction ngsScaffold(ToolsMenu::NGS_SCAFFOLD, ToolsMenu::NGS_MENU, "Scenarios/length_filter.uwl", SampleAction::OpenWizard, tr("Filter short scaffolds..."));
+    ngsScaffold.requiredPlugins << externalToolsPlugin;
     SampleAction ngsRawDna(ToolsMenu::NGS_RAW_DNA, ToolsMenu::NGS_MENU, "NGS/raw_dna.uwl", SampleAction::Select, tr("Raw DNA-Seq data processing"));
     ngsRawDna.requiredPlugins << externalToolsPlugin;
     SampleAction ngsVariants(ToolsMenu::NGS_CALL_VARIANTS, ToolsMenu::NGS_MENU, "NGS/call_variants.uwl", SampleAction::Select, tr("Variant calling"));
@@ -367,8 +358,8 @@ void WorkflowDesignerService::initSampleActions() {
     SampleAction blastNcbi(ToolsMenu::BLAST_NCBI, ToolsMenu::BLAST_MENU, "Scenarios/remote_blasting.uwl", SampleAction::Select, tr("Remote NCBI BLAST"));
     blastNcbi.requiredPlugins << "remote_blast";
 
-    samples->registerAction(sangerAlign);
     samples->registerAction(ngsControl);
+    samples->registerAction(ngsScaffold);
     samples->registerAction(ngsRawDna);
     samples->registerAction(ngsVariants);
     samples->registerAction(ngsVariantsAndEffect);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,8 +25,10 @@
 
 namespace U2 {
 
+const QString StatisticsWidget::ID = "statistics";
+
 StatisticsWidget::StatisticsWidget(const QWebElement &container, Dashboard *parent)
-: TableWidget(container, parent)
+    : TableWidget(container, ID, parent)
 {
     useEmptyRows = false;
     createTable();
@@ -62,10 +64,7 @@ QStringList StatisticsWidget::header() {
 }
 
 inline static QString timeStr(qint64 timeMks) {
-    QDateTime t;
-    t.setTimeSpec(Qt::UTC);
-    t.setMSecsSinceEpoch(timeMks / 1000);
-    return t.toString("hh:mm:ss.zzz");
+    return QTime::fromMSecsSinceStartOfDay(timeMks / 1000).toString("hh:mm:ss.zzz");
 }
 
 QList<QStringList> StatisticsWidget::data() {

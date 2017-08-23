@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,14 +22,14 @@
 #ifndef _U2_PROFILE_TO_PROFILE_WORKER_H_
 #define _U2_PROFILE_TO_PROFILE_WORKER_H_
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 
 namespace LocalWorkflow {
 
@@ -49,7 +49,7 @@ private:
     IntegralBus *inPort;
     IntegralBus *outPort;
 
-    QList<MAlignmentObject*> objects;
+    QList<MultipleSequenceAlignmentObject*> objects;
 };
 
 class ProfileToProfileWorkerFactory : public DomainFactory {
@@ -73,19 +73,20 @@ protected:
 };
 
 class ProfileToProfileTask : public Task {
+    Q_OBJECT
 public:
-    ProfileToProfileTask(const MAlignment &masterMsa, MAlignment &secondMsa);
+    ProfileToProfileTask(const MultipleSequenceAlignment &masterMsa, const MultipleSequenceAlignment &secondMsa);
     ~ProfileToProfileTask();
 
     virtual void prepare();
     virtual QList<Task*> onSubTaskFinished(Task *subTask);
 
-    const MAlignment & getResult();
+    const MultipleSequenceAlignment & getResult();
 
 private:
-    MAlignment masterMsa;
-    MAlignment secondMsa;
-    MAlignment result;
+    MultipleSequenceAlignment masterMsa;
+    MultipleSequenceAlignment secondMsa;
+    MultipleSequenceAlignment result;
     int seqIdx;
     int subtaskCount;
 

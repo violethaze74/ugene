@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,6 +44,7 @@ private slots:
     void sl_saveCorrespondingSequence();
     void sl_saveSequencesAsAlignment();
     void sl_saveAlignmentAsSequences();
+    void sl_exportMcaToMsa();
     void sl_exportNucleicAlignmentToAmino();
     void sl_importAnnotationsFromCSV();
     void sl_exportChromatogramToSCF();
@@ -59,6 +60,7 @@ private:
     QAction* exportCorrespondingSeqsAction;
     QAction* exportSequencesAsAlignmentAction;
     QAction* exportAlignmentAsSequencesAction;
+    QAction* exportMcaToMsaAction;
     QAction* exportNucleicAlignmentToAminoAction;
     QAction* importAnnotationsFromCSVAction;
     QAction* exportDNAChromatogramAction;

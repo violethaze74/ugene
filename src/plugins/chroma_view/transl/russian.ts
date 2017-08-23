@@ -4,7 +4,7 @@
 <context>
     <name>U2::ChromaViewAction</name>
     <message>
-        <location filename="../src/ChromaViewPlugin.cpp" line="148"/>
+        <location filename="../src/ChromaViewPlugin.cpp" line="145"/>
         <source>Show chromatogram</source>
         <translation>Показать хроматограмму</translation>
     </message>
@@ -12,12 +12,12 @@
 <context>
     <name>U2::ChromaViewPlugin</name>
     <message>
-        <location filename="../src/ChromaViewPlugin.cpp" line="62"/>
+        <location filename="../src/ChromaViewPlugin.cpp" line="57"/>
         <source>Chromatogram View</source>
         <translation>Хроматограмма</translation>
     </message>
     <message>
-        <location filename="../src/ChromaViewPlugin.cpp" line="62"/>
+        <location filename="../src/ChromaViewPlugin.cpp" line="57"/>
         <source>Chromatograms visualization</source>
         <translation>Показать хроматограмму</translation>
     </message>
@@ -25,38 +25,38 @@
 <context>
     <name>U2::ChromatogramView</name>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="76"/>
+        <location filename="../src/ChromatogramView.cpp" line="78"/>
         <source>Show all</source>
         <translation>Показать все</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="79"/>
+        <location filename="../src/ChromatogramView.cpp" line="81"/>
         <source>Show/hide trace</source>
         <translation>Показать/скрыть след</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="110"/>
+        <location filename="../src/ChromatogramView.cpp" line="112"/>
         <source>Edit new sequence</source>
         <translation>Редактировать новую последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="113"/>
+        <location filename="../src/ChromatogramView.cpp" line="115"/>
         <source>Edit existing sequence</source>
         <translation>Редактировать существующую последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="116"/>
+        <location filename="../src/ChromatogramView.cpp" line="118"/>
         <source>Remove edited sequence</source>
         <translation>Удалить редактируемую последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="119"/>
+        <location filename="../src/ChromatogramView.cpp" line="121"/>
         <source>Undo changes</source>
         <translation>Отменить изменения</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="219"/>
-        <location filename="../src/ChromatogramView.cpp" line="356"/>
+        <location filename="../src/ChromatogramView.cpp" line="221"/>
+        <location filename="../src/ChromatogramView.cpp" line="358"/>
         <source>The sequence is locked</source>
         <translation>Последовательность заблокирована</translation>
     </message>
@@ -69,7 +69,7 @@
         <translation type="obsolete">Последовательность заблокирована</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="69"/>
+        <location filename="../src/ChromatogramView.cpp" line="71"/>
         <source>Show quality bars</source>
         <translation>Показывать уровни достоверности</translation>
     </message>
@@ -77,12 +77,12 @@
 <context>
     <name>U2::ChromatogramViewRenderArea</name>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="512"/>
+        <location filename="../src/ChromatogramView.cpp" line="514"/>
         <source>Chromatogram view (zoom in to see base calls)</source>
         <translation>Хроматограмма (приближайте масштаб)</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="737"/>
+        <location filename="../src/ChromatogramView.cpp" line="739"/>
         <source>original sequence</source>
         <translation>Исходная последовательность</translation>
     </message>

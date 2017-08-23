@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@
 namespace U2 {
 
 GenbankPlainTextFormat::GenbankPlainTextFormat(QObject* p)
-: EMBLGenbankAbstractDocument(BaseDocumentFormats::PLAIN_GENBANK, tr("Genbank"), 79, DocumentFormatFlags_SW, p)
+: EMBLGenbankAbstractDocument(BaseDocumentFormats::PLAIN_GENBANK, tr("GenBank"), 79, DocumentFormatFlags_SW, p)
 {
     formatDescription = tr("GenBank Flat File Format is a rich format for storing sequences and associated annotations");
     fileExtensions << "gb" << "gbk" << "gen" << "genbank";

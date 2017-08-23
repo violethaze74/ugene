@@ -11,21 +11,21 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/MAlignment.h>
-#include <U2Core/MAlignmentObject.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/ProjectModel.h>
 
-#include <U2Algorithm/MAlignmentUtilTasks.h>
+#include <U2Algorithm/MsaUtilTasks.h>
 
 #include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/SimpleWorkflowTask.h>
 
-#include <QtCore/QVariant>
-#include <QtCore/QString>
-#include <QtCore/QRegExp>
+#include <QVariant>
+#include <QString>
+#include <QRegExp>
 
 namespace U2 {
 
@@ -54,9 +54,12 @@ bool PairwiseAlignmentHirschbergTaskSettings::convertCustomSettings() {
     return true;
 }
 
-PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings* _settings) :
-    PairwiseAlignmentTask(TaskFlag_NoRun), settings(_settings), kalignSubTask(NULL), workflowKalignSubTask(NULL), ma(NULL) {
-
+PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings* _settings)
+    : PairwiseAlignmentTask(TaskFlag_NoRun),
+      settings(_settings),
+      kalignSubTask(NULL),
+      workflowKalignSubTask(NULL)
+{
     SAFE_POINT(settings != NULL, "Task settings are not defined.", );
     SAFE_POINT(settings->convertCustomSettings() && settings->isValid(), "Invalide task settings.", );
 
@@ -79,11 +82,9 @@ PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignme
     alphabet = U2AlphabetUtils::getById(settings->alphabet);
     SAFE_POINT(alphabet != NULL, "Albhabet is invalid.", );
 
-    ma = new MAlignment(firstName + " vs. " + secondName, alphabet);
-    ma->addRow(firstName, first, os);
-    CHECK_OP(os, );
-    ma->addRow(secondName, second, os);
-    CHECK_OP(os, );
+    ma = MultipleSequenceAlignment(firstName + " vs. " + secondName, alphabet);
+    ma->addRow(firstName, first);
+    ma->addRow(secondName, second);
 
     KalignTaskSettings kalignSettings;
     kalignSettings.gapOpenPenalty = settings->gapOpen;
@@ -91,14 +92,13 @@ PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignme
     kalignSettings.termGapPenalty = settings->gapTerm;
     kalignSettings.secret = settings->bonusScore;
 
-    kalignSubTask = new KalignTask(*ma, kalignSettings);
+    kalignSubTask = new KalignTask(ma, kalignSettings);
     setUseDescriptionFromSubtask(true);
     setVerboseLogMode(true);
     addSubTask(kalignSubTask);
 }
 
 PairwiseAlignmentHirschbergTask::~PairwiseAlignmentHirschbergTask() {
-    delete ma;
     delete settings;
 }
 
@@ -125,9 +125,9 @@ QList<Task*> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) {
             alignmentDoc = format->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(newFileUrl), localStateInfo);
             CHECK_OP(localStateInfo, res);
 
-            MAlignment resultMa = kalignSubTask->resultMA;
+            MultipleSequenceAlignment resultMa = kalignSubTask->resultMA;
 
-            MAlignmentObject * docObject = MAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
+            MultipleSequenceAlignmentObject * docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
             CHECK_OP(localStateInfo, res);
 
             alignmentDoc->addObject(docObject);
@@ -147,11 +147,11 @@ QList<Task*> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) {
             SAFE_POINT_OP(os, res);
             for (int rowNumber = 0; rowNumber < rows.length(); ++rowNumber) {
                 if (rows[rowNumber].sequenceId == settings->firstSequenceRef.entityId) {
-                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA.getRow(0).getGapModel(), os);
+                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA->getMsaRow(0)->getGapModel(), os);
                     CHECK_OP(os, res);
                 }
                 if (rows[rowNumber].sequenceId == settings->secondSequenceRef.entityId) {
-                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA.getRow(1).getGapModel(), os);
+                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA->getMsaRow(1)->getGapModel(), os);
                     CHECK_OP(os, res);
                 }
             }
@@ -164,7 +164,7 @@ Task::ReportResult PairwiseAlignmentHirschbergTask::report() {
     propagateSubtaskError();
     CHECK_OP(stateInfo, ReportResult_Finished);
 
-    assert(kalignSubTask->inputMA.getNumRows() == kalignSubTask->resultMA.getNumRows());
+    assert(kalignSubTask->inputMA->getNumRows() == kalignSubTask->resultMA->getNumRows());
 
     return ReportResult_Finished;
 }

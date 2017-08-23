@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,20 +52,6 @@ private:
     void initTabixTask();
 };
 
-/**
- * If output file already exists, CopyFileTask tries to rename existing file and to complete copying.
- */
-class CopyFileTask : public Task {
-    Q_OBJECT
-public:
-    CopyFileTask(const GUrl& from, const GUrl& to);
-    void run();
-    QString generateReport() const;
-private:
-    GUrl from;
-    GUrl to;
-};
-
-} // namespace U2
+}   // namespace U2
 
 #endif // _U2_TABIX_TASK_H_

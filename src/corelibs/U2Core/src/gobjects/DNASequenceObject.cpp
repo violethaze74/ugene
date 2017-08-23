@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -204,6 +204,10 @@ bool U2SequenceObject::isValidDbiObject(U2OpStatus &os) {
 }
 
 void U2SequenceObject::replaceRegion(const U2Region& region, const DNASequence& seq, U2OpStatus& os) {
+    replaceRegion(entityRef.entityId, region, seq, os);
+}
+
+void U2SequenceObject::replaceRegion(const U2DataId &masterId, const U2Region &region, const DNASequence &seq, U2OpStatus &os) {
     // seq.alphabet == NULL - for tests.
     CHECK_EXT(seq.alphabet == getAlphabet() || seq.seq.isEmpty() || seq.alphabet == NULL,
         os.setError(tr("Modified sequence & region have different alphabet")), );
@@ -211,13 +215,17 @@ void U2SequenceObject::replaceRegion(const U2Region& region, const DNASequence& 
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );
     QVariantMap hints;
-    con.dbi->getSequenceDbi()->updateSequenceData(entityRef.entityId, region, seq.seq, hints, os);
+    con.dbi->getSequenceDbi()->updateSequenceData(masterId, entityRef.entityId, region, seq.seq, hints, os);
     cachedLength = -1;
     if (region.intersects(cachedLastAccessedRegion.first)) {
         cachedLastAccessedRegion = QPair<U2Region, QByteArray>();
     }
     setModified(true);
     emit si_sequenceChanged();
+}
+
+void U2SequenceObject::removeRegion(U2OpStatus &os, const U2Region &region) {
+    replaceRegion(region, DNASequence(), os);
 }
 
 GObject * U2SequenceObject::clone(const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hints) const {
@@ -455,6 +463,11 @@ void U2SequenceObject::updateCachedValues() const {
     cachedCircular = seq.circular ? TriState_Yes : TriState_No;
 
     SAFE_POINT(cachedAlphabet != NULL, "Invalid sequence alphabet", );
+}
+
+void U2SequenceObject::sl_resetDataCaches() {
+    cachedLastAccessedRegion = QPair<U2Region, QByteArray>();
+    cachedLength = -1;
 }
 
 void U2SequenceObject::setGObjectName(const QString &newName) {

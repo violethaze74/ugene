@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,8 +30,8 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignment.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -62,7 +62,7 @@ U2SequenceObject * DocumentFormatUtils::addSequenceObject(const U2DbiRef& dbiRef
     U2SequenceImporter importer;
 
     const QString folder = hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    importer.startSequence(dbiRef, folder, name, circular, os);
+    importer.startSequence(os, dbiRef, folder, name, circular);
     CHECK_OP(os, NULL);
 
     importer.addBlock(seq.constData(), seq.length(), os);
@@ -164,14 +164,14 @@ QList<DNASequence> DocumentFormatUtils::toSequences(const GObject* obj) {
         CHECK_OP_EXT(os, res.removeLast(), res);
         return res;
     }
-    const MAlignmentObject* maObj = qobject_cast<const MAlignmentObject*>(obj);
-    CHECK(maObj != NULL, res); //MAlignmentObject is NULL
+    const MultipleSequenceAlignmentObject* maObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
+    CHECK(maObj != NULL, res); //MultipleSequenceAlignmentObject is NULL
     const DNAAlphabet* al = maObj->getAlphabet();
-    qint64 alLen = maObj->getMAlignment().getLength();
-    foreach (const MAlignmentRow& row, maObj->getMAlignment().getRows()) {
+    qint64 alLen = maObj->getMsa()->getLength();
+    foreach (const MultipleSequenceAlignmentRow& row, maObj->getMsa()->getMsaRows()) {
         DNASequence seq;
-        seq.seq = row.toByteArray(alLen, os);
-        seq.setName(row.getName());
+        seq.seq = row->toByteArray(os, alLen);
+        seq.setName(row->getName());
         seq.alphabet = al;
         res << seq;
     }
@@ -237,7 +237,7 @@ U2SequenceObject* DocumentFormatUtils::addSequenceObjectDeprecated(const U2DbiRe
     }
 
     U2SequenceImporter importer;
-    importer.startSequence(dbiRef, folder, sequence.getName(), sequence.circular, os);
+    importer.startSequence(os, dbiRef, folder, sequence.getName(), sequence.circular);
     CHECK_OP(os, NULL);
     importer.addBlock(sequence.seq.constData(), sequence.seq.length(), os);
     CHECK_OP(os, NULL);

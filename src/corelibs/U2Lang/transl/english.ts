@@ -55,20 +55,20 @@
         <location filename="../src/library/script/ScriptLibrary.cpp" line="499"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="551"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="587"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="615"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="652"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="678"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="694"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="710"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="726"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="782"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="812"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="851"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="877"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="904"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="931"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="958"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="985"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="614"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="648"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="674"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="690"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="706"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="722"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="778"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="808"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="847"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="873"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="900"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="927"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="954"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="981"/>
         <source>Incorrect number of arguments</source>
         <translation>Incorrect number of arguments</translation>
     </message>
@@ -86,9 +86,9 @@
         <location filename="../src/library/script/ScriptLibrary.cpp" line="486"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="568"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="593"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="602"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="621"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="731"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="601"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="620"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="727"/>
         <source>Empty or invalid sequence</source>
         <translation>Empty or invalid sequence</translation>
     </message>
@@ -113,8 +113,8 @@
         <location filename="../src/library/script/ScriptLibrary.cpp" line="321"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="438"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="511"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="664"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="862"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="660"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="858"/>
         <source>Second argument must be a number</source>
         <translation>Second argument must be a number</translation>
     </message>
@@ -141,16 +141,16 @@
     <message>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="504"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="558"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="657"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="683"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="699"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="715"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="653"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="679"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="695"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="711"/>
         <source>Invalid alignment</source>
         <translation>Invalid alignment</translation>
     </message>
     <message>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="514"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="668"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="664"/>
         <source>Row is out of range</source>
         <translation>Row is out of range</translation>
     </message>
@@ -170,52 +170,52 @@
         <translation>Length is out of range</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="605"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="604"/>
         <source>Alphabets of each sequence must be the same</source>
         <translation>Alphabets of each sequence must be the same</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="631"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="628"/>
         <source>Alphabets don&apos;t match</source>
         <translation>Alphabets don&apos;t match</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="886"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="882"/>
         <source>Empty annotation name</source>
         <translation>Empty annotation name</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="909"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="936"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="963"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="905"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="932"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="959"/>
         <source>Invalid file path</source>
         <translation>Invalid file path</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="914"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="941"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="910"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="937"/>
         <source>No data to write</source>
         <translation>No data to write</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="919"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="946"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="968"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="915"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="942"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="964"/>
         <source>Cannot open the file by given path</source>
         <translation>Cannot open the file by given path</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="990"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="986"/>
         <source>Empty file path</source>
         <translation>Empty file path</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="995"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="991"/>
         <source>Can&apos;t detect the sequence file format: </source>
         <translation>Can&apos;t detect the sequence file format: </translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="1011"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="1007"/>
         <source>There are no sequences in the file: </source>
         <translation>There are no sequences in the file: </translation>
     </message>
@@ -223,43 +223,43 @@
         <location filename="../src/library/script/ScriptLibrary.cpp" line="191"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="444"/>
         <location filename="../src/library/script/ScriptLibrary.cpp" line="525"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="637"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="634"/>
         <source>Third argument must be a number</source>
         <translation>Third argument must be a number</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="736"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="787"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="817"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="856"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="882"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="732"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="783"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="813"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="852"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="878"/>
         <source>Invalid annotations</source>
         <translation>Invalid annotations</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="740"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="736"/>
         <source>Empty name</source>
         <translation>Empty name</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="791"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="821"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="787"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="817"/>
         <source>Empty qualifier name</source>
         <translation>Empty qualifier name</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="795"/>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="825"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="791"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="821"/>
         <source>Empty qualifier value</source>
         <translation>Empty qualifier value</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="831"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="827"/>
         <source>forth argument must be a string</source>
         <translation>forth argument must be a string</translation>
     </message>
     <message>
-        <location filename="../src/library/script/ScriptLibrary.cpp" line="866"/>
+        <location filename="../src/library/script/ScriptLibrary.cpp" line="862"/>
         <source>Index is out of range</source>
         <translation>Index is out of range</translation>
     </message>
@@ -269,17 +269,17 @@
         <translation>Exception during script execution! Line: %1, error: %2</translation>
     </message>
     <message>
-        <location filename="../src/model/GrouperOutSlot.cpp" line="155"/>
+        <location filename="../src/model/GrouperOutSlot.cpp" line="157"/>
         <source>By value</source>
         <translation>By value</translation>
     </message>
     <message>
-        <location filename="../src/model/GrouperOutSlot.cpp" line="159"/>
+        <location filename="../src/model/GrouperOutSlot.cpp" line="161"/>
         <source>By name</source>
         <translation>By name</translation>
     </message>
     <message>
-        <location filename="../src/model/GrouperOutSlot.cpp" line="163"/>
+        <location filename="../src/model/GrouperOutSlot.cpp" line="165"/>
         <source>By id</source>
         <translation>By id</translation>
     </message>
@@ -395,14 +395,14 @@
         <translation>NULL parameters area</translation>
     </message>
     <message>
-        <location filename="../src/model/WorkflowContext.cpp" line="206"/>
-        <source>Can not create directory: </source>
-        <translation>Can not create directory: </translation>
+        <location filename="../src/model/WorkflowContext.cpp" line="205"/>
+        <source>Can not create folder: </source>
+        <translation>Can not create folder: </translation>
     </message>
     <message>
-        <location filename="../src/model/WorkflowContext.cpp" line="229"/>
-        <source>Can not create directory %1 in the directory %2</source>
-        <translation>Can not create directory %1 in the directory %2</translation>
+        <location filename="../src/model/WorkflowContext.cpp" line="228"/>
+        <source>Can not create folder %1 in the folder %2</source>
+        <translation>Can not create folder %1 in the folder %2</translation>
     </message>
     <message>
         <location filename="../src/support/AttributeInfo.cpp" line="43"/>
@@ -415,7 +415,7 @@
         <translation>Actor &apos;%1&apos; does not have this parameter: %2</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="348"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="328"/>
         <source>Additional</source>
         <translation>Additional</translation>
     </message>
@@ -435,27 +435,27 @@
         <translation>The variable is already defined: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="259"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="255"/>
         <source>Empty script text</source>
         <translation>Empty script text</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="267"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="263"/>
         <source>Script syntax check failed! Line: %1, error: %2</source>
         <translation>Script syntax check failed! Line: %1, error: %2</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="291"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="287"/>
         <source>The workflow contains a cycle</source>
         <translation>The workflow contains a cycle</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="385"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="381"/>
         <source>&lt;empty&gt;</source>
         <translation>&lt;empty&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="385"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="381"/>
         <source>Default value</source>
         <translation>Default value</translation>
     </message>
@@ -485,37 +485,37 @@
         <translation>Unknown actor ID: </translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/Constants.cpp" line="32"/>
+        <location filename="../src/support/serialize/Constants.cpp" line="34"/>
         <source>Error: unknown exception caught</source>
         <translation>Error: unknown exception caught</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/Constants.cpp" line="45"/>
+        <location filename="../src/support/serialize/Constants.cpp" line="47"/>
         <source>Undefined construct at &apos;%1 %2&apos;</source>
         <translation>Undefined construct at &apos;%1 %2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/Constants.cpp" line="63"/>
+        <location filename="../src/support/serialize/Constants.cpp" line="65"/>
         <source>Undefined block in .meta: &apos;%1&apos;</source>
         <translation>Undefined block in .meta: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/OldUWL.cpp" line="50"/>
+        <location filename="../src/support/serialize/OldUWL.cpp" line="51"/>
         <source>%1 actor has not markers attribute</source>
         <translation>%1 actor has not markers attribute</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/OldUWL.cpp" line="56"/>
+        <location filename="../src/support/serialize/OldUWL.cpp" line="57"/>
         <source>Redefinition of %1 marker at %2 actor</source>
         <translation>Redefinition of %1 marker at %2 actor</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/OldUWL.cpp" line="84"/>
+        <location filename="../src/support/serialize/OldUWL.cpp" line="85"/>
         <source>Unknown actor name &quot;%1&quot; at a marker definition</source>
         <translation>Unknown actor name &quot;%1&quot; at a marker definition</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/OldUWL.cpp" line="91"/>
+        <location filename="../src/support/serialize/OldUWL.cpp" line="92"/>
         <source>Unknown function type &quot;%1&quot; for the marker %2</source>
         <translation>Unknown function type &quot;%1&quot; for the marker %2</translation>
     </message>
@@ -678,22 +678,22 @@
 <context>
     <name>U2::DescriptorListEditorDelegate</name>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="407"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="387"/>
         <source>&lt;empty&gt;</source>
         <translation>&lt;empty&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="407"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="387"/>
         <source>Default value</source>
         <translation>Default value</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="411"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="391"/>
         <source>&lt;List of values&gt;</source>
         <translation>&lt;List of values&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="411"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="391"/>
         <source>List of values</source>
         <translation>List of values</translation>
     </message>
@@ -701,383 +701,387 @@
 <context>
     <name>U2::HRSchemaSerializer</name>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="85"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="86"/>
         <source>Parameter &apos;%1&apos; undefined for element &apos;%2&apos;</source>
         <translation>Parameter &apos;%1&apos; undefined for element &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="90"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="91"/>
         <source>Cannot parse value from &apos;%1&apos;: no value factory</source>
         <translation>Cannot parse value from &apos;%1&apos;: no value factory</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="95"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="96"/>
         <source>Cannot parse value from &apos;%1&apos;</source>
         <translation>Cannot parse value from &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="157"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="304"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="158"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="305"/>
         <source>Bad header: expected &apos;%1&apos;, got &apos;%2&apos;</source>
         <translation>Bad header: expected &apos;%1&apos;, got &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="382"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="384"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="386"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="398"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="400"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="444"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="383"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="385"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="387"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="399"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="401"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="445"/>
         <source>Database select definition: &apos;%1&apos; expected but not found</source>
         <translation>Database select definition: &apos;%1&apos; expected but not found</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="390"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="391"/>
         <source>Database select definition: invalid DB object URL</source>
         <translation>Database select definition: invalid DB object URL</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="405"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="406"/>
         <source>Database select definition: invalid DB folder URL</source>
         <translation>Database select definition: invalid DB folder URL</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="446"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="447"/>
         <source>Database select definition: expected either object or folder definition but both found</source>
         <translation>Database select definition: expected either object or folder definition but both found</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="457"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="458"/>
         <source>Database select definition: &apos;%1&apos; or &apos;%2&apos; expected but neither found</source>
         <translation>Database select definition: &apos;%1&apos; or &apos;%2&apos; expected but neither found</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="460"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="461"/>
         <source>Database select definition: &apos;%1&apos; is expected, &apos;%2&apos; is found</source>
         <translation>Database select definition: &apos;%1&apos; is expected, &apos;%2&apos; is found</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="493"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="486"/>
+        <source>folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="494"/>
         <source>Element name cannot contain whitespaces: &apos;%1&apos;</source>
         <translation>Element name cannot contain whitespaces: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="496"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="497"/>
         <source>Element name cannot contain dots: &apos;%1&apos;</source>
         <translation>Element name cannot contain dots: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="499"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="500"/>
         <source>Element &apos;%1&apos; already defined</source>
         <translation>Element &apos;%1&apos; already defined</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="505"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="506"/>
         <source>Type attribute not set for %1 element</source>
         <translation>Type attribute not set for %1 element</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="513"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="514"/>
         <source>Unknown type of %1 element: %2</source>
         <translation>Unknown type of %1 element: %2</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="522"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="523"/>
         <source>Name attribute not set for %1 element</source>
         <translation>Name attribute not set for %1 element</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="555"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="566"/>
         <source>Unexpected actor attribute: %1</source>
         <translation>Unexpected actor attribute: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="575"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="589"/>
         <source>No validator type</source>
         <translation>No validator type</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="583"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="597"/>
         <source>Script validator has not a script</source>
         <translation>Script validator has not a script</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="589"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="603"/>
         <source>Too many blocks in validator definition</source>
         <translation>Too many blocks in validator definition</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="604"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="618"/>
         <source>Grouper out slot action: empty type</source>
         <translation>Grouper out slot action: empty type</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="606"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="620"/>
         <source>Grouper out slot action: invalid type: %1</source>
         <translation>Grouper out slot action: invalid type: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="615"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="629"/>
         <source>Grouper out slot action: invalid parameter: %1</source>
         <translation>Grouper out slot action: invalid parameter: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="627"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="641"/>
         <source>Grouper out slot action: bad int &apos;%1&apos; at parameter %2</source>
         <translation>Grouper out slot action: bad int &apos;%1&apos; at parameter %2</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="638"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="652"/>
         <source>Grouper out slot action: bad bool &apos;%1&apos; at parameter %2</source>
         <translation>Grouper out slot action: bad bool &apos;%1&apos; at parameter %2</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="673"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="687"/>
         <source>Grouper out slot: duplicated slot name: %1</source>
         <translation>Grouper out slot: duplicated slot name: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="679"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="693"/>
         <source>Grouper out slot: unknown attribute: %1</source>
         <translation>Grouper out slot: unknown attribute: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="683"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="697"/>
         <source>Grouper out slot: unknown block definition: &apos;%1&apos;. %2 expected</source>
         <translation>Grouper out slot: unknown block definition: &apos;%1&apos;. %2 expected</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="687"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="701"/>
         <source>Grouper out slot: unknown token: &apos;%1&apos;. %2 or %3 expected</source>
         <translation>Grouper out slot: unknown token: &apos;%1&apos;. %2 or %3 expected</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="692"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="706"/>
         <source>Grouper out slot: empty slot name</source>
         <translation>Grouper out slot: empty slot name</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="695"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="709"/>
         <source>Grouper out slot: empty in-slot</source>
         <translation>Grouper out slot: empty in-slot</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1667"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1681"/>
         <source>Error: element name in the workflow file contains spaces</source>
         <translation>Error: element name in the workflow file contains spaces</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2029"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2043"/>
         <source>%1 actor has not marker attribute</source>
         <translation>%1 actor has not marker attribute</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2053"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2067"/>
         <source>Name attribute is not set for the marker</source>
         <translation>Name attribute is not set for the marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2056"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2070"/>
         <source>Type attribute is not set for %1 marker</source>
         <translation>Type attribute is not set for %1 marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2065"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2079"/>
         <source>Qualifier name attribute is not set for %1 marker</source>
         <translation>Qualifier name attribute is not set for %1 marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="799"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="813"/>
         <source>Links list is not empty. Maybe .meta is defined earlier than actor-bindings</source>
         <translation>Links list is not empty. Maybe .meta is defined earlier than actor-bindings</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="845"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="942"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="859"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="956"/>
         <source>%1 element is undefined: at &quot;%2&quot; in aliases block</source>
         <translation>%1 element is undefined: at &quot;%2&quot; in aliases block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="852"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="866"/>
         <source>%1 parameter is undefined: at &quot;%2&quot; in aliases block</source>
         <translation>%1 parameter is undefined: at &quot;%2&quot; in aliases block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="864"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="878"/>
         <source>Duplicate parameter alias &quot;%1&quot;</source>
         <translation>Duplicate parameter alias &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="874"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="888"/>
         <source>Empty parameter alias block: &quot;%1&quot;</source>
         <translation>Empty parameter alias block: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="883"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="897"/>
         <source>Duplicate parameter alias name &quot;%1&quot; at &quot;%2&quot;</source>
         <translation>Duplicate parameter alias name &quot;%1&quot; at &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="901"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="915"/>
         <source>No other blocks allowed in alias block</source>
         <translation>No other blocks allowed in alias block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1081"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1095"/>
         <source>Undefined actor id &apos;%1&apos; at &apos;%2&apos;</source>
         <translation>Undefined actor id &apos;%1&apos; at &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="835"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="849"/>
         <source>Validating actor bindings graph failed: &apos;%1&apos;</source>
         <translation>Validating actor bindings graph failed: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="742"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="756"/>
         <source>%1 definition expected at .iterations block</source>
         <translation>%1 definition expected at .iterations block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="749"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="763"/>
         <source>Cannot parse integer from &apos;%1&apos;: iteration id</source>
         <translation>Cannot parse integer from &apos;%1&apos;: iteration id</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="756"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="770"/>
         <source>Element id &apos;%1&apos; undefined in .iteration block</source>
         <translation>Element id &apos;%1&apos; undefined in .iteration block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="907"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="921"/>
         <source>%1 element undefined in aliases block</source>
         <translation>%1 element undefined in aliases block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="911"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="925"/>
         <source>%1 has no parameter %2: in aliases block</source>
         <translation>%1 has no parameter %2: in aliases block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="920"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="934"/>
         <source>No other blocks allowed in help block</source>
         <translation>No other blocks allowed in help block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="927"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="941"/>
         <source>Undefined parameter alias used in help block: &apos;%1&apos;</source>
         <translation>Undefined parameter alias used in help block: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="949"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="963"/>
         <source>%1 port is undefined: at &quot;%2&quot; in aliases block</source>
         <translation>%1 port is undefined: at &quot;%2&quot; in aliases block</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="962"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="976"/>
         <source>%1 slot is undefined: at &quot;%2&quot; in aliases block&apos;</source>
         <translation>%1 slot is undefined: at &quot;%2&quot; in aliases block&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="973"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="987"/>
         <source>Duplicate port alias &quot;%1&quot;</source>
         <translation>Duplicate port alias &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="984"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="998"/>
         <source>Empty port aliases are not allowed: %1</source>
         <translation>Empty port aliases are not allowed: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="993"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1007"/>
         <source>Duplicate port alias name &quot;%1&quot; at &quot;%2&quot;</source>
         <translation>Duplicate port alias name &quot;%1&quot; at &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1013"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1027"/>
         <source>Duplicate slot alias &quot;%1&quot; at port alias&quot;%2&quot;</source>
         <translation>Duplicate slot alias &quot;%1&quot; at port alias&quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1025"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1048"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1039"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1062"/>
         <source>Undefined element id &apos;%1&apos; at &apos;%2&apos;</source>
         <translation>Undefined element id &apos;%1&apos; at &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1039"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1062"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1053"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1076"/>
         <source>Undefined slot id &apos;%1&apos; at &apos;%2&apos;</source>
         <translation>Undefined slot id &apos;%1&apos; at &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1053"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1067"/>
         <source>Undefined port id &apos;%1&apos; at &apos;%2&apos;</source>
         <translation>Undefined port id &apos;%1&apos; at &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1056"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1070"/>
         <source>Destination port should be input: %1</source>
         <translation>Destination port should be input: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="807"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="820"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="821"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="834"/>
         <source>Undefined element id: &apos;%1&apos;</source>
         <translation>Undefined element id: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="155"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="156"/>
         <source>XML workflow format is obsolete and not supported</source>
         <translation>XML workflow format is obsolete and not supported</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="211"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="212"/>
         <source>The included file &apos;%1&apos; doesn&apos;t exists</source>
         <translation>The included file &apos;%1&apos; doesn&apos;t exists</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="220"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="221"/>
         <source>Can&apos;t open &apos;%1&apos;</source>
         <translation>Can&apos;t open &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="240"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="241"/>
         <source>File &apos;%1&apos; contains mistakes</source>
         <translation>File &apos;%1&apos; contains mistakes</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="252"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="253"/>
         <source>There is recursive including of the file: &apos;%1&apos;</source>
         <translation>There is recursive including of the file: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="276"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="277"/>
         <source>Unknown file format: &apos;%1&apos;</source>
         <translation>Unknown file format: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="309"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="310"/>
         <source>Workflow name not specified</source>
         <translation>Workflow name not specified</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="362"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="363"/>
         <source>Url definition does not contain dataset name</source>
         <translation>Url definition does not contain dataset name</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="485"/>
-        <source>Directory url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</source>
-        <translation>Directory url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</translation>
+        <source>Folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</source>
+        <translation type="vanished">Folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="812"/>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="825"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="826"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="839"/>
         <source>Cannot find &apos;%1&apos; port at &apos;%2&apos;</source>
         <translation>Cannot find &apos;%1&apos; port at &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="789"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="803"/>
         <source>Cannot bind %1:%2 to %3:%4</source>
         <translation>Cannot bind %1:%2 to %3:%4</translation>
     </message>
@@ -1179,30 +1183,30 @@
 <context>
     <name>U2::LocalWorkflow::BaseNGSTask</name>
     <message>
-        <location filename="../src/support/BaseNGSWorker.cpp" line="198"/>
+        <location filename="../src/support/BaseNGSWorker.cpp" line="202"/>
         <source>No input URL</source>
         <translation>No input URL</translation>
     </message>
     <message>
-        <location filename="../src/support/BaseNGSWorker.cpp" line="209"/>
-        <source>Directory does not exist: </source>
-        <translation>Directory does not exist: </translation>
+        <location filename="../src/support/BaseNGSWorker.cpp" line="213"/>
+        <source>Folder does not exist: </source>
+        <translation>Folder does not exist: </translation>
     </message>
 </context>
 <context>
     <name>U2::MapDatatypeEditor</name>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="91"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="76"/>
         <source>Slots</source>
         <translation>Slots</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="91"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="76"/>
         <source>Data source</source>
         <translation>Data source</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="187"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="167"/>
         <source>The input slot &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;is bound to&lt;br&gt;the bus slot &lt;b&gt;%2&lt;/b&gt;</source>
         <translation>The input slot &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;is bound to&lt;br&gt;the bus slot &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
@@ -1358,19 +1362,19 @@
 <context>
     <name>U2::PrompterBaseImpl</name>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1350"/>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1370"/>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1407"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1346"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1366"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1403"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1353"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1349"/>
         <source>the list of files</source>
         <translation>the list of files</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1385"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1381"/>
         <source>file(s) alongside of input sources of &lt;u&gt;%1&lt;/u&gt;</source>
         <translation>file(s) alongside of input sources of &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
@@ -1386,7 +1390,7 @@
 <context>
     <name>U2::RunFileSystem</name>
     <message>
-        <location filename="../src/model/RunFileSystem.cpp" line="152"/>
+        <location filename="../src/model/RunFileSystem.cpp" line="154"/>
         <source>Workflow-run output</source>
         <translation>Workflow-run output</translation>
     </message>
@@ -1553,147 +1557,147 @@
 <context>
     <name>U2::Workflow::BaseAttributes</name>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="44"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="46"/>
         <source>Input file(s)</source>
         <translation>Input file(s)</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="44"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="46"/>
         <source>Semicolon-separated list of paths to the input files.</source>
         <translation>Semicolon-separated list of paths to the input files.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="48"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="50"/>
         <source>Output file</source>
         <translation>Output file</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="48"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="50"/>
         <source>Location of output data file. If this attribute is set, slot &quot;Location&quot; in port will not be used.</source>
         <translation>Location of output data file. If this attribute is set, slot &quot;Location&quot; in port will not be used.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="53"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="55"/>
         <source>Output file suffix</source>
         <translation>Output file suffix</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="53"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="55"/>
         <source>This suffix will be used for generating the output file name.</source>
         <translation>This suffix will be used for generating the output file name.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="57"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="59"/>
         <source>Located on</source>
         <translation>Located on</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="57"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="59"/>
         <source>Machine file(s) are located on</source>
         <translation>Machine file(s) are located on</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="61"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="63"/>
         <source>Data storage</source>
         <translation>Data storage</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="61"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="63"/>
         <source>Place to store workflow results</source>
         <translation>Place to store workflow results</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="82"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="84"/>
         <source>Database</source>
         <translation>Database</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="82"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="84"/>
         <source>The URL or name of a shared UGENE database</source>
         <translation>The URL or name of a shared UGENE database</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="86"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="88"/>
         <source>Output path</source>
         <translation>Output path</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="86"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="88"/>
         <source>Location of output objects in a shared database</source>
         <translation>Location of output objects in a shared database</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="90"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="92"/>
         <source>Document format</source>
         <translation>Document format</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="90"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="92"/>
         <source>Document format of output file.</source>
         <translation>Document format of output file.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="94"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="96"/>
         <source>Accumulate objects</source>
         <translation>Accumulate objects</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="95"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="97"/>
         <source>Accumulate all incoming data in one file or create separate files for each input.In the latter case, an incremental numerical suffix is added to the file name.</source>
         <translation>Accumulate all incoming data in one file or create separate files for each input.In the latter case, an incremental numerical suffix is added to the file name.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="100"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="102"/>
         <source>Split sequence</source>
         <translation>Split sequence</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="100"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="102"/>
         <source>Split each incoming sequence on several parts.</source>
         <translation>Split each incoming sequence on several parts.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="104"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="106"/>
         <source>Read by lines</source>
         <translation>Read by lines</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="104"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="106"/>
         <source>Reads the input file line by line.</source>
         <translation>Reads the input file line by line.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="108"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="110"/>
         <source>Existing file</source>
         <translation>Existing file</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="108"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="110"/>
         <source>If a target file already exists, you can specify how it should be handled: either overwritten, renamed or appended (if supported by file format). If Rename option is chosen existing file will be renamed.</source>
         <translation>If a target file already exists, you can specify how it should be handled: either overwritten, renamed or appended (if supported by file format). If Rename option is chosen existing file will be renamed.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="114"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="116"/>
         <source>Search in</source>
         <translation>Search in</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="114"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="116"/>
         <source>Which strands should be searched: direct, complement or both.</source>
         <translation>Which strands should be searched: direct, complement or both.</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="134"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="136"/>
         <source>both strands</source>
         <translation>both strands</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="135"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="137"/>
         <source>direct strand</source>
         <translation>direct strand</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseAttributes.cpp" line="136"/>
+        <location filename="../src/library/BaseAttributes.cpp" line="138"/>
         <source>complementary strand</source>
         <translation>complementary strand</translation>
     </message>
@@ -1792,19 +1796,19 @@
 <context>
     <name>U2::Workflow::IntegralBusPort</name>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="436"/>
-        <location filename="../src/model/IntegralBusModel.cpp" line="470"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="434"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="468"/>
         <source>No input data supplied</source>
         <translation>No input data supplied</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="484"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="482"/>
         <source>Empty input slot: %1</source>
         <translation>Empty input slot: %1</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="487"/>
-        <location filename="../src/model/IntegralBusModel.cpp" line="501"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="485"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="499"/>
         <source>Bad slot binding: %1 to %2</source>
         <translation>Bad slot binding: %1 to %2</translation>
     </message>
@@ -1830,33 +1834,33 @@
 <context>
     <name>U2::Workflow::SchemaSerializer</name>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="250"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="251"/>
         <source>no metadata</source>
         <translation>no metadata</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="318"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="319"/>
         <source>Invalid content: duplicate process %1</source>
         <translation>Invalid content: duplicate process %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="325"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="326"/>
         <source>Invalid content: unknown process type %1</source>
         <translation>Invalid content: unknown process type %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="356"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="357"/>
         <source>Invalid content: unknown port %1 requested for %2</source>
         <translation>Invalid content: unknown port %1 requested for %2</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="385"/>
-        <location filename="../src/support/SchemaSerializer.cpp" line="392"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="386"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="393"/>
         <source>Invalid content: no such process %1 to bind</source>
         <translation>Invalid content: no such process %1 to bind</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="404"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="405"/>
         <source>Invalid content: cannot bind [%1 : %2] to [%3 : %4]</source>
         <translation>Invalid content: cannot bind [%1 : %2] to [%3 : %4]</translation>
     </message>
@@ -1872,42 +1876,42 @@
 <context>
     <name>U2::WorkflowIterationRunTask</name>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="138"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="143"/>
         <source>Workflow run</source>
         <translation>Workflow run</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="154"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="159"/>
         <source>Unknown domain %1</source>
         <translation>Unknown domain %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="204"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="209"/>
         <source>Failed to preprocess the workflow. Some of included files are broken</source>
         <translation>Failed to preprocess the workflow. Some of included files are broken</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="212"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="217"/>
         <source>Failed to create worker %1 %2 in domain %3</source>
         <translation>Failed to create worker %1 %2 in domain %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="220"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="225"/>
         <source>Failed to create connection %1 %2 in domain %3</source>
         <translation>Failed to create connection %1 %2 in domain %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="233"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="238"/>
         <source>Failed to create a workflow context</source>
         <translation>Failed to create a workflow context</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="295"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="300"/>
         <source>No workers are ready, while not all workers are done. Workflow is broken?</source>
         <translation>No workers are ready, while not all workers are done. Workflow is broken?</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="239"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="244"/>
         <source>Failed to create scheduler in domain %1</source>
         <translation>Failed to create scheduler in domain %1</translation>
     </message>
@@ -1923,7 +1927,7 @@
 <context>
     <name>U2::WorkflowRunTask</name>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="56"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="59"/>
         <source>Execute workflow</source>
         <translation>Execute workflow</translation>
     </message>
@@ -2020,7 +2024,7 @@
 <context>
     <name>U2::WorkflowSettings</name>
     <message>
-        <location filename="../src/support/WorkflowSettings.cpp" line="259"/>
+        <location filename="../src/support/WorkflowSettings.cpp" line="253"/>
         <source>Command line UGENE path not found, a possibility to run in separate process will be disabled</source>
         <translation>Command line UGENE path not found, a possibility to run in separate process will be disabled</translation>
     </message>
@@ -2033,92 +2037,92 @@
         <translation>Required parameter is not set: %1</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="549"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="547"/>
         <source>Either parameter &apos;%1&apos; or input slot &apos;%2&apos; must be set</source>
         <translation>Either parameter &apos;%1&apos; or input slot &apos;%2&apos; must be set</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="353"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="349"/>
         <source> (use --%1 option)</source>
         <translation> (use --%1 option)</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="407"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="403"/>
         <source>&lt;List of values&gt;</source>
         <translation>&lt;List of values&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="407"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="403"/>
         <source>List of values</source>
         <translation>List of values</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="570"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="566"/>
         <source>%1 actors in workflow have &apos;%2&apos; alias</source>
         <translation>%1 actors in workflow have &apos;%2&apos; alias</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="641"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="637"/>
         <source>The %1 element is a %2. Sorry, but current version of UGENE doesn&apos;t support of filters and groupers in the includes.</source>
         <translation>The %1 element is a %2. Sorry, but current version of UGENE doesn&apos;t support of filters and groupers in the includes.</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="649"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="645"/>
         <source>filter</source>
         <translation>filter</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="651"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="647"/>
         <source>grouper</source>
         <translation>grouper</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="659"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="655"/>
         <source>The workflow has not any aliased ports</source>
         <translation>The workflow has not any aliased ports</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="676"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="672"/>
         <source>The aliased port %1.%2 has no aliased slots</source>
         <translation>The aliased port %1.%2 has no aliased slots</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="685"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="681"/>
         <source>The free port %1.%2 is not aliased</source>
         <translation>The free port %1.%2 is not aliased</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="698"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="694"/>
         <source>The required parameter %1.%2 is empty and not aliased</source>
         <translation>The required parameter %1.%2 is empty and not aliased</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="886"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="882"/>
         <source>External tool &quot;%1&quot; is not set. You can set it in Settings -&gt; Preferences -&gt; External Tools</source>
         <translation>External tool &quot;%1&quot; is not set. You can set it in Settings -&gt; Preferences -&gt; External Tools</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="890"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="886"/>
         <source>External tool &quot;%1&quot; is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected</source>
         <translation>External tool &quot;%1&quot; is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1205"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1201"/>
         <source>Can&apos;t access output file path: &apos;%1&apos;</source>
         <translation>Can&apos;t access output file path: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1224"/>
-        <source>Can&apos;t output directory path: &apos;%1&apos;, check permissions</source>
-        <translation>Can&apos;t output directory path: &apos;%1&apos;, check permissions</translation>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1220"/>
+        <source>Can&apos;t output folder path: &apos;%1&apos;, check permissions</source>
+        <translation>Can&apos;t output folder path: &apos;%1&apos;, check permissions</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1243"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1239"/>
         <source>Empty shared database URL specified</source>
         <translation>Empty shared database URL specified</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1315"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1311"/>
         <source>Wrong samples map string</source>
         <translation>Wrong samples map string</translation>
     </message>

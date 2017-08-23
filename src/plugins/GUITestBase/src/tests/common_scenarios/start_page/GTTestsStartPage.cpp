@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -107,9 +107,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006){
 //    Expected state: project is added to "Resent files" list
 //    Close project
     GTUtilsProject::closeProject(os);
-    GTGlobals::sleep(500);
-    GTWebView::traceAllWebElements(os, GTUtilsStartPage::getStartPage(os));
-    GTGlobals::sleep(500);
 //    Go to Start page
     GTUtilsStartPage::openStartPage(os);
 //    Click project name in "Resent projects" list
@@ -119,11 +116,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006){
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
 
     QString expectedTitle;
-#ifdef Q_OS_MAC
     expectedTitle = "proj1 UGENE";
-#else
-    expectedTitle = "proj1 UGENE - [Start Page]";
-#endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
 }
 
@@ -142,6 +135,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008){
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);
 //    Close Start page
     GTUtilsMdi::click(os, GTGlobals::Close);
+    GTGlobals::sleep();
     QWidget* window = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false));
     CHECK_SET_ERR(window == NULL, "start page was not closed");
 //    Repeat step 2

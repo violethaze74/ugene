@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,20 +28,20 @@
 namespace U2 {
 
 MsaColorSchemeCustomFactory::MsaColorSchemeCustomFactory(QObject *parent, const ColorSchemeData &scheme)
-    : MsaColorSchemeFactory(parent, scheme.name, scheme.name, DNAAlphabet_RAW | scheme.alphabetType),
+    : MsaColorSchemeFactory(parent, scheme.name, scheme.name, scheme.type | DNAAlphabet_RAW),
       colorsPerChar(colorMapToColorVector(scheme.alpColors))
 {
 
 }
 
-MsaColorScheme * MsaColorSchemeCustomFactory::create(QObject *parent, MAlignmentObject *maObj) const {
+MsaColorScheme * MsaColorSchemeCustomFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaColorSchemeStatic(parent, this, maObj, colorsPerChar);
 }
 
 bool MsaColorSchemeCustomFactory::isEqualTo(const ColorSchemeData &scheme) const {
     bool result = true;
     result &= getName() == scheme.name;
-    result &= getAlphabetTypes().testFlag(scheme.alphabetType);
+    result &= isAlphabetTypeSupported(scheme.type);
     result &= colorsPerChar == colorMapToColorVector(scheme.alpColors);
     return result;
 }
@@ -49,7 +49,8 @@ bool MsaColorSchemeCustomFactory::isEqualTo(const ColorSchemeData &scheme) const
 void MsaColorSchemeCustomFactory::setScheme(const ColorSchemeData &scheme) {
     CHECK(!isEqualTo(scheme), );
     name = scheme.name;
-    alphabetTypes = scheme.alphabetType;
+    supportedAlphabets &= ~supportedAlphabets;
+    supportedAlphabets |= scheme.type;
     colorsPerChar = colorMapToColorVector(scheme.alpColors);
     emit si_factoryChanged();
 }

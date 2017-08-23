@@ -1,6 +1,6 @@
 ﻿/**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,16 +22,18 @@
 #ifndef _U2_MSA_DISTANCE_ALGORITHM_H_
 #define _U2_MSA_DISTANCE_ALGORITHM_H_
 
+#include <QMutex>
+#include <QVarLengthArray>
+#include <QVector>
+
 #include <U2Core/AppResources.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Task.h>
-#include <U2Core/MAlignment.h>
-#include <QtCore/QVarLengthArray>
-#include <QtCore/QMutex>
 
 namespace U2 {
 
-class MSADistanceAlgorithm;
 class DNAAlphabet;
+class MSADistanceAlgorithm;
 class MSADistanceMatrix;
 
 enum DistanceAlgorithmFlag {
@@ -50,7 +52,7 @@ class U2ALGORITHM_EXPORT MSADistanceAlgorithmFactory : public QObject {
 public:
     MSADistanceAlgorithmFactory(const QString& algoId, DistanceAlgorithmFlags flags, QObject* p = NULL);
 
-    virtual MSADistanceAlgorithm* createAlgorithm(const MAlignment& ma, QObject* parent = NULL) = 0;
+    virtual MSADistanceAlgorithm* createAlgorithm(const MultipleSequenceAlignment& ma, QObject* parent = NULL) = 0;
 
     QString getId() const {return algorithmId;}
 
@@ -78,7 +80,7 @@ class U2ALGORITHM_EXPORT MSADistanceMatrix {
     friend class MSADistanceAlgorithm;
 private:
     MSADistanceMatrix();
-    MSADistanceMatrix(const MAlignment& ma, bool _excludeGaps, bool _usePercents);
+    MSADistanceMatrix(const MultipleSequenceAlignment& ma, bool _excludeGaps, bool _usePercents);
 
 public:
     bool isEmpty(){ return table.isEmpty(); }
@@ -99,7 +101,7 @@ class U2ALGORITHM_EXPORT MSADistanceAlgorithm : public Task {
     Q_OBJECT
 
 public:
-    MSADistanceAlgorithm(MSADistanceAlgorithmFactory* factory, const MAlignment& ma);
+    MSADistanceAlgorithm(MSADistanceAlgorithmFactory* factory, const MultipleSequenceAlignment& ma);
 
     int getSimilarity(int row1, int row2, bool usePercents);
 
@@ -129,7 +131,7 @@ private:
 protected:
     virtual void fillTable();
     virtual int calculateSimilarity(int , int ){return 0;}
-    MAlignment                                  ma;
+    MultipleSequenceAlignment                   ma;
     mutable QMutex                              lock;
     bool                                        excludeGaps;
     bool                                        isSimilarity;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,6 +62,7 @@ void ExternalToolsWidgetController::sl_timerShouts() {
     emit si_update();
 }
 
+const QString ExternalToolsWidget::ID = "external tools";
 const QString ExternalToolsWidget::LINE_BREAK("break_line");
 const QString ExternalToolsWidget::SINGLE_QUOTE("s_quote");
 const QString ExternalToolsWidget::BACK_SLASH("b_slash");
@@ -69,7 +70,7 @@ const QString ExternalToolsWidget::BACK_SLASH("b_slash");
 ExternalToolsWidget::ExternalToolsWidget(const QWebElement &_container,
                                          Dashboard *parent,
                                          const ExternalToolsWidgetController *_ctrl) :
-    DashboardWidget(_container, parent),
+    DashboardWidget(_container, ID, parent),
     ctrl(_ctrl)
 {
     SAFE_POINT(NULL != ctrl, "Controller is NULL", );

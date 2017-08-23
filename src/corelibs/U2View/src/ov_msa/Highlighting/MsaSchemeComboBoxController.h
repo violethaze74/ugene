@@ -22,14 +22,14 @@
 #ifndef _U2_MSA_COMBO_BOX_CONTROLLER_H_
 #define _U2_MSA_COMBO_BOX_CONTROLLER_H_
 
-#include <QComboBox>
-
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GroupedComboBoxDelegate.h>
 
 #include <U2View/MSAEditor.h>
+
+#include <QComboBox>
 
 class QStandardItemModel;
 
@@ -38,15 +38,20 @@ namespace U2 {
 class ComboBoxSignalHandler : public QObject {
     Q_OBJECT
 public:
-    ComboBoxSignalHandler(QWidget *parent = NULL);
-    QComboBox *getComboBox();
-
+    ComboBoxSignalHandler(QWidget *parent = NULL) : QObject(parent) {
+        comboBox = new QComboBox(parent);
+        comboBox->setItemDelegate(new GroupedComboBoxDelegate(comboBox));
+        connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_indexChanged(int)));
+    }
+    QComboBox* getComboBox() {
+        return comboBox;
+    }
 signals:
     void si_dataChanged(const QString &newScheme);
-
 private slots:
-    void sl_indexChanged(int index);
-
+    void sl_indexChanged(int index) {
+        emit si_dataChanged(comboBox->itemData(index).toString());
+    }
 protected:
     QComboBox *comboBox;
 };
@@ -57,7 +62,6 @@ public:
     MsaSchemeComboBoxController(MSAEditor *msa, Registry *registry, QWidget *parent = NULL);
     void init();
     void setCurrentItemById(const QString& id);
-
 private:
     void fillCbWithGrouping();
     void createAndFillGroup(QList<Factory *> rawSchemesFactories, const QString& groupName);
@@ -68,8 +72,7 @@ private:
 
 template <class Factory, class Registry>
 MsaSchemeComboBoxController<Factory, Registry>::MsaSchemeComboBoxController(MSAEditor *msa, Registry *registry, QWidget *parent /*= NULL*/)
-    : ComboBoxSignalHandler(parent), msa(msa), registry(registry)
-{
+    : ComboBoxSignalHandler(parent), msa(msa), registry(registry) {
     init();
 }
 
@@ -77,17 +80,17 @@ template <class Factory, class Registry>
 void MsaSchemeComboBoxController<Factory, Registry>::init() {
     CHECK(registry != NULL, );
 
-    bool isAlphabetRaw = msa->getMSAObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
+    bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
 
     comboBox->blockSignals(true);
     comboBox->clear();
     if (isAlphabetRaw) {
         fillCbWithGrouping();
     } else {
-        CHECK(msa->getMSAObject(), );
-        CHECK(msa->getMSAObject()->getAlphabet(), );
-        DNAAlphabetType alphabetType = msa->getMSAObject()->getAlphabet()->getType();
-        QList<Factory *> schemesFactories = registry->getSchemes(alphabetType);
+        CHECK(msa->getMaObject(), );
+        CHECK(msa->getMaObject()->getAlphabet(), );
+        DNAAlphabetType alphabetType = msa->getMaObject()->getAlphabet()->getType();
+        QList<Factory *> schemesFactories = registry->getAllSchemes(alphabetType);
         Factory* emptySchemeFactory = registry->getEmptySchemeFactory();
         schemesFactories.removeAll(emptySchemeFactory);
         schemesFactories.prepend(emptySchemeFactory);
@@ -105,7 +108,7 @@ void MsaSchemeComboBoxController<Factory, Registry>::setCurrentItemById(const QS
 
 template <class Factory, class Registry>
 void MsaSchemeComboBoxController<Factory, Registry>::fillCbWithGrouping() {
-    QMap<DNAAlphabetTypes, QList<Factory*> > schemesFactories = registry->getSchemesGrouped();
+    QMap<AlphabetFlags, QList<Factory*> > schemesFactories = registry->getAllSchemesGrouped();
     Factory *emptySchemeFactory = registry->getEmptySchemeFactory();
 
     QList<Factory *> commonSchemesFactories = schemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];

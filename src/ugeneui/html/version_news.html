@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
  UGENE - Integrated Bioinformatics Tools.
- Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  http://ugene.unipro.ru
 
  This program is free software; you can redistribute it and/or
@@ -38,6 +38,9 @@
         .features_list li:last-child {
             margin-bottom: 0;
         }
+        .sub_paragraph {
+            margin-left: 50px;
+        }
         .sub_features_list li {
             margin-top: 4px;
             margin-bottom: 4px;
@@ -60,30 +63,38 @@
 </head>
 <body>
 <div>
-    <h3 lang="en">Changes in UGENE 1.26</h3>
+    <h3 lang="en">Changes in UGENE 1.27</h3>
     <ul class="features_list" lang="en">
-                <li><span class="research_field">General:</span>
-                    <ul class="sub_features_list">
-                        <li>Support of high-resolution Retina displays</li>
-                        <li>By default, all documents are opened in tabs instead of windows. To change this parameter go to the Application Settings</li>
-                    </ul>
+                <li><span class="research_field">Sanger Reads Editor</span>
+                    </br><span class="sub_paragraph">A brand new framework for analysis of Sanger sequencing results:</span>
+                    </p>
+                        <ul class="sub_features_list">
+                            <li>Reads mapping to a reference sequence</li>
+                            <li>Browsing of the result alignment with trace chromatograms</li>
+                            <li>Editing of reads</li>
+                            <li>Exporting of the results</li>
+                        </ul>
+                        </p>
+                        <span class="sub_paragraph">See <a href="https://youtu.be/lDovNM1oZEw">this introductory video</a> for the quick start.</span>
                 </li>
-                <li><span class="research_field">NGS:</span> All databases, supported by SnpEff, are now available for prediction of variant effects</li>
                 <li><span class="research_field">Bug fixes and minor improvements</span></li>
     </ul>
-    <p class="textWithIndent" lang="en">A new view for working with Sanger reads - the Chromatogram Alignment Editor - is planned for 1.27 version. Stay tuned!</p>
 
-    <h3 lang="ru">Изменения в UGENE 1.26</h3>
+    <h3 lang="ru">Изменения в UGENE 1.27</h3>
     <ul class="features_list" lang="ru">
-                <li><span class="research_field">Общие:</span>
+                <li><span class="research_field">Редактор данных секвенирования по Сэнгеру</span>
+                </br><span class="sub_paragraph">Добавлен новый модуль для обработки данных секвенирования по Сэнгеру:</span>
+                </p>
                         <ul class="sub_features_list">
-                            <li>Поддержка мониторов с высоким разрешением Retina</li>
-                            <li>По умолчанию все документы открыты в отдельных вкладках, а не в окнах. Изменить способ отображения можно в настройках приложения</li>
+                            <li>Картирование прочтений на референсную последовательность</li>
+                            <li>Визуализация выровненных прочтений с хроматограммами</li>
+                            <li>Редактирование данных</li>
+                            <li>Экспорт результатов</li>
                         </ul>
+                        </p>
+                        <span class="sub_paragraph">См. также <a href="https://youtu.be/lDovNM1oZEw">видео</a>, посвященное новому редактору (на английском языке).</span>
                 </li>
-                <li><span class="research_field">NGS:</span> Поддержка всех доступных баз данных SnpEff для предсказания эффектов вариаций</li>
                 <li><span class="research_field">Исправление ошибок, мелкие улучшения</span></li>
     </ul>
-    <p class="textWithIndent" lang="ru">Выпуск нового редактора выравнивания хроматограмм, предназначенного для визуализации и анализа данных секвенирования по Сэнгеру, запланирован на версию 1.27. Следите за новосяти UGENE!</p>
 </div>
 </body>

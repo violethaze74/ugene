@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
+#include <QFile>
+#include <QTextStream>
 
 #include "MrBayesTask.h"
 
@@ -38,7 +38,7 @@ namespace U2 {
 #define TMPFILENAME "tmp.nex"
 #define TREEFILEEXT ".con.tre"
 
-MrBayesPrepareDataForCalculation::MrBayesPrepareDataForCalculation(const MAlignment& _ma, const CreatePhyTreeSettings& s, const QString& url)
+MrBayesPrepareDataForCalculation::MrBayesPrepareDataForCalculation(const MultipleSequenceAlignment& _ma, const CreatePhyTreeSettings& s, const QString& url)
 :Task(tr("Generating input file for MrBayes"), TaskFlags_NR_FOSCOE), ma(_ma), settings(s), tmpDirUrl(url){
 
     saveDocumentTask = NULL;
@@ -82,7 +82,7 @@ QList<Task*> MrBayesPrepareDataForCalculation::onSubTaskFinished(Task* subTask){
     return res;
 }
 
-MrBayesSupportTask::MrBayesSupportTask(const MAlignment& _ma, const CreatePhyTreeSettings& s)
+MrBayesSupportTask::MrBayesSupportTask(const MultipleSequenceAlignment& _ma, const CreatePhyTreeSettings& s)
 :PhyTreeGeneratorTask(_ma, s)
 {
     GCOUNTER( cvar, tvar, "MrBayesSupportTask" );

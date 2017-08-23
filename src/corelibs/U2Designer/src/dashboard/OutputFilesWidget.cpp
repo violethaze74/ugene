@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,9 +31,11 @@
 namespace U2 {
 
 static const int MAX_FILES_COUNT = 10;
+const QString OutputFilesWidget::ID = "output files";
 
 OutputFilesWidget::OutputFilesWidget(const QWebElement &content, Dashboard *parent)
-: TableWidget(content, parent), collapsed(false)
+    : TableWidget(content, ID, parent),
+      collapsed(false)
 {
     createTable();
 
@@ -51,7 +53,7 @@ void OutputFilesWidget::sl_newOutputFile(const U2::Workflow::Monitor::FileInfo &
     if (collapsed && rows.contains(id(info))) {
         addFileMenu(info);
     } else {
-        addRow(id(info), createRowByFile(info));
+        addRow(id(info), createRowByFile(info), info.actor);
     }
 }
 
@@ -84,7 +86,7 @@ QString OutputFilesWidget::createActionsSubMenu(const Monitor::FileInfo& info, b
         )
         .arg(fullWidth ? "full-width" : "")
         .arg(relative(QFileInfo(info.url).dir().absolutePath() + "/"))
-        .arg(tr("Open containing directory"));
+        .arg(tr("Open containing folder"));
 }
 
 static const int MAX_LEN = 25;

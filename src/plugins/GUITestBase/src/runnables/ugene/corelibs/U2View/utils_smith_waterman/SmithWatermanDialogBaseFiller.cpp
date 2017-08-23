@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,27 +29,15 @@
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QAbstractButton>
-#include <QtGui/QSpinBox>
-#include <QtGui/QRadioButton>
-#include <QtGui/QGroupBox>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QComboBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QAbstractButton>
-#include <QtWidgets/QSpinBox>
-#include <QtWidgets/QRadioButton>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QComboBox>
-#endif
+#include <QApplication>
+#include <QPushButton>
+#include <QAbstractButton>
+#include <QSpinBox>
+#include <QRadioButton>
+#include <QGroupBox>
+#include <QDialogButtonBox>
+#include <QComboBox>
 
-const int RESULT_INTERSECTION_FILTER_INDEX = 0;
 const QString TEST_NAME_FOR_MA_RESULTS = "_test]";
 const QString TEST_NAME_FOR_ANNOT_RESULTS = "test";
 const QString ANNOTATION_RESULT_FILE_NAME = "Annotations.gb";
@@ -168,7 +156,7 @@ void SmithWatermanDialogFiller::commonScenario() {
         GTComboBox::setCurrentIndex(os, comboRealization, swRealizationIndex);
 
         QComboBox * comboResultFilter = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "comboResultFilter", dialog));
-        GTComboBox::setCurrentIndex(os, comboResultFilter, RESULT_INTERSECTION_FILTER_INDEX);
+		GTComboBox::setIndexWithText(os, comboResultFilter, "filter-intersections");
 
         QSpinBox * spinScorePercent = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "spinScorePercent", dialog));
         GTSpinBox::setValue(os, spinScorePercent, RESULT_SCORE_PERCENTAGE, GTGlobals::UseKeyBoard);

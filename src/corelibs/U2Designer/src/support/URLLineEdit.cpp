@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,16 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QFocusEvent>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLayout>
-#else
-#include <QtWidgets/QLayout>
-#endif
+#include <QFocusEvent>
+#include <QLayout>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SuggestCompleter.h>
@@ -187,7 +184,7 @@ void URLLineEdit::browse(bool addFiles) {
     if(isPath || multi){
         QStringList lst;
         if (isPath) {
-            QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a directory"), lastDir);
+            QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder"), lastDir);
             lst << dir;
         } else {
             lst = U2FileDialog::getOpenFileNames(NULL, tr("Select file(s)"), lastDir, FileFilter);

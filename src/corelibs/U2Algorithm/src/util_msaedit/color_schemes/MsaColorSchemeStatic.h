@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MsaColorSchemeStatic : public MsaColorScheme {
     Q_OBJECT
 public:
-    MsaColorSchemeStatic(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj, const QVector<QColor> &colorsPerChar);
+    MsaColorSchemeStatic(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj, const QVector<QColor> &colorsPerChar);
 
     QColor getColor(int seq, int pos, char c) const;
 
@@ -43,9 +43,9 @@ private:
 class MsaColorSchemeStaticFactory : public MsaColorSchemeFactory {
     Q_OBJECT
 public:
-    MsaColorSchemeStaticFactory(QObject *parent, const QString &id, const QString &name, const DNAAlphabetTypes &alphabetTypes, const QVector<QColor> &colorsPerChar);
+    MsaColorSchemeStaticFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets, const QVector<QColor> &colorsPerChar);
 
-    MsaColorScheme * create(QObject* parent, MAlignmentObject * maObj) const;
+    MsaColorScheme * create(QObject* parent, MultipleAlignmentObject * maObj) const;
 
 private:
     QVector<QColor> colorsPerChar;

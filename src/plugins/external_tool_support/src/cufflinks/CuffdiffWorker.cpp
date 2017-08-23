@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -104,8 +104,8 @@ void CuffdiffWorkerFactory::init()
 
     { // Define parameters of the element
         Descriptor outDir(OUT_DIR,
-            CuffdiffWorker::tr("Output directory"),
-            CuffdiffWorker::tr("The base name of output directory. It could be modified with a suffix."));
+            CuffdiffWorker::tr("Output folder"),
+            CuffdiffWorker::tr("The base name of output folder. It could be modified with a suffix."));
 
         Descriptor timeSeriesAnalysis(TIME_SERIES_ANALYSIS,
             CuffdiffWorker::tr("Time series analysis"),
@@ -182,8 +182,8 @@ void CuffdiffWorkerFactory::init()
             CuffdiffWorker::tr("The path to the Cuffdiff external tool in UGENE."));
 
         Descriptor tmpDir(TMP_DIR_PATH,
-            CuffdiffWorker::tr("Temporary directory"),
-            CuffdiffWorker::tr("The directory for temporary files."));
+            CuffdiffWorker::tr("Temporary folder"),
+            CuffdiffWorker::tr("The folder for temporary files."));
 
         attributes << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, "");
         attributes << new Attribute(timeSeriesAnalysis, BaseTypes::BOOL_TYPE(), false, QVariant(false));

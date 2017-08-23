@@ -115,7 +115,9 @@ typedef unsigned long long khint64_t;
 #endif
 
 #ifdef _MSC_VER
-#define inline __inline
+#  if _MSC_VER < 1900
+#    define inline __inline
+#  endif
 #endif
 
 typedef khint32_t khint_t;

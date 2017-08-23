@@ -102,18 +102,18 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="123"/>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="137"/>
+        <location filename="../src/CircularViewImageExportTask.cpp" line="115"/>
+        <location filename="../src/CircularViewImageExportTask.cpp" line="129"/>
         <source>Circular view</source>
         <translation>Circular view</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="175"/>
+        <location filename="../src/CircularViewImageExportTask.cpp" line="167"/>
         <source>Include position marker</source>
         <translation>Include position marker</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="176"/>
+        <location filename="../src/CircularViewImageExportTask.cpp" line="168"/>
         <source>Include selection</source>
         <translation>Include selection</translation>
     </message>
@@ -180,22 +180,22 @@
 <context>
     <name>U2::CircularViewImageExportController</name>
     <message>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="132"/>
+        <location filename="../src/CircularViewImageExportTask.cpp" line="124"/>
         <source>List of Circular Views is empty!</source>
         <translation>List of Circular Views is empty!</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="155"/>
+        <location filename="../src/CircularViewImageExportTask.cpp" line="147"/>
         <source>Sequence</source>
         <translation>Sequence</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="158"/>
+        <location filename="../src/CircularViewImageExportTask.cpp" line="150"/>
         <source>Sequence context is NULL!</source>
         <translation>Sequence context is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="159"/>
+        <location filename="../src/CircularViewImageExportTask.cpp" line="151"/>
         <source>Sequece Gobject is NULL</source>
         <translation>Sequece Gobject is NULL</translation>
     </message>

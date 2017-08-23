@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,18 +25,11 @@
 #include "DNAStatsWindow.h"
 #include "DNAStatProfileTask.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QDoubleSpinBox>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QDoubleSpinBox>
-#endif
-#include <QtGui/QContextMenuEvent>
+#include <QLabel>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QDoubleSpinBox>
+#include <QContextMenuEvent>
 
 namespace U2 {
 

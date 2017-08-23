@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDebug>
 #include <QScopedPointer>
 
 #include <U2Algorithm/FindAlgorithmTask.h>
@@ -106,7 +107,7 @@ private:
         Workflow::Port* p = a->getPort(BasePorts::IN_SEQ_PORT_ID());
         SAFE_POINT(NULL != p, "NULL port", false);
         QVariant busMap = p->getParameter(Workflow::IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributePureValue();
-        QString slotValue = busMap.value<QStrStrMap>().value(BaseSlots::TEXT_SLOT().getId());
+        QString slotValue = busMap.value<StrStrMap>().value(BaseSlots::TEXT_SLOT().getId());
         return !slotValue.isEmpty();
     }
 };

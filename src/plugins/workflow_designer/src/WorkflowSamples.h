@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,21 +26,11 @@
 #include <U2Gui/GlassView.h>
 #include <U2Core/Task.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QToolBox>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QTreeWidget>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QToolBox>
-#include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QTreeWidget>
-#endif
-
-#include <QtXml/qdom.h>
+#include <QAction>
+#include <QHBoxLayout>
+#include <QToolBox>
+#include <QButtonGroup>
+#include <QTreeWidget>
 
 namespace U2 {
 class WorkflowView;

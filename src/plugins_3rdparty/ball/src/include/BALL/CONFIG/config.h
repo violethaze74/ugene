@@ -4,7 +4,7 @@
 #ifndef BALL_CONFIG_CONFIG_H
 #define BALL_CONFIG_CONFIG_H
 
-#include <QtCore/QtGlobal>
+#include <QtGlobal>
 
 #ifdef _WINDOWS
 typedef signed char             int8_t;
@@ -31,7 +31,7 @@ typedef unsigned long long int  uint64_t;
 /* #undef BALL_DEBUG */
 /* #undef BALL_NO_INLINE_FUNCTIONS */
 
-// The path to the directory where BALL is installed.
+// The path to the folder where BALL is installed.
 //#define BALL_PATH "/usr/local"
 //#define BALL_DATA_PATH "/usr/local/share/BALL/data"
 

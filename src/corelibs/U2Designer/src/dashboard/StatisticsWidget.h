@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,6 +36,8 @@ public:
     virtual QList<int> widths();
     virtual QStringList header();
     virtual QList<QStringList> data();
+
+    static const QString ID;
 
 private slots:
     void sl_workerInfoChanged(const QString &actor, const U2::Workflow::Monitor::WorkerInfo &info);

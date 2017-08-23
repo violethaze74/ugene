@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -28,8 +28,8 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MAlignmentObject.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -57,7 +57,7 @@ const QString DNASequenceGenerator::ID("dna_generator");
 
 QString DNASequenceGenerator::prepareReferenceFileFilter() {
     QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true) +
-        ";;" + DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, false);
+        ";;" + DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
     return filter;
 }
 
@@ -120,11 +120,11 @@ void DNASequenceGenerator::evaluateBaseContent(const DNASequence& sequence, QMap
     evaluate(sequence.seq, result);
 }
 
-void DNASequenceGenerator::evaluateBaseContent(const MAlignment& ma, QMap<char, qreal>& result) {
+void DNASequenceGenerator::evaluateBaseContent(const MultipleSequenceAlignment& ma, QMap<char, qreal>& result) {
     QList< QMap<char, qreal> > rowsContents;
-    foreach(const MAlignmentRow& row, ma.getRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
         QMap<char, qreal> rowContent;
-        evaluate(row.getData(), rowContent);
+        evaluate(row->getData(), rowContent);
         rowsContents.append(rowContent);
     }
 
@@ -144,7 +144,7 @@ void DNASequenceGenerator::evaluateBaseContent(const MAlignment& ma, QMap<char, 
         }
     }
 
-    int rowsNum = ma.getNumRows();
+    int rowsNum = ma->getNumRows();
     QMutableMapIterator<char, qreal> i(result);
     while (i.hasNext()) {
         i.next();
@@ -158,7 +158,7 @@ void DNASequenceGenerator::evaluateBaseContent(const MAlignment& ma, QMap<char, 
 EvaluateBaseContentTask* DNASequenceGeneratorTask::createEvaluationTask(Document* doc, QString& err) {
     assert(doc->isLoaded());
     QList<GObject*> gobjects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
-    gobjects << doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    gobjects << doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (!gobjects.isEmpty()) {
         return new EvaluateBaseContentTask(gobjects.first());
     }
@@ -262,7 +262,7 @@ QList<Task*> DNASequenceGeneratorTask::onGenerateTaskFinished( ) {
         if (  isSequenceFormat) {
             addSequencesToSeqDoc( doc );
         } else { // consider alignment format
-            SAFE_POINT( supportedFormats.contains( GObjectTypes::MULTIPLE_ALIGNMENT ),
+            SAFE_POINT( supportedFormats.contains( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT ),
                 "Unexpected format encountered", resultTasks );
             addSequencesToMsaDoc( doc );
         }
@@ -294,7 +294,7 @@ QList<Task*> DNASequenceGeneratorTask::onGenerateTaskFinished( ) {
 void DNASequenceGeneratorTask::addSequencesToMsaDoc( Document *source )
 {
     const QSet<QString> &supportedFormats = source->getDocumentFormat( )->getSupportedObjectTypes( );
-    SAFE_POINT( supportedFormats.contains( GObjectTypes::MULTIPLE_ALIGNMENT ),
+    SAFE_POINT( supportedFormats.contains( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT ),
         "Invalid document format", );
     SAFE_POINT( NULL != generateTask, "Invalid generate task", );
     const U2DbiRef dbiRef = generateTask->getDbiRef( );
@@ -303,7 +303,7 @@ void DNASequenceGeneratorTask::addSequencesToMsaDoc( Document *source )
     const QString baseSeqName = cfg.getSequenceName( );
     const QList<U2Sequence> seqs = generateTask->getResults( );
 
-    MAlignment msa( tr( "Generated MSA" ), alp );
+    MultipleSequenceAlignment msa(tr( "Generated MSA" ), alp);
     DbiConnection con( dbiRef, stateInfo );
 
     for ( int sequenceNum = 0, totalSeqCount = seqs.size( ); sequenceNum < totalSeqCount;
@@ -314,10 +314,9 @@ void DNASequenceGeneratorTask::addSequencesToMsaDoc( Document *source )
         // TODO: large sequences will cause out of memory error here
         const QByteArray seqContent = con.dbi->getSequenceDbi( )->getSequenceData(
             seqs[sequenceNum].id, U2_REGION_MAX, stateInfo );
-        msa.addRow( seqName, seqContent, sequenceNum, stateInfo );
-        CHECK_OP( stateInfo, );
+        msa->addRow( seqName, seqContent, sequenceNum);
     }
-    MAlignmentObject *alnObject = MAlignmentImporter::createAlignment( source->getDbiRef( ), msa, stateInfo );
+    MultipleSequenceAlignmentObject *alnObject = MultipleSequenceAlignmentImporter::createAlignment( source->getDbiRef( ), msa, stateInfo );
     CHECK_OP( stateInfo, );
     source->addObject( alnObject );
 }
@@ -384,10 +383,10 @@ void EvaluateBaseContentTask::run() {
         U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(_obj);
         alp = dnaObj->getAlphabet();
         DNASequenceGenerator::evaluateBaseContent(dnaObj->getWholeSequence(stateInfo), result);
-    } else if (_obj->getGObjectType() == GObjectTypes::MULTIPLE_ALIGNMENT) {
-        MAlignmentObject* maObj = qobject_cast<MAlignmentObject*>(_obj);
+    } else if (_obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
+        MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(_obj);
         alp = maObj->getAlphabet();
-        DNASequenceGenerator::evaluateBaseContent(maObj->getMAlignment(), result);
+        DNASequenceGenerator::evaluateBaseContent(maObj->getMultipleAlignment(), result);
     } else {
         stateInfo.setError(tr("Base content can be evaluated for sequence or sequence alignment"));
     }
@@ -428,7 +427,7 @@ void GenerateDNASequenceTask::run( ) {
             window = length;
         }
 
-        seqImporter.startSequence( dbiRef, U2ObjectDbi::ROOT_FOLDER, QString( "default" ), false, stateInfo );
+        seqImporter.startSequence(stateInfo, dbiRef, U2ObjectDbi::ROOT_FOLDER, QString( "default" ), false);
         CHECK_OP_BREAK( stateInfo );
 
         for( int chunkCount = 0; chunkCount < length / window && !isCanceled( );

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,11 +58,15 @@ public:
     static void click(HI::GUITestOpStatus &os, const QString& itemName, Qt::MouseButton button = Qt::LeftButton);
     static void click(HI::GUITestOpStatus &os, const QString& itemName, const QString &parentName, Qt::MouseButton button = Qt::LeftButton);
 
+    static void callContextMenu(HI::GUITestOpStatus &os, const QString &itemName);
+    static void callContextMenu(HI::GUITestOpStatus &os, const QString &itemName, const QString &parentName);
+
     static QTreeView* getTreeView(HI::GUITestOpStatus &os);
     static QModelIndex findIndex(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
     static QModelIndex findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
     static QModelIndex findIndex(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex& parent, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
     static QModelIndex findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex& parent, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
+    static QModelIndex findIndex(HI::GUITestOpStatus &os, const QStringList &itemPath, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
     static QModelIndexList findIndecies(HI::GUITestOpStatus &os,
                                         const QString &itemName,
                                         const QModelIndex &parent = QModelIndex(),
@@ -80,6 +84,7 @@ public:
     static QModelIndexList findFilteredIndexes(HI::GUITestOpStatus &os, const QString &substring, const QModelIndex &parentIndex = QModelIndex());
     static void checkFilteredGroup(HI::GUITestOpStatus &os, const QString &groupName, const QStringList &namesToCheck, const QStringList &alternativeNamesToCheck,
         const QStringList &excludedNames);
+    static void ensureFilteringIsDisabled(HI::GUITestOpStatus &os);
 
     // returns true if the item exists, does not set error unlike findIndex method
     static bool checkItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
@@ -105,21 +110,23 @@ public:
 
     static void dragAndDrop(HI::GUITestOpStatus &os, const QModelIndex &from, const QModelIndex &to);
     static void dragAndDrop(HI::GUITestOpStatus &os, const QModelIndex &from, QWidget* to);
+    static void dragAndDrop(HI::GUITestOpStatus &os, const QStringList &from, QWidget* to);
     static void dragAndDropSeveralElements(HI::GUITestOpStatus &os, QModelIndexList from, QModelIndex to);
 
     static void expandProjectView(HI::GUITestOpStatus &os);
 
     static void markSequenceAsCircular(HI::GUITestOpStatus &os, const QString &sequenceObjectName);
 
+    // Get all documents names with their object names (database connections are processed incorrectly)
+    static QMap<QString, QStringList> getDocuments(HI::GUITestOpStatus &os);
+
     static const QString widgetName;
 
 private:
     static void sendDragAndDrop(HI::GUITestOpStatus &os, const QPoint &enterPos, const QPoint &dropPos);
     static void sendDragAndDrop(HI::GUITestOpStatus &os, const QPoint &enterPos, QWidget* dropWidget);
-
-
 };
 
-} // namespace
+}   // namespace U2
 
 #endif

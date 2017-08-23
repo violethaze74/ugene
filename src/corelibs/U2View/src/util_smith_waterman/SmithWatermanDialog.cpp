@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,7 +60,7 @@ extern const qint32 STRING_HAS_NO_KEY_MESSAGE;
 const quint8 COUNT_OF_TEMPLATE_BUTTONS_IN_ROW = 2;
 const char * RUN_BUTTON_ANNOT_RESULT_LABEL = "Search";
 const char * RUN_BUTTON_MA_RESULT_LABEL = "Align";
-const char * RESULT_DIR_NOT_FOUND_MESSAGE = "Directory you have chosen for alignment files does not exist";
+const char * RESULT_DIR_NOT_FOUND_MESSAGE = "Folder you have chosen for alignment files does not exist";
 const QString DEFAULT_PATTERN_SEQUENCE_NAME = "P";
 const QChar DEFAULT_SHORTHANDS_SEPARATOR = '_';
 
@@ -73,7 +73,7 @@ SmithWatermanDialog::SmithWatermanDialog(QWidget* w, ADVSequenceObjectContext* c
     dialogConfig = _dialogConfig;
 
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759685");
+    new HelpButton(this, buttonBox, "19766941");
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Remote run"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

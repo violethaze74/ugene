@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,10 +25,10 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MAlignment.h>
-#include <U2Core/MAlignmentExporter.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/ProjectModel.h>
@@ -208,17 +208,17 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
         QByteArray curResultPtrnSubseq = ptrnSequenceData.mid(pairAlignSeqs.ptrnSubseq.startPos, pairAlignSeqs.ptrnSubseq.length);
         alignSequences(curResultRefSubseq, curResultPtrnSubseq, pairAlignSeqs.pairAlignment);
 
-        MAlignment msa(newFileName, alphabet);
+        MultipleSequenceAlignment msa(newFileName, alphabet);
 
         expansionInfo.curProcessingSubseq = &pairAlignSeqs.refSubseq;
-        msa.addRow(tagsRegistry->parseStringWithTags(refSubseqTemplate, expansionInfo), curResultRefSubseq, stateInfo);
+        msa->addRow(tagsRegistry->parseStringWithTags(refSubseqTemplate, expansionInfo), curResultRefSubseq);
         CHECK_OP(stateInfo, tr("Failed to add a reference subsequence row."));
 
         expansionInfo.curProcessingSubseq = &pairAlignSeqs.ptrnSubseq;
-        msa.addRow(tagsRegistry->parseStringWithTags(ptrnSubseqTemplate, expansionInfo), curResultPtrnSubseq, stateInfo);
+        msa->addRow(tagsRegistry->parseStringWithTags(ptrnSubseqTemplate, expansionInfo), curResultPtrnSubseq);
         CHECK_OP(stateInfo, tr("Failed to add a pattern subsequence row."));
 
-        MAlignmentObject *docObject = MAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), msa, stateInfo);
+        MultipleSequenceAlignmentObject *docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), msa, stateInfo);
         CHECK_OP(stateInfo, tr("Failed to create an alignment."));
         alignmentDoc->addObject(docObject);
         currentProject->addDocument(alignmentDoc);
@@ -298,13 +298,11 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     SAFE_POINT(refSequenceData.length() > 0 && ptrnSequenceData.length() > 0, "Invalid sequence length detected!", QString::null);
     alignSequences(refSequenceData, ptrnSequenceData, pairAlignSeqs.pairAlignment);
 
-    MAlignment msa(refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet);
-    msa.addRow(refSequence->visualName, refSequenceData, stateInfo);
-    CHECK_OP(stateInfo, tr("Failed to add row to result msa."));
-    msa.addRow(ptrnSequence->visualName, ptrnSequenceData, stateInfo);
-    CHECK_OP(stateInfo, tr("Failed to add row to result msa."));
+    MultipleSequenceAlignment msa(refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet);
+    msa->addRow(refSequence->visualName, refSequenceData);
+    msa->addRow(ptrnSequence->visualName, ptrnSequenceData);
 
-    MAlignmentObject *docObject = MAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), msa, stateInfo);
+    MultipleSequenceAlignmentObject *docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), msa, stateInfo);
     CHECK_OP(stateInfo, tr("Failed to create an alignment."));
     alignmentDoc->addObject(docObject);
 
@@ -386,8 +384,8 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InCurrentWindow
     QByteArray notUsedOutputParam;
     refRow->gaps.clear();
     ptrnRow->gaps.clear();
-    MsaDbiUtils::splitBytesToCharsAndGaps(refSequenceData, notUsedOutputParam, refRow->gaps);
-    MsaDbiUtils::splitBytesToCharsAndGaps(ptrnSequenceData, notUsedOutputParam, ptrnRow->gaps);
+    MaDbiUtils::splitBytesToCharsAndGaps(refSequenceData, notUsedOutputParam, refRow->gaps);
+    MaDbiUtils::splitBytesToCharsAndGaps(ptrnSequenceData, notUsedOutputParam, ptrnRow->gaps);
 
     U2UseCommonUserModStep userModStep(sourceMsaRef, os);
     Q_UNUSED(userModStep);
@@ -412,11 +410,11 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QByteArray &refSequence, 
                 continue;
                 break;
             case SmithWatermanResult::UP:
-                ptrnSequence.insert(ptrnSeqCurrentPosition, MAlignment_GapChar);
+                ptrnSequence.insert(ptrnSeqCurrentPosition, U2Msa::GAP_CHAR);
                 --refSeqCurrentPosition;
                 break;
             case SmithWatermanResult::LEFT:
-                refSequence.insert(refSeqCurrentPosition, MAlignment_GapChar);
+                refSequence.insert(refSeqCurrentPosition, U2Msa::GAP_CHAR);
                 --ptrnSeqCurrentPosition;
                 break;
             default:

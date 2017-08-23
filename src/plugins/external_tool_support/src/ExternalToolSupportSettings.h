@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,13 @@
 #ifndef _U2_EXTERNAL_TOOL_SUPPORT_SETTINGS_H_
 #define _U2_EXTERNAL_TOOL_SUPPORT_SETTINGS_H_
 
-#include <QtCore/QString>
-#include <QtCore/QObject>
-#include <QtGui/QFont>
+#include <QString>
+#include <QObject>
+#include <QFont>
 
 #include <U2Core/global.h>
-#include <QtCore/QDirIterator>
-#include <QtCore/QQueue>
+#include <QDirIterator>
+#include <QQueue>
 
 namespace U2 {
 
@@ -58,7 +58,7 @@ private:
     static int prevNumberExternalTools;
 };
 
-/**Helper class that iterates through subdirectories up to given deep level*/
+/**Helper class that iterates through subfolders up to given deep level*/
 class LimitedDirIterator{
 public:
     //deepLevel = 0 - returns only the root dir

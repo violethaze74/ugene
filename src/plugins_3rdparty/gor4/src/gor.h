@@ -2,7 +2,7 @@
 #define _GOR_H_
 
 #include "nrutil.h"
-#include <QtCore/QFile>
+#include <QFile>
 
 #include <U2Core/U2OpStatus.h>
 

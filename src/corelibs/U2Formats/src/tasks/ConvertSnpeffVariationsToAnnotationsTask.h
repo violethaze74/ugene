@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,8 @@
 
 #ifndef _U2_CONVERT_SNPEFF_VARIATIONS_TO_ANNOTATIONS_TASK_H_
 #define _U2_CONVERT_SNPEFF_VARIATIONS_TO_ANNOTATIONS_TASK_H_
+
+#include <QMap>
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/Task.h>
@@ -48,6 +50,7 @@ private:
     QMap<QString, QList<SharedAnnotationData> > annotationTablesData;
 
     static const QString CHROM_QUALIFIER_NAME;
+    static const QString LOCATION_QUALIFIER_NAME;
     static const QString REFERENCE_QUALIFIER_NAME;
     static const QString ALTERNATE_QUALIFIER_NAME;
     static const QString ALLELE_QUALIFIER_NAME;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ EditPrimerDialog::EditPrimerDialog(QWidget *parent, const Primer &editToPrimer)
 void EditPrimerDialog::init() {
     GCOUNTER(cvar, tvar, "Add primer in library");
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759741");
+    new HelpButton(this, buttonBox, "19766997");
 
     primerEdit->setValidator(new PrimerValidator(this));
 

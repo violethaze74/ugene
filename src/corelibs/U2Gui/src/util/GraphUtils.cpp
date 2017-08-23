@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,15 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#include "GraphUtils.h"
+#include <math.h>
+
+#include <QPainter>
+#include <QVector>
 
 #include <U2Core/FormatUtils.h>
+#include <U2Core/U2SafePoints.h>
 
-#include <math.h>
-#include <QtCore/QVector>
-#include <QtGui/QColor>
+#include "GraphUtils.h"
 
 namespace U2 {
+
+GraphUtils::ArrowConfig::ArrowConfig()
+    : lineWidth(0),
+      lineLength(0),
+      arrowHeadWidth(0),
+      arrowHeadLength(0),
+      direction(LeftToRight)
+{
+
+}
 
 static void drawNum(QPainter& p, int x1, int x2, const QString& num, int lBorder, int rBorder, int y1, int y2) {
     if (x1 < lBorder|| x2 > rBorder) {
@@ -45,7 +57,6 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
     }
     p.save();
 
-    assert(c.drawArrow != c.drawBorderNotches);
     assert(c.drawArrow ? c.drawAxis : true);
 
     p.setFont(font);
@@ -65,7 +76,7 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
         chunk /= 2;
     }
     float scale =  len / (float)span;
-    if (c.direction == BTT) {
+    if (c.direction == BottomToTop) {
         if(c.drawAxis) {
             p.drawLine(pos.x(), pos.y() - c.extraAxisLenBefore, pos.x(), pos.y() + len + c.extraAxisLenAfter);
         }
@@ -87,11 +98,12 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
                 p.drawText(pos.x() + c.textOffset, pos.y() + ch, en);
             }
         }
-    } else if (c.direction == TTB) {
+    } else if (c.direction == TopToBottom) {
         int notchDX1 =  c.notchSize;
         int notchDX2 =  c.notchSize;
         QFontMetrics fm(font);
         int fontHeight = fm.height();
+        qint64 fontCenteringOffset = fontHeight / 2 - 2; // -2 is for baseline offset
         if(c.drawAxis) {
             p.drawLine(pos.x(), pos.y() - c.extraAxisLenBefore , pos.x(), pos.y() + len + c.extraAxisLenAfter);
         }
@@ -117,26 +129,29 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
                 }
                 if (c.drawNumbers) {
                     QString snum = FormatUtils::formatNumber(currnotch);
-                    if( y > fontHeight){
+                    qint64 textY = pos.y() + len - (y - fontCenteringOffset);
+                    if (y > fontHeight && textY > pos.y() + fontHeight) {
                         if (c.textPosition == LEFT) {
-                            p.drawText(pos.x() - c.textOffset - snum.length() * cw, pos.y() + len - y, snum);
-                        }else{
+                            qint64 textX = pos.x() - c.textOffset - snum.length() * cw;
+                            p.drawText(textX, textY, snum);
+                        } else {
                             assert(c.textPosition == RIGHT);
-                            p.drawText(pos.x() + c.textOffset - snum.length() * cw, pos.y() + len - y, snum);
+                            qint64 textX = pos.x() + c.textOffset;
+                            p.drawText(textX, textY, snum);
                         }
                     }
                 }
             }
         }
         if (c.drawNumbers) {
-            QString endStr = QString::number(end);
-            int roundedEnd = end, endLen = endStr.length();
-            if (endLen >= 4){
-                endStr = endStr.left(endLen - 3);
-                roundedEnd = endStr.toInt() * pow((double)10 , (double)(3));
-                //roundedEnd = endStr.toInt() * pow((double)10 , (double)(endLen - 3));
+            QString startStr = QString::number(start);
+            if (c.textPosition == LEFT) {
+                p.drawText(pos.x() - c.textOffset - startStr.length() * cw, pos.y() + fontCenteringOffset, startStr);
+            } else {
+                assert(c.textPosition == RIGHT);
+                p.drawText(pos.x() + c.textOffset - startStr.length() * cw, pos.y() + fontCenteringOffset, startStr);
             }
-            endStr = FormatUtils::formatNumber(roundedEnd);
+            QString endStr = QString::number(end);
             if (c.textPosition == LEFT) {
                 p.drawText(pos.x() - c.textOffset - endStr.length() * cw, pos.y() + len, endStr);
             } else {
@@ -174,7 +189,7 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
             drawNum(p, enX1, enX2, en, enX1, enX2, yt1, yt2);
         }
 
-        if (c.direction == LTR) {
+        if (c.direction == LeftToRight) {
             int leftborder = stX2;
             int rightborder= enX1;
             if (c.drawArrow) {
@@ -201,7 +216,7 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
                     }
                 }
             }
-        } else if (c.direction == RTL) {
+        } else if (c.direction == RightToLeft) {
             int leftborder = enX2;
             int rightborder= stX1;
             if (c.drawArrow) {
@@ -466,5 +481,42 @@ qint64 GraphUtils::pickRoundedNumberBelow(qint64 maxVal) {
     return res;
 }
 
-}//namespace
+void GraphUtils::drawArrow(QPainter &painter, const QRectF &rect, const ArrowConfig &config) {
+    SAFE_POINT(LeftToRight == config.direction || RightToLeft == config.direction, "Vertical arrows drawing is not implemented", );
+    painter.save();
 
+    QLineF line;
+    QPolygonF arrowHead(3);
+    switch (config.direction) {
+    case LeftToRight:
+        arrowHead[0] = QPointF(rect.left() + config.lineLength, rect.top() + config.arrowHeadWidth / 2);
+        arrowHead[1] = QPointF(rect.left() + config.lineLength - config.arrowHeadLength, rect.top());
+        arrowHead[2] = QPointF(rect.left() + config.lineLength - config.arrowHeadLength, rect.top() + config.arrowHeadWidth);
+        line.setP1(QPointF(rect.left(), rect.top() + config.arrowHeadWidth / 2));
+        line.setP2(QPointF(rect.left() + config.lineLength - config.arrowHeadLength, rect.top() + config.arrowHeadWidth / 2));
+        break;
+    case RightToLeft:
+        arrowHead[0] = QPointF(rect.left(), rect.top() + config.arrowHeadWidth / 2);
+        arrowHead[1] = QPointF(rect.left() + config.arrowHeadLength, rect.top());
+        arrowHead[2] = QPointF(rect.left() + config.arrowHeadLength, rect.top() + config.arrowHeadWidth);
+        line.setP1(QPointF(rect.left() + config.arrowHeadLength, rect.top() + config.arrowHeadWidth / 2));
+        line.setP2(QPointF(rect.left() + config.lineLength, rect.top() + config.arrowHeadWidth / 2));
+        break;
+    default:
+        FAIL("Not implemented", );
+    }
+
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QPen pen(config.color);
+    pen.setWidth(config.lineWidth);
+    painter.setPen(pen);
+    painter.drawLine(line);
+
+    painter.setPen(config.color);
+    painter.setBrush(QBrush(config.color));
+    painter.drawPolygon(arrowHead);
+    painter.restore();
+}
+
+}   // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Designer/GrouperEditor.h>
-
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Designer/GrouperEditor.h>
 
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
@@ -61,13 +62,8 @@ GrouperEditorWidget::GrouperEditorWidget(GrouperSlotsCfgModel *grouperModel, Act
 
     setupUi(this);
     {
-#if (QT_VERSION < 0x050000) //Qt 5
-        slotsTable->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-        slotsTable->horizontalHeader()->setClickable(false);
-#else
         slotsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
         slotsTable->horizontalHeader()->setSectionsClickable(false);
-#endif
         slotsTable->horizontalHeader()->setStretchLastSection(true);
         slotsTable->verticalHeader()->hide();
         slotsTable->verticalHeader()->setDefaultSectionSize(QFontMetrics(QFont()).height() + 6);

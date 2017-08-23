@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,32 +21,34 @@
 
 #include <QApplication>
 #include <QAbstractItemModel>
+#include <QDir>
 #include <QListWidget>
 #include <QTreeView>
 
-#include "GTTestsCreateAnnotationWidget.h"
-#include "GTUtilsAnnotationsTreeView.h"
-#include "utils/GTUtilsDialog.h"
-#include "GTUtilsMdi.h"
-#include "GTUtilsOptionPanelSequenceView.h"
-#include "GTUtilsProjectTreeView.h"
-#include "GTUtilsTaskTreeView.h"
+#include <base_dialogs/GTFileDialog.h>
+#include <base_dialogs/MessageBoxFiller.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
-#include <base_dialogs/GTFileDialog.h>
-#include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
-#include "primitives/GTMenu.h"
-#include <drivers/GTMouseDriver.h>
+#include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
+#include <utils/GTUtilsDialog.h>
+
+#include "GTTestsCreateAnnotationWidget.h"
+#include "GTUtilsAnnotationsTreeView.h"
+#include "GTUtilsMdi.h"
+#include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsProjectTreeView.h"
+#include "GTUtilsTaskTreeView.h"
 #include "runnables/qt/EscapeClicker.h"
-#include <base_dialogs/MessageBoxFiller.h>
-#include "primitives/PopupChooser.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
@@ -587,7 +589,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
 //    4. Click "Predefined group names" button.
 //    Expected state: nothing happens, there is no popup menus.
-            GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new EscapeClicker(os));
+            GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new EscapeClicker(os));
             clickSelectGroupButton(os, dialog);
 
 //    5. Set the annotation name. Accept the dialog.
@@ -633,7 +635,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
 //    4. Click "Predefined group names" button.
 //    Expected state: nothing happens, there is no popup menus.
-            GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new EscapeClicker(os));
+            GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new EscapeClicker(os));
             clickSelectGroupButton(os, dialog);
 
 //    5. Set the annotation name. Accept the dialog.
@@ -672,7 +674,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
 //    4. Click "Predefined group names" button.
 //    Expected state: nothing happens, there is no popup menus.
-    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new EscapeClicker(os));
+    GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new EscapeClicker(os));
     clickSelectGroupButton(os);
 
 //    5. Set the annotation name. Create annotations.
@@ -2045,7 +2047,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
             clickSelectGroupButton(os, dialog);
 
 //    7. Close the popup menu. Set "NC_001363 annotations 2" in existing tables combobox.
-            setExistingTable(os, dialog, "NC_001363 annotations 2 [2annot_1seq.gb]");
+            setExistingTable(os, dialog, "2annot_1seq.gb [NC_001363 annotations 2]");
 
 //    8. Click "Predefined group names" button.
 //    Expected state: a popup menu contains all groups from the "NC_001363 annotations 2" table.
@@ -2158,7 +2160,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
             clickSelectGroupButton(os, dialog);
 
 //    7. Close the popup menu. Set "NC_001363 annotations 2" in existing tables combobox.
-            setExistingTable(os, dialog, "NC_001363 annotations 2 [2annot_1seq.gb]");
+            setExistingTable(os, dialog, "2annot_1seq.gb [NC_001363 annotations 2]");
 
 //    8. Click "Predefined group names" button.
 //    Expected state: a popup menu contains all groups from the "NC_001363 annotations 2" table.
@@ -2183,7 +2185,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     QStringList expectedGroups = QStringList() << "group  (0, 1)"
                                                << "just an annotation  (0, 1)"
                                                << "test_0032  (0, 1)";
-    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "2annot_1seq.gb [NC_001363 annotations 2] *");
+    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 annotations 2 [2annot_1seq.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'")
                   .arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
@@ -2267,7 +2269,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
 //    7. Close the popup menu. Set "NC_001363 annotations 2" in existing tables combobox.
     GTUtilsOptionPanelSequenceView::openSaveAnnotationToShowHideWidget(os);
-    setExistingTable(os, NULL, "NC_001363 annotations 2 [2annot_1seq.gb]");
+    setExistingTable(os, NULL, "2annot_1seq.gb [NC_001363 annotations 2]");
     GTUtilsOptionPanelSequenceView::openSaveAnnotationToShowHideWidget(os, false);
 
 //    8. Click "Predefined group names" button.
@@ -2289,7 +2291,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     expectedGroups = QStringList() << "group  (0, 1)"
                                                << "just an annotation  (0, 1)"
                                                << "test_0033  (0, 1)";
-    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "2annot_1seq.gb [NC_001363 annotations 2] *");
+    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 annotations 2 [2annot_1seq.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'")
                   .arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
@@ -2810,7 +2812,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 //    21. Cancel the dialog.
             // Dialog is applied to check boundaries.
             setSimpleLocation(os, 199950, 1, false, dialog);
-            GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location! Location must be in GenBank format."));
+            GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location! Location must be in GenBank format."));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -3127,31 +3129,31 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
 //        Auto table radio button - invisible
     QRadioButton *rbExistingTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable");
     CHECK_SET_ERR(NULL != rbExistingTable, "rbExistingTable is NULL");
-    CHECK_SET_ERR(!rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly enabled");
+    CHECK_SET_ERR(!rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly enabled for human_T1");
 
     QComboBox *cbExistingTable = GTWidget::findExactWidget<QComboBox *>(os, "cbExistingTable");
     CHECK_SET_ERR(NULL != cbExistingTable, "cbExistingTable is NULL");
-    CHECK_SET_ERR(!cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly enabled");
+    CHECK_SET_ERR(!cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly enabled for human_T1");
 
     QToolButton *tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseExistingTable");
     CHECK_SET_ERR(NULL != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
-    CHECK_SET_ERR(!tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly enabled");
+    CHECK_SET_ERR(!tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly enabled for human_T1");
 
     QRadioButton *rbCreateNewTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbCreateNewTable");
     CHECK_SET_ERR(NULL != rbCreateNewTable, "rbCreateNewTable is NULL");
-    CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
+    CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled for human_T1");
 
     QLineEdit *leNewTablePath = GTWidget::findExactWidget<QLineEdit *>(os, "leNewTablePath");
     CHECK_SET_ERR(NULL != leNewTablePath, "leNewTablePath is NULL");
-    CHECK_SET_ERR(leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly disabled");
+    CHECK_SET_ERR(leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly disabled for human_T1");
 
     QToolButton *tbBrowseNewTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseNewTable");
     CHECK_SET_ERR(NULL != tbBrowseNewTable, "tbBrowseNewTable is NULL");
-    CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly disabled");
+    CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly disabled for human_T1");
 
     QRadioButton *rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable");
     CHECK_SET_ERR(NULL != rbUseAutoTable, "rbUseAutoTable is NULL");
-    CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
+    CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible for human_T1");
 
 //    4. Open "Annotation parameters" group. Check "Use pattern name" checkbox state.
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os);
@@ -3159,8 +3161,8 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
 //    Expected state: it is visible and enabled.
     QCheckBox *chbUsePatternNames = GTWidget::findExactWidget<QCheckBox *>(os, "chbUsePatternNames");
     CHECK_SET_ERR(NULL != chbUsePatternNames, "chbUsePatternNames is NULL");
-    CHECK_SET_ERR(chbUsePatternNames->isVisible(), "chbUsePatternNames is unexpectedly invisible");
-    CHECK_SET_ERR(chbUsePatternNames->isEnabled(), "chbUsePatternNames is unexpectedly disabled");
+    CHECK_SET_ERR(chbUsePatternNames->isVisible(), "chbUsePatternNames is unexpectedly invisible for human_T1");
+    CHECK_SET_ERR(chbUsePatternNames->isEnabled(), "chbUsePatternNames is unexpectedly disabled for human_T1");
 
     GTUtilsMdi::click(os, GTGlobals::Close);
 
@@ -3181,31 +3183,31 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
 //        Auto table radio button - invisible
     rbExistingTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable");
     CHECK_SET_ERR(NULL != rbExistingTable, "rbExistingTable is NULL");
-    CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
+    CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled for murine_1");
 
     cbExistingTable = GTWidget::findExactWidget<QComboBox *>(os, "cbExistingTable");
     CHECK_SET_ERR(NULL != cbExistingTable, "cbExistingTable is NULL");
-    CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disabled");
+    CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disabled for murine_1");
 
     tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseExistingTable");
     CHECK_SET_ERR(NULL != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
-    CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disabled");
+    CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disabled for murine_1");
 
     rbCreateNewTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbCreateNewTable");
     CHECK_SET_ERR(NULL != rbCreateNewTable, "rbCreateNewTable is NULL");
-    CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
+    CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled for murine_1");
 
     leNewTablePath = GTWidget::findExactWidget<QLineEdit *>(os, "leNewTablePath");
     CHECK_SET_ERR(NULL != leNewTablePath, "leNewTablePath is NULL");
-    CHECK_SET_ERR(!leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly enabled");
+    CHECK_SET_ERR(!leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly enabled for murine_1");
 
     tbBrowseNewTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseNewTable");
     CHECK_SET_ERR(NULL != tbBrowseNewTable, "tbBrowseNewTable is NULL");
-    CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled");
+    CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled for murine_1");
 
     rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable");
     CHECK_SET_ERR(NULL != rbUseAutoTable, "rbUseAutoTable is NULL");
-    CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
+    CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible  for murine_1");
 
 //    8. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
     GTWidget::click(os, GTWidget::findWidget(os, "rbCreateNewTable"));
@@ -3219,13 +3221,13 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
 //        New table lineedit - enabled
 //        New table browse button - enabled
 //        Auto table radio button - invisible
-    CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
-    CHECK_SET_ERR(!cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly enabled");
-    CHECK_SET_ERR(!tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly enabled");
-    CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
-    CHECK_SET_ERR(leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly disabled");
-    CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly disabled");
-    CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
+    CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled for murine_2");
+    CHECK_SET_ERR(!cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly enabled for murine_2");
+    CHECK_SET_ERR(!tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly enabled for murine_2");
+    CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled for murine_2");
+    CHECK_SET_ERR(leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly disabled  for murine_2");
+    CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly disabled  for murine_2");
+    CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible for murine_2");
 
 //    9. Select "Existing table" option. Check if destination table widgets are enabled or disabled.
     GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "rbExistingTable"));
@@ -3239,13 +3241,13 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
 //        New table lineedit - disabled
 //        New table browse button - disabled
 //        Auto table radio button - invisible
-    CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
-    CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disabled");
-    CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disabled");
-    CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
-    CHECK_SET_ERR(!leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly enabled");
-    CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled");
-    CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
+    CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled for murine_3");
+    CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disabled for murine_3");
+    CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disabled for murine_3");
+    CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled for murine_3");
+    CHECK_SET_ERR(!leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly enabled for murine_3");
+    CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled for murine_3");
+    CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible for murine_3");
 
 //    10. Open "Annotation parameters" group. Check "Use pattern name" checkbox state.
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os);
@@ -3254,8 +3256,8 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
 //    Expected state: it is visible and enabled.
     chbUsePatternNames = GTWidget::findExactWidget<QCheckBox *>(os, "chbUsePatternNames");
     CHECK_SET_ERR(NULL != chbUsePatternNames, "chbUsePatternNames is NULL");
-    CHECK_SET_ERR(chbUsePatternNames->isVisible(), "chbUsePatternNames is unexpectedly invisible");
-    CHECK_SET_ERR(chbUsePatternNames->isEnabled(), "chbUsePatternNames is unexpectedly disabled");
+    CHECK_SET_ERR(chbUsePatternNames->isVisible(), "chbUsePatternNames is unexpectedly invisible for murine");
+    CHECK_SET_ERR(chbUsePatternNames->isEnabled(), "chbUsePatternNames is unexpectedly disabled for murine");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0041) {

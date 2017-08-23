@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -121,11 +121,7 @@
 #define PATH_PREFIX_DATA "data"
 #define PATH_PREFIX_SCRIPTS "scripts"
 
-typedef QMap<QString, QString> QStrStrMap;
-typedef QPair<QString, QString> StringPair;
-
 namespace U2 {
-
 
 enum TriState {
     TriState_Unknown,
@@ -138,16 +134,21 @@ enum UnloadedObjectFilter { //used as a separate type but not 'bool' to improve 
     UOF_LoadedOnly
 };
 
+enum NavigationDirection {
+    Forward,
+    Backward
+};
+
 }
 
 enum DNAAlphabetType {
-    DNAAlphabet_UNDEFINED = 0,
-    DNAAlphabet_RAW = 1 << 1,
-    DNAAlphabet_NUCL = 1 << 2,
-    DNAAlphabet_AMINO = 1 << 3
+    DNAAlphabet_UNDEFINED = 0x0,
+    DNAAlphabet_RAW     = 0x1,
+    DNAAlphabet_NUCL    = 0x2,
+    DNAAlphabet_AMINO   = 0x4
 };
 
-Q_DECLARE_FLAGS(DNAAlphabetTypes, DNAAlphabetType)
-Q_DECLARE_OPERATORS_FOR_FLAGS(DNAAlphabetTypes)
+Q_DECLARE_FLAGS(AlphabetFlags, DNAAlphabetType)
+Q_DECLARE_OPERATORS_FOR_FLAGS(AlphabetFlags)
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,79 +22,81 @@
 #ifndef _U2_APPCONTEXT_H_
 #define _U2_APPCONTEXT_H_
 
+#include <QObject>
+
 #include "global.h"
 
 namespace U2 {
 
 template<class T> class IdRegistry;
-class PluginSupport;
-class ServiceRegistry;
-class ProjectLoader;
-class MainWindow;
-class ProjectView;
-class Project;
-class ProjectService;
-class PluginViewer;
-class Settings;
+class AlignmentAlgorithmsRegistry;
+class AnnotationSettingsRegistry;
+class AppFileStorage;
+class AppGlobalObject;
 class AppSettings;
 class AppSettingsGUI;
-class DocumentFormatRegistry;
-class IOAdapterRegistry;
-class DNATranslationRegistry;
-class DNAAlphabetRegistry;
-class GObjectViewFactoryRegistry;
-class ResourceTracker;
-class TaskScheduler;
-class AnnotationSettingsRegistry;
-class TestFramework;
-class DBXRefRegistry;
-class SubstMatrixRegistry;
-class SmithWatermanTaskFactoryRegistry;
-class SWMulAlignResultNamesTagsRegistry;
-class MolecularSurfaceFactoryRegistry;
-class SWResultFilterRegistry;
-class MsaColorSchemeRegistry;
-class MsaHighlightingSchemeRegistry;
-class SecStructPredictAlgRegistry;
-class CudaGpuRegistry;
-class OpenCLGpuRegistry;
-class RecentlyDownloadedCache;
-class ProtocolInfoRegistry;
-class RemoteMachineMonitor;
-class PhyTreeGeneratorRegistry;
-class CMDLineRegistry;
-class MSAConsensusAlgorithmRegistry;
 class AssemblyConsensusAlgorithmRegistry;
-class MSADistanceAlgorithmRegistry;
-class PWMConversionAlgorithmRegistry;
-class VirtualFileSystemRegistry;
-class DnaAssemblyAlgRegistry;
-class GenomeAssemblyAlgRegistry;
-class AppGlobalObject;
-class DataBaseRegistry;
-class ExternalToolRegistry;
-class RepeatFinderTaskFactoryRegistry;
-class U2DbiRegistry;
-class UdrSchemaRegistry;
-class QDActorPrototypeRegistry;
-class StructuralAlignmentAlgorithmRegistry;
 class AutoAnnotationsSupport;
 class CDSearchFactoryRegistry;
-class UGUITestBase;
-class SplicedAlignmentTaskRegistry;
+class CMDLineRegistry;
+class ConvertFactoryRegistry;
+class CredentialsAsker;
+class CudaGpuRegistry;
+class DBXRefRegistry;
+class DNAAlphabetRegistry;
+class DNATranslationRegistry;
+class DataBaseRegistry;
+class DnaAssemblyAlgRegistry;
+class DocumentFormatRegistry;
+class ExternalToolRegistry;
+class GObjectViewFactoryRegistry;
+class GenomeAssemblyAlgRegistry;
+class IOAdapterRegistry;
+class MSAConsensusAlgorithmRegistry;
+class MSADistanceAlgorithmRegistry;
+class MainWindow;
+class MolecularSurfaceFactoryRegistry;
+class MsaColorSchemeRegistry;
+class MsaHighlightingSchemeRegistry;
 class OPCommonWidgetFactoryRegistry;
 class OPWidgetFactoryRegistry;
-class WorkflowScriptRegistry;
-class AppFileStorage;
-class U2DataPathRegistry;
-class AlignmentAlgorithmsRegistry;
-class ScriptingToolRegistry;
-class CredentialsAsker;
+class OpenCLGpuRegistry;
+class PWMConversionAlgorithmRegistry;
 class PasswordStorage;
-class ConvertFactoryRegistry;
-class WelcomePageAction;
-class ProjectFilterTaskRegistry;
 class PasteFactory;
+class PhyTreeGeneratorRegistry;
+class PluginSupport;
+class PluginViewer;
+class Project;
+class ProjectFilterTaskRegistry;
+class ProjectLoader;
+class ProjectService;
+class ProjectView;
+class ProtocolInfoRegistry;
+class QDActorPrototypeRegistry;
+class RecentlyDownloadedCache;
+class RemoteMachineMonitor;
+class RepeatFinderTaskFactoryRegistry;
+class ResourceTracker;
+class SWMulAlignResultNamesTagsRegistry;
+class SWResultFilterRegistry;
+class ScriptingToolRegistry;
+class SecStructPredictAlgRegistry;
+class ServiceRegistry;
+class Settings;
+class SmithWatermanTaskFactoryRegistry;
+class SplicedAlignmentTaskRegistry;
+class StructuralAlignmentAlgorithmRegistry;
+class SubstMatrixRegistry;
+class TaskScheduler;
+class TestFramework;
+class U2DataPathRegistry;
+class U2DbiRegistry;
+class UGUITestBase;
+class UdrSchemaRegistry;
+class VirtualFileSystemRegistry;
+class WelcomePageAction;
+class WorkflowScriptRegistry;
 
 class U2CORE_EXPORT AppContext  : public QObject {
     Q_OBJECT

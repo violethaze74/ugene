@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,15 +34,19 @@
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
+
 #include <U2Designer/DelegateEditors.h>
+
 #include <U2Formats/BAMUtils.h>
 #include <U2Formats/ConvertFileTask.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseAttributes.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BaseAttributes.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
@@ -132,13 +136,13 @@ void ConvertFilesFormatWorkerFactory::init() {
         Descriptor excludedFormats(EXCLUDED_FORMATS_ID, ConvertFilesFormatWorker::tr("Excluded formats"),
             ConvertFilesFormatWorker::tr("Input file won't be converted to any of selected formats."));
 
-        Descriptor outDir(OUT_MODE_ID, ConvertFilesFormatWorker::tr("Output directory"),
-            ConvertFilesFormatWorker::tr("Select an output directory. <b>Custom</b> - specify the output directory in the 'Custom directory' parameter. "
-            "<b>Workflow</b> - internal workflow directory. "
-            "<b>Input file</b> - the directory of the input file."));
+        Descriptor outDir(OUT_MODE_ID, ConvertFilesFormatWorker::tr("Output folder"),
+            ConvertFilesFormatWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
+            "<b>Workflow</b> - internal workflow folder. "
+            "<b>Input file</b> - the folder of the input file."));
 
-        Descriptor customDir(CUSTOM_DIR_ID, ConvertFilesFormatWorker::tr("Custom directory"),
-            ConvertFilesFormatWorker::tr("Select the custom output directory."));
+        Descriptor customDir(CUSTOM_DIR_ID, ConvertFilesFormatWorker::tr("Custom folder"),
+            ConvertFilesFormatWorker::tr("Select the custom output folder."));
 
         a << new Attribute( BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true );
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(WORKFLOW_INTERNAL));
@@ -270,7 +274,7 @@ QString ConvertFilesFormatWorker::createWorkingDir( const QString& fileUrl ){
                 result += "/";
             }
         }else{
-            algoLog.error(tr("Convert Format: result directory is empty, default workflow directory is used"));
+            algoLog.error(tr("Convert Format: result folder is empty, default workflow folder is used"));
             useInternal = true;
         }
     }else{

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -415,7 +415,7 @@ int OverviewRenderArea::getAnnotationDensity (int pos) const {
 
 void OverviewRenderArea::setAnnotationsOnPos() {
     annotationsOnPos.clear();
-    const ADVSequenceObjectContext *ctx = view->getSequenceContext();
+    const SequenceObjectContext *ctx = view->getSequenceContext();
     const qint64 len = ctx->getSequenceLength();
     annotationsOnPos.resize(len);
 

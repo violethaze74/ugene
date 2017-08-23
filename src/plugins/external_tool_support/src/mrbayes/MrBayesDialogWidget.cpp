@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
@@ -55,11 +55,11 @@ namespace U2 {
 #define MR_BAYES_TEMPR "/mb_tempr"
 #define MR_BAYES_SEED "/mb_seed"
 
-MrBayesWidget::MrBayesWidget(const MAlignment &ma, QWidget *parent) :
+MrBayesWidget::MrBayesWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
     CreatePhyTreeWidget(parent)
 {
     setupUi(this);
-    DNAAlphabetType alphabetType = ma.getAlphabet()->getType();
+    DNAAlphabetType alphabetType = ma->getAlphabet()->getType();
     if ((alphabetType == DNAAlphabet_RAW) || (alphabetType == DNAAlphabet_NUCL)){
         isAminoAcidAlphabet = false;
         modelLabel1->setText(tr("Substitution model"));
@@ -168,7 +168,7 @@ int MrBayesWidget::getRandomSeed(){
 }
 
 bool MrBayesWidget::checkSettings(QString &messsage, const CreatePhyTreeSettings &settings) {
-    //Check that MrBayes and tempory directory path defined
+    //Check that MrBayes and tempory folder path defined
     ExternalToolRegistry* reg = AppContext::getExternalToolRegistry();
     ExternalTool* mb= reg->getByName(ET_MRBAYES);
     assert(mb);

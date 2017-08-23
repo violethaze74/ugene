@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include <U2Core/AssemblyImporter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GUrl.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -129,15 +129,15 @@ private:
     CommunicationChannel* reads;
 };
 
-class GenomeAlignerMAlignmentWriter : public GenomeAlignerWriter {
+class GenomeAlignerMsaWriter : public GenomeAlignerWriter {
 public:
-    GenomeAlignerMAlignmentWriter();
+    GenomeAlignerMsaWriter();
     inline void write(SearchQuery *seq, SAType offset);
     void close();
     void setReferenceName(const QString &refName);
-    MAlignment &getResult();
+    MultipleSequenceAlignment &getResult();
 private:
-    MAlignment result;
+    MultipleSequenceAlignment result;
 };
 
 } //LocalWorkflow

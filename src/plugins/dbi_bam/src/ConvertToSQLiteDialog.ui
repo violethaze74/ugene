@@ -2,12 +2,29 @@
 <ui version="4.0">
  <class>ConvertToSQLiteDialog</class>
  <widget class="QDialog" name="ConvertToSQLiteDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>581</width>
+    <height>491</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Import BAM File</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="dialogLayout">
    <property name="sizeConstraint">
-    <enum>QLayout::SetFixedSize</enum>
+    <enum>QLayout::SetDefaultConstraint</enum>
    </property>
    <item>
     <layout class="QGridLayout" name="gridLayout_3">

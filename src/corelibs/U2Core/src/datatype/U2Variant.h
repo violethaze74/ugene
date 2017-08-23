@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #ifndef _U2_VARIANT_H_
 #define _U2_VARIANT_H_
 
+#include <U2Core/StrPackUtils.h>
 #include <U2Core/U2Type.h>
 
 namespace U2 {
@@ -74,7 +75,7 @@ public:
     QByteArray  refData;
     QByteArray  obsData;
     QString     publicId;
-    QStrStrMap  additionalInfo;
+    StrStrMap   additionalInfo;
 
     static const QString VCF4_QUAL;
     static const QString VCF4_FILTER;

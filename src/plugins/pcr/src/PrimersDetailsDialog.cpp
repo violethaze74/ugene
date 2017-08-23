@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ PrimersDetailsDialog::PrimersDetailsDialog(QWidget *parent, const QString &detai
 {
     GCOUNTER(cvar, tvar, "PrimersDetailsDialog");
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759740");
+    new HelpButton(this, buttonBox, "19766996");
     textEdit->setText(details);
 }
 

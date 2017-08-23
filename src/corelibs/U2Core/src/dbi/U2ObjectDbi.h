@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -127,6 +127,12 @@ public:
     /** Updates object rank, e.g. a top-level object can be transmuted into a child object */
     virtual void setObjectRank(const U2DataId &objectId, U2DbiObjectRank newRank, U2OpStatus& os) = 0;
 
+    /** Adds a record, representing parent-child relationship between entities, to a DB */
+    virtual void setParent(const U2DataId& parentId, const U2DataId& childId, U2OpStatus& os) = 0;
+
+    /** Returns object rank of the given object */
+    virtual U2DbiObjectRank getObjectRank(const U2DataId &objectId, U2OpStatus& os) = 0;
+
     /** Gets the trackMod value for the object */
     virtual U2TrackModType getTrackModType(const U2DataId& objectId, U2OpStatus& os) = 0;
 
@@ -186,7 +192,7 @@ public:
         Otherwise, moves the specified objects between the specified folders, omitting duplicates.
 
         'saveFromFolder' parameter specifies whether the 'fromFolder' path has to be stored
-        for further usage. For instance, when the object is moved to the recycle bin its previous directory
+        for further usage. For instance, when the object is moved to the recycle bin its previous folder
         is needed in order to restore the object afterwards.
 
         Requires: U2DbiFeature_ChangeFolders feature support

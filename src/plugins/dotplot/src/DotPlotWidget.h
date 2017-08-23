@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,15 +26,9 @@
 #include <U2View/PanView.h>
 #include <U2Core/U2Region.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMenu>
-#include <QtGui/QToolButton>
-#else
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QToolButton>
-#endif
-
-#include <QtCore/QTimer>
+#include <QMenu>
+#include <QToolButton>
+#include <QTimer>
 
 namespace U2 {
 
@@ -169,7 +163,6 @@ private:
     QAction *filterDotPlotAction;
 
     int textSpace;
-    static const int defaultTextSpace = 30;
     static const int rulerNotchSize = 2;
 
     int w;

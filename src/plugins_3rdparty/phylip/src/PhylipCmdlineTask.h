@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -27,14 +27,14 @@
 namespace U2 {
 
 class CmdlineInOutTaskRunner;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class PhyTreeObject;
 class TmpDbiHandle;
 
 class PhylipCmdlineTask : public PhyTreeGeneratorTask {
     Q_OBJECT
 public:
-    PhylipCmdlineTask(const MAlignment &msa, const CreatePhyTreeSettings &settings);
+    PhylipCmdlineTask(const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings);
     ~PhylipCmdlineTask();
 
     void prepare();
@@ -57,7 +57,7 @@ private:
 
 private:
     CmdlineInOutTaskRunner *cmdlineTask;
-    MAlignmentObject *msaObject;
+    MultipleSequenceAlignmentObject *msaObject;
     PhyTreeObject *treeObject;
     QString dbiPath;
     U2DbiRef dbiRef;

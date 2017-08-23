@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,23 +22,13 @@
 #include <U2Core/U2SafePoints.h>
 #include "ADVGraphModel.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QSpinBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QCheckBox>
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QSpinBox>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QLabel>
+#include <QPushButton>
+#include <QSpinBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QCheckBox>
+#include <QMessageBox>
 #include <U2Gui/HelpButton.h>
 
 #include "GraphLabelsSelectDialog.h"
@@ -71,7 +61,7 @@ GraphLabelsSelectDialog::GraphLabelsSelectDialog(int maxWindowSize, QWidget* par
     QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
     QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
 
-    new HelpButton(this, buttonBox, "19759523");
+    new HelpButton(this, buttonBox, "19766779");
 
     mainLayout->addLayout(spinLayout);
     mainLayout->addWidget(usedIntervalsCheck);

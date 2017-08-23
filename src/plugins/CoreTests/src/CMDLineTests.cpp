@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,17 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
-
+#include <QApplication>
+#include <QCoreApplication>
+#include <QDomElement>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/Log.h>
 #include <U2Core/CMDLineCoreOptions.h>
+#include <U2Core/Log.h>
+
 #include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/WorkflowUtils.h>
 
@@ -67,6 +64,7 @@ void GTest_RunCMDLine::init(XMLTestFormat *tf, const QDomElement& el) {
     proc = new QProcess(this);
     if (el.hasAttribute(WORKINK_DIR_ATTR)) {
         QString workingDir = el.attribute(WORKINK_DIR_ATTR);
+        QDir().mkpath(env->getVar(TEMP_DATA_DIR_ENV_ID) + "/" + workingDir);
         proc->setWorkingDirectory(env->getVar(TEMP_DATA_DIR_ENV_ID) + "/" + workingDir);
     }
     QString protosPath = env->getVar(COMMON_DATA_DIR_ENV_ID) + "/" +  env->getVar(CONFIG_PROTOTYPE);
@@ -79,7 +77,6 @@ void GTest_RunCMDLine::init(XMLTestFormat *tf, const QDomElement& el) {
     for (int i = 0; i < list.size(); ++i) {
         QFileInfo fIdest = list.at(i);
         QFileInfo fItarget(userScriptsDir.path() + "/" + fIdest.fileName());
-        QString destPath = fIdest.absoluteFilePath(), targetPath = fItarget.absoluteFilePath();
         if(!fItarget.exists()){
             QFile::copy(fIdest.absoluteFilePath(), fItarget.absoluteFilePath());
         }else if(fIdest.size() != fItarget.size()){

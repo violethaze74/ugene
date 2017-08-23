@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,26 +32,26 @@
 #include <U2Core/U2Sequence.h>
 #include <U2Core/GUrl.h>
 
-#include <QtCore/QHash>
-#include <QtCore/QSet>
+#include <QHash>
+#include <QSet>
 
 class QMutex;
 
 namespace U2 {
 
 // For the classes below, see description in class definition
-class U2ObjectDbi;
-class U2ObjectRelationsDbi;
-class U2SequenceDbi;
-class U2FeatureDbi;
-class U2CrossDatabaseReferenceDbi;
-class U2MsaDbi;
 class U2AssemblyDbi;
 class U2AttributeDbi;
-class U2VariantDbi;
-class U2ModDbi;
-class U2OpStatus;
+class U2CrossDatabaseReferenceDbi;
 class U2Dbi;
+class U2FeatureDbi;
+class U2ModDbi;
+class U2MsaDbi;
+class U2ObjectDbi;
+class U2ObjectRelationsDbi;
+class U2OpStatus;
+class U2SequenceDbi;
+class U2VariantDbi;
 class UdrDbi;
 class Version;
 

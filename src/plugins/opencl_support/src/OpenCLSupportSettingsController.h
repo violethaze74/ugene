@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,14 +22,9 @@
 #ifndef __OPENCL_SUPPORT_SETTINGS_CONTROLLER__
 #define __OPENCL_SUPPORT_SETTINGS_CONTROLLER__
 
-#include <QtCore/QVector>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QCheckBox>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QCheckBox>
-#endif
+#include <QVector>
+#include <QLabel>
+#include <QCheckBox>
 
 #include <U2Gui/AppSettingsGUI.h>
 

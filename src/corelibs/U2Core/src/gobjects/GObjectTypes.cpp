@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,7 +46,9 @@ REGISTER_TYPE_EX(SEQUENCE,          "OT_SEQUENCE",      GObject::tr("Sequence"),
 REGISTER_TYPE(ANNOTATION_TABLE,     "OT_ANNOTATIONS",   GObject::tr("Annotation"),      GObject::tr("Annotations"),    "a");
 REGISTER_TYPE(VARIANT_TRACK,        "OT_VARIATIONS",    GObject::tr("Variation"),       GObject::tr("Variations"),     "v");
 REGISTER_TYPE(CHROMATOGRAM,         "OT_CHROMATOGRAM",  GObject::tr("Chromatogram"),    GObject::tr("Chromatograms"),  "c");
-REGISTER_TYPE_EX(MULTIPLE_ALIGNMENT,   "OT_MSA",        GObject::tr("Alignment"),       GObject::tr("Alignments"),     "m",     ":core/images/msa.png",         ":core/images/ro_msa.png");
+// SANGER_TODO: icons!!
+REGISTER_TYPE_EX(MULTIPLE_CHROMATOGRAM_ALIGNMENT,   "OT_MCA",    GObject::tr("Alignment"),       GObject::tr("Alignments"),     "mc",     ":core/images/msa.png",         ":core/images/ro_msa.png");
+REGISTER_TYPE_EX(MULTIPLE_SEQUENCE_ALIGNMENT,   "OT_MSA",        GObject::tr("Alignment"),       GObject::tr("Alignments"),     "m",     ":core/images/msa.png",         ":core/images/ro_msa.png");
 REGISTER_TYPE_EX(PHYLOGENETIC_TREE, "OT_PTREE",         GObject::tr("Tree"),            GObject::tr("Trees"),          "tr",    ":core/images/tree.png",        ":core/images/ro_tree.png");
 REGISTER_TYPE_EX(BIOSTRUCTURE_3D,   "OT_BIOSTRUCT3D",   GObject::tr("3D model"),        GObject::tr("3D models"),      "3d",    ":core/images/biostruct3d.png", ":core/images/ro_biostruct3d.png");
 REGISTER_TYPE(ASSEMBLY,             "OT_ASSEMBLY",      GObject::tr("Assembly"),        GObject::tr("Assemblies"),     "as");

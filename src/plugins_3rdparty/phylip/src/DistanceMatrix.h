@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 #include <QString>
 #include <U2Algorithm/SubstMatrixRegistry.h>
 #include <U2Core/AppResources.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/PhyTree.h>
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 #include <QVector>
@@ -39,7 +39,7 @@ private:
     float* rawdata;
     int size;
     QMap<QString, int> index_map;
-    const MAlignment* malignment;
+    const MultipleSequenceAlignment* malignment;
     PhyTreeData* treedata;
     matrix qdata;
     matrix middlematrix;
@@ -51,7 +51,7 @@ private:
 public:
     matrix rawMatrix;
     bool isValid();
-    void calculateOutOfAlignment(const MAlignment& ma, const CreatePhyTreeSettings& settings);
+    void calculateOutOfAlignment(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings);
     ~DistanceMatrix();
     const QString& getErrorMessage() {return errorMessage;}
     void freeMemory(void*& allocatedMemory){free(allocatedMemory);}

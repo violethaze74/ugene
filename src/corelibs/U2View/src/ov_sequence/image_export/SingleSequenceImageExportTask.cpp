@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@
 
 #include <U2Gui/RegionSelector.h>
 
-#include <QtXml/QDomDocument>
+#include <QDomDocument>
 #include <QPrinter>
 #include <QSvgGenerator>
 

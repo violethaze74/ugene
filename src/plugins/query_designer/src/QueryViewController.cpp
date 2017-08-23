@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,15 +29,16 @@
 #include <U2Core/Counter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TaskSignalMapper.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Gui/GlassView.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2Lang/QueryDesignerRegistry.h>
@@ -1147,9 +1148,11 @@ AddConstraintDialog::AddConstraintDialog(QueryScene* _scene, QDDistanceType _kin
                                          QDElement* defSrc, QDElement* defDst)
 : scene(_scene), kind(_kind) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759342");
+    new HelpButton(this, buttonBox, "19766599");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    QString title = "Add %1 Constraint";
+    QString title = tr("Add Constraint %1");
     switch (kind)
     {
     case E2S:

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ class DetViewRenderer;
 class U2VIEW_EXPORT DetView : public GSequenceLineViewAnnotated {
     Q_OBJECT
 public:
-    DetView(QWidget* p, ADVSequenceObjectContext* ctx);
+    DetView(QWidget* p, SequenceObjectContext* ctx);
 
     DetViewRenderArea* getDetViewRenderArea() const;
 

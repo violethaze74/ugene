@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,20 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QRadioButton>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QGroupBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QRadioButton>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QGroupBox>
-#endif
+#include <QDir>
+#include <QApplication>
+#include <QPushButton>
+#include <QRadioButton>
+#include <QDialogButtonBox>
+#include <QGroupBox>
 
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>

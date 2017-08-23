@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,11 +41,11 @@
 namespace U2 {
 ////////////////////////////////////////
 //ClustalOSupportRunDialog
-ClustalOSupportRunDialog::ClustalOSupportRunDialog(const MAlignment& _ma, ClustalOSupportTaskSettings& _settings, QWidget* _parent) :
-        QDialog(_parent), ma(_ma), settings(_settings)
+ClustalOSupportRunDialog::ClustalOSupportRunDialog(const MultipleSequenceAlignment& _ma, ClustalOSupportTaskSettings& _settings, QWidget* _parent) :
+        QDialog(_parent), ma(_ma->getCopy()), settings(_settings)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759732");
+    new HelpButton(this, buttonBox, "19766988");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -79,7 +79,7 @@ ClustalOWithExtFileSpecifySupportRunDialog::ClustalOWithExtFileSpecifySupportRun
     saveController(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759714");
+    new HelpButton(this, buttonBox, "19766970");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -94,7 +94,7 @@ ClustalOWithExtFileSpecifySupportRunDialog::ClustalOWithExtFileSpecifySupportRun
 void ClustalOWithExtFileSpecifySupportRunDialog::sl_inputPathButtonClicked() {
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(this, tr("Open an alignment file"), lod.dir,
-        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true));
+        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
     if (lod.url.isEmpty()) {
         return;
     }

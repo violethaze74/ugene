@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,20 +26,21 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/GObjectTypes.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ToolsMenu.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Lang/WorkflowSettings.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "MuscleAlignDialogController.h"
 #include "MusclePlugin.h"
@@ -55,9 +56,9 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     return plug;
 }
 
-    
-MusclePlugin::MusclePlugin() 
-: Plugin(tr("MUSCLE"), 
+
+MusclePlugin::MusclePlugin()
+: Plugin(tr("MUSCLE"),
          tr("A port of MUSCLE package for multiple sequence alignment. Check http://www.drive5.com/muscle/ for the original version")),
          ctx(NULL)
 {
@@ -83,7 +84,7 @@ MusclePlugin::MusclePlugin()
     GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = UMUSCLETests ::createTestFactories();
 
-    foreach(XMLTestFactory* f, l->qlist) { 
+    foreach(XMLTestFactory* f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         Q_UNUSED(res);
         assert(res);
@@ -124,18 +125,16 @@ void MuscleAction::sl_updateState() {
     setEnabled(!item->isStateLocked() && !msaEditor->isAlignmentEmpty());
 }
 
-MuscleMSAEditorContext::MuscleMSAEditorContext(QObject* p) : GObjectViewWindowContext(p, MSAEditorFactory::ID) {
+MuscleMSAEditorContext::MuscleMSAEditorContext(QObject* p) : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
 
 void MuscleMSAEditorContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    assert(msaed!=NULL);
-    if (msaed->getMSAObject() == NULL) {
-        return;
-    }
+    SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
+    CHECK(msaed->getMaObject() != NULL, );
 
-    bool objLocked = msaed->getMSAObject()->isStateLocked();
+    bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
     MuscleAction* alignAction = new MuscleAction(this, view, tr("Align with MUSCLE..."), 1000);
@@ -143,8 +142,8 @@ void MuscleMSAEditorContext::initViewContext(GObjectView* view) {
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
     alignAction->setObjectName("Align with muscle");
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align()));
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     addViewAction(alignAction);
 
     MuscleAction* addSequencesAction = new MuscleAction(this, view, tr("Align sequences to profile with MUSCLE..."), 1001);
@@ -152,8 +151,8 @@ void MuscleMSAEditorContext::initViewContext(GObjectView* view) {
     addSequencesAction->setEnabled(!objLocked && !isMsaEmpty);
     addSequencesAction->setObjectName("Align sequences to profile with MUSCLE");
     connect(addSequencesAction, SIGNAL(triggered()), SLOT(sl_alignSequencesToProfile()));
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), addSequencesAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), addSequencesAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), addSequencesAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), addSequencesAction, SLOT(sl_updateState()));
     addViewAction(addSequencesAction);
 
     MuscleAction* alignProfilesAction = new MuscleAction(this, view, tr("Align profile to profile with MUSCLE..."), 1002);
@@ -161,8 +160,8 @@ void MuscleMSAEditorContext::initViewContext(GObjectView* view) {
     alignProfilesAction->setEnabled(!objLocked && !isMsaEmpty);
     alignProfilesAction->setObjectName("Align profile to profile with MUSCLE");
     connect(alignProfilesAction, SIGNAL(triggered()), SLOT(sl_alignProfileToProfile()));
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), alignProfilesAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignProfilesAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignProfilesAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignProfilesAction, SLOT(sl_updateState()));
     addViewAction(alignProfilesAction);
 }
 
@@ -172,14 +171,14 @@ void MuscleMSAEditorContext::buildMenu(GObjectView* v, QMenu* m) {
     SAFE_POINT(alignMenu != NULL, "alignMenu", );
     foreach(GObjectViewAction* a, actions) {
         a->addToMenuWithOrder(alignMenu);
-    }    
+    }
 }
 
 void MuscleMSAEditorContext::sl_align() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
 
     const QRect selection = action->getMSAEditor()->getCurrentSelection();
     MuscleTaskSettings s;
@@ -192,15 +191,15 @@ void MuscleMSAEditorContext::sl_align() {
         }
     }
 
-    QObjectScopedPointer<MuscleAlignDialogController> dlg = new MuscleAlignDialogController(ed->getWidget(), obj->getMAlignment(), s);
+    QObjectScopedPointer<MuscleAlignDialogController> dlg = new MuscleAlignDialogController(ed->getWidget(), obj->getMultipleAlignment(), s);
     const int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
-    
+
     if (rc != QDialog::Accepted) {
         return;
     }
-    
-    
+
+
     AlignGObjectTask* muscleTask = new MuscleGObjectRunFromSchemaTask(obj, s);
     Task *alignTask = NULL;
 
@@ -222,13 +221,13 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
     if (obj == NULL)
         return;
     assert(!obj->isStateLocked());
 
     DocumentFormatConstraints c;
-    QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, false);
+    QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
     QString f2 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
     QString filter = f2 + "\n" + f1;
 
@@ -255,7 +254,7 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
     if (obj == NULL)
         return;
     assert(!obj->isStateLocked());
@@ -264,11 +263,11 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
 #ifdef Q_OS_MAC
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         lod.url = U2FileDialog::getOpenFileName(NULL, tr("Select file with alignment"), lod,
-            DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true), 0, QFileDialog::DontUseNativeDialog );
+            DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true), 0, QFileDialog::DontUseNativeDialog );
     } else
 #endif
     lod.url = U2FileDialog::getOpenFileName(NULL, tr("Select file with alignment"), lod,
-        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true));
+        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
 
     if (lod.url.isEmpty()) {
         return;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -120,7 +120,7 @@ ReadAssemblyProto::ReadAssemblyProto()
     setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::ASSEMBLY);
 
     setDisplayName(ReadAssemblyWorker::tr("Read Assembly"));
-    setDocumentation(ReadAssemblyWorker::tr("Reads assembly from files."));
+    setDocumentation(ReadAssemblyWorker::tr("Reads assembly from files. All assembly file formats supported by UGENE are allowed as input to this element."));
 
     { // ports description
         QMap<Descriptor, DataTypePtr> outTypeMap;

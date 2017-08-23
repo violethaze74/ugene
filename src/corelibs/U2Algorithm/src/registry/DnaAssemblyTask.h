@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,17 +22,14 @@
 #ifndef _U2_DNA_ASSEMBLY_TASK_H_
 #define _U2_DNA_ASSEMBLY_TASK_H_
 
-#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/DNASequence.h>
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GUrl.h>
-#include <U2Core/MAlignment.h>
-#include <U2Core/Task.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
 class Document;
-
-
 
 class U2ALGORITHM_EXPORT ShortReadSet {
 public:
@@ -52,15 +49,9 @@ public:
 
 };
 
-
 class U2ALGORITHM_EXPORT DnaAssemblyToRefTaskSettings {
 public:
-    DnaAssemblyToRefTaskSettings()
-        : pairedReads(false),
-          filterUnpaired(false),
-          prebuiltIndex(false),
-          openView(false),
-          samOutput(true) {}
+    DnaAssemblyToRefTaskSettings();
 
     void setCustomSettings(const QMap<QString, QVariant>& settings);
     QVariant getCustomValue(const QString& optionName, const QVariant& defaultVal) const;
@@ -80,6 +71,8 @@ public:
     bool prebuiltIndex;
     bool openView;
     bool samOutput;
+    QString tmpDirPath;
+    bool cleanTmpDir;
 
 private:
     QMap<QString, QVariant> customSettings;

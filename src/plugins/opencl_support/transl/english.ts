@@ -57,7 +57,7 @@
 <context>
     <name>U2::OpenCLSupportSettingsPageController</name>
     <message>
-        <location filename="../src/OpenCLSupportSettingsController.cpp" line="42"/>
+        <location filename="../src/OpenCLSupportSettingsController.cpp" line="35"/>
         <source>OpenCL</source>
         <translation>OpenCL</translation>
     </message>

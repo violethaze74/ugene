@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,14 +43,15 @@ ExportAnnotationsDialog::ExportAnnotationsDialog( const QString &filename, QWidg
     : QDialog( parent ), ui( new Ui_ExportAnnotationsDialog( ) )
 {
     ui->setupUi( this );
-    new HelpButton(this, ui->buttonBox, "19759498");
+    lastAddToProjectState = ui->addToProjectCheck->isChecked();
+    new HelpButton(this, ui->buttonBox, "19766754");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     initSaveController(filename);
     sl_formatChanged(saveController->getFormatIdToSave());
-
     window()->resize(window()->width(), 0);
+    
 }
 
 ExportAnnotationsDialog::~ExportAnnotationsDialog( ) {
@@ -72,30 +73,43 @@ void ExportAnnotationsDialog::initSaveController(const QString &filename) {
     formatConstraints.supportedObjectTypes.insert(GObjectTypes::ANNOTATION_TABLE);
     formatConstraints.addFlagToSupport(DocumentFormatFlag_SupportWriting);
     formatConstraints.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
+    formatConstraints.addFlagToExclude(DocumentFormatFlag_Hidden);
     formatConstraints.formatsToExclude << BaseDocumentFormats::VECTOR_NTI_SEQUENCE;
 
     saveController = new SaveDocumentController(config, formatConstraints, this);
     saveController->addFormat(CSV_FORMAT_ID, QString(CSV_FORMAT_ID).toUpper(), QStringList() << CSV_FORMAT_ID);
 
     connect(saveController, SIGNAL(si_formatChanged(const QString &)), SLOT(sl_formatChanged(const QString &)));
+    connect(ui->addToProjectCheck, SIGNAL(clicked(bool)), SLOT(sl_addToProjectStateChanged(bool)));
+    
 }
 
-QString ExportAnnotationsDialog::filePath( ) const {
+QString ExportAnnotationsDialog::filePath() const {
     return saveController->getSaveFileName();
 }
 
-bool ExportAnnotationsDialog::exportSequence( ) const {
-    return ui->exportSequenceCheck->isChecked( );
+bool ExportAnnotationsDialog::exportSequence() const {
+    return ui->exportSequenceCheck->isChecked();
 }
 
-bool ExportAnnotationsDialog::exportSequenceNames( ) const {
-    return ui->exportSequenceNameCheck->isChecked( );
+bool ExportAnnotationsDialog::exportSequenceNames() const {
+    return ui->exportSequenceNameCheck->isChecked();
+}
+
+bool ExportAnnotationsDialog::addToProject() const {
+    return ui->addToProjectCheck->isChecked();
 }
 
 void ExportAnnotationsDialog::sl_formatChanged(const QString &newFormatId) {
     const bool isCsvFormat = (CSV_FORMAT_ID == newFormatId);
     ui->exportSequenceCheck->setEnabled(isCsvFormat);
     ui->exportSequenceNameCheck->setEnabled(isCsvFormat);
+    ui->addToProjectCheck->setEnabled(!isCsvFormat);
+    ui->addToProjectCheck->setChecked(!isCsvFormat && lastAddToProjectState);
+}
+
+void ExportAnnotationsDialog::sl_addToProjectStateChanged(bool state){
+    lastAddToProjectState = state;
 }
 
 QString ExportAnnotationsDialog::fileFormat( ) const {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,18 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#include "PWMatrixTests.h"
-#include <U2Core/AppContext.h>
-#include <U2Core/IOAdapter.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/GObject.h>
-#include <U2Core/DNAAlphabet.h>
-
 #include <U2Algorithm/PWMConversionAlgorithm.h>
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObject.h>
+#include <U2Core/IOAdapter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
+
+#include "PWMatrixTests.h"
 
 namespace U2 {
 
@@ -152,13 +153,13 @@ Task::ReportResult GTest_PFMCreateTest::report() {
             return ReportResult_Finished;
         }
 
-        QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+        QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (list.size() == 0) {
-            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
             return ReportResult_Finished;
         }
-        MAlignmentObject * myAlign = (MAlignmentObject*)list.first();
-        const MAlignment &al = myAlign->getMAlignment();
+        MultipleSequenceAlignmentObject *myAlign = qobject_cast<MultipleSequenceAlignmentObject *>(list.first());
+        const MultipleSequenceAlignment al = myAlign->getMultipleAlignment();
         PFMatrix pfm(al, type);
         for (int i = 0, n = (type == PFM_MONONUCLEOTIDE) ? 4 : 16; i < n; i++) {
             for (int j = 0, nn = (type == PFM_MONONUCLEOTIDE) ? length : length - 1; j < nn; j++) {
@@ -177,7 +178,7 @@ Task::ReportResult GTest_PFMCreateTest::report() {
 
         QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
         if (list.size() == 0 || list.size() < size) {
-            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty or less than %2").arg(GObjectTypes::MULTIPLE_ALIGNMENT).arg(size));
+            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty or less than %2").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).arg(size));
             return ReportResult_Finished;
         }
         QList<DNASequence*> data;
@@ -322,13 +323,13 @@ Task::ReportResult GTest_PWMCreateTest::report() {
             return ReportResult_Finished;
         }
 
-        QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+        QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (list.size() == 0) {
-            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
             return ReportResult_Finished;
         }
-        MAlignmentObject * myAlign = (MAlignmentObject*)list.first();
-        const MAlignment &al = myAlign->getMAlignment();
+        MultipleSequenceAlignmentObject * myAlign = (MultipleSequenceAlignmentObject*)list.first();
+        const MultipleSequenceAlignment al = myAlign->getMultipleAlignment();
 
         PFMatrix pfm(al, pftype);
         pwm = algorithm->convert(pfm);
@@ -342,7 +343,7 @@ Task::ReportResult GTest_PWMCreateTest::report() {
 
         QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
         if (list.size() == 0 || list.size() < size) {
-            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty or less than %2").arg(GObjectTypes::MULTIPLE_ALIGNMENT).arg(size));
+            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty or less than %2").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).arg(size));
             return ReportResult_Finished;
         }
         QList<DNASequence*> data;

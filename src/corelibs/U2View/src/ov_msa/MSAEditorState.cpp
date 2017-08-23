@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,10 +21,10 @@
 
 #include "MSAEditorState.h"
 #include "MSAEditor.h"
-#include "MSAEditorFactory.h"
+#include "MaEditorFactory.h"
 
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/DNASequenceSelection.h>
 
 namespace U2 {
@@ -36,7 +36,7 @@ namespace U2 {
 #define ZOOM_FACTOR QString("zoom_factor")
 
 bool MSAEditorState::isValid() const {
-    return stateData.value(VIEW_ID) == MSAEditorFactory::ID;
+    return stateData.value(VIEW_ID) == MsaEditorFactory::ID;
 }
 
 GObjectReference MSAEditorState::getMSAObjectRef() const {
@@ -88,9 +88,9 @@ void MSAEditorState::setZoomFactor(float zoomFactor) {
 QVariantMap MSAEditorState::saveState(MSAEditor* v) {
     MSAEditorState ss;
 
-    ss.stateData[VIEW_ID]=MSAEditorFactory::ID;
+    ss.stateData[VIEW_ID]=MsaEditorFactory::ID;
 
-    MAlignmentObject* msaObj = v->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObj = v->getMaObject();
     if (msaObj) {
         ss.setMSAObjectRef(GObjectReference(msaObj));
     }

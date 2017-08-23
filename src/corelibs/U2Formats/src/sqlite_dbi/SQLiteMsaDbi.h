@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,8 +65,10 @@ public:
      * The number of rows and the length of the alignment are set to 0.
      * Returns the assigned id.
      */
-    virtual U2DataId createMsaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, U2OpStatus& os);
-    virtual U2DataId createMsaObject(const QString& folder, const QString& name,const U2AlphabetId& alphabet, int length, U2OpStatus& os);
+    U2DataId createMcaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, U2OpStatus& os);
+    U2DataId createMcaObject(const QString& folder, const QString& name,const U2AlphabetId& alphabet, int length, U2OpStatus& os);
+    U2DataId createMsaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, U2OpStatus& os);
+    U2DataId createMsaObject(const QString& folder, const QString& name,const U2AlphabetId& alphabet, int length, U2OpStatus& os);
 
     /**
      * Updates the multiple alignment name.
@@ -84,10 +86,11 @@ public:
 
     /**
      * Creates rows (and gap models for them) in the database.
-     * Ignores 'length' of the 'rows' (recalculates them).
+     * Enlarges msa length, if 'length' of any of the 'rows' is greater than current msa length.
+     * Recalculates 'length' of the 'rows'.
      * The rows are appended to the end of the MSA.
      * Assigns MSA as a parent for all the sequences.
-     * If a row ID equals "-1", sets a valid ID to the passed U2MsaRow instances.
+     * If a row ID equals "-1", sets a valid ID to the passed U2MaRow instances.
      * Updates the number of rows of the MSA.
      * Updates the alignment length.
      * Increments the alignment version.
@@ -97,7 +100,9 @@ public:
 
     /**
      * Creates a new row and gap model records in the database.
-     * Ignores 'row.length' (recalculates it) and 'row.rowId'. Sets valid to the passed U2MsaRow instance.
+     * Enlarges msa length, if 'row.length' is greater than current msa length.
+     * Ignores 'row.rowId'.
+     * Recalculates 'row.length' and and 'row.rowId'. Sets valid to the passed U2MsaRow instance.
      * If 'posInMsa' equals to '-1' the row is appended to the end of the MSA,
      * otherwise it is inserted to the specified position and all positions are updated.
      * Assigns MSA as a parent for the sequence.
@@ -179,7 +184,7 @@ private:
     /**
      * Creates new records in MsaRow and MsaRowGap tables for the added row, and
      * sets the parent of the sequence object to the MSA object.
-     * Sets the assigned ID to the passed U2MsaRow instance.
+     * Sets the assigned ID to the passed U2MaRow instance.
      */
     void addMsaRowAndGaps(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os);
 
@@ -269,9 +274,9 @@ private:
 
     ///////////////////////////////////////////////////////////
     // Methods included into a multi-action
-    void updateRowInfo(ModificationAction &updateAction, const U2DataId &msaId, const U2MsaRow &row, U2OpStatus &os);
-    void updateGapModel(ModificationAction &updateAction, const U2DataId& msaId, qint64 msaRowId, const QList<U2MsaGap>& gapModel, U2OpStatus& os);
-    void updateMsaLength(ModificationAction &updateAction, const U2DataId& msaId, qint64 length, U2OpStatus &os);
+    void updateRowInfo(SQLiteModificationAction &updateAction, const U2DataId &msaId, const U2MsaRow &row, U2OpStatus &os);
+    void updateGapModel(SQLiteModificationAction &updateAction, const U2DataId& msaId, qint64 msaRowId, const QList<U2MsaGap>& gapModel, U2OpStatus& os);
+    void updateMsaLength(SQLiteModificationAction &updateAction, const U2DataId& msaId, qint64 length, U2OpStatus &os);
 };
 
 } //namespace

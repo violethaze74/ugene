@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,11 +23,12 @@
 
 #include "ResourcesWidget.h"
 
-
 namespace U2 {
 
+const QString ResourcesWidget::ID = "resources";
+
 ResourcesWidget::ResourcesWidget(const QWebElement &container, Dashboard *parent)
-: DashboardWidget(container, parent)
+    : DashboardWidget(container, ID, parent)
 {
     connect(parent->monitor(), SIGNAL(si_progressChanged(int)), SLOT(sl_progressChanged(int)));
     connect(parent->monitor(), SIGNAL(si_taskStateChanged(Monitor::TaskState)),

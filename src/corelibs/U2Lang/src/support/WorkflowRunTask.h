@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,6 @@
 
 #include <U2Core/CmdlineTaskRunner.h>
 #include <U2Lang/WorkflowManager.h>
-#include <U2Lang/WorkflowDebugStatus.h>
 
 namespace U2 {
 
@@ -71,12 +70,13 @@ class U2LANG_EXPORT WorkflowRunTask : public WorkflowAbstractRunner {
     Q_OBJECT
 public:
     WorkflowRunTask(const Schema&, const ActorMap& rmap = ActorMap(),
-        WorkflowDebugStatus *debugInfo = new WorkflowDebugStatus());
+        WorkflowDebugStatus *debugInfo = NULL);
     virtual QList<WorkerState> getState(Actor*);
     virtual int getMsgNum(const Link*);
     virtual int getMsgPassed(const Link*);
 
 private:
+    QString generateReport() const;
     // CmdlineTask
     QString getTaskError() const;
 

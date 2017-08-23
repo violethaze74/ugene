@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ public:
     static void     exportAnnotations(const AnnotationTableObject *aObj, const GUrl &dstUrl);
     static void     exportObject2Document(GObject *object, const QString &url = QString(), bool tracePath = true);
     static void     export2Document(const QObjectScopedPointer<ExportDocumentDialogController> &dialog, bool tracePath = true);
-    static Task *   saveAnnotationsTask(const QString &filepath, const DocumentFormatId & format, const QList<Annotation *> &annList);
+    static Task *   saveAnnotationsTask(const QString &filepath, const DocumentFormatId & format, const QList<Annotation *> &annList, bool addToProject);
 };
 
 } // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -76,13 +76,13 @@ QByteArray uniteAlphabetChars(const QByteArray &firstAlphabetChars, const QByteA
 bool ColorSchemeUtils::getSchemaColors(ColorSchemeData &customScheme) {
     QMap<char, QColor> &alphColors = customScheme.alpColors;
     const QString &file = customScheme.name + COLOR_SCHEME_NAME_FILTERS;
-    DNAAlphabetType &type = customScheme.alphabetType;
+    DNAAlphabetType &type = customScheme.type;
     bool &defaultAlpType = customScheme.defaultAlpType = true;
 
     QString dirPath = getColorsDir();
     QDir dir(dirPath);
     if (!dir.exists()) {
-        coreLog.info(QString("%1: no such directory").arg(dirPath));
+        coreLog.info(QString("%1: no such folder").arg(dirPath));
         return false;
     }
 

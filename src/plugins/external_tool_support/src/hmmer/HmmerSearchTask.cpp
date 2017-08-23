@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,6 @@
 #include <U2Core/Counter.h>
 #include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -86,9 +85,11 @@ QList<Task *> HmmerSearchTask::onSubTaskFinished(Task *subTask) {
         result << parseTask;
     } else if (subTask == parseTask) {
         removeTempDir();
-        Task *createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, parseTask->getAnnotations(), settings.pattern.groupName);
-        createAnnotationsTask->setSubtaskProgressWeight(5);
-        result << createAnnotationsTask;
+        if (settings.annotationTable != NULL) {
+            Task *createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, parseTask->getAnnotations(), settings.pattern.groupName);
+            createAnnotationsTask->setSubtaskProgressWeight(5);
+            result << createAnnotationsTask;
+        }
     }
 
     return result;
@@ -143,7 +144,7 @@ void HmmerSearchTask::prepareWorkingDir() {
     }
 
     if (!tempDir.mkpath(settings.workingDir)) {
-        setError(tr("Cannot create a directory for temporary files."));
+        setError(tr("Cannot create a folder for temporary files."));
         return;
     }
 }
@@ -194,12 +195,12 @@ QStringList HmmerSearchTask::getArguments() const {
         FAIL(tr("Unknown option controlling model-specific thresholding"), arguments);
     }
 
-    arguments << "--F1" << QString::number(settings.f1);
-    arguments << "--F2" << QString::number(settings.f2);
-    arguments << "--F3" << QString::number(settings.f3);
-
     if (settings.doMax) {
         arguments << "--max";
+    } else {
+        arguments << "--F1" << QString::number(settings.f1);
+        arguments << "--F2" << QString::number(settings.f2);
+        arguments << "--F3" << QString::number(settings.f3);
     }
 
     if (settings.noBiasFilter) {
@@ -213,12 +214,14 @@ QStringList HmmerSearchTask::getArguments() const {
     arguments << "--seed" << QString::number(settings.seed);
     arguments << "--cpu" << QString::number(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 
-    arguments << "--noali";
-    arguments << "--domtblout" << settings.workingDir + "/" + PER_DOMAIN_HITS_FILENAME;
+    if (settings.noali) {
+        arguments << "--noali";
+    }
 
+    arguments << "--domtblout" << settings.workingDir + "/" + PER_DOMAIN_HITS_FILENAME;
     arguments << settings.hmmProfileUrl;
     arguments << settings.sequenceUrl;
-
+    
     return arguments;
 }
 

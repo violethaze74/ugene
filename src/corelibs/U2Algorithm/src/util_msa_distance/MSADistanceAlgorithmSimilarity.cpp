@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 
 #include "MSADistanceAlgorithmSimilarity.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
@@ -41,7 +41,7 @@ QString MSADistanceAlgorithmFactorySimilarity::getName() const {
 }
 
 
-MSADistanceAlgorithm* MSADistanceAlgorithmFactorySimilarity::createAlgorithm(const MAlignment& ma, QObject* ) {
+MSADistanceAlgorithm* MSADistanceAlgorithmFactorySimilarity::createAlgorithm(const MultipleSequenceAlignment& ma, QObject* ) {
     MSADistanceAlgorithm* res = new MSADistanceAlgorithmSimilarity(this, ma);
     if(flags.testFlag(DistanceAlgorithmFlag_ExcludeGaps)){
         res->setExcludeGaps(true);
@@ -55,20 +55,20 @@ MSADistanceAlgorithm* MSADistanceAlgorithmFactorySimilarity::createAlgorithm(con
 // Algorithm
 
 void MSADistanceAlgorithmSimilarity::run() {
-    int nSeq = ma.getNumRows();
+    int nSeq = ma->getNumRows();
     for (int i = 0; i < nSeq; i++) {
         for (int j = i; j < nSeq; j++) {
             int sim = 0;
-            for (int k = 0; k < ma.getLength(); k++) {
+            for (int k = 0; k < ma->getLength(); k++) {
                 if (isCanceled()) {
                     return;
                 }
-                bool similar = (ma.charAt(i, k) == ma.charAt(j, k));
+                bool similar = (ma->charAt(i, k) == ma->charAt(j, k));
 
                 if(!excludeGaps){
                     if (similar) sim++;
                 }else{
-                    if (similar && ma.charAt(i, k)!=MAlignment_GapChar) sim++;
+                    if (similar && ma->charAt(i, k)!=U2Msa::GAP_CHAR) sim++;
                 }
 
             }

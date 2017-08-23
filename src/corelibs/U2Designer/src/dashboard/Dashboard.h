@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,12 +23,7 @@
 #define _U2_DASHBOARD_H_
 
 #include <QWebElement>
-
-#if (QT_VERSION < 0x050000) //Qt 5
 #include <QWebView>
-#else
-#include <QtWebKitWidgets/QWebView>
-#endif
 
 #include <U2Core/U2SafePoints.h>
 
@@ -118,11 +113,12 @@ private:
 class DashboardWidget : public QObject {
     Q_OBJECT
 public:
-    DashboardWidget(const QWebElement &container, Dashboard *parent);
+    DashboardWidget(const QWebElement &container, const QString &id, Dashboard *parent);
 
 protected:
     Dashboard *dashboard;
     QWebElement container;
+    const QString id;
 };
 
 class JavascriptAgent : public QObject {

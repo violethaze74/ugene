@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,14 +22,8 @@
 #ifndef _U2_ESTIMATION_REPORTER_H_
 #define _U2_ESTIMATION_REPORTER_H_
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QWebView>
 #include <QMessageBox>
-#else
-#include <QtWidgets/QMessageBox>
-#include <QtWebKitWidgets/QWebView>
-#endif
+#include <QWebView>
 
 #include <U2Core/global.h>
 #include <U2Lang/SchemaEstimationTask.h>

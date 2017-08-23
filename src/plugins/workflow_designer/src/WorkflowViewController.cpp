@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -385,7 +385,7 @@ void WorkflowView::setupScene() {
 void WorkflowView::setupPalette() {
     palette = new WorkflowPalette(WorkflowEnv::getProtoRegistry());
     palette->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored));
-    connect(palette, SIGNAL(processSelected(Workflow::ActorPrototype*)), SLOT(sl_selectPrototype(Workflow::ActorPrototype*)));
+    connect(palette, SIGNAL(processSelected(Workflow::ActorPrototype*, bool)), SLOT(sl_selectPrototype(Workflow::ActorPrototype*, bool)));
     connect(palette, SIGNAL(si_protoDeleted(const QString&)), SLOT(sl_protoDeleted(const QString&)));
     connect(palette, SIGNAL(si_protoListModified()), SLOT(sl_protoListModified()));
     connect(palette, SIGNAL(si_protoChanged()), scene, SLOT(sl_updateDocs()));
@@ -906,7 +906,7 @@ namespace {
         if (!dir.exists()) {
             bool created = dir.mkpath(dir.absolutePath());
             if (!created) {
-                os.setError(QObject::tr("Can not create the directory: ") + dir.absolutePath());
+                os.setError(QObject::tr("Can not create the folder: ") + dir.absolutePath());
                 return "";
             }
         }
@@ -1832,7 +1832,7 @@ void WorkflowView::sl_importSchemaToElement() {
     }
 }
 
-void WorkflowView::sl_selectPrototype(Workflow::ActorPrototype* p) {
+void WorkflowView::sl_selectPrototype(Workflow::ActorPrototype* p, bool putToScene) {
     propertyEditor->setEditable(!p);
     scene->clearSelection();
     currentProto = p;
@@ -1844,8 +1844,12 @@ void WorkflowView::sl_selectPrototype(Workflow::ActorPrototype* p) {
     } else {
         delete currentActor;
         currentActor = createActor(p, QVariantMap());
-        propertyEditor->setDescriptor(p, tr("Drag the palette element to the scene or just click on the scene to add the element."));
-        scene->views().at(0)->setCursor(Qt::CrossCursor);
+        if (putToScene) {
+            addProcess(currentActor, scene->getLastMousePressPoint());
+        } else {
+            propertyEditor->setDescriptor(p, tr("Drag the palette element to the scene or just click on the scene to add the element."));
+            scene->views().at(0)->setCursor(Qt::CrossCursor);
+        }
     }
 }
 
@@ -2067,7 +2071,7 @@ void WorkflowView::sl_onSelectionChanged() {
 void WorkflowView::sl_exportScene() {
     propertyEditor->commit();
     QString fileName = GUrlUtils::fixFileName(meta.name);
-    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(sceneView->viewport(), ExportImageDialog::WD, 
+    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(sceneView->viewport(), ExportImageDialog::WD,
                                                                            fileName, ExportImageDialog::SupportScaling,  sceneView->viewport());
     dialog->exec();
 }
@@ -2704,6 +2708,7 @@ void WorkflowScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     if (!locked && !mouseEvent->isAccepted() && controller->selectedProto() && (mouseEvent->button() == Qt::LeftButton)) {
         controller->addProcess(controller->getActor(), mouseEvent->scenePos());
     }
+    lastMousePressPoint = mouseEvent->scenePos();
     QGraphicsScene::mousePressEvent(mouseEvent);
 }
 

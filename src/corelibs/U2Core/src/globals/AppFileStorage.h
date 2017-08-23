@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -92,7 +92,7 @@ public:
     void unregisterWorkflowProcess(FileStorage::WorkflowProcess &process, U2OpStatus &os);
 
     /**
-     * Removes all files from the storage directory and all records from the storage
+     * Removes all files from the storage folder and all records from the storage
      * which are not used by registered workflow processes (active owners)
      * These active owners could be created not only by current process,
      * but by some other UGENE processes
@@ -100,7 +100,7 @@ public:
     void cleanup(U2OpStatus &os);
 
     /**
-     * Returns the absolute path to the new directory in the storage directory.
+     * Returns the absolute path to the new folder in the storage folder.
      * The result path does not contain "/" symbol in the end
      */
     QString createDirectory() const;

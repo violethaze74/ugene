@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,11 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Designer/EditMarkerGroupDialog.h>
 #include <U2Designer/MarkerEditor.h>
-
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Lang/Marker.h>
 #include <U2Lang/MarkerUtils.h>
@@ -36,13 +37,8 @@ MarkerEditorWidget::MarkerEditorWidget(QAbstractTableModel *markerModel, QWidget
 {
     setupUi(this);
     {
-#if (QT_VERSION < 0x050000) //Qt 5
-        markerTable->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-        markerTable->horizontalHeader()->setClickable(false);
-#else
         markerTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
         markerTable->horizontalHeader()->setSectionsClickable(false);
-#endif
         markerTable->horizontalHeader()->setStretchLastSection(true);
         markerTable->verticalHeader()->hide();
         markerTable->verticalHeader()->setDefaultSectionSize(QFontMetrics(QFont()).height() + 6);

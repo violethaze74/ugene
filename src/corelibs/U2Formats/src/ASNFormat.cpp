@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDebug>
-#include <QtCore/QStringList>
+#include <QDebug>
+#include <QStringList>
 
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/IOAdapter.h>
@@ -619,7 +619,7 @@ bool ASNFormat::AsnParser::readRootElement()
         throw AsnParserError(ASNFormat::tr("First line is too long"));
     }
 
-    QString line = QString(QByteArray::fromRawData(buf, len));
+    QString line = QString(QByteArray(buf, len));
     if (line.contains("::=")) {
         // get mime type
         int start = line.indexOf("::=")+ 4;

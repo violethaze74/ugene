@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 #define _GROUPER_ACTION_UTILS_
 
 #include <U2Core/AnnotationData.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2SequenceUtils.h>
 
 #include <U2Lang/Datatype.h>
@@ -94,7 +94,7 @@ public:
     virtual QVariant finishAction(U2OpStatus &os);
 
 private:
-    MAlignment result;
+    MultipleSequenceAlignment result;
 };
 
 class MergerMSAPerformer : public ActionPerformer {
@@ -104,7 +104,7 @@ public:
     virtual QVariant finishAction(U2OpStatus &os);
 
 private:
-    MAlignment result;
+    MultipleSequenceAlignment result;
 };
 
 class MergerStringPerformer : public ActionPerformer {

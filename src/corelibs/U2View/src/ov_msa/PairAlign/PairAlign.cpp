@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Alphabet.h>
 #include <U2Core/U2DbiUtils.h>
@@ -55,7 +55,7 @@
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/AlignmentAlgorithmGUIExtension.h>
 
@@ -63,9 +63,9 @@
 #include "../SequenceSelectorWidgetController.h"
 
 inline U2::U2DataId getSequenceIdByRowId( U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus &os ) {
-    U2::MAlignmentRow row = msa->getMSAObject()->getMAlignment().getRowByRowId(rowId, os);
+    const U2::MultipleSequenceAlignmentRow row = msa->getMaObject()->getMsa()->getMsaRowByRowId(rowId, os);
     CHECK_OP(os, U2::U2DataId());
-    return row.getRowDBInfo().sequenceId;
+    return row->getRowDbInfo().sequenceId;
 }
 
 namespace U2 {
@@ -117,9 +117,9 @@ void PairAlign::initLayout() {
 void PairAlign::initParameters() {
     if (2 == msa->getCurrentSelection().height()) {
         int selectionPos = msa->getCurrentSelection().y();
-        qint64 firstRowId = msa->getRowByLineNumber(selectionPos).getRowId();
+        qint64 firstRowId = msa->getRowByLineNumber(selectionPos)->getRowId();
         firstSeqSelectorWC->setSequenceId(firstRowId);
-        qint64 secondRowId = msa->getRowByLineNumber(selectionPos + 1).getRowId();
+        qint64 secondRowId = msa->getRowByLineNumber(selectionPos + 1)->getRowId();
         secondSeqSelectorWC->setSequenceId(secondRowId);
     } else {
         firstSeqSelectorWC->setSequenceId(pairwiseAlignmentWidgetsSettings->firstSequenceId);
@@ -152,7 +152,7 @@ void PairAlign::initParameters() {
 }
 
 void PairAlign::updateWarningMessage() {
-    QString alphabetName = msa->getMSAObject()->getAlphabet()->getName();
+    QString alphabetName = msa->getMaObject()->getAlphabet()->getName();
     lblMessage->setText(tr("Pairwise alignment is not available for alignments with \"%1\" alphabet.").arg(alphabetName));
 }
 
@@ -186,8 +186,8 @@ void PairAlign::connectSignals() {
 
     connect(firstSeqSelectorWC,         SIGNAL(si_selectionChanged()),         SLOT(sl_selectorTextChanged()));
     connect(secondSeqSelectorWC,        SIGNAL(si_selectionChanged()),         SLOT(sl_selectorTextChanged()));
-    connect(msa->getMSAObject(),        SIGNAL(si_lockedStateChanged()),       SLOT(sl_checkState()));
-    connect(msa->getMSAObject(),        SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)), SLOT(sl_alignmentChanged()));
+    connect(msa->getMaObject(),        SIGNAL(si_lockedStateChanged()),       SLOT(sl_checkState()));
+    connect(msa->getMaObject(),        SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
 }
 
 void PairAlign::sl_checkState(){
@@ -195,7 +195,7 @@ void PairAlign::sl_checkState(){
 }
 
 void PairAlign::sl_alignmentChanged() {
-    const DNAAlphabet* dnaAlphabet = msa->getMSAObject()->getAlphabet();
+    const DNAAlphabet* dnaAlphabet = msa->getMaObject()->getAlphabet();
     SAFE_POINT(NULL != dnaAlphabet, "Alignment alphabet is not defined.", );
     if(dnaAlphabet->getId() != pairwiseAlignmentWidgetsSettings->customSettings.value(PairwiseAlignmentTaskSettings::ALPHABET, "").toString()) {
         pairwiseAlignmentWidgetsSettings->customSettings.insert("alphabet", dnaAlphabet->getId());
@@ -231,9 +231,9 @@ void PairAlign::checkState() {
     showHideSettingsWidget->setEnabled(alphabetIsOk);
     showHideOutputWidget->setEnabled(alphabetIsOk);
 
-    bool readOnly = msa->getMSAObject()->isStateLocked();
-    canDoAlign = ((MAlignmentRow::invalidRowId() != firstSeqSelectorWC->sequenceId())
-                  && (MAlignmentRow::invalidRowId() != secondSeqSelectorWC->sequenceId())
+    bool readOnly = msa->getMaObject()->isStateLocked();
+    canDoAlign = ((U2MsaRow::INVALID_ROW_ID != firstSeqSelectorWC->sequenceId())
+                  && (U2MsaRow::INVALID_ROW_ID != secondSeqSelectorWC->sequenceId())
                   && (firstSeqSelectorWC->sequenceId() != secondSeqSelectorWC->sequenceId())
                   && sequenceNamesIsOk && alphabetIsOk && (!readOnly || inNewWindowCheckBox->isChecked()));
 
@@ -264,14 +264,10 @@ void PairAlign::updatePercentOfSimilarity() {
     SAFE_POINT(NULL != distanceFactory, QString("%1 algorithm factory not found.").arg(BuiltInDistanceAlgorithms::SIMILARITY_ALGO), );
 
     U2OpStatusImpl os;
-    MAlignment ma;
-    const MAlignment &currentAlignment = msa->getMSAObject()->getMAlignment();
-    ma.addRow(firstSeqSelectorWC->text(),
-        currentAlignment.getRowByRowId(firstSeqSelectorWC->sequenceId(), os).getData(), -1, os);
-    CHECK_OP(os, );
-    ma.addRow(secondSeqSelectorWC->text(),
-        currentAlignment.getRowByRowId(secondSeqSelectorWC->sequenceId(), os).getData(), -1, os);
-    CHECK_OP(os, );
+    MultipleSequenceAlignment ma;
+    const MultipleSequenceAlignment currentAlignment = msa->getMaObject()->getMultipleAlignment();
+    ma->addRow(firstSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1);
+    ma->addRow(secondSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1);
     distanceCalcTask = distanceFactory->createAlgorithm(ma);
     distanceCalcTask->setExcludeGaps(true);
     connect(distanceCalcTask, SIGNAL(si_stateChanged()), SLOT(sl_distanceCalculated()));
@@ -279,7 +275,7 @@ void PairAlign::updatePercentOfSimilarity() {
 }
 
 bool PairAlign::checkSequenceNames( ) {
-    QList<qint64> rowIds = msa->getMSAObject( )->getMAlignment( ).getRowsIds( );
+    QList<qint64> rowIds = msa->getMaObject( )->getMultipleAlignment( )->getRowsIds( );
     return ( rowIds.contains( firstSeqSelectorWC->sequenceId( ) )
         && rowIds.contains( secondSeqSelectorWC->sequenceId( ) ) );
 }
@@ -299,7 +295,7 @@ void PairAlign::sl_algorithmSelected(const QString& algorithmName) {
     AlignmentAlgorithm* alg = getAlgorithmById(algorithmName);
     SAFE_POINT(NULL != alg, QString("Algorithm %1 not found.").arg(algorithmName), );
     QString firstAlgorithmRealization = alg->getRealizationsList().first();
-    alphabetIsOk = alg->checkAlphabet(msa->getMSAObject()->getAlphabet());
+    alphabetIsOk = alg->checkAlphabet(msa->getMaObject()->getAlphabet());
 
     AlignmentAlgorithmGUIExtensionFactory* algGUIFactory = alg->getGUIExtFactory(firstAlgorithmRealization);
     SAFE_POINT(NULL != algGUIFactory, QString("Algorithm %1 GUI factory not found.").arg(firstAlgorithmRealization), );
@@ -335,7 +331,7 @@ void PairAlign::sl_alignButtonPressed() {
     SAFE_POINT(true == canDoAlign, "Invalide state of PairAlign options panel widget. startAlignButton is not disabled.", );
 
     U2OpStatus2Log os;
-    U2EntityRef msaRef = msa->getMSAObject()->getEntityRef();
+    U2EntityRef msaRef = msa->getMaObject()->getEntityRef();
     DbiConnection con(msaRef.dbiRef, os);
     CHECK_OP(os, );
 
@@ -367,7 +363,7 @@ void PairAlign::sl_alignButtonPressed() {
 
     settings.inNewWindow = inNewWindowCheckBox->isChecked();
     settings.msaRef = msaRef;
-    settings.alphabet = U2AlphabetId(msa->getMSAObject()->getAlphabet()->getId());
+    settings.alphabet = U2AlphabetId(msa->getMaObject()->getAlphabet()->getId());
     settings.firstSequenceRef = firstSequenceRef;
     settings.secondSequenceRef = secondSequenceRef;
     settingsWidget->getAlignmentAlgorithmCustomSettings(true);
@@ -418,11 +414,11 @@ void PairAlign::sl_alignComplete() {
     SAFE_POINT(NULL != pairwiseAlignmentWidgetsSettings->pairwiseAlignmentTask, "Can't process an unexpected align task", );
     if (true == pairwiseAlignmentWidgetsSettings->pairwiseAlignmentTask->isFinished()) {
         if(!inNewWindowCheckBox->isChecked()){
-            MAlignmentModInfo mi;
-            mi.sequenceListChanged = false;
+            MaModificationInfo mi;
+            mi.rowListChanged = false;
             mi.modifiedRowIds.append(pairwiseAlignmentWidgetsSettings->firstSequenceId);
             mi.modifiedRowIds.append(pairwiseAlignmentWidgetsSettings->secondSequenceId);
-            msa->getMSAObject()->updateCachedMAlignment(mi);
+            msa->getMaObject()->updateCachedMultipleAlignment(mi);
         }
         pairwiseAlignmentWidgetsSettings->pairwiseAlignmentTask = NULL;
     }

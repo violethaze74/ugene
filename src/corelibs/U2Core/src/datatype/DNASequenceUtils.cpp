@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-void DNASequenceUtils::append(DNASequence& sequence, const DNASequence& appendedSequence, U2OpStatus& /* os */) {
+void DNASequenceUtils::append(DNASequence& sequence, const DNASequence& appendedSequence) {
     sequence.seq += appendedSequence.constSequence();
 }
 
@@ -51,8 +51,8 @@ void DNASequenceUtils::removeChars(DNASequence& sequence, int startPos, int endP
 
 void DNASequenceUtils::removeChars(QByteArray& sequence, int startPos, int endPos, U2OpStatus& os) {
     if ((endPos <= startPos) || (startPos < 0) || (endPos > sequence.length())) {
-        coreLog.trace(L10N::internalError("incorrect parameters was passed to DNASequenceUtils::removeChars,"
-            "startPos '%1', endPos '%2', sequence length '%3'!").arg(startPos).arg(endPos).arg(sequence.length()));
+        coreLog.trace(L10N::internalError("incorrect parameters was passed to DNASequenceUtils::removeChars, "
+            "startPos '%1', endPos '%2', sequence length '%3'").arg(startPos).arg(endPos).arg(sequence.length()));
         os.setError("Can't remove chars from a sequence.");
         return;
     }
@@ -63,7 +63,7 @@ void DNASequenceUtils::removeChars(QByteArray& sequence, int startPos, int endPo
 void DNASequenceUtils::insertChars(QByteArray& sequence, int startPos, const QByteArray& newChars, U2OpStatus& os) {
     int endPos = startPos + newChars.length();
     CHECK_EXT(newChars.length() > 0, os.setError("Array of chars for replacing is empty!"), );
-    if ((startPos < 0) || (endPos > sequence.length())) {
+    if ((startPos < 0) || (startPos > sequence.length())) {
         coreLog.trace(L10N::internalError("incorrect parameters was passed to DNASequenceUtils::insertChars, "
             "startPos '%1', endPos '%2', sequence length '%3'!").arg(startPos).arg(endPos).arg(sequence.length()));
         os.setError("Can't remove chars from a sequence.");
@@ -114,6 +114,40 @@ QByteArray DNASequenceUtils::complement(const QByteArray &sequence) {
 
 QByteArray DNASequenceUtils::reverseComplement(const QByteArray &sequence) {
     return reverse(complement(sequence));
+}
+
+void DNASequenceUtils::crop(DNASequence &sequence, int startPos, int length) {
+    sequence.quality.qualCodes = sequence.quality.qualCodes.mid(startPos, length);
+    sequence.seq = sequence.seq.mid(startPos, length);
+}
+
+U2Region DNASequenceUtils::trimByQuality(DNASequence &sequence, int qualityThreshold, int minSequenceLength, bool trimBothEnds) {
+    const int sequenceLength = sequence.length();
+    CHECK(sequenceLength <= sequence.quality.qualCodes.length(), U2Region(0, sequenceLength));
+
+    int endPosition = sequenceLength - 1;
+    for (; endPosition >= 0; endPosition--) {
+        if (sequence.quality.getValue(endPosition) >= qualityThreshold) {
+            break;
+        }
+    }
+
+    int beginPosition = 0;
+    if (trimBothEnds) {
+        for (; beginPosition <= endPosition; beginPosition++) {
+            if (sequence.quality.getValue(beginPosition) >= qualityThreshold) {
+                break;
+            }
+        }
+    }
+
+    if (endPosition >= beginPosition && endPosition - beginPosition + 1 >= minSequenceLength) {
+        crop(sequence, beginPosition, endPosition - beginPosition + 1);
+    } else {
+        return U2Region(0, sequenceLength);
+    }
+
+    return U2Region(beginPosition, endPosition - beginPosition + 1);
 }
 
 } // namespace

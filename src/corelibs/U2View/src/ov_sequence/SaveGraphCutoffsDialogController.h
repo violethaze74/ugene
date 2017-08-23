@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,26 +25,30 @@
 #include <ui_SaveGraphCutoffsDialog.h>
 
 #include <U2View/ADVGraphModel.h>
-#include <U2View/ADVSequenceObjectContext.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
 
 namespace U2 {
 
+class SequenceObjectContext;
 class SaveGraphCutoffsDialogController : public QDialog, Ui_SaveGraphCutoffsDialog {
     Q_OBJECT
 public:
-    SaveGraphCutoffsDialogController(GSequenceGraphDrawer *_d, QSharedPointer<GSequenceGraphData>& _gd, QWidget *parent, ADVSequenceObjectContext* _ctx);
+    SaveGraphCutoffsDialogController(GSequenceGraphDrawer *d,
+                                     QSharedPointer<GSequenceGraphData>& gd,
+                                     QWidget *parent,
+                                     SequenceObjectContext* ctx);
 
     virtual void accept();
 private:
     inline bool isAcceptableValue(float val);
     bool validate();
+    void tryAddObject(AnnotationTableObject *annotationTableObject);
 
     CreateAnnotationWidgetController*   ac;
-    ADVSequenceObjectContext*           ctx;
+    SequenceObjectContext*              ctx;
     GSequenceGraphDrawer*               d;
-    QSharedPointer<GSequenceGraphData> gd;
+    QSharedPointer<GSequenceGraphData>  gd;
     QList<U2Region>                     resultRegions;
 };
 

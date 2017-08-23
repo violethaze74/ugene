@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ const U2EntityRef & ImportSequenceFromRawDataTask::getEntityRef() const {
 }
 
 void ImportSequenceFromRawDataTask::run() {
-    sequenceRef = U2SequenceUtils::import(dbiRef, folder, sequence, stateInfo);
+    sequenceRef = U2SequenceUtils::import(stateInfo, dbiRef, folder, sequence);
 }
 
 }   // namespace U2

@@ -5,12 +5,11 @@
 
 /* Average Prediction Module */
 
-#include <QtGlobal>
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QTemporaryFile>
-#include <QtCore/QTextStream>
-#include <QtCore/QString>
+#include <QDir>
+#include <QFile>
+#include <QTemporaryFile>
+#include <QTextStream>
+#include <QString>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/UserApplicationsSettings.h>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,17 +22,10 @@
 #include "SubstMatrixDialog.h"
 
 #include <U2Gui/HelpButton.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#include <QtGui/QScrollBar>
-#include <QtGui/QHeaderView>
-#include <QtGui/QTableWidgetItem>
-#else
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QScrollBar>
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QTableWidgetItem>
-#endif
+#include <QPushButton>
+#include <QScrollBar>
+#include <QHeaderView>
+#include <QTableWidgetItem>
 
 namespace U2 {
 
@@ -119,14 +112,8 @@ void SubstMatrixDialog::prepareTable() {
         tableMatrix->setItem(0, i+1, ptwi);
     }
 
-#if (QT_VERSION < 0x050000) //Qt 5
-    tableMatrix->verticalHeader()->setResizeMode(QHeaderView::Stretch);
-    tableMatrix->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-#else
     tableMatrix->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     tableMatrix->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-#endif
-
     tableMatrix->setMinimumSize(CELL_WIDTH * (n + 1) + 20, CELL_WIDTH * (n + 1) + 20); //+20 is for borders
 }
 

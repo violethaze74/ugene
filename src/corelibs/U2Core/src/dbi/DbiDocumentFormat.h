@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,9 +50,9 @@ protected:
     QList<GObject *> cloneObjects(const QList<GObject *> &srcObjects, const U2DbiRef &dstDbiRef, const QVariantMap &hints, U2OpStatus &os);
 
 private:
-    QString             formatName;
-    U2DbiFactoryId      id;
-    DocumentFormatId    formatId;
+    QString                  formatName;
+    U2DbiFactoryId           id;
+    DocumentFormatId         formatId;
 };
 
 }//namespace

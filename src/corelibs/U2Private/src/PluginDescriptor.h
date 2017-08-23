@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,8 @@
 
 #ifndef _U2_PLUGINDESCRIPTOR_H_
 #define _U2_PLUGINDESCRIPTOR_H_
+
+#include <QObject>
 
 #include <U2Core/global.h>
 #include <U2Core/Version.h>
@@ -90,7 +92,7 @@ public:
 class U2PRIVATE_EXPORT PluginDescriptorHelper: public QObject {
     Q_OBJECT
 private:
-    PluginDescriptorHelper() {};
+    PluginDescriptorHelper() {}
 public:
     static PluginDesc readPluginDescriptor(const QString& url, QString& error);
 

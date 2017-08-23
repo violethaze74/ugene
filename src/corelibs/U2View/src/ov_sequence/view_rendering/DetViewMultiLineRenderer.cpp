@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ namespace U2 {
 /* DetViewMultiLineRenderer */
 /************************************************************************/
 const int DetViewMultiLineRenderer::INDENT_BETWEEN_LINES = 30;
-DetViewMultiLineRenderer::DetViewMultiLineRenderer(DetView *detView, ADVSequenceObjectContext *ctx)
+DetViewMultiLineRenderer::DetViewMultiLineRenderer(DetView *detView, SequenceObjectContext *ctx)
     : DetViewRenderer(detView, ctx),
       extraIndent(0) {
     singleLinePainter = new DetViewSingleLineRenderer(detView, ctx);

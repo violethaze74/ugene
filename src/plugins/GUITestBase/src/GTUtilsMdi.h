@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,9 +46,12 @@ public:
     // fails if windowName is empty or because of FindOptions settings
     static QWidget* findWindow(HI::GUITestOpStatus &os, const QString& windowName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
 
+    static void closeActiveWindow(HI::GUITestOpStatus &os);
     static void closeWindow(HI::GUITestOpStatus &os, const QString& windowName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
     static void closeAllWindows(HI::GUITestOpStatus &os);
     static void waitWindowOpened(HI::GUITestOpStatus &os, const QString &windowNamePart, qint64 timeout = 180000);
+
+    static bool isTabbedLayout(HI::GUITestOpStatus &os);
 };
 
 } // namespace

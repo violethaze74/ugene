@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,23 +20,25 @@
  */
 
 #include <QApplication>
+#include <QDir>
+
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTLineEdit.h>
+#include <utils/GTUtilsDialog.h>
 
 #include "GTDatabaseConfig.h"
 #include "GTTestsPrimerLibrary.h"
 #include "GTUtilsAnnotationsTreeView.h"
-#include "GTUtilsOptionPanelSequenceView.h"
-#include "utils/GTUtilsDialog.h"
+#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPrimerLibrary.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsTaskTreeView.h"
-#include "GTUtilsLog.h"
-#include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTLineEdit.h>
-#include <drivers/GTMouseDriver.h>
 #include "runnables/ugene/plugins/pcr/AddPrimerDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ExportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
@@ -61,7 +63,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     //3. Click the close button.
     GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Close);
-
+    GTGlobals::sleep();
     //Expected: The window is closed.
     QWidget *libraryMdi3 = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false));
     CHECK_SET_ERR(NULL == libraryMdi3, "Library MDI is not closed");
@@ -322,7 +324,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 //    3. Click "Export".
 //    4. Fill the dialog:
 //        Export to: "Local file";
-//        Format: "genbank";
+//        Format: "GenBank";
 //        File path: any valid path;
 //    and accept the dialog.
     class ExportToGenbankScenario : public CustomScenario {
@@ -330,7 +332,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
             ExportPrimersDialogFiller::setExportTarget(os, ExportPrimersDialogFiller::LocalFile);
-            ExportPrimersDialogFiller::setFormat(os, "Genbank");
+            ExportPrimersDialogFiller::setFormat(os, "GenBank");
             ExportPrimersDialogFiller::setFilePath(os, sandBoxDir + "pcrlib/test_0007/primers.gb");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }

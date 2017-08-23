@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
 #include <QTextDocument>
-#endif
 
 #include <U2Core/AnnotationModification.h>
 #include <U2Core/AnnotationTableObject.h>
@@ -524,11 +521,7 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
             } else {
                 tip += "<br>";
             }
-#if (QT_VERSION >= 0x050000)
             tip += "<b>" + q.name.toHtmlEscaped() + "</b> = " + val.toHtmlEscaped();
-#else
-            tip += "<b>" + Qt::escape(q.name) + "</b> = " + Qt::escape(val);
-#endif
         }
         tip += "</nobr>";
     }
@@ -602,24 +595,14 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
             tip += "<br>";
         }
         SAFE_POINT(!seqVal.isEmpty(), "Empty sequence detected!", QString());
-#if (QT_VERSION >= 0x050000)
         tip += "<nobr><b>" + QObject::tr("Sequence") + "</b> = " + seqVal.toHtmlEscaped()
             + "</nobr>";
-#else
-        tip += "<nobr><b>" + QObject::tr("Sequence") + "</b> = " + Qt::escape(seqVal)
-            + "</nobr>";
-#endif
         rows++;
 
         if (rows <= maxRows && NULL != aminoTT) {
             tip += "<br>";
-#if (QT_VERSION >= 0x050000)
             tip += "<nobr><b>" + QObject::tr("Translation") + "</b> = "
                 + aminoVal.toHtmlEscaped() + "</nobr>";
-#else
-            tip += "<nobr><b>" + QObject::tr("Translation") + "</b> = " + Qt::escape(aminoVal)
-                + "</nobr>";
-#endif
         }
     }
     return tip;

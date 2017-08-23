@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,6 +58,7 @@ private:
  * The PairedFastqComparator class
  */
 class U2FORMATS_EXPORT PairedFastqComparator : public QObject {
+    Q_OBJECT
 public:
     PairedFastqComparator(const QString& inputFile_1, const QString& inputFile_2,
                           const QString& outputFile_1, const QString& outputFile_2,

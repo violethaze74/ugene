@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,21 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtXml/QDomDocument>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPrinter>
-#include <QtGui/QLabel>
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QVBoxLayout>
-#else
-#include <QtPrintSupport/QPrinter>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QVBoxLayout>
-#endif
-#include <QtSvg/QSvgGenerator>
+#include <QDomDocument>
+#include <QPrinter>
+#include <QLabel>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QVBoxLayout>
+#include <QSvgGenerator>
 
 #include <U2Core/U2SafePoints.h>
 

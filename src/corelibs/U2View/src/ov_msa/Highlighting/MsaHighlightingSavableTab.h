@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #ifndef _U2_MSA_HIGHLIGHTING_SAVABLE_TAB_H_
 #define _U2_MSA_HIGHLIGHTING_SAVABLE_TAB_H_
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 #include "../MsaOpSavableTab.h"
 

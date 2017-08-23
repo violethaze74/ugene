@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #ifndef _U2_PAIRWISE_ALIGNER_H_
 #define _U2_PAIRWISE_ALIGNER_H_
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
@@ -31,7 +31,7 @@ public:
     PairwiseAligner(const QByteArray &seq1, const QByteArray &seq2);
     virtual ~PairwiseAligner();
 
-    virtual MAlignment align() = 0;
+    virtual MultipleSequenceAlignment align() = 0;
     virtual void setSeq1(const QByteArray &value);
     virtual void setSeq2(const QByteArray &value);
     virtual void setSeqs(const QByteArray &value1, const QByteArray &value2);

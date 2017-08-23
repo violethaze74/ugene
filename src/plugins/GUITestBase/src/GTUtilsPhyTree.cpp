@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,14 +23,17 @@
 
 #include <QGraphicsItem>
 
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTWidget.h>
+#include <utils/GTThread.h>
+
+#include <U2Core/U2SafePoints.h>
+
 #include <U2View/GraphicsButtonItem.h>
 #include <U2View/GraphicsRectangularBranchItem.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsPhyTree.h"
-#include <drivers/GTMouseDriver.h>
-#include <primitives/GTWidget.h>
-#include <utils/GTThread.h>
 
 namespace U2 {
 using namespace HI;

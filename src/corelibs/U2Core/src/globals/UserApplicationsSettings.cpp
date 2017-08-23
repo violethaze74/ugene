@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,25 +26,15 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/GUrlUtils.h>
 
-#include <QtCore/QSettings>
-#include <QtCore/QDir>
-#include <QtCore/QProcessEnvironment>
-
-#include <QtGui/QDesktopServices>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleFactory>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QStyle>
-#include <QtWidgets/QStyleFactory>
-#include <QtWidgets/QDialogButtonBox>
+#include <QApplication>
+#include <QDesktopServices>
+#include <QDialogButtonBox>
+#include <QDir>
+#include <QProcessEnvironment>
+#include <QSettings>
 #include <QStandardPaths>
-#endif
-
-
+#include <QStyle>
+#include <QStyleFactory>
 
 namespace U2 {
 
@@ -169,12 +159,7 @@ void UserAppsSettings::setRecentlyDownloadedFileNames(const QStringList& fileNam
 }
 
 QString UserAppsSettings::getUserTemporaryDirPath() const {
-#if (QT_VERSION >= 0x050000)
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + TEMPORARY_DIR, QStandardPaths::writableLocation(QStandardPaths::TempLocation)).toString();
-#else
-    return AppContext::getSettings()->getValue(SETTINGS_ROOT + TEMPORARY_DIR, QDesktopServices::storageLocation(QDesktopServices::TempLocation)).toString();
-#endif
-
 }
 
 void UserAppsSettings::setUserTemporaryDirPath(const QString& newPath) {
@@ -230,7 +215,7 @@ QString UserAppsSettings::createCurrentProcessTemporarySubDir(U2OpStatus &os, co
     if (!baseDir.exists()) {
         bool created = baseDir.mkpath(baseDir.absolutePath());
         if (!created) {
-            os.setError(QString("Can not create the directory: %1").arg(baseDir.absolutePath()));
+            os.setError(QString("Can not create the folder: %1").arg(baseDir.absolutePath()));
             return "";
         }
     }
@@ -248,7 +233,7 @@ QString UserAppsSettings::createCurrentProcessTemporarySubDir(U2OpStatus &os, co
         idx++;
 
         if (idx > MAX_ATTEMPTS) {
-            os.setError(QString("Can not create a sub-directory in: %1").arg(baseDir.absolutePath()));
+            os.setError(QString("Can not create a sub-folder in: %1").arg(baseDir.absolutePath()));
             return "";
         }
     } while (!created);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,19 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtXml/qdom.h>
+#include <QDomDocument>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/Settings.h>
 #include <U2Core/Counter.h>
-#include <U2Core/L10n.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/L10n.h>
+#include <U2Core/Settings.h>
+
 #include <U2Lang/HRSchemaSerializer.h>
 
-#include "WorkflowViewController.h"
 #include "SceneSerializer.h"
 #include "WorkflowDocument.h"
 #include "WorkflowSceneIOTasks.h"
+#include "WorkflowViewController.h"
 
 namespace U2 {
 using namespace Workflow;

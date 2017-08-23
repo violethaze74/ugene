@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,8 @@
 #include <QWebElement>
 #include <QApplication>
 #include <QTreeWidget>
+#include <QDebug>
+#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -31,7 +33,7 @@
 #include <U2View/ADVConstants.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
 #include <U2View/AssemblyBrowserFactory.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "GTTestsProject.h"
 #include "utils/GTUtilsApp.h"
@@ -89,7 +91,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 #ifdef Q_OS_MAC
     expectedTitle = "proj1 UGENE";
 #else
-    expectedTitle = "proj1 UGENE - [Start Page]";
+    expectedTitle = "proj1 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
 
@@ -97,7 +99,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 // Expected state: "Export Project" dialog has appeared
 //
 // 3. Fill the next field in dialog:
-//     {Destination Directory} _common_data/scenarios/sandbox
+//     {Destination folder} _common_data/scenarios/sandbox
 // 4. Click OK button
     GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir+"_common_data/scenarios/sandbox"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Export project...");
@@ -144,7 +146,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 #ifdef Q_OS_MAC
     expectedTitle = "proj1 UGENE";
 #else
-    expectedTitle = "proj1 UGENE - [Start Page]";
+    expectedTitle = "proj1 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
@@ -160,7 +162,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 #ifdef Q_OS_MAC
     expectedTitle = "proj2 UGENE";
 #else
-    expectedTitle = "proj2 UGENE - [Start Page]";
+    expectedTitle = "proj2 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
@@ -175,7 +177,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 #ifdef Q_OS_MAC
     expectedTitle = "UGENE";
 #else
-    expectedTitle = "UGENE - [Start Page]";
+    expectedTitle = "UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
 
@@ -200,7 +202,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
-    GTUtilsDocument::checkDocument(os, "ty3.aln.gz", MSAEditorFactory::ID);
+    GTUtilsDocument::checkDocument(os, "ty3.aln.gz", MsaEditorFactory::ID);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
@@ -297,7 +299,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export document", GTGlobals::UseMouse));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "murine.gb"));
-    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, testDir + "_common_data/genbank/.dir/", "murine_copy1.gb",
+                                                   ExportDocumentDialogFiller::Genbank, false, true, GTGlobals::UseMouse));
+    
     GTMouseDriver::click(Qt::RightButton);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "murine_copy1.gb"));
@@ -407,7 +411,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/1m.fa");
     GTGlobals::sleep();
-    GTUtilsMdi::click(os, GTGlobals::Minimize);
+    // GTUtilsMdi::click(os, GTGlobals::Minimize);
 
     QWidget* w = GTUtilsMdi::findWindow(os, "1m [m] Multiple alignment");
     CHECK_SET_ERR(w != NULL, "Sequence view window title is not 1m [m] Multiple alignment");
@@ -496,9 +500,9 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDocument::checkDocument(os, "ace_test_1.ace", MSAEditorFactory::ID);
+    GTUtilsDocument::checkDocument(os, "ace_test_1.ace", MsaEditorFactory::ID);
     GTUtilsProjectTreeView::checkObjectTypes(os,
-                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_ALIGNMENT,
+                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
                                              GTUtilsProjectTreeView::findIndex(os, "ace_test_1.ace"));
 
 //    3. Open "_common_data/ACE/ace_test_2.ace".
@@ -722,23 +726,6 @@ GUI_TEST_CLASS_DEFINITION(test_0043){
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "Tree");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0044){
-    GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check document which format cant be saved by UGENE
-    GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
-
-    GTUtilsProjectTreeView::click(os, "COI.aln");
-    QString fileContent = readFileToStr(dataDir + "samples/HMM/aligment15900.hmm");
-    GTClipboard::setText(os, fileContent);
-
-    GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
-    GTGlobals::sleep();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProjectTreeView::findIndex(os, "aligment15900");
-
-    GTUtilsProjectTreeView::itemModificationCheck(os, GTUtilsProjectTreeView::findIndex(os, "clipboard.hmm"), false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0045){

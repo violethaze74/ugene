@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -224,13 +224,13 @@ void SelectSubalignmentFiller::commonScenario() {
     QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
-    QSpinBox* startPosBox = dialog->findChild<QSpinBox*>("startPosBox");
-    GT_CHECK(startPosBox != NULL, "startPosBox is NULL");
-    GTSpinBox::setValue(os, startPosBox, msaRegion.region.startPos, GTGlobals::UseKeyBoard);
+    QSpinBox* startLineEdit = dialog->findChild<QSpinBox*>("startLineEdit");
+    GT_CHECK(startLineEdit != NULL, "startLineEdit is NULL");
+    GTSpinBox::setValue(os, startLineEdit, msaRegion.region.startPos, GTGlobals::UseKeyBoard);
 
-    QSpinBox* endPosBox = dialog->findChild<QSpinBox*>("endPosBox");
-    GT_CHECK(endPosBox != NULL, "endPoxBox is NULL");
-    GTSpinBox::setValue(os, endPosBox, msaRegion.region.endPos(), GTGlobals::UseKeyBoard);
+    QSpinBox* endLineEdit = dialog->findChild<QSpinBox*>("endLineEdit");
+    GT_CHECK(endLineEdit != NULL, "endPoxBox is NULL");
+    GTSpinBox::setValue(os, endLineEdit, msaRegion.region.endPos(), GTGlobals::UseKeyBoard);
 
     QWidget *noneButton = dialog->findChild<QWidget*>("noneButton");
     GT_CHECK(noneButton!=NULL, "noneButton is NULL");

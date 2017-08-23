@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,6 +61,8 @@ class ExternalToolsWidget : public DashboardWidget {
     Q_OBJECT
 public:
     ExternalToolsWidget(const QWebElement &container, Dashboard *parent, const ExternalToolsWidgetController* ctrl);
+
+    static const QString ID;
 
 public slots:
     void sl_onLogUpdate();

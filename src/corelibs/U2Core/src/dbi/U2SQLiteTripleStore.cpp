@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -112,11 +112,11 @@ void U2SQLiteTripleStore::init(const QString &url, U2OpStatus &os) {
             break;
         }
 
-        SQLiteQuery("PRAGMA synchronous = OFF", db, os).execute();
-        SQLiteQuery("PRAGMA main.locking_mode = NORMAL", db, os).execute();
-        SQLiteQuery("PRAGMA temp_store = MEMORY", db, os).execute();
-        SQLiteQuery("PRAGMA journal_mode = MEMORY", db, os).execute();
-        SQLiteQuery("PRAGMA cache_size = 10000", db, os).execute();
+        SQLiteWriteQuery("PRAGMA synchronous = OFF", db, os).execute();
+        SQLiteWriteQuery("PRAGMA main.locking_mode = NORMAL", db, os).execute();
+        SQLiteWriteQuery("PRAGMA temp_store = MEMORY", db, os).execute();
+        SQLiteWriteQuery("PRAGMA journal_mode = MEMORY", db, os).execute();
+        SQLiteWriteQuery("PRAGMA cache_size = 10000", db, os).execute();
 
         // check if the opened database is valid sqlite dbi
         if (isEmpty(os)) {
@@ -163,7 +163,7 @@ bool U2SQLiteTripleStore::isEmpty(U2OpStatus &os) const {
 
 void U2SQLiteTripleStore::createTables(U2OpStatus &os) {
     QMutexLocker lock(&db->lock);
-    SQLiteQuery("CREATE TABLE Triplets (id INTEGER PRIMARY KEY AUTOINCREMENT, "
+    SQLiteWriteQuery("CREATE TABLE Triplets (id INTEGER PRIMARY KEY AUTOINCREMENT, "
         "key TEXT NOT NULL, role TEXT NOT NULL, value TEXT NOT NULL)", db, os).execute();
 }
 
@@ -214,7 +214,7 @@ bool U2SQLiteTripleStore::contains(const QString &key, const QString &role, U2Op
 bool U2SQLiteTripleStore::contains(const U2Triplet &value, U2OpStatus &os) const {
     QMutexLocker lock(&db->lock);
     static const QString queryString("SELECT t.id FROM Triplets t WHERE t.key = ?1 AND t.role = ?2 AND t.value = ?3");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     q.bindString(1, value.getKey());
     q.bindString(2, value.getRole());
     q.bindString(3, value.getValue());
@@ -230,7 +230,7 @@ bool U2SQLiteTripleStore::contains(const U2Triplet &value, U2OpStatus &os) const
 QString U2SQLiteTripleStore::getValue(const QString &key, const QString &role, U2OpStatus &os) const {
     QMutexLocker lock(&db->lock);
     static const QString queryString("SELECT t.value FROM Triplets t WHERE t.key = ?1 AND t.role = ?2 ORDER BY t.id");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     q.bindString(1, key);
     q.bindString(2, role);
 
@@ -244,7 +244,7 @@ QString U2SQLiteTripleStore::getValue(const QString &key, const QString &role, U
 qint64 U2SQLiteTripleStore::getTripletId(const U2Triplet &triplet, bool &found, U2OpStatus &os) const {
     QMutexLocker lock(&db->lock);
     static const QString queryString("SELECT t.id FROM Triplets t WHERE t.key = ?1 AND t.role = ?2 AND t.value = ?3");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
     q.bindString(1, triplet.getKey());
     q.bindString(2, triplet.getRole());
     q.bindString(3, triplet.getValue());
@@ -262,7 +262,7 @@ qint64 U2SQLiteTripleStore::getTripletId(const U2Triplet &triplet, bool &found, 
 qint64 U2SQLiteTripleStore::insertTriplet(const U2Triplet &triplet, U2OpStatus &os) {
     QMutexLocker lock(&db->lock);
     static const QString queryString("INSERT INTO Triplets(key, role, value) VALUES(?1, ?2, ?3)");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteWriteQuery q(queryString, db, os);
     q.bindString(1, triplet.getKey());
     q.bindString(2, triplet.getRole());
     q.bindString(3, triplet.getValue());
@@ -273,7 +273,7 @@ qint64 U2SQLiteTripleStore::insertTriplet(const U2Triplet &triplet, U2OpStatus &
 void U2SQLiteTripleStore::removeTriplet(qint64 tripletId, U2OpStatus &os) {
     QMutexLocker lock(&db->lock);
     static const QString queryString("DELETE FROM Triplets WHERE id = ?1");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteWriteQuery q(queryString, db, os);
     q.bindInt64(1, tripletId);
 
     q.execute();
@@ -282,7 +282,7 @@ void U2SQLiteTripleStore::removeTriplet(qint64 tripletId, U2OpStatus &os) {
 QList<U2Triplet> U2SQLiteTripleStore::getTriplets(U2OpStatus &os) const {
     QMutexLocker lock(&db->lock);
     static const QString queryString("SELECT t.id, t.key, t.role, t.value FROM Triplets t");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadQuery q(queryString, db, os);
 
     QList<U2Triplet> result;
     while (q.step()) {
@@ -296,7 +296,7 @@ QList<U2Triplet> U2SQLiteTripleStore::getTriplets(U2OpStatus &os) const {
 void U2SQLiteTripleStore::removeValue(const U2Triplet &value, U2OpStatus &os) {
     QMutexLocker lock(&db->lock);
     static const QString queryString("DELETE FROM Triplets WHERE id = ?1");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteWriteQuery q(queryString, db, os);
     q.bindInt64(1, value.id);
 
     q.execute();

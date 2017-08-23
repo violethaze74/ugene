@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/U2Type.h>
 
-#include <QtCore/QDataStream>
+#include <QDataStream>
 
 namespace U2 {
 
@@ -43,6 +43,8 @@ public:
     bool isValid() const {return !docUrl.isEmpty() && !objName.isEmpty() && !objType.isEmpty();}
 
     bool operator ==(const GObjectReference& o) const;
+
+    bool operator <(const GObjectReference& o) const;
 
     /** GObject reference keeps only string path of the document url.
         This must be enough to find document in the project
@@ -67,6 +69,10 @@ private:
 
 inline uint qHash(const GObjectReference& key) {
     return ::qHash(key.docUrl) + ::qHash(key.objName) + ::qHash(key.objType);
+}
+
+inline uint qHash(const GObjectReference* key) {
+    return ::qHash(key->docUrl) + ::qHash(key->objName) + ::qHash(key->objType);
 }
 
 //TODO: add constraints on relation roles

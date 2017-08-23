@@ -53,7 +53,7 @@
         <translation>Найдены ошибки в библиотеке: %1</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusUtils.cpp" line="109"/>
+        <location filename="../src/util_msa_consensus/MSAConsensusUtils.cpp" line="107"/>
         <source>Gaps:</source>
         <translation>Пробелы:</translation>
     </message>
@@ -92,47 +92,47 @@
 <context>
     <name>U2::AlignInAminoFormTask</name>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="99"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="99"/>
         <source>Align in amino form</source>
         <translation>Выравнивание в амино форму</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="109"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="109"/>
         <source>Invalid MSA object detected</source>
         <translation>Обнаружен некорректный MSA объект</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="110"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="110"/>
         <source>AlignInAminoFormTask: Input alphabet is not nucleic!</source>
         <translation>AlignInAminoFormTask: Входной алфавит не является нуклеотидным!</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="111"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="111"/>
         <source>AlignInAminoFormTask: Input alignment is empty!</source>
         <translation>AlignInAminoFormTask: Входное выравнивание пустое!</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="118"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="118"/>
         <source>Invalid applications settings detected</source>
         <translation>Обнаружены некорректные настройки приложений</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="121"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="121"/>
         <source>Invalid users applications settings detected</source>
         <translation>Обнаружены некорректные настройки приложений</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="128"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="128"/>
         <source>Invalid MSA document detected</source>
         <translation>Обнаружен некорректный MSA документ</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="148"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="148"/>
         <source>NULL clonedObj in AlignInAminoFormTask::prepare!</source>
         <translation>NULL clonedObj in AlignInAminoFormTask::prepare!</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="158"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="157"/>
         <source>Can not find row %1 in original alignment.</source>
         <translation>Строка %1 не может быть найдена в исходном выравнивании.</translation>
     </message>
@@ -181,7 +181,7 @@
 <context>
     <name>U2::BestPositionFindTask</name>
     <message>
-        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="105"/>
+        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="108"/>
         <source>Best position find task</source>
         <translation>Best position find task</translation>
     </message>
@@ -189,12 +189,12 @@
 <context>
     <name>U2::CreateSubalignmentTask</name>
     <message>
-        <location filename="../src/util_msaedit/CreateSubalignmentTask.cpp" line="55"/>
+        <location filename="../src/util_msaedit/CreateSubalignmentTask.cpp" line="50"/>
         <source>Create sub-alignment: %1</source>
         <translation>Создание участка выравнивания: %1</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/CreateSubalignmentTask.cpp" line="89"/>
+        <location filename="../src/util_msaedit/CreateSubalignmentTask.cpp" line="82"/>
         <source>Document is locked: %1</source>
         <translation>Документ заблокирован: %1</translation>
     </message>
@@ -202,7 +202,7 @@
 <context>
     <name>U2::DnaAssemblyMultiTask</name>
     <message>
-        <location filename="../src/misc/DnaAssemblyMultiTask.cpp" line="84"/>
+        <location filename="../src/misc/DnaAssemblyMultiTask.cpp" line="79"/>
         <source>The short reads can&apos;t be mapped to the reference sequence!</source>
         <translation>Короткие риды не могут быть отражены в референсной последовательности!</translation>
     </message>
@@ -226,7 +226,7 @@
 <context>
     <name>U2::GenomeAssemblyMultiTask</name>
     <message>
-        <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="86"/>
+        <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="81"/>
         <source>Assembly cannot be performed.</source>
         <translation>Assembly cannot be performed.</translation>
     </message>
@@ -273,7 +273,7 @@
 <context>
     <name>U2::MSAConsensusAlgorithmFactoryLevitsky</name>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmLevitsky.cpp" line="36"/>
+        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmLevitsky.cpp" line="38"/>
         <source>The algorithm proposed by Victor Levitsky to work with DNA alignments.
 Collects global alignment frequency for every symbol using extended (15 symbols) DNA alphabet first.
 For every column selects the most rare symbol in the whole alignment with percentage in the column greater or equals to the threshold value.</source>
@@ -282,7 +282,7 @@ For every column selects the most rare symbol in the whole alignment with percen
 Для каждого столбца выбирается наиболее редко встречаемый символ во всём выравнивании, такой что процентное соотношение его появления в столбце больше либо равно значению порога.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmLevitsky.cpp" line="44"/>
+        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmLevitsky.cpp" line="46"/>
         <source>Levitsky</source>
         <translation>Схема Левицкого</translation>
     </message>
@@ -290,12 +290,12 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MSAConsensusAlgorithmFactoryStrict</name>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmStrict.cpp" line="39"/>
+        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmStrict.cpp" line="41"/>
         <source>The algorithm returns gap character (&apos;-&apos;) if symbol frequency in a column is lower than threshold specified.</source>
         <translation>Алгоритм возвращает символ пробела (&apos;-&apos;), если частота появления символа в столбце меньше, чем величина, заданная в пороге.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmStrict.cpp" line="43"/>
+        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmStrict.cpp" line="45"/>
         <source>Strict</source>
         <translation>Строгая схема</translation>
     </message>
@@ -350,7 +350,7 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MSADistanceAlgorithmHammingRevCompl</name>
     <message>
-        <location filename="../src/util_msa_distance/MSADistanceAlgorithmHammingRevCompl.cpp" line="78"/>
+        <location filename="../src/util_msa_distance/MSADistanceAlgorithmHammingRevCompl.cpp" line="77"/>
         <source>An unexpected error has occurred during running the Hamming reverse-complement algorithm.</source>
         <translation>Произошла ошибка во время запуска обратно-комплементарного алгоритма Хэмминга.</translation>
     </message>
@@ -364,113 +364,126 @@ For every column selects the most rare symbol in the whole alignment with percen
     </message>
 </context>
 <context>
+    <name>U2::MsaColorSchemeFactory</name>
+    <message>
+        <source>Nucleotide</source>
+        <translation type="vanished">Нуклеотидная</translation>
+    </message>
+    <message>
+        <source>Amino</source>
+        <translation type="vanished">Аминокислотная</translation>
+    </message>
+</context>
+<context>
     <name>U2::MsaColorSchemeRegistry</name>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="496"/>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="511"/>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="552"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="521"/>
         <source>No colors</source>
         <translation>Без цвета</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="504"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="529"/>
         <source>Jalview</source>
         <translation>Раскраска Jalview</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="506"/>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="545"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="531"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="569"/>
         <source>Percentage Identity</source>
         <translation>По процентному соотношению</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="507"/>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="546"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="532"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="570"/>
         <source>Percentage Identity (gray)</source>
         <translation>По процентному соотношению (серый)</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="519"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="543"/>
         <source>Zappo</source>
         <translation>Zappo</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="523"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="547"/>
         <source>Tailor</source>
         <translation>Tailor</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="527"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="551"/>
         <source>Hydrophobicity</source>
         <translation>Гидрофобность</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="531"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="555"/>
         <source>Helix propensity</source>
         <translation>Склонность к спиральности</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="535"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="559"/>
         <source>Strand propensity</source>
         <translation>Склонность к линейности</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="539"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="563"/>
         <source>Turn propensity</source>
         <translation>Склонность к сворачиванию</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="543"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="567"/>
         <source>Buried index</source>
         <translation>Индекс</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="548"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="572"/>
         <source>Clustal X</source>
         <translation>Clustal X</translation>
     </message>
 </context>
 <context>
+    <name>U2::MsaHighlightingSchemeFactory</name>
+    <message>
+        <source>Nucleotide</source>
+        <translation type="vanished">Нуклеотидная</translation>
+    </message>
+    <message>
+        <source>Amino</source>
+        <translation type="vanished">Аминокислотная</translation>
+    </message>
+</context>
+<context>
     <name>U2::MsaHighlightingSchemeRegistry</name>
     <message>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="120"/>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="121"/>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="122"/>
+        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="117"/>
         <source>No highlighting</source>
         <translation>Без выделения</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="124"/>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="125"/>
+        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="118"/>
         <source>Agreements</source>
         <translation>Совпадающие нуклеотиды</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="127"/>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="128"/>
+        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="119"/>
         <source>Disagreements</source>
         <translation>Различающиеся нуклеотиды</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="130"/>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="131"/>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="132"/>
+        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="120"/>
         <source>Gaps</source>
         <translation>Пробелы</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="134"/>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="135"/>
+        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="121"/>
         <source>Conservation level</source>
         <translation>Уровень сохранения</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="137"/>
+        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="122"/>
         <source>Transitions</source>
         <translation>Транзиции</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="138"/>
+        <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="123"/>
         <source>Transversions</source>
         <translation>Трансверсии</translation>
     </message>
@@ -578,7 +591,7 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::SimpleAddToAlignmentTask</name>
     <message>
-        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="49"/>
+        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="52"/>
         <source>Align sequences to an existing alignment by UGENE started</source>
         <translation>Align sequences to an existing alignment by UGENE started</translation>
     </message>
@@ -615,19 +628,19 @@ For every column selects the most rare symbol in the whole alignment with percen
     </message>
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="222"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="308"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="306"/>
         <source>Failed to create an alignment.</source>
         <translation>Неудачная попытка создания выравнивания.</translation>
     </message>
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="251"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="328"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="326"/>
         <source>Smith-Waterman pairwise alignment: no results</source>
         <translation>Парное выравнивание Smith-Waterman: нет результатов</translation>
     </message>
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="258"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="334"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="332"/>
         <source>Sequences aren&apos;t stored in the source msa dbi</source>
         <translation>Последовательности не хранятся в источнике msa dbi</translation>
     </message>
@@ -639,33 +652,31 @@ For every column selects the most rare symbol in the whole alignment with percen
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="278"/>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="280"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="342"/>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="344"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="346"/>
         <source>Failed to get the sequence object.</source>
         <translation>Неудачная попытка получения объекта последовательности.</translation>
     </message>
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="294"/>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="296"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="360"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="363"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="358"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="361"/>
         <source>Failed to get the sequence data.</source>
         <translation>Неудачная попытка получения данных последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="303"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="305"/>
         <source>Failed to add row to result msa.</source>
-        <translation>Неудачная попытка добавления строки в результирующее выравнивание.</translation>
+        <translation type="vanished">Неудачная попытка добавления строки в результирующее выравнивание.</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="372"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="370"/>
         <source>Failed to get msa from dbi</source>
         <translation>Неудачная попытка получения msa из dbi</translation>
     </message>
     <message>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="394"/>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="396"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="398"/>
         <source>Failed to update row gap model</source>
         <translation>Неудачная попытка обновить модель пробелов строк</translation>
     </message>
@@ -748,32 +759,32 @@ For every column selects the most rare symbol in the whole alignment with percen
     </message>
 </context>
 <context>
-    <name>U2::TranslateMSA2AminoTask</name>
+    <name>U2::TranslateMsa2AminoTask</name>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="48"/>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="61"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="48"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="61"/>
         <source>Translate nucleic alignment to amino</source>
         <translation>Трансляция нуклеотидного выравнивания в амино</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="50"/>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="63"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="50"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="63"/>
         <source>Invalid MSA object detected</source>
         <translation>Обнаружен некорректный MSA объект</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="51"/>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="64"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="51"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="64"/>
         <source>Multiple alignment already has amino-acid alphabet</source>
         <translation>Выравнивание уже имеет аминокислотный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="55"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="55"/>
         <source>Unable to find suitable translation for %1</source>
         <translation>Невозможно найти подходящую трансляцию для %1</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/MAlignmentUtilTasks.cpp" line="71"/>
+        <location filename="../src/util_msaedit/MsaUtilTasks.cpp" line="71"/>
         <source>Invalid translation object</source>
         <translation>Некорректный объект трансляции</translation>
     </message>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,10 +30,10 @@
 
 #include "StateLockableDataModel.h"
 
-#include <QtCore/QDateTime>
-#include <QtCore/QMimeData>
-#include <QtCore/QPointer>
-#include <QtScript/QScriptValue>
+#include <QDateTime>
+#include <QMimeData>
+#include <QPointer>
+#include <QScriptValue>
 
 namespace U2 {
 
@@ -389,6 +389,8 @@ public:
     void setURL(const GUrl& newUrl);
 
     void makeClean();
+
+    void setModificationTrack(bool track);
 
     // avoid using this method against shared databases documents,
     // since databases allow many objects with the same name. The method returns

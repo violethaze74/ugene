@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ ExportSequences2MSADialog::ExportSequences2MSADialog(QWidget* p, const QString& 
     : QDialog(p),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759427");
+    new HelpButton(this, buttonBox, "19766684");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     okButton = buttonBox->button(QDialogButtonBox::Ok);
@@ -74,7 +74,7 @@ void ExportSequences2MSADialog::initSaveController(const QString &defaultUrl) {
     config.parentWidget = this;
 
     DocumentFormatConstraints formatConstraints;
-    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_ALIGNMENT;
+    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     formatConstraints.addFlagToSupport(DocumentFormatFlag_SupportWriting);
 
     saveController = new SaveDocumentController(config, formatConstraints, this);

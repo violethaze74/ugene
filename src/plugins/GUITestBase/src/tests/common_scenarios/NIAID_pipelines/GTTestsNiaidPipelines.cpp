@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,20 +43,12 @@
 #include <U2Core/AppContext.h>
 #include <U2Gui/ToolsMenu.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QWizard>
-#include <QtGui/QLineEdit>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QGraphicsItem>
-#include <QtWidgets/QWizard>
-#include <QtWidgets/QLineEdit>
-#endif
+#include <QApplication>
+#include <QGraphicsItem>
+#include <QWizard>
+#include <QLineEdit>
 
 #include <QProcess>
-
 
 namespace U2 {
 
@@ -76,6 +68,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
     while(!scheduller->getTopLevelTasks().isEmpty()){
         GTGlobals::sleep();
     }
+	GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
 }
 #define GT_CLASS_NAME "GTUtilsDialog::WizardFiller0002"
 #define GT_METHOD_NAME "run"

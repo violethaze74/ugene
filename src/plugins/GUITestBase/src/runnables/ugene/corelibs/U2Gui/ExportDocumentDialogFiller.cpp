@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,16 +25,10 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTCheckBox.h>
 
-#include <QtCore/QDir>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QPushButton>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QDialogButtonBox>
-#endif
+#include <QDir>
+#include <QApplication>
+#include <QPushButton>
+#include <QDialogButtonBox>
 
 namespace U2 {
 
@@ -55,7 +49,7 @@ path(_path), name(_name), useMethod(method), format(_format), compressFile(compr
         path = QDir::toNativeSeparators(__path);
     }
 
-    comboBoxItems[Genbank] = "Genbank";
+    comboBoxItems[Genbank] = "GenBank";
     comboBoxItems[GFF] = "GFF";
     comboBoxItems[CLUSTALW] = "CLUSTALW";
     comboBoxItems[BAM] = "BAM";

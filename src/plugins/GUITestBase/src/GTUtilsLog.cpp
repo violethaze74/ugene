@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,8 +56,14 @@ QList<LogMessage*> GTLogTracer::getMessages(){
 }
 
 bool GTLogTracer::checkMessage(QString s){
-    foreach (LogMessage* message, getMessages()){
-        if(message->text.contains(s,Qt::CaseInsensitive)){
+    QList<LogMessage*> messages = getMessages();
+    QList<QString> textMessages;
+    foreach(LogMessage* message, messages){
+        textMessages.append(message->text);
+    }
+
+    foreach(QString message, textMessages){
+        if (message.contains(s, Qt::CaseInsensitive)){
             return true;
         }
     }

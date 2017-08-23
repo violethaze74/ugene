@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,9 +28,8 @@
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/ObjectViewTasks.h>
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
-#include <QtXml/qdom.h>
 class QDomDocument;
 
 namespace U2 {

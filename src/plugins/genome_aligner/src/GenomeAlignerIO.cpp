@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -115,37 +115,33 @@ GenomeAlignerCommunicationChanelReader::~GenomeAlignerCommunicationChanelReader(
 }
 
 /************************************************************************/
-/* GenomeAlignerMAlignmentWriter                                        */
+/* GenomeAlignerMsaWriter                                        */
 /************************************************************************/
-GenomeAlignerMAlignmentWriter::GenomeAlignerMAlignmentWriter() {
+GenomeAlignerMsaWriter::GenomeAlignerMsaWriter() {
     writtenReadsCount = 0;
 }
 
-void GenomeAlignerMAlignmentWriter::close() {
+void GenomeAlignerMsaWriter::close() {
     //TODO: add some heuristic alphabet selection.
-    result.setAlphabet(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
+    result->setAlphabet(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
 }
 
-MAlignment& GenomeAlignerMAlignmentWriter::getResult() {
+MultipleSequenceAlignment& GenomeAlignerMsaWriter::getResult() {
     return result;
 }
 
-void GenomeAlignerMAlignmentWriter::write(SearchQuery *seq, SAType offset) {
-    U2OpStatus2Log os;
-    //if (seq->hasQuality() && seq->getQuality().qualCodes.length() > 0) {
-    //    row.setQuality(seq->getQuality());
-    //}
+void GenomeAlignerMsaWriter::write(SearchQuery *seq, SAType offset) {
     QByteArray offsetGaps;
-    offsetGaps.fill(MAlignment_GapChar, offset);
+    offsetGaps.fill(U2Msa::GAP_CHAR, offset);
     QByteArray seqWithOffset = seq->constSequence();
     seqWithOffset.prepend(offsetGaps);
-    result.addRow(seq->getName(), seqWithOffset, os);
+    result->addRow(seq->getName(), seqWithOffset);
     writtenReadsCount++;
 }
 
-void GenomeAlignerMAlignmentWriter::setReferenceName(const QString &refName) {
+void GenomeAlignerMsaWriter::setReferenceName(const QString &refName) {
     this->refName = refName;
-    result.setName(refName);
+    result->setName(refName);
 }
 
 } //LocalWorkflow

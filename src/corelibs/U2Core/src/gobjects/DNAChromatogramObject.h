@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #ifndef _U2_DNA_CHROMATOGRAM_OBJECT_H_
 #define _U2_DNA_CHROMATOGRAM_OBJECT_H_
 
-#include <QtCore/QMutex>
+#include <QMutex>
 
 #include <U2Core/GObject.h>
 #include <U2Core/DNAChromatogram.h>
@@ -34,6 +34,7 @@ class U2CORE_EXPORT U2Chromatogram : public U2RawData {
 public:
                         U2Chromatogram();
                         U2Chromatogram(const U2DbiRef &dbiRef);
+                        U2Chromatogram(const U2RawData &rawData);
 
     U2DataType          getType() const;
 };
@@ -50,6 +51,7 @@ public:
                                         const QVariantMap &hintsMap = QVariantMap());
 
     const DNAChromatogram &         getChromatogram() const;
+    void                            setChromatogram(U2OpStatus &os, const DNAChromatogram &chromatogram);
 
     GObject *                       clone(const U2DbiRef &dstRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
 

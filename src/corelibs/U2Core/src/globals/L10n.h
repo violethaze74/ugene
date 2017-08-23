@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,9 +50,9 @@ public:
     static QString errorFileTooLarge(const GUrl &url) { return tr("File is too large: '%1'").arg(url.getURLString()); }
     static QString errorFileNotFound(const GUrl &url) { return tr("File not found: '%1'").arg(url.getURLString()); }
     static QString errorIsNotAFile(const GUrl &url) { return tr("'%1' is not a file").arg(url.getURLString()); }
-    static QString errorDirNotFound(const GUrl &url) { return tr("Directory not found: '%1'").arg(url.getURLString()); }
-    static QString errorOpeningDir(const GUrl &url) { return tr("Error opening directory: '%1'").arg(url.getURLString()); }
-    static QString errorIsNotADir(const GUrl &url) { return tr("'%1' is not a directory").arg(url.getURLString()); }
+    static QString errorDirNotFound(const GUrl &url) { return tr("Folder not found: '%1'").arg(url.getURLString()); }
+    static QString errorOpeningDir(const GUrl &url) { return tr("Error opening folder: '%1'").arg(url.getURLString()); }
+    static QString errorIsNotADir(const GUrl &url) { return tr("'%1' is not a folder").arg(url.getURLString()); }
 
     // messages to work with a shared database
     static QString errorWrongDbObjUrlFormat(const QString &url) { return tr("'%1' does not match database object URL format").arg(url); }

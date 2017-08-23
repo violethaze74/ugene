@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -100,7 +100,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0002) {
     createTestConnection(os);
 
     QSet<GObjectType> acceptableTypes;
-    acceptableTypes << GObjectTypes::MULTIPLE_ALIGNMENT;
+    acceptableTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0003_alignment", acceptableTypes));
 
     QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
@@ -223,7 +223,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0008) {
     createTestConnection(os);
 
     QSet<GObjectType> acceptableTypes;
-    acceptableTypes << GObjectTypes::MULTIPLE_ALIGNMENT;
+    acceptableTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "pt0005_COI", acceptableTypes));
 
     QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
@@ -364,7 +364,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_neg_test_0012) {
     createTestConnection(os);
 
     QSet<GObjectType> acceptableTypes;
-    acceptableTypes << GObjectTypes::MULTIPLE_ALIGNMENT;
+    acceptableTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0003_alignment", acceptableTypes,
         ProjectTreeItemSelectorDialogFiller::Single, 1));
 

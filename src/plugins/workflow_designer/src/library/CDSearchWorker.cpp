@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,26 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#include "CDSearchWorker.h"
-
 #include <U2Algorithm/CDSearchTaskFactoryRegistry.h>
 
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BasePorts.h>
-#include <U2Lang/BaseActorCategories.h>
-
-#include <U2Core/DNASequence.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/TaskSignalMapper.h>
-#include <U2Core/FailTask.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNASequence.h>
+#include <U2Core/FailTask.h>
+#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/WorkflowEnv.h>
+
+#include "CDSearchWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -77,8 +77,8 @@ void CDSearchWorkerFactory::init() {
         Descriptor ed(EVALUE_ATTR, CDSearchWorker::tr("Expect value"),
             CDSearchWorker::tr("Modifies the <a href=\"http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#expect\">E-value</a> threshold used for filtering results. False positive results should be very rare with the default setting of 0.01 (use a more conservative, i.e. lower setting for more reliable results), results with E-values in the range of 1 and above should be considered putative false positives.")
            );
-        Descriptor pd(DB_PATH_ATTR, CDSearchWorker::tr("Database directory"),
-            CDSearchWorker::tr("Specifies database directory for local search.")
+        Descriptor pd(DB_PATH_ATTR, CDSearchWorker::tr("Database folder"),
+            CDSearchWorker::tr("Specifies database folder for local search.")
            );
 
         a << new Attribute(nd, BaseTypes::STRING_TYPE(), true, "CDD result");
@@ -117,7 +117,7 @@ void CDSearchWorkerFactory::init() {
     }
 
     {
-        delegates[DB_PATH_ATTR] = new URLDelegate("", "Database Directory", false, true, false);
+        delegates[DB_PATH_ATTR] = new URLDelegate("", "Database Folder", false, true, false);
     }
 
     proto->setPrompter(new CDSearchPrompter());

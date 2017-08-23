@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ StartupDialog::StartupDialog(QWidget *parent)
 : QDialog(parent)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759802");
+    new HelpButton(this, buttonBox, "19767058");
 
     label->setStyleSheet(L10N::infoHintStyleSheet());
 
@@ -62,7 +62,7 @@ void StartupDialog::sl_accepted(){
     }
     QFile file(dir.filePath("ex1.txt"));
     if (!file.open(QIODevice::WriteOnly)){
-        QMessageBox::critical(this, this->windowTitle(), tr("You have no write access to the directory. Please choose another one."));
+        QMessageBox::critical(this, this->windowTitle(), tr("You have no write access to the folder. Please choose another one."));
         return;
     }
     file.close();

@@ -8,7 +8,7 @@ use_opencl(){
 
 UGENE_RELATIVE_DESTDIR = ''
 
-QT += xml network script webkit
+QT += xml network script webkit widgets
 TEMPLATE = app
 CONFIG +=qt dll thread debug_and_release console
 DEFINES+= QT_DLL QT_FATAL_ASSERT

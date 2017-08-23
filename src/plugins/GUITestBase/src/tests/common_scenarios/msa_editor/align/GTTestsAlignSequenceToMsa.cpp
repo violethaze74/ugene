@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,24 +18,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#include "GTTestsAlignSequenceToMsa.h"
-#include <drivers/GTMouseDriver.h>
-#include <drivers/GTKeyboardDriver.h>
-#include "utils/GTKeyboardUtils.h"
-#include <primitives/GTWidget.h>
+
+#include <GTGlobals.h>
 #include <base_dialogs/GTFileDialog.h>
-#include "primitives/GTMenu.h"
-#include <primitives/GTTreeWidget.h>
-#include <primitives/GTSpinBox.h>
-#include "GTGlobals.h"
-#include "system/GTClipboard.h"
-#include "primitives/GTAction.h"
-#include <primitives/GTTreeWidget.h>
-#include <primitives/GTToolbar.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
-#include <primitives/GTCheckBox.h>
-#include "utils/GTUtilsDialog.h"
+#include <primitives/GTMenu.h>
+#include <primitives/GTSpinBox.h>
+#include <primitives/GTToolbar.h>
+#include <primitives/GTTreeWidget.h>
+#include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
+#include <utils/GTKeyboardUtils.h>
+#include <utils/GTUtilsDialog.h>
+
+#include <QApplication>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRegistry.h>
+
+#include <U2View/MSAEditor.h>
+#include <U2View/MSAEditorSequenceArea.h>
+
+#include "GTTestsAlignSequenceToMsa.h"
 #include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -43,33 +53,25 @@
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "primitives/PopupChooser.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/util/RenameSequenceFiller.h"
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorSequenceArea.h>
+#include "runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.h"
 
 namespace U2 {
 namespace GUITest_common_scenarios_align_sequences_to_msa{
 using namespace HI;
 
-void checkAlignedRegion(HI::GUITestOpStatus& os, QRect selectionRect, const QString& expectedContent) {
+void checkAlignedRegion(HI::GUITestOpStatus& os, const QRect &selectionRect, const QString& expectedContent) {
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, selectionRect.center().x()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    int leftOffset = GTUtilsMSAEditorSequenceArea::getLeftOffset(os) - 1;
-
-    selectionRect.adjust(-leftOffset, 0, -leftOffset, 0);
-
     GTUtilsMSAEditorSequenceArea::selectArea(os, selectionRect.topLeft(), selectionRect.bottomRight());
-    GTKeyboardDriver::keyClick( 'c',Qt::ControlModifier);
-
+    GTKeyboardUtils::copy(os);
     GTGlobals::sleep(500);
-    QString clipboardTest = GTClipboard::text(os);
 
-    CHECK_SET_ERR(clipboardTest== expectedContent, QString("Incorrect alignment of the region\n Expected: \n%1 \nResult: \n%2").arg(expectedContent).arg(clipboardTest));
+    const QString clipboardText = GTClipboard::text(os);
+    CHECK_SET_ERR(clipboardText == expectedContent, QString("Incorrect alignment of the region\n Expected: \n%1 \nResult: \n%2").arg(expectedContent).arg(clipboardText));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001){
@@ -134,12 +136,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002){
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3086, "Incorrect sequences count");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0003){
+GUI_TEST_CLASS_DEFINITION(test_0003) {
     //Align short sequences with default settings(on platforms with MAFFT)
     //Expected state: MAFFT alignment started and finished succesfully with using option --addfragments
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getByName("MAFFT");
+    CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
+    CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
+
     GTLogTracer logTracer;
+
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/cmdline/primers/", "primers.fa");
@@ -155,7 +161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003){
     const bool hasMessage = logTracer.checkMessage("--addfragments");
     CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
 
-    checkAlignedRegion(os, QRect(QPoint(86,17), QPoint(114,23)),
+    checkAlignedRegion(os, QRect(QPoint(86, 17), QPoint(114, 23)),
         QString("CATGCCTTTGTAATAATCTTCTTTATAGT\n"
                 "-----------------------------\n"
                 "-----------------------------\n"
@@ -192,6 +198,10 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005){
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getByName("MAFFT");
+    CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
+    CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
+
     GTFileDialog::openFile(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/", "TUB.msf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -351,6 +361,189 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3, "Incorrect sequences count");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0011) {
+//    Adding and aligning with MAFFT a sequence, which is longer than an alignment.
+
+//    1. Open "_common_data/scenarios/msa/ma.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Ensure that MAFFT tool is set.
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getByName("MAFFT");
+    CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
+    CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
+
+//    3. Click "Align sequence to this alignment" button on the toolbar.
+//    4. Select "_common_data/scenarios/msa/add_and_align_1.fa" in the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_1.fa"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+
+//    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row.
+    const QStringList expectedMsaData = QStringList() << "----TAAGACTTCTAA------------"
+                                                      << "----TAAGCTTACTAA------------"
+                                                      << "----TTAGTTTATTAA------------"
+                                                      << "----TCAGTCTATTAA------------"
+                                                      << "----TCAGTTTATTAA------------"
+                                                      << "----TTAGTCTACTAA------------"
+                                                      << "----TCAGATTATTAA------------"
+                                                      << "----TTAGATTGCTAA------------"
+                                                      << "----TTAGATTATTAA------------"
+                                                      << "----TAAGTCTATTAA------------"
+                                                      << "----TTAGCTTATTAA------------"
+                                                      << "----TTAGCTTATTAA------------"
+                                                      << "----TTAGCTTATTAA------------"
+                                                      << "----TAAGTCTTTTAA------------"
+                                                      << "----TAAGTCTTTTAA------------"
+                                                      << "----TAAGTCTTTTAA------------"
+                                                      << "----TAAGAATAATTA------------"
+                                                      << "----TAAGCCTTTTAA------------"
+                                                      << "GCGCTAAGCCTTTTAAGCGCGCGCGCGC";
+	GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0012) {
+//    Adding and aligning with MAFFT a sequence, which can be aligned with an alignment shifting
+
+//    1. Open "_common_data/scenarios/msa/ma.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Ensure that MAFFT tool is set.
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getByName("MAFFT");
+    CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
+    CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
+
+//    3. Click "Align sequence to this alignment" button on the toolbar.
+//    4. Select "_common_data/scenarios/msa/add_and_align_2.fa" in the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_2.fa"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+
+//    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row.
+    const QStringList expectedMsaData = QStringList() << "------TAAGACTTCTAA"
+                                                      << "------TAAGCTTACTAA"
+                                                      << "------TTAGTTTATTAA"
+                                                      << "------TCAGTCTATTAA"
+                                                      << "------TCAGTTTATTAA"
+                                                      << "------TTAGTCTACTAA"
+                                                      << "------TCAGATTATTAA"
+                                                      << "------TTAGATTGCTAA"
+                                                      << "------TTAGATTATTAA"
+                                                      << "------TAAGTCTATTAA"
+                                                      << "------TTAGCTTATTAA"
+                                                      << "------TTAGCTTATTAA"
+                                                      << "------TTAGCTTATTAA"
+                                                      << "------TAAGTCTTTTAA"
+                                                      << "------TAAGTCTTTTAA"
+                                                      << "------TAAGTCTTTTAA"
+                                                      << "------TAAGAATAATTA"
+                                                      << "------TAAGCCTTTTAA"
+                                                      << "GCGCGCTAAGCC------";
+	GTUtilsTaskTreeView::waitTaskFinished(os);
+	const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0013) {
+//    Adding and aligning with MAFFT a sequence to an alignment with columns of gaps
+
+//    1. Open "_common_data/scenarios/msa/ma2_gap_8_col.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Ensure that MAFFT tool is set.
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getByName("MAFFT");
+    CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
+    CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
+
+//    3. Click "Align sequence to this alignment" button on the toolbar.
+//    4. Select "_common_data/scenarios/msa/add_and_align_1.fa" in the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_1.fa"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+
+//    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row, columns with gaps were removed
+    const QStringList expectedMsaData = QStringList() << "-----AAGCTTCTTTTAA----------"
+                                                      << "-----AAGTTACTAA-------------"
+                                                      << "-----TAG---TTATTAA----------"
+                                                      << "-----AAGC---TATTAA----------"
+                                                      << "-----TAGTTATTAA-------------"
+                                                      << "-----TAGTTATTAA-------------"
+                                                      << "-----TAGTTATTAA-------------"
+                                                      << "-----AAGCTTT---TAA----------"
+                                                      << "-----A--AGAATAATTA----------"
+                                                      << "-----AAGCTTTTAA-------------"
+                                                      << "GCGCTAAGCCTTTTAAGCGCGCGCGCGC";
+	GTUtilsTaskTreeView::waitTaskFinished(os);
+	const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0014) {
+//    Adding and aligning with MAFFT should remove all columns of gaps from the source msa before the aligning, also it should be trimmed after the aligning.
+
+//    1. Open "_common_data/scenarios/msa/ma2_gap_8_col.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Ensure that MAFFT tool is set.
+    ExternalTool *mafftTool = AppContext::getExternalToolRegistry()->getByName("MAFFT");
+    CHECK_SET_ERR(NULL != mafftTool, "Can't find MAFFT tool in the registry");
+    CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
+
+//    3. Click "Align sequence to this alignment" button on the toolbar.
+//    4. Select "_common_data/scenarios/msa/add_and_align_3.fa" in the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_3.fa"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+
+//    Expected state: an additional row appeared in the alignment, the forth column doesn't consist only of gaps, there are no columns of gaps even in the end of the alignment.
+    const QStringList expectedMsaData = QStringList() << "AAGCTTCTTTTAA"
+                                                      << "AAGTTACTAA---"
+                                                      << "TAG---TTATTAA"
+                                                      << "AAGC---TATTAA"
+                                                      << "TAGTTATTAA---"
+                                                      << "TAGTTATTAA---"
+                                                      << "TAGTTATTAA---"
+                                                      << "AAGCTTT---TAA"
+                                                      << "A--AGAATAATTA"
+                                                      << "AAGCTTTTAA---"
+                                                      << "A--AGAATA----";
+	GTUtilsTaskTreeView::waitTaskFinished(os);
+	const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0015) {
+//    Adding and aligning without MAFFT should remove all columns of gaps from the source msa before the aligning, also it should be trimmed after the aligning.
+
+//    2. Ensure that MAFFT tool is not set. Remove it, if it is set.
+    GTUtilsExternalTools::removeTool(os, "MAFFT");
+
+//    1. Open "_common_data/scenarios/msa/ma2_gap_8_col.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Click "Align sequence to this alignment" button on the toolbar.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_3.fa"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+
+//    4. Select "_common_data/scenarios/msa/add_and_align_3.fa" in the dialog.
+//    Expected state: an additional row appeared in the alignment, the forth column doesn't consist only of gaps, there are no columns of gaps even in the end of the alignment.
+    const QStringList expectedMsaData = QStringList() << "AAGCTTCTTTTAA"
+                                                      << "AAGTTACTAA---"
+                                                      << "TAG---TTATTAA"
+                                                      << "AAGC---TATTAA"
+                                                      << "TAGTTATTAA---"
+                                                      << "TAGTTATTAA---"
+                                                      << "TAGTTATTAA---"
+                                                      << "AAGCTTT---TAA"
+                                                      << "A--AGAATAATTA"
+                                                      << "AAGCTTTTAA---"
+                                                      << "AAGAATA------";
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
+}
+
 } // namespace
 } // namespace U2
-

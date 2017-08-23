@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,6 +60,7 @@ public:
     bool doMax;                 // --max: Turn all heuristic filters off ( less speed more power )
     bool noBiasFilter;          // --nobias: turn off composition bias filter
     bool noNull2;               // --nonull2: turn off biased composition score corrections
+    bool noali;                 // --noali: turn off alignment writing
 
     int seed;                   // --seed : set RNG seed ( if 0: one-time arbitrary seed )
 

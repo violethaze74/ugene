@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,17 +29,15 @@
 
 namespace U2 {
 
-MysqlModificationAction::MysqlModificationAction(MysqlDbi* _dbi, const U2DataId& _masterObjId) :
-    dbi(_dbi),
-    masterObjId(_masterObjId),
-    trackMod(NoTrack)
+MysqlModificationAction::MysqlModificationAction(MysqlDbi* _dbi, const U2DataId& _masterObjId)
+    : ModificationAction(_dbi, _masterObjId)
 {
-    objIds.insert(masterObjId);
+
 }
 
 U2TrackModType MysqlModificationAction::prepare(U2OpStatus& os) {
     CHECK_OP(os, NoTrack);
-    MysqlTransaction t(dbi->getDbRef(), os);
+    MysqlTransaction t(getDbi()->getDbRef(), os);
     Q_UNUSED(t);
 
     trackMod = dbi->getObjectDbi()->getTrackModType(masterObjId, os);
@@ -55,17 +53,17 @@ U2TrackModType MysqlModificationAction::prepare(U2OpStatus& os) {
         // If a user mod step has already been created for this action
         // then it can not be deleted. The version must be incremented.
         // Obsolete duplicate step must be deleted
-        if (dbi->getMysqlModDbi()->isUserStepStarted(masterObjId)) {
-            dbi->getMysqlModDbi()->removeDuplicateUserStep(masterObjId, masterObjVersionToTrack, os);
+        if (getDbi()->getMysqlModDbi()->isUserStepStarted(masterObjId)) {
+            getDbi()->getMysqlModDbi()->removeDuplicateUserStep(masterObjId, masterObjVersionToTrack, os);
 
             // Increment the object version
             masterObjVersionToTrack++;
         }
 
         // A user pressed "Undo" (maybe several times), did another action => there is no more "Redo" history
-        dbi->getMysqlModDbi()->removeModsWithGreaterVersion(masterObjId, masterObjVersionToTrack, os);
+        getDbi()->getMysqlModDbi()->removeModsWithGreaterVersion(masterObjId, masterObjVersionToTrack, os);
         if (os.hasError()) {
-            dbi->getMysqlModDbi()->cleanUpAllStepsOnError();
+            getDbi()->getMysqlModDbi()->cleanUpAllStepsOnError();
             return trackMod;
         }
     }
@@ -84,7 +82,7 @@ void MysqlModificationAction::addModification(const U2DataId& objId, qint64 modT
         qint64 objVersion = dbi->getObjectDbi()->getObjectVersion(objId, os);
         CHECK_OP(os, );
 
-        if ((objId == masterObjId) && (dbi->getMysqlModDbi()->isUserStepStarted(masterObjId))) {
+        if ((objId == masterObjId) && (getDbi()->getMysqlModDbi()->isUserStepStarted(masterObjId))) {
             objVersion++;
         }
 
@@ -101,7 +99,7 @@ void MysqlModificationAction::addModification(const U2DataId& objId, qint64 modT
 void MysqlModificationAction::complete(U2OpStatus& os) {
     // TODO: rewrite it with another U2UseCommonMultiModStep
     CHECK_OP(os, );
-    MysqlTransaction t(dbi->getDbRef(), os);
+    MysqlTransaction t(getDbi()->getDbRef(), os);
     Q_UNUSED(t);
 
     // Save modification tracks, if required
@@ -110,16 +108,16 @@ void MysqlModificationAction::complete(U2OpStatus& os) {
             // do nothing
         }
         else if (1 == singleSteps.size()) {
-            dbi->getMysqlModDbi()->createModStep(masterObjId, singleSteps.first(), os);
+            getDbi()->getMysqlModDbi()->createModStep(masterObjId, singleSteps.first(), os);
             CHECK_OP(os, );
         }
         else {
-            MysqlUseCommonMultiModStep multi(dbi, masterObjId, os);
+            MysqlUseCommonMultiModStep multi(getDbi(), masterObjId, os);
             CHECK_OP(os, );
             Q_UNUSED(multi);
 
             foreach (U2SingleModStep singleStep, singleSteps) {
-                dbi->getMysqlModDbi()->createModStep(masterObjId, singleStep, os);
+                getDbi()->getMysqlModDbi()->createModStep(masterObjId, singleStep, os);
                 CHECK_OP(os, );
             }
         }
@@ -127,13 +125,14 @@ void MysqlModificationAction::complete(U2OpStatus& os) {
 
     // Increment versions of all objects
     foreach (const U2DataId& objId, objIds) {
-        MysqlObjectDbi::incrementVersion(objId, dbi->getDbRef(), os);
+        MysqlObjectDbi::incrementVersion(objId, getDbi()->getDbRef(), os);
         CHECK_OP(os, );
     }
 }
 
-U2TrackModType MysqlModificationAction::getTrackModType() const {
-    return trackMod;
+MysqlDbi* MysqlModificationAction::getDbi() const {
+    return static_cast<MysqlDbi*>(dbi);
+
 }
 
 }   // namespace U2

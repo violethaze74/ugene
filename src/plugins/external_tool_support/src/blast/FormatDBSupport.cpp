@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
@@ -103,7 +103,7 @@ FormatDBSupport::FormatDBSupport(const QString& name, const QString& path) : Ext
 }
 
 void FormatDBSupport::sl_runWithExtFileSpecify(){
-    //Check that formatDB or makeblastdb and tempory directory path defined
+    //Check that formatDB or makeblastdb and tempory folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         if(name == ET_FORMATDB){
@@ -147,9 +147,7 @@ void FormatDBSupport::sl_runWithExtFileSpecify(){
     if (formatDBRunDialog->result() != QDialog::Accepted){
         return;
     }
-    //assert(!settings.inputFilePath.isEmpty());
-    //
-    FormatDBSupportTask* formatDBSupportTask=new FormatDBSupportTask(name, settings);
+    FormatDBSupportTask* formatDBSupportTask = new FormatDBSupportTask(name, settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(formatDBSupportTask);
 }
 }//namespace

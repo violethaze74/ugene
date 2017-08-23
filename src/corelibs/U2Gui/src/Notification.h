@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,39 +27,24 @@
 #include "NotificationWidget.h"
 #include "NotificationsTypes.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QDialog>
-#include <QtGui/QTextEdit>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QCheckBox>
-#include <QtGui/QLayout>
-#include <QtGui/QMainWindow>
-#include <QtGui/QScrollArea>
-#include <QtGui/QToolTip>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QDialog>
-#include <QtWidgets/QTextEdit>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QLayout>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QToolTip>
-#endif
-#include <QtGui/QMouseEvent>
-#include <QtGui/QHelpEvent>
+#include <QAction>
+#include <QLabel>
+#include <QPushButton>
+#include <QDialog>
+#include <QTextEdit>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QCheckBox>
+#include <QLayout>
+#include <QMainWindow>
+#include <QScrollArea>
+#include <QToolTip>
+#include <QMouseEvent>
+#include <QHelpEvent>
 
 
-#include <QtCore/QPoint>
-#include <QtCore/QTimer>
+#include <QPoint>
+#include <QTimer>
 
 namespace U2 {
 
@@ -77,6 +62,10 @@ public:
     NotificationType getType() const;
     virtual bool eventFilter( QObject * watched, QEvent * event ); 
     void increaseCounter();
+
+    // Switches notification to embedded visual state:
+    // In embedded state notification is shown inside NotificationWidget
+    void switchEmbeddedVisualState();
 
 private slots:
     void sl_timeout();
@@ -132,6 +121,9 @@ signals:
 
 private:
     QPoint getBottomRightOfMainWindow();    // because of Mac's strange behavior
+
+    // Adds notification as a child to notification widget
+    void addToNotificationWidget(Notification* n);
 
     NotificationWidget *w;
 

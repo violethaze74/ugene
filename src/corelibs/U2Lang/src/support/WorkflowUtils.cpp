@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,14 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedPointer>
-#include <QtCore/QDir>
-#include <QtCore/QUrl>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QListWidgetItem>
-#else
-#include <QtWidgets/QListWidgetItem>
-#endif
+#include <QScopedPointer>
+#include <QDir>
+#include <QUrl>
+#include <QListWidgetItem>
 
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
@@ -56,9 +52,9 @@
 #include <U2Core/GObject.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignment.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PasswordStorage.h>
 #include <U2Core/QVariantUtils.h>
 #include <U2Core/Settings.h>
@@ -180,7 +176,7 @@ bool validateParameters(const Schema &schema, ProblemList &infoList) {
 
 bool validateExternalTools(Actor *a, ProblemList &infoList) {
     bool good = true;
-    QStrStrMap tools = a->getProto()->getExternalTools();
+    StrStrMap tools = a->getProto()->getExternalTools();
     foreach (const QString &toolId, tools.keys()) {
         Attribute *attr = a->getParameter(tools[toolId]);
         ExternalTool *tool = AppContext::getExternalToolRegistry()->getByName(toolId);
@@ -399,7 +395,7 @@ QList<Descriptor> WorkflowUtils::findMatchingCandidates(DataTypePtr from, DataTy
 }
 
 Descriptor WorkflowUtils::getCurrentMatchingDescriptor(const QList<Descriptor> & candidates, DataTypePtr to,
-                                                       const Descriptor & key, const QStrStrMap & bindings) {
+                                                       const Descriptor & key, const StrStrMap & bindings) {
     DataTypePtr elementDatatype = to->getDatatypeByDescriptor(key);
     if (elementDatatype->isList()) {
         QString currentVal = bindings.value(key.getId());
@@ -622,7 +618,7 @@ void WorkflowUtils::print(const QString &slotString, const QVariant &data, DataT
         CHECK(NULL != obj.data(),);
         data2text(context, BaseDocumentFormats::FASTA, obj.data(), text);
     } else if (BaseTypes::MULTIPLE_ALIGNMENT_TYPE() == type) {
-        QScopedPointer<MAlignmentObject> obj(StorageUtils::getMsaObject(storage, data.value<SharedDbiDataHandler>()));
+        QScopedPointer<MultipleSequenceAlignmentObject> obj(StorageUtils::getMsaObject(storage, data.value<SharedDbiDataHandler>()));
         CHECK(NULL != obj.data(),);
         data2text(context, BaseDocumentFormats::CLUSTAL_ALN, obj.data(), text);
     } else if (BaseTypes::ANNOTATION_TABLE_TYPE() == type || BaseTypes::ANNOTATION_TABLE_LIST_TYPE() == type) {
@@ -706,7 +702,7 @@ bool WorkflowUtils::validateSchemaForIncluding(const Schema &s, QString &error) 
     return true;
 }
 
-void WorkflowUtils::extractPathsFromBindings(QStrStrMap &busMap, SlotPathMap &pathMap) {
+void WorkflowUtils::extractPathsFromBindings(StrStrMap &busMap, SlotPathMap &pathMap) {
     QString srcId;
     QStringList path;
     foreach (const QString &dest, busMap.keys()) {
@@ -722,7 +718,7 @@ void WorkflowUtils::extractPathsFromBindings(QStrStrMap &busMap, SlotPathMap &pa
     }
 }
 
-void WorkflowUtils::applyPathsToBusMap(QStrStrMap &busMap, const SlotPathMap &pathMap) {
+void WorkflowUtils::applyPathsToBusMap(StrStrMap &busMap, const SlotPathMap &pathMap) {
     foreach (const QString &dest, busMap.keys()) {
         QStringList newSrcs;
 
@@ -1151,7 +1147,7 @@ bool WorkflowUtils::validateInputDbFolders(QString urls, ProblemList &problemLis
 }
 
 /**
- * Input @dirAbsPath must be an absolute path to a directory (or empty).
+ * Input @dirAbsPath must be an absolute path to a folder (or empty).
  * The method returns "true" if it is possible to create a file in it.
  */
 static bool canWriteToPath(QString dirAbsPath) {
@@ -1161,10 +1157,10 @@ static bool canWriteToPath(QString dirAbsPath) {
     QFileInfo fi(dirAbsPath);
     SAFE_POINT(fi.dir().isAbsolute(), "Not an absolute path!", false);
 
-    // Find out the directory that exists
+    // Find out the folder that exists
     QDir existenDir(dirAbsPath);
     while (!existenDir.exists()) {
-        // Get upper directory
+        // Get upper folder
         QString dirPath = existenDir.path();
         QString dirName = existenDir.dirName();
         dirPath.remove(// remove dir name and slash (if any) from the path
@@ -1176,8 +1172,8 @@ static bool canWriteToPath(QString dirAbsPath) {
         existenDir.setPath(dirPath);
     }
 
-    // Attempts to write a file to the directory.
-    // This assumes possibility to create any sub-directory, file, etc.
+    // Attempts to write a file to the folder.
+    // This assumes possibility to create any sub-folder, file, etc.
     QFile file(existenDir.filePath("testWriteAccess.txt"));
     if (!file.open(QIODevice::WriteOnly)) {
         return false;
@@ -1221,7 +1217,7 @@ bool WorkflowUtils::validateOutputDir(const QString &url, ProblemList &problemLi
         return true;
     }
     else {
-        problemList << Problem(tr("Can't output directory path: '%1', check permissions").arg(url));
+        problemList << Problem(tr("Can't output folder path: '%1', check permissions").arg(url));
         return false;
     }
 }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,28 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#include "MAFFTWorker.h"
-#include "TaskLocalStorage.h"
-#include "MAFFTSupport.h"
-
-#include <U2Lang/IntegralBusModel.h>
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BasePorts.h>
-#include <U2Lang/BaseActorCategories.h>
-#include <U2Lang/CoreLibConstants.h>
-#include <U2Lang/NoFailTaskWrapper.h>
-
-#include <U2Designer/DelegateEditors.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/FailTask.h>
+#include <U2Core/Log.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Core/ExternalToolRegistry.h>
-#include <U2Core/Log.h>
-#include <U2Core/FailTask.h>
+#include <U2Designer/DelegateEditors.h>
+
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/CoreLibConstants.h>
+#include <U2Lang/IntegralBusModel.h>
+#include <U2Lang/NoFailTaskWrapper.h>
+#include <U2Lang/WorkflowEnv.h>
+
+#include "MAFFTSupport.h"
+#include "MAFFTWorker.h"
+#include "TaskLocalStorage.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -76,8 +77,8 @@ void MAFFTWorkerFactory::init() {
                    MAFFTWorker::tr("Maximum number of iterative refinement."));
     Descriptor etp(EXT_TOOL_PATH, MAFFTWorker::tr("Tool Path"),
                    MAFFTWorker::tr("External tool path."));
-    Descriptor tdp(TMP_DIR_PATH, MAFFTWorker::tr("Temporary directory"),
-                   MAFFTWorker::tr("Directory for temporary files."));
+    Descriptor tdp(TMP_DIR_PATH, MAFFTWorker::tr("Temporary folder"),
+                   MAFFTWorker::tr("Folder for temporary files."));
 
     a << new Attribute(gop, BaseTypes::NUM_TYPE(), false, QVariant(1.53));
     a << new Attribute(gep, BaseTypes::NUM_TYPE(), false, QVariant(0.00));
@@ -165,12 +166,12 @@ Task* MAFFTWorker::tick() {
 
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-        QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &msa = msaObj->getMAlignment();
+        const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
-        if (msa.isEmpty()) {
-            algoLog.error(tr("An empty MSA '%1' has been supplied to MAFFT.").arg(msa.getName()));
+        if (msa->isEmpty()) {
+            algoLog.error(tr("An empty MSA '%1' has been supplied to MAFFT.").arg(msa->getName()));
             return NULL;
         }
         MAFFTSupportTask* supportTask = new MAFFTSupportTask(msa, GObjectReference(), cfg);
@@ -199,13 +200,13 @@ void MAFFTWorker::sl_taskFinished() {
 
     SAFE_POINT(NULL != output, "NULL output!", );
     send(t->resultMA);
-    algoLog.info(tr("Aligned %1 with MAFFT").arg(t->resultMA.getName()));
+    algoLog.info(tr("Aligned %1 with MAFFT").arg(t->resultMA->getName()));
 }
 
 void MAFFTWorker::cleanup() {
 }
 
-void MAFFTWorker::send(const MAlignment &msa) {
+void MAFFTWorker::send(const MultipleSequenceAlignment &msa) {
     SAFE_POINT(NULL != output, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;

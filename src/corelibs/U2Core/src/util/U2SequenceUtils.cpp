@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -104,6 +104,9 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef& srcSeq, const U2DbiR
     CHECK_OP(os, res);
 
     res = seq;
+    U2TrackModType modType = res.trackModType;
+    res.trackModType = NoTrack;
+
     res.id.clear();
     res.length = 0;
 
@@ -128,6 +131,14 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef& srcSeq, const U2DbiR
         CHECK_OP(os, res);
         res.length += currentChunkSize;
     }
+
+    U2DbiObjectRank rank = srcCon.dbi->getObjectDbi()->getObjectRank(seq.id, os);
+    CHECK_OP(os, res);
+
+    dstCon.dbi->getObjectDbi()->setObjectRank(res.id, rank, os);
+    CHECK_OP(os, res);
+
+    res.trackModType = modType;
     return res;
 }
 
@@ -198,15 +209,15 @@ QList<QByteArray> U2SequenceUtils::extractRegions(const U2EntityRef& seqRef, con
     return res;
 }
 
-U2EntityRef U2SequenceUtils::import(const U2DbiRef& dbiRef, const DNASequence& seq, U2OpStatus& os) {
-    return import(dbiRef, U2ObjectDbi::ROOT_FOLDER, seq, os);
+U2EntityRef U2SequenceUtils::import(U2OpStatus &os, const U2DbiRef &dbiRef, const DNASequence &seq, const U2AlphabetId &alphabetId) {
+    return import(os, dbiRef, U2ObjectDbi::ROOT_FOLDER, seq, alphabetId);
 }
 
-U2EntityRef U2SequenceUtils::import(const U2DbiRef& dbiRef, const QString& folder, const DNASequence& seq, U2OpStatus& os) {
+U2EntityRef U2SequenceUtils::import(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const DNASequence &seq, const U2AlphabetId &alphabetId) {
     U2EntityRef res;
     U2SequenceImporter i;
 
-    i.startSequence(dbiRef, folder, seq.getName(), seq.circular, os);
+    i.startSequence(os, dbiRef, folder, seq.getName(), seq.circular, alphabetId);
     CHECK_OP(os, res);
 
     i.addBlock(seq.constData(), seq.length(), os);
@@ -230,13 +241,13 @@ void U2SequenceUtils::setQuality(const U2EntityRef& entityRef, const DNAQuality&
     QList<U2DataId> idQualList=con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId,DNAInfo::FASTQ_QUAL_CODES,os);
     CHECK_OP(os, );
     if(!idQualList.isEmpty()){
-        con.dbi->getAttributeDbi()->removeObjectAttributes(idQualList.first(),os);
+        con.dbi->getAttributeDbi()->removeAttributes(idQualList,os);
         CHECK_OP(os, );
     }
     QList<U2DataId> idQualTypeList=con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId,DNAInfo::FASTQ_QUAL_TYPE,os);
     CHECK_OP(os, );
     if(!idQualTypeList.isEmpty()){
-        con.dbi->getAttributeDbi()->removeObjectAttributes(idQualTypeList.first(),os);
+        con.dbi->getAttributeDbi()->removeAttributes(idQualTypeList,os);
         CHECK_OP(os, );
     }
 
@@ -327,11 +338,12 @@ U2SequenceImporter::~U2SequenceImporter() {
 }
 
 
-void U2SequenceImporter::startSequence(const U2DbiRef& dbiRef,
-                                       const QString& dstFolder,
-                                       const QString& visualName,
+void U2SequenceImporter::startSequence(U2OpStatus &os,
+                                       const U2DbiRef &dbiRef,
+                                       const QString &dstFolder,
+                                       const QString &visualName,
                                        bool circular,
-                                       U2OpStatus& os) {
+                                       const U2AlphabetId &alphabetId) {
     SAFE_POINT(!con.isOpen(), "Connection is already opened!", );
     con.open(dbiRef, true, os);
     CHECK_OP(os, );
@@ -341,7 +353,7 @@ void U2SequenceImporter::startSequence(const U2DbiRef& dbiRef,
     sequence = U2Sequence();
     sequence.visualName = visualName;
     sequence.circular = circular;
-    sequence.alphabet.id = DNAAlphabet_NUCL;
+    sequence.alphabet.id = alphabetId.id;
 
     currentLength = 0;
     isUnfinishedRegion = false;

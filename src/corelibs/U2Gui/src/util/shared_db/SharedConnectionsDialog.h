@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,25 +22,19 @@
 #ifndef _U2_SHARED_CONNECTIONS_DIALOG_H_
 #define _U2_SHARED_CONNECTIONS_DIALOG_H_
 
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDialog>
-#else
-#include <QtWidgets/QDialog>
-#endif
+#include <QDialog>
+#include <QMap>
 
 #include <U2Core/global.h>
 
-class Ui_SharedConnectionsDialog;
-
-
 class QListWidgetItem;
 class QModelIndex;
+class Ui_SharedConnectionsDialog;
 
 namespace U2 {
 
-class U2DbiRef;
 class Task;
+class U2DbiRef;
 
 class U2GUI_EXPORT SharedConnectionsDialog : public QDialog {
     Q_OBJECT

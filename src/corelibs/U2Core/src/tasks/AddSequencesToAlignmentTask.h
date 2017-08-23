@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 #include <QPointer>
 
 #include <U2Core/Task.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2Type.h>
 
 namespace U2 {
@@ -39,7 +39,7 @@ class U2UseCommonUserModStep;
 class U2CORE_EXPORT AddSequenceObjectsToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    AddSequenceObjectsToAlignmentTask(MAlignmentObject* obj, const QList<DNASequence>& seqList);
+    AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QList<DNASequence>& seqList);
 
     virtual void prepare();
     virtual void run();
@@ -48,7 +48,7 @@ protected:
     void processObjectsAndSetResultingAlphabet();
 
     QList<DNASequence>    seqList;
-    QPointer<MAlignmentObject>  maObj;
+    QPointer<MultipleSequenceAlignmentObject>  maObj;
 protected:
     void releaseLock();
 private:
@@ -58,7 +58,7 @@ private:
     U2MsaDbi*                   dbi;
     U2EntityRef                 entityRef;
     U2UseCommonUserModStep*     modStep;
-    MAlignmentModInfo           mi;
+    MaModificationInfo           mi;
 
     static const int maxErrorListSize;
     /** Returns the max length of the rows including trailing gaps */
@@ -71,7 +71,7 @@ private:
 class U2CORE_EXPORT AddSequencesFromFilesToAlignmentTask : public AddSequenceObjectsToAlignmentTask {
     Q_OBJECT
 public:
-    AddSequencesFromFilesToAlignmentTask(MAlignmentObject* obj, const QStringList& urls);
+    AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls);
 
     virtual void prepare();
     QList<Task*> onSubTaskFinished(Task* subTask);
@@ -85,7 +85,7 @@ private:
 class U2CORE_EXPORT AddSequencesFromDocumentsToAlignmentTask : public AddSequenceObjectsToAlignmentTask {
     Q_OBJECT
 public:
-    AddSequencesFromDocumentsToAlignmentTask(MAlignmentObject* obj, const QList<Document*>& docs);
+    AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QList<Document*>& docs);
 
     virtual void prepare();
 private:

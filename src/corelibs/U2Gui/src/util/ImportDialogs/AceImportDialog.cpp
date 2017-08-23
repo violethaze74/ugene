@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ AceImportDialog::AceImportDialog(const QVariantMap& _settings) :
     saveController(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19759624");
+    new HelpButton(this, buttonBox, "19766880");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -89,7 +89,7 @@ bool AceImportDialog::isValid() {
     QFileInfo destinationDir(QFileInfo(destUrl.getURLString()).path());
     if (!destinationDir.isWritable()) {
         leDest->setFocus(Qt::OtherFocusReason);
-        QMessageBox::critical(this, windowTitle(), tr("Destination directory '%1' is not writable, "\
+        QMessageBox::critical(this, windowTitle(), tr("Destination folder '%1' is not writable, "\
                                                       "please choose different destination URL")
                               .arg(destinationDir.absoluteFilePath()));
         return false;

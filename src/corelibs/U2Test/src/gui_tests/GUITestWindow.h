@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,14 +24,17 @@
 
 #include <U2Gui/MainWindow.h>
 #include <U2Core/AppContext.h>
-#include <ui_GUITestingWindow.h>
 
+#include "ui_GUITestingWindow.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QtGui>
-#else
-#include <QtWidgets/QtWidgets>
-#endif
+class QCheckBox;
+class QComboBox;
+class QDoubleSpinBox;
+class QGroupBox;
+class QMenuBar;
+class QRadioButton;
+class QSpinBox;
+class QToolButton;
 
 namespace U2 {
 class EventFilter;

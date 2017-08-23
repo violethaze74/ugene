@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryStrict: public MSAConsensus
 public:
     MSAConsensusAlgorithmFactoryStrict(QObject* p = NULL);
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MAlignment& ma, QObject* parent);
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent);
 
     virtual QString getDescription() const;
 
@@ -53,9 +53,10 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmStrict : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmStrict(MSAConsensusAlgorithmFactoryStrict* f, QObject* p = NULL) : MSAConsensusAlgorithm(f, p){}
+    MSAConsensusAlgorithmStrict(MSAConsensusAlgorithmFactoryStrict* f, bool ignoreTrailingLeadingGaps, QObject* p = NULL)
+        : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {}
 
-    virtual char getConsensusChar(const MAlignment& ma, int column, const QVector<qint64> &seqIdx = QVector<qint64>()) const;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const;
 };
 
 

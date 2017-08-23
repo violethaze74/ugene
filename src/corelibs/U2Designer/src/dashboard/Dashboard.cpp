@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,20 +19,15 @@
  * MA 02110-1301, USA.
  */
 
-#include <QDesktopServices>
-#include <QFile>
-
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QMessageBox>
-#include <QWebFrame>
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QMessageBox>
-#include <QtWebKitWidgets/QWebFrame>
-#include <QtWidgets/QApplication>
-#endif
+#include <QApplication>
 #include <QClipboard>
+#include <QDesktopServices>
+#include <QDir>
+#include <QFile>
+#include <QMessageBox>
+#include <QSettings>
+#include <QWebFrame>
+#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>
@@ -43,16 +38,16 @@
 
 #include <U2Gui/MainWindow.h>
 
+#include <U2Lang/ActorModel.h>
 #include <U2Lang/WorkflowSettings.h>
 
+#include "Dashboard.h"
+#include "ExternalToolsWidget.h"
 #include "OutputFilesWidget.h"
 #include "ParametersWidget.h"
 #include "ProblemsWidget.h"
 #include "ResourcesWidget.h"
 #include "StatisticsWidget.h"
-#include "ExternalToolsWidget.h"
-
-#include "Dashboard.h"
 
 namespace U2 {
 
@@ -203,7 +198,7 @@ void Dashboard::sl_serialize() {
     if (!d.exists(reportDir)) {
         bool created = d.mkpath(reportDir);
         if (!created) {
-            coreLog.error(tr("Can not create a directory: ") + reportDir);
+            coreLog.error(tr("Can not create a folder: ") + reportDir);
             return;
         }
     }
@@ -365,8 +360,11 @@ void Dashboard::sl_hideLoadBtnHint() {
 /************************************************************************/
 /* DashboardWidget */
 /************************************************************************/
-DashboardWidget::DashboardWidget(const QWebElement &_container, Dashboard *parent)
-: QObject(parent), dashboard(parent), container(_container)
+DashboardWidget::DashboardWidget(const QWebElement &_container, const QString &id, Dashboard *parent)
+    : QObject(parent),
+      dashboard(parent),
+      container(_container),
+      id(id)
 {
 
 }
@@ -422,7 +420,7 @@ void JavascriptAgent::setClipboardText(const QString &text) {
 /* LoadDashboardsTask */
 /************************************************************************/
 ScanDashboardsDirTask::ScanDashboardsDirTask()
-: Task(tr("Scan dashboards directory"), TaskFlag_None)
+: Task(tr("Scan dashboards folder"), TaskFlag_None)
 {
 
 }

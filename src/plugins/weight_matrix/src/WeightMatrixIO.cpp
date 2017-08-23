@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,15 +35,11 @@
 
 #include <U2Core/DIProperties.h>
 
-#include <QtCore/QVector>
-#include <QtCore/QTextStream>
-#include <QtCore/QFile>
+#include <QVector>
+#include <QTextStream>
+#include <QFile>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QMessageBox>
 
 /* TRANSLATOR U2::IOAdapter */
 
@@ -88,7 +84,7 @@ PFMatrix WeightMatrixIO::readPFMatrix(IOAdapterFactory* iof, const QString& url,
     QByteArray block(BUFF_SIZE, '\0');
     qint64 blockLen = 0;
     while ((blockLen = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
-        text.append(QByteArray::fromRawData(block.data(), blockLen));
+        text.append(QByteArray(block.data(), blockLen));
         if (text.size() > 1000*1000) {
             si.setError(L10N::errorFileTooLarge(url));
             break;
@@ -190,7 +186,7 @@ PWMatrix WeightMatrixIO::readPWMatrix(IOAdapterFactory* iof, const QString& url,
     QByteArray block(BUFF_SIZE, '\0');
     qint64 blockLen = 0;
     while ((blockLen = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
-        text.append(QByteArray::fromRawData(block.data(), blockLen));
+        text.append(QByteArray(block.data(), blockLen));
         if (text.size() > 1000*1000) {
             si.setError(L10N::errorFileTooLarge(url));
             break;

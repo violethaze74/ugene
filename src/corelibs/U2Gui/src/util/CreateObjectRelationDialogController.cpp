@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,12 +28,8 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectTypes.h>
 
-#include <QtGui/QIcon>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QMessageBox>
-#endif
+#include <QIcon>
+#include <QMessageBox>
 
 #include <U2Gui/HelpButton.h>
 #include <QPushButton>

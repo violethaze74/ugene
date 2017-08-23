@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,20 +22,21 @@
 #ifndef _U2_KALIGN_ADAPTER_H_
 #define _U2_KALIGN_ADAPTER_H_
 
-#include <QtCore/QObject>
+#include <QObject>
+
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
-class MAlignment;
 class TaskStateInfo;
 
 class KalignAdapter : public QObject {
 	Q_OBJECT
 public:
-	static void align(const MAlignment& ma, MAlignment& res, TaskStateInfo& ti);
+	static void align(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti);
 
 private:
-	static void alignUnsafe(const MAlignment& ma, MAlignment& res, TaskStateInfo& ti);
+	static void alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti);
 };
 
 }//namespace

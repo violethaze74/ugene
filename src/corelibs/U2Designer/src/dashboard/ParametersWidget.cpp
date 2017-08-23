@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,8 +31,10 @@
 
 namespace U2 {
 
+const QString ParametersWidget::ID = "parameters";
+
 ParametersWidget::ParametersWidget(const QWebElement &container, Dashboard *parent)
-    : DashboardWidget(container, parent)
+    : DashboardWidget(container, ID, parent)
 {
     const WorkflowMonitor *workflowMonitor = dashboard->monitor();
     SAFE_POINT(NULL != workflowMonitor, "NULL workflow monitor!", );

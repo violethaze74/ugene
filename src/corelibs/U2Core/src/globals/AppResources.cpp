@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,8 +27,8 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Test/GTest.h>
 
-#include <QtCore/QThread>
-#include <QtCore/QProcess>
+#include <QThread>
+#include <QProcess>
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
 #include <stdio.h>

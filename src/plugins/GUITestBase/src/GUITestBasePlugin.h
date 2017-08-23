@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@ private slots:
     void sl_showWindow();
 private:
     void registerTests(UGUITestBase *guiTestBase);
-    void registerAdditionalChecks(UGUITestBase *guiTestBase);
+    void registerAdditionalActions(UGUITestBase *guiTestBase);
 
     QAction*        openGUITestRunnerAction;
     GUITestRunner*  view;

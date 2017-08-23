@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedPointer>
+#include <QScopedPointer>
 
 #include "CoreLib.h"
 #include "GenericReadWorker.h"
@@ -36,10 +36,11 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QVariantUtils.h>
 #include <U2Core/TextObject.h>
+#include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SequenceUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -239,7 +240,7 @@ static U2SequenceObject *addSeqObject(Document *doc, DNASequence &seq) {
     U2SequenceObject *dna = NULL;
     if (doc->getDocumentFormat()->isObjectOpSupported(doc, DocumentFormat::DocObjectOp_Add, GObjectTypes::SEQUENCE)) {
         U2OpStatus2Log os;
-        U2EntityRef seqRef = U2SequenceUtils::import(doc->getDbiRef(), seq, os);
+        U2EntityRef seqRef = U2SequenceUtils::import(os, doc->getDbiRef(), seq);
         CHECK_OP(os, NULL);
         dna = new U2SequenceObject(seq.getName(), seqRef);
         doc->addObject(dna);
@@ -326,10 +327,13 @@ inline static U2SequenceObject * getCopiedSequenceObject(const QVariantMap &data
     if (refCount > 2) { // need to copy because it is used by another worker
         DNASequence seq = seqObj->getSequence(reg, os);
         CHECK_OP(os, NULL);
-        U2EntityRef seqRef = U2SequenceUtils::import(context->getDataStorage()->getDbiRef(), seq, os);
+        U2EntityRef seqRef = U2SequenceUtils::import(os, context->getDataStorage()->getDbiRef(), seq);
         CHECK_OP(os, NULL);
 
-        return new U2SequenceObject(seqObj->getSequenceName(), seqRef);
+        U2SequenceObject *clonedSeqObj = new U2SequenceObject(seqObj->getSequenceName(), seqRef);
+        U2AttributeUtils::copyObjectAttributes(seqObj->getEntityRef(), clonedSeqObj->getEntityRef(), os);
+
+        return clonedSeqObj;
     } else {
         return seqObj.take();
     }
@@ -844,20 +848,20 @@ void MSAWriter::data2doc(Document* doc, const QVariantMap& data) {
 
 void MSAWriter::data2document(Document* doc, const QVariantMap& data, WorkflowContext* context) {
     SharedDbiDataHandler msaId = data.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-    QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
     SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", );
-    MAlignment ma = msaObj->getMAlignment();
+    MultipleSequenceAlignment msa = msaObj->getMsaCopy();
 
-    SAFE_POINT(!ma.isEmpty(), tr("Empty alignment passed for writing to %1").arg(doc->getURLString()), )
+    SAFE_POINT(!msa->isEmpty(), tr("Empty alignment passed for writing to %1").arg(doc->getURLString()), )
 
-    if (ma.getName().isEmpty()) {
+    if (msa->getName().isEmpty()) {
         QString name = QString(MA_OBJECT_NAME + "_%1").arg(ct);
-        ma.setName(name);
+        msa->setName(name);
         ct++;
     }
 
     U2OpStatus2Log os;
-    MAlignmentObject* obj = MAlignmentImporter::createAlignment(doc->getDbiRef(), ma, os);
+    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), msa, os);
     CHECK_OP(os, );
 
     doc->addObject(obj);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,8 +21,7 @@
 
 #include "RF_SuffixArray.h"
 #include "RFConstants.h"
-#include <QtCore/QtAlgorithms>
-#include <QtCore/QThread>
+#include <QThread>
 #include <U2Core/Log.h>
 
 namespace U2 {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@ namespace U2 {
 class TableWidget : public DashboardWidget {
     Q_OBJECT
 public:
-    TableWidget(const QWebElement &container, Dashboard *parent);
+    TableWidget(const QWebElement &container, const QString &id, Dashboard *parent);
 
     /** The list of % */
     virtual QList<int> widths() = 0;
@@ -44,13 +44,12 @@ protected slots:
     void fillTable();
 
 protected:
-    bool useEmptyRows;
-    QMap<QString, QWebElement> rows;
-
-protected:
-    void addRow(const QString &dataId, const QStringList &d);
+    void addRow(const QString &dataId, const QStringList &d, const QString &rowId = "");
     void updateRow(const QString &dataId, const QStringList &d);
     virtual QString createRow(const QStringList &d);
+
+    bool useEmptyRows;
+    QMap<QString, QWebElement> rows;
 
 private:
     void addEmptyRows();

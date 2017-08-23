@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,61 +19,54 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTTestsWorkflowDesigner.h"
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QDir>
+#include <QFileInfo>
+#include <QGraphicsItem>
+#include <QGraphicsView>
+#include <QProcess>
+#include <QScreen>
+#include <QTextEdit>
 
-#include <drivers/GTMouseDriver.h>
-#include <drivers/GTKeyboardDriver.h>
-#include "utils/GTKeyboardUtils.h"
-#include <primitives/GTWidget.h>
+#include <GTGlobals.h>
 #include <base_dialogs/GTFileDialog.h>
-#include "primitives/GTMenu.h"
-#include "GTGlobals.h"
-#include <primitives/GTTreeWidget.h>
-#include "primitives/GTAction.h"
-#include "system/GTFile.h"
+#include <base_dialogs/MessageBoxFiller.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTMenu.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTableView.h>
-#include "primitives/PopupChooser.h"
-#include <base_dialogs/MessageBoxFiller.h>
-#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/AliasesDialogFiller.h"
-#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-#include "utils/GTUtilsApp.h"
+#include <primitives/GTTreeWidget.h>
+#include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
+#include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
+#include <utils/GTUtilsApp.h>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/ToolsMenu.h>
+
+#include <U2Lang/WorkflowSettings.h>
+
+#include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "GTTestsWorkflowDesigner.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-
-#include <U2Core/AppContext.h>
-
-#include <U2Gui/ToolsMenu.h>
-
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QTextEdit>
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QGraphicsView>
-#include <QtGui/QDesktopWidget>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QTextEdit>
-#include <QtWidgets/QGraphicsItem>
-#include <QtWidgets/QGraphicsView>
-#include <QtWidgets/QDesktopWidget>
-#endif
-
-#include <QProcess>
-//#include <P
-#include "../../workflow_designer/src/WorkflowViewItems.h"
-#include <U2Lang/WorkflowSettings.h>
-#include <QtCore/QFileInfo>
+#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/AliasesDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
+#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
 
@@ -85,107 +78,6 @@ namespace U2 {
 
 namespace GUITest_common_scenarios_workflow_designer {
 using namespace HI;
-GUI_TEST_CLASS_DEFINITION(test_0001){
-
-
-   /* GTUtilsWorkflowDesigner::openWorkfolwDesigner(os);
-    GTUtilsWorkflowDesigner::addSample(os, "call variants");
-
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "call variants"));
-    GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::getParameter(os, "Max number of reads per input BAM");*/
-    int i = GTFile::getSize(os, dataDir + "cmdline/pwm-build.uwl");
-    CHECK_SET_ERR(false, QString("%1").arg(i));
-    /*GTUtilsWorkflowDesigner::createDataset(os, "some name");*/
-    //GTWidget::getAllWidgetsInfo(os, table);
-    //    QAbstractButton* edit = GTAction::button(os, GTAction::findActionByText(os, "Edit script of the element..."));
-//    GTWidget::click(os, edit);
-
-    /*WizardFiller::pairValList list;
-    list.append(WizardFiller::pairValLabel("bowtie version",new WizardFiller::ComboBoxValue(0)));
-    list.append(WizardFiller::pairValLabel("bowtie index directory", new WizardFiller::lineEditValue
-                                           (testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data/index",true)));
-    list.append(WizardFiller::pairValLabel("bowtie index basename",new WizardFiller::lineEditValue("chr6",false)));
-    list.append(WizardFiller::pairValLabel("tophat",new WizardFiller::lineEditValue(testDir + "_common_data/scenarios/sandbox",true)));
-    list.append(WizardFiller::pairValLabel("cufflinks",new WizardFiller::lineEditValue(testDir + "_common_data/scenarios/sandbox",true)));
-    list.append(WizardFiller::pairValLabel("cuffmerge",new WizardFiller::lineEditValue(testDir + "_common_data/scenarios/sandbox",true)));
-    list.append(WizardFiller::pairValLabel("cuffdiff",new WizardFiller::lineEditValue(testDir + "_common_data/scenarios/sandbox",true)));
-
-
-    GTUtilsDialog::waitForDialog(os,new ConfigureTuxedoWizardFiller(os,ConfigureTuxedoWizardFiller::full
-                                                                    ,ConfigureTuxedoWizardFiller::singleReads));
-    GTUtilsDialog::waitForDialog(os,new TuxedoWizardFiller(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data","lymph_aln.fastq",
-                                                           testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data","wbc_aln.fastq",list));
-
-
-
-
-    GTUtilsWorkflowDesigner::addSample(os,"tuxedo tools");
-
-
-
-    GTKeyboardDriver::keyClick( 'r' ,Qt::ControlModifier);
-    TaskScheduler* scheduller = AppContext::getTaskScheduler();
-
-    GTGlobals::sleep(5000);
-    while(!scheduller->getTopLevelTasks().isEmpty()){
-        GTGlobals::sleep();
-    }
-
-    bool eq;
-// *****************************************
-    //tophat1
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0001/tophat_out/junctions.bed",
-                             testDir + "_common_data/scenarios/sandbox/tophat_out/junctions.bed");
-    CHECK_SET_ERR(eq,"junctions.bed files are not equal");
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0001/tophat_out/deletions.bed",
-                             testDir + "_common_data/scenarios/sandbox/tophat_out/deletions.bed");
-    CHECK_SET_ERR(eq,"deletions.bed files are not equal");
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0001/tophat_out/insertions.bed",
-                             testDir + "_common_data/scenarios/sandbox/tophat_out/insertions.bed");
-    CHECK_SET_ERR(eq,"insertions.bed files are not equal");
-
-    //tophat2
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0002/tophat_out/junctions.bed",
-                             testDir + "_common_data/scenarios/sandbox/tophat_out_1/junctions.bed");
-    CHECK_SET_ERR(eq,"junctions.bed2 files are not equal");
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0002/tophat_out/deletions.bed",
-                             testDir + "_common_data/scenarios/sandbox/tophat_out_1/deletions.bed");
-    CHECK_SET_ERR(eq,"deletions.bed2 files are not equal");
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0002/tophat_out/insertions.bed",
-                             testDir + "_common_data/scenarios/sandbox/tophat_out_1/insertions.bed");
-    CHECK_SET_ERR(eq,"insertions.bed2 files are not equal");
-// *****************************************
-    //cufflinks1
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0001/cufflinks_out/skipped.gtf",
-                             testDir + "_common_data/scenarios/sandbox/cufflinks_out/skipped.gtf");
-    CHECK_SET_ERR(eq,"skipped.gtf files are not equal");
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0001/cufflinks_out/genes.fpkm_tracking",
-                             testDir + "_common_data/scenarios/sandbox/cufflinks_out/genes.fpkm_tracking");
-    CHECK_SET_ERR(eq,"genes.fpkm_tracking files are not equal");
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0001/cufflinks_out/isoforms.fpkm_tracking",
-                             testDir + "_common_data/scenarios/sandbox/cufflinks_out/isoforms.fpkm_tracking");
-    CHECK_SET_ERR(eq,"isoforms.fpkm_tracking files are not equal");
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0001/cufflinks_out/transcripts.gtf",
-                             testDir + "_common_data/scenarios/sandbox/cufflinks_out/transcripts.gtf");
-    CHECK_SET_ERR(eq,"transcripts.gtf files are not equal");
-
-    //cufflinks2
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0002/cufflinks_out_1/skipped.gtf",
-                             testDir + "_common_data/scenarios/sandbox/cufflinks_out_1/skipped.gtf");
-    CHECK_SET_ERR(eq,"skipped.gtf2 files are not equal");
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0002/cufflinks_out_1/genes.fpkm_tracking",
-                             testDir + "_common_data/scenarios/sandbox/cufflinks_out_1/genes.fpkm_tracking");
-    CHECK_SET_ERR(eq,"genes.fpkm_tracking2 files are not equal");
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0002/cufflinks_out_1/isoforms.fpkm_tracking",
-                             testDir + "_common_data/scenarios/sandbox/cufflinks_out_1/isoforms.fpkm_tracking");
-    CHECK_SET_ERR(eq,"isoforms.fpkm_tracking2 files are not equal");
-    eq = GTFile::equals(os,testDir + "_common_data/NIAID_pipelines/tuxedo_pipeline/data_to_compare_with/test_0002/cufflinks_out_1/transcripts.gtf",
-                             testDir + "_common_data/scenarios/sandbox/cufflinks_out_1/transcripts.gtf");
-    CHECK_SET_ERR(eq,"transcripts.gtf2 files are not equal");*/
-//*****************************************
-
-}
 
 GUI_TEST_CLASS_DEFINITION(test_0002){
     GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
@@ -269,7 +161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003){
     GTWidget::click(os,GTAction::button(os,"Run workflow"));
 
     GTGlobals::sleep();
-//    2. If you don't want result file (T1.gb) in UGENE run directory, change this property in write genbank worker.Run schema.
+//    2. If you don't want result file (T1.gb) in UGENE run folder, change this property in write genbank worker.Run schema.
 //    Expected state: T1.gb file is saved to your disc
     GTFileDialog::openFile(os,testDir + "_common_data/scenarios/sandbox/","T1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -353,11 +245,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007){
     QPoint p(GTUtilsWorkflowDesigner::getItemLeft(os,"Read Alignment")+20,
              GTUtilsWorkflowDesigner::getItemTop(os,"Read Alignment")+20);
 
-#if (QT_VERSION < 0x050000) // deprecated method
-    QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
-#else
     QPixmap pixmap = QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId());
-#endif
     QImage img = pixmap.toImage();
     QRgb rgb = img.pixel(p);
     QColor c(rgb);
@@ -532,9 +420,9 @@ GUI_TEST_CLASS_DEFINITION(test_0017){
     //1. Open Workflow Designer
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Workflow Designer...");
 
-    //2. Write the path to the directory which does not exist(in the StartupDialogFiller).
+    //2. Write the path to the folder which does not exist(in the StartupDialogFiller).
     //3. Click OK(in the StartupDialogFiller).
-    CHECK_SET_ERR(!l.hasError(), "There are error messages about write access in WD directory");
+    CHECK_SET_ERR(!l.hasError(), "There are error messages about write access in WD folder");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0058){
@@ -622,7 +510,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
 
     GTUtilsWorkflowDesigner::click(os, "Write Annotations");
     GTGlobals::sleep();
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "bed", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "BED", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

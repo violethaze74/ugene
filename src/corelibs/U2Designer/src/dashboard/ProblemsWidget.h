@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,6 +38,8 @@ public:
     virtual QList<QStringList> data();
 
     static QString problemImage(const Problem &info);
+
+    static const QString ID;
 
 private slots:
     void sl_newProblem(const Problem &info);

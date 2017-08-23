@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,6 @@ public:
     static void checkContainsError(HI::GUITestOpStatus &os, const GTLogTracer& logTracer, const QString &messagePart);
     static void checkContainsMessage(HI::GUITestOpStatus &os, const GTLogTracer& logTracer, bool expected = true);
     static QStringList getErrors(HI::GUITestOpStatus &os, const GTLogTracer &logTracer);
-
 };
 
 } // namespace
