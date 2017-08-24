@@ -529,6 +529,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Open containing folder",
         PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
+    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0035) {
@@ -569,6 +570,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Open containing folder",
         PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "sars.gb", Qt::RightButton);
+    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0038){
