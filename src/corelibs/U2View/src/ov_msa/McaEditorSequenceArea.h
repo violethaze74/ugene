@@ -80,7 +80,6 @@ public slots:
     void sl_backgroundSelectionChanged();
 
 private slots:
-    void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
     void sl_showHideTrace();
     void sl_showAllTraces();
     void sl_setRenderAreaHeight(int k);
@@ -93,9 +92,10 @@ private slots:
     void sl_trimLeftEnd();
     void sl_trimRightEnd();
 
+    void sl_updateActions();
+
 private:
     void initRenderer();
-    void updateActions();
     void drawBackground(QPainter &p);
 
     void getColorAndHighlightingIds(QString &csid, QString &hsid);

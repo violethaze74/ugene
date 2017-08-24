@@ -51,6 +51,7 @@ public:
     static const QString NGS_DENOVO;
     static const QString NGS_MAP;
     static const QString NGS_INDEX;
+    static const QString NGS_SCAFFOLD;
     static const QString NGS_RAW_DNA;
     static const QString NGS_CALL_VARIANTS;
     static const QString NGS_CALL_VARIANTS_AND_EFFECT;

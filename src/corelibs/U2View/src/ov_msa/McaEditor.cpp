@@ -31,9 +31,9 @@
 
 #include "MaConsensusMismatchController.h"
 #include "MaEditorFactory.h"
-#include "MaEditorNameList.h"
 #include "McaEditor.h"
 #include "McaEditorConsensusArea.h"
+#include "McaEditorNameList.h"
 #include "McaEditorSequenceArea.h"
 #include "ExportConsensus/MaExportConsensusTabFactory.h"
 #include "General/McaGeneralTabFactory.h"
@@ -105,6 +105,10 @@ bool McaEditor::isChromVisible(qint64 rowId) const {
 
 bool McaEditor::isChromVisible(int rowIndex) const {
     return !ui->getCollapseModel()->isItemCollapsed(rowIndex);
+}
+
+bool McaEditor::isChromatogramButtonChecked() const {
+    return showChromatogramsAction->isChecked();
 }
 
 QString McaEditor::getReferenceRowName() const {

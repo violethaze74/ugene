@@ -29,7 +29,7 @@ win32-msvc2013 {
 win32 {
     # not visual studio 2015
     !win32-msvc2015 {
-        DEFINES += "inline=__inline" 
+        DEFINES += "inline=__inline"
     }
 }
 

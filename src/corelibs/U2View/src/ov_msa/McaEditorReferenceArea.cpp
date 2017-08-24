@@ -54,7 +54,7 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
     rowBar->hide();
 
     connect(ui->getEditor()->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
-            SLOT(sl_update()));
+            SLOT(completeUpdate()));
 
     connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_visibleRangeChanged()));
     connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection,MaEditorSelection)),
@@ -104,11 +104,6 @@ void McaEditorReferenceArea::sl_clearSelection() {
 void McaEditorReferenceArea::sl_fontChanged(const QFont &newFont) {
     renderer->setFont(newFont);
     setFixedHeight(renderer->getMinimumHeight());
-}
-
-void McaEditorReferenceArea::sl_update() {
-    getSequenceObject()->forceCachedSequenceUpdate();
-    completeUpdate();
 }
 
 void McaEditorReferenceArea::mousePressEvent(QMouseEvent* e) {

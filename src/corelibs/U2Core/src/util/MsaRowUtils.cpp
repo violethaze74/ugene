@@ -614,7 +614,7 @@ void MsaRowUtils::removeTrailingGapsFromModel(qint64 length, U2MsaRowGapModel &g
         if (gap.offset >= length) {
             while (gapModel.size() > i) {
                 gapModel.removeLast();
-            } 
+            }
         } else {
             length += gap.gap;
         }

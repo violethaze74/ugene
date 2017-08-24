@@ -33,8 +33,6 @@
 
 namespace U2 {
 
-extern Logger log;
-
 FindExonRegionsTask::FindExonRegionsTask(U2SequenceObject *dObj, const QString &annName)
     : Task("FindExonRegionsTask", TaskFlags_NR_FOSCOE), dnaObj(dObj), exonAnnName(annName)
 {

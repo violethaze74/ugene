@@ -538,7 +538,6 @@ McaRowMemoryData MultipleChromatogramAlignmentRowData::getRowMemoryData() const 
     mcaRowMemoryData.chromatogram = chromatogram;
     mcaRowMemoryData.gapModel = gaps;
     mcaRowMemoryData.sequence = sequence;
-    mcaRowMemoryData.workingArea = getCoreRegion();
     mcaRowMemoryData.rowLength = getRowLengthWithoutTrailing();
     mcaRowMemoryData.additionalInfo = additionalInfo;
     return mcaRowMemoryData;

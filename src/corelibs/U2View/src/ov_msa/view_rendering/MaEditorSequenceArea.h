@@ -105,7 +105,7 @@ public:
 
     virtual void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
-    virtual void adjustReferenceLength(U2OpStatus& os) {}
+    virtual void adjustReferenceLength(U2OpStatus& os) { Q_UNUSED(os); }
 
     U2Region getSelectedRows() const;
 
@@ -152,7 +152,6 @@ public:
     bool getUseDotsCheckedState() const;
 
     QAction *getReplaceCharacterAction() const;
-    const QAction * const getRemoveSAction() const;
 
 public slots:
     void sl_changeColorSchemeOutside(const QString &id);
@@ -164,10 +163,12 @@ protected slots:
     void sl_changeColorScheme();
     void sl_fillCurrentSelectionWithGaps();
 
-    virtual void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
+    void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
 
     void sl_completeUpdate();
     void sl_completeRedraw();
+
+    virtual void sl_updateActions() = 0;
 
     void sl_triggerUseDots();
     void sl_useDots();
@@ -210,7 +211,6 @@ protected:
     void keyReleaseEvent(QKeyEvent *);
 
     virtual void initRenderer() = 0;
-    virtual void updateActions() = 0;
     virtual void drawBackground(QPainter& p);
 
     /**

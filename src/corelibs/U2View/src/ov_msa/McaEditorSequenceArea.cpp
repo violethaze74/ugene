@@ -31,6 +31,8 @@
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include "McaEditorSequenceArea.h"
 #include "helpers/MaAmbiguousCharactersController.h"
 #include "helpers/ScrollController.h"
@@ -112,13 +114,11 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
 
     scaleBar->getPlusAction()->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
     addAction(scaleBar->getPlusAction());
-    QAbstractButton *plusButton = scaleBar->getPlusButton();
-    plusButton->setToolTip(QString("%1 (%2)").arg(plusButton->text()).arg(scaleBar->getPlusAction()->shortcut().toString(QKeySequence::NativeText)));
+    GUIUtils::updateButtonToolTip(scaleBar->getPlusButton(), scaleBar->getPlusAction()->shortcut());
 
     scaleBar->getMinusAction()->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Down));
     addAction(scaleBar->getMinusAction());
-    QAbstractButton *minusButton = scaleBar->getMinusButton();
-    minusButton->setToolTip(QString("%1 (%2)").arg(minusButton->text()).arg(scaleBar->getMinusAction()->shortcut().toString(QKeySequence::NativeText)));
+    GUIUtils::updateButtonToolTip(scaleBar->getMinusButton(), scaleBar->getMinusAction()->shortcut());
 
     scaleAction = NULL;
 
@@ -131,7 +131,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_setRenderAreaHeight(int)));
 
     updateColorAndHighlightSchemes();
-    updateActions();
+    sl_updateActions();
 }
 
 void McaEditorSequenceArea::adjustReferenceLength(U2OpStatus& os) {
@@ -232,11 +232,6 @@ void McaEditorSequenceArea::sl_backgroundSelectionChanged() {
     update();
 }
 
-void McaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo) {
-    getEditor()->getReferenceContext()->getSequenceObject()->forceCachedSequenceUpdate();
-    MaEditorSequenceArea::sl_alignmentChanged(ma, modInfo);
-}
-
 void McaEditorSequenceArea::sl_showHideTrace() {
     QAction* traceAction = qobject_cast<QAction*> (sender());
 
@@ -300,7 +295,7 @@ void McaEditorSequenceArea::sl_addInsertion() {
     maMode = InsertCharMode;
     editModeAnimationTimer.start(500);
     highlightCurrentSelection();
-    updateActions();
+    sl_updateActions();
 }
 
 void McaEditorSequenceArea::sl_removeGapBeforeSelection() {
@@ -323,6 +318,26 @@ void McaEditorSequenceArea::sl_trimLeftEnd() {
 
 void McaEditorSequenceArea::sl_trimRightEnd() {
     trimRowEnd(MultipleChromatogramAlignmentObject::Right);
+}
+
+void McaEditorSequenceArea::sl_updateActions() {
+    MultipleAlignmentObject* maObj = editor->getMaObject();
+    SAFE_POINT(NULL != maObj, "MaObj is NULL", );
+
+    const bool readOnly = maObj->isStateLocked();
+    const bool canEditAlignment = !readOnly && !isAlignmentEmpty();
+    const bool canEditSelectedArea = canEditAlignment && !selection.isNull();
+    const bool isEditing = (maMode != ViewMode);
+    const bool isSingleSymbolSelected = (selection.getRect().size() == QSize(1, 1));
+    const bool hasGapBeforeSelection = (!selection.isEmpty() && selection.x() > 0 && maObj->getMultipleAlignment()->isGap(selection.y(), selection.x() - 1));
+
+    ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
+    updateTrimActions(canEditSelectedArea);
+    insertAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
+    replaceCharacterAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
+    fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
+    removeGapBeforeSelectionAction->setEnabled(hasGapBeforeSelection && !isEditing && canEditAlignment);
+    removeColumnsOfGapsAction->setEnabled(canEditAlignment);
 }
 
 void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::TrimEdge edge) {
@@ -364,25 +379,6 @@ void McaEditorSequenceArea::updateTrimActions(bool isEnabled) {
 
 void McaEditorSequenceArea::initRenderer() {
     renderer = new SequenceWithChromatogramAreaRenderer(ui, this);
-}
-
-void McaEditorSequenceArea::updateActions() {
-    MultipleAlignmentObject* maObj = editor->getMaObject();
-    SAFE_POINT(NULL != maObj, "MaObj is NULL", );
-
-    const bool readOnly = maObj->isStateLocked();
-    const bool canEditAlignment = !readOnly && !isAlignmentEmpty();
-    const bool canEditSelectedArea = canEditAlignment && !selection.isNull();
-    const bool isEditing = (maMode != ViewMode);
-    const bool isSingleSymbolSelected = (selection.getRect().size() == QSize(1, 1));
-    const bool hasGapBeforeSelection = canEditAlignment && (maObj->getMultipleAlignment()->isGap(selection.y(), selection.x() - 1));
-
-    ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
-    updateTrimActions(canEditSelectedArea);
-    insertAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
-    replaceCharacterAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
-    fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
-    removeGapBeforeSelectionAction->setEnabled(hasGapBeforeSelection && !isEditing);
 }
 
 void McaEditorSequenceArea::drawBackground(QPainter &painter) {

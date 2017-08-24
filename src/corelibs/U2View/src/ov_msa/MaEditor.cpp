@@ -434,6 +434,7 @@ void MaEditor::updateActions() {
     zoomOutAction->setEnabled( getColumnWidth() > MOBJECT_MIN_COLUMN_WIDTH );
     zoomToSelectionAction->setEnabled( font.pointSize() < MOBJECT_MAX_FONT_SIZE);
     changeFontAction->setEnabled( resizeMode == ResizeMode_FontAndContent);
+    emit si_updateActions();
 }
 
 } // namespace

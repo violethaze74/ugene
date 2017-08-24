@@ -70,7 +70,7 @@ DnaAssemblySupport::DnaAssemblySupport()
     connect( convertAssemblyToSamAction, SIGNAL( triggered() ), SLOT( sl_showConvertToSamDialog() ) );
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, convertAssemblyToSamAction);
 
-    QAction* genomeAssemblyAction = new QAction( tr("Genome de novo assembly..."), this );
+    QAction* genomeAssemblyAction = new QAction( tr("Reads de novo assembly (with SPAdes)..."), this );
     genomeAssemblyAction->setObjectName(ToolsMenu::NGS_DENOVO);
     genomeAssemblyAction->setIcon(QIcon(":core/images/align.png"));
     connect( genomeAssemblyAction, SIGNAL( triggered() ), SLOT( sl_showGenomeAssemblyDialog() ) );

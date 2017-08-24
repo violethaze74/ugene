@@ -492,4 +492,8 @@ QString GUrlUtils::fixFileName(const QString &fileName) {
     return result;
 }
 
+QString GUrlUtils::getSlashEndedPath(const QString &dirPath) {
+    return dirPath.endsWith("/") ? dirPath : dirPath + "/";
+}
+
 }//namespace

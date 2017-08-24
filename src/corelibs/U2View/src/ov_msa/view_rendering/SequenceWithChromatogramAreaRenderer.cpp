@@ -29,7 +29,7 @@
 #include <U2View/SequenceObjectContext.h>
 
 #include "SequenceWithChromatogramAreaRenderer.h"
-#include "ov_msa/MaEditorNameList.h"
+#include "ov_msa/McaEditorNameList.h"
 #include "ov_msa/McaEditorSequenceArea.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/RowHeightController.h"

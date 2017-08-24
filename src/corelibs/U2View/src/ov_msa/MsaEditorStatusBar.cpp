@@ -208,7 +208,8 @@ void MsaEditorStatusBar::setupLayout() {
 }
 
 void MsaEditorStatusBar::updateLabels() {
-    updateLinePositionLabels();
+    updateLineLabel();
+    updatePositionLabel();
     updateColumnLabel();
     updateSelectionLabel();
 }

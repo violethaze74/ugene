@@ -917,7 +917,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
     GTFile::copy(os, testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "chrM.sorted.bam.ugenedb");
     GTFileDialog::openFile(os, sandBoxDir + "chrM.sorted.bam.ugenedb");
 	GTUtilsProjectTreeView::click(os, "chrM");
-	
+
 //    2. Rename assembly object
     GTUtilsProjectTreeView::rename(os, "chrM", "new_name");
 //    Check UGENE title

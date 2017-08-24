@@ -28,6 +28,7 @@ namespace U2 {
 
 class McaEditor;
 class McaEditorConsensusArea;
+class McaEditorNameList;
 class McaEditorReferenceArea;
 class McaEditorSequenceArea;
 class McaReferenceCharController;
@@ -39,6 +40,7 @@ public:
 
     McaEditor* getEditor() const;
     McaEditorConsensusArea* getConsensusArea() const;
+    McaEditorNameList *getEditorNameList() const;
     McaEditorSequenceArea* getSequenceArea() const;
     McaReferenceCharController* getRefCharController() const;
 
@@ -54,6 +56,9 @@ protected:
     void initNameList(QScrollBar* nhBar);
     void initConsensusArea();
     void initStatusBar();
+
+private slots:
+    void sl_alignmentChanged();
 
 private:
     McaEditorReferenceArea*     refArea;

@@ -20,6 +20,7 @@
  */
 
 #include <QMessageBox>
+#include <QShortcut>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -173,6 +174,8 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
     saveController->setPath(outputLineEdit->text());
+
+    new QShortcut(QKeySequence(Qt::Key_Delete), this, SLOT(sl_removeRead()));
 }
 
 void AlignToReferenceBlastDialog::initSaveController() {

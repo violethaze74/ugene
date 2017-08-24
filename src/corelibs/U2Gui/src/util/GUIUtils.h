@@ -31,6 +31,8 @@
 
 #include "U2FileDialog.h"
 
+class QAbstractButton;
+
 namespace U2 {
 
 class U2GUI_EXPORT GUIUtils : public QObject {
@@ -46,6 +48,7 @@ public:
     static QMenu* findSubMenu(QMenu* m, const QString& name);
 
     static void updateActionToolTip(QAction *action);
+    static void updateButtonToolTip(QAbstractButton *button, const QKeySequence &shortcut);
 
     static void disableEmptySubmenus(QMenu* m);
 

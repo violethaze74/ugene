@@ -316,7 +316,7 @@ bool ConvertToSQLiteDialog::checkReferencesState() {
 void ConvertToSQLiteDialog::initSaveController() {
     SaveDocumentControllerConfig config;
     config.defaultDomain = DIR_HELPER_DOMAIN;
-    config.defaultFileName = sourceUrl.dirPath() + "/" + sourceUrl.fileName() + ".ugenedb";
+    config.defaultFileName = sourceUrl.dirPath() + "/" + QFileInfo(sourceUrl.fileName()).completeBaseName() + ".ugenedb";
     config.defaultFormatId = BaseDocumentFormats::UGENEDB;
     config.fileDialogButton = ui.destinationUrlButton;
     config.fileNameEdit = ui.destinationUrlEdit;

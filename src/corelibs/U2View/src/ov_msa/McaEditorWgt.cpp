@@ -44,6 +44,8 @@
 
 namespace U2 {
 
+#define TOP_INDENT 10
+
 McaEditorWgt::McaEditorWgt(McaEditor *editor)
     : MaEditorWgt(editor)
 {
@@ -70,8 +72,8 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
                                                Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), refArea);
     refName->setObjectName("reference label container widget");
 
-
     nameAreaLayout->insertWidget(0, refName);
+    nameAreaLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
 
     QVector<U2Region> itemRegions;
     for (int i = 0; i < editor->getNumSequences(); i++) {
@@ -86,7 +88,26 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
 
     McaEditorConsensusArea* mcaConsArea = qobject_cast<McaEditorConsensusArea*>(consArea);
     SAFE_POINT(mcaConsArea != NULL, "Failed to cast consensus area to MCA consensus area", );
+    seqAreaHeaderLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
+    seqAreaHeader->setStyleSheet("background-color: white;");
     connect(mcaConsArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
+    MultipleChromatogramAlignmentObject* mcaObj = editor->getMaObject();
+    connect(mcaObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
+}
+
+void McaEditorWgt::sl_alignmentChanged() {
+    int size = editor->getNumSequences();
+    int collapseSize = collapseModel->getItemSize();
+    if (size > collapseSize) {
+        QVector<U2Region> itemRegions;
+        for (int i = 0; i < size; i++) {
+            itemRegions << U2Region(i, 1);
+        }
+        collapseModel->reset(itemRegions);
+        McaEditor* mcaEditor = getEditor();
+        bool isButtonChecked = mcaEditor->isChromatogramButtonChecked();
+        collapseModel->collapseAll(!isButtonChecked);
+    }
 }
 
 McaEditor *McaEditorWgt::getEditor() const {
@@ -95,6 +116,10 @@ McaEditor *McaEditorWgt::getEditor() const {
 
 McaEditorConsensusArea *McaEditorWgt::getConsensusArea() const {
     return qobject_cast<McaEditorConsensusArea *>(consArea);
+}
+
+McaEditorNameList *McaEditorWgt::getEditorNameList() const {
+    return qobject_cast<McaEditorNameList *>(nameList);
 }
 
 McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
@@ -137,7 +162,7 @@ void McaEditorWgt::initConsensusArea() {
 }
 
 void McaEditorWgt::initStatusBar() {
-    statusBar = new McaEditorStatusBar(editor->getMaObject(), seqArea, refCharController);
+    statusBar = new McaEditorStatusBar(editor->getMaObject(), seqArea, getEditorNameList(), refCharController);
 }
 
 }   // namespace U2

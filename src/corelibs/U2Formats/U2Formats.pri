@@ -35,7 +35,7 @@ win32:DEFINES += _USE_MATH_DEFINES "__func__=__FUNCTION__" "R_OK=4" "atoll=_atoi
 win32 {
     # not visual studio 2015
     !win32-msvc2015 {
-        DEFINES += "inline=__inline" 
+        DEFINES += "inline=__inline"
     }
 }
 

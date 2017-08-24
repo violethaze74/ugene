@@ -195,7 +195,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
         SLOT(sl_alphabetChanged(const MaModificationInfo &, const DNAAlphabet*)));
 
     updateColorAndHighlightSchemes();
-    updateActions();
+    sl_updateActions();
 }
 
 MSAEditor *MSAEditorSequenceArea::getEditor() const {
@@ -216,34 +216,6 @@ bool MSAEditorSequenceArea::hasAminoAlphabet() {
     const DNAAlphabet* alphabet = maObj->getAlphabet();
     SAFE_POINT(NULL != maObj, tr("DNAAlphabet is null in MSAEditorSequenceArea::hasAminoAlphabet()"), false);
     return DNAAlphabet_AMINO == alphabet->getType();
-}
-
-void MSAEditorSequenceArea::updateActions() {
-    MultipleAlignmentObject* maObj = editor->getMaObject();
-    assert(maObj != NULL);
-    bool readOnly = maObj->isStateLocked();
-
-    createSubaligniment->setEnabled(!isAlignmentEmpty());
-    saveSequence->setEnabled(!isAlignmentEmpty());
-    addSeqFromProjectAction->setEnabled(!readOnly);
-    addSeqFromFileAction->setEnabled(!readOnly);
-    sortByNameAction->setEnabled(!readOnly && !isAlignmentEmpty());
-    collapseModeSwitchAction->setEnabled(!readOnly && !isAlignmentEmpty());
-
-//Update actions of "Edit" group
-    bool canEditAlignment = !readOnly && !isAlignmentEmpty();
-    bool canEditSelectedArea = canEditAlignment && !selection.isNull();
-    const bool isEditing = (maMode != ViewMode);
-    ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
-
-    fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && !isEditing);
-    bool oneCharacterIsSelected = selection.width() == 1 && selection.height() == 1;
-    replaceCharacterAction->setEnabled(canEditSelectedArea && oneCharacterIsSelected);
-    delColAction->setEnabled(canEditAlignment);
-    reverseComplementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());
-    reverseAction->setEnabled(canEditSelectedArea);
-    complementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());
-    removeAllGapsAction->setEnabled(canEditAlignment);
 }
 
 void MSAEditorSequenceArea::focusInEvent(QFocusEvent* fe) {
@@ -453,6 +425,34 @@ void MSAEditorSequenceArea::sl_alphabetChanged(const MaModificationInfo &mi, con
     notificationStack->addNotification(message, Info_Not);
 }
 
+void MSAEditorSequenceArea::sl_updateActions() {
+    MultipleAlignmentObject* maObj = editor->getMaObject();
+    assert(maObj != NULL);
+    bool readOnly = maObj->isStateLocked();
+
+    createSubaligniment->setEnabled(!isAlignmentEmpty());
+    saveSequence->setEnabled(!isAlignmentEmpty());
+    addSeqFromProjectAction->setEnabled(!readOnly);
+    addSeqFromFileAction->setEnabled(!readOnly);
+    sortByNameAction->setEnabled(!readOnly && !isAlignmentEmpty());
+    collapseModeSwitchAction->setEnabled(!readOnly && !isAlignmentEmpty());
+
+//Update actions of "Edit" group
+    bool canEditAlignment = !readOnly && !isAlignmentEmpty();
+    bool canEditSelectedArea = canEditAlignment && !selection.isNull();
+    const bool isEditing = (maMode != ViewMode);
+    ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
+
+    fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && !isEditing);
+    bool oneCharacterIsSelected = selection.width() == 1 && selection.height() == 1;
+    replaceCharacterAction->setEnabled(canEditSelectedArea && oneCharacterIsSelected);
+    delColAction->setEnabled(canEditAlignment);
+    reverseComplementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());
+    reverseAction->setEnabled(canEditSelectedArea);
+    complementAction->setEnabled(canEditSelectedArea && maObj->getAlphabet()->isNucleic());
+    removeAllGapsAction->setEnabled(canEditAlignment);
+}
+
 void MSAEditorSequenceArea::sl_delCol() {
     QObjectScopedPointer<DeleteGapsDialog> dlg = new DeleteGapsDialog(this, editor->getMaObject()->getNumRows());
     dlg->exec();
@@ -515,7 +515,7 @@ void MSAEditorSequenceArea::sl_onPosChangeRequest(int position) {
 }
 
 void MSAEditorSequenceArea::sl_lockedStateChanged() {
-    updateActions();
+    sl_updateActions();
 }
 
 void MSAEditorSequenceArea::sl_removeAllGaps() {

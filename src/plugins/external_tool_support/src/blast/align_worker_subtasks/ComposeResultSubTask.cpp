@@ -106,6 +106,9 @@ void ComposeResultSubTask::run() {
     insertShiftedGapsIntoReference();
     CHECK_OP(stateInfo, );
 
+    enlargeReferenceByGaps();
+    CHECK_OP(stateInfo, );
+
     mcaObject->changeLength(stateInfo, qMax(mcaObject->getLength(), referenceSequenceObject->getSequenceLength()));
     CHECK_OP(stateInfo, );
 
@@ -222,6 +225,20 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
 
     annsObject->addAnnotations(anns);
     annotations = storage->getDataHandler(annsObject->getEntityRef());
+}
+
+void ComposeResultSubTask::enlargeReferenceByGaps() {
+    const qint64 sequenceLength = referenceSequenceObject->getSequenceLength();
+    const qint64 alignmentLength = mcaObject->getLength();
+    const int gapsNeedToInsertToReference = alignmentLength - sequenceLength;
+    if (gapsNeedToInsertToReference > 0) {
+        U2DataId id = mcaObject->getEntityRef().entityId;
+        U2Region region(sequenceLength, 0);
+        QByteArray insert(gapsNeedToInsertToReference, U2Msa::GAP_CHAR);
+        DNASequence seq(insert);
+        referenceSequenceObject->replaceRegion(id, region, seq, stateInfo);
+        CHECK_OP(stateInfo, );
+    }
 }
 
 U2Region ComposeResultSubTask::getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const U2MsaRowGapModel &referenceGapModel) const {
