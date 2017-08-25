@@ -33,7 +33,9 @@
 #include <U2View/BaseWidthController.h>
 #include <U2View/DrawHelper.h>
 #include <U2View/McaEditor.h>
+#include <U2View/McaEditorConsensusArea.h>
 #include <U2View/McaEditorNameList.h>
+#include <U2View/McaEditorReferenceArea.h>
 #include <U2View/McaEditorSequenceArea.h>
 #include <U2View/McaEditorConsensusArea.h>
 
@@ -247,9 +249,9 @@ QString GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(GUITestOpStatus &o
     MultipleChromatogramAlignmentObject* obj = editor->getMaObject();
     GT_CHECK_RESULT(obj != NULL, "MultipleChromatogramAlignmentObject not found", QString());
 
-    QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
-    int num = sel.x();
-    int length = sel.width();
+    U2Region sel = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
+    int num = sel.startPos;
+    int length = sel.length;
 
     U2OpStatus2Log status;
     QByteArray seq = obj->getReferenceObj()->getSequenceData(U2Region(num, length), status);
@@ -420,6 +422,65 @@ qint64 GTUtilsMcaEditorSequenceArea::getReferenceLength(GUITestOpStatus &os) {
     qint64 refLength = obj->getReferenceObj()->getSequenceLength();
 
     return refLength;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getReferenceSelection"
+U2Region GTUtilsMcaEditorSequenceArea::getReferenceSelection(GUITestOpStatus &os) {
+    McaEditorReferenceArea *mcaEditArea = qobject_cast<McaEditorReferenceArea*>(GTWidget::findWidget(os, "mca_editor_reference_area"));
+    GT_CHECK_RESULT(mcaEditArea != NULL, "McaEditorReferenceArea not found", U2Region());
+
+    SequenceObjectContext* seqContext = mcaEditArea->getSequenceContext();
+    GT_CHECK_RESULT(seqContext != NULL, "SequenceObjectContext not found", U2Region());
+
+    DNASequenceSelection* dnaSel = seqContext->getSequenceSelection();
+    GT_CHECK_RESULT(dnaSel != NULL, "DNASequenceSelection not found", U2Region());
+
+    QVector<U2Region> region = dnaSel->getSelectedRegions();
+    GT_CHECK_RESULT(region.size() == 1, "Incorrect selected region", U2Region());
+
+    return region.first();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getSelectedConsensusReg"
+QString GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(GUITestOpStatus &os) {
+    McaEditorConsensusArea* consArea = GTUtilsMcaEditor::getConsensusArea(os);
+    GT_CHECK_RESULT(consArea != NULL, "Consensus area not found", QString());
+
+    QSharedPointer<MSAEditorConsensusCache> consCache = consArea->getConsensusCache();
+
+    U2Region sel = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
+    int start = sel.startPos;
+    int length = sel.length;
+
+    QString res;
+    for (int i = 0; i < length; i++) {
+        int pos = start + i;
+        char ch = consCache->getConsensusChar(pos);
+        res.append(ch);
+    }
+    return res;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getConsensusStringByPos"
+QString GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(GUITestOpStatus &os, const U2Region reg) {
+    McaEditorConsensusArea* consArea = GTUtilsMcaEditor::getConsensusArea(os);
+    GT_CHECK_RESULT(consArea != NULL, "Consensus area not found", QString());
+
+    QSharedPointer<MSAEditorConsensusCache> consCache = consArea->getConsensusCache();
+
+    int start = reg.startPos;
+    int length = reg.length;
+
+    QString res;
+    for (int i = 0; i < length; i++) {
+        int pos = start + i;
+        char ch = consCache->getConsensusChar(pos);
+        res.append(ch);
+    }
+    return res;
 }
 #undef GT_METHOD_NAME
 

@@ -1836,6 +1836,10 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
 
     //Expected state : first difference between reference "T" and consensus "G"
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    QString consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'G', QString("Incorrect symbols, Expected ref = T, con = G, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
+
 
     //7. Push "Jump to next variation" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
@@ -1844,6 +1848,9 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
 
     //Expected state : difference between reference "T" and consensus "G"
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'G', QString("Incorrect symbols, Expected ref = T, con = G, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     //8. Push "Jump to next variation" from context menu
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next variation"));
@@ -1852,12 +1859,18 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
 
     //Expected state : difference between reference "T" and consensus "C"
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'C', QString("Incorrect symbols, Expected ref = T, con = C, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     //9. Push "Jump to next variation" from main menu
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to next variation");
 
     //Expected state : difference between reference "G" and consensus "A"
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'G' && consensusChar[0] == 'A', QString("Incorrect symbols, Expected ref = G, con = G, current ref = %1, cons = %2").arg(referenceChar[0]).arg(consensusChar[0]));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0015_2) {
@@ -2021,30 +2034,42 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
     GTGlobals::sleep();
 
-    //Expected state : first difference between reference "T" and consensus "N"
+    //Expected state : first difference between reference "T" and consensus GAP
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    QString consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = T, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     //7. Push "Jump to previous variation" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
     GTGlobals::sleep();
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
 
-    //Expected state : difference between reference "C" and consensus "M"
+    //Expected state : difference between reference "C" and consensus GAP
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = C, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     //8. Push "Jump to previous variation" from context menu
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to previous variation"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected state : difference between reference "G" and consensus "N"
+    //Expected state : difference between reference "G" and consensus GAP
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'G' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = G, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     //9. Push "Jump to next variation" from main menu
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to previous variation");
 
-    //Expected state : difference between reference "T" and consensus "W"
+    //Expected state : difference between reference "T" and consensus GAP
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = T, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_2) {
@@ -2290,6 +2315,13 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     GTGlobals::sleep();
 
     //Expected state : reference "C", consensus "N", read "N"
+    QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    QString consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    U2Region reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
+    QPoint readSelection(reg.startPos, 0);
+    char readChar = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, readSelection);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == 'N' && readChar == 'N', QString("Incorrect symbols, Expected ref = C, con = N, read = N current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //6. Push "Jump to next ambiguous character" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
@@ -2297,6 +2329,13 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
 
     //Expected state : reference "C", consensus "M", read "M".
+    referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
+    readSelection = QPoint(reg.startPos, 0);
+    readChar = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, readSelection);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == 'M' && readChar == 'M', QString("Incorrect symbols, Expected ref = C, con = M, read = M current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //7. Push "Jump to next ambiguous character" button from context menu
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next ambiguous character"));
@@ -2304,12 +2343,25 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : reference "T", consensus "W", read "W"
+    referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
+    readSelection = QPoint(reg.startPos, 0);
+    readChar = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, readSelection);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'W' && readChar == 'W', QString("Incorrect symbols, Expected ref = T, con = W, read = W current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //8.Push "Jump to next ambiguous character" button from main menu
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to next ambiguous character");
 
     //Expected state : reference "C", consensus "N", read "N"
-
+    referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
+    readSelection = QPoint(reg.startPos, 0);
+    readChar = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, readSelection);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == 'N' && readChar == 'N', QString("Incorrect symbols, Expected ref = C, con = N, read = N current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0018_1) {
@@ -2471,6 +2523,13 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     GTGlobals::sleep();
 
     //Expected state: reference "T", consensus "W", read "W"
+    QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    QString consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    U2Region reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
+    QPoint readSelection(reg.startPos, 0);
+    char readChar = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, readSelection);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'W' && readChar == 'W', QString("Incorrect symbols, Expected ref = T, con = W, read = W current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //6. Push "Jump to previous variation" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
@@ -2478,6 +2537,13 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
 
     //Expected state: reference "G", consensus "N", read "N"
+    referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
+    readSelection = QPoint(reg.startPos, 0);
+    readChar = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, readSelection);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'G' && consensusChar[0] == 'N' && readChar == 'N', QString("Incorrect symbols, Expected ref = G, con = N, read = N current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //7. Push "Jump to next variation" from context menu
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to previous ambiguous character"));
@@ -2485,11 +2551,25 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: reference "C", consensus "N", read "N"
+    referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
+    readSelection = QPoint(reg.startPos, 0);
+    readChar = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, readSelection);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == 'N' && readChar == 'N', QString("Incorrect symbols, Expected ref = C, con = N, read = N current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //8. Push "Jump to previous variation" from main menu
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to previous ambiguous character");
 
     //Expected state: reference "T", consensus "W", read "W"
+    referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
+    consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
+    reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
+    readSelection = QPoint(reg.startPos, 0);
+    readChar = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, readSelection);
+    CHECK_SET_ERR(referenceChar.size() == 1 && consensusChar.size() == 1, QString("Incorrect selection size, Expected ref = 1, cons = 1, Curren ref = %1, cons = %2").arg(QString::number(referenceChar.size())).arg(QString::number(consensusChar.size())));
+    CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'W' && readChar == 'W', QString("Incorrect symbols, Expected ref = T, con = W, read = W current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0019) {
@@ -3425,6 +3505,11 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
     CHECK_SET_ERR(refChar.size() == 1, "Incorrect reference selection");
     CHECK_SET_ERR(refChar[0] == U2Mca::GAP_CHAR, "Incorrect reference character");
 
+    //Expected state: consensus  sequence is recomputed according to the settings in the Option Panel
+    QString consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
+    CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
+    CHECK_SET_ERR(consSel[0] == 'N', QString("Incorrect consensus character, expected: N, current: %1").arg(consSel));
+
     //8. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
 
@@ -3572,6 +3657,11 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
     CHECK_SET_ERR(refChar.size() == 1, "Incorrect reference selection");
     CHECK_SET_ERR(refChar[0] == U2Mca::GAP_CHAR, "Incorrect reference character");
 
+    //Expected state: consensus  sequence is recomputed according to the settings in the Option Panel
+    QString consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
+    CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
+    CHECK_SET_ERR(consSel[0] == 'N', QString("Incorrect consensus character, expected: N, current: %1").arg(consSel));
+
     //9. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
 
@@ -3713,6 +3803,11 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     QString refChar = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, x, 1);
     CHECK_SET_ERR(refChar.size() == 1, "Incorrect reference selection");
     CHECK_SET_ERR(refChar[0] == U2Mca::GAP_CHAR, "Incorrect reference character");
+
+    //Expected state: consensus  sequence is recomputed according to the settings in the Option Panel
+    QString consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
+    CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
+    CHECK_SET_ERR(consSel[0] == 'N', QString("Incorrect consensus character, expected: N, current: %1").arg(consSel));
 
     //9. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
@@ -4107,6 +4202,12 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     CHECK_SET_ERR(rowLength == newRowLength + 1, "Incorrect row length");
 
     //Expected state: Consensus sequence is recomputed according to the settings in the Option Panel
+    QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
+    int x = sel.x();
+    QString consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
+    CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
+    CHECK_SET_ERR(consSel[0] == 'G', QString("Incorrect consensus character, expected: G, current: %1").arg(consSel));
+
     //Expected state: Reference sequence is not changed
     qint64 newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
     CHECK_SET_ERR(refLength == newRefLength, "Error: reference length was changed");
@@ -4120,6 +4221,12 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     CHECK_SET_ERR(selectedChar == 'A', "Incorrect selected character");
 
     //Expected result: consensus  sequence is restored
+    sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
+    x = sel.x();
+    consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
+    CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
+    CHECK_SET_ERR(consSel[0] == 'A', QString("Incorrect consensus character, expected: A, current: %1").arg(consSel));
+
     //Expected state: the sequence is shifted one character to the right
     newRowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     CHECK_SET_ERR(rowLength == newRowLength, "Incorrect row length");
@@ -4133,7 +4240,15 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
 
     //Expected state: the sequence is shifted one character to the left
     newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    CHECK_SET_ERR(refLength == newRefLength, "Error: reference length was changed")
+    CHECK_SET_ERR(refLength == newRefLength, "Error: reference length was changed");
+
+    //Expected result: consensus  sequence is restored
+    sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
+    x = sel.x();
+    consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
+    CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
+    CHECK_SET_ERR(consSel[0] == 'G', QString("Incorrect consensus character, expected: G, current: %1").arg(consSel));
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_2) {
@@ -4225,6 +4340,12 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     CHECK_SET_ERR(rowLength == newRowLength + 1, "Incorrect row length");
 
     //Expected state: Consensus sequence is recomputed according to the settings in the Option Panel
+    QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
+    int x = sel.x();
+    QString consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
+    CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
+    CHECK_SET_ERR(consSel[0] == 'G', QString("Incorrect consensus character, expected: G, current: %1").arg(consSel));
+
     //Expected state: Reference sequence is not changed
     qint64 newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
     CHECK_SET_ERR(refLength == newRefLength, "Error: reference length was changed");
@@ -4238,6 +4359,12 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     CHECK_SET_ERR(selectedChar == 'A', "Incorrect selected character");
 
     //Expected result: consensus  sequence is restored
+    sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
+    x = sel.x();
+    consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
+    CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
+    CHECK_SET_ERR(consSel[0] == 'A', QString("Incorrect consensus character, expected: A, current: %1").arg(consSel));
+
     //Expected state: the sequence is shifted one character to the right
     newRowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     CHECK_SET_ERR(rowLength == newRowLength, "Incorrect row length");
@@ -4251,7 +4378,15 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
 
     //Expected state: the sequence is shifted one character to the left
     newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    CHECK_SET_ERR(refLength == newRefLength, "Error: reference length was changed")
+    CHECK_SET_ERR(refLength == newRefLength, "Error: reference length was changed");
+
+    //Expected result: consensus  sequence is restored
+    sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
+    x = sel.x();
+    consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
+    CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
+    CHECK_SET_ERR(consSel[0] == 'G', QString("Incorrect consensus character, expected: G, current: %1").arg(consSel));
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_3) {
@@ -4341,6 +4476,12 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     CHECK_SET_ERR(rowLength == newRowLength + 1, "Incorrect row length");
 
     //Expected state: Consensus sequence is recomputed according to the settings in the Option Panel
+    QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
+    int x = sel.x();
+    QString consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
+    CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
+    CHECK_SET_ERR(consSel[0] == 'G', QString("Incorrect consensus character, expected: G, current: %1").arg(consSel));
+
     //Expected state: Reference sequence is not changed
     qint64 newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
     CHECK_SET_ERR(refLength == newRefLength, "Error: reference length was changed");
@@ -4354,6 +4495,12 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     CHECK_SET_ERR(selectedChar == 'A', "Incorrect selected character");
 
     //Expected result: consensus  sequence is restored
+    sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
+    x = sel.x();
+    consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
+    CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
+    CHECK_SET_ERR(consSel[0] == 'A', QString("Incorrect consensus character, expected: A, current: %1").arg(consSel));
+
     //Expected state: the sequence is shifted one character to the right
     newRowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     CHECK_SET_ERR(rowLength == newRowLength, "Incorrect row length");
@@ -4367,7 +4514,15 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
     //Expected state: the sequence is shifted one character to the left
     newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    CHECK_SET_ERR(refLength == newRefLength, "Error: reference length was changed")
+    CHECK_SET_ERR(refLength == newRefLength, "Error: reference length was changed");
+
+    //Expected result: consensus  sequence is restored
+    sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
+    x = sel.x();
+    consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(x, 1));
+    CHECK_SET_ERR(consSel.size() == 1, "Incorrect consensus selection");
+    CHECK_SET_ERR(consSel[0] == 'G', QString("Incorrect consensus character, expected: G, current: %1").arg(consSel));
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027_1) {
@@ -4468,7 +4623,6 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
     CHECK_SET_ERR(refSel[0] == U2Mca::GAP_CHAR, QString("Invalid reference selected character, expected: GAP, current: %1").arg(refSel[0]));
     rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
     CHECK_SET_ERR(rowChar == U2Mca::GAP_CHAR, QString("Invalid row selected character, expected: GAP, current: %1").arg(rowChar));
-
 
     //9. Push Redo(Ctrl + Y)
     GTUtilsMcaEditor::redo(os);

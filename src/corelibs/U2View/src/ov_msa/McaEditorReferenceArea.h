@@ -32,7 +32,7 @@ namespace U2 {
 class McaEditor;
 class McaEditorWgt;
 
-class McaEditorReferenceArea : public PanView {
+class U2VIEW_EXPORT McaEditorReferenceArea : public PanView {
     Q_OBJECT
 public:
     McaEditorReferenceArea(McaEditorWgt* ui, SequenceObjectContext* ctx);

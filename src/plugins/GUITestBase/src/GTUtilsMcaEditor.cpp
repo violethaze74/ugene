@@ -28,6 +28,7 @@
 
 #include <U2Core/U2SafePoints.h>
 
+#include <U2View/McaEditorConsensusArea.h>
 #include <U2View/McaEditor.h>
 #include <U2View/McaEditorNameList.h>
 #include <U2View/McaEditorSequenceArea.h>
@@ -75,6 +76,14 @@ McaEditorNameList *GTUtilsMcaEditor::getNameListArea(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "getSequenceArea"
 McaEditorSequenceArea *GTUtilsMcaEditor::getSequenceArea(GUITestOpStatus &os) {
     return GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", getEditorUi(os));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getConsensusArea"
+McaEditorConsensusArea* GTUtilsMcaEditor::getConsensusArea(GUITestOpStatus &os) {
+    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
+    CHECK_OP(os, NULL);
+    return GTWidget::findExactWidget<McaEditorConsensusArea*>(os, "consArea", activeWindow);
 }
 #undef GT_METHOD_NAME
 

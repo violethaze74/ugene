@@ -46,6 +46,7 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
 {
     SAFE_POINT(NULL != renderer, "Renderer is NULL", );
 
+    setObjectName("mca_editor_reference_area");
     singleBaseSelection = true;
     setLocalToolbarVisible(false);
     settings->showMainRuler = false;

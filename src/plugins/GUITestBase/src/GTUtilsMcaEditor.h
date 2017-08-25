@@ -33,6 +33,7 @@ namespace U2 {
 class McaEditor;
 class McaEditorNameList;
 class McaEditorSequenceArea;
+class McaEditorConsensusArea;
 class McaEditorWgt;
 
 class GTUtilsMcaEditor {
@@ -42,6 +43,7 @@ public:
     static QLabel *getReferenceLabel(HI::GUITestOpStatus &os);
     static McaEditorNameList *getNameListArea(HI::GUITestOpStatus &os);
     static McaEditorSequenceArea *getSequenceArea(HI::GUITestOpStatus &os);
+    static McaEditorConsensusArea* getConsensusArea(HI::GUITestOpStatus &os);
 
     static QString getReferenceLabelText(HI::GUITestOpStatus &os);
 

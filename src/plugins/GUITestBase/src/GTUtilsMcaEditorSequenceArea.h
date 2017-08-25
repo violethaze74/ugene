@@ -64,6 +64,9 @@ public:
     static char getReadCharByPos(GUITestOpStatus &os, const QPoint p);
     static qint64 getRowLength(GUITestOpStatus &os, const int numRow);
     static qint64 getReferenceLength(GUITestOpStatus &os);
+    static U2Region getReferenceSelection(GUITestOpStatus &os);
+    static QString getSelectedConsensusReg(GUITestOpStatus &os);
+    static QString getConsensusStringByRegion(GUITestOpStatus &os, const U2Region reg);
 };
 
 }//namespace
