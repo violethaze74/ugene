@@ -32,7 +32,7 @@ namespace U2 {
 class MaConsensusMismatchController;
 class McaEditorWgt;
 
-class McaEditorConsensusArea : public MaEditorConsensusArea {
+class U2VIEW_EXPORT McaEditorConsensusArea : public MaEditorConsensusArea {
     Q_OBJECT
     Q_DISABLE_COPY(McaEditorConsensusArea)
 
