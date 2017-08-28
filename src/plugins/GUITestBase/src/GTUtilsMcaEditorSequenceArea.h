@@ -48,7 +48,6 @@ public:
     static void dragAndDrop(HI::GUITestOpStatus &os, const QPoint p);
     static int getSelectedRowsNum(GUITestOpStatus &os);
     static QRect getSelectedRect(GUITestOpStatus &os);
-    static qint64 getReferenceSelectedNum(GUITestOpStatus &os);
     static void clickToReferencePosition(GUITestOpStatus &os, const qint64 num);
     /**
     *0 - ViewMode

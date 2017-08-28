@@ -1934,9 +1934,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //6. Push "Jump to next variation" button twice
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
-    GTGlobals::sleep();
+    //6. Push "Jump to next variation" button
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
 
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
@@ -2135,9 +2133,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //6. Push "Jump to previous variation" button twice
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
-    GTGlobals::sleep();
+    //6. Push "Jump to previous variation" button
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
 
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
@@ -2153,7 +2149,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //8. Push "Jump to next variation" from main menu
+    //8. Push "Jump to previous variation" from main menu
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to previous variation");
 
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
@@ -2741,8 +2737,8 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTGlobals::sleep(500);
 
     //Expected state : There is no selection
-    qint64 selectedNum = GTUtilsMcaEditorSequenceArea::getReferenceSelectedNum(os);
-    CHECK_SET_ERR(selectedNum == -1, "Some reference character is lselected");
+    U2Region sel = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
+    CHECK_SET_ERR(sel == U2Region(), "Some reference character is lselected");
 
     //9. Select any symbol in the read
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
@@ -4610,8 +4606,8 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
     CHECK_SET_ERR(refSel[0] == 'G', QString("Invalid reference selected character, expected: G, current: %1").arg(refSel[0]));
     char rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
     CHECK_SET_ERR(rowChar == 'G', QString("Invalid row selected character, expected: G, current: %1").arg(rowChar));
-
-    //Expected state: Consensus  sequence is recomputed according to the settings in the Option Panel(question)
+    QString consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(sel.x(), 1));
+    CHECK_SET_ERR(consSel[0] == 'G', QString("Invalid consensus selected character, expected: G, current: %1").arg(consSel[0]));
 
     //8. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
@@ -4623,6 +4619,8 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
     CHECK_SET_ERR(refSel[0] == U2Mca::GAP_CHAR, QString("Invalid reference selected character, expected: GAP, current: %1").arg(refSel[0]));
     rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
     CHECK_SET_ERR(rowChar == U2Mca::GAP_CHAR, QString("Invalid row selected character, expected: GAP, current: %1").arg(rowChar));
+    consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(sel.x(), 1));
+    CHECK_SET_ERR(consSel[0] == U2Mca::GAP_CHAR, QString("Invalid consensus selected character, expected: GAP, current: %1").arg(consSel[0]))
 
     //9. Push Redo(Ctrl + Y)
     GTUtilsMcaEditor::redo(os);
@@ -4633,8 +4631,8 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
     CHECK_SET_ERR(refSel[0] == 'G', QString("Invalid reference selected character, expected: G, current: %1").arg(refSel[0]));
     rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
     CHECK_SET_ERR(rowChar == 'G', QString("Invalid row selected character, expected: G, current: %1").arg(rowChar));
-
-    //Expected result :Consensus  sequence is recomputed according to the settings in the Option Panel(question)
+    consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(sel.x(), 1));
+    CHECK_SET_ERR(consSel[0] == 'G', QString("Invalid consensus selected character, expected: G, current: %1").arg(consSel[0]));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027_2) {
@@ -4722,8 +4720,8 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
     CHECK_SET_ERR(refSel[0] == 'G', QString("Invalid reference selected character, expected: G, current: %1").arg(refSel[0]));
     char rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
     CHECK_SET_ERR(rowChar == 'G', QString("Invalid row selected character, expected: G, current: %1").arg(rowChar));
-
-    //Expected state: Consensus  sequence is recomputed according to the settings in the Option Panel(question)
+    QString consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(sel.x(), 1));
+    CHECK_SET_ERR(consSel[0] == 'G', QString("Invalid consensus selected character, expected: G, current: %1").arg(consSel[0]));
 
     //8. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
@@ -4735,6 +4733,8 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
     CHECK_SET_ERR(refSel[0] == U2Mca::GAP_CHAR, QString("Invalid reference selected character, expected: GAP, current: %1").arg(refSel[0]));
     rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
     CHECK_SET_ERR(rowChar == U2Mca::GAP_CHAR, QString("Invalid row selected character, expected: GAP, current: %1").arg(rowChar));
+    consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(sel.x(), 1));
+    CHECK_SET_ERR(consSel[0] == U2Mca::GAP_CHAR, QString("Invalid consensus selected character, expected: GAP, current: %1").arg(consSel[0]))
 
     //9. Push Redo(Ctrl + Y)
     GTUtilsMcaEditor::redo(os);
@@ -4745,8 +4745,8 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
     CHECK_SET_ERR(refSel[0] == 'G', QString("Invalid reference selected character, expected: G, current: %1").arg(refSel[0]));
     rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
     CHECK_SET_ERR(rowChar == 'G', QString("Invalid row selected character, expected: G, current: %1").arg(rowChar));
-
-    //Expected result :Consensus  sequence is recomputed according to the settings in the Option Panel(question)
+    consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(sel.x(), 1));
+    CHECK_SET_ERR(consSel[0] == 'G', QString("Invalid consensus selected character, expected: G, current: %1").arg(consSel[0]));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027_3) {
@@ -4832,8 +4832,8 @@ GUI_TEST_CLASS_DEFINITION(test_0027_3) {
     CHECK_SET_ERR(refSel[0] == 'G', QString("Invalid reference selected character, expected: G, current: %1").arg(refSel[0]));
     char rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
     CHECK_SET_ERR(rowChar == 'G', QString("Invalid row selected character, expected: G, current: %1").arg(rowChar));
-
-    //Expected state: Consensus  sequence is recomputed according to the settings in the Option Panel(question)
+    QString consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(sel.x(), 1));
+    CHECK_SET_ERR(consSel[0] == 'G', QString("Invalid consensus selected character, expected: G, current: %1").arg(consSel[0]));
 
     //8. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
@@ -4845,6 +4845,8 @@ GUI_TEST_CLASS_DEFINITION(test_0027_3) {
     CHECK_SET_ERR(refSel[0] == U2Mca::GAP_CHAR, QString("Invalid reference selected character, expected: GAP, current: %1").arg(refSel[0]));
     rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
     CHECK_SET_ERR(rowChar == U2Mca::GAP_CHAR, QString("Invalid row selected character, expected: GAP, current: %1").arg(rowChar));
+    consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(sel.x(), 1));
+    CHECK_SET_ERR(consSel[0] == U2Mca::GAP_CHAR, QString("Invalid consensus selected character, expected: GAP, current: %1").arg(consSel[0]))
 
     //9. Push Redo(Ctrl + Y)
     GTUtilsMcaEditor::redo(os);
@@ -4855,8 +4857,8 @@ GUI_TEST_CLASS_DEFINITION(test_0027_3) {
     CHECK_SET_ERR(refSel[0] == 'G', QString("Invalid reference selected character, expected: G, current: %1").arg(refSel[0]));
     rowChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
     CHECK_SET_ERR(rowChar == 'G', QString("Invalid row selected character, expected: G, current: %1").arg(rowChar));
-
-    //Expected result :Consensus  sequence is recomputed according to the settings in the Option Panel(question)
+    consSel = GTUtilsMcaEditorSequenceArea::getConsensusStringByRegion(os, U2Region(sel.x(), 1));
+    CHECK_SET_ERR(consSel[0] == 'G', QString("Invalid consensus selected character, expected: G, current: %1").arg(consSel[0]));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0028) {

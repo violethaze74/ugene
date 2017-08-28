@@ -305,18 +305,7 @@ QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getReferenceSelectedNum"
-qint64 GTUtilsMcaEditorSequenceArea::getReferenceSelectedNum(GUITestOpStatus &os) {
-    PanView *panView = qobject_cast<PanView*>(GTWidget::findWidget(os, "pan_view"));
-    GT_CHECK_RESULT(panView != NULL, "PanView not found", -1);
-    QVector<U2Region> selReg = panView->getSequenceContext()->getSequenceSelection()->getSelectedRegions();
-    CHECK(!selReg.isEmpty(), -1);
-
-    return selReg.first().startPos;
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "selectReferenceByNum"
+#define GT_METHOD_NAME "clickToReferencePosition"
 void GTUtilsMcaEditorSequenceArea::clickToReferencePosition(GUITestOpStatus &os, const qint64 num) {
     QPoint selectedPoint(num, 2);
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMdi::activeWindow(os));
@@ -328,10 +317,12 @@ void GTUtilsMcaEditorSequenceArea::clickToReferencePosition(GUITestOpStatus &os,
     const QPoint positionCenter(mcaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(selectedPoint.x()), 2);
     GT_CHECK(mcaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
 
-    PanView *panView = qobject_cast<PanView*>(GTWidget::findWidget(os, "pan_view"));
-    GT_CHECK(panView != NULL, "MCA Editor reference area is not found");
+    PanView *panView = qobject_cast<PanView*>(GTWidget::findWidget(os, "mca_editor_reference_area"));
+    GT_CHECK(panView != NULL, "Pan view area is not found");
 
-    GTMouseDriver::moveTo(panView->mapToGlobal(positionCenter));
+    QPoint p = panView->mapToGlobal(positionCenter);
+
+    GTMouseDriver::moveTo(p);
     GTMouseDriver::click();
 
 }
@@ -437,6 +428,9 @@ U2Region GTUtilsMcaEditorSequenceArea::getReferenceSelection(GUITestOpStatus &os
     GT_CHECK_RESULT(dnaSel != NULL, "DNASequenceSelection not found", U2Region());
 
     QVector<U2Region> region = dnaSel->getSelectedRegions();
+
+    CHECK(region.size() != 0, U2Region());
+
     GT_CHECK_RESULT(region.size() == 1, "Incorrect selected region", U2Region());
 
     return region.first();
