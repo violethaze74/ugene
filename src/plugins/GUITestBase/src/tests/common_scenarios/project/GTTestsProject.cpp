@@ -368,7 +368,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     QModelIndex se2 = GTUtilsProjectTreeView::findIndex(os, "se2");
     GTUtilsProjectTreeView::itemActiveCheck(os, se2);
 
-    GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsMdi::closeActiveWindow(os);
     GTUtilsProjectTreeView::itemActiveCheck(os, se1, false);
     GTUtilsProjectTreeView::itemActiveCheck(os, se2, false);
 
