@@ -860,8 +860,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006){
             .arg("UGENE").arg(currentScheme));
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "UGENE", PopupChecker::IsChecked));
-    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep(500);
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);	
+
+	GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::Highlighting);
 }
 
 namespace {
