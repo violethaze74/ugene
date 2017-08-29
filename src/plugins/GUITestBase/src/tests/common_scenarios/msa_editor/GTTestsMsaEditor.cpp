@@ -3996,8 +3996,8 @@ GUI_TEST_CLASS_DEFINITION(test_0056){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
                                                   << "export sequences as alignment"));
     GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
-    GTGlobals::sleep();
-	GTUtilsMdi::activateWindow(os, "murine [m] murine");
+	GTUtilsTaskTreeView::waitTaskFinished(os);
+	
 //    "Use Genbank "SOURCE" tags..." checkbox
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(nameList.size() == 1, QString("unexpected number of names: %1").arg(nameList.size()));
