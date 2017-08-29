@@ -386,26 +386,26 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
     QModelIndex item = GTUtilsProjectTreeView::findIndex(os, "se1");
     QFont font = GTUtilsProjectTreeView::getFont(os, item);
-    CHECK_SET_ERR(font.bold(), "se1 item font is not a bold");
+    CHECK_SET_ERR(font.bold(), "se1 item font is not a bold_1");
     item = GTUtilsProjectTreeView::findIndex(os, "se2");
     font = GTUtilsProjectTreeView::getFont(os, item);
-    CHECK_SET_ERR(font.bold(), "se2 item font is not a bold");
+    CHECK_SET_ERR(font.bold(), "se2 item font is not a bold_1");
 
-    GTUtilsMdi::click(os, GTGlobals::Close);
+	GTUtilsMdi::closeActiveWindow(os);
     GTGlobals::sleep(1000);
     item = GTUtilsProjectTreeView::findIndex(os, "se1");
     font = GTUtilsProjectTreeView::getFont(os, item);
-    CHECK_SET_ERR(!font.bold(), "se1 item font is not a bold");
+    CHECK_SET_ERR(!font.bold(), "se1 item font is not a bold_2");
 
     GTUtilsSequenceView::openSequenceView(os, "se1");
     item = GTUtilsProjectTreeView::findIndex(os, "se1");
     font = GTUtilsProjectTreeView::getFont(os, item);
-    CHECK_SET_ERR(font.bold(), "se1 item font is not a bold");
+    CHECK_SET_ERR(font.bold(), "se1 item font is not a bold_3");
 
     GTUtilsSequenceView::openSequenceView(os, "se2");
     item = GTUtilsProjectTreeView::findIndex(os, "se2");
     font = GTUtilsProjectTreeView::getFont(os, item);
-    CHECK_SET_ERR(font.bold(), "se2 item font is not a bold");
+    CHECK_SET_ERR(font.bold(), "se2 item font is not a bold_2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0023) {
@@ -589,9 +589,9 @@ GUI_TEST_CLASS_DEFINITION(test_0038){
     QString title2 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title2 == "BL060C3 [m] Contig2", "unexpected title for doc2: " + title2);
 
-    //reopening windows
+    //reopening windows z
     while(GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != NULL){
-        GTUtilsMdi::click(os, GTGlobals::Close);
+		GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "action_open_view"));
     GTUtilsProjectTreeView::click(os, "BL060C3.ace", Qt::RightButton);
@@ -628,7 +628,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1){
 
     //reopening windows
     while(GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != NULL){
-        GTUtilsMdi::click(os, GTGlobals::Close);
+		GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "action_open_view"));
     GTUtilsProjectTreeView::click(os, "test_3637_1.ugenedb", Qt::RightButton);
@@ -638,7 +638,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1){
     title1 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title1 == "test_3637_1 [as] Contig1", "unexpected title for doc1: " + title1);
 
-    //check for first document
+    //check for second document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
     title2 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title2 == "test_3637_1 [as] Contig2", "unexpected title for doc2: " + title2);
