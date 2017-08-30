@@ -29,6 +29,7 @@
 #include <U2Formats/ASNFormat.h>
 #include <U2Formats/AceFormat.h>
 #include <U2Formats/AceImporter.h>
+#include <U2Formats/AprFormat.h>
 #include <U2Formats/BedFormat.h>
 #include <U2Formats/ClustalWAlnFormat.h>
 #include <U2Formats/DatabaseConnectionFormat.h>
@@ -64,7 +65,7 @@
 namespace U2 {
 
 bool DocumentFormatRegistryImpl::registerFormat(DocumentFormat* f) {
-    assert(getFormatById(f->getFormatId())==NULL);
+    SAFE_POINT(getFormatById(f->getFormatId()) == NULL, "Existing format", false);
     formats.push_back(f);
     emit si_documentFormatRegistered(f);
     if (f->getFormatDescription().isEmpty()) {
@@ -193,6 +194,9 @@ void DocumentFormatRegistryImpl::init() {
 
     ACEFormat *aceFormat = new ACEFormat(this);
     registerFormat(aceFormat);
+
+    AprFormat *apr = new AprFormat(this);
+    registerFormat(apr);
 
     AceImporter *aceImporter = new AceImporter();
     importSupport.addDocumentImporter(aceImporter);

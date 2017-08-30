@@ -377,10 +377,16 @@ bool ProjectLoaderImpl::shouldFormatBeSelected(const QList<FormatDetectionResult
     const FormatDetectionResult firstUnrelatedFormat = getFirstUnrelatedFormat(formats);
     CHECK(FormatDetection_NotMatched != firstUnrelatedFormat.score(), false);
 
-    return firstFormat.score() == firstUnrelatedFormat.score()
-        || (firstUnrelatedFormat.score() > FormatDetection_AverageSimilarity && firstFormat.score() < FormatDetection_Matched)
-        || (firstFormat.score() <= FormatDetection_AverageSimilarity)
-        || forceSelectFormat;
+    int firstFormatScore = firstFormat.score();
+    int firstUnrelatedFormatScore = firstUnrelatedFormat.score();
+    bool isFirstFormatEqualFirstUnrelatedFormat = firstFormatScore == firstUnrelatedFormatScore;
+    bool isFirstUnrelatedFormatMoreThenFormatDetectionAverageSimilarity = firstUnrelatedFormatScore > FormatDetection_AverageSimilarity;
+    bool isFirstFormatLessThenFormatDetectionMatched = firstFormatScore < FormatDetection_Matched;
+    bool isFirstFormatLessOrEqualThenFormatDetectionAverageSimilarity = firstFormatScore <= FormatDetection_AverageSimilarity;
+    return isFirstFormatEqualFirstUnrelatedFormat
+           || (isFirstUnrelatedFormatMoreThenFormatDetectionAverageSimilarity && isFirstFormatLessThenFormatDetectionMatched)
+           || isFirstFormatLessOrEqualThenFormatDetectionAverageSimilarity
+           || forceSelectFormat;
 }
 
 bool ProjectLoaderImpl::detectFormat(const GUrl &url, QList<FormatDetectionResult> &formats, const QVariantMap &hints, FormatDetectionResult &selectedResult) {
@@ -811,7 +817,7 @@ SaveProjectDialogController::SaveProjectDialogController(QWidget *w) : QDialog(w
     setModal(true);
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Yes"));
     buttonBox->button(QDialogButtonBox::No)->setText(tr("No"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));    
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(sl_clicked(QAbstractButton *)));
 }

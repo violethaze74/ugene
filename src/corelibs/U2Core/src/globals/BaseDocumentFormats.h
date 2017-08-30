@@ -35,6 +35,7 @@ class U2CORE_EXPORT BaseDocumentFormats {
 public:
     static const DocumentFormatId ABIF;
     static const DocumentFormatId ACE;
+    static const DocumentFormatId APR;
     static const DocumentFormatId BAM;
     static const DocumentFormatId BED;
     static const DocumentFormatId CLUSTAL_ALN;
