@@ -41,8 +41,15 @@ public:
     static bool isTabOpened(HI::GUITestOpStatus &os, Tabs tab);
 
     static void setConsensusType(HI::GUITestOpStatus &os, const QString &consensusTypeName);
+    static QStringList getConsensusTypes(HI::GUITestOpStatus &os);
+
     static int getHeight(HI::GUITestOpStatus &os);
     static int getLength(HI::GUITestOpStatus &os);
+
+    static void setThreshold(HI::GUITestOpStatus &os, int threshold);
+    static int getThreshold(HI::GUITestOpStatus &os);
+
+    static void pushResetButton(HI::GUITestOpStatus &os);
 
 private:
     static QMap<Tabs, QString> initNames();

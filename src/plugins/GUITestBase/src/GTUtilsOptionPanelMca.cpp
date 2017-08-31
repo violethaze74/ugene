@@ -22,9 +22,11 @@
 #include <QComboBox>
 #include <QApplication>
 #include <QLabel>
+#include <QToolButton>
 
 #include <primitives/GTComboBox.h>
 #include <primitives/GTWidget.h>
+#include <primitives/GTSlider.h>
 
 #include "GTUtilsOptionPanelMca.h"
 
@@ -89,6 +91,14 @@ void GTUtilsOptionPanelMca::setConsensusType(HI::GUITestOpStatus &os, const QStr
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getConsensusTypes"
+QStringList GTUtilsOptionPanelMca::getConsensusTypes(HI::GUITestOpStatus &os) {
+    openTab(os, Consensus);
+    QStringList types = GTComboBox::getValues(os, GTWidget::findExactWidget<QComboBox *>(os, "consensusType"));
+    return types;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getHeight"
 int GTUtilsOptionPanelMca::getHeight(HI::GUITestOpStatus &os){
     QLabel* alignmentHeightLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "seqNumLabel"));
@@ -108,6 +118,30 @@ int GTUtilsOptionPanelMca::getLength(HI::GUITestOpStatus &os){
     int result = alignmentLengthLabel->text().toInt(&ok);
     GT_CHECK_RESULT(ok == true, "label text is not int", -1);
     return result;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setThreshold"
+void GTUtilsOptionPanelMca::setThreshold(GUITestOpStatus &os, int threshold) {
+    openTab(os, Consensus);
+    GTSlider::setValue(os, GTWidget::findExactWidget<QSlider *>(os, "thresholdSlider"), threshold);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getThreshold"
+int GTUtilsOptionPanelMca::getThreshold(GUITestOpStatus &os) {
+    openTab(os, Consensus);
+    QSlider *thresholdSlider = GTWidget::findExactWidget<QSlider *>(os, "thresholdSlider");
+    GT_CHECK_RESULT(NULL != thresholdSlider, "thresholdSlider is NULL", -1);
+    return thresholdSlider->value();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "pushResetButton"
+void GTUtilsOptionPanelMca::pushResetButton(HI::GUITestOpStatus &os) {
+    openTab(os, Consensus);
+    QToolButton* result = GTWidget::findExactWidget<QToolButton *>(os, "thresholdResetButton");
+    result->click();
 }
 #undef GT_METHOD_NAME
 
