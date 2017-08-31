@@ -21,6 +21,7 @@
 
 #include <QComboBox>
 #include <QApplication>
+#include <QLabel>
 
 #include <primitives/GTComboBox.h>
 #include <primitives/GTWidget.h>
@@ -85,6 +86,28 @@ bool GTUtilsOptionPanelMca::isTabOpened(HI::GUITestOpStatus &os, Tabs tab) {
 void GTUtilsOptionPanelMca::setConsensusType(HI::GUITestOpStatus &os, const QString &consensusTypeName) {
     openTab(os, Consensus);
     GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "consensusType"), consensusTypeName);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getHeight"
+int GTUtilsOptionPanelMca::getHeight(HI::GUITestOpStatus &os){
+    QLabel* alignmentHeightLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "seqNumLabel"));
+    GT_CHECK_RESULT(alignmentHeightLabel != NULL, "alignmentHeightLabel not found", -1);
+    bool ok;
+    int result = alignmentHeightLabel->text().toInt(&ok);
+    GT_CHECK_RESULT(ok == true, "label text is not int", -1);
+    return result;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getLength"
+int GTUtilsOptionPanelMca::getLength(HI::GUITestOpStatus &os){
+    QLabel* alignmentLengthLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "lengthLabel"));
+    GT_CHECK_RESULT(alignmentLengthLabel != NULL, "alignmentLengthLabel not found", -1);
+    bool ok;
+    int result = alignmentLengthLabel->text().toInt(&ok);
+    GT_CHECK_RESULT(ok == true, "label text is not int", -1);
+    return result;
 }
 #undef GT_METHOD_NAME
 
