@@ -3113,7 +3113,7 @@ GUI_TEST_CLASS_DEFINITION(test_2437) {
     FormatDBSupportRunDialogFiller::Parameters p;
     p.inputFilePath = dataDir + "samples/FASTA/human_T1.fa";
     p.alphabetType = FormatDBSupportRunDialogFiller::Parameters::Nucleotide;
-    p.outputDirPath = sandBoxDir + "test_2437";
+    p.outputDirPath = sandBoxDir + "test_2437/*";
     QDir().mkpath(p.outputDirPath);
     GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, p));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST make database...");
