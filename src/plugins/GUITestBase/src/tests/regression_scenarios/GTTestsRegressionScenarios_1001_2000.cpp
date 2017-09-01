@@ -8404,9 +8404,10 @@ GUI_TEST_CLASS_DEFINITION( test_1897 ) {
     GTMouseDriver::click(Qt::RightButton );
 
     //5) Look at Hightlighting/Gaps action again
-    QAction *action = GTAction::findActionByText( os, "Gaps" );
-    //Expected state: It must be checked
-    CHECK_SET_ERR( action->isChecked( ), "Action has to be checked!" );
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Highlighting"
+        << "Gaps", PopupChecker::IsChecked));
+    GTMouseDriver::click(Qt::RightButton);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1908){
