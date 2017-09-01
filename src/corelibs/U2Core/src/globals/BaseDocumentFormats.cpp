@@ -29,6 +29,7 @@ namespace U2 {
 
 const DocumentFormatId BaseDocumentFormats::ABIF("abi");
 const DocumentFormatId BaseDocumentFormats::ACE("ace");
+const DocumentFormatId BaseDocumentFormats::APR("apr");
 const DocumentFormatId BaseDocumentFormats::BAM("bam");
 const DocumentFormatId BaseDocumentFormats::BED("bed");
 const DocumentFormatId BaseDocumentFormats::CLUSTAL_ALN("clustal");
@@ -75,6 +76,7 @@ StrStrMap initInvalidFormatIdsMap() {
     // IDs from 1.26.0
     invalidIds2trueIds.insert("ABI", BaseDocumentFormats::ABIF);
     invalidIds2trueIds.insert("ACE", BaseDocumentFormats::ACE);
+    invalidIds2trueIds.insert("APR", BaseDocumentFormats::APR);
     invalidIds2trueIds.insert("BAM", BaseDocumentFormats::BAM);
     invalidIds2trueIds.insert("BED", BaseDocumentFormats::BED);
     invalidIds2trueIds.insert("CLUSTAL", BaseDocumentFormats::CLUSTAL_ALN);
@@ -119,6 +121,7 @@ StrStrMap initFormatIdsMap() {
     // IDs from 1.25.0 and lower
     anyIds2trueIds.insert(BaseDocumentFormats::ABIF, BaseDocumentFormats::ABIF);
     anyIds2trueIds.insert(BaseDocumentFormats::ACE, BaseDocumentFormats::ACE);
+    anyIds2trueIds.insert(BaseDocumentFormats::APR, BaseDocumentFormats::APR);
     anyIds2trueIds.insert(BaseDocumentFormats::BAM, BaseDocumentFormats::BAM);
     anyIds2trueIds.insert(BaseDocumentFormats::BED, BaseDocumentFormats::BED);
     anyIds2trueIds.insert(BaseDocumentFormats::CLUSTAL_ALN, BaseDocumentFormats::CLUSTAL_ALN);
