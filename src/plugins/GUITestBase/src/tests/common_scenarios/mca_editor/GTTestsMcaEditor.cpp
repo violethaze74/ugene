@@ -5200,7 +5200,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     int startRowHeinght = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
 
     //5. Push General button
-    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::Tabs::General);
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
     GTGlobals::sleep();
 
     //Expected state :Sequence number: 16
@@ -5277,10 +5277,10 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     int startRowHeinght = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
 
     //5.Push "Consensus" button
-    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::Tabs::Consensus);
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::Consensus);
 
     //Expected state :"Consenus mode" is expanded
-    bool isTabOpen = GTUtilsOptionPanelMca::isTabOpened(os, GTUtilsOptionPanelMca::Tabs::Consensus);
+    bool isTabOpen = GTUtilsOptionPanelMca::isTabOpened(os, GTUtilsOptionPanelMca::Consensus);
     CHECK_SET_ERR(isTabOpen, "Consensus tab is not open");
 
     //Expected state :"Simple extended" by default (combo with 2 values: "Simple extended" and "Strict")
@@ -5310,10 +5310,10 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     CHECK_SET_ERR(threshold == 100, QString("Unexpected threshold, expected: 100, current^ %1").arg(QString::number(threshold)));
 
     //8. Collapse "Consenus mode"
-    GTUtilsOptionPanelMca::closeTab(os, GTUtilsOptionPanelMca::Tabs::Consensus);
+    GTUtilsOptionPanelMca::closeTab(os, GTUtilsOptionPanelMca::Consensus);
 
     //Expected state : "Consenus mode" is collapsed
-    isTabOpen = GTUtilsOptionPanelMca::isTabOpened(os, GTUtilsOptionPanelMca::Tabs::Consensus);
+    isTabOpen = GTUtilsOptionPanelMca::isTabOpened(os, GTUtilsOptionPanelMca::Consensus);
     CHECK_SET_ERR(!isTabOpen, "Consensus tab is open");
 }
 
