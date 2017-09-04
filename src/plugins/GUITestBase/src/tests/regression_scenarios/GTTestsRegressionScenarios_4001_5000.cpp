@@ -2216,17 +2216,22 @@ GUI_TEST_CLASS_DEFINITION(test_4306_1) {
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_4306/test_4306.nwk", 0, 0, true));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    3. Use context menu on tree view.
 //    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
-    QStringList items = QStringList() << "Zoom In"
-                                      << "Zoom Out"
-                                      << "Reset Zooming";
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, items));
-    GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
-    GTGlobals::sleep();
+	//    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.                                 
+	GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Zoom In", PopupChecker::IsEnabled));
+	GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
+	GTGlobals::sleep();
+
+	GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Zoom Out", PopupChecker::IsEnabled));
+	GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
+	GTGlobals::sleep();
+
+	GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Reset Zooming", PopupChecker::IsEnabled));
+	GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
+	GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4306_2) {
