@@ -762,6 +762,7 @@ GUI_TEST_CLASS_DEFINITION(test_5252) {
 GUI_TEST_CLASS_DEFINITION(test_5268) {
 //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+	GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Create a custom color scheme for the alignment with aan ppropriate alphabet.
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl));
@@ -774,14 +775,13 @@ GUI_TEST_CLASS_DEFINITION(test_5268) {
     GTUtilsOptionPanelMsa::setColorScheme(os, "test_5268");
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-
+	GTKeyboardDriver::keyClick(Qt::Key_Escape);
+	GTGlobals::sleep(500);
 //    5. Open {Settings -> Preferences -> Alignment Color Scheme}.
 //    6. Change color of the custom color scheme and click ok.
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl, NewColorSchemeCreator::Change));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
-
-    GTGlobals::sleep(500);
-
+ 
 //    Expected state: the settings dialog closed, new colors are applied for the opened MSA.
     const QString opColorScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
     CHECK_SET_ERR(opColorScheme == "test_5268",
@@ -790,8 +790,8 @@ GUI_TEST_CLASS_DEFINITION(test_5268) {
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-
-    GTGlobals::sleep(500);
+	GTKeyboardDriver::keyClick(Qt::Key_Escape);
+	GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5278) {
