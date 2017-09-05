@@ -4337,8 +4337,6 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
     QLineEdit* line = qobject_cast<QLineEdit*>(table->findChild<QLineEdit*>());
     CHECK_SET_ERR(line, "QLineEdit not found. Widget in this cell might be not QLineEdit");
     GTLineEdit::setText(os, line, dataDir + "samples/FASTA/HMM/aligment15900.hmm");
-
-
     GTGlobals::sleep(1000);
 #ifdef Q_OS_MAC
     GTGlobals::sleep();
@@ -4348,6 +4346,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
     GTUtilsMdi::click(os, GTGlobals::Close);
+	GTGlobals::sleep(500);
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read HMM2 Profile");
