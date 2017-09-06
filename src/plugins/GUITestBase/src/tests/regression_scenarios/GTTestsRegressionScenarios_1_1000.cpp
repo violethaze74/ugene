@@ -2575,11 +2575,13 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+	
     QStringList errors = GTUtilsLog::getErrors(os, l1);
     CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1");
     //CHECK_SET_ERR(errors[0].contains(""), " 1");
-
+	
     GTUtilsProjectTreeView::click(os, "Gene.fa");
+	GTGlobals::sleep();
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
 
     GTLogTracer l2;
@@ -2588,9 +2590,10 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+	GTGlobals::sleep();
     errors = GTUtilsLog::getErrors(os, l2);
     CHECK_SET_ERR(errors.size() == 2, "Wrong errors count 2");
-    GTGlobals::sleep(10000);
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0888) {
