@@ -571,7 +571,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + "/test_ugene_5162.vcf"), "No resut file 1");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + "/test_ugene_5162_1.vcf"), "No resut file 2");
+    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + "/test_ugene_5163.vcf"), "No resut file 2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0062) {
