@@ -917,7 +917,7 @@ GUI_TEST_CLASS_DEFINITION(test_1048){
     bool vis = GTWidget::findWidget(os, "AssemblyReadsAreaHint", GTUtilsMdi::activeWindow(os))->isVisible();
     CHECK_SET_ERR(!vis, "hint unexpectidly visiable");
 
-    GTUtilsMdi::activateWindow(os, "1.bam [as] chrM");
+    GTUtilsMdi::activateWindow(os, "1 [as] chrM");
 
     QWidget* w1 = GTUtilsMdi::activeWindow(os);
     GTWidget::click(os, w1);
@@ -927,7 +927,7 @@ GUI_TEST_CLASS_DEFINITION(test_1048){
     }
     GTGlobals::sleep();
     GTKeyboardDriver::keyClick( Qt::Key_Home);
-    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(10,10));
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(20,20));
     GTGlobals::sleep(500);
     vis = GTWidget::findWidget(os, "AssemblyReadsAreaHint", GTUtilsMdi::activeWindow(os))->isVisible();
     CHECK_SET_ERR(vis, "hint unexpectidly invisiable");
