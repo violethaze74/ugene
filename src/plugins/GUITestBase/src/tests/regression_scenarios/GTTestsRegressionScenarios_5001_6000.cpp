@@ -1267,11 +1267,11 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
     };
     GTUtilsDialog::waitForDialog(os, new SpadesGenomeAssemblyDialogFiller(os, "Paired-end (Interlaced)", QStringList() << testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq",
         QStringList(), sandBoxDir, "Single Cell", "Error correction only", "aaaaa", 1, 228));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Genome de novo assembly...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Reads de novo assembly (with SPAdes)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new SpadesDialogSettingsChecker(os, "Paired-end (Interlaced)", "Single Cell", "Error correction only", "aaaaa", 1, 228));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Genome de novo assembly...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Reads de novo assembly (with SPAdes)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -1444,9 +1444,11 @@ GUI_TEST_CLASS_DEFINITION(test_5469) {
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsSequenceView::clickAnnotationDet(os, "5'UTR", 1, 1);
+	GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size() == 2, "Wrong number of selected annotations");
+	CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size() == 2, QString("Wrong number of selected annotations expect %1, got %2").arg("2").arg(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5495) {
@@ -1791,7 +1793,7 @@ GUI_TEST_CLASS_DEFINITION(test_5716) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
 
 //    3. Set any output file path, set any format.
-    const QString expectedOutputPath = sandBoxDir + "test_5716.gb";
+    const QString expectedOutputPath = sandBoxDir + "test_5716.txt";
     GTUtilsOptionPanelMsa::setExportConsensusOutputPath(os, expectedOutputPath);
 
 //    4. Open "General" options panel tab.
@@ -1804,7 +1806,7 @@ GUI_TEST_CLASS_DEFINITION(test_5716) {
 //    Expected state: UGENE doesn't crash, the form is filled with values from step 3.
     const QString currentOutputPath = GTUtilsOptionPanelMsa::getExportConsensusOutputPath(os);
     const QString currentOutputFormat = GTUtilsOptionPanelMsa::getExportConsensusOutputFormat(os);
-    const QString expectedOutputFormat = "GenBank";
+    const QString expectedOutputFormat = "Plain text";
     CHECK_SET_ERR(currentOutputPath == expectedOutputPath, QString("Output path is incorrect: expected '%1', got '%2'").arg(expectedOutputPath).arg(currentOutputPath));
     CHECK_SET_ERR(currentOutputFormat == expectedOutputFormat, QString("Output format is incorrect: expected '%1', got '%2'").arg(expectedOutputFormat).arg(currentOutputFormat));
 }
@@ -1834,6 +1836,7 @@ GUI_TEST_CLASS_DEFINITION(test_5747) {
     //7. Set new name and press enter
     GTKeyboardDriver::keySequence("New name 2");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
+	GTGlobals::sleep(500);
 }
 
 } // namespace GUITest_regression_scenarios
