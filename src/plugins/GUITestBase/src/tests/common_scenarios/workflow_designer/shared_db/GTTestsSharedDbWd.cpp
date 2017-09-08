@@ -88,8 +88,8 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0001) {
 
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
-
-    CHECK_SET_ERR(1 == datasetList->count(), "Invalid dataset item count");
+	
+	CHECK_SET_ERR(1 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("1").arg(datasetList->count()));
     CHECK_SET_ERR("et0001_sequence" == datasetList->item(0)->text(), "Invalid dataset item name");
 }
 
@@ -112,7 +112,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0002) {
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
 
-    CHECK_SET_ERR(1 == datasetList->count(), "Invalid dataset item count");
+	CHECK_SET_ERR(1 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("1").arg(datasetList->count()));
     CHECK_SET_ERR("et0003_alignment" == datasetList->item(0)->text(), "Invalid dataset item name");
 }
 
@@ -135,7 +135,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0003) {
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
 
-    CHECK_SET_ERR(1 == datasetList->count(), "Invalid dataset item count");
+	CHECK_SET_ERR(1 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("1").arg(datasetList->count()));
     CHECK_SET_ERR("et0002_features" == datasetList->item(0)->text(), "Invalid dataset item name");
 }
 
@@ -158,7 +158,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0004) {
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
 
-    CHECK_SET_ERR(1 == datasetList->count(), "Invalid dataset item count");
+	CHECK_SET_ERR(1 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("1").arg(datasetList->count()));
     CHECK_SET_ERR("et0004_assembly" == datasetList->item(0)->text(), "Invalid dataset item name");
 }
 
@@ -181,7 +181,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0005) {
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
 
-    CHECK_SET_ERR(1 == datasetList->count(), "Invalid dataset item count");
+	CHECK_SET_ERR(1 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("1").arg(datasetList->count()));
     CHECK_SET_ERR("et0006_text" == datasetList->item(0)->text(), "Invalid dataset item name");
 }
 
@@ -204,7 +204,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0006) {
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
 
-    CHECK_SET_ERR(1 == datasetList->count(), "Invalid dataset item count");
+	CHECK_SET_ERR(1 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("1").arg(datasetList->count()));
     CHECK_SET_ERR("et0005_variations" == datasetList->item(0)->text(), "Invalid dataset item name");
 }
 
@@ -238,9 +238,9 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0008) {
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
 
-    CHECK_SET_ERR(2 == datasetList->count(), "Invalid dataset item count");
-    CHECK_SET_ERR("pt0005_COI" == datasetList->item(0)->text(), "Invalid dataset item name");
-    CHECK_SET_ERR("export_tests" == datasetList->item(1)->text(), "Invalid dataset item name");
+	CHECK_SET_ERR(2 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("2").arg(datasetList->count()));
+    CHECK_SET_ERR("pt0005_COI" == datasetList->item(0)->text(), "Invalid dataset item name_1");
+    CHECK_SET_ERR("export_tests" == datasetList->item(1)->text(), "Invalid dataset item name_2");
 }
 
 GUI_TEST_CLASS_DEFINITION(read_gui_test_0009) {
@@ -264,16 +264,16 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0009) {
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0004_assembly", acceptableTypes));
     GTWidget::click(os, addFromDbButton);
 
-    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, testDir + "_common_data/bam");
+    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, testDir + "_common_data/bam/*");
 
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
 
-    CHECK_SET_ERR(4 == datasetList->count(), "Invalid dataset item count");
-    CHECK_SET_ERR("view_test_0003" == datasetList->item(0)->text(), "Invalid dataset item name");
-    CHECK_SET_ERR("Klebsislla.sort.bam.ugenedb" == datasetList->item(1)->text(), "Invalid dataset item name");
-    CHECK_SET_ERR("et0004_assembly" == datasetList->item(2)->text(), "Invalid dataset item name");
-    CHECK_SET_ERR("bam" == datasetList->item(3)->text(), "Invalid dataset item name");
+	CHECK_SET_ERR(4 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("4").arg(datasetList->count()));
+    CHECK_SET_ERR("view_test_0003" == datasetList->item(0)->text(), "Invalid dataset item name_1");
+    CHECK_SET_ERR("Klebsislla.sort.bam.ugenedb" == datasetList->item(1)->text(), "Invalid dataset item name_2");
+    CHECK_SET_ERR("et0004_assembly" == datasetList->item(2)->text(), "Invalid dataset item name_3");
+    CHECK_SET_ERR("bam" == datasetList->item(3)->text(), "Invalid dataset item name_4");
 }
 
 GUI_TEST_CLASS_DEFINITION(read_gui_test_0010) {
@@ -305,12 +305,12 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0010) {
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
 
-    CHECK_SET_ERR(5 == datasetList->count(), "Invalid dataset item count");
-    CHECK_SET_ERR(!datasetList->findItems("et0001_sequence", Qt::MatchExactly).isEmpty(), "Invalid dataset item name");
-    CHECK_SET_ERR(!datasetList->findItems("et0007_seq", Qt::MatchExactly).isEmpty(), "Invalid dataset item name");
-    CHECK_SET_ERR(!datasetList->findItems("export_test_0007", Qt::MatchExactly).isEmpty(), "Invalid dataset item name");
-    CHECK_SET_ERR(!datasetList->findItems("export_test_0008", Qt::MatchExactly).isEmpty(), "Invalid dataset item name");
-    CHECK_SET_ERR(!datasetList->findItems("export_test_0009", Qt::MatchExactly).isEmpty(), "Invalid dataset item name");
+	CHECK_SET_ERR(5 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("5").arg(datasetList->count()));
+    CHECK_SET_ERR(!datasetList->findItems("et0001_sequence", Qt::MatchExactly).isEmpty(), "Invalid dataset item name_1");
+    CHECK_SET_ERR(!datasetList->findItems("et0007_seq", Qt::MatchExactly).isEmpty(), "Invalid dataset item nam_2");
+    CHECK_SET_ERR(!datasetList->findItems("export_test_0007", Qt::MatchExactly).isEmpty(), "Invalid dataset item name_3");
+    CHECK_SET_ERR(!datasetList->findItems("export_test_0008", Qt::MatchExactly).isEmpty(), "Invalid dataset item name_4");
+    CHECK_SET_ERR(!datasetList->findItems("export_test_0009", Qt::MatchExactly).isEmpty(), "Invalid dataset item name_5");
 }
 
 GUI_TEST_CLASS_DEFINITION(read_gui_test_0011) {
@@ -342,14 +342,14 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0011) {
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
 
-    CHECK_SET_ERR(7 == datasetList->count(), "Invalid dataset item count");
-    CHECK_SET_ERR("export_test_0008" == datasetList->item(0)->text(), "Invalid dataset item name");
-    CHECK_SET_ERR("export_test_0009" == datasetList->item(1)->text(), "Invalid dataset item name");
-    CHECK_SET_ERR("et0007_seq" == datasetList->item(2)->text(), "Invalid dataset item name");
-    CHECK_SET_ERR("et0001_sequence" == datasetList->item(3)->text(), "Invalid dataset item name");
-    CHECK_SET_ERR("pt0001_dir2" == datasetList->item(4)->text(), "Invalid dataset item name");
-    CHECK_SET_ERR("pt0006_dir2" == datasetList->item(5)->text(), "Invalid dataset item name");
-    CHECK_SET_ERR("pt0005_human_T1" == datasetList->item(6)->text(), "Invalid dataset item name");
+	CHECK_SET_ERR(7 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("7").arg(datasetList->count()));
+    CHECK_SET_ERR("export_test_0008" == datasetList->item(0)->text(), "Invalid dataset item name_1");
+    CHECK_SET_ERR("export_test_0009" == datasetList->item(1)->text(), "Invalid dataset item name_2");
+    CHECK_SET_ERR("et0007_seq" == datasetList->item(2)->text(), "Invalid dataset item name_3");
+    CHECK_SET_ERR("et0001_sequence" == datasetList->item(3)->text(), "Invalid dataset item name_4");
+    CHECK_SET_ERR("pt0001_dir2" == datasetList->item(4)->text(), "Invalid dataset item name_5");
+    CHECK_SET_ERR("pt0006_dir2" == datasetList->item(5)->text(), "Invalid dataset item name_6");
+    CHECK_SET_ERR("pt0005_human_T1" == datasetList->item(6)->text(), "Invalid dataset item name_7");
 }
 
 GUI_TEST_CLASS_DEFINITION(read_gui_neg_test_0012) {
