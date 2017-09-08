@@ -19,32 +19,31 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ACE_IMPORT_DIALOG_H_
-#define _U2_ACE_IMPORT_DIALOG_H_
+#ifndef _U2_APR_IMPORT_WIDGET_H_
+#define _U2_APR_IMPORT_WIDGET_H_
 
-#include <U2Formats/AceImporter.h>
+#include <U2Formats/AprImporter.h>
 
-#include "ui_AceImportDialog.h"
+#include "ImportWidget.h"
+#include "ui_AprImportWidget.h"
 
 namespace U2 {
 
 class SaveDocumentController;
 
-class AceImportDialog : public ImportDialog, public Ui_AceImportDialog {
+class AprImportWidget : public ImportWidget, public Ui_AprImportWidget {
     Q_OBJECT
 public:
-    AceImportDialog(const QVariantMap& settings);
+    AprImportWidget(const GUrl& url, const QVariantMap& settings);
+    virtual QVariantMap getSettings() const;
 
-protected:
-    bool isValid();
-    void applySettings();
-    void initSaveController();
+    void initSaveController(const GUrl& url, const DocumentFormatId defaultFormatId);
 
-    SaveDocumentController *saveController;
-
-    static const QString EXTENSION;
+private:
+    DocumentFormatId getFormatId(const QVariantMap& settings);
+    static QString getDefaultValues();
 };
 
 }   // namespace U2
 
-#endif // _U2_ACE_IMPORT_DIALOG_H_
+#endif // _U2_APR_IMPORT_WIDGET_H_

@@ -30,6 +30,7 @@
 #include <U2Formats/AceFormat.h>
 #include <U2Formats/AceImporter.h>
 #include <U2Formats/AprFormat.h>
+#include <U2Formats/AprImporter.h>
 #include <U2Formats/BedFormat.h>
 #include <U2Formats/ClustalWAlnFormat.h>
 #include <U2Formats/DatabaseConnectionFormat.h>
@@ -200,6 +201,9 @@ void DocumentFormatRegistryImpl::init() {
 
     AceImporter *aceImporter = new AceImporter();
     importSupport.addDocumentImporter(aceImporter);
+
+    AprImporter* aprImporter = new AprImporter();
+    importSupport.addDocumentImporter(aprImporter);
 
     PDWFormat *pdw = new PDWFormat(this);
     registerFormat(pdw);

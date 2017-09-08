@@ -401,7 +401,7 @@ bool ProjectLoaderImpl::detectFormat(const GUrl &url, QList<FormatDetectionResul
             return false;
         }
     } else {
-        const QList<FormatDetectionResult> relatedFormats = getRelatedFormats(formats, idx);
+        QList<FormatDetectionResult> relatedFormats = getRelatedFormats(formats, idx);
         if (relatedFormats.size() > 1) {
             int indexInRelatedList = DocumentProviderSelectorController::selectResult(url, relatedFormats);
             if (indexInRelatedList >= 0) {
@@ -562,8 +562,8 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
                         }else{
                             info.openView = nViews++ < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS;
                         }
-                        QVariantMap hints;
-                        info.dp = dr.importer->createImportTask(dr, true, hints);
+                        QVariantMap _hints = dr.rawDataCheckResult.properties;
+                        info.dp = dr.importer->createImportTask(dr, true, _hints);
                         docProviders << info;
                     }
                 }
