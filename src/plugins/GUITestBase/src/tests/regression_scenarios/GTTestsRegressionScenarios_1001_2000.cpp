@@ -6197,6 +6197,7 @@ GUI_TEST_CLASS_DEFINITION( test_1603 ) {
     QAbstractButton *tree = GTAction::button(os,"Build Tree");
     GTWidget::click(os, tree);
     GTGlobals::sleep();
+	GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMdi::closeWindow(os, "COI [m] COI");
     QString docName = "1603.nwk";
