@@ -235,6 +235,7 @@ QString GTUtilsMcaEditorSequenceArea::getReferenceReg(GUITestOpStatus &os, int n
 
     U2OpStatus2Log status;
     QByteArray seq = obj->getReferenceObj()->getSequenceData(U2Region(num, length), status);
+    CHECK_OP(status, QString());
 
     return seq;
 }
@@ -385,13 +386,13 @@ char GTUtilsMcaEditorSequenceArea::getReadCharByPos(GUITestOpStatus &os, const Q
 #define GT_METHOD_NAME "getRowLength"
 qint64 GTUtilsMcaEditorSequenceArea::getRowLength(GUITestOpStatus &os, const int numRow) {
     McaEditorSequenceArea* mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
-    GT_CHECK_RESULT(mcaSeqArea != NULL, "MCA Editor sequence area is not found", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(mcaSeqArea != NULL, "MCA Editor sequence area is not found", 0);
 
     McaEditor* mcaEditor = mcaSeqArea->getEditor();
-    GT_CHECK_RESULT(mcaSeqArea != NULL, "MCA Editor is not found", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(mcaSeqArea != NULL, "MCA Editor is not found", 0);
 
     MultipleChromatogramAlignmentObject* mcaObj = mcaEditor->getMaObject();
-    GT_CHECK_RESULT(mcaObj != NULL, "MCA Object is not found", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(mcaObj != NULL, "MCA Object is not found", 0);
 
     const MultipleChromatogramAlignmentRow mcaRow = mcaObj->getRow(numRow);
 

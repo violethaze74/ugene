@@ -31,10 +31,11 @@ class GUITestOpStatus;
 namespace U2 {
 
 class McaEditor;
+class McaEditorConsensusArea;
 class McaEditorNameList;
 class McaEditorSequenceArea;
-class McaEditorConsensusArea;
 class McaEditorWgt;
+class MultipleAlignmentRowData;
 
 class GTUtilsMcaEditor {
 public:
@@ -44,6 +45,7 @@ public:
     static McaEditorNameList *getNameListArea(HI::GUITestOpStatus &os);
     static McaEditorSequenceArea *getSequenceArea(HI::GUITestOpStatus &os);
     static McaEditorConsensusArea* getConsensusArea(HI::GUITestOpStatus &os);
+    static MultipleAlignmentRowData* getMcaRow(HI::GUITestOpStatus &os, int rowNum);
 
     static QString getReferenceLabelText(HI::GUITestOpStatus &os);
 
