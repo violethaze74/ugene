@@ -1454,36 +1454,143 @@ GUI_TEST_CLASS_DEFINITION(test_5469) {
 	CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size() == 2, QString("Wrong number of selected annotations expect %1, got %2").arg("2").arg(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5492) {
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            //Expected state : "Min read identity" option by default = 80 %
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            QString expected = "80";
+            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+
+            //Expected state : "Quality threshold" option by default = 30
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            expected = "30";
+            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+
+            //Expected state : "Add to project" option is checked by default
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+
+            //Expected state : "Result aligment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit");
+            bool checkOutput = output.isEmpty();
+            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+
+            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
+            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
+            bool checkContainsSecond = output.contains("sanger_reads_alignment");
+            bool checkContainsThird = output.contains("UGENE_Data");
+            bool checkContainsFourth = output.contains("Documents");
+            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
+            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+
+            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_short.gb");
+
+            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                QString name = "sanger_";
+                QString num = QString::number(i);
+                if (num.size() == 1) {
+                    num = "0" + QString::number(i);
+                }
+                name += num;
+                name += ".ab1";
+                reads << name;
+            }
+            QString readDir = testDir + "_common_data/sanger/";
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            GTUtilsDialog::waitForDialog(os, ob);
+
+            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+
+            //4. Push "Align" button
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //5. Select last symbol of the read and insert some gaps, until reference will increase for a few symbols
+    MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(os, 0);
+    int end = row->getCoreStart() + row->getCoreLength() - 1;
+    QPoint p(end, 0);
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, p);
+
+    int i = 15;
+    while (i != 0) {
+        GTKeyboardDriver::keyClick(Qt::Key_Space);
+        GTGlobals::sleep(300);
+        i--;
+    }
+
+    //6. Select this last symbil again, press "Insert character" and insert gap
+    row = GTUtilsMcaEditor::getMcaRow(os, 0);
+    end = row->getCoreStart() + row->getCoreLength() - 1;
+    p = QPoint(end, 0);
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, p);
+    GTGlobals::sleep(1000);
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Replace character/gap");
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTGlobals::sleep(1000);
+
+    //Expected : all gaps since a place when you started to insert, will turn into trailing
+    row = GTUtilsMcaEditor::getMcaRow(os, 0);
+    int newRowLength = row->getCoreStart() + row->getCoreLength() - 1;
+    CHECK_SET_ERR(newRowLength < end, "Incorrect length");
+
+    int refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
+    //7. Press "Remove all coloumns of gaps "
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Remove all columns of gaps");
+
+    //Expected: Reference will be trimmed
+    int newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
+    CHECK_SET_ERR(newRefLength < refLength, QString("Expected: New ref length is less then old ref length, current: new = %1, old = %2").arg(QString::number(newRefLength)).arg(QString::number(refLength)));
+
+    //8. Press "undo"
+    GTUtilsMcaEditor::undo(os);
+
+    //Expected: reference will be restored with gaps
+    newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
+    CHECK_SET_ERR(newRefLength == refLength, QString("Expected: New ref length is equal old ref length, current: new = %1, old = %2").arg(QString::number(newRefLength)).arg(QString::number(refLength)));
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5495) {
     //1) Open samples/FASTA/human_T1.fa
-        GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-        GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2) Select 100..10 region of the sequence
-        class Scenario : public CustomScenario {
-        public:
-            void run(HI::GUITestOpStatus &os) {
-                QWidget *dialog = QApplication::activeModalWidget();
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
 
-                QLineEdit *startEdit = dialog->findChild<QLineEdit*>("startEdit");
-                QLineEdit *endEdit = dialog->findChild<QLineEdit*>("endEdit");
-                CHECK_SET_ERR(startEdit != NULL, "QLineEdit \"startEdit\" not found");
-                CHECK_SET_ERR(endEdit != NULL, "QLineEdit \"endEdit\" not found");
+            QLineEdit *startEdit = dialog->findChild<QLineEdit*>("startEdit");
+            QLineEdit *endEdit = dialog->findChild<QLineEdit*>("endEdit");
+            CHECK_SET_ERR(startEdit != NULL, "QLineEdit \"startEdit\" not found");
+            CHECK_SET_ERR(endEdit != NULL, "QLineEdit \"endEdit\" not found");
 
-                GTLineEdit::setText(os, startEdit, QString::number(321));
-                GTLineEdit::setText(os, endEdit, QString::number(123));
+            GTLineEdit::setText(os, startEdit, QString::number(321));
+            GTLineEdit::setText(os, endEdit, QString::number(123));
 
-                QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox"));
-                QPushButton* goButton = box->button(QDialogButtonBox::Ok);
-                CHECK_SET_ERR(goButton!= NULL, "Go button not found");
-                CHECK_SET_ERR(!goButton->isEnabled(), "Go button is enabled");
+            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox"));
+            QPushButton* goButton = box->button(QDialogButtonBox::Ok);
+            CHECK_SET_ERR(goButton != NULL, "Go button not found");
+            CHECK_SET_ERR(!goButton->isEnabled(), "Go button is enabled");
 
-                GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
-            }
-        };
-        GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, new Scenario));
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));
-        GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, new Scenario));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5499) {
