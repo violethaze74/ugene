@@ -1183,12 +1183,12 @@
 <context>
     <name>U2::LocalWorkflow::BaseNGSTask</name>
     <message>
-        <location filename="../src/support/BaseNGSWorker.cpp" line="202"/>
+        <location filename="../src/support/BaseNGSWorker.cpp" line="195"/>
         <source>No input URL</source>
         <translation>Отсутствует входной адрес</translation>
     </message>
     <message>
-        <location filename="../src/support/BaseNGSWorker.cpp" line="213"/>
+        <location filename="../src/support/BaseNGSWorker.cpp" line="206"/>
         <source>Folder does not exist: </source>
         <translation>Папка не существует: </translation>
     </message>
@@ -1876,42 +1876,42 @@
 <context>
     <name>U2::WorkflowIterationRunTask</name>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="143"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="163"/>
         <source>Workflow run</source>
         <translation>Запуск схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="159"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="179"/>
         <source>Unknown domain %1</source>
         <translation>Неизвестное имя среды исполнения: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="209"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="229"/>
         <source>Failed to preprocess the workflow. Some of included files are broken</source>
         <translation>Не удалось предварительно обработать схему. Некоторые из включенных файлов некорректны</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="217"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="237"/>
         <source>Failed to create worker %1 %2 in domain %3</source>
         <translation>Не удалось создать процесс %1 %2 для среды исполнения %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="225"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="245"/>
         <source>Failed to create connection %1 %2 in domain %3</source>
         <translation>Не удалось создать соединение процессов %1 %2 для среды исполнения %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="238"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="258"/>
         <source>Failed to create a workflow context</source>
         <translation>Невозможно создать контекст схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="300"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="320"/>
         <source>No workers are ready, while not all workers are done. Workflow is broken?</source>
         <translation>Все процессы находятся в состоянии &quot;не готовы&quot; (обработали входные данные), но не все процессы находятся в состоянии &quot;завершил исполнение&quot;. Пожалуйста, проверьте схему?</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="244"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="264"/>
         <source>Failed to create scheduler in domain %1</source>
         <translation>Не удалось создать планировщик для среды исполнения %1</translation>
     </message>
