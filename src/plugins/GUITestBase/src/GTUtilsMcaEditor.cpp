@@ -87,6 +87,20 @@ McaEditorConsensusArea* GTUtilsMcaEditor::getConsensusArea(GUITestOpStatus &os) 
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getMcaRow"
+MultipleAlignmentRowData* GTUtilsMcaEditor::getMcaRow(GUITestOpStatus &os, int rowNum) {
+    McaEditor* mcaEditor = GTUtilsMcaEditor::getEditor(os);
+    GT_CHECK_RESULT(NULL != mcaEditor, "McaEditor not found", NULL);
+
+    MultipleChromatogramAlignmentObject* maObj = mcaEditor->getMaObject();
+    GT_CHECK_RESULT(NULL != maObj, "MultipleChromatogramAlignmentObject not found", NULL);
+
+    MultipleAlignmentRow row = maObj->getRow(rowNum);
+
+    return row.data();
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getReferenceLabelText"
 QString GTUtilsMcaEditor::getReferenceLabelText(GUITestOpStatus &os) {
     QLabel *referenceLabel = getReferenceLabel(os);
