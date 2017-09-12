@@ -124,7 +124,6 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
     accessSharedDatabaseAction = new QAction(tr("Connect to UGENE shared database..."), this);
     accessSharedDatabaseAction->setObjectName(ACTION_PROJECTSUPPORT__ACCESS_SHARED_DB);
     accessSharedDatabaseAction->setIcon(QIcon(":core/images/db/database_go.png"));
-    accessSharedDatabaseAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
     connect(accessSharedDatabaseAction, SIGNAL(triggered()), SLOT(sl_accessSharedDatabase()));
 
     searchGenbankEntryAction = new QAction(tr("Search NCBI GenBank..."), this);
