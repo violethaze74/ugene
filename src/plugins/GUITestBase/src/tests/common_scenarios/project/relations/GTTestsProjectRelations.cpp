@@ -19,15 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTTestsProjectRelations.h"
 #include "GTGlobals.h"
-#include <drivers/GTMouseDriver.h>
-#include "GTUtilsProject.h"
-#include "utils/GTUtilsApp.h"
+#include "GTTestsProjectRelations.h"
 #include "GTUtilsDocument.h"
+#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
-#include <U2View/AnnotatedDNAViewFactory.h>
 #include "GTUtilsTaskTreeView.h"
+#include "utils/GTUtilsApp.h"
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <system/GTFile.h>
+#include <U2View/AnnotatedDNAViewFactory.h>
 
 namespace U2{
 
@@ -44,6 +46,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 
     GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
 	GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -56,6 +59,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, child));
     GTMouseDriver::doubleClick();
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 }

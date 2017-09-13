@@ -64,6 +64,7 @@ namespace GUITest_common_scenarios_project_sequence_exporting {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
 	GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -123,9 +124,14 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTGlobals::sleep();
 
     CHECK_SET_ERR(seq == "AAAT", "exported sequence differs from AAAT");
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
 	GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -165,10 +171,14 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::click(Qt::RightButton);
 
 // Expected state: sequence view C has been opened, with sequence "GAATAGAAAAG"
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0003)
-{
+GUI_TEST_CLASS_DEFINITION(test_0003) {
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     const QString doc1("1.gb"), doc2("2.gb");
 
 // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
@@ -217,10 +227,14 @@ GUI_TEST_CLASS_DEFINITION(test_0003)
 
 // Expected state: sequence view B part 1 of 3 has been opened, with sequence "ACCCCACCCGTAGGTGGCAAGCTAGCTTAAG"
     GTUtilsSequenceView::checkSequence(os, "ACCCCACCCGTAGGTGGCAAGCTAGCTTAAG");
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
 	GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -239,8 +253,13 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTGlobals::sleep(1000);
     bool equals = GTFile::equals(os, testDir+"_common_data/scenarios/sandbox/1.csv", testDir+"_common_data/scenarios/project/test_0004.csv");
     CHECK_SET_ERR(equals == true, "Exported file differs from the test file");
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 GUI_TEST_CLASS_DEFINITION(test_0005) {
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj4.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -272,6 +291,10 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTGlobals::sleep(1000);
     bool equals = GTFile::equals(os, testDir+"_common_data/scenarios/sandbox/1.csv", testDir+"_common_data/scenarios/project/test_0005.csv");
     CHECK_SET_ERR(equals == true, "Exported file differs from the test file");
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {

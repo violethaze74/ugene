@@ -418,6 +418,8 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025) {
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
+
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj4.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -430,6 +432,10 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "misc_feature", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026) {

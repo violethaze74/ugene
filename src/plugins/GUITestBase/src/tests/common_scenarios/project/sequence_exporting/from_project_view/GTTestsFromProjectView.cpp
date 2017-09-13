@@ -19,33 +19,34 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTTestsFromProjectView.h"
-#include "GTGlobals.h"
-#include <drivers/GTKeyboardDriver.h>
-#include "utils/GTKeyboardUtils.h"
-#include <utils/GTThread.h>
-#include <drivers/GTMouseDriver.h>
-#include "primitives/GTMenu.h"
 #include "api/GTSequenceReadingModeDialogUtils.h"
-#include <primitives/GTTreeWidget.h>
-#include <base_dialogs/GTFileDialog.h>
-#include "GTUtilsProject.h"
+#include "GTGlobals.h"
+#include "GTTestsFromProjectView.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
+#include "GTUtilsMdi.h"
+#include "GTUtilsMdi.h"
+#include "GTUtilsProject.h"
+#include "GTUtilsProjectTreeView.h"
+#include "GTUtilsSequenceView.h"
+#include "GTUtilsTaskTreeView.h"
+#include "primitives/GTMenu.h"
+#include "primitives/PopupChooser.h"
+#include "runnables/ugene/corelibs/U2Gui/ExportChromatogramFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportMSA2SequencesDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportSequences2MSADialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+#include "utils/GTKeyboardUtils.h"
 #include "utils/GTUtilsApp.h"
 #include "utils/GTUtilsToolTip.h"
-#include "GTUtilsMdi.h"
-#include "GTUtilsProjectTreeView.h"
-#include "GTUtilsTaskTreeView.h"
-#include "GTUtilsSequenceView.h"
-#include "GTUtilsMdi.h"
-#include "primitives/PopupChooser.h"
-#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportSequences2MSADialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportMSA2SequencesDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ExportChromatogramFiller.h"
+#include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTTreeWidget.h>
+#include <system/GTFile.h>
+#include <utils/GTThread.h>
 
 #include <U2View/AnnotatedDNAViewFactory.h>
 #include <U2View/MaEditorFactory.h>
@@ -57,6 +58,7 @@ using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
 
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
 	GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -103,10 +105,15 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTGlobals::sleep(3000);
 // Expected state: sequence view NC_001363 sequence has been opened, with sequence same as in 1.gb document
     GTUtilsDocument::checkDocument(os, "exp.fasta", AnnotatedDNAViewFactory::ID);
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
 
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
 	GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -143,6 +150,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 // Expected state: multiple aligniment view with NC_001363 sequence has been opened
     GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/sandbox/exp2.aln");
     GTUtilsDocument::checkDocument(os, "exp2.aln");
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -305,6 +316,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
+
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     const QString doc1("1.gb"), doc2("2.gb");
 // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj4.uprj");
@@ -358,11 +371,17 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     if (GTUtilsProjectTreeView::getSelectedItem(os) != "[s] NC_001363 sequence") {
         os.setError("multiple alignment view with NC_001363 sequence has been not opened");
     }
+
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    const QString doc1("1.gb"), doc2("2.gb");
 
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
+    const QString doc1("1.gb"), doc2("2.gb");
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj4.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -415,10 +434,15 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     if (GTUtilsProjectTreeView::getSelectedItem(os) != "[s] NC_001363 sequence") {
         os.setError("multiple alignment view with NC_001363 sequence has been not opened");
         }
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_1) {
 
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     const QString doc1("1.gb"), doc2("2.gb");
 
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
@@ -474,9 +498,16 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     if (GTUtilsProjectTreeView::getSelectedItem(os) != "[s] NC_001363 sequence") {
         os.setError("multiple alignment view with NC_001363 sequence has been not opened");
         }
+
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_2) {
+
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 
     const QString doc1("1.gb"), doc2("2.gb");
 
@@ -533,10 +564,15 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     if (GTUtilsProjectTreeView::getSelectedItem(os) != "[s] NC_001363 sequence") {
         os.setError("multiple alignment view with NC_001363 sequence has been not opened");
         }
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     }
+
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTFileDialog::openFile(os, dataDir + "samples/ABIF/", "A01.abi");
-    GTUtilsTaskTreeView::waitTaskFinished(os);   
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CHROMATOGRAM));
        Runnable *filler = new ExportChromatogramFiller(os, sandBoxDir,
@@ -547,7 +583,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 GUI_TEST_CLASS_DEFINITION(test_0008_1) {
     GTFileDialog::openFile(os, dataDir + "samples/ABIF/", "A01.abi");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
 	GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CHROMATOGRAM));
     Runnable *filler = new ExportChromatogramFiller(os, sandBoxDir,
         "pagefile.sys", ExportChromatogramFiller::SCF, true, true, true);
