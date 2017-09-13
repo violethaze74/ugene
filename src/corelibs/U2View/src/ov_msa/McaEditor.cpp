@@ -216,6 +216,7 @@ void McaEditor::initActions() {
     ui->addAction(showConsensusTabAction);
 
     showOverviewAction->setText(tr("Show overview"));
+    showOverviewAction->setObjectName("overview");
     changeFontAction->setText(tr("Change characters font"));
 }
 
