@@ -2103,6 +2103,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0030);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0033);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0034);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0038);
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/document_from_text/
     //////////////////////////////////////////////////////////////////////////
