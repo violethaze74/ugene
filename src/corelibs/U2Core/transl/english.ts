@@ -89,12 +89,12 @@
         <translation>Unsupported object type: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="415"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="421"/>
         <source>Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty.</source>
         <translation>Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty.</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="570"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="576"/>
         <source>Invalid number of symbols: %1</source>
         <translation>Invalid number of symbols: %1</translation>
     </message>
@@ -802,37 +802,37 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::CmdlineTaskRunner</name>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="98"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="100"/>
         <source>Run UGENE command line: %1</source>
         <translation>Run UGENE command line: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="139"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="146"/>
         <source>Cannot start process &apos;%1&apos;</source>
         <translation>Cannot start process &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="209"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="216"/>
         <source>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</source>
         <translation>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="213"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="220"/>
         <source>The process &apos;%1&apos; crashed some time after starting successfully</source>
         <translation>The process &apos;%1&apos; crashed some time after starting successfully</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="217"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="224"/>
         <source>Error occurred while reading from or writing to channel</source>
         <translation>Error occurred while reading from or writing to channel</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="220"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="227"/>
         <source>Unknown error occurred</source>
         <translation>Unknown error occurred</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="265"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="272"/>
         <source>An error occurred. Process is not finished successfully.</source>
         <translation>An error occurred. Process is not finished successfully.</translation>
     </message>
@@ -897,6 +897,24 @@ The session database file is removed after closing of UGENE.</translation>
         <location filename="../src/tasks/CopyDataTask.cpp" line="74"/>
         <source>IO adapter error. %1</source>
         <translation>IO adapter error. %1</translation>
+    </message>
+</context>
+<context>
+    <name>U2::CopyFileTask</name>
+    <message>
+        <location filename="../src/tasks/CopyFileTask.cpp" line="32"/>
+        <source>File &apos;%1&apos; copy task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/CopyFileTask.cpp" line="49"/>
+        <source>File &apos;%1&apos; doesn&apos;t exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/CopyFileTask.cpp" line="51"/>
+        <source>File copy from &apos;%1&apos; to &apos;%2&apos; failed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1253,7 +1271,7 @@ The session database file is removed after closing of UGENE.</translation>
         <translation>ugenedb is a internal UGENE database file format</translation>
     </message>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="153"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="156"/>
         <source>Invalid destination database reference</source>
         <translation>Invalid destination database reference</translation>
     </message>
@@ -1277,27 +1295,27 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="553"/>
+        <location filename="../src/models/DocumentModel.cpp" line="566"/>
         <source>Document is not loaded</source>
         <translation>Document is not loaded</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="566"/>
+        <location filename="../src/models/DocumentModel.cpp" line="579"/>
         <source>IO adapter does not support write operation</source>
         <translation>IO adapter does not support write operation</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="572"/>
+        <location filename="../src/models/DocumentModel.cpp" line="585"/>
         <source>No write support for document format</source>
         <translation>No write support for document format</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="642"/>
+        <location filename="../src/models/DocumentModel.cpp" line="655"/>
         <source>Locked by user</source>
         <translation>Locked by user</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="666"/>
+        <location filename="../src/models/DocumentModel.cpp" line="679"/>
         <source>Lock is NULL</source>
         <translation>Lock is NULL</translation>
     </message>
@@ -1542,47 +1560,47 @@ The session database file is removed after closing of UGENE.</translation>
         <translation>Failed to rename %1 to %2</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="290"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="300"/>
         <source>Folder is not specified</source>
         <translation>Folder is not specified</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="295"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="305"/>
         <source>Folder can&apos;t be created: %1</source>
         <translation>Folder can&apos;t be created: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="300"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="310"/>
         <source>Folder can&apos;t be read: %1</source>
         <translation>Folder can&apos;t be read: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="342"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="352"/>
         <source>File path is not specified</source>
         <translation>File path is not specified</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="345"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="355"/>
         <source>Folder path instead of file path</source>
         <translation>Folder path instead of file path</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="403"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="413"/>
         <source>Can not create a folder: %1</source>
         <translation>Can not create a folder: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="453"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="463"/>
         <source>%1 is not a local file [%2].</source>
         <translation>%1 is not a local file [%2].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="462"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="472"/>
         <source>Can not create a folder [%1].</source>
         <translation>Can not create a folder [%1].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="467"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="477"/>
         <source>%1 is a folder [%2].</source>
         <translation>%1 is a folder [%2].</translation>
     </message>
@@ -1993,27 +2011,47 @@ The session database file is removed after closing of UGENE.</translation>
         <translation>IO adapter factory is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="442"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="276"/>
+        <source>The fileURL  to load is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="279"/>
+        <source>Cannot get an IO file adapter factory for the file URL: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="282"/>
+        <source>Cannot detect the file format: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="285"/>
+        <source>Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="445"/>
         <source>Document not found %1</source>
         <translation>Document not found %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="462"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="465"/>
         <source>Not enough memory to load document %1</source>
         <translation>Not enough memory to load document %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="478"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="481"/>
         <source>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</source>
         <translation>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="508"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="511"/>
         <source>Object not found: %1</source>
         <translation>Object not found: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="515"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="518"/>
         <source>Can&apos;t add object. Document format constraints check failed: %1</source>
         <translation>Can&apos;t add object. Document format constraints check failed: %1</translation>
     </message>
@@ -2654,8 +2692,8 @@ UGENE contains unsaved modifications.</translation>
         <translation>Invalid sequence DBI</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="380"/>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="559"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="386"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="565"/>
         <source>Failed to derive sequence alphabet!</source>
         <translation>Failed to derive sequence alphabet!</translation>
     </message>
@@ -2679,7 +2717,7 @@ UGENE contains unsaved modifications.</translation>
 <context>
     <name>U2SequenceImporter</name>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="301"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="307"/>
         <source>Sequence was not imported. Probably, this is because the sequence is empty.</source>
         <translation>Sequence was not imported. Probably, this is because the sequence is empty.</translation>
     </message>
