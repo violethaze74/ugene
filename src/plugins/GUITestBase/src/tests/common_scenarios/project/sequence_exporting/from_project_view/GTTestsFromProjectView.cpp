@@ -192,8 +192,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa", ExportToSequenceFormatFiller::FASTA, true, true));
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "HIV-1.aln"));
-    GTMouseDriver::click(Qt::RightButton);
+	GTUtilsProjectTreeView::click(os, "HIV-1.aln", Qt::RightButton);
     GTGlobals::sleep();
 
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "export1.fa");
@@ -256,8 +255,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa",
         ExportToSequenceFormatFiller::FASTA, true, true));
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
-    GTMouseDriver::click(Qt::RightButton);
+	GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     GTGlobals::sleep(1000);
 
     GTGlobals::sleep(1000);
@@ -291,9 +289,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_PROJECT__EXPORT_AS_SEQUENCES_ACTION));
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa",
         ExportToSequenceFormatFiller::FASTA, true, false));
-
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI"));
-    GTMouseDriver::click(Qt::RightButton);
+   
+	GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     GTGlobals::sleep(1000);
 
     GTGlobals::sleep(1000);
@@ -355,7 +352,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     Runnable *filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/",
         "exp2.msf", ExportSequenceAsAlignmentFiller::Msf);
     GTUtilsDialog::waitForDialog(os, filler);
-
+	 GTGlobals::sleep(1000);
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, child));
