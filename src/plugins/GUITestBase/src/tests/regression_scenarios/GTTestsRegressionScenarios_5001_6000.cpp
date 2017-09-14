@@ -2907,6 +2907,20 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
     CHECK_SET_ERR(errors.isEmpty(), "Some errors in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5762) {
+    // 1. Connect to a shared database.
+    // 2. Right click on the document->Add->Import to the database.
+    // 3. Click "Add files".
+    // 4. Choose "data/samples/ABIF/A01.abi".
+    // 5. Click "Import".
+    // Expected state : the file is imported, there are no errors in the log.
+    GTLogTracer logTracer;
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    GTUtilsSharedDatabaseDocument::importFiles(os, databaseDoc, "/regression5761", QStringList() << dataDir + "samples/ABIF/A01.abi");
+    GTUtilsNotifications::waitForNotification(os, false, "Aligned reads (16)");
+    GTUtilsLog::check(os, logTracer);
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
