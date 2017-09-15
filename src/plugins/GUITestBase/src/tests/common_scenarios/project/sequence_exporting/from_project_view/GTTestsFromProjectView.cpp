@@ -261,9 +261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "Open New View", GTGlobals::UseMouse));
-
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Zychia_baranovi"));
-    GTMouseDriver::click(Qt::RightButton);
+	GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
     GTGlobals::sleep(1000);
 
     GTGlobals::sleep(1000);
@@ -296,9 +294,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "Open New View", GTGlobals::UseMouse));
-
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Zychia_baranovi"));
-    GTMouseDriver::click(Qt::RightButton);
+	GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
     GTGlobals::sleep(1000);
 
     GTGlobals::sleep(1000);
@@ -323,6 +319,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
 // Expected state:
 //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
+	GTUtilsProjectTreeView::click(os, doc1);
     GTUtilsProjectTreeView::findIndex(os, doc1);//checks inside
     GTUtilsProjectTreeView::findIndex(os, doc2);
     if (GTUtilsDocument::isDocumentLoaded(os, doc1) || GTUtilsDocument::isDocumentLoaded(os, doc2)) {
@@ -331,11 +328,12 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     }
 
 // 2. Double click on [a] Annotations sequence object, in project view tree
-    QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
-    GTMouseDriver::moveTo(itemPos);
+    //QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
+	GTUtilsProjectTreeView::click(os, "Annotations");
+    //GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
-
+	
 // Expected result: NC_001363 sequence has been opened in sequence view
     GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow*> (GTUtilsMdi::activeWindow(os));
     if (! activeWindow->getViewName().contains("NC_001363")) {
