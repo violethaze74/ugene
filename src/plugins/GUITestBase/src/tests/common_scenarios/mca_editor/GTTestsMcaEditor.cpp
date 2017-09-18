@@ -3050,7 +3050,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'C', "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == 'C', QString("Incorrect selected character, expected: C, current: %1").arg(selectedChar));
 
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -3075,7 +3075,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
 
     //Expected state: Expected result: the original character of the alignment was replaced with the new one (e.g 'C' was replaced with GAP).
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == U2Mca::GAP_CHAR, "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == U2Mca::GAP_CHAR, QString("Incorrect selected character, expected: GAP, current: %1").arg(selectedChar));
 
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -3087,7 +3087,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
 
     //Expected state: This is character 'C'
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    CHECK_SET_ERR(selectedChar == 'C', "Incorrect selected character");
+    CHECK_SET_ERR(selectedChar == 'C', QString("Incorrect selected character, expected: C, current: %1").arg(selectedChar));
 
     //10. Push Redo (Ctrl+Y)
     GTUtilsMcaEditor::redo(os);
