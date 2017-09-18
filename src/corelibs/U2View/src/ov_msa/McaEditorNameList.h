@@ -58,6 +58,7 @@ private:
     void drawText(QPainter &painter, const QString &text, const QRect &rect, bool selected);
     void drawArrow(QPainter &painter, bool isReversed, const QRectF &arrowRect);
     QRectF calculateArrowRect(const U2Region &yRange) const;
+    void moveSelection(int dy);
 
     int getAvailableWidth() const;
     int getMinimumWidgetWidth() const;

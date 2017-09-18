@@ -51,13 +51,21 @@ private slots:
     void sl_fontChanged(const QFont &newFont);
 
 private:
+    void setReferenceSelection(QMouseEvent* e);
+
     void mousePressEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
+    void mouseReleaseEvent(QMouseEvent* e);
     void keyPressEvent(QKeyEvent *event);
     void updateScrollBar();
 
     McaEditor* editor;
     McaEditorWgt* ui;
     McaReferenceAreaRenderer *renderer;
+    qint64 lastMouseReleasePos;
+    qint64 selectionCountFromStartPos;
+    bool isShiftPressed;
+    bool expandToTheRight;
 };
 
 class McaEditorReferenceRenderArea : public PanViewRenderArea {

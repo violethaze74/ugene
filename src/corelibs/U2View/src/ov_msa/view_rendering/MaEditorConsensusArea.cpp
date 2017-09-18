@@ -403,8 +403,8 @@ void MaEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
             } else {
                 MaEditorSelection selection(curPos, 0, 1, selectionHeight);
                 ui->getSequenceArea()->setSelection(selection);
-                scribbling = true;
             }
+            scribbling = true;
         }
     }
     QWidget::mousePressEvent(e);

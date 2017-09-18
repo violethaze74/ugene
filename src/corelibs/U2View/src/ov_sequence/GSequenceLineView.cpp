@@ -195,7 +195,7 @@ void GSequenceLineView::mouseReleaseEvent(QMouseEvent* me) {
             qint64 pos = renderArea->coordToPos(areaPoint);
             if (pos == lastPressPos) {
                 U2Region rgn(pos, 1);
-                if (rgn.startPos >=0 && rgn.endPos() <= seqLen) {
+                if (rgn.startPos >= 0 && rgn.endPos() <= seqLen) {
                     setSelection(rgn);
                 }
             }

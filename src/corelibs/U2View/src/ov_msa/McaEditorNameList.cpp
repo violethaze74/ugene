@@ -142,4 +142,11 @@ int McaEditorNameList::getIconColumnWidth() const {
     return iconColumnWidth;
 }
 
+void McaEditorNameList::moveSelection(int dy) {
+    MaEditorNameList::moveSelection(dy);
+    MaEditorSequenceArea* seqArea = ui->getSequenceArea();
+    seqArea->sl_cancelSelection();
+    updateSelection(nextSequenceToSelect);
+}
+
 }   // namespace U2
