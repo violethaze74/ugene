@@ -37,24 +37,38 @@
 <context>
     <name>AceImportDialog</name>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.ui" line="14"/>
         <source>Import ACE File</source>
-        <translation>Import ACE File</translation>
+        <translation type="vanished">Import ACE File</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.ui" line="28"/>
         <source>Source URL:</source>
-        <translation>Source URL:</translation>
+        <translation type="vanished">Source URL:</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.ui" line="52"/>
         <source>Destination URL:</source>
-        <translation>Destination URL:</translation>
+        <translation type="vanished">Destination URL:</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.ui" line="62"/>
         <source>...</source>
-        <translation>...</translation>
+        <translation type="vanished">...</translation>
+    </message>
+</context>
+<context>
+    <name>AceImportWidget</name>
+    <message>
+        <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Form</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="63"/>
+        <source>Save to file</source>
+        <translation type="unfinished">Save to file</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="77"/>
+        <source>...</source>
+        <translation type="unfinished">...</translation>
     </message>
 </context>
 <context>
@@ -83,6 +97,29 @@
         <location filename="../src/util/AddNewDocumentDialog.ui" line="71"/>
         <source>Compress file</source>
         <translation>Compress file</translation>
+    </message>
+</context>
+<context>
+    <name>AprImportWidget</name>
+    <message>
+        <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Form</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="63"/>
+        <source>Save to fiie</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="70"/>
+        <source>File format</source>
+        <translation type="unfinished">File format</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="87"/>
+        <source>...</source>
+        <translation type="unfinished">...</translation>
     </message>
 </context>
 <context>
@@ -907,60 +944,64 @@
         <translation>Multi-sequence files import policy</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="97"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="103"/>
         <source>Import as separate sequences</source>
         <translation>Import as separate sequences</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="107"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="119"/>
         <source>Merge into a single sequence</source>
         <translation>Merge into a single sequence</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="132"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Number of &apos;unknown&apos; symbols &lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;(&apos;N &apos;for nucleic or &apos;X&apos; for amino)&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; between parts:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Number of &apos;unknown&apos; symbols &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;(&apos;N &apos;for nucleic or &apos;X&apos; for amino)&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; between parts:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; {3C?} {4.0/?} {3.?} {40/?} {1&quot;?} {2&apos;?} {8.25p?} {400;?} {0p?} {0p?} {0p?} {0p?} {0;?} {0p?} {10p?} {10p?} {10p?}</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="146"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="158"/>
         <source> bases</source>
         <translation>bases</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="161"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="132"/>
         <source>Join into alignment</source>
         <translation>Join into alignment</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="184"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="148"/>
+        <source>Number of unknown symbols (N - for nucleic or X - for amino) between parts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="193"/>
         <source>Import ACE files as</source>
         <translation>Import ACE files as</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="190"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="199"/>
         <source>Multiple sequence alignment</source>
         <translation>Multiple sequence alignment</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="203"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="212"/>
         <source>Short reads assembly</source>
         <translation>Short reads assembly</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="219"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="228"/>
         <source>Documents and objects options</source>
         <translation>Documents and objects options</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="225"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="234"/>
         <source>Create a subfolder for each document</source>
         <translation>Create a subfolder for each document</translation>
     </message>
@@ -1524,66 +1565,62 @@ The items cannot be recovered once deleted.</translation>
 <context>
     <name>U2::AceImportDialog</name>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="135"/>
         <source>Destination UGENEDB file</source>
-        <translation>Destination UGENEDB file</translation>
+        <translation type="vanished">Destination UGENEDB file</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="68"/>
         <source>Destination URL is not specified</source>
-        <translation>Destination URL is not specified</translation>
+        <translation type="vanished">Destination URL is not specified</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="54"/>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="vanished">OK</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="74"/>
         <source>Destination URL must point to a local file</source>
-        <translation>Destination URL must point to a local file</translation>
+        <translation type="vanished">Destination URL must point to a local file</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="82"/>
         <source>There is opened view with destination file.
 Close it or choose different file</source>
-        <translation>There is opened view with destination file.
+        <translation type="vanished">There is opened view with destination file.
 Close it or choose different file</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="92"/>
         <source>Destination folder &apos;%1&apos; is not writable, please choose different destination URL</source>
-        <translation>Destination folder &apos;%1&apos; is not writable, please choose different destination URL</translation>
+        <translation type="vanished">Destination folder &apos;%1&apos; is not writable, please choose different destination URL</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="100"/>
         <source>Destination file already exists.
 To overwrite the file, press &apos;Replace&apos;.
 To append data to existing file press &apos;Append&apos;.</source>
-        <translation>Destination file already exists.
+        <translation type="vanished">Destination file already exists.
 To overwrite the file, press &apos;Replace&apos;.
 To append data to existing file press &apos;Append&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="103"/>
         <source>Replace</source>
-        <translation>Replace</translation>
+        <translation type="vanished">Replace</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="104"/>
         <source>Append</source>
-        <translation>Append</translation>
+        <translation type="vanished">Append</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="55"/>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="105"/>
         <source>Cancel</source>
-        <translation>Cancel</translation>
+        <translation type="vanished">Cancel</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="109"/>
         <source>Destination file &apos;%1&apos; cannot be removed</source>
-        <translation>Destination file &apos;%1&apos; cannot be removed</translation>
+        <translation type="vanished">Destination file &apos;%1&apos; cannot be removed</translation>
+    </message>
+</context>
+<context>
+    <name>U2::AceImportWidget</name>
+    <message>
+        <location filename="../src/util/ImportWidgets/AceImportWidget.cpp" line="60"/>
+        <source>Destination UGENEDB file</source>
+        <translation type="unfinished">Destination UGENEDB file</translation>
     </message>
 </context>
 <context>
@@ -2149,17 +2186,17 @@ Are you sure you want to open all of them?</source>
         <translation>Save sequence names</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="47"/>
+        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="48"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="48"/>
+        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="49"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="69"/>
+        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="70"/>
         <source>Select file to save annotations</source>
         <translation>Select file to save annotations</translation>
     </message>
@@ -2271,24 +2308,24 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::GUIUtils</name>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="143"/>
-        <location filename="../src/util/GUIUtils.cpp" line="153"/>
-        <location filename="../src/util/GUIUtils.cpp" line="171"/>
+        <location filename="../src/util/GUIUtils.cpp" line="154"/>
+        <location filename="../src/util/GUIUtils.cpp" line="164"/>
+        <location filename="../src/util/GUIUtils.cpp" line="182"/>
         <source>Error!</source>
         <translation>Error!</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="143"/>
+        <location filename="../src/util/GUIUtils.cpp" line="154"/>
         <source>Document URL is empty!</source>
         <translation>Document URL is empty!</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="153"/>
+        <location filename="../src/util/GUIUtils.cpp" line="164"/>
         <source>Unable to launch default web browser.</source>
         <translation>Unable to launch default web browser.</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="171"/>
+        <location filename="../src/util/GUIUtils.cpp" line="182"/>
         <source>Please specify the browser executable</source>
         <translation>Please specify the browser executable</translation>
     </message>
@@ -2516,9 +2553,13 @@ Are you sure you want to open all of them?</source>
         <translation>Log</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="72"/>
         <source>Settings</source>
-        <translation>Settings</translation>
+        <translation type="vanished">Settings</translation>
+    </message>
+    <message>
+        <location filename="../src/util/logview/LogView.cpp" line="72"/>
+        <source>Settings...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/logview/LogView.cpp" line="76"/>
@@ -2748,12 +2789,12 @@ Are you sure you want to open all of them?</source>
         <translation>Unlock document for editing</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="327"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="323"/>
         <source>Import to the database...</source>
         <translation>Import to the database...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="328"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="324"/>
         <source>Import to the folder...</source>
         <translation>Import to the folder...</translation>
     </message>
@@ -2824,7 +2865,7 @@ Are you sure you want to open all of them?</source>
         <translation>Empty recycle bin</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="554"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="550"/>
         <source>Add</source>
         <translation>Add</translation>
     </message>
@@ -3035,14 +3076,24 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ScaleBar</name>
     <message>
-        <location filename="../src/util/ScaleBar.cpp" line="39"/>
         <source>-</source>
-        <translation>-</translation>
+        <translation type="vanished">-</translation>
     </message>
     <message>
-        <location filename="../src/util/ScaleBar.cpp" line="46"/>
         <source>+</source>
-        <translation>+</translation>
+        <translation type="vanished">+</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ScaleBar.cpp" line="42"/>
+        <location filename="../src/util/ScaleBar.cpp" line="46"/>
+        <source>Decrease peaks height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/ScaleBar.cpp" line="53"/>
+        <location filename="../src/util/ScaleBar.cpp" line="57"/>
+        <source>Increase peaks height</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3241,42 +3292,42 @@ check connection settings</translation>
 <context>
     <name>U2::ToolsMenu</name>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="108"/>
+        <location filename="../src/ToolsMenu.cpp" line="109"/>
         <source>Sanger data analysis</source>
         <translation>Sanger data analysis</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="118"/>
+        <location filename="../src/ToolsMenu.cpp" line="119"/>
         <source>NGS data analysis</source>
         <translation>NGS data analysis</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="146"/>
+        <location filename="../src/ToolsMenu.cpp" line="149"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="160"/>
+        <location filename="../src/ToolsMenu.cpp" line="163"/>
         <source>Multiple sequence alignment</source>
         <translation>Multiple sequence alignment</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="172"/>
+        <location filename="../src/ToolsMenu.cpp" line="175"/>
         <source>Cloning</source>
         <translation>Cloning</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="180"/>
+        <location filename="../src/ToolsMenu.cpp" line="183"/>
         <source>Primer</source>
         <translation>Primer</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="186"/>
+        <location filename="../src/ToolsMenu.cpp" line="189"/>
         <source>Search for TFBS</source>
         <translation>Search for TFBS</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="195"/>
+        <location filename="../src/ToolsMenu.cpp" line="198"/>
         <source>HMMER tools</source>
         <translation>HMMER tools</translation>
     </message>
