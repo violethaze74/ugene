@@ -72,6 +72,8 @@ public:
     MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* obj);
     ~MSAEditor();
 
+    QString getSettingsRoot() const { return MSAE_SETTINGS_ROOT; }
+
     MultipleSequenceAlignmentObject* getMaObject() const { return qobject_cast<MultipleSequenceAlignmentObject*>(maObject); }
 
     virtual void buildStaticToolbar(QToolBar* tb);

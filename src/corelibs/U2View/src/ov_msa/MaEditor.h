@@ -26,6 +26,9 @@
 
 namespace U2 {
 
+#define MSAE_SETTINGS_ROOT QString("msaeditor/")
+#define MCAE_SETTINGS_ROOT QString("mcaeditor/")
+
 #define MSAE_MENU_COPY          "MSAE_MENU_COPY"
 #define MSAE_MENU_EDIT          "MSAE_MENU_EDIT"
 #define MSAE_MENU_EXPORT        "MSAE_MENU_EXPORT"
@@ -35,6 +38,22 @@ namespace U2 {
 #define MSAE_MENU_STATISTICS    "MSAE_MENU_STATISTICS"
 #define MSAE_MENU_ADVANCED      "MSAE_MENU_ADVANCED"
 #define MSAE_MENU_LOAD          "MSAE_MENU_LOAD_SEQ"
+
+#define MOBJECT_MIN_FONT_SIZE 8
+#define MOBJECT_MAX_FONT_SIZE 18
+#define MOBJECT_MIN_COLUMN_WIDTH 1
+
+#define MOBJECT_SETTINGS_COLOR_NUCL     "color_nucl"
+#define MOBJECT_SETTINGS_COLOR_AMINO    "color_amino"
+#define MOBJECT_SETTINGS_FONT_FAMILY    "font_family"
+#define MOBJECT_SETTINGS_FONT_SIZE      "font_size"
+#define MOBJECT_SETTINGS_FONT_ITALIC    "font_italic"
+#define MOBJECT_SETTINGS_FONT_BOLD      "font_bold"
+#define MOBJECT_SETTINGS_ZOOM_FACTOR    "zoom_factor"
+
+#define MOBJECT_DEFAULT_FONT_FAMILY "Verdana"
+#define MOBJECT_DEFAULT_FONT_SIZE 10
+#define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0f
 
 class MaEditorWgt;
 class MultipleAlignmentObject;
@@ -58,6 +77,8 @@ public:
 
 public:
     MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, GObject* obj);
+
+    virtual QString getSettingsRoot() const = 0;
 
     virtual MultipleAlignmentObject* getMaObject() const { return maObject; }
 
@@ -130,6 +151,7 @@ private slots:
 protected:
     virtual QWidget* createWidget() = 0;
     virtual void initActions();
+    virtual void initZoom();
 
     void addCopyMenu(QMenu* m);
     void addEditMenu(QMenu* m);

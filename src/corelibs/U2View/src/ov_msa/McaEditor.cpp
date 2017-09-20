@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -39,6 +40,7 @@
 #include "General/McaGeneralTabFactory.h"
 #include "helpers/MaAmbiguousCharactersController.h"
 #include "ov_sequence/SequenceObjectContext.h"
+#include "Overview/MaEditorOverviewArea.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 namespace U2 {
@@ -48,6 +50,8 @@ McaEditor::McaEditor(const QString &viewName,
     : MaEditor(McaEditorFactory::ID, viewName, obj),
       referenceCtx(NULL)
 {
+    initZoom();
+
     U2OpStatusImpl os;
     foreach (const MultipleChromatogramAlignmentRow& row, obj->getMca()->getMcaRows()) {
         chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), true);
@@ -136,6 +140,7 @@ void McaEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
 
 void McaEditor::sl_showHideChromatograms(bool show) {
     ui->getCollapseModel()->collapseAll(!show);
+    sl_saveChromatogramState();
     emit si_completeUpdate();
 }
 
@@ -185,6 +190,9 @@ QWidget* McaEditor::createWidget() {
 void McaEditor::initActions() {
     MaEditor::initActions();
 
+    Settings* s = AppContext::getSettings();
+    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+
     zoomInAction->setText(tr("Zoom in"));
     zoomInAction->setShortcut(QKeySequence::ZoomIn);
     GUIUtils::updateActionToolTip(zoomInAction);
@@ -203,8 +211,8 @@ void McaEditor::initActions() {
     showChromatogramsAction = new QAction(QIcon(":/core/images/graphs.png"), tr("Show chromatograms"), this);
     showChromatogramsAction->setObjectName("chromatograms");
     showChromatogramsAction->setCheckable(true);
-    showChromatogramsAction->setChecked(true);
     connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
+    showChromatogramsAction->setChecked(s->getValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, true).toBool());
     ui->addAction(showChromatogramsAction);
 
     showGeneralTabAction = new QAction(tr("Open \"General\" tab on the options panel"), this);
@@ -217,7 +225,23 @@ void McaEditor::initActions() {
 
     showOverviewAction->setText(tr("Show overview"));
     showOverviewAction->setObjectName("overview");
+    connect(showOverviewAction, SIGNAL(triggered(bool)), SLOT(sl_saveOverviewState()));
+    bool overviewVisible = s->getValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_OVERVIEW, true).toBool();
+    showOverviewAction->setChecked(overviewVisible);
+    ui->getOverviewArea()->setVisible(overviewVisible);
     changeFontAction->setText(tr("Change characters font"));
+}
+
+void McaEditor::sl_saveOverviewState() {
+    Settings* s = AppContext::getSettings();
+    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+    s->setValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_OVERVIEW, showOverviewAction->isChecked());
+}
+
+void McaEditor::sl_saveChromatogramState() {
+    Settings* s = AppContext::getSettings();
+    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+    s->setValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, showChromatogramsAction->isChecked());
 }
 
 void McaEditor::addAlignmentMenu(QMenu *menu) {
@@ -234,6 +258,7 @@ void McaEditor::addAppearanceMenu(QMenu *menu) {
     appearanceMenu->addAction(showChromatogramsAction);
     appearanceMenu->addMenu(getUI()->getSequenceArea()->getTraceActionsMenu());
     appearanceMenu->addAction(showOverviewAction);
+    appearanceMenu->addAction(getUI()->getToogleColumnsAction());
     appearanceMenu->addSeparator();
     appearanceMenu->addAction(zoomInAction);
     appearanceMenu->addAction(zoomOutAction);
