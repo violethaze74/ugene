@@ -32,7 +32,6 @@
 #include <QToolTip>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
@@ -55,8 +54,6 @@
 
 namespace U2 {
 
-
-#define SETTINGS_ROOT QString("msaeditor/")
 
 MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt *_ui)
     : editor(_ui->getEditor()),
@@ -98,12 +95,8 @@ MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt *_ui)
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
 
-    MSAConsensusAlgorithmFactory* algo = getConsensusAlgorithmFactory();
-    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(NULL, editor->getMaObject(), algo));
-    connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
     addAction(ui->getCopySelectionAction());
     addAction(ui->getPasteAction());
-    restoreLastUsedConsensusThreshold();
 
     setObjectName("consArea");
 }
@@ -149,6 +142,13 @@ bool MaEditorConsensusArea::event(QEvent* e) {
     }
 
     return QWidget::event(e);
+}
+
+void MaEditorConsensusArea::initCache() {
+    MSAConsensusAlgorithmFactory *algo = getConsensusAlgorithmFactory();
+    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(NULL, editor->getMaObject(), algo));
+    connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
+    restoreLastUsedConsensusThreshold();
 }
 
 QString MaEditorConsensusArea::createToolTip(QHelpEvent* he) const {
@@ -225,7 +225,7 @@ MSAConsensusAlgorithmFactory* MaEditorConsensusArea::getConsensusAlgorithmFactor
     const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
     ConsensusAlgorithmFlags alphaFlags = MSAConsensusAlgorithmFactory::getAphabetFlags(al);
     if (algo == NULL || (algo->getFlags() & alphaFlags) != alphaFlags) {
-        algo = reg->getAlgorithmFactory(BuiltInConsensusAlgorithms::DEFAULT_ALGO);
+        algo = reg->getAlgorithmFactory(getDefaultAlgorithmId());
         if ((algo->getFlags() & alphaFlags) != alphaFlags) {
             QList<MSAConsensusAlgorithmFactory*> algorithms = reg->getAlgorithmFactories(MSAConsensusAlgorithmFactory::getAphabetFlags(al));
             SAFE_POINT(algorithms.count() > 0, "There are no consensus algorithms for the current alphabet.", NULL);
@@ -304,13 +304,6 @@ void MaEditorConsensusArea::sl_changeConsensusAlgorithm(const QString& algoId) {
     emit si_consensusAlgorithmChanged(algoId);
 }
 
-QString MaEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
-    const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
-    SAFE_POINT(NULL != al, "Alphabet is NULL", "");
-    const char* suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic" : "_raw";
-    return SETTINGS_ROOT + "_consensus_algorithm_"+ suffix;
-}
-
 QString MaEditorConsensusArea::getThresholdSettingsKey(const QString& factoryId) const {
     return getLastUsedAlgoSettingsKey() + "_" + factoryId + "_threshold";
 }
@@ -368,7 +361,6 @@ void MaEditorConsensusArea::restoreLastUsedConsensusThreshold() {
     MSAConsensusAlgorithm* algo = getConsensusAlgorithm();
     int threshold = AppContext::getSettings()->getValue(getThresholdSettingsKey(algo->getId()), algo->getDefaultThreshold()).toInt();
     getConsensusAlgorithm()->setThreshold(threshold);
-
 }
 
 MSAConsensusAlgorithm* MaEditorConsensusArea::getConsensusAlgorithm() const {

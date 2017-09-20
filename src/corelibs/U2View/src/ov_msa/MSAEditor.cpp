@@ -27,6 +27,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/MSAUtils.h>
+#include <U2Core/Settings.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -58,6 +59,8 @@ MSAEditor::MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* o
       alignSequencesToAlignmentAction(NULL),
       treeManager(this)
 {
+    initZoom();
+
     buildTreeAction = new QAction(QIcon(":/core/images/phylip.png"), tr("Build Tree"), this);
     buildTreeAction->setObjectName("Build Tree");
     buildTreeAction->setEnabled(!isAlignmentEmpty());

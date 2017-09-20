@@ -24,8 +24,9 @@
 
 #include <QWidget>
 
-#include "view_rendering/MaEditorConsensusArea.h"
+#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 
+#include "view_rendering/MaEditorConsensusArea.h"
 
 namespace U2 {
 
@@ -39,12 +40,15 @@ class U2VIEW_EXPORT McaEditorConsensusArea : public MaEditorConsensusArea {
 public:
     McaEditorConsensusArea(McaEditorWgt* ui);
 
+    QString getDefaultAlgorithmId() const { return BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO; }
+
     MaConsensusMismatchController* getMismatchController() { return mismatchController; }
     void buildStaticToolbar(QToolBar* tb);
 
 private:
     void initRenderer();
     bool highlightConsensusChar(int pos);
+    QString getLastUsedAlgoSettingsKey() const;
 
 private:
     MaConsensusMismatchController*  mismatchController;
