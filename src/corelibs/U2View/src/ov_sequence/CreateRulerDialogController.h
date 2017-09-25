@@ -34,7 +34,12 @@ namespace U2 {
 class U2VIEW_EXPORT CreateRulerDialogController : public QDialog, public Ui_CreateRulerDialog {
     Q_OBJECT
 public:
-    CreateRulerDialogController(const QSet<QString>& namesToFilter, const U2Region& range, int offset = -1, QWidget* p=NULL);
+    CreateRulerDialogController(
+            /* The names in this set are already used and are not allowed */
+            const QSet<QString>& namesToFilter,
+            /** Ruler offset selected by default */
+            int defaultOffset,
+            QWidget* p=NULL);
 
     virtual void accept ();
 

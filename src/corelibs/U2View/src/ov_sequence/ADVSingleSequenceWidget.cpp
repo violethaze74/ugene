@@ -883,7 +883,7 @@ void ADVSingleSequenceWidget::sl_createCustomRuler() {
         offset = selection.first().startPos;
     }
 
-    QObjectScopedPointer<CreateRulerDialogController> d = new CreateRulerDialogController(namesToFilter, U2Region(0, getSequenceObject()->getSequenceLength()), offset);
+    QObjectScopedPointer<CreateRulerDialogController> d = new CreateRulerDialogController(namesToFilter, offset);
     const int rc = d->exec();
     CHECK(!d.isNull(), );
 
