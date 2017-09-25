@@ -80,8 +80,11 @@ private:
     void updatePercentOfSimilarity();
     bool checkSequenceNames();
     AlignmentAlgorithm* getAlgorithmById(const QString& algorithmId);
-    void updateWarningMessage();
+    /* Updates label with warning message. Types: 0 -> bad alphabet, 1 -> same sequences in selectors. */
+    void updateWarningMessage(int warningMessageType);
     void initSaveController();
+    /* Checks if the given sequence is in the alignment */
+    bool isValidSequenceId(qint64 sequenceId) const;
     static QString getDefaultFilePath();
 
     MSAEditor* msa;

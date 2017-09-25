@@ -62,6 +62,9 @@
 #include "PairAlign.h"
 #include "../SequenceSelectorWidgetController.h"
 
+#define    BadAlphabetWarning 0
+#define    DuplicateSequenceWarning 1
+
 inline U2::U2DataId getSequenceIdByRowId( U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus &os ) {
     const U2::MultipleSequenceAlignmentRow row = msa->getMaObject()->getMsa()->getMsaRowByRowId(rowId, os);
     CHECK_OP(os, U2::U2DataId());
@@ -114,6 +117,10 @@ void PairAlign::initLayout() {
     mainLayout->insertWidget(2, showHideOutputWidget);
 }
 
+bool PairAlign::isValidSequenceId(qint64 sequenceId) const {
+    return msa->getMaObject()->getRowPosById(sequenceId) >= 0;
+}
+
 void PairAlign::initParameters() {
     if (2 == msa->getCurrentSelection().height()) {
         int selectionPos = msa->getCurrentSelection().y();
@@ -122,8 +129,12 @@ void PairAlign::initParameters() {
         qint64 secondRowId = msa->getRowByLineNumber(selectionPos + 1)->getRowId();
         secondSeqSelectorWC->setSequenceId(secondRowId);
     } else {
-        firstSeqSelectorWC->setSequenceId(pairwiseAlignmentWidgetsSettings->firstSequenceId);
-        secondSeqSelectorWC->setSequenceId(pairwiseAlignmentWidgetsSettings->secondSequenceId);
+        if (isValidSequenceId(pairwiseAlignmentWidgetsSettings->firstSequenceId)) {
+            firstSeqSelectorWC->setSequenceId(pairwiseAlignmentWidgetsSettings->firstSequenceId);
+        }
+        if (isValidSequenceId(pairwiseAlignmentWidgetsSettings->secondSequenceId)) {
+            secondSeqSelectorWC->setSequenceId(pairwiseAlignmentWidgetsSettings->secondSequenceId);
+        }
     }
 
     inNewWindowCheckBox->setChecked(pairwiseAlignmentWidgetsSettings->inNewWindow);
@@ -145,15 +156,27 @@ void PairAlign::initParameters() {
 
     lblMessage->setStyleSheet(
         "color: " + L10N::errorColorLabelStr() + ";"
-        "font: bold;");
-    updateWarningMessage();
+        "font: bold;"
+        "padding-top: 15px;");
 
     sl_alignmentChanged();
 }
 
-void PairAlign::updateWarningMessage() {
-    QString alphabetName = msa->getMaObject()->getAlphabet()->getName();
-    lblMessage->setText(tr("Pairwise alignment is not available for alignments with \"%1\" alphabet.").arg(alphabetName));
+void PairAlign::updateWarningMessage(int type) {
+    QString text;
+    switch (type) {
+        case DuplicateSequenceWarning:
+            text = tr("Please select 2 different sequences to align");
+            break;
+        case BadAlphabetWarning: {
+            QString alphabetName = msa->getMaObject()->getAlphabet()->getName();
+            text = tr("Pairwise alignment is not available for alignments with \"%1\" alphabet.").arg(alphabetName);
+            break;
+        }
+        default:
+            text = tr("Unexpected error");
+    }
+    lblMessage->setText(text);
 }
 
 void PairAlign::initSaveController() {
@@ -204,7 +227,6 @@ void PairAlign::sl_alignmentChanged() {
         AlignmentAlgorithm* alg = getAlgorithmById(curAlgorithmId);
         SAFE_POINT(NULL != alg, QString("Algorithm %1 not found.").arg(curAlgorithmId), );
         alphabetIsOk = alg->checkAlphabet(dnaAlphabet);
-        updateWarningMessage();
 
         if(NULL != settingsWidget) {
             settingsWidget->updateWidget();
@@ -223,24 +245,33 @@ void PairAlign::checkState() {
     outputFileSelectButton->setEnabled(inNewWindowCheckBox->isChecked());
 
 
-    if (true == sequencesChanged) {
+    if (sequencesChanged) {
         updatePercentOfSimilarity();
     }
 
-    lblMessage->setVisible(!alphabetIsOk);
+    qint64 firstSequenceId = firstSeqSelectorWC->sequenceId();
+    qint64 secondSequenceId = secondSeqSelectorWC->sequenceId();
+    bool sameSequenceInBothSelectors = firstSequenceId == secondSequenceId && firstSequenceId != U2MsaRow::INVALID_ROW_ID;
+    if (!alphabetIsOk) {
+        updateWarningMessage(BadAlphabetWarning);
+    } else if (sameSequenceInBothSelectors) {
+        updateWarningMessage(DuplicateSequenceWarning);
+    }
+    lblMessage->setVisible(!alphabetIsOk || sameSequenceInBothSelectors);
+
     showHideSettingsWidget->setEnabled(alphabetIsOk);
     showHideOutputWidget->setEnabled(alphabetIsOk);
 
     bool readOnly = msa->getMaObject()->isStateLocked();
-    canDoAlign = ((U2MsaRow::INVALID_ROW_ID != firstSeqSelectorWC->sequenceId())
-                  && (U2MsaRow::INVALID_ROW_ID != secondSeqSelectorWC->sequenceId())
-                  && (firstSeqSelectorWC->sequenceId() != secondSeqSelectorWC->sequenceId())
+    canDoAlign = ((U2MsaRow::INVALID_ROW_ID != firstSequenceId)
+                  && (U2MsaRow::INVALID_ROW_ID != secondSequenceId)
+                  && (firstSequenceId != secondSequenceId)
                   && sequenceNamesIsOk && alphabetIsOk && (!readOnly || inNewWindowCheckBox->isChecked()));
 
     alignButton->setEnabled(canDoAlign);
 
-    pairwiseAlignmentWidgetsSettings->firstSequenceId = firstSeqSelectorWC->sequenceId();
-    pairwiseAlignmentWidgetsSettings->secondSequenceId = secondSeqSelectorWC->sequenceId();
+    pairwiseAlignmentWidgetsSettings->firstSequenceId = firstSequenceId;
+    pairwiseAlignmentWidgetsSettings->secondSequenceId = secondSequenceId;
     pairwiseAlignmentWidgetsSettings->algorithmName = algorithmListComboBox->currentText();
     pairwiseAlignmentWidgetsSettings->inNewWindow = inNewWindowCheckBox->isChecked();
     pairwiseAlignmentWidgetsSettings->resultFileName = saveController->getSaveFileName();
