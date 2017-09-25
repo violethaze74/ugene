@@ -492,8 +492,10 @@ void FindPatternWidget::sl_onAlgorithmChanged(int index)
     selectedAlgorithm = boxAlgorithm->itemData(index).toInt();
     updatePatternText(previousAlgorithm);
     updateLayout();
-    verifyPatternAlphabet();
-    sl_activateNewSearch(true);
+    bool noValidationErrors = verifyPatternAlphabet();
+    if (noValidationErrors) {
+        sl_activateNewSearch(true);
+    }
 }
 
 
@@ -816,8 +818,8 @@ void FindPatternWidget::sl_onSearchPatternChanged()
 
         // Show a warning if the pattern alphabet doesn't match,
         // but do not block the "Search" button
-        verifyPatternAlphabet();
-        if(patterns != previousPatternString){
+        bool noValidationErrors = verifyPatternAlphabet();
+        if (noValidationErrors && patterns != previousPatternString) {
             previousPatternString = patterns;
             sl_activateNewSearch(false);
         }
@@ -886,7 +888,7 @@ void FindPatternWidget::setRegionToWholeSequence()
     boxRegion->setCurrentIndex(boxRegion->findData(RegionSelectionIndex_WholeSequence));
 }
 
-void FindPatternWidget::verifyPatternAlphabet()
+bool FindPatternWidget::verifyPatternAlphabet()
 {
     U2OpStatusImpl os;
 
@@ -899,7 +901,6 @@ void FindPatternWidget::verifyPatternAlphabet()
     QString patterns = patternNoNames.join("");
 
     bool alphabetIsOk = checkAlphabet(patterns);
-
     if (!alphabetIsOk) {
         showHideMessage(true, PatternAlphabetDoNotMatch);
     }
@@ -907,16 +908,20 @@ void FindPatternWidget::verifyPatternAlphabet()
         showHideMessage(false, PatternAlphabetDoNotMatch);
     }
 
-    if(selectedAlgorithm == FindAlgorithmPatternSettings_RegExp){
+    bool result = alphabetIsOk;
+
+    if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
         QRegExp regExp(textPattern->toPlainText());
-        if(regExp.isValid()){
+        if (regExp.isValid()) {
             showHideMessage(false, PatternWrongRegExp);
-        }else{
+        } else {
             showHideMessage(true, PatternWrongRegExp);
+            result = false;
         }
-    }else{
+    } else {
         showHideMessage(false, PatternWrongRegExp);
     }
+    return result;
 }
 
 void FindPatternWidget::sl_onSequenceTranslationChanged(int /* index */)
@@ -1124,6 +1129,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
     U2OpStatusImpl os;
     settings.sequence = activeContext->getSequenceObject()->getWholeSequenceData(os);
     CHECK_OP_EXT(os, showTooLongSequenceError(), ); // suppose that if the sequence cannot be fetched from the DB, UGENE ran out of memory
+    settings.sequenceAlphabet = activeContext->getSequenceObject()->getAlphabet();
     settings.searchIsCircular = activeContext->getSequenceObject()->isCircular();
 
     // Strand
