@@ -764,9 +764,17 @@ void URLListController::replaceUrl(int pos, int newPos) {
 }
 
 void URLListController::addUrl(const QString &url, U2OpStatus &os) {
+    foreach (const URLContainer* container, set->getUrls()) {
+        const QString& oldUrl = container->getUrl();
+        bool oldIsDir = QFileInfo(oldUrl).isDir();
+        if (oldUrl == url || (oldIsDir && url.startsWith(oldUrl + "/"))) {
+            os.setError(tr("The resource is already added: %1").arg(oldUrl));
+            return;
+        }
+    }
     URLContainer *urlCont = URLContainerFactory::createUrlContainer(url);
     if (NULL == urlCont) {
-        os.setError(tr("This file or folder does not exist: %1").arg(url));
+        os.setError(tr("The file or folder does not exist: %1").arg(url));
         return;
     }
 
