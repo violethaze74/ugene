@@ -28,6 +28,7 @@
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowContext.h>
 #include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowMonitor.h>
 
 #include "SequenceQualityTrimWorker.h"
 #include "tasks/SequenceQualityTrimTask.h"
@@ -81,6 +82,10 @@ QList<Message> SequenceQualityTrimWorker::fetchResult(Task *task, U2OpStatus &os
 
     QScopedPointer<U2SequenceObject> trimmedSequenceObject(trimTask->takeTrimmedSequence());
     SAFE_POINT_EXT(NULL != trimmedSequenceObject, os.setError("Sequence trim task didn't produce any object without any errors"), messages);
+    if (0 == trimmedSequenceObject->getSequenceLength()) {
+        monitor()->addError(tr("Sequence was filtered out by quality"), actor->getId(), Problem::U2_WARNING);
+        return messages;
+    }
     SharedDbiDataHandler trimmedSequenceHandler = context->getDataStorage()->putSequence(trimmedSequenceObject.data());
 
     QVariantMap data;

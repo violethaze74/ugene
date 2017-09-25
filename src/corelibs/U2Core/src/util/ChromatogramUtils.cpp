@@ -276,7 +276,8 @@ DNAChromatogram ChromatogramUtils::reverseComplement(const DNAChromatogram &chro
 
 U2Region ChromatogramUtils::sequenceRegion2TraceRegion(const DNAChromatogram &chromatogram, const U2Region &sequenceRegion) {
     CHECK(sequenceRegion.startPos <= chromatogram.baseCalls.length()
-               && sequenceRegion.endPos() <= chromatogram.baseCalls.length(), U2Region());
+          && sequenceRegion.endPos() <= chromatogram.baseCalls.length()
+          && 0 < sequenceRegion.length, U2Region());
 
     const int traceStartPos = sequenceRegion.startPos == 0 ? 0 : chromatogram.baseCalls[sequenceRegion.startPos - 1];
     const int traceLength = chromatogram.baseCalls[sequenceRegion.endPos() - 1] - traceStartPos + 1;

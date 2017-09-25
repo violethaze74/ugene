@@ -123,7 +123,7 @@ void DNASequenceUtils::crop(DNASequence &sequence, int startPos, int length) {
 
 U2Region DNASequenceUtils::trimByQuality(DNASequence &sequence, int qualityThreshold, int minSequenceLength, bool trimBothEnds) {
     const int sequenceLength = sequence.length();
-    CHECK(sequenceLength <= sequence.quality.qualCodes.length(), U2Region(0, sequenceLength));
+    CHECK_EXT(sequenceLength <= sequence.quality.qualCodes.length(), crop(sequence, 0, 0), U2Region());
 
     int endPosition = sequenceLength - 1;
     for (; endPosition >= 0; endPosition--) {
@@ -141,12 +141,10 @@ U2Region DNASequenceUtils::trimByQuality(DNASequence &sequence, int qualityThres
         }
     }
 
-    if (endPosition >= beginPosition && endPosition - beginPosition + 1 >= minSequenceLength) {
-        crop(sequence, beginPosition, endPosition - beginPosition + 1);
-    } else {
-        return U2Region(0, sequenceLength);
-    }
+    const bool isRegionAcceptable = (endPosition >= beginPosition && endPosition - beginPosition + 1 >= minSequenceLength);
+    CHECK_EXT(isRegionAcceptable, crop(sequence, 0, 0), U2Region());
 
+    crop(sequence, beginPosition, endPosition - beginPosition + 1);
     return U2Region(beginPosition, endPosition - beginPosition + 1);
 }
 

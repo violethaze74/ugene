@@ -99,7 +99,7 @@ public:
     const QMap<QString, Monitor::WorkerInfo> & getWorkersInfo() const;
     const QList<Monitor::WorkerParamsInfo>  & getWorkersParameters() const;
     const QMap<QString, Monitor::WorkerLogInfo> & getWorkersLog() const;
-    const QMap<QString, StrStrMap> &getWorkersReports() const;
+    const QMap<QString, QMultiMap<QString, QString> > &getWorkersReports() const;
     QString actorName(const QString &id) const;
     int getDataProduced(const QString &actor) const;
     bool containsOutputFile(const QString &url) const;
@@ -160,7 +160,7 @@ private:
     QMap<QString, Monitor::WorkerInfo> workers;
     QList<Monitor::WorkerParamsInfo> workersParamsInfo;
     QMap<QString, Monitor::WorkerLogInfo> workersLog;
-    QMap<QString, StrStrMap> workersReports;
+    QMap<QString, QMultiMap<QString, QString> > workersReports;  // workerId<taskName, taskReport> >
     QString _outputDir;
     bool saveSchema;
     bool started;

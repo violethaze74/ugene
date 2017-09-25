@@ -414,16 +414,14 @@ void FastqQualityTrimTask::runStep(){
         CHECK_OP(stateInfo, );
 
         DNASequence dna = iter.next();
-        const int initialLength = dna.length();
-
         dna.quality.type = qualityType;
-
         const U2Region acceptedRegion = DNASequenceUtils::trimByQuality(dna, quality, minLen, bothEnds);
 
-        if (acceptedRegion.length < initialLength) {
+        if (0 < acceptedRegion.length) {
             ycount++;
         } else {
             ncount++;
+            continue;
         }
 
         FastqFormat::writeEntry(dna.getName(), dna, io.data(), "Writing error", stateInfo, false);
