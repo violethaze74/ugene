@@ -24,6 +24,7 @@
 #include <QFile>
 #include <QListWidget>
 #include <QPlainTextEdit>
+#include <QRadioButton>
 #include <QTableView>
 #include <QTableWidget>
 #include <QWebElement>
@@ -102,6 +103,7 @@
 #include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
@@ -2990,6 +2992,146 @@ GUI_TEST_CLASS_DEFINITION(test_5762) {
     GTUtilsSharedDatabaseDocument::importFiles(os, databaseDoc, "/regression5761", QStringList() << dataDir + "samples/ABIF/A01.abi");
     GTUtilsNotifications::waitForNotification(os, false, "Aligned reads (16)");
     GTUtilsLog::check(os, logTracer);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5786_1) {
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Click "Build Tree" button on the toolbar.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+//    3. Select "PhyML Maximum Likelihood" tree building method.
+            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+
+//    4. Open "Branch Support" tab.
+            GTTabWidget::clickTab(os, "twSettings", dialog, "Branch Support");
+
+//    Expected state: "Use fast likelihood-based method" radionbutton is selected, "Use fast likelihood-based method" combobox is enabled, "Perform bootstrap" spinbox is disabled.
+            QRadioButton *rbFastMethod = GTWidget::findExactWidget<QRadioButton *>(os, "fastMethodCheckbox", dialog);
+            CHECK_SET_ERR(NULL != rbFastMethod, "fastMethodCheckbox is NULL");
+            CHECK_SET_ERR(rbFastMethod->isChecked(), "fastMethodCheckbox is not checked");
+            GTWidget::checkEnabled(os, "fastMethodCombo", true, dialog);
+            GTWidget::checkEnabled(os, "bootstrapSpinBox", false, dialog);
+
+//    5. Select "Perform bootstrap" radiobutton.
+            GTRadioButton::click(os, "bootstrapRadioButton", dialog);
+
+//    Expected state: "Use fast likelihood-based method" combobox is disabled, "Perform bootstrap" spinbox is enabled.
+            GTWidget::checkEnabled(os, "fastMethodCombo", false, dialog);
+            GTWidget::checkEnabled(os, "bootstrapSpinBox", true, dialog);
+
+//    6. Select "Use fast likelihood-based method" radionbutton.
+            GTRadioButton::click(os, "fastMethodCheckbox", dialog);
+
+//    Expected state: "Use fast likelihood-based method" combobox is enabled, "Perform bootstrap" spinbox is disabled.
+            GTWidget::checkEnabled(os, "fastMethodCombo", true, dialog);
+            GTWidget::checkEnabled(os, "bootstrapSpinBox", false, dialog);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new Scenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5786_2) {
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Click "Build Tree" button on the toolbar.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+//    3. Select "PhyML Maximum Likelihood" tree building method.
+            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+
+            GTWidget::checkEnabled(os, "tranSpinBox", false, dialog);
+
+//    4. Select "Transition / transversion ratio" "fixed" radiobutton.
+            GTRadioButton::click(os, "transFixedRb", dialog);
+
+            GTWidget::checkEnabled(os, "tranSpinBox", true, dialog);
+
+//    5. Open "Branch Support" tab.
+            GTTabWidget::clickTab(os, "twSettings", dialog, "Branch Support");
+
+//    6. Select "Perform bootstrap" radiobutton.
+            GTRadioButton::click(os, "bootstrapRadioButton", dialog);
+
+//    7. Open the "Substitution Model" tab.
+            GTTabWidget::clickTab(os, "twSettings", dialog, "Substitution Model");
+
+//    Expected state: Expected state: the "Transition / transversion ratio" spinbox is enabled.
+            GTWidget::checkEnabled(os, "tranSpinBox", true, dialog);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new Scenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5786_3) {
+    GTLogTracer logTracerNegative("-b 5");
+    GTLogTracer logTracerPositive("-b -2");
+
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Click "Build Tree" button on the toolbar.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+//    3. Select "PhyML Maximum Likelihood" tree building method.
+            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+
+//    4. Open "Branch Support" tab.
+            GTTabWidget::clickTab(os, "twSettings", dialog, "Branch Support");
+
+//    5. Select "Perform bootstrap" radiobutton.
+            GTRadioButton::click(os, "bootstrapRadioButton", dialog);
+
+//    6. Set "Perform bootstrap" spinbox value to 5.
+            GTSpinBox::setValue(os, "bootstrapSpinBox", 5, dialog);
+
+//    7. Select "Use fast likelihood-based method" radiobutton.
+            GTRadioButton::click(os, "fastMethodCheckbox", dialog);
+
+//    8. Set "Use fast likelihood-based method" combobox value to "Chi2-based".
+            GTComboBox::setIndexWithText(os, "fastMethodCombo", dialog, "Chi2-based");
+
+//    9. Set other necessary values and accept the dialog.
+            GTLineEdit::setText(os, "fileNameEdit", sandBoxDir + "test_5786_3.nwk", dialog);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new Scenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+    GTGlobals::sleep();
+
+//    Expected state: there is an only "-b" parameter in the phyML arguments, it is equal to "-2".
+    GTUtilsLog::checkContainsMessage(os, logTracerNegative, false);
+    GTUtilsLog::checkContainsMessage(os, logTracerPositive, true);
 }
 
 } // namespace GUITest_regression_scenarios
