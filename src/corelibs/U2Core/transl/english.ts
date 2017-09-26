@@ -1266,12 +1266,12 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::DbiDocumentFormat</name>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="47"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="48"/>
         <source>ugenedb is a internal UGENE database file format</source>
         <translation>ugenedb is a internal UGENE database file format</translation>
     </message>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="156"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="163"/>
         <source>Invalid destination database reference</source>
         <translation>Invalid destination database reference</translation>
     </message>
@@ -1605,7 +1605,7 @@ The session database file is removed after closing of UGENE.</translation>
         <translation>%1 is a folder [%2].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.h" line="133"/>
+        <location filename="../src/util/GUrlUtils.h" line="135"/>
         <source>Output URL</source>
         <translation>Output URL</translation>
     </message>
