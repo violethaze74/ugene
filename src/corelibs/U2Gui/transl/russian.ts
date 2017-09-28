@@ -3086,13 +3086,13 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/util/ScaleBar.cpp" line="42"/>
         <location filename="../src/util/ScaleBar.cpp" line="46"/>
         <source>Decrease peaks height</source>
-        <translation type="unfinished"></translation>
+        <translation>Уменьшить высоту пиков</translation>
     </message>
     <message>
         <location filename="../src/util/ScaleBar.cpp" line="53"/>
         <location filename="../src/util/ScaleBar.cpp" line="57"/>
         <source>Increase peaks height</source>
-        <translation type="unfinished"></translation>
+        <translation>Увеличить высоту пиков</translation>
     </message>
 </context>
 <context>
