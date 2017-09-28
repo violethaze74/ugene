@@ -230,6 +230,7 @@ int MSACollapsibleItemModel::rowToMap(int rowIndex, bool failIfNotVisible) const
 
 void MSACollapsibleItemModel::getVisibleRows(int startPos, int endPos, QVector<U2Region>& range) const {
     if (items.isEmpty()) {
+        CHECK(0 <= startPos && 0 <= endPos && startPos <= endPos, );
         range.append(U2Region(startPos, endPos - startPos + 1));
         return;
     }
