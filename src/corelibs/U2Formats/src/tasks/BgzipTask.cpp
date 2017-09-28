@@ -40,7 +40,7 @@ private:
 };
 
 BgzipTask::BgzipTask(const GUrl& fileUrl, const GUrl& bgzfUrl)
-    : Task(tr("Bgzip Compression task"), (TaskFlag)(TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled)),
+    : Task(tr("Bgzip Compression task"), TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       fileUrl(fileUrl),
       bgzfUrl(bgzfUrl)
 {
@@ -117,7 +117,7 @@ bool BgzipTask::checkBgzf(const GUrl &fileUrl) {
 }
 
 GzipDecompressTask::GzipDecompressTask(const GUrl& zipUrl, const GUrl& fileUrl)
-    : Task(tr("Decompression task"), (TaskFlag)(TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled)),
+    : Task(tr("Decompression task"), TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       zippedUrl(zipUrl),
       unzippedUrl(fileUrl)
 {

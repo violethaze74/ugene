@@ -56,9 +56,9 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
     : GObjectView(factoryId, viewName),
       ui(NULL),
       cachedColumnWidth(0),
-      exportHighlightedAction(NULL),
+      resizeMode(ResizeMode_FontAndContent),
       zoomFactor(0),
-      resizeMode(ResizeMode_FontAndContent)
+      exportHighlightedAction(NULL)
 {
     maObject = qobject_cast<MultipleAlignmentObject*>(obj);
     objects.append(maObject);
