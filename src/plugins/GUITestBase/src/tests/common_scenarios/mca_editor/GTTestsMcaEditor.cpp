@@ -5191,7 +5191,6 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    int startRowHeinght = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
 
     //5. Push General button
     GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
@@ -5268,7 +5267,6 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    int startRowHeinght = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
 
     //5.Push "Consensus" button
     GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::Consensus);
@@ -5372,7 +5370,6 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    int startRowHeinght = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
 
     //Expected state: Aligned Reads Map is in the bottom screen by default. Show / Hide overview button is in pressed state
     GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions" << "Appearance", QStringList() << "Show overview", PopupChecker::CheckOption(PopupChecker::IsChecked));
@@ -5456,7 +5453,6 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    int startRowHeinght = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
 
     //Expected state : Aligned Reads Map is in the bottom screen by default
     GTMenu::checkMainMenuItemsState(os, QStringList() << "Actions" << "Appearance", QStringList() << "Show overview", PopupChecker::CheckOption(PopupChecker::IsChecked));
