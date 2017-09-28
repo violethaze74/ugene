@@ -2351,7 +2351,7 @@ GUI_TEST_CLASS_DEFINITION(test_5716) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
 
 //    3. Set any output file path, set any format.
-    const QString expectedOutputPath = sandBoxDir + "test_5716.txt";
+	const QString expectedOutputPath = QDir::toNativeSeparators(sandBoxDir + "test_5716.txt");
     GTUtilsOptionPanelMsa::setExportConsensusOutputPath(os, expectedOutputPath);
 
 //    4. Open "General" options panel tab.
