@@ -997,12 +997,12 @@ GUI_TEST_CLASS_DEFINITION(test_5363_1) {
 
     FormatDBSupportRunDialogFiller::Parameters parametersDB;
     parametersDB.inputFilePath = dataDir + "/samples/Genbank/murine.gb";
-    parametersDB.outputDirPath = sandBoxDir;
+	parametersDB.outputDirPath = QDir(sandBoxDir).absolutePath();
     GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, parametersDB));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST make database...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
+	
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1025,6 +1025,7 @@ GUI_TEST_CLASS_DEFINITION(test_5363_1) {
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "blast result", U2Region(hitFrom, hitTo - hitFrom)),
                   QString("Cannot find blast result [%1, %2]").arg(hitFrom).arg(hitTo));
+				  
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5363_2) {
@@ -1040,7 +1041,7 @@ GUI_TEST_CLASS_DEFINITION(test_5363_2) {
 
     FormatDBSupportRunDialogFiller::Parameters parametersDB;
     parametersDB.inputFilePath = dataDir + "/samples/Genbank/murine.gb";
-    parametersDB.outputDirPath = sandBoxDir;
+	parametersDB.outputDirPath = QDir(sandBoxDir).absolutePath();
     GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, parametersDB));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST+ make database...");
 
