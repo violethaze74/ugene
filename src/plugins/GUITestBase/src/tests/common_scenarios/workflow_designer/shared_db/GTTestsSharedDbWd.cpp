@@ -20,7 +20,7 @@
  */
 
 #include <QListWidget>
-
+#include <QDir>
 #include <U2Core/global.h>
 #include <U2Core/U2SafePoints.h>
 #include "primitives/GTAction.h"
@@ -264,7 +264,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0009) {
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0004_assembly", acceptableTypes));
     GTWidget::click(os, addFromDbButton);
 
-    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, testDir + "_common_data/bam/*");
+	GTUtilsWorkflowDesigner::setDatasetInputFolder(os, QDir(testDir + "_common_data/bam").absolutePath()); 
 
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
