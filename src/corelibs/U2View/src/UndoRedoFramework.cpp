@@ -41,13 +41,13 @@ MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject *
     SAFE_POINT(maObj != NULL, "NULL MSA Object!", );
 
     undoAction = new QAction(this);
-    undoAction->setText("Undo");
+    undoAction->setText(tr("Undo"));
     undoAction->setIcon(QIcon(":core/images/undo.png"));
     undoAction->setShortcut(QKeySequence::Undo);
     GUIUtils::updateActionToolTip(undoAction);
 
     redoAction = new QAction(this);
-    redoAction->setText("Redo");
+    redoAction->setText(tr("Redo"));
     redoAction->setIcon(QIcon(":core/images/redo.png"));
     redoAction->setShortcut(QKeySequence::Redo);
     GUIUtils::updateActionToolTip(redoAction);
