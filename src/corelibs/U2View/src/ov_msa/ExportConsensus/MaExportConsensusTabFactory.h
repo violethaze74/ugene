@@ -38,6 +38,7 @@ private:
 };
 
 class U2VIEW_EXPORT McaExportConsensusTabFactory : public OPWidgetFactory {
+    Q_OBJECT
 public:
     McaExportConsensusTabFactory();
 
