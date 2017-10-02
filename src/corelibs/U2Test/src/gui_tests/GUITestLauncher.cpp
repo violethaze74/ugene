@@ -257,9 +257,10 @@ QString GUITestLauncher::performTest(const QString& testName) {
 
     QString testResult = readTestResult(process.readAllStandardOutput());
 
-    if(qgetenv("UGENE_SKIP_TEST_RECORDING").toInt() != 1){
-        screenRecorder.kill();
-        if(!GUITestTeamcityLogger::testFailed(testResult)){
+    if (qgetenv("UGENE_SKIP_TEST_RECORDING").toInt() != 1) {
+        screenRecorder.close();
+        screenRecorder.waitForFinished(2000);
+        if (!GUITestTeamcityLogger::testFailed(testResult)) {
             QFile(getVideoPath(testName)).remove();
         }
     }
