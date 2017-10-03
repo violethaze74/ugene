@@ -111,14 +111,6 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(this, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_resetColumnWidthCache()));
     connect(this, SIGNAL(si_fontChanged(QFont)), SLOT(sl_resetColumnWidthCache()));
-
-    Settings* s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppConext is NULL", );
-    font.setFamily(s->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString());
-    font.setPointSize(s->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt());
-    font.setItalic(s->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_ITALIC, false).toBool());
-    font.setBold(s->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_BOLD, false).toBool());
-    calcFontPixelToPointSizeCoef();
 }
 
 int MaEditor::getAlignmentLen() const {
@@ -362,6 +354,17 @@ void MaEditor::initZoom() {
     }
 }
 
+void MaEditor::initFont() {
+    Settings* s = AppContext::getSettings();
+    SAFE_POINT(s != NULL, "AppConext is NULL", );
+    font.setFamily(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString());
+    font.setPointSize(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt());
+    font.setItalic(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_ITALIC, false).toBool());
+    font.setBold(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_BOLD, false).toBool());
+
+    calcFontPixelToPointSizeCoef();
+}
+
 void MaEditor::addCopyMenu(QMenu* m) {
     QMenu* cm = m->addMenu(tr("Copy/Paste"));
     cm->menuAction()->setObjectName(MSAE_MENU_COPY);
@@ -403,21 +406,18 @@ void MaEditor::addAlignMenu(QMenu* m) {
     em->menuAction()->setObjectName(MSAE_MENU_ALIGN);
 }
 
-static void saveFont(const QFont& f) {
-    Settings* s = AppContext::getSettings();
-    s->setValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_FAMILY, f.family());
-    s->setValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_SIZE, f.pointSize());
-    s->setValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_ITALIC, f.italic());
-    s->setValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_BOLD, f.bold());
-}
-
 void MaEditor::setFont(const QFont& f) {
     int pSize = f.pointSize();
     font = f;
     calcFontPixelToPointSizeCoef();
     font.setPointSize(qBound(MOBJECT_MIN_FONT_SIZE, pSize, MOBJECT_MAX_FONT_SIZE));
     emit si_fontChanged(font);
-    saveFont(font);
+
+    Settings* s = AppContext::getSettings();
+    s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_FAMILY, f.family());
+    s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_SIZE, f.pointSize());
+    s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_ITALIC, f.italic());
+    s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_BOLD, f.bold());
 }
 
 void MaEditor::calcFontPixelToPointSizeCoef() {

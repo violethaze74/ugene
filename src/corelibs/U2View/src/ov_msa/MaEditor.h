@@ -152,6 +152,7 @@ protected:
     virtual QWidget* createWidget() = 0;
     virtual void initActions();
     virtual void initZoom();
+    virtual void initFont();
 
     void addCopyMenu(QMenu* m);
     void addEditMenu(QMenu* m);

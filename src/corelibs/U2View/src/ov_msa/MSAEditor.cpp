@@ -60,6 +60,7 @@ MSAEditor::MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* o
       treeManager(this)
 {
     initZoom();
+    initFont();
 
     buildTreeAction = new QAction(QIcon(":/core/images/phylip.png"), tr("Build Tree"), this);
     buildTreeAction->setObjectName("Build Tree");

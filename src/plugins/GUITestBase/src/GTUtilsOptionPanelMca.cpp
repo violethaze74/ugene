@@ -91,6 +91,13 @@ void GTUtilsOptionPanelMca::setConsensusType(HI::GUITestOpStatus &os, const QStr
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getConsensusType"
+QString GTUtilsOptionPanelMca::getConsensusType(HI::GUITestOpStatus &os) {
+    openTab(os, Consensus);
+    return GTComboBox::getCurrentText(os, GTWidget::findExactWidget<QComboBox *>(os, "consensusType"));
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getConsensusTypes"
 QStringList GTUtilsOptionPanelMca::getConsensusTypes(HI::GUITestOpStatus &os) {
     openTab(os, Consensus);

@@ -33,6 +33,7 @@
 #include <U2View/McaEditorNameList.h>
 #include <U2View/McaEditorSequenceArea.h>
 #include <U2View/McaEditorWgt.h>
+#include <U2View/MSAEditorOffsetsView.h>
 
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
@@ -99,6 +100,18 @@ MultipleAlignmentRowData* GTUtilsMcaEditor::getMcaRow(GUITestOpStatus &os, int r
 
     return row.data();
 }
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getOffsetAction"
+QAction* GTUtilsMcaEditor::getOffsetAction(GUITestOpStatus &os) {
+    McaEditorWgt* editorWgt = GTUtilsMcaEditor::getEditorUi(os);
+    GT_CHECK_RESULT(editorWgt != NULL, "McaEditorWgt not found", NULL);
+
+    MSAEditorOffsetsViewController* offsetController = editorWgt->getOffsetsViewController();
+    GT_CHECK_RESULT(offsetController != NULL, "MSAEditorOffsetsViewController is NULL", NULL);
+    return offsetController->getToggleColumnsViewAction();
+}
+
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceLabelText"
