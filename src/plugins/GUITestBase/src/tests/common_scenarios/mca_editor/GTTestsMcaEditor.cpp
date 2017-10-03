@@ -2724,8 +2724,8 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTGlobals::sleep(500);
 
     //Expected state : There is no selection
-    int selectedRows = GTUtilsMcaEditorSequenceArea::getSelectedRowsNum(os);
-    CHECK_SET_ERR(selectedRows == 0, "Some reads are selected");
+    U2Region reg = GTUtilsMcaEditorSequenceArea::getSelectedRowsNum(os);
+    CHECK_SET_ERR(reg.length == 0, "Some reads are selected");
 
     //7. Select any region in the reference
     GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 500);

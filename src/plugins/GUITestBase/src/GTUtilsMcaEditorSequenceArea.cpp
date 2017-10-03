@@ -288,12 +288,12 @@ void GTUtilsMcaEditorSequenceArea::dragAndDrop(HI::GUITestOpStatus &os, const QP
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSelectedRowsNum"
-int GTUtilsMcaEditorSequenceArea::getSelectedRowsNum(GUITestOpStatus &os) {
-    McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea*>
-        (GTWidget::findWidget(os, "mca_editor_sequence_area"));
-    CHECK_SET_ERR_RESULT(mcaEditArea != NULL, "McaEditorSequenceArea not found", 0);
+U2Region GTUtilsMcaEditorSequenceArea::getSelectedRowsNum(GUITestOpStatus &os) {
+    McaEditorNameList *mcaNameList = GTUtilsMcaEditor::getNameListArea(os);
+    CHECK_SET_ERR_RESULT(mcaNameList != NULL, "McaEditorNameList not found", U2Region());
 
-    return mcaEditArea->getSelectedRows().length;
+    U2Region selection = mcaNameList->getSelection();
+    return selection;
 }
 #undef GT_METHOD_NAME
 
