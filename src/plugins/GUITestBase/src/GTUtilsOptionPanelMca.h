@@ -41,6 +41,7 @@ public:
     static bool isTabOpened(HI::GUITestOpStatus &os, Tabs tab);
 
     static void setConsensusType(HI::GUITestOpStatus &os, const QString &consensusTypeName);
+    static QString getConsensusType(HI::GUITestOpStatus &os);
     static QStringList getConsensusTypes(HI::GUITestOpStatus &os);
 
     static int getHeight(HI::GUITestOpStatus &os);

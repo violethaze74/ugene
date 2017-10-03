@@ -111,6 +111,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
     scaleBar = new ScaleBar(Qt::Horizontal);
     scaleBar->setRange(100, 1000);
     scaleBar->setTickInterval(100);
+    scaleBar->setObjectName("peak_height_slider");
 
     scaleBar->getPlusAction()->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
     addAction(scaleBar->getPlusAction());

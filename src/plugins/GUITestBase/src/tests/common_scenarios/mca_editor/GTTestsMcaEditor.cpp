@@ -57,6 +57,7 @@
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMca.h"
+#include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
@@ -5486,7 +5487,139 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     CHECK_SET_ERR(list != listTwo, "Visible area not change");
 }
 
-}//namespace U2
+GUI_TEST_CLASS_DEFINITION(test_0040_1) {
+    QString filePath = testDir + "_common_data/sanger/alignment.ugenedb";
+    QString fileName = "sanger_alignment.ugenedb";
 
-}//namespace
-//QWidget* simple = GTWidget::findWidget(os, "mca_overview_area_sanger");
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    // chrom show/hide
+    QAbstractButton* showChromsButton = GTAction::button(os, "chromatograms");
+    CHECK_SET_ERR(showChromsButton != NULL, "show/hide chromatograms button was not found");
+    GTWidget::click(os, showChromsButton);
+    bool chromCheckedState = showChromsButton->isChecked();
+
+    // overview show/hide
+    QAbstractButton* showOverviewButton = GTAction::button(os, "overview");
+    CHECK_SET_ERR(showOverviewButton != NULL, "overview button was not found");
+    GTWidget::click(os, showOverviewButton);
+    bool overviewCheckedState = showOverviewButton->isChecked();
+
+    // offsets show/hide
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Show offsets"));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+
+    QAction* offsetAction = GTUtilsMcaEditor::getOffsetAction(os);
+    bool offsetCheckedState = offsetAction->isChecked();
+
+    // close the view
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
+    GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
+    GTGlobals::sleep();
+
+    // open the view again
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    // check saved states
+    showChromsButton = GTAction::button(os, "chromatograms");
+    CHECK_SET_ERR(showChromsButton != NULL, "show/hide chromatograms button was not found");
+    CHECK_SET_ERR(chromCheckedState == showChromsButton->isChecked(), "Show/hide chromatograms button state was not saved");
+
+    showOverviewButton = GTAction::button(os, "overview");
+    CHECK_SET_ERR(showOverviewButton != NULL, "overview button was not found");
+    CHECK_SET_ERR(overviewCheckedState == showOverviewButton->isChecked(), "Show/hide overview button state was not saved");
+
+    offsetAction = GTUtilsMcaEditor::getOffsetAction(os);
+    CHECK_SET_ERR(offsetAction != NULL, "overview button was not found");
+    CHECK_SET_ERR(offsetCheckedState == offsetAction->isChecked(), "Show/hide offset button state was not saved");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0040_2) {
+    QString filePath = testDir + "_common_data/sanger/alignment.ugenedb";
+    QString fileName = "sanger_alignment.ugenedb";
+
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    // cons type and threshold
+    GTUtilsOptionPanelMca::setConsensusType(os, "Strict");
+    GTUtilsOptionPanelMca::setThreshold(os, 57);
+
+    // close the view with ugenedb
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
+    GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
+    GTGlobals::sleep();
+
+    // open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTGlobals::sleep();
+
+    QComboBox *consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os,"consensusType"));
+    CHECK_SET_ERR(consensusCombo!=NULL, "consensusCombo is NULL");
+    GTComboBox::setIndexWithText(os,consensusCombo, "Levitsky");
+
+    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os,"thresholdSpinBox"));
+    CHECK_SET_ERR(thresholdSpinBox!=NULL, "consensusCombo is NULL");
+    GTSpinBox::setValue(os,thresholdSpinBox, 68, GTGlobals::UseKeyBoard);
+
+    // close the view with COI
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
+    GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
+    GTGlobals::sleep();
+
+    // open ugenedb and check consensus settings
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+    CHECK_SET_ERR(GTUtilsOptionPanelMca::getConsensusType(os) == "Strict", "Consensus algorithm type for MCA was not saved");
+    CHECK_SET_ERR(GTUtilsOptionPanelMca::getThreshold(os) == 57, "Consensus threshold for MCA was not saved");
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
+    GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
+
+    // open COI.aln and check consensus settings
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTGlobals::sleep();
+    consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os,"consensusType"));
+    GTComboBox::checkCurrentValue(os, consensusCombo, "Levitsky");
+    CHECK_SET_ERR(GTUtilsOptionPanelMsa::getThreshold(os) == 68, "Consensus threshold for MSA was not saved");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0040_3) {
+    QString filePath = testDir + "_common_data/sanger/alignment.ugenedb";
+    QString fileName = "sanger_alignment.ugenedb";
+
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Change characters font"));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+
+    ScaleBar* scaleBar = GTWidget::findExactWidget<ScaleBar*>(os, "peak_height_slider");
+
+    QAbstractButton* plusButton = scaleBar->getPlusButton();
+    GTWidget::click(os, plusButton);
+    GTWidget::click(os, plusButton);
+    GTWidget::click(os, plusButton);
+    GTWidget::click(os, plusButton);
+    GTWidget::click(os, plusButton);
+
+    int peakHight = scaleBar->value();
+
+    // close ugenedb
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
+    GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
+    GTGlobals::sleep();
+
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+    scaleBar = GTWidget::findExactWidget<ScaleBar*>(os, "peak_height_slider");
+    CHECK_SET_ERR(scaleBar->value() == peakHight, "Peak height was not saved");
+}
+
+} //namespace GUITest_common_scenarios_mca_editor
+
+} //namespace U2

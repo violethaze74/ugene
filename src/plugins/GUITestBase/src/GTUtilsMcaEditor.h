@@ -47,6 +47,8 @@ public:
     static McaEditorConsensusArea* getConsensusArea(HI::GUITestOpStatus &os);
     static MultipleAlignmentRowData* getMcaRow(HI::GUITestOpStatus &os, int rowNum);
 
+    static QAction* getOffsetAction(HI::GUITestOpStatus &os);
+
     static QString getReferenceLabelText(HI::GUITestOpStatus &os);
 
     static int getReadsCount(HI::GUITestOpStatus &os);
