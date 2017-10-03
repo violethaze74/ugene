@@ -51,6 +51,7 @@ McaEditor::McaEditor(const QString &viewName,
       referenceCtx(NULL)
 {
     initZoom();
+    initFont();
 
     U2OpStatusImpl os;
     foreach (const MultipleChromatogramAlignmentRow& row, obj->getMca()->getMcaRows()) {
