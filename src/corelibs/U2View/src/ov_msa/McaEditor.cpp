@@ -230,7 +230,7 @@ void McaEditor::initActions() {
     bool overviewVisible = s->getValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_OVERVIEW, true).toBool();
     showOverviewAction->setChecked(overviewVisible);
     ui->getOverviewArea()->setVisible(overviewVisible);
-    changeFontAction->setText(tr("Change characters font"));
+    changeFontAction->setText(tr("Change characters font..."));
 }
 
 void McaEditor::sl_saveOverviewState() {

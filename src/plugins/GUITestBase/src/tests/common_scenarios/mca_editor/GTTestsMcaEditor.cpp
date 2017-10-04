@@ -5592,7 +5592,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_3) {
 
     GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Change characters font"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Change characters font..."));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
 
     ScaleBar* scaleBar = GTWidget::findExactWidget<ScaleBar*>(os, "peak_height_slider");
