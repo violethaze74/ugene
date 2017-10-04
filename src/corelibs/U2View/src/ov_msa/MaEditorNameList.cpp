@@ -294,10 +294,11 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     switch(key) {
     case Qt::Key_Up: {
         bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect - 1);
-        int selStart = getSelection().startPos;
+        U2Region sel = getSelection();
+        int selStart = sel.length != 0 ? getSelection().startPos : nextSequenceToSelect;
         if (isSeqInRange && isShiftPressed) {
             nextSequenceToSelect--;
-            updateSelection(nextSequenceToSelect);
+            moveSelection(0);
             int seqAreaHeight = ui->getSequenceArea()->height();
             ui->getScrollController()->scrollToRowByNumber(nextSequenceToSelect, seqAreaHeight);
         } else if (!isShiftPressed && selStart > 0) {
@@ -315,10 +316,10 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     case Qt::Key_Down: {
         bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect + 1);
         int selEnd = getSelection().endPos() - 1;
-        int rowNum = ui->getSequenceArea()->getNumDisplayableSequences() -1;
+        int rowNum = ui->getSequenceArea()->getNumDisplayableSequences() - 1;
         if (isSeqInRange && isShiftPressed) {
             nextSequenceToSelect++;
-            updateSelection(nextSequenceToSelect);
+            moveSelection(0);
             int seqAreaHeight = ui->getSequenceArea()->height();
             ui->getScrollController()->scrollToRowByNumber(nextSequenceToSelect, seqAreaHeight);
         } else if (!isShiftPressed && selEnd < rowNum) {
