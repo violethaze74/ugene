@@ -297,6 +297,21 @@ U2Region GTUtilsMcaEditorSequenceArea::getSelectedRowsNum(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getSelectedRowsNames"
+QStringList GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(GUITestOpStatus &os) {
+    U2Region sel = getSelectedRowsNum(os);
+    QStringList names = getNameList(os);
+
+    QStringList res;
+    for (int i = sel.startPos; i < sel.endPos(); i++) {
+        res << names[i];
+    }
+
+    return res;
+}
+#undef GT_METHOD_NAME
+
+
 #define GT_METHOD_NAME "getSelectedRect"
 QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus &os) {
     McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea*>(GTWidget::findWidget(os, "mca_editor_sequence_area"));

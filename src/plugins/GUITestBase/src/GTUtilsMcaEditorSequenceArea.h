@@ -47,6 +47,7 @@ public:
     static void moveTheBorderBetweenAlignmentAndRead(HI::GUITestOpStatus &os, int shift);
     static void dragAndDrop(HI::GUITestOpStatus &os, const QPoint p);
     static U2Region getSelectedRowsNum(GUITestOpStatus &os);
+    static QStringList getSelectedRowsNames(GUITestOpStatus &os);
     static QRect getSelectedRect(GUITestOpStatus &os);
     static void clickToReferencePosition(GUITestOpStatus &os, const qint64 num);
     /**
