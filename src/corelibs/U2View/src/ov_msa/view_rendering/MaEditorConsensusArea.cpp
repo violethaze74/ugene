@@ -384,27 +384,25 @@ void MaEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
     if (e->buttons() & Qt::LeftButton) {
         selecting = true;
         int lastPos = curPos;
-        curPos = ui->getBaseWidthController()->screenXPositionToBase(e->x());
-        if (curPos != -1) {
-            const int selectionHeight = ui->getSequenceArea()->getNumDisplayableSequences();
-            // select current column
-            if ((Qt::ShiftModifier == e->modifiers()) && (lastPos != -1)) {
-                MaEditorSelection selection(qMin(lastPos, curPos), 0, abs(curPos - lastPos) + 1, selectionHeight);
-                ui->getSequenceArea()->setSelection(selection);
-                curPos = lastPos;
-            } else {
-                MaEditorSelection selection(curPos, 0, 1, selectionHeight);
-                ui->getSequenceArea()->setSelection(selection);
-            }
-            scribbling = true;
+        curPos = qBound(0, ui->getBaseWidthController()->screenXPositionToColumn(e->x()), ui->getEditor()->getAlignmentLen() - 1);
+        const int selectionHeight = ui->getSequenceArea()->getNumDisplayableSequences();
+        // select current column
+        if ((Qt::ShiftModifier == e->modifiers()) && (lastPos != -1)) {
+            MaEditorSelection selection(qMin(lastPos, curPos), 0, abs(curPos - lastPos) + 1, selectionHeight);
+            ui->getSequenceArea()->setSelection(selection);
+            curPos = lastPos;
+        } else {
+            MaEditorSelection selection(curPos, 0, 1, selectionHeight);
+            ui->getSequenceArea()->setSelection(selection);
         }
+        scribbling = true;
     }
     QWidget::mousePressEvent(e);
 }
 
 void MaEditorConsensusArea::mouseMoveEvent(QMouseEvent *event) {
     if ((event->buttons() & Qt::LeftButton) && scribbling && selecting) {
-        const int newPos = ui->getBaseWidthController()->screenXPositionToBase(event->x());
+        const int newPos = qBound(0, ui->getBaseWidthController()->screenXPositionToColumn(event->x()), ui->getEditor()->getAlignmentLen() - 1);
         updateSelection(newPos);
     }
     QWidget::mouseMoveEvent(event);
@@ -417,7 +415,7 @@ void MaEditorConsensusArea::mouseReleaseEvent(QMouseEvent *event) {
     }
 
     if (event->button() == Qt::LeftButton && selecting) {
-        const int newPos = qBound(0, ui->getBaseWidthController()->screenXPositionToBase(event->x()), editor->getAlignmentLen() - 1);
+        const int newPos = qBound(0, ui->getBaseWidthController()->screenXPositionToColumn(event->x()), editor->getAlignmentLen() - 1);
         updateSelection(newPos);
         scribbling = false;
         selecting = false;
