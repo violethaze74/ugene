@@ -3641,6 +3641,20 @@ GUI_TEST_CLASS_DEFINITION(test_5786_3) {
     GTUtilsLog::checkContainsMessage(os, logTracerPositive, true);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5815) {
+    //1. Open a short alignment, e.g "test_common_data\scenarios\msa\ma2_gapped.aln"
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Click on the empty area at the right side of the consensus
+    GTUtilsMsaEditor::moveToColumn(os, 13);
+    QPoint p = GTMouseDriver::getMousePosition();
+    GTMouseDriver::moveTo(QPoint(p.x() + 100, p.y()));
+    GTMouseDriver::click();
+
+    //Expected: no crash
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
