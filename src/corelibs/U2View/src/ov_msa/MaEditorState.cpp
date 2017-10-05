@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSAEditorState.h"
+#include "MaEditorState.h"
 #include "MSAEditor.h"
 #include "MaEditorFactory.h"
+#include "helpers/ScrollController.h"
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
@@ -30,25 +31,25 @@
 namespace U2 {
 
 #define VIEW_ID     QString("view_id")
-#define MSA_OBJ     QString("msa_obj_ref")
+#define MA_OBJ      QString("ma_obj_ref")
 #define FONT        QString("font")
 #define FIRST_POS   QString("first_pos")
+#define FIRST_SEQ   QString("first_seq")
 #define ZOOM_FACTOR QString("zoom_factor")
 
-bool MSAEditorState::isValid() const {
-    return stateData.value(VIEW_ID) == MsaEditorFactory::ID;
+bool MaEditorState::isValid() const {
+    return stateData.value(VIEW_ID) == MsaEditorFactory::ID || stateData.value(VIEW_ID) == McaEditorFactory::ID;
 }
 
-GObjectReference MSAEditorState::getMSAObjectRef() const {
-    return stateData.contains(MSA_OBJ) ? stateData[MSA_OBJ].value<GObjectReference>() : GObjectReference();
+GObjectReference MaEditorState::getMaObjectRef() const {
+    return stateData.contains(MA_OBJ) ? stateData[MA_OBJ].value<GObjectReference>() : GObjectReference();
 }
 
-void MSAEditorState::setMSAObjectRef(const GObjectReference& ref) {
-    stateData[MSA_OBJ] = QVariant::fromValue<GObjectReference>(ref);
+void MaEditorState::setMaObjectRef(const GObjectReference& ref) {
+    stateData[MA_OBJ] = QVariant::fromValue<GObjectReference>(ref);
 }
 
-QFont MSAEditorState::getFont() const {
-
+QFont MaEditorState::getFont() const {
     QVariant v = stateData.value(FONT);
     if (v.type() == QVariant::Font) {
         return v.value<QFont>();
@@ -56,12 +57,12 @@ QFont MSAEditorState::getFont() const {
     return QFont();
 }
 
-void MSAEditorState::setFont(const QFont &f) {
+void MaEditorState::setFont(const QFont &f) {
 
     stateData[FONT] = f;
 }
 
-int MSAEditorState::getFirstPos() const {
+int MaEditorState::getFirstPos() const {
     QVariant v = stateData.value(FIRST_POS);
     if (v.type() == QVariant::Int) {
         return v.toInt();
@@ -69,11 +70,23 @@ int MSAEditorState::getFirstPos() const {
     return -1;
 }
 
-void MSAEditorState::setFirstPos(int y) {
+void MaEditorState::setFirstPos(int y) {
     stateData[FIRST_POS] = y;
 }
 
-float MSAEditorState::getZoomFactor() const {
+int MaEditorState::getFirstSeq() const {
+    QVariant v = stateData.value(FIRST_SEQ);
+    if (v.type() == QVariant::Int) {
+        return v.toInt();
+    }
+    return -1;
+}
+
+void MaEditorState::setFirstSeq(int seq) {
+    stateData[FIRST_SEQ] = seq;
+}
+
+float MaEditorState::getZoomFactor() const {
     QVariant v = stateData.value(ZOOM_FACTOR);
     if (v.type() == QVariant::Double) {
         return v.toDouble();
@@ -81,22 +94,30 @@ float MSAEditorState::getZoomFactor() const {
     return 1.0;
 }
 
-void MSAEditorState::setZoomFactor(float zoomFactor) {
+void MaEditorState::setZoomFactor(float zoomFactor) {
     stateData[ZOOM_FACTOR] = zoomFactor;
 }
 
-QVariantMap MSAEditorState::saveState(MSAEditor* v) {
-    MSAEditorState ss;
+QVariantMap MaEditorState::saveState(MaEditor* v) {
+    MaEditorState ss;
+    ss.stateData[VIEW_ID]= v->getFactoryId();
 
-    ss.stateData[VIEW_ID]=MsaEditorFactory::ID;
-
-    MultipleSequenceAlignmentObject* msaObj = v->getMaObject();
-    if (msaObj) {
-        ss.setMSAObjectRef(GObjectReference(msaObj));
+    MultipleAlignmentObject* maObj = v->getMaObject();
+    if (maObj) {
+        ss.setMaObjectRef(GObjectReference(maObj));
     }
 
+    MaEditorWgt* wgt = v->getUI();
+    SAFE_POINT(wgt != NULL, "MaEditorWgt is NULL", QVariantMap());
+    ScrollController* scrollController = wgt->getScrollController();
+    SAFE_POINT(scrollController != NULL, "ScrollController is NULL", QVariantMap());
+
+    int firstBase = scrollController->getFirstVisibleBase();
+    int firstSeq = scrollController->getFirstVisibleRowIndex();
+
+    ss.setFirstPos(firstBase);
+    ss.setFirstSeq(firstSeq);
     ss.setFont(v->getFont());
-    ss.setFirstPos(v->getFirstVisibleBase());
 
     return ss.stateData;
 }

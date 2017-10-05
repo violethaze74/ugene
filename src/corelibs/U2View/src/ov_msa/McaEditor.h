@@ -61,6 +61,8 @@ public:
 
     virtual int getRowContentIndent(int rowId) const;
 
+    virtual QVariantMap saveState();
+
     bool isChromVisible(qint64 rowId) const;
     bool isChromVisible(int rowIndex) const;
     bool isChromatogramButtonChecked() const;

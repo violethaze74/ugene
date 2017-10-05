@@ -425,9 +425,10 @@ void MaEditor::calcFontPixelToPointSizeCoef() {
     fontPixelToPointSize = (float) info.pixelSize() / (float) info.pointSize();
 }
 
-void MaEditor::setFirstVisibleBase(int firstPos) {
+void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
     if (ui->getSequenceArea()->isPosInRange(firstPos)) {
         ui->getScrollController()->setFirstVisibleBase(firstPos);
+        ui->getScrollController()->getFirstVisibleRowIndex(firstSeq);
     }
 }
 

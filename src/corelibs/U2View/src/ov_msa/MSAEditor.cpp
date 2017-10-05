@@ -42,11 +42,11 @@
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/ProjectView.h>
 
-#include "MSAEditor.h"
-#include "MSAEditorState.h"
-#include "MSAEditorTasks.h"
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
+#include "MaEditorState.h"
+#include "MSAEditor.h"
+#include "MSAEditorTasks.h"
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "Overview/MaEditorOverviewArea.h"
 #include "view_rendering/MaEditorConsensusArea.h"
@@ -100,10 +100,6 @@ bool MSAEditor::onCloseEvent() {
         ui->getOverviewArea()->cancelRendering();
     }
     return true;
-}
-
-int MSAEditor::getFirstVisibleBase() const {
-    return ui->getSequenceArea()->getFirstVisibleBase();
 }
 
 const MultipleSequenceAlignmentRow MSAEditor::getRowByLineNumber(int lineNumber) const {
@@ -189,7 +185,7 @@ Task* MSAEditor::updateViewTask(const QString& stateName, const QVariantMap& sta
 }
 
 QVariantMap MSAEditor::saveState() {
-    return MSAEditorState::saveState(this);
+    return MaEditorState::saveState(this);
 }
 
 MsaEditorWgt *MSAEditor::getUI() const {

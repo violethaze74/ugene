@@ -81,11 +81,11 @@ public:
     MaEditor* getEditor(const QString &viewName, GObject *obj);
 };
 
-class OpenSavedMSAEditorTask : public ObjectViewTask {
+class OpenSavedMaEditorTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenSavedMSAEditorTask(GObjectType type, MaEditorFactory* factory,
-                           const QString& viewName, const QVariantMap& stateData);
+    OpenSavedMaEditorTask(GObjectType type, MaEditorFactory* factory,
+                          const QString& viewName, const QVariantMap& stateData);
     virtual void open();
 
     static void updateRanges(const QVariantMap& stateData, MaEditor* ctx);
