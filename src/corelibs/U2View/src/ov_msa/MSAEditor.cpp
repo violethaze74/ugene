@@ -65,7 +65,6 @@ MSAEditor::MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* o
     buildTreeAction = new QAction(QIcon(":/core/images/phylip.png"), tr("Build Tree"), this);
     buildTreeAction->setObjectName("Build Tree");
     buildTreeAction->setEnabled(!isAlignmentEmpty());
-    connect(maObject, SIGNAL(si_alignmentBecomesEmpty(bool)), buildTreeAction, SLOT(setDisabled(bool)));
     connect(maObject, SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_rowsRemoved(const QList<qint64> &)));
     connect(buildTreeAction, SIGNAL(triggered()), SLOT(sl_buildTree()));
 
@@ -288,6 +287,7 @@ void MSAEditor::updateActions() {
     if(alignSequencesToAlignmentAction != NULL) {
         alignSequencesToAlignmentAction->setEnabled(!maObject->isStateLocked());
     }
+    buildTreeAction->setEnabled(!maObject->isStateLocked() && !this->isAlignmentEmpty());
 }
 
 void MSAEditor::copyRowFromSequence(U2SequenceObject *seqObj, U2OpStatus &os) {
