@@ -71,6 +71,7 @@ DocumentProviderSelectorController::DocumentProviderSelectorController(const GUr
 {
     setupUi(this);
 
+    setObjectName("Select Document Format");
     new HelpButton(this, buttonBox, "19766880");
     gbFormats->setTitle(QString("Options for %1").arg(url.fileName()));
     buttonBox->button(QDialogButtonBox::Cancel)->setAutoDefault(false);
@@ -168,7 +169,8 @@ void DocumentProviderSelectorController::addFormatRadioButton(const GUrl& url, Q
     ImportWidget* wgt = getRadioButtonWgt(result, text, url, it);
 
     QRadioButton *rbFormat = new QRadioButton(text);
-    rbFormat->setObjectName(text + "_radio");
+    QString name = QString::number(it) + "_radio";
+    rbFormat->setObjectName(name);
     formatsRadioButtons << rbFormat;
     bg->addButton(rbFormat, it);
     formatsLayout->addWidget(rbFormat);
