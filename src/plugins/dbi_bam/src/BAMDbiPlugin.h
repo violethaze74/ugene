@@ -53,7 +53,7 @@ public:
 
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url);
 
-    virtual DocumentProviderTask* createImportTask(const FormatDetectionResult& res, bool showWizard, const QVariantMap &hints);
+    virtual DocumentProviderTask* createImportTask(const FormatDetectionResult& res, bool showGui, const QVariantMap &hints);
 };
 
 class LoadInfoTask;
