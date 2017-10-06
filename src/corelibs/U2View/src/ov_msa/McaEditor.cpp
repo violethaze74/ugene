@@ -32,7 +32,6 @@
 
 #include "MaConsensusMismatchController.h"
 #include "MaEditorFactory.h"
-#include "MaEditorState.h"
 #include "McaEditor.h"
 #include "McaEditorConsensusArea.h"
 #include "McaEditorNameList.h"
@@ -103,10 +102,6 @@ int McaEditor::getRowContentIndent(int rowId) const {
         return SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS / 2;
     }
     return MaEditor::getRowContentIndent(rowId);
-}
-
-QVariantMap McaEditor::saveState() {
-    return MaEditorState::saveState(this);
 }
 
 bool McaEditor::isChromVisible(qint64 rowId) const {

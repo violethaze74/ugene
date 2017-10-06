@@ -79,10 +79,6 @@ public:
 
     virtual void buildStaticMenu(QMenu* m);
 
-    virtual Task* updateViewTask(const QString& stateName, const QVariantMap& stateData);
-
-    virtual QVariantMap saveState();
-
     MsaEditorWgt* getUI() const;
 
     //Return alignment row that is displayed on target line in MSAEditor

@@ -78,6 +78,10 @@ public:
 public:
     MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, GObject* obj);
 
+    virtual QVariantMap saveState();
+
+    virtual Task* updateViewTask(const QString& stateName, const QVariantMap& stateData);
+
     virtual QString getSettingsRoot() const = 0;
 
     virtual MultipleAlignmentObject* getMaObject() const { return maObject; }

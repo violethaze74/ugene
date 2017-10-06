@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_TASKS_H_
-#define _U2_MSA_EDITOR_TASKS_H_
+#ifndef _U2_MA_EDITOR_TASKS_H_
+#define _U2_MA_EDITOR_TASKS_H_
 
 #include <U2Core/GObjectReference.h>
 #include <U2Gui/ObjectViewTasks.h>
@@ -95,9 +95,9 @@ private:
 };
 
 
-class UpdateMSAEditorTask : public ObjectViewTask {
+class UpdateMaEditorTask : public ObjectViewTask {
 public:
-    UpdateMSAEditorTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData);
+    UpdateMaEditorTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData);
 
     virtual void update();
 };

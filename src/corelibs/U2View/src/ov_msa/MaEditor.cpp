@@ -41,6 +41,8 @@
 #include <U2View/MSAEditorOverviewArea.h>
 
 #include "MaEditor.h"
+#include "MaEditorState.h"
+#include "MaEditorTasks.h"
 #include "helpers/ScrollController.h"
 #include "view_rendering/MaEditorWgt.h"
 
@@ -111,6 +113,14 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(this, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_resetColumnWidthCache()));
     connect(this, SIGNAL(si_fontChanged(QFont)), SLOT(sl_resetColumnWidthCache()));
+}
+
+QVariantMap MaEditor::saveState() {
+    return MaEditorState::saveState(this);
+}
+
+Task* MaEditor::updateViewTask(const QString& stateName, const QVariantMap& stateData) {
+    return new UpdateMaEditorTask(this, stateName, stateData);
 }
 
 int MaEditor::getAlignmentLen() const {

@@ -51,7 +51,7 @@
 #include "MSAEditor.h"
 #include "MSAEditorConsensusArea.h"
 #include "MaEditorState.h"
-#include "MSAEditorTasks.h"
+#include "MaEditorTasks.h"
 #include "MaEditorFactory.h"
 #include "McaEditor.h" // SANGER_TODO: deal with includes
 
@@ -253,21 +253,20 @@ void OpenSavedMaEditorTask::updateRanges(const QVariantMap& stateData, MaEditor*
 
 //////////////////////////////////////////////////////////////////////////
 // update
-UpdateMSAEditorTask::UpdateMSAEditorTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData)
+UpdateMaEditorTask::UpdateMaEditorTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData)
 : ObjectViewTask(v, stateName, stateData)
 {
 }
 
-void UpdateMSAEditorTask::update() {
-    // SANGER_TODO: if this valid?
+void UpdateMaEditorTask::update() {
     if (view.isNull() || (view->getFactoryId() != MsaEditorFactory::ID && view->getFactoryId() != McaEditorFactory::ID)) {
         return; //view was closed;
     }
 
-    MSAEditor* msaView = qobject_cast<MSAEditor*>(view.data());
-    assert(msaView!=NULL);
+    MaEditor* maView = qobject_cast<MaEditor*>(view.data());
+    SAFE_POINT_EXT(maView != NULL, setError("MaEditor is NULL"), );
 
-    OpenSavedMaEditorTask::updateRanges(stateData, msaView);
+    OpenSavedMaEditorTask::updateRanges(stateData, maView);
 }
 
 

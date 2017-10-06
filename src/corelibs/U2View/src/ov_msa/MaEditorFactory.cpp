@@ -24,7 +24,7 @@
 #include "McaEditor.h"
 #include "MSAEditor.h"
 #include "MaEditorState.h"
-#include "MSAEditorTasks.h"
+#include "MaEditorTasks.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>

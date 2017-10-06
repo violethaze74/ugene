@@ -44,9 +44,8 @@
 
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
-#include "MaEditorState.h"
 #include "MSAEditor.h"
-#include "MSAEditorTasks.h"
+#include "MaEditorTasks.h"
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "Overview/MaEditorOverviewArea.h"
 #include "view_rendering/MaEditorConsensusArea.h"
@@ -178,14 +177,6 @@ void MSAEditor::addStatisticsMenu(QMenu* m) {
     QMenu* em = m->addMenu(tr("Statistics"));
     em->setIcon(QIcon(":core/images/chart_bar.png"));
     em->menuAction()->setObjectName(MSAE_MENU_STATISTICS);
-}
-
-Task* MSAEditor::updateViewTask(const QString& stateName, const QVariantMap& stateData) {
-    return new UpdateMSAEditorTask(this, stateName, stateData);
-}
-
-QVariantMap MSAEditor::saveState() {
-    return MaEditorState::saveState(this);
 }
 
 MsaEditorWgt *MSAEditor::getUI() const {
