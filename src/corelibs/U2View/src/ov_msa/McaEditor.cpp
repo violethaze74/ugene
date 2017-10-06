@@ -22,6 +22,7 @@
 #include <QToolBar>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -50,6 +51,7 @@ McaEditor::McaEditor(const QString &viewName,
     : MaEditor(McaEditorFactory::ID, viewName, obj),
       referenceCtx(NULL)
 {
+    GCOUNTER(cvar, tvar, "Sanger Reads Editor");
     initZoom();
     initFont();
 
@@ -140,6 +142,7 @@ void McaEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
 }
 
 void McaEditor::sl_showHideChromatograms(bool show) {
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "'Show chromatogram' action triggered", getFactoryId());
     ui->getCollapseModel()->collapseAll(!show);
     sl_saveChromatogramState();
     emit si_completeUpdate();
@@ -231,11 +234,14 @@ void McaEditor::initActions() {
     showOverviewAction->setChecked(overviewVisible);
     ui->getOverviewArea()->setVisible(overviewVisible);
     changeFontAction->setText(tr("Change characters font..."));
+    GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, overviewVisible, "'Show overview' is checked on the view opening", getFactoryId());
+    GRUNTIME_NAMED_CONDITION_COUNTER(ccvar, ttvar, !overviewVisible, "'Show overview' is unchecked on the view opening", getFactoryId());
 }
 
 void McaEditor::sl_saveOverviewState() {
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "'Show overview' action triggered", getFactoryId());
     s->setValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_OVERVIEW, showOverviewAction->isChecked());
 }
 

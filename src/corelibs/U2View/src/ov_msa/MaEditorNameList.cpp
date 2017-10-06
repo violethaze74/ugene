@@ -25,6 +25,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 
+#include <U2Core/Counter.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -245,6 +246,7 @@ void MaEditorNameList::sl_alignmentChanged(const MultipleAlignment&, const MaMod
 }
 
 void MaEditorNameList::sl_removeSequence() {
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Remove row", editor->getFactoryId());
     U2Region sel = getSelection();
     CHECK(!sel.isEmpty(), );
 
@@ -822,6 +824,7 @@ void MaEditorNameList::drawSelection(QPainter &painter) {
 }
 
 void MaEditorNameList::sl_editSequenceName() {
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Rename row", editor->getFactoryId());
     MultipleAlignmentObject* maObj = editor->getMaObject();
     CHECK(!maObj->isStateLocked(), );
 

@@ -21,6 +21,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AssemblyObject.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
@@ -109,6 +110,8 @@ QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const 
 
     QMap<U2DataId, GObject*> match;
 
+    bool hasMca = false;
+
     foreach(const U2DataId &id, objectIds) {
         U2OpStatus2Log status;
         ref.entityId = id;
@@ -117,16 +120,20 @@ QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const 
         handle.dbi->getObjectDbi()->getObject(object, id, status);
         CHECK_OPERATION(!status.isCoR(), continue);
 
+
         if (object.visualName.isEmpty()) {
             object.visualName = "Unnamed object";
         }
 
         GObject *gobject = GObjectUtils::createObject(ref.dbiRef, id, object.visualName);
         CHECK_OPERATION(NULL != gobject, continue);
+        hasMca |= (gobject->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT);
 
         match[id] = gobject;
         objects << gobject;
     }
+
+    GRUNTIME_NAMED_CONDITION_COUNTER(tvar, cvar, hasMca, "The number of opening of the ugenedb files with Sanger data", "");
 
     if (handle.dbi->getObjectRelationsDbi() != NULL) {
         foreach(const U2DataId &id, match.keys()) {
