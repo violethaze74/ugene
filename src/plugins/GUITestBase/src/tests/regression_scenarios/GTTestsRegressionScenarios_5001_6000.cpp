@@ -2376,6 +2376,45 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
     GTGlobals::sleep();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5681) {
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
+
+            QComboBox *comboBox = dialog->findChild<QComboBox*>();
+            CHECK_SET_ERR(comboBox != NULL, "ComboBox not found");
+
+            QStringList formats = GTComboBox::getValues(os, comboBox);
+            CHECK_SET_ERR(!formats.contains("BAM"), "BAM format is present in annotations export dialog");
+
+            QDialogButtonBox* buttonBox = dialog->findChild<QDialogButtonBox*>("buttonBox");
+            CHECK_SET_ERR(buttonBox != NULL, "buttonBox is NULL");
+
+            QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+            CHECK_SET_ERR(cancelButton != NULL, "cancelButton is NULL");
+            GTWidget::click(os, cancelButton);
+        }
+    };
+
+    //1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open the context menu for the "NC_001363 features" object.
+    //3. Select "Export/Import" -> "Export annotations..." menu item.
+    //4. Set any valid output path, select "UGENE Database" format.
+    //5. Accept the dialog.
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "murine_annotations.gb", ExportAnnotationsFiller::ugenedb, true, false, false));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export annotations..."));
+    GTUtilsProjectTreeView::callContextMenu(os, "NC_001363 features");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: No safe point
+    GTUtilsProjectTreeView::checkItem(os, "murine_annotations.gb");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5714_1) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
