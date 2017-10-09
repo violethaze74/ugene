@@ -21,10 +21,10 @@
 
 #include "MaEditorFactory.h"
 
+#include "MaEditorState.h"
+#include "MaEditorTasks.h"
 #include "McaEditor.h"
 #include "MSAEditor.h"
-#include "MSAEditorState.h"
-#include "MSAEditorTasks.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
@@ -111,11 +111,11 @@ Task* MaEditorFactory::createViewTask(const MultiGSelection& multiSelection, boo
 }
 
 bool MaEditorFactory::isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData) {
-    MSAEditorState state(stateData);
+    MaEditorState state(stateData);
     if (!state.isValid()) {
         return false;
     }
-    GObjectReference ref = state.getMSAObjectRef();
+    GObjectReference ref = state.getMaObjectRef();
     Document* doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
     if (doc == NULL) { //todo: accept to use invalid state removal routines of ObjectViewTask ???
         return false;
@@ -133,15 +133,11 @@ bool MaEditorFactory::isStateInSelection(const MultiGSelection& multiSelection, 
 }
 
 Task* MaEditorFactory::createViewTask(const QString& viewName, const QVariantMap& stateData) {
-    return new OpenSavedMSAEditorTask(type, this, viewName, stateData);
+    return new OpenSavedMaEditorTask(type, this, viewName, stateData);
 }
 
 bool MaEditorFactory::supportsSavedStates() const {
     return true;
-}
-
-MaEditor* MaEditorFactory::getEditor(const QString &, GObject *) {
-    FAIL("Static parent method to overload. Should not be called.", NULL);
 }
 
 /************************************************************************/

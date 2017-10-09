@@ -66,6 +66,7 @@ public:
 
     void setFirstVisibleBase(int firstVisibleBase);
     void setFirstVisibleRowByNumber(int firstVisibleRowNumber);
+    void setFirstVisibleRowByIndex(int firstVisibleRowIndex);
 
     void scrollSmoothly(const Directions &directions);
     void stopSmoothScrolling();

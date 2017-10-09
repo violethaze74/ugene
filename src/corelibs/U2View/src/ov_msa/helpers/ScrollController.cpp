@@ -134,6 +134,10 @@ void ScrollController::setFirstVisibleBase(int firstVisibleBase) {
 
 void ScrollController::setFirstVisibleRowByNumber(int firstVisibleRowNumber) {
     const int firstVisibleRowIndex = ui->getCollapseModel()->mapToRow(firstVisibleRowNumber);
+    setFirstVisibleRowByIndex(firstVisibleRowIndex);
+}
+
+void ScrollController::setFirstVisibleRowByIndex(int firstVisibleRowIndex) {
     vScrollBar->setValue(ui->getRowHeightController()->getRowGlobalOffset(firstVisibleRowIndex));
 }
 

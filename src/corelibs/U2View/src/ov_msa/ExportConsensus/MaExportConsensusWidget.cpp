@@ -45,7 +45,7 @@
 #include "ov_msa/view_rendering/MaEditorConsensusArea.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
-#include <U2View/MSAEditorTasks.h>
+#include <U2View/MaEditorTasks.h>
 
 #include "MaExportConsensusWidget.h"
 
