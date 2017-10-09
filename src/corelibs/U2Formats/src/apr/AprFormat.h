@@ -38,9 +38,10 @@ class U2FORMATS_EXPORT AprFormat : public DocumentFormat {
 public:
     AprFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::APR; }
+    virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::VECTOR_NTI_ALIGNX; }
     virtual const QString& getFormatName() const { return formatName; }
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url = GUrl()) const;
+    virtual QString getRadioButtonText() const;
 
 protected:
     virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);

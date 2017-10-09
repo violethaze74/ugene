@@ -31,19 +31,38 @@ class QToolButton;
 
 namespace U2 {
 
+class ImportWidget;
+
 class DocumentProviderSelectorController : public QDialog, private Ui_DocumentProviderSelectorDialog {
     Q_OBJECT
 public:
-    static int selectResult(const GUrl& url, const QList<FormatDetectionResult>& results);
+    static int selectResult(const GUrl& url, QList<FormatDetectionResult>& results);
+
+private slots:
+    void accept();
+    void sl_enableConvertInfo(int state);
+
 
 private:
-    DocumentProviderSelectorController(const QList<FormatDetectionResult>& results, QWidget *parent);
+    DocumentProviderSelectorController(const GUrl& url, QList<FormatDetectionResult>& results, QWidget *parent);
+    ImportWidget* getRadioButtonWgt(const FormatDetectionResult& result, QString& radioButtonName, const GUrl& url, int it);
     int getSelectedFormatIdx() const;
-    static QString getViewName(const GObjectType &objectType);
-    static QString getTypeName(const GObjectType &objectType);
+    void addFormatRadioButton(const GUrl& url, QList<FormatDetectionResult> &results, QButtonGroup* bg, int it);
+    void fillTitle(const FormatDetectionResult &result);
 
-    QList<QRadioButton *> formatsRadioButtons;
-    const QList<FormatDetectionResult> formatDetectionResults;
+    static QString getButtonName(const GObjectType &objectType);
+
+    QList<QRadioButton*> formatsRadioButtons;
+    QList<ImportWidget*> radioButtonConnectedWidget;
+    QList<FormatDetectionResult>& formatDetectionResults;
+    QList<QString> formatInfo;
+    QString title;
+    QString selectedFormat;
+    int selectedRadioButton;
+
+    static const QString DOCUMENT_PROVIDER_SELECTOR_CONTROLLER_ROOT;
+    static const QString SELECTION;
+
 };
 
 }   // namespace U2

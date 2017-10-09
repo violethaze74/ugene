@@ -19,17 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#include "ImportDialogsFactories.h"
-#include "ImportDialogs/AceImportDialog.h"
+#include "ImportWidgetsFactories.h"
+#include "ImportWidgets/AceImportWidget.h"
+#include "ImportWidgets/AprImportWidget.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/ImportWidget.h>
+
 namespace U2 {
 
-void ImportDialogFactories::registerFactories() {
+void ImportWidgetsFactories::registerFactories() {
     DocumentFormatRegistry* dfRegistry = AppContext::getDocumentFormatRegistry();
     SAFE_POINT(dfRegistry, "Document format registry is NULL", );
     DocumentImportersRegistry* diRegistry = dfRegistry->getImportSupport();
@@ -37,11 +40,19 @@ void ImportDialogFactories::registerFactories() {
 
     DocumentImporter* aceImporter = diRegistry->getDocumentImporter(AceImporter::ID);
     SAFE_POINT(aceImporter, "ACE importer is NULL", );
-    aceImporter->setDialogFactory(new AceImportDialogFactory());
+    aceImporter->setWidgetFactory(new AceImportWidgetFactory());
+
+    DocumentImporter* aprImporter = diRegistry->getDocumentImporter(AprImporter::ID);
+    SAFE_POINT(aprImporter, "APR importer is NULL", );
+    aprImporter->setWidgetFactory(new AprImportWidgetFactory());
 }
 
-ImportDialog* AceImportDialogFactory::getDialog(const QVariantMap &settings) const {
-    return new AceImportDialog(settings);
+ImportWidget* AceImportWidgetFactory::getWidget(const GUrl& url, const QVariantMap& settings) const {
+    return new AceImportWidget(url, settings);
+}
+
+ImportWidget* AprImportWidgetFactory::getWidget(const GUrl& url, const QVariantMap& settings) const {
+    return new AprImportWidget(url, settings);
 }
 
 }   // namespace U2

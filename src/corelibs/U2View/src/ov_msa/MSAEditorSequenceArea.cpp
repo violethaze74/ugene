@@ -442,6 +442,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
     bool canEditSelectedArea = canEditAlignment && !selection.isNull();
     const bool isEditing = (maMode != ViewMode);
     ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
+    ui->getPasteAction()->setEnabled(!readOnly);
 
     fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && !isEditing);
     bool oneCharacterIsSelected = selection.width() == 1 && selection.height() == 1;

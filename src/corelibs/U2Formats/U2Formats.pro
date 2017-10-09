@@ -50,6 +50,7 @@ HEADERS += src/ABIFormat.h \
            src/ace/CloneAssemblyWithReferenceToDbiTask.h \
            src/ace/ConvertAceToSqliteTask.h \
            src/apr/AprFormat.h \
+           src/apr/AprImporter.h \
            src/mysql_dbi/MysqlAssemblyDbi.h \
            src/mysql_dbi/MysqlAttributeDbi.h \
            src/mysql_dbi/MysqlBlobInputStream.h \
@@ -154,6 +155,7 @@ SOURCES += src/ABIFormat.cpp \
            src/ace/CloneAssemblyWithReferenceToDbiTask.cpp \
            src/ace/ConvertAceToSqliteTask.cpp \
            src/apr/AprFormat.cpp \
+           src/apr/AprImporter.cpp \
            src/mysql_dbi/MysqlAssemblyDbi.cpp \
            src/mysql_dbi/MysqlAttributeDbi.cpp \
            src/mysql_dbi/MysqlBlobInputStream.cpp \

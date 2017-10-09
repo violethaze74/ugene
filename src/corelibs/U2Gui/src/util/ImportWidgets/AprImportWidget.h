@@ -19,27 +19,31 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IMPORT_DIALOGS_H_
-#define _U2_IMPORT_DIALOGS_H_
+#ifndef _U2_APR_IMPORT_WIDGET_H_
+#define _U2_APR_IMPORT_WIDGET_H_
 
-#include <U2Core/DocumentImport.h>
+#include <U2Formats/AprImporter.h>
+
+#include "ImportWidget.h"
+#include "ui_AprImportWidget.h"
 
 namespace U2 {
 
-/** If you need a dialog on file import, specify it here,
- *  crete its factory and add the factory to the importer.
- *  Note that importer should exec the dialog itself.
- **/
-class U2GUI_EXPORT ImportDialogFactories {
-public:
-    static void registerFactories();
-};
+class SaveDocumentController;
 
-class AceImportDialogFactory : public ImportDialogFactory {
+class AprImportWidget : public ImportWidget, public Ui_AprImportWidget {
+    Q_OBJECT
 public:
-    virtual ImportDialog* getDialog(const QVariantMap &settings) const;
+    AprImportWidget(const GUrl& url, const QVariantMap& settings);
+    virtual QVariantMap getSettings() const;
+
+    void initSaveController(const GUrl& url, const DocumentFormatId defaultFormatId);
+
+private:
+    DocumentFormatId getFormatId(const QVariantMap& settings);
+    static QString getDefaultValues();
 };
 
 }   // namespace U2
 
-#endif // _U2_IMPORT_DIALOGS_H_
+#endif // _U2_APR_IMPORT_WIDGET_H_
