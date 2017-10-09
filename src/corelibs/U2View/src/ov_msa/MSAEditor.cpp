@@ -44,8 +44,8 @@
 
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
-#include "MSAEditor.h"
 #include "MaEditorTasks.h"
+#include "MSAEditor.h"
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "Overview/MaEditorOverviewArea.h"
 #include "view_rendering/MaEditorConsensusArea.h"

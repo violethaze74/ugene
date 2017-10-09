@@ -438,7 +438,7 @@ void MaEditor::calcFontPixelToPointSizeCoef() {
 void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
     if (ui->getSequenceArea()->isPosInRange(firstPos)) {
         ui->getScrollController()->setFirstVisibleBase(firstPos);
-        ui->getScrollController()->getFirstVisibleRowIndex(firstSeq);
+        ui->getScrollController()->setFirstVisibleRowByIndex(firstSeq);
     }
 }
 

@@ -27,11 +27,11 @@
 #include <U2Core/DocumentProviderTask.h>
 namespace U2 {
 
-class MultipleAlignmentObject;
-class UnloadedObject;
 class MaEditor;
 class MaEditorFactory;
 class MSAEditor;
+class MultipleAlignmentObject;
+class UnloadedObject;
 
 /*!
  * \brief The OpenMaEditorTask class

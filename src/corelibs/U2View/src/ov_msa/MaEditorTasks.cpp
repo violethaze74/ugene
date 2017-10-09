@@ -48,12 +48,12 @@
 
 #include <U2Formats/DocumentFormatUtils.h>
 
-#include "MSAEditor.h"
-#include "MSAEditorConsensusArea.h"
+#include "MaEditorFactory.h"
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
-#include "MaEditorFactory.h"
-#include "McaEditor.h" // SANGER_TODO: deal with includes
+#include "McaEditor.h"
+#include "MSAEditor.h"
+#include "MSAEditorConsensusArea.h"
 
 namespace U2 {
 

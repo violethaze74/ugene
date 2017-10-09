@@ -118,6 +118,7 @@ QVariantMap MaEditorState::saveState(MaEditor* v) {
     ss.setFirstPos(firstBase);
     ss.setFirstSeq(firstSeq);
     ss.setFont(v->getFont());
+    ss.setZoomFactor(v->zoomFactor);
 
     return ss.stateData;
 }

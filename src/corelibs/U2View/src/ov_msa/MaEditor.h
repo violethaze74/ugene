@@ -69,6 +69,7 @@ public:
 class U2VIEW_EXPORT MaEditor : public GObjectView {
     Q_OBJECT
     friend class OpenSavedMaEditorTask;
+    friend class MaEditorState;
 public:
     enum ResizeMode {
         ResizeMode_FontAndContent, ResizeMode_OnlyContent
