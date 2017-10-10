@@ -113,11 +113,11 @@ FormatCheckResult BAMImporter::checkRawData(const QByteArray& rawData, const GUr
     return samScore;
 }
 
-DocumentProviderTask* BAMImporter::createImportTask(const FormatDetectionResult& res, bool showWizard, const QVariantMap &hints) {
+DocumentProviderTask* BAMImporter::createImportTask(const FormatDetectionResult& res, bool showGui, const QVariantMap &hints) {
     bool sam = res.rawDataCheckResult.properties[SAM_HINT].toBool();
     QVariantMap fullHints(hints);
     fullHints[SAM_HINT] = sam;
-    return new BAMImporterTask(res.url, showWizard, fullHints);
+    return new BAMImporterTask(res.url, showGui, fullHints);
 }
 
 

@@ -136,8 +136,8 @@ static void createRows(IOAdapter* io, char* buff, const int sequnenceNum, const 
 }
 
 AprFormat::AprFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_CannotBeCreated), QStringList("apr")) {
-    formatName = tr("APR");
-    formatDescription = tr("APR is a Vector NTI format for multiple alignment");
+    formatName = tr("Vector NTI/AlignX");
+    formatDescription = tr("Vector NTI/AlignX is a Vector NTI format for multiple alignment");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
@@ -155,6 +155,10 @@ FormatCheckResult AprFormat::checkRawData(const QByteArray& rawData, const GUrl&
         }
     }
     return FormatDetection_Matched;
+}
+
+QString AprFormat::getRadioButtonText() const {
+    return tr("Open in read-only mode");
 }
 
 Document* AprFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {

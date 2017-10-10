@@ -35,7 +35,6 @@ class U2CORE_EXPORT BaseDocumentFormats {
 public:
     static const DocumentFormatId ABIF;
     static const DocumentFormatId ACE;
-    static const DocumentFormatId APR;
     static const DocumentFormatId BAM;
     static const DocumentFormatId BED;
     static const DocumentFormatId CLUSTAL_ALN;
@@ -68,6 +67,7 @@ public:
     static const DocumentFormatId STOCKHOLM;
     static const DocumentFormatId UGENEDB;
     static const DocumentFormatId VCF4;
+    static const DocumentFormatId VECTOR_NTI_ALIGNX;
     static const DocumentFormatId VECTOR_NTI_SEQUENCE;
 
     static DocumentFormat* get(const DocumentFormatId& formatId);

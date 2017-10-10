@@ -55,7 +55,6 @@ ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus &os, CustomScenario
 }
 
 void ImportBAMFileFiller::commonScenario() {
-
     GTGlobals::sleep(500);
     QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");

@@ -120,6 +120,11 @@ GraphMenuAction::GraphMenuAction(const DNAAlphabet* a) : ADVSequenceWidgetAction
     this->setMenu(menu);
     addToBar = true;
     
+    separator = menu->addSeparator();
+    
+    QAction* closeAllAction = new QAction(GraphMenuAction::tr("Close all graphs"), this);
+    menu->addAction(closeAllAction);
+    connect(closeAllAction, SIGNAL(triggered()), this, SLOT(sl_closeAllGraphs()));
     setVisible(a->isNucleic());
 }
 
@@ -155,8 +160,18 @@ void GraphMenuAction::addGraphAction(ADVSequenceObjectContext* ctx, GraphAction*
     SAFE_POINT(graphMenuAction, "GraphMenuAction is not available (while adding a new action)!",);
 
     action->setParent(graphMenuAction);
-    graphMenuAction->menu->addAction(action);
+    graphMenuAction->menu->insertAction(graphMenuAction->separator, action);
     action->setCheckable(true);
+}
+
+void GraphMenuAction::sl_closeAllGraphs() {
+    QList<QAction*> allActions = menu->actions();
+    foreach (QAction* a, allActions) {
+        GraphAction* graphAction = qobject_cast<GraphAction*>(a);
+        if (graphAction != NULL && graphAction->isChecked()) {
+            graphAction->trigger();
+        }
+    }    
 }
 
 

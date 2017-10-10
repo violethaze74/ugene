@@ -19,48 +19,31 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_STATE_H_
-#define _U2_MSA_EDITOR_STATE_H_
+#ifndef _U2_APR_IMPORT_WIDGET_H_
+#define _U2_APR_IMPORT_WIDGET_H_
 
-#include <U2Core/U2Region.h>
-#include <U2Core/GObject.h>
+#include <U2Formats/AprImporter.h>
 
-#include <QVariant>
+#include "ImportWidget.h"
+#include "ui_AprImportWidget.h"
 
 namespace U2 {
 
-class MSAEditor;
+class SaveDocumentController;
 
-
-class U2VIEW_EXPORT MSAEditorState {
+class AprImportWidget : public ImportWidget, public Ui_AprImportWidget {
+    Q_OBJECT
 public:
-    MSAEditorState(){}
+    AprImportWidget(const GUrl& url, const QVariantMap& settings);
+    virtual QVariantMap getSettings() const;
 
-    MSAEditorState(const QVariantMap& _stateData) : stateData(_stateData){}
+    void initSaveController(const GUrl& url, const DocumentFormatId defaultFormatId);
 
-    static QVariantMap saveState(MSAEditor* v);
-
-    bool isValid() const;
-
-    GObjectReference getMSAObjectRef() const;
-
-    void setMSAObjectRef(const GObjectReference& ref);
-
-    QFont getFont() const;
-    void setFont(const QFont &f);
-
-    int getFirstPos() const;
-    void setFirstPos(int y);
-
-    float getZoomFactor() const;
-    void setZoomFactor(float zoomFactor);
-
-    QVariantMap stateData;
+private:
+    DocumentFormatId getFormatId(const QVariantMap& settings);
+    static QString getDefaultValues();
 };
 
+}   // namespace U2
 
-
-
-} // namespace
-
-#endif
+#endif // _U2_APR_IMPORT_WIDGET_H_

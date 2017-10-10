@@ -19,32 +19,31 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ACE_IMPORT_DIALOG_H_
-#define _U2_ACE_IMPORT_DIALOG_H_
+#ifndef _U2_GT_RUNNABLES_IMPORT_APR_FILE_DIALOG_FILLER_H_
+#define _U2_GT_RUNNABLES_IMPORT_APR_FILE_DIALOG_FILLER_H_
 
-#include <U2Formats/AceImporter.h>
-
-#include "ui_AceImportDialog.h"
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
+using namespace HI;
 
-class SaveDocumentController;
-
-class AceImportDialog : public ImportDialog, public Ui_AceImportDialog {
-    Q_OBJECT
+class ImportAPRFileFiller : public Filler {
 public:
-    AceImportDialog(const QVariantMap& settings);
+    ImportAPRFileFiller(HI::GUITestOpStatus &os,
+                     bool isReadOnly,
+                     QString dstUrl = QString(),
+                     QString formatToConvertTo = "fasta",
+                     int timeoutMs = 120000);
+    ImportAPRFileFiller(HI::GUITestOpStatus &os, CustomScenario *_c);
 
-protected:
-    bool isValid();
-    void applySettings();
-    void initSaveController();
+    virtual void commonScenario();
 
-    SaveDocumentController *saveController;
-
-    static const QString EXTENSION;
+private:
+    bool isReadOnly;
+    const QString destinationUrl;
+    const QString format;
 };
 
 }   // namespace U2
 
-#endif // _U2_ACE_IMPORT_DIALOG_H_
+#endif // _U2_GT_RUNNABLES_IMPORT_APR_FILE_DIALOG_FILLER_H_

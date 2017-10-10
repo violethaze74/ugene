@@ -99,6 +99,9 @@
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
@@ -120,6 +123,7 @@
 #include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
@@ -2376,6 +2380,45 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
     GTGlobals::sleep();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5681) {
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
+
+            QComboBox *comboBox = dialog->findChild<QComboBox*>();
+            CHECK_SET_ERR(comboBox != NULL, "ComboBox not found");
+
+            QStringList formats = GTComboBox::getValues(os, comboBox);
+            CHECK_SET_ERR(!formats.contains("BAM"), "BAM format is present in annotations export dialog");
+
+            QDialogButtonBox* buttonBox = dialog->findChild<QDialogButtonBox*>("buttonBox");
+            CHECK_SET_ERR(buttonBox != NULL, "buttonBox is NULL");
+
+            QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+            CHECK_SET_ERR(cancelButton != NULL, "cancelButton is NULL");
+            GTWidget::click(os, cancelButton);
+        }
+    };
+
+    //1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open the context menu for the "NC_001363 features" object.
+    //3. Select "Export/Import" -> "Export annotations..." menu item.
+    //4. Set any valid output path, select "UGENE Database" format.
+    //5. Accept the dialog.
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "murine_annotations.gb", ExportAnnotationsFiller::ugenedb, true, false, false));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export annotations..."));
+    GTUtilsProjectTreeView::callContextMenu(os, "NC_001363 features");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: No safe point
+    GTUtilsProjectTreeView::checkItem(os, "murine_annotations.gb");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5714_1) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -3641,6 +3684,91 @@ GUI_TEST_CLASS_DEFINITION(test_5786_3) {
     GTUtilsLog::checkContainsMessage(os, logTracerPositive, true);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5798_1) {
+    //1. Open samples/APR/DNA.apr in read-only mode
+    GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
+    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: DNA.apr in the project view
+    GTUtilsProjectTreeView::checkItem(os, "DNA.apr");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5798_2) {
+    //1. Convert samples/APR/DNA.apr to fasta
+    GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, false, sandBoxDir + "DNA", "FASTA"));
+    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: DNA.fa in the project view
+    GTUtilsProjectTreeView::checkItem(os, "DNA.fa");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5798_3) {
+    //1. Convert samples/APR/DNA.apr to clustaw
+    GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, false, sandBoxDir + "DNA", "CLUSTALW"));
+    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: DNA.aln in the project view
+    GTUtilsProjectTreeView::checkItem(os, "DNA.aln");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5798_4) {
+    //1. Open samples/APR/DNA.apr in read-only mode
+    GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
+    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: DNA.apr in the project view
+    GTUtilsProjectTreeView::checkItem(os, "DNA.apr");
+
+    //2. Convert document to clustalw from project view
+    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, sandBoxDir, "DNA.aln", ExportDocumentDialogFiller::CLUSTALW, false, true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export document"));
+    GTUtilsProjectTreeView::callContextMenu(os, "DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: DNA.aln in the project view
+    GTUtilsProjectTreeView::checkItem(os, "DNA.aln");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5798_5) {
+    //1. Open Workflow designer
+    GTLogTracer l;
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    //2. Open sample {Convert alignments to ClustalW}
+    GTUtilsWorkflowDesigner::addSample(os, "Convert alignments to ClustalW");
+    //Expected state: There is "Show wizard" tool button
+
+    //3. Press "Show wizard" button
+
+    class customWizard : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget* dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            //4. Select input MSA "samples/APR/DNA.apr"
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << dataDir + "samples/APR/DNA.apr"));
+            //5. Press "Next" button
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::setParameter(os, "Result ClustalW file", "DNA.aln");
+            //6. Press "Run" button
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Convert alignments to ClustalW Wizard", new customWizard()));
+    GTWidget::click(os, GTAction::button(os, "Show wizard"));
+    //Expected state: Align sequences with MUSCLE Wizard appeared
+
+    GTGlobals::sleep(1000);
+
+    //Expected state: Scheme successfully performed
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::check(os, l);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5815) {
     //1. Open a short alignment, e.g "test_common_data\scenarios\msa\ma2_gapped.aln"
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
@@ -3653,6 +3781,26 @@ GUI_TEST_CLASS_DEFINITION(test_5815) {
     GTMouseDriver::click();
 
     //Expected: no crash
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5818_1) {
+    //1. Open samples/ACE/BL060C3.ace in read-only mode
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
+    GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: BL060C3.ace in the project view
+    GTUtilsProjectTreeView::checkItem(os, "BL060C3.ace");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5818_2) {
+    //1. Convert samples/ACE/BL060C3.ace.ugenedb to fasta
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "BL060C3.ace.ugenedb"));
+    GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: BL060C3.ace.ugenedb in the project view
+    GTUtilsProjectTreeView::checkItem(os, "BL060C3.ace.ugenedb");
 }
 
 } // namespace GUITest_regression_scenarios

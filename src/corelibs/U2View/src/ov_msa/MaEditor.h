@@ -68,7 +68,8 @@ public:
 
 class U2VIEW_EXPORT MaEditor : public GObjectView {
     Q_OBJECT
-    friend class OpenSavedMSAEditorTask;
+    friend class OpenSavedMaEditorTask;
+    friend class MaEditorState;
 public:
     enum ResizeMode {
         ResizeMode_FontAndContent, ResizeMode_OnlyContent
@@ -77,6 +78,10 @@ public:
 
 public:
     MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, GObject* obj);
+
+    virtual QVariantMap saveState();
+
+    virtual Task* updateViewTask(const QString& stateName, const QVariantMap& stateData);
 
     virtual QString getSettingsRoot() const = 0;
 
@@ -164,7 +169,7 @@ protected:
     void setFont(const QFont& f);
     void calcFontPixelToPointSizeCoef();
 
-    void setFirstVisibleBase(int firstPos);
+    void setFirstVisiblePosSeq(int firstPos, int firstSeq);
     void setZoomFactor(float newZoomFactor);
 
     virtual void updateActions();
