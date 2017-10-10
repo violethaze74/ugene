@@ -32,7 +32,7 @@ public:
     ImportACEFileFiller(HI::GUITestOpStatus &os,
                      bool isReadOnly,
                      QString dstUrl = QString(),
-                     QString stcUrl = QString(),
+                     QString r = QString(),
                      int timeoutMs = 120000);
     ImportACEFileFiller(HI::GUITestOpStatus &os, CustomScenario *_c);
 

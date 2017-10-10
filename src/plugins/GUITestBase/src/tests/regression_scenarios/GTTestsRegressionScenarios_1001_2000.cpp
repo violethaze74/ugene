@@ -86,6 +86,9 @@
 #include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "api/GTGraphicsItem.h"
+#include "api/GTSequenceReadingModeDialog.h"
+#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "GTDatabaseConfig.h"
 #include "GTTestsRegressionScenarios_1001_2000.h"
 #include "GTUtilsAnnotationsHighlightingTreeView.h"
@@ -113,9 +116,6 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "api/GTGraphicsItem.h"
-#include "api/GTSequenceReadingModeDialog.h"
-#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "runnables/qt/EscapeClicker.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
@@ -134,6 +134,7 @@
 #include "runnables/ugene/corelibs/U2Gui/FindQualifierDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
@@ -182,11 +183,11 @@
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/HmmerSearchDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.h"
@@ -1710,7 +1711,7 @@ GUI_TEST_CLASS_DEFINITION(test_1123){
     // Expected state: task complete successfully, result file opens in the MSA Editor (or in the Assembly Viewer).
 
     GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_1123"));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/abif/19_022.ab1"
         << testDir + "_common_data/abif/39_034.ab1",
         sandBoxDir + "1123_abi.cap.ace"));
@@ -1731,7 +1732,7 @@ GUI_TEST_CLASS_DEFINITION(test_1123_1){
     // Expected state: task complete successfully, result file opens in the MSA Editor (or in the Assembly Viewer).
 
     GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_1123_1"));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/scf/Sequence A.scf"
         << testDir + "_common_data/scf/Sequence A.scf",
         sandBoxDir + "1123_scf.cap.ace"));
@@ -3931,16 +3932,13 @@ GUI_TEST_CLASS_DEFINITION(test_1368){
 GUI_TEST_CLASS_DEFINITION(test_1371) {
 //    1. Open file "data/samples/ACE/BL060C3.ace" as msa.
 //    Expected state: there are 2 MSA objects in document.
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTFileDialog::openFile(os, dataDir + "samples/ACE", "BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
     GTUtilsProjectTreeView::checkItem(os, "Contig1");
     GTUtilsProjectTreeView::checkItem(os, "Contig2");
-    GTUtilsProjectTreeView::checkObjectTypes(os,
-                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
-                                             GTUtilsProjectTreeView::findIndex(os, "BL060C3.ace"));
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, "BL060C3.ace"));
 
 //    2. Open file "data/samples/ACE/BL060C3.ace" as assembly.
 //    Expected state: there are 2 assembly objects in document.
@@ -3948,8 +3946,7 @@ GUI_TEST_CLASS_DEFINITION(test_1371) {
     GTUtilsDocument::removeDocument(os, "BL060C3.ace");
     QDir().mkpath(sandBoxDir + "test_1371");
 
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "test_1371/test_1371.ugenedb"));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_1371.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/ACE", "BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4644,7 +4641,7 @@ GUI_TEST_CLASS_DEFINITION(test_1457){
 
 GUI_TEST_CLASS_DEFINITION(test_1458){
     //1. Open document "../Samples/ACE/BL060C3.ace"
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_1458.ace.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4653,8 +4650,8 @@ GUI_TEST_CLASS_DEFINITION(test_1458){
     //3. Select "Export document"
     //4. Check, that for all output file formats export work correctly
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export document"));
-    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, sandBoxDir, "test_1458.fa", ExportDocumentDialogFiller::FASTA, false, true));
-    GTUtilsProjectTreeView::click(os, "BL060C3.ace", Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, sandBoxDir, "test_1458.fa", ExportDocumentDialogFiller::UGENEDB, false, true));
+    GTUtilsProjectTreeView::click(os, "test_1458.ace.ugenedb", Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1435) {

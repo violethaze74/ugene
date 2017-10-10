@@ -34,11 +34,11 @@ namespace U2 {
 ImportACEFileFiller::ImportACEFileFiller(HI::GUITestOpStatus &os,
                                          bool _isReadOnly,
                                          QString dstUrl,
-                                         QString stcUrl,
+                                         QString srcUrl,
                                          int timeoutMs) :
     Filler(os, "Select Document Format"),
     isReadOnly(_isReadOnly),
-    sourceUrl(stcUrl),
+    sourceUrl(srcUrl),
     destinationUrl(dstUrl) {
     settings.timeout = timeoutMs;
 }
