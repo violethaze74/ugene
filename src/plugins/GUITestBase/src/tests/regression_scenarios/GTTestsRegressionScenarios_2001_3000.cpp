@@ -2740,9 +2740,7 @@ GUI_TEST_CLASS_DEFINITION( test_2400 ){
 //    1. Import samples/ACE/k26.ace to  ugenedb (via open file)
     QString fileName = "2400.ugenedb";
     QString ugenedb = sandBoxDir + fileName;
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller
-                                 (os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, ugenedb));
+	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, ugenedb));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: assembly view for Contig_1 opened with refrence sequence added to it
