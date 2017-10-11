@@ -1682,14 +1682,14 @@ GUI_TEST_CLASS_DEFINITION(test_1122){
 //    Expected state: Result is the same as in the step 4.
 
     GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/scenarios/CAP3/xyz.fa"
                                                                  << testDir + "_common_data/scenarios/CAP3/xyz.qual",
                                                                  sandBoxDir + "test_1122_1"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads de novo assembly (with CAP3)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/scenarios/CAP3/xyz.fastq",
                                                                  sandBoxDir + "test_1122_2"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads de novo assembly (with CAP3)...");
