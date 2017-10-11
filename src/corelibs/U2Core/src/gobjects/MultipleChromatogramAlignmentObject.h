@@ -69,6 +69,7 @@ public:
     void trimRow(const int rowIndex, int currentPos, U2OpStatus& os, TrimEdge edge);
     void saveState();
     void releaseState();
+    int getReferenceLengthWithGaps() const;
 
 private:
     void loadAlignment(U2OpStatus &os);
