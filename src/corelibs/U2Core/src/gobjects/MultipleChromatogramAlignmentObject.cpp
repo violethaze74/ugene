@@ -297,4 +297,17 @@ void MultipleChromatogramAlignmentObject::removeRegionPrivate(U2OpStatus &os, co
     McaDbiUtils::removeCharacters(maRef, rows, startPos, nBases, os);
 }
 
+
+int MultipleChromatogramAlignmentObject::getReferenceLengthWithGaps() const {
+    int lengthWithoutGaps = getLength();
+
+    U2MsaRowGapModel refGapModel = getReferenceGapModel();
+    int gapLength = 0;
+    foreach(const U2MsaGap gap, refGapModel) {
+        gapLength += gap.gap;
+    }
+
+    return lengthWithoutGaps + gapLength;
+}
+
 }   // namespace U2
