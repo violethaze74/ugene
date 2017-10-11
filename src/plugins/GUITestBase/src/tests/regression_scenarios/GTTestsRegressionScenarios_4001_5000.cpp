@@ -4588,11 +4588,11 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_4782) {
 //    1. Open "data/samples/genbank/murine.gb".
-    GTFileDialog::openFile(os, dataDir + "samples/genbank/murine.gb");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Open "data/samples/Genbank/sars.gb".
-    GTFileDialog::openFile(os, dataDir + "samples/genbank/sars.gb");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    Expected state: a Sequence View for "sars.gb" is active.
