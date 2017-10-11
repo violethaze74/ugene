@@ -5998,9 +5998,7 @@ GUI_TEST_CLASS_DEFINITION(test_2929){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2930){
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller
-                                 (os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "test_2930"));
+	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_2930"));
     GTFileDialog::openFile(os, dataDir+"samples/ACE", "K26.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

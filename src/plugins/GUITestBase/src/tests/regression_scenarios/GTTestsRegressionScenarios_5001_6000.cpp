@@ -1,3 +1,4 @@
+
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
@@ -3749,12 +3750,13 @@ GUI_TEST_CLASS_DEFINITION(test_5798_5) {
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
             //4. Select input MSA "samples/APR/DNA.apr"
-            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << dataDir + "samples/APR/DNA.apr"));
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << dataDir + "samples/APR/DNA.apr"));		
             //5. Press "Next" button
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-            GTUtilsWizard::setParameter(os, "Result ClustalW file", "DNA.aln");
+            GTUtilsWizard::setParameter(os, "Result ClustalW file", "DNA.aln");			
             //6. Press "Run" button
-            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
+			GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
 
