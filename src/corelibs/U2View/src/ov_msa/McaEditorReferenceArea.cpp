@@ -142,15 +142,18 @@ void McaEditorReferenceArea::mousePressEvent(QMouseEvent* e) {
 void McaEditorReferenceArea::mouseMoveEvent(QMouseEvent* e) {
     if (isShiftPressed) {
         setReferenceSelection(e);
-        e->accept();
     } else {
-        PanView::mouseMoveEvent(e);
+        QPoint areaPoint = toRenderAreaPoint(e->pos());
+        qint64 pos = renderArea->coordToPos(areaPoint);
+        qint64 selStart = qMin(lastPressPos, pos);
+        qint64 selLen = qAbs(pos - lastPressPos) + 1;
+        setSelection(U2Region(selStart, selLen));
     }
+
+    e->accept();
 }
 
 void McaEditorReferenceArea::mouseReleaseEvent(QMouseEvent* e) {
-    Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
-    bool isShiftPressed = km.testFlag(Qt::ShiftModifier);
     bool accept = false;
     if (e->button() == Qt::LeftButton){
         if (isShiftPressed) {
@@ -233,7 +236,7 @@ void McaEditorReferenceArea::keyPressEvent(QKeyEvent *event) {
                         selectedRegion.startPos++;
                         selectedRegion.length--;
                     } else {
-                        selectedRegion.length = qAbs(selectionCountFromStartPos == -1 ? selectionCountFromStartPos -= 1 : selectionCountFromStartPos);
+                        selectedRegion.length = qAbs(selectionCountFromStartPos == -1 ? selectionCountFromStartPos += 1 : selectionCountFromStartPos);
                     }
                 }
             } else {
