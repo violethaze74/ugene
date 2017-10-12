@@ -93,7 +93,9 @@ QList<Task*> AprImporterTask::onSubTaskFinished(Task* subTask) {
         QString dstUrl = convTask->getResult();
         SAFE_POINT_EXT(!dstUrl.isEmpty(), stateInfo.setError(tr("Empty destination url")), res);
 
-        LoadDocumentTask* loadTask = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, dstUrl);
+        QVariantMap hints;
+        hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
+        LoadDocumentTask* loadTask = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, dstUrl, hints);
         CHECK(loadTask != NULL, res);
 
         res << loadTask;
