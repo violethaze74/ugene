@@ -290,7 +290,7 @@ void MaEditorNameList::paintEvent(QPaintEvent*) {
 
 void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     int key = e->key();
-    bool isShiftPressed = e->modifiers() == Qt::ShiftModifier;
+    bool isShiftPressed = e->modifiers().testFlag(Qt::ShiftModifier);
     switch(key) {
     case Qt::Key_Up: {
         bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect - 1);
