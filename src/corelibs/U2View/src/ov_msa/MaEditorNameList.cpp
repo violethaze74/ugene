@@ -260,6 +260,12 @@ void MaEditorNameList::sl_removeSequence() {
 
     U2Region mappedSelection = ui->getCollapseModel()->mapSelectionRegionToRows(sel);
     maObj->removeRegion(0, mappedSelection.startPos, maObj->getLength(), mappedSelection.length, true);
+
+    qint64 numRows = editor->getUI()->getCollapseModel()->getDisplayableRowsCount();
+    if (sel.startPos < numRows) {
+        int count = qMin(sel.length, numRows - sel.startPos);
+        setSelection(sel.startPos, count);
+    }
 }
 
 void MaEditorNameList::sl_selectReferenceSequence() {
