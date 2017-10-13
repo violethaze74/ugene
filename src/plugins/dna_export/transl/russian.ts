@@ -307,39 +307,32 @@
     <message>
         <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="20"/>
         <source>Export Alignment without Chromatograms </source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт выравнивания без хроматограмм </translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="34"/>
         <source>File format</source>
-        <translation type="unfinished">Формат файла</translation>
+        <translation>Формат файла</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="52"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="61"/>
         <source>Export to file</source>
-        <translation type="unfinished">Записать в файл</translation>
+        <translation>Записать в файл</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="70"/>
         <source>Add document to project</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить в проект</translation>
     </message>
     <message>
         <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="80"/>
         <source>Include reference sequence</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ExportMsa2McaDialog</name>
-    <message>
-        <source>...</source>
-        <translation type="obsolete">...</translation>
+        <translation>Добавить референсную последовательность в файл</translation>
     </message>
 </context>
 <context>
@@ -691,7 +684,7 @@
     <message>
         <location filename="../src/tasks/ConvertMca2MsaTask.cpp" line="31"/>
         <source>Convert MCA to MSA task</source>
-        <translation type="unfinished"></translation>
+        <translation>Convert MCA to MSA task</translation>
     </message>
 </context>
 <context>
@@ -1079,27 +1072,27 @@
 <context>
     <name>U2::ExportMca2MsaDialog</name>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="40"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="42"/>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="41"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="43"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="70"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="72"/>
         <source>Export Alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт выравнивания</translation>
     </message>
 </context>
 <context>
     <name>U2::ExportMca2MsaTask</name>
     <message>
-        <location filename="../src/tasks/ExportMca2MsaTask.cpp" line="36"/>
+        <location filename="../src/tasks/ExportMca2MsaTask.cpp" line="37"/>
         <source>Export Sanger reads task</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Export Sanger reads task</translation>
     </message>
 </context>
 <context>
@@ -1127,7 +1120,7 @@
     <message>
         <location filename="../src/ExportProjectViewItems.cpp" line="100"/>
         <source>Export alignment without chromatograms...</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт выравнивания без хроматограмм...</translation>
     </message>
     <message>
         <location filename="../src/ExportProjectViewItems.cpp" line="103"/>
@@ -1435,32 +1428,37 @@
         <translation>Объединить последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="54"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="55"/>
         <source>Export</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="55"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="56"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="187"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="188"/>
         <source>Export Sequences</source>
         <translation>Экспорт последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="149"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="150"/>
         <source>Select organism</source>
         <translation>Выберите организм</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="234"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="236"/>
         <source>File is empty</source>
         <translation>Не указано имя файла</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="239"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="242"/>
+        <source>File name is too long!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportSequencesDialog.cpp" line="247"/>
         <source>Organism for back translation not specified</source>
         <translation>Не выбран организм для обратной трансляции</translation>
     </message>
@@ -2067,7 +2065,7 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
     <message>
         <location filename="../src/McaEditorContext.cpp" line="55"/>
         <source>Export alignment without chromatograms...</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт выравнивания без хроматограмм...</translation>
     </message>
 </context>
 <context>
