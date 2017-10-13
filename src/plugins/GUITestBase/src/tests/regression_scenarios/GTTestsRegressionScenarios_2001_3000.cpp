@@ -2755,15 +2755,12 @@ GUI_TEST_CLASS_DEFINITION( test_2401 ) {
     QString sandbox = testDir + "_common_data/scenarios/sandbox/";
     QString fileName = "2401.ugenedb";
     QString ugenedb = sandbox + fileName;
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller
-                                 (os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, ugenedb));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, ugenedb));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: the file is imported without errors, the assembly is opened.
     // 4. Close the project.
-    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
 #ifdef Q_OS_MAC
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Close project");
 #else
@@ -2775,9 +2772,7 @@ GUI_TEST_CLASS_DEFINITION( test_2401 ) {
     // 6. Set the same ugenedb path for import: "_common_data/scenarios/sandbox/2401.ugenedb".
     // 7. Click OK.
     // 8. Click Append.
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller
-                                 (os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, ugenedb, ConvertAceToSqliteDialogFiller::APPEND));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, ugenedb));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_11_(error).ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
