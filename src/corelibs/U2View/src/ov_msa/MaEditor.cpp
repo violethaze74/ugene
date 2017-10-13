@@ -357,11 +357,7 @@ void MaEditor::initZoom() {
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != NULL, "AppConext is NULL", );
     zoomFactor = s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, MOBJECT_DEFAULT_ZOOM_FACTOR).toFloat();
-    if ( (font.pointSize() == MOBJECT_MIN_FONT_SIZE) && (zoomFactor < 1.0f) ) {
-        resizeMode = ResizeMode_OnlyContent;
-    } else {
-        resizeMode = ResizeMode_FontAndContent;
-    }
+    updateResizeMode();
 }
 
 void MaEditor::initFont() {
@@ -373,6 +369,14 @@ void MaEditor::initFont() {
     font.setBold(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_BOLD, false).toBool());
 
     calcFontPixelToPointSizeCoef();
+}
+
+void MaEditor::updateResizeMode() {
+    if ( (font.pointSize() >= MOBJECT_MIN_FONT_SIZE) && (zoomFactor < 1.0f) ) {
+        resizeMode = ResizeMode_OnlyContent;
+    } else {
+        resizeMode = ResizeMode_FontAndContent;
+    }
 }
 
 void MaEditor::addCopyMenu(QMenu* m) {
@@ -421,6 +425,7 @@ void MaEditor::setFont(const QFont& f) {
     font = f;
     calcFontPixelToPointSizeCoef();
     font.setPointSize(qBound(MOBJECT_MIN_FONT_SIZE, pSize, MOBJECT_MAX_FONT_SIZE));
+    updateResizeMode();
     emit si_fontChanged(font);
 
     Settings* s = AppContext::getSettings();
@@ -444,6 +449,7 @@ void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
 
 void MaEditor::setZoomFactor(float newZoomFactor) {
     zoomFactor = newZoomFactor;
+    updateResizeMode();
     Settings* s = AppContext::getSettings();
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, zoomFactor);
     sl_resetColumnWidthCache();

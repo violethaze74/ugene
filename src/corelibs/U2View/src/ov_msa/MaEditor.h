@@ -158,6 +158,7 @@ protected:
     virtual void initActions();
     virtual void initZoom();
     virtual void initFont();
+    void updateResizeMode();
 
     void addCopyMenu(QMenu* m);
     void addEditMenu(QMenu* m);
