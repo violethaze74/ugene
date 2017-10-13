@@ -38,12 +38,19 @@ class SequenceObjectContext;
 #define     MCAE_MENU_NAVIGATION    "MCAE_MENU_NAVIGATION"
 #define     MCAE_MENU_EDIT          "MCAE_MENU_EDIT"
 
+#define MCAE_SETTINGS_SHOW_CHROMATOGRAMS    "show_chromatograms"
+#define MCAE_SETTINGS_SHOW_OVERVIEW         "show_overview"
+#define MCAE_SETTINGS_PEAK_HEIGHT           "peak_height"
+#define MCAE_SETTINGS_CONSENSUS_TYPE        "consensus_type"
+
 class U2VIEW_EXPORT McaEditor : public MaEditor {
     Q_OBJECT
     friend class McaEditorSequenceArea;
 public:
     McaEditor(const QString& viewName,
               MultipleChromatogramAlignmentObject* obj);
+
+    QString getSettingsRoot() const { return MCAE_SETTINGS_ROOT; }
 
     MultipleChromatogramAlignmentObject* getMaObject() const;
     McaEditorWgt *getUI() const;
@@ -71,6 +78,9 @@ protected slots:
 private slots:
     void sl_showGeneralTab();
     void sl_showConsensusTab();
+
+    void sl_saveOverviewState();
+    void sl_saveChromatogramState();
 
 protected:
     QWidget* createWidget();

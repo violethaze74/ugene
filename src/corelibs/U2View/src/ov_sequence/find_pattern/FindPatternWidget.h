@@ -160,7 +160,8 @@ private:
     /** Allows showing of several error messages. */
     void showHideMessage(bool show, MessageFlag messageFlag, const QString& additionalMsg = QString());
 
-    void verifyPatternAlphabet();
+    /** Checks pattern alphabet and sets error message if needed. Returns false on error or true if no error found */
+    bool verifyPatternAlphabet();
     bool checkAlphabet(const QString& pattern);
     void showTooLongSequenceError();
 

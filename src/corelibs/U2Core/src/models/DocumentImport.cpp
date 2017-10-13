@@ -22,6 +22,8 @@
 #include <U2Core/DocumentImport.h>
 #include <U2Core/Log.h>
 
+#include <U2Gui/ImportWidget.h>
+
 namespace U2 {
 
 DocumentImportersRegistry::~DocumentImportersRegistry() {
@@ -47,11 +49,11 @@ void DocumentImportersRegistry::addDocumentImporter(DocumentImporter* i) {
 
 const QString DocumentImporter::LOAD_RESULT_DOCUMENT = "load_result_document";
 
-void DocumentImporter::setDialogFactory(ImportDialogFactory* factory) {
-    if (dialogFactory) {
-        delete dialogFactory;
+void DocumentImporter::setWidgetFactory(ImportWidgetFactory* factory) {
+    if (widgetFactory) {
+        delete widgetFactory;
     }
-    dialogFactory = factory;
+    widgetFactory = factory;
 }
 
 const QSet<GObjectType> &DocumentImporter::getSupportedObjectTypes() const {
@@ -64,6 +66,15 @@ void ImportDialog::accept() {
     }
     applySettings();
     QDialog::accept();
+}
+
+QString DocumentImporter::getRadioButtonText() const {
+    return QString();
+}
+
+ImportWidget* DocumentImporter::createImportWidget(const GUrl& url, const QVariantMap& settings) const {
+    ImportWidget* res = widgetFactory->getWidget(url, settings);
+    return res;
 }
 
 } //namespace

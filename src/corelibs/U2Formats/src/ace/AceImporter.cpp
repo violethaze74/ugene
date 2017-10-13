@@ -28,12 +28,15 @@
 #include <U2Core/CloneObjectTask.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
+
+#include <U2Gui/ImportWidget.h>
 
 #include <U2Formats/AceFormat.h>
 
@@ -47,13 +50,12 @@ namespace U2 {
 //// AceImporterTask
 ///////////////////////////////////
 
-AceImporterTask::AceImporterTask(const GUrl& url, const QVariantMap& settings, const QVariantMap &hints) :
+AceImporterTask::AceImporterTask(const GUrl& url, const QVariantMap& settings) :
     DocumentProviderTask(tr("ACE file import: %1").arg(url.fileName()), TaskFlags_NR_FOSE_COSC),
     convertTask(NULL),
     loadDocTask(NULL),
     isSqliteDbTransit(false),
     settings(settings),
-    hints(hints),
     srcUrl(url)
 {
     documentDescription = srcUrl.fileName();
@@ -62,7 +64,7 @@ AceImporterTask::AceImporterTask(const GUrl& url, const QVariantMap& settings, c
 void AceImporterTask::prepare() {
     startTime = GTimer::currentTimeMicros();
 
-    hintedDbiRef = hints.value(DocumentFormat::DBI_REF_HINT).value<U2DbiRef>();
+    hintedDbiRef = settings.value(DocumentFormat::DBI_REF_HINT).value<U2DbiRef>();
     SAFE_POINT_EXT(hintedDbiRef.isValid(), setError(tr("Dbi ref is invalid")), );
 
     isSqliteDbTransit = SQLITE_DBI_ID != hintedDbiRef.dbiFactoryId;
@@ -128,12 +130,12 @@ Task::ReportResult AceImporterTask::report() {
 void AceImporterTask::initCloneObjectTasks() {
     const QMap<U2Sequence, U2Assembly> importedObjects = convertTask->getImportedObjects();
     foreach (const U2Sequence &reference, importedObjects.keys()) {
-        cloneTasks << new CloneAssemblyWithReferenceToDbiTask(importedObjects[reference], reference, localDbiRef, hintedDbiRef, hints);
+        cloneTasks << new CloneAssemblyWithReferenceToDbiTask(importedObjects[reference], reference, localDbiRef, hintedDbiRef, settings);
     }
 }
 
 void AceImporterTask::initLoadDocumentTask() {
-    if (hints.value(AceImporter::LOAD_RESULT_DOCUMENT, true).toBool()) {
+    if (settings.value(AceImporter::LOAD_RESULT_DOCUMENT, true).toBool()) {
         loadDocTask = LoadDocumentTask::getDefaultLoadDocTask(convertTask->getDestinationUrl());
         if (loadDocTask == NULL) {
             setError(tr("Failed to get load task for : %1").arg(convertTask->getDestinationUrl().getURLString()));
@@ -165,28 +167,16 @@ FormatCheckResult AceImporter::checkRawData(const QByteArray& rawData, const GUr
     return aceFormat.checkRawData(rawData, url);
 }
 
-DocumentProviderTask* AceImporter::createImportTask(const FormatDetectionResult& res, bool showWizard, const QVariantMap &hints) {
+DocumentProviderTask* AceImporter::createImportTask(const FormatDetectionResult& res, bool, const QVariantMap &hints) {
     QVariantMap settings;
-    AceImporterTask* task = NULL;
     settings.insert(SRC_URL, res.url.getURLString());
 
-    if (showWizard && NULL != dialogFactory) {
-        QObjectScopedPointer<ImportDialog> dialog = dialogFactory->getDialog(settings);
-        const int result = dialog->exec();
-        CHECK(!dialog.isNull(), NULL);
-
-        settings = dialog->getSettings();
-        QVariantMap extendedHints(hints);
-        if (settings.contains(DocumentFormat::DBI_REF_HINT)) {
-            extendedHints.insert(DocumentFormat::DBI_REF_HINT, settings[DocumentFormat::DBI_REF_HINT]);
-        }
-        task = new AceImporterTask(res.url, settings, extendedHints);
-        if (result == QDialog::Rejected) {
-            task->cancel();
-        }
-    } else {
-        task = new AceImporterTask(res.url, settings, hints);
+    AceImporterTask* task = NULL;
+    if (hints.contains(DocumentFormat::DBI_REF_HINT)) {
+        QVariant hint = hints.value(DocumentFormat::DBI_REF_HINT);
+        settings.insert(DocumentFormat::DBI_REF_HINT, hint);
     }
+    task = new AceImporterTask(res.url, settings);
 
     return task;
 }

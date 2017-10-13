@@ -83,6 +83,7 @@ void ExportAnnotationsFiller::init(const QString &exportToFile) {
     comboBoxItems[gff] = "GFF";
     comboBoxItems[gtf] = "GTF";
     comboBoxItems[csv] = "CSV";
+    comboBoxItems[ugenedb] = "UGENE Database";
 }
 
 #define GT_METHOD_NAME "commonScenario"

@@ -43,12 +43,31 @@ public:
     static void moveTo(HI::GUITestOpStatus &os, const QPoint &p);
     static QPoint convertCoordinates(HI::GUITestOpStatus &os, const QPoint p);
     static QString getReferenceReg(HI::GUITestOpStatus &os, int num, int length);
+    static QString getSelectedReferenceReg(HI::GUITestOpStatus &os);
     static void moveTheBorderBetweenAlignmentAndRead(HI::GUITestOpStatus &os, int shift);
     static void dragAndDrop(HI::GUITestOpStatus &os, const QPoint p);
-    static int getSelectedRowsNum(GUITestOpStatus &os);
+    static U2Region getSelectedRowsNum(GUITestOpStatus &os);
+    static QStringList getSelectedRowsNames(GUITestOpStatus &os);
     static QRect getSelectedRect(GUITestOpStatus &os);
-    static qint64 getReferenceSelectedNum(GUITestOpStatus &os);
     static void clickToReferencePosition(GUITestOpStatus &os, const qint64 num);
+    /**
+    *0 - ViewMode
+    *1 - ReplaceCharMode
+    *2 - InsertCharMode
+    *Return value of this function is not enum "MaMode" to avoid encapsulation violation
+    */
+    static short getCharacterModificationMode(GUITestOpStatus &os);
+    /**
+    *Valid just if one character in sequence area selected
+    */
+    static char getSelectedReadChar(GUITestOpStatus &os);
+    static char getReadCharByPos(GUITestOpStatus &os, const QPoint p);
+    static qint64 getRowLength(GUITestOpStatus &os, const int numRow);
+    static qint64 getReferenceLength(GUITestOpStatus &os);
+    static qint64 getReferenceLengthWithGaps(GUITestOpStatus &os);
+    static U2Region getReferenceSelection(GUITestOpStatus &os);
+    static QString getSelectedConsensusReg(GUITestOpStatus &os);
+    static QString getConsensusStringByRegion(GUITestOpStatus &os, const U2Region reg);
 };
 
 }//namespace

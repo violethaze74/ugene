@@ -51,6 +51,8 @@ public:
 
 private:
     void run();
+    QString generateReport() const;
+
     void cloneObjects();
     void cloneSequence();
     void cloneChromatogram();
@@ -61,6 +63,7 @@ private:
     const SequenceQualityTrimTaskSettings settings;
     U2SequenceObject *trimmedSequenceObject;
     DNAChromatogramObject *trimmedChromatogramObject;
+    bool isFilteredOut;
 };
 
 }   // namespace U2

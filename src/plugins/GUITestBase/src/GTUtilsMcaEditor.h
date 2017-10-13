@@ -31,9 +31,11 @@ class GUITestOpStatus;
 namespace U2 {
 
 class McaEditor;
+class McaEditorConsensusArea;
 class McaEditorNameList;
 class McaEditorSequenceArea;
 class McaEditorWgt;
+class MultipleAlignmentRowData;
 
 class GTUtilsMcaEditor {
 public:
@@ -42,6 +44,10 @@ public:
     static QLabel *getReferenceLabel(HI::GUITestOpStatus &os);
     static McaEditorNameList *getNameListArea(HI::GUITestOpStatus &os);
     static McaEditorSequenceArea *getSequenceArea(HI::GUITestOpStatus &os);
+    static McaEditorConsensusArea* getConsensusArea(HI::GUITestOpStatus &os);
+    static MultipleAlignmentRowData* getMcaRow(HI::GUITestOpStatus &os, int rowNum);
+
+    static QAction* getOffsetAction(HI::GUITestOpStatus &os);
 
     static QString getReferenceLabelText(HI::GUITestOpStatus &os);
 
@@ -58,6 +64,9 @@ public:
 
     static void undo(HI::GUITestOpStatus &os);
     static void redo(HI::GUITestOpStatus &os);
+    static void zoomIn(HI::GUITestOpStatus &os);
+    static void zoomOut(HI::GUITestOpStatus &os);
+    static void resetZoom(HI::GUITestOpStatus &os);
 };
 
 }   // namespace U2

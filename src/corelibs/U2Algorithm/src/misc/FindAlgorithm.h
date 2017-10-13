@@ -30,6 +30,8 @@
 
 namespace U2 {
 
+class DNAAlphabet;
+
 class U2ALGORITHM_EXPORT FindAlgorithmResult {
 public:
     static const int NOT_ENOUGH_MEMORY_ERROR;
@@ -90,6 +92,7 @@ public:
         FindAlgorithmStrand strand = FindAlgorithmStrand_Direct,
         DNATranslation* complementTT = NULL,
         DNATranslation* proteinTT = NULL,
+        const DNAAlphabet* sequenceAlphabet = NULL,
         const U2Region& searchRegion = U2Region(),
         int maxErr = 0,
         FindAlgorithmPatternSettings _patternSettings = FindAlgorithmPatternSettings_Subst,
@@ -101,6 +104,8 @@ public:
     FindAlgorithmStrand                 strand;
     DNATranslation*                     complementTT;
     DNATranslation*                     proteinTT;
+    /** Alphabet of the sequence. May be NULL if unknown */
+    const DNAAlphabet*                  sequenceAlphabet;
     U2Region                            searchRegion;
     int                                 maxErr;
     FindAlgorithmPatternSettings        patternSettings;
@@ -124,6 +129,7 @@ public:
         bool supportAmbigiousBases,
         const char* sequence,
         int seqLen,
+        const DNAAlphabet* sequenceAlphabet, // Sequence alphabet. May be NULL if not known.
         bool searchIsCircular,
         const U2Region& range,
         const char* pattern,
@@ -149,6 +155,7 @@ public:
                 config.useAmbiguousBases,
                 sequence,
                 seqLen,
+                config.sequenceAlphabet,
                 searchIsCircular,
                 config.searchRegion,
                 config.pattern.constData(),

@@ -27,8 +27,13 @@
 namespace U2 {
 
 class MsaEditorNameList : public MaEditorNameList {
+    Q_OBJECT
 public:
     MsaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
+
+private slots:
+    void sl_buildStaticMenu(GObjectView *view, QMenu *menu);
+    void sl_buildContextMenu(GObjectView *view, QMenu *menu);
 
 private:
     void buildMenu(QMenu *menu);

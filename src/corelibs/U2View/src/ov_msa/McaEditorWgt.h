@@ -45,6 +45,7 @@ public:
     McaReferenceCharController* getRefCharController() const;
 
     QAction *getClearSelectionAction() const;
+    QAction *getToogleColumnsAction() const;
 
 signals:
     void si_clearSelection();

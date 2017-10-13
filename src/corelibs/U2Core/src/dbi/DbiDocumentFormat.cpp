@@ -204,7 +204,9 @@ void DbiDocumentFormat::storeDocument(Document* d, IOAdapter* ioAdapter, U2OpSta
        GObject* cloned = clonedObjects[initialObj];
        QList<GObjectRelation> relations;
        foreach (const GObjectRelation& r, initialObj->getObjectRelations()) {
-           relations << GObjectRelation(match[r.ref], r.role);
+           if (match.contains(r.ref)) {
+               relations << GObjectRelation(match[r.ref], r.role);
+           }
        }
        cloned->setObjectRelations(relations);
     }

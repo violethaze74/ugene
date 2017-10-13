@@ -31,6 +31,7 @@ namespace U2 {
 class DocumentImporter;
 class DocumentProviderTask;
 class FormatDetectionResult;
+class ImportWidget;
 
 class U2CORE_EXPORT ImportDialog : public QDialog {
     Q_OBJECT
@@ -49,11 +50,11 @@ protected:
     QVariantMap settings;
 };
 
-class ImportDialogFactory {
+class ImportWidgetFactory {
 public:
-    virtual ~ImportDialogFactory() {}
+    virtual ~ImportWidgetFactory() {}
 
-    virtual ImportDialog* getDialog(const QVariantMap& settings) const = 0;
+    virtual ImportWidget* getWidget(const GUrl& url, const QVariantMap& settings) const = 0;
 };
 
 /** Registry for all DocumentImportHandlers */
@@ -81,13 +82,17 @@ class U2CORE_EXPORT DocumentImporter : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(DocumentImporter)
 public:
-    DocumentImporter(const QString& _id, const QString& _name, QObject* o = NULL) : QObject(o), id(_id), name(_name), dialogFactory(NULL) {}
+    DocumentImporter(const QString& _id, const QString& _name, QObject* o = NULL) : QObject(o), id(_id), name(_name), widgetFactory(NULL) {}
 
-    virtual ~DocumentImporter() { delete dialogFactory; }
+    virtual ~DocumentImporter() { delete widgetFactory; }
 
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url) = 0;
 
-    virtual DocumentProviderTask* createImportTask(const FormatDetectionResult& res, bool showWizard, const QVariantMap &hints) = 0;
+    virtual DocumentProviderTask* createImportTask(const FormatDetectionResult& res, bool showGui, const QVariantMap &hints) = 0;
+
+    virtual QString getRadioButtonText() const;
+
+    virtual ImportWidget* createImportWidget(const GUrl& url, const QVariantMap& settings) const;
 
     virtual QString getImporterDescription() const {return importerDescription;}
 
@@ -99,7 +104,7 @@ public:
 
     const QList<QString>& getSupportedFileExtensions() const {return extensions;}
 
-    void setDialogFactory(ImportDialogFactory* factory);
+    void setWidgetFactory(ImportWidgetFactory* factory);
 
     const QSet<GObjectType> &getSupportedObjectTypes() const;
 
@@ -112,7 +117,7 @@ protected:
     QStringList             formatIds;
     QList<QString>          extensions;
     QString                 importerDescription;
-    ImportDialogFactory*    dialogFactory;
+    ImportWidgetFactory*    widgetFactory;
     QSet<GObjectType>       supportedObjectTypes;
 };
 

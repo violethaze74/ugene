@@ -73,6 +73,7 @@ DotPlotViewContext::DotPlotViewContext(QObject* p)
     connect( showDlgAction, SIGNAL( triggered() ), SLOT( sl_showDotPlotDialog() ) );
     ToolsMenu::addAction(ToolsMenu::TOOLS, showDlgAction);
 
+    connect(AppContext::getMainWindow()->getMDIManager(), SIGNAL(si_windowActivated(MWMDIWindow*)), SLOT(sl_windowActivated(MWMDIWindow*)));
 
     // need to know it build dotplot wizard finished work
     connect( AppContext::getTaskScheduler(), SIGNAL( si_stateChanged(Task*) ), SLOT( sl_loadTaskStateChanged(Task*) ) );
@@ -154,23 +155,20 @@ static U2SequenceObject * getSequenceByFile(QString file) {
 
 // called from the context menu
 void DotPlotViewContext::sl_buildDotPlot() {
+    GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
+    CHECK(action != NULL, )
+    showBuildDotPlotDialog(action->getObjectView());
+}
 
-    GObjectViewAction *action = qobject_cast<GObjectViewAction*>(sender());
-    if (!action) {
-        return;
-    }
-
-    // tell in which dnaView we should build dotplot
-    AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
-    if (!dnaView) {
-        return;
-    }
+void DotPlotViewContext::showBuildDotPlotDialog(GObjectView *ov) {
+    AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView*>(ov);
+    CHECK(dnaView != NULL, )
 
     DotPlotWidget *dotPlot = new DotPlotWidget(dnaView);
     dotPlot->setSequences(getSequenceByFile(firstFile), getSequenceByFile(secondFile));
 
     // show settings dialog
-    if (dotPlot && (dotPlot->sl_showSettingsDialog(createdByWizard))) {
+    if (dotPlot->sl_showSettingsDialog(createdByWizard)) {
         DotPlotSplitter* splitter = getView(dnaView, true); // create new splitter
         Q_ASSERT(splitter);
         splitter->addView(dotPlot);
@@ -211,6 +209,10 @@ void DotPlotViewContext::sl_removeDotPlot() {
     }
 }
 
+
+#define SHOW_BUILD_DOT_PLOT_DIALOG_FLAG "trigger_dot_plot_dialog"
+#define BUILD_DOT_PLOT_ACTION_NAME "build_dotplot_action"
+
 // new view context is opened
 void DotPlotViewContext::initViewContext(GObjectView* v) {
     AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(v);
@@ -219,7 +221,7 @@ void DotPlotViewContext::initViewContext(GObjectView* v) {
     // add the dotplot menu item to an analyze menu
     QString dotPlotBuildString = tr("Build dotplot...");
     ADVGlobalAction* act = new ADVGlobalAction(av, QIcon(":dotplot/images/dotplot.png"), dotPlotBuildString, 40, ADVGlobalActionFlags(ADVGlobalActionFlag_AddToAnalyseMenu));
-    act->setObjectName("build_dotplot_action");
+    act->setObjectName(BUILD_DOT_PLOT_ACTION_NAME);
     connect(act, SIGNAL(triggered()), SLOT(sl_buildDotPlot()));
 
     ADVGlobalAction* tb = new ADVGlobalAction(av, QIcon(":dotplot/images/dotplot.png"), dotPlotBuildString, 40, ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar));
@@ -234,8 +236,8 @@ void DotPlotViewContext::initViewContext(GObjectView* v) {
         Q_ASSERT(widget != NULL);
         widget->showMaximized();
 
-        // show dotplot settings dialog
-        act->trigger();
+        // once view is ready and activated we will show build-dot-plot dialog
+        av->setProperty(SHOW_BUILD_DOT_PLOT_DIALOG_FLAG, 1);
     }
 }
 
@@ -299,6 +301,19 @@ void DotPlotViewContext::removeDotPlotView(GObjectView* view) {
             delete dotPlotView;
         }
     }
+}
+
+void DotPlotViewContext::sl_windowActivated(MWMDIWindow* w) {
+    // check if we need to show DP dialog for this window
+    GObjectViewWindow* ow = qobject_cast<GObjectViewWindow*>(w);
+    CHECK(ow != NULL, )
+    GObjectView* view = ow->getObjectView();
+    if (view->property(SHOW_BUILD_DOT_PLOT_DIALOG_FLAG).toInt() != 1) {
+        return;
+    }
+    // mark this window as processed
+    view->setProperty(SHOW_BUILD_DOT_PLOT_DIALOG_FLAG, 0);
+    showBuildDotPlotDialog(view);
 }
 
 }//namespace

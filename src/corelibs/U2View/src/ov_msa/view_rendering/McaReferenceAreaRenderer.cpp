@@ -87,7 +87,9 @@ void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize &/*canvasSi
         if (color.isValid()) {
             p.fillRect(charRect, color);
         }
-        p.drawText(charRect, Qt::AlignCenter, QString(c));
+        if (maEditor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent) {
+            p.drawText(charRect, Qt::AlignCenter, QString(c));
+        }
     }
 }
 

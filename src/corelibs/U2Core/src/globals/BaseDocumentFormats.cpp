@@ -61,6 +61,7 @@ const DocumentFormatId BaseDocumentFormats::SRF("srfasta");
 const DocumentFormatId BaseDocumentFormats::STOCKHOLM("stockholm");
 const DocumentFormatId BaseDocumentFormats::UGENEDB("usqlite");
 const DocumentFormatId BaseDocumentFormats::VCF4("vcf");
+const DocumentFormatId BaseDocumentFormats::VECTOR_NTI_ALIGNX("Vector_nti_alignx");
 const DocumentFormatId BaseDocumentFormats::VECTOR_NTI_SEQUENCE("vector_nti_sequence");
 
 DocumentFormat* BaseDocumentFormats::get(const DocumentFormatId& formatId) {
@@ -108,6 +109,7 @@ StrStrMap initInvalidFormatIdsMap() {
     invalidIds2trueIds.insert("Stockholm", BaseDocumentFormats::STOCKHOLM);
     invalidIds2trueIds.insert("Usqlite", BaseDocumentFormats::UGENEDB);
     invalidIds2trueIds.insert("VCF", BaseDocumentFormats::VCF4);
+    invalidIds2trueIds.insert("Vector NTI/AlignX", BaseDocumentFormats::VECTOR_NTI_ALIGNX);
     invalidIds2trueIds.insert("Vector NTI Sequence", BaseDocumentFormats::VECTOR_NTI_SEQUENCE);
 
     return invalidIds2trueIds;
@@ -151,6 +153,7 @@ StrStrMap initFormatIdsMap() {
     anyIds2trueIds.insert(BaseDocumentFormats::STOCKHOLM, BaseDocumentFormats::STOCKHOLM);
     anyIds2trueIds.insert(BaseDocumentFormats::UGENEDB, BaseDocumentFormats::UGENEDB);
     anyIds2trueIds.insert(BaseDocumentFormats::VCF4, BaseDocumentFormats::VCF4);
+    anyIds2trueIds.insert(BaseDocumentFormats::VECTOR_NTI_ALIGNX, BaseDocumentFormats::VECTOR_NTI_ALIGNX);
     anyIds2trueIds.insert(BaseDocumentFormats::VECTOR_NTI_SEQUENCE, BaseDocumentFormats::VECTOR_NTI_SEQUENCE);
 
     // IDs from 1.26.0

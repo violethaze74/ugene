@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IMPORT_DIALOGS_H_
-#define _U2_IMPORT_DIALOGS_H_
+#ifndef _U2_IMPORT_WIDGETS_H_
+#define _U2_IMPORT_WIDGETS_H_
 
 #include <U2Core/DocumentImport.h>
 
@@ -30,16 +30,26 @@ namespace U2 {
  *  crete its factory and add the factory to the importer.
  *  Note that importer should exec the dialog itself.
  **/
-class U2GUI_EXPORT ImportDialogFactories {
+
+class AceImportWidget;
+class AprImportWidget;
+class ImportWidget;
+
+class U2GUI_EXPORT ImportWidgetsFactories {
 public:
     static void registerFactories();
 };
 
-class AceImportDialogFactory : public ImportDialogFactory {
+class AceImportWidgetFactory : public ImportWidgetFactory {
 public:
-    virtual ImportDialog* getDialog(const QVariantMap &settings) const;
+    virtual ImportWidget* getWidget(const GUrl& url, const QVariantMap& settings) const;
+};
+
+class AprImportWidgetFactory : public ImportWidgetFactory {
+public:
+    virtual ImportWidget* getWidget(const GUrl& url, const QVariantMap& settings) const;
 };
 
 }   // namespace U2
 
-#endif // _U2_IMPORT_DIALOGS_H_
+#endif // _U2_IMPORT_WIDGETS_H_

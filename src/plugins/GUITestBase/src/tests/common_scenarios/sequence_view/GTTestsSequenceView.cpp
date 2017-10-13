@@ -1168,6 +1168,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
     };
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new AllPopupChecker));
     GTWidget::click(os, translationsMenuToolbarButton);
+	GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 #undef GET_ACTIONS
 

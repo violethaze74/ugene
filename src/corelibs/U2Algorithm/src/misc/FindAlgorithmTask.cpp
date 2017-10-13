@@ -64,6 +64,7 @@ void FindAlgorithmTask::run() {
         config.useAmbiguousBases,
         config.sequence.constData(),
         config.sequence.size(),
+        config.sequenceAlphabet,
         config.searchIsCircular,
         config.searchRegion,
         config.pattern.constData(),

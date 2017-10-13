@@ -27,6 +27,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/Settings.h>
 
 #include "MaConsensusMismatchController.h"
 #include "McaEditor.h"
@@ -39,6 +40,7 @@
 #include "McaEditorWgt.h"
 #include "McaReferenceCharController.h"
 #include "MSACollapsibleModel.h"
+#include "MSAEditorOffsetsView.h"
 #include "helpers/McaRowHeightController.h"
 #include "ov_sequence/SequenceObjectContext.h"
 
@@ -64,9 +66,6 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     consSettings.highlightMismatches = true;
     consArea->setDrawSettings(consSettings);
 
-    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO);
-    consArea->setConsensusAlgorithm(algoFactory);
-
     QString name = getEditor()->getReferenceContext()->getSequenceObject()->getSequenceName();
     QWidget *refName = createHeaderLabelWidget(tr("Reference %1:").arg(name),
                                                Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), refArea);
@@ -82,7 +81,9 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
 
     collapseModel->setTrivialGroupsPolicy(MSACollapsibleItemModel::Allow);
     collapseModel->reset(itemRegions);
-    collapseModel->collapseAll(false);
+    Settings* s = AppContext::getSettings();
+    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+    collapseModel->collapseAll(!s->getValue(editor->getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, true).toBool());
     collapseModel->setFakeCollapsibleModel(true);
     collapsibleMode = true;
 
@@ -132,6 +133,11 @@ McaReferenceCharController* McaEditorWgt::getRefCharController() const {
 
 QAction *McaEditorWgt::getClearSelectionAction() const {
     return clearSelectionAction;
+}
+
+QAction* McaEditorWgt::getToogleColumnsAction() const {
+    SAFE_POINT(offsetsView != NULL, "Offset controller is NULL", NULL);
+    return offsetsView->getToggleColumnsViewAction();
 }
 
 void McaEditorWgt::initActions() {

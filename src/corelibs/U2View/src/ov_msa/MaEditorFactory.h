@@ -50,7 +50,7 @@ public:
 
     virtual bool supportsSavedStates() const;
 
-    static MaEditor* getEditor(const QString &viewName, GObject *obj);
+    virtual MaEditor* getEditor(const QString &viewName, GObject *obj) = 0;
 
 protected:
     virtual OpenMaEditorTask* getOpenMaEditorTask(MultipleAlignmentObject* obj) = 0;
@@ -68,7 +68,7 @@ class U2VIEW_EXPORT MsaEditorFactory : public MaEditorFactory {
 public:
     MsaEditorFactory();
 
-    static MaEditor* getEditor(const QString &viewName, GObject *obj);
+    MaEditor* getEditor(const QString &viewName, GObject *obj);
 
     static const GObjectViewFactoryId ID;
 private:
@@ -86,7 +86,7 @@ class U2VIEW_EXPORT McaEditorFactory : public MaEditorFactory {
 public:
     McaEditorFactory();
 
-    static MaEditor* getEditor(const QString &viewName, GObject *obj);
+    MaEditor* getEditor(const QString &viewName, GObject *obj);
 
     static const GObjectViewFactoryId ID;
 private:

@@ -211,7 +211,7 @@ unix {
     mime.path = $$UGENE_INSTALL_MIME
 
     icons.files += installer/_common_data/application-x-ugene-ext.png
-    icons.path = $$UGENE_INSTALL_ICONS
+    icons.path = $$UGENE_INSTALL_ICONS/hicolor/32x32/mimetypes/
 
 
     INSTALLS += binscript ugene_starter transl plugins scripts data desktop pixmaps mime icons manual

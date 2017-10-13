@@ -22,13 +22,13 @@
 #ifndef _U2_MCA_REFERENCE_AREA_RENDERER_H_
 #define _U2_MCA_REFERENCE_AREA_RENDERER_H_
 
-#include "ov_sequence/view_rendering/PanViewRenderer.h"
+#include <U2View/PanViewRenderer.h>
 
 namespace U2 {
 
 class MaEditor;
 
-class McaReferenceAreaRenderer : public PanViewRenderer {
+class U2VIEW_EXPORT McaReferenceAreaRenderer : public PanViewRenderer {
 public:
     McaReferenceAreaRenderer(PanView *panView, SequenceObjectContext *ctx, MaEditor *maEditor);
 

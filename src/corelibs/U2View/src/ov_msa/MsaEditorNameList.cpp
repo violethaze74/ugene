@@ -29,7 +29,16 @@ namespace U2 {
 MsaEditorNameList::MsaEditorNameList(MaEditorWgt *ui, QScrollBar *nhBar)
     : MaEditorNameList(ui, nhBar)
 {
+    connect(editor, SIGNAL(si_buildPopupMenu(GObjectView *, QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
+    connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
+}
 
+void MsaEditorNameList::sl_buildStaticMenu(GObjectView *, QMenu *menu) {
+    buildMenu(menu);
+}
+
+void MsaEditorNameList::sl_buildContextMenu(GObjectView *, QMenu *menu) {
+    buildMenu(menu);
 }
 
 void MsaEditorNameList::buildMenu(QMenu *menu) {

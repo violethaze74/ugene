@@ -124,7 +124,6 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
     accessSharedDatabaseAction = new QAction(tr("Connect to UGENE shared database..."), this);
     accessSharedDatabaseAction->setObjectName(ACTION_PROJECTSUPPORT__ACCESS_SHARED_DB);
     accessSharedDatabaseAction->setIcon(QIcon(":core/images/db/database_go.png"));
-    accessSharedDatabaseAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
     connect(accessSharedDatabaseAction, SIGNAL(triggered()), SLOT(sl_accessSharedDatabase()));
 
     searchGenbankEntryAction = new QAction(tr("Search NCBI GenBank..."), this);
@@ -377,10 +376,16 @@ bool ProjectLoaderImpl::shouldFormatBeSelected(const QList<FormatDetectionResult
     const FormatDetectionResult firstUnrelatedFormat = getFirstUnrelatedFormat(formats);
     CHECK(FormatDetection_NotMatched != firstUnrelatedFormat.score(), false);
 
-    return firstFormat.score() == firstUnrelatedFormat.score()
-        || (firstUnrelatedFormat.score() > FormatDetection_AverageSimilarity && firstFormat.score() < FormatDetection_Matched)
-        || (firstFormat.score() <= FormatDetection_AverageSimilarity)
-        || forceSelectFormat;
+    int firstFormatScore = firstFormat.score();
+    int firstUnrelatedFormatScore = firstUnrelatedFormat.score();
+    bool isFirstFormatEqualFirstUnrelatedFormat = firstFormatScore == firstUnrelatedFormatScore;
+    bool isFirstUnrelatedFormatMoreThenFormatDetectionAverageSimilarity = firstUnrelatedFormatScore > FormatDetection_AverageSimilarity;
+    bool isFirstFormatLessThenFormatDetectionMatched = firstFormatScore < FormatDetection_Matched;
+    bool isFirstFormatLessOrEqualThenFormatDetectionAverageSimilarity = firstFormatScore <= FormatDetection_AverageSimilarity;
+    return isFirstFormatEqualFirstUnrelatedFormat
+           || (isFirstUnrelatedFormatMoreThenFormatDetectionAverageSimilarity && isFirstFormatLessThenFormatDetectionMatched)
+           || isFirstFormatLessOrEqualThenFormatDetectionAverageSimilarity
+           || forceSelectFormat;
 }
 
 bool ProjectLoaderImpl::detectFormat(const GUrl &url, QList<FormatDetectionResult> &formats, const QVariantMap &hints, FormatDetectionResult &selectedResult) {
@@ -395,7 +400,7 @@ bool ProjectLoaderImpl::detectFormat(const GUrl &url, QList<FormatDetectionResul
             return false;
         }
     } else {
-        const QList<FormatDetectionResult> relatedFormats = getRelatedFormats(formats, idx);
+        QList<FormatDetectionResult> relatedFormats = getRelatedFormats(formats, idx);
         if (relatedFormats.size() > 1) {
             int indexInRelatedList = DocumentProviderSelectorController::selectResult(url, relatedFormats);
             if (indexInRelatedList >= 0) {
@@ -556,8 +561,8 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
                         }else{
                             info.openView = nViews++ < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS;
                         }
-                        QVariantMap hints;
-                        info.dp = dr.importer->createImportTask(dr, true, hints);
+                        QVariantMap _hints = dr.rawDataCheckResult.properties;
+                        info.dp = dr.importer->createImportTask(dr, true, _hints);
                         docProviders << info;
                     }
                 }
@@ -811,7 +816,7 @@ SaveProjectDialogController::SaveProjectDialogController(QWidget *w) : QDialog(w
     setModal(true);
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Yes"));
     buttonBox->button(QDialogButtonBox::No)->setText(tr("No"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));    
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(sl_clicked(QAbstractButton *)));
 }

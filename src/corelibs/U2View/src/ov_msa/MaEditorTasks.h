@@ -19,19 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_TASKS_H_
-#define _U2_MSA_EDITOR_TASKS_H_
+#ifndef _U2_MA_EDITOR_TASKS_H_
+#define _U2_MA_EDITOR_TASKS_H_
 
 #include <U2Core/GObjectReference.h>
 #include <U2Gui/ObjectViewTasks.h>
 #include <U2Core/DocumentProviderTask.h>
 namespace U2 {
 
-class MultipleAlignmentObject;
-class UnloadedObject;
 class MaEditor;
 class MaEditorFactory;
 class MSAEditor;
+class MultipleAlignmentObject;
+class UnloadedObject;
 
 /*!
  * \brief The OpenMaEditorTask class
@@ -81,11 +81,11 @@ public:
     MaEditor* getEditor(const QString &viewName, GObject *obj);
 };
 
-class OpenSavedMSAEditorTask : public ObjectViewTask {
+class OpenSavedMaEditorTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenSavedMSAEditorTask(GObjectType type, MaEditorFactory* factory,
-                           const QString& viewName, const QVariantMap& stateData);
+    OpenSavedMaEditorTask(GObjectType type, MaEditorFactory* factory,
+                          const QString& viewName, const QVariantMap& stateData);
     virtual void open();
 
     static void updateRanges(const QVariantMap& stateData, MaEditor* ctx);
@@ -95,9 +95,9 @@ private:
 };
 
 
-class UpdateMSAEditorTask : public ObjectViewTask {
+class UpdateMaEditorTask : public ObjectViewTask {
 public:
-    UpdateMSAEditorTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData);
+    UpdateMaEditorTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData);
 
     virtual void update();
 };

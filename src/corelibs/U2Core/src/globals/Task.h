@@ -159,7 +159,6 @@ enum TaskFlag {
     TaskFlag_OnlyNotificationReport = 1 << 26, // task is asked to generate report
 
     TaskFlag_CollectChildrenWarnings = 1 << 27
-
 };
 
 #define TaskFlags_FOSCOE                (TaskFlags(TaskFlag_FailOnSubtaskError) | TaskFlag_FailOnSubtaskCancel)
@@ -171,7 +170,7 @@ enum TaskFlag {
 #define TaskFlags_NR_FOSE_COSC          (TaskFlags_FOSE_COSC | TaskFlag_NoRun)
 #define TaskFlags_RBSF_FOSE_COSC        (TaskFlags_FOSE_COSC | TaskFlag_RunBeforeSubtasksFinished)
 
-typedef QFlags<TaskFlag> TaskFlags;
+Q_DECLARE_FLAGS(TaskFlags, TaskFlag)
 typedef QVarLengthArray<TaskResourceUsage, 1> TaskResources;
 
 class U2CORE_EXPORT Task : public QObject {
@@ -443,5 +442,7 @@ signals:
 };
 
 } //namespace
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(U2::TaskFlags)
 
 #endif

@@ -1574,4 +1574,8 @@ void MaEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo&) {
 
 }
 
+MaEditorSequenceArea::MaMode MaEditorSequenceArea::getModInfo() {
+    return maMode;
+}
+
 } // namespace

@@ -63,6 +63,7 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.h"
@@ -367,7 +368,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     QModelIndex se2 = GTUtilsProjectTreeView::findIndex(os, "se2");
     GTUtilsProjectTreeView::itemActiveCheck(os, se2);
 
-    GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsMdi::closeActiveWindow(os);
     GTUtilsProjectTreeView::itemActiveCheck(os, se1, false);
     GTUtilsProjectTreeView::itemActiveCheck(os, se2, false);
 
@@ -385,26 +386,26 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
     QModelIndex item = GTUtilsProjectTreeView::findIndex(os, "se1");
     QFont font = GTUtilsProjectTreeView::getFont(os, item);
-    CHECK_SET_ERR(font.bold(), "se1 item font is not a bold");
+    CHECK_SET_ERR(font.bold(), "se1 item font is not a bold_1");
     item = GTUtilsProjectTreeView::findIndex(os, "se2");
     font = GTUtilsProjectTreeView::getFont(os, item);
-    CHECK_SET_ERR(font.bold(), "se2 item font is not a bold");
+    CHECK_SET_ERR(font.bold(), "se2 item font is not a bold_1");
 
-    GTUtilsMdi::click(os, GTGlobals::Close);
+	GTUtilsMdi::closeActiveWindow(os);
     GTGlobals::sleep(1000);
     item = GTUtilsProjectTreeView::findIndex(os, "se1");
     font = GTUtilsProjectTreeView::getFont(os, item);
-    CHECK_SET_ERR(!font.bold(), "se1 item font is not a bold");
+    CHECK_SET_ERR(!font.bold(), "se1 item font is not a bold_2");
 
     GTUtilsSequenceView::openSequenceView(os, "se1");
     item = GTUtilsProjectTreeView::findIndex(os, "se1");
     font = GTUtilsProjectTreeView::getFont(os, item);
-    CHECK_SET_ERR(font.bold(), "se1 item font is not a bold");
+    CHECK_SET_ERR(font.bold(), "se1 item font is not a bold_3");
 
     GTUtilsSequenceView::openSequenceView(os, "se2");
     item = GTUtilsProjectTreeView::findIndex(os, "se2");
     font = GTUtilsProjectTreeView::getFont(os, item);
-    CHECK_SET_ERR(font.bold(), "se2 item font is not a bold");
+    CHECK_SET_ERR(font.bold(), "se2 item font is not a bold_2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0023) {
@@ -417,6 +418,8 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025) {
+    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
+
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj4.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -429,6 +432,10 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "misc_feature", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
+
+    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026) {
@@ -495,7 +502,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
 //    2. Select "Open as multiple sequence alignment" item, accept the dialog.
 //    Expected state: file opens, document contains two malignment objects, the MSA Editor is shown.
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -509,8 +516,9 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
 //    4. Select "Open as assembly" item, accept the dialog.
 //    Expected state: file opens, document contains two assembly objects and two sequence objects, the Assembly Browser is shown.
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "project_test_0033.ugenedb"));
+	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "project_test_0033.ugenedb"));
+	//GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
+    //GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "project_test_0033.ugenedb"));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_2.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -528,6 +536,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Open containing folder",
         PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
+    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0035) {
@@ -568,11 +577,12 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Open containing folder",
         PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "sars.gb", Qt::RightButton);
+    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0038){
     //test for several alignments in one document
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -586,9 +596,9 @@ GUI_TEST_CLASS_DEFINITION(test_0038){
     QString title2 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title2 == "BL060C3 [m] Contig2", "unexpected title for doc2: " + title2);
 
-    //reopening windows
+    //reopening windows z
     while(GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != NULL){
-        GTUtilsMdi::click(os, GTGlobals::Close);
+		GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "action_open_view"));
     GTUtilsProjectTreeView::click(os, "BL060C3.ace", Qt::RightButton);
@@ -608,8 +618,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038){
 
 GUI_TEST_CLASS_DEFINITION(test_0038_1){
     //test for several assembly documents in one document
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "test_3637_1.ugenedb"));
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_3637_1.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -625,7 +634,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1){
 
     //reopening windows
     while(GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != NULL){
-        GTUtilsMdi::click(os, GTGlobals::Close);
+		GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "action_open_view"));
     GTUtilsProjectTreeView::click(os, "test_3637_1.ugenedb", Qt::RightButton);
@@ -635,7 +644,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1){
     title1 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title1 == "test_3637_1 [as] Contig1", "unexpected title for doc1: " + title1);
 
-    //check for first document
+    //check for second document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
     title2 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title2 == "test_3637_1 [as] Contig2", "unexpected title for doc2: " + title2);

@@ -531,7 +531,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1658);
     REGISTER_TEST(GUITest_regression_scenarios::test_1660);
     REGISTER_TEST(GUITest_regression_scenarios::test_1661);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1662);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1662);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1664);
     REGISTER_TEST(GUITest_regression_scenarios::test_1668);
     REGISTER_TEST(GUITest_regression_scenarios::test_1672);
@@ -884,7 +884,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3279);
     REGISTER_TEST(GUITest_regression_scenarios::test_3283);
     REGISTER_TEST(GUITest_regression_scenarios::test_3287);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3288);
+    REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_3288, 420000);
     REGISTER_TEST(GUITest_regression_scenarios::test_3305);
     REGISTER_TEST(GUITest_regression_scenarios::test_3306);
     REGISTER_TEST(GUITest_regression_scenarios::test_3307);
@@ -1310,6 +1310,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5447_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5447_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_5469);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5492);
     REGISTER_TEST(GUITest_regression_scenarios::test_5495);
     REGISTER_TEST(GUITest_regression_scenarios::test_5499);
 
@@ -1320,12 +1321,45 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5562_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5562_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_5588);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5594_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5594_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5594_3);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5594_4);
 
+    REGISTER_TEST(GUITest_regression_scenarios::test_5622);
     REGISTER_TEST(GUITest_regression_scenarios::test_5636);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5637);
     REGISTER_TEST(GUITest_regression_scenarios::test_5659);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5681);
 
+    REGISTER_TEST(GUITest_regression_scenarios::test_5714_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5714_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5714_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_5716);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5718);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5739);
     REGISTER_TEST(GUITest_regression_scenarios::test_5747);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5751);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5752);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5753);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5755);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5758);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5761);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5762);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5769_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5769_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5786_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5786_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5786_3);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5798_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5798_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5798_3);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5798_4);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5798_5);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_5815);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5818_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5818_2);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -1463,7 +1497,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sanger::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_sanger::test_0003);
     REGISTER_TEST(GUITest_common_scenarios_sanger::test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_sanger::test_0005);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/Sequence view/
@@ -2044,8 +2077,13 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0007);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0008);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0010);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0011);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0012_1);
@@ -2056,9 +2094,42 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0015_1);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0015_2);
-    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0016);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0016_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0016_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0017_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0017_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0018_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0018_2);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0019);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0021);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0022_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0022_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0022_3);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0023_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0023_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0023_3);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0024_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0024_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0024_3);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0025_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0025_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0025_3);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0026_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0026_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0026_3);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0027_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0027_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0027_3);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0028);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0029);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0030);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0033);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0034);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0038);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0039);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0040_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0040_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0040_3);
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/document_from_text/
     //////////////////////////////////////////////////////////////////////////

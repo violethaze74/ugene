@@ -115,8 +115,9 @@
 #include "runnables/ugene/corelibs/U2Gui/ExportChromatogramFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindQualifierDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportToDatabaseDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
@@ -2225,17 +2226,22 @@ GUI_TEST_CLASS_DEFINITION(test_4306_1) {
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_4306/test_4306.nwk", 0, 0, true));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    3. Use context menu on tree view.
 //    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
-    QStringList items = QStringList() << "Zoom In"
-                                      << "Zoom Out"
-                                      << "Reset Zooming";
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, items));
-    GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
-    GTGlobals::sleep();
+	//    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
+	GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Zoom In", PopupChecker::IsEnabled));
+	GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
+	GTGlobals::sleep();
+
+	GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Zoom Out", PopupChecker::IsEnabled));
+	GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
+	GTGlobals::sleep();
+
+	GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Reset Zooming", PopupChecker::IsEnabled));
+	GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
+	GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4306_2) {
@@ -3197,7 +3203,7 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
 
 GUI_TEST_CLASS_DEFINITION(test_4587) {
     GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_4587"));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4587/", "extended_dna.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::checkObjectTypes(os,
@@ -3329,7 +3335,7 @@ GUI_TEST_CLASS_DEFINITION(test_4588_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4591) {
-    
+
     //1. Open a circular sequence of length N.
     GTFileDialog::openFile(os, dataDir  + "samples/Genbank/NC_014267.1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3341,7 +3347,7 @@ GUI_TEST_CLASS_DEFINITION(test_4591) {
     //2. Open "Region selection" dialog {Ctrl+a} fill it with next data:
     //        {Single range selection} checked
     //        {Region:} 140425..2
-    
+
     //3. Press 'Go' button
     //Expected state: this regions are selected on the view
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ADV_MENU_COPY<<"Copy sequence"));
@@ -3350,32 +3356,32 @@ GUI_TEST_CLASS_DEFINITION(test_4591) {
     QString text = GTClipboard::text(os);
     CHECK_SET_ERR(text == "ATTG", "unexpected selection: " + text);
 }
-      
-      
+
+
 GUI_TEST_CLASS_DEFINITION(test_4591_1) {
     //1) Open samples/FASTA/human_T1.fa
         GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
         GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     //2) Select 100..10 region of the sequence
         class Scenario : public CustomScenario {
         public:
             void run(HI::GUITestOpStatus &os) {
                 QWidget *dialog = QApplication::activeModalWidget();
-                
+
                 QLineEdit *startEdit = dialog->findChild<QLineEdit*>("startEdit");
                 QLineEdit *endEdit = dialog->findChild<QLineEdit*>("endEdit");
                 CHECK_SET_ERR(startEdit != NULL, "QLineEdit \"startEdit\" not found");
                 CHECK_SET_ERR(endEdit != NULL, "QLineEdit \"endEdit\" not found");
-                
+
                 GTLineEdit::setText(os, startEdit, QString::number(321));
                 GTLineEdit::setText(os, endEdit, QString::number(123));
-                                
+
                 QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox"));
                 QPushButton* goButton = box->button(QDialogButtonBox::Ok);
                 CHECK_SET_ERR(goButton!= NULL, "Go button not found");
                 CHECK_SET_ERR(!goButton->isEnabled(), "Go button is enabled");
-                
+
                 GTLineEdit::setText(os, startEdit, QString::number(123));
                 GTLineEdit::setText(os, endEdit, QString::number(321));
                 CHECK_SET_ERR(goButton!= NULL, "Go button not found");
@@ -3386,12 +3392,12 @@ GUI_TEST_CLASS_DEFINITION(test_4591_1) {
         };
         GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, new Scenario));
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));
-        GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0")); 
-        
+        GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4591_2) {
-    
+
     //1. Open a circular sequence of length N.
     GTFileDialog::openFile(os, dataDir  + "samples/Genbank/NC_014267.1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3403,7 +3409,7 @@ GUI_TEST_CLASS_DEFINITION(test_4591_2) {
     //2. Open "Region selection" dialog {Ctrl+a} fill it with next data:
     //        {Single range selection} checked
     //        {Region:} 140425..2
-    
+
     //3. Press 'Go' button
     //Expected state: this regions are selected on the view
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ADV_MENU_COPY<<"Copy sequence"));
@@ -4261,7 +4267,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
     GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
     GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
- 
+
     //    4. Undo changes
     GTUtilsMsaEditor::undo(os);
     GTGlobals::sleep(500);
@@ -4591,11 +4597,11 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_4782) {
 //    1. Open "data/samples/genbank/murine.gb".
-    GTFileDialog::openFile(os, dataDir + "samples/genbank/murine.gb");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Open "data/samples/Genbank/sars.gb".
-    GTFileDialog::openFile(os, dataDir + "samples/genbank/sars.gb");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    Expected state: a Sequence View for "sars.gb" is active.
