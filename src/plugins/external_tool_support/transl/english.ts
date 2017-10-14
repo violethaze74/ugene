@@ -6,78 +6,78 @@
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="20"/>
         <source>Input data</source>
-        <translation type="unfinished">Input data</translation>
+        <translation>Input data</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="26"/>
         <source>Reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Reference</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="14"/>
         <source>Map Sanger Reads to Reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Map Sanger Reads to Reference</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="38"/>
         <source>Input a file with a reference sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Input a file with a reference sequence</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="45"/>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="159"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="54"/>
         <source>Reads</source>
-        <translation type="unfinished"></translation>
+        <translation>Reads</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="79"/>
         <source>Add</source>
-        <translation type="unfinished">Add</translation>
+        <translation>Add</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="86"/>
         <source>Remove</source>
-        <translation type="unfinished">Remove</translation>
+        <translation>Remove</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="98"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="104"/>
         <source>Trimming quality threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>Trimming quality threshold</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="152"/>
         <source>Input the result file path</source>
-        <translation type="unfinished"></translation>
+        <translation>Input the result file path</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="111"/>
         <source>%</source>
-        <translation type="unfinished"></translation>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="134"/>
         <source>Mapping min identity</source>
-        <translation type="unfinished"></translation>
+        <translation>Mapping min identity</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="144"/>
         <source>Result alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Result alignment</translation>
     </message>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="168"/>
         <source>Add to project</source>
-        <translation type="unfinished">Add to project</translation>
+        <translation>Add to project</translation>
     </message>
 </context>
 <context>
@@ -3026,19 +3026,24 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::AlignToReferenceBlastCmdlineTask</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="75"/>
-        <source>Align Sanger reads to reference</source>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="78"/>
+        <source>Map Sanger reads to reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="92"/>
         <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="95"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="98"/>
         <source>wrong reference format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="132"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="135"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="150"/>
+        <source>&lt;u&gt;Filtered by quality or length (%1):&lt;/u&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="193"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="196"/>
         <source>wrong output format</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3050,67 +3055,67 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="obsolete">Align</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="168"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="230"/>
         <source>Map</source>
-        <translation type="unfinished"></translation>
+        <translation>Map</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="169"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="231"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="188"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="250"/>
         <source>Select Output File...</source>
-        <translation type="unfinished"></translation>
+        <translation>Select Output File...</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="201"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="208"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="226"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="249"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="263"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="270"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="288"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="311"/>
         <source>Error</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="202"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="264"/>
         <source>Reference sequence is not set.</source>
-        <translation type="unfinished"></translation>
+        <translation>Reference sequence is not set.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="209"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="271"/>
         <source>No reads provided.</source>
-        <translation type="unfinished"></translation>
+        <translation>No reads provided.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="227"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="289"/>
         <source>Output file is not set.</source>
-        <translation type="unfinished"></translation>
+        <translation>Output file is not set.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="238"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="300"/>
         <source>Overwrite the file?</source>
-        <translation type="unfinished"></translation>
+        <translation>Overwrite the file?</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="239"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="301"/>
         <source>The result file already exists. Would you like to overwrite it?</source>
-        <translation type="unfinished"></translation>
+        <translation>The result file already exists. Would you like to overwrite it?</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="249"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="311"/>
         <source>Unable to delete the file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Unable to delete the file.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="261"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="323"/>
         <source>Open Reference Sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Open Reference Sequence</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="272"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="334"/>
         <source>Select File(s) with Read(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Select File(s) with Read(s)</translation>
     </message>
 </context>
 <context>
@@ -4766,12 +4771,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="468"/>
         <source>Map reads to reference...</source>
-        <translation type="unfinished"></translation>
+        <translation>Map reads to reference...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="493"/>
         <source>Reads de novo assembly (with %1)...</source>
-        <translation type="unfinished"></translation>
+        <translation>Reads de novo assembly (with %1)...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="478"/>
@@ -5060,68 +5065,68 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::FormatDBSupportTask</name>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="54"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="55"/>
         <source>Run NCBI FormatDB task</source>
         <translation>Run NCBI FormatDB task</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="150"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="151"/>
         <source>Cannot create temp folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="167"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="168"/>
         <source>Trying to initialize Format DB task second time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="174"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="175"/>
         <source>Input files paths contain space characters.</source>
         <translation>Input files paths contain space characters.</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="191"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="192"/>
         <source>Output database path contain space characters.</source>
         <translation>Output database path contain space characters.</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="101"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="103"/>
         <source>Blast database creation has been cancelled</source>
         <translation>Blast database creation has been cancelled</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="91"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="93"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Can not remove folder for temporary files.</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="108"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="110"/>
         <source>Blast database has been successfully created</source>
         <translation>Blast database has been successfully created</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="109"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="111"/>
         <source>Source sequences: </source>
         <translation>Source sequences: </translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="117"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="119"/>
         <source>Database file path: %1</source>
         <translation>Database file path: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="119"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="121"/>
         <source>Type: %1</source>
         <translation>Type: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="121"/>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="127"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="123"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="129"/>
         <source>Formatdb log file path: </source>
         <translation>Formatdb log file path: </translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportTask.cpp" line="125"/>
+        <location filename="../src/blast/FormatDBSupportTask.cpp" line="127"/>
         <source>Blast database creation has been failed</source>
         <translation>Blast database creation has been failed</translation>
     </message>
@@ -5669,27 +5674,27 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <name>U2::LocalWorkflow::AlignToReferenceBlastTask</name>
     <message>
         <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="230"/>
-        <source>Align to reference</source>
+        <source>Map to reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="295"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="302"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="296"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="303"/>
         <source>Reference sequence:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="297"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="304"/>
         <source>Aligned reads (%1):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="306"/>
-        <source>Filtered by quality (%1):</source>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="313"/>
+        <source>Filtered by low identity (%1):</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12402,8 +12407,13 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::Workflow::FormatDBSubTask</name>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/FormatDBSubTask.cpp" line="42"/>
+        <location filename="../src/blast/align_worker_subtasks/FormatDBSubTask.cpp" line="46"/>
         <source>Format DB task wrapper</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/align_worker_subtasks/FormatDBSubTask.cpp" line="66"/>
+        <source>The task uses a temporary folder to process the data. It is required that the folder path doesn&apos;t have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
