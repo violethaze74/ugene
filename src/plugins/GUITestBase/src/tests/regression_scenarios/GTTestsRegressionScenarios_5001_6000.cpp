@@ -2831,13 +2831,13 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
 
     //3. Select all chars in the reference from here to the end
     QPoint currentPos = GTMouseDriver::getMousePosition();
-    QPoint destPos(currentPos.x() + 54, currentPos.y());
+    QPoint destPos(currentPos.x() + 100, currentPos.y());
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, destPos);
 
     //Expected: selected length = 4
     U2Region reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
     int sel = reg.length;
-    CHECK_SET_ERR(sel == 4, QString("Unexpected selection length, expectedL 4, ceurrent: %1").arg(QString::number(sel)));
+    CHECK_SET_ERR(sel == 5, QString("Unexpected selection length, expected 5, ceurrent: %1").arg(QString::number(sel)));
 
 }
 
