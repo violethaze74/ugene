@@ -185,6 +185,10 @@ void WorkflowTabView::sl_dashboardsLoaded() {
     foreach (const QString &dbPath, t->getOpenedDashboards()) {
         addDashboard(new Dashboard(dbPath, this));
     }
+    int nDashboards = count();
+    if (nDashboards > 0) {
+        setCurrentIndex(nDashboards - 1);
+    }
 }
 
 QStringList WorkflowTabView::allNames() const {
