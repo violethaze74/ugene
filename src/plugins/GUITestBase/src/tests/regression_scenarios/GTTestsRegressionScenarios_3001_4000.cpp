@@ -6068,9 +6068,15 @@ GUI_TEST_CLASS_DEFINITION(test_3983) {
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "chr1_gl000191_random_Amino_translation_");
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(1, 1));
     GTWidget::click(os, GTUtilsOptionPanelMsa::getAddButton(os, 2));
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
     GTGlobals::sleep();
 
     GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));
