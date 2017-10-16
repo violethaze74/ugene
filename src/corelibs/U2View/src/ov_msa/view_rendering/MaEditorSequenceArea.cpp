@@ -256,6 +256,7 @@ void MaEditorSequenceArea::updateSelection() {
 }
 
 void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHighlightSelection) {
+    CHECK(!isAlignmentEmpty(), );
     // TODO: assert(isInRange(s));
     exitFromEditCharacterMode();
     if (highlightSelection != newHighlightSelection) {
@@ -831,6 +832,7 @@ void MaEditorSequenceArea::sl_hScrollBarActionPerfermed() {
 }
 
 void MaEditorSequenceArea::setCursorPos(const QPoint& p) {
+    CHECK(!isAlignmentEmpty(), )
     SAFE_POINT(isInRange(p), tr("Cursor position is out of range"), );
     CHECK(p != cursorPos, );
 
@@ -886,7 +888,6 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
         rubberBandOrigin = e->pos();
         const QPoint p = ui->getScrollController()->getMaPointByScreenPoint(e->pos());
         setCursorPos(boundWithVisibleRange(p));
-
         if (isInRange(p)) {
             const MaEditorSelection &s = getSelection();
             if (s.getRect().contains(cursorPos) && !isAlignmentLocked() && editingEnabled) {
