@@ -36,7 +36,7 @@ ExportMca2MsaDialog::ExportMca2MsaDialog(const QString &defaultFilePath, QWidget
 {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "19766686");
+    new HelpButton(this, buttonBox, "20874842");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

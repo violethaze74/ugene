@@ -80,7 +80,7 @@ bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionRes
     d->setModal(true);
     ui.setupUi(d.data());
 
-    new HelpButton(d.data(), ui.buttonBox, "19766646");
+    new HelpButton(d.data(), ui.buttonBox, "20874802");
 
     bool canBeShortReads = minSequenceSize > 0 && maxSequenceSize < 2000;
     bool haveReadAligners = !AppContext::getDnaAssemblyAlgRegistry()->getRegisteredAlgorithmIds().isEmpty();
