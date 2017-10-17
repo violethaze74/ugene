@@ -894,6 +894,7 @@ void MaEditorNameList::clearGroupsSelections() {
 
 void MaEditorNameList::moveSelection(int dy) {
     ui->getSequenceArea()->moveSelection(0, dy);
+    updateSelection(nextSequenceToSelect);
 }
 
 } // namespace U2
