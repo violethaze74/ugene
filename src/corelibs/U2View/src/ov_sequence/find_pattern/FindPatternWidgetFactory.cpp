@@ -33,7 +33,7 @@ namespace U2 {
 
 const QString FindPatternWidgetFactory::GROUP_ID = "OP_FIND_PATTERN";
 const QString FindPatternWidgetFactory::GROUP_ICON_STR = ":core/images/find_dialog.png";
-const QString FindPatternWidgetFactory::GROUP_DOC_PAGE = "19766726";
+const QString FindPatternWidgetFactory::GROUP_DOC_PAGE = "20874882";
 
 FindPatternWidgetFactory::FindPatternWidgetFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
