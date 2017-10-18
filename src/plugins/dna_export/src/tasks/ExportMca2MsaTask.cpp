@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2core/Counter.h>
+#include <U2Core/Counter.h>
 #include <U2Core/GHints.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
