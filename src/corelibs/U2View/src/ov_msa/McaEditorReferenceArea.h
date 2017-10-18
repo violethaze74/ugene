@@ -52,7 +52,7 @@ private slots:
 
 private:
     void setReferenceSelection(QMouseEvent* e);
-
+    void connectSignalsAndSlots();
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void mouseReleaseEvent(QMouseEvent* e);
@@ -62,6 +62,9 @@ private:
     McaEditor* editor;
     McaEditorWgt* ui;
     McaReferenceAreaRenderer *renderer;
+    QMetaObject::Connection connectionUiClearSelection;
+    QMetaObject::Connection connectionSequenceClearSelection;
+    QMetaObject::Connection connectionSequenceChangeSelection;
     qint64 lastMouseReleasePos;
     qint64 selectionCountFromStartPos;
     bool isShiftPressed;
