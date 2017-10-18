@@ -40,6 +40,7 @@ public:
     void drawNameListSelection(QPainter &painter) const;
 
     void setAreaHeight(int h);
+    int getAreaHeight() const;
 
     int getScaleBarValue() const;
 

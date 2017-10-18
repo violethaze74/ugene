@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2core/Counter.h>
 #include <U2Core/GHints.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
@@ -41,6 +42,7 @@ ExportMca2MsaTask::ExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObj
       convertTask(NULL),
       exportTask(NULL)
 {
+    GCOUNTER(cvar, tvar, "ExportMca2MsaTask");
     SAFE_POINT_EXT(NULL != mcaObject, setError(L10N::nullPointerError("MCA object")), );
 }
 

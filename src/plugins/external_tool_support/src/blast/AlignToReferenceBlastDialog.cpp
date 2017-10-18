@@ -224,6 +224,7 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
       savableWidget(this)
 {
     setupUi(this);
+    GCOUNTER(cvar, tvar, "'Map reads to reference' dialog opening");
 
     new HelpButton(this, buttonBox, "20875232"); 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Map"));
