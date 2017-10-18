@@ -64,13 +64,6 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
             SLOT(completeUpdate()));
 
     connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_visibleRangeChanged()));
-    connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection,MaEditorSelection)),
-            SLOT(sl_selectionChanged(MaEditorSelection,MaEditorSelection)));
-
-    connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
-    connect(ui->getSequenceArea(), SIGNAL(si_clearReferenceSelection()),
-            SLOT(sl_clearSelection()));
-
     connect(ctx->getSequenceSelection(),
         SIGNAL(si_selectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)),
         SLOT(sl_onSelectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)));
@@ -82,6 +75,8 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
     connect(ui->getConsensusArea(), SIGNAL(si_mismatchRedrawRequired()), SLOT(completeUpdate()));
     connect(scrollBar, SIGNAL(valueChanged(int)), ui->getScrollController()->getHorizontalScrollBar(), SLOT(setValue(int)));
     connect(ui->getScrollController()->getHorizontalScrollBar(), SIGNAL(valueChanged(int)), scrollBar, SLOT(setValue(int)));
+
+    connectSignalsAndSlots();
 
     sl_fontChanged(editor->getFont());
 }
@@ -128,7 +123,12 @@ void McaEditorReferenceArea::mousePressEvent(QMouseEvent* e) {
             selectionCountFromStartPos = 1;
         }
         int value = lastMouseReleasePos;
+        disconnect(connectionUiClearSelection);
+        disconnect(connectionSequenceClearSelection);
+        disconnect(connectionSequenceChangeSelection);
         emit ui->si_clearSelection();
+        connectSignalsAndSlots();
+
         lastMouseReleasePos = value;
     }
 
@@ -307,23 +307,36 @@ void McaEditorReferenceArea::updateScrollBar() {
     scrollBar->setPageStep(hScrollbar->pageStep());
 }
 
+void McaEditorReferenceArea::connectSignalsAndSlots() {
+    connectionUiClearSelection = connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
+    connectionSequenceClearSelection = connect(ui->getSequenceArea(), SIGNAL(si_clearReferenceSelection()),
+        SLOT(sl_clearSelection()));
+    connectionSequenceChangeSelection = connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection, MaEditorSelection)),
+        SLOT(sl_selectionChanged(MaEditorSelection, MaEditorSelection)));
+}
+
 void McaEditorReferenceArea::sl_onSelectionChanged(LRegionsSelection * /*selection*/, const QVector<U2Region> &addedRegions, const QVector<U2Region> &removedRegions) {
     if (addedRegions.size() == 1) {
         const U2Region addedRegion = addedRegions.first();
         qint64 baseToScrollTo = -1;
         if (removedRegions.size() == 1) {
-            const U2Region removedRegion = removedRegions.first();
-            if (addedRegion.startPos < removedRegion.startPos && addedRegion.endPos() == removedRegion.endPos()) {
-                baseToScrollTo = addedRegion.startPos;
-            } else if (addedRegion.startPos == removedRegion.startPos && addedRegion.endPos() > removedRegion.endPos()) {
-                baseToScrollTo = addedRegion.endPos() - 1;
+            if (removedRegions.first() == addedRegions.first()) {
+                int hSchrollValue = ui->getScrollController()->getHorizontalScrollBar()->value();
+                ui->getScrollController()->setHScrollbarValue(hSchrollValue);
             } else {
-                baseToScrollTo = addedRegion.startPos;
+                const U2Region removedRegion = removedRegions.first();
+                if (addedRegion.startPos == removedRegion.startPos) {
+                    baseToScrollTo = addedRegion.endPos() - 1;
+                } else {
+                    baseToScrollTo = addedRegion.startPos;
+                }
             }
         } else {
             baseToScrollTo = addedRegion.startPos;
         }
-        ui->getScrollController()->scrollToBase(static_cast<int>(baseToScrollTo), width());
+        if (baseToScrollTo != -1) {
+            ui->getScrollController()->scrollToBase(static_cast<int>(baseToScrollTo), width());
+        }
     }
     emit si_selectionChanged();
 }

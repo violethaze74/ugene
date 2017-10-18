@@ -69,6 +69,7 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
     editSequenceNameAction = new QAction(tr("Edit sequence name"), this);
     editSequenceNameAction->setObjectName("edit_sequence_name");
     editSequenceNameAction->setShortcut(QKeySequence(Qt::Key_F2));
+    editSequenceNameAction->setShortcutContext(Qt::WidgetShortcut);
     connect(editSequenceNameAction, SIGNAL(triggered()), SLOT(sl_editSequenceName()));
     addAction(editSequenceNameAction);
 
@@ -78,6 +79,7 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
 
     removeSequenceAction = new QAction(tr("Remove sequence(s)"), this);
     removeSequenceAction->setObjectName("Remove sequence");
+    removeSequenceAction->setShortcutContext(Qt::WidgetShortcut);
     connect(removeSequenceAction, SIGNAL(triggered()), SLOT(sl_removeSequence()));
     addAction(removeSequenceAction);
 
@@ -894,6 +896,7 @@ void MaEditorNameList::clearGroupsSelections() {
 
 void MaEditorNameList::moveSelection(int dy) {
     ui->getSequenceArea()->moveSelection(0, dy);
+    updateSelection(nextSequenceToSelect);
 }
 
 } // namespace U2
