@@ -37,7 +37,7 @@ public:
     AprImportWidget(const GUrl& url, const QVariantMap& settings);
     virtual QVariantMap getSettings() const;
 
-    void initSaveController(const GUrl& url, const DocumentFormatId defaultFormatId);
+    void initSaveController(const QString& url, const DocumentFormatId defaultFormatId);
 
 private:
     DocumentFormatId getFormatId(const QVariantMap& settings);
