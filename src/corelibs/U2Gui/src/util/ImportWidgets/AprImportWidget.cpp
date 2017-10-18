@@ -21,6 +21,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Settings.h>
 
@@ -37,7 +38,13 @@ AprImportWidget::AprImportWidget(const GUrl& url, const QVariantMap& settings) :
 
     DocumentFormatId formatId = getFormatId(settings);
 
-    initSaveController(url, formatId);
+    GUrl resultUrl = GUrlUtils::changeFileExt(url.getURLString(), formatId);
+    QString resultUrlString = resultUrl.getURLString();
+    if (resultUrlString.endsWith(QString(".gz"))) {
+        resultUrlString.chop(3);
+    }
+
+    initSaveController(resultUrlString, formatId);
 }
 
 QVariantMap AprImportWidget::getSettings() const {
@@ -48,12 +55,12 @@ QVariantMap AprImportWidget::getSettings() const {
     return settings;
 }
 
-void AprImportWidget::initSaveController(const GUrl& url, const DocumentFormatId defaultFormatId){
+void AprImportWidget::initSaveController(const QString& url, const DocumentFormatId defaultFormatId){
     SaveDocumentControllerConfig config;
 
     config.defaultFormatId = defaultFormatId;
-    config.defaultFileName = url.getURLString();
     config.fileDialogButton = browseButton;
+    config.defaultFileName = url;
     config.fileNameEdit = fileNameEdit;
     config.formatCombo = formatCombo;
     config.parentWidget = this;
