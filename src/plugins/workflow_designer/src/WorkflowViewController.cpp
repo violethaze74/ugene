@@ -2119,7 +2119,11 @@ void WorkflowView::runWizard(Wizard *w) {
             loadWizardResult(result);
             return;
         }
+
+        const bool isSample = meta.isSample();
         updateMeta();
+        meta.setSampleMark(isSample);
+
         WizardController::ApplyResult res = controller.applyChanges(meta);
         if (WizardController::ACTORS_REPLACED == res) {
             recreateScene();

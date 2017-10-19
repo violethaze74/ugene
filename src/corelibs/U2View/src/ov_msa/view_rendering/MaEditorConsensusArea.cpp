@@ -32,6 +32,7 @@
 #include <QToolTip>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
@@ -146,6 +147,7 @@ bool MaEditorConsensusArea::event(QEvent* e) {
 
 void MaEditorConsensusArea::initCache() {
     MSAConsensusAlgorithmFactory *algo = getConsensusAlgorithmFactory();
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, QString("'%1' consensus type is selected on view opening").arg(algo->getName()), editor->getFactoryId());
     consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(NULL, editor->getMaObject(), algo));
     connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
     restoreLastUsedConsensusThreshold();
@@ -313,6 +315,7 @@ void MaEditorConsensusArea::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* 
     if (oldAlgo!=NULL && algoFactory == oldAlgo->getFactory()) {
         return;
     }
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, QString("'%1' consensus algorithm is selected").arg(algoFactory->getName()), editor->getFactoryId());
 
     //store threshold for the active algo
     if (oldAlgo!=NULL && oldAlgo->supportsThreshold()) {

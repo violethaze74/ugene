@@ -22,6 +22,7 @@
 #include <QGridLayout>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/GUrlUtils.h>
@@ -75,6 +76,9 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       pasteAction(NULL)
 {
     undoFWK = new MsaUndoRedoFramework(this, editor->getMaObject());
+
+    connect(getUndoAction(), SIGNAL(triggered()), SLOT(sl_countUndo()));
+    connect(getRedoAction(), SIGNAL(triggered()), SLOT(sl_countRedo()));
 }
 
 QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment ali, QWidget* heightTarget){
@@ -272,6 +276,14 @@ void MaEditorWgt::initActions() {
         .arg(pasteAction->shortcut().toString()));
 
     addAction(pasteAction);
+}
+
+void MaEditorWgt::sl_countUndo() {
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Undo", editor->getFactoryId());
+}
+
+void MaEditorWgt::sl_countRedo() {
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Redo", editor->getFactoryId());
 }
 
 } // namespace

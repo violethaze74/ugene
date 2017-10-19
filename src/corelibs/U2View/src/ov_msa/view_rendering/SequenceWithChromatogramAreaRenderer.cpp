@@ -113,6 +113,10 @@ void SequenceWithChromatogramAreaRenderer::setAreaHeight(int h) {
     s->setValue(ui->getEditor()->getSettingsRoot() + MCAE_SETTINGS_PEAK_HEIGHT, maxTraceHeight);
 }
 
+int SequenceWithChromatogramAreaRenderer::getAreaHeight() const {
+    return maxTraceHeight;
+}
+
 int SequenceWithChromatogramAreaRenderer::getScaleBarValue() const {
     return maxTraceHeight;
 }
