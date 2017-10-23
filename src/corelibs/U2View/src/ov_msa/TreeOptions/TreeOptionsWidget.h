@@ -111,7 +111,8 @@ public:
 private slots:
     void sl_onOpenTreeTriggered();
     void sl_onBuildTreeTriggered();
-    void sl_msaChanged(const MultipleAlignment&, const MaModificationInfo&);
+    void sl_updateBuildTreeButtonState();
+
 private:
     MSAEditor*   editor;
 
