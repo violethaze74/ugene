@@ -325,7 +325,7 @@ void McaEditorReferenceArea::sl_onSelectionChanged(LRegionsSelection * /*selecti
                 ui->getScrollController()->setHScrollbarValue(hSchrollValue);
             } else {
                 const U2Region removedRegion = removedRegions.first();
-                if (addedRegion.startPos == removedRegion.startPos) {
+                if (addedRegion.startPos == removedRegion.startPos || addedRegion.startPos == removedRegion.endPos() - 1) {
                     baseToScrollTo = addedRegion.endPos() - 1;
                 } else {
                     baseToScrollTo = addedRegion.startPos;
