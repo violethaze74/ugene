@@ -20,6 +20,7 @@
  */
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/OPWidgetFactory.h>
@@ -106,7 +107,7 @@ void OptionsPanel::openOptionsGroup(const QString& groupId) {
         widget->focusOptionsWidget(groupId);
         return;
     }
-
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, QString("Opening tab: %1").arg(groupId), objView->getFactoryId());
     OPWidgetFactory* opWidgetFactory = findFactoryByGroupId(groupId);
     SAFE_POINT(NULL != opWidgetFactory,
         QString("Internal error: can't open a group with ID '%1' on the Options Panel.").arg(groupId),);

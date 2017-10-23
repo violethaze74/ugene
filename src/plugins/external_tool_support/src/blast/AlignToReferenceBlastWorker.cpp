@@ -303,7 +303,7 @@ QString AlignToReferenceBlastTask::generateReport() const {
 
     result += "</table>";
     if (!filtredReads.isEmpty()) {
-        result += "<br><u>" + tr("Filtered by quality (%1):").arg(filtredReads.size()) + "</u>";
+        result += "<br><u>" + tr("Filtered by low identity (%1):").arg(filtredReads.size()) + "</u>";
         result += "<table>";
         foreach (const QString &readName, filtredReads) {
             result += "<tr><td width=50></td><td width=300 nowrap>" + readName + "</td></tr>";

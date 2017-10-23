@@ -200,6 +200,7 @@ void MaEditor::resetCollapsibleModel() {
 }
 
 void MaEditor::sl_zoomIn() {
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Zoom in", getFactoryId());
     int pSize = font.pointSize();
 
     if (resizeMode == ResizeMode_OnlyContent) {
@@ -223,6 +224,7 @@ void MaEditor::sl_zoomIn() {
 }
 
 void MaEditor::sl_zoomOut() {
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Zoom out", getFactoryId());
     int pSize = font.pointSize();
 
     bool resizeModeChanged = false;
@@ -278,6 +280,7 @@ void MaEditor::sl_zoomToSelection()
 }
 
 void MaEditor::sl_resetZoom() {
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Reset zoom", getFactoryId());
     QFont f = getFont();
     f.setPointSize(MOBJECT_DEFAULT_FONT_SIZE);
     setFont(f);
@@ -311,6 +314,7 @@ void MaEditor::sl_saveAlignmentAs(){
 
 void MaEditor::sl_changeFont() {
     bool ok = false;
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Change of the characters font", getFactoryId());
     // QFontDialog::DontUseNativeDialog - no color selector, affects only Mac OS
     QFont f = QFontDialog::getFont(&ok, font, widget, tr("Characters Font"), QFontDialog::DontUseNativeDialog);
     if (!ok) {
