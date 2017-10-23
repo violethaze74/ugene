@@ -372,7 +372,9 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         startSelectingRowNumber = 0;
         break;
     case Qt::Key_Delete:
-        sl_removeSequence();
+        if (removeSequenceAction->isEnabled()) {
+            sl_removeSequence();
+        }
         break;
     }
     QWidget::keyPressEvent(e);
