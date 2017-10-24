@@ -2381,6 +2381,34 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
     GTGlobals::sleep();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5665) {
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    //2. Document context menu -> Export / Import -> Export sequences.
+    //Expected: "Export selected sequences" dialog appears.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            
+            QLineEdit* filepathLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog);
+            GTLineEdit::setText(os, filepathLineEdit, dataDir + "long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_.fa");            
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    //Expected: the dialog about external modification of documents appears.
+    //5. Click "No".
+    //Expected: UGENE does not crash.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, new Scenario()));
+    GTUtilsProjectTreeView::click(os, "human_T1.fa", Qt::RightButton);
+    GTGlobals::sleep(3000);
+    GTKeyboardDriver::keyClick( Qt::Key_Escape);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5681) {
     class Scenario : public CustomScenario {
     public:

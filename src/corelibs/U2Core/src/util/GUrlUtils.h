@@ -35,6 +35,8 @@ class TaskStateInfo;
 class Logger;
 class U2OpStatus;
 
+/* Maximum file name length for Linux, Windows and MacOS X is 255 characters. */
+#define MAX_OS_FILE_NAME_LENGTH 255
 
 class U2CORE_EXPORT GUrlUtils : public QObject {
     Q_OBJECT
