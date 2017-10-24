@@ -283,6 +283,13 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
     return result;
 }
 
+Task::ReportResult AlignToReferenceBlastTask::report() {
+    if (NULL != formatDbSubTask) {
+        QFileInfo(formatDbSubTask->getResultPath()).dir().removeRecursively();
+    }
+    return ReportResult_Finished;
+}
+
 QString AlignToReferenceBlastTask::generateReport() const {
     QString result;
 
