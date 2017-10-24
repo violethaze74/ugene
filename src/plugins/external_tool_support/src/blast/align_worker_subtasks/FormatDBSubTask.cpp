@@ -19,19 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#include "FormatDBSubTask.h"
-#include "blast/FormatDBSupport.h"
-#include "blast/FormatDBSupportTask.h"
+#include <QDir>
+#include <QTemporaryDir>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Lang/DbiDataStorage.h>
 
-#include <QDir>
+#include "FormatDBSubTask.h"
+#include "blast/FormatDBSupport.h"
+#include "blast/FormatDBSupportTask.h"
 
 namespace U2 {
 namespace Workflow {
@@ -58,7 +62,13 @@ void FormatDBSubTask::prepare() {
     settings.isInputAmino = refObject->getAlphabet()->isAmino();
     settings.databaseTitle = refObject->getSequenceName();
 
-    settings.outputPath = GUrlUtils::getSlashEndedPath(ExternalToolSupportUtils::createTmpDir("align_to_ref", stateInfo)) + QFileInfo(referenceUrl).completeBaseName();
+    const QString tempDirPath = getAcceptableTempDir();
+    CHECK_EXT(!tempDirPath.isEmpty(), setError(tr("The task uses a temporary folder to process the data. It is required that the folder path doesn't have spaces. "
+                                                  "Please set up an appropriate path for the \"Temporary files\" parameter on the \"Directories\" tab of the UGENE Application Settings.")), );
+
+    const QString workingDir = GUrlUtils::getSlashEndedPath(ExternalToolSupportUtils::createTmpDir(tempDirPath, "align_to_ref", stateInfo));
+    settings.tempDirPath = workingDir;
+    settings.outputPath = workingDir + QFileInfo(referenceUrl).completeBaseName();
     CHECK_OP(stateInfo, );
 
     FormatDBSupportTask* formatTask = new FormatDBSupportTask(ET_FORMATDB, settings);
@@ -69,6 +79,44 @@ void FormatDBSubTask::prepare() {
 
 const QString& FormatDBSubTask::getResultPath() const {
     return databaseNameAndPath;
+}
+
+namespace {
+
+bool isTempDirAcceptable(const QString &tempDir) {
+    CHECK(!tempDir.contains(QRegExp("\\s")), false);
+    QTemporaryDir testSubDir(tempDir + "/XXXXXX");
+    CHECK(testSubDir.isValid(), false);
+    return true;
+}
+
+}
+
+QString FormatDBSubTask::getAcceptableTempDir() const {
+    QString tempDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
+    if (isTempDirAcceptable(tempDirPath)) {
+        return tempDirPath;
+    }
+
+    tempDirPath = QFileInfo(referenceUrl).absoluteDir().path();
+    if (isTempDirAcceptable(tempDirPath)) {
+        return tempDirPath;
+    }
+
+#if defined (Q_OS_WIN)
+    tempDirPath = "C:/ugene_tmp";
+#elif defined (Q_OS_UNIX)
+    tempDirPath = "/tmp/ugene_tmp";
+#else
+    return QString();
+#endif
+
+    const bool created = QDir().mkpath(tempDirPath);
+    if (created && isTempDirAcceptable(tempDirPath)) {
+        return tempDirPath;
+    }
+
+    return QString();
 }
 
 } // namespace Workflow
