@@ -58,6 +58,7 @@ private:
     void prepare();
     QString generateReport() const;
     QList<Task*> onSubTaskFinished(Task *subTask);
+    ReportResult report();
 
     const QString referenceUrl;
     const QString resultUrl;

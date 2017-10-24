@@ -83,6 +83,7 @@ public:
     QStringList     inputFilesPath;
     QString         outputPath;
     QString         databaseTitle;
+    QString         tempDirPath;
     /*-p  Type of file
             T - protein
             F - nucleotide*/

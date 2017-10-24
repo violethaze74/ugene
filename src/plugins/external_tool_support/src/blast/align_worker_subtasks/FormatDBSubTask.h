@@ -41,6 +41,8 @@ public:
     const QString& getResultPath() const;
 
 private:
+    QString getAcceptableTempDir() const;
+
     const QString               referenceUrl;
     const SharedDbiDataHandler  referenceDbHandler;
     DbiDataStorage *storage;
