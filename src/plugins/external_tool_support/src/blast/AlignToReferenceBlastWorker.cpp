@@ -227,7 +227,7 @@ AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl, cons
                                                      const QList<SharedDbiDataHandler> &reads,
                                                      int minIdentityPercent,
                                                      DbiDataStorage *storage)
-    : Task(tr("Align to reference"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
+    : Task(tr("Map to reference"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       referenceUrl(refUrl),
       resultUrl(resultUrl),
       reference(reference),
@@ -281,6 +281,13 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
         result << saveTask;
     }
     return result;
+}
+
+Task::ReportResult AlignToReferenceBlastTask::report() {
+    if (NULL != formatDbSubTask) {
+        QFileInfo(formatDbSubTask->getResultPath()).dir().removeRecursively();
+    }
+    return ReportResult_Finished;
 }
 
 QString AlignToReferenceBlastTask::generateReport() const {
