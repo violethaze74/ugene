@@ -441,7 +441,7 @@ void MaEditor::setFont(const QFont& f) {
 
 void MaEditor::calcFontPixelToPointSizeCoef() {
     QFontInfo info(font);
-    fontPixelToPointSize = (float) info.pixelSize() / (float) info.pointSize();
+    fontPixelToPointSize = (double) info.pixelSize() / (double) info.pointSize();
 }
 
 void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
@@ -451,7 +451,7 @@ void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
     }
 }
 
-void MaEditor::setZoomFactor(float newZoomFactor) {
+void MaEditor::setZoomFactor(double newZoomFactor) {
     zoomFactor = newZoomFactor;
     updateResizeMode();
     Settings* s = AppContext::getSettings();
