@@ -78,6 +78,7 @@ private:
     void fillComboBoxes();
     // Enables/disables all transition ratio related controls.
     void makeTTRatioControlsAvailable(bool enabled);
+    void makeTTRatioControlsAvailable(SubstModelTrRatioType ttRatioType);
 
     QStringList generatePhyMlSettingsScript();
 
@@ -92,7 +93,9 @@ private slots:
     void sl_optTopologyCheckboxClicked(bool checked);
 
 private:
-    bool optBranchCheckboxSavedState;    
+    bool optBranchCheckboxSavedState;
+    bool isTtRationFixed;
+    bool isTreeNumberSet;
 };
 
 }//namespace

@@ -53,8 +53,8 @@ public:
     int getFirstSeq() const;
     void setFirstSeq(int seq);
 
-    float getZoomFactor() const;
-    void setZoomFactor(float zoomFactor);
+    double getZoomFactor() const;
+    void setZoomFactor(double zoomFactor);
 
     QVariantMap stateData;
 };
