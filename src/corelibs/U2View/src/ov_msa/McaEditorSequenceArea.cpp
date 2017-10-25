@@ -258,6 +258,7 @@ void McaEditorSequenceArea::sl_showHideTrace() {
 }
 
 void McaEditorSequenceArea::sl_showAllTraces() {
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Selection of a 'Show / hide trace' item", editor->getFactoryId());
     settings.drawTraceA = true;
     settings.drawTraceC = true;
     settings.drawTraceG = true;
