@@ -529,8 +529,11 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
                     curRowNumber = newRowNumber;
                     singleSelecting = false;
                 } else {
-                    curRowNumber = (startSelectingRowNumber < firstVisibleRowNumber) ? firstVisibleRowNumber : startSelectingRowNumber;
-                    curRowNumber = (startSelectingRowNumber > lastVisibleRowNumber) ? lastVisibleRowNumber : startSelectingRowNumber;
+                    if (startSelectingRowNumber > newRowNumber) {
+                        curRowNumber = (startSelectingRowNumber < firstVisibleRowNumber) ? firstVisibleRowNumber : startSelectingRowNumber;
+                    } else {
+                        curRowNumber = (startSelectingRowNumber > lastVisibleRowNumber) ? lastVisibleRowNumber : startSelectingRowNumber;
+                    }
                     if (newRowNumber > lastVisibleRowNumber || newRowNumber < firstVisibleRowNumber) {
                         newRowNumber = newRowNumber > 0 ? lastVisibleRowNumber : 0;
                     }
