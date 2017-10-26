@@ -1853,8 +1853,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/ETSSettingsWidget.ui" line="50"/>
-        <source>&lt;a href=&quot;http://ugene.unipro.ru/external.html&quot;&gt;external tools package&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;http://ugene.unipro.ru/external.html&quot;&gt;external tools package&lt;/a&gt;</translation>
+        <source>&lt;a href=&quot;http://ugene.net/external.html&quot;&gt;external tools package&lt;/a&gt;</source>
+        <translation>&lt;a href=&quot;http://ugene.net/external.html&quot;&gt;external tools package&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/ETSSettingsWidget.ui" line="70"/>

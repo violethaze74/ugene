@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>499</width>
-    <height>599</height>
+    <height>621</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -47,7 +47,7 @@
            <string>Check lastest version of external tools package</string>
           </property>
           <property name="text">
-           <string>&lt;a href=&quot;http://ugene.unipro.ru/external.html&quot;&gt;external tools package&lt;/a&gt;</string>
+           <string>&lt;a href=&quot;http://ugene.net/external.html&quot;&gt;external tools package&lt;/a&gt;</string>
           </property>
          </widget>
         </item>
