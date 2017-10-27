@@ -279,10 +279,15 @@ void PhyMlWidget::restoreDefault(){
 
 bool PhyMlWidget::checkSettings(QString &message, const CreatePhyTreeSettings &settings) {
     const bool fileExists = QFileInfo(inputFileLineEdit->text()).exists();
-    if (!fileExists) {
+    const bool fileHaveToExist = (1 == treeTypesCombo->currentIndex());
+    if (fileHaveToExist && !fileExists) {
         twSettings->setCurrentIndex(2);
         inputFileLineEdit->setFocus();
-        message = tr("File with the starting tree is not set.");
+        if (!inputFileLineEdit->text().isEmpty()) {
+            message = tr("File with the starting tree is not set.");
+        } else {
+            message = tr("File with the starting tree doesn't exist.");
+        }
         return false;
     }
 
