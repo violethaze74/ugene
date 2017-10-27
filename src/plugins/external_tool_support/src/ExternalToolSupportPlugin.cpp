@@ -113,6 +113,7 @@
 #include "hmmer/HmmerSupport.h"
 #include "hmmer/HmmerTests.h"
 #include "java/JavaSupport.h"
+#include "kraken/KrakenSupport.h"
 #include "macs/MACSSupport.h"
 #include "macs/MACSWorker.h"
 #include "mafft/MAFFTSupport.h"
@@ -447,6 +448,9 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::BUILD_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::SEARCH_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::PHMMER_TOOL));
+
+    etRegistry->registerEntry(new KrakenSupport(KrakenSupport::BUILD_TOOL));
+    etRegistry->registerEntry(new KrakenSupport(KrakenSupport::CLASSIFY_TOOL));
 
     if (AppContext::getMainWindow()) {
         ExternalToolSupportAction* formatDBAction= new ExternalToolSupportAction(tr("BLAST make database..."), this, QStringList(ET_FORMATDB));
