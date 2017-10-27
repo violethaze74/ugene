@@ -40,8 +40,11 @@ class BlastPlusSupport : public ExternalTool {
     Q_OBJECT
 public:
     BlastPlusSupport(const QString& name, const QString& path = "");
-public slots:
+
+private slots:
     void sl_runWithExtFileSpecify();
+    void sl_runAlign();
+
 private:
     QString lastDBPath;
     QString lastDBName;

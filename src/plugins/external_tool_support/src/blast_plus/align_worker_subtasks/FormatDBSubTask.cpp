@@ -71,7 +71,7 @@ void FormatDBSubTask::prepare() {
     settings.outputPath = workingDir + QFileInfo(referenceUrl).completeBaseName();
     CHECK_OP(stateInfo, );
 
-    FormatDBSupportTask* formatTask = new FormatDBSupportTask(ET_FORMATDB, settings);
+    FormatDBSupportTask* formatTask = new FormatDBSupportTask(ET_MAKEBLASTDB, settings);
     addSubTask(formatTask);
 
     databaseNameAndPath = settings.outputPath;

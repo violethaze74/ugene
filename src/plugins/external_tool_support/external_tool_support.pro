@@ -16,13 +16,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/bigWigTools/BigWigSupport.h \
            src/bigWigTools/BedGraphToBigWigTask.h \
            src/bigWigTools/BedGraphToBigWigWorker.h \
-           src/blast/align_worker_subtasks/BlastReadsSubTask.h \
-           src/blast/align_worker_subtasks/ComposeResultSubTask.h \
-           src/blast/align_worker_subtasks/FormatDBSubTask.h \
-           src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.h \
-           src/blast/align_worker_subtasks/RemoveGapsFromSequenceTask.h \
-           src/blast/AlignToReferenceBlastDialog.h \
-           src/blast/AlignToReferenceBlastWorker.h \
            src/blast/BlastAllSupport.h \
            src/blast/BlastAllSupportRunDialog.h \
            src/blast/BlastAllSupportTask.h \
@@ -31,6 +24,8 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/blast/FormatDBSupportRunDialog.h \
            src/blast/FormatDBSupportTask.h \
            src/blast/PrepareInputFastaFilesTask.h \
+           src/blast_plus/AlignToReferenceBlastDialog.h \
+           src/blast_plus/AlignToReferenceBlastWorker.h \
            src/blast_plus/BlastDBCmdDialog.h \
            src/blast_plus/BlastDBCmdSupport.h \
            src/blast_plus/BlastDBCmdSupportTask.h \
@@ -44,6 +39,11 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/blast_plus/RPSBlastSupportTask.h \
            src/blast_plus/TBlastNPlusSupportTask.h \
            src/blast_plus/TBlastXPlusSupportTask.h \
+           src/blast_plus/align_worker_subtasks/BlastReadsSubTask.h \
+           src/blast_plus/align_worker_subtasks/ComposeResultSubTask.h \
+           src/blast_plus/align_worker_subtasks/FormatDBSubTask.h \
+           src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.h \
+           src/blast_plus/align_worker_subtasks/RemoveGapsFromSequenceTask.h \
            src/bowtie/bowtie_tests/bowtieTests.h \
            src/bowtie/BowtieSettingsWidget.h \
            src/bowtie/BowtieSupport.h \
@@ -192,6 +192,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/vcfutils/VcfutilsSupport.h
 
 FORMS += src/blast/FormatDBSupportRunDialog.ui \
+         src/blast_plus/AlignToReferenceBlastDialog.ui \
          src/blast_plus/BlastDBCmdDialog.ui \
          src/bowtie/BowtieBuildSettings.ui \
          src/bowtie/BowtieSettings.ui \
@@ -213,7 +214,6 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/tcoffee/TCoffeeSupportRunDialog.ui \
          src/snpeff/SnpEffDatabaseDialog.ui \
          src/spades/SpadesSettings.ui \
-         src/blast/AlignToReferenceBlastDialog.ui \
          src/utils/BlastAllSupportDialog.ui \
          src/utils/BlastDBSelectorWidget.ui
 
@@ -231,13 +231,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/bigWigTools/BigWigSupport.cpp \
            src/bigWigTools/BedGraphToBigWigTask.cpp \
            src/bigWigTools/BedGraphToBigWigWorker.cpp \
-           src/blast/align_worker_subtasks/BlastReadsSubTask.cpp \
-           src/blast/align_worker_subtasks/ComposeResultSubTask.cpp \
-           src/blast/align_worker_subtasks/FormatDBSubTask.cpp \
-           src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp \
-           src/blast/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp \
-           src/blast/AlignToReferenceBlastDialog.cpp \
-           src/blast/AlignToReferenceBlastWorker.cpp \
            src/blast/BlastAllSupport.cpp \
            src/blast/BlastAllSupportRunDialog.cpp \
            src/blast/BlastAllSupportTask.cpp \
@@ -246,6 +239,8 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/blast/FormatDBSupportRunDialog.cpp \
            src/blast/FormatDBSupportTask.cpp \
            src/blast/PrepareInputFastaFilesTask.cpp \
+           src/blast_plus/AlignToReferenceBlastDialog.cpp \
+           src/blast_plus/AlignToReferenceBlastWorker.cpp \
            src/blast_plus/BlastDBCmdDialog.cpp \
            src/blast_plus/BlastDBCmdSupport.cpp \
            src/blast_plus/BlastDBCmdSupportTask.cpp \
@@ -259,6 +254,11 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/blast_plus/RPSBlastSupportTask.cpp \
            src/blast_plus/TBlastNPlusSupportTask.cpp \
            src/blast_plus/TBlastXPlusSupportTask.cpp \
+           src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp \
+           src/blast_plus/align_worker_subtasks/ComposeResultSubTask.cpp \
+           src/blast_plus/align_worker_subtasks/FormatDBSubTask.cpp \
+           src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.cpp \
+           src/blast_plus/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp \
            src/bowtie/bowtie_tests/bowtieTests.cpp \
            src/bowtie/BowtieSettingsWidget.cpp \
            src/bowtie/BowtieSupport.cpp \

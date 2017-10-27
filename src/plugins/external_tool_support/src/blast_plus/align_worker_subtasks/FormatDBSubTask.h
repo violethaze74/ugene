@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.net
+ * http://ugene.unipro.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,24 +19,38 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXTERNAL_TOOL_UTILS_H_
-#define _U2_EXTERNAL_TOOL_UTILS_H_
+#ifndef _U2_FORMAT_DB_SUBTASK_H_
+#define _U2_FORMAT_DB_SUBTASK_H_
 
-#include <QObject>
+#include <U2Core/Task.h>
+
+#include <U2Lang/DbiDataHandler.h>
+#include <U2Lang/DbiDataStorage.h>
 
 namespace U2 {
+namespace Workflow {
 
-class ExternalToolUtils : public QObject {
+class FormatDBSubTask : public Task {
     Q_OBJECT
 public:
-    static void checkExtToolsPath(const QStringList &names);
+    FormatDBSubTask(const QString& referenceUrl,
+                    const SharedDbiDataHandler &referenceDbHandler,
+                    DbiDataStorage *storage);
+    void prepare();
 
-    static void addDefaultCistromeDirToSettings();
-    static void addCistromeDataPath(const QString& dataName, const QString& dirName, bool entriesAreFolders = false);
+    const QString& getResultPath() const;
 
-    static const QString CISTROME_DATA_DIR;
+private:
+    QString getAcceptableTempDir() const;
+
+    const QString               referenceUrl;
+    const SharedDbiDataHandler  referenceDbHandler;
+    DbiDataStorage *storage;
+
+    QString databaseNameAndPath;
 };
 
-}   // namespace U2
+} // namespace Workflow
+} // namespace U2
 
-#endif // _U2_EXTERNAL_TOOL_UTILS_H_
+#endif // _U2_FORMAT_DB_SUBTASK_H_
