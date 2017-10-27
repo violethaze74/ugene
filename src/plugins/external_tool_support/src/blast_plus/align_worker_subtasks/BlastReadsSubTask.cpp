@@ -21,7 +21,7 @@
 
 #include "BlastReadsSubTask.h"
 
-#include "blast/BlastAllSupportTask.h"
+#include "blast_plus/BlastNPlusSupportTask.h"
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/PairwiseAlignmentTask.h>
@@ -109,6 +109,9 @@ void BlastAndSwReadTask::prepare() {
     settings.xDropoffFGA = 100;
     settings.numberOfProcessors = AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
     settings.numberOfHits = 100;
+    settings.gapOpenCost = 2;
+    settings.gapExtendCost = 2;
+
     QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
     CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), );
 
@@ -123,9 +126,9 @@ void BlastAndSwReadTask::prepare() {
     settings.groupName = "blast";
 
     settings.outputResFile = GUrlUtils::prepareTmpFileLocation(blastResultDir, "read_sequence", "gb", stateInfo);
-    settings.outputType = 8;
+    settings.outputType = 5;
 
-    blastTask = new BlastAllSupportTask(settings);
+    blastTask = new BlastNPlusSupportTask(settings);
     addSubTask(blastTask);
 }
 
@@ -230,7 +233,9 @@ U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData
             // region on reference
             qint64 hitFrom = ann->findFirstQualifierValue("hit-from").toInt();
             qint64 hitTo = ann->findFirstQualifierValue("hit-to").toInt();
-            refRegion = U2Region(hitFrom - 1, hitTo - hitFrom);
+            qint64 leftMost = qMin(hitFrom, hitTo);
+            qint64 rightMost = qMax(hitFrom, hitTo);
+            refRegion = U2Region(leftMost - 1, rightMost - leftMost);
 
             // frame
             QString frame = ann->findFirstQualifierValue("source_frame");
