@@ -3080,6 +3080,18 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
     GTUtilsLog::check(os, logTracer);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4515) {
+
+    GTFileDialog::openFile(os, dataDir + "samples/ABIF/", "A01.abi");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "K");
+
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 0/0"), "Results string not match");
+}
+
+
 GUI_TEST_CLASS_DEFINITION(test_4524) {
     // Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
