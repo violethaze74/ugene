@@ -29,6 +29,7 @@
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GObjectTypes.h>
 
 #include <U2Gui/GUIUtils.h>
 
@@ -838,8 +839,11 @@ void MaEditorNameList::sl_editSequenceName() {
     CHECK(n >= 0, );
 
     QString curName =  maObj->getMultipleAlignment()->getRow(n)->getName();
-    QString newName = QInputDialog::getText(ui, tr("Rename Read"),
-            tr("New sequence name:"), QLineEdit::Normal, curName, &ok);
+    
+    bool isMca = this->editor->getMaObject()->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
+    QString title = isMca ? tr("Rename Read") : tr("Rename Sequence");
+    QString newName = QInputDialog::getText(ui, title, tr("New name:"), QLineEdit::Normal, curName, &ok);
+        
     if (ok && !newName.isEmpty() && curName != newName) {
         emit si_sequenceNameChanged(curName, newName);
         maObj->renameRow(n,newName);
