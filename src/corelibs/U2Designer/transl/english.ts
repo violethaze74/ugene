@@ -1198,7 +1198,7 @@ bowtie index file</translation>
         <translation type="vanished">Open by operating system</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="206"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="207"/>
         <source>files</source>
         <translation>files</translation>
     </message>
@@ -1363,12 +1363,12 @@ bowtie index file</translation>
 <context>
     <name>U2::SchemaRunModeDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="556"/>
+        <location filename="../src/DelegateEditors.cpp" line="563"/>
         <source>This computer</source>
         <translation>This computer</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="557"/>
+        <location filename="../src/DelegateEditors.cpp" line="564"/>
         <source>Remote computer</source>
         <translation>Remote computer</translation>
     </message>
@@ -1420,17 +1420,17 @@ bowtie index file</translation>
 <context>
     <name>U2::StringListDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="687"/>
+        <location filename="../src/DelegateEditors.cpp" line="694"/>
         <source>Enter items</source>
         <translation>Enter items</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="689"/>
+        <location filename="../src/DelegateEditors.cpp" line="696"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="691"/>
+        <location filename="../src/DelegateEditors.cpp" line="698"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -1568,17 +1568,17 @@ bowtie index file</translation>
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="546"/>
+        <location filename="../src/DelegateEditors.cpp" line="553"/>
         <source>Overwrite</source>
         <translation>Overwrite</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="547"/>
+        <location filename="../src/DelegateEditors.cpp" line="554"/>
         <source>Rename</source>
         <translation>Rename</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="549"/>
+        <location filename="../src/DelegateEditors.cpp" line="556"/>
         <source>Append</source>
         <translation>Append</translation>
     </message>

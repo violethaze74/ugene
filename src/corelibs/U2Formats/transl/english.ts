@@ -404,17 +404,17 @@
 <context>
     <name>U2::AprImporter</name>
     <message>
-        <location filename="../src/apr/AprImporter.cpp" line="119"/>
+        <location filename="../src/apr/AprImporter.cpp" line="117"/>
         <source>Vector NTI/AlignX file importer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/apr/AprImporter.cpp" line="123"/>
+        <location filename="../src/apr/AprImporter.cpp" line="121"/>
         <source>Vector NTI/AlignX files importer is used to convert conventional APR files to a multiple sequence alignment formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/apr/AprImporter.cpp" line="138"/>
+        <location filename="../src/apr/AprImporter.cpp" line="136"/>
         <source>Convert to another format:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -428,7 +428,7 @@
     </message>
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="66"/>
-        <location filename="../src/apr/AprImporter.cpp" line="94"/>
+        <location filename="../src/apr/AprImporter.cpp" line="92"/>
         <source>Empty destination url</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2200,7 +2200,7 @@
         <translation>Failed to parse SCF file: %1</translation>
     </message>
     <message>
-        <location filename="../src/SCFFormat.cpp" line="1235"/>
+        <location filename="../src/SCFFormat.cpp" line="1237"/>
         <source>Failed to load sequence from SCF file %1</source>
         <translation>Failed to load sequence from SCF file %1</translation>
     </message>

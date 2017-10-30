@@ -1551,7 +1551,7 @@ Double-click to collapse the branch</translation>
         <translation>Restriction Site</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="110"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="111"/>
         <source>none</source>
         <translation>none</translation>
     </message>
@@ -2561,117 +2561,122 @@ Double-click to collapse the branch</translation>
 <context>
     <name>U2::AnnotatedDNAView</name>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="111"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="115"/>
         <source>Go to position...</source>
         <translation>Go to position...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="130"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="134"/>
         <source>Find pattern...</source>
         <translation>Find pattern...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="135"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="139"/>
+        <source>Annotations settings on sequence editing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="143"/>
         <source>Insert subsequence...</source>
         <translation>Insert subsequence...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="140"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="148"/>
         <source>Remove subsequence...</source>
         <translation>Remove subsequence...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="144"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="152"/>
         <source>Replace subsequence...</source>
         <translation>Replace subsequence...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="149"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="157"/>
         <source>Selected sequence from view</source>
         <translation>Selected sequence from view</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="153"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="161"/>
         <source>Reverse-complement sequence</source>
         <translation>Reverse-complement sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="162"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="170"/>
         <source>Complement sequence</source>
         <translation>Complement sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="354"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="362"/>
         <source>Error!</source>
         <translation>Error!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="535"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="543"/>
         <source>Analyze</source>
         <translation>Analyze</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="545"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="553"/>
         <source>Add</source>
         <translation>Add</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="551"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="559"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="557"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="565"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="563"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="571"/>
         <source>Remove</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="576"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="584"/>
         <source>Edit</source>
         <translation>Edit</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1085"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1094"/>
         <source>Show codon table</source>
         <translation>Show codon table</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1336"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1372"/>
         <source>No sequence in focus</source>
         <translation>No sequence in focus</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="158"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="166"/>
         <source>Reverse sequence</source>
         <translation>Reverse sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="755"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="764"/>
         <source>Disable &apos;%1&apos; highlighting</source>
         <translation>Disable &apos;%1&apos; highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="757"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="766"/>
         <source>Enable &apos;%1&apos; highlighting</source>
         <translation>Enable &apos;%1&apos; highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="807"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="816"/>
         <source>Select sequence to associate annotations with:</source>
         <translation>Select sequence to associate annotations with:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="825"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="834"/>
         <source>No sequence object found for annotations</source>
         <translation>No sequence object found for annotations</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="894"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="903"/>
         <source>Go To</source>
         <translation>Go To</translation>
     </message>
@@ -2693,7 +2698,6 @@ Double-click to collapse the branch</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="124"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="269"/>
         <source>Value</source>
         <translation>Value</translation>
     </message>
@@ -2719,19 +2723,19 @@ Double-click to collapse the branch</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="192"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1137"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1129"/>
         <source>Copy qualifier text</source>
         <translation>Copy qualifier text</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="195"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1141"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1133"/>
         <source>Copy qualifier URL</source>
         <translation>Copy qualifier URL</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="198"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1146"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1138"/>
         <source>Toggle column</source>
         <translation>Toggle column</translation>
     </message>
@@ -2752,45 +2756,45 @@ Double-click to collapse the branch</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="215"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="802"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="794"/>
         <source>Copy column text</source>
         <translation>Copy column text</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="218"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="816"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="808"/>
         <source>copy column URL</source>
         <translation>copy column URL</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="221"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="403"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="450"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="395"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="442"/>
         <source>Annotation</source>
         <translation>Annotation</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1777"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1769"/>
         <source>Edit Group</source>
         <translation>Edit Group</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1824"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1816"/>
         <source>Edit Annotation</source>
         <translation>Edit Annotation</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1824"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1816"/>
         <source>Edit</source>
         <translation>Edit</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="572"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="564"/>
         <source>At least one dragged annotation is out of the sequence range!</source>
         <translation>At least one dragged annotation is out of the sequence range!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1974"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1966"/>
         <source>Create Permanent Annotation</source>
         <translation>Create Permanent Annotation</translation>
     </message>
@@ -2805,48 +2809,48 @@ Double-click to collapse the branch</translation>
         <translation>Make auto-annotations persistent</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="397"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="389"/>
         <source>Group</source>
         <translation>Group</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="400"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="392"/>
         <source>Qualifier</source>
         <translation>Qualifier</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="808"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="800"/>
         <source>Copy column &apos;%1&apos; text</source>
         <translation>Copy column &apos;%1&apos; text</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="811"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="803"/>
         <source>Copy &apos;%1&apos; annotation location</source>
         <translation>Copy &apos;%1&apos; annotation location</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="820"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="812"/>
         <source>Copy column &apos;%1&apos; URL</source>
         <translation>Copy column &apos;%1&apos; URL</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="842"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1147"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="834"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1139"/>
         <source>Hide &apos;%1&apos; column</source>
         <translation>Hide &apos;%1&apos; column</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1137"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1129"/>
         <source>Copy qualifier &apos;%1&apos; value</source>
         <translation>Copy qualifier &apos;%1&apos; value</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1141"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1133"/>
         <source>Copy qualifier &apos;%1&apos; URL</source>
         <translation>Copy qualifier &apos;%1&apos; URL</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1147"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1139"/>
         <source>Add &apos;%1&apos; column</source>
         <translation>Add &apos;%1&apos; column</translation>
     </message>
@@ -3975,19 +3979,37 @@ You don&apos;t have enough rights to change file</translation>
 <context>
     <name>U2::DetView</name>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="62"/>
+        <location filename="../src/ov_sequence/DetView.cpp" line="63"/>
         <source>Show complement strand</source>
         <translation>Show complement strand</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="67"/>
+        <location filename="../src/ov_sequence/DetView.cpp" line="68"/>
         <source>Show/hide translations</source>
         <translation>Show/hide translations</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="71"/>
+        <location filename="../src/ov_sequence/DetView.cpp" line="72"/>
         <source>Wrap sequence</source>
         <translation>Wrap sequence</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/DetView.cpp" line="78"/>
+        <source>Edit sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::DetViewSequenceEditor</name>
+    <message>
+        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="238"/>
+        <source>Delete the sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="240"/>
+        <source>Would you like to completely remove the sequence?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4832,7 +4854,7 @@ Please, check external tools in the settings.</translation>
 <context>
     <name>U2::FindQualifierTask</name>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2335"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2327"/>
         <source>Searching for a qualifier</source>
         <translation>Searching for a qualifier</translation>
     </message>
@@ -5895,55 +5917,64 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MaEditorNameList</name>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="70"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="71"/>
         <source>Edit sequence name</source>
         <translation>Edit sequence name</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="77"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="78"/>
         <source>Copy current sequence</source>
         <translation>Copy current sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="81"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="82"/>
         <source>Remove sequence(s)</source>
         <translation>Remove sequence(s)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="131"/>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="584"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="132"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="577"/>
         <source>MSA Editor UI is NULL</source>
         <translation>MSA Editor UI is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="133"/>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="586"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="134"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="579"/>
         <source>MSA Editor sequence area is NULL</source>
         <translation>MSA Editor sequence area is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="149"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="150"/>
         <source>MSA Object is NULL</source>
         <translation>MSA Object is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="155"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="156"/>
         <source>Invalid sequence index</source>
         <translation>Invalid sequence index</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="849"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="844"/>
         <source>Rename Read</source>
         <translation>Rename Read</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="844"/>
+        <source>Rename Sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="845"/>
+        <source>New name:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Rename</source>
         <translation type="vanished">Rename</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="850"/>
         <source>New sequence name:</source>
-        <translation>New sequence name:</translation>
+        <translation type="vanished">New sequence name:</translation>
     </message>
 </context>
 <context>
@@ -6066,52 +6097,52 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MaEditorStatusBar</name>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="80"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="81"/>
         <source>Sel %1</source>
         <translation>Sel %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="81"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="82"/>
         <source>Ln %1 / %2</source>
         <translation>Ln %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="81"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="82"/>
         <source>Line %1 of %2</source>
         <translation>Line %1 of %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="82"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="83"/>
         <source>Col %1 / %2</source>
         <translation>Col %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="82"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="83"/>
         <source>Column %1 of %2</source>
         <translation>Column %1 of %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="83"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="84"/>
         <source>Pos %1 / %2</source>
         <translation>Pos %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="83"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="84"/>
         <source>Position %1 of %2</source>
         <translation>Position %1 of %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="84"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="85"/>
         <source>Selection width and height are %1</source>
         <translation>Selection width and height are %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="133"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="134"/>
         <source>Alignment object is locked</source>
         <translation>Alignment object is locked</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="133"/>
+        <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="134"/>
         <source>Alignment object is not locked</source>
         <translation>Alignment object is not locked</translation>
     </message>
@@ -6146,6 +6177,16 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="271"/>
         <source>Paste</source>
         <translation>Paste</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="282"/>
+        <source>Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="286"/>
+        <source>Redo</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6704,12 +6745,12 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::MsaUndoRedoFramework</name>
     <message>
-        <location filename="../src/UndoRedoFramework.cpp" line="44"/>
+        <location filename="../src/UndoRedoFramework.cpp" line="45"/>
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/UndoRedoFramework.cpp" line="50"/>
+        <location filename="../src/UndoRedoFramework.cpp" line="51"/>
         <source>Redo</source>
         <translation type="unfinished"></translation>
     </message>
