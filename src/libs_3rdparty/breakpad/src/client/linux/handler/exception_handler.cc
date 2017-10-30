@@ -423,9 +423,9 @@ bool ExceptionHandler::HandleSignal(int sig, siginfo_t* info, void* uc) {
   // Fill in all the holes in the struct to make Valgrind happy.
   memset(&context, 0, sizeof(context));
   memcpy(&context.siginfo, info, sizeof(siginfo_t));
-  memcpy(&context.context, uc, sizeof(struct ucontext));
+  memcpy(&context.context, uc, sizeof(ucontext_t));
 #if defined(__aarch64__)
-  struct ucontext *uc_ptr = (struct ucontext*)uc;
+  ucontext_t *uc_ptr = (ucontext_t*)uc;
   struct fpsimd_context *fp_ptr =
       (struct fpsimd_context*)&uc_ptr->uc_mcontext.__reserved;
   if (fp_ptr->head.magic == FPSIMD_MAGIC) {
@@ -435,7 +435,7 @@ bool ExceptionHandler::HandleSignal(int sig, siginfo_t* info, void* uc) {
   // FP state is not part of user ABI on ARM Linux.
   // In case of MIPS Linux FP state is already part of struct ucontext
   // and 'float_state' is not a member of CrashContext.
-  struct ucontext *uc_ptr = (struct ucontext*)uc;
+  ucontext_t *uc_ptr = (ucontext_t*)uc;
   if (uc_ptr->uc_mcontext.fpregs) {
     memcpy(&context.float_state,
            uc_ptr->uc_mcontext.fpregs,
@@ -459,7 +459,7 @@ bool ExceptionHandler::SimulateSignalDelivery(int sig) {
   // ExceptionHandler::HandleSignal().
   siginfo.si_code = SI_USER;
   siginfo.si_pid = getpid();
-  struct ucontext context;
+  ucontext_t context;
   getcontext(&context);
   return HandleSignal(sig, &siginfo, &context);
 }

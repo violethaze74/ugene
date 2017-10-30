@@ -22,6 +22,7 @@
 #include <QPushButton>
 
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -35,8 +36,9 @@ ExportMca2MsaDialog::ExportMca2MsaDialog(const QString &defaultFilePath, QWidget
       saveController(NULL)
 {
     setupUi(this);
+    GCOUNTER(cvar, tvar, "'Export Alignment without Chromatograms' dialog opening");
 
-    new HelpButton(this, buttonBox, "19766686");
+    new HelpButton(this, buttonBox, "20874842");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

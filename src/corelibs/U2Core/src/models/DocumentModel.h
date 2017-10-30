@@ -228,6 +228,8 @@ public:
 
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
 
+    virtual QString getRadioButtonText() const;
+
 protected:
 
    /* io - opened IOAdapter.

@@ -67,6 +67,7 @@ public:
     static const DocumentFormatId STOCKHOLM;
     static const DocumentFormatId UGENEDB;
     static const DocumentFormatId VCF4;
+    static const DocumentFormatId VECTOR_NTI_ALIGNX;
     static const DocumentFormatId VECTOR_NTI_SEQUENCE;
 
     static DocumentFormat* get(const DocumentFormatId& formatId);

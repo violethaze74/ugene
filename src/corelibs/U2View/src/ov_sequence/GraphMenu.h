@@ -64,10 +64,12 @@ class U2VIEW_EXPORT GraphMenuAction : public ADVSequenceWidgetAction
 public:
     GraphMenuAction(const DNAAlphabet* a);
     static void addGraphAction(ADVSequenceObjectContext*, GraphAction*);
-
+public slots:
+    void sl_closeAllGraphs();
 private:
     static const QString ACTION_NAME;
     QMenu* menu;
+    QAction* separator;
 
     static GraphMenuAction* findGraphMenuAction(ADVSequenceObjectContext*);
 };

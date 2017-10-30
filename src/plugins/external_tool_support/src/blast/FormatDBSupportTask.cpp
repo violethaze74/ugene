@@ -44,10 +44,11 @@
 namespace U2 {
 
 void FormatDBSupportTaskSettings::reset() {
-    inputFilesPath=QList<QString>();
-    outputPath="";
-    databaseTitle="";
-    isInputAmino=true;
+    inputFilesPath = QList<QString>();
+    outputPath = "";
+    databaseTitle = "";
+    isInputAmino = true;
+    tempDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(FORMATDB_TMP_DIR);
 }
 
 FormatDBSupportTask::FormatDBSupportTask(const QString& name, const FormatDBSupportTaskSettings& _settings) :
@@ -77,6 +78,7 @@ QList<Task *> FormatDBSupportTask::onSubTaskFinished(Task *subTask) {
         inputFastaFiles << prepareTask->getFastaFiles();
         fastaTmpFiles << prepareTask->getTempFiles();
         createFormatDbTask();
+        CHECK_OP(stateInfo, result);
         result << formatDBTask;
     }
 
@@ -144,8 +146,7 @@ QString getTempDirName(qint64 taskId) {
 
 QString FormatDBSupportTask::prepareTempDir() {
     const QString tmpDirName = getTempDirName(getTaskId());
-    const QString tmpDir = GUrlUtils::prepareDirLocation(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(FORMATDB_TMP_DIR) + "/"+ tmpDirName,
-                                                   stateInfo);
+    const QString tmpDir = GUrlUtils::prepareDirLocation(settings.tempDirPath + "/" + tmpDirName, stateInfo);
     CHECK_OP(stateInfo, "");
     CHECK_EXT(!tmpDir.isEmpty(), setError(tr("Cannot create temp folder")), "");
     return tmpDir;
@@ -182,9 +183,9 @@ void FormatDBSupportTask::createFormatDbTask() {
         externalToolLog = settings.outputPath + "formatDB.log";
     }else if (toolName == ET_MAKEBLASTDB){
         for (int i = 0; i < inputFastaFiles.length(); i++){
-            inputFastaFiles[i]="\""+inputFastaFiles[i]+"\"";
+            inputFastaFiles[i] = "\"" + inputFastaFiles[i] + "\"";
         }
-        arguments <<"-in"<< inputFastaFiles.join(" ");
+        arguments << "-in" << inputFastaFiles.join(" ");
         arguments <<"-logfile"<< settings.outputPath + "MakeBLASTDB.log";
         externalToolLog = settings.outputPath + "MakeBLASTDB.log";
         if(settings.outputPath.contains(" ")){

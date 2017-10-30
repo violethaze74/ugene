@@ -34,7 +34,7 @@ class LoadDocumentTask;
 class AceImporterTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    AceImporterTask(const GUrl &url, const QVariantMap& settings, const QVariantMap &hints = QVariantMap());
+    AceImporterTask(const GUrl &url, const QVariantMap& settings);
 
     virtual void prepare();
     virtual QList<Task*> onSubTaskFinished(Task* subTask);
@@ -52,7 +52,6 @@ private:
     bool                     isSqliteDbTransit;
 
     QVariantMap              settings;
-    QVariantMap              hints;
 
     U2DbiRef                 localDbiRef;
     U2DbiRef                 hintedDbiRef;
@@ -70,7 +69,7 @@ public:
     AceImporter();
 
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url);
-    virtual DocumentProviderTask* createImportTask(const FormatDetectionResult& res, bool showWizard, const QVariantMap &hints);
+    virtual DocumentProviderTask* createImportTask(const FormatDetectionResult& res, bool showGui, const QVariantMap &hints);
 
     static const QString ID;
     static const QString SRC_URL;

@@ -44,7 +44,7 @@ ExportAnnotationsDialog::ExportAnnotationsDialog( const QString &filename, QWidg
 {
     ui->setupUi( this );
     lastAddToProjectState = ui->addToProjectCheck->isChecked();
-    new HelpButton(this, ui->buttonBox, "19766754");
+    new HelpButton(this, ui->buttonBox, "20874910");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

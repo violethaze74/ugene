@@ -45,7 +45,7 @@
 #elif defined(Q_OS_UNIX)
 #define NUMBER_OF_TESTS_IN_SUITE 550
 #elif defined(Q_OS_WIN)
-#define NUMBER_OF_TESTS_IN_SUITE 750
+#define NUMBER_OF_TESTS_IN_SUITE 850
 #endif
 
 #define GUITESTING_REPORT_PREFIX "GUITesting"
@@ -257,9 +257,10 @@ QString GUITestLauncher::performTest(const QString& testName) {
 
     QString testResult = readTestResult(process.readAllStandardOutput());
 
-    if(qgetenv("UGENE_SKIP_TEST_RECORDING").toInt() != 1){
-        screenRecorder.kill();
-        if(!GUITestTeamcityLogger::testFailed(testResult)){
+    if (qgetenv("UGENE_SKIP_TEST_RECORDING").toInt() != 1) {
+        screenRecorder.close();
+        screenRecorder.waitForFinished(2000);
+        if (!GUITestTeamcityLogger::testFailed(testResult)) {
             QFile(getVideoPath(testName)).remove();
         }
     }

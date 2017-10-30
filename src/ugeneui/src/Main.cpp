@@ -86,7 +86,7 @@
 
 #include <U2Gui/CredentialsAskerGui.h>
 #include <U2Gui/FeatureKeyFilterTask.h>
-#include <U2Gui/ImportDialogsFactories.h>
+#include <U2Gui/ImportWidgetsFactories.h>
 #include <U2Gui/LogView.h>
 #include <U2Gui/MsaContentFilterTask.h>
 #include <U2Gui/MsaSeqNameFilterTask.h>
@@ -530,7 +530,7 @@ int main(int argc, char **argv)
 
     DocumentFormatRegistryImpl* dfr = new DocumentFormatRegistryImpl();
     appContext->setDocumentFormatRegistry(dfr);
-    ImportDialogFactories::registerFactories();
+    ImportWidgetsFactories::registerFactories();
 
     IOAdapterRegistryImpl* io = new IOAdapterRegistryImpl();
     appContext->setIOAdapterRegistry(io);

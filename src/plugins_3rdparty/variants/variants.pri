@@ -27,7 +27,7 @@ use_bundled_zlib() {
 win32 : LIBS += -lwsock32
 
 
-INCLUDEPATH += src ../../include /usr/include
+INCLUDEPATH += src ../../include
 INCLUDEPATH += ../../libs_3rdparty/samtools/src/samtools
 INCLUDEPATH += ../../libs_3rdparty/samtools/src
 INCLUDEPATH += ../../libs_3rdparty/samtools/src/samtools/bcftools

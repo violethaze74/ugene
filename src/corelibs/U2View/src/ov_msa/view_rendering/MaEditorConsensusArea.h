@@ -57,6 +57,7 @@ public:
     virtual ~MaEditorConsensusArea();
 
     MaEditorWgt *getEditorWgt() const;
+    virtual QString getDefaultAlgorithmId() const = 0;
 
     QSize getCanvasSize(const U2Region &region, const MaEditorConsElements &elements) const;
 
@@ -111,9 +112,10 @@ protected slots:
     void setupFontAndHeight();
 
 protected:
+    void initCache();
     QString createToolTip(QHelpEvent* he) const;
     void restoreLastUsedConsensusThreshold();
-    QString getLastUsedAlgoSettingsKey() const;
+    virtual QString getLastUsedAlgoSettingsKey() const = 0;
     QString getThresholdSettingsKey(const QString& factoryId) const;
 
     virtual void initRenderer() = 0;

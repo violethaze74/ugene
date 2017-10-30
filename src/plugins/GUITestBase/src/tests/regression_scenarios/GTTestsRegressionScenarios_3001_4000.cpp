@@ -81,6 +81,8 @@
 #include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "api/GTSequenceReadingModeDialog.h"
+#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "GTDatabaseConfig.h"
 #include "GTTestsRegressionScenarios_3001_4000.h"
 #include "GTUtilsAnnotationsHighlightingTreeView.h"
@@ -108,8 +110,6 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "api/GTSequenceReadingModeDialog.h"
-#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "runnables/qt/EscapeClicker.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
@@ -128,6 +128,7 @@
 #include "runnables/ugene/corelibs/U2Gui/FindQualifierDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
@@ -175,10 +176,10 @@
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.h"
@@ -729,10 +730,7 @@ GUI_TEST_CLASS_DEFINITION(test_3126) {
 //    Expected: the file is imported, UGENE does not crash.
     GTLogTracer l;
 
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller
-                                 (os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os,
-                                                                        sandBoxDir + "test_3126"));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_3126"));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4764,12 +4762,11 @@ GUI_TEST_CLASS_DEFINITION(test_3736) {
 GUI_TEST_CLASS_DEFINITION(test_3738) {
 //    Select {DNA Assembly -> Contig assembly with CAP3}
     GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "test_3738.ugenedb"));
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_3738.ugenedb"));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList()<<testDir + "_common_data/scf/Sequence A.scf"
                                                                  <<testDir + "_common_data/scf/Sequence B.scf",
                                                                  sandBoxDir + "test_3738.ace"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" <<  "Reads quality control and de novo assembly (with CAP3)...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" <<  "Reads de novo assembly (with CAP3)...");
 
 //    menu item in the main menu.
 //    Set sequences "_common_data/scf/Sequence A.scf" and "_common_data/scf/Sequence B.scf" as input, set any valid output path and run the task.
@@ -5108,8 +5105,7 @@ GUI_TEST_CLASS_DEFINITION(test_3778) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3779) {
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "regression_test_3779.ugenedb"));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "regression_test_3779.ugenedb"));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_4.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

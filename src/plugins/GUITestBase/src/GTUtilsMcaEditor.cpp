@@ -28,10 +28,12 @@
 
 #include <U2Core/U2SafePoints.h>
 
+#include <U2View/McaEditorConsensusArea.h>
 #include <U2View/McaEditor.h>
 #include <U2View/McaEditorNameList.h>
 #include <U2View/McaEditorSequenceArea.h>
 #include <U2View/McaEditorWgt.h>
+#include <U2View/MSAEditorOffsetsView.h>
 
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
@@ -76,6 +78,40 @@ McaEditorNameList *GTUtilsMcaEditor::getNameListArea(GUITestOpStatus &os) {
 McaEditorSequenceArea *GTUtilsMcaEditor::getSequenceArea(GUITestOpStatus &os) {
     return GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", getEditorUi(os));
 }
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getConsensusArea"
+McaEditorConsensusArea* GTUtilsMcaEditor::getConsensusArea(GUITestOpStatus &os) {
+    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
+    CHECK_OP(os, NULL);
+    return GTWidget::findExactWidget<McaEditorConsensusArea*>(os, "consArea", activeWindow);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getMcaRow"
+MultipleAlignmentRowData* GTUtilsMcaEditor::getMcaRow(GUITestOpStatus &os, int rowNum) {
+    McaEditor* mcaEditor = GTUtilsMcaEditor::getEditor(os);
+    GT_CHECK_RESULT(NULL != mcaEditor, "McaEditor not found", NULL);
+
+    MultipleChromatogramAlignmentObject* maObj = mcaEditor->getMaObject();
+    GT_CHECK_RESULT(NULL != maObj, "MultipleChromatogramAlignmentObject not found", NULL);
+
+    MultipleAlignmentRow row = maObj->getRow(rowNum);
+
+    return row.data();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getOffsetAction"
+QAction* GTUtilsMcaEditor::getOffsetAction(GUITestOpStatus &os) {
+    McaEditorWgt* editorWgt = GTUtilsMcaEditor::getEditorUi(os);
+    GT_CHECK_RESULT(editorWgt != NULL, "McaEditorWgt not found", NULL);
+
+    MSAEditorOffsetsViewController* offsetController = editorWgt->getOffsetsViewController();
+    GT_CHECK_RESULT(offsetController != NULL, "MSAEditorOffsetsViewController is NULL", NULL);
+    return offsetController->getToggleColumnsViewAction();
+}
+
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceLabelText"
@@ -193,6 +229,24 @@ void GTUtilsMcaEditor::undo(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "redo"
 void GTUtilsMcaEditor::redo(GUITestOpStatus &os) {
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "zoomIn"
+void GTUtilsMcaEditor::zoomIn(HI::GUITestOpStatus &os) {
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom In"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "zoomOut"
+void GTUtilsMcaEditor::zoomOut(HI::GUITestOpStatus &os) {
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "resetZoom"
+void GTUtilsMcaEditor::resetZoom(HI::GUITestOpStatus &os) {
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Reset Zoom"));
 }
 #undef GT_METHOD_NAME
 

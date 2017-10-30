@@ -39,10 +39,11 @@ SequenceQualityTrimTaskSettings::SequenceQualityTrimTaskSettings()
 }
 
 SequenceQualityTrimTask::SequenceQualityTrimTask(const SequenceQualityTrimTaskSettings &settings)
-    : Task(tr("Trim sequence by quality"), TaskFlag_None),
+    : Task(tr("Trim sequence by quality"), TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       settings(settings),
       trimmedSequenceObject(NULL),
-      trimmedChromatogramObject(NULL)
+      trimmedChromatogramObject(NULL),
+      isFilteredOut(false)
 {
     SAFE_POINT_EXT(NULL != settings.sequenceObject, setError("Sequence object is NULL"), );
 }
@@ -66,6 +67,11 @@ void SequenceQualityTrimTask::run() {
     CHECK_OP(stateInfo, );
 
     trimChromatogram(acceptedRegion);
+}
+
+QString SequenceQualityTrimTask::generateReport() const {
+    CHECK(isFilteredOut, "");
+    return tr("The sequence '%1' was filtered out by quality").arg(settings.sequenceObject->getSequenceName());
 }
 
 void SequenceQualityTrimTask::cloneObjects() {
@@ -118,6 +124,7 @@ U2Region SequenceQualityTrimTask::trimSequence() {
     DNASequence sequence = trimmedSequenceObject->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, U2Region());
     const U2Region acceptedRegion = DNASequenceUtils::trimByQuality(sequence, settings.qualityTreshold, settings.minSequenceLength, settings.trimBothEnds);
+    isFilteredOut = acceptedRegion.isEmpty();
     trimmedSequenceObject->setWholeSequence(sequence);
     return acceptedRegion;
 }

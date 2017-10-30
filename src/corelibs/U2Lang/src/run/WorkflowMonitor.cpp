@@ -97,7 +97,7 @@ const QMap<QString, Monitor::WorkerLogInfo> & WorkflowMonitor::getWorkersLog() c
     return workersLog;
 }
 
-const QMap<QString, StrStrMap> &WorkflowMonitor::getWorkersReports() const {
+const QMap<QString, QMultiMap<QString, QString> > &WorkflowMonitor::getWorkersReports() const {
     return workersReports;
 }
 

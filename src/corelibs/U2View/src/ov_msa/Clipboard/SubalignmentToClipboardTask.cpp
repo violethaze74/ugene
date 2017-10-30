@@ -171,8 +171,8 @@ void RichTextMsaClipboardTask::run(){
     DNAAlphabetType atype = al->getType();
     MsaColorSchemeRegistry* csr = AppContext::getMsaColorSchemeRegistry();
         QString csid = atype == DNAAlphabet_AMINO ?
-            s->getValue(MOBJECT_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString()
-          : s->getValue(MOBJECT_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
+            s->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString()
+          : s->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
 
     MsaColorSchemeFactory* csf = csr->getSchemeFactoryById(csid);
     if (csf == NULL) {
@@ -181,8 +181,8 @@ void RichTextMsaClipboardTask::run(){
     SAFE_POINT(csf!=NULL, "RTFMSA entry storing: NULL MsaColorSchemeFactory object", );
     MsaColorScheme* colorScheme = csf->create(this, obj);
 
-    QString fontFamily = s->getValue(MOBJECT_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString();
-    int pointSize = s->getValue(MOBJECT_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt();
+    QString fontFamily = s->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString();
+    int pointSize = s->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt();
 
     MsaHighlightingScheme* highlightingScheme = context->getUI()->getSequenceArea()->getCurrentHighlightingScheme();
     SAFE_POINT(highlightingScheme!=NULL, "RTFMSA entry storing: NULL highlightingScheme object", );

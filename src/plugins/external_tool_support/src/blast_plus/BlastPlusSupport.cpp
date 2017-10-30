@@ -41,6 +41,7 @@
 #include <U2View/ADVUtils.h>
 #include <U2View/AnnotatedDNAView.h>
 
+#include "AlignToReferenceBlastDialog.h"
 #include "BlastDBCmdDialog.h"
 #include "BlastDBCmdSupport.h"
 #include "BlastDBCmdSupportTask.h"
@@ -55,7 +56,9 @@
 #include "RPSBlastSupportTask.h"
 #include "TBlastNPlusSupportTask.h"
 #include "TBlastXPlusSupportTask.h"
+#include "blast/FormatDBSupport.h"
 #include "utils/ExternalToolSupportAction.h"
+#include "utils/ExternalToolUtils.h"
 
 namespace U2 {
 
@@ -219,6 +222,24 @@ void BlastPlusSupport::sl_runWithExtFileSpecify(){
     QList<BlastTaskSettings> settingsList = blastPlusRunDialog->getSettingsList();
     BlastPlusSupportMultiTask* blastPlusSupportMultiTask = new BlastPlusSupportMultiTask(settingsList,settingsList[0].outputResFile);
     AppContext::getTaskScheduler()->registerTopLevelTask(blastPlusSupportMultiTask);
+}
+
+void BlastPlusSupport::sl_runAlign() {
+    ExternalToolUtils::checkExtToolsPath(QStringList() << ET_BLASTN << ET_MAKEBLASTDB);
+
+    if (AppContext::getExternalToolRegistry()->getByName(ET_BLASTN)->getPath().isEmpty()
+            || AppContext::getExternalToolRegistry()->getByName(ET_MAKEBLASTDB)->getPath().isEmpty()){
+        return;
+    }
+
+    QObjectScopedPointer<AlignToReferenceBlastDialog> dlg = new AlignToReferenceBlastDialog(AppContext::getMainWindow()->getQMainWindow());
+    dlg->exec();
+    CHECK(!dlg.isNull(), );
+    CHECK(dlg->result() == QDialog::Accepted, );
+
+    AlignToReferenceBlastCmdlineTask::Settings settings = dlg->getSettings();
+    AlignToReferenceBlastCmdlineTask* task = new AlignToReferenceBlastCmdlineTask(settings);
+    AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
 ////////////////////////////////////////

@@ -41,8 +41,6 @@
 
 namespace U2 {
 
-#define SETTINGS_ROOT QString("msaeditor/")
-
 #define SETTINGS_SHOW_OFFSETS "show_offsets"
 
 MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt* maEditorUi, MaEditor* ed, MaEditorSequenceArea* sa)
@@ -67,7 +65,7 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt* maEd
     seqArea->installEventFilter(this);
 
     Settings* s = AppContext::getSettings();
-    bool showOffsets = s->getValue(SETTINGS_ROOT + SETTINGS_SHOW_OFFSETS, true).toBool();
+    bool showOffsets = s->getValue(editor->getSettingsRoot() + SETTINGS_SHOW_OFFSETS, true).toBool();
 
     viewAction = new QAction(tr("Show offsets"), this);
     viewAction->setObjectName("show_offsets");
@@ -107,7 +105,8 @@ bool MSAEditorOffsetsViewController::eventFilter(QObject* o, QEvent* e) {
 void MSAEditorOffsetsViewController::sl_showOffsets(bool show) {
     updateOffsets();
     Settings* s = AppContext::getSettings();
-    s->setValue(SETTINGS_ROOT + SETTINGS_SHOW_OFFSETS, show);
+    SAFE_POINT(s != NULL, "AppContext settings is NULL", );
+    s->setValue(editor->getSettingsRoot() + SETTINGS_SHOW_OFFSETS, show);
 }
 
 void MSAEditorOffsetsViewController::updateOffsets() {

@@ -51,7 +51,10 @@
 #include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "api/GTSequenceReadingModeDialog.h"
+#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "GTDatabaseConfig.h"
+#include "GTGlobals.h"
 #include "GTTestsRegressionScenarios_1_1000.h"
 #include "GTUtilsAnnotationsHighlightingTreeView.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -59,7 +62,6 @@
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
-#include "utils/GTUtilsDialog.h"
 #include "GTUtilsEscClicker.h"
 #include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
@@ -77,39 +79,12 @@
 #include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
-#include "utils/GTUtilsToolTip.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "primitives/GTAction.h"
-#include <primitives/GTCheckBox.h>
-#include "system/GTClipboard.h"
-#include <primitives/GTComboBox.h>
-#include "system/GTFile.h"
-#include <base_dialogs/GTFileDialog.h>
-#include "GTGlobals.h"
-#include <primitives/GTGroupBox.h>
-#include <drivers/GTKeyboardDriver.h>
-#include "utils/GTKeyboardUtils.h"
-#include <primitives/GTLineEdit.h>
-#include <primitives/GTListWidget.h>
 #include "primitives/GTMenu.h"
-#include <drivers/GTMouseDriver.h>
-#include <primitives/GTPlainTextEdit.h>
-#include <primitives/GTRadioButton.h>
-#include "api/GTSequenceReadingModeDialog.h"
-#include "api/GTSequenceReadingModeDialogUtils.h"
-#include <primitives/GTSlider.h>
-#include <primitives/GTSpinBox.h>
-#include <primitives/GTTabWidget.h>
-#include <primitives/GTTableView.h>
-#include "utils/GTThread.h"
-#include <primitives/GTToolbar.h>
-#include <primitives/GTTreeWidget.h>
-#include <primitives/GTWidget.h>
-#include <base_dialogs/DefaultDialogFiller.h>
-#include "runnables/qt/EscapeClicker.h"
-#include <base_dialogs/MessageBoxFiller.h>
 #include "primitives/PopupChooser.h"
+#include "runnables/qt/EscapeClicker.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/BuildIndexDialogFiller.h"
@@ -128,6 +103,7 @@
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/GraphSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
@@ -178,10 +154,10 @@
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.h"
@@ -192,6 +168,32 @@
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SelectDocumentFormatDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+#include "system/GTClipboard.h"
+#include "system/GTFile.h"
+#include "utils/GTKeyboardUtils.h"
+#include "utils/GTThread.h"
+#include "utils/GTUtilsDialog.h"
+#include "utils/GTUtilsToolTip.h"
+
+#include <base_dialogs/DefaultDialogFiller.h>
+#include <base_dialogs/GTFileDialog.h>
+#include <base_dialogs/MessageBoxFiller.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTGroupBox.h>
+#include <primitives/GTLineEdit.h>
+#include <primitives/GTListWidget.h>
+#include <primitives/GTPlainTextEdit.h>
+#include <primitives/GTRadioButton.h>
+#include <primitives/GTSlider.h>
+#include <primitives/GTSpinBox.h>
+#include <primitives/GTTableView.h>
+#include <primitives/GTTabWidget.h>
+#include <primitives/GTToolbar.h>
+#include <primitives/GTTreeWidget.h>
+#include <primitives/GTWidget.h>
 
 namespace U2 {
 
@@ -1226,19 +1228,19 @@ GUI_TEST_CLASS_DEFINITION(test_0729){
 //    3) Click on "unset"
     GTUtilsWorkflowDesigner::click(os, item);
 //    Expected state: Dataset view opened
-    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/FASTA");
-//    4) Click "Add folder", select data/samples/Genbank
-    QListWidget* itemsArea = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea");
-    GTListWidget::click(os, itemsArea, "FASTA", Qt::RightButton);
+	GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/FASTA/*");
+//    4) Click "Add folder", select data/samples/FASTA
+//    QListWidget* itemsArea = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea");
+//    GTListWidget::click(os, itemsArea, "FASTA", Qt::RightButton);
 //    5) Click on appeared item in the file list
 //    Expected state:
 //        the following widgets appears:
 //            Include mask, Exclude mask lineedits;
 //            Recursive checkbox
-    GTWidget::findWidget(os, "includeMaskEdit");
-    GTWidget::findWidget(os, "excludeMaskEdit");
-    GTWidget::findWidget(os, "recursiveBox");
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
+ //   GTWidget::findWidget(os, "includeMaskEdit");
+ //   GTWidget::findWidget(os, "excludeMaskEdit");
+ //   GTWidget::findWidget(os, "recursiveBox");
+ //   GTWidget::click(os, GTUtilsMdi::activeWindow(os));
 
 }
 
@@ -1638,7 +1640,7 @@ GUI_TEST_CLASS_DEFINITION(test_0792) {
 //    Expected state: Dataset view opened
 
 //    3) Click "Add folder", select data/samples/Genbank
-    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/Genbank");
+    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/Genbank/*");
 //    4) Click on appeared item in the file list
     QWidget* datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
     QListWidget* items = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea", datasetWidget);
@@ -2016,13 +2018,12 @@ GUI_TEST_CLASS_DEFINITION(test_0830) {
     //    Run
     QString outUrl = sandBoxDir + "830.ace";
     QFile(outUrl).remove();
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "830.ugenedb"));
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, outUrl));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList()
         << testDir + "_common_data/scenarios/CAP3/region2.fa"
         << testDir + "_common_data/scenarios/CAP3/region4.fa",
         outUrl));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and de novo assembly (with CAP3)...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads de novo assembly (with CAP3)...");
 
     //3) wait for task error, ensure that no output files are in the project
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2573,11 +2574,13 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     QStringList errors = GTUtilsLog::getErrors(os, l1);
     CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1");
     //CHECK_SET_ERR(errors[0].contains(""), " 1");
 
     GTUtilsProjectTreeView::click(os, "Gene.fa");
+	GTGlobals::sleep();
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
 
     GTLogTracer l2;
@@ -2586,9 +2589,10 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+	GTGlobals::sleep();
     errors = GTUtilsLog::getErrors(os, l2);
     CHECK_SET_ERR(errors.size() == 2, "Wrong errors count 2");
-    GTGlobals::sleep(10000);
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0888) {

@@ -32,7 +32,7 @@
 #include <QToolTip>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/DNAAlphabet.h>
+#include <U2Core/Counter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
@@ -55,8 +55,6 @@
 
 namespace U2 {
 
-
-#define SETTINGS_ROOT QString("msaeditor/")
 
 MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt *_ui)
     : editor(_ui->getEditor()),
@@ -98,12 +96,8 @@ MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt *_ui)
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
 
-    MSAConsensusAlgorithmFactory* algo = getConsensusAlgorithmFactory();
-    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(NULL, editor->getMaObject(), algo));
-    connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
     addAction(ui->getCopySelectionAction());
     addAction(ui->getPasteAction());
-    restoreLastUsedConsensusThreshold();
 
     setObjectName("consArea");
 }
@@ -149,6 +143,14 @@ bool MaEditorConsensusArea::event(QEvent* e) {
     }
 
     return QWidget::event(e);
+}
+
+void MaEditorConsensusArea::initCache() {
+    MSAConsensusAlgorithmFactory *algo = getConsensusAlgorithmFactory();
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, QString("'%1' consensus type is selected on view opening").arg(algo->getName()), editor->getFactoryId());
+    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(NULL, editor->getMaObject(), algo));
+    connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
+    restoreLastUsedConsensusThreshold();
 }
 
 QString MaEditorConsensusArea::createToolTip(QHelpEvent* he) const {
@@ -225,7 +227,7 @@ MSAConsensusAlgorithmFactory* MaEditorConsensusArea::getConsensusAlgorithmFactor
     const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
     ConsensusAlgorithmFlags alphaFlags = MSAConsensusAlgorithmFactory::getAphabetFlags(al);
     if (algo == NULL || (algo->getFlags() & alphaFlags) != alphaFlags) {
-        algo = reg->getAlgorithmFactory(BuiltInConsensusAlgorithms::DEFAULT_ALGO);
+        algo = reg->getAlgorithmFactory(getDefaultAlgorithmId());
         if ((algo->getFlags() & alphaFlags) != alphaFlags) {
             QList<MSAConsensusAlgorithmFactory*> algorithms = reg->getAlgorithmFactories(MSAConsensusAlgorithmFactory::getAphabetFlags(al));
             SAFE_POINT(algorithms.count() > 0, "There are no consensus algorithms for the current alphabet.", NULL);
@@ -304,13 +306,6 @@ void MaEditorConsensusArea::sl_changeConsensusAlgorithm(const QString& algoId) {
     emit si_consensusAlgorithmChanged(algoId);
 }
 
-QString MaEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
-    const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
-    SAFE_POINT(NULL != al, "Alphabet is NULL", "");
-    const char* suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic" : "_raw";
-    return SETTINGS_ROOT + "_consensus_algorithm_"+ suffix;
-}
-
 QString MaEditorConsensusArea::getThresholdSettingsKey(const QString& factoryId) const {
     return getLastUsedAlgoSettingsKey() + "_" + factoryId + "_threshold";
 }
@@ -320,6 +315,7 @@ void MaEditorConsensusArea::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* 
     if (oldAlgo!=NULL && algoFactory == oldAlgo->getFactory()) {
         return;
     }
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, QString("'%1' consensus algorithm is selected").arg(algoFactory->getName()), editor->getFactoryId());
 
     //store threshold for the active algo
     if (oldAlgo!=NULL && oldAlgo->supportsThreshold()) {
@@ -368,7 +364,6 @@ void MaEditorConsensusArea::restoreLastUsedConsensusThreshold() {
     MSAConsensusAlgorithm* algo = getConsensusAlgorithm();
     int threshold = AppContext::getSettings()->getValue(getThresholdSettingsKey(algo->getId()), algo->getDefaultThreshold()).toInt();
     getConsensusAlgorithm()->setThreshold(threshold);
-
 }
 
 MSAConsensusAlgorithm* MaEditorConsensusArea::getConsensusAlgorithm() const {
@@ -392,27 +387,25 @@ void MaEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
     if (e->buttons() & Qt::LeftButton) {
         selecting = true;
         int lastPos = curPos;
-        curPos = ui->getBaseWidthController()->screenXPositionToBase(e->x());
-        if (curPos != -1) {
-            const int selectionHeight = ui->getSequenceArea()->getNumDisplayableSequences();
-            // select current column
-            if ((Qt::ShiftModifier == e->modifiers()) && (lastPos != -1)) {
-                MaEditorSelection selection(qMin(lastPos, curPos), 0, abs(curPos - lastPos) + 1, selectionHeight);
-                ui->getSequenceArea()->setSelection(selection);
-                curPos = lastPos;
-            } else {
-                MaEditorSelection selection(curPos, 0, 1, selectionHeight);
-                ui->getSequenceArea()->setSelection(selection);
-                scribbling = true;
-            }
+        curPos = qBound(0, ui->getBaseWidthController()->screenXPositionToColumn(e->x()), ui->getEditor()->getAlignmentLen() - 1);
+        const int selectionHeight = ui->getSequenceArea()->getNumDisplayableSequences();
+        // select current column
+        if ((Qt::ShiftModifier == e->modifiers()) && (lastPos != -1)) {
+            MaEditorSelection selection(qMin(lastPos, curPos), 0, abs(curPos - lastPos) + 1, selectionHeight);
+            ui->getSequenceArea()->setSelection(selection);
+            curPos = lastPos;
+        } else {
+            MaEditorSelection selection(curPos, 0, 1, selectionHeight);
+            ui->getSequenceArea()->setSelection(selection);
         }
+        scribbling = true;
     }
     QWidget::mousePressEvent(e);
 }
 
 void MaEditorConsensusArea::mouseMoveEvent(QMouseEvent *event) {
     if ((event->buttons() & Qt::LeftButton) && scribbling && selecting) {
-        const int newPos = ui->getBaseWidthController()->screenXPositionToBase(event->x());
+        const int newPos = qBound(0, ui->getBaseWidthController()->screenXPositionToColumn(event->x()), ui->getEditor()->getAlignmentLen() - 1);
         updateSelection(newPos);
     }
     QWidget::mouseMoveEvent(event);
@@ -425,7 +418,7 @@ void MaEditorConsensusArea::mouseReleaseEvent(QMouseEvent *event) {
     }
 
     if (event->button() == Qt::LeftButton && selecting) {
-        const int newPos = qBound(0, ui->getBaseWidthController()->screenXPositionToBase(event->x()), editor->getAlignmentLen() - 1);
+        const int newPos = qBound(0, ui->getBaseWidthController()->screenXPositionToColumn(event->x()), editor->getAlignmentLen() - 1);
         updateSelection(newPos);
         scribbling = false;
         selecting = false;

@@ -42,8 +42,7 @@ namespace U2 {
 /************************************************************************/
 McaEditorConsensusArea::McaEditorConsensusArea(McaEditorWgt *ui)
     : MaEditorConsensusArea(ui) {
-    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO);
-    setConsensusAlgorithm(algoFactory);
+    initCache();
 
     mismatchController = new MaConsensusMismatchController(this, consensusCache, editor);
     addAction(mismatchController->getPrevMismatchAction());
@@ -65,5 +64,10 @@ void McaEditorConsensusArea::initRenderer() {
 bool McaEditorConsensusArea::highlightConsensusChar(int pos) {
     return consensusSettings.highlightMismatches && mismatchController->isMismatch(pos);
 }
+
+QString McaEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
+    return editor->getSettingsRoot() + MCAE_SETTINGS_CONSENSUS_TYPE;
+}
+
 
 }   // namespace U2

@@ -91,6 +91,7 @@ protected:
     int getSelectedRow() const;
     virtual QString getTextForRow(int s);
     virtual QString getSeqName(int s);
+    virtual void moveSelection(int dy);
 
     bool                completeRedraw;
 
@@ -142,6 +143,7 @@ protected:
     QScrollBar*         nhBar;
     int                 curRowNumber;
     int                 startSelectingRowNumber;
+    int                 nextSequenceToSelect;
     QPoint              selectionStartPoint;
     bool                scribbling;
     bool                shifting;

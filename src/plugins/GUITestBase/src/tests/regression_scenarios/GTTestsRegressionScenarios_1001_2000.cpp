@@ -84,6 +84,9 @@
 #include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "api/GTGraphicsItem.h"
+#include "api/GTSequenceReadingModeDialog.h"
+#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "GTDatabaseConfig.h"
 #include "GTTestsRegressionScenarios_1001_2000.h"
 #include "GTUtilsAnnotationsHighlightingTreeView.h"
@@ -111,9 +114,6 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "api/GTGraphicsItem.h"
-#include "api/GTSequenceReadingModeDialog.h"
-#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "runnables/qt/EscapeClicker.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
@@ -132,6 +132,7 @@
 #include "runnables/ugene/corelibs/U2Gui/FindQualifierDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
@@ -180,11 +181,11 @@
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/HmmerSearchDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.h"
@@ -915,7 +916,7 @@ GUI_TEST_CLASS_DEFINITION(test_1048){
     bool vis = GTWidget::findWidget(os, "AssemblyReadsAreaHint", GTUtilsMdi::activeWindow(os))->isVisible();
     CHECK_SET_ERR(!vis, "hint unexpectidly visiable");
 
-    GTUtilsMdi::activateWindow(os, "1.bam [as] chrM");
+    GTUtilsMdi::activateWindow(os, "1 [as] chrM");
 
     QWidget* w1 = GTUtilsMdi::activeWindow(os);
     GTWidget::click(os, w1);
@@ -925,7 +926,7 @@ GUI_TEST_CLASS_DEFINITION(test_1048){
     }
     GTGlobals::sleep();
     GTKeyboardDriver::keyClick( Qt::Key_Home);
-    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(10,10));
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(20,20));
     GTGlobals::sleep(500);
     vis = GTWidget::findWidget(os, "AssemblyReadsAreaHint", GTUtilsMdi::activeWindow(os))->isVisible();
     CHECK_SET_ERR(vis, "hint unexpectidly invisiable");
@@ -1680,17 +1681,17 @@ GUI_TEST_CLASS_DEFINITION(test_1122){
 //    Expected state: Result is the same as in the step 4.
 
     GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/scenarios/CAP3/xyz.fa"
                                                                  << testDir + "_common_data/scenarios/CAP3/xyz.qual",
                                                                  sandBoxDir + "test_1122_1"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and de novo assembly (with CAP3)...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads de novo assembly (with CAP3)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/scenarios/CAP3/xyz.fastq",
                                                                  sandBoxDir + "test_1122_2"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and de novo assembly (with CAP3)...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads de novo assembly (with CAP3)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "test_1122_1.ace", sandBoxDir + "test_1122_2.ace"), "Files are not equal");
@@ -1709,11 +1710,11 @@ GUI_TEST_CLASS_DEFINITION(test_1123){
     // Expected state: task complete successfully, result file opens in the MSA Editor (or in the Assembly Viewer).
 
     GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_1123"));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/abif/19_022.ab1"
         << testDir + "_common_data/abif/39_034.ab1",
         sandBoxDir + "1123_abi.cap.ace"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and de novo assembly (with CAP3)...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads de novo assembly (with CAP3)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 
@@ -1730,11 +1731,11 @@ GUI_TEST_CLASS_DEFINITION(test_1123_1){
     // Expected state: task complete successfully, result file opens in the MSA Editor (or in the Assembly Viewer).
 
     GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_1123_1"));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/scf/Sequence A.scf"
         << testDir + "_common_data/scf/Sequence A.scf",
         sandBoxDir + "1123_scf.cap.ace"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" <<"Reads quality control and de novo assembly (with CAP3)...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" <<"Reads de novo assembly (with CAP3)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -1759,7 +1760,7 @@ GUI_TEST_CLASS_DEFINITION(test_1124){
         }
     };
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, new Scenario()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads quality control and de novo assembly (with CAP3)...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads de novo assembly (with CAP3)...");
     GTGlobals::sleep();
 }
 
@@ -3930,16 +3931,13 @@ GUI_TEST_CLASS_DEFINITION(test_1368){
 GUI_TEST_CLASS_DEFINITION(test_1371) {
 //    1. Open file "data/samples/ACE/BL060C3.ace" as msa.
 //    Expected state: there are 2 MSA objects in document.
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTFileDialog::openFile(os, dataDir + "samples/ACE", "BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
     GTUtilsProjectTreeView::checkItem(os, "Contig1");
     GTUtilsProjectTreeView::checkItem(os, "Contig2");
-    GTUtilsProjectTreeView::checkObjectTypes(os,
-                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
-                                             GTUtilsProjectTreeView::findIndex(os, "BL060C3.ace"));
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, "BL060C3.ace"));
 
 //    2. Open file "data/samples/ACE/BL060C3.ace" as assembly.
 //    Expected state: there are 2 assembly objects in document.
@@ -3947,8 +3945,7 @@ GUI_TEST_CLASS_DEFINITION(test_1371) {
     GTUtilsDocument::removeDocument(os, "BL060C3.ace");
     QDir().mkpath(sandBoxDir + "test_1371");
 
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "test_1371/test_1371.ugenedb"));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_1371.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/ACE", "BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4336,8 +4333,6 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
     QLineEdit* line = qobject_cast<QLineEdit*>(table->findChild<QLineEdit*>());
     CHECK_SET_ERR(line, "QLineEdit not found. Widget in this cell might be not QLineEdit");
     GTLineEdit::setText(os, line, dataDir + "samples/FASTA/HMM/aligment15900.hmm");
-
-
     GTGlobals::sleep(1000);
 #ifdef Q_OS_MAC
     GTGlobals::sleep();
@@ -4347,6 +4342,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
     GTUtilsMdi::click(os, GTGlobals::Close);
+	GTGlobals::sleep(500);
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read HMM2 Profile");
@@ -4644,7 +4640,7 @@ GUI_TEST_CLASS_DEFINITION(test_1457){
 
 GUI_TEST_CLASS_DEFINITION(test_1458){
     //1. Open document "../Samples/ACE/BL060C3.ace"
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_1458.ace.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4653,8 +4649,8 @@ GUI_TEST_CLASS_DEFINITION(test_1458){
     //3. Select "Export document"
     //4. Check, that for all output file formats export work correctly
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export document"));
-    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, sandBoxDir, "test_1458.fa", ExportDocumentDialogFiller::FASTA, false, true));
-    GTUtilsProjectTreeView::click(os, "BL060C3.ace", Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, sandBoxDir, "test_1458.fa", ExportDocumentDialogFiller::UGENEDB, false, true));
+    GTUtilsProjectTreeView::click(os, "test_1458.ace.ugenedb", Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1435) {
@@ -6197,6 +6193,7 @@ GUI_TEST_CLASS_DEFINITION( test_1603 ) {
     QAbstractButton *tree = GTAction::button(os,"Build Tree");
     GTWidget::click(os, tree);
     GTGlobals::sleep();
+	GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMdi::closeWindow(os, "COI [m] COI");
     QString docName = "1603.nwk";
@@ -8403,9 +8400,10 @@ GUI_TEST_CLASS_DEFINITION( test_1897 ) {
     GTMouseDriver::click(Qt::RightButton );
 
     //5) Look at Hightlighting/Gaps action again
-    QAction *action = GTAction::findActionByText( os, "Gaps" );
-    //Expected state: It must be checked
-    CHECK_SET_ERR( action->isChecked( ), "Action has to be checked!" );
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Highlighting"
+        << "Gaps", PopupChecker::IsChecked));
+    GTMouseDriver::click(Qt::RightButton);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1908){

@@ -21,9 +21,12 @@
 
 #include <QComboBox>
 #include <QApplication>
+#include <QLabel>
+#include <QToolButton>
 
 #include <primitives/GTComboBox.h>
 #include <primitives/GTWidget.h>
+#include <primitives/GTSlider.h>
 
 #include "GTUtilsOptionPanelMca.h"
 
@@ -85,6 +88,67 @@ bool GTUtilsOptionPanelMca::isTabOpened(HI::GUITestOpStatus &os, Tabs tab) {
 void GTUtilsOptionPanelMca::setConsensusType(HI::GUITestOpStatus &os, const QString &consensusTypeName) {
     openTab(os, Consensus);
     GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "consensusType"), consensusTypeName);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getConsensusType"
+QString GTUtilsOptionPanelMca::getConsensusType(HI::GUITestOpStatus &os) {
+    openTab(os, Consensus);
+    return GTComboBox::getCurrentText(os, GTWidget::findExactWidget<QComboBox *>(os, "consensusType"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getConsensusTypes"
+QStringList GTUtilsOptionPanelMca::getConsensusTypes(HI::GUITestOpStatus &os) {
+    openTab(os, Consensus);
+    QStringList types = GTComboBox::getValues(os, GTWidget::findExactWidget<QComboBox *>(os, "consensusType"));
+    return types;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getHeight"
+int GTUtilsOptionPanelMca::getHeight(HI::GUITestOpStatus &os){
+    QLabel* alignmentHeightLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "seqNumLabel"));
+    GT_CHECK_RESULT(alignmentHeightLabel != NULL, "alignmentHeightLabel not found", -1);
+    bool ok;
+    int result = alignmentHeightLabel->text().toInt(&ok);
+    GT_CHECK_RESULT(ok == true, "label text is not int", -1);
+    return result;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getLength"
+int GTUtilsOptionPanelMca::getLength(HI::GUITestOpStatus &os){
+    QLabel* alignmentLengthLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "lengthLabel"));
+    GT_CHECK_RESULT(alignmentLengthLabel != NULL, "alignmentLengthLabel not found", -1);
+    bool ok;
+    int result = alignmentLengthLabel->text().toInt(&ok);
+    GT_CHECK_RESULT(ok == true, "label text is not int", -1);
+    return result;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setThreshold"
+void GTUtilsOptionPanelMca::setThreshold(GUITestOpStatus &os, int threshold) {
+    openTab(os, Consensus);
+    GTSlider::setValue(os, GTWidget::findExactWidget<QSlider *>(os, "thresholdSlider"), threshold);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getThreshold"
+int GTUtilsOptionPanelMca::getThreshold(GUITestOpStatus &os) {
+    openTab(os, Consensus);
+    QSlider *thresholdSlider = GTWidget::findExactWidget<QSlider *>(os, "thresholdSlider");
+    GT_CHECK_RESULT(NULL != thresholdSlider, "thresholdSlider is NULL", -1);
+    return thresholdSlider->value();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "pushResetButton"
+void GTUtilsOptionPanelMca::pushResetButton(HI::GUITestOpStatus &os) {
+    openTab(os, Consensus);
+    QToolButton* result = GTWidget::findExactWidget<QToolButton *>(os, "thresholdResetButton");
+    result->click();
 }
 #undef GT_METHOD_NAME
 

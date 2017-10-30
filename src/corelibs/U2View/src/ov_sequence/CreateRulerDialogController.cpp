@@ -23,23 +23,18 @@
 
 #include <U2Core/TextUtils.h>
 
-#include <QLabel>
 #include <QPushButton>
-#include <QLineEdit>
-#include <QSpinBox>
 #include <QMessageBox>
 #include <QColorDialog>
-#include <QPalette>
 #include <U2Gui/HelpButton.h>
 
 namespace U2 {
 
-CreateRulerDialogController::CreateRulerDialogController(const QSet<QString>& namesToFilter,
-                                                         const U2Region& seqRange, int defaultOffset, QWidget* p)
+CreateRulerDialogController::CreateRulerDialogController(const QSet<QString>& namesToFilter, int defaultOffset, QWidget* p)
 : QDialog(p)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19766721");
+    new HelpButton(this, buttonBox, "20874877");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -51,9 +46,9 @@ CreateRulerDialogController::CreateRulerDialogController(const QSet<QString>& na
 
     nameEdit->setText(TextUtils::variate(tr("New ruler"), "_", filter));
 
-    spinBox->setMinimum(INT_MIN + seqRange.length);
+    spinBox->setMinimum(INT_MIN);
     spinBox->setMaximum(INT_MAX);
-    spinBox->setValue(seqRange.contains(defaultOffset+1) ? defaultOffset + 1 : spinBox->minimum());
+    spinBox->setValue(defaultOffset);
 
     color = Qt::darkBlue;
 

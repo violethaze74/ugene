@@ -64,7 +64,7 @@ signals:
 
 protected slots:
     void doneCompletion();
-    void sl_textEdited(const QString&);
+    void sl_textChanged(const QString&);
 
 private:
     CompletionFiller *filler;
