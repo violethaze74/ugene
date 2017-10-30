@@ -3601,6 +3601,29 @@ GUI_TEST_CLASS_DEFINITION(test_5769_2) {
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_5B70", QString("Unexpected selected read, expected: SZYD_Cas9_5B70, current: %1").arg(name[0]));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5770) {
+    QString filePath = testDir + "_common_data/sanger/alignment.ugenedb";
+    QString fileName = "sanger_alignment.ugenedb";
+
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    //2. Select read "SZYD_Cas9_5B71"
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
+
+    //3. Hold the _Shift_ key and press the _down arrow_ key.
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTGlobals::sleep(500);
+
+    //Expected: the selection is expanded.
+    QStringList names = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
+    CHECK_SET_ERR(names.size() == 2, QString("Incorrect selection. Expected: 2 selected rows, current: %1 selected rows").arg(names.size()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5786_1) {
 //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
