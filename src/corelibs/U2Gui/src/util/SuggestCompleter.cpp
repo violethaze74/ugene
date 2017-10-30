@@ -56,7 +56,7 @@ BaseCompleter::BaseCompleter( CompletionFiller *filler, QLineEdit *parent /* = 0
     editor->installEventFilter(this);
 
     connect(popup, SIGNAL(itemClicked(QTreeWidgetItem*,int)), SLOT(doneCompletion()));
-    connect(editor, SIGNAL(textEdited(QString)), SLOT(sl_textEdited(QString)));
+    connect(editor, SIGNAL(textChanged(QString)), SLOT(sl_textChanged(QString)));
 }
 
 BaseCompleter::~BaseCompleter(){
@@ -155,12 +155,19 @@ void BaseCompleter::doneCompletion(){
     }
 }
 
-void BaseCompleter::sl_textEdited( const QString& typedText){
+void BaseCompleter::sl_textChanged( const QString& typedText){
     if (typedText.isEmpty()){
         popup->hide();
         return;
     }
-    showCompletion(filler->getSuggestions(typedText));
+    QStringList suggestions = filler->getSuggestions(typedText);
+    bool haveSingleValidChoice = suggestions.length() == 1 && suggestions.first() == typedText;
+    if (haveSingleValidChoice) {
+        lastChosenItemIndex = 0;
+        emit si_editingFinished();
+    } else {
+        showCompletion(filler->getSuggestions(typedText));
+    }
 }
 
 int BaseCompleter::getLastChosenItemIndex() const {

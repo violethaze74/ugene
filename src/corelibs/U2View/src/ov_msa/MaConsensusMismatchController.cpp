@@ -22,6 +22,7 @@
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNASequenceSelection.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -86,10 +87,12 @@ void MaConsensusMismatchController::sl_resize(int newSize) {
 }
 
 void MaConsensusMismatchController::sl_next() {
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Jump to next variation", editor->getFactoryId());
     selectNextMismatch(Forward);
 }
 
 void MaConsensusMismatchController::sl_prev() {
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Jump to previous variation", editor->getFactoryId());
     selectNextMismatch(Backward);
 }
 

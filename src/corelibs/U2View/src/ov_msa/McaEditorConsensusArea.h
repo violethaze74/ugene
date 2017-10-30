@@ -24,20 +24,23 @@
 
 #include <QWidget>
 
-#include "view_rendering/MaEditorConsensusArea.h"
+#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 
+#include "view_rendering/MaEditorConsensusArea.h"
 
 namespace U2 {
 
 class MaConsensusMismatchController;
 class McaEditorWgt;
 
-class McaEditorConsensusArea : public MaEditorConsensusArea {
+class U2VIEW_EXPORT McaEditorConsensusArea : public MaEditorConsensusArea {
     Q_OBJECT
     Q_DISABLE_COPY(McaEditorConsensusArea)
 
 public:
     McaEditorConsensusArea(McaEditorWgt* ui);
+
+    QString getDefaultAlgorithmId() const { return BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO; }
 
     MaConsensusMismatchController* getMismatchController() { return mismatchController; }
     void buildStaticToolbar(QToolBar* tb);
@@ -45,6 +48,7 @@ public:
 private:
     void initRenderer();
     bool highlightConsensusChar(int pos);
+    QString getLastUsedAlgoSettingsKey() const;
 
 private:
     MaConsensusMismatchController*  mismatchController;

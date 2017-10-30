@@ -269,14 +269,14 @@ void GTUtilsOptionPanelMsa::setPairwiseAlignmentAlgorithm(HI::GUITestOpStatus &o
 
 #define GT_METHOD_NAME "setThreshold"
 void GTUtilsOptionPanelMsa::setThreshold(GUITestOpStatus &os, int threshold) {
-    openTab(os, Highlighting);
+    openTab(os, General);
     GTSlider::setValue(os, GTWidget::findExactWidget<QSlider *>(os, "thresholdSlider"), threshold);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getThreshold"
 int GTUtilsOptionPanelMsa::getThreshold(GUITestOpStatus &os) {
-    openTab(os, Highlighting);
+    openTab(os, General);
     QSlider *thresholdSlider = GTWidget::findExactWidget<QSlider *>(os, "thresholdSlider");
     GT_CHECK_RESULT(NULL != thresholdSlider, "thresholdSlider is NULL", -1);
     return thresholdSlider->value();

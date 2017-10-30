@@ -226,7 +226,11 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx) : ctx(_ctx), dn
     tree->addAction(editAction);
 
     addQualifierAction = new QAction(tr("Qualifier..."), this);
+#ifndef Q_OS_MAC
     addQualifierAction->setShortcut(QKeySequence(Qt::Key_Insert));
+#else
+    addQualifierAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_I));
+#endif
     addQualifierAction->setShortcutContext(Qt::WindowShortcut);
     addQualifierAction->setObjectName("add_qualifier_action");
     connect(addQualifierAction, SIGNAL(triggered()), SLOT(sl_addQualifier()));

@@ -855,12 +855,11 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
 
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann");
 
-    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf",
-                                                                 ExportAnnotationsFiller::gtf, os));
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0011_1.gtf",
+                                                                 ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
-	GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTUtilsLog::check(os, l);
 }
 

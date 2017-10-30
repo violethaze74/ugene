@@ -24,6 +24,8 @@
 
 #include <QWidget>
 
+#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
+
 #include "view_rendering/MaEditorConsensusArea.h"
 
 namespace U2 {
@@ -36,12 +38,15 @@ class U2VIEW_EXPORT MSAEditorConsensusArea : public MaEditorConsensusArea {
 public:
     MSAEditorConsensusArea(MsaEditorWgt* ui);
 
+    QString getDefaultAlgorithmId() const { return BuiltInConsensusAlgorithms::DEFAULT_ALGO; }
+
 private slots:
     void sl_buildStaticMenu(GObjectView *view, QMenu *menu);
     void sl_buildContextMenu(GObjectView *view, QMenu *menu);
 
 private:
     void initRenderer();
+    QString getLastUsedAlgoSettingsKey() const;
     void buildMenu(QMenu *menu);
 };
 

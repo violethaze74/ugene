@@ -199,7 +199,7 @@ void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString &itemN
 
     QPoint p = getItemCenter(os, itemIndex); // clicking on the center does not select the item (Linux)
     p.setX(p.x() + 1);
-    p.setY(p.y() + 1);
+    p.setY(p.y() + 5);
     GTMouseDriver::moveTo(p);
     GTMouseDriver::click(button);
 }

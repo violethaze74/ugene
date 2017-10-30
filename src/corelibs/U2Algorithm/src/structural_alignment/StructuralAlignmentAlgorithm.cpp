@@ -47,7 +47,7 @@ QString BioStruct3DReference::print() const {
 
 /* class U2ALGORITHM_EXPORT StructuralAlignmentTask : public Task */
 StructuralAlignmentTask::StructuralAlignmentTask(StructuralAlignmentAlgorithm *_algorithm, const StructuralAlignmentTaskSettings &_settings)
-        : Task("StructuralAlignmentTask", TaskFlag(TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled)), algorithm(_algorithm), settings(_settings), result()
+        : Task("StructuralAlignmentTask", TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled), algorithm(_algorithm), settings(_settings), result()
 {}
 
 void StructuralAlignmentTask::run() {

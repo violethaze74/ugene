@@ -24,7 +24,9 @@
 #include <U2Algorithm/MsaHighlightingScheme.h>
 #include <U2Algorithm/MsaColorScheme.h>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/Settings.h>
 
 #include <U2View/SequenceObjectContext.h>
 
@@ -55,7 +57,10 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MaEdi
     heightPD = getChromatogramHeight() - INDENT_BETWEEN_ROWS;
     heightQuality = charHeight;
 
-    maxTraceHeight = heightPD - heightBC;
+    Settings* s = AppContext::getSettings();
+    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+    SAFE_POINT(ui->getEditor() != NULL, "MaEditor is NULL", );
+    maxTraceHeight = s->getValue(ui->getEditor()->getSettingsRoot() + MCAE_SETTINGS_PEAK_HEIGHT, heightPD - heightBC).toInt();
 }
 
 void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &painter) const {
@@ -101,6 +106,15 @@ void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter &paint
 
 void SequenceWithChromatogramAreaRenderer::setAreaHeight(int h) {
     maxTraceHeight = h;
+
+    Settings* s = AppContext::getSettings();
+    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+    SAFE_POINT(ui->getEditor() != NULL, "MaEditor is NULL", );
+    s->setValue(ui->getEditor()->getSettingsRoot() + MCAE_SETTINGS_PEAK_HEIGHT, maxTraceHeight);
+}
+
+int SequenceWithChromatogramAreaRenderer::getAreaHeight() const {
+    return maxTraceHeight;
 }
 
 int SequenceWithChromatogramAreaRenderer::getScaleBarValue() const {
@@ -277,7 +291,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
     if (startPos != 0) {
         prev = getPreviousBaseCallEndPosition(chroma.baseCalls, startPos);
     }
-    
+
     qint64 endPos = visible.endPos();
     for (int i = startPos; i < endPos; i++) {
         SAFE_POINT(i < chroma.baseCalls.length(), "Base calls array is too short: visible range index is out range", );
@@ -334,7 +348,7 @@ void SequenceWithChromatogramAreaRenderer::completePolygonsWithLastBaseCallTrace
         prev = chroma.baseCalls.back();
         pointsCount = 2;
     } else {
-        prev = chroma.baseCalls[endPos - 1]; 
+        prev = chroma.baseCalls[endPos - 1];
         pointsCount = chroma.baseCalls[endPos] - prev;
         pointsCount = getCorrectPointsCountVariable(chroma.baseCalls, pointsCount, endPos, endPos - 1);
         pointsCount = pointsCount == 1 ? 2 : pointsCount;

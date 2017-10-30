@@ -63,9 +63,8 @@ void InputWidgetController::storeParameter() {
 }
 
 void InputWidgetController::addParameterToCmdLineSettings(QStringList& settings) {
-    if(cmdLinePrefix.isEmpty()) {
-        return;
-    }
+    CHECK(baseWidget->isEnabled(), );
+    CHECK(!cmdLinePrefix.isEmpty(), );
     curValue = getWidgetValue();
     if(!curValue.isNull() && curValue != defaultValue) {
         settings << cmdLinePrefix;

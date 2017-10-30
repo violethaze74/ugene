@@ -89,8 +89,7 @@ DnaAssemblySupport::DnaAssemblySupport()
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, buildIndexAction);
 }
 
-void DnaAssemblySupport::sl_showDnaAssemblyDialog()
-{
+void DnaAssemblySupport::sl_showDnaAssemblyDialog() {
     DnaAssemblyAlgRegistry* registry = AppContext::getDnaAssemblyAlgRegistry();
     if (registry->getRegisteredAlgorithmIds().isEmpty()) {
         QMessageBox::information(QApplication::activeWindow(), tr("DNA Assembly"),

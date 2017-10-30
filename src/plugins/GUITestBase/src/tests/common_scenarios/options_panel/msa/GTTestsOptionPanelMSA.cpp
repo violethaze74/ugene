@@ -860,8 +860,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006){
             .arg("UGENE").arg(currentScheme));
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "UGENE", PopupChecker::IsChecked));
-    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep(500);
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);	
+
+	GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::Highlighting);
 }
 
 namespace {
@@ -882,10 +883,20 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0007){
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
 //    4. Check no highlighting
     setHighlightingType(os, "No highlighting");
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#fcff92");
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
+    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#a0a0a4");
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 2));
+    GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,2), "#ff99b1");
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(2, 0));
+    GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2,0), "#4eade1");
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4,0), "#70f970");
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(4, 0));
+    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4,0), "#a0a0a4");
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(4, 2));
+    GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4,2), "#ffffff");
 }
 
@@ -914,7 +925,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0008){
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
 //    4. Check Agreements highlighting type
     setHighlightingType(os, "Agreements");
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#fcff92");
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#a0a0a4");
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,2), "#ffffff");
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2,0), "#4eade1");
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3,1), "#ffffff");
@@ -995,7 +1006,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0010_1){
     GTUtilsOptionPanelMsa::addReference(os, "CfT-1_Cladosporium_fulvum");
 //    4. Check Gaps highlighting type
     setHighlightingType(os, "Gaps");
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#c0c0c0");
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,1), "#c0c0c0");
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0011){

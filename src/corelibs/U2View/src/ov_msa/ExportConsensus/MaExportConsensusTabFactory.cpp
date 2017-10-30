@@ -35,7 +35,8 @@
 namespace U2 {
 
 const QString GROUP_ICON_STR = ":core/images/consensus.png";
-const QString GROUP_DOC_PAGE = "19766805";
+const QString GROUP_DOC_PAGE_MSA = "19766805";
+const QString GROUP_DOC_PAGE_MCA = "20873530";
 const QString MsaExportConsensusTabFactory::GROUP_ID = "OP_EXPORT_CONSENSUS";
 const QString McaExportConsensusTabFactory::GROUP_ID = "OP_CONSENSUS";
 
@@ -58,7 +59,7 @@ QWidget * MsaExportConsensusTabFactory::createWidget(GObjectView* objView) {
 }
 
 OPGroupParameters MsaExportConsensusTabFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Export Consensus"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Export Consensus"), GROUP_DOC_PAGE_MSA);
 }
 
 McaExportConsensusTabFactory::McaExportConsensusTabFactory() {
@@ -96,12 +97,11 @@ QWidget * McaExportConsensusTabFactory::createWidget(GObjectView* objView) {
 }
 
 OPGroupParameters McaExportConsensusTabFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Consensus"), GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Consensus"), GROUP_DOC_PAGE_MCA);
 }
 
 const QString &McaExportConsensusTabFactory::getGroupId() {
     return GROUP_ID;
 }
-
 
 } // namespace U2

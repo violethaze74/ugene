@@ -34,7 +34,8 @@ public:
         genbank,
         gff,
         gtf,
-        csv
+        csv,
+        ugenedb
     };
 
     ExportAnnotationsFiller(const QString &exportToFile, fileFormat format, HI::GUITestOpStatus &os);

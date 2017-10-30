@@ -106,8 +106,9 @@
 #include "runnables/ugene/corelibs/U2Gui/ExportChromatogramFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindQualifierDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportToDatabaseDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
@@ -2216,17 +2217,22 @@ GUI_TEST_CLASS_DEFINITION(test_4306_1) {
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_4306/test_4306.nwk", 0, 0, true));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    3. Use context menu on tree view.
 //    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
-    QStringList items = QStringList() << "Zoom In"
-                                      << "Zoom Out"
-                                      << "Reset Zooming";
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, items));
-    GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
-    GTGlobals::sleep();
+	//    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.                                 
+	GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Zoom In", PopupChecker::IsEnabled));
+	GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
+	GTGlobals::sleep();
+
+	GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Zoom Out", PopupChecker::IsEnabled));
+	GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
+	GTGlobals::sleep();
+
+	GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Reset Zooming", PopupChecker::IsEnabled));
+	GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
+	GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4306_2) {
@@ -3188,7 +3194,7 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
 
 GUI_TEST_CLASS_DEFINITION(test_4587) {
     GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_4587"));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4587/", "extended_dna.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::checkObjectTypes(os,
@@ -4582,11 +4588,11 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_4782) {
 //    1. Open "data/samples/genbank/murine.gb".
-    GTFileDialog::openFile(os, dataDir + "samples/genbank/murine.gb");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Open "data/samples/Genbank/sars.gb".
-    GTFileDialog::openFile(os, dataDir + "samples/genbank/sars.gb");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    Expected state: a Sequence View for "sars.gb" is active.

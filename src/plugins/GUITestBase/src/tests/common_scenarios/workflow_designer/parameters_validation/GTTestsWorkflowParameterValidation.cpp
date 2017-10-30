@@ -131,7 +131,7 @@ GUI_TEST_CLASS_DEFINITION( test_0002 ) {
     QPoint readAlignmentCenter = GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment");
     GTMouseDriver::moveTo(readAlignmentCenter);
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, outputDir.path());
+	GTUtilsWorkflowDesigner::setDatasetInputFolder(os, outputDir.absolutePath());
     GTGlobals::sleep(2000);
     GTWidget::click(os, activeWindow);
 
@@ -150,6 +150,7 @@ GUI_TEST_CLASS_DEFINITION( test_0002 ) {
 
 //    Expected state: The "folder not found" error has appeared in the "Error list"
     GTUtilsWorkflowDesigner::checkErrorList(os, "Read alignment: folder not found:");
+	
 }
 
 GUI_TEST_CLASS_DEFINITION( test_0003 ) {

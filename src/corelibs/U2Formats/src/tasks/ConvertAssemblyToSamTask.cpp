@@ -44,7 +44,7 @@
 namespace U2 {
 
 ConvertAssemblyToSamTask::ConvertAssemblyToSamTask(GUrl db, GUrl sam)
-: Task("ConvertAssemblyToSamTask", (TaskFlag)(TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled)),
+: Task("ConvertAssemblyToSamTask", TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
     dbFileUrl(db),
     samFileUrl(sam),
     handle(NULL)
@@ -52,7 +52,7 @@ ConvertAssemblyToSamTask::ConvertAssemblyToSamTask(GUrl db, GUrl sam)
 }
 
 ConvertAssemblyToSamTask::ConvertAssemblyToSamTask(const DbiConnection *h, GUrl sam)
-: Task("ConvertAssemblyToSamTask", (TaskFlag)(TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled)),
+: Task("ConvertAssemblyToSamTask", TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
     dbFileUrl(NULL),
     samFileUrl(sam),
     handle(h)
@@ -60,7 +60,7 @@ ConvertAssemblyToSamTask::ConvertAssemblyToSamTask(const DbiConnection *h, GUrl 
 }
 
 ConvertAssemblyToSamTask::ConvertAssemblyToSamTask(const U2EntityRef& entityRef, GUrl sam)
-: Task("ConvertAssemblyToSamTask", (TaskFlag)(TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled)),
+: Task("ConvertAssemblyToSamTask", TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
     dbFileUrl(NULL),
     samFileUrl(sam),
     assemblyEntityRef(entityRef),

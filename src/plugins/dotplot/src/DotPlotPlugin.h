@@ -63,8 +63,11 @@ private slots:
 
     void sl_showDotPlotDialog();
     void sl_loadTaskStateChanged(Task* task);
+    void sl_windowActivated(MWMDIWindow* w);
 
 private:
+    void showBuildDotPlotDialog(GObjectView* v);
+
     bool createdByWizard;
     QString firstFile;
     QString secondFile;

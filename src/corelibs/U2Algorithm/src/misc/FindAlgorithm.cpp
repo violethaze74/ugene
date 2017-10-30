@@ -29,6 +29,7 @@
 
 #include <U2Algorithm/DynTable.h>
 #include <U2Algorithm/RollingArray.h>
+#include <U2Core/U2AlphabetUtils.h>
 
 #include "FindAlgorithm.h"
 
@@ -112,10 +113,10 @@ static bool isComplement(FindAlgorithmStrand s) {
 }
 
 FindAlgorithmSettings::FindAlgorithmSettings(const QByteArray &pattern, FindAlgorithmStrand strand,
-    DNATranslation *complementTT, DNATranslation *proteinTT, const U2Region &searchRegion,
+    DNATranslation *complementTT, DNATranslation *proteinTT, const DNAAlphabet* sequenceAlphabet, const U2Region &searchRegion,
     int maxErr, FindAlgorithmPatternSettings _patternSettings, bool ambBases, int _maxRegExpResult,
     int _maxResult2Find )
-    : pattern( pattern ), strand( strand ), complementTT( complementTT ), proteinTT( proteinTT ),
+    : pattern( pattern ), strand( strand ), complementTT( complementTT ), proteinTT( proteinTT ), sequenceAlphabet(sequenceAlphabet),
     searchRegion( searchRegion ), maxErr( maxErr ), patternSettings( _patternSettings ),
     useAmbiguousBases( ambBases ), maxRegExpResult( _maxRegExpResult ),
     maxResult2Find( _maxResult2Find )
@@ -794,6 +795,7 @@ void FindAlgorithm::find(
                          bool useAmbiguousBases,
                          const char* seq,
                          int seqLen,
+                         const DNAAlphabet* sequenceAlphabet,
                          bool searchIsCircular,
                          const U2Region& range,
                          const char* pattern,
@@ -828,6 +830,13 @@ void FindAlgorithm::find(
     }
 
     bool insDel = (patternSettings == FindAlgorithmPatternSettings_InsDel);
+
+    if (patternSettings == FindAlgorithmPatternSettings_Exact && sequenceAlphabet != NULL) {
+        // exact search -> do not run any search if pattern has illegal symbols
+        if (!U2AlphabetUtils::matches(sequenceAlphabet, pattern, patternLen)) {
+            return;
+        }
+    }
 
     if (aminoTT != NULL) {
         findInAmino(rl, aminoTT, complTT, strand, insDel, seq, range, searchIsCircular, pattern, patternLen, maxErr,

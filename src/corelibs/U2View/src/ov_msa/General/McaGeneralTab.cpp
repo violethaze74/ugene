@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include "McaGeneralTab.h"
-
-#include "../McaEditor.h"
 #include <U2Gui/ShowHideSubgroupWidget.h>
+
+#include "McaGeneralTab.h"
+#include "ov_msa/McaEditor.h"
 
 namespace U2 {
 

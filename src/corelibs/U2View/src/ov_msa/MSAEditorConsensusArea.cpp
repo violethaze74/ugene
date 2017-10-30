@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/DNAAlphabet.h>
+
 #include <U2Gui/GUIUtils.h>
 
 #include "MSAEditor.h"
@@ -33,6 +35,7 @@ namespace U2 {
 /************************************************************************/
 MSAEditorConsensusArea::MSAEditorConsensusArea(MsaEditorWgt *ui)
     : MaEditorConsensusArea(ui) {
+    initCache();
     initRenderer();
     setupFontAndHeight();
 
@@ -50,6 +53,13 @@ void MSAEditorConsensusArea::sl_buildContextMenu(GObjectView * /*view*/, QMenu *
 
 void MSAEditorConsensusArea::initRenderer() {
     renderer = new MaConsensusAreaRenderer(this);
+}
+
+QString MSAEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
+    const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
+    SAFE_POINT(NULL != al, "Alphabet is NULL", "");
+    const char* suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic" : "_raw";
+    return editor->getSettingsRoot() + "_consensus_algorithm_"+ suffix;
 }
 
 void MSAEditorConsensusArea::buildMenu(QMenu *menu) {

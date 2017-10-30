@@ -195,7 +195,7 @@ void GSequenceLineView::mouseReleaseEvent(QMouseEvent* me) {
             qint64 pos = renderArea->coordToPos(areaPoint);
             if (pos == lastPressPos) {
                 U2Region rgn(pos, 1);
-                if (rgn.startPos >=0 && rgn.endPos() <= seqLen) {
+                if (rgn.startPos >= 0 && rgn.endPos() <= seqLen) {
                     setSelection(rgn);
                 }
             }
@@ -562,7 +562,7 @@ qint64 GSequenceLineViewRenderArea::coordToPos(int _x) const {
     int x = qBound(0, _x, width());
     const U2Region &vr = view->getVisibleRange();
     double scale = getCurrentScale();
-    qint64 pos = vr.startPos + x / scale;
+    qint64 pos = vr.startPos + x / scale + 0.5;
     pos = qMax(pos, vr.startPos);
     pos = qMin(pos, vr.endPos());
     return pos;

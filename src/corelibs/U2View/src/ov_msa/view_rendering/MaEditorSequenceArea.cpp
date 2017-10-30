@@ -29,6 +29,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleAlignmentObject.h>
@@ -48,6 +49,7 @@
 #include "MaEditorWgt.h"
 #include "SequenceAreaRenderer.h"
 #include "ov_msa/MaEditor.h"
+#include "ov_msa/McaEditorWgt.h"
 #include "ov_msa/MSACollapsibleModel.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/DrawHelper.h"
@@ -256,6 +258,7 @@ void MaEditorSequenceArea::updateSelection() {
 }
 
 void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHighlightSelection) {
+    CHECK(!isAlignmentEmpty(), );
     // TODO: assert(isInRange(s));
     exitFromEditCharacterMode();
     if (highlightSelection != newHighlightSelection) {
@@ -370,8 +373,14 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     SAFE_POINT_OP(os, );
 
     const U2Region& sel = getSelectedRows();
+    const bool isGap = maObj->getRow(selection.topLeft().y())->isGap(selection.topLeft().x());
     maObj->removeRegion(selection.x(), sel.startPos, selection.width(), sel.length, true);
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Delete current selection", editor->getFactoryId());
+
     if (selection.height() == 1 && selection.width() == 1) {
+        GRUNTIME_NAMED_CONDITION_COUNTER(cvar2, tvar2, isGap, "Remove gap", editor->getFactoryId());
+        GRUNTIME_NAMED_CONDITION_COUNTER(cvar3, tvar3, !isGap, "Remove character", editor->getFactoryId());
+
         if (isInRange(selection.topLeft())) {
             return;
         }
@@ -654,11 +663,13 @@ void MaEditorSequenceArea::sl_delCurrentSelection() {
 }
 
 void MaEditorSequenceArea::sl_cancelSelection() {
+    GRUNTIME_NAMED_CONDITION_COUNTER(cvat, tvar, qobject_cast<McaEditorWgt*>(sender()) != NULL, "Clear selection", editor->getFactoryId());
     MaEditorSelection emptySelection;
     setSelection(emptySelection);
 }
 
 void MaEditorSequenceArea::sl_fillCurrentSelectionWithGaps() {
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Fill selection with gaps", editor->getFactoryId());
     if(!isAlignmentLocked()) {
         emit si_startMaChanging();
         insertGapsBeforeSelection();
@@ -831,6 +842,7 @@ void MaEditorSequenceArea::sl_hScrollBarActionPerfermed() {
 }
 
 void MaEditorSequenceArea::setCursorPos(const QPoint& p) {
+    CHECK(!isAlignmentEmpty(), )
     SAFE_POINT(isInRange(p), tr("Cursor position is out of range"), );
     CHECK(p != cursorPos, );
 
@@ -886,7 +898,6 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
         rubberBandOrigin = e->pos();
         const QPoint p = ui->getScrollController()->getMaPointByScreenPoint(e->pos());
         setCursorPos(boundWithVisibleRange(p));
-
         if (isInRange(p)) {
             const MaEditorSelection &s = getSelection();
             if (s.getRect().contains(cursorPos) && !isAlignmentLocked() && editingEnabled) {
@@ -1529,6 +1540,10 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
         return;
     }
 
+    const bool isGap = maObj->getRow(selection.y())->isGap(selection.x());
+    GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, isGap, "Replace gap", editor->getFactoryId());
+    GRUNTIME_NAMED_CONDITION_COUNTER(ccvar, ttvar, !isGap, "Replace character", editor->getFactoryId());
+
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
@@ -1572,6 +1587,10 @@ void MaEditorSequenceArea::deleteOldCustomSchemes() {
 
 void MaEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo&) {
 
+}
+
+MaEditorSequenceArea::MaMode MaEditorSequenceArea::getModInfo() {
+    return maMode;
 }
 
 } // namespace

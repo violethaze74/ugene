@@ -25,6 +25,7 @@
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
@@ -111,6 +112,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
     scaleBar = new ScaleBar(Qt::Horizontal);
     scaleBar->setRange(100, 1000);
     scaleBar->setTickInterval(100);
+    scaleBar->setObjectName("peak_height_slider");
 
     scaleBar->getPlusAction()->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
     addAction(scaleBar->getPlusAction());
@@ -233,6 +235,7 @@ void McaEditorSequenceArea::sl_backgroundSelectionChanged() {
 }
 
 void McaEditorSequenceArea::sl_showHideTrace() {
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Selection of a 'Show / hide trace' item", editor->getFactoryId());
     QAction* traceAction = qobject_cast<QAction*> (sender());
 
     if (!traceAction) {
@@ -255,6 +258,7 @@ void McaEditorSequenceArea::sl_showHideTrace() {
 }
 
 void McaEditorSequenceArea::sl_showAllTraces() {
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Selection of a 'Show / hide trace' item", editor->getFactoryId());
     settings.drawTraceA = true;
     settings.drawTraceC = true;
     settings.drawTraceG = true;
@@ -269,6 +273,8 @@ void McaEditorSequenceArea::sl_showAllTraces() {
 void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
     //k = chromaMax
     SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
+    GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, r->getAreaHeight() < k, "Increase peaks height", editor->getFactoryId());
+    GRUNTIME_NAMED_CONDITION_COUNTER(ccvar, ttvar, r->getAreaHeight() > k, "Decrease peaks height", editor->getFactoryId());
     r->setAreaHeight(k);
     sl_completeUpdate();
 }
@@ -299,12 +305,14 @@ void McaEditorSequenceArea::sl_addInsertion() {
 }
 
 void McaEditorSequenceArea::sl_removeGapBeforeSelection() {
+    GCOUNTER(cvar, tvar, "Remove gap at the left");
     emit si_startMaChanging();
     removeGapsPrecedingSelection(1);
     emit si_stopMaChanging(true);
 }
 
 void McaEditorSequenceArea::sl_removeColumnsOfGaps() {
+    GCOUNTER(cvar, tvar, "Remove all columns of gaps");
     U2OpStatus2Log os;
     U2UseCommonUserModStep userModStep(editor->getMaObject()->getEntityRef(), os);
     Q_UNUSED(userModStep);
@@ -313,10 +321,12 @@ void McaEditorSequenceArea::sl_removeColumnsOfGaps() {
 }
 
 void McaEditorSequenceArea::sl_trimLeftEnd() {
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Trim left end", editor->getFactoryId());
     trimRowEnd(MultipleChromatogramAlignmentObject::Left);
 }
 
 void McaEditorSequenceArea::sl_trimRightEnd() {
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Trim right end", editor->getFactoryId());
     trimRowEnd(MultipleChromatogramAlignmentObject::Right);
 }
 
@@ -426,6 +436,9 @@ void McaEditorSequenceArea::insertChar(char newCharacter) {
     int xSelection = selection.x();
     maObj->changeLength(os, maObj->getLength() + 1);
     maObj->insertCharacter(selection.y(), xSelection, newCharacter);
+
+    GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, newCharacter == U2Msa::GAP_CHAR, "Insert gap into a new column", editor->getFactoryId());
+    GRUNTIME_NAMED_CONDITION_COUNTER(ccvar, ttvar, newCharacter != U2Msa::GAP_CHAR, "Insert character into a new column", editor->getFactoryId());
 
     // insert char into the reference
     U2SequenceObject* ref = getEditor()->getMaObject()->getReferenceObj();

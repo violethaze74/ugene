@@ -192,6 +192,10 @@ void DocumentFormat::storeEntry(IOAdapter *, const QMap< GObjectType, QList<GObj
     os.setError("This document format does not support streaming mode");
 }
 
+QString DocumentFormat::getRadioButtonText() const {
+    return QString();
+}
+
 bool DocumentFormat::isObjectOpSupported(const Document* d, DocObjectOp op, GObjectType t) const {
     assert(d->getDocumentFormat() == this);
 

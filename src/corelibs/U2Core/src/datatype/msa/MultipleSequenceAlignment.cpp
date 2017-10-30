@@ -442,7 +442,7 @@ void MultipleSequenceAlignmentData::removeRegion(int startPos, int startRow, int
     SAFE_POINT(startPos >= 0 && startPos + nBases <= length && nBases > 0,
         QString("Incorrect parameters were passed to MultipleSequenceAlignmentData::removeRegion: startPos '%1', "
         "nBases '%2', the length is '%3'").arg(startPos).arg(nBases).arg(length),);
-    SAFE_POINT(startRow >= 0 && startRow + nRows <= getNumRows() && nRows > 0,
+    SAFE_POINT(startRow >= 0 && startRow + nRows <= getNumRows() && (nRows > 0 || (nRows == 0 && getNumRows() == 0)),
         QString("Incorrect parameters were passed to MultipleSequenceAlignmentData::removeRegion: startRow '%1', "
         "nRows '%2', the number of rows is '%3'").arg(startRow).arg(nRows).arg(getNumRows()),);
 
