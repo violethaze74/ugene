@@ -63,10 +63,10 @@
 #include "bedtools/BedtoolsSupport.h"
 #include "bigWigTools/BedGraphToBigWigWorker.h"
 #include "bigWigTools/BigWigSupport.h"
-#include "blast/AlignToReferenceBlastWorker.h"
 #include "blast/BlastAllSupport.h"
 #include "blast/BlastAllWorker.h"
 #include "blast/FormatDBSupport.h"
+#include "blast_plus/AlignToReferenceBlastWorker.h"
 #include "blast_plus/BlastDBCmdSupport.h"
 #include "blast_plus/BlastPlusSupport.h"
 #include "blast_plus/BlastPlusWorker.h"
@@ -468,7 +468,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         ExternalToolSupportAction* alignToRefBlastAction = new ExternalToolSupportAction(tr("Map reads to reference..."),
                                                                                          this, QStringList() << ET_FORMATDB << ET_BLASTALL);
         alignToRefBlastAction->setObjectName(ToolsMenu::SANGER_ALIGN);
-        connect(alignToRefBlastAction, SIGNAL(triggered(bool)), blastallTool, SLOT(sl_runAlign()));
+        connect(alignToRefBlastAction, SIGNAL(triggered(bool)), blastNPlusTool, SLOT(sl_runAlign()));
 
         BlastPlusSupportContext* blastPlusViewCtx = new BlastPlusSupportContext(this);
         blastPlusViewCtx->setParent(this);//may be problems???

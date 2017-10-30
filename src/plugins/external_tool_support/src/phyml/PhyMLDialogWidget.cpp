@@ -23,12 +23,12 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include "ExternalToolSupportSettings.h"
@@ -65,7 +65,9 @@ const QString PhyMlSettingsPreffixes::TreeSearchingType(CreatePhyTreeWidget::set
 const QString PhyMlSettingsPreffixes::UserTreePath(CreatePhyTreeWidget::settingsPath() + "/user_tree");
 
 PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
-    CreatePhyTreeWidget(parent)
+    CreatePhyTreeWidget(parent),
+    isTtRationFixed(false),
+    isTreeNumberSet(false)
 {
     setupUi(this);
 
@@ -99,7 +101,47 @@ void PhyMlWidget::fillComboBoxes() {
 void PhyMlWidget::makeTTRatioControlsAvailable(bool enabled) {
     transLabel->setEnabled(enabled);
     transEstimatedRb->setEnabled(enabled);
+    transFixedRb->setEnabled(enabled);
     tranSpinBox->setEnabled(enabled && !transEstimatedRb->isChecked());
+}
+
+void PhyMlWidget::makeTTRatioControlsAvailable(SubstModelTrRatioType ttRatioType) {
+    const bool shouldSavePreviousValue = transLabel->isEnabled();
+    makeTTRatioControlsAvailable(true);
+
+    switch (ttRatioType) {
+    case ANY_TT_RATIO:
+        if (isTtRationFixed) {
+            transFixedRb->setChecked(true);
+        } else {
+            transEstimatedRb->setChecked(true);
+        }
+        break;
+    case ONLY_FIXED_TT_RATIO:
+        if (shouldSavePreviousValue) {
+            isTtRationFixed = transFixedRb->isChecked();
+        }
+        transFixedRb->setChecked(true);
+        transEstimatedRb->setEnabled(false);
+        transFixedRb->setEnabled(false);
+        break;
+    case ONLY_ESTIMATED_TT_RATIO:
+        if (shouldSavePreviousValue) {
+            isTtRationFixed = transFixedRb->isChecked();
+        }
+        transEstimatedRb->setChecked(true);
+        transEstimatedRb->setEnabled(false);
+        transFixedRb->setEnabled(false);
+        break;
+    case WITHOUT_TT_RATIO:
+        if (shouldSavePreviousValue) {
+            isTtRationFixed = transFixedRb->isChecked();
+        }
+        transFixedRb->setChecked(false);
+        transEstimatedRb->setChecked(false);
+        makeTTRatioControlsAvailable(false);
+        break;
+    }
 }
 
 void PhyMlWidget::createWidgetsControllers() {
@@ -166,10 +208,20 @@ void PhyMlWidget::sl_checkUserTreeType(int newIndex) {
 }
 
 void PhyMlWidget::sl_checkTreeImprovement(int newIndex) {
-    bool isNNI = (newIndex == 0);
-    treeNumbersCheckbox->setEnabled(!isNNI);
-    if(isNNI) {
+    const bool isNni = (newIndex == 0);
+    const bool shouldSaveTreeNumbersValue = treeNumbersCheckbox->isEnabled();
+    if (shouldSaveTreeNumbersValue) {
+        isTreeNumberSet = treeNumbersCheckbox->isChecked();
+    }
+
+    if (isNni) {
+        treeNumbersCheckbox->setChecked(false);
+        treeNumbersCheckbox->setEnabled(false);
         treeNumbersSpinBox->setEnabled(false);
+    } else {
+        treeNumbersCheckbox->setChecked(isTreeNumberSet);
+        treeNumbersCheckbox->setEnabled(true);
+        treeNumbersSpinBox->setEnabled(treeNumbersCheckbox->isChecked());
     }
 }
 
@@ -205,7 +257,7 @@ void PhyMlWidget::sl_checkSubModelType(const QString& newModel){
     SAFE_POINT(modelIndex >= 0, QString("'%1' is incorrect substitution model for dna sequence").arg(newModel),);
 
     SubstModelTrRatioType ttRatioType = PhyMLModelTypes::getTtRatioType(newModel);
-    makeTTRatioControlsAvailable(ttRatioType == ANY_TT_RATIO);
+    makeTTRatioControlsAvailable(ttRatioType);
 }
 
 void PhyMlWidget::fillSettings(CreatePhyTreeSettings& settings){
@@ -226,13 +278,28 @@ void PhyMlWidget::restoreDefault(){
 }
 
 bool PhyMlWidget::checkSettings(QString &message, const CreatePhyTreeSettings &settings) {
+    const bool fileExists = QFileInfo(inputFileLineEdit->text()).exists();
+    const bool fileHaveToExist = (1 == treeTypesCombo->currentIndex());
+    if (fileHaveToExist && !fileExists) {
+        twSettings->setCurrentIndex(2);
+        inputFileLineEdit->setFocus();
+        if (!inputFileLineEdit->text().isEmpty()) {
+            message = tr("File with the starting tree is not set.");
+        } else {
+            message = tr("File with the starting tree doesn't exist.");
+        }
+        return false;
+    }
+
     //Check that PhyMl and tempory folder path defined
     ExternalToolRegistry* reg = AppContext::getExternalToolRegistry();
-    ExternalTool* phyml= reg->getByName(PhyMLSupport::PhyMlRegistryId);
+    ExternalTool* phyml = reg->getByName(PhyMLSupport::PhyMlRegistryId);
     SAFE_POINT(NULL != phyml, "External tool PHyML is not registered", false);
+
     const QString& path = phyml->getPath();
     const QString& name = phyml->getName();
-    if (path.isEmpty()){
+
+    if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
         msgBox->setText(tr("Path for %1 tool not selected.").arg(name));
@@ -254,9 +321,11 @@ bool PhyMlWidget::checkSettings(QString &message, const CreatePhyTreeSettings &s
                break;
         }
     }
+
     if (path.isEmpty()){
         return false;
     }
+
     U2OpStatus2Log os(LogLevel_DETAILS);
     ExternalToolSupportSettings::checkTemporaryDir(os);
     CHECK_OP(os, false);

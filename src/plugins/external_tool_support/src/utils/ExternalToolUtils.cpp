@@ -19,19 +19,57 @@
  * MA 02110-1301, USA.
  */
 
-#include "ExternalToolUtils.h"
+#include <QFile>
+#include <QFileInfo>
+#include <QMessageBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DataPathRegistry.h>
+#include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QFile>
-#include <QFileInfo>
+#include <U2Gui/AppSettingsGUI.h>
+
+#include "ExternalToolSupportSettingsController.h"
+#include "ExternalToolUtils.h"
 
 namespace U2 {
 
 const QString ExternalToolUtils::CISTROME_DATA_DIR = "CISTROME_DATA_DIR";
+
+void ExternalToolUtils::checkExtToolsPath(const QStringList &names) {
+    QStringList missingTools;
+    foreach (QString name, names) {
+        if (AppContext::getExternalToolRegistry()->getByName(name)->getPath().isEmpty()) {
+            missingTools << name;
+        }
+    }
+    if (!missingTools.isEmpty()){
+        QString mergedNames = missingTools.join(", ");
+
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
+        msgBox->setWindowTitle("BLAST: "+ QString(mergedNames));
+        msgBox->setText(tr("Paths for the following tools are not selected: %1.").arg(mergedNames));
+        msgBox->setInformativeText(tr("Do you want to select it now?"));
+        msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox->setDefaultButton(QMessageBox::Yes);
+        const int ret = msgBox->exec();
+        CHECK(!msgBox.isNull(), );
+
+        switch (ret) {
+        case QMessageBox::Yes:
+            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+            break;
+        case QMessageBox::No:
+            return;
+        default:
+            assert(false);
+            break;
+        }
+    }
+}
 
 void ExternalToolUtils::addDefaultCistromeDirToSettings() {
     const QString cistromeDefaultPath = QFileInfo(QString(PATH_PREFIX_DATA) + QString(":") + "cistrome").absoluteFilePath();

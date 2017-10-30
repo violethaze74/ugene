@@ -222,6 +222,7 @@ void McaEditorReferenceArea::keyPressEvent(QKeyEvent *event) {
     case Qt::Key_Right:
         if (!selectedRegion.isEmpty() && selectedRegion.endPos() < ctx->getSequenceLength()) {
             if (isShiftPressed) {
+                expandToTheRight = selectionCountFromStartPos == 1 ? true : expandToTheRight;
                 if (expandToTheRight) {
                     selectionCountFromStartPos++;
                     if (selectionCountFromStartPos <= 0) {
