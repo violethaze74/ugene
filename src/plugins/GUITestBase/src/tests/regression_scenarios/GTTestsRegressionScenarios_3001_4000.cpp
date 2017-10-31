@@ -5569,7 +5569,6 @@ GUI_TEST_CLASS_DEFINITION(test_3870) {
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
 
     //2. Insert gaps
-    GTUtilsMSAEditorSequenceArea::scrollToPosition(os, QPoint(length - 1, 1));
     int columnsNumber = GTUtilsMSAEditorSequenceArea::getNumVisibleBases(os);
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(columnsNumber - 10, 0), QPoint(columnsNumber, 10));
 
