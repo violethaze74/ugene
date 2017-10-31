@@ -185,6 +185,13 @@ protected slots:
 private slots:
     void sl_hScrollBarActionPerfermed();
 
+private:
+    int shiftRegion(int shift);
+    QList<U2MsaGap> findRemovableGapColumns(int& shift);
+    QList<U2MsaGap> findCommonGapColumns(int& numOfColumns);
+    U2MsaGap addTrailingGapColumns(int count);
+    QList<U2MsaGap> findRestorableGapColumns(const int shift);
+
 signals:
     void si_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
     void si_selectionChanged(const QStringList& selectedRows);
@@ -312,6 +319,10 @@ protected:
     MaEditorSelection   baseSelection; // selection with rows indexes in absolute coordinates
 
     int                 maVersionBeforeShifting;
+
+    QList<U2MsaGap>     ctrlModeGapModel;
+    bool                isCtrlPressed;
+    qint64              lengthOnMousePress;
 
     QAction*            useDotsAction;
 
