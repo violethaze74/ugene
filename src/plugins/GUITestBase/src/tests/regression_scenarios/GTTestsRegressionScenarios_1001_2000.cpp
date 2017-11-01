@@ -6156,7 +6156,7 @@ GUI_TEST_CLASS_DEFINITION(test_1600_7) {
 
 //    Expected state: New gaps have been added, collapsible item has retained
     seq = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Isophya_altaica_EF540820");
-    CHECK_SET_ERR(seq == "-AAG-TTACTAA----", "unexpected sequence1: " + seq);
+    CHECK_SET_ERR(seq == "-AAG-TTACTAA---", "unexpected sequence1: " + seq);
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off 2");
 }
 
