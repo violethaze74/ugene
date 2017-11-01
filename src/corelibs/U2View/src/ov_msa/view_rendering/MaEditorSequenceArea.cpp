@@ -662,6 +662,10 @@ void MaEditorSequenceArea::sl_delCurrentSelection() {
 }
 
 void MaEditorSequenceArea::sl_cancelSelection() {
+    if (maMode != ViewMode) {
+        exitFromEditCharacterMode();
+        return;
+    }
     GRUNTIME_NAMED_CONDITION_COUNTER(cvat, tvar, qobject_cast<McaEditorWgt*>(sender()) != NULL, "Clear selection", editor->getFactoryId());
     MaEditorSelection emptySelection;
     setSelection(emptySelection);
