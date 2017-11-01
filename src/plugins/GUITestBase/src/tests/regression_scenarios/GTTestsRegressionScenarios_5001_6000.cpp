@@ -2344,6 +2344,47 @@ GUI_TEST_CLASS_DEFINITION(test_5637) {
     CHECK_SET_ERR(rowLength <= refLength, QString("Expected: row length must be equal or lesser then reference length, current: row lenght = %1, reference length = %2").arg(QString::number(rowLength)).arg(QString::number(refLength)));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5638) {
+    //1. Open File "\samples\CLUSTALW\COI.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Click to position (30, 10)
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(30, 10));
+
+    //3. Press Ctrl and drag and drop selection to the right for a few symbols
+    U2MsaListGapModel startGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTMouseDriver::press();
+    QPoint curPos = GTMouseDriver::getMousePosition();
+    QPoint moveMouseTo(curPos.x() + 200, curPos.y());
+    GTMouseDriver::moveTo(moveMouseTo);
+
+    GTGlobals::sleep();
+    U2MsaListGapModel gapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    if (gapModel.size() < 11) {
+        GTMouseDriver::release();
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+        CHECK_SET_ERR(false, "Can't find selected sequence");
+    }
+
+    if (gapModel[10].size() != 1) {
+        GTMouseDriver::release();
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+        CHECK_SET_ERR(false, QString("Unexpected selected sequence's gap model size, expected: 1, current: %1").arg(gapModel[10].size()));
+    }
+
+    // 4. Drag and drop selection to the left to the begining
+    GTMouseDriver::moveTo(curPos);
+    GTMouseDriver::release();
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    GTGlobals::sleep();
+    U2MsaListGapModel finishGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    CHECK_SET_ERR(finishGapModel == startGapModel, "Unexpected changes of alignment");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5659) {
     // 1. Open murine.gb
     // 2. Context menu on annotations object
