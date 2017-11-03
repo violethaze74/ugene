@@ -372,7 +372,9 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         startSelectingRowNumber = 0;
         break;
     case Qt::Key_Delete:
-        sl_removeSequence();
+        if (removeSequenceAction->isEnabled()) {
+            sl_removeSequence();
+        }
         break;
     }
     QWidget::keyPressEvent(e);
@@ -527,8 +529,11 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
                     curRowNumber = newRowNumber;
                     singleSelecting = false;
                 } else {
-                    curRowNumber = (startSelectingRowNumber < firstVisibleRowNumber) ? firstVisibleRowNumber : startSelectingRowNumber;
-                    curRowNumber = (startSelectingRowNumber > lastVisibleRowNumber) ? lastVisibleRowNumber : startSelectingRowNumber;
+                    if (startSelectingRowNumber > newRowNumber) {
+                        curRowNumber = (startSelectingRowNumber < firstVisibleRowNumber) ? firstVisibleRowNumber : startSelectingRowNumber;
+                    } else {
+                        curRowNumber = (startSelectingRowNumber > lastVisibleRowNumber) ? lastVisibleRowNumber : startSelectingRowNumber;
+                    }
                     if (newRowNumber > lastVisibleRowNumber || newRowNumber < firstVisibleRowNumber) {
                         newRowNumber = newRowNumber > 0 ? lastVisibleRowNumber : 0;
                     }

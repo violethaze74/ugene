@@ -172,7 +172,14 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
         const QRect sliderSpaceRect = hBar->style()->subControlRect(QStyle::CC_ScrollBar, &hScrollBarOptions, QStyle::SC_ScrollBarGroove, hBar);
         const QPoint rightEdge(sliderSpaceRect.x() + sliderSpaceRect.width(), sliderSpaceRect.height() / 2);
 
-        GTMouseDriver::moveTo(hBar->mapToGlobal(rightEdge) - QPoint(1, 0));
+        int lastBase = msaSeqArea->getLastVisibleBase(true);
+        QPoint p;
+        if (position.x() == lastBase) {
+            p = hBar->mapToGlobal(rightEdge) + QPoint(3, 0);
+        } else {
+            p = hBar->mapToGlobal(rightEdge) - QPoint(1, 0);
+        }
+        GTMouseDriver::moveTo(p);
         GTMouseDriver::click();
     }
 

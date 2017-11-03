@@ -2344,6 +2344,47 @@ GUI_TEST_CLASS_DEFINITION(test_5637) {
     CHECK_SET_ERR(rowLength <= refLength, QString("Expected: row length must be equal or lesser then reference length, current: row lenght = %1, reference length = %2").arg(QString::number(rowLength)).arg(QString::number(refLength)));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5638) {
+    //1. Open File "\samples\CLUSTALW\COI.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Click to position (30, 10)
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(30, 10));
+
+    //3. Press Ctrl and drag and drop selection to the right for a few symbols
+    U2MsaListGapModel startGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTMouseDriver::press();
+    QPoint curPos = GTMouseDriver::getMousePosition();
+    QPoint moveMouseTo(curPos.x() + 200, curPos.y());
+    GTMouseDriver::moveTo(moveMouseTo);
+
+    GTGlobals::sleep();
+    U2MsaListGapModel gapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    if (gapModel.size() < 11) {
+        GTMouseDriver::release();
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+        CHECK_SET_ERR(false, "Can't find selected sequence");
+    }
+
+    if (gapModel[10].size() != 1) {
+        GTMouseDriver::release();
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+        CHECK_SET_ERR(false, QString("Unexpected selected sequence's gap model size, expected: 1, current: %1").arg(gapModel[10].size()));
+    }
+
+    // 4. Drag and drop selection to the left to the begining
+    GTMouseDriver::moveTo(curPos);
+    GTMouseDriver::release();
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    GTGlobals::sleep();
+    U2MsaListGapModel finishGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    CHECK_SET_ERR(finishGapModel == startGapModel, "Unexpected changes of alignment");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5659) {
     // 1. Open murine.gb
     // 2. Context menu on annotations object
@@ -3599,6 +3640,29 @@ GUI_TEST_CLASS_DEFINITION(test_5769_2) {
     name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
     CHECK_SET_ERR(name.size() == 1, QString("Unexpected selection? expected sel == 1< cerrent sel == %1").arg(QString::number(name.size())));
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_5B70", QString("Unexpected selected read, expected: SZYD_Cas9_5B70, current: %1").arg(name[0]));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5770) {
+    QString filePath = testDir + "_common_data/sanger/alignment.ugenedb";
+    QString fileName = "sanger_alignment.ugenedb";
+
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    //2. Select read "SZYD_Cas9_5B71"
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
+
+    //3. Hold the _Shift_ key and press the _down arrow_ key.
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTGlobals::sleep(500);
+
+    //Expected: the selection is expanded.
+    QStringList names = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
+    CHECK_SET_ERR(names.size() == 2, QString("Incorrect selection. Expected: 2 selected rows, current: %1 selected rows").arg(names.size()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5786_1) {

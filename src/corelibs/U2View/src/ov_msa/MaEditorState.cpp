@@ -86,7 +86,7 @@ void MaEditorState::setFirstSeq(int seq) {
     stateData[FIRST_SEQ] = seq;
 }
 
-float MaEditorState::getZoomFactor() const {
+double MaEditorState::getZoomFactor() const {
     QVariant v = stateData.value(ZOOM_FACTOR);
     if (v.type() == QVariant::Double) {
         return v.toDouble();
@@ -94,7 +94,7 @@ float MaEditorState::getZoomFactor() const {
     return 1.0;
 }
 
-void MaEditorState::setZoomFactor(float zoomFactor) {
+void MaEditorState::setZoomFactor(double zoomFactor) {
     stateData[ZOOM_FACTOR] = zoomFactor;
 }
 

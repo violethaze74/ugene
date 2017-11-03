@@ -292,9 +292,7 @@ GUI_TEST_CLASS_DEFINITION(test_4013) {
     GTFileDialog::openFile(os, dataDir+"samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    int length = GTUtilsMSAEditorSequenceArea::getLength(os);
 
-    GTUtilsMSAEditorSequenceArea::scrollToPosition(os, QPoint(length - 1, 1));
     int columnsNumber = GTUtilsMSAEditorSequenceArea::getNumVisibleBases(os);
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(columnsNumber - 10, 0), QPoint(columnsNumber, 10));
 

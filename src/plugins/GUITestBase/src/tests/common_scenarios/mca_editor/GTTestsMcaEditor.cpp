@@ -588,7 +588,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
-    GTUtilsLog::checkContainsError(os, trace, QString("Task {Align Sanger reads to reference} finished with error: The input reference sequence 'seq6' contains characters that don't belong to DNA alphabet."));
+    GTUtilsLog::checkContainsError(os, trace, QString("Task {Map Sanger reads to reference} finished with error: The input reference sequence 'seq6' contains characters that don't belong to DNA alphabet."));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
@@ -675,7 +675,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Error: More than one sequence in the reference file:  <path>/alphabets/standard_dna_rna_amino_1000.fa
-    GTUtilsLog::checkContainsError(os, trace, QString("Task {Align Sanger reads to reference} finished with error: More than one sequence in the reference file:"));
+    GTUtilsLog::checkContainsError(os, trace, QString("Task {Map Sanger reads to reference} finished with error: More than one sequence in the reference file:"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
@@ -816,7 +816,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
-    GTUtilsLog::checkContainsError(os, trace, QString("Task {Align Sanger reads to reference} finished with error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet."));
+    GTUtilsLog::checkContainsError(os, trace, QString("Task {Map Sanger reads to reference} finished with error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet."));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
@@ -1931,30 +1931,30 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence_1");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //6. Push "Jump to next variation" button
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
 
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence_2");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //7. Push "Jump to next variation" from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next variation"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next variation_3"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence_4");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //8. Push "Jump to next variation" from main menu
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to next variation");
 
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence_5");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -5184,7 +5184,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
             GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
 
-            //4. Push "Align" button
+            //4. Push "Маp" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
@@ -5193,6 +5193,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+	GTGlobals::sleep();
 
     //5. Push General button
     GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
@@ -5203,9 +5204,9 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     CHECK_SET_ERR(height == 16, QString("Incorrect height, expected: 16, current: %1").arg(QString::number(height)));
     GTGlobals::sleep();
 
-    //Expected state: Reference length: 11937
+    //Expected state: Reference length: 11933
     int length = GTUtilsOptionPanelMca::getLength(os);
-    CHECK_SET_ERR(length == 11937, QString("Incorrect length, expected: 11937, current: %1").arg(QString::number(length)))
+    CHECK_SET_ERR(length == 11933, QString("Incorrect length, expected: 11937, current: %1").arg(QString::number(length)))
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0034) {

@@ -22,12 +22,15 @@
 #ifndef _U2_EXTERNAL_TOOL_UTILS_H_
 #define _U2_EXTERNAL_TOOL_UTILS_H_
 
-#include <QString>
+#include <QObject>
 
 namespace U2 {
 
-class ExternalToolUtils {
+class ExternalToolUtils : public QObject {
+    Q_OBJECT
 public:
+    static void checkExtToolsPath(const QStringList &names);
+
     static void addDefaultCistromeDirToSettings();
     static void addCistromeDataPath(const QString& dataName, const QString& dirName, bool entriesAreFolders = false);
 

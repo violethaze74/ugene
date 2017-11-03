@@ -53,7 +53,7 @@ namespace U2 {
 
 #define MOBJECT_DEFAULT_FONT_FAMILY "Verdana"
 #define MOBJECT_DEFAULT_FONT_SIZE 10
-#define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0f
+#define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0
 
 class MaEditorWgt;
 class MultipleAlignmentObject;
@@ -171,7 +171,7 @@ protected:
     void calcFontPixelToPointSizeCoef();
 
     void setFirstVisiblePosSeq(int firstPos, int firstSeq);
-    void setZoomFactor(float newZoomFactor);
+    void setZoomFactor(double newZoomFactor);
 
     virtual void updateActions();
 
@@ -181,8 +181,8 @@ protected:
     QFont       font;
     ResizeMode  resizeMode;
     SNPSettings snp;
-    float       zoomFactor;
-    float       fontPixelToPointSize;
+    double      zoomFactor;
+    double      fontPixelToPointSize;
     mutable int cachedColumnWidth;
 
     QAction*          saveAlignmentAction;

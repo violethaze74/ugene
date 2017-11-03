@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.net
+ * http://ugene.unipro.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,46 +19,38 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_EDITOR_STATE_H_
-#define _U2_MA_EDITOR_STATE_H_
+#ifndef _U2_FORMAT_DB_SUBTASK_H_
+#define _U2_FORMAT_DB_SUBTASK_H_
 
-#include <U2Core/U2Region.h>
-#include <U2Core/GObject.h>
+#include <U2Core/Task.h>
 
-#include <QVariant>
+#include <U2Lang/DbiDataHandler.h>
+#include <U2Lang/DbiDataStorage.h>
 
 namespace U2 {
+namespace Workflow {
 
-class MaEditor;
-
-class U2VIEW_EXPORT MaEditorState {
+class FormatDBSubTask : public Task {
+    Q_OBJECT
 public:
-    MaEditorState(){}
+    FormatDBSubTask(const QString& referenceUrl,
+                    const SharedDbiDataHandler &referenceDbHandler,
+                    DbiDataStorage *storage);
+    void prepare();
 
-    MaEditorState(const QVariantMap& _stateData) : stateData(_stateData){}
+    const QString& getResultPath() const;
 
-    static QVariantMap saveState(MaEditor* v);
+private:
+    QString getAcceptableTempDir() const;
 
-    bool isValid() const;
+    const QString               referenceUrl;
+    const SharedDbiDataHandler  referenceDbHandler;
+    DbiDataStorage *storage;
 
-    GObjectReference getMaObjectRef() const;
-    void setMaObjectRef(const GObjectReference& ref);
-
-    QFont getFont() const;
-    void setFont(const QFont &f);
-
-    int getFirstPos() const;
-    void setFirstPos(int y);
-
-    int getFirstSeq() const;
-    void setFirstSeq(int seq);
-
-    double getZoomFactor() const;
-    void setZoomFactor(double zoomFactor);
-
-    QVariantMap stateData;
+    QString databaseNameAndPath;
 };
 
-} // namespace
+} // namespace Workflow
+} // namespace U2
 
-#endif
+#endif // _U2_FORMAT_DB_SUBTASK_H_

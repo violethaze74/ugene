@@ -1524,7 +1524,9 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0002){
 //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default"));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
+    
 //    4. Fill build tree dialog with defaulb values
 //    Expected state: tree built.
     GTWidget::findWidget(os, "treeView");
@@ -1540,6 +1542,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTGlobals::sleep(1000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //prepating widgets
     QWidget *treeView = GTWidget::findWidget(os, "treeView");
@@ -1589,6 +1592,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTGlobals::sleep(1000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //prepating widgets
     QWidget *treeView = GTWidget::findWidget(os, "treeView");
@@ -1633,7 +1637,8 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005){
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
+    GTGlobals::sleep(1000);
+    
     QCheckBox* showNamesCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showNamesCheck"));
     CHECK_SET_ERR(showNamesCheck != NULL, "showNamesCheck not found");
     QCheckBox* showDistancesCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showDistancesCheck"));

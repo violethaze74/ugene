@@ -47,43 +47,10 @@
 #include "ExternalToolSupportSettingsController.h"
 #include "FormatDBSupport.h"
 #include "utils/BlastTaskSettings.h"
+#include "utils/ExternalToolUtils.h"
 #include "utils/ExternalToolSupportAction.h"
 
-#include "AlignToReferenceBlastDialog.h"
-
 namespace U2 {
-
-void checkExtToolsPath(QStringList names) {
-    QStringList missingTools;
-    foreach (QString name, names) {
-        if (AppContext::getExternalToolRegistry()->getByName(name)->getPath().isEmpty()) {
-            missingTools << name;
-        }
-    }
-    if (!missingTools.isEmpty()){
-        QString mergedNames = missingTools.join(", ");
-
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("BLAST: "+ QString(mergedNames));
-        msgBox->setText(BlastAllSupport::tr("Paths for the following tools are not selected: %1.").arg(mergedNames));
-        msgBox->setInformativeText(BlastAllSupport::tr("Do you want to select it now?"));
-        msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox->setDefaultButton(QMessageBox::Yes);
-        const int ret = msgBox->exec();
-        CHECK(!msgBox.isNull(), );
-
-        switch (ret) {
-           case QMessageBox::Yes:
-               AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-               break;
-           case QMessageBox::No:
-               return;
-           default:
-               assert(false);
-               break;
-         }
-    }
-}
 
 BlastAllSupport::BlastAllSupport(const QString& name, const QString& path) : ExternalTool(name, path)
 {
@@ -114,7 +81,7 @@ BlastAllSupport::BlastAllSupport(const QString& name, const QString& path) : Ext
 
 void BlastAllSupport::sl_runWithExtFileSpecify(){
     //Check that blastall and tempory folder path defined
-    checkExtToolsPath(QStringList() << ET_BLASTALL);
+    ExternalToolUtils::checkExtToolsPath(QStringList() << ET_BLASTALL);
 
     if (path.isEmpty()){
         return;
@@ -134,24 +101,6 @@ void BlastAllSupport::sl_runWithExtFileSpecify(){
     QList<BlastTaskSettings> settingsList = blastallRunDialog->getSettingsList();
     BlastAllSupportMultiTask* blastallSupportMultiTask = new BlastAllSupportMultiTask(settingsList,settingsList[0].outputResFile);
     AppContext::getTaskScheduler()->registerTopLevelTask(blastallSupportMultiTask);
-}
-
-void BlastAllSupport::sl_runAlign() {
-    checkExtToolsPath(QStringList() << ET_BLASTALL << ET_FORMATDB);
-
-    if (AppContext::getExternalToolRegistry()->getByName(ET_BLASTALL)->getPath().isEmpty()
-            || AppContext::getExternalToolRegistry()->getByName(ET_FORMATDB)->getPath().isEmpty()){
-        return;
-    }
-
-    QObjectScopedPointer<AlignToReferenceBlastDialog> dlg = new AlignToReferenceBlastDialog(AppContext::getMainWindow()->getQMainWindow());
-    dlg->exec();
-    CHECK(!dlg.isNull(), );
-    CHECK(dlg->result() == QDialog::Accepted, );
-
-    AlignToReferenceBlastCmdlineTask::Settings settings = dlg->getSettings();
-    AlignToReferenceBlastCmdlineTask* task = new AlignToReferenceBlastCmdlineTask(settings);
-    AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
 ////////////////////////////////////////
@@ -183,7 +132,7 @@ void BlastAllSupportContext::buildMenu(GObjectView* view, QMenu* m) {
 
 void BlastAllSupportContext::sl_showDialog() {
     //Checking the BlastAll path and temporary folder path are defined
-    checkExtToolsPath(QStringList() << ET_BLASTALL);
+    ExternalToolUtils::checkExtToolsPath(QStringList() << ET_BLASTALL);
 
     if (AppContext::getExternalToolRegistry()->getByName(ET_BLASTALL)->getPath().isEmpty()){
         return;
