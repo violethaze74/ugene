@@ -103,6 +103,7 @@ protected:
 
 private:
     SharedDbiDataHandler reference;
+    QString referenceUrl;
 };
 
 /************************************************************************/

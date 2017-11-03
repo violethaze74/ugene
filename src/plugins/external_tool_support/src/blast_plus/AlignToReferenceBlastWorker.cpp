@@ -167,6 +167,7 @@ void AlignToReferenceBlastWorker::onPrepared(Task *task, U2OpStatus &os) {
     PrepareReferenceSequenceTask *prepareTask = qobject_cast<PrepareReferenceSequenceTask *>(task);
     CHECK_EXT(NULL != prepareTask, os.setError(L10N::internalError("Unexpected prepare task")), );
     reference = context->getDataStorage()->getDataHandler(prepareTask->getReferenceEntityRef());
+    referenceUrl = prepareTask->getPreparedReferenceUrl();
 }
 
 Task * AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) const {
@@ -178,7 +179,7 @@ Task * AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) c
         }
     }
     int readIdentity = getValue<int>(IDENTITY_ID);
-    return new AlignToReferenceBlastTask(getValue<QString>(REF_ATTR_ID), getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readIdentity, context->getDataStorage());
+    return new AlignToReferenceBlastTask(referenceUrl, getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readIdentity, context->getDataStorage());
 }
 
 QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) const {
