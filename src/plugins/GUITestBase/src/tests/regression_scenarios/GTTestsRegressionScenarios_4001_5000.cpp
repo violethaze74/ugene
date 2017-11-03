@@ -1202,7 +1202,7 @@ GUI_TEST_CLASS_DEFINITION(test_4118){
     GTLogTracer l;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     QMap<QString, QVariant> parameters;
-    parameters.insert("FASTQ files", QVariant(QDir().absoluteFilePath(testDir + "_common_data/NGS_tutorials/RNA-Seq_Analysis/Prepare_Raw_Data/lymph.fastq")));
+    parameters.insert("FASTQ files", QVariant(QDir().absoluteFilePath(testDir + "_common_data/fastq/lymph.fastq")));
     parameters.insert("Adapters", QVariant(""));
 
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Raw RNA-Seq Data Processing", QStringList()<<"Skip mapping"<<"Single-end"));
