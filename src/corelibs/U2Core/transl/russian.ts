@@ -1014,7 +1014,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="399"/>
         <source>5. The Invertebrate Mitochondrial Code</source>
-        <translation>5. Митохондриальный код позвоночных</translation>
+        <translation>5. Митохондриальный код беспозвоночных</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="409"/>
