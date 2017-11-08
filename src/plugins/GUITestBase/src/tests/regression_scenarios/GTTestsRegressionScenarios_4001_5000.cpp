@@ -1210,7 +1210,7 @@ GUI_TEST_CLASS_DEFINITION(test_4118){
     GTUtilsWorkflowDesigner::addSample(os, "Raw RNA-Seq data processing");
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
+    //GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);
 
 }
