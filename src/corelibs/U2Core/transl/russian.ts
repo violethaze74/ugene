@@ -2221,7 +2221,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Не удалось вставить пробелы в выравнивание!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1104"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1111"/>
         <source>Failed to crop an alignment!</source>
         <translation>Не удалось обрезать выравнивание!</translation>
     </message>
