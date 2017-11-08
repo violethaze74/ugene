@@ -1,6 +1,5 @@
 include (CoreTests.pri)
 
-# Input
 HEADERS += src/AnnotationTableObjectTest.h \
            src/AsnParserTests.h \
            src/BinaryFindOpenCLTests.h \
@@ -17,6 +16,7 @@ HEADERS += src/AnnotationTableObjectTest.h \
            src/FormatDetectionTests.h \
            src/GUrlTests.h \
            src/LoadRemoteDocumentTests.h \
+           src/McaObjectTests.h \
            src/PWMatrixTests.h \
            src/PhyTreeObjectTests.h \
            src/SMatrixTests.h \
@@ -25,6 +25,7 @@ HEADERS += src/AnnotationTableObjectTest.h \
            src/TaskTests.h \
            src/TextObjectTests.h \
            src/UtilTestActions.h
+
 SOURCES += src/AnnotationTableObjectTest.cpp \
            src/AsnParserTests.cpp \
            src/BinaryFindOpenCLTests.cpp \
@@ -41,6 +42,7 @@ SOURCES += src/AnnotationTableObjectTest.cpp \
            src/FormatDetectionTests.cpp \
            src/GUrlTests.cpp \
            src/LoadRemoteDocumentTests.cpp \
+           src/McaObjectTests.cpp \
            src/PWMatrixTests.cpp \
            src/PhyTreeObjectTests.cpp \
            src/SMatrixTests.cpp \

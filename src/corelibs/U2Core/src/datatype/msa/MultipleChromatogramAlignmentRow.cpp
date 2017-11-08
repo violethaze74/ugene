@@ -377,7 +377,8 @@ bool MultipleChromatogramAlignmentRowData::isRowContentEqual(const MultipleChrom
 }
 
 bool MultipleChromatogramAlignmentRowData::isRowContentEqual(const MultipleChromatogramAlignmentRowData &row) const {
-    if (MatchExactly == DNASequenceUtils::compare(sequence, row.getSequence())) {
+    if (MatchExactly == DNASequenceUtils::compare(sequence, row.getSequence())
+        && ChromatogramUtils::areEqual(chromatogram, row.chromatogram)) {
         if (sequence.length() == 0) {
             return true;
         } else {
