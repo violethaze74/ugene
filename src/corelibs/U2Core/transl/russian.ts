@@ -1032,7 +1032,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="399"/>
         <source>5. The Invertebrate Mitochondrial Code</source>
-        <translation>5. Митохондриальный код позвоночных</translation>
+        <translation>5. Митохондриальный код беспозвоночных</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="409"/>
@@ -2221,7 +2221,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Не удалось вставить пробелы в выравнивание!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1104"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1111"/>
         <source>Failed to crop an alignment!</source>
         <translation>Не удалось обрезать выравнивание!</translation>
     </message>

@@ -4987,18 +4987,6 @@ Directory Path: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to create output folder for result assembly.
-Directory Path: %1</source>
-        <translation type="obsolete">Unable to create output folder for result assembly.
-Directory Path: %1</translation>
-    </message>
-    <message>
-        <source>Unable to create output folder for result assembly.
-Folder Path: %1</source>
-        <translation type="vanished">Unable to create output folder for result assembly.
-Folder Path: %1</translation>
-    </message>
-    <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="332"/>
         <source>Select output folder</source>
         <translation>Select output folder</translation>
@@ -5923,13 +5911,13 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     </message>
     <message>
         <location filename="../src/ov_msa/MaEditorNameList.cpp" line="131"/>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="579"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="584"/>
         <source>MSA Editor UI is NULL</source>
         <translation>MSA Editor UI is NULL</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MaEditorNameList.cpp" line="133"/>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="581"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="586"/>
         <source>MSA Editor sequence area is NULL</source>
         <translation>MSA Editor sequence area is NULL</translation>
     </message>
@@ -5944,7 +5932,7 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation>Invalid sequence index</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="844"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="849"/>
         <source>Rename Read</source>
         <translation>Rename Read</translation>
     </message>
@@ -5953,7 +5941,7 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation type="vanished">Rename</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="845"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="850"/>
         <source>New sequence name:</source>
         <translation>New sequence name:</translation>
     </message>
@@ -5961,12 +5949,12 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MaEditorSequenceArea</name>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="96"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="99"/>
         <source>Replace selected character</source>
         <translation>Replace selected character</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="103"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="106"/>
         <source>Fill selection with gaps</source>
         <translation>Fill selection with gaps</translation>
     </message>
@@ -5991,7 +5979,7 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation type="vanished">Last visible sequence is out of range</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="163"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="166"/>
         <source>Invalid collapsible item model!</source>
         <translation>Invalid collapsible item model!</translation>
     </message>
@@ -6000,44 +5988,44 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation type="vanished">Sequence is out of range: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="464"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="623"/>
         <source>Alignment object is not available</source>
         <translation>Alignment object is not available</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="783"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="946"/>
         <source>No reference sequence selected</source>
         <translation>No reference sequence selected</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="784"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="947"/>
         <source>Reference sequence for current highlighting scheme is not selected. Use context menu or Highlighting tab on Options panel to select it</source>
         <translation>Reference sequence for current highlighting scheme is not selected. Use context menu or Highlighting tab on Options panel to select it</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="800"/>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1401"/>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1482"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="963"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1577"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1658"/>
         <source>Unknown alphabet</source>
         <translation>Unknown alphabet</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="844"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1008"/>
         <source>Cursor position is out of range</source>
         <translation>Cursor position is out of range</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1212"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1388"/>
         <source>Top left corner of the selection has incorrect coords</source>
         <translation>Top left corner of the selection has incorrect coords</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1214"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1390"/>
         <source>Bottom right corner of the selection has incorrect coords</source>
         <translation>Bottom right corner of the selection has incorrect coords</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1577"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1753"/>
         <source>It is not possible to insert the character into the alignment. Please use a character from set A-Z (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</source>
         <translation>It is not possible to insert the character into the alignment. Please use a character from set A-Z (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</translation>
     </message>
@@ -6058,7 +6046,7 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation type="vanished">startSeq is too big</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="91"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="94"/>
         <source>Use dots</source>
         <translation>Use dots</translation>
     </message>
@@ -6158,16 +6146,6 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="271"/>
         <source>Paste</source>
         <translation>Paste</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="282"/>
-        <source>Undo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="286"/>
-        <source>Redo</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6531,7 +6509,7 @@ Simple overview is unavailable.</translation>
         <translation>Insert gap</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="458"/>
+        <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="459"/>
         <source>It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</source>
         <translation>It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</translation>
     </message>

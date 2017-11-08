@@ -2218,7 +2218,7 @@ The session database file is removed after closing of UGENE.</translation>
         <translation>Failed to insert gaps into an alignment!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1104"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1111"/>
         <source>Failed to crop an alignment!</source>
         <translation>Failed to crop an alignment!</translation>
     </message>

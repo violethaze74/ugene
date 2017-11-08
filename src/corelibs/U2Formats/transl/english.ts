@@ -2803,7 +2803,7 @@
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="993"/>
-        <source>Unexpected row count! Query: &apos;%1&apos;, rows: %2</source>
+        <source>Unexpected row count. Query: &apos;%1&apos;, rows: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

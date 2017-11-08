@@ -1913,7 +1913,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
             GTUtilsDialog::waitForDialog(os, d);
 
             GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
+			GTGlobals::sleep();
             //4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
@@ -1931,30 +1931,30 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence_1");
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //6. Push "Jump to next variation" button
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
 
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence_2");
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //7. Push "Jump to next variation" from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next variation_3"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next variation"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence_4");
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //8. Push "Jump to next variation" from main menu
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to next variation");
 
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence_5");
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
