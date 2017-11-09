@@ -32,6 +32,7 @@
 #include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
@@ -78,23 +79,21 @@ void BlastPlusSupportCommonTask::prepare(){
     //Add new subdir for temporary files
     //Folder name is ExternalToolName + CurrentDate + CurrentTime
 
-    QString tmpDirName = "BlastPlus_"+QString::number(this->getTaskId())+"_"+
-                         QDate::currentDate().toString("dd.MM.yyyy")+"_"+
-                         QTime::currentTime().toString("hh.mm.ss.zzz")+"_"+
-                         QString::number(QCoreApplication::applicationPid())+"/";
-    //Check and remove subdir for temporary files
-    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BLASTPLUS_TMP_DIR) + "/" + tmpDirName;
+    QString tmpDirPath = getAcceptableTempDir();
+    CHECK_EXT(!tmpDirPath.isEmpty(), setError(tr("The task uses a temporary folder to process the data. The folder path is required not to have spaces. "
+        "Please set up an appropriate path for the \"Temporary files\" parameter on the \"Directories\" tab of the UGENE Application Settings.")), );
+
     QDir tmpDir(tmpDirPath);
-    if(tmpDir.exists()){
-        foreach(const QString& file, tmpDir.entryList()){
+    if(tmpDir.exists()) {
+        foreach(const QString& file, tmpDir.entryList()) {
             tmpDir.remove(file);
         }
-        if(!tmpDir.rmdir(tmpDir.absolutePath())){
+        if (!tmpDir.rmdir(tmpDir.absolutePath())) {
             stateInfo.setError(tr("Subfolder for temporary files exists. Can not remove this folder."));
             return;
         }
     }
-    if(!tmpDir.mkpath(tmpDirPath)){
+    if(!tmpDir.mkpath(tmpDirPath)) {
         stateInfo.setError(tr("Can not create folder for temporary files."));
         return;
     }
@@ -130,6 +129,19 @@ void BlastPlusSupportCommonTask::prepare(){
     saveTemporaryDocumentTask = new SaveDocumentTask(tmpDoc, AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE), url);
     saveTemporaryDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(saveTemporaryDocumentTask);
+}
+
+QString BlastPlusSupportCommonTask::getAcceptableTempDir() const {
+    QString tmpDirName = "BlastPlus_" + QString::number(this->getTaskId()) + "_" +
+        QDate::currentDate().toString("dd.MM.yyyy") + "_" +
+        QTime::currentTime().toString("hh.mm.ss.zzz") + "_" +
+        QString::number(QCoreApplication::applicationPid()) + "/";
+
+    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BLASTPLUS_TMP_DIR);
+    if (!GUrlUtils::containSpaces(tmpDirPath)) {
+        return tmpDirPath + "/" + tmpDirName;
+    }
+    return QString();
 }
 
 QList<Task*> BlastPlusSupportCommonTask::onSubTaskFinished(Task* subTask) {
