@@ -70,6 +70,10 @@ GUrl GUrlUtils::ensureFileExt(const GUrl& url, const QStringList& typeExt) {
     return GUrl(url.getURLString() + "."  + typeExt.first(), url.getType());
 }
 
+bool GUrlUtils::containSpaces(const QString &string) {
+    return string.contains(QRegExp("\\s"));
+}
+
 GUrl GUrlUtils::changeFileExt(const GUrl &url, const DocumentFormatId &oldFormatId, const DocumentFormatId &newFormatId) {
     CHECK(url.isLocalFile(), GUrl());
     DocumentFormatRegistry *dfRegistry = AppContext::getDocumentFormatRegistry();
