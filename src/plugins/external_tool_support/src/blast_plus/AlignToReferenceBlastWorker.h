@@ -50,9 +50,8 @@ public:
                               DbiDataStorage *storage);
     QString getResultUrl() const;
     SharedDbiDataHandler getAnnotations() const;
-
-    QMap<QString, bool> getAcceptedReads() const;
-    QStringList getDiscardedReads() const;
+    QList<QPair<QString, bool> > getAcceptedReads() const;
+    QList<QPair<QString, int> > getDiscardedReads() const;
 
 private:
     void prepare();
