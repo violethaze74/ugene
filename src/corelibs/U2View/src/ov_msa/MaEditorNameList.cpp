@@ -434,7 +434,7 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
                 if (e->y() < selectionStartPoint.y()) {
                     startSelectingRowNumber = 0;
                 } else {
-                    startSelectingRowNumber = ui->getEditor()->getNumSequences() - 1;
+                    startSelectingRowNumber = seqArea->getNumDisplayableSequences() - 1;
                 }
             }
             rubberBand->setGeometry(QRect(selectionStartPoint, QSize()));
@@ -555,8 +555,8 @@ void MaEditorNameList::updateSelection(int newSeq) {
     CHECK(ui->getSequenceArea()->isSeqInRange(newSeq) || ui->getSequenceArea()->isSeqInRange(curRowNumber), );
 
     int start = qMin(curRowNumber, newSeq);
-    int count = qAbs(newSeq - curRowNumber) + 1;
-    setSelection(start, count);
+    int end = qMax(curRowNumber, newSeq);
+    setSelection(start, end - start + 1);
     int height = ui->getSequenceArea()->height();
     ui->getScrollController()->scrollToRowByNumber(newSeq, height);
 }
