@@ -21,6 +21,6 @@ setup(  name =          'u2py_internals',
         license =       '../../../../../installer/source/LICENSE.txt',
         author =        'Ivan Protsyuk',
         author_email =  'iprotsyuk@unipro.ru',
-        url =           'http://ugene.unipro.ru/download.html',
+        url =           'http://ugene.net/download.html',
         ext_modules =   [ module ]
         )
