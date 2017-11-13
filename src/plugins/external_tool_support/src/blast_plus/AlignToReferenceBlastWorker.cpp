@@ -186,7 +186,7 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) c
     AlignToReferenceBlastTask *alignTask = qobject_cast<AlignToReferenceBlastTask*>(task);
     CHECK_EXT(NULL != alignTask, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
 
-    const QList<QPair<QString, bool> > acceptedReads = alignTask->getAcceptedReads();
+    const QList<QPair<QString, QPair<int, bool> > > acceptedReads = alignTask->getAcceptedReads();
     const QList<QPair<QString, int> > discardedReads = alignTask->getDiscardedReads();
 
     algoLog.info(QString("Reads discarded by the mapper: %1").arg(discardedReads.count()));
@@ -195,9 +195,9 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) c
         algoLog.details(discardedPair.first);
     }
     algoLog.info(QString("Reads accepted by the mapper: %1").arg(acceptedReads.count()));
-    QPair<QString, bool> pair;
+    QPair<QString, QPair<int, bool> > pair;
     foreach(pair, acceptedReads) {
-        algoLog.details((pair.second ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + pair.first);
+        algoLog.details((pair.second.second ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + pair.first);
     }
     algoLog.info(QString("Total reads processed by the mapper: %1").arg(acceptedReads.count() + discardedReads.count()));
 
@@ -299,25 +299,38 @@ QString AlignToReferenceBlastTask::generateReport() const {
     QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
     CHECK(NULL != refObject, "");
 
-    const QList<QPair<QString, bool> > acceptedReads = getAcceptedReads();
+    const QList<QPair<QString, QPair<int, bool> > > acceptedReads = getAcceptedReads();
     const QList<QPair<QString, int> > filtredReads = getDiscardedReads();
+    const int sizeOfArrow = 17;
+    const int widthOfChar = 7;
+
+    int maxSize = 0;
+    QPair<QString, QPair<int, bool> > acceptedPair;
+    foreach(acceptedPair, acceptedReads) {
+        maxSize = qMax(acceptedPair.first.size(), maxSize);
+    }
+    QPair<QString, int> filtredPair;
+    foreach(filtredPair, filtredReads) {
+        maxSize = qMax(filtredPair.first.size(), maxSize);
+    }
+    maxSize *= widthOfChar;
 
     result += "<br><table><tr><td><b>" + tr("Details") + "</b></td></tr></table>\n";
     result += "<u>" + tr("Reference sequence:") + QString("</u> %1<br>").arg(refObject->getSequenceName());
     result += "<u>" + tr("Aligned reads (%1):").arg(acceptedReads.size()) + "</u>";
     result += "<table>";
-    QPair<QString, bool> acceptedPair;
     foreach(acceptedPair, acceptedReads) {
-        const QString read = (acceptedPair.second ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + acceptedPair.first + "&nbsp; &nbsp;";
-        result += "<tr><td width=50>" + tr("") + "</td><td>" + read + "</td></tr>";
+        const QString read = (acceptedPair.second.second ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + acceptedPair.first + "&nbsp; &nbsp;";
+        const QString readIdentity = "identity&nbsp;&nbsp;" + QString::number(acceptedPair.second.first) + "%";
+        result += "<tr><td width=50>" + tr("") + QString("</td><td width=%1 nowrap>").arg(maxSize + sizeOfArrow) + read + "</td><td>" + readIdentity + "</td></tr>";
     }
     result += "</table>";
     if (!filtredReads.isEmpty()) {
         result += "<br><u>" + tr("Filtered by low identity (%1):").arg(filtredReads.size()) + "</u>";
         result += "<table>";
-        QPair<QString, int> filtredPair;
         foreach(filtredPair, filtredReads) {
-            result += "<tr><td width=50></td><td width=300 nowrap>" + filtredPair.first + "&nbsp; &nbsp;" + QString::number(filtredPair.second) + "%&nbsp;&nbsp;identity</td></tr>";
+            const QString readIdentity = "identity&nbsp;&nbsp;" + QString::number(filtredPair.second) + "%";
+            result += QString("<tr><td width=67></td><td width=%1 nowrap>").arg(maxSize) + filtredPair.first + "&nbsp; &nbsp;" + "</td><td>" + readIdentity + "</td></tr>";
         }
         result += "</table>";
     }
@@ -335,12 +348,13 @@ SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
     return composeSubTask->getAnnotations();
 }
 
-QList<QPair<QString, bool> > AlignToReferenceBlastTask::getAcceptedReads() const {
-    QList<QPair<QString, bool> > acceptedReads;
+QList<QPair<QString, QPair<int, bool> > > AlignToReferenceBlastTask::getAcceptedReads() const {
+    QList<QPair<QString, QPair<int, bool> > > acceptedReads;
     CHECK(NULL != blastTask, acceptedReads);
     foreach (BlastAndSwReadTask *subTask, blastTask->getBlastSubtasks()) {
         if (subTask->getReadIdentity() >= minIdentityPercent) {
-            acceptedReads.append((QPair<QString, bool>(subTask->getReadName(), subTask->isComplement())));
+            QPair<int, bool> pair(subTask->getReadIdentity(), subTask->isComplement());
+            acceptedReads.append((QPair<QString, QPair<int, bool> >(subTask->getReadName(), pair)));
         }
     }
     return acceptedReads;
