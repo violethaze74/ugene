@@ -46,10 +46,12 @@ BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
                                      const QList<SharedDbiDataHandler> &reads,
                                      const SharedDbiDataHandler &reference,
                                      const int minIdentityPercent,
+                                     const QMap<SharedDbiDataHandler, QString> &readsNames,
                                      DbiDataStorage *storage)
     : Task(tr("Align reads with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
       dbPath(dbPath),
       reads(reads),
+      readsNames(readsNames),
       reference(reference),
       minIdentityPercent(minIdentityPercent),
       storage(storage)
@@ -59,7 +61,7 @@ BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
 
 void BlastReadsSubTask::prepare() {
     foreach (const SharedDbiDataHandler &read, reads) {
-        BlastAndSwReadTask* subTask = new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, storage);
+        BlastAndSwReadTask* subTask = new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, readsNames[read], storage);
         addSubTask(subTask);
 
         blastSubTasks << subTask;
@@ -77,6 +79,7 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
                                        const SharedDbiDataHandler &read,
                                        const SharedDbiDataHandler &reference,
                                        const int minIdentityPercent,
+                                       const QString &readName,
                                        DbiDataStorage *storage)
     : Task(tr("Align one read with BLAST & SW task"), TaskFlags_FOSE_COSC),
       dbPath(dbPath),
@@ -88,6 +91,7 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
       readShift(0),
       storage(storage),
       blastTask(NULL),
+      readName(readName),
       complement(false),
       skipped(false)
 {
@@ -115,7 +119,9 @@ void BlastAndSwReadTask::prepare() {
     QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
     CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), );
 
-    initialReadName = readObject->getSequenceName();
+    if (readName.isEmpty()) {
+        readName = readObject->getSequenceName();
+    }
 
     settings.querySequence = readObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
@@ -198,7 +204,7 @@ bool BlastAndSwReadTask::isReadAligned() const {
 }
 
 QString BlastAndSwReadTask::getReadName() const {
-    return initialReadName;
+    return readName;
 }
 
 MultipleSequenceAlignment BlastAndSwReadTask::getMAlignment() {

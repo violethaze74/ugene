@@ -35,8 +35,8 @@ workflow "Trim and map Sanger reads"{
     }
 
     .actor-bindings {
-        read-sequence.out-sequence->SequenceQualityTrim.in-sequence
         SequenceQualityTrim.out-sequence->align-to-reference.in-sequence
+        read-sequence.out-sequence->SequenceQualityTrim.in-sequence
     }
 
     read-sequence.sequence->SequenceQualityTrim.in-sequence.sequence
@@ -65,24 +65,27 @@ workflow "Trim and map Sanger reads"{
             align-to-reference.result-url {
                 alias:result-url;
             }
+            align-to-reference.row-naming-policy {
+                alias:row-naming-policy;
+            }
         }
         visual {
             SequenceQualityTrim {
-                pos:"-705 -555";
+                pos:"-675 -525";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-sequence.angle:180;
                 out-sequence.angle:360;
             }
             align-to-reference {
-                pos:"-405 -540";
+                pos:"-375 -510";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-sequence.angle:180;
                 out.angle:360;
             }
             read-sequence {
-                pos:"-960 -540";
+                pos:"-930 -510";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 out-sequence.angle:360;
