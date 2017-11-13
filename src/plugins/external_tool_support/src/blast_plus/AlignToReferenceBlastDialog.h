@@ -42,13 +42,21 @@ class AlignToReferenceBlastCmdlineTask : public Task {
 public:
     class Settings {
     public:
+        enum RowNaming {
+            SequenceName,
+            FileName
+        };
+
         Settings();
+
+        QString getRowNamingPolicyString() const;
 
         QString referenceUrl;
         QStringList readUrls;
         int minIdentity;
         int minLength;
         int qualityThreshold;
+        RowNaming rowNaming;
         QString outAlignment;
         bool addResultToProject;
     };
@@ -77,6 +85,7 @@ private:
     static const QString MIN_IDENTITY_ARG;
     static const QString REF_ARG;
     static const QString RESULT_ALIGNMENT_ARG;
+    static const QString ROW_NAMING_ARG;
 };
 
 class AlignToReferenceBlastDialog : public QDialog, public Ui_AlignToReferenceBlastDialog {
