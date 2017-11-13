@@ -167,6 +167,7 @@ void AlignToReferenceBlastWorker::onPrepared(Task *task, U2OpStatus &os) {
     PrepareReferenceSequenceTask *prepareTask = qobject_cast<PrepareReferenceSequenceTask *>(task);
     CHECK_EXT(NULL != prepareTask, os.setError(L10N::internalError("Unexpected prepare task")), );
     reference = context->getDataStorage()->getDataHandler(prepareTask->getReferenceEntityRef());
+    referenceUrl = prepareTask->getPreparedReferenceUrl();
 }
 
 Task * AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) const {
@@ -178,23 +179,25 @@ Task * AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) c
         }
     }
     int readIdentity = getValue<int>(IDENTITY_ID);
-    return new AlignToReferenceBlastTask(getValue<QString>(REF_ATTR_ID), getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readIdentity, context->getDataStorage());
+    return new AlignToReferenceBlastTask(referenceUrl, getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readIdentity, context->getDataStorage());
 }
 
 QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) const {
     AlignToReferenceBlastTask *alignTask = qobject_cast<AlignToReferenceBlastTask*>(task);
     CHECK_EXT(NULL != alignTask, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
 
-    const QMap<QString, bool> acceptedReads = alignTask->getAcceptedReads();
-    const QStringList discardedReads = alignTask->getDiscardedReads();
+    const QList<QPair<QString, bool> > acceptedReads = alignTask->getAcceptedReads();
+    const QList<QPair<QString, int> > discardedReads = alignTask->getDiscardedReads();
 
     algoLog.info(QString("Reads discarded by the mapper: %1").arg(discardedReads.count()));
-    foreach (const QString &readName, discardedReads) {
-        algoLog.details(readName);
+    QPair<QString, int> discardedPair;
+    foreach(discardedPair, discardedReads) {
+        algoLog.details(discardedPair.first);
     }
     algoLog.info(QString("Reads accepted by the mapper: %1").arg(acceptedReads.count()));
-    foreach (const QString &readName, acceptedReads.keys()) {
-        algoLog.details((acceptedReads[readName] ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + readName);
+    QPair<QString, bool> pair;
+    foreach(pair, acceptedReads) {
+        algoLog.details((pair.second ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + pair.first);
     }
     algoLog.info(QString("Total reads processed by the mapper: %1").arg(acceptedReads.count() + discardedReads.count()));
 
@@ -296,24 +299,25 @@ QString AlignToReferenceBlastTask::generateReport() const {
     QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
     CHECK(NULL != refObject, "");
 
-    const QMap<QString, bool> acceptedReads = getAcceptedReads();
-    const QStringList filtredReads = getDiscardedReads();
+    const QList<QPair<QString, bool> > acceptedReads = getAcceptedReads();
+    const QList<QPair<QString, int> > filtredReads = getDiscardedReads();
 
     result += "<br><table><tr><td><b>" + tr("Details") + "</b></td></tr></table>\n";
     result += "<u>" + tr("Reference sequence:") + QString("</u> %1<br>").arg(refObject->getSequenceName());
     result += "<u>" + tr("Aligned reads (%1):").arg(acceptedReads.size()) + "</u>";
     result += "<table>";
-    foreach (const QString &readName, acceptedReads.keys()) {
-        const QString read = (acceptedReads[readName] ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + readName;
+    QPair<QString, bool> acceptedPair;
+    foreach(acceptedPair, acceptedReads) {
+        const QString read = (acceptedPair.second ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + acceptedPair.first + "&nbsp; &nbsp;";
         result += "<tr><td width=50>" + tr("") + "</td><td>" + read + "</td></tr>";
     }
-
     result += "</table>";
     if (!filtredReads.isEmpty()) {
         result += "<br><u>" + tr("Filtered by low identity (%1):").arg(filtredReads.size()) + "</u>";
         result += "<table>";
-        foreach (const QString &readName, filtredReads) {
-            result += "<tr><td width=50></td><td width=300 nowrap>" + readName + "</td></tr>";
+        QPair<QString, int> filtredPair;
+        foreach(filtredPair, filtredReads) {
+            result += "<tr><td width=50></td><td width=300 nowrap>" + filtredPair.first + "&nbsp; &nbsp;" + QString::number(filtredPair.second) + "%&nbsp;&nbsp;identity</td></tr>";
         }
         result += "</table>";
     }
@@ -331,23 +335,23 @@ SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
     return composeSubTask->getAnnotations();
 }
 
-QMap<QString, bool> AlignToReferenceBlastTask::getAcceptedReads() const {
-    QMap<QString, bool> acceptedReads;
+QList<QPair<QString, bool> > AlignToReferenceBlastTask::getAcceptedReads() const {
+    QList<QPair<QString, bool> > acceptedReads;
     CHECK(NULL != blastTask, acceptedReads);
     foreach (BlastAndSwReadTask *subTask, blastTask->getBlastSubtasks()) {
         if (subTask->getReadIdentity() >= minIdentityPercent) {
-            acceptedReads.insert(subTask->getReadName(), subTask->isComplement());
+            acceptedReads.append((QPair<QString, bool>(subTask->getReadName(), subTask->isComplement())));
         }
     }
     return acceptedReads;
 }
 
-QStringList AlignToReferenceBlastTask::getDiscardedReads() const {
-    QStringList discardedReads;
+QList<QPair<QString, int> > AlignToReferenceBlastTask::getDiscardedReads() const {
+    QList<QPair<QString, int> > discardedReads;
     CHECK(NULL != blastTask, discardedReads);
     foreach (BlastAndSwReadTask* subTask, blastTask->getBlastSubtasks()) {
         if (subTask->getReadIdentity() < minIdentityPercent) {
-            discardedReads << subTask->getReadName();
+            discardedReads << QPair<QString, int>(subTask->getReadName(), subTask->getReadIdentity());
         }
     }
     return discardedReads;

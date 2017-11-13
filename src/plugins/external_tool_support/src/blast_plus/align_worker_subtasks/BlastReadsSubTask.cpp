@@ -24,7 +24,9 @@
 #include "blast_plus/BlastNPlusSupportTask.h"
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
+#include <U2Algorithm/BuiltInDistanceAlgorithms.h>
 #include <U2Algorithm/PairwiseAlignmentTask.h>
+#include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -78,7 +80,7 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
                                        const SharedDbiDataHandler &reference,
                                        const int minIdentityPercent,
                                        DbiDataStorage *storage)
-    : Task(tr("Align one read with BLAST & SW task"), TaskFlags_FOSE_COSC),
+    : Task(tr("Align one read with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
       dbPath(dbPath),
       read(read),
       reference(reference),
@@ -141,7 +143,8 @@ QList<Task*> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
         U2Region referenceRegion = getReferenceRegion(blastTask->getResultedAnnotations());
         if (referenceRegion.isEmpty()) {
             skipped = true;
-            taskLog.info(tr("%1 was skipped. Low identity.").arg(getReadName()));
+            readIdentity = 0;
+            taskLog.info(tr("%1 was skipped. No BLAST results.").arg(getReadName()));
             return result;
         }
         createAlignment(referenceRegion);
@@ -156,25 +159,40 @@ QList<Task*> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
         settings->setCustomValue("SW_scoringMatrix", "dna");
 
         result << factory->getTaskInstance(settings.take());
+    } else if (qobject_cast<AbstractAlignmentTask*>(subTask) != NULL) {
+        QScopedPointer<MultipleSequenceAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
+        CHECK_EXT(!msaObject.isNull(), setError(L10N::nullPointerError("MSA object for %1").arg(getReadName())), result);
+        int rowCount = msaObject->getNumRows();
+        CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), result);
+
+        referenceGaps = msaObject->getMsaRow(0)->getGapModel();
+        readGaps = msaObject->getMsaRow(1)->getGapModel();
+
+        if (offset > 0) {
+            shiftGaps(referenceGaps);
+            MsaRowUtils::addOffsetToGapModel(readGaps, offset);
+        }
+
+        msaObject->crop(msaObject->getRow(1)->getCoreRegion());
+        MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(BuiltInDistanceAlgorithms::SIMILARITY_ALGO);
+        CHECK_EXT(NULL != factory, setError("MSADistanceAlgorithmFactory is NULL"), result);
+        factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
+
+        MSADistanceAlgorithm* algo = factory->createAlgorithm(msaObject->getMsa());
+        CHECK_EXT(NULL != algo, setError("MSADistanceAlgorithm is NULL"), result);
+        result << algo;
+    } else if (qobject_cast<MSADistanceAlgorithm*>(subTask) != NULL){
+        MSADistanceAlgorithm* algo = qobject_cast<MSADistanceAlgorithm*>(subTask);
+        const MSADistanceMatrix& mtx = algo->getMatrix();
+
+        readIdentity = mtx.getSimilarity(0, 1, true);
+        if (readIdentity < minIdentityPercent) {
+            skipped = true;
+            taskLog.info(tr("%1 was skipped. Low identity: %2. Minimum identity was set to %3")
+                         .arg(getReadName()).arg(readIdentity).arg(minIdentityPercent));
+        }
     }
     return result;
-}
-
-void BlastAndSwReadTask::run() {
-    CHECK_OP(stateInfo, );
-    CHECK(!skipped, );
-
-    QScopedPointer<MultipleSequenceAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
-    CHECK_EXT(!msaObject.isNull(), setError(L10N::nullPointerError("MSA object for %1").arg(getReadName())), );
-    int rowCount = msaObject->getNumRows();
-    CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), );
-
-    referenceGaps = msaObject->getMsaRow(0)->getGapModel();
-    readGaps = msaObject->getMsaRow(1)->getGapModel();
-
-    CHECK(offset > 0, );
-    shiftGaps(referenceGaps);
-    MsaRowUtils::addOffsetToGapModel(readGaps, offset);
 }
 
 bool BlastAndSwReadTask::isComplement() const {
@@ -217,6 +235,7 @@ int BlastAndSwReadTask::getReadIdentity() const {
 }
 
 U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData> &blastAnnotations) {
+    CHECK(!blastAnnotations.isEmpty(), U2Region());
     U2Region refRegion;
     U2Region blastReadRegion;
     int maxIdentity = 0;
@@ -244,12 +263,7 @@ U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData
     }
     QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
     CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), U2Region());
-    qint64 readLen = readObject->getSequenceLength();
-
-    readIdentity = 100 * maxIdentity / readLen;
-    CHECK(readIdentity >= minIdentityPercent, U2Region());
-
-    qint64 undefinedLen = readLen - maxIdentity;
+    qint64 undefinedLen = readObject->getSequenceLength() - maxIdentity;
     readShift = undefinedLen - blastReadRegion.startPos;
 
     // extend ref region to the read
