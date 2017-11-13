@@ -103,14 +103,15 @@ QString OutputFilesWidget::createFileButton(const Monitor::FileInfo& info) const
     return QString(
         "<div class=\"file-button-ctn\">"
         "<div class=\"btn-group full-width file-btn-group\">"
-        "<button class=\"btn full-width long-text\" onclick=%1 onmouseover=\"this.title=agent.absolute('%2')\">%3</button>"
+        "<button class=\"btn full-width long-text\" id=\"%1\" onclick=%2 onmouseover=\"this.title=agent.absolute('%3')\">%4</button>"
             "<button class=\"btn dropdown-toggle\" data-toggle=\"dropdown\">"
                 "<span class=\"caret\"></span>"
             "</button>"
-            "%4"
+            "%5"
         "</div>"
         "</div>"
     )
+    .arg(info.actor)
     .arg(onClickAction(info))
     .arg(relative(info.url))
     .arg(fileName(info.url))
