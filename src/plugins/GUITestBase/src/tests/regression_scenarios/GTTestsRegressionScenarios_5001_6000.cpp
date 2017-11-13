@@ -3925,6 +3925,27 @@ GUI_TEST_CLASS_DEFINITION(test_5818_2) {
     GTUtilsProjectTreeView::checkItem(os, "BL060C3.ace.ugenedb");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5840) {
+    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+    QString fileName = "sanger_alignment.ugenedb";
+
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    //2. Select a read ""
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
+
+    //3. Select a document in the Project View and press the Delete key.
+    GTUtilsProjectTreeView::click(os, "Aligned reads");
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep(1000);
+
+    //Expected: The document has been deleted.
+    bool isExited = GTUtilsProjectTreeView::checkItem(os, "Aligned reads");
+    CHECK_SET_ERR(!isExited, "The document has not been deleted")
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
