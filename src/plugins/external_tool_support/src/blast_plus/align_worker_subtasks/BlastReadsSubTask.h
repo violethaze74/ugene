@@ -78,7 +78,6 @@ public:
 
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
-    void run();
 
     bool isComplement() const;
     const SharedDbiDataHandler& getRead() const;

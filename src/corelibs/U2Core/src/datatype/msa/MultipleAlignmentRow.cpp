@@ -78,6 +78,10 @@ bool MultipleAlignmentRowData::isTrailingOrLeadingGap(qint64 position) const {
     return false;
 }
 
+U2Region MultipleAlignmentRowData::getCoreRegion() const {
+    return U2Region(getCoreStart(), getCoreLength());
+}
+
 MultipleAlignmentRowData::~MultipleAlignmentRowData() {
 
 }
