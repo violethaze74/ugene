@@ -141,6 +141,8 @@ public:
     static QString fixFileName(const QString &fileName);
 
     static QString getSlashEndedPath(const QString &dirPath);
+
+    static bool containSpaces(const QString &string);
 };
 
 } //namespace
