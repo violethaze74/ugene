@@ -169,7 +169,7 @@ QString AlignToReferenceBlastCmdlineTask::generateReport() const {
     QRegExp readNameExtractor(".*\'(.*)\'.*");
     foreach (const QString &taskReport, trimReports.values()) {
         readNameExtractor.indexIn(taskReport);
-        resultReport += "<tr><td width=50></td><td width=300 nowrap>" + readNameExtractor.cap(1) + "</td></tr>";
+        resultReport += "<tr><td width=67></td><td width=300 nowrap>" + readNameExtractor.cap(1) + "</td></tr>";
     }
 
     if (trimReports.values().size() > 0) {
