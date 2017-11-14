@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QFontMetrics>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
@@ -329,18 +331,18 @@ QString AlignToReferenceBlastTask::generateReport() const {
     const QList<QPair<QString, QPair<int, bool> > > acceptedReads = getAcceptedReads();
     const QList<QPair<QString, int> > filtredReads = getDiscardedReads();
     const int sizeOfArrow = 17;
-    const int widthOfChar = 7;
+    const QFont font;
+    QFontMetrics metrix(font);
 
     int maxSize = 0;
     QPair<QString, QPair<int, bool> > acceptedPair;
     foreach(acceptedPair, acceptedReads) {
-        maxSize = qMax(acceptedPair.first.size(), maxSize);
+        maxSize = qMax(metrix.width(acceptedPair.first), maxSize);
     }
     QPair<QString, int> filtredPair;
     foreach(filtredPair, filtredReads) {
-        maxSize = qMax(filtredPair.first.size(), maxSize);
+        maxSize = qMax(metrix.width(filtredPair.first), maxSize);
     }
-    maxSize *= widthOfChar;
 
     result += "<br><table><tr><td><b>" + tr("Details") + "</b></td></tr></table>\n";
     result += "<u>" + tr("Reference sequence:") + QString("</u> %1<br>").arg(refObject->getSequenceName());
