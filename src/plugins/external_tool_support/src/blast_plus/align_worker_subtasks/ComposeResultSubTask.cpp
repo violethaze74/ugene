@@ -220,9 +220,6 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
 
     mcaObject->moveToThread(thread());
 
-    // remove gap columns
-    mcaObject->deleteColumnsWithGaps(stateInfo);
-
     annsObject->addAnnotations(anns);
     annotations = storage->getDataHandler(annsObject->getEntityRef());
 }
@@ -363,6 +360,9 @@ void ComposeResultSubTask::insertShiftedGapsIntoReference() {
         dnaSeq.seq.insert(gap.offset, QByteArray(gap.gap, U2Msa::GAP_CHAR));
     }
     referenceSequenceObject->setWholeSequence(dnaSeq);
+
+    // remove gap columns
+    mcaObject->deleteColumnsWithGaps(stateInfo);
 }
 
 void ComposeResultSubTask::insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps) {

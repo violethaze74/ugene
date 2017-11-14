@@ -48,7 +48,9 @@ using namespace HI;
 McaEditor *GTUtilsMcaEditor::getEditor(GUITestOpStatus &os) {
     McaEditorWgt *editorUi = getEditorUi(os);
     CHECK_OP(os, NULL);
-    return editorUi->getEditor();
+    McaEditor *editor = editorUi->getEditor();
+    GT_CHECK_RESULT(NULL != editor, "MCA Editor is NULL", NULL);
+    return editor;
 }
 #undef GT_METHOD_NAME
 
@@ -56,7 +58,9 @@ McaEditor *GTUtilsMcaEditor::getEditor(GUITestOpStatus &os) {
 McaEditorWgt *GTUtilsMcaEditor::getEditorUi(GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
-    return activeWindow->findChild<McaEditorWgt *>();
+    McaEditorWgt *mcaEditorWgt = activeWindow->findChild<McaEditorWgt *>();
+    GT_CHECK_RESULT(NULL != mcaEditorWgt, "MCA Editor widget is NULL", NULL);
+    return mcaEditorWgt;
 }
 #undef GT_METHOD_NAME
 

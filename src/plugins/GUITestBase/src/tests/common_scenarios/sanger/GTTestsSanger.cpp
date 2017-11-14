@@ -200,7 +200,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
             }
             AlignToReferenceBlastDialogFiller::setReads(os, readsUrls, dialog);
 
-            AlignToReferenceBlastDialogFiller::setDestination(os, sandBoxDir + "sanger_test_0005_1.ubgenedb", dialog);
+            AlignToReferenceBlastDialogFiller::setDestination(os, sandBoxDir + "sanger_test_0005_1.ugenedb", dialog);
 
 //    3. Click the 'Map' button.
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -310,12 +310,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005_3) {
             GTWidget::clickWindowTitle(os, wizard);
 
 //    2. Fill it with any valid data until the 'Mapping settings' page.
-            GTUtilsWizard::setParameter(os, "Reference", testDir + "_common_data/sanger/reference.gb");
+            GTUtilsWizard::setParameter(os, "Reference", QFileInfo(testDir + "_common_data/sanger/reference.gb").absoluteFilePath());
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
             QStringList readsUrls;
             for (int i = 1; i <= 20; i++) {
-                readsUrls << QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+                readsUrls << QFileInfo(QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'))).absoluteFilePath();
             }
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << readsUrls);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -329,7 +329,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_3) {
 
 //    3. Fill the wizard till the end. Run the workflow.
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-            GTUtilsWizard::setParameter(os, "Mapped reads file", sandBoxDir + "sanger_test_0005_3.ugenedb");
+            GTUtilsWizard::setParameter(os, "Mapped reads file", QFileInfo(sandBoxDir + "sanger_test_0005_3.ugenedb").absoluteFilePath());
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
@@ -378,12 +378,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
             GTWidget::clickWindowTitle(os, wizard);
 
 //    2. Fill it with any valid data until the 'Mapping settings' page.
-            GTUtilsWizard::setParameter(os, "Reference", testDir + "_common_data/sanger/reference.gb");
+            GTUtilsWizard::setParameter(os, "Reference", QFileInfo(testDir + "_common_data/sanger/reference.gb").absoluteFilePath());
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
             QStringList readsUrls;
             for (int i = 1; i <= 20; i++) {
-                readsUrls << QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+                readsUrls << QFileInfo(QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'))).absoluteFilePath();
             }
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << readsUrls);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -401,7 +401,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
 
 //    4. Fill the wizard till the end. Run the workflow.
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-            GTUtilsWizard::setParameter(os, "Mapped reads file", sandBoxDir + "sanger_test_0005_4.ugenedb");
+            GTUtilsWizard::setParameter(os, "Mapped reads file", QFileInfo(sandBoxDir + "sanger_test_0005_4.ugenedb").absoluteFilePath());
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };

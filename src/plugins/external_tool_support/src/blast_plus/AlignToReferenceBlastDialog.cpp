@@ -188,14 +188,14 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
 
         config.command = "--task=" + ALIGN_TO_REF_CMDLINE;
         QString argString = "--%1=\"%2\"";
-        config.arguments << argString.arg(REF_ARG).arg(settings.referenceUrl);
+        config.arguments << argString.arg(REF_ARG).arg(QFileInfo(settings.referenceUrl).absoluteFilePath());
         config.arguments << argString.arg(READS_ARG).arg(settings.readUrls.join(";"));
         config.arguments << argString.arg(MIN_IDENTITY_ARG).arg(settings.minIdentity);
         config.arguments << argString.arg(ROW_NAMING_ARG).arg(settings.getRowNamingPolicyString());
         config.arguments << argString.arg(MIN_LEN_ARG).arg(settings.minLength);
         config.arguments << argString.arg(THRESHOLD_ARG).arg(settings.qualityThreshold);
         config.arguments << argString.arg(TRIM_ARG).arg(true);
-        config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(settings.outAlignment);
+        config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(QFileInfo(settings.outAlignment).absoluteFilePath());
 
         config.reportFile = reportFile.fileName();
         config.emptyOutputPossible = true;

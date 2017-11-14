@@ -76,11 +76,10 @@ void GTUtilsDashboard::clickOutputFile(GUITestOpStatus &os, const QString &outpu
 
         if (buttonText.endsWith("...")) {
             buttonText.chop(QString("...").length());
-        }
-
-        if (outputFileName.startsWith(buttonText)) {
-            click(os, outputFilesButton);
-            return;
+            if (!buttonText.isEmpty() && outputFileName.startsWith(buttonText)) {
+                click(os, outputFilesButton);
+                return;
+            }
         }
     }
 
