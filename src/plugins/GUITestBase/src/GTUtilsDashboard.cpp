@@ -66,11 +66,21 @@ QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus &os, const QStr
 void GTUtilsDashboard::clickOutputFile(GUITestOpStatus &os, const QString &outputFileName, const QString &producerName) {
     const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsById(os, getDashboard(os), producerName, "button");
     foreach (const HIWebElement &outputFilesButton, outputFilesButtons) {
-        if (outputFilesButton.toPlainText() == outputFileName) {
+        QString buttonText = outputFilesButton.toPlainText();
+        if (buttonText == outputFileName) {
             click(os, outputFilesButton);
             return;
         }
+
+        if (buttonText.endsWith("...")) {
+            buttonText.chop(QString("...").length());
+            if (!buttonText.isEmpty() && outputFileName.startsWith(buttonText)) {
+                click(os, outputFilesButton);
+                return;
+            }
+        }
     }
+
     GT_CHECK(false, QString("The output file with name '%1' produced by '%2' not found").arg(outputFileName).arg(producerName));
 }
 #undef GT_METHOD_NAME

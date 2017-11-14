@@ -45,6 +45,14 @@ QString GUrlUtils::getUncompressedExtension(const GUrl& url) {
     return ext;
 }
 
+QString GUrlUtils::getUncompressedCompleteBaseName(const GUrl &url) {
+    QString filePath = url.getURLString();
+    if ("gz" == url.lastFileSuffix())  {
+        filePath.chop(QString(".gz").length());
+    }
+    return QFileInfo(filePath).completeBaseName();
+}
+
 GUrl GUrlUtils::ensureFileExt(const GUrl& url, const QStringList& typeExt) {
     SAFE_POINT(!typeExt.isEmpty(), "Type extension is empty!", GUrl());
 
