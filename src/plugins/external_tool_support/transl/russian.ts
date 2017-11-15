@@ -11,12 +11,12 @@
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="26"/>
         <source>Reference</source>
-        <translation>Референс</translation>
+        <translation>Референсная последовательность</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="14"/>
         <source>Map Sanger Reads to Reference</source>
-        <translation>Выравнивание Сэнгеровских ридов на референс</translation>
+        <translation>Выравнивание данных секвенирования по Сэнгеру</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="38"/>
@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="54"/>
         <source>Reads</source>
-        <translation>Риды</translation>
+        <translation>Прочтения</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="79"/>
@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="104"/>
         <source>Trimming quality threshold</source>
-        <translation>Порог качества отсечения</translation>
+        <translation>Порог качества для обрезания концов</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="152"/>
@@ -66,8 +66,8 @@
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="134"/>
-        <source>Mapping min identity</source>
-        <translation>Минимальная идентичность выравнивания</translation>
+        <source>Mapping min similarity</source>
+        <translation>Минимальное сходство при выравнивании</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="144"/>
@@ -3492,101 +3492,106 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastPlusSupportCommonTask</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="69"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="70"/>
         <source>A problem occurred during doing BLAST+. The sequence is no more available.</source>
         <translation>A problem occurred during doing BLAST+. The sequence is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="93"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="83"/>
+        <source>The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="92"/>
         <source>Subfolder for temporary files exists. Can not remove this folder.</source>
         <translation>Subfolder for temporary files exists. Can not remove this folder.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="98"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="97"/>
         <source>Can not create folder for temporary files.</source>
         <translation>Не удаётся создать папку для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="111"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="110"/>
         <source>Can not create fake NCBI ini file</source>
         <translation>Can not create fake NCBI ini file</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="155"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="167"/>
         <source>Output file not found</source>
         <translation>Выходной файл не найден</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="157"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="169"/>
         <source>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</source>
         <translation>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="186"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="211"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="198"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="223"/>
         <source>There were no hits found for your BLAST search.</source>
         <translation>There were no hits found for your BLAST search.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="203"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="215"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Can not remove folder for temporary files.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="244"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="256"/>
         <source>Incorrect number of fields in line: %1</source>
         <translation>Incorrect number of fields in line: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="249"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="254"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="409"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="416"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="433"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="261"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="266"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="421"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="428"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="445"/>
         <source>Can&apos;t get location</source>
         <translation>Can&apos;t get location</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="266"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="278"/>
         <source>Can&apos;t evaluate location</source>
         <translation>Can&apos;t evaluate location</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="272"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="277"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="284"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="289"/>
         <source>Can&apos;t get hit location</source>
         <translation>Can&apos;t get hit location</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="293"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="305"/>
         <source>Can&apos;t evaluate hit location</source>
         <translation>Can&apos;t evaluate hit location</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="307"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="459"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="319"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="471"/>
         <source>Can&apos;t get align length</source>
         <translation>Can&apos;t get align length</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="312"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="451"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="324"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="463"/>
         <source>Can&apos;t get gaps</source>
         <translation>Can&apos;t get gaps</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="317"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="443"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="329"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="455"/>
         <source>Can&apos;t get identity</source>
         <translation>Can&apos;t get identity</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="346"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="358"/>
         <source>Can&apos;t open output file</source>
         <translation>Can&apos;t open output file</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="350"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="362"/>
         <source>Can&apos;t read output file</source>
         <translation>Can&apos;t read output file</translation>
     </message>
@@ -3638,17 +3643,17 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastPlusSupportMultiTask</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="613"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="625"/>
         <source>Source file</source>
         <translation>Исходный файл</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="614"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="626"/>
         <source>Used databse</source>
         <translation>Используемая база данных</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="616"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="628"/>
         <source>No any results found</source>
         <translation>Результатов не найдено</translation>
     </message>
@@ -4757,12 +4762,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="468"/>
         <source>Map reads to reference...</source>
-        <translation>Выравнивание ридов на референс...</translation>
+        <translation>Выравнивание прочтений на референсную последовательность...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="493"/>
         <source>Reads de novo assembly (with %1)...</source>
-        <translation>Сборка ридов de novo (при помощи %1)...</translation>
+        <translation>Сборка прочтений de novo (при помощи %1)...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="478"/>

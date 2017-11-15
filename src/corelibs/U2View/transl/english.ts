@@ -5895,55 +5895,64 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MaEditorNameList</name>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="70"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="71"/>
         <source>Edit sequence name</source>
         <translation>Edit sequence name</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="77"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="78"/>
         <source>Copy current sequence</source>
         <translation>Copy current sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="81"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="82"/>
         <source>Remove sequence(s)</source>
         <translation>Remove sequence(s)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="131"/>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="584"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="132"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="577"/>
         <source>MSA Editor UI is NULL</source>
         <translation>MSA Editor UI is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="133"/>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="586"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="134"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="579"/>
         <source>MSA Editor sequence area is NULL</source>
         <translation>MSA Editor sequence area is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="149"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="150"/>
         <source>MSA Object is NULL</source>
         <translation>MSA Object is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="155"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="156"/>
         <source>Invalid sequence index</source>
         <translation>Invalid sequence index</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="849"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="844"/>
         <source>Rename Read</source>
         <translation>Rename Read</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="844"/>
+        <source>Rename Sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="845"/>
+        <source>New name:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Rename</source>
         <translation type="vanished">Rename</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="850"/>
         <source>New sequence name:</source>
-        <translation>New sequence name:</translation>
+        <translation type="vanished">New sequence name:</translation>
     </message>
 </context>
 <context>

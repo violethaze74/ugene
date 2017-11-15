@@ -131,7 +131,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Mapping min identity</string>
+         <string>Mapping min similarity</string>
         </property>
        </widget>
       </item>
