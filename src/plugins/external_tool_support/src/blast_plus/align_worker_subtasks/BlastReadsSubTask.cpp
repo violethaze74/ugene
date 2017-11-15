@@ -50,7 +50,7 @@ BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
                                      const int minIdentityPercent,
                                      const QMap<SharedDbiDataHandler, QString> &readsNames,
                                      DbiDataStorage *storage)
-    : Task(tr("Align reads with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
+    : Task(tr("Map reads with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
       dbPath(dbPath),
       reads(reads),
       readsNames(readsNames),
@@ -83,7 +83,7 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
                                        const int minIdentityPercent,
                                        const QString &readName,
                                        DbiDataStorage *storage)
-    : Task(tr("Align one read with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
+    : Task(tr("Map one read with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
       dbPath(dbPath),
       read(read),
       reference(reference),
@@ -194,7 +194,7 @@ QList<Task*> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
         readIdentity = mtx.getSimilarity(0, 1, true);
         if (readIdentity < minIdentityPercent) {
             skipped = true;
-            taskLog.info(tr("%1 was skipped. Low identity: %2. Minimum identity was set to %3")
+            taskLog.info(tr("%1 was skipped. Low similarity: %2. Minimum similarity was set to %3")
                          .arg(getReadName()).arg(readIdentity).arg(minIdentityPercent));
         }
     }

@@ -133,7 +133,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkContainsError(os, l, "No read satisfy minimum identity criteria");
+    GTUtilsLog::checkContainsError(os, l, "No read satisfy minimum similarity criteria");
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
 
     settings.minIdentity = 30;

@@ -194,7 +194,7 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
         ++rowsCounter;
     }
     if (rowsCounter == 0) {
-        stateInfo.setError(tr("No read satisfy minimum identity criteria."));
+        stateInfo.setError(tr("No read satisfy minimum similarity criteria."));
         return;
     }
     result->trim(false); // just recalculates alignment len
