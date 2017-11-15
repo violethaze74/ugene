@@ -141,7 +141,7 @@ MultipleChromatogramAlignmentObject *ComposeResultSubTask::takeMcaObject() {
 }
 
 void ComposeResultSubTask::createAlignmentAndAnnotations() {
-    MultipleChromatogramAlignment result("Aligned reads");
+    MultipleChromatogramAlignment result("Mapped reads");
     result->setAlphabet(referenceSequenceObject->getAlphabet());
 
     U2MsaRowGapModel referenceGaps = getReferenceGaps();

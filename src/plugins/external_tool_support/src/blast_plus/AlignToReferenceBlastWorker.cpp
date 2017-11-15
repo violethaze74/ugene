@@ -344,7 +344,7 @@ QString AlignToReferenceBlastTask::generateReport() const {
 
     result += "<br><table><tr><td><b>" + tr("Details") + "</b></td></tr></table>\n";
     result += "<u>" + tr("Reference sequence:") + QString("</u> %1<br>").arg(refObject->getSequenceName());
-    result += "<u>" + tr("Aligned reads (%1):").arg(acceptedReads.size()) + "</u>";
+    result += "<u>" + tr("Mapped reads (%1):").arg(acceptedReads.size()) + "</u>";
     result += "<table>";
     foreach(acceptedPair, acceptedReads) {
         const QString read = (acceptedPair.second.second ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + acceptedPair.first + "&nbsp; &nbsp;";
