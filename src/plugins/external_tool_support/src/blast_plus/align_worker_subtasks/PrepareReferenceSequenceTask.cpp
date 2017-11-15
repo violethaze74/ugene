@@ -21,10 +21,13 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CopyFileTask.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/IOAdapter.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -92,7 +95,12 @@ QList<Task *> PrepareReferenceSequenceTask::onSubTaskFinished(Task *subTask) {
     } else if (qobject_cast<RemoveGapsFromSequenceTask*>(subTask) != NULL) {
         Document* doc = loadTask->getDocument(false);
         SAFE_POINT(NULL != doc, "Document is NULL", newSubTasks);
-        SaveDocumentTask* saveTask = new SaveDocumentTask(doc);
+
+        DocumentFormat *fastaFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
+        IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(doc->getURL()));
+
+        Document *fastaDoc = doc->getSimpleCopy(fastaFormat, ioAdapterFactory, doc->getURL());
+        SaveDocumentTask* saveTask = new SaveDocumentTask(fastaDoc, SaveDoc_Overwrite | SaveDoc_DestroyButDontUnload);
         newSubTasks << saveTask;
     }
 

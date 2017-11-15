@@ -28,6 +28,7 @@
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTSpinBox.h>
@@ -171,6 +172,267 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsProjectTreeView::checkItem(os, "sanger_test_0004_4");
 
     GTUtilsLog::check(os, l);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0005_1) {
+//    // Check 'Sequence name from file' value of the 'Read name in result alignment' parameter in the 'Map Sanger Reads to Reference' dialog.
+//    1. Click "Tools" -> "Sanger data analysis" -> "Map reads to reference..." in the main menu.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "active modal widget is NULL");
+
+//    Expected state: 'Sequence name from file' value is set by default.
+            const QString expectedRowNamingPolicy = "Sequence name from file";
+            const QString currentRowNamingPolicy = GTComboBox::getCurrentText(os, "cbRowNaming", dialog);
+            CHECK_SET_ERR(expectedRowNamingPolicy == currentRowNamingPolicy,
+                          QString("An incorrect default value of the 'Read name in result alignment' parameter: expected '%1', got '%2'")
+                          .arg(expectedRowNamingPolicy).arg(currentRowNamingPolicy));
+
+//    2. Set input data from "_common_data/sanger/" directory and the output file.
+            AlignToReferenceBlastDialogFiller::setReference(os, testDir + "_common_data/sanger/reference.gb", dialog);
+
+            QStringList readsUrls;
+            for (int i = 1; i <= 20; i++) {
+                readsUrls << QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+            }
+            AlignToReferenceBlastDialogFiller::setReads(os, readsUrls, dialog);
+
+            AlignToReferenceBlastDialogFiller::setDestination(os, sandBoxDir + "sanger_test_0005_1.ugenedb", dialog);
+
+//    3. Click the 'Map' button.
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+
+//    Expected state: the result alignment rows are named like "SZYD_Cas9_*".
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const QStringList expectedReadsnames = QStringList() << "SZYD_Cas9_5B70"
+                                                         << "SZYD_Cas9_5B71"
+                                                         << "SZYD_Cas9_CR50"
+                                                         << "SZYD_Cas9_CR51"
+                                                         << "SZYD_Cas9_CR52"
+                                                         << "SZYD_Cas9_CR53"
+                                                         << "SZYD_Cas9_CR54"
+                                                         << "SZYD_Cas9_CR55"
+                                                         << "SZYD_Cas9_CR56"
+                                                         << "SZYD_Cas9_CR60"
+                                                         << "SZYD_Cas9_CR61"
+                                                         << "SZYD_Cas9_CR62"
+                                                         << "SZYD_Cas9_CR63"
+                                                         << "SZYD_Cas9_CR64"
+                                                         << "SZYD_Cas9_CR65"
+                                                         << "SZYD_Cas9_CR66";
+    const QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
+    CHECK_SET_ERR(expectedReadsnames == readsNames, "Incorrect reads names");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0005_2) {
+//    // Check 'Sequence name from file' value of the 'Read name in result alignment' parameter in the 'Map Sanger Reads to Reference' dialog.
+//    1. Click "Tools" -> "Sanger data analysis" -> "Map reads to reference..." in the main menu.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "active modal widget is NULL");
+
+//    Expected state: 'Sequence name from file' value is set by default.
+            const QString expectedRowNamingPolicy = "Sequence name from file";
+            const QString currentRowNamingPolicy = GTComboBox::getCurrentText(os, "cbRowNaming", dialog);
+            CHECK_SET_ERR(expectedRowNamingPolicy == currentRowNamingPolicy,
+                          QString("An incorrect default value of the 'Read name in result alignment' parameter: expected '%1', got '%2'")
+                          .arg(expectedRowNamingPolicy).arg(currentRowNamingPolicy));
+
+//    2. Set input data from "_common_data/sanger/" directory and the output file.
+            AlignToReferenceBlastDialogFiller::setReference(os, testDir + "_common_data/sanger/reference.gb", dialog);
+
+            QStringList readsUrls;
+            for (int i = 1; i <= 20; i++) {
+                readsUrls << QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+            }
+            AlignToReferenceBlastDialogFiller::setReads(os, readsUrls, dialog);
+
+            AlignToReferenceBlastDialogFiller::setDestination(os, sandBoxDir + "sanger_test_0005_2.ugenedb", dialog);
+
+//    3. Set 'Read name in result alignment' to 'File name'.
+            GTComboBox::setIndexWithText(os, "cbRowNaming", dialog, "File name");
+
+//    4. Click the 'Map' button.
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+
+//    Expected state: the result alignment rows are named like "sanger_*".
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const QStringList expectedReadsnames = QStringList() << "sanger_01"
+                                                         << "sanger_02"
+                                                         << "sanger_04"
+                                                         << "sanger_05"
+                                                         << "sanger_06"
+                                                         << "sanger_07"
+                                                         << "sanger_08"
+                                                         << "sanger_09"
+                                                         << "sanger_10"
+                                                         << "sanger_14"
+                                                         << "sanger_15"
+                                                         << "sanger_16"
+                                                         << "sanger_17"
+                                                         << "sanger_18"
+                                                         << "sanger_19"
+                                                         << "sanger_20";
+    const QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
+    CHECK_SET_ERR(expectedReadsnames == readsNames, "Incorrect reads names");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0005_3) {
+//    // Check 'Sequence name from file' value of the 'Read name in result alignment' parameter of the 'Map to Reference' workflow element.
+//    1. Open 'Trim and map Sanger reads' workflow sample.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+
+//    Expected state: wizard has appeared.
+            QWidget *wizard = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != wizard, "active modal widget is NULL");
+            GTWidget::clickWindowTitle(os, wizard);
+
+//    2. Fill it with any valid data until the 'Mapping settings' page.
+            GTUtilsWizard::setParameter(os, "Reference", QFileInfo(testDir + "_common_data/sanger/reference.gb").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            QStringList readsUrls;
+            for (int i = 1; i <= 20; i++) {
+                readsUrls << QFileInfo(QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'))).absoluteFilePath();
+            }
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << readsUrls);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+//    Expected state: 'Sequence name from file' value is set by default for the 'Read name in result alignment' parameter.
+            const QString expectedRowNamingPolicy = "Sequence name from file";
+            const QString currentRowNamingPolicy = GTUtilsWizard::getParameter(os, "Read name in result alignment").toString();
+            CHECK_SET_ERR(expectedRowNamingPolicy == currentRowNamingPolicy,
+                          QString("An incorrect default value of the 'Read name in result alignment' parameter: expected '%1', got '%2'")
+                          .arg(expectedRowNamingPolicy).arg(currentRowNamingPolicy));
+
+//    3. Fill the wizard till the end. Run the workflow.
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::setParameter(os, "Mapped reads file", QFileInfo(sandBoxDir + "sanger_test_0005_3.ugenedb").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new Scenario));
+    GTUtilsWorkflowDesigner::addSample(os, "Trim and map Sanger reads");
+
+//    Expected state: the result alignment rows are named like "SZYD_Cas9_*".
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDashboard::clickOutputFile(os, "sanger_test_0005_3.ugenedb", "align-to-reference");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const QStringList expectedReadsnames = QStringList() << "SZYD_Cas9_5B70"
+                                                         << "SZYD_Cas9_5B71"
+                                                         << "SZYD_Cas9_CR50"
+                                                         << "SZYD_Cas9_CR51"
+                                                         << "SZYD_Cas9_CR52"
+                                                         << "SZYD_Cas9_CR53"
+                                                         << "SZYD_Cas9_CR54"
+                                                         << "SZYD_Cas9_CR55"
+                                                         << "SZYD_Cas9_CR56"
+                                                         << "SZYD_Cas9_CR60"
+                                                         << "SZYD_Cas9_CR61"
+                                                         << "SZYD_Cas9_CR62"
+                                                         << "SZYD_Cas9_CR63"
+                                                         << "SZYD_Cas9_CR64"
+                                                         << "SZYD_Cas9_CR65"
+                                                         << "SZYD_Cas9_CR66";
+    const QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
+    CHECK_SET_ERR(expectedReadsnames == readsNames, "Incorrect reads names");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0005_4) {
+//    // Check 'Sequence name from file' value of the 'Read name in result alignment' parameter of the 'Map to Reference' workflow element.
+//    1. Open 'Trim and map Sanger reads' workflow sample.GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+
+//    Expected state: wizard has appeared.
+            QWidget *wizard = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != wizard, "active modal widget is NULL");
+            GTWidget::clickWindowTitle(os, wizard);
+
+//    2. Fill it with any valid data until the 'Mapping settings' page.
+            GTUtilsWizard::setParameter(os, "Reference", QFileInfo(testDir + "_common_data/sanger/reference.gb").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            QStringList readsUrls;
+            for (int i = 1; i <= 20; i++) {
+                readsUrls << QFileInfo(QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'))).absoluteFilePath();
+            }
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << readsUrls);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+//    Expected state: 'Sequence name from file' value is set by default for the 'Read name in result alignment' parameter.
+            const QString expectedRowNamingPolicy = "Sequence name from file";
+            const QString currentRowNamingPolicy = GTUtilsWizard::getParameter(os, "Read name in result alignment").toString();
+            CHECK_SET_ERR(expectedRowNamingPolicy == currentRowNamingPolicy,
+                          QString("An incorrect default value of the 'Read name in result alignment' parameter: expected '%1', got '%2'")
+                          .arg(expectedRowNamingPolicy).arg(currentRowNamingPolicy));
+
+
+//    3. Set the 'Read name in result alignment' to 'File name'.
+            GTUtilsWizard::setParameter(os, "Read name in result alignment", "File name");
+
+//    4. Fill the wizard till the end. Run the workflow.
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::setParameter(os, "Mapped reads file", QFileInfo(sandBoxDir + "sanger_test_0005_4.ugenedb").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new Scenario));
+    GTUtilsWorkflowDesigner::addSample(os, "Trim and map Sanger reads");
+
+//    Expected state: the result alignment rows are named like "sanger_*".
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDashboard::clickOutputFile(os, "sanger_test_0005_4.ugenedb", "align-to-reference");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const QStringList expectedReadsnames = QStringList() << "sanger_01"
+                                                         << "sanger_02"
+                                                         << "sanger_04"
+                                                         << "sanger_05"
+                                                         << "sanger_06"
+                                                         << "sanger_07"
+                                                         << "sanger_08"
+                                                         << "sanger_09"
+                                                         << "sanger_10"
+                                                         << "sanger_14"
+                                                         << "sanger_15"
+                                                         << "sanger_16"
+                                                         << "sanger_17"
+                                                         << "sanger_18"
+                                                         << "sanger_19"
+                                                         << "sanger_20";
+    const QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
+    CHECK_SET_ERR(expectedReadsnames == readsNames, "Incorrect reads names");
 }
 
 }   // namespace GUITest_common_scenarios_sanger

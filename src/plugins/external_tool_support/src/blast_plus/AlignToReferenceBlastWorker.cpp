@@ -19,13 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include <QFontMetrics>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/FormatUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
@@ -55,13 +54,17 @@ namespace U2 {
 namespace LocalWorkflow {
 
 const QString AlignToReferenceBlastWorkerFactory::ACTOR_ID("align-to-reference");
+const QString AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME = QObject::tr("Sequence name from file");
+const QString AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME = QObject::tr("File name");
+const QString AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE = "sequence name";
+const QString AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE = "file name";
+
 namespace {
     const QString OUT_PORT_ID = "out";
     const QString REF_ATTR_ID = "reference";
     const QString RESULT_URL_ATTR_ID = "result-url";
     const QString IDENTITY_ID = "identity";
-
-    const QString ALGORITHM = "algorithm";
+    const QString ROW_NAMING_ID = "row-naming-policy";
 }
 
 /************************************************************************/
@@ -103,9 +106,14 @@ void AlignToReferenceBlastWorkerFactory::init() {
                            AlignToReferenceBlastPrompter::tr("An URL to write the result alignment."));
         attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), true);
 
-        Descriptor identityDesc(IDENTITY_ID, AlignToReferenceBlastPrompter::tr("Minimum read identity"),
-                                AlignToReferenceBlastPrompter::tr("Reads, whose identity with the reference is less than the stated value, will be ignored."));
+        Descriptor identityDesc(IDENTITY_ID, AlignToReferenceBlastPrompter::tr("Mapping min similarity"),
+                                AlignToReferenceBlastPrompter::tr("Reads, whose similarity with the reference is less than the stated value, will be ignored."));
         attributes << new Attribute(identityDesc, BaseTypes::NUM_TYPE(), false, 80);
+
+        Descriptor rowNamingDesc(ROW_NAMING_ID, AlignToReferenceBlastPrompter::tr("Read name in result alignment"),
+                                AlignToReferenceBlastPrompter::tr("Reads in the result alignment can be named either by names of the sequences in the input files or by the input files names. "
+                                                                  "For example, if the sequences have the same name, set this value to \"File name\" to be able to distinguish the reads in the result alignment."));
+        attributes << new Attribute(rowNamingDesc, BaseTypes::STRING_TYPE(), false, ROW_NAMING_SEQUENCE_NAME_VALUE);
     }
 
     QMap<QString, PropertyDelegate*> delegates;
@@ -117,6 +125,11 @@ void AlignToReferenceBlastWorkerFactory::init() {
         m["maximum"] = 100;
         m["suffix"] = "%";
         delegates[IDENTITY_ID] = new SpinBoxDelegate(m);
+
+        QVariantMap rowNamingMap;
+        rowNamingMap.insert(ROW_NAMING_SEQUENCE_NAME, ROW_NAMING_SEQUENCE_NAME_VALUE);
+        rowNamingMap.insert(ROW_NAMING_FILE_NAME, ROW_NAMING_FILE_NAME_VALUE);
+        delegates[ROW_NAMING_ID] = new ComboBoxDelegate(rowNamingMap);
     }
 
     Descriptor desc(ACTOR_ID, AlignToReferenceBlastWorker::tr("Map to Reference"),
@@ -174,14 +187,17 @@ void AlignToReferenceBlastWorker::onPrepared(Task *task, U2OpStatus &os) {
 
 Task * AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) const {
     QList<SharedDbiDataHandler> reads;
+    QMap<SharedDbiDataHandler, QString> readsNames;
     foreach (const Message &message, messages) {
         QVariantMap data = message.getData().toMap();
         if (data.contains(BaseSlots::DNA_SEQUENCE_SLOT().getId())) {
-            reads << data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
+            const SharedDbiDataHandler read = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
+            reads << read;
+            readsNames.insert(read, getReadName(message));
         }
     }
     int readIdentity = getValue<int>(IDENTITY_ID);
-    return new AlignToReferenceBlastTask(referenceUrl, getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readIdentity, context->getDataStorage());
+    return new AlignToReferenceBlastTask(referenceUrl, getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readsNames, readIdentity, context->getDataStorage());
 }
 
 QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) const {
@@ -204,7 +220,7 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) c
     algoLog.info(QString("Total reads processed by the mapper: %1").arg(acceptedReads.count() + discardedReads.count()));
 
     if (0 != discardedReads.count()) {
-        monitor()->addWarning(QString("%1 %2 not mapped").arg(discardedReads.count()).arg(discardedReads.count() == 1 ? "read was" : "reads were"), actor->getId());
+        monitor()->addError(QString("%1 %2 not mapped").arg(discardedReads.count()).arg(discardedReads.count() == 1 ? "read was" : "reads were"), actor->getId(), Problem::U2_WARNING);
     }
 
     const QString resultUrl = alignTask->getResultUrl();
@@ -224,12 +240,20 @@ MessageMetadata AlignToReferenceBlastWorker::generateMetadata(const QString &dat
     return MessageMetadata(getValue<QString>(REF_ATTR_ID), datasetName);
 }
 
+QString AlignToReferenceBlastWorker::getReadName(const Message &message) const {
+    CHECK(AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE == getValue<QString>(ROW_NAMING_ID), "");
+    const int metadataId = message.getMetadataId();
+    const MessageMetadata metadata = context->getMetadataStorage().get(metadataId);
+    return GUrlUtils::getUncompressedCompleteBaseName(metadata.getFileUrl());
+}
+
 /************************************************************************/
 /* AlignToReferenceBlastTask */
 /************************************************************************/
 AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl, const QString &resultUrl,
                                                      const SharedDbiDataHandler &reference,
                                                      const QList<SharedDbiDataHandler> &reads,
+                                                     const QMap<SharedDbiDataHandler, QString> &readsNames,
                                                      int minIdentityPercent,
                                                      DbiDataStorage *storage)
     : Task(tr("Map to reference"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
@@ -237,6 +261,7 @@ AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl, cons
       resultUrl(resultUrl),
       reference(reference),
       reads(reads),
+      readsNames(readsNames),
       minIdentityPercent(minIdentityPercent),
       formatDbSubTask(NULL),
       blastTask(NULL),
@@ -259,7 +284,7 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == formatDbSubTask) {
         QString dbPath = formatDbSubTask->getResultPath();
-        blastTask = new BlastReadsSubTask(dbPath, reads, reference, minIdentityPercent, storage);
+        blastTask = new BlastReadsSubTask(dbPath, reads, reference, minIdentityPercent, readsNames, storage);
         result << blastTask;
     } else if (subTask == blastTask) {
         composeSubTask = new ComposeResultSubTask(reference, reads, blastTask->getBlastSubtasks(), storage);
@@ -304,18 +329,18 @@ QString AlignToReferenceBlastTask::generateReport() const {
     const QList<QPair<QString, QPair<int, bool> > > acceptedReads = getAcceptedReads();
     const QList<QPair<QString, int> > filtredReads = getDiscardedReads();
     const int sizeOfArrow = 17;
-    const QFont font;
-    QFontMetrics metrix(font);
+    const int widthOfChar = 7;
 
     int maxSize = 0;
     QPair<QString, QPair<int, bool> > acceptedPair;
     foreach(acceptedPair, acceptedReads) {
-        maxSize = qMax(metrix.width(acceptedPair.first), maxSize);
+        maxSize = qMax(acceptedPair.first.size(), maxSize);
     }
     QPair<QString, int> filtredPair;
     foreach(filtredPair, filtredReads) {
-        maxSize = qMax(metrix.width(filtredPair.first), maxSize);
+        maxSize = qMax(filtredPair.first.size(), maxSize);
     }
+    maxSize *= widthOfChar;
 
     result += "<br><table><tr><td><b>" + tr("Details") + "</b></td></tr></table>\n";
     result += "<u>" + tr("Reference sequence:") + QString("</u> %1<br>").arg(refObject->getSequenceName());

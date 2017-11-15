@@ -3836,8 +3836,7 @@ GUI_TEST_CLASS_DEFINITION(test_5798_5) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::setParameter(os, "Result ClustalW file", "DNA.aln");
             //6. Press "Run" button
-            GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
-			GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
 
