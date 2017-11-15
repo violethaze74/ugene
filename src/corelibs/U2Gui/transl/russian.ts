@@ -37,24 +37,38 @@
 <context>
     <name>AceImportDialog</name>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.ui" line="14"/>
         <source>Import ACE File</source>
-        <translation>Импорт ACE файла</translation>
+        <translation type="vanished">Импорт ACE файла</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.ui" line="28"/>
         <source>Source URL:</source>
-        <translation>Источник:</translation>
+        <translation type="vanished">Источник:</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.ui" line="52"/>
         <source>Destination URL:</source>
-        <translation>Назначение:</translation>
+        <translation type="vanished">Назначение:</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.ui" line="62"/>
         <source>...</source>
-        <translation>...</translation>
+        <translation type="vanished">...</translation>
+    </message>
+</context>
+<context>
+    <name>AceImportWidget</name>
+    <message>
+        <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Форма</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="63"/>
+        <source>Save to file</source>
+        <translation type="unfinished">Сохранить в файл</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="77"/>
+        <source>...</source>
+        <translation type="unfinished">...</translation>
     </message>
 </context>
 <context>
@@ -83,6 +97,29 @@
         <location filename="../src/util/AddNewDocumentDialog.ui" line="71"/>
         <source>Compress file</source>
         <translation>Сжать файл</translation>
+    </message>
+</context>
+<context>
+    <name>AprImportWidget</name>
+    <message>
+        <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Форма</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="63"/>
+        <source>Save to fiie</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="70"/>
+        <source>File format</source>
+        <translation type="unfinished">Формат файла</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="87"/>
+        <source>...</source>
+        <translation type="unfinished">...</translation>
     </message>
 </context>
 <context>
@@ -907,60 +944,64 @@
         <translation>Параметры импорта файлов, содержащих несколько последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="97"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="103"/>
         <source>Import as separate sequences</source>
         <translation>Импортировать как отдельные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="107"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="119"/>
         <source>Merge into a single sequence</source>
         <translation>Соединить в одну последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="132"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Number of &apos;unknown&apos; symbols &lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;(&apos;N &apos;for nucleic or &apos;X&apos; for amino)&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; between parts:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Число неизвестных символов &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;(&apos;N &apos;для нуклеотидных или &apos;X&apos; для амино)&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; между частями:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; {3C?} {4.0/?} {3.?} {40/?} {1&quot;?} {2&apos;?} {8.25p?} {400;?} {0p?} {0p?} {0p?} {0p?} {0;?} {0p?} {10p?} {10p?} {10p?}</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="146"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="158"/>
         <source> bases</source>
         <translation>символов</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="161"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="132"/>
         <source>Join into alignment</source>
         <translation>Соедить в выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="184"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="148"/>
+        <source>Number of unknown symbols (N - for nucleic or X - for amino) between parts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="193"/>
         <source>Import ACE files as</source>
         <translation>Импортировать ACE файлы как</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="190"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="199"/>
         <source>Multiple sequence alignment</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="203"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="212"/>
         <source>Short reads assembly</source>
         <translation>Сборка коротких ридов</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="219"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="228"/>
         <source>Documents and objects options</source>
         <translation>Настройки документов и объектов</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="225"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="234"/>
         <source>Create a subfolder for each document</source>
         <translation>Создать подпапку для каждого документа</translation>
     </message>
@@ -1524,66 +1565,62 @@ The items cannot be recovered once deleted.</source>
 <context>
     <name>U2::AceImportDialog</name>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="135"/>
         <source>Destination UGENEDB file</source>
-        <translation>Место назначения UGENEDB файла</translation>
+        <translation type="vanished">Место назначения UGENEDB файла</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="68"/>
         <source>Destination URL is not specified</source>
-        <translation>Не указан путь места назначения</translation>
+        <translation type="vanished">Не указан путь места назначения</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="54"/>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="vanished">OK</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="74"/>
         <source>Destination URL must point to a local file</source>
-        <translation>Место назначения должно указывать на локальный файл</translation>
+        <translation type="vanished">Место назначения должно указывать на локальный файл</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="82"/>
         <source>There is opened view with destination file.
 Close it or choose different file</source>
-        <translation>Указанный файл используется.
+        <translation type="vanished">Указанный файл используется.
 Закройте его или выберите другой файл</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="92"/>
         <source>Destination folder &apos;%1&apos; is not writable, please choose different destination URL</source>
-        <translation>Папка места назначения &apos;%1&apos; недоступна для записи, выберите другое место назначения</translation>
+        <translation type="vanished">Папка места назначения &apos;%1&apos; недоступна для записи, выберите другое место назначения</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="100"/>
         <source>Destination file already exists.
 To overwrite the file, press &apos;Replace&apos;.
 To append data to existing file press &apos;Append&apos;.</source>
-        <translation>Указанный файл уже существует.
+        <translation type="vanished">Указанный файл уже существует.
 Чтобы переписать файл нажмите &apos;Переписать&apos;.
 Для добавления данных в существующий файл нажмите &apos;Добавить&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="103"/>
         <source>Replace</source>
-        <translation>Переписать</translation>
+        <translation type="vanished">Переписать</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="104"/>
         <source>Append</source>
-        <translation>Добавить</translation>
+        <translation type="vanished">Добавить</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="55"/>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="105"/>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation type="vanished">Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="109"/>
         <source>Destination file &apos;%1&apos; cannot be removed</source>
-        <translation>Файл &apos;%1&apos; не может быть удален</translation>
+        <translation type="vanished">Файл &apos;%1&apos; не может быть удален</translation>
+    </message>
+</context>
+<context>
+    <name>U2::AceImportWidget</name>
+    <message>
+        <location filename="../src/util/ImportWidgets/AceImportWidget.cpp" line="60"/>
+        <source>Destination UGENEDB file</source>
+        <translation type="unfinished">Место назначения UGENEDB файла</translation>
     </message>
 </context>
 <context>
@@ -2149,17 +2186,17 @@ Are you sure you want to open all of them?</source>
         <translation>Сохранить имена последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="47"/>
+        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="48"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="48"/>
+        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="49"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="69"/>
+        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="70"/>
         <source>Select file to save annotations</source>
         <translation>Выберите файл для сохранения аннотаций</translation>
     </message>
@@ -2271,24 +2308,24 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::GUIUtils</name>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="143"/>
-        <location filename="../src/util/GUIUtils.cpp" line="153"/>
-        <location filename="../src/util/GUIUtils.cpp" line="171"/>
+        <location filename="../src/util/GUIUtils.cpp" line="154"/>
+        <location filename="../src/util/GUIUtils.cpp" line="164"/>
+        <location filename="../src/util/GUIUtils.cpp" line="182"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="143"/>
+        <location filename="../src/util/GUIUtils.cpp" line="154"/>
         <source>Document URL is empty!</source>
         <translation>Пустая ссылка!</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="153"/>
+        <location filename="../src/util/GUIUtils.cpp" line="164"/>
         <source>Unable to launch default web browser.</source>
         <translation>Не удалось запустить браузер Интернет, установленный по умолчанию.</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="171"/>
+        <location filename="../src/util/GUIUtils.cpp" line="182"/>
         <source>Please specify the browser executable</source>
         <translation>Не указано приложение браузера</translation>
     </message>
@@ -2515,9 +2552,13 @@ Are you sure you want to open all of them?</source>
         <translation>Лог</translation>
     </message>
     <message>
-        <location filename="../src/util/logview/LogView.cpp" line="72"/>
         <source>Settings</source>
-        <translation>Настройки</translation>
+        <translation type="vanished">Настройки</translation>
+    </message>
+    <message>
+        <location filename="../src/util/logview/LogView.cpp" line="72"/>
+        <source>Settings...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/logview/LogView.cpp" line="76"/>
@@ -2737,17 +2778,17 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ProjectTreeController</name>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="554"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="550"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="327"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="323"/>
         <source>Import to the database...</source>
         <translation>Импортировать в базу данных...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="328"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="324"/>
         <source>Import to the folder...</source>
         <translation>Импортировать в папку...</translation>
     </message>
@@ -3034,14 +3075,24 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ScaleBar</name>
     <message>
-        <location filename="../src/util/ScaleBar.cpp" line="39"/>
         <source>-</source>
-        <translation>-</translation>
+        <translation type="vanished">-</translation>
     </message>
     <message>
-        <location filename="../src/util/ScaleBar.cpp" line="46"/>
         <source>+</source>
-        <translation>+</translation>
+        <translation type="vanished">+</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ScaleBar.cpp" line="42"/>
+        <location filename="../src/util/ScaleBar.cpp" line="46"/>
+        <source>Decrease peaks height</source>
+        <translation>Уменьшить высоту пиков</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ScaleBar.cpp" line="53"/>
+        <location filename="../src/util/ScaleBar.cpp" line="57"/>
+        <source>Increase peaks height</source>
+        <translation>Увеличить высоту пиков</translation>
     </message>
 </context>
 <context>
@@ -3239,42 +3290,42 @@ check connection settings</translation>
 <context>
     <name>U2::ToolsMenu</name>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="108"/>
+        <location filename="../src/ToolsMenu.cpp" line="109"/>
         <source>Sanger data analysis</source>
         <translation>Анализ данных секвенирования по Сэнгеру</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="118"/>
+        <location filename="../src/ToolsMenu.cpp" line="119"/>
         <source>NGS data analysis</source>
         <translation>Анализ данных NGS</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="146"/>
+        <location filename="../src/ToolsMenu.cpp" line="149"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="160"/>
+        <location filename="../src/ToolsMenu.cpp" line="163"/>
         <source>Multiple sequence alignment</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="172"/>
+        <location filename="../src/ToolsMenu.cpp" line="175"/>
         <source>Cloning</source>
         <translation>Клонирование</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="180"/>
+        <location filename="../src/ToolsMenu.cpp" line="183"/>
         <source>Primer</source>
         <translation>Олигонуклеотиды</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="186"/>
+        <location filename="../src/ToolsMenu.cpp" line="189"/>
         <source>Search for TFBS</source>
         <translation>Поиск сайтов связывания транскрипционных факторов (TFBS)</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="195"/>
+        <location filename="../src/ToolsMenu.cpp" line="198"/>
         <source>HMMER tools</source>
         <translation>Инструменты HMMER</translation>
     </message>

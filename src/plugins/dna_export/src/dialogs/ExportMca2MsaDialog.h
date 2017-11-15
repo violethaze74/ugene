@@ -31,6 +31,7 @@ namespace U2 {
 class SaveDocumentController;
 
 class ExportMca2MsaDialog : public QDialog, public Ui_ExportMca2MsaDialog {
+    Q_OBJECT
 public:
     ExportMca2MsaDialog(const QString &defaultFilePath, QWidget *parent);
 
