@@ -162,7 +162,7 @@ QString AlignToReferenceBlastCmdlineTask::generateReport() const {
 
     QMultiMap<QString, QString> trimReports = reports.value("SequenceQualityTrim", QMultiMap<QString, QString>());
     if (trimReports.values().size() > 0) {
-        resultReport += tr("<u>Filtered by quality or length (%1):</u>").arg(trimReports.values().size());
+        resultReport += tr("<u>Filtered by quality (%1):</u>").arg(trimReports.values().size());
         resultReport += "<table>";
     }
 
