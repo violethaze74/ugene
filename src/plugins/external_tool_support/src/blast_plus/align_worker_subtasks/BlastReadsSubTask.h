@@ -81,6 +81,7 @@ public:
 
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
+    ReportResult report();
 
     bool isComplement() const;
     const SharedDbiDataHandler& getRead() const;
@@ -94,6 +95,9 @@ public:
     int         getReadIdentity() const;
 
 private:
+    BlastNPlusSupportTask *getBlastTask();
+    void checkRead(const QByteArray &sequenceData);
+
     U2Region getReferenceRegion(const QList<SharedAnnotationData>& blastAnnotations);
     void createAlignment(const U2Region& refRegion);
     void shiftGaps(U2MsaRowGapModel &gaps) const;
