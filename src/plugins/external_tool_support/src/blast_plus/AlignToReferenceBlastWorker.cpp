@@ -344,7 +344,7 @@ QString AlignToReferenceBlastTask::generateReport() const {
     if (!filtredReads.isEmpty()) {
         result += "<tr><td colspan=3><u>" + tr("Filtered by low similarity (%1):").arg(filtredReads.size()) + "</u></td></tr>";
         foreach(filtredPair, filtredReads) {
-            const QString readIdentity = "similarity&nbsp;&nbsp;" + QString::number(filtredPair.second) + "%";
+            const QString readIdentity = tr("similarity") + "&nbsp;&nbsp;" + QString::number(filtredPair.second) + "%";
             result += QString("<tr><td></td><td style=white-space:nowrap>") + filtredPair.first.replace("-", "&#8209;") + "&nbsp; &nbsp;" + "</td><td><div style=\"margin-left:7px;\">" + readIdentity + "</div></td></tr>";
         }
         result += "</table>";
