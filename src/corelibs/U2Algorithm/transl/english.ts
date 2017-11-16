@@ -53,7 +53,7 @@
         <translation>Some errors occurs in library: %1</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusUtils.cpp" line="107"/>
+        <location filename="../src/util_msa_consensus/MSAConsensusUtils.cpp" line="108"/>
         <source>Gaps:</source>
         <translation>Gaps:</translation>
     </message>
@@ -181,7 +181,7 @@
 <context>
     <name>U2::BestPositionFindTask</name>
     <message>
-        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="108"/>
+        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="120"/>
         <source>Best position find task</source>
         <translation>Best position find task</translation>
     </message>
@@ -210,7 +210,7 @@
 <context>
     <name>U2::DnaAssemblyToReferenceTask</name>
     <message>
-        <location filename="../src/registry/DnaAssemblyTask.cpp" line="30"/>
+        <location filename="../src/registry/DnaAssemblyTask.cpp" line="34"/>
         <source>Align short reads</source>
         <translation>Align short reads</translation>
     </message>
@@ -234,12 +234,12 @@
 <context>
     <name>U2::LoadPatternsFileTask</name>
     <message>
-        <location filename="../src/misc/FindAlgorithmTask.cpp" line="107"/>
+        <location filename="../src/misc/FindAlgorithmTask.cpp" line="108"/>
         <source>Load pattern from file</source>
         <translation>Load pattern from file</translation>
     </message>
     <message>
-        <location filename="../src/misc/FindAlgorithmTask.cpp" line="128"/>
+        <location filename="../src/misc/FindAlgorithmTask.cpp" line="129"/>
         <source>Detecting format error for file %1</source>
         <translation>Detecting format error for file %1</translation>
     </message>
@@ -273,14 +273,14 @@
 <context>
     <name>U2::MSAConsensusAlgorithmFactoryLevitsky</name>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmLevitsky.cpp" line="38"/>
+        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmLevitsky.cpp" line="36"/>
         <source>The algorithm proposed by Victor Levitsky to work with DNA alignments.
 Collects global alignment frequency for every symbol using extended (15 symbols) DNA alphabet first.
 For every column selects the most rare symbol in the whole alignment with percentage in the column greater or equals to the threshold value.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmLevitsky.cpp" line="46"/>
+        <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmLevitsky.cpp" line="44"/>
         <source>Levitsky</source>
         <translation></translation>
     </message>
@@ -354,6 +354,19 @@ For every column selects the most rare symbol in the whole alignment with percen
     </message>
 </context>
 <context>
+    <name>U2::MaConsensusAlgorithmFactorySimpleExtended</name>
+    <message>
+        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="198"/>
+        <source>The algorithm selects the best character from the extended DNA alphabet. Only bases with frequences which are greater than a threshold value are taken into account.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="203"/>
+        <source>Simple extended</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::MolecularSurfaceCalcTask</name>
     <message>
         <location filename="../src/molecular_geometry/MolecularSurface.cpp" line="126"/>
@@ -375,64 +388,69 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MsaColorSchemeRegistry</name>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="521"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="533"/>
         <source>No colors</source>
         <translation>No colors</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="529"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="541"/>
+        <source>UGENE Sanger</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="545"/>
         <source>Jalview</source>
         <translation>Jalview</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="531"/>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="569"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="547"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="585"/>
         <source>Percentage Identity</source>
         <translation>Percentage Identity</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="532"/>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="570"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="548"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="586"/>
         <source>Percentage Identity (gray)</source>
         <translation>Percentage Identity (gray)</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="543"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="559"/>
         <source>Zappo</source>
         <translation>Zappo</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="547"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="563"/>
         <source>Tailor</source>
         <translation>Tailor</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="551"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="567"/>
         <source>Hydrophobicity</source>
         <translation>Hydrophobicity</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="555"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="571"/>
         <source>Helix propensity</source>
         <translation>Helix propensity</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="559"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="575"/>
         <source>Strand propensity</source>
         <translation>Strand propensity</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="563"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="579"/>
         <source>Turn propensity</source>
         <translation>Turn propensity</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="567"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="583"/>
         <source>Buried index</source>
         <translation>Buried index</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="572"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="588"/>
         <source>Clustal X</source>
         <translation>Clustal X</translation>
     </message>
@@ -589,7 +607,7 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::SimpleAddToAlignmentTask</name>
     <message>
-        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="52"/>
+        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="51"/>
         <source>Align sequences to an existing alignment by UGENE started</source>
         <translation>Align sequences to an existing alignment by UGENE started</translation>
     </message>

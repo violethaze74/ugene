@@ -4,78 +4,83 @@
 <context>
     <name>AlignToReferenceBlastDialog</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="20"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="20"/>
         <source>Input data</source>
         <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="26"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="26"/>
         <source>Reference</source>
-        <translation>Референс</translation>
+        <translation>Референсная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="14"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="14"/>
         <source>Map Sanger Reads to Reference</source>
-        <translation>Выравнивание Сэнгеровских ридов на референс</translation>
+        <translation>Выравнивание данных секвенирования по Сэнгеру</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="38"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="38"/>
         <source>Input a file with a reference sequence</source>
         <translation>Укажите файл с референсной последовательностью</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="45"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="159"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="45"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="169"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="54"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="54"/>
         <source>Reads</source>
-        <translation>Риды</translation>
+        <translation>Прочтения</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="79"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="79"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="86"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="86"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="98"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="98"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="104"/>
-        <source>Trimming quality threshold</source>
-        <translation>Порог качества отсечения</translation>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="114"/>
+        <source>Mapping min similarity</source>
+        <translation>Минимальное сходство при выравнивании</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="152"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="134"/>
+        <source>Trimming quality threshold</source>
+        <translation>Порог качества для обрезания концов</translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="141"/>
+        <source>Read name in result alignment</source>
+        <translation>Имя прочтения в выравнивании</translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="162"/>
         <source>Input the result file path</source>
         <translation>Укажите путь до выходного файла</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="111"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="121"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="134"/>
-        <source>Mapping min identity</source>
-        <translation>Минимальная идентичность выравнивания</translation>
-    </message>
-    <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="144"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="154"/>
         <source>Result alignment</source>
         <translation>Сохранить в</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="168"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="178"/>
         <source>Add to project</source>
         <translation>Добавить в проект</translation>
     </message>
@@ -2883,6 +2888,16 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <source>NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB. In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</source>
         <translation type="vanished">NOTE: &quot;bwtsw&quot; алгоритм не поддерживается для работы с рефересными последовательностями, размер которых меньше 10 MB. В таком случае рекомендуется изменить алгоритм на &quot;is&quot;</translation>
     </message>
+    <message>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="57"/>
+        <source>Sequence name from file</source>
+        <translation>Имя последовательности в файле</translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="58"/>
+        <source>File name</source>
+        <translation>Имя файла</translation>
+    </message>
 </context>
 <context>
     <name>SnpEffDatabaseDialog</name>
@@ -3022,24 +3037,24 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::AlignToReferenceBlastCmdlineTask</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="78"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="93"/>
         <source>Map Sanger reads to reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание прочтений на референсную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="95"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="98"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="110"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="113"/>
         <source>wrong reference format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="150"/>
-        <source>&lt;u&gt;Filtered by quality or length (%1):&lt;/u&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="165"/>
+        <source>&lt;u&gt;Filtered by quality (%1):&lt;/u&gt;</source>
+        <translation>Прочтения, отфильтрованные по качеству</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="193"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="196"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="209"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="212"/>
         <source>wrong output format</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3051,67 +3066,77 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="obsolete">Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="230"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="246"/>
         <source>Map</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="231"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="247"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="250"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="253"/>
+        <source>File name</source>
+        <translation>Имя файла</translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="254"/>
+        <source>Sequence name from file</source>
+        <translation>Имя последовательности в файле</translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="270"/>
         <source>Select Output File...</source>
         <translation>Укажите выходной файл...</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="263"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="270"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="288"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="311"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="283"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="290"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="309"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="332"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="264"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="284"/>
         <source>Reference sequence is not set.</source>
         <translation>Референсная последовательность не задана.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="271"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="291"/>
         <source>No reads provided.</source>
         <translation>Риды не заданы.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="289"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="310"/>
         <source>Output file is not set.</source>
         <translation>Выходной файл не указан.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="300"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="321"/>
         <source>Overwrite the file?</source>
         <translation>Переписать этот файл?</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="301"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="322"/>
         <source>The result file already exists. Would you like to overwrite it?</source>
         <translation>Такой файл уже существует. Переписать его?</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="311"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="332"/>
         <source>Unable to delete the file.</source>
         <translation>Невозможно удалить этот файл.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="323"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="344"/>
         <source>Open Reference Sequence</source>
         <translation>Выбрать референсную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="334"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="355"/>
         <source>Select File(s) with Read(s)</source>
-        <translation>Выбрать риды</translation>
+        <translation>Выбрать прочтения</translation>
     </message>
 </context>
 <context>
@@ -3180,12 +3205,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastAllSupport</name>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="68"/>
-        <source>Paths for the following tools are not selected: %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="106"/>
+        <location filename="../src/blast/BlastAllSupport.cpp" line="73"/>
         <source>The &lt;i&gt;blastall&lt;/i&gt; is the old program developed and distributed by the NCBI for running BLAST searches. The NCBI recommends that people start using the programs of the BLAST+ package instead.</source>
         <translation>&lt;i&gt; blastall &lt;/i&gt;это программа разработанная NCBI для запуска BLAST поиска. NCBI рекомендует использовать более новый пакет BLAST+.</translation>
     </message>
@@ -3194,15 +3214,14 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Путь для BLAST %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="69"/>
         <source>Do you want to select it now?</source>
-        <translation>Выбрать сейчас?</translation>
+        <translation type="vanished">Выбрать сейчас?</translation>
     </message>
 </context>
 <context>
     <name>U2::BlastAllSupportContext</name>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="169"/>
+        <location filename="../src/blast/BlastAllSupport.cpp" line="118"/>
         <source>Query with local BLAST...</source>
         <translation>Поиск с помощью локальной базы данных BLAST...</translation>
     </message>
@@ -3215,7 +3234,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Выбрать сейчас?</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="219"/>
+        <location filename="../src/blast/BlastAllSupport.cpp" line="168"/>
         <source>Sequence object is NULL</source>
         <translation>Sequence object is NULL</translation>
     </message>
@@ -3489,12 +3508,12 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastPlusSupport</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="179"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="182"/>
         <source>Path for BLAST+ tools not selected.</source>
         <translation>Путь для BLAST+ не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="180"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="183"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -3502,101 +3521,106 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastPlusSupportCommonTask</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="69"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="70"/>
         <source>A problem occurred during doing BLAST+. The sequence is no more available.</source>
         <translation>A problem occurred during doing BLAST+. The sequence is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="93"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="83"/>
+        <source>The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="92"/>
         <source>Subfolder for temporary files exists. Can not remove this folder.</source>
         <translation>Subfolder for temporary files exists. Can not remove this folder.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="98"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="97"/>
         <source>Can not create folder for temporary files.</source>
         <translation>Не удаётся создать папку для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="111"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="110"/>
         <source>Can not create fake NCBI ini file</source>
         <translation>Can not create fake NCBI ini file</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="155"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="167"/>
         <source>Output file not found</source>
         <translation>Выходной файл не найден</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="157"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="169"/>
         <source>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</source>
         <translation>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="186"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="211"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="198"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="223"/>
         <source>There were no hits found for your BLAST search.</source>
         <translation>There were no hits found for your BLAST search.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="203"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="215"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Can not remove folder for temporary files.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="244"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="256"/>
         <source>Incorrect number of fields in line: %1</source>
         <translation>Incorrect number of fields in line: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="249"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="254"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="409"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="416"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="433"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="261"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="266"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="421"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="428"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="445"/>
         <source>Can&apos;t get location</source>
         <translation>Can&apos;t get location</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="266"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="278"/>
         <source>Can&apos;t evaluate location</source>
         <translation>Can&apos;t evaluate location</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="272"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="277"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="284"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="289"/>
         <source>Can&apos;t get hit location</source>
         <translation>Can&apos;t get hit location</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="293"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="305"/>
         <source>Can&apos;t evaluate hit location</source>
         <translation>Can&apos;t evaluate hit location</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="307"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="459"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="319"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="471"/>
         <source>Can&apos;t get align length</source>
         <translation>Can&apos;t get align length</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="312"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="451"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="324"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="463"/>
         <source>Can&apos;t get gaps</source>
         <translation>Can&apos;t get gaps</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="317"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="443"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="329"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="455"/>
         <source>Can&apos;t get identity</source>
         <translation>Can&apos;t get identity</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="346"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="358"/>
         <source>Can&apos;t open output file</source>
         <translation>Can&apos;t open output file</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="350"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="362"/>
         <source>Can&apos;t read output file</source>
         <translation>Can&apos;t read output file</translation>
     </message>
@@ -3604,43 +3628,43 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastPlusSupportContext</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="234"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="255"/>
         <source>Fetch sequences by &apos;id&apos;</source>
         <translation>Получить последовательности по &apos;id&apos;</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="245"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="266"/>
         <source>Query with local BLAST+...</source>
         <translation>Поиск с помощью локальной базы данных BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="289"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="310"/>
         <source>Fetch sequences from local BLAST database</source>
         <translation>Извлечь последовательность из локальной базы данных BLAST</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="294"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="315"/>
         <source>Fetch sequences by &apos;id&apos; %1</source>
         <translation>Извлечь последовательности по &apos;id&apos; %1</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="312"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="333"/>
         <source>Path for BLAST+ tools not selected.</source>
         <translation>Путь для BLAST+ не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="313"/>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="398"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="334"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="419"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="369"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="390"/>
         <source>Sequence object is NULL</source>
         <translation>Sequence object is NULL</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="397"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="418"/>
         <source>Path for BLAST+ %1 tool not selected.</source>
         <translation>Путь для BLAST+ %1 не установлен.</translation>
     </message>
@@ -3648,17 +3672,17 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastPlusSupportMultiTask</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="613"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="625"/>
         <source>Source file</source>
         <translation>Исходный файл</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="614"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="626"/>
         <source>Used databse</source>
         <translation>Используемая база данных</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="616"/>
+        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="628"/>
         <source>No any results found</source>
         <translation>Результатов не найдено</translation>
     </message>
@@ -4767,12 +4791,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="468"/>
         <source>Map reads to reference...</source>
-        <translation>Выравнивание ридов на референс...</translation>
+        <translation>Выравнивание прочтений на референсную последовательность...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="493"/>
         <source>Reads de novo assembly (with %1)...</source>
-        <translation>Сборка ридов de novo (при помощи %1)...</translation>
+        <translation>Сборка прочтений de novo (при помощи %1)...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="478"/>
@@ -4907,6 +4931,19 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <location filename="../src/ExternalToolSupportSettingsController.cpp" line="645"/>
         <source>Not a valid external tools folder</source>
         <translation>Нет подходящей папки внешних инструментов</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExternalToolUtils</name>
+    <message>
+        <location filename="../src/utils/ExternalToolUtils.cpp" line="54"/>
+        <source>Paths for the following tools are not selected: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/ExternalToolUtils.cpp" line="55"/>
+        <source>Do you want to select it now?</source>
+        <translation type="unfinished">Выбрать сейчас?</translation>
     </message>
 </context>
 <context>
@@ -5245,18 +5282,16 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="344"/>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="352"/>
-        <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
-    </message>
-    <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="352"/>
-        <source>Sequences larger 2Gb are not supported on 32-bit architecture.</source>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="342"/>
+        <source>error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="344"/>
+        <source>Error</source>
+        <translation type="obsolete">Ошибка</translation>
+    </message>
+    <message>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="342"/>
         <source>No sequence in focus found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5606,62 +5641,72 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::AlignToReferenceBlastPrompter</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="81"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="86"/>
         <source>Input sequence</source>
         <translation type="unfinished">Входная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="81"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="86"/>
         <source>Input sequence.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="82"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="87"/>
         <source>Aligned data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="82"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="87"/>
         <source>Aligned data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="96"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="101"/>
         <source>Reference URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="97"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="102"/>
         <source>A URL to the file with a reference sequence.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="100"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="105"/>
         <source>Result alignment URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="101"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="106"/>
         <source>An URL to write the result alignment.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="104"/>
-        <source>Minimum read identity</source>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="109"/>
+        <source>Mapping min similarity</source>
+        <translation type="unfinished">Минимальное сходство при выравнивании</translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="110"/>
+        <source>Reads, whose similarity with the reference is less than the stated value, will be ignored.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="105"/>
-        <source>Reads, whose identity with the reference is less than the stated value, will be ignored.</source>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="113"/>
+        <source>Read name in result alignment</source>
+        <translation type="unfinished">Имя прочтения в выравнивании</translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="114"/>
+        <source>Reads in the result alignment can be named either by names of the sequences in the input files or by the input files names. For example, if the sequences have the same name, set this value to &quot;File name&quot; to be able to distinguish the reads in the result alignment.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="146"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="161"/>
         <source>unset</source>
         <translation type="unfinished">не указан</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="149"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="164"/>
         <source>Aligns each sequence from &lt;u&gt;%1&lt;/u&gt; to the reference sequence from &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5669,45 +5714,50 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::AlignToReferenceBlastTask</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="230"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="259"/>
         <source>Map to reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Выровнять на референсную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="302"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="345"/>
         <source>Details</source>
-        <translation type="unfinished"></translation>
+        <translation>Детальная информация</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="303"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="346"/>
         <source>Reference sequence:</source>
-        <translation type="unfinished"></translation>
+        <translation>Референсная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="304"/>
-        <source>Aligned reads (%1):</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="347"/>
+        <source>Mapped reads (%1):</source>
+        <translation>Выровненные прочтения</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="313"/>
-        <source>Filtered by low identity (%1):</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="351"/>
+        <source>similarity</source>
+        <translation>сходство</translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="356"/>
+        <source>Filtered by low similarity (%1):</source>
+        <translation>Прочтения, отфильтрованные из-за недостаточного сходства</translation>
     </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::AlignToReferenceBlastWorker</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="120"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="135"/>
         <source>Map to Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="121"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="136"/>
         <source>Align input sequences (e.g. Sanger reads) to the reference sequence.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="209"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="230"/>
         <source>The result file was not produced</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11583,17 +11633,27 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PhyMlWidget</name>
     <message>
-        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="178"/>
+        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="230"/>
         <source>Open an alignment file</source>
         <translation>Открыть выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="238"/>
+        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="287"/>
+        <source>File with the starting tree is not set.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="289"/>
+        <source>File with the starting tree doesn&apos;t exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="305"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Путь для %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="239"/>
+        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="306"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -11636,27 +11696,27 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PrepareReferenceSequenceTask</name>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="34"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="45"/>
         <source>Prepare reference sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="67"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="85"/>
         <source>No reference sequence in the file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="68"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="86"/>
         <source>More than one sequence in the reference file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="71"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="89"/>
         <source>Unable to cast gobject to sequence object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="72"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="90"/>
         <source>The input reference sequence &apos;%1&apos; contains characters that don&apos;t belong to DNA alphabet.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11824,12 +11884,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RemoveGapsFromSequenceTask</name>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp" line="66"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp" line="66"/>
         <source>Remove gaps from the sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp" line="83"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp" line="83"/>
         <source>Find gaps in the sequence</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12354,22 +12414,27 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::Workflow::BlastAndSwReadTask</name>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="81"/>
-        <source>Align one read with BLAST &amp; SW task</source>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="86"/>
+        <source>Map one read with BLAST &amp; SW task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="141"/>
-        <source>%1 was skipped. Low identity.</source>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="153"/>
+        <source>%1 was skipped. No BLAST results.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="295"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="197"/>
+        <source>%1 was skipped. Low similarity: %2. Minimum similarity was set to %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="320"/>
         <source>The %1 algorithm is not found. Add the %1 plugin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="298"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="323"/>
         <source>The %1 algorithm is not found. Check that the %1 plugin is up to date.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12377,25 +12442,25 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::Workflow::BlastReadsSubTask</name>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="50"/>
-        <source>Align reads with BLAST &amp; SW task</source>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="53"/>
+        <source>Map reads with BLAST &amp; SW task</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::Workflow::ComposeResultSubTask</name>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubTask.cpp" line="64"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/ComposeResultSubTask.cpp" line="64"/>
         <source>Compose alignment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubTask.cpp" line="197"/>
-        <source>No read satisfy minimum identity criteria.</source>
+        <location filename="../src/blast_plus/align_worker_subtasks/ComposeResultSubTask.cpp" line="197"/>
+        <source>No read satisfy minimum similarity criteria.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubTask.cpp" line="314"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/ComposeResultSubTask.cpp" line="311"/>
         <source>The related chromatogram not found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12403,12 +12468,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::Workflow::FormatDBSubTask</name>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/FormatDBSubTask.cpp" line="46"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/FormatDBSubTask.cpp" line="46"/>
         <source>Format DB task wrapper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/FormatDBSubTask.cpp" line="66"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/FormatDBSubTask.cpp" line="66"/>
         <source>The task uses a temporary folder to process the data. It is required that the folder path doesn&apos;t have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
         <translation type="unfinished"></translation>
     </message>

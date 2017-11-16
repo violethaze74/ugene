@@ -4503,8 +4503,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="132"/>
+        <source>Trimming quality threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Quality threshold</source>
-        <translation>Порог качества</translation>
+        <translation type="vanished">Порог качества</translation>
     </message>
     <message>
         <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="133"/>
@@ -5309,6 +5313,11 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/tasks/SequenceQualityTrimTask.cpp" line="74"/>
         <source>The sequence &apos;%1&apos; was filtered out by quality</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/SequenceQualityTrimTask.cpp" line="126"/>
+        <source>The trimming was skipped for the sequences without quality information.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6133,12 +6142,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Имя новой панели:</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowTabView.cpp" line="206"/>
+        <location filename="../src/WorkflowTabView.cpp" line="202"/>
         <source>Run</source>
         <translation>Запуск</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowTabView.cpp" line="228"/>
+        <location filename="../src/WorkflowTabView.cpp" line="224"/>
         <source>Rename</source>
         <translation>Переименовать</translation>
     </message>

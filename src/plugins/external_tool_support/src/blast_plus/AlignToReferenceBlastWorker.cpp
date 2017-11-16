@@ -348,7 +348,7 @@ QString AlignToReferenceBlastTask::generateReport() const {
     result += "<table>";
     foreach(acceptedPair, acceptedReads) {
         const QString read = (acceptedPair.second.second ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + acceptedPair.first + "&nbsp; &nbsp;";
-        const QString readIdentity = "similarity&nbsp;&nbsp;" + QString::number(acceptedPair.second.first) + "%";
+        const QString readIdentity = tr("similarity")+"&nbsp;&nbsp;" + QString::number(acceptedPair.second.first) + "%";
         result += "<tr><td width=50>" + tr("") + QString("</td><td width=%1 nowrap>").arg(maxSize + sizeOfArrow) + read + "</td><td>" + readIdentity + "</td></tr>";
     }
     result += "</table>";

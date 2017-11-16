@@ -570,7 +570,7 @@
     <message>
         <location filename="../src/SiteconQuery.cpp" line="75"/>
         <source>similarity %1%</source>
-        <translation>%1%</translation>
+        <translation>сходство %1%</translation>
     </message>
     <message>
         <location filename="../src/SiteconQuery.cpp" line="80"/>
