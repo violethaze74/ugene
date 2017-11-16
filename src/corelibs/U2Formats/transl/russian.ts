@@ -2200,7 +2200,7 @@
         <translation>Failed to parse SCF file: %1</translation>
     </message>
     <message>
-        <location filename="../src/SCFFormat.cpp" line="1237"/>
+        <location filename="../src/SCFFormat.cpp" line="1235"/>
         <source>Failed to load sequence from SCF file %1</source>
         <translation>Невозможно загрузить последовательность из SCF файла %1</translation>
     </message>
