@@ -1501,6 +1501,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sanger::test_0005_2);
     REGISTER_TEST(GUITest_common_scenarios_sanger::test_0005_3);
     REGISTER_TEST(GUITest_common_scenarios_sanger::test_0005_4);
+    REGISTER_TEST(GUITest_common_scenarios_sanger::test_0006);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/Sequence view/
