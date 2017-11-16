@@ -2601,47 +2601,47 @@ Double-click to collapse the branch</translation>
         <translation>Complement sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="354"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="353"/>
         <source>Error!</source>
         <translation>Error!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="535"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="534"/>
         <source>Analyze</source>
         <translation>Analyze</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="545"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="544"/>
         <source>Add</source>
         <translation>Add</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="551"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="550"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="557"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="556"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="563"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="562"/>
         <source>Remove</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="576"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="575"/>
         <source>Edit</source>
         <translation>Edit</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1085"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1084"/>
         <source>Show codon table</source>
         <translation>Show codon table</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1336"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1335"/>
         <source>No sequence in focus</source>
         <translation>No sequence in focus</translation>
     </message>
@@ -2651,27 +2651,27 @@ Double-click to collapse the branch</translation>
         <translation>Reverse sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="755"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="754"/>
         <source>Disable &apos;%1&apos; highlighting</source>
         <translation>Disable &apos;%1&apos; highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="757"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="756"/>
         <source>Enable &apos;%1&apos; highlighting</source>
         <translation>Enable &apos;%1&apos; highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="807"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="806"/>
         <source>Select sequence to associate annotations with:</source>
         <translation>Select sequence to associate annotations with:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="825"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="824"/>
         <source>No sequence object found for annotations</source>
         <translation>No sequence object found for annotations</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="894"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="893"/>
         <source>Go To</source>
         <translation>Go To</translation>
     </message>
@@ -4423,17 +4423,17 @@ Please, check external tools in the settings.</translation>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="98"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="97"/>
         <source>Warning</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="98"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="97"/>
         <source>Export to file URL is empty!</source>
         <translation>Export to file URL is empty!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="125"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="124"/>
         <source>Select file to save...</source>
         <translation>Select file to save...</translation>
     </message>
@@ -5923,13 +5923,13 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     </message>
     <message>
         <location filename="../src/ov_msa/MaEditorNameList.cpp" line="131"/>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="579"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="584"/>
         <source>MSA Editor UI is NULL</source>
         <translation>MSA Editor UI is NULL</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MaEditorNameList.cpp" line="133"/>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="581"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="586"/>
         <source>MSA Editor sequence area is NULL</source>
         <translation>MSA Editor sequence area is NULL</translation>
     </message>
@@ -5944,16 +5944,16 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation>Invalid sequence index</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="844"/>
         <source>Rename Read</source>
-        <translation>Rename Read</translation>
+        <translation type="vanished">Rename Read</translation>
     </message>
     <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="849"/>
         <source>Rename</source>
-        <translation type="vanished">Rename</translation>
+        <translation>Rename</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="845"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="850"/>
         <source>New sequence name:</source>
         <translation>New sequence name:</translation>
     </message>
@@ -6000,44 +6000,44 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation type="vanished">Sequence is out of range: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="464"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="465"/>
         <source>Alignment object is not available</source>
         <translation>Alignment object is not available</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="783"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="784"/>
         <source>No reference sequence selected</source>
         <translation>No reference sequence selected</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="784"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="785"/>
         <source>Reference sequence for current highlighting scheme is not selected. Use context menu or Highlighting tab on Options panel to select it</source>
         <translation>Reference sequence for current highlighting scheme is not selected. Use context menu or Highlighting tab on Options panel to select it</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="800"/>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1401"/>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1482"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="801"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1402"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1483"/>
         <source>Unknown alphabet</source>
         <translation>Unknown alphabet</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="844"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="846"/>
         <source>Cursor position is out of range</source>
         <translation>Cursor position is out of range</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1212"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1213"/>
         <source>Top left corner of the selection has incorrect coords</source>
         <translation>Top left corner of the selection has incorrect coords</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1214"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1215"/>
         <source>Bottom right corner of the selection has incorrect coords</source>
         <translation>Bottom right corner of the selection has incorrect coords</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1577"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1578"/>
         <source>It is not possible to insert the character into the alignment. Please use a character from set A-Z (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</source>
         <translation>It is not possible to insert the character into the alignment. Please use a character from set A-Z (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</translation>
     </message>
@@ -6531,7 +6531,7 @@ Simple overview is unavailable.</translation>
         <translation>Insert gap</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="458"/>
+        <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="459"/>
         <source>It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</source>
         <translation>It is not possible to insert the character into the alignment. Please use a character from DNA extended alphabet (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</translation>
     </message>

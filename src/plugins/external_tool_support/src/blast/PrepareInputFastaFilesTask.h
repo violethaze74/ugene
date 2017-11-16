@@ -27,6 +27,7 @@
 namespace U2 {
 
 class PrepareInputFastaFilesTask : public Task {
+    Q_OBJECT
 public:
     PrepareInputFastaFilesTask(const QStringList &inputFiles, const QString &tempDir);
 

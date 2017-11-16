@@ -1552,62 +1552,62 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::GUrlUtils</name>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="142"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="154"/>
         <source>Renamed %1 to %2</source>
         <translation>Старый файл %1 переименован  в %2</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="146"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="158"/>
         <source>Failed to rename %1 to %2</source>
         <translation>Не удалось переименовать %1 в %2</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="300"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="312"/>
         <source>Folder is not specified</source>
         <translation>Папка не указана</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="305"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="317"/>
         <source>Folder can&apos;t be created: %1</source>
         <translation>Невозможно создать папку: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="310"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="322"/>
         <source>Folder can&apos;t be read: %1</source>
         <translation>Файлы папки %1 невозможно открыть на чтение</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="352"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="364"/>
         <source>File path is not specified</source>
         <translation>Путь до файла не задан</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="355"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="367"/>
         <source>Folder path instead of file path</source>
         <translation>Путь до папки вместо пути до файла</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="413"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="425"/>
         <source>Can not create a folder: %1</source>
         <translation>Невозможно создать папку: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="463"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="475"/>
         <source>%1 is not a local file [%2].</source>
         <translation>%1 is not a local file [%2].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="472"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="484"/>
         <source>Can not create a folder [%1].</source>
         <translation>Can not create a folder [%1].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="477"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="489"/>
         <source>%1 is a folder [%2].</source>
         <translation>%1 is a folder [%2].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.h" line="135"/>
+        <location filename="../src/util/GUrlUtils.h" line="136"/>
         <source>Output URL</source>
         <translation>Выходной путь</translation>
     </message>

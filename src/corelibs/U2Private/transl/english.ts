@@ -176,7 +176,7 @@ By default, loglevel=&quot;ERROR&quot;.</translation>
 <context>
     <name>U2::DocumentFormatRegistryImpl</name>
     <message>
-        <location filename="../src/DocumentFormatRegistryImpl.cpp" line="225"/>
+        <location filename="../src/DocumentFormatRegistryImpl.cpp" line="233"/>
         <source>UGENE Database</source>
         <translation>UGENE Database</translation>
     </message>

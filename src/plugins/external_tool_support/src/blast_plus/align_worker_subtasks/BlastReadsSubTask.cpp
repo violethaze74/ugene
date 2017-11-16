@@ -50,7 +50,7 @@ BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
                                      const int minIdentityPercent,
                                      const QMap<SharedDbiDataHandler, QString> &readsNames,
                                      DbiDataStorage *storage)
-    : Task(tr("Align reads with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
+    : Task(tr("Map reads with BLAST & SW task"), TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel),
       dbPath(dbPath),
       reads(reads),
       readsNames(readsNames),
@@ -83,7 +83,7 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
                                        const int minIdentityPercent,
                                        const QString &readName,
                                        DbiDataStorage *storage)
-    : Task(tr("Align one read with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
+    : Task(tr("Map one read with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
       dbPath(dbPath),
       read(read),
       reference(reference),
@@ -104,39 +104,9 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
 }
 
 void BlastAndSwReadTask::prepare() {
-    BlastTaskSettings settings;
-
-    settings.programName = "blastn";
-    settings.databaseNameAndPath = dbPath;
-    settings.megablast = true;
-    settings.wordSize = 28;
-    settings.xDropoffGA = 20;
-    settings.xDropoffUnGA = 10;
-    settings.xDropoffFGA = 100;
-    settings.numberOfProcessors = AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
-    settings.numberOfHits = 100;
-    settings.gapOpenCost = 2;
-    settings.gapExtendCost = 2;
-
-    QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
-    CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), );
-
-    if (readName.isEmpty()) {
-        readName = readObject->getSequenceName();
-    }
-
-    settings.querySequence = readObject->getWholeSequenceData(stateInfo);
+    blastTask = getBlastTask();
     CHECK_OP(stateInfo, );
-    settings.alphabet = readObject->getAlphabet();
-    settings.isNucleotideSeq = settings.alphabet->isNucleic();
-
-    settings.needCreateAnnotations = false;
-    settings.groupName = "blast";
-
-    settings.outputResFile = GUrlUtils::prepareTmpFileLocation(blastResultDir, "read_sequence", "gb", stateInfo);
-    settings.outputType = 5;
-
-    blastTask = new BlastNPlusSupportTask(settings);
+    SAFE_POINT_EXT(NULL != blastTask, "BLAST subtask is NULL", );
     addSubTask(blastTask);
 }
 
@@ -194,11 +164,19 @@ QList<Task*> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
         readIdentity = mtx.getSimilarity(0, 1, true);
         if (readIdentity < minIdentityPercent) {
             skipped = true;
-            taskLog.info(tr("%1 was skipped. Low identity: %2. Minimum identity was set to %3")
+            taskLog.info(tr("%1 was skipped. Low similarity: %2. Minimum similarity was set to %3")
                          .arg(getReadName()).arg(readIdentity).arg(minIdentityPercent));
         }
     }
     return result;
+}
+
+Task::ReportResult BlastAndSwReadTask::report() {
+    if (hasError() || isCanceled()) {
+        skipped = true;
+        readIdentity = 0;
+    }
+    return ReportResult_Finished;
 }
 
 bool BlastAndSwReadTask::isComplement() const {
@@ -238,6 +216,54 @@ qint64 BlastAndSwReadTask::getOffset() const {
 
 int BlastAndSwReadTask::getReadIdentity() const {
     return readIdentity;
+}
+
+BlastNPlusSupportTask *BlastAndSwReadTask::getBlastTask() {
+    BlastTaskSettings settings;
+
+    settings.programName = "blastn";
+    settings.databaseNameAndPath = dbPath;
+    settings.megablast = true;
+    settings.wordSize = 28;
+    settings.xDropoffGA = 20;
+    settings.xDropoffUnGA = 10;
+    settings.xDropoffFGA = 100;
+    settings.numberOfProcessors = AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
+    settings.numberOfHits = 100;
+    settings.gapOpenCost = 2;
+    settings.gapExtendCost = 2;
+
+    QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
+    CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), NULL);
+
+    if (readName.isEmpty()) {
+        readName = readObject->getSequenceName();
+    }
+
+    settings.querySequence = readObject->getWholeSequenceData(stateInfo);
+    CHECK_OP(stateInfo, NULL);
+
+    checkRead(settings.querySequence);
+    CHECK_OP(stateInfo, NULL);
+
+    settings.alphabet = readObject->getAlphabet();
+    settings.isNucleotideSeq = settings.alphabet->isNucleic();
+
+    settings.needCreateAnnotations = false;
+    settings.groupName = "blast";
+
+    settings.outputResFile = GUrlUtils::prepareTmpFileLocation(blastResultDir, "read_sequence", "gb", stateInfo);
+    settings.outputType = 5;
+
+    return new BlastNPlusSupportTask(settings);
+}
+
+void BlastAndSwReadTask::checkRead(const QByteArray &sequenceData) {
+    const int gapsCount = sequenceData.count(U2Msa::GAP_CHAR);
+    const int nCount = sequenceData.count("N");
+    if (gapsCount + nCount == sequenceData.length()) {
+        setError(tr("Read doesn't contain meaningful data"));
+    }
 }
 
 U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData> &blastAnnotations) {

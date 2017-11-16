@@ -1439,37 +1439,32 @@
         <translation>Merge sequences</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="55"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="54"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="56"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="55"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="188"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="187"/>
         <source>Export Sequences</source>
         <translation>Export Sequences</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="150"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="149"/>
         <source>Select organism</source>
         <translation>Select organism</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="236"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="234"/>
         <source>File is empty</source>
         <translation>File is empty</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="242"/>
-        <source>File name is too long!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="247"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="239"/>
         <source>Organism for back translation not specified</source>
         <translation>Organism for back translation not specified</translation>
     </message>

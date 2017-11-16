@@ -525,22 +525,22 @@ this merge sequence slot:</translation>
         <translation>UGENE has found &quot;%1&quot; on the file system. Do you want to add it as a second %2 with paired reads?</translation>
     </message>
     <message>
-        <location filename="../src/EstimationReporter.cpp" line="77"/>
+        <location filename="../src/EstimationReporter.cpp" line="78"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/EstimationReporter.cpp" line="78"/>
+        <location filename="../src/EstimationReporter.cpp" line="79"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../src/EstimationReporter.cpp" line="93"/>
+        <location filename="../src/EstimationReporter.cpp" line="94"/>
         <source>Workflow Estimation</source>
         <translation>Workflow Estimation</translation>
     </message>
     <message>
-        <location filename="../src/EstimationReporter.cpp" line="94"/>
+        <location filename="../src/EstimationReporter.cpp" line="95"/>
         <source>Approximate estimation time of the workflow run is </source>
         <translation>Approximate estimation time of the workflow run is </translation>
     </message>
@@ -768,43 +768,43 @@ bowtie index file</translation>
 <context>
     <name>U2::Dashboard</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="164"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="165"/>
         <source>Output Files</source>
         <translation>Output Files</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="165"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="166"/>
         <source>Workflow Task</source>
         <translation>Workflow Task</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="166"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="167"/>
         <source>Common Statistics</source>
         <translation>Common Statistics</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="173"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="174"/>
         <source>Parameters</source>
         <translation>Parameters</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="250"/>
-        <location filename="../src/dashboard/Dashboard.cpp" line="258"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="251"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="259"/>
         <source>External Tools</source>
         <translation>External Tools</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="190"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="191"/>
         <source>Problems</source>
         <translation>Problems</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="200"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="201"/>
         <source>Can not create a folder: </source>
         <translation>Can not create a folder: </translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="215"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="216"/>
         <source>Can not open a file for writing: </source>
         <translation>Can not open a file for writing: </translation>
     </message>
@@ -1049,12 +1049,12 @@ bowtie index file</translation>
 <context>
     <name>U2::JavascriptAgent</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="390"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="394"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="390"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="394"/>
         <source>The file does not exist</source>
         <translation>The file does not exist</translation>
     </message>
@@ -1179,17 +1179,17 @@ bowtie index file</translation>
 <context>
     <name>U2::OutputFilesWidget</name>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="63"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="65"/>
         <source>File</source>
         <translation>File</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="63"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="65"/>
         <source>Producer</source>
         <translation>Producer</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="87"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="89"/>
         <source>Open containing folder</source>
         <translation>Open containing folder</translation>
     </message>
@@ -1198,7 +1198,7 @@ bowtie index file</translation>
         <translation type="vanished">Open by operating system</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="204"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="207"/>
         <source>files</source>
         <translation>files</translation>
     </message>
@@ -1206,32 +1206,32 @@ bowtie index file</translation>
 <context>
     <name>U2::ProblemsWidget</name>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="56"/>
+        <location filename="../src/dashboard/ProblemsWidget.cpp" line="58"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="59"/>
+        <location filename="../src/dashboard/ProblemsWidget.cpp" line="61"/>
         <source>Warning</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="62"/>
+        <location filename="../src/dashboard/ProblemsWidget.cpp" line="64"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="118"/>
+        <location filename="../src/dashboard/ProblemsWidget.cpp" line="120"/>
         <source>Element</source>
         <translation>Element</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="118"/>
+        <location filename="../src/dashboard/ProblemsWidget.cpp" line="120"/>
         <source>Message</source>
         <translation>Message</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="118"/>
+        <location filename="../src/dashboard/ProblemsWidget.cpp" line="120"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
@@ -1309,7 +1309,7 @@ bowtie index file</translation>
 <context>
     <name>U2::RemoveDashboardsTask</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="465"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="469"/>
         <source>Remove dashboards</source>
         <translation>Remove dashboards</translation>
     </message>
@@ -1317,37 +1317,37 @@ bowtie index file</translation>
 <context>
     <name>U2::ResourcesWidget</name>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="50"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="51"/>
         <source>Time</source>
         <translation>Time</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="102"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="103"/>
         <source>The workflow task is in progress...</source>
         <translation>The workflow task is in progress...</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="107"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="108"/>
         <source>The workflow task is in progress. There are problems...</source>
         <translation>The workflow task is in progress. There are problems...</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="113"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="114"/>
         <source>The workflow task has been finished with warnings!</source>
         <translation>The workflow task has been finished with warnings!</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="119"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="120"/>
         <source>The workflow task has been finished with errors!</source>
         <translation>The workflow task has been finished with errors!</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="125"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="126"/>
         <source>The workflow task has been finished successfully!</source>
         <translation>The workflow task has been finished successfully!</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="130"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="131"/>
         <source>The workflow task has been canceled!</source>
         <translation>The workflow task has been canceled!</translation>
     </message>
@@ -1355,7 +1355,7 @@ bowtie index file</translation>
 <context>
     <name>U2::ScanDashboardsDirTask</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="419"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="423"/>
         <source>Scan dashboards folder</source>
         <translation>Scan dashboards folder</translation>
     </message>
@@ -1363,12 +1363,12 @@ bowtie index file</translation>
 <context>
     <name>U2::SchemaRunModeDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="556"/>
+        <location filename="../src/DelegateEditors.cpp" line="563"/>
         <source>This computer</source>
         <translation>This computer</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="557"/>
+        <location filename="../src/DelegateEditors.cpp" line="564"/>
         <source>Remote computer</source>
         <translation>Remote computer</translation>
     </message>
@@ -1389,17 +1389,17 @@ bowtie index file</translation>
 <context>
     <name>U2::StatisticsWidget</name>
     <message>
-        <location filename="../src/dashboard/StatisticsWidget.cpp" line="61"/>
+        <location filename="../src/dashboard/StatisticsWidget.cpp" line="63"/>
         <source>Element</source>
         <translation>Element</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/StatisticsWidget.cpp" line="61"/>
+        <location filename="../src/dashboard/StatisticsWidget.cpp" line="63"/>
         <source>Elapsed time</source>
         <translation>Elapsed time</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/StatisticsWidget.cpp" line="61"/>
+        <location filename="../src/dashboard/StatisticsWidget.cpp" line="63"/>
         <source>Output messages</source>
         <translation>Output messages</translation>
     </message>
@@ -1420,17 +1420,17 @@ bowtie index file</translation>
 <context>
     <name>U2::StringListDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="687"/>
+        <location filename="../src/DelegateEditors.cpp" line="694"/>
         <source>Enter items</source>
         <translation>Enter items</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="689"/>
+        <location filename="../src/DelegateEditors.cpp" line="696"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="691"/>
+        <location filename="../src/DelegateEditors.cpp" line="698"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -1568,17 +1568,17 @@ bowtie index file</translation>
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="546"/>
+        <location filename="../src/DelegateEditors.cpp" line="553"/>
         <source>Overwrite</source>
         <translation>Overwrite</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="547"/>
+        <location filename="../src/DelegateEditors.cpp" line="554"/>
         <source>Rename</source>
         <translation>Rename</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="549"/>
+        <location filename="../src/DelegateEditors.cpp" line="556"/>
         <source>Append</source>
         <translation>Append</translation>
     </message>

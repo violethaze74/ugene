@@ -152,11 +152,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     //Expected state :
     //"reference_sanger_reads_alignment.ugenedb" in the Project View with object :
-    //-{'mc' Aligned reads} for multiple chromatogram alignment object in Project View
+    //-{'mc' Mapped reads} for multiple chromatogram alignment object in Project View
     GTUtilsProject::checkProject(os);
     GTUtilsProjectTreeView::openView(os);
-    bool check = GTUtilsProjectTreeView::checkItem(os, "Aligned reads");
-    CHECK_SET_ERR(check, "'Aligned reads' is not present in the project view");
+    bool check = GTUtilsProjectTreeView::checkItem(os, "Mapped reads");
+    CHECK_SET_ERR(check, "'Mapped reads' is not present in the project view");
 
     //    Expected state : Reference name is  "KM099231" at the editor left corner
     //    Expected state : 16 reads are present
@@ -177,7 +177,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     }
 
     //5. Report with info
-    GTUtilsNotifications::waitForNotification(os, false, "Aligned reads (16)");
+    GTUtilsNotifications::waitForNotification(os, false, "Mapped reads (16)");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //number of filtered sequences with the names: 4

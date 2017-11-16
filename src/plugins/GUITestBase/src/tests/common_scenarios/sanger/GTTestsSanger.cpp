@@ -133,7 +133,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkContainsError(os, l, "No read satisfy minimum identity criteria");
+    GTUtilsLog::checkContainsError(os, l, "No read satisfy minimum similarity criteria");
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
 
     settings.minIdentity = 30;
@@ -433,6 +433,47 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
                                                          << "sanger_20";
     const QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
     CHECK_SET_ERR(expectedReadsnames == readsNames, "Incorrect reads names");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0006) {
+//    // Check that reads that consists of gaps and N only are skipped
+//    1. Select "Tools" -> "Sanger data analysis" -> "Map reads to reference..." item in the main menu.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+//    2. Set '_common_data/sanger/dataset3/reference.gb' as reference and the next files as reads:
+//        '_common_data/sanger/dataset3/gaps.ab1'
+//        '_common_data/sanger/dataset3/N.ab1'
+//        '_common_data/sanger/dataset3/N_and_gaps.ab1'
+//        '_common_data/sanger/dataset3/pFB7-CDK5RAP2_P1713799_009.ab1'
+//        Set 'Read name in result alignment' option to 'File name'.
+//        Accept the dialog.
+            AlignToReferenceBlastDialogFiller::setReference(os, QFileInfo(testDir + "_common_data/sanger/dataset3/reference.gb").absoluteFilePath(), dialog);
+
+            const QStringList reads = QStringList() << testDir + "_common_data/sanger/dataset3/gaps.ab1"
+                                                    << testDir + "_common_data/sanger/dataset3/N.ab1"
+                                                    << testDir + "_common_data/sanger/dataset3/N_and_gaps.ab1"
+                                                    << testDir + "_common_data/sanger/dataset3/pFB7-CDK5RAP2_P1713799_009.ab1";
+            AlignToReferenceBlastDialogFiller::setReads(os, reads, dialog);
+
+            GTComboBox::setIndexWithText(os, "cbRowNaming", dialog, "File name");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the report contains information about 3 filtered reads, their similarity is 0%. The result alignment contains one mapped read with the name 'pFB7-CDK5RAP2_P1713799_009'.
+    // It is too hard to check the report, because we change it too often. Just check the rows count.
+    const int rowsCount = GTUtilsMcaEditor::getReadsCount(os);
+    CHECK_SET_ERR(1 == rowsCount, QString("Unexpected rows count: expect 1, got %1").arg(rowsCount));
 }
 
 }   // namespace GUITest_common_scenarios_sanger

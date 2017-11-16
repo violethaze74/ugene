@@ -116,6 +116,7 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS(MaConsensusAlgorithmSimpleExtended::Characters)
 
 class MaConsensusAlgorithmFactorySimpleExtended : public MSAConsensusAlgorithmFactory {
+    Q_OBJECT
 public:
     MaConsensusAlgorithmFactorySimpleExtended(QObject *parent = NULL);
 
