@@ -347,8 +347,8 @@ QString AlignToReferenceBlastTask::generateReport() const {
             const QString readIdentity = tr("similarity") + "&nbsp;&nbsp;" + QString::number(filtredPair.second) + "%";
             result += QString("<tr><td></td><td style=white-space:nowrap>") + filtredPair.first.replace("-", "&#8209;") + "&nbsp; &nbsp;" + "</td><td><div style=\"margin-left:7px;\">" + readIdentity + "</div></td></tr>";
         }
-        result += "</table>";
     }
+    result += "</table>";
 
     return result;
 }
