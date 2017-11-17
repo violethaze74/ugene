@@ -263,7 +263,7 @@ void MaEditorSequenceArea::updateSelection() {
 }
 
 void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHighlightSelection) {
-    CHECK(!isAlignmentEmpty(), );
+    CHECK(!isAlignmentEmpty() || s.isEmpty(), );
     // TODO: assert(isInRange(s));
     exitFromEditCharacterMode();
     if (highlightSelection != newHighlightSelection) {
