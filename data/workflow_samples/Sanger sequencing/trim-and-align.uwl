@@ -125,7 +125,7 @@ workflow "Trim and map Sanger reads"{
                 parameters-area {
                     group {
                         title:"Settings";
-                        label-size:150;
+                        label-size:220;
                         SequenceQualityTrim.qual-id {
                         }
                         align-to-reference.identity {
