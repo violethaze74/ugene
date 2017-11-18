@@ -53,7 +53,7 @@
         <translation>Some errors occurs in library: %1</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusUtils.cpp" line="108"/>
+        <location filename="../src/util_msa_consensus/MSAConsensusUtils.cpp" line="111"/>
         <source>Gaps:</source>
         <translation>Gaps:</translation>
     </message>
