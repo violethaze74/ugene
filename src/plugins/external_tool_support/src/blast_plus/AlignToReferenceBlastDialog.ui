@@ -98,10 +98,20 @@
       <string>Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_5">
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="qualitySpinBox">
+        <property name="maximum">
+         <number>999999999</number>
+        </property>
+        <property name="value">
+         <number>30</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Trimming quality threshold</string>
+         <string>Mapping min similarity</string>
         </property>
        </widget>
       </item>
@@ -118,22 +128,22 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="qualitySpinBox">
-        <property name="maximum">
-         <number>999999999</number>
-        </property>
-        <property name="value">
-         <number>30</number>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Trimming quality threshold</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_4">
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblRowNaming">
         <property name="text">
-         <string>Mapping min identity</string>
+         <string>Read name in result alignment</string>
         </property>
        </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="cbRowNaming"/>
       </item>
      </layout>
     </widget>

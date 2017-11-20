@@ -100,7 +100,7 @@
         <translation>GTF</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="766"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="773"/>
         <source>Unexpected number of modified objects. Expected: 1, actual: %1</source>
         <translation>Unexpected number of modified objects. Expected: 1, actual: %1</translation>
     </message>
@@ -315,12 +315,12 @@
 <context>
     <name>U2::AceImporter</name>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="153"/>
+        <location filename="../src/ace/AceImporter.cpp" line="155"/>
         <source>ACE file importer</source>
         <translation>ACE file importer</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="157"/>
+        <location filename="../src/ace/AceImporter.cpp" line="159"/>
         <source>ACE files importer is used to convert conventional ACE files into UGENE database format.Having ACE file converted into UGENE DB format you get an fast and efficient interface to your data with an option to change the content</source>
         <translation>ACE files importer is used to convert conventional ACE files into UGENE database format.Having ACE file converted into UGENE DB format you get an fast and efficient interface to your data with an option to change the content</translation>
     </message>
@@ -328,24 +328,114 @@
 <context>
     <name>U2::AceImporterTask</name>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="51"/>
+        <location filename="../src/ace/AceImporter.cpp" line="54"/>
         <source>ACE file import: %1</source>
         <translation>ACE file import: %1</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="66"/>
+        <location filename="../src/ace/AceImporter.cpp" line="68"/>
         <source>Dbi ref is invalid</source>
         <translation>Dbi ref is invalid</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="82"/>
+        <location filename="../src/ace/AceImporter.cpp" line="84"/>
         <source>Can&apos;t create a temporary database</source>
         <translation>Can&apos;t create a temporary database</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="139"/>
+        <location filename="../src/ace/AceImporter.cpp" line="141"/>
         <source>Failed to get load task for : %1</source>
         <translation>Failed to get load task for : %1</translation>
+    </message>
+</context>
+<context>
+    <name>U2::AprFormat</name>
+    <message>
+        <location filename="../src/apr/AprFormat.cpp" line="60"/>
+        <source>Unexpected end of file</source>
+        <translation type="unfinished">Unexpected end of file</translation>
+    </message>
+    <message>
+        <location filename="../src/apr/AprFormat.cpp" line="70"/>
+        <source>There is no sequences in alignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/apr/AprFormat.cpp" line="97"/>
+        <source>Attemt to find any number in the string failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/apr/AprFormat.cpp" line="139"/>
+        <source>Vector NTI/AlignX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/apr/AprFormat.cpp" line="140"/>
+        <source>Vector NTI/AlignX is a Vector NTI format for multiple alignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/apr/AprFormat.cpp" line="161"/>
+        <source>Open in read-only mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/apr/AprFormat.cpp" line="171"/>
+        <source>File doesn&apos;t contain any msa objects</source>
+        <translation type="unfinished">File doesn&apos;t contain any msa objects</translation>
+    </message>
+    <message>
+        <location filename="../src/apr/AprFormat.cpp" line="193"/>
+        <source>Illegal header line</source>
+        <translation type="unfinished">Illegal header line</translation>
+    </message>
+    <message>
+        <location filename="../src/apr/AprFormat.cpp" line="209"/>
+        <source>Sequences not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/apr/AprFormat.cpp" line="217"/>
+        <source>Alphabet is unknown</source>
+        <translation type="unfinished">Alphabet is unknown</translation>
+    </message>
+</context>
+<context>
+    <name>U2::AprImporter</name>
+    <message>
+        <location filename="../src/apr/AprImporter.cpp" line="119"/>
+        <source>Vector NTI/AlignX file importer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/apr/AprImporter.cpp" line="123"/>
+        <source>Vector NTI/AlignX files importer is used to convert conventional APR files to a multiple sequence alignment formats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/apr/AprImporter.cpp" line="138"/>
+        <source>Convert to another format:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::AprImporterTask</name>
+    <message>
+        <location filename="../src/apr/AprImporter.cpp" line="54"/>
+        <source>APR file import: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/apr/AprImporter.cpp" line="66"/>
+        <location filename="../src/apr/AprImporter.cpp" line="94"/>
+        <source>Empty destination url</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/apr/AprImporter.cpp" line="72"/>
+        <source>Invalid I/O environment!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -725,7 +815,7 @@
 <context>
     <name>U2::ConvertSnpeffVariationsToAnnotationsTask</name>
     <message>
-        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="49"/>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="50"/>
         <source>Convert SnpEff variations to annotations task</source>
         <translation>Convert SnpEff variations to annotations task</translation>
     </message>
@@ -754,7 +844,7 @@
 <context>
     <name>U2::DefaultConvertFileTask</name>
     <message>
-        <location filename="../src/tasks/ConvertFileTask.cpp" line="121"/>
+        <location filename="../src/tasks/ConvertFileTask.cpp" line="130"/>
         <source>The formats are not compatible: %1 and %2</source>
         <translation>The formats are not compatible: %1 and %2</translation>
     </message>
@@ -1693,17 +1783,17 @@
 <context>
     <name>U2::LoadConvertAndSaveSnpeffVariationsToAnnotationsTask</name>
     <message>
-        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="117"/>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="120"/>
         <source>Load file and convert SnpEff variations to annotations task</source>
         <translation>Load file and convert SnpEff variations to annotations task</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="157"/>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="160"/>
         <source>&apos;%1&apos; load failed, the result document is NULL</source>
         <translation>&apos;%1&apos; load failed, the result document is NULL</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="161"/>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="164"/>
         <source>File &apos;%1&apos; doesn&apos;t contain variation tracks</source>
         <translation>File &apos;%1&apos; doesn&apos;t contain variation tracks</translation>
     </message>
@@ -1970,7 +2060,7 @@
         <translation>Alphabet is unknown</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="351"/>
+        <location filename="../src/PhylipFormat.cpp" line="350"/>
         <source>Error parsing file</source>
         <translation>Error parsing file</translation>
     </message>
@@ -1978,32 +2068,32 @@
 <context>
     <name>U2::PhylipInterleavedFormat</name>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="239"/>
+        <location filename="../src/PhylipFormat.cpp" line="238"/>
         <source>PHYLIP Interleaved</source>
         <translation>PHYLIP Interleaved</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="338"/>
+        <location filename="../src/PhylipFormat.cpp" line="337"/>
         <source>Illegal line</source>
         <translation>Illegal line</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="345"/>
+        <location filename="../src/PhylipFormat.cpp" line="344"/>
         <source>Wrong header</source>
         <translation>Wrong header</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="381"/>
+        <location filename="../src/PhylipFormat.cpp" line="379"/>
         <source>Block is incomplete</source>
         <translation>Block is incomplete</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="392"/>
+        <location filename="../src/PhylipFormat.cpp" line="390"/>
         <source>Block is incomlete</source>
         <translation>Block is incomlete</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="399"/>
+        <location filename="../src/PhylipFormat.cpp" line="397"/>
         <source>Number of characters does not correspond to the stated number</source>
         <translation>Number of characters does not correspond to the stated number</translation>
     </message>
@@ -2027,18 +2117,18 @@
     </message>
     <message>
         <location filename="../src/PhylipFormat.cpp" line="211"/>
-        <location filename="../src/PhylipFormat.cpp" line="349"/>
+        <location filename="../src/PhylipFormat.cpp" line="348"/>
         <source>There is not enough data</source>
         <translation>There is not enough data</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="216"/>
-        <location filename="../src/PhylipFormat.cpp" line="359"/>
+        <location filename="../src/PhylipFormat.cpp" line="215"/>
+        <location filename="../src/PhylipFormat.cpp" line="357"/>
         <source>Error parsing file</source>
         <translation>Error parsing file</translation>
     </message>
     <message>
-        <location filename="../src/PhylipFormat.cpp" line="230"/>
+        <location filename="../src/PhylipFormat.cpp" line="229"/>
         <source>Number of characters does not correspond to the stated number</source>
         <translation>Number of characters does not correspond to the stated number</translation>
     </message>
@@ -2110,7 +2200,7 @@
         <translation>Failed to parse SCF file: %1</translation>
     </message>
     <message>
-        <location filename="../src/SCFFormat.cpp" line="1235"/>
+        <location filename="../src/SCFFormat.cpp" line="1237"/>
         <source>Failed to load sequence from SCF file %1</source>
         <translation>Failed to load sequence from SCF file %1</translation>
     </message>
@@ -2367,8 +2457,8 @@
     <message>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="605"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="638"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1118"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1127"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1125"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1134"/>
         <source>Unexpected modification type &apos;%1&apos;</source>
         <translation>Unexpected modification type &apos;%1&apos;</translation>
     </message>
@@ -2438,54 +2528,54 @@
         <translation>An error occurred during addition of a row</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="586"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="593"/>
         <source>Can&apos;t undo an operation for the object</source>
         <translation>Can&apos;t undo an operation for the object</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="649"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="656"/>
         <source>Can&apos;t redo an operation for the object</source>
         <translation>Can&apos;t redo an operation for the object</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="791"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="896"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="798"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="903"/>
         <source>Object not found</source>
         <translation>Object not found</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="845"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="852"/>
         <source>Folder not found: %1 (canonical: %2)</source>
         <translation>Folder not found: %1 (canonical: %2)</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1026"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1033"/>
         <source>Not an object, id: %1, type: %2</source>
         <translation>Not an object, id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1050"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1057"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="290"/>
         <source>Unknown object type! Id: %1, type: %2</source>
         <translation>Unknown object type! Id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1094"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1101"/>
         <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1109"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1116"/>
         <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1140"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1147"/>
         <source>An error occurred during updating an object name</source>
         <translation>An error occurred during updating an object name</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1158"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1165"/>
         <source>An error occurred during updating an object name!</source>
         <translation>An error occurred during updating an object name!</translation>
     </message>
@@ -2577,12 +2667,12 @@
         <translation>Can not convert pnext to a number: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/util/MysqlHelpers.cpp" line="399"/>
+        <location filename="../src/mysql_dbi/util/MysqlHelpers.cpp" line="411"/>
         <source>Bound values: </source>
         <translation>Bound values: </translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/util/MysqlHelpers.cpp" line="421"/>
+        <location filename="../src/mysql_dbi/util/MysqlHelpers.cpp" line="433"/>
         <source>Cannot start a transaction</source>
         <translation>Cannot start a transaction</translation>
     </message>
@@ -2712,7 +2802,12 @@
         <translation>Object not found!</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="803"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="993"/>
+        <source>Unexpected row count! Query: &apos;%1&apos;, rows: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="810"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="919"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="931"/>
         <source>Object not found.</source>

@@ -57,9 +57,23 @@ AlignToReferenceBlastCmdlineTask::Settings::Settings()
     : minIdentity(60),
       minLength(0),
       qualityThreshold(30),
+      rowNaming(SequenceName),
       addResultToProject(true)
 {
 
+}
+
+QString AlignToReferenceBlastCmdlineTask::Settings::getRowNamingPolicyString() const {
+    switch (rowNaming) {
+    case SequenceName:
+        return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE;
+        break;
+    case FileName:
+        return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE;
+        break;
+    default:
+        FAIL("An unknown row naming policy", LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE);
+    }
 }
 
 const QString AlignToReferenceBlastCmdlineTask::ALIGN_TO_REF_CMDLINE = "align-to-reference";
@@ -71,6 +85,7 @@ const QString AlignToReferenceBlastCmdlineTask::THRESHOLD_ARG = "threshold";
 const QString AlignToReferenceBlastCmdlineTask::READS_ARG = "reads";
 
 const QString AlignToReferenceBlastCmdlineTask::MIN_IDENTITY_ARG = "min-identity";
+const QString AlignToReferenceBlastCmdlineTask::ROW_NAMING_ARG = "row-naming-policy";
 const QString AlignToReferenceBlastCmdlineTask::REF_ARG = "reference";
 const QString AlignToReferenceBlastCmdlineTask::RESULT_ALIGNMENT_ARG = "result-url";
 
@@ -147,7 +162,7 @@ QString AlignToReferenceBlastCmdlineTask::generateReport() const {
 
     QMultiMap<QString, QString> trimReports = reports.value("SequenceQualityTrim", QMultiMap<QString, QString>());
     if (trimReports.values().size() > 0) {
-        resultReport += tr("<u>Filtered by quality or length (%1):</u>").arg(trimReports.values().size());
+        resultReport += tr("<u>Filtered by quality (%1):</u>").arg(trimReports.values().size());
         resultReport += "<table>";
     }
 
@@ -173,13 +188,14 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
 
         config.command = "--task=" + ALIGN_TO_REF_CMDLINE;
         QString argString = "--%1=\"%2\"";
-        config.arguments << argString.arg(REF_ARG).arg(settings.referenceUrl);
+        config.arguments << argString.arg(REF_ARG).arg(QFileInfo(settings.referenceUrl).absoluteFilePath());
         config.arguments << argString.arg(READS_ARG).arg(settings.readUrls.join(";"));
         config.arguments << argString.arg(MIN_IDENTITY_ARG).arg(settings.minIdentity);
+        config.arguments << argString.arg(ROW_NAMING_ARG).arg(settings.getRowNamingPolicyString());
         config.arguments << argString.arg(MIN_LEN_ARG).arg(settings.minLength);
         config.arguments << argString.arg(THRESHOLD_ARG).arg(settings.qualityThreshold);
         config.arguments << argString.arg(TRIM_ARG).arg(true);
-        config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(settings.outAlignment);
+        config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(QFileInfo(settings.outAlignment).absoluteFilePath());
 
         config.reportFile = reportFile.fileName();
         config.emptyOutputPossible = true;
@@ -234,6 +250,10 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
     initSaveController();
     readsListWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
+    cbRowNaming->addItem(tr("File name"), AlignToReferenceBlastCmdlineTask::Settings::FileName);
+    cbRowNaming->addItem(tr("Sequence name from file"), AlignToReferenceBlastCmdlineTask::Settings::SequenceName);
+    cbRowNaming->setCurrentIndex(cbRowNaming->findData(AlignToReferenceBlastCmdlineTask::Settings::SequenceName));
+
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
     saveController->setPath(outputLineEdit->text());
 
@@ -283,6 +303,7 @@ void AlignToReferenceBlastDialog::accept() {
     settings.minIdentity = minIdentitySpinBox->value();
     settings.minLength = 0;
     settings.qualityThreshold = qualitySpinBox->value();
+    settings.rowNaming = static_cast<AlignToReferenceBlastCmdlineTask::Settings::RowNaming>(cbRowNaming->currentData().toInt());
 
     if (outputLineEdit->text().isEmpty()) {
         QMessageBox::warning(this, tr("Error"),

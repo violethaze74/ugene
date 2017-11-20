@@ -2880,18 +2880,18 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Click to the position 6316 at the reference
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 6376);
+    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 6372);
 
     //6. Select all chars in the reference from here to the end
     QPoint currentPos = GTMouseDriver::getMousePosition();
-    QPoint destPos(currentPos.x() + 100, currentPos.y());
+    const int newXPos = GTUtilsMdi::activeWindow(os)->mapToGlobal(GTUtilsMdi::activeWindow(os)->rect().topRight()).x();
+    QPoint destPos(newXPos, currentPos.y());
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, destPos);
 
     //Expected: selected length = 4
     U2Region reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
     int sel = reg.length;
-    CHECK_SET_ERR(sel == 4, QString("Unexpected selection length, expectedL 4, ceurrent: %1").arg(QString::number(sel)));
-
+    CHECK_SET_ERR(sel == 4, QString("Unexpected selection length, expectedL 4, current: %1").arg(QString::number(sel)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5747) {
@@ -3836,8 +3836,7 @@ GUI_TEST_CLASS_DEFINITION(test_5798_5) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::setParameter(os, "Result ClustalW file", "DNA.aln");
             //6. Press "Run" button
-            GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
-			GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
 

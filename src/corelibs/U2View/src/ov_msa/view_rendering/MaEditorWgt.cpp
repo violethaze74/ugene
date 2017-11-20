@@ -279,11 +279,11 @@ void MaEditorWgt::initActions() {
 }
 
 void MaEditorWgt::sl_countUndo() {
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Undo", editor->getFactoryId());
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, tr("Undo"), editor->getFactoryId());
 }
 
 void MaEditorWgt::sl_countRedo() {
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Redo", editor->getFactoryId());
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, tr("Redo"), editor->getFactoryId());
 }
 
 } // namespace

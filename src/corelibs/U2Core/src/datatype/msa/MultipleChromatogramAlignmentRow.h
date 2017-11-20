@@ -140,7 +140,6 @@ public:
 
     /** Obsolete. The length of the row core */
     qint64 getCoreLength() const;
-    U2Region getCoreRegion() const;
 
     /** Removes all gaps. Returns true if changed. */
     inline bool simplify();

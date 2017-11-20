@@ -35,14 +35,13 @@ const int DNAQuality::MIN_PHRED64_VALUE = 59;
 
 DNAQuality::DNAQuality(const QByteArray &qualScore)
     : qualCodes(qualScore),
-      type(detectTypeByCodes(qualCodes))
-{
+      type(detectTypeByCodes(qualCodes)) {
 
 }
 
 DNAQuality::DNAQuality( const QByteArray& qualScore, DNAQualityType t)
-: qualCodes(qualScore), type(t)
-{
+    : qualCodes(qualScore),
+      type(t) {
 
 }
 
@@ -53,15 +52,31 @@ qint64 DNAQuality::memoryHint() const {
     return m;
 }
 
-int DNAQuality::getValue( int pos ) const
-{
+void DNAQuality::setQualCodes(const QByteArray& qualCodes) {
+    bool zeroQuality = true;
+    int prev = -1;
+    for (uint i  = 0; i < qualCodes.size(); i++) {
+        if (i > 0) {
+            if (prev != qualCodes[i]) {
+                zeroQuality = false;
+            }
+        }
+        prev = qualCodes[i];
+    }
+    if (!zeroQuality) {
+        this->qualCodes = qualCodes;
+    } else {
+        this->qualCodes = QByteArray();
+    }
+}
+
+int DNAQuality::getValue( int pos ) const {
     assert(pos >=0 && pos < qualCodes.count());
     return  type == DNAQualityType_Sanger ?
         ( (int)qualCodes.at(pos) - 33 ) : ( (int)qualCodes.at(pos) - 64 );
 }
 
-char DNAQuality::encode( int val, DNAQualityType type )
-{
+char DNAQuality::encode( int val, DNAQualityType type ) {
     if (type == DNAQualityType_Sanger ) {
         return (char) ( (val <= 93 ? val : 93) + 33 );
     } else {
@@ -69,8 +84,7 @@ char DNAQuality::encode( int val, DNAQualityType type )
     }
 }
 
-QString DNAQuality::getDNAQualityNameByType( DNAQualityType t )
-{
+QString DNAQuality::getDNAQualityNameByType( DNAQualityType t ) {
     switch(t){
         case DnaQualityType_Solexa:
             return SOLEXA;
@@ -81,8 +95,7 @@ QString DNAQuality::getDNAQualityNameByType( DNAQualityType t )
     }
 }
 
-DNAQualityType DNAQuality::getDNAQualityTypeByName( const QString& name )
-{
+DNAQualityType DNAQuality::getDNAQualityTypeByName( const QString& name ) {
     if ( name == SOLEXA) {
         return DNAQualityType_Illumina;
     } else if (name == ILLUMINA) {
@@ -92,8 +105,7 @@ DNAQualityType DNAQuality::getDNAQualityTypeByName( const QString& name )
     }
 }
 
-QStringList DNAQuality::getDNAQualityTypeNames()
-{
+QStringList DNAQuality::getDNAQualityTypeNames() {
     QStringList res;
     res << SANGER << ILLUMINA << SOLEXA;
     return res;
@@ -102,7 +114,7 @@ QStringList DNAQuality::getDNAQualityTypeNames()
 DNAQualityType DNAQuality::detectTypeByCodes(const QByteArray &qualCodes) {
     int maxQualityValue = 33;
     int minQualityValue = 126;
-    for (int i = 0; i < qualCodes.size(); i++){
+    for (int i = 0; i < qualCodes.size(); i++) {
         maxQualityValue = qMax(static_cast<int>(qualCodes.at(i)), maxQualityValue);
         minQualityValue = qMin(static_cast<int>(qualCodes.at(i)), minQualityValue);
     }

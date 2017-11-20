@@ -14,14 +14,22 @@
         <translation>Использовать</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.ui" line="26"/>
         <source>Counts</source>
-        <translation>Числа</translation>
+        <translation type="vanished">Числа</translation>
+    </message>
+    <message>
+        <source>Percents</source>
+        <translation type="vanished">Проценты</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="26"/>
+        <source>Count</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.ui" line="36"/>
-        <source>Percents</source>
-        <translation>Проценты</translation>
+        <source>Percentage</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.ui" line="46"/>
@@ -87,14 +95,22 @@
         <translation>Использовать</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="40"/>
         <source>Counts</source>
-        <translation>Числа</translation>
+        <translation type="vanished">Числа</translation>
+    </message>
+    <message>
+        <source>Percents</source>
+        <translation type="vanished">Проценты</translation>
+    </message>
+    <message>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="40"/>
+        <source>Count</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="50"/>
-        <source>Percents</source>
-        <translation>Проценты</translation>
+        <source>Percentage</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="57"/>
@@ -135,9 +151,13 @@
 <context>
     <name>U2::DNAStatMSAEditorContext</name>
     <message>
-        <location filename="../src/DNAStatPlugin.cpp" line="71"/>
         <source>Generate grid profile</source>
-        <translation>Представить выравнивание в виде таблицы частот</translation>
+        <translation type="vanished">Представить выравнивание в виде таблицы частот</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAStatPlugin.cpp" line="71"/>
+        <source>Generate grid profile...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -151,27 +171,31 @@
         <translation type="vanished">HTML файлы</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="51"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="54"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="52"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="55"/>
         <source>Cancel</source>
         <translation type="unfinished">Отмена</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="75"/>
-        <source>Select file to save report to..</source>
-        <translation>Выберете файл для сохранения отчета..</translation>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="87"/>
+        <source>Save file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="104"/>
+        <source>Select file to save report to..</source>
+        <translation type="vanished">Выберете файл для сохранения отчета..</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="116"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="104"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="116"/>
         <source>File URL is empty</source>
         <translation>Не указан файл для сохранения отчета</translation>
     </message>
@@ -179,68 +203,83 @@
 <context>
     <name>U2::DNAStatMSAProfileTask</name>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="117"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="129"/>
         <source>Generate alignment profile</source>
         <translation>Генерация сеточного отчета</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="129"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="141"/>
         <source>No output file name specified</source>
         <translation>Не указано имя файла для сохранения отчета</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="157"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="169"/>
         <source>Alignment file:</source>
         <translation>Файл:</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="158"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="170"/>
         <source>Table content:</source>
         <translation>Результаты:</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="158"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="170"/>
         <source>symbol percents</source>
         <translation>процент символа</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="158"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="170"/>
         <source>symbol counts</source>
         <translation>количество символов</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="138"/>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="249"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="150"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="261"/>
         <source>Can&apos;t open file for write: %1</source>
         <translation>Не могу открыть файл для записи: %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="240"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="252"/>
         <source>There is not enough memory to show this grid profile in UGENE. You can save it to an HTML file and open it with a web browser.</source>
         <translation>There is not enough memory to show this grid profile in UGENE. You can save it to an HTML file and open it with a web browser.</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="242"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="254"/>
         <source>There is not enough memory to generate this grid profile in UGENE.</source>
         <translation>There is not enough memory to generate this grid profile in UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="285"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="293"/>
+        <source>Task was finished with an error: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="296"/>
+        <source>Task was canceled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="300"/>
+        <source>Grid profile for %1: &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="314"/>
         <source>Alignment profile</source>
         <translation>Отчет для множественного выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="285"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="314"/>
         <source>Alignment profile for %1</source>
         <translation>Отчет для множественного выравнивания %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="154"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="166"/>
         <source>Multiple Sequence Alignment Grid Profile</source>
         <translation>Сеточный отчет для множественного выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="224"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="236"/>
         <source>Legend:</source>
         <translation>Легенда:</translation>
     </message>
@@ -347,22 +386,31 @@
 <context>
     <name>U2::DistanceMatrixMSAEditorContext</name>
     <message>
-        <location filename="../src/DNAStatPlugin.cpp" line="108"/>
         <source>Generate distance matrix</source>
-        <translation>Рассчитать матрицу расстояний</translation>
+        <translation type="vanished">Рассчитать матрицу расстояний</translation>
+    </message>
+    <message>
+        <location filename="../src/DNAStatPlugin.cpp" line="108"/>
+        <source>Generate distance matrix...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::DistanceMatrixMSAProfileDialog</name>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="56"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="60"/>
         <source>Generate</source>
         <translation>Создать отчет</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="57"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="61"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="94"/>
+        <source>Save file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>CSV files</source>
@@ -373,17 +421,16 @@
         <translation type="vanished">HTML файлы</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="81"/>
         <source>Select file to save report to..</source>
-        <translation>Выберете файл для сохранения отчета..</translation>
+        <translation type="vanished">Выберете файл для сохранения отчета..</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="112"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="125"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="112"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="125"/>
         <source>File URL is empty</source>
         <translation>Не указан файл для сохранения отчета</translation>
     </message>
@@ -391,64 +438,74 @@
 <context>
     <name>U2::DistanceMatrixMSAProfileTask</name>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="138"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="151"/>
         <source>Generate distance matrix</source>
         <translation>Рассчитать матрицу расстояний</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="166"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="179"/>
         <source>No output file name specified</source>
         <translation>Не указано имя файла для сохранения отчета</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="188"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="201"/>
         <source>Multiple Sequence Alignment Distance Matrix</source>
         <translation>Матрица расстояний множественного выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="191"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="204"/>
         <source>Alignment file:</source>
         <translation>Файл:</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="192"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="205"/>
         <source>Table content:</source>
         <translation>Результаты:</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="202"/>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="235"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="215"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="248"/>
         <source>There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser.</source>
         <translation>There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser.</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="209"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="222"/>
         <source>Group statistics of multiple alignment</source>
         <translation>Групповая статистика множественного выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="242"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="255"/>
         <source>Legend:</source>
         <translation>Легенда:</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="174"/>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="261"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="187"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="274"/>
         <source>Can&apos;t open file for write: %1</source>
         <translation>Не могу открыть файл для записи: %1</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="303"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="317"/>
         <source>There is not enough groups to create distance matrix!</source>
         <translation>Недостаточно групп для того, чтобы создать матрицу расстояний!</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="352"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="361"/>
+        <source>Task was finished with an error: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="365"/>
+        <source>Distanse matrix for %1: &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="379"/>
         <source>Distance matrix</source>
         <translation>Матрица расстояний</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="352"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="379"/>
         <source>Distance matrix for %1</source>
         <translation>Матрица расстояний для %1</translation>
     </message>
