@@ -97,6 +97,8 @@ public:
 
     bool isTrailingOrLeadingGap(qint64 position) const;
 
+    U2Region getCoreRegion() const;
+
     virtual ~MultipleAlignmentRowData();
 
     /** Returns the list of gaps for the row */

@@ -114,22 +114,22 @@
         <translation>An error occurred while starting UGENE: </translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="274"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="275"/>
         <source>An error occurred while finishing UGENE: </source>
         <translation>An error occurred while finishing UGENE: </translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="276"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="277"/>
         <source>Test fails because of timeout.</source>
         <translation>Test fails because of timeout.</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="308"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="309"/>
         <source>Test name</source>
         <translation>Test name</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="308"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="309"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>

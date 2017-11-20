@@ -4,51 +4,40 @@
 <context>
     <name>BaseContentDialog</name>
     <message>
-        <location filename="../src/BaseContentDialog.ui" line="20"/>
         <source>Set Base Content</source>
-        <translation>Задать состав последовательности</translation>
+        <translation type="vanished">Задать состав последовательности</translation>
     </message>
     <message>
         <source>Base conetnt</source>
         <translation type="vanished">Состав</translation>
     </message>
     <message>
-        <location filename="../src/BaseContentDialog.ui" line="26"/>
         <source>Base content</source>
-        <translation>Основной состав</translation>
+        <translation type="vanished">Основной состав</translation>
     </message>
     <message>
-        <location filename="../src/BaseContentDialog.ui" line="55"/>
         <source>A</source>
-        <translation>A</translation>
+        <translation type="vanished">A</translation>
     </message>
     <message>
-        <location filename="../src/BaseContentDialog.ui" line="68"/>
-        <location filename="../src/BaseContentDialog.ui" line="107"/>
-        <location filename="../src/BaseContentDialog.ui" line="146"/>
-        <location filename="../src/BaseContentDialog.ui" line="185"/>
         <source> %</source>
-        <translation> %</translation>
+        <translation type="vanished"> %</translation>
     </message>
     <message>
-        <location filename="../src/BaseContentDialog.ui" line="94"/>
         <source>C</source>
-        <translation>C</translation>
+        <translation type="vanished">C</translation>
     </message>
     <message>
-        <location filename="../src/BaseContentDialog.ui" line="133"/>
         <source>G</source>
-        <translation>G</translation>
+        <translation type="vanished">G</translation>
     </message>
     <message>
-        <location filename="../src/BaseContentDialog.ui" line="172"/>
         <source>T</source>
-        <translation>T</translation>
+        <translation type="vanished">T</translation>
     </message>
     <message>
-        <location filename="../src/BaseContentDialog.ui" line="199"/>
         <source>GC Skew</source>
-        <translation>GC смещение</translation>
+        <translation type="vanished">GC смещение</translation>
     </message>
 </context>
 <context>
@@ -174,37 +163,65 @@
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.ui" line="212"/>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="288"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui" line="492"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.ui" line="221"/>
+        <source>Base content (%)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DNASequenceGeneratorDialog.ui" line="245"/>
+        <source>A</source>
+        <translation type="unfinished">A</translation>
+    </message>
+    <message>
+        <location filename="../src/DNASequenceGeneratorDialog.ui" line="295"/>
+        <source>C</source>
+        <translation type="unfinished">C</translation>
+    </message>
+    <message>
+        <location filename="../src/DNASequenceGeneratorDialog.ui" line="342"/>
+        <source>G</source>
+        <translation type="unfinished">G</translation>
+    </message>
+    <message>
+        <location filename="../src/DNASequenceGeneratorDialog.ui" line="389"/>
+        <source>T</source>
+        <translation type="unfinished">T</translation>
+    </message>
+    <message>
+        <location filename="../src/DNASequenceGeneratorDialog.ui" line="426"/>
+        <source>GC Skew</source>
+        <translation type="unfinished">GC смещение</translation>
+    </message>
+    <message>
         <source>Manual</source>
-        <translation>Вручную</translation>
+        <translation type="vanished">Вручную</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="236"/>
         <source>Configure...</source>
-        <translation>Настроить...</translation>
+        <translation type="vanished">Настроить...</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="267"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui" line="471"/>
         <source>Output</source>
         <translation>Результат</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="273"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui" line="477"/>
         <source>Output File</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="297"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui" line="501"/>
         <source>Format</source>
         <translation>Формат</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.ui" line="323"/>
+        <location filename="../src/DNASequenceGeneratorDialog.ui" line="527"/>
         <source>Add to project</source>
         <translation>Добавить в проект</translation>
     </message>
@@ -286,21 +303,36 @@
     </message>
 </context>
 <context>
-    <name>ExportMsa2McaDialog</name>
+    <name>ExportMca2MsaDialog</name>
     <message>
-        <location filename="../src/ExportMsa2McaDialog.ui" line="14"/>
-        <source>Export MSA to MCA</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="20"/>
+        <source>Export Alignment without Chromatograms </source>
+        <translation>Экспорт выравнивания без хроматограмм </translation>
     </message>
     <message>
-        <location filename="../src/ExportMsa2McaDialog.ui" line="20"/>
-        <source>Save MCA to:</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="34"/>
+        <source>File format</source>
+        <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ExportMsa2McaDialog.ui" line="35"/>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="52"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="61"/>
+        <source>Export to file</source>
+        <translation>Записать в файл</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="70"/>
+        <source>Add document to project</source>
+        <translation>Добавить в проект</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.ui" line="80"/>
+        <source>Include reference sequence</source>
+        <translation>Добавить референсную последовательность в файл</translation>
     </message>
 </context>
 <context>
@@ -604,34 +636,29 @@
         <source>Document is already added to the project %1</source>
         <translation>Документ уже добавлен в проект %1</translation>
     </message>
+    <message>
+        <location filename="../src/ExportTasks.cpp" line="80"/>
+        <source>Can&apos;t create load task</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::BaseContentDialog</name>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="171"/>
         <source>Save</source>
-        <translation>Сохранить</translation>
+        <translation type="vanished">Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="172"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="255"/>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="278"/>
         <source>Base content</source>
-        <translation>Основной состав</translation>
+        <translation type="vanished">Основной состав</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="255"/>
         <source>Incorrect GC Skew value</source>
-        <translation>Некорректное значение GC смещения</translation>
+        <translation type="vanished">Некорректное значение GC смещения</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="278"/>
         <source>Total percentage has to be 100 %</source>
-        <translation>Сумма должна составлять 100 %</translation>
+        <translation type="vanished">Сумма должна составлять 100 %</translation>
     </message>
 </context>
 <context>
@@ -650,6 +677,14 @@
         <location filename="../src/CSVColumnConfigurationDialog.cpp" line="96"/>
         <source>Invalid qualifier name!</source>
         <translation>Неправильное имя квалификатора!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ConvertMca2MsaTask</name>
+    <message>
+        <location filename="../src/tasks/ConvertMca2MsaTask.cpp" line="31"/>
+        <source>Convert MCA to MSA task</source>
+        <translation>Convert MCA to MSA task</translation>
     </message>
 </context>
 <context>
@@ -674,17 +709,17 @@
 <context>
     <name>U2::DNAExportPlugin</name>
     <message>
-        <location filename="../src/DNAExportPlugin.cpp" line="48"/>
+        <location filename="../src/DNAExportPlugin.cpp" line="49"/>
         <source>DNA export</source>
         <translation>Экспорт ДНК</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPlugin.cpp" line="48"/>
+        <location filename="../src/DNAExportPlugin.cpp" line="49"/>
         <source>Export and import support for DNA &amp; protein sequences</source>
         <translation>Экспорт и импорт поддерживается для белков и ДНК последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPlugin.cpp" line="51"/>
+        <location filename="../src/DNAExportPlugin.cpp" line="52"/>
         <source>Random sequence generator...</source>
         <translation>Генерация случайных последовательностей...</translation>
     </message>
@@ -692,12 +727,12 @@
 <context>
     <name>U2::DNAExportService</name>
     <message>
-        <location filename="../src/DNAExportPlugin.cpp" line="85"/>
+        <location filename="../src/DNAExportPlugin.cpp" line="86"/>
         <source>DNA export service</source>
         <translation>Экспорт ДНК</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPlugin.cpp" line="85"/>
+        <location filename="../src/DNAExportPlugin.cpp" line="86"/>
         <source>Export and import support for DNA &amp; protein sequences</source>
         <translation>Экспорт и импорт поддерживается для белков и ДНК последовательностей</translation>
     </message>
@@ -705,46 +740,62 @@
 <context>
     <name>U2::DNASequenceGeneratorDialog</name>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="61"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="70"/>
         <source>Generate</source>
         <translation>Сгенерировать</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="62"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="71"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="96"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="119"/>
         <source>Save sequences</source>
         <translation>Сохранить последовательности</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="111"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="134"/>
         <source>Open file</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="138"/>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="147"/>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="152"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="154"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="159"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="164"/>
         <source>DNA Sequence Generator</source>
         <translation>Генератор ДНК последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="138"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="154"/>
         <source>Windows size bigger than sequence length</source>
         <translation>Размер окна больше чем длина последовательности</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="147"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="159"/>
         <source>Reference url is not specified.</source>
         <translation>Путь до референса не указан.</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="152"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="164"/>
         <source>Output file is no specified.</source>
         <translation>Не указан выходной файл.</translation>
+    </message>
+    <message>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="177"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="202"/>
+        <source>Base content</source>
+        <translation type="unfinished">Основной состав</translation>
+    </message>
+    <message>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="177"/>
+        <source>Total percentage must be 100%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="202"/>
+        <source>Incorrect GC Skew value</source>
+        <translation type="unfinished">Некорректное значение GC смещения</translation>
     </message>
 </context>
 <context>
@@ -786,7 +837,7 @@
 <context>
     <name>U2::ExportAlignmentTask</name>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="95"/>
+        <location filename="../src/ExportTasks.cpp" line="96"/>
         <source>Export alignment to &apos;%1&apos;</source>
         <translation>Экспорт выравнивания в &apos;%1&apos;</translation>
     </message>
@@ -861,7 +912,7 @@
 <context>
     <name>U2::ExportDNAChromatogramTask</name>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="209"/>
+        <location filename="../src/ExportTasks.cpp" line="210"/>
         <source>Export chromatogram to SCF</source>
         <translation>Экспорт хроматограммы в SCF</translation>
     </message>
@@ -937,17 +988,17 @@
 <context>
     <name>U2::ExportMSA2MSATask</name>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="154"/>
+        <location filename="../src/ExportTasks.cpp" line="155"/>
         <source>Export alignment to alignment: %1</source>
         <translation>Экспортировать выравнивание в выравнивание: %1</translation>
     </message>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="158"/>
+        <location filename="../src/ExportTasks.cpp" line="159"/>
         <source>Nothing to export: multiple alignment is empty</source>
         <translation>Nothing to export: multiple alignment is empty</translation>
     </message>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="182"/>
+        <location filename="../src/ExportTasks.cpp" line="183"/>
         <source>Out of memory</source>
         <translation>Ошибка выделения памяти</translation>
     </message>
@@ -1013,144 +1064,154 @@
 <context>
     <name>U2::ExportMSA2SequencesTask</name>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="120"/>
+        <location filename="../src/ExportTasks.cpp" line="121"/>
         <source>Export alignment to sequence: %1</source>
         <translation>Экспорт выравнивания в последовательность: %1</translation>
     </message>
 </context>
 <context>
-    <name>U2::ExportMsa2McaDialog</name>
+    <name>U2::ExportMca2MsaDialog</name>
     <message>
-        <location filename="../src/ExportMsa2McaDialog.cpp" line="48"/>
-        <source>Export MSA to MCA</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="42"/>
+        <source>Export</source>
+        <translation>Экспорт</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="43"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/ExportMca2MsaDialog.cpp" line="72"/>
+        <source>Export Alignment</source>
+        <translation>Экспорт выравнивания</translation>
     </message>
 </context>
 <context>
-    <name>U2::ExportMsa2McaTask</name>
+    <name>U2::ExportMca2MsaTask</name>
     <message>
-        <location filename="../src/tasks/ExportMsa2McaTask.cpp" line="44"/>
-        <source>Export MSA to MCA</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/tasks/ExportMca2MsaTask.cpp" line="37"/>
+        <source>Export Sanger reads task</source>
+        <translation type="unfinished">Export Sanger reads task</translation>
     </message>
 </context>
 <context>
     <name>U2::ExportProjectViewItemsContoller</name>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="86"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="84"/>
         <source>Export sequences...</source>
         <translation>Экспорт последовательностей...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="90"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="88"/>
         <source>Export corresponding sequence...</source>
         <translation>Экспорт соответствующей последовательности...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="94"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="92"/>
         <source>Export sequences as alignment...</source>
         <translation>Экспорт последовательностей в выравнивание...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="98"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="96"/>
         <source>Export alignment to sequence format...</source>
         <translation>Экспорт выранивания в формат последовательности...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="103"/>
-        <source>Export MSA to MCA...</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/ExportProjectViewItems.cpp" line="100"/>
+        <source>Export alignment without chromatograms...</source>
+        <translation>Экспорт выравнивания без хроматограмм...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="107"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="103"/>
         <source>Export nucleic alignment to amino translation...</source>
         <translation>Экспорт нуклеотидной последовательности в амино трансляции...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="111"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="107"/>
         <source>Import annotations from CSV file...</source>
         <translation>Импорт аннотаций из CSV файла...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="115"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="111"/>
         <source>Export chromatogram to SCF...</source>
         <translation>Экспорт хроматограммы в SCF...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="119"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="115"/>
         <source>Export annotations...</source>
         <translation>Экспортировать аннотации...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="123"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="119"/>
         <source>Export sequence quality...</source>
         <translation>Экспорт качества последовательности...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="126"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="122"/>
         <source>Export object...</source>
         <translation>Экспорт объекта...</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="158"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="169"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="185"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="194"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="204"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="220"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="154"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="165"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="178"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="186"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="195"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="205"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="222"/>
         <source>Export/Import</source>
         <translation>Экспорт/Импорт</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="311"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="313"/>
         <source>There are no sequence objects selected.</source>
         <translation>There are no sequence objects selected.</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="327"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="329"/>
         <source>There is no annotation table selected.</source>
         <translation>There is no annotation table selected.</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="340"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="342"/>
         <source>There is no associated sequence found.</source>
         <translation>There is no associated sequence found.</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="387"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="597"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="389"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="587"/>
         <source>No sequence objects selected!</source>
         <translation>Выделите один или более объектов!</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="414"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="416"/>
         <source>Not enough memory</source>
         <translation>Недостаточно памяти</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="436"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="464"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="492"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="438"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="482"/>
         <source>Select one alignment object to export</source>
         <translation>Выберите один объект выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="481"/>
-        <source>A problem occurred during export MSA to MCA. The MSA is no more available.</source>
+        <location filename="../src/ExportProjectViewItems.cpp" line="466"/>
+        <source>Select one chromatogram alignment object to export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="539"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="529"/>
         <source>Select one chromatogram object to export</source>
         <translation>Выберите один объект для экспорта</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="575"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="565"/>
         <source>Select one annotation object to export</source>
         <translation>Выберите один объект аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="602"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="592"/>
         <source>Set output quality file</source>
         <translation>Укажите качество выходного файла</translation>
     </message>
@@ -1395,6 +1456,14 @@
         <location filename="../src/ExportSequencesDialog.cpp" line="239"/>
         <source>Organism for back translation not specified</source>
         <translation>Не выбран организм для обратной трансляции</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExportUtils</name>
+    <message>
+        <location filename="../src/ExportUtils.cpp" line="97"/>
+        <source>A problem occurred during export MCA to MSA. The MCA is no more available.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1984,6 +2053,14 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
         <location filename="../src/ExportAlignmentViewItems.cpp" line="112"/>
         <source>Export Amino Translation</source>
         <translation>Экспорт амино трансляций</translation>
+    </message>
+</context>
+<context>
+    <name>U2::McaEditorContext</name>
+    <message>
+        <location filename="../src/McaEditorContext.cpp" line="55"/>
+        <source>Export alignment without chromatograms...</source>
+        <translation>Экспорт выравнивания без хроматограмм...</translation>
     </message>
 </context>
 <context>

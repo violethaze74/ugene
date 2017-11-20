@@ -206,7 +206,6 @@ TaskFlags WorkflowIterationRunTask::getAdditionalFlags() {
 }
 
 WorkflowIterationRunTask::~WorkflowIterationRunTask() {
-    emit si_updateProducers();
     lmap.clear();
     DomainFactory* df = WorkflowEnv::getDomainRegistry()->getById(schema->getDomain());
     if (df) {
@@ -334,6 +333,8 @@ Task::ReportResult WorkflowIterationRunTask::report() {
             }
         }
     }
+
+    emit si_updateProducers();
     return ReportResult_Finished;
 }
 

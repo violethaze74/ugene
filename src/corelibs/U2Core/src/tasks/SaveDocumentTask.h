@@ -36,16 +36,15 @@ class IOAdapterFactory;
 class DocumentFormat;
 
 enum SaveDocFlag {
-    SaveDoc_Overwrite = 0x0,
-    SaveDoc_Append = 0x1,
-    SaveDoc_Roll = 0x2,
-    SaveDoc_DestroyAfter = 0x4,
-    SaveDoc_DestroyButDontUnload = 0x8,
-    SaveDoc_OpenAfter = 0x16,
-    SaveDoc_UnloadAfter = 0x80
+    SaveDoc_Overwrite = 1 << 0,
+    SaveDoc_Append = 1 << 1,
+    SaveDoc_Roll = 1 << 2,
+    SaveDoc_DestroyAfter = 1 << 3,
+    SaveDoc_DestroyButDontUnload = 1 << 4,
+    SaveDoc_OpenAfter = 1 << 5,
+    SaveDoc_UnloadAfter = 1 << 6
 };
-
-typedef QFlags<SaveDocFlag>  SaveDocFlags;
+Q_DECLARE_FLAGS(SaveDocFlags, SaveDocFlag)
 
 class U2CORE_EXPORT SaveDocumentTask : public Task {
     Q_OBJECT
@@ -121,5 +120,7 @@ public:
 };
 
 }//namespace
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(U2::SaveDocFlags)
 
 #endif

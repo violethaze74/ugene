@@ -831,7 +831,7 @@ void FindAlgorithm::find(
 
     bool insDel = (patternSettings == FindAlgorithmPatternSettings_InsDel);
 
-    if (patternSettings == FindAlgorithmPatternSettings_Exact && sequenceAlphabet != NULL) {
+    if (patternSettings == FindAlgorithmPatternSettings_Exact && sequenceAlphabet != NULL && aminoTT == NULL) {
         // exact search -> do not run any search if pattern has illegal symbols
         if (!U2AlphabetUtils::matches(sequenceAlphabet, pattern, patternLen)) {
             return;

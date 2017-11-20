@@ -3354,17 +3354,17 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::MergeFastqPrompter</name>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="454"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="452"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="455"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="453"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation>из &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="457"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="455"/>
         <source>Merges input sequences %1.</source>
         <translation>Соединяет входные файлы %1.</translation>
     </message>
@@ -3372,77 +3372,77 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::MergeFastqWorker</name>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="465"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="463"/>
         <source>FASTQ Merger</source>
         <translation>Слияние файлов FASTQ</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="466"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="464"/>
         <source>Merges input sequences to one output file</source>
         <translation>этот элемент соединяет входные последовательности в один выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="470"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="468"/>
         <source>Input File</source>
         <translation>Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="471"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="469"/>
         <source>Set of FASTQ reads files</source>
         <translation>Набор файлов с FASTQ ридами</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="472"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="470"/>
         <source>Output File</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="473"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="471"/>
         <source>Output FASTQ file</source>
         <translation>Выходной FASTQ файл</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="486"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="484"/>
         <source>Output folder</source>
         <translation>Выходная папка</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="487"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="485"/>
         <source>Select an output folder. &lt;b&gt;Custom&lt;/b&gt; - specify the output folder in the &apos;Custom folder&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow folder. &lt;b&gt;Input file&lt;/b&gt; - the folder of the input file.</source>
         <translation>выберите выходную папку. &lt;b&gt;Частная&lt;/b&gt; - укажите папку в параметре &apos;Частная папка&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя папка дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - папка входного файла.</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="491"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="489"/>
         <source>Custom folder</source>
         <translation>Частная папка</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="492"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="490"/>
         <source>Select the custom output folder.</source>
         <translation>Укажите частную выходную папку.</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="494"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="492"/>
         <source>Output file name</source>
         <translation>Имя выходного файла</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="495"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="493"/>
         <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</source>
         <translation>Имя выходного файла.</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="510"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="508"/>
         <source>Custom</source>
         <translation>Частная</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="508"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="506"/>
         <source>Input file</source>
         <translation>Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="509"/>
+        <location filename="../src/library/FASTQWorkersLibrary.cpp" line="507"/>
         <source>Workflow</source>
         <translation>Схема</translation>
     </message>
@@ -4439,17 +4439,17 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::SequenceQualityTrimPrompter</name>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="51"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="52"/>
         <source>unset</source>
         <translation type="unfinished">не указан</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="52"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="53"/>
         <source>from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation type="unfinished">из &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="54"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="55"/>
         <source>Trim input sequence %1 from %2, using the quality threshold.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4457,72 +4457,85 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::SequenceQualityTrimWorker</name>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="72"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="73"/>
         <source>There is no sequence object in the message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="80"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="81"/>
         <source>An unexpected task type</source>
         <translation type="unfinished">An unexpected task type</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="102"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="86"/>
+        <source>Sequence was filtered out by quality</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="107"/>
         <source>Sequence Quality Trimmer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="103"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="108"/>
         <source>The workflow scans each input sequence from the end to find the first position where the quality is greater or equal to the minimum quality threshold. Then it trims the sequence to that position. If a the whole sequence has quality less than the threshold or the length of the output sequence less than the minimum length threshold then the sequence is skipped.</source>
         <translation type="unfinished">Схема сканирует каждую входную последовательность начиная с конца для поиска первой позиции где качество больше или равно минимальному порогу качества. После этого происходит подрезание до этой позиции.</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="109"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="114"/>
         <source>Input Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="110"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="115"/>
         <source>Set of sequences to trim by quality</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="111"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="116"/>
         <source>Output Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="112"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="117"/>
         <source>Trimmed sequences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="127"/>
-        <source>Quality threshold</source>
-        <translation>Порог качества</translation>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="132"/>
+        <source>Trimming quality threshold</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="128"/>
+        <source>Quality threshold</source>
+        <translation type="vanished">Порог качества</translation>
+    </message>
+    <message>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="133"/>
         <source>Quality threshold for trimming.</source>
         <translation>порог качества для подрезания.</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="130"/>
-        <source>Min Length</source>
-        <translation>Минимальная длина</translation>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="135"/>
+        <source>Min length</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="131"/>
+        <source>Min Length</source>
+        <translation type="vanished">Минимальная длина</translation>
+    </message>
+    <message>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="136"/>
         <source>Too short reads are discarded by the filter.</source>
         <translation>слишком короткие риды будут удалены.</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="133"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="138"/>
         <source>Trim both ends</source>
         <translation>Обрезка обоих концов</translation>
     </message>
     <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="134"/>
+        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="139"/>
         <source>Trim the both ends of a read or not. Usually, you need to set &lt;b&gt;True&lt;/b&gt; for &lt;b&gt;Sanger&lt;/b&gt; sequencing and &lt;b&gt;False&lt;/b&gt; for &lt;b&gt;NGS&lt;/b&gt;</source>
         <translation>обрезать оба конца рида или нет. Для ридов, полученных методом Сенгера, обычно необходимо установить значение &lt;b&gt;Истина&lt;/b&gt;, а для ридов NGS — &lt;b&gt;Ложь&lt;/b&gt;.</translation>
     </message>
@@ -5297,6 +5310,16 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <source>Trim sequence by quality</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/tasks/SequenceQualityTrimTask.cpp" line="74"/>
+        <source>The sequence &apos;%1&apos; was filtered out by quality</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/SequenceQualityTrimTask.cpp" line="126"/>
+        <source>The trimming was skipped for the sequences without quality information.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::StartupDialog</name>
@@ -5798,66 +5821,71 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/WorkflowDesignerPlugin.cpp" line="331"/>
+        <source>Filter short scaffolds...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="333"/>
         <source>Raw DNA-Seq data processing</source>
         <translation>Обработка сырых данных секвенирования ДНК</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="333"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="335"/>
         <source>Variant calling</source>
         <translation>Поиск вариаций</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="335"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="337"/>
         <source>Variant calling and effects prediction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="337"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="339"/>
         <source>Annotate variants and predict effects</source>
         <translation>Аннотация вариаций и предсказание эффекта</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="339"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="341"/>
         <source>Raw RNA-Seq data processing</source>
         <translation>Обработка сырых данных секвенирования РНК</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="341"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="343"/>
         <source>RNA-Seq data analysis</source>
         <translation>Анализ данных секвенирования РНК</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="343"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="345"/>
         <source>Extract transcript sequences</source>
         <translation>Извлечение последовательности транскриптов</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="345"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="347"/>
         <source>Raw ChIP-Seq data processing</source>
         <translation>Обработка сырых данных ChIP-Seq</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="347"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="349"/>
         <source>ChIP-Seq data analysis</source>
         <translation>Анализ данных ChIP-Seq</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="349"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="351"/>
         <source>ChIP-Seq coverage</source>
         <translation>Покрытие ChIP-Seq</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="351"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="353"/>
         <source>Extract coverage from assemblies</source>
         <translation>Расчет покрытия по сборке</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="353"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="355"/>
         <source>Extract consensus from assemblies</source>
         <translation>Извлечение консенсуса из сборки</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="356"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="358"/>
         <source>Remote NCBI BLAST</source>
         <translation>Удаленный поиск с помощью NCBI BLAST</translation>
     </message>
@@ -5991,27 +6019,27 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowPaletteElements</name>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="557"/>
+        <location filename="../src/WorkflowPalette.cpp" line="571"/>
         <source>Can&apos;t remove element %1</source>
         <translation>Не могу удалить элемент %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="579"/>
+        <location filename="../src/WorkflowPalette.cpp" line="593"/>
         <source>Expand all</source>
         <translation>Развернуть все</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="580"/>
+        <location filename="../src/WorkflowPalette.cpp" line="594"/>
         <source>Collapse all</source>
         <translation>Свернуть все</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="583"/>
+        <location filename="../src/WorkflowPalette.cpp" line="597"/>
         <source>Edit</source>
         <translation>Изменить</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowPalette.cpp" line="584"/>
+        <location filename="../src/WorkflowPalette.cpp" line="598"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
@@ -6030,37 +6058,37 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowRunFromCMDLineBase</name>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="49"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="50"/>
         <source>Workflow run from cmdline</source>
         <translation>Запуск схемы из командной строки</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="71"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="77"/>
         <source>no task to run</source>
         <translation>нет задач для выполнения</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="88"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="94"/>
         <source>Cannot find workflow: %1</source>
         <translation>Невозможно найти схему: %1</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="117"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="123"/>
         <source>alias &apos;%1&apos; not set in workflow</source>
         <translation>алиас &apos;%1&apos; не установлен в схеме</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="138"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="144"/>
         <source>Incorrect value for &apos;%1&apos;, null or default value passed to workflow</source>
         <translation>Некорректное значение &apos;%1&apos;, нулевое или дефолтное значение передано схеме</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="123"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="129"/>
         <source>actor parameter &apos;%1&apos; not found</source>
         <translation>текущий параметр &apos;%1&apos; не найден</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="130"/>
+        <location filename="../src/cmdline/WorkflowCMDLineTasks.cpp" line="136"/>
         <source>cannot parse value from &apos;%1&apos;</source>
         <translation>невозможно разобрать значение из &apos;%1&apos;</translation>
     </message>
@@ -6068,22 +6096,22 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowScene</name>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2539"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2547"/>
         <source>Open document(s)</source>
         <translation>Открыть документы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2699"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2707"/>
         <source>Workflow Designer</source>
         <translation>Дизайнер вычислительных схем</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2699"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2707"/>
         <source>Unable to open specified documents. Watch log for details.</source>
         <translation>Невозможно открыть указанные документы. Посмотрите лог для выяснения деталей.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2781"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2790"/>
         <source>Drop an element from the palette here</source>
         <translation>Перенесите сюда элемент из палитры</translation>
     </message>
@@ -6136,7 +6164,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <name>U2::WorkflowView</name>
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="326"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2336"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2344"/>
         <source>Workflow Designer</source>
         <translation>Дизайнер схем</translation>
     </message>
@@ -6149,8 +6177,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     <message>
         <location filename="../src/WorkflowViewController.cpp" line="442"/>
         <location filename="../src/WorkflowViewController.cpp" line="444"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2259"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2261"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2267"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2269"/>
         <source>Warning!</source>
         <translation>Предупреждение!</translation>
     </message>
@@ -6417,33 +6445,33 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Схема содержит визард. Текущая версия UGENE не поддерживает визарды в схемах.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2139"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2147"/>
         <source>File is not found: %1</source>
         <translation>Файл не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2177"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2185"/>
         <source>Show dashboard</source>
         <translation>Показать панель</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2186"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2194"/>
         <source>Show workflow</source>
         <translation>Показать схему</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2232"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2235"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2240"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2243"/>
         <source>Open workflow file</source>
         <translation>Открыть файл схемы</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2273"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2281"/>
         <source>New workflow</source>
         <translation>Новая схема</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2337"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2345"/>
         <source>The workflow has been modified.
 Do you want to save changes?</source>
         <translation>Схема была изменена. Вы хотите сохранить изменения?</translation>
@@ -6471,12 +6499,12 @@ Do you want to save changes?</source>
         <translation>Неверные входные данные!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2305"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2313"/>
         <source>Workflow Designer - %1</source>
         <translation>Дизайнер схем - %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1847"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1850"/>
         <source>Drag the palette element to the scene or just click on the scene to add the element.</source>
         <translation>Перетащите элемент из палитры на плоскость или просто кликните мышью в нужном месте схемы.</translation>
     </message>
