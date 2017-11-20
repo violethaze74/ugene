@@ -3925,6 +3925,21 @@ GUI_TEST_CLASS_DEFINITION(test_5818_2) {
     GTUtilsProjectTreeView::checkItem(os, "BL060C3.ace.ugenedb");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5832) {
+    //1. Open "test/_common_data/fasta/empty.fa".
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "empty.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTLogTracer l;
+
+    //2. Click on the sequence area.
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(5, 5));
+
+    //Expected: no errors in the log
+    QStringList errorList = GTUtilsLog::getErrors(os, l);
+    CHECK_SET_ERR(errorList.isEmpty(), "Unexpected errors in the log");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5840) {
     QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
     QString fileName = "sanger_alignment.ugenedb";
