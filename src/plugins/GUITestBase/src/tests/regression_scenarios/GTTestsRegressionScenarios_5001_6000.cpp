@@ -3946,6 +3946,26 @@ GUI_TEST_CLASS_DEFINITION(test_5840) {
     CHECK_SET_ERR(!isExited, "The document has not been deleted")
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5847) {
+    //1. Open samples/APR/DNA.apr in read-only mode
+    GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
+    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select any sequence
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "HS11791");
+    GTGlobals::sleep(1000);
+
+    GTLogTracer l;
+
+    //3 Press "delete"
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    //Expected: no errors in the log
+    QStringList errorList = GTUtilsLog::getErrors(os, l);
+    CHECK_SET_ERR(errorList.isEmpty(), "Unexpected errors in the log");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
