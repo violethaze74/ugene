@@ -129,7 +129,7 @@ void SequenceQualityTrimWorkerFactory::init() {
 
     QList<Attribute *> attributes;
     {
-        Descriptor qualityTreshold(QUALITY_ID, SequenceQualityTrimWorker::tr("Quality threshold"),
+        Descriptor qualityTreshold(QUALITY_ID, SequenceQualityTrimWorker::tr("Trimming quality threshold"),
                                    SequenceQualityTrimWorker::tr("Quality threshold for trimming."));
 
         Descriptor minSequenceLength(LEN_ID, SequenceQualityTrimWorker::tr("Min length"),

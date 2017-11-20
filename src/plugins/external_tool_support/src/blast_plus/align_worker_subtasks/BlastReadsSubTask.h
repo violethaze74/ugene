@@ -47,6 +47,7 @@ public:
                       const QList<SharedDbiDataHandler> &reads,
                       const SharedDbiDataHandler &reference,
                       const int minIdentityPercent,
+                      const QMap<SharedDbiDataHandler, QString> &readsNames,
                       DbiDataStorage *storage);
 
     void prepare();
@@ -56,6 +57,7 @@ public:
 private:
     const QString dbPath;
     const QList<SharedDbiDataHandler> reads;
+    const QMap<SharedDbiDataHandler, QString> readsNames;
     const SharedDbiDataHandler reference;
     const int minIdentityPercent;
 
@@ -74,11 +76,12 @@ public:
                        const SharedDbiDataHandler& read,
                        const SharedDbiDataHandler &reference,
                        const int minIdentityPercent,
+                       const QString &readName,
                        DbiDataStorage *storage);
 
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
-    void run();
+    ReportResult report();
 
     bool isComplement() const;
     const SharedDbiDataHandler& getRead() const;
@@ -92,6 +95,9 @@ public:
     int         getReadIdentity() const;
 
 private:
+    BlastNPlusSupportTask *getBlastTask();
+    void checkRead(const QByteArray &sequenceData);
+
     U2Region getReferenceRegion(const QList<SharedAnnotationData>& blastAnnotations);
     void createAlignment(const U2Region& refRegion);
     void shiftGaps(U2MsaRowGapModel &gaps) const;
@@ -117,7 +123,7 @@ private:
 
     U2MsaRowGapModel referenceGaps;
     U2MsaRowGapModel readGaps;
-    QString initialReadName;
+    QString readName;
     bool complement;
     bool skipped;
 };

@@ -93,7 +93,7 @@ workflow "Trim and map Sanger reads"{
         wizard {
             help-page-id:16122701;
 	    auto-run: true;
-            name:"Trim and Map Sanger Reads";
+            name:"Map Sanger Reads to Reference";
             page {
                 id:1;
                 next:2;
@@ -121,14 +121,16 @@ workflow "Trim and map Sanger reads"{
             page {
                 id:3;
                 next:4;
-                title:"Trimming and Filtering";
+                title:"Mapping Settings";
                 parameters-area {
                     group {
                         title:"Settings";
-                        label-size:120;
+                        label-size:220;
                         SequenceQualityTrim.qual-id {
                         }
-                        SequenceQualityTrim.len-id {
+                        align-to-reference.identity {
+                        }
+                        align-to-reference.row-naming-policy {
                         }
                     }
                 }

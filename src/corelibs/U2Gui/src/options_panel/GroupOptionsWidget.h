@@ -36,6 +36,7 @@ namespace U2 {
  */
 class U2GUI_EXPORT GroupOptionsWidget : public QWidget
 {
+    Q_OBJECT
 public:
     GroupOptionsWidget(const QString& groupId, const QString& title, const QString& documentationPage, QWidget* widget);
 

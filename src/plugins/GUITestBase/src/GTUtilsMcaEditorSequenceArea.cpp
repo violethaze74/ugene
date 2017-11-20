@@ -357,7 +357,8 @@ short GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(GUITestOpStatus
 #define GT_METHOD_NAME "getSelectedChar"
 char GTUtilsMcaEditorSequenceArea::getSelectedReadChar(GUITestOpStatus &os) {
     QRect selection = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
-    GT_CHECK_RESULT(selection.width() == 1 && selection.height() == 1, "Multiple selection", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(selection.width() > 0 && selection.height() > 0, "There is no selection", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(selection.width() <= 1 && selection.height() <= 1, "The selection is too big", U2Mca::INVALID_CHAR);
     int rowNum = selection.y();
     qint64 pos = selection.x();
 

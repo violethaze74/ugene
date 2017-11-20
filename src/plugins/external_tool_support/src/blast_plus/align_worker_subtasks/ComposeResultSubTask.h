@@ -48,6 +48,7 @@ public:
 
     void prepare();
     void run();
+
     const SharedDbiDataHandler& getAnnotations() const;
 
     U2SequenceObject *takeReferenceSequenceObject();

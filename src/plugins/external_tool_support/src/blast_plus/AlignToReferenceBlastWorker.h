@@ -46,13 +46,13 @@ public:
                               const QString &resultUrl,
                               const SharedDbiDataHandler &reference,
                               const QList<SharedDbiDataHandler> &reads,
+                              const QMap<SharedDbiDataHandler, QString> &readsNames,
                               int minIdentityPercent,
                               DbiDataStorage *storage);
     QString getResultUrl() const;
     SharedDbiDataHandler getAnnotations() const;
-
-    QMap<QString, bool> getAcceptedReads() const;
-    QStringList getDiscardedReads() const;
+    QList<QPair<QString, QPair<int, bool> > > getAcceptedReads() const;
+    QList<QPair<QString, int> > getDiscardedReads() const;
 
 private:
     void prepare();
@@ -64,6 +64,7 @@ private:
     const QString resultUrl;
     const SharedDbiDataHandler reference;
     const QList<SharedDbiDataHandler> reads;
+    const QMap<SharedDbiDataHandler, QString> readsNames;
     const int minIdentityPercent;
 
     FormatDBSubTask* formatDbSubTask;
@@ -102,7 +103,10 @@ protected:
     MessageMetadata generateMetadata(const QString &datasetName) const;
 
 private:
+    QString getReadName(const Message &message) const;
+
     SharedDbiDataHandler reference;
+    QString referenceUrl;
 };
 
 /************************************************************************/
@@ -113,8 +117,13 @@ public:
     AlignToReferenceBlastWorkerFactory();
     Worker * createWorker(Actor *a);
 
-    static const QString ACTOR_ID;
     static void init();
+
+    static const QString ACTOR_ID;
+    static const QString ROW_NAMING_SEQUENCE_NAME;
+    static const QString ROW_NAMING_FILE_NAME;
+    static const QString ROW_NAMING_SEQUENCE_NAME_VALUE;
+    static const QString ROW_NAMING_FILE_NAME_VALUE;
 };
 
 } // LocalWorkflow

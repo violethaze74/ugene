@@ -155,7 +155,7 @@ void MaEditorConsensusArea::initCache() {
 
 QString MaEditorConsensusArea::createToolTip(QHelpEvent* he) const {
     const int x = he->pos().x();
-    const int column = ui->getBaseWidthController()->globalXPositionToColumn(x);
+    const int column = ui->getBaseWidthController()->screenXPositionToColumn(x);
     QString result;
     if (0 <= column && column <= editor->getAlignmentLen()) {
         assert(editor->getMaObject());

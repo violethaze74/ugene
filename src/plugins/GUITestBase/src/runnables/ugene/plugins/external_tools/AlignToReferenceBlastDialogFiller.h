@@ -51,6 +51,10 @@ public:
 
     void commonScenario();
 
+    static void setReference(HI::GUITestOpStatus &os, const QString &referenceUrl, QWidget *dialog);
+    static void setReads(HI::GUITestOpStatus &os, const QStringList &readUrls, QWidget *dialog);
+    static void setDestination(HI::GUITestOpStatus &os, const QString &destinationUrl, QWidget *dialog);
+
 private:
     Settings settings;
 };
