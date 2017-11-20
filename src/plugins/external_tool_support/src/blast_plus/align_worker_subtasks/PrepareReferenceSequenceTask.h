@@ -27,6 +27,7 @@
 
 namespace U2 {
 
+class CopyFileTask;
 class LoadDocumentTask;
 class RemoveGapsFromSequenceTask;
 class U2SequenceObject;
@@ -37,6 +38,7 @@ public:
     PrepareReferenceSequenceTask(const QString &referenceUrl, const U2DbiRef &dstDbiRef);
 
     const U2EntityRef &getReferenceEntityRef() const;
+    const QString getPreparedReferenceUrl() const { return preparedReferenceUrl; }
 
 private:
     void prepare();
@@ -48,10 +50,12 @@ private:
     const QString referenceUrl;
     const U2DbiRef dstDbiRef;
 
-    LoadDocumentTask *loadTask;
-    RemoveGapsFromSequenceTask *removeGapsTask;
+    CopyFileTask*               copyTask;
+    LoadDocumentTask*           loadTask;
+    RemoveGapsFromSequenceTask* removeGapsTask;
 
     U2EntityRef referenceEntityRef;
+    QString preparedReferenceUrl;
 };
 
 }   // namespace U2

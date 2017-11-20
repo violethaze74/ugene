@@ -2187,7 +2187,7 @@ Do you want view online documentation?</source>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="434"/>
         <source>Task report [%1]</source>
-        <translation>Отчёт выполнения задачи  - %1</translation>
+        <translation>Отчёт выполнения задачи - %1</translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="445"/>
@@ -2207,17 +2207,17 @@ Do you want view online documentation?</source>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="446"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Статус</translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="448"/>
         <source>Error:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка:</translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="453"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Время выполнения</translation>
     </message>
     <message>
         <source>status</source>

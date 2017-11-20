@@ -615,7 +615,6 @@ bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence &dna, DNAChromatogra
     QByteArray qualCodes(numBases, 0);
 
     if (res != -1 ) {
-
         for (uint i = 0; i < numBases; i++) {
             qualCodes[i] = DNAQuality::encode(conf[i],DNAQualityType_Sanger);
             switch(sequence[i]) {
@@ -661,7 +660,7 @@ bool ABIFormat::loadABIObjects(SeekableBuf* fp, DNASequence &dna, DNAChromatogra
         }
     }
 
-    quality.qualCodes = qualCodes;
+    quality.setQualCodes(qualCodes);
 
     }
 

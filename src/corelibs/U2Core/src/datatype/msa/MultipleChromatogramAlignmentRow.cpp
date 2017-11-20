@@ -257,10 +257,6 @@ qint64 MultipleChromatogramAlignmentRowData::getCoreLength() const {
     return length;
 }
 
-U2Region MultipleChromatogramAlignmentRowData::getCoreRegion() const {
-    return U2Region(getCoreStart(), getCoreLength());
-}
-
 void MultipleChromatogramAlignmentRowData::append(const MultipleChromatogramAlignmentRow &anotherRow, int lengthBefore, U2OpStatus &os) {
     // TODO: remove
     append(*anotherRow, lengthBefore, os);

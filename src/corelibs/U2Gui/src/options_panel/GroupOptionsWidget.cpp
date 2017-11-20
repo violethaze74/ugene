@@ -64,7 +64,7 @@ GroupOptionsWidget::GroupOptionsWidget(const QString& _groupId, const QString& _
     mainLayout->addWidget(titleWidget);
     mainLayout->addWidget(widget);
 
-    QPushButton *helpButton = new QPushButton("Help", this);
+    QPushButton *helpButton = new QPushButton(tr("Help"), this);
     helpButton->setMaximumWidth(60);
     new HelpButton(this, helpButton, documentationPage);
     QSpacerItem *spacer = new QSpacerItem(MIN_WIDGET_WIDTH, 0, QSizePolicy::Maximum, QSizePolicy::Expanding);

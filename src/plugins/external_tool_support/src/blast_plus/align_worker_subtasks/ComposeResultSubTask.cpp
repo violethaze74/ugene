@@ -141,7 +141,7 @@ MultipleChromatogramAlignmentObject *ComposeResultSubTask::takeMcaObject() {
 }
 
 void ComposeResultSubTask::createAlignmentAndAnnotations() {
-    MultipleChromatogramAlignment result("Aligned reads");
+    MultipleChromatogramAlignment result("Mapped reads");
     result->setAlphabet(referenceSequenceObject->getAlphabet());
 
     U2MsaRowGapModel referenceGaps = getReferenceGaps();
@@ -194,7 +194,7 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
         ++rowsCounter;
     }
     if (rowsCounter == 0) {
-        stateInfo.setError(tr("No read satisfy minimum identity criteria."));
+        stateInfo.setError(tr("No read satisfy minimum similarity criteria."));
         return;
     }
     result->trim(false); // just recalculates alignment len
@@ -219,9 +219,6 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
     CHECK_OP(stateInfo, );
 
     mcaObject->moveToThread(thread());
-
-    // remove gap columns
-    mcaObject->deleteColumnsWithGaps(stateInfo);
 
     annsObject->addAnnotations(anns);
     annotations = storage->getDataHandler(annsObject->getEntityRef());
@@ -363,6 +360,9 @@ void ComposeResultSubTask::insertShiftedGapsIntoReference() {
         dnaSeq.seq.insert(gap.offset, QByteArray(gap.gap, U2Msa::GAP_CHAR));
     }
     referenceSequenceObject->setWholeSequence(dnaSeq);
+
+    // remove gap columns
+    mcaObject->deleteColumnsWithGaps(stateInfo);
 }
 
 void ComposeResultSubTask::insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps) {

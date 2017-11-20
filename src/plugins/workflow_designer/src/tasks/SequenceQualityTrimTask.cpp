@@ -123,6 +123,7 @@ void SequenceQualityTrimTask::restoreRelation() {
 U2Region SequenceQualityTrimTask::trimSequence() {
     DNASequence sequence = trimmedSequenceObject->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, U2Region());
+    CHECK_EXT(sequence.hasQualityScores(), stateInfo.addWarning(tr("The trimming was skipped for the sequences without quality information.")), U2Region(0, trimmedSequenceObject->getSequenceLength()));
     const U2Region acceptedRegion = DNASequenceUtils::trimByQuality(sequence, settings.qualityTreshold, settings.minSequenceLength, settings.trimBothEnds);
     isFilteredOut = acceptedRegion.isEmpty();
     trimmedSequenceObject->setWholeSequence(sequence);

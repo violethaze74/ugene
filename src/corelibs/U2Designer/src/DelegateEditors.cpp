@@ -190,13 +190,20 @@ void DoubleSpinBoxDelegate::sl_commit() {
 /********************************
 * ComboBoxDelegate
 ********************************/
+ComboBoxDelegate::ComboBoxDelegate(const QVariantMap &items, QObject *parent)
+    : PropertyDelegate(parent),
+      items(items)
+{
+
+}
+
 PropertyWidget * ComboBoxDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
     return new ComboBoxWidget(items, parent);
 }
 
 QWidget *ComboBoxDelegate::createEditor(QWidget *parent,
-                                       const QStyleOptionViewItem &/* option */,
-                                       const QModelIndex &/* index */) const
+                                        const QStyleOptionViewItem &/* option */,
+                                        const QModelIndex &/* index */) const
 {
     ComboBoxWidget *editor = new ComboBoxWidget(getItems(), parent);
     connect(editor, SIGNAL(valueChanged(const QString &)),

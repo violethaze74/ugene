@@ -152,11 +152,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     //Expected state :
     //"reference_sanger_reads_alignment.ugenedb" in the Project View with object :
-    //-{'mc' Aligned reads} for multiple chromatogram alignment object in Project View
+    //-{'mc' Mapped reads} for multiple chromatogram alignment object in Project View
     GTUtilsProject::checkProject(os);
     GTUtilsProjectTreeView::openView(os);
-    bool check = GTUtilsProjectTreeView::checkItem(os, "Aligned reads");
-    CHECK_SET_ERR(check, "'Aligned reads' is not present in the project view");
+    bool check = GTUtilsProjectTreeView::checkItem(os, "Mapped reads");
+    CHECK_SET_ERR(check, "'Mapped reads' is not present in the project view");
 
     //    Expected state : Reference name is  "KM099231" at the editor left corner
     //    Expected state : 16 reads are present
@@ -177,7 +177,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     }
 
     //5. Report with info
-    GTUtilsNotifications::waitForNotification(os, false, "Aligned reads (16)");
+    GTUtilsNotifications::waitForNotification(os, false, "Mapped reads (16)");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //number of filtered sequences with the names: 4
@@ -323,7 +323,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
         void run(HI::GUITestOpStatus &os) {
             //    Expected state: "Trim and Align Sanger Reads" dialog has appered
             QWidget *wizard = GTWidget::getActiveModalWidget(os);
-            const QString expectedTitle = "Trim and Map Sanger Reads";
+            const QString expectedTitle = "Map Sanger Reads to Reference";
             const QString actualTitle = wizard->windowTitle();
             CHECK_SET_ERR(expectedTitle == actualTitle, QString("Wizard title is incorrect: expected '%1', got '%2'").arg(expectedTitle).arg(actualTitle));
 
@@ -357,7 +357,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Trim and Map Sanger Reads", new Scenario()));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new Scenario()));
 
     GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
 
@@ -461,7 +461,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
         void run(HI::GUITestOpStatus &os) {
             //    Expected state: "Trim and Align Sanger Reads" dialog has appered
             QWidget *wizard = GTWidget::getActiveModalWidget(os);
-            const QString expectedTitle = "Trim and Map Sanger Reads";
+            const QString expectedTitle = "Map Sanger Reads to Reference";
             const QString actualTitle = wizard->windowTitle();
             CHECK_SET_ERR(expectedTitle == actualTitle, QString("Wizard title is incorrect: expected '%1', got '%2'").arg(expectedTitle).arg(actualTitle));
 
@@ -496,7 +496,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     };
 
     GTLogTracer trace;
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Trim and Map Sanger Reads", new Scenario()));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new Scenario()));
     GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -689,7 +689,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
         void run(HI::GUITestOpStatus &os) {
             //    Expected state: "Trim and Align Sanger Reads" dialog has appered
             QWidget *wizard = GTWidget::getActiveModalWidget(os);
-            const QString expectedTitle = "Trim and Map Sanger Reads";
+            const QString expectedTitle = "Map Sanger Reads to Reference";
             const QString actualTitle = wizard->windowTitle();
             CHECK_SET_ERR(expectedTitle == actualTitle, QString("Wizard title is incorrect: expected '%1', got '%2'").arg(expectedTitle).arg(actualTitle));
 
@@ -724,7 +724,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     };
 
     GTLogTracer trace;
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Trim and Map Sanger Reads", new Scenario()));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new Scenario()));
     GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -830,7 +830,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
         void run(HI::GUITestOpStatus &os) {
             //    Expected state: "Trim and Align Sanger Reads" dialog has appered
             QWidget *wizard = GTWidget::getActiveModalWidget(os);
-            const QString expectedTitle = "Trim and Map Sanger Reads";
+            const QString expectedTitle = "Map Sanger Reads to Reference";
             const QString actualTitle = wizard->windowTitle();
             CHECK_SET_ERR(expectedTitle == actualTitle, QString("Wizard title is incorrect: expected '%1', got '%2'").arg(expectedTitle).arg(actualTitle));
 
@@ -865,7 +865,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     };
 
     GTLogTracer trace;
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Trim and Map Sanger Reads", new Scenario()));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new Scenario()));
     GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1926,35 +1926,39 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     GTGlobals::sleep(5000);
 
     //5. Push "Ctrl+Alt+v"
+    //Expected state : Notification "There are no variations in the consensus sequence" will be shown
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTKeyboardDriver::keyClick('v', Qt::AltModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
-    //Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //6. Push "Jump to next variation" button
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
-
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //7. Push "Jump to next variation" from context menu
+    //Expected state : Notification "There are no variations in the consensus sequence" will be shown
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next variation"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //8. Push "Jump to next variation" from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to next variation");
-
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to next variation");
+
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -2122,6 +2126,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTGlobals::sleep(5000);
 
     //5. Push "Ctrl+Alt+Shift+v"
+    //Expected state : Notification "There are no variations in the consensus sequence" will be shown
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTKeyboardDriver::keyPress(Qt::Key_Alt);
     GTKeyboardDriver::keyClick('v', Qt::ShiftModifier);
@@ -2129,31 +2136,32 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
     GTGlobals::sleep();
 
-    //Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //6. Push "Jump to previous variation" button
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
-
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
+
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //7. Push "Jump to previous variation" from context menu
+    //Expected state : Notification "There are no variations in the consensus sequence" will be shown
+    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to previous variation"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected state : Notification "There are no variations in the consensus sequence" will be shown
-    GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //8. Push "Jump to previous variation" from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to previous variation");
-
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to previous variation");
+
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -2218,38 +2226,46 @@ GUI_TEST_CLASS_DEFINITION(test_0017_1) {
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
 
+#ifndef Q_OS_LINUX
     //In linux, OS intercept this hotkey
-    ////5. Push "Ctrl+Alt+a"
-    //GTKeyboardDriver::keyPress(Qt::Key_Control);
-    //GTKeyboardDriver::keyClick('a', Qt::AltModifier);
-    //GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    //GTGlobals::sleep();
-    ////Expected state : Notification "There are no ambiguous characters in the alignment.
-    //GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
-    //GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //6. Push "Jump to next variation" button
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
-
+    //5. Push "Ctrl+Alt+a"
     //Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
+
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTKeyboardDriver::keyClick('a', Qt::AltModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+#endif
+
+    //6. Push "Jump to next variation" button
+    //Expected state : Notification "There are no ambiguous characters in the alignment.
+    GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
+
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
+
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //7. Push "Jump to next variation" from context menu
+    //Expected state : Notification "There are no ambiguous characters in the alignment.
+    GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
+
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to next ambiguous character"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected state : Notification "There are no ambiguous characters in the alignment.
-    GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //8. Push "Jump to next variation" from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to next ambiguous character");
-
     //Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to next ambiguous character");
+
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -2304,13 +2320,17 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(5000);
 
+#ifndef Q_OS_LINUX
     //In linux, OS intercept this hotkey
-    ////5. Push Ctrl + Alt + a
-    //GTKeyboardDriver::keyPress(Qt::Key_Control);
-    //GTKeyboardDriver::keyClick('a', Qt::AltModifier);
-    //GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    //GTGlobals::sleep();
+
+    //5. Push Ctrl + Alt + a
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTKeyboardDriver::keyClick('a', Qt::AltModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+#else
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
+#endif
+    GTGlobals::sleep();
 
     //Expected state : reference "C", consensus "N", read "N"
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -2423,39 +2443,44 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
 
     //5. Push "Ctrl+Alt+Shift+a"
+    //Expected state : Notification "There are no ambiguous characters in the alignment.
+    GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
+
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTKeyboardDriver::keyPress(Qt::Key_Alt);
     GTKeyboardDriver::keyClick('a', Qt::ShiftModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
-    //Expected state : Notification "There are no ambiguous characters in the alignment.
-    GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //6. Push "Jump to previous variation" button
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
-
     //Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
+
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
+
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //7. Push "Jump to next variation" from context menu
+    //Expected state : Notification "There are no ambiguous characters in the alignment.
+    GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
+
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation" << "Jump to previous ambiguous character"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected state : Notification "There are no ambiguous characters in the alignment.
-    GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //8. Push "Jump to previous variation" from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to previous ambiguous character");
-
     //Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Navigation" << "Jump to previous ambiguous character");
+
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 

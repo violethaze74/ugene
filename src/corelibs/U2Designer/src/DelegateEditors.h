@@ -173,7 +173,7 @@ private:
 class U2DESIGNER_EXPORT ComboBoxDelegate : public PropertyDelegate {
     Q_OBJECT
 public:
-    ComboBoxDelegate(const QVariantMap& items, QObject *parent = 0) : PropertyDelegate(parent), items(items) {}
+    ComboBoxDelegate(const QVariantMap& items, QObject *parent = 0);    // items: visible name -> value
     virtual ~ComboBoxDelegate() {}
 
       QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,

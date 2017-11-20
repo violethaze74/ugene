@@ -47,6 +47,7 @@ private:
 };
 
 class RemoveGapsFromSequenceTask : public Task {
+    Q_OBJECT
 public:
     RemoveGapsFromSequenceTask(U2SequenceObject * const sequenceObject);
 

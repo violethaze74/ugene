@@ -2331,6 +2331,14 @@ Are you sure you want to open all of them?</source>
     </message>
 </context>
 <context>
+    <name>U2::GroupOptionsWidget</name>
+    <message>
+        <location filename="../src/options_panel/GroupOptionsWidget.cpp" line="67"/>
+        <source>Help</source>
+        <translation type="unfinished">Помощь</translation>
+    </message>
+</context>
+<context>
     <name>U2::Header</name>
     <message>
         <location filename="../src/NotificationWidget.cpp" line="47"/>
