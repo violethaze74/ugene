@@ -294,8 +294,9 @@ GUI_TEST_CLASS_DEFINITION(test_4013) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     int columnsNumber = GTUtilsMSAEditorSequenceArea::getNumVisibleBases(os);
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(columnsNumber - 10, 0), QPoint(columnsNumber, 10));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(columnsNumber - 10, 0), QPoint(columnsNumber, 10), GTGlobals::UseMouse);
 
+    GTGlobals::sleep(1000);
     GTKeyboardDriver::keyClick( Qt::Key_Space);
 
     GTGlobals::sleep();
