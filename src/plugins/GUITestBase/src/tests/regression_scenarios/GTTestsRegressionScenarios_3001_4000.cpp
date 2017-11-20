@@ -5570,8 +5570,9 @@ GUI_TEST_CLASS_DEFINITION(test_3870) {
 
     //2. Insert gaps
     int columnsNumber = GTUtilsMSAEditorSequenceArea::getNumVisibleBases(os);
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(columnsNumber - 10, 0), QPoint(columnsNumber, 10));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(columnsNumber - 10, 0), QPoint(columnsNumber, 10), GTGlobals::UseMouse);
 
+    GTGlobals::sleep(1000);
     GTKeyboardDriver::keyClick( Qt::Key_Space);
 
     //3. Export sequences with terminal gaps to FASTA
