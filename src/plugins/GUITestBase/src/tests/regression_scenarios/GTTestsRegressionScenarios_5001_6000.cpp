@@ -2344,6 +2344,47 @@ GUI_TEST_CLASS_DEFINITION(test_5637) {
     CHECK_SET_ERR(rowLength <= refLength, QString("Expected: row length must be equal or lesser then reference length, current: row lenght = %1, reference length = %2").arg(QString::number(rowLength)).arg(QString::number(refLength)));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5638) {
+    //1. Open File "\samples\CLUSTALW\COI.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Click to position (30, 10)
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(30, 10));
+
+    //3. Press Ctrl and drag and drop selection to the right for a few symbols
+    U2MsaListGapModel startGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTMouseDriver::press();
+    QPoint curPos = GTMouseDriver::getMousePosition();
+    QPoint moveMouseTo(curPos.x() + 200, curPos.y());
+    GTMouseDriver::moveTo(moveMouseTo);
+
+    GTGlobals::sleep();
+    U2MsaListGapModel gapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    if (gapModel.size() < 11) {
+        GTMouseDriver::release();
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+        CHECK_SET_ERR(false, "Can't find selected sequence");
+    }
+
+    if (gapModel[10].size() != 1) {
+        GTMouseDriver::release();
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+        CHECK_SET_ERR(false, QString("Unexpected selected sequence's gap model size, expected: 1, current: %1").arg(gapModel[10].size()));
+    }
+
+    // 4. Drag and drop selection to the left to the begining
+    GTMouseDriver::moveTo(curPos);
+    GTMouseDriver::release();
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    GTGlobals::sleep();
+    U2MsaListGapModel finishGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    CHECK_SET_ERR(finishGapModel == startGapModel, "Unexpected changes of alignment");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5659) {
     // 1. Open murine.gb
     // 2. Context menu on annotations object
@@ -2379,6 +2420,34 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "source"));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5665) {
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Document context menu -> Export / Import -> Export sequences.
+    //Expected: "Export selected sequences" dialog appears.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+            QLineEdit* filepathLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog);
+            GTLineEdit::setText(os, filepathLineEdit, dataDir + "long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_.fa");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    //Expected: the dialog about external modification of documents appears.
+    //5. Click "No".
+    //Expected: UGENE does not crash.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, new Scenario()));
+    GTUtilsProjectTreeView::click(os, "human_T1.fa", Qt::RightButton);
+    GTGlobals::sleep(3000);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5681) {
@@ -3627,6 +3696,29 @@ GUI_TEST_CLASS_DEFINITION(test_5769_2) {
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_5B70", QString("Unexpected selected read, expected: SZYD_Cas9_5B70, current: %1").arg(name[0]));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5770) {
+    QString filePath = testDir + "_common_data/sanger/alignment.ugenedb";
+    QString fileName = "sanger_alignment.ugenedb";
+
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    //2. Select read "SZYD_Cas9_5B71"
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
+
+    //3. Hold the _Shift_ key and press the _down arrow_ key.
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTGlobals::sleep(500);
+
+    //Expected: the selection is expanded.
+    QStringList names = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
+    CHECK_SET_ERR(names.size() == 2, QString("Incorrect selection. Expected: 2 selected rows, current: %1 selected rows").arg(names.size()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5786_1) {
 //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
@@ -3884,6 +3976,62 @@ GUI_TEST_CLASS_DEFINITION(test_5818_2) {
 
     //Expected: BL060C3.ace.ugenedb in the project view
     GTUtilsProjectTreeView::checkItem(os, "BL060C3.ace.ugenedb");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5832) {
+    //1. Open "test/_common_data/fasta/empty.fa".
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "empty.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTLogTracer l;
+
+    //2. Click on the sequence area.
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(5, 5));
+
+    //Expected: no errors in the log
+    QStringList errorList = GTUtilsLog::getErrors(os, l);
+    CHECK_SET_ERR(errorList.isEmpty(), "Unexpected errors in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5840) {
+    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+    QString fileName = "sanger_alignment.ugenedb";
+
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    //2. Select a read ""
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
+
+    //3. Select a document in the Project View and press the Delete key.
+    GTUtilsProjectTreeView::click(os, "Aligned reads");
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep(1000);
+
+    //Expected: The document has been deleted.
+    bool isExited = GTUtilsProjectTreeView::checkItem(os, "Aligned reads");
+    CHECK_SET_ERR(!isExited, "The document has not been deleted")
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5847) {
+    //1. Open samples/APR/DNA.apr in read-only mode
+    GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
+    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select any sequence
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "HS11791");
+    GTGlobals::sleep(1000);
+
+    GTLogTracer l;
+
+    //3 Press "delete"
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    //Expected: no errors in the log
+    QStringList errorList = GTUtilsLog::getErrors(os, l);
+    CHECK_SET_ERR(errorList.isEmpty(), "Unexpected errors in the log");
 }
 
 } // namespace GUITest_regression_scenarios
