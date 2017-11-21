@@ -1,4 +1,3 @@
-
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
@@ -3867,6 +3866,8 @@ GUI_TEST_CLASS_DEFINITION(test_5798_1) {
 
     //Expected: DNA.apr in the project view
     GTUtilsProjectTreeView::checkItem(os, "DNA.apr");
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, QStringList() << "DNA.apr"));
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "DNA.apr", true);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5798_2) {
@@ -3877,6 +3878,8 @@ GUI_TEST_CLASS_DEFINITION(test_5798_2) {
 
     //Expected: DNA.fa in the project view
     GTUtilsProjectTreeView::checkItem(os, "DNA.fa");
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, QStringList() << "DNA.fa"));
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "DNA.fa", false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5798_3) {
@@ -3887,6 +3890,8 @@ GUI_TEST_CLASS_DEFINITION(test_5798_3) {
 
     //Expected: DNA.aln in the project view
     GTUtilsProjectTreeView::checkItem(os, "DNA.aln");
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, QStringList() << "DNA.aln"));
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "DNA.aln", false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5798_4) {
@@ -3897,6 +3902,8 @@ GUI_TEST_CLASS_DEFINITION(test_5798_4) {
 
     //Expected: DNA.apr in the project view
     GTUtilsProjectTreeView::checkItem(os, "DNA.apr");
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, QStringList() << "DNA.apr"));
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "DNA.apr", true);
 
     //2. Convert document to clustalw from project view
     GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, sandBoxDir, "DNA.aln", ExportDocumentDialogFiller::CLUSTALW, false, true));
@@ -3906,14 +3913,29 @@ GUI_TEST_CLASS_DEFINITION(test_5798_4) {
 
     //Expected: DNA.aln in the project view
     GTUtilsProjectTreeView::checkItem(os, "DNA.aln");
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, QStringList() << "DNA.aln"));
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "DNA.aln", false);
+
+    //3. Export object to MEGA format from project view
+    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, sandBoxDir, "DNA.meg", ExportDocumentDialogFiller::MEGA, false, true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export object..."));
+    GTUtilsProjectTreeView::callContextMenu(os, "DNA", "DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: DNA.meg is in the project view
+    GTUtilsProjectTreeView::checkItem(os, "DNA.meg");
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, QStringList() << "DNA.meg"));
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "DNA.meg", false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5798_5) {
     //1. Open Workflow designer
     GTLogTracer l;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
     //2. Open sample {Convert alignments to ClustalW}
     GTUtilsWorkflowDesigner::addSample(os, "Convert alignments to ClustalW");
+
     //Expected state: There is "Show wizard" tool button
 
     //3. Press "Show wizard" button
@@ -3923,12 +3945,15 @@ GUI_TEST_CLASS_DEFINITION(test_5798_5) {
         void run(HI::GUITestOpStatus &os) {
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
             //4. Select input MSA "samples/APR/DNA.apr"
-            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << dataDir + "samples/APR/DNA.apr"));		
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << dataDir + "samples/APR/DNA.apr"));
+
             //5. Press "Next" button
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::setParameter(os, "Result ClustalW file", "DNA.aln");
             //6. Press "Run" button
+
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
