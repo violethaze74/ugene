@@ -4034,6 +4034,26 @@ GUI_TEST_CLASS_DEFINITION(test_5847) {
     CHECK_SET_ERR(errorList.isEmpty(), "Unexpected errors in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5872) {
+    GTLogTracer logTracer("ASSERT: \"!isInRange");
+
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Switch on the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+//    3. Select two first rows in the Name List Area.
+    GTUtilsMsaEditor::selectRows(os, 0, 1, GTGlobals::UseMouse);
+
+//    4. Click to the position (3, 3).
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(2, 2));
+
+//    Expected state: there is no message in the log starting with ﻿'ASSERT: "!isInRange'.
+    GTUtilsLog::checkContainsMessage(os, logTracer, false);
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
