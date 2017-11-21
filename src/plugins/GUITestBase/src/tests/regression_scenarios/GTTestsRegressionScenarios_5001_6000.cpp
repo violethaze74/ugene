@@ -3927,7 +3927,7 @@ GUI_TEST_CLASS_DEFINITION(test_5798_5) {
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << dataDir + "samples/APR/DNA.apr"));		
             //5. Press "Next" button
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-            GTUtilsWizard::setParameter(os, "Result ClustalW file", "DNA.aln");			
+            GTUtilsWizard::setParameter(os, "Result ClustalW file", "DNA.aln");
             //6. Press "Run" button
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }

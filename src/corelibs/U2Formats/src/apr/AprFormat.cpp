@@ -55,7 +55,7 @@ static QString getLine(IOAdapter* io, char* buff, const QString& pattern, U2OpSt
     bool finishedReading = false;
     QString line;
     while (!finishedReading) {
-        int len = io->readLine(buff, AprFormat::READ_BUFF_SIZE, &lineOk);
+        io->readLine(buff, AprFormat::READ_BUFF_SIZE, &lineOk);
         if (!lineOk) {
             os.setError(AprFormat::tr("Unexpected end of file"));
             line = QString();
