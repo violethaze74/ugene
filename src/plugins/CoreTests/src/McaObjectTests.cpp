@@ -74,9 +74,6 @@ Task::ReportResult GTest_CompareTwoMca::report() {
     CHECK_EXT((NULL == reference1 && NULL == reference2)
               || (NULL != reference1 && NULL != reference2), setError("One object has a reference, but another one doesn't"), ReportResult_Finished);
 
-    const bool areReferencesEqual = (MatchExactly == DNASequenceUtils::compare(reference1->getWholeSequenceData(stateInfo), reference2->getWholeSequenceData(stateInfo)));
-    CHECK_EXT(areReferencesEqual, setError("References are not equal"), ReportResult_Finished);
-
     const qint64 rowsNumber1 = mca1->getNumRows();
     const qint64 rowsNumber2 = mca2->getNumRows();
     CHECK_EXT(rowsNumber1 == rowsNumber2,
@@ -94,6 +91,9 @@ Task::ReportResult GTest_CompareTwoMca::report() {
         const bool areEqual = row1->isRowContentEqual(row2);
         CHECK_EXT(areEqual, setError(QString("The rows with number %1 differ from each other").arg(i)), ReportResult_Finished);
     }
+
+    const bool areReferencesEqual = (MatchExactly == DNASequenceUtils::compare(reference1->getWholeSequenceData(stateInfo), reference2->getWholeSequenceData(stateInfo)));
+    CHECK_EXT(areReferencesEqual, setError("References are not equal"), ReportResult_Finished);
 
     return ReportResult_Finished;
 }
