@@ -106,7 +106,7 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
 void BlastAndSwReadTask::prepare() {
     blastTask = getBlastTask();
     CHECK_OP(stateInfo, );
-    SAFE_POINT_EXT(NULL != blastTask, "BLAST subtask is NULL", );
+    SAFE_POINT_EXT(NULL != blastTask, setError("BLAST subtask is NULL"), );
     addSubTask(blastTask);
 }
 

@@ -390,7 +390,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     CHECK_SET_ERR(1 == documents.first().count(), QString("An incorrect objects count in '%1' document: expected 1, got %2")
         .arg(documents.keys().first()).arg(documents.first().count()));
 
-    const QString expectedObjectName = "[mc] Aligned reads";
+    const QString expectedObjectName = "[mc] Mapped reads";
     const QString actualObjectName = documents.first().first();
     CHECK_SET_ERR(expectedObjectName == actualObjectName, QString("An inexpected object name: expected '%1', got '%2'")
         .arg(expectedObjectName).arg(actualObjectName));
@@ -443,7 +443,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     //    10. Select "Open view" from context menu and select "Open new view: "Alignment Editor" from context view
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view" << "Open new view: Alignment Editor", GTGlobals::UseMouse));
-    GTUtilsProjectTreeView::callContextMenu(os, "Aligned reads");
+    GTUtilsProjectTreeView::callContextMenu(os, "Mapped reads");
 
     //    Expected state:  Chromatogram sanger view is opened
     GTUtilsTaskTreeView::waitTaskFinished(os);

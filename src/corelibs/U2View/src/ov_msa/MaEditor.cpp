@@ -57,9 +57,9 @@ const float MaEditor::zoomMult = 1.25;
 MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObject *obj)
     : GObjectView(factoryId, viewName),
       ui(NULL),
-      cachedColumnWidth(0),
       resizeMode(ResizeMode_FontAndContent),
       zoomFactor(0),
+      cachedColumnWidth(0),
       exportHighlightedAction(NULL)
 {
     maObject = qobject_cast<MultipleAlignmentObject*>(obj);
