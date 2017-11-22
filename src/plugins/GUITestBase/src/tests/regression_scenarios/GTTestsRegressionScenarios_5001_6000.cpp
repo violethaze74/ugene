@@ -3858,6 +3858,77 @@ GUI_TEST_CLASS_DEFINITION(test_5786_3) {
     GTUtilsLog::checkContainsMessage(os, logTracerPositive, true);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5789_1) {
+//    1. Open "_common_data/sanger/alignment.ugenedb".
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", sandBoxDir + "test_5789.ugenedb");
+    GTFileDialog::openFile(os, sandBoxDir + "test_5789.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: both "Undo" and "Redo" buttons are disabled.
+    bool isUndoEnabled = GTUtilsMcaEditor::isUndoEnabled(os);
+    bool isRedoEnabled = GTUtilsMcaEditor::isRedoEnabled(os);
+    CHECK_SET_ERR(!isUndoEnabled, "Undo button is unexpectedly enabled");
+    CHECK_SET_ERR(!isRedoEnabled, "Redo button is unexpectedly enabled");
+
+//    2. Edit the MCA somehow.
+    GTUtilsMcaEditor::removeRead(os, "SZYD_Cas9_5B70");
+
+//    Expected state: the "Undo" button is enabled, the "Redo" button is disabled.
+    isUndoEnabled = GTUtilsMcaEditor::isUndoEnabled(os);
+    isRedoEnabled = GTUtilsMcaEditor::isRedoEnabled(os);
+    CHECK_SET_ERR(isUndoEnabled, "Undo button is unexpectedly disabled");
+    CHECK_SET_ERR(!isRedoEnabled, "Redo button is unexpectedly enabled");
+
+//    3. Close and open the view again.
+//    Expected state: the "Undo" button is enabled, the "Redo" button is disabled.
+//    4. Repeat the previous state several times.
+    for (int i = 0; i < 5; i++) {
+        GTUtilsMdi::closeActiveWindow(os);
+        GTUtilsProjectTreeView::doubleClickItem(os, "test_5789.ugenedb");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+
+        isUndoEnabled = GTUtilsMcaEditor::isUndoEnabled(os);
+        isRedoEnabled = GTUtilsMcaEditor::isRedoEnabled(os);
+        CHECK_SET_ERR(isUndoEnabled, "Undo button is unexpectedly disabled");
+        CHECK_SET_ERR(!isRedoEnabled, "Redo button is unexpectedly enabled");
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5789_2) {
+//    1. Open "_common_data/scenarios/msa/ma.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: both "Undo" and "Redo" buttons are disabled.
+    bool isUndoEnabled = GTUtilsMsaEditor::isUndoEnabled(os);
+    bool isRedoEnabled = GTUtilsMsaEditor::isRedoEnabled(os);
+    CHECK_SET_ERR(!isUndoEnabled, "Undo button is unexpectedly enabled");
+    CHECK_SET_ERR(!isRedoEnabled, "Redo button is unexpectedly enabled");
+
+//    2. Edit the MSA somehow.
+    GTUtilsMsaEditor::removeRows(os, 0, 0);
+
+//    Expected state: the "Undo" button is enabled, the "Redo" button is disabled.
+    isUndoEnabled = GTUtilsMcaEditor::isUndoEnabled(os);
+    isRedoEnabled = GTUtilsMcaEditor::isRedoEnabled(os);
+    CHECK_SET_ERR(isUndoEnabled, "Undo button is unexpectedly disabled");
+    CHECK_SET_ERR(!isRedoEnabled, "Redo button is unexpectedly enabled");
+
+//    3. Close and open the view again.
+//    Expected state: the "Undo" button is enabled, the "Redo" button is disabled.
+//    4. Repeat the previous state several times.
+    for (int i = 0; i < 5; i++) {
+        GTUtilsMdi::closeActiveWindow(os);
+        GTUtilsProjectTreeView::doubleClickItem(os, "ma.aln");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+
+        isUndoEnabled = GTUtilsMsaEditor::isUndoEnabled(os);
+        isRedoEnabled = GTUtilsMsaEditor::isRedoEnabled(os);
+        CHECK_SET_ERR(isUndoEnabled, "Undo button is unexpectedly disabled");
+        CHECK_SET_ERR(!isRedoEnabled, "Redo button is unexpectedly enabled");
+    }
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5798_1) {
     //1. Open samples/APR/DNA.apr in read-only mode
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
