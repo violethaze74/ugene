@@ -6454,13 +6454,11 @@ GUI_TEST_CLASS_DEFINITION(test_1640) {
     for (int i=0; i<12; i++) {
         GTKeyboardDriver::keyClick( Qt::Key_Right, Qt::ShiftModifier);
     }
-    //GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-
+ 
     //Expected state: all sequences of each selected column are selected
     GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     QString chars = GTClipboard::text(os);
-    //CHECK_SET_ERR(chars == "TCAGTCTATTAA", "Wrong selection: " + chars);
-	CHECK_SET_ERR(chars == "TCTATTAA", "Wrong selection: " + QString("Wrong selection : %1").arg(chars));
+    CHECK_SET_ERR(chars == "TCTATTAA", "Wrong selection: " + QString("Wrong selection : %1").arg(chars));
 
 }
 
