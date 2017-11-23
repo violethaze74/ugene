@@ -41,6 +41,7 @@ private:
     void setupLayout();
     void updateLabels();
     void updateLineLabel();
+    void updatePositionLabel();
 
     McaReferenceCharController* refCharController;
     McaEditorNameList *nameList;

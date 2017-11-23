@@ -68,7 +68,7 @@ protected:
 
     void updateLock();
     virtual void updateLineLabel();
-    void updatePositionLabel();
+    virtual void updatePositionLabel();
     void updateColumnLabel();
     void updateSelectionLabel();
 

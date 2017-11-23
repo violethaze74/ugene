@@ -111,7 +111,7 @@ const QString NONE_SELECTION = QObject::tr("none");
 
 QPair<QString, QString> MaEditorStatusBar::getGappedPositionInfo(const QPoint& pos) const{
     if (pos.isNull()) {
-        return  QPair<QString, QString>(MaEditorStatusBar::NONE_MARK, MaEditorStatusBar::NONE_MARK);
+        return QPair<QString, QString>(MaEditorStatusBar::NONE_MARK, MaEditorStatusBar::NONE_MARK);
     }
 
     QPair<QString, QString> p;

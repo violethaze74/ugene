@@ -91,4 +91,21 @@ void McaEditorStatusBar::updateLineLabel() {
                       QString::number(aliObj->getNumRows()));
 }
 
+void McaEditorStatusBar::updatePositionLabel() {
+    const MaEditorSelection selection = seqArea->getSelection();
+    QPair<QString, QString> positions = QPair<QString, QString>(MaEditorStatusBar::NONE_MARK, MaEditorStatusBar::NONE_MARK);
+    if (!selection.isEmpty()) {
+        positions = getGappedPositionInfo(selection.topLeft());
+    } else {
+        const U2Region rowsSelection = nameList->getSelection();
+        if (!rowsSelection.isEmpty()) {
+            const MultipleAlignmentRow row = seqArea->getEditor()->getMaObject()->getRow(rowsSelection.startPos);
+            const QString rowLength = QString::number(row->getUngappedLength());
+            positions = QPair<QString, QString>(MaEditorStatusBar::NONE_MARK, rowLength);
+        }
+    }
+    positionLabel->update(positions.first, positions.second);
+    positionLabel->updateMinWidth(QString::number(aliObj->getLength()));
+}
+
 } // namespace
