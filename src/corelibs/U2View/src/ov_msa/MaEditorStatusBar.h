@@ -86,6 +86,8 @@ protected:
     QLabel*                     lockLabel;
 
     static const QString NONE_MARK;
+    static const QString GAP_MARK;
+
 private:
     QString selectionPattern;
 };
