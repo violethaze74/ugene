@@ -62,11 +62,16 @@ public:
     static void moveToReadName(HI::GUITestOpStatus &os, const QString &readName);
     static void clickReadName(HI::GUITestOpStatus &os, const QString &sequenceName, Qt::MouseButton mouseButton = Qt::LeftButton);
 
+    static void removeRead(HI::GUITestOpStatus &os, const QString &readName);
+
     static void undo(HI::GUITestOpStatus &os);
     static void redo(HI::GUITestOpStatus &os);
     static void zoomIn(HI::GUITestOpStatus &os);
     static void zoomOut(HI::GUITestOpStatus &os);
     static void resetZoom(HI::GUITestOpStatus &os);
+
+    static bool isUndoEnabled(HI::GUITestOpStatus &os);
+    static bool isRedoEnabled(HI::GUITestOpStatus &os);
 };
 
 }   // namespace U2

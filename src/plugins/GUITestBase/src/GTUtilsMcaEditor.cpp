@@ -22,6 +22,7 @@
 #include <QLabel>
 #include <QTextDocument>
 
+#include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
@@ -225,6 +226,14 @@ void GTUtilsMcaEditor::clickReadName(GUITestOpStatus &os, const QString &readNam
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "undo"
+void GTUtilsMcaEditor::removeRead(GUITestOpStatus &os, const QString &readName) {
+    clickReadName(os, readName);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep(500);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "undo"
 void GTUtilsMcaEditor::undo(GUITestOpStatus &os) {
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo"));
 }
@@ -251,6 +260,18 @@ void GTUtilsMcaEditor::zoomOut(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "resetZoom"
 void GTUtilsMcaEditor::resetZoom(HI::GUITestOpStatus &os) {
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Reset Zoom"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isUndoEnabled"
+bool GTUtilsMcaEditor::isUndoEnabled(GUITestOpStatus &os) {
+    return GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo")->isEnabled();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isRedoEnabled"
+bool GTUtilsMcaEditor::isRedoEnabled(GUITestOpStatus &os) {
+    return GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo")->isEnabled();
 }
 #undef GT_METHOD_NAME
 
