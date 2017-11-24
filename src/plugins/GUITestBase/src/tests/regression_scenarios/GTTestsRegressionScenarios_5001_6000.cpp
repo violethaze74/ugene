@@ -79,6 +79,7 @@
 #include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
+#include "GTUtilsMcaEditorStatusWidget.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
@@ -4117,6 +4118,53 @@ GUI_TEST_CLASS_DEFINITION(test_5832) {
     //Expected: no errors in the log
     QStringList errorList = GTUtilsLog::getErrors(os, l);
     CHECK_SET_ERR(errorList.isEmpty(), "Unexpected errors in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5833) {
+//    1. Open "_common_data/sanger/alignment.ugenedb".
+    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
+    GTFileDialog::openFile(os, filePath);
+
+//    2. Select 440 base on the second read (the position is ungapped).
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2506, 1));
+
+//    Expected state: the status bar contains the next labels: "Ln 2/16, RefPos 2500/11878, ReadPos 440/1173".
+    QString rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
+    QString rowsCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
+    QString referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
+    QString referenceLengthString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString(os);
+    QString readPositionString = GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString(os);
+    QString readLengthString = GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString(os);
+    CHECK_SET_ERR("2" == rowNumberString, QString("Unexepected row number label: expected '%1', got '%2'").arg("2").arg(rowNumberString));
+    CHECK_SET_ERR("16" == rowsCountString, QString("Unexepected rows count label: expected '%1', got '%2'").arg("16").arg(rowsCountString));
+    CHECK_SET_ERR("2500" == referencePositionString, QString("Unexepected reference position label: expected '%1', got '%2'").arg("2500").arg(referencePositionString));
+    CHECK_SET_ERR("11878" == referenceLengthString, QString("Unexepected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
+    CHECK_SET_ERR("440" == readPositionString, QString("Unexepected read position label: expected '%1', got '%2'").arg("440").arg(readPositionString));
+    CHECK_SET_ERR("1173" == readLengthString, QString("Unexepected read length label: expected '%1', got '%2'").arg("1173").arg(readLengthString));
+
+//    3. Call a context menu, select "Edit" -> "Insert character/gap" menu item.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Insert character/gap"));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+    GTGlobals::sleep(500);
+
+//    4. Click 'A' key.
+    GTKeyboardDriver::keyClick(Qt::Key_A);
+    GTGlobals::sleep(500);
+
+//    Expected state: the new base has been inserted, the status bar contains the next labels: "Ln 2/16, RefPos gap/11878, ReadPos 440/1174".
+    rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
+    rowsCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
+    referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
+    referenceLengthString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString(os);
+    readPositionString = GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString(os);
+    readLengthString = GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString(os);
+    CHECK_SET_ERR("2" == rowNumberString, QString("Unexepected row number label: expected '%1', got '%2'").arg("2").arg(rowNumberString));
+    CHECK_SET_ERR("16" == rowsCountString, QString("Unexepected rows count label: expected '%1', got '%2'").arg("16").arg(rowsCountString));
+    CHECK_SET_ERR("gap" == referencePositionString, QString("Unexepected reference position label: expected '%1', got '%2'").arg("gap").arg(referencePositionString));
+    CHECK_SET_ERR("11878" == referenceLengthString, QString("Unexepected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
+    CHECK_SET_ERR("440" == readPositionString, QString("Unexepected read position label: expected '%1', got '%2'").arg("440").arg(readPositionString));
+    CHECK_SET_ERR("1174" == readLengthString, QString("Unexepected read length label: expected '%1', got '%2'").arg("1174").arg(readLengthString));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5840) {
