@@ -3858,6 +3858,36 @@ GUI_TEST_CLASS_DEFINITION(test_5786_3) {
     GTUtilsLog::checkContainsMessage(os, logTracerPositive, true);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5790) {
+    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+    QString fileName = "sanger_alignment_5790.ugenedb";
+
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    //GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
+    //2. Click to position on read
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
+    GTGlobals::sleep(500);
+
+    //3. Enter edit mode
+    GTKeyboardDriver::keyClick('i', Qt::ShiftModifier);
+    GTGlobals::sleep(1000);
+    //4. Click escape
+    //Expected state: selection still present
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep(1000);
+    CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os) == 0, "MCA is not in view mode");
+
+    //5. Click escape
+    //Expected state: selection disappeared
+    QRect emptyselection = QRect();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep(1000);
+    CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::getSelectedRect(os) == emptyselection, "Selection isn't empty but should be");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5798_1) {
     //1. Open samples/APR/DNA.apr in read-only mode
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
