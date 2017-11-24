@@ -36,6 +36,7 @@ public:
     static int getRowHeight(HI::GUITestOpStatus &os, int rowNumber);
     static void clickToPosition(HI::GUITestOpStatus &os, const QPoint &globalMaPosition);
     static void scrollToPosition(HI::GUITestOpStatus &os, const QPoint &position);
+    static void scrollToBase(HI::GUITestOpStatus &os, int position);
     static void clickCollapseTriangle(HI::GUITestOpStatus &os, QString seqName, bool showChromatogram);
     static bool isChromatogramShown(HI::GUITestOpStatus &os, QString seqName);
     static QStringList getNameList(HI::GUITestOpStatus &os);

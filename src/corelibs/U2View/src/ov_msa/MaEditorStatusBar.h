@@ -68,7 +68,7 @@ protected:
 
     void updateLock();
     virtual void updateLineLabel();
-    void updatePositionLabel();
+    virtual void updatePositionLabel();
     void updateColumnLabel();
     void updateSelectionLabel();
 
@@ -86,6 +86,8 @@ protected:
     QLabel*                     lockLabel;
 
     static const QString NONE_MARK;
+    static const QString GAP_MARK;
+
 private:
     QString selectionPattern;
 };
