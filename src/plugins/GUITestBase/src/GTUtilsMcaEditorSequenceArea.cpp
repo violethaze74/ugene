@@ -19,10 +19,12 @@
 * MA 02110-1301, USA.
 */
 
+#include <QApplication>
 #include <QMainWindow>
 #include <QStyleOptionSlider>
 
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTScrollBar.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
@@ -114,38 +116,19 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMdi::activeWindow(os));
     GT_CHECK(NULL != mcaSeqArea, "MSA Editor sequence area is not found");
     GT_CHECK(mcaSeqArea->isInRange(position), "Position is out of range");
+    CHECK(!mcaSeqArea->isVisible(position, false), );
 
-    // scroll down
-    GScrollBar* vBar = GTWidget::findExactWidget<GScrollBar *>(os, "vertical_sequence_scroll", GTUtilsMdi::activeWindow(os));
-    GT_CHECK(NULL != vBar, "Vertical scroll bar is not found");
+    GTUtilsMcaEditor::scrollToRead(os, position.y());
+    scrollToBase(os, position.x());
+    CHECK_SET_ERR(mcaSeqArea->isVisible(position, false), "The position is still invisible after scrolling");
+}
+#undef GT_METHOD_NAME
 
-    QStyleOptionSlider vScrollBarOptions;
-    vScrollBarOptions.initFrom(vBar);
-
-    while (!mcaSeqArea->isRowVisible(position.y(), false)) {
-        const QRect sliderSpaceRect = vBar->style()->subControlRect(QStyle::CC_ScrollBar, &vScrollBarOptions, QStyle::SC_ScrollBarGroove, vBar);
-        const QPoint bottomEdge(sliderSpaceRect.width() / 2, sliderSpaceRect.y() + sliderSpaceRect.height());
-
-        GTMouseDriver::moveTo(vBar->mapToGlobal(bottomEdge) - QPoint(0, 1));
-        GTMouseDriver::click();
-    }
-
-    // scroll right
-    GScrollBar* hBar = GTWidget::findExactWidget<GScrollBar *>(os, "horizontal_sequence_scroll", GTUtilsMdi::activeWindow(os));
-    GT_CHECK(NULL != hBar, "Horisontal scroll bar is not found");
-
-    QStyleOptionSlider hScrollBarOptions;
-    hScrollBarOptions.initFrom(hBar);
-
-    while (!mcaSeqArea->isPositionVisible(position.x(), false)) {
-        const QRect sliderSpaceRect = hBar->style()->subControlRect(QStyle::CC_ScrollBar, &hScrollBarOptions, QStyle::SC_ScrollBarGroove, hBar);
-        const QPoint rightEdge(sliderSpaceRect.x() + sliderSpaceRect.width(), sliderSpaceRect.height() / 2);
-
-        GTMouseDriver::moveTo(hBar->mapToGlobal(rightEdge) - QPoint(1, 0));
-        GTMouseDriver::click();
-    }
-
-    SAFE_POINT(mcaSeqArea->isVisible(position, false), "The position is still invisible after scrolling", );
+#define GT_METHOD_NAME "scrollToBase"
+void GTUtilsMcaEditorSequenceArea::scrollToBase(GUITestOpStatus &os, int position) {
+    GTScrollBar::moveSliderWithMouseToValue(os,
+                                            GTUtilsMcaEditor::getHorizontalScrollBar(os),
+                                            GTUtilsMcaEditor::getEditorUi(os)->getBaseWidthController()->getBaseGlobalRange(position).center());
 }
 #undef GT_METHOD_NAME
 

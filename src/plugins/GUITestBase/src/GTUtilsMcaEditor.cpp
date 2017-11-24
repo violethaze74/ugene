@@ -22,7 +22,9 @@
 #include <QLabel>
 #include <QTextDocument>
 
+#include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTScrollBar.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 
@@ -31,9 +33,12 @@
 #include <U2View/McaEditorConsensusArea.h>
 #include <U2View/McaEditor.h>
 #include <U2View/McaEditorNameList.h>
+#include <U2View/McaEditorReferenceArea.h>
 #include <U2View/McaEditorSequenceArea.h>
 #include <U2View/McaEditorWgt.h>
 #include <U2View/MSAEditorOffsetsView.h>
+#include <U2View/RowHeightController.h>
+#include <U2View/ScrollController.h>
 
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
@@ -89,6 +94,26 @@ McaEditorConsensusArea* GTUtilsMcaEditor::getConsensusArea(GUITestOpStatus &os) 
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
     return GTWidget::findExactWidget<McaEditorConsensusArea*>(os, "consArea", activeWindow);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getReferenceArea"
+McaEditorReferenceArea *GTUtilsMcaEditor::getReferenceArea(GUITestOpStatus &os) {
+    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
+    CHECK_OP(os, NULL);
+    return GTWidget::findExactWidget<McaEditorReferenceArea*>(os, "mca_editor_reference_area", activeWindow);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getHorizontalScrollBar"
+QScrollBar *GTUtilsMcaEditor::getHorizontalScrollBar(GUITestOpStatus &os) {
+    return GTWidget::findExactWidget<QScrollBar *>(os, "horizontal_sequence_scroll", getEditorUi(os));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getVerticalScrollBar"
+QScrollBar *GTUtilsMcaEditor::getVerticalScrollBar(GUITestOpStatus &os) {
+    return GTWidget::findExactWidget<QScrollBar *>(os, "vertical_sequence_scroll", getEditorUi(os));
 }
 #undef GT_METHOD_NAME
 
@@ -196,7 +221,7 @@ QRect GTUtilsMcaEditor::getReadNameRect(GUITestOpStatus &os, const QString &read
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getRedNameRect"
+#define GT_METHOD_NAME "getReadNameRect"
 QRect GTUtilsMcaEditor::getReadNameRect(GUITestOpStatus &os, int rowNumber) {
     Q_UNUSED(os);
     GT_CHECK_RESULT(0 <= rowNumber, QString("Read '%1' not found").arg(rowNumber), QRect());
@@ -204,23 +229,58 @@ QRect GTUtilsMcaEditor::getReadNameRect(GUITestOpStatus &os, int rowNumber) {
     McaEditorNameList *nameList = getNameListArea(os);
     GT_CHECK_RESULT(NULL != nameList, "McaEditorNameList not found", QRect());
 
-    const int rowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, rowNumber);
+    const U2Region rowScreenRange = getEditorUi(os)->getRowHeightController()->getRowScreenRangeByNumber(rowNumber);
+    return QRect(nameList->mapToGlobal(QPoint(0, rowScreenRange.startPos)), nameList->mapToGlobal(QPoint(nameList->width(), rowScreenRange.endPos())));
+}
+#undef GT_METHOD_NAME
 
-    return QRect(nameList->mapToGlobal(QPoint(0, rowHeight * rowNumber)), nameList->mapToGlobal(QPoint(nameList->width(), rowHeight * (rowNumber + 1))));
+#define GT_METHOD_NAME "scrollToRead"
+void GTUtilsMcaEditor::scrollToRead(GUITestOpStatus &os, const QString &readName) {
+    scrollToRead(os, readName2readNumber(os, readName));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "scrollToRead"
+void GTUtilsMcaEditor::scrollToRead(GUITestOpStatus &os, int readNumber) {
+    McaEditorWgt *mcaEditorWgt = getEditorUi(os);
+    const U2Region rowRange = mcaEditorWgt->getRowHeightController()->getRowGlobalRangeByNumber(readNumber);
+    CHECK(!U2Region(mcaEditorWgt->getScrollController()->getScreenPosition().y(), getNameListArea(os)->height()).contains(rowRange), );
+    GTScrollBar::moveSliderWithMouseToValue(os, getVerticalScrollBar(os), rowRange.center() - mcaEditorWgt->getSequenceArea()->height() / 2);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "moveToReadName"
 void GTUtilsMcaEditor::moveToReadName(GUITestOpStatus &os, const QString &readName) {
-    const QRect sequenceNameRect = getReadNameRect(os, readName);
-    GTMouseDriver::moveTo(sequenceNameRect.center());
+    moveToReadName(os, readName2readNumber(os, readName));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "moveToReadName"
+void GTUtilsMcaEditor::moveToReadName(GUITestOpStatus &os, int readNumber) {
+    scrollToRead(os, readNumber);
+    const QRect readNameRect = getReadNameRect(os, readNumber);
+    GTMouseDriver::moveTo(readNameRect.center());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickReadName"
 void GTUtilsMcaEditor::clickReadName(GUITestOpStatus &os, const QString &readName, Qt::MouseButton mouseButton) {
-    moveToReadName(os, readName);
+    clickReadName(os, readName2readNumber(os, readName), mouseButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickReadName"
+void GTUtilsMcaEditor::clickReadName(GUITestOpStatus &os, int readNumber, Qt::MouseButton mouseButton) {
+    moveToReadName(os, readNumber);
     GTMouseDriver::click(mouseButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "undo"
+void GTUtilsMcaEditor::removeRead(GUITestOpStatus &os, const QString &readName) {
+    clickReadName(os, readName);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME
 
@@ -251,6 +311,32 @@ void GTUtilsMcaEditor::zoomOut(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "resetZoom"
 void GTUtilsMcaEditor::resetZoom(HI::GUITestOpStatus &os) {
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Reset Zoom"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isUndoEnabled"
+bool GTUtilsMcaEditor::isUndoEnabled(GUITestOpStatus &os) {
+    return GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo")->isEnabled();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isRedoEnabled"
+bool GTUtilsMcaEditor::isRedoEnabled(GUITestOpStatus &os) {
+    return GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo")->isEnabled();
+}
+
+#define GT_METHOD_NAME "toggleShowChromatogramsMode"
+void GTUtilsMcaEditor::toggleShowChromatogramsMode(GUITestOpStatus &os) {
+    GTWidget::click(os, GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show chromatograms"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "readName2readNumber"
+int GTUtilsMcaEditor::readName2readNumber(GUITestOpStatus &os, const QString &readName) {
+    const QStringList names = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
+    const int rowNumber = names.indexOf(readName);
+    GT_CHECK_RESULT(0 <= rowNumber, QString("Read '%1' not found").arg(readName), -1);
+    return rowNumber;
 }
 #undef GT_METHOD_NAME
 
