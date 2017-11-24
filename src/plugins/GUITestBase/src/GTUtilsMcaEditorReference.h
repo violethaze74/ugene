@@ -19,34 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MCA_EDITOR_STATUS_BAR_H_
-#define _U2_MCA_EDITOR_STATUS_BAR_H_
+#ifndef _U2_GT_UTILS_MCA_EDITOR_REFERENCE_H_
+#define _U2_GT_UTILS_MCA_EDITOR_REFERENCE_H_
 
-#include "MaEditorStatusBar.h"
+namespace HI{
+class GUITestOpStatus;
+}
 
 namespace U2 {
 
-class McaEditorNameList;
-class McaReferenceCharController;
-
-class McaEditorStatusBar : public MaEditorStatusBar {
-    Q_OBJECT
+class GTUtilsMcaEditorReference {
 public:
-    McaEditorStatusBar(MultipleAlignmentObject* mobj,
-                       MaEditorSequenceArea *seqArea,
-                       McaEditorNameList *nameList,
-                       McaReferenceCharController* refCharController);
-
-private:
-    void setupLayout();
-    void updateLabels();
-    void updateLineLabel();
-    void updatePositionLabel();
-
-    McaReferenceCharController* refCharController;
-    McaEditorNameList *nameList;
+    static void clickToPosition(HI::GUITestOpStatus &os, int position);
+    static void scrollToPosition(HI::GUITestOpStatus &os, int position);
 };
 
-} // namespace
+}   // namespace U2
 
-#endif // _U2_MCA_EDITOR_STATUS_BAR_H_
+#endif // _U2_GT_UTILS_MCA_EDITOR_REFERENCE_H_

@@ -480,7 +480,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTLogTracer l;
 
     AlignToReferenceBlastDialogFiller::Settings settings;
-    settings.referenceUrl = testDir + "_common_data/sanger/dataset4/Reference.fna";
+    settings.referenceUrl = testDir + "_common_data/sanger/dataset5/Reference.fna";
     settings.readUrls << QString(testDir + "_common_data/sanger/dataset5/187_260_V49595_10.ab1");
     settings.outAlignment = QFileInfo(sandBoxDir + "sanger_test_0007").absoluteFilePath();
 
