@@ -156,6 +156,7 @@ void McaReferenceCharController::initRegions() {
         charRegions.append(current, gapCounter);
     }
     ungappedLength = data.size() - gapCounter;
+    emit si_cacheUpdated();
 }
 
 } // namepspace

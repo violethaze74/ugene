@@ -60,6 +60,9 @@ public:
     int getUngappedPosition(int pos) const;
     int getUngappedLength() const;
 
+signals:
+    void si_cacheUpdated();
+
 public slots:
     void sl_update();
     void sl_update(const MultipleAlignment &maBefore, const MaModificationInfo &modInfo);

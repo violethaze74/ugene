@@ -54,6 +54,7 @@ McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject* mobj,
     selectionLabel->hide();
 
     connect(nameList, SIGNAL(si_selectionChanged()), SLOT(sl_update()));
+    connect(refCharController, SIGNAL(si_cacheUpdated()), SLOT(sl_update()));
 
     updateLabels();
     setupLayout();
