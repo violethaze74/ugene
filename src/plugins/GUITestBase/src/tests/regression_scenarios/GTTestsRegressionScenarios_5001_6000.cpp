@@ -2169,6 +2169,29 @@ GUI_TEST_CLASS_DEFINITION(test_5594_4) {
     CHECK_SET_ERR(reg.length == 6, QString("Unexpexter selected length, expected: 6, current: %1").arg(reg.length));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5604) {
+    //1. Open Workflow designer
+    GTLogTracer l;
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Open scheme
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/scenarios/_regression/5604/scheme.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Set up input data
+    GTUtilsWorkflowDesigner::click(os, "Read FASTQ Files with Reads");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/reads/e_coli_1000.fq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/reads/e_coli_1000_1.fq", true);
+
+    GTUtilsWorkflowDesigner::click(os, "Align Reads with BWA MEM");
+    GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", testDir + "_common_data/fasta/human_T1_cutted.fa", GTUtilsWorkflowDesigner::textValue);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsDashboard::getOutputFiles(os).size() == 1, "Wrong quantaty of output files");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5622) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
