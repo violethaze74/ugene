@@ -324,6 +324,7 @@ bool GTUtilsMcaEditor::isUndoEnabled(GUITestOpStatus &os) {
 bool GTUtilsMcaEditor::isRedoEnabled(GUITestOpStatus &os) {
     return GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo")->isEnabled();
 }
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "toggleShowChromatogramsMode"
 void GTUtilsMcaEditor::toggleShowChromatogramsMode(GUITestOpStatus &os) {

@@ -118,17 +118,25 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
     GT_CHECK(mcaSeqArea->isInRange(position), "Position is out of range");
     CHECK(!mcaSeqArea->isVisible(position, false), );
 
-    GTUtilsMcaEditor::scrollToRead(os, position.y());
-    scrollToBase(os, position.x());
+    if (!mcaSeqArea->isRowVisible(position.y(), false)) {
+        GTUtilsMcaEditor::scrollToRead(os, position.y());
+    }
+
+    if (!mcaSeqArea->isPositionVisible(position.x(), false)) {
+        scrollToBase(os, position.x());
+    }
+
     CHECK_SET_ERR(mcaSeqArea->isVisible(position, false), "The position is still invisible after scrolling");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToBase"
 void GTUtilsMcaEditorSequenceArea::scrollToBase(GUITestOpStatus &os, int position) {
+    const int scrollBarValue = GTUtilsMcaEditor::getEditorUi(os)->getBaseWidthController()->getBaseGlobalRange(position).center() -
+                               GTUtilsMcaEditor::getEditorUi(os)->getSequenceArea()->width() / 2;
     GTScrollBar::moveSliderWithMouseToValue(os,
                                             GTUtilsMcaEditor::getHorizontalScrollBar(os),
-                                            GTUtilsMcaEditor::getEditorUi(os)->getBaseWidthController()->getBaseGlobalRange(position).center());
+                                            scrollBarValue);
 }
 #undef GT_METHOD_NAME
 
