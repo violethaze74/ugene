@@ -1839,13 +1839,10 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
-
-
-    GTGlobals::sleep(100);
-    GTUtilsWorkflowDesigner::runWorkflow(os);
-	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-	
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+	GTGlobals::sleep(100);
+	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));   
+    GTUtilsWorkflowDesigner::runWorkflow(os);	
+	GTGlobals::sleep();   
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1154) {
