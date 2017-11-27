@@ -105,8 +105,13 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
     SAFE_POINT_EXT(opened, setError(L10N::errorOpeningFileWrite(reportFile.fileName())), );
     reportFile.close();
 
+    GUrl referenceUrl(settings.referenceUrl);
+    if (referenceUrl.isLocalFile()) {
+        CHECK_EXT(QFileInfo(referenceUrl.getURLString()).exists(), setError(tr("The '%1' reference file doesn't exist.").arg(settings.referenceUrl)),);
+    }
+    
     FormatDetectionConfig config;
-    QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.referenceUrl, config);
+    QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(referenceUrl, config);
     CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError(tr("wrong reference format")), );
 
     DocumentFormat *format = formats.first().format;
