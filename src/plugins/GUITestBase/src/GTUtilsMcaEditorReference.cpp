@@ -59,10 +59,12 @@ void GTUtilsMcaEditorReference::clickToPosition(HI::GUITestOpStatus &os, int pos
 
 #define GT_METHOD_NAME "scrollToPosition"
 void GTUtilsMcaEditorReference::scrollToPosition(HI::GUITestOpStatus &os, int position) {
+    const int scrollBarValue = GTUtilsMcaEditor::getEditorUi(os)->getBaseWidthController()->getBaseGlobalRange(position).center() -
+                               GTUtilsMcaEditor::getEditorUi(os)->getSequenceArea()->width() / 2;
     CHECK(!GTUtilsMcaEditor::getReferenceArea(os)->getVisibleRange().contains(position), );
     GTScrollBar::moveSliderWithMouseToValue(os,
                                             GTUtilsMcaEditor::getHorizontalScrollBar(os),
-                                            GTUtilsMcaEditor::getEditorUi(os)->getBaseWidthController()->getBaseGlobalRange(position).center());
+                                            scrollBarValue);
 }
 #undef GT_METHOD_NAME
 
