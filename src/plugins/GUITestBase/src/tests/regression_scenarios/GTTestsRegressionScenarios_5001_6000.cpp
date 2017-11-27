@@ -3931,7 +3931,7 @@ GUI_TEST_CLASS_DEFINITION(test_5789_2) {
 
 //    2. Edit the MSA somehow.
     GTUtilsMsaEditor::removeRows(os, 0, 0);
-
+	GTGlobals::sleep(100);
 //    Expected state: the "Undo" button is enabled, the "Redo" button is disabled.
     isUndoEnabled = GTUtilsMcaEditor::isUndoEnabled(os);
     isRedoEnabled = GTUtilsMcaEditor::isRedoEnabled(os);
