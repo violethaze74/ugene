@@ -298,7 +298,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemorySetter(500000)));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
@@ -343,7 +343,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemorySetter(256)));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
