@@ -1842,7 +1842,7 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
 	GTGlobals::sleep(100);
 	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));   
     GTUtilsWorkflowDesigner::runWorkflow(os);	
-	GTGlobals::sleep();   
+	GTGlobals::sleep(500);   
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1154) {
