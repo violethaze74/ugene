@@ -1463,68 +1463,15 @@ GUI_TEST_CLASS_DEFINITION(test_5469) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5492) {
-    class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            //Expected state : "Min read identity" option by default = 80 %
-            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-            QString expected = "80";
-            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Quality threshold" option by default = 30
-            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-            expected = "30";
-            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+    QString fileName = "sanger_alignment_short.ugenedb";
 
-            //Expected state : "Add to project" option is checked by default
-            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
-
-            //Expected state : "Result aligment" field is filled by default
-            QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-            bool checkContainsSecond = output.contains("sanger_reads_alignment");
-            bool checkContainsThird = output.contains("UGENE_Data");
-            bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
-
-            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_short.gb");
-
-            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
-            QStringList reads;
-            for (int i = 1; i < 21; i++) {
-                QString name = "sanger_";
-                QString num = QString::number(i);
-                if (num.size() == 1) {
-                    num = "0" + QString::number(i);
-                }
-                name += num;
-                name += ".ab1";
-                reads << name;
-            }
-            QString readDir = testDir + "_common_data/sanger/";
-            GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-            GTUtilsDialog::waitForDialog(os, ob);
-
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-            //4. Push "Align" button
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
-        }
-    };
-
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //5. Select last symbol of the read and insert some gaps, until reference will increase for a few symbols
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+ 
+    //2. Select last symbol of the read and insert some gaps, until reference will increase for a few symbols
     MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(os, 0);
     int end = row->getCoreStart() + row->getCoreLength() - 1;
     QPoint p(end, 0);
@@ -1537,7 +1484,7 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
         i--;
     }
 
-    //6. Select this last symbil again, press "Insert character" and insert gap
+    //4. Select this last symbil again, press "Insert character" and insert gap
     row = GTUtilsMcaEditor::getMcaRow(os, 0);
     end = row->getCoreStart() + row->getCoreLength() - 1;
     p = QPoint(end, 0);
@@ -1553,14 +1500,14 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
     CHECK_SET_ERR(newRowLength < end, "Incorrect length");
 
     int refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    //7. Press "Remove all coloumns of gaps "
+    //5. Press "Remove all coloumns of gaps "
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Remove all columns of gaps");
 
     //Expected: Reference will be trimmed
     int newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
     CHECK_SET_ERR(newRefLength < refLength, QString("Expected: New ref length is less then old ref length, current: new = %1, old = %2").arg(QString::number(newRefLength)).arg(QString::number(refLength)));
 
-    //8. Press "undo"
+    //6. Press "undo"
     GTUtilsMcaEditor::undo(os);
 
     //Expected: reference will be restored with gaps
@@ -2281,66 +2228,12 @@ GUI_TEST_CLASS_DEFINITION(test_5636) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5637) {
-    class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            //Expected state : "Min read identity" option by default = 80 %
-            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-            QString expected = "80";
-            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+	QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+	QString fileName = "sanger_alignment_short.ugenedb";
 
-            //Expected state : "Quality threshold" option by default = 30
-            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-            expected = "30";
-            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
-
-            //Expected state : "Add to project" option is checked by default
-            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
-
-            //Expected state : "Result aligment" field is filled by default
-            QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-            bool checkContainsSecond = output.contains("sanger_reads_alignment");
-            bool checkContainsThird = output.contains("UGENE_Data");
-            bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
-
-            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_short.gb");
-
-            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
-            QStringList reads;
-            for (int i = 1; i < 21; i++) {
-                QString name = "sanger_";
-                QString num = QString::number(i);
-                if (num.size() == 1) {
-                    num = "0" + QString::number(i);
-                }
-                name += num;
-                name += ".ab1";
-                reads << name;
-            }
-            QString readDir = testDir + "_common_data/sanger/";
-            GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-            GTUtilsDialog::waitForDialog(os, ob);
-
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-            //4. Push "Align" button
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
-        }
-    };
-
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+	//1. Copy to 'sandbox' and open alignment_short.ugenedb
+	GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+	GTFileDialog::openFile(os, sandBoxDir, fileName);
 
     //Expected: row length must be equal or lesser then reference length
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
@@ -2348,11 +2241,11 @@ GUI_TEST_CLASS_DEFINITION(test_5637) {
     qint64 rowLength = row->getRowLengthWithoutTrailing();
     CHECK_SET_ERR(rowLength <= refLength, QString("Expected: row length must be equal or lesser then reference length, current: row lenght = %1, reference length = %2").arg(QString::number(rowLength)).arg(QString::number(refLength)));
 
-    //5. Select a char in the first row
+    //2. Select a char in the first row
     QPoint p(5500, 0);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, p);
 
-    //6. insert 6 gaps
+    //3. insert 6 gaps
     int i = 6;
     while (i != 0) {
         GTGlobals::sleep(1000);
@@ -2829,77 +2722,24 @@ GUI_TEST_CLASS_DEFINITION(test_5716) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5718) {
-    class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            //Expected state : "Min read identity" option by default = 80 %
-            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-            QString expected = "80";
-            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Quality threshold" option by default = 30
-            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-            expected = "30";
-            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+	QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+	QString fileName = "sanger_alignment_short.ugenedb";
 
-            //Expected state : "Add to project" option is checked by default
-            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+	//1. Copy to 'sandbox' and open alignment_short.ugenedb
+	GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+	GTFileDialog::openFile(os, sandBoxDir, fileName);
 
-            //Expected state : "Result aligment" field is filled by default
-            QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-            bool checkContainsSecond = output.contains("sanger_reads_alignment");
-            bool checkContainsThird = output.contains("UGENE_Data");
-            bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
-
-            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_short.gb");
-
-            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
-            QStringList reads;
-            for (int i = 1; i < 21; i++) {
-                QString name = "sanger_";
-                QString num = QString::number(i);
-                if (num.size() == 1) {
-                    num = "0" + QString::number(i);
-                }
-                name += num;
-                name += ".ab1";
-                reads << name;
-            }
-            QString readDir = testDir + "_common_data/sanger/";
-            GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-            GTUtilsDialog::waitForDialog(os, ob);
-
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-            //4. Push "Align" button
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
-        }
-    };
-
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //5. Click reference pos 2071
+    //2. Click reference pos 2071
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2071, 1));
-    GTGlobals::sleep(500);
+    GTGlobals::sleep(1000);
 
-    //6. Insert gap
+    //3. Insert gap
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
     int lengthBeforeGapColumnsRemoving = GTUtilsMcaEditorSequenceArea::getReferenceLengthWithGaps(os);
 
-    //7. Remove all columns of gaps
+    //4. Remove all columns of gaps
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Remove all columns of gaps"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3432,69 +3272,16 @@ GUI_TEST_CLASS_DEFINITION(test_5758) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5761) {
-    class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            //Expected state : "Min read identity" option by default = 80 %
-            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-            QString expected = "80";
-            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Quality threshold" option by default = 30
-            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-            expected = "30";
-            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+	QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+	QString fileName = "sanger_alignment_short.ugenedb";
 
-            //Expected state : "Add to project" option is checked by default
-            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
-
-            //Expected state : "Result aligment" field is filled by default
-            QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-            bool checkContainsSecond = output.contains("sanger_reads_alignment");
-            bool checkContainsThird = output.contains("UGENE_Data");
-            bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
-
-            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_short.gb");
-
-            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
-            QStringList reads;
-            for (int i = 1; i < 21; i++) {
-                QString name = "sanger_";
-                QString num = QString::number(i);
-                if (num.size() == 1) {
-                    num = "0" + QString::number(i);
-                }
-                name += num;
-                name += ".ab1";
-                reads << name;
-            }
-            QString readDir = testDir + "_common_data/sanger/";
-            GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-            GTUtilsDialog::waitForDialog(os, ob);
-
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-            //4. Push "Align" button
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
-        }
-    };
-
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+	//1. Copy to 'sandbox' and open alignment_short.ugenedb
+	GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+	GTFileDialog::openFile(os, sandBoxDir, fileName);
 
     GTLogTracer trace;
-    //5. Select the last char of the first row
+    //2. Select the last char of the first row
     MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(os, 0);
     int end = row->getCoreStart() + row->getCoreLength() - 1;
     QPoint p(end, 0);
@@ -3502,7 +3289,7 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
     QPoint curPos = GTMouseDriver::getMousePosition();
     QPoint moveMouseTo(curPos.x() + 140, curPos.y());
 
-    //6. Press left button and move mouse to the right (add some gaps)
+    //3. Press left button and move mouse to the right (add some gaps)
     GTMouseDriver::press();
     GTMouseDriver::moveTo(moveMouseTo);
     int i = 10;
