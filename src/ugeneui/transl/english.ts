@@ -742,7 +742,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CancelAllTask</name>
     <message>
-        <location filename="../src/main_window/ShutdownTask.cpp" line="240"/>
+        <location filename="../src/main_window/ShutdownTask.cpp" line="236"/>
         <source>Canceling: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -821,7 +821,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CloseWindowsTask</name>
     <message>
-        <location filename="../src/main_window/ShutdownTask.cpp" line="212"/>
+        <location filename="../src/main_window/ShutdownTask.cpp" line="208"/>
         <source>Closing views</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2133,7 +2133,7 @@ Do you want view online documentation?</translation>
         <translation>Shutdown</translation>
     </message>
     <message>
-        <location filename="../src/main_window/ShutdownTask.cpp" line="230"/>
+        <location filename="../src/main_window/ShutdownTask.cpp" line="226"/>
         <source>Cancel active tasks</source>
         <translation>Cancel active tasks</translation>
     </message>
