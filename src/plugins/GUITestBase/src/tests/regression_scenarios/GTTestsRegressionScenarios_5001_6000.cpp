@@ -3847,34 +3847,30 @@ GUI_TEST_CLASS_DEFINITION(test_5798_5) {
 
     //2. Open sample {Convert alignments to ClustalW}
     GTUtilsWorkflowDesigner::addSample(os, "Convert alignments to ClustalW");
-
-    //Expected state: There is "Show wizard" tool button
-
-    //3. Press "Show wizard" button
+    //Expected state: There is "Show wizard" tool button    
+	//3. Press "Show wizard" button
 
     class customWizard : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
             QWidget* dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+			
             //4. Select input MSA "samples/APR/DNA.apr"
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << dataDir + "samples/APR/DNA.apr"));
 
             //5. Press "Next" button
-            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-            GTUtilsWizard::setParameter(os, "Result ClustalW file", "DNA.aln");
-            //6. Press "Run" button
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);			
+            //GTUtilsWizard::setParameter(os, "Result ClustalW file", "DNA.aln");
 
-            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+			//6. Press "Run" button           
+			GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
 
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Convert alignments to ClustalW Wizard", new customWizard()));
     GTWidget::click(os, GTAction::button(os, "Show wizard"));
     //Expected state: Align sequences with MUSCLE Wizard appeared
-
-    GTGlobals::sleep(1000);
 
     //Expected state: Scheme successfully performed
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3935,9 +3931,13 @@ GUI_TEST_CLASS_DEFINITION(test_5833) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
+	GTUtilsTaskTreeView::waitTaskFinished(os);
+	GTGlobals::sleep(100);
 
 //    2. Select 440 base on the second read (the position is ungapped).
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2506, 1));
+	GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
+	GTGlobals::sleep(100);
 
 //    Expected state: the status bar contains the next labels: "Ln 2/16, RefPos 2500/11878, ReadPos 440/1173".
     QString rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3956,12 +3956,13 @@ GUI_TEST_CLASS_DEFINITION(test_5833) {
 //    3. Call a context menu, select "Edit" -> "Insert character/gap" menu item.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Insert character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep(500);
+	GTUtilsTaskTreeView::waitTaskFinished(os);  
+	GTGlobals::sleep(500);
 
 //    4. Click 'A' key.
-    GTKeyboardDriver::keyClick(Qt::Key_A);
-    GTGlobals::sleep(500);
-
+	GTKeyboardDriver::keyClick('A');
+	GTGlobals::sleep(500);
+	
 //    Expected state: the new base has been inserted, the status bar contains the next labels: "Ln 2/16, RefPos gap/11878, ReadPos 440/1174".
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
     rowsCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
