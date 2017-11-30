@@ -76,6 +76,8 @@
 #include "AnnotatedDNAViewTasks.h"
 #include "AnnotationsTreeView.h"
 #include "AutoAnnotationUtils.h"
+#include "DetView.h"
+#include "DetViewSequenceEditor.h"
 #include "GraphMenu.h"
 
 #ifdef max
@@ -1316,11 +1318,18 @@ void AnnotatedDNAView::sl_paste(){
     SAFE_POINT(pasteFactory != NULL, "adFactory is null", );
 
     bool focus = false;
+    int pastePoint = -1;
     ADVSingleSequenceWidget *wgt = qobject_cast<ADVSingleSequenceWidget*> (focusedWidget);
     if (wgt != NULL) {
         QList<GSequenceLineView*> views = wgt->getLineViews();
         foreach (GSequenceLineView* v, views) {
             if (v->hasFocus()) {
+                if (qobject_cast<DetView*>(v) != NULL) {
+                    DetView* detView = qobject_cast<DetView*>(v);
+                    if (detView->isEditMode()) {
+                        pastePoint = detView->getEditor()->getCursorPosition();
+                    }
+                }
                 focus = true;
                 break;
             }
@@ -1333,14 +1342,15 @@ void AnnotatedDNAView::sl_paste(){
     }
     ADVSequenceObjectContext *seqCtx = getSequenceInFocus();
     SAFE_POINT(seqCtx != NULL, tr("No sequence in focus"), );
-    pasteQueue.insert(task, seqCtx);
+    pasteQueue.insert(task, PasteLocation(pastePoint, seqCtx));
 
 
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
 void AnnotatedDNAView::sl_pasteFinished(Task* _pasteTask){
-    ADVSequenceObjectContext *seqCtx = pasteQueue.take(_pasteTask);
+    PasteLocation loc = pasteQueue.take(_pasteTask);
+    ADVSequenceObjectContext *seqCtx = loc.seqCtx;
     if (seqCtx == NULL){
         return;
     }
@@ -1372,8 +1382,8 @@ void AnnotatedDNAView::sl_pasteFinished(Task* _pasteTask){
             seq.seq.append(dnaObj.seq);
         }
     }
-
-    Task *t = new ModifySequenceContentTask(BaseDocumentFormats::FASTA, obj, U2Region(obj->getSequenceLength(), 0), seq);
+    Task *t = new ModifySequenceContentTask(BaseDocumentFormats::FASTA, obj,
+                                            U2Region(loc.pastePos != -1 ? loc.pastePos : obj->getSequenceLength(), 0), seq);
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_sequenceModifyTaskStateChanged()));
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
     seqCtx->getSequenceSelection()->clear();

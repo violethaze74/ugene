@@ -64,6 +64,7 @@ class CodonTableAction;
 
 class U2VIEW_EXPORT AnnotatedDNAView : public GObjectView {
     Q_OBJECT
+    friend class DetViewSequenceEditor; // TODO_SVEDIT: remove this
 public:
     AnnotatedDNAView(const QString &viewName, const QList<U2SequenceObject *> &dnaObjects);
     ~AnnotatedDNAView();
@@ -284,7 +285,17 @@ private:
 
     int                         timerId;
 
-    QMap<Task*, ADVSequenceObjectContext*> pasteQueue;
+    struct PasteLocation {
+        PasteLocation()
+            : pastePos(-1), seqCtx(NULL) {}
+        PasteLocation(qint64 pos, ADVSequenceObjectContext* ctx)
+            : pastePos(pos),
+              seqCtx(ctx) {}
+
+        qint64                      pastePos;
+        ADVSequenceObjectContext*   seqCtx;
+    };
+    QMap<Task*, PasteLocation> pasteQueue;
 };
 
 } // namespace U2

@@ -192,6 +192,30 @@ void DetViewMultiLineRenderer::drawSelection(QPainter &p, const QSize &canvasSiz
     p.translate(0, - indentCounter);
 }
 
+void DetViewMultiLineRenderer::drawCursor(QPainter &p, const QSize &canvasSize, const U2Region& visibleRange) {
+    CHECK(detView->isEditMode(), );
+
+    int symbolsPerLine = getSymbolsPerLine(canvasSize.width());
+    U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
+    int indentCounter = 0;
+    do {
+        // cut the extra space at the end of the sequence
+        oneLineRegion.length = qMin(visibleRange.endPos() - oneLineRegion.startPos, oneLineRegion.length);
+        singleLinePainter->drawCursor(p,
+                                   QSize(canvasSize.width(), getOneLineHeight()),
+                                   oneLineRegion);
+
+        p.translate(0, getOneLineHeight());
+        indentCounter += getOneLineHeight();
+
+        oneLineRegion.startPos += symbolsPerLine;
+
+    } while (oneLineRegion.startPos < visibleRange.endPos());
+
+    // move painter back to [0, 0] position
+    p.translate(0, - indentCounter);
+}
+
 void DetViewMultiLineRenderer::update() {
     singleLinePainter->update();
 }

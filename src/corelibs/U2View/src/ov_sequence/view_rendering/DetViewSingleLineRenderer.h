@@ -76,6 +76,7 @@ public:
 
     virtual void drawAll(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange);
     virtual void drawSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange);
+    virtual void drawCursor(QPainter &p, const QSize &canvasSize, const U2Region& visibleRange);
 
     void update();
 
