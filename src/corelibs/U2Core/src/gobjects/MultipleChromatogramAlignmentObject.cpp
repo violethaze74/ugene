@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -295,6 +295,19 @@ void MultipleChromatogramAlignmentObject::removeRowPrivate(U2OpStatus &os, const
 void MultipleChromatogramAlignmentObject::removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef,
                                                               const QList<qint64> &rows, int startPos, int nBases) {
     McaDbiUtils::removeCharacters(maRef, rows, startPos, nBases, os);
+}
+
+
+int MultipleChromatogramAlignmentObject::getReferenceLengthWithGaps() const {
+    int lengthWithoutGaps = getLength();
+
+    U2MsaRowGapModel refGapModel = getReferenceGapModel();
+    int gapLength = 0;
+    foreach(const U2MsaGap gap, refGapModel) {
+        gapLength += gap.gap;
+    }
+
+    return lengthWithoutGaps + gapLength;
 }
 
 }   // namespace U2

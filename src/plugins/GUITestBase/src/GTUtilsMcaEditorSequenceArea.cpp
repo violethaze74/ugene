@@ -19,10 +19,12 @@
 * MA 02110-1301, USA.
 */
 
+#include <QApplication>
 #include <QMainWindow>
 #include <QStyleOptionSlider>
 
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTScrollBar.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
@@ -114,38 +116,27 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMdi::activeWindow(os));
     GT_CHECK(NULL != mcaSeqArea, "MSA Editor sequence area is not found");
     GT_CHECK(mcaSeqArea->isInRange(position), "Position is out of range");
+    CHECK(!mcaSeqArea->isVisible(position, false), );
 
-    // scroll down
-    GScrollBar* vBar = GTWidget::findExactWidget<GScrollBar *>(os, "vertical_sequence_scroll", GTUtilsMdi::activeWindow(os));
-    GT_CHECK(NULL != vBar, "Vertical scroll bar is not found");
-
-    QStyleOptionSlider vScrollBarOptions;
-    vScrollBarOptions.initFrom(vBar);
-
-    while (!mcaSeqArea->isRowVisible(position.y(), false)) {
-        const QRect sliderSpaceRect = vBar->style()->subControlRect(QStyle::CC_ScrollBar, &vScrollBarOptions, QStyle::SC_ScrollBarGroove, vBar);
-        const QPoint bottomEdge(sliderSpaceRect.width() / 2, sliderSpaceRect.y() + sliderSpaceRect.height());
-
-        GTMouseDriver::moveTo(vBar->mapToGlobal(bottomEdge) - QPoint(0, 1));
-        GTMouseDriver::click();
+    if (!mcaSeqArea->isRowVisible(position.y(), false)) {
+        GTUtilsMcaEditor::scrollToRead(os, position.y());
     }
 
-    // scroll right
-    GScrollBar* hBar = GTWidget::findExactWidget<GScrollBar *>(os, "horizontal_sequence_scroll", GTUtilsMdi::activeWindow(os));
-    GT_CHECK(NULL != hBar, "Horisontal scroll bar is not found");
-
-    QStyleOptionSlider hScrollBarOptions;
-    hScrollBarOptions.initFrom(hBar);
-
-    while (!mcaSeqArea->isPositionVisible(position.x(), false)) {
-        const QRect sliderSpaceRect = hBar->style()->subControlRect(QStyle::CC_ScrollBar, &hScrollBarOptions, QStyle::SC_ScrollBarGroove, hBar);
-        const QPoint rightEdge(sliderSpaceRect.x() + sliderSpaceRect.width(), sliderSpaceRect.height() / 2);
-
-        GTMouseDriver::moveTo(hBar->mapToGlobal(rightEdge) - QPoint(1, 0));
-        GTMouseDriver::click();
+    if (!mcaSeqArea->isPositionVisible(position.x(), false)) {
+        scrollToBase(os, position.x());
     }
 
-    SAFE_POINT(mcaSeqArea->isVisible(position, false), "The position is still invisible after scrolling", );
+    CHECK_SET_ERR(mcaSeqArea->isVisible(position, false), "The position is still invisible after scrolling");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "scrollToBase"
+void GTUtilsMcaEditorSequenceArea::scrollToBase(GUITestOpStatus &os, int position) {
+    const int scrollBarValue = GTUtilsMcaEditor::getEditorUi(os)->getBaseWidthController()->getBaseGlobalRange(position).center() -
+                               GTUtilsMcaEditor::getEditorUi(os)->getSequenceArea()->width() / 2;
+    GTScrollBar::moveSliderWithMouseToValue(os,
+                                            GTUtilsMcaEditor::getHorizontalScrollBar(os),
+                                            scrollBarValue);
 }
 #undef GT_METHOD_NAME
 
@@ -357,7 +348,8 @@ short GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(GUITestOpStatus
 #define GT_METHOD_NAME "getSelectedChar"
 char GTUtilsMcaEditorSequenceArea::getSelectedReadChar(GUITestOpStatus &os) {
     QRect selection = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
-    GT_CHECK_RESULT(selection.width() == 1 && selection.height() == 1, "Multiple selection", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(selection.width() > 0 && selection.height() > 0, "There is no selection", U2Mca::INVALID_CHAR);
+    GT_CHECK_RESULT(selection.width() <= 1 && selection.height() <= 1, "The selection is too big", U2Mca::INVALID_CHAR);
     int rowNum = selection.y();
     qint64 pos = selection.x();
 
@@ -429,6 +421,21 @@ qint64 GTUtilsMcaEditorSequenceArea::getReferenceLength(GUITestOpStatus &os) {
     qint64 refLength = obj->getReferenceObj()->getSequenceLength();
 
     return refLength;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getReferenceLength"
+qint64 GTUtilsMcaEditorSequenceArea::getReferenceLengthWithGaps(GUITestOpStatus &os) {
+    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
+    GT_CHECK_RESULT(mw != NULL, "QMainWindow not found", 0);
+    McaEditor* editor = mw->findChild<McaEditor*>();
+    GT_CHECK_RESULT(editor != NULL, "McaEditor not found", 0);
+    MultipleChromatogramAlignmentObject* obj = editor->getMaObject();
+    GT_CHECK_RESULT(obj != NULL, "MultipleChromatogramAlignmentObject not found", 0);
+
+    int length = obj->getReferenceLengthWithGaps();
+
+    return length;
 }
 #undef GT_METHOD_NAME
 

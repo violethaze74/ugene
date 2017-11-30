@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -66,6 +66,7 @@ public:
 
     void setFirstVisibleBase(int firstVisibleBase);
     void setFirstVisibleRowByNumber(int firstVisibleRowNumber);
+    void setFirstVisibleRowByIndex(int firstVisibleRowIndex);
 
     void scrollSmoothly(const Directions &directions);
     void stopSmoothScrolling();

@@ -2017,7 +2017,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::FindExonRegionsTask</name>
     <message>
-        <location filename="../src/FindExonRegionsTask.cpp" line="100"/>
+        <location filename="../src/FindExonRegionsTask.cpp" line="98"/>
         <source>Failed to search for exon annotations. The sequence %1 doesn&apos;t have any related annotations.</source>
         <translation>Failed to search for exon annotations. The sequence %1 doesn&apos;t have any related annotations.</translation>
     </message>

@@ -77,6 +77,8 @@ public:
     qint64 memoryHint() const;
 
     QByteArray      qualCodes;
+    void setQualCodes(const QByteArray& qualCodes);
+
     DNAQualityType  type;
 
     static const DNAQualityFormat QUAL_FORMAT;

@@ -46,6 +46,8 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/GraphLabelsSelectDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/GraphSettingsDialogFiller.h \
+            src/runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h \
+            src/runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/ImportOptionsWidgetFiller.h \
             src/runnables/ugene/corelibs/U2Gui/ImportToDatabaseDialogFiller.h \
@@ -152,7 +154,9 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsExternalTools.h \
             src/GTUtilsLog.h \
             src/GTUtilsMcaEditor.h \
+            src/GTUtilsMcaEditorReference.h \
             src/GTUtilsMcaEditorSequenceArea.h \
+            src/GTUtilsMcaEditorStatusWidget.h \
             src/GTUtilsMdi.h \
             src/GTUtilsMsaEditor.h \
             src/GTUtilsMsaEditorSequenceArea.h \
@@ -298,6 +302,8 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/GraphLabelsSelectDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/GraphSettingsDialogFiller.cpp \
+            src/runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.cpp \
+            src/runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/ImportOptionsWidgetFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/ImportToDatabaseDialogFiller.cpp \
@@ -404,7 +410,9 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsExternalTools.cpp \
             src/GTUtilsLog.cpp \
             src/GTUtilsMcaEditor.cpp \
+            src/GTUtilsMcaEditorReference.cpp \
             src/GTUtilsMcaEditorSequenceArea.cpp \
+            src/GTUtilsMcaEditorStatusWidget.cpp \
             src/GTUtilsMdi.cpp \
             src/GTUtilsMsaEditor.cpp \
             src/GTUtilsMsaEditorSequenceArea.cpp \

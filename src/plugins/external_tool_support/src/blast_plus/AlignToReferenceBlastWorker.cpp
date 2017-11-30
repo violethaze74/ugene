@@ -1,29 +1,30 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
-* http://ugene.unipro.ru
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/FormatUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
@@ -46,20 +47,24 @@
 #include "align_worker_subtasks/ComposeResultSubTask.h"
 #include "align_worker_subtasks/FormatDBSubTask.h"
 #include "align_worker_subtasks/PrepareReferenceSequenceTask.h"
-#include "blast/BlastAllSupport.h"
 #include "blast/FormatDBSupport.h"
+#include "blast_plus/BlastPlusSupport.h"
 
 namespace U2 {
 namespace LocalWorkflow {
 
 const QString AlignToReferenceBlastWorkerFactory::ACTOR_ID("align-to-reference");
+const QString AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME = QObject::tr("Sequence name from file");
+const QString AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME = QObject::tr("File name");
+const QString AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE = "sequence name";
+const QString AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE = "file name";
+
 namespace {
     const QString OUT_PORT_ID = "out";
     const QString REF_ATTR_ID = "reference";
     const QString RESULT_URL_ATTR_ID = "result-url";
     const QString IDENTITY_ID = "identity";
-
-    const QString ALGORITHM = "algorithm";
+    const QString ROW_NAMING_ID = "row-naming-policy";
 }
 
 /************************************************************************/
@@ -101,9 +106,14 @@ void AlignToReferenceBlastWorkerFactory::init() {
                            AlignToReferenceBlastPrompter::tr("An URL to write the result alignment."));
         attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), true);
 
-        Descriptor identityDesc(IDENTITY_ID, AlignToReferenceBlastPrompter::tr("Minimum read identity"),
-                                AlignToReferenceBlastPrompter::tr("Reads, whose identity with the reference is less than the stated value, will be ignored."));
+        Descriptor identityDesc(IDENTITY_ID, AlignToReferenceBlastPrompter::tr("Mapping min similarity"),
+                                AlignToReferenceBlastPrompter::tr("Reads, whose similarity with the reference is less than the stated value, will be ignored."));
         attributes << new Attribute(identityDesc, BaseTypes::NUM_TYPE(), false, 80);
+
+        Descriptor rowNamingDesc(ROW_NAMING_ID, AlignToReferenceBlastPrompter::tr("Read name in result alignment"),
+                                AlignToReferenceBlastPrompter::tr("Reads in the result alignment can be named either by names of the sequences in the input files or by the input files names. "
+                                                                  "For example, if the sequences have the same name, set this value to \"File name\" to be able to distinguish the reads in the result alignment."));
+        attributes << new Attribute(rowNamingDesc, BaseTypes::STRING_TYPE(), false, ROW_NAMING_SEQUENCE_NAME_VALUE);
     }
 
     QMap<QString, PropertyDelegate*> delegates;
@@ -115,6 +125,11 @@ void AlignToReferenceBlastWorkerFactory::init() {
         m["maximum"] = 100;
         m["suffix"] = "%";
         delegates[IDENTITY_ID] = new SpinBoxDelegate(m);
+
+        QVariantMap rowNamingMap;
+        rowNamingMap.insert(ROW_NAMING_SEQUENCE_NAME, ROW_NAMING_SEQUENCE_NAME_VALUE);
+        rowNamingMap.insert(ROW_NAMING_FILE_NAME, ROW_NAMING_FILE_NAME_VALUE);
+        delegates[ROW_NAMING_ID] = new ComboBoxDelegate(rowNamingMap);
     }
 
     Descriptor desc(ACTOR_ID, AlignToReferenceBlastWorker::tr("Map to Reference"),
@@ -122,8 +137,8 @@ void AlignToReferenceBlastWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new AlignToReferenceBlastPrompter(NULL));
-    proto->addExternalTool(ET_BLASTALL);
-    proto->addExternalTool(ET_FORMATDB);
+    proto->addExternalTool(ET_BLASTN);
+    proto->addExternalTool(ET_MAKEBLASTDB);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -167,34 +182,40 @@ void AlignToReferenceBlastWorker::onPrepared(Task *task, U2OpStatus &os) {
     PrepareReferenceSequenceTask *prepareTask = qobject_cast<PrepareReferenceSequenceTask *>(task);
     CHECK_EXT(NULL != prepareTask, os.setError(L10N::internalError("Unexpected prepare task")), );
     reference = context->getDataStorage()->getDataHandler(prepareTask->getReferenceEntityRef());
+    referenceUrl = prepareTask->getPreparedReferenceUrl();
 }
 
 Task * AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) const {
     QList<SharedDbiDataHandler> reads;
+    QMap<SharedDbiDataHandler, QString> readsNames;
     foreach (const Message &message, messages) {
         QVariantMap data = message.getData().toMap();
         if (data.contains(BaseSlots::DNA_SEQUENCE_SLOT().getId())) {
-            reads << data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
+            const SharedDbiDataHandler read = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
+            reads << read;
+            readsNames.insert(read, getReadName(message));
         }
     }
     int readIdentity = getValue<int>(IDENTITY_ID);
-    return new AlignToReferenceBlastTask(getValue<QString>(REF_ATTR_ID), getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readIdentity, context->getDataStorage());
+    return new AlignToReferenceBlastTask(referenceUrl, getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readsNames, readIdentity, context->getDataStorage());
 }
 
 QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) const {
     AlignToReferenceBlastTask *alignTask = qobject_cast<AlignToReferenceBlastTask*>(task);
     CHECK_EXT(NULL != alignTask, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
 
-    const QMap<QString, bool> acceptedReads = alignTask->getAcceptedReads();
-    const QStringList discardedReads = alignTask->getDiscardedReads();
+    const QList<QPair<QString, QPair<int, bool> > > acceptedReads = alignTask->getAcceptedReads();
+    const QList<QPair<QString, int> > discardedReads = alignTask->getDiscardedReads();
 
     algoLog.info(QString("Reads discarded by the mapper: %1").arg(discardedReads.count()));
-    foreach (const QString &readName, discardedReads) {
-        algoLog.details(readName);
+    QPair<QString, int> discardedPair;
+    foreach(discardedPair, discardedReads) {
+        algoLog.details(discardedPair.first);
     }
     algoLog.info(QString("Reads accepted by the mapper: %1").arg(acceptedReads.count()));
-    foreach (const QString &readName, acceptedReads.keys()) {
-        algoLog.details((acceptedReads[readName] ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + readName);
+    QPair<QString, QPair<int, bool> > pair;
+    foreach(pair, acceptedReads) {
+        algoLog.details((pair.second.second ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + pair.first);
     }
     algoLog.info(QString("Total reads processed by the mapper: %1").arg(acceptedReads.count() + discardedReads.count()));
 
@@ -219,19 +240,28 @@ MessageMetadata AlignToReferenceBlastWorker::generateMetadata(const QString &dat
     return MessageMetadata(getValue<QString>(REF_ATTR_ID), datasetName);
 }
 
+QString AlignToReferenceBlastWorker::getReadName(const Message &message) const {
+    CHECK(AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE == getValue<QString>(ROW_NAMING_ID), "");
+    const int metadataId = message.getMetadataId();
+    const MessageMetadata metadata = context->getMetadataStorage().get(metadataId);
+    return GUrlUtils::getUncompressedCompleteBaseName(metadata.getFileUrl());
+}
+
 /************************************************************************/
 /* AlignToReferenceBlastTask */
 /************************************************************************/
 AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl, const QString &resultUrl,
                                                      const SharedDbiDataHandler &reference,
                                                      const QList<SharedDbiDataHandler> &reads,
+                                                     const QMap<SharedDbiDataHandler, QString> &readsNames,
                                                      int minIdentityPercent,
                                                      DbiDataStorage *storage)
-    : Task(tr("Align to reference"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
+    : Task(tr("Map to reference"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       referenceUrl(refUrl),
       resultUrl(resultUrl),
       reference(reference),
       reads(reads),
+      readsNames(readsNames),
       minIdentityPercent(minIdentityPercent),
       formatDbSubTask(NULL),
       blastTask(NULL),
@@ -254,7 +284,7 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == formatDbSubTask) {
         QString dbPath = formatDbSubTask->getResultPath();
-        blastTask = new BlastReadsSubTask(dbPath, reads, reference, minIdentityPercent, storage);
+        blastTask = new BlastReadsSubTask(dbPath, reads, reference, minIdentityPercent, readsNames, storage);
         result << blastTask;
     } else if (subTask == blastTask) {
         composeSubTask = new ComposeResultSubTask(reference, reads, blastTask->getBlastSubtasks(), storage);
@@ -283,33 +313,42 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
     return result;
 }
 
+Task::ReportResult AlignToReferenceBlastTask::report() {
+    if (NULL != formatDbSubTask) {
+        QFileInfo(formatDbSubTask->getResultPath()).dir().removeRecursively();
+    }
+    return ReportResult_Finished;
+}
+
 QString AlignToReferenceBlastTask::generateReport() const {
     QString result;
 
     QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
     CHECK(NULL != refObject, "");
 
-    const QMap<QString, bool> acceptedReads = getAcceptedReads();
-    const QStringList filtredReads = getDiscardedReads();
+    const QList<QPair<QString, QPair<int, bool> > > acceptedReads = getAcceptedReads();
+    const QList<QPair<QString, int> > filtredReads = getDiscardedReads();
 
     result += "<br><table><tr><td><b>" + tr("Details") + "</b></td></tr></table>\n";
     result += "<u>" + tr("Reference sequence:") + QString("</u> %1<br>").arg(refObject->getSequenceName());
-    result += "<u>" + tr("Aligned reads (%1):").arg(acceptedReads.size()) + "</u>";
+    result += "<u>" + tr("Mapped reads (%1):").arg(acceptedReads.size()) + "</u>";
     result += "<table>";
-    foreach (const QString &readName, acceptedReads.keys()) {
-        const QString read = (acceptedReads[readName] ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + readName;
-        result += "<tr><td width=50>" + tr("") + "</td><td>" + read + "</td></tr>";
+    QPair<QString, QPair<int, bool> > acceptedPair;
+    foreach(acceptedPair, acceptedReads) {
+        const QString arrow = acceptedPair.second.second ? "&#x2190;" : "&#x2192;";
+        const QString read = acceptedPair.first.replace("-", "&#8209;");
+        const QString readIdentity = tr("similarity")+"&nbsp;&nbsp;" + QString::number(acceptedPair.second.first) + "%";
+        result += "<tr><td align=right width=50>" + arrow + QString("</td><td><nobr>") + read + "</nobr></td><td><div style=\"margin-left:7px;\">" + readIdentity + "</div></td></tr>";
     }
-
-    result += "</table>";
+    QPair<QString, int> filtredPair;
     if (!filtredReads.isEmpty()) {
-        result += "<br><u>" + tr("Filtered by quality (%1):").arg(filtredReads.size()) + "</u>";
-        result += "<table>";
-        foreach (const QString &readName, filtredReads) {
-            result += "<tr><td width=50></td><td width=300 nowrap>" + readName + "</td></tr>";
+        result += "<tr><td colspan=3><u>" + tr("Filtered by low similarity (%1):").arg(filtredReads.size()) + "</u></td></tr>";
+        foreach(filtredPair, filtredReads) {
+            const QString readIdentity = tr("similarity") + "&nbsp;&nbsp;" + QString::number(filtredPair.second) + "%";
+            result += QString("<tr><td></td><td style=white-space:nowrap>") + filtredPair.first.replace("-", "&#8209;") + "&nbsp; &nbsp;" + "</td><td><div style=\"margin-left:7px;\">" + readIdentity + "</div></td></tr>";
         }
-        result += "</table>";
     }
+    result += "</table>";
 
     return result;
 }
@@ -324,23 +363,24 @@ SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
     return composeSubTask->getAnnotations();
 }
 
-QMap<QString, bool> AlignToReferenceBlastTask::getAcceptedReads() const {
-    QMap<QString, bool> acceptedReads;
+QList<QPair<QString, QPair<int, bool> > > AlignToReferenceBlastTask::getAcceptedReads() const {
+    QList<QPair<QString, QPair<int, bool> > > acceptedReads;
     CHECK(NULL != blastTask, acceptedReads);
     foreach (BlastAndSwReadTask *subTask, blastTask->getBlastSubtasks()) {
         if (subTask->getReadIdentity() >= minIdentityPercent) {
-            acceptedReads.insert(subTask->getReadName(), subTask->isComplement());
+            QPair<int, bool> pair(subTask->getReadIdentity(), subTask->isComplement());
+            acceptedReads.append((QPair<QString, QPair<int, bool> >(subTask->getReadName(), pair)));
         }
     }
     return acceptedReads;
 }
 
-QStringList AlignToReferenceBlastTask::getDiscardedReads() const {
-    QStringList discardedReads;
+QList<QPair<QString, int> > AlignToReferenceBlastTask::getDiscardedReads() const {
+    QList<QPair<QString, int> > discardedReads;
     CHECK(NULL != blastTask, discardedReads);
     foreach (BlastAndSwReadTask* subTask, blastTask->getBlastSubtasks()) {
         if (subTask->getReadIdentity() < minIdentityPercent) {
-            discardedReads << subTask->getReadName();
+            discardedReads << QPair<QString, int>(subTask->getReadName(), subTask->getReadIdentity());
         }
     }
     return discardedReads;

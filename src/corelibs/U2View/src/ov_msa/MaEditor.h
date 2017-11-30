@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -53,7 +53,7 @@ namespace U2 {
 
 #define MOBJECT_DEFAULT_FONT_FAMILY "Verdana"
 #define MOBJECT_DEFAULT_FONT_SIZE 10
-#define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0f
+#define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0
 
 class MaEditorWgt;
 class MultipleAlignmentObject;
@@ -68,7 +68,8 @@ public:
 
 class U2VIEW_EXPORT MaEditor : public GObjectView {
     Q_OBJECT
-    friend class OpenSavedMSAEditorTask;
+    friend class OpenSavedMaEditorTask;
+    friend class MaEditorState;
 public:
     enum ResizeMode {
         ResizeMode_FontAndContent, ResizeMode_OnlyContent
@@ -77,6 +78,10 @@ public:
 
 public:
     MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, GObject* obj);
+
+    virtual QVariantMap saveState();
+
+    virtual Task* updateViewTask(const QString& stateName, const QVariantMap& stateData);
 
     virtual QString getSettingsRoot() const = 0;
 
@@ -153,6 +158,7 @@ protected:
     virtual void initActions();
     virtual void initZoom();
     virtual void initFont();
+    void updateResizeMode();
 
     void addCopyMenu(QMenu* m);
     void addEditMenu(QMenu* m);
@@ -164,8 +170,8 @@ protected:
     void setFont(const QFont& f);
     void calcFontPixelToPointSizeCoef();
 
-    void setFirstVisibleBase(int firstPos);
-    void setZoomFactor(float newZoomFactor);
+    void setFirstVisiblePosSeq(int firstPos, int firstSeq);
+    void setZoomFactor(double newZoomFactor);
 
     virtual void updateActions();
 
@@ -175,8 +181,8 @@ protected:
     QFont       font;
     ResizeMode  resizeMode;
     SNPSettings snp;
-    float       zoomFactor;
-    float       fontPixelToPointSize;
+    double      zoomFactor;
+    double      fontPixelToPointSize;
     mutable int cachedColumnWidth;
 
     QAction*          saveAlignmentAction;

@@ -64,6 +64,7 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.h"
@@ -433,6 +434,8 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
+	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
@@ -502,7 +505,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
 //    2. Select "Open as multiple sequence alignment" item, accept the dialog.
 //    Expected state: file opens, document contains two malignment objects, the MSA Editor is shown.
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -516,8 +519,9 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
 //    4. Select "Open as assembly" item, accept the dialog.
 //    Expected state: file opens, document contains two assembly objects and two sequence objects, the Assembly Browser is shown.
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "project_test_0033.ugenedb"));
+	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "project_test_0033.ugenedb"));
+	//GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
+    //GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "project_test_0033.ugenedb"));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_2.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -581,7 +585,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
 
 GUI_TEST_CLASS_DEFINITION(test_0038){
     //test for several alignments in one document
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AlignmentEditor));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -617,8 +621,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038){
 
 GUI_TEST_CLASS_DEFINITION(test_0038_1){
     //test for several assembly documents in one document
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "test_3637_1.ugenedb"));
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_3637_1.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

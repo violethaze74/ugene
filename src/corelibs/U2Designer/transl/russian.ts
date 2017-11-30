@@ -525,22 +525,22 @@ this merge sequence slot:</source>
         <translation>UGENE обнаружил &quot;%1&quot; в файловой системе. Хотите дабавить в качестве %2 с парными ридами?</translation>
     </message>
     <message>
-        <location filename="../src/EstimationReporter.cpp" line="77"/>
+        <location filename="../src/EstimationReporter.cpp" line="78"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../src/EstimationReporter.cpp" line="78"/>
+        <location filename="../src/EstimationReporter.cpp" line="79"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../src/EstimationReporter.cpp" line="93"/>
+        <location filename="../src/EstimationReporter.cpp" line="94"/>
         <source>Workflow Estimation</source>
         <translation>Оценка выполнения схемы</translation>
     </message>
     <message>
-        <location filename="../src/EstimationReporter.cpp" line="94"/>
+        <location filename="../src/EstimationReporter.cpp" line="95"/>
         <source>Approximate estimation time of the workflow run is </source>
         <translation>Примерная оценка длительности выполнения схемы </translation>
     </message>
@@ -768,43 +768,43 @@ bowtie index file</source>
 <context>
     <name>U2::Dashboard</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="164"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="165"/>
         <source>Output Files</source>
         <translation>Выходные файлы</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="165"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="166"/>
         <source>Workflow Task</source>
         <translation>Задача схемы</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="166"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="167"/>
         <source>Common Statistics</source>
         <translation>Общая статистика</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="173"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="174"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="250"/>
-        <location filename="../src/dashboard/Dashboard.cpp" line="258"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="251"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="259"/>
         <source>External Tools</source>
         <translation>Внешние инструменты</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="190"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="191"/>
         <source>Problems</source>
         <translation>Проблемы</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="200"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="201"/>
         <source>Can not create a folder: </source>
         <translation>Невозможно создать папку: </translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="215"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="216"/>
         <source>Can not open a file for writing: </source>
         <translation>Невозможно открыть файл для записи: </translation>
     </message>
@@ -1049,12 +1049,12 @@ bowtie index file</source>
 <context>
     <name>U2::JavascriptAgent</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="390"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="394"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="390"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="394"/>
         <source>The file does not exist</source>
         <translation>Файл не существует</translation>
     </message>
@@ -1179,17 +1179,17 @@ bowtie index file</source>
 <context>
     <name>U2::OutputFilesWidget</name>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="63"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="65"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="63"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="65"/>
         <source>Producer</source>
         <translation>Производитель</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="87"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="89"/>
         <source>Open containing folder</source>
         <translation>Открыть содержащую папку</translation>
     </message>
@@ -1198,7 +1198,7 @@ bowtie index file</source>
         <translation type="vanished">Открыть при помощи операционной системы</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="204"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="206"/>
         <source>files</source>
         <translation>файлы</translation>
     </message>
@@ -1206,32 +1206,32 @@ bowtie index file</source>
 <context>
     <name>U2::ProblemsWidget</name>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="56"/>
+        <location filename="../src/dashboard/ProblemsWidget.cpp" line="58"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="59"/>
+        <location filename="../src/dashboard/ProblemsWidget.cpp" line="61"/>
         <source>Warning</source>
         <translation>Ожидание</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="62"/>
+        <location filename="../src/dashboard/ProblemsWidget.cpp" line="64"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="118"/>
+        <location filename="../src/dashboard/ProblemsWidget.cpp" line="120"/>
         <source>Element</source>
         <translation>Элемент</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="118"/>
+        <location filename="../src/dashboard/ProblemsWidget.cpp" line="120"/>
         <source>Message</source>
         <translation>Сообщение</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ProblemsWidget.cpp" line="118"/>
+        <location filename="../src/dashboard/ProblemsWidget.cpp" line="120"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
@@ -1309,7 +1309,7 @@ bowtie index file</source>
 <context>
     <name>U2::RemoveDashboardsTask</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="465"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="469"/>
         <source>Remove dashboards</source>
         <translation>Удалить панель</translation>
     </message>
@@ -1317,37 +1317,37 @@ bowtie index file</source>
 <context>
     <name>U2::ResourcesWidget</name>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="50"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="51"/>
         <source>Time</source>
         <translation>Время</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="102"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="103"/>
         <source>The workflow task is in progress...</source>
         <translation>Задача выполнения схемы в процессе...</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="107"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="108"/>
         <source>The workflow task is in progress. There are problems...</source>
         <translation>Задача выполнения схемы в процессе. Есть проблемы...</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="113"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="114"/>
         <source>The workflow task has been finished with warnings!</source>
         <translation>Задача выполнения схемы завершилась с предупреждениями!</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="119"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="120"/>
         <source>The workflow task has been finished with errors!</source>
         <translation>Задача выполнения схемы завершилась с ошибками!</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="125"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="126"/>
         <source>The workflow task has been finished successfully!</source>
         <translation>Задача выполнения схемы завершилась без ошибок!</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ResourcesWidget.cpp" line="130"/>
+        <location filename="../src/dashboard/ResourcesWidget.cpp" line="131"/>
         <source>The workflow task has been canceled!</source>
         <translation>Задача выполнения схемы была отменена!</translation>
     </message>
@@ -1355,7 +1355,7 @@ bowtie index file</source>
 <context>
     <name>U2::ScanDashboardsDirTask</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="419"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="423"/>
         <source>Scan dashboards folder</source>
         <translation>Сканирование папки панели</translation>
     </message>
@@ -1389,17 +1389,17 @@ bowtie index file</source>
 <context>
     <name>U2::StatisticsWidget</name>
     <message>
-        <location filename="../src/dashboard/StatisticsWidget.cpp" line="61"/>
+        <location filename="../src/dashboard/StatisticsWidget.cpp" line="63"/>
         <source>Element</source>
         <translation>Элемент</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/StatisticsWidget.cpp" line="61"/>
+        <location filename="../src/dashboard/StatisticsWidget.cpp" line="63"/>
         <source>Elapsed time</source>
         <translation>Прошедшее время</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/StatisticsWidget.cpp" line="61"/>
+        <location filename="../src/dashboard/StatisticsWidget.cpp" line="63"/>
         <source>Output messages</source>
         <translation>Выходные сообщения</translation>
     </message>

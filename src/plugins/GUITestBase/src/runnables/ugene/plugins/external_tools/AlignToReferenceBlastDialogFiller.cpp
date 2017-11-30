@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,18 +25,18 @@
 #include <QListWidget>
 #include <QSpinBox>
 
-#include <U2Test/UGUITest.h>
-
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
-
 #include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTWidget.h>
 
-#include "GTUtilsTaskTreeView.h"
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Test/UGUITest.h>
 
 #include "AlignToReferenceBlastDialogFiller.h"
+#include "GTUtilsTaskTreeView.h"
 
 namespace U2 {
 
@@ -59,23 +59,11 @@ void AlignToReferenceBlastDialogFiller::commonScenario() {
     QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
-    QLineEdit* reference = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "referenceLineEdit", dialog));
-    GT_CHECK(reference, "referenceLineEdit is NULL");
-    GTLineEdit::setText(os, reference, settings.referenceUrl);
+    setReference(os, settings.referenceUrl, dialog);
+    CHECK_OP(os, );
 
-    QWidget* addReadButton = GTWidget::findWidget(os, "addReadButton");
-    GT_CHECK(addReadButton, "addReadButton is NULL");
-
-    QListWidget* readsListWidget = qobject_cast<QListWidget*>(GTWidget::findWidget(os, "readsListWidget", dialog));
-    GT_CHECK(readsListWidget, "readsListWidget is NULL");
-    foreach (const QString& read, settings.readUrls) {
-        if (!readsListWidget->findItems(read, Qt::MatchExactly).isEmpty()) {
-            continue;
-        }
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, read));
-        GTWidget::click(os, addReadButton);
-        GTGlobals::sleep();
-    }
+    setReads(os, settings.readUrls, dialog);
+    CHECK_OP(os, );
 
     QSpinBox* settingSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "minIdentitySpinBox", dialog));
     GT_CHECK(settingSpinBox, "minIdentitySpinBox is NULL");
@@ -89,15 +77,50 @@ void AlignToReferenceBlastDialogFiller::commonScenario() {
     GT_CHECK(checkBox, "addToProjectCheckbox is NULL");
     GTCheckBox::setChecked(os, checkBox, settings.addResultToProject);
 
-    QLineEdit* out = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "outputLineEdit", dialog));
-    GT_CHECK(out, "outputLineEdit is NULL");
-    GTLineEdit::setText(os, out, settings.outAlignment);
+    setDestination(os, settings.outAlignment, dialog);
+    CHECK_OP(os, );
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setReference"
+void AlignToReferenceBlastDialogFiller::setReference(GUITestOpStatus &os, const QString &referenceUrl, QWidget *dialog) {
+    QLineEdit* reference = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "referenceLineEdit", dialog));
+    GT_CHECK(reference, "referenceLineEdit is NULL");
+    GTLineEdit::setText(os, reference, referenceUrl);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setReads"
+void AlignToReferenceBlastDialogFiller::setReads(GUITestOpStatus &os, const QStringList &readUrls, QWidget *dialog) {
+    QWidget* addReadButton = GTWidget::findWidget(os, "addReadButton");
+    GT_CHECK(addReadButton, "addReadButton is NULL");
+
+    QListWidget* readsListWidget = qobject_cast<QListWidget*>(GTWidget::findWidget(os, "readsListWidget", dialog));
+    GT_CHECK(readsListWidget, "readsListWidget is NULL");
+
+    QStringList uniqueReads;
+    foreach (const QString& read, readUrls) {
+        if (readsListWidget->findItems(read, Qt::MatchExactly).isEmpty()) {
+            uniqueReads << read;
+        }
+    }
+    CHECK(!uniqueReads.isEmpty(), );
+
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, uniqueReads));
+    GTWidget::click(os, addReadButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setDestination"
+void AlignToReferenceBlastDialogFiller::setDestination(GUITestOpStatus &os, const QString &destinationUrl, QWidget *dialog) {
+    QLineEdit* out = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "outputLineEdit", dialog));
+    GT_CHECK(out, "outputLineEdit is NULL");
+    GTLineEdit::setText(os, out, destinationUrl);
 }
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
 }   // namespace U2
-

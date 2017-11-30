@@ -1,7 +1,7 @@
  /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNASequenceSelection.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -86,10 +87,12 @@ void MaConsensusMismatchController::sl_resize(int newSize) {
 }
 
 void MaConsensusMismatchController::sl_next() {
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Jump to next variation", editor->getFactoryId());
     selectNextMismatch(Forward);
 }
 
 void MaConsensusMismatchController::sl_prev() {
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Jump to previous variation", editor->getFactoryId());
     selectNextMismatch(Backward);
 }
 

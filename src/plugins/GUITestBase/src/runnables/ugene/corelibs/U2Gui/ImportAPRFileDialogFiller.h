@@ -19,48 +19,31 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_STATE_H_
-#define _U2_MSA_EDITOR_STATE_H_
+#ifndef _U2_GT_RUNNABLES_IMPORT_APR_FILE_DIALOG_FILLER_H_
+#define _U2_GT_RUNNABLES_IMPORT_APR_FILE_DIALOG_FILLER_H_
 
-#include <U2Core/U2Region.h>
-#include <U2Core/GObject.h>
-
-#include <QVariant>
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
+using namespace HI;
 
-class MSAEditor;
-
-
-class U2VIEW_EXPORT MSAEditorState {
+class ImportAPRFileFiller : public Filler {
 public:
-    MSAEditorState(){}
+    ImportAPRFileFiller(HI::GUITestOpStatus &os,
+                     bool isReadOnly,
+                     QString dstUrl = QString(),
+                     QString formatToConvertTo = "fasta",
+                     int timeoutMs = 120000);
+    ImportAPRFileFiller(HI::GUITestOpStatus &os, CustomScenario *_c);
 
-    MSAEditorState(const QVariantMap& _stateData) : stateData(_stateData){}
+    virtual void commonScenario();
 
-    static QVariantMap saveState(MSAEditor* v);
-
-    bool isValid() const;
-
-    GObjectReference getMSAObjectRef() const;
-
-    void setMSAObjectRef(const GObjectReference& ref);
-
-    QFont getFont() const;
-    void setFont(const QFont &f);
-
-    int getFirstPos() const;
-    void setFirstPos(int y);
-
-    float getZoomFactor() const;
-    void setZoomFactor(float zoomFactor);
-
-    QVariantMap stateData;
+private:
+    bool isReadOnly;
+    const QString destinationUrl;
+    const QString format;
 };
 
+}   // namespace U2
 
-
-
-} // namespace
-
-#endif
+#endif // _U2_GT_RUNNABLES_IMPORT_APR_FILE_DIALOG_FILLER_H_

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,6 +41,8 @@
 #include <U2View/MSAEditorOverviewArea.h>
 
 #include "MaEditor.h"
+#include "MaEditorState.h"
+#include "MaEditorTasks.h"
 #include "helpers/ScrollController.h"
 #include "view_rendering/MaEditorWgt.h"
 
@@ -55,9 +57,9 @@ const float MaEditor::zoomMult = 1.25;
 MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObject *obj)
     : GObjectView(factoryId, viewName),
       ui(NULL),
-      cachedColumnWidth(0),
       resizeMode(ResizeMode_FontAndContent),
       zoomFactor(0),
+      cachedColumnWidth(0),
       exportHighlightedAction(NULL)
 {
     maObject = qobject_cast<MultipleAlignmentObject*>(obj);
@@ -111,6 +113,14 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(this, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_resetColumnWidthCache()));
     connect(this, SIGNAL(si_fontChanged(QFont)), SLOT(sl_resetColumnWidthCache()));
+}
+
+QVariantMap MaEditor::saveState() {
+    return MaEditorState::saveState(this);
+}
+
+Task* MaEditor::updateViewTask(const QString& stateName, const QVariantMap& stateData) {
+    return new UpdateMaEditorTask(this, stateName, stateData);
 }
 
 int MaEditor::getAlignmentLen() const {
@@ -190,6 +200,7 @@ void MaEditor::resetCollapsibleModel() {
 }
 
 void MaEditor::sl_zoomIn() {
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Zoom in", getFactoryId());
     int pSize = font.pointSize();
 
     if (resizeMode == ResizeMode_OnlyContent) {
@@ -213,6 +224,7 @@ void MaEditor::sl_zoomIn() {
 }
 
 void MaEditor::sl_zoomOut() {
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Zoom out", getFactoryId());
     int pSize = font.pointSize();
 
     bool resizeModeChanged = false;
@@ -268,6 +280,7 @@ void MaEditor::sl_zoomToSelection()
 }
 
 void MaEditor::sl_resetZoom() {
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Reset zoom", getFactoryId());
     QFont f = getFont();
     f.setPointSize(MOBJECT_DEFAULT_FONT_SIZE);
     setFont(f);
@@ -301,6 +314,7 @@ void MaEditor::sl_saveAlignmentAs(){
 
 void MaEditor::sl_changeFont() {
     bool ok = false;
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Change of the characters font", getFactoryId());
     // QFontDialog::DontUseNativeDialog - no color selector, affects only Mac OS
     QFont f = QFontDialog::getFont(&ok, font, widget, tr("Characters Font"), QFontDialog::DontUseNativeDialog);
     if (!ok) {
@@ -347,11 +361,7 @@ void MaEditor::initZoom() {
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != NULL, "AppConext is NULL", );
     zoomFactor = s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, MOBJECT_DEFAULT_ZOOM_FACTOR).toFloat();
-    if ( (font.pointSize() == MOBJECT_MIN_FONT_SIZE) && (zoomFactor < 1.0f) ) {
-        resizeMode = ResizeMode_OnlyContent;
-    } else {
-        resizeMode = ResizeMode_FontAndContent;
-    }
+    updateResizeMode();
 }
 
 void MaEditor::initFont() {
@@ -363,6 +373,14 @@ void MaEditor::initFont() {
     font.setBold(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_BOLD, false).toBool());
 
     calcFontPixelToPointSizeCoef();
+}
+
+void MaEditor::updateResizeMode() {
+    if ( (font.pointSize() >= MOBJECT_MIN_FONT_SIZE) && (zoomFactor < 1.0f) ) {
+        resizeMode = ResizeMode_OnlyContent;
+    } else {
+        resizeMode = ResizeMode_FontAndContent;
+    }
 }
 
 void MaEditor::addCopyMenu(QMenu* m) {
@@ -411,6 +429,7 @@ void MaEditor::setFont(const QFont& f) {
     font = f;
     calcFontPixelToPointSizeCoef();
     font.setPointSize(qBound(MOBJECT_MIN_FONT_SIZE, pSize, MOBJECT_MAX_FONT_SIZE));
+    updateResizeMode();
     emit si_fontChanged(font);
 
     Settings* s = AppContext::getSettings();
@@ -422,17 +441,19 @@ void MaEditor::setFont(const QFont& f) {
 
 void MaEditor::calcFontPixelToPointSizeCoef() {
     QFontInfo info(font);
-    fontPixelToPointSize = (float) info.pixelSize() / (float) info.pointSize();
+    fontPixelToPointSize = (double) info.pixelSize() / (double) info.pointSize();
 }
 
-void MaEditor::setFirstVisibleBase(int firstPos) {
+void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
     if (ui->getSequenceArea()->isPosInRange(firstPos)) {
         ui->getScrollController()->setFirstVisibleBase(firstPos);
+        ui->getScrollController()->setFirstVisibleRowByIndex(firstSeq);
     }
 }
 
-void MaEditor::setZoomFactor(float newZoomFactor) {
+void MaEditor::setZoomFactor(double newZoomFactor) {
     zoomFactor = newZoomFactor;
+    updateResizeMode();
     Settings* s = AppContext::getSettings();
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, zoomFactor);
     sl_resetColumnWidthCache();

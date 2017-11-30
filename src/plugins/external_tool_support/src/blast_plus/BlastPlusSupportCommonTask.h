@@ -69,6 +69,7 @@ private:
     void parseXMLResult();
     void parseXMLHit(const QDomNode &xml);
     void parseXMLHsp(const QDomNode &xml,const QString &id, const QString &def, const QString &accession);
+    QString getAcceptableTempDir() const;
 };
 
 class BlastPlusSupportMultiTask : public Task {

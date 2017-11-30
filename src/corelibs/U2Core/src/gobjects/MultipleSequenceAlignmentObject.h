@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -53,6 +53,7 @@ public:
     void updateGapModel(const QList<MultipleSequenceAlignmentRow> &sourceRows);
 
     void crop(const U2Region &window, const QSet<QString> &rowNames);
+    void crop(const U2Region &window);
 
     /** Methods to work with rows */
     void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel);

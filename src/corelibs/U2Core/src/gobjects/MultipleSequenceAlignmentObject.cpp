@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -88,7 +88,7 @@ void MultipleSequenceAlignmentObject::updateGapModel(U2OpStatus &os, const U2Msa
     QList<qint64> modifiedRowIds;
     foreach (qint64 rowId, rowsGapModel.keys()) {
         if (!rowIds.contains(rowId)) {
-            os.setError("Can't update gaps of a multiple alignment");
+            os.setError(QString("Can't update gaps of a multiple alignment: cannot find a row with the id %1").arg(rowId));
             return;
         }
 
@@ -99,6 +99,7 @@ void MultipleSequenceAlignmentObject::updateGapModel(U2OpStatus &os, const U2Msa
 
     MaModificationInfo mi;
     mi.rowListChanged = false;
+    mi.modifiedRowIds = modifiedRowIds;
     updateCachedMultipleAlignment(mi);
 }
 
@@ -129,7 +130,7 @@ void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QS
     QList<qint64> rowIds;
     for (int i = 0; i < ma->getNumRows(); ++i) {
         QString rowName = ma->getRow(i)->getName();
-        if (rowNames.contains(rowName)) {
+        if (rowNames.isEmpty() || rowNames.contains(rowName)) {
             qint64 rowId = ma->getRow(i)->getRowId();
             rowIds.append(rowId);
         }
@@ -140,6 +141,10 @@ void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QS
     SAFE_POINT_OP(os, );
 
     updateCachedMultipleAlignment();
+}
+
+void MultipleSequenceAlignmentObject::crop(const U2Region &window) {
+    crop(window, QSet<QString>());
 }
 
 void MultipleSequenceAlignmentObject::updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel) {

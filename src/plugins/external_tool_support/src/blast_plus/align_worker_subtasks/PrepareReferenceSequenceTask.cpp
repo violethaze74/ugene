@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,11 +19,22 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CopyFileTask.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/IOAdapter.h>
+#include <U2Core/IOAdapterUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
+
+#include <QFileInfo>
 
 #include "PrepareReferenceSequenceTask.h"
 #include "RemoveGapsFromSequenceTask.h"
@@ -34,6 +45,7 @@ PrepareReferenceSequenceTask::PrepareReferenceSequenceTask(const QString &refere
     : DocumentProviderTask(tr("Prepare reference sequence"), TaskFlags_NR_FOSE_COSC),
       referenceUrl(referenceUrl),
       dstDbiRef(dstDbiRef),
+      copyTask(NULL),
       loadTask(NULL),
       removeGapsTask(NULL)
 {
@@ -46,18 +58,24 @@ const U2EntityRef &PrepareReferenceSequenceTask::getReferenceEntityRef() const {
 }
 
 void PrepareReferenceSequenceTask::prepare() {
-    QVariantMap hints;
-    hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue<U2DbiRef>(dstDbiRef);
-    loadTask = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, referenceUrl, hints);
-    CHECK_OP(stateInfo, );
-    addSubTask(loadTask);
+    QString tmpDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
+    copyTask = new CopyFileTask(referenceUrl, GUrlUtils::prepareTmpFileLocation(tmpDir, GUrlUtils::fixFileName(QFileInfo(referenceUrl).completeBaseName()), "tmp", stateInfo));
+    addSubTask(copyTask);
 }
 
 QList<Task *> PrepareReferenceSequenceTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> newSubTasks;
     CHECK_OP(stateInfo, newSubTasks);
 
-    if (loadTask == subTask) {
+    if (copyTask == subTask) {
+        preparedReferenceUrl = copyTask->getTargetFilePath();
+        QVariantMap hints;
+        hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue<U2DbiRef>(dstDbiRef);
+        loadTask = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, preparedReferenceUrl, hints);
+        CHECK_OP(stateInfo, newSubTasks);
+
+        newSubTasks << loadTask;
+    } else if (loadTask == subTask) {
         Document * const document = loadTask->getDocument(false);
         SAFE_POINT(NULL != document, "Document is NULL", newSubTasks);
 
@@ -74,6 +92,16 @@ QList<Task *> PrepareReferenceSequenceTask::onSubTaskFinished(Task *subTask) {
         referenceEntityRef = referenceObject->getEntityRef();
 
         newSubTasks << new RemoveGapsFromSequenceTask(referenceObject);
+    } else if (qobject_cast<RemoveGapsFromSequenceTask*>(subTask) != NULL) {
+        Document* doc = loadTask->getDocument(false);
+        SAFE_POINT(NULL != doc, "Document is NULL", newSubTasks);
+
+        DocumentFormat *fastaFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
+        IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(doc->getURL()));
+
+        Document *fastaDoc = doc->getSimpleCopy(fastaFormat, ioAdapterFactory, doc->getURL());
+        SaveDocumentTask* saveTask = new SaveDocumentTask(fastaDoc, SaveDoc_Overwrite | SaveDoc_DestroyButDontUnload);
+        newSubTasks << saveTask;
     }
 
     return newSubTasks;

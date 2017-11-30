@@ -35,19 +35,20 @@ namespace U2 {
 MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject *_maObj)
 : QObject(p),
   maObj(_maObj),
+  stateComplete(true),
   undoStepsAvailable(0),
   redoStepsAvailable(0)
 {
     SAFE_POINT(maObj != NULL, "NULL MSA Object!", );
 
     undoAction = new QAction(this);
-    undoAction->setText("Undo");
+    undoAction->setText(tr("Undo"));
     undoAction->setIcon(QIcon(":core/images/undo.png"));
     undoAction->setShortcut(QKeySequence::Undo);
     GUIUtils::updateActionToolTip(undoAction);
 
     redoAction = new QAction(this);
-    redoAction->setText("Redo");
+    redoAction->setText(tr("Redo"));
     redoAction->setIcon(QIcon(":core/images/redo.png"));
     redoAction->setShortcut(QKeySequence::Redo);
     GUIUtils::updateActionToolTip(redoAction);
@@ -60,7 +61,6 @@ MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject *
     connect(maObj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(undoAction, SIGNAL(triggered()), this, SLOT(sl_undo()));
     connect(redoAction, SIGNAL(triggered()), this, SLOT(sl_redo()));
-    stateComplete = true;
 }
 
 void MsaUndoRedoFramework::sl_completeStateChanged(bool _stateComplete) {

@@ -79,6 +79,7 @@
 #include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
+#include "GTUtilsMcaEditorStatusWidget.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
@@ -99,6 +100,9 @@
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
@@ -120,6 +124,7 @@
 #include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
@@ -293,7 +298,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemorySetter(500000)));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
@@ -338,7 +343,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemorySetter(256)));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
-    GTGlobals::sleep();
+    GTGlobals::sleep(100);
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
@@ -1458,68 +1463,15 @@ GUI_TEST_CLASS_DEFINITION(test_5469) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5492) {
-    class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            //Expected state : "Min read identity" option by default = 80 %
-            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-            QString expected = "80";
-            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Quality threshold" option by default = 30
-            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-            expected = "30";
-            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+    QString fileName = "sanger_alignment_short.ugenedb";
 
-            //Expected state : "Add to project" option is checked by default
-            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
-
-            //Expected state : "Result aligment" field is filled by default
-            QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-            bool checkContainsSecond = output.contains("sanger_reads_alignment");
-            bool checkContainsThird = output.contains("UGENE_Data");
-            bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
-
-            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_short.gb");
-
-            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
-            QStringList reads;
-            for (int i = 1; i < 21; i++) {
-                QString name = "sanger_";
-                QString num = QString::number(i);
-                if (num.size() == 1) {
-                    num = "0" + QString::number(i);
-                }
-                name += num;
-                name += ".ab1";
-                reads << name;
-            }
-            QString readDir = testDir + "_common_data/sanger/";
-            GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-            GTUtilsDialog::waitForDialog(os, ob);
-
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-            //4. Push "Align" button
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
-        }
-    };
-
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //5. Select last symbol of the read and insert some gaps, until reference will increase for a few symbols
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+ 
+    //2. Select last symbol of the read and insert some gaps, until reference will increase for a few symbols
     MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(os, 0);
     int end = row->getCoreStart() + row->getCoreLength() - 1;
     QPoint p(end, 0);
@@ -1532,7 +1484,7 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
         i--;
     }
 
-    //6. Select this last symbil again, press "Insert character" and insert gap
+    //4. Select this last symbil again, press "Insert character" and insert gap
     row = GTUtilsMcaEditor::getMcaRow(os, 0);
     end = row->getCoreStart() + row->getCoreLength() - 1;
     p = QPoint(end, 0);
@@ -1548,14 +1500,14 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
     CHECK_SET_ERR(newRowLength < end, "Incorrect length");
 
     int refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    //7. Press "Remove all coloumns of gaps "
+    //5. Press "Remove all coloumns of gaps "
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit" << "Remove all columns of gaps");
 
     //Expected: Reference will be trimmed
     int newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
     CHECK_SET_ERR(newRefLength < refLength, QString("Expected: New ref length is less then old ref length, current: new = %1, old = %2").arg(QString::number(newRefLength)).arg(QString::number(refLength)));
 
-    //8. Press "undo"
+    //6. Press "undo"
     GTUtilsMcaEditor::undo(os);
 
     //Expected: reference will be restored with gaps
@@ -2165,6 +2117,29 @@ GUI_TEST_CLASS_DEFINITION(test_5594_4) {
     CHECK_SET_ERR(reg.length == 6, QString("Unexpexter selected length, expected: 6, current: %1").arg(reg.length));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5604) {
+    //1. Open Workflow designer
+    GTLogTracer l;
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Open scheme
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/scenarios/_regression/5604/scheme.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Set up input data
+    GTUtilsWorkflowDesigner::click(os, "Read FASTQ Files with Reads");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/reads/e_coli_1000.fq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/reads/e_coli_1000_1.fq", true);
+
+    GTUtilsWorkflowDesigner::click(os, "Align Reads with BWA MEM");
+    GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", testDir + "_common_data/fasta/human_T1_cutted.fa", GTUtilsWorkflowDesigner::textValue);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsDashboard::getOutputFiles(os).size() == 1, "Wrong quantaty of output files");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5622) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -2253,66 +2228,12 @@ GUI_TEST_CLASS_DEFINITION(test_5636) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5637) {
-    class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            //Expected state : "Min read identity" option by default = 80 %
-            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-            QString expected = "80";
-            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+	QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+	QString fileName = "sanger_alignment_short.ugenedb";
 
-            //Expected state : "Quality threshold" option by default = 30
-            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-            expected = "30";
-            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
-
-            //Expected state : "Add to project" option is checked by default
-            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
-
-            //Expected state : "Result aligment" field is filled by default
-            QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-            bool checkContainsSecond = output.contains("sanger_reads_alignment");
-            bool checkContainsThird = output.contains("UGENE_Data");
-            bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
-
-            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_short.gb");
-
-            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
-            QStringList reads;
-            for (int i = 1; i < 21; i++) {
-                QString name = "sanger_";
-                QString num = QString::number(i);
-                if (num.size() == 1) {
-                    num = "0" + QString::number(i);
-                }
-                name += num;
-                name += ".ab1";
-                reads << name;
-            }
-            QString readDir = testDir + "_common_data/sanger/";
-            GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-            GTUtilsDialog::waitForDialog(os, ob);
-
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-            //4. Push "Align" button
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
-        }
-    };
-
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+	//1. Copy to 'sandbox' and open alignment_short.ugenedb
+	GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+	GTFileDialog::openFile(os, sandBoxDir, fileName);
 
     //Expected: row length must be equal or lesser then reference length
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
@@ -2320,11 +2241,11 @@ GUI_TEST_CLASS_DEFINITION(test_5637) {
     qint64 rowLength = row->getRowLengthWithoutTrailing();
     CHECK_SET_ERR(rowLength <= refLength, QString("Expected: row length must be equal or lesser then reference length, current: row lenght = %1, reference length = %2").arg(QString::number(rowLength)).arg(QString::number(refLength)));
 
-    //5. Select a char in the first row
+    //2. Select a char in the first row
     QPoint p(5500, 0);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, p);
 
-    //6. insert 6 gaps
+    //3. insert 6 gaps
     int i = 6;
     while (i != 0) {
         GTGlobals::sleep(1000);
@@ -2337,6 +2258,47 @@ GUI_TEST_CLASS_DEFINITION(test_5637) {
     row = GTUtilsMcaEditor::getMcaRow(os, 1);
     rowLength = row->getRowLengthWithoutTrailing();
     CHECK_SET_ERR(rowLength <= refLength, QString("Expected: row length must be equal or lesser then reference length, current: row lenght = %1, reference length = %2").arg(QString::number(rowLength)).arg(QString::number(refLength)));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5638) {
+    //1. Open File "\samples\CLUSTALW\COI.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Click to position (30, 10)
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(30, 10));
+
+    //3. Press Ctrl and drag and drop selection to the right for a few symbols
+    U2MsaListGapModel startGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTMouseDriver::press();
+    QPoint curPos = GTMouseDriver::getMousePosition();
+    QPoint moveMouseTo(curPos.x() + 200, curPos.y());
+    GTMouseDriver::moveTo(moveMouseTo);
+
+    GTGlobals::sleep();
+    U2MsaListGapModel gapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    if (gapModel.size() < 11) {
+        GTMouseDriver::release();
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+        CHECK_SET_ERR(false, "Can't find selected sequence");
+    }
+
+    if (gapModel[10].size() != 1) {
+        GTMouseDriver::release();
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+        CHECK_SET_ERR(false, QString("Unexpected selected sequence's gap model size, expected: 1, current: %1").arg(gapModel[10].size()));
+    }
+
+    // 4. Drag and drop selection to the left to the begining
+    GTMouseDriver::moveTo(curPos);
+    GTMouseDriver::release();
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    GTGlobals::sleep();
+    U2MsaListGapModel finishGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    CHECK_SET_ERR(finishGapModel == startGapModel, "Unexpected changes of alignment");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5659) {
@@ -2374,6 +2336,73 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "source"));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5665) {
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Document context menu -> Export / Import -> Export sequences.
+    //Expected: "Export selected sequences" dialog appears.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+            QLineEdit* filepathLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog);
+            GTLineEdit::setText(os, filepathLineEdit, dataDir + "long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_.fa");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    //Expected: the dialog about external modification of documents appears.
+    //5. Click "No".
+    //Expected: UGENE does not crash.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, new Scenario()));
+    GTUtilsProjectTreeView::click(os, "human_T1.fa", Qt::RightButton);
+    GTGlobals::sleep(3000);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5681) {
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
+
+            QComboBox *comboBox = dialog->findChild<QComboBox*>();
+            CHECK_SET_ERR(comboBox != NULL, "ComboBox not found");
+
+            QStringList formats = GTComboBox::getValues(os, comboBox);
+            CHECK_SET_ERR(!formats.contains("BAM"), "BAM format is present in annotations export dialog");
+
+            QDialogButtonBox* buttonBox = dialog->findChild<QDialogButtonBox*>("buttonBox");
+            CHECK_SET_ERR(buttonBox != NULL, "buttonBox is NULL");
+
+            QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+            CHECK_SET_ERR(cancelButton != NULL, "cancelButton is NULL");
+            GTWidget::click(os, cancelButton);
+        }
+    };
+
+    //1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open the context menu for the "NC_001363 features" object.
+    //3. Select "Export/Import" -> "Export annotations..." menu item.
+    //4. Set any valid output path, select "UGENE Database" format.
+    //5. Accept the dialog.
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "murine_annotations.gb", ExportAnnotationsFiller::ugenedb, true, false, false));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export annotations..."));
+    GTUtilsProjectTreeView::callContextMenu(os, "NC_001363 features");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: No safe point
+    GTUtilsProjectTreeView::checkItem(os, "murine_annotations.gb");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5714_1) {
@@ -2692,6 +2721,35 @@ GUI_TEST_CLASS_DEFINITION(test_5716) {
     CHECK_SET_ERR(currentOutputFormat == expectedOutputFormat, QString("Output format is incorrect: expected '%1', got '%2'").arg(expectedOutputFormat).arg(currentOutputFormat));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5718) {
+
+	QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+	QString fileName = "sanger_alignment_short.ugenedb";
+
+	//1. Copy to 'sandbox' and open alignment_short.ugenedb
+	GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+	GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    //2. Click reference pos 2071
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2071, 1));
+    GTGlobals::sleep(1000);
+
+    //3. Insert gap
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+    int lengthBeforeGapColumnsRemoving = GTUtilsMcaEditorSequenceArea::getReferenceLengthWithGaps(os);
+
+    //4. Remove all columns of gaps
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Remove all columns of gaps"));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: before gap column removig < after gap column removig
+    int lengthAfterGapColumnsRemoving = GTUtilsMcaEditorSequenceArea::getReferenceLengthWithGaps(os);
+    CHECK_SET_ERR(lengthAfterGapColumnsRemoving < lengthBeforeGapColumnsRemoving, QString("Expected: before gap column removig > after gap column removig, current: before %1, after %2").arg(QString::number(lengthBeforeGapColumnsRemoving)).arg(QString::number(lengthAfterGapColumnsRemoving)));
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5739) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -2755,18 +2813,18 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Click to the position 6316 at the reference
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 6376);
+    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 6372);
 
     //6. Select all chars in the reference from here to the end
     QPoint currentPos = GTMouseDriver::getMousePosition();
-    QPoint destPos(currentPos.x() + 100, currentPos.y());
+    const int newXPos = GTUtilsMdi::activeWindow(os)->mapToGlobal(GTUtilsMdi::activeWindow(os)->rect().topRight()).x();
+    QPoint destPos(newXPos, currentPos.y());
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, destPos);
 
     //Expected: selected length = 4
     U2Region reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
     int sel = reg.length;
-    CHECK_SET_ERR(sel == 4, QString("Unexpected selection length, expectedL 4, ceurrent: %1").arg(QString::number(sel)));
-
+    CHECK_SET_ERR(sel == 4, QString("Unexpected selection length, expectedL 4, current: %1").arg(QString::number(sel)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5747) {
@@ -3214,69 +3272,16 @@ GUI_TEST_CLASS_DEFINITION(test_5758) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5761) {
-    class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            //Expected state : "Min read identity" option by default = 80 %
-            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-            QString expected = "80";
-            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Quality threshold" option by default = 30
-            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-            expected = "30";
-            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+	QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+	QString fileName = "sanger_alignment_short.ugenedb";
 
-            //Expected state : "Add to project" option is checked by default
-            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
-
-            //Expected state : "Result aligment" field is filled by default
-            QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-            bool checkContainsSecond = output.contains("sanger_reads_alignment");
-            bool checkContainsThird = output.contains("UGENE_Data");
-            bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird &&checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
-
-            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_short.gb");
-
-            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
-            QStringList reads;
-            for (int i = 1; i < 21; i++) {
-                QString name = "sanger_";
-                QString num = QString::number(i);
-                if (num.size() == 1) {
-                    num = "0" + QString::number(i);
-                }
-                name += num;
-                name += ".ab1";
-                reads << name;
-            }
-            QString readDir = testDir + "_common_data/sanger/";
-            GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
-            GTUtilsDialog::waitForDialog(os, ob);
-
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-
-            //4. Push "Align" button
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
-        }
-    };
-
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+	//1. Copy to 'sandbox' and open alignment_short.ugenedb
+	GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+	GTFileDialog::openFile(os, sandBoxDir, fileName);
 
     GTLogTracer trace;
-    //5. Select the last char of the first row
+    //2. Select the last char of the first row
     MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(os, 0);
     int end = row->getCoreStart() + row->getCoreLength() - 1;
     QPoint p(end, 0);
@@ -3284,7 +3289,7 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
     QPoint curPos = GTMouseDriver::getMousePosition();
     QPoint moveMouseTo(curPos.x() + 140, curPos.y());
 
-    //6. Press left button and move mouse to the right (add some gaps)
+    //3. Press left button and move mouse to the right (add some gaps)
     GTMouseDriver::press();
     GTMouseDriver::moveTo(moveMouseTo);
     int i = 10;
@@ -3501,6 +3506,29 @@ GUI_TEST_CLASS_DEFINITION(test_5769_2) {
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_5B70", QString("Unexpected selected read, expected: SZYD_Cas9_5B70, current: %1").arg(name[0]));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5770) {
+    QString filePath = testDir + "_common_data/sanger/alignment.ugenedb";
+    QString fileName = "sanger_alignment.ugenedb";
+
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    //2. Select read "SZYD_Cas9_5B71"
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
+
+    //3. Hold the _Shift_ key and press the _down arrow_ key.
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTGlobals::sleep(500);
+
+    //Expected: the selection is expanded.
+    QStringList names = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
+    CHECK_SET_ERR(names.size() == 2, QString("Incorrect selection. Expected: 2 selected rows, current: %1 selected rows").arg(names.size()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5786_1) {
 //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
@@ -3641,6 +3669,214 @@ GUI_TEST_CLASS_DEFINITION(test_5786_3) {
     GTUtilsLog::checkContainsMessage(os, logTracerPositive, true);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5789_1) {
+//    1. Open "_common_data/sanger/alignment.ugenedb".
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", sandBoxDir + "test_5789.ugenedb");
+    GTFileDialog::openFile(os, sandBoxDir + "test_5789.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: both "Undo" and "Redo" buttons are disabled.
+    bool isUndoEnabled = GTUtilsMcaEditor::isUndoEnabled(os);
+    bool isRedoEnabled = GTUtilsMcaEditor::isRedoEnabled(os);
+    CHECK_SET_ERR(!isUndoEnabled, "Undo button is unexpectedly enabled");
+    CHECK_SET_ERR(!isRedoEnabled, "Redo button is unexpectedly enabled");
+
+//    2. Edit the MCA somehow.
+    GTUtilsMcaEditor::removeRead(os, "SZYD_Cas9_5B70");
+
+//    Expected state: the "Undo" button is enabled, the "Redo" button is disabled.
+    isUndoEnabled = GTUtilsMcaEditor::isUndoEnabled(os);
+    isRedoEnabled = GTUtilsMcaEditor::isRedoEnabled(os);
+    CHECK_SET_ERR(isUndoEnabled, "Undo button is unexpectedly disabled");
+    CHECK_SET_ERR(!isRedoEnabled, "Redo button is unexpectedly enabled");
+
+//    3. Close and open the view again.
+//    Expected state: the "Undo" button is enabled, the "Redo" button is disabled.
+//    4. Repeat the previous state several times.
+    for (int i = 0; i < 5; i++) {
+        GTUtilsMdi::closeActiveWindow(os);
+        GTUtilsProjectTreeView::doubleClickItem(os, "test_5789.ugenedb");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+
+        isUndoEnabled = GTUtilsMcaEditor::isUndoEnabled(os);
+        isRedoEnabled = GTUtilsMcaEditor::isRedoEnabled(os);
+        CHECK_SET_ERR(isUndoEnabled, "Undo button is unexpectedly disabled");
+        CHECK_SET_ERR(!isRedoEnabled, "Redo button is unexpectedly enabled");
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5789_2) {
+//    1. Open "_common_data/scenarios/msa/ma.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: both "Undo" and "Redo" buttons are disabled.
+    bool isUndoEnabled = GTUtilsMsaEditor::isUndoEnabled(os);
+    bool isRedoEnabled = GTUtilsMsaEditor::isRedoEnabled(os);
+    CHECK_SET_ERR(!isUndoEnabled, "Undo button is unexpectedly enabled");
+    CHECK_SET_ERR(!isRedoEnabled, "Redo button is unexpectedly enabled");
+
+//    2. Edit the MSA somehow.
+    GTUtilsMsaEditor::removeRows(os, 0, 0);
+	GTGlobals::sleep(100);
+//    Expected state: the "Undo" button is enabled, the "Redo" button is disabled.
+    isUndoEnabled = GTUtilsMcaEditor::isUndoEnabled(os);
+    isRedoEnabled = GTUtilsMcaEditor::isRedoEnabled(os);
+    CHECK_SET_ERR(isUndoEnabled, "Undo button is unexpectedly disabled");
+    CHECK_SET_ERR(!isRedoEnabled, "Redo button is unexpectedly enabled");
+
+//    3. Close and open the view again.
+//    Expected state: the "Undo" button is enabled, the "Redo" button is disabled.
+//    4. Repeat the previous state several times.
+    for (int i = 0; i < 5; i++) {
+        GTUtilsMdi::closeActiveWindow(os);
+        GTUtilsProjectTreeView::doubleClickItem(os, "ma.aln");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+
+        isUndoEnabled = GTUtilsMsaEditor::isUndoEnabled(os);
+        isRedoEnabled = GTUtilsMsaEditor::isRedoEnabled(os);
+        CHECK_SET_ERR(isUndoEnabled, "Undo button is unexpectedly disabled");
+        CHECK_SET_ERR(!isRedoEnabled, "Redo button is unexpectedly enabled");
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5790) {
+    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+    QString fileName = "sanger_alignment_5790.ugenedb";
+
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    //GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
+    //2. Click to position on read
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
+    GTGlobals::sleep(500);
+
+    //3. Enter edit mode
+    GTKeyboardDriver::keyClick('i', Qt::ShiftModifier);
+    GTGlobals::sleep(1000);
+    //4. Click escape
+    //Expected state: selection still present
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep(1000);
+    CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os) == 0, "MCA is not in view mode");
+
+    //5. Click escape
+    //Expected state: selection disappeared
+    QRect emptyselection = QRect();
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep(1000);
+    CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::getSelectedRect(os) == emptyselection, "Selection isn't empty but should be");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5798_1) {
+    //1. Open samples/APR/DNA.apr in read-only mode
+    GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
+    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: DNA.apr in the project view
+    GTUtilsProjectTreeView::checkItem(os, "DNA.apr");
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, QStringList() << "DNA.apr"));
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "DNA.apr", true);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5798_2) {
+    //1. Convert samples/APR/DNA.apr to fasta
+    GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, false, sandBoxDir + "DNA", "FASTA"));
+    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: DNA.fa in the project view
+    GTUtilsProjectTreeView::checkItem(os, "DNA.fa");
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, QStringList() << "DNA.fa"));
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "DNA.fa", false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5798_3) {
+    //1. Convert samples/APR/DNA.apr to clustaw
+    GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, false, sandBoxDir + "DNA", "CLUSTALW"));
+    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: DNA.aln in the project view
+    GTUtilsProjectTreeView::checkItem(os, "DNA.aln");
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, QStringList() << "DNA.aln"));
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "DNA.aln", false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5798_4) {
+    //1. Open samples/APR/DNA.apr in read-only mode
+    GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
+    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: DNA.apr in the project view
+    GTUtilsProjectTreeView::checkItem(os, "DNA.apr");
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, QStringList() << "DNA.apr"));
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "DNA.apr", true);
+
+    //2. Convert document to clustalw from project view
+    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, sandBoxDir, "DNA.aln", ExportDocumentDialogFiller::CLUSTALW, false, true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export document"));
+    GTUtilsProjectTreeView::callContextMenu(os, "DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: DNA.aln in the project view
+    GTUtilsProjectTreeView::checkItem(os, "DNA.aln");
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, QStringList() << "DNA.aln"));
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "DNA.aln", false);
+
+    //3. Export object to MEGA format from project view
+    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, sandBoxDir, "DNA.meg", ExportDocumentDialogFiller::MEGA, false, true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export object..."));
+    GTUtilsProjectTreeView::callContextMenu(os, "DNA", "DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: DNA.meg is in the project view
+    GTUtilsProjectTreeView::checkItem(os, "DNA.meg");
+    GTUtilsProjectTreeView::checkObjectTypes(os, QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GTUtilsProjectTreeView::findIndex(os, QStringList() << "DNA.meg"));
+    GTUtilsDocument::checkIfDocumentIsLocked(os, "DNA.meg", false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5798_5) {
+    //1. Open Workflow designer
+    GTLogTracer l;
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    //2. Open sample {Convert alignments to ClustalW}
+    GTUtilsWorkflowDesigner::addSample(os, "Convert alignments to ClustalW");
+    //Expected state: There is "Show wizard" tool button    
+	//3. Press "Show wizard" button
+
+    class customWizard : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget* dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+			
+            //4. Select input MSA "samples/APR/DNA.apr"
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << dataDir + "samples/APR/DNA.apr"));
+
+            //5. Press "Next" button
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);			
+            //GTUtilsWizard::setParameter(os, "Result ClustalW file", "DNA.aln");
+
+			//6. Press "Run" button           
+			GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Convert alignments to ClustalW Wizard", new customWizard()));
+    GTWidget::click(os, GTAction::button(os, "Show wizard"));
+    //Expected state: Align sequences with MUSCLE Wizard appeared
+
+    //Expected state: Scheme successfully performed
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::check(os, l);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5815) {
     //1. Open a short alignment, e.g "test_common_data\scenarios\msa\ma2_gapped.aln"
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
@@ -3653,6 +3889,154 @@ GUI_TEST_CLASS_DEFINITION(test_5815) {
     GTMouseDriver::click();
 
     //Expected: no crash
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5818_1) {
+    //1. Open samples/ACE/BL060C3.ace in read-only mode
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
+    GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: BL060C3.ace in the project view
+    GTUtilsProjectTreeView::checkItem(os, "BL060C3.ace");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5818_2) {
+    //1. Convert samples/ACE/BL060C3.ace.ugenedb to fasta
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "BL060C3.ace.ugenedb"));
+    GTFileDialog::openFile(os, dataDir + "samples/ACE/BL060C3.ace");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: BL060C3.ace.ugenedb in the project view
+    GTUtilsProjectTreeView::checkItem(os, "BL060C3.ace.ugenedb");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5832) {
+    //1. Open "test/_common_data/fasta/empty.fa".
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "empty.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTLogTracer l;
+
+    //2. Click on the sequence area.
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(5, 5));
+
+    //Expected: no errors in the log
+    QStringList errorList = GTUtilsLog::getErrors(os, l);
+    CHECK_SET_ERR(errorList.isEmpty(), "Unexpected errors in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5833) {
+//    1. Open "_common_data/sanger/alignment.ugenedb".
+    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
+    GTFileDialog::openFile(os, filePath);
+	GTUtilsTaskTreeView::waitTaskFinished(os);
+	GTGlobals::sleep(100);
+
+//    2. Select 440 base on the second read (the position is ungapped).
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2506, 1));
+	GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
+	GTGlobals::sleep(100);
+
+//    Expected state: the status bar contains the next labels: "Ln 2/16, RefPos 2500/11878, ReadPos 440/1173".
+    QString rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
+    QString rowsCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
+    QString referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
+    QString referenceLengthString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString(os);
+    QString readPositionString = GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString(os);
+    QString readLengthString = GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString(os);
+    CHECK_SET_ERR("2" == rowNumberString, QString("Unexepected row number label: expected '%1', got '%2'").arg("2").arg(rowNumberString));
+    CHECK_SET_ERR("16" == rowsCountString, QString("Unexepected rows count label: expected '%1', got '%2'").arg("16").arg(rowsCountString));
+    CHECK_SET_ERR("2500" == referencePositionString, QString("Unexepected reference position label: expected '%1', got '%2'").arg("2500").arg(referencePositionString));
+    CHECK_SET_ERR("11878" == referenceLengthString, QString("Unexepected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
+    CHECK_SET_ERR("440" == readPositionString, QString("Unexepected read position label: expected '%1', got '%2'").arg("440").arg(readPositionString));
+    CHECK_SET_ERR("1173" == readLengthString, QString("Unexepected read length label: expected '%1', got '%2'").arg("1173").arg(readLengthString));
+
+//    3. Call a context menu, select "Edit" -> "Insert character/gap" menu item.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Insert character/gap"));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+	GTUtilsTaskTreeView::waitTaskFinished(os);  
+	GTGlobals::sleep(500);
+
+//    4. Click 'A' key.
+	GTKeyboardDriver::keyClick('A');
+	GTGlobals::sleep(500);
+	
+//    Expected state: the new base has been inserted, the status bar contains the next labels: "Ln 2/16, RefPos gap/11878, ReadPos 440/1174".
+    rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
+    rowsCountString = GTUtilsMcaEditorStatusWidget::getRowsCountString(os);
+    referencePositionString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(os);
+    referenceLengthString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString(os);
+    readPositionString = GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString(os);
+    readLengthString = GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString(os);
+    CHECK_SET_ERR("2" == rowNumberString, QString("Unexepected row number label: expected '%1', got '%2'").arg("2").arg(rowNumberString));
+    CHECK_SET_ERR("16" == rowsCountString, QString("Unexepected rows count label: expected '%1', got '%2'").arg("16").arg(rowsCountString));
+    CHECK_SET_ERR("gap" == referencePositionString, QString("Unexepected reference position label: expected '%1', got '%2'").arg("gap").arg(referencePositionString));
+    CHECK_SET_ERR("11878" == referenceLengthString, QString("Unexepected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
+    CHECK_SET_ERR("440" == readPositionString, QString("Unexepected read position label: expected '%1', got '%2'").arg("440").arg(readPositionString));
+    CHECK_SET_ERR("1174" == readLengthString, QString("Unexepected read length label: expected '%1', got '%2'").arg("1174").arg(readLengthString));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5840) {
+    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+    QString fileName = "sanger_alignment.ugenedb";
+
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+
+    //2. Select a read ""
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B71");
+
+    //3. Select a document in the Project View and press the Delete key.
+    GTUtilsProjectTreeView::click(os, "Aligned reads");
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep(1000);
+
+    //Expected: The document has been deleted.
+    bool isExited = GTUtilsProjectTreeView::checkItem(os, "Aligned reads");
+    CHECK_SET_ERR(!isExited, "The document has not been deleted")
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5847) {
+    //1. Open samples/APR/DNA.apr in read-only mode
+    GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
+    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select any sequence
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "HS11791");
+    GTGlobals::sleep(1000);
+
+    GTLogTracer l;
+
+    //3 Press "delete"
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    //Expected: no errors in the log
+    QStringList errorList = GTUtilsLog::getErrors(os, l);
+    CHECK_SET_ERR(errorList.isEmpty(), "Unexpected errors in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5872) {
+    GTLogTracer logTracer("ASSERT: \"!isInRange");
+
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Switch on the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+//    3. Select two first rows in the Name List Area.
+    GTUtilsMsaEditor::selectRows(os, 0, 1, GTGlobals::UseMouse);
+
+//    4. Click to the position (3, 3).
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(2, 2));
+
+//    Expected state: there is no message in the log starting with ﻿'ASSERT: "!isInRange'.
+    GTUtilsLog::checkContainsMessage(os, logTracer, false);
 }
 
 } // namespace GUITest_regression_scenarios

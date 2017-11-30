@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/ChromatogramView.cpp" line="81"/>
         <source>Show/hide trace</source>
-        <translation>Показать/скрыть след</translation>
+        <translation>Показывать/скрывать отдельные сигналы</translation>
     </message>
     <message>
         <location filename="../src/ChromatogramView.cpp" line="112"/>

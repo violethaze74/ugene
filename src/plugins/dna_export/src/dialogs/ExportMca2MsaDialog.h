@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,6 +31,7 @@ namespace U2 {
 class SaveDocumentController;
 
 class ExportMca2MsaDialog : public QDialog, public Ui_ExportMca2MsaDialog {
+    Q_OBJECT
 public:
     ExportMca2MsaDialog(const QString &defaultFilePath, QWidget *parent);
 

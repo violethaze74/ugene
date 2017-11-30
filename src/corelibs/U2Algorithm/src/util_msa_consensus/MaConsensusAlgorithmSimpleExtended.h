@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -116,6 +116,7 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS(MaConsensusAlgorithmSimpleExtended::Characters)
 
 class MaConsensusAlgorithmFactorySimpleExtended : public MSAConsensusAlgorithmFactory {
+    Q_OBJECT
 public:
     MaConsensusAlgorithmFactorySimpleExtended(QObject *parent = NULL);
 

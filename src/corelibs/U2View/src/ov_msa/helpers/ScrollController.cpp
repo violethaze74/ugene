@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -134,6 +134,10 @@ void ScrollController::setFirstVisibleBase(int firstVisibleBase) {
 
 void ScrollController::setFirstVisibleRowByNumber(int firstVisibleRowNumber) {
     const int firstVisibleRowIndex = ui->getCollapseModel()->mapToRow(firstVisibleRowNumber);
+    setFirstVisibleRowByIndex(firstVisibleRowIndex);
+}
+
+void ScrollController::setFirstVisibleRowByIndex(int firstVisibleRowIndex) {
     vScrollBar->setValue(ui->getRowHeightController()->getRowGlobalOffset(firstVisibleRowIndex));
 }
 

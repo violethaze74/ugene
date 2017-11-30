@@ -45,6 +45,14 @@ QString GUrlUtils::getUncompressedExtension(const GUrl& url) {
     return ext;
 }
 
+QString GUrlUtils::getUncompressedCompleteBaseName(const GUrl &url) {
+    QString filePath = url.getURLString();
+    if ("gz" == url.lastFileSuffix())  {
+        filePath.chop(QString(".gz").length());
+    }
+    return QFileInfo(filePath).completeBaseName();
+}
+
 GUrl GUrlUtils::ensureFileExt(const GUrl& url, const QStringList& typeExt) {
     SAFE_POINT(!typeExt.isEmpty(), "Type extension is empty!", GUrl());
 
@@ -60,6 +68,10 @@ GUrl GUrlUtils::ensureFileExt(const GUrl& url, const QStringList& typeExt) {
         return url;
     }
     return GUrl(url.getURLString() + "."  + typeExt.first(), url.getType());
+}
+
+bool GUrlUtils::containSpaces(const QString &string) {
+    return string.contains(QRegExp("\\s"));
 }
 
 GUrl GUrlUtils::changeFileExt(const GUrl &url, const DocumentFormatId &oldFormatId, const DocumentFormatId &newFormatId) {
@@ -478,9 +490,6 @@ void GUrlUtils::validateLocalFileUrl(const GUrl &url, U2OpStatus &os, const QStr
         return;
     }
 }
-
-/* Maximum file name length for Linux, Windows and MacOS X is 255 characters. */
-#define MAX_OS_FILE_NAME_LENGTH 255
 
 QString GUrlUtils::fixFileName(const QString &fileName) {
     QString result = fileName;

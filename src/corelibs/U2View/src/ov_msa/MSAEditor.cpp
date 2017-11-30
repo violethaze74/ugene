@@ -42,11 +42,10 @@
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/ProjectView.h>
 
-#include "MSAEditor.h"
-#include "MSAEditorState.h"
-#include "MSAEditorTasks.h"
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
+#include "MaEditorTasks.h"
+#include "MSAEditor.h"
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "Overview/MaEditorOverviewArea.h"
 #include "view_rendering/MaEditorConsensusArea.h"
@@ -65,7 +64,6 @@ MSAEditor::MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* o
     buildTreeAction = new QAction(QIcon(":/core/images/phylip.png"), tr("Build Tree"), this);
     buildTreeAction->setObjectName("Build Tree");
     buildTreeAction->setEnabled(!isAlignmentEmpty());
-    connect(maObject, SIGNAL(si_alignmentBecomesEmpty(bool)), buildTreeAction, SLOT(setDisabled(bool)));
     connect(maObject, SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_rowsRemoved(const QList<qint64> &)));
     connect(buildTreeAction, SIGNAL(triggered()), SLOT(sl_buildTree()));
 
@@ -100,10 +98,6 @@ bool MSAEditor::onCloseEvent() {
         ui->getOverviewArea()->cancelRendering();
     }
     return true;
-}
-
-int MSAEditor::getFirstVisibleBase() const {
-    return ui->getSequenceArea()->getFirstVisibleBase();
 }
 
 const MultipleSequenceAlignmentRow MSAEditor::getRowByLineNumber(int lineNumber) const {
@@ -182,14 +176,6 @@ void MSAEditor::addStatisticsMenu(QMenu* m) {
     QMenu* em = m->addMenu(tr("Statistics"));
     em->setIcon(QIcon(":core/images/chart_bar.png"));
     em->menuAction()->setObjectName(MSAE_MENU_STATISTICS);
-}
-
-Task* MSAEditor::updateViewTask(const QString& stateName, const QVariantMap& stateData) {
-    return new UpdateMSAEditorTask(this, stateName, stateData);
-}
-
-QVariantMap MSAEditor::saveState() {
-    return MSAEditorState::saveState(this);
 }
 
 MsaEditorWgt *MSAEditor::getUI() const {
@@ -288,6 +274,7 @@ void MSAEditor::updateActions() {
     if(alignSequencesToAlignmentAction != NULL) {
         alignSequencesToAlignmentAction->setEnabled(!maObject->isStateLocked());
     }
+    buildTreeAction->setEnabled(!maObject->isStateLocked() && !this->isAlignmentEmpty());
 }
 
 void MSAEditor::copyRowFromSequence(U2SequenceObject *seqObj, U2OpStatus &os) {

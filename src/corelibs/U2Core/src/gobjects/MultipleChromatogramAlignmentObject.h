@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -69,6 +69,7 @@ public:
     void trimRow(const int rowIndex, int currentPos, U2OpStatus& os, TrimEdge edge);
     void saveState();
     void releaseState();
+    int getReferenceLengthWithGaps() const;
 
 private:
     void loadAlignment(U2OpStatus &os);

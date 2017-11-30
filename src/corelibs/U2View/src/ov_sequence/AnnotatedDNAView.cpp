@@ -183,6 +183,7 @@ QWidget* AnnotatedDNAView::createWidget() {
     connect(mainSplitter, SIGNAL(splitterMoved(int, int)), SLOT(sl_splitterMoved(int, int)));
 
     mainSplitter->addWidget(codonTableView);
+    mainSplitter->setCollapsible(mainSplitter->indexOf(codonTableView), false);
 
     mainSplitter->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(mainSplitter, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested()));

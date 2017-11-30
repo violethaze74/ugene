@@ -30,6 +30,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
@@ -50,7 +51,7 @@ ExportSequencesDialog::ExportSequencesDialog( bool m, bool allowComplement, bool
       saveController(NULL),
       defaultFileName(defaultFileName) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "19766683");
+    new HelpButton(this, buttonBox, "20874839");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -230,8 +231,15 @@ void ExportSequencesDialog::updateModel() {
 }
 
 void ExportSequencesDialog::sl_exportClicked() {
-    if (saveController->getSaveFileName().isEmpty()) {
+    QString fileName = saveController->getSaveFileName();
+    if (fileName.isEmpty()) {
         QMessageBox::warning(this, L10N::warningTitle(), tr("File is empty"));
+        fileNameEdit->setFocus();
+        return;
+    }
+    QFileInfo fi(fileName);
+    if (fi.fileName().length() > MAX_OS_FILE_NAME_LENGTH) {
+        QMessageBox::warning(this, L10N::warningTitle(), tr("File name is too long!"));
         fileNameEdit->setFocus();
         return;
     }

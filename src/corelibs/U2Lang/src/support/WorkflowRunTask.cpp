@@ -126,7 +126,7 @@ QString WorkflowRunTask::generateReport() const {
             foreach (const QString &taskName, tasksReports.uniqueKeys()) {
                 foreach (const QString &taskReport, tasksReports.values(taskName)) {
                     if (!taskReport.isEmpty()) {
-                        workerReport += QString("<div class=\"task\" id=\"%1\">%2</div>").arg(taskName).arg(taskReport);
+                        workerReport += QString("<div class=\"task\" id=\"%1\">%2</div>").arg(taskName).arg(QString(taskReport.toUtf8().toBase64()));
                     }
                 }
             }
@@ -206,7 +206,6 @@ TaskFlags WorkflowIterationRunTask::getAdditionalFlags() {
 }
 
 WorkflowIterationRunTask::~WorkflowIterationRunTask() {
-    emit si_updateProducers();
     lmap.clear();
     DomainFactory* df = WorkflowEnv::getDomainRegistry()->getById(schema->getDomain());
     if (df) {
@@ -334,6 +333,8 @@ Task::ReportResult WorkflowIterationRunTask::report() {
             }
         }
     }
+
+    emit si_updateProducers();
     return ReportResult_Finished;
 }
 

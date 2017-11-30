@@ -36,6 +36,7 @@ public:
     static int getRowHeight(HI::GUITestOpStatus &os, int rowNumber);
     static void clickToPosition(HI::GUITestOpStatus &os, const QPoint &globalMaPosition);
     static void scrollToPosition(HI::GUITestOpStatus &os, const QPoint &position);
+    static void scrollToBase(HI::GUITestOpStatus &os, int position);
     static void clickCollapseTriangle(HI::GUITestOpStatus &os, QString seqName, bool showChromatogram);
     static bool isChromatogramShown(HI::GUITestOpStatus &os, QString seqName);
     static QStringList getNameList(HI::GUITestOpStatus &os);
@@ -64,6 +65,7 @@ public:
     static char getReadCharByPos(GUITestOpStatus &os, const QPoint p);
     static qint64 getRowLength(GUITestOpStatus &os, const int numRow);
     static qint64 getReferenceLength(GUITestOpStatus &os);
+    static qint64 getReferenceLengthWithGaps(GUITestOpStatus &os);
     static U2Region getReferenceSelection(GUITestOpStatus &os);
     static QString getSelectedConsensusReg(GUITestOpStatus &os);
     static QString getConsensusStringByRegion(GUITestOpStatus &os, const U2Region reg);

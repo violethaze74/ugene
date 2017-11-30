@@ -1002,6 +1002,9 @@ void FindPatternWidget::checkState()
                 showHideMessage(false, PatternIsTooLong);
             }
         }
+    } else {
+        doNotHighlightBackground(textPattern);
+        showHideMessage(false, PatternAlphabetDoNotMatch);
     }
 
     showHideMessage(false, AnnotationNotValidFastaParsedName);
@@ -1112,6 +1115,9 @@ void FindPatternWidget::sl_onFileSelectorToggled(bool on)
 {
     textPattern->setDisabled(on);
     checkState();
+    if (!on) { // if returning to input-pattern mode -> recheck it's content
+        verifyPatternAlphabet();
+    }
     sl_activateNewSearch(true);
 }
 

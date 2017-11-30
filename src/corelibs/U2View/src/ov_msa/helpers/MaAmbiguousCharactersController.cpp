@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include <QBitArray>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -74,10 +75,12 @@ QAction *MaAmbiguousCharactersController::getNextAction() const {
 }
 
 void MaAmbiguousCharactersController::sl_next() {
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Jump to next ambiguous character", maEditor->getFactoryId());
     scrollToNextAmbiguous(Forward);
 }
 
 void MaAmbiguousCharactersController::sl_previous() {
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Jump to previous ambiguous character", maEditor->getFactoryId());
     scrollToNextAmbiguous(Backward);
 }
 

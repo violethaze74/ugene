@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QApplication>
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QPainter>
@@ -29,6 +30,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleAlignmentObject.h>
@@ -48,6 +50,7 @@
 #include "MaEditorWgt.h"
 #include "SequenceAreaRenderer.h"
 #include "ov_msa/MaEditor.h"
+#include "ov_msa/McaEditorWgt.h"
 #include "ov_msa/MSACollapsibleModel.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/DrawHelper.h"
@@ -82,6 +85,8 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
     selecting = false;
     shifting = false;
     editingEnabled = false;
+    isCtrlPressed = false;
+    lengthOnMousePress = editor->getMaObject()->getLength();
 
     cachedView = new QPixmap();
     completeRedraw = true;
@@ -256,6 +261,7 @@ void MaEditorSequenceArea::updateSelection() {
 }
 
 void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHighlightSelection) {
+    CHECK(!isAlignmentEmpty(), );
     // TODO: assert(isInRange(s));
     exitFromEditCharacterMode();
     if (highlightSelection != newHighlightSelection) {
@@ -370,8 +376,14 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     SAFE_POINT_OP(os, );
 
     const U2Region& sel = getSelectedRows();
+    const bool isGap = maObj->getRow(selection.topLeft().y())->isGap(selection.topLeft().x());
     maObj->removeRegion(selection.x(), sel.startPos, selection.width(), sel.length, true);
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Delete current selection", editor->getFactoryId());
+
     if (selection.height() == 1 && selection.width() == 1) {
+        GRUNTIME_NAMED_CONDITION_COUNTER(cvar2, tvar2, isGap, "Remove gap", editor->getFactoryId());
+        GRUNTIME_NAMED_CONDITION_COUNTER(cvar3, tvar3, !isGap, "Remove character", editor->getFactoryId());
+
         if (isInRange(selection.topLeft())) {
             return;
         }
@@ -396,7 +408,7 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
         // backup current selection for the case when selection might disappear
         const MaEditorSelection selectionBackup = selection;
 
-        const int resultShift = maObj->shiftRegion(x, y, selectionWidth, height, shift);
+        const int resultShift = shiftRegion(shift);
         if (0 != resultShift) {
             U2OpStatus2Log os;
             adjustReferenceLength(os);
@@ -419,6 +431,161 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
         }
     }
     return false;
+}
+
+int MaEditorSequenceArea::shiftRegion(int shift) {
+    int resultShift = 0;
+
+    MultipleAlignmentObject *maObj = editor->getMaObject();
+    const U2Region rows = getSelectedRows();
+    const int selectionWidth = selection.width();
+    const int height = rows.length;
+    const int y = rows.startPos;
+    int x = selection.x();
+    if (isCtrlPressed) {
+        if (shift > 0) {
+            QList<U2MsaGap> gapModelToRemove = findRemovableGapColumns(shift);
+            if (!gapModelToRemove.isEmpty()) {
+                foreach(U2MsaGap gap, gapModelToRemove) {
+                    x = selection.x();
+                    U2OpStatus2Log os;
+                    const int length = maObj->getLength();
+                    if (length != gap.offset) {
+                        maObj->deleteGap(os, rows, gap.offset, gap.gap);
+                    }
+                    CHECK_OP(os, resultShift);
+                    resultShift += maObj->shiftRegion(x, y, selectionWidth, height, gap.gap);
+                    MaEditorSelection newSel(QPoint(gap.gap + x, selection.y()), selectionWidth, height);
+                    setSelection(newSel);
+                }
+            }
+        } else if (shift < 0 && !ctrlModeGapModel.isEmpty()) {
+            QList<U2MsaGap> gapModelToRestore = findRestorableGapColumns(shift);
+            if (!gapModelToRestore.isEmpty()) {
+                resultShift = maObj->shiftRegion(x, y, selectionWidth, height, shift);
+                foreach(U2MsaGap gap, gapModelToRestore) {
+                    if (gap.endPos() < lengthOnMousePress) {
+                        maObj->insertGap(rows, gap.offset, gap.gap);
+                    } else if (gap.offset >= lengthOnMousePress) {
+                        U2OpStatus2Log os;
+                        U2Region allRows(0, maObj->getNumRows());
+                        maObj->deleteGap(os, allRows, maObj->getLength() - gap.gap, gap.gap);
+                        CHECK_OP(os, resultShift);
+                    }
+                }
+            }
+        }
+    } else {
+        resultShift = maObj->shiftRegion(x, y, selectionWidth, height, shift);
+    }
+
+    return resultShift;
+}
+
+QList<U2MsaGap> MaEditorSequenceArea::findRemovableGapColumns(int& shift) {
+    CHECK(shift > 0, QList<U2MsaGap>());
+
+    int numOfRemovableColumns = 0;
+    U2MsaRowGapModel commonGapColumns = findCommonGapColumns(numOfRemovableColumns);
+    if (numOfRemovableColumns < shift){
+        int count = shift - numOfRemovableColumns;
+        commonGapColumns << addTrailingGapColumns(count);
+    }
+
+    QList<U2MsaGap> gapColumnsToRemove;
+    int count = shift;
+    foreach(U2MsaGap gap, commonGapColumns) {
+        if (count >= gap.gap) {
+            gapColumnsToRemove.append(gap);
+            count -= gap.gap;
+            if (count == 0) {
+                break;
+            }
+        } else {
+            gapColumnsToRemove.append(U2MsaGap(gap.offset, count));
+            break;
+        }
+    }
+
+    ctrlModeGapModel << gapColumnsToRemove;
+
+    if (count < shift) {
+        shift -= count;
+    }
+    return gapColumnsToRemove;
+}
+
+QList<U2MsaGap> MaEditorSequenceArea::findCommonGapColumns(int& numOfColumns) {
+    const U2Region rows = getSelectedRows();
+    const int x = selection.x();
+    const int wight = selection.width();
+    const U2MsaListGapModel listGapModel = editor->getMaObject()->getGapModel();
+
+    U2MsaRowGapModel gapModelToUpdate;
+    foreach(U2MsaGap gap, listGapModel[rows.startPos]) {
+        if (gap.offset + gap.gap <= x + wight) {
+            continue;
+        } else if (gap.offset < x + wight && gap.offset + gap.gap > x + wight) {
+            int startPos = x + wight;
+            U2MsaGap g(startPos, gap.offset + gap.gap - startPos);
+            gapModelToUpdate << g;
+        } else {
+            gapModelToUpdate << gap;
+        }
+    }
+
+    numOfColumns = 0;
+    for (int i = rows.startPos + 1; i < rows.endPos(); i++) {
+        U2MsaRowGapModel currentGapModelToRemove;
+        int currentNumOfColumns = 0;
+        foreach(U2MsaGap gap, listGapModel[i]) {
+            foreach(U2MsaGap gapToRemove, gapModelToUpdate) {
+                U2MsaGap intersectedGap = gap.intersect(gapToRemove);
+                if (intersectedGap.gap == 0) {
+                    continue;
+                }
+                currentNumOfColumns += intersectedGap.gap;
+                currentGapModelToRemove << intersectedGap;
+            }
+        }
+        gapModelToUpdate = currentGapModelToRemove;
+        numOfColumns = currentNumOfColumns;
+    }
+
+    return gapModelToUpdate;
+}
+
+U2MsaGap MaEditorSequenceArea::addTrailingGapColumns(int count) {
+    MultipleAlignmentObject *maObj = editor->getMaObject();
+    qint64 length = maObj->getLength();
+    return U2MsaGap(length, count);
+}
+
+QList<U2MsaGap> MaEditorSequenceArea::findRestorableGapColumns(const int shift) {
+    CHECK(shift < 0, QList<U2MsaGap>());
+    CHECK(!ctrlModeGapModel.isEmpty(), QList<U2MsaGap>());
+
+    QList<U2MsaGap> gapColumnsToRestore;
+    int absShift = qAbs(shift);
+    const int size = ctrlModeGapModel.size();
+    for (int i = size - 1; i >= 0; i--) {
+        if (ctrlModeGapModel[i].gap >= absShift) {
+            const int offset = ctrlModeGapModel[i].gap - absShift;
+            U2MsaGap gapToRestore(ctrlModeGapModel[i].offset + offset, absShift);
+            gapColumnsToRestore.push_front(gapToRestore);
+            ctrlModeGapModel[i].gap -= absShift;
+            if (ctrlModeGapModel[i].gap == 0) {
+                ctrlModeGapModel.removeOne(ctrlModeGapModel[i]);
+            }
+            break;
+        } else {
+            gapColumnsToRestore.push_front(ctrlModeGapModel[i]);
+            absShift -= ctrlModeGapModel[i].gap;
+            ctrlModeGapModel.removeOne(ctrlModeGapModel[i]);
+        }
+    }
+
+    return gapColumnsToRestore;
 }
 
 void MaEditorSequenceArea::centerPos(const QPoint &point) {
@@ -654,11 +821,17 @@ void MaEditorSequenceArea::sl_delCurrentSelection() {
 }
 
 void MaEditorSequenceArea::sl_cancelSelection() {
+    if (maMode != ViewMode) {
+        exitFromEditCharacterMode();
+        return;
+    }
+    GRUNTIME_NAMED_CONDITION_COUNTER(cvat, tvar, qobject_cast<McaEditorWgt*>(sender()) != NULL, "Clear selection", editor->getFactoryId());
     MaEditorSelection emptySelection;
     setSelection(emptySelection);
 }
 
 void MaEditorSequenceArea::sl_fillCurrentSelectionWithGaps() {
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Fill selection with gaps", editor->getFactoryId());
     if(!isAlignmentLocked()) {
         emit si_startMaChanging();
         insertGapsBeforeSelection();
@@ -831,6 +1004,7 @@ void MaEditorSequenceArea::sl_hScrollBarActionPerfermed() {
 }
 
 void MaEditorSequenceArea::setCursorPos(const QPoint& p) {
+    CHECK(!isAlignmentEmpty(), )
     SAFE_POINT(isInRange(p), tr("Cursor position is out of range"), );
     CHECK(p != cursorPos, );
 
@@ -883,10 +1057,13 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
             return;
         }
 
+        Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
+        isCtrlPressed = km.testFlag(Qt::ControlModifier);
+        lengthOnMousePress = editor->getMaObject()->getLength();
+
         rubberBandOrigin = e->pos();
         const QPoint p = ui->getScrollController()->getMaPointByScreenPoint(e->pos());
         setCursorPos(boundWithVisibleRange(p));
-
         if (isInRange(p)) {
             const MaEditorSelection &s = getSelection();
             if (s.getRect().contains(cursorPos) && !isAlignmentLocked() && editingEnabled) {
@@ -932,6 +1109,15 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
     shifting = false;
     selecting = false;
     maVersionBeforeShifting = -1;
+
+    if (ctrlModeGapModel.isEmpty() && isCtrlPressed) {
+        MultipleAlignmentObject* maObj = editor->getMaObject();
+        maObj->si_completeStateChanged(true);
+        MaModificationInfo mi;
+        mi.alignmentLengthChanged = false;
+        maObj->si_alignmentChanged(maObj->getMultipleAlignment(), mi);
+    }
+    ctrlModeGapModel.clear();
 
     ui->getScrollController()->stopSmoothScrolling();
 
@@ -1528,6 +1714,10 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
         exitFromEditCharacterMode();
         return;
     }
+
+    const bool isGap = maObj->getRow(selection.y())->isGap(selection.x());
+    GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, isGap, "Replace gap", editor->getFactoryId());
+    GRUNTIME_NAMED_CONDITION_COUNTER(ccvar, ttvar, !isGap, "Replace character", editor->getFactoryId());
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);

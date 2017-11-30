@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
-* http://ugene.unipro.ru
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include <QThread>
 
@@ -141,7 +141,7 @@ MultipleChromatogramAlignmentObject *ComposeResultSubTask::takeMcaObject() {
 }
 
 void ComposeResultSubTask::createAlignmentAndAnnotations() {
-    MultipleChromatogramAlignment result("Aligned reads");
+    MultipleChromatogramAlignment result("Mapped reads");
     result->setAlphabet(referenceSequenceObject->getAlphabet());
 
     U2MsaRowGapModel referenceGaps = getReferenceGaps();
@@ -194,7 +194,7 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
         ++rowsCounter;
     }
     if (rowsCounter == 0) {
-        stateInfo.setError(tr("No read satisfy minimum identity criteria."));
+        stateInfo.setError(tr("No read satisfy minimum similarity criteria."));
         return;
     }
     result->trim(false); // just recalculates alignment len
@@ -219,9 +219,6 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
     CHECK_OP(stateInfo, );
 
     mcaObject->moveToThread(thread());
-
-    // remove gap columns
-    mcaObject->deleteColumnsWithGaps(stateInfo);
 
     annsObject->addAnnotations(anns);
     annotations = storage->getDataHandler(annsObject->getEntityRef());
@@ -363,6 +360,9 @@ void ComposeResultSubTask::insertShiftedGapsIntoReference() {
         dnaSeq.seq.insert(gap.offset, QByteArray(gap.gap, U2Msa::GAP_CHAR));
     }
     referenceSequenceObject->setWholeSequence(dnaSeq);
+
+    // remove gap columns
+    mcaObject->deleteColumnsWithGaps(stateInfo);
 }
 
 void ComposeResultSubTask::insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps) {

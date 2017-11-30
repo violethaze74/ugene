@@ -45,7 +45,7 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
       ui(new Ui_ExportHighlightedDialog())
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "19766806");
+    new HelpButton(this, ui->buttonBox, "20874962");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -56,8 +56,6 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
     CHECK(msaui->getEditor()->getMaObject(), );
 
     initSaveController();
-
-    connect(ui->endLineEdit, SIGNAL(valueChanged(int)), SLOT(endPosValueChanged()));
 
     int alignLength = msaui->getEditor()->getMaObject()->getLength();
     QRect selection = msaui->getSequenceArea()->getSelection().getRect();
@@ -80,7 +78,10 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
 
     ui->startLineEdit->setValue(startPos);
     ui->endLineEdit->setValue(endPos);
+    
+    connect(ui->endLineEdit, SIGNAL(valueChanged(int)), SLOT(endPosValueChanged()));
 }
+
 ExportHighligtingDialogController::~ExportHighligtingDialogController(){
     delete ui;
 }

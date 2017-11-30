@@ -80,6 +80,8 @@
 #include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "api/GTSequenceReadingModeDialog.h"
+#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "GTDatabaseConfig.h"
 #include "GTTestsRegressionScenarios_2001_3000.h"
 #include "GTUtilsAnnotationsHighlightingTreeView.h"
@@ -107,8 +109,6 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "api/GTSequenceReadingModeDialog.h"
-#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "runnables/qt/EscapeClicker.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
@@ -127,6 +127,7 @@
 #include "runnables/ugene/corelibs/U2Gui/FindQualifierDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
@@ -175,10 +176,10 @@
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.h"
@@ -1920,12 +1921,10 @@ GUI_TEST_CLASS_DEFINITION(test_2281) {
 
 GUI_TEST_CLASS_DEFINITION(test_2292) {
     QString destName = testDir + "_common_data/ugenedb/example-alignment.ugenedb";
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, destName));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "There is opened view with destination file"));
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb/", "example-alignment.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_2292.ace.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/ACE", "K26.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2665,9 +2664,7 @@ GUI_TEST_CLASS_DEFINITION( test_2382 ) {
 
     QString sandboxDir = testDir + "_common_data/scenarios/sandbox/";
     QString assDocName = "test_2382.ugenedb";
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller
-                                 (os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandboxDir + assDocName));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandboxDir + assDocName));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "capres4.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2685,9 +2682,7 @@ GUI_TEST_CLASS_DEFINITION( test_2382_1 ) {
 
     QString sandboxDir = testDir + "_common_data/scenarios/sandbox/";
     QString assDocName = "test_2382_1.ugenedb";
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller
-                                 (os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandboxDir + assDocName));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandboxDir + assDocName));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "test_new.cap.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2745,9 +2740,7 @@ GUI_TEST_CLASS_DEFINITION( test_2400 ){
 //    1. Import samples/ACE/k26.ace to  ugenedb (via open file)
     QString fileName = "2400.ugenedb";
     QString ugenedb = sandBoxDir + fileName;
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller
-                                 (os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, ugenedb));
+	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, ugenedb));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: assembly view for Contig_1 opened with refrence sequence added to it
@@ -2762,9 +2755,7 @@ GUI_TEST_CLASS_DEFINITION( test_2401 ) {
     QString sandbox = testDir + "_common_data/scenarios/sandbox/";
     QString fileName = "2401.ugenedb";
     QString ugenedb = sandbox + fileName;
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller
-                                 (os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, ugenedb));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, ugenedb));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2782,9 +2773,7 @@ GUI_TEST_CLASS_DEFINITION( test_2401 ) {
     // 6. Set the same ugenedb path for import: "_common_data/scenarios/sandbox/2401.ugenedb".
     // 7. Click OK.
     // 8. Click Append.
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller
-                                 (os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, ugenedb, ConvertAceToSqliteDialogFiller::APPEND));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, ugenedb));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_11_(error).ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -6003,9 +5992,7 @@ GUI_TEST_CLASS_DEFINITION(test_2929){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2930){
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller
-                                 (os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "test_2930"));
+	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_2930"));
     GTFileDialog::openFile(os, dataDir+"samples/ACE", "K26.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -6016,9 +6003,7 @@ GUI_TEST_CLASS_DEFINITION(test_2930){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2931){
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller
-        (os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "test_2931"));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_2931"));
     GTFileDialog::openFile(os, dataDir+"samples/ACE", "K26.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);

@@ -35,13 +35,18 @@ class TaskStateInfo;
 class Logger;
 class U2OpStatus;
 
+/* Maximum file name length for Linux, Windows and MacOS X is 255 characters. */
+#define MAX_OS_FILE_NAME_LENGTH 255
 
 class U2CORE_EXPORT GUrlUtils : public QObject {
     Q_OBJECT
 public:
 
     //gets the uncompressed extension for the URL. Filters 'gz' like suffixes
-    static QString  getUncompressedExtension(const GUrl& url);
+    static QString getUncompressedExtension(const GUrl& url);
+
+    //gets the complete base file name without ignoring 'gz' suffix
+    static QString getUncompressedCompleteBaseName(const GUrl &url);
 
     // ensures that url ends with one of the exts
     static GUrl     ensureFileExt(const GUrl& url, const QStringList& typeExt);
@@ -139,6 +144,8 @@ public:
     static QString fixFileName(const QString &fileName);
 
     static QString getSlashEndedPath(const QString &dirPath);
+
+    static bool containSpaces(const QString &string);
 };
 
 } //namespace

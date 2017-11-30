@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -76,6 +76,10 @@ bool MultipleAlignmentRowData::isTrailingOrLeadingGap(qint64 position) const {
         return true;
     }
     return false;
+}
+
+U2Region MultipleAlignmentRowData::getCoreRegion() const {
+    return U2Region(getCoreStart(), getCoreLength());
 }
 
 MultipleAlignmentRowData::~MultipleAlignmentRowData() {

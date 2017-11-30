@@ -388,14 +388,15 @@ AddTreeWidget::AddTreeWidget(MSAEditor* msa)
     buttonLayout->addWidget(buildTreeButton);
     buildTreeButton->setObjectName( "BuildTreeButton" );
     
-    buildTreeButton->setDisabled(editor->getNumSequences() < 2);
+    MultipleSequenceAlignmentObject* maObj = editor->getMaObject();
+    buildTreeButton->setDisabled(editor->getNumSequences() < 2 || maObj->isStateLocked());
     
     mainLayout->addLayout(buttonLayout);
 
     connect(openTreeButton, SIGNAL(clicked()), SLOT(sl_onOpenTreeTriggered()));
     connect(buildTreeButton, SIGNAL(clicked()), SLOT(sl_onBuildTreeTriggered()));
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), 
-            SLOT(sl_msaChanged(const MultipleAlignment&, const MaModificationInfo&)));
+    connect(maObj, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateBuildTreeButtonState()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_updateBuildTreeButtonState()));
 }
 
 void AddTreeWidget::sl_onOpenTreeTriggered() {
@@ -406,8 +407,8 @@ void AddTreeWidget::sl_onBuildTreeTriggered() {
     editor->getTreeManager()->buildTreeWithDialog();
 }
 
-void AddTreeWidget::sl_msaChanged(const MultipleAlignment&, const MaModificationInfo&) {
-    buildTreeButton->setDisabled(editor->getNumSequences() < 2);
+void AddTreeWidget::sl_updateBuildTreeButtonState() {
+    buildTreeButton->setDisabled(editor->getNumSequences() < 2 || editor->getMaObject()->isStateLocked());
 }
 
 }

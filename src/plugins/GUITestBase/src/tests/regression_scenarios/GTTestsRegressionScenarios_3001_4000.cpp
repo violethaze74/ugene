@@ -84,6 +84,8 @@
 #include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "api/GTSequenceReadingModeDialog.h"
+#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "GTDatabaseConfig.h"
 #include "GTTestsRegressionScenarios_3001_4000.h"
 #include "GTUtilsAnnotationsHighlightingTreeView.h"
@@ -111,8 +113,6 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "api/GTSequenceReadingModeDialog.h"
-#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "runnables/qt/EscapeClicker.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
@@ -131,6 +131,7 @@
 #include "runnables/ugene/corelibs/U2Gui/FindQualifierDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
@@ -178,10 +179,10 @@
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.h"
@@ -732,10 +733,7 @@ GUI_TEST_CLASS_DEFINITION(test_3126) {
 //    Expected: the file is imported, UGENE does not crash.
     GTLogTracer l;
 
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller
-                                 (os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os,
-                                                                        sandBoxDir + "test_3126"));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_3126"));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4425,7 +4423,7 @@ GUI_TEST_CLASS_DEFINITION(test_3687_1) {
     //Expected: the finishes with error about sequences amount.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsNotifications::waitForNotification(os, true, "contains too many sequences to be displayed");
-    GTFileDialog::openFile(os, testDir + "_common_data/NGS_tutorials/RNA-Seq_Analysis/Prepare_Raw_Data/lymph.fastq");
+    GTFileDialog::openFile(os, testDir + "_common_data/fastq/lymph.fastq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -4438,7 +4436,7 @@ GUI_TEST_CLASS_DEFINITION(test_3687_2) {
     //Expected: the finishes with error about sequences amount.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTUtilsNotifications::waitForNotification(os, true, "contains too many sequences to be displayed");
-    GTFileDialog::openFile(os, testDir + "_common_data/NGS_tutorials/RNA-Seq_Analysis/Prepare_Raw_Data/lymph.fastq");
+    GTFileDialog::openFile(os, testDir + "_common_data/fastq/lymph.fastq");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -4767,8 +4765,7 @@ GUI_TEST_CLASS_DEFINITION(test_3736) {
 GUI_TEST_CLASS_DEFINITION(test_3738) {
 //    Select {DNA Assembly -> Contig assembly with CAP3}
     GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "test_3738.ugenedb"));
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_3738.ugenedb"));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList()<<testDir + "_common_data/scf/Sequence A.scf"
                                                                  <<testDir + "_common_data/scf/Sequence B.scf",
                                                                  sandBoxDir + "test_3738.ace"));
@@ -5111,8 +5108,7 @@ GUI_TEST_CLASS_DEFINITION(test_3778) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3779) {
-    GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
-    GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "regression_test_3779.ugenedb"));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "regression_test_3779.ugenedb"));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_4.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -5573,10 +5569,10 @@ GUI_TEST_CLASS_DEFINITION(test_3870) {
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
 
     //2. Insert gaps
-    GTUtilsMSAEditorSequenceArea::scrollToPosition(os, QPoint(length - 1, 1));
     int columnsNumber = GTUtilsMSAEditorSequenceArea::getNumVisibleBases(os);
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(columnsNumber - 10, 0), QPoint(columnsNumber, 10));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(columnsNumber - 10, 0), QPoint(columnsNumber, 10), GTGlobals::UseMouse);
 
+    GTGlobals::sleep(1000);
     GTKeyboardDriver::keyClick( Qt::Key_Space);
 
     //3. Export sequences with terminal gaps to FASTA
@@ -6015,7 +6011,7 @@ GUI_TEST_CLASS_DEFINITION(test_3967){
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new SpadesGenomeAssemblyDialogFiller(os, "Paired-end (Interlaced)", QStringList()<<testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq",
                                                                           QStringList(), sandBoxDir));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Genome de novo assembly...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Reads de novo assembly (with SPAdes)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);
 ////  1. Open workflow designer
@@ -6072,9 +6068,15 @@ GUI_TEST_CLASS_DEFINITION(test_3983) {
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "chr1_gl000191_random_Amino_translation_");
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(1, 1));
     GTWidget::click(os, GTUtilsOptionPanelMsa::getAddButton(os, 2));
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
     GTGlobals::sleep();
 
     GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));

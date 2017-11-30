@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,17 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#include "MaConsensusModeWidget.h"
-
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2View/MSAEditorConsensusArea.h>
+
+#include "MaConsensusModeWidget.h"
+#include "ov_msa/MaEditor.h"
+#include "ov_msa/view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 
@@ -99,6 +102,7 @@ void MaConsensusModeWidget::updateThresholdState(bool enable, int minVal, int ma
 }
 
 void MaConsensusModeWidget::sl_algorithmChanged(const QString& algoId) {
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Consensus type changed", consArea->getEditorWgt()->getEditor()->getFactoryId());
     // Update state for the current algorithm
     SAFE_POINT(maObject != NULL, "MaConsensusModeWidget is not initialized", );
 
@@ -122,6 +126,7 @@ void MaConsensusModeWidget::sl_algorithmSelectionChanged(int index) {
 }
 
 void MaConsensusModeWidget::sl_thresholdSliderChanged(int value) {
+    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Consensus threshold changed", consArea->getEditorWgt()->getEditor()->getFactoryId());
     thresholdSpinBox->disconnect(this);
     thresholdSpinBox->setValue(value);
     connect(thresholdSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_thresholdSpinBoxChanged(int)));

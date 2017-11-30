@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@
 namespace U2 {
 
 class AbstractAlignmentTaskFactory;
-class BlastAllSupportTask;
+class BlastNPlusSupportTask;
 class PairwiseAlignmentTaskSettings;
 
 namespace Workflow {
@@ -47,6 +47,7 @@ public:
                       const QList<SharedDbiDataHandler> &reads,
                       const SharedDbiDataHandler &reference,
                       const int minIdentityPercent,
+                      const QMap<SharedDbiDataHandler, QString> &readsNames,
                       DbiDataStorage *storage);
 
     void prepare();
@@ -56,6 +57,7 @@ public:
 private:
     const QString dbPath;
     const QList<SharedDbiDataHandler> reads;
+    const QMap<SharedDbiDataHandler, QString> readsNames;
     const SharedDbiDataHandler reference;
     const int minIdentityPercent;
 
@@ -74,11 +76,12 @@ public:
                        const SharedDbiDataHandler& read,
                        const SharedDbiDataHandler &reference,
                        const int minIdentityPercent,
+                       const QString &readName,
                        DbiDataStorage *storage);
 
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
-    void run();
+    ReportResult report();
 
     bool isComplement() const;
     const SharedDbiDataHandler& getRead() const;
@@ -92,6 +95,9 @@ public:
     int         getReadIdentity() const;
 
 private:
+    BlastNPlusSupportTask *getBlastTask();
+    void checkRead(const QByteArray &sequenceData);
+
     U2Region getReferenceRegion(const QList<SharedAnnotationData>& blastAnnotations);
     void createAlignment(const U2Region& refRegion);
     void shiftGaps(U2MsaRowGapModel &gaps) const;
@@ -112,12 +118,12 @@ private:
 
     DbiDataStorage *storage;
 
-    BlastAllSupportTask*    blastTask;
+    BlastNPlusSupportTask *blastTask;
     QString blastResultDir;
 
     U2MsaRowGapModel referenceGaps;
     U2MsaRowGapModel readGaps;
-    QString initialReadName;
+    QString readName;
     bool complement;
     bool skipped;
 };

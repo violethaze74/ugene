@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -140,7 +140,6 @@ public:
 
     /** Obsolete. The length of the row core */
     qint64 getCoreLength() const;
-    U2Region getCoreRegion() const;
 
     /** Removes all gaps. Returns true if changed. */
     inline bool simplify();

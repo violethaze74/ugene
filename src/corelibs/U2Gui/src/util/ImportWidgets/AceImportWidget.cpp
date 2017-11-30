@@ -38,8 +38,6 @@ AceImportWidget::AceImportWidget(const GUrl& url, const QVariantMap& settings) :
 {
     setupUi(this);
 
-    sourseLineEdit->setText(url.getURLString());
-
     initSaveController(url);
 }
 
@@ -54,9 +52,7 @@ QVariantMap AceImportWidget::getSettings() const {
 void AceImportWidget::initSaveController(const GUrl& url) {
     SaveDocumentControllerConfig config;
 
-    if (!sourseLineEdit->text().isEmpty()) {
-        config.defaultFileName = url.getURLString() + EXTENSION;
-    }
+    config.defaultFileName = url.getURLString() + EXTENSION;
     config.defaultFormatId = BaseDocumentFormats::UGENEDB;
     config.fileDialogButton = browseButton;
     config.fileNameEdit = fileNameEdit;

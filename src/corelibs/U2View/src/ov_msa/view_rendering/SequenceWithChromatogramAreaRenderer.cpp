@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -111,6 +111,10 @@ void SequenceWithChromatogramAreaRenderer::setAreaHeight(int h) {
     SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
     SAFE_POINT(ui->getEditor() != NULL, "MaEditor is NULL", );
     s->setValue(ui->getEditor()->getSettingsRoot() + MCAE_SETTINGS_PEAK_HEIGHT, maxTraceHeight);
+}
+
+int SequenceWithChromatogramAreaRenderer::getAreaHeight() const {
+    return maxTraceHeight;
 }
 
 int SequenceWithChromatogramAreaRenderer::getScaleBarValue() const {

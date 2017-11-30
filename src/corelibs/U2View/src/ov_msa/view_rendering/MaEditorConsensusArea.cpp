@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,6 +32,7 @@
 #include <QToolTip>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
@@ -146,6 +147,7 @@ bool MaEditorConsensusArea::event(QEvent* e) {
 
 void MaEditorConsensusArea::initCache() {
     MSAConsensusAlgorithmFactory *algo = getConsensusAlgorithmFactory();
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, QString("'%1' consensus type is selected on view opening").arg(algo->getName()), editor->getFactoryId());
     consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(NULL, editor->getMaObject(), algo));
     connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
     restoreLastUsedConsensusThreshold();
@@ -153,7 +155,7 @@ void MaEditorConsensusArea::initCache() {
 
 QString MaEditorConsensusArea::createToolTip(QHelpEvent* he) const {
     const int x = he->pos().x();
-    const int column = ui->getBaseWidthController()->globalXPositionToColumn(x);
+    const int column = ui->getBaseWidthController()->screenXPositionToColumn(x);
     QString result;
     if (0 <= column && column <= editor->getAlignmentLen()) {
         assert(editor->getMaObject());
@@ -313,6 +315,7 @@ void MaEditorConsensusArea::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* 
     if (oldAlgo!=NULL && algoFactory == oldAlgo->getFactory()) {
         return;
     }
+    GRUNTIME_NAMED_COUNTER(cvar, tvar, QString("'%1' consensus algorithm is selected").arg(algoFactory->getName()), editor->getFactoryId());
 
     //store threshold for the active algo
     if (oldAlgo!=NULL && oldAlgo->supportsThreshold()) {

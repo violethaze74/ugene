@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,10 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include "McaGeneralTab.h"
-
-#include "../McaEditor.h"
 #include <U2Gui/ShowHideSubgroupWidget.h>
+
+#include "McaGeneralTab.h"
+#include "ov_msa/McaEditor.h"
 
 namespace U2 {
 

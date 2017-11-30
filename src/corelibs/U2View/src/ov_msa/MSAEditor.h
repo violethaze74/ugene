@@ -63,7 +63,6 @@ class U2VIEW_EXPORT MSAEditor : public MaEditor {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditor)
 
-    friend class OpenSavedMSAEditorTask;
     friend class MSAEditorTreeViewerUI;
     friend class SequenceAreaRenderer;
     friend class SequenceWithChromatogramAreaRenderer;
@@ -80,13 +79,7 @@ public:
 
     virtual void buildStaticMenu(QMenu* m);
 
-    virtual Task* updateViewTask(const QString& stateName, const QVariantMap& stateData);
-
-    virtual QVariantMap saveState();
-
     MsaEditorWgt* getUI() const;
-
-    int getFirstVisibleBase() const;
 
     //Return alignment row that is displayed on target line in MSAEditor
     const MultipleSequenceAlignmentRow getRowByLineNumber(int lineNumber) const;

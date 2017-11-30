@@ -71,8 +71,6 @@ void AprImporterTask::prepare() {
     IOAdapterRegistry *ioar = AppContext::getIOAdapterRegistry();
     SAFE_POINT_EXT(NULL != ioar, stateInfo.setError(tr("Invalid I/O environment!")), );
 
-    IOAdapterFactory *iof = ioar->getIOAdapterFactoryById(IOAdapterUtils::url2io(dstUrl));
-
     QFileInfo fileInfo(dstUrl);
     QDir qDir = fileInfo.dir();
     QString dir = qDir.path();
@@ -93,7 +91,9 @@ QList<Task*> AprImporterTask::onSubTaskFinished(Task* subTask) {
         QString dstUrl = convTask->getResult();
         SAFE_POINT_EXT(!dstUrl.isEmpty(), stateInfo.setError(tr("Empty destination url")), res);
 
-        LoadDocumentTask* loadTask = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, dstUrl);
+        QVariantMap hints;
+        hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
+        LoadDocumentTask* loadTask = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, dstUrl, hints);
         CHECK(loadTask != NULL, res);
 
         res << loadTask;

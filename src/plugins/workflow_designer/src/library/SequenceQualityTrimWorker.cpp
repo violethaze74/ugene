@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -129,7 +129,7 @@ void SequenceQualityTrimWorkerFactory::init() {
 
     QList<Attribute *> attributes;
     {
-        Descriptor qualityTreshold(QUALITY_ID, SequenceQualityTrimWorker::tr("Quality threshold"),
+        Descriptor qualityTreshold(QUALITY_ID, SequenceQualityTrimWorker::tr("Trimming quality threshold"),
                                    SequenceQualityTrimWorker::tr("Quality threshold for trimming."));
 
         Descriptor minSequenceLength(LEN_ID, SequenceQualityTrimWorker::tr("Min length"),

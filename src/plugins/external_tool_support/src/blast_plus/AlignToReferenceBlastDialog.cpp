@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDomDocument>
 #include <QMessageBox>
 #include <QShortcut>
 
@@ -35,6 +36,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -47,6 +49,7 @@
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include "AlignToReferenceBlastDialog.h"
+#include "AlignToReferenceBlastWorker.h"
 
 namespace U2 {
 
@@ -54,9 +57,23 @@ AlignToReferenceBlastCmdlineTask::Settings::Settings()
     : minIdentity(60),
       minLength(0),
       qualityThreshold(30),
+      rowNaming(SequenceName),
       addResultToProject(true)
 {
 
+}
+
+QString AlignToReferenceBlastCmdlineTask::Settings::getRowNamingPolicyString() const {
+    switch (rowNaming) {
+    case SequenceName:
+        return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE;
+        break;
+    case FileName:
+        return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE;
+        break;
+    default:
+        FAIL("An unknown row naming policy", LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE);
+    }
 }
 
 const QString AlignToReferenceBlastCmdlineTask::ALIGN_TO_REF_CMDLINE = "align-to-reference";
@@ -68,11 +85,12 @@ const QString AlignToReferenceBlastCmdlineTask::THRESHOLD_ARG = "threshold";
 const QString AlignToReferenceBlastCmdlineTask::READS_ARG = "reads";
 
 const QString AlignToReferenceBlastCmdlineTask::MIN_IDENTITY_ARG = "min-identity";
+const QString AlignToReferenceBlastCmdlineTask::ROW_NAMING_ARG = "row-naming-policy";
 const QString AlignToReferenceBlastCmdlineTask::REF_ARG = "reference";
 const QString AlignToReferenceBlastCmdlineTask::RESULT_ALIGNMENT_ARG = "result-url";
 
 AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Settings &settings)
-    : Task(tr("Align Sanger reads to reference"), TaskFlags_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
+    : Task(tr("Map Sanger reads to reference"), TaskFlags_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
       cmdlineTask(NULL),
       loadRef(NULL),
@@ -87,8 +105,13 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
     SAFE_POINT_EXT(opened, setError(L10N::errorOpeningFileWrite(reportFile.fileName())), );
     reportFile.close();
 
+    GUrl referenceUrl(settings.referenceUrl);
+    if (referenceUrl.isLocalFile()) {
+        CHECK_EXT(QFileInfo(referenceUrl.getURLString()).exists(), setError(tr("The '%1' reference file doesn't exist.").arg(settings.referenceUrl)),);
+    }
+    
     FormatDetectionConfig config;
-    QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.referenceUrl, config);
+    QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(referenceUrl, config);
     CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError(tr("wrong reference format")), );
 
     DocumentFormat *format = formats.first().format;
@@ -99,8 +122,66 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
     addSubTask(loadRef);
 }
 
+namespace {
+
+static const QString DIV = "div";
+static const QString CLASS = "class";
+static const QString ID = "id";
+static const QString CLASS_WORKER = "worker";
+static const QString CLASS_TASK = "task";
+
+QMap<QString, QMultiMap<QString, QString> > splitReports(U2OpStatus &os, const QString &reportString) {
+    QMap<QString, QMultiMap<QString, QString> > result;
+    QDomDocument document;
+    document.setContent("<html><body>" + reportString + "</body></html>");
+    const QDomNodeList workersList = document.firstChildElement("html").firstChildElement("body").childNodes();
+    for (int i = 0; i < workersList.size(); i++) {
+        QDomElement workerElement = workersList.item(i).toElement();
+
+        const QString workerElementClass = workerElement.attribute(CLASS);
+        SAFE_POINT_EXT(CLASS_WORKER == workerElementClass, os.setError(QString("An unknown element class: %1").arg(workerElementClass)), result);
+
+        const QDomNodeList tasksList = workerElement.childNodes();
+        for (int j = 0; j < tasksList.size(); j++) {
+            QDomElement taskElement = tasksList.item(j).toElement();
+
+            const QString taskElementClass = taskElement.attribute(CLASS);
+            SAFE_POINT_EXT(CLASS_TASK == taskElementClass, os.setError(QString("An unknown element class: %1").arg(taskElementClass)), result);
+
+            result[workerElement.attribute(ID)].insert(taskElement.attribute(ID), QByteArray::fromBase64(taskElement.text().toUtf8()));
+        }
+    }
+    return result;
+}
+
+}
+
 QString AlignToReferenceBlastCmdlineTask::generateReport() const {
-    return reportString;
+    U2OpStatusImpl os;
+    QMap<QString, QMultiMap<QString, QString> > reports = splitReports(os, reportString);
+
+    QMultiMap<QString, QString> mapperReports = reports.value(LocalWorkflow::AlignToReferenceBlastWorkerFactory::ACTOR_ID, QMultiMap<QString, QString>());
+    CHECK(mapperReports.size() > 0, "");
+
+    QString resultReport = mapperReports.values().first();
+
+    QMultiMap<QString, QString> trimReports = reports.value("SequenceQualityTrim", QMultiMap<QString, QString>());
+    if (trimReports.values().size() > 0) {
+        resultReport += tr("<u>Filtered by quality (%1):</u>").arg(trimReports.values().size());
+        resultReport += "<table>";
+    }
+
+    QRegExp readNameExtractor(".*\'(.*)\'.*");
+    foreach (const QString &taskReport, trimReports.values()) {
+        readNameExtractor.indexIn(taskReport);
+        resultReport += "<tr><td width=50></td><td width=300 nowrap>" + readNameExtractor.cap(1) + "</td></tr>";
+    }
+
+    if (trimReports.values().size() > 0) {
+        resultReport += "</table>";
+    }
+
+    return resultReport;
 }
 
 QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) {
@@ -112,13 +193,14 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
 
         config.command = "--task=" + ALIGN_TO_REF_CMDLINE;
         QString argString = "--%1=\"%2\"";
-        config.arguments << argString.arg(REF_ARG).arg(settings.referenceUrl);
+        config.arguments << argString.arg(REF_ARG).arg(QFileInfo(settings.referenceUrl).absoluteFilePath());
         config.arguments << argString.arg(READS_ARG).arg(settings.readUrls.join(";"));
         config.arguments << argString.arg(MIN_IDENTITY_ARG).arg(settings.minIdentity);
+        config.arguments << argString.arg(ROW_NAMING_ARG).arg(settings.getRowNamingPolicyString());
         config.arguments << argString.arg(MIN_LEN_ARG).arg(settings.minLength);
         config.arguments << argString.arg(THRESHOLD_ARG).arg(settings.qualityThreshold);
         config.arguments << argString.arg(TRIM_ARG).arg(true);
-        config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(settings.outAlignment);
+        config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(QFileInfo(settings.outAlignment).absoluteFilePath());
 
         config.reportFile = reportFile.fileName();
         config.emptyOutputPossible = true;
@@ -163,14 +245,19 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
       savableWidget(this)
 {
     setupUi(this);
+    GCOUNTER(cvar, tvar, "'Map reads to reference' dialog opening");
 
-    new HelpButton(this, buttonBox, "20873538"); 
+    new HelpButton(this, buttonBox, "20875232"); 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Map"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     connectSlots();
     initSaveController();
     readsListWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    cbRowNaming->addItem(tr("File name"), AlignToReferenceBlastCmdlineTask::Settings::FileName);
+    cbRowNaming->addItem(tr("Sequence name from file"), AlignToReferenceBlastCmdlineTask::Settings::SequenceName);
+    cbRowNaming->setCurrentIndex(cbRowNaming->findData(AlignToReferenceBlastCmdlineTask::Settings::SequenceName));
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
     saveController->setPath(outputLineEdit->text());
@@ -221,6 +308,7 @@ void AlignToReferenceBlastDialog::accept() {
     settings.minIdentity = minIdentitySpinBox->value();
     settings.minLength = 0;
     settings.qualityThreshold = qualitySpinBox->value();
+    settings.rowNaming = static_cast<AlignToReferenceBlastCmdlineTask::Settings::RowNaming>(cbRowNaming->currentData().toInt());
 
     if (outputLineEdit->text().isEmpty()) {
         QMessageBox::warning(this, tr("Error"),
