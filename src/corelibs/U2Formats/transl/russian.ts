@@ -2443,7 +2443,7 @@
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="118"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="217"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="653"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="373"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="374"/>
         <source>Msa object not found</source>
         <translation>Объект msa не найден</translation>
     </message>
@@ -2517,8 +2517,8 @@
     <message>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1196"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1305"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1326"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1336"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1327"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1337"/>
         <source>An error occurred during updating an msa length</source>
         <translation>An error occurred during updating an msa length</translation>
     </message>
@@ -2768,16 +2768,16 @@
         <translation>An object single modification step not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="525"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="540"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="733"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="526"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="541"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="734"/>
         <source>Msa object not found!</source>
         <translation>Msa object not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="623"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="793"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="831"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="624"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="794"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="832"/>
         <source>Msa row not found!</source>
         <translation>Msa row not found!</translation>
     </message>
