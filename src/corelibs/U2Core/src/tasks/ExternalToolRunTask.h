@@ -155,6 +155,10 @@ public:
     QString getLastError() const {return lastError;}
 
 protected:
+    virtual void processLine(const QString &line);
+    virtual void processErrLine(const QString &line);
+    virtual bool isError(const QString &line) const;
+
     void setLastError(const QString &value);
 
 private:

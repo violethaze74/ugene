@@ -190,7 +190,16 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/vcftools/VcfConsensusSupport.h \
            src/vcftools/VcfConsensusSupportTask.h \
            src/vcftools/VcfConsensusWorker.h \
-           src/vcfutils/VcfutilsSupport.h
+           src/vcfutils/VcfutilsSupport.h \
+    src/kraken/KrakenClassifyTaskSettings.h \
+    src/kraken/KrakenClassifyTask.h \
+    src/kraken/KrakenClassifyPrompter.h \
+    src/kraken/KrakenClassifyWorker.h \
+    src/kraken/KrakenClassifyWorkerFactory.h \
+    src/kraken/DatabaseValidator.h \
+    src/kraken/DatabaseSizeRelation.h \
+    src/kraken/KrakenTranslateLogParser.h \
+    src/kraken/KrakenClassifyLogParser.h
 
 FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/blast_plus/AlignToReferenceBlastDialog.ui \
@@ -405,7 +414,16 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/vcftools/VcfConsensusSupport.cpp \
            src/vcftools/VcfConsensusSupportTask.cpp \
            src/vcftools/VcfConsensusWorker.cpp \
-           src/vcfutils/VcfutilsSupport.cpp
+           src/vcfutils/VcfutilsSupport.cpp \
+    src/kraken/KrakenClassifyTaskSettings.cpp \
+    src/kraken/KrakenClassifyTask.cpp \
+    src/kraken/KrakenClassifyWorker.cpp \
+    src/kraken/KrakenClassifyPrompter.cpp \
+    src/kraken/KrakenClassifyWorkerFactory.cpp \
+    src/kraken/DatabaseValidator.cpp \
+    src/kraken/DatabaseSizeRelation.cpp \
+    src/kraken/KrakenTranslateLogParser.cpp \
+    src/kraken/KrakenClassifyLogParser.cpp
 
 RESOURCES += external_tool_support.qrc
 TRANSLATIONS += transl/english.ts \

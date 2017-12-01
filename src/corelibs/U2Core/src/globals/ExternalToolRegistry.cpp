@@ -45,6 +45,10 @@ const StrStrMap &ExternalTool::getAdditionalInfo() const {
     return additionalInfo;
 }
 
+QStringList ExternalTool::getAdditionalPaths() const {
+    return QStringList();
+}
+
 void ExternalTool::setPath(const QString& _path) {
     if (path!=_path) {
         path=_path;

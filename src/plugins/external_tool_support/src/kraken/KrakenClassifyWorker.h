@@ -19,34 +19,46 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_SUPPORT_H_
-#define _U2_KRAKEN_SUPPORT_H_
+#ifndef _U2_KRAKEN_CLASSIFY_WORKER_H_
+#define _U2_KRAKEN_CLASSIFY_WORKER_H_
 
-#include <U2Core/ExternalToolRegistry.h>
+#include <U2Lang/LocalDomain.h>
+
+#include "KrakenClassifyTaskSettings.h"
 
 namespace U2 {
+namespace LocalWorkflow {
 
-#define ET_KRAKEN_CLASSIFY KrakenSupport::CLASSIFY_TOOL
-#define ET_KRAKEN_BUILD KrakenSupport::BUILD_TOOL
-#define ET_KRAKEN_TRANSLATE KrakenSupport::TRANSLATE_TOOL
-
-class KrakenSupport : public ExternalTool {
+class KrakenClassifyWorker : public BaseWorker {
     Q_OBJECT
 public:
-    KrakenSupport(const QString &name);
+    KrakenClassifyWorker(Actor* actor);
 
-    QStringList getAdditionalPaths() const;
+    void init();
+    Task *tick();
+    void cleanup();
+    bool isReady() const;
 
-    static const QString BUILD_TOOL;
-    static const QString CLASSIFY_TOOL;
-    static const QString TRANSLATE_TOOL;
+private slots:
+    void sl_taskFinished(Task *task);
 
 private:
-    void initBuild();
-    void initClassify();
-    void initTranslate();
+    bool isReadyToRun() const;
+    bool dataFinished() const;
+    QString checkPairedReads() const;
+
+    KrakenClassifyTaskSettings getSettings(U2OpStatus &os);
+
+    IntegralBus *input;
+    IntegralBus *pairedInput;
+    IntegralBus *output;
+
+    bool pairedReadsInput;
+
+    static const QString KRAKEN_DIR;
 };
 
+}   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_KRAKEN_SUPPORT_H_
+#endif // _U2_KRAKEN_CLASSIFY_WORKER_H_

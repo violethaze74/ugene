@@ -19,34 +19,25 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_SUPPORT_H_
-#define _U2_KRAKEN_SUPPORT_H_
+#ifndef _U2_DATABASE_SIZE_RELATION_H_
+#define _U2_DATABASE_SIZE_RELATION_H_
 
-#include <U2Core/ExternalToolRegistry.h>
+#include <U2Lang/AttributeRelation.h>
 
 namespace U2 {
+namespace LocalWorkflow {
 
-#define ET_KRAKEN_CLASSIFY KrakenSupport::CLASSIFY_TOOL
-#define ET_KRAKEN_BUILD KrakenSupport::BUILD_TOOL
-#define ET_KRAKEN_TRANSLATE KrakenSupport::TRANSLATE_TOOL
-
-class KrakenSupport : public ExternalTool {
-    Q_OBJECT
+class DatabaseSizeRelation : public ValuesRelation {
 public:
-    KrakenSupport(const QString &name);
+    DatabaseSizeRelation(const QString &relatedAttributeId);
 
-    QStringList getAdditionalPaths() const;
-
-    static const QString BUILD_TOOL;
-    static const QString CLASSIFY_TOOL;
-    static const QString TRANSLATE_TOOL;
-
-private:
-    void initBuild();
-    void initClassify();
-    void initTranslate();
+    QVariant getAffectResult(const QVariant &influencingValue,
+                             const QVariant &dependentValue,
+                             DelegateTags *infTags,
+                             DelegateTags *depTags) const;
 };
 
+}   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_KRAKEN_SUPPORT_H_
+#endif // _U2_DATABASE_SIZE_RELATION_H_

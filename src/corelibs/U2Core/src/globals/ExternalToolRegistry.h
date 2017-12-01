@@ -79,6 +79,7 @@ public:
     const QString&      getToolKitName()  const { return toolKitName; }
     const StrStrMap&    getErrorDescriptions()  const { return errorDescriptions; }
     const StrStrMap&    getAdditionalInfo() const;
+    QStringList         getAdditionalPaths() const;
 
     virtual void        getAdditionalParameters(const QString& output) { Q_UNUSED(output) }
 

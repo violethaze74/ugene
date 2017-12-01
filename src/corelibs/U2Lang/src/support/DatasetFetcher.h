@@ -34,6 +34,7 @@ public:
 
     bool hasFullDataset() const;
     bool isDone() const;
+    const QString &getDatasetName() const;  // must be got before takeFullDataset call
     QList<Message> takeFullDataset();
     void processInputMessage();
 

@@ -19,34 +19,36 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_SUPPORT_H_
-#define _U2_KRAKEN_SUPPORT_H_
-
-#include <U2Core/ExternalToolRegistry.h>
+#include "KrakenTranslateLogParser.h"
 
 namespace U2 {
 
-#define ET_KRAKEN_CLASSIFY KrakenSupport::CLASSIFY_TOOL
-#define ET_KRAKEN_BUILD KrakenSupport::BUILD_TOOL
-#define ET_KRAKEN_TRANSLATE KrakenSupport::TRANSLATE_TOOL
+const QStringList KrakenTranslateLogParser::wellKnownErrors = KrakenTranslateLogParser::initWellKnownErrors();
 
-class KrakenSupport : public ExternalTool {
-    Q_OBJECT
-public:
-    KrakenSupport(const QString &name);
+KrakenTranslateLogParser::KrakenTranslateLogParser()
+    : ExternalToolLogParser()
+{
 
-    QStringList getAdditionalPaths() const;
+}
 
-    static const QString BUILD_TOOL;
-    static const QString CLASSIFY_TOOL;
-    static const QString TRANSLATE_TOOL;
+bool KrakenTranslateLogParser::isError(const QString &line) const {
+    foreach (const QString &wellKnownError, wellKnownErrors) {
+        if (line.contains(wellKnownError)) {
+            return true;
+        }
+    }
+    return false;
+}
 
-private:
-    void initBuild();
-    void initClassify();
-    void initTranslate();
-};
+QStringList KrakenTranslateLogParser::initWellKnownErrors() {
+    QStringList result;
+    result << "Must specify DB";
+    result << "unable to find";
+    result << "does not contain necessary file database.kdb";
+    result << "No such file or directory";
+    result << "Use of uninitialized value $taxid";
+
+    return result;
+}
 
 }   // namespace U2
-
-#endif // _U2_KRAKEN_SUPPORT_H_

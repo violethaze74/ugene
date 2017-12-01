@@ -19,34 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_SUPPORT_H_
-#define _U2_KRAKEN_SUPPORT_H_
+#ifndef _U2_DATABASE_VALIDATOR_H_
+#define _U2_DATABASE_VALIDATOR_H_
 
-#include <U2Core/ExternalToolRegistry.h>
+#include <U2Lang/ActorValidator.h>
 
 namespace U2 {
+namespace Workflow {
 
-#define ET_KRAKEN_CLASSIFY KrakenSupport::CLASSIFY_TOOL
-#define ET_KRAKEN_BUILD KrakenSupport::BUILD_TOOL
-#define ET_KRAKEN_TRANSLATE KrakenSupport::TRANSLATE_TOOL
-
-class KrakenSupport : public ExternalTool {
-    Q_OBJECT
+class DatabaseValidator : public ActorValidator {
 public:
-    KrakenSupport(const QString &name);
-
-    QStringList getAdditionalPaths() const;
-
-    static const QString BUILD_TOOL;
-    static const QString CLASSIFY_TOOL;
-    static const QString TRANSLATE_TOOL;
-
-private:
-    void initBuild();
-    void initClassify();
-    void initTranslate();
+    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
 };
 
+}   // namespace Workflow
 }   // namespace U2
 
-#endif // _U2_KRAKEN_SUPPORT_H_
+#endif // _U2_DATABASE_VALIDATOR_H_
