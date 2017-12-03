@@ -1663,24 +1663,24 @@ To append data to existing file press &apos;Append&apos;.</source>
 <context>
     <name>U2::AddDocumentAndOpenViewTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="340"/>
-        <location filename="../src/OpenViewTask.cpp" line="354"/>
+        <location filename="../src/OpenViewTask.cpp" line="357"/>
+        <location filename="../src/OpenViewTask.cpp" line="371"/>
         <source>Opening view for document: &apos;NONAME&apos;</source>
         <translation>Открытие документа: &apos;NONAME&apos;</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="344"/>
-        <location filename="../src/OpenViewTask.cpp" line="357"/>
+        <location filename="../src/OpenViewTask.cpp" line="361"/>
+        <location filename="../src/OpenViewTask.cpp" line="374"/>
         <source>Opening view for document: %1</source>
         <translation>Открытие документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="346"/>
+        <location filename="../src/OpenViewTask.cpp" line="363"/>
         <source>Provided document is NULL</source>
         <translation>Provided document is NULL</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="359"/>
+        <location filename="../src/OpenViewTask.cpp" line="376"/>
         <source>Document provider is NULL</source>
         <translation>Document provider is NULL</translation>
     </message>
@@ -1996,22 +1996,22 @@ Are you sure you want to open all of them?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="217"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="223"/>
         <source>Download remote documents</source>
         <translation>Скачать удаленные документы</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="257"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="264"/>
         <source>Hint: </source>
         <translation>Подсказка: </translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="258"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="265"/>
         <source>Use database unique identifier.</source>
         <translation>Использовать уникальный идентификатор базы данных.</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="260"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="267"/>
         <source>You can download multiple items by separating IDs with space or semicolon.</source>
         <translation>Вы можете скачать несколько элементов разделяя идентификаторы при помощи пробела или точки с запятой.</translation>
     </message>
@@ -2589,9 +2589,24 @@ Are you sure you want to open all of them?</source>
         <translation>Load remote document and add to project</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="291"/>
+        <location filename="../src/OpenViewTask.cpp" line="250"/>
+        <source>Load remote document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/OpenViewTask.cpp" line="296"/>
         <source>Cannot find %1 in %2 database</source>
         <translation>Невозможно найти %1 в базе данных %2</translation>
+    </message>
+    <message>
+        <location filename="../src/OpenViewTask.cpp" line="346"/>
+        <source>Failed to download %1 from %2. Error: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/OpenViewTask.cpp" line="352"/>
+        <source>Document was successfully downloaded: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
