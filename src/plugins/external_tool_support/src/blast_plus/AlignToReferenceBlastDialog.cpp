@@ -189,6 +189,11 @@ QString AlignToReferenceBlastCmdlineTask::generateReport() const {
 
 QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) {
     QList<Task*> result;
+    if (subTask->hasError()) {
+        QFileInfo refFi(settings.referenceUrl);
+        QString errorStr = tr("A problem occurred while mapping reads to \"%1\"");
+        setError(errorStr.arg(refFi.fileName()));
+    }
     CHECK(subTask != NULL, result);
     CHECK(!subTask->isCanceled() && !subTask->hasError(), result);
     if (loadRef == subTask) {
