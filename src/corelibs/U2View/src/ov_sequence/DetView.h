@@ -132,8 +132,7 @@ public:
     int getSymbolsPerLine() const;
     int getLinesCount() const;
     int getVisibleSymbolsCount() const;
-    // TODO_SVEDIT: rewrite the method or make it work for curcor visibility in multiline
-    int getMaxPossibleStartPos() const;
+    int getDirectLine() const;
 
     int getShiftsCount() const;
     int getShiftHeight() const;

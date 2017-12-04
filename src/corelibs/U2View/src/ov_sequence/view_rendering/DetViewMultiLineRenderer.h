@@ -47,6 +47,8 @@ public:
     qint64 getLinesCount(const QSize& canvasSize) const;
     qint64 getContentIndentY(const QSize& canvasSize, const U2Region& visibleRange) const;
 
+    int getDirectLine() const;
+
     int getRowsInLineCount() const;
 
     QSize getBaseCanvasSize(const U2Region &visibleRange) const;

@@ -118,6 +118,10 @@ qint64 DetViewMultiLineRenderer::getContentIndentY(const QSize& , const U2Region
     return 0;
 }
 
+int DetViewMultiLineRenderer::getDirectLine() const {
+    return singleLinePainter->getDirectLine();
+}
+
 int DetViewMultiLineRenderer::getRowsInLineCount() const {
     return singleLinePainter->getRowsInLineCount() + 2;
 }

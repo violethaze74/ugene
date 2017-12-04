@@ -40,6 +40,7 @@ public:
 
     double getCurrentScale() const;
     qint64 getSymbolsPerLine(const qint64 width) const;
+    virtual int getDirectLine() const = 0;
 
     virtual void drawCursor(QPainter &p, const QSize &canvasSize, const U2Region& visibleRange) = 0;
 
@@ -54,7 +55,7 @@ public:
     virtual void update() = 0;
 
 protected:
-    DetView*                    detView;
+    DetView*    detView;
 };
 
 /************************************************************************/

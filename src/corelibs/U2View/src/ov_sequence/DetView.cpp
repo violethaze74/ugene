@@ -217,33 +217,57 @@ int DetView::getShift() const {
 }
 
 void DetView::ensureVisible(int pos) {
-    CHECK(!visibleRange.contains(pos), );
     CHECK(pos >= 0 && pos <= getSequenceLength(), );
 
     if (isWrapMode()) {
-        // TODO_SVEDIT: make cursor visible in multiline
-//        int line = pos / getSymbolsPerLine(); // the line number
-//        int listStartPos = line * getSymbolsPerLine();
-//        coreLog.info(QString("Line start pos is %1").arg(listStartPos));
-//        if (pos < visibleRange.startPos) {
-//            // scroll up
-//            coreLog.info("New pos is before visible range");
-//            visibleRange.startPos = listStartPos;
-//            // if the widget can fit more then one line and it is the end -- scroll to re previous
-//        } else {
-//            // scroll down
-//            coreLog.info("New pos is AFTER visible range");
-//            DetViewRenderArea* detArea = getDetViewRenderArea();
-//            // wrong expresstion
-//            if (pos > detArea->getMaxPossibleStartPos()) {
-//                coreLog.info("New pos is at the end!");
-//                // do nothing!
-//                visibleRange.startPos = detArea->getMaxPossibleStartPos();
-//            } else {
-//                visibleRange.startPos = listStartPos;
-//            }
-//        }
+        DetViewRenderArea* renderArea = getDetViewRenderArea();
+        if (!visibleRange.contains(pos)) {
+            if (pos < visibleRange.startPos) {
+                // scroll up till the line is visible
+                int line = pos / getSymbolsPerLine();
+                int listStartPos = line * getSymbolsPerLine();
+                visibleRange.startPos = listStartPos;
+                currentShiftsCounter = renderArea->getDirectLine() + 1;
+            } else {
+                // scroll down till the line is visible
+                int line = pos / getSymbolsPerLine();
+                int listStartPos = line * getSymbolsPerLine();
+                visibleRange.startPos = listStartPos;
+                currentShiftsCounter = 0;
+
+                // get the count of visible lines
+                int visibleLinesCount = renderArea->getLinesCount() + (getShift() != 0 ? 1 : 0);
+                if (renderArea->height() + getShift() - renderArea->getShiftsCount() * renderArea->getShiftHeight() * visibleLinesCount > 0) {
+                    visibleLinesCount ++;
+                }
+            }
+        } else {
+            // ensure the direct strand is visible
+            if (currentShiftsCounter > renderArea->getDirectLine() &&
+                    U2Region(visibleRange.startPos, getSymbolsPerLine()).contains(pos)) {
+                // this is the first line, just remove the shift
+                currentShiftsCounter = renderArea->getDirectLine() + 1;
+            }
+
+            if (U2Region(visibleRange.endPos() - getSymbolsPerLine(), getSymbolsPerLine()).contains(pos)) {
+                // the last visible line, scroll a little
+                // TODO_SVEDIT: check the tail
+                int availableSpace = renderArea->height() + currentShiftsCounter * renderArea->getShiftHeight();
+                int lastLinePart = availableSpace % (numShiftsInOneLine * renderArea->getShiftHeight());
+                int lastVisibleShifts = lastLinePart / renderArea->getShiftHeight();
+
+                if (lastVisibleShifts <= renderArea->getDirectLine()) {
+                    currentShiftsCounter += renderArea->getDirectLine() - lastVisibleShifts + 2;
+                }
+                if (currentShiftsCounter > numShiftsInOneLine) {
+                    currentShiftsCounter %= numShiftsInOneLine;
+                    visibleRange.startPos += getSymbolsPerLine();
+                }
+            }
+            // do nothing otherwise -- the cursor is visible
+        }
     } else {
+        CHECK(!visibleRange.contains(pos), );
         if (pos < visibleRange.startPos) {
             visibleRange.startPos = pos;
         } else {
@@ -699,13 +723,8 @@ int DetViewRenderArea::getVisibleSymbolsCount() const {
     return getLinesCount() * getSymbolsPerLine();
 }
 
-int DetViewRenderArea::getMaxPossibleStartPos() const {
-    if (getDetView()->isWrapMode()) {
-        int tail = view->getSequenceLength() % getSymbolsPerLine();
-        return view->getSequenceLength() - tail - getSymbolsPerLine() * (getLinesCount() - 1);
-    } else {
-        return view->getSequenceLength() - getSymbolsPerLine();
-    }
+int DetViewRenderArea::getDirectLine() const {
+    return renderer->getDirectLine();
 }
 
 int DetViewRenderArea::getShiftsCount() const {

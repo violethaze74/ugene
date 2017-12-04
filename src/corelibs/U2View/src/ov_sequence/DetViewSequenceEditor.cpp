@@ -23,6 +23,8 @@
 
 #include "DetView.h" // all should be astract! Do not use direct reference
 
+#include <QMessageBox>
+
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentModel.h>
@@ -59,7 +61,7 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
 
     SequenceObjectContext* ctx = view->getSequenceContext();
     const QList<ADVSequenceWidget*> list = ctx->getSequenceWidgets();
-    SAFE_POINT(!list.isEmpty(), "seq wgts list is empty", false);
+    CHECK(!list.isEmpty(), false);
     ADVSequenceWidget* wgt = list.first();
     AnnotatedDNAView* dnaView = wgt->getAnnotatedDNAView();
     QAction* a = dnaView->removeAnnsAndQsAction;
@@ -228,7 +230,17 @@ void DetViewSequenceEditor::deleteChar(int key) {
     }
 
     if (regionToRemove.length == view->getSequenceLength()) {
-        // you're going to remove the whole sequence
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Detele the sequence");
+        msgBox.setIcon(QMessageBox::Question);
+        msgBox.setText(tr("Would you like to completely remove the sequence?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+
+        int res = msgBox.exec();
+        if (res == QMessageBox::No) {
+            return;
+        }
         Document* doc = seqObj->getDocument();
         SAFE_POINT(doc != NULL, "Document is NULL", );
         doc->removeObject(seqObj);
