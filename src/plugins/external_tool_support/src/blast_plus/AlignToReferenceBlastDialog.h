@@ -102,16 +102,18 @@ private slots:
     void sl_addRead();
     void sl_removeRead();
     void sl_referenceChanged(const QString &);
+    void sl_outputFileSetByUser(const QString newPath);
+    void sl_outputFileEditedByUser(const QString& newPath);
+
 private:
     void initSaveController();
     void connectSlots();
-    bool fitsDefaultPattern(const QString &name) const;
 
     SaveDocumentController *saveController;
+    bool fileNameProvidedByUser;
+    
     AlignToReferenceBlastCmdlineTask::Settings settings;
     U2SavableWidget savableWidget;
-
-    static const QString defaultOutputName;
 };
 
 } // namespace
