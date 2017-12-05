@@ -19,34 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_SUPPORT_H_
-#define _U2_KRAKEN_SUPPORT_H_
+#ifndef _U2_KRAKEN_CLASSIFY_PROMPTER_H_
+#define _U2_KRAKEN_CLASSIFY_PROMPTER_H_
 
-#include <U2Core/ExternalToolRegistry.h>
+#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
+namespace LocalWorkflow {
 
-#define ET_KRAKEN_CLASSIFY KrakenSupport::CLASSIFY_TOOL
-#define ET_KRAKEN_BUILD KrakenSupport::BUILD_TOOL
-#define ET_KRAKEN_TRANSLATE KrakenSupport::TRANSLATE_TOOL
-
-class KrakenSupport : public ExternalTool {
+class KrakenClassifyPrompter : public PrompterBase<KrakenClassifyPrompter> {
     Q_OBJECT
 public:
-    KrakenSupport(const QString &name);
-
-    QStringList getAdditionalPaths() const;
-
-    static const QString BUILD_TOOL;
-    static const QString CLASSIFY_TOOL;
-    static const QString TRANSLATE_TOOL;
+    KrakenClassifyPrompter(Actor *actor = NULL);
 
 private:
-    void initBuild();
-    void initClassify();
-    void initTranslate();
+    QString composeRichDoc();
 };
 
+}   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_KRAKEN_SUPPORT_H_
+#endif // _U2_KRAKEN_CLASSIFY_PROMPTER_H_

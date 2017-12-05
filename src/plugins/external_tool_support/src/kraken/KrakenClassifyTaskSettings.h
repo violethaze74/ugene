@@ -19,34 +19,33 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_SUPPORT_H_
-#define _U2_KRAKEN_SUPPORT_H_
+#ifndef _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
+#define _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
 
-#include <U2Core/ExternalToolRegistry.h>
+#include <QStringList>
 
 namespace U2 {
 
-#define ET_KRAKEN_CLASSIFY KrakenSupport::CLASSIFY_TOOL
-#define ET_KRAKEN_BUILD KrakenSupport::BUILD_TOOL
-#define ET_KRAKEN_TRANSLATE KrakenSupport::TRANSLATE_TOOL
-
-class KrakenSupport : public ExternalTool {
-    Q_OBJECT
+class KrakenClassifyTaskSettings {
 public:
-    KrakenSupport(const QString &name);
+    KrakenClassifyTaskSettings();
 
-    QStringList getAdditionalPaths() const;
+    QString databaseUrl;
+    QString readsUrl;
+    QString pairedReadsUrl;
+    bool quickOperation;
+    int minNumberOfHits;
+    int numberOfThreads;
+    bool preloadDatabase;
+    bool pairedReads;
 
-    static const QString BUILD_TOOL;
-    static const QString CLASSIFY_TOOL;
-    static const QString TRANSLATE_TOOL;
+    QString rawClassificationUrl;
+    QString translatedClassificationUrl;
 
-private:
-    void initBuild();
-    void initClassify();
-    void initTranslate();
+    static const QString SINGLE_END;
+    static const QString PAIRED_END;
 };
 
 }   // namespace U2
 
-#endif // _U2_KRAKEN_SUPPORT_H_
+#endif // _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_

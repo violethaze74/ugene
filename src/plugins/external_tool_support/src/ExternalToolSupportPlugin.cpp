@@ -113,6 +113,7 @@
 #include "hmmer/HmmerSupport.h"
 #include "hmmer/HmmerTests.h"
 #include "java/JavaSupport.h"
+#include "kraken/KrakenClassifyWorkerFactory.h"
 #include "kraken/KrakenSupport.h"
 #include "macs/MACSSupport.h"
 #include "macs/MACSWorker.h"
@@ -451,6 +452,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
 
     etRegistry->registerEntry(new KrakenSupport(KrakenSupport::BUILD_TOOL));
     etRegistry->registerEntry(new KrakenSupport(KrakenSupport::CLASSIFY_TOOL));
+    etRegistry->registerEntry(new KrakenSupport(KrakenSupport::TRANSLATE_TOOL));
 
     if (AppContext::getMainWindow()) {
         ExternalToolSupportAction* formatDBAction= new ExternalToolSupportAction(tr("BLAST make database..."), this, QStringList(ET_FORMATDB));
@@ -672,6 +674,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::BedtoolsIntersectWorkerFactory::init();
     LocalWorkflow::HmmerBuildWorkerFactory::init();
     LocalWorkflow::HmmerSearchWorkerFactory::init();
+    LocalWorkflow::KrakenClassifyWorkerFactory::init();
 }
 
 //////////////////////////////////////////////////////////////////////////

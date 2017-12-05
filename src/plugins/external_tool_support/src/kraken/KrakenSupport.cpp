@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDir>
+#include <QFileInfo>
+
 #include <U2Core/AppContext.h>
 
 #include "KrakenSupport.h"
@@ -28,6 +31,7 @@ namespace U2 {
 
 const QString KrakenSupport::BUILD_TOOL = "kraken-build";
 const QString KrakenSupport::CLASSIFY_TOOL = "kraken";
+const QString KrakenSupport::TRANSLATE_TOOL = "kraken-translate";
 
 KrakenSupport::KrakenSupport(const QString &name)
     : ExternalTool(name)
@@ -52,26 +56,32 @@ KrakenSupport::KrakenSupport(const QString &name)
     if (CLASSIFY_TOOL == name) {
         initClassify();
     }
+
+    if (TRANSLATE_TOOL == name) {
+        initTranslate();
+    }
+}
+
+QStringList KrakenSupport::getAdditionalPaths() const {
+    if (BUILD_TOOL == name) {
+        return QStringList() << QFileInfo(path).dir().absolutePath() + "/jellyfish";
+    }
+    return QStringList();
 }
 
 void KrakenSupport::initBuild() {
-#ifdef Q_OS_WIN
-    executableFileName = "kraken-build.exe";
-#elif defined(Q_OS_UNIX)
     executableFileName = "kraken-build";
-#endif
-
     description = tr("The \"<i>kraken-build</i>\" executable is used to build a Kraken database.");
 }
 
 void KrakenSupport::initClassify() {
-#ifdef Q_OS_WIN
-    executableFileName = "kraken.exe";
-#elif defined(Q_OS_UNIX)
     executableFileName = "kraken";
-#endif
-
     description = tr("The \"<i>kraken</i>\" executable is used to classify a set of sequences. It does this by examining the k-mers within a read and querying a database with those k-mers.");
+}
+
+void KrakenSupport::initTranslate() {
+    executableFileName = "kraken-translate";
+    description = tr("The \"<i>kraken-translate</i>\" executable is used to translate the Kraken classification to make it more readable.");
 }
 
 }   // namespace U2
