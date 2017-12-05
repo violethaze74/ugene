@@ -112,6 +112,11 @@ void BlastAndSwReadTask::prepare() {
 
 QList<Task*> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
     QList<Task*> result;
+    if (subTask->hasError() && subTask == blastTask) {
+        QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
+        CHECK_EXT(!refObject.isNull(), setError(L10N::nullPointerError("Reference sequence")), result);
+        setError(tr("A problem occurred while mapping \"%1\" to \"%2\".").arg(readName).arg(refObject->getGObjectName()));
+    }
     CHECK(subTask != NULL, result);
     CHECK(!subTask->hasError() && !subTask->isCanceled(), result);
 
