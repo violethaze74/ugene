@@ -78,6 +78,8 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
 
     connectSignalsAndSlots();
 
+    setMouseTracking(false);
+
     sl_fontChanged(editor->getFont());
 }
 

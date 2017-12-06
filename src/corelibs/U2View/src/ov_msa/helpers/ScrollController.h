@@ -49,6 +49,7 @@ public:
     void init(GScrollBar *hScrollBar, GScrollBar *vScrollBar);
 
     QPoint getScreenPosition() const;       // in pixels
+    QPoint getGlobalMousePosition(const QPoint& mousePos) const;
 
     void updateHorizontalScrollBar();
     void updateVerticalScrollBar();

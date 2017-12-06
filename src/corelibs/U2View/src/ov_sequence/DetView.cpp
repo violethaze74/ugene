@@ -40,6 +40,7 @@
 
 #include <U2Gui/GraphUtils.h>
 #include <U2Gui/GScrollBar.h>
+#include <U2Gui/SelectionModificationHelper.h>
 
 #include <QApplication>
 #include <QFontMetrics>
@@ -307,47 +308,23 @@ void DetView::hideEvent(QHideEvent * e) {
 }
 
 void DetView::mouseMoveEvent(QMouseEvent *me) {
+    if (!me->buttons()) {
+        setBorderCursor(me->pos());
+    } else if (me->buttons() & Qt::LeftButton) {
+        Qt::CursorShape shape = cursor().shape();
+        if (shape != Qt::ArrowCursor) {
+            moveBorder(me->pos());
+            QWidget::mouseMoveEvent(me);
+            return;
+        }
+    }
+
     if (lastPressPos == -1) {
         QWidget::mouseMoveEvent(me);
         return;
     }
     if (me->buttons() & Qt::LeftButton) {
-        QPoint areaPoint = toRenderAreaPoint(me->pos());
-
-        // manage scrollbar auto-scrolling
-        if (isWrapMode()) {
-            if (areaPoint.y() > height()) {
-                verticalScrollBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd);
-            } else if (areaPoint.y() <= 0) {
-                verticalScrollBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub);
-            } else {
-                verticalScrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
-            }
-        } else {
-            if (areaPoint.x() > width()) {
-                scrollBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd);
-            } else if (areaPoint.x() <= 0) {
-                scrollBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub);
-            } else {
-                scrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
-            }
-        }
-
-        // compute selection
-        qint64 pos = renderArea->coordToPos(areaPoint);
-        if (isWrapMode() && (areaPoint.x() > width() || areaPoint.x() <= 0)) {
-            QPoint boundaryPoint(areaPoint.x() > width() ? width() : 0, areaPoint.y());
-            pos = renderArea->coordToPos(boundaryPoint);
-        }
-        qint64 selStart = qMin(lastPressPos, pos);
-        qint64 selLen = qAbs(pos - lastPressPos);
-        if (selStart < 0) {
-            selLen += selStart;
-            selStart = 0;
-        } else if (selStart + selLen > seqLen) {
-            selLen = seqLen - selStart;
-        }
-        setSelection(U2Region(selStart, selLen));
+        moveBorder(me->pos());
     }
     QWidget::mouseMoveEvent(me);
 }
@@ -546,12 +523,68 @@ void DetView::setupTranslationsMenu() {
     button->setObjectName("translationsMenuToolbarButton");
 }
 
+QPoint DetView::getRenderAreaPointAfterAutoScroll(const QPoint& pos) {
+    QPoint areaPoint = toRenderAreaPoint(pos);
+    if (isWrapMode()) {
+        if (areaPoint.y() > height()) {
+            verticalScrollBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd);
+        } else if (areaPoint.y() <= 0) {
+            verticalScrollBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub);
+        } else {
+            verticalScrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
+        }
+    } else {
+        if (areaPoint.x() > width()) {
+            scrollBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd);
+        } else if (areaPoint.x() <= 0) {
+            scrollBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub);
+        } else {
+            scrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
+        }
+    }
+
+    if (isWrapMode() && (areaPoint.x() > width() || areaPoint.x() <= 0)) {
+        areaPoint = QPoint(areaPoint.x() > width() ? width() : 0, areaPoint.y());
+    }
+
+    return areaPoint;
+}
+
+void DetView::moveBorder(const QPoint& p) {
+    QPoint areaPoint = getRenderAreaPointAfterAutoScroll(p);
+    resizeSelection(areaPoint);
+}
+
+void DetView::setBorderCursor(const QPoint& p) {
+    if (!isWrapMode()) {
+        GSequenceLineView::setBorderCursor(p);
+    } else {
+        const int sliderPos = verticalScrollBar->sliderPosition();
+        const int shiftHeight = getDetViewRenderArea()->getShiftHeight();
+        const int lineHeight = numShiftsInOneLine * shiftHeight;
+        const int globalY = p.y() + sliderPos * shiftHeight;
+        const int numLines = qRound(double(globalY) / lineHeight + 0.5);
+
+        const double scale = renderArea->getCurrentScale();
+        const int width = getRenderArea()->width();
+        const int symPerLine = width / scale;
+        const int correctWidth = symPerLine * scale;
+
+        const int offset = correctWidth * (numLines - 1);
+        CHECK(offset >= 0, );
+
+        QPoint pos(p.x() + offset, p.y());
+        GSequenceLineView::setBorderCursor(pos);
+    }
+}
+
 /************************************************************************/
 /* DetViewRenderArea */
 /************************************************************************/
 DetViewRenderArea::DetViewRenderArea(DetView* v)
     : GSequenceLineViewAnnotatedRenderArea(v, true) {
     renderer = DetViewRendererFactory::createRenderer(getDetView(), view->getSequenceContext(), v->isWrapMode());
+    setMouseTracking(true);
     updateSize();
 }
 

@@ -103,6 +103,9 @@ protected:
 
 private:
     void setupTranslationsMenu();
+    QPoint getRenderAreaPointAfterAutoScroll(const QPoint& pos);
+    void moveBorder(const QPoint& p);
+    void setBorderCursor(const QPoint& p);
 };
 
 class DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {

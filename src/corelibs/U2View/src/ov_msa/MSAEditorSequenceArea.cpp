@@ -194,6 +194,8 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(editor->getMaObject(), SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet*)),
         SLOT(sl_alphabetChanged(const MaModificationInfo &, const DNAAlphabet*)));
 
+    setMouseTracking(true);
+
     updateColorAndHighlightSchemes();
     sl_updateActions();
 }
