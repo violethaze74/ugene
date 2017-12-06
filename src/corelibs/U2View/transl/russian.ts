@@ -783,22 +783,31 @@ Probably the data is too big.</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="56"/>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="44"/>
+        <source>Alphabet:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="73"/>
         <source>Length:</source>
         <translation>Длина:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="85"/>
-        <source>Sequence number:</source>
-        <translation>Число последовательностей:</translation>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="102"/>
+        <source>Sequences:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="120"/>
+        <source>Sequence number:</source>
+        <translation type="vanished">Число последовательностей:</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="137"/>
         <source>Format:</source>
         <translation>Формат:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="130"/>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="147"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
@@ -1072,8 +1081,12 @@ Probably the data is too big.</source>
     </message>
     <message>
         <location filename="../src/ov_msa/General/McaGeneralTabOptionsPanelWidget.ui" line="52"/>
+        <source>Sequences:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Sequence number:</source>
-        <translation>Число прочтений:</translation>
+        <translation type="vanished">Число прочтений:</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/General/McaGeneralTabOptionsPanelWidget.ui" line="59"/>
@@ -2631,12 +2644,12 @@ Double-click to collapse the branch</source>
         <translation>Редактирование</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1096"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1094"/>
         <source>Show codon table</source>
         <translation>Показать таблицу кодонов</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1374"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1372"/>
         <source>No sequence in focus</source>
         <translation>No sequence in focus</translation>
     </message>
@@ -2646,27 +2659,27 @@ Double-click to collapse the branch</source>
         <translation>Заменить на обратную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="818"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="816"/>
         <source>Select sequence to associate annotations with:</source>
         <translation>Установить связь аннотаций с последовательностью:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="836"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="834"/>
         <source>No sequence object found for annotations</source>
         <translation>Не найдена связанная с аннотациями последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="766"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="764"/>
         <source>Disable &apos;%1&apos; highlighting</source>
         <translation>Не использовать подсветку для &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="768"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="766"/>
         <source>Enable &apos;%1&apos; highlighting</source>
         <translation>Задействовать подсветку для &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="905"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="903"/>
         <source>Go To</source>
         <translation>Выбор позиции</translation>
     </message>
@@ -3984,22 +3997,22 @@ You don&apos;t have enough rights to change file</source>
         <translation>Не транслировать</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="82"/>
+        <location filename="../src/ov_sequence/DetView.cpp" line="83"/>
         <source>Translate selection</source>
         <translation>Транслировать выделенный участок</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="87"/>
+        <location filename="../src/ov_sequence/DetView.cpp" line="88"/>
         <source>Set up frames manually</source>
         <translation>Выбрать рамки считывания</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="92"/>
+        <location filename="../src/ov_sequence/DetView.cpp" line="93"/>
         <source>Show all frames</source>
         <translation>Отображать все рамки считывания</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="97"/>
+        <location filename="../src/ov_sequence/DetView.cpp" line="99"/>
         <source>Wrap sequence</source>
         <translation>Свернуть последовательность</translation>
     </message>
@@ -5949,13 +5962,13 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     </message>
     <message>
         <location filename="../src/ov_msa/MaEditorNameList.cpp" line="132"/>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="577"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="585"/>
         <source>MSA Editor UI is NULL</source>
         <translation>MSA Editor UI is NULL</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MaEditorNameList.cpp" line="134"/>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="579"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="587"/>
         <source>MSA Editor sequence area is NULL</source>
         <translation>MSA Editor sequence area is NULL</translation>
     </message>
@@ -5970,17 +5983,17 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation>Invalid sequence index</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="844"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="852"/>
         <source>Rename Read</source>
         <translation>Переименовать</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="844"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="852"/>
         <source>Rename Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="845"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="853"/>
         <source>New name:</source>
         <translation type="unfinished"></translation>
     </message>
