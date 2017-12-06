@@ -25,6 +25,7 @@
 #include <QObject>
 
 #include <QColor>
+#include <QDialog>
 #include <QMouseEvent>
 #include <QTimer>
 
@@ -32,7 +33,11 @@
 
 namespace U2 {
 
-class DetView; // TODO_SVEDIT: separate header of course
+class DetView;
+class DNASequence;
+class U2SequenceObject;
+class U2Region;
+
 class DetViewSequenceEditor : public QObject {
     Q_OBJECT
 public:
@@ -44,8 +49,8 @@ public:
 
     bool eventFilter(QObject *watched, QEvent *event);
 
-    int getCursorPosition() const { return cursor; }
-    QColor getCursorColor() const { return cursorColor; }
+    int             getCursorPosition() const { return cursor; }
+    QColor          getCursorColor() const { return cursorColor; }
 
     // the methods can be private!
     void setCursor(int newPos);
@@ -53,6 +58,8 @@ public:
 
     void insertChar(int character);
     void deleteChar(int key);
+
+    void runModifySeqTask(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence);
 
 public slots:
     void sl_editMode(bool active);

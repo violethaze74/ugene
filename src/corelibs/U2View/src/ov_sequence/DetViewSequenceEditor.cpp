@@ -21,13 +21,18 @@
 
 #include "DetViewSequenceEditor.h"
 
-#include "DetView.h" // all should be astract! Do not use direct reference
+#include "ADVConstants.h"
+#include "DetView.h"
 
 #include <QMessageBox>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/L10n.h>
+#include <U2Core/ModifySequenceObjectTask.h>
+#include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2Msa.h>
@@ -37,8 +42,8 @@
 #include <U2View/ADVSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
 
-
 namespace U2 {
+
 DetViewSequenceEditor::DetViewSequenceEditor(DetView* _view)
     : view(_view),
       cursorColor(Qt::black),
@@ -199,8 +204,8 @@ void DetViewSequenceEditor::insertChar(int character) {
         // ignore multuselection for now
         r = ctx->getSequenceSelection()->getSelectedRegions().first();
     }
+    runModifySeqTask(seqObj, r, seq);
 
-    seqObj->replaceRegion(r, seq, os);
     navigate(cursor + 1, false);
 }
 
@@ -210,19 +215,16 @@ void DetViewSequenceEditor::deleteChar(int key) {
     U2SequenceObject* seqObj = view->getSequenceObject();
     SAFE_POINT(seqObj != NULL, "SeqObject is NULL", );
 
-    // add safe points
-    U2OpStatusImpl os;
     U2Region regionToRemove;
     if (cursor > 0) {
         regionToRemove = U2Region(key == Qt::Key_Backspace ? cursor - 1 : cursor, 1);
     }
     SequenceObjectContext* ctx = view->getSequenceContext();
     if (!ctx->getSequenceSelection()->isEmpty()) {
-        // remove the selection
         // check the count of region and remove from the end!
+        setCursor(ctx->getSequenceSelection()->getSelectedRegions().first().startPos);
         foreach (U2Region r, ctx->getSequenceSelection()->getSelectedRegions()) {
-            seqObj->removeRegion(os, r);
-            regionToRemove = r; // TODO_SVEDIT: check
+            runModifySeqTask(seqObj, r, DNASequence());
         }
         ctx->getSequenceSelection()->clear();
         // TODO_SVEDIT: set up cursor position
@@ -246,10 +248,22 @@ void DetViewSequenceEditor::deleteChar(int key) {
         doc->removeObject(seqObj);
         return;
     }
-    seqObj->removeRegion(os, regionToRemove);
-
-    SAFE_POINT_OP(os, );
+    runModifySeqTask(seqObj, regionToRemove, DNASequence());
     setCursor(key == Qt::Key_Backspace ? cursor - 1 : cursor);
+}
+
+void DetViewSequenceEditor::runModifySeqTask(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence) {
+    Settings* s = AppContext::getSettings();
+    U1AnnotationUtils::AnnotationStrategyForResize strategy = static_cast<U1AnnotationUtils::AnnotationStrategyForResize>(
+                s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
+                            U1AnnotationUtils::AnnotationStrategyForResize_Resize).toUInt());
+    Task* t = new ModifySequenceContentTask(seqObj->getDocument()->getDocumentFormatId(), seqObj,
+                                            region, sequence,
+                                            s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(),
+                                            strategy, seqObj->getDocument()->getURL());
+
+    SAFE_POINT(NULL != t, L10N::nullPointerError("Edit sequence task"), );
+    AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
 void DetViewSequenceEditor::sl_editMode(bool active) {

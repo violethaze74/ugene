@@ -202,6 +202,7 @@ private slots:
     void sl_splitterMoved(int, int);
     void sl_onSequenceWidgetTitleClicked(ADVSequenceWidget* seqWidget);
 
+    void sl_editSettings();
     void sl_addSequencePart();
     void sl_removeSequencePart();
     void sl_replaceSequencePart();
@@ -252,6 +253,7 @@ private:
     QAction*            posSelectorWidgetAction;
     QAction*            removeAnnsAndQsAction;
 
+    QAction*            editSettingsAction;
     QAction*            addSequencePart;
     QAction*            removeSequencePart;
     QAction*            replaceSequencePart;

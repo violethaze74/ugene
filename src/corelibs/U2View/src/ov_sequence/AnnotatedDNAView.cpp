@@ -44,6 +44,7 @@
 #include <U2Core/ReverseSequenceTask.h>
 #include <U2Core/SelectionUtils.h>
 #include <U2Core/SequenceUtils.h>
+#include <U2Core/Settings.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -52,6 +53,7 @@
 
 #include <U2Gui/CreateObjectRelationDialogController.h>
 #include <U2Gui/DialogUtils.h>
+#include <U2Gui/EditSettingsDialog.h>
 #include <U2Gui/EditSequenceDialogController.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
@@ -133,6 +135,10 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     findPatternAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
     findPatternAction->setShortcutContext(Qt::WindowShortcut);
     connect(findPatternAction, SIGNAL(triggered()), SLOT(sl_onFindPatternClicked()));
+
+    editSettingsAction = new QAction(tr("Annotations settings on sequence editing"), this);
+    editSettingsAction->setObjectName(ACTION_EDIT_SEQUENCE_SETTINGS);
+    connect(editSettingsAction, SIGNAL(triggered()), this, SLOT(sl_editSettings()));
 
     addSequencePart = new QAction(tr("Insert subsequence..."), this);
     addSequencePart->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_I));
@@ -588,6 +594,7 @@ void AnnotatedDNAView::addEditMenu(QMenu* m) {
         rm->addAction(annotationsView->editAction);
     }
 
+    rm->addAction(editSettingsAction);
     rm->addAction(addSequencePart);
     rm->addAction(replaceSequencePart);
     sl_selectionChanged();
@@ -1145,6 +1152,25 @@ void AnnotatedDNAView::updateState(const AnnotatedDNAViewState& s) {
     }
 
     annotationsView->updateState(s.stateData);
+}
+
+void AnnotatedDNAView::sl_editSettings() {
+    Settings* s = AppContext::getSettings();
+    SAFE_POINT(s != NULL, L10N::nullPointerError("AppContext::settings"), );
+    EditSettings settings;
+    settings.annotationStrategy = static_cast<U1AnnotationUtils::AnnotationStrategyForResize>(
+                s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
+                            U1AnnotationUtils::AnnotationStrategyForResize_Resize).toUInt());
+    settings.recalculateQualifiers = s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool();
+
+    QObjectScopedPointer<EditSettingsDialog> dlg = new EditSettingsDialog(settings, getSequenceWidgetInFocus());
+    int res =dlg->exec();
+
+    if (res == QDialog::Accepted) {
+        const EditSettings& newSettings = dlg->getSettings();
+        s->setValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY, newSettings.annotationStrategy);
+        s->setValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, newSettings.recalculateQualifiers);
+    }
 }
 
 void AnnotatedDNAView::sl_addSequencePart() {
