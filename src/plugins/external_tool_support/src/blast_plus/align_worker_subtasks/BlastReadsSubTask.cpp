@@ -36,6 +36,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 
 namespace U2 {
@@ -62,6 +63,10 @@ BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
 }
 
 void BlastReadsSubTask::prepare() {
+    QString tempPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
+    CHECK_EXT(!GUrlUtils::containSpaces(tempPath), setError(tr("The task uses a temporary folder to process the data. The folder path is required not to have spaces. "
+        "Please set up an appropriate path for the \"Temporary files\" parameter on the \"Directories\" tab of the UGENE Application Settings.")), );
+
     foreach (const SharedDbiDataHandler &read, reads) {
         BlastAndSwReadTask* subTask = new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, readsNames[read], storage);
         addSubTask(subTask);
