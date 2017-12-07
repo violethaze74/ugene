@@ -67,6 +67,9 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/ceas/CEASSettings.h \
            src/ceas/CEASSupport.h \
            src/ceas/CEASSupportTask.h \
+           src/clark/ClarkBuildWorker.h \
+           src/clark/ClarkClassifyWorker.h \
+           src/clark/ClarkSupport.h \
            src/clustalo/ClustalOSupport.h \
            src/clustalo/ClustalOSupportRunDialog.h \
            src/clustalo/ClustalOSupportTask.h \
@@ -292,6 +295,9 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/ceas/CEASSettings.cpp \
            src/ceas/CEASSupport.cpp \
            src/ceas/CEASSupportTask.cpp \
+           src/clark/ClarkBuildWorker.cpp \
+           src/clark/ClarkClassifyWorker.cpp \
+           src/clark/ClarkSupport.cpp \
            src/clustalo/ClustalOSupport.cpp \
            src/clustalo/ClustalOSupportRunDialog.cpp \
            src/clustalo/ClustalOSupportTask.cpp \

@@ -1400,7 +1400,7 @@ QString PrompterBaseImpl::getProducers(const QString& port, const QString& slot)
 }
 
 QString PrompterBaseImpl::getProducersOrUnset(const QString &port, const QString &slot) {
-    static const QString unsetStr = "<font color='red'>"+tr("unset")+"</font>";
+    static const QString unsetStr = "<font color='red'>"+tr("unconnected")+"</font>";
     QString prods = getProducers(port, slot);
     return prods.isEmpty() ? unsetStr : prods;
 }

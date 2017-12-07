@@ -37,6 +37,7 @@
 #include "blast/FormatDBSupport.h"
 #include "blast_plus/BlastPlusSupport.h"
 #include "utils/ExternalToolValidateTask.h"
+#include "clark/ClarkSupport.h"
 
 namespace U2 {
 
@@ -506,6 +507,11 @@ void ExternalToolSupportSettingsPageWidget::sl_itemSelectionChanged() {
     else if (name == "Cistrome") {
         descriptionTextBrowser->setText(tr("<i>Cistrome</i> is a UGENE version of Cistrome pipeline which also includes some tools useful for ChIP-seq analysis"
             "This pipeline is aimed to provide the following analysis steps: peak calling and annotating, motif search and gene ontology."));
+    }
+    else if (name == CLARK_GROUP) {
+        descriptionTextBrowser->setText(tr("CLARK (CLAssifier based on Reduced K-mers) is a tool for supervised sequence classification "
+                                           "based on discriminative k-mers. UGENE provides the GUI for CLARK and CLARK-l variants of the CLARK framework "
+                                           "for solving the problem of the assignment of metagenomic reads to known genomes."));
     } else { //no description or tool custom description
         ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName(name);
         setDescription(tool);

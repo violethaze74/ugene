@@ -90,6 +90,9 @@
 #include "cap3/CAP3Worker.h"
 #include "ceas/CEASReportWorker.h"
 #include "ceas/CEASSupport.h"
+#include "clark/ClarkBuildWorker.h"
+#include "clark/ClarkClassifyWorker.h"
+#include "clark/ClarkSupport.h"
 #include "clustalo/ClustalOSupport.h"
 #include "clustalo/ClustalOWorker.h"
 #include "clustalw/ClustalWSupport.h"
@@ -216,61 +219,64 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     Plugin(tr("External tool support"), tr("Runs other external tools")) {
     //External tools registry keeps order of items added
     //it is important because there might be dependencies
+    ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
+    CHECK(NULL != etRegistry, );
 
     // python with modules
-    AppContext::getExternalToolRegistry()->registerEntry(new PythonSupport(ET_PYTHON));
-    AppContext::getExternalToolRegistry()->registerEntry(new PythonModuleDjangoSupport(ET_PYTHON_DJANGO));
-    AppContext::getExternalToolRegistry()->registerEntry(new PythonModuleNumpySupport(ET_PYTHON_NUMPY));
+    etRegistry->registerEntry(new PythonSupport(ET_PYTHON));
+    etRegistry->registerEntry(new PythonModuleDjangoSupport(ET_PYTHON_DJANGO));
+    etRegistry->registerEntry(new PythonModuleNumpySupport(ET_PYTHON_NUMPY));
 
     // Rscript with modules
-    AppContext::getExternalToolRegistry()->registerEntry(new RSupport(ET_R));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleGostatsSupport(ET_R_GOSTATS));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleGodbSupport(ET_R_GO_DB));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleHgu133adbSupport(ET_R_HGU133A_DB));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleHgu133bdbSupport(ET_R_HGU133B_DB));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleHgu133plus2dbSupport(ET_R_HGU1333PLUS2_DB));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleHgu95av2dbSupport(ET_R_HGU95AV2_DB));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleMouse430a2dbSupport(ET_R_MOUSE430A2_DB));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleCelegansdbSupport(ET_R_CELEGANS_DB));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleDrosophila2dbSupport(ET_R_DROSOPHILA2_DB));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleOrghsegdbSupport(ET_R_ORG_HS_EG_DB));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleOrgmmegdbSupport(ET_R_ORG_MM_EG_DB));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleOrgceegdbSupport(ET_R_ORG_CE_EG_DB));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleOrgdmegdbSupport(ET_R_ORG_DM_EG_DB));
-    AppContext::getExternalToolRegistry()->registerEntry(new RModuleSeqlogoSupport(ET_R_SEQLOGO));
+    etRegistry->registerEntry(new RSupport(ET_R));
+    etRegistry->registerEntry(new RModuleGostatsSupport(ET_R_GOSTATS));
+    etRegistry->registerEntry(new RModuleGodbSupport(ET_R_GO_DB));
+    etRegistry->registerEntry(new RModuleHgu133adbSupport(ET_R_HGU133A_DB));
+    etRegistry->registerEntry(new RModuleHgu133bdbSupport(ET_R_HGU133B_DB));
+    etRegistry->registerEntry(new RModuleHgu133plus2dbSupport(ET_R_HGU1333PLUS2_DB));
+    etRegistry->registerEntry(new RModuleHgu95av2dbSupport(ET_R_HGU95AV2_DB));
+    etRegistry->registerEntry(new RModuleMouse430a2dbSupport(ET_R_MOUSE430A2_DB));
+    etRegistry->registerEntry(new RModuleCelegansdbSupport(ET_R_CELEGANS_DB));
+    etRegistry->registerEntry(new RModuleDrosophila2dbSupport(ET_R_DROSOPHILA2_DB));
+    etRegistry->registerEntry(new RModuleOrghsegdbSupport(ET_R_ORG_HS_EG_DB));
+    etRegistry->registerEntry(new RModuleOrgmmegdbSupport(ET_R_ORG_MM_EG_DB));
+    etRegistry->registerEntry(new RModuleOrgceegdbSupport(ET_R_ORG_CE_EG_DB));
+    etRegistry->registerEntry(new RModuleOrgdmegdbSupport(ET_R_ORG_DM_EG_DB));
+    etRegistry->registerEntry(new RModuleSeqlogoSupport(ET_R_SEQLOGO));
 
     //perl
     PerlSupport *perlSupport = new PerlSupport(ET_PERL);
-    AppContext::getExternalToolRegistry()->registerEntry(perlSupport);
+    etRegistry->registerEntry(perlSupport);
 
     //java
     JavaSupport *javaSupport = new JavaSupport(ET_JAVA);
-    AppContext::getExternalToolRegistry()->registerEntry(javaSupport);
+    etRegistry->registerEntry(javaSupport);
 
-    //Fill ExternalToolRegistry with supported tools
+    //Fill ExternalToolRegistry with supported tools   
+    
     //ClustalW
     ClustalWSupport* clustalWTool=new ClustalWSupport(ET_CLUSTAL);
-    AppContext::getExternalToolRegistry()->registerEntry(clustalWTool);
+    etRegistry->registerEntry(clustalWTool);
 
     //ClustalO
     ClustalOSupport* clustalOTool=new ClustalOSupport(ET_CLUSTALO);
-    AppContext::getExternalToolRegistry()->registerEntry(clustalOTool);
+    etRegistry->registerEntry(clustalOTool);
 
     //MAFFT
     MAFFTSupport* mAFFTTool=new MAFFTSupport(ET_MAFFT);
-    AppContext::getExternalToolRegistry()->registerEntry(mAFFTTool);
+    etRegistry->registerEntry(mAFFTTool);
 
     //T-Coffee
     TCoffeeSupport* tCoffeeTool=new TCoffeeSupport(ET_TCOFFEE);
-    AppContext::getExternalToolRegistry()->registerEntry(tCoffeeTool);
+    etRegistry->registerEntry(tCoffeeTool);
 
     //MrBayes
     MrBayesSupport* mrBayesTool = new MrBayesSupport(ET_MRBAYES);
-    AppContext::getExternalToolRegistry()->registerEntry(mrBayesTool);
+    etRegistry->registerEntry(mrBayesTool);
 
     //PhyML
     PhyMLSupport* phyMlTool = new PhyMLSupport(PhyMLSupport::PhyMlRegistryId);
-    AppContext::getExternalToolRegistry()->registerEntry(phyMlTool);
+    etRegistry->registerEntry(phyMlTool);
 
     if (AppContext::getMainWindow()) {
         clustalWTool->getViewContext()->setParent(this);
@@ -305,8 +311,6 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         connect(tCoffeeAction, SIGNAL(triggered()), tCoffeeTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, tCoffeeAction);
     }
-    ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
-    CHECK(NULL != etRegistry, );
 
     //FormatDB
     FormatDBSupport* formatDBTool = new FormatDBSupport(ET_FORMATDB);
@@ -349,9 +353,9 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     Bowtie2Support* bowtie2AlignSupport = new Bowtie2Support(ET_BOWTIE2_ALIGN);
     Bowtie2Support* bowtie2BuildSupport = new Bowtie2Support(ET_BOWTIE2_BUILD);
     Bowtie2Support* bowtie2InspectSupport = new Bowtie2Support(ET_BOWTIE2_INSPECT);
-    AppContext::getExternalToolRegistry()->registerEntry(bowtie2AlignSupport);
-    AppContext::getExternalToolRegistry()->registerEntry(bowtie2BuildSupport);
-    AppContext::getExternalToolRegistry()->registerEntry(bowtie2InspectSupport);
+    etRegistry->registerEntry(bowtie2AlignSupport);
+    etRegistry->registerEntry(bowtie2BuildSupport);
+    etRegistry->registerEntry(bowtie2InspectSupport);
 
     // BWA
     BwaSupport* bwaSupport = new BwaSupport(ET_BWA);
@@ -363,19 +367,19 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
 
     // SAMtools (external tool)
     SamToolsExtToolSupport* samToolsExtToolSupport = new SamToolsExtToolSupport(ET_SAMTOOLS_EXT);
-    AppContext::getExternalToolRegistry()->registerEntry(samToolsExtToolSupport);
+    etRegistry->registerEntry(samToolsExtToolSupport);
 
     // BCFtools (external tool)
     BcfToolsSupport* bcfToolsSupport = new BcfToolsSupport(ET_BCFTOOLS);
-    AppContext::getExternalToolRegistry()->registerEntry(bcfToolsSupport);
+    etRegistry->registerEntry(bcfToolsSupport);
 
     // Tabix
     TabixSupport* tabixSupport = new TabixSupport(ET_TABIX);
-    AppContext::getExternalToolRegistry()->registerEntry(tabixSupport);
+    etRegistry->registerEntry(tabixSupport);
 
     // VcfConsensus
     VcfConsensusSupport* vcfConsSupport = new VcfConsensusSupport(ET_VCF_CONSENSUS);
-    AppContext::getExternalToolRegistry()->registerEntry(vcfConsSupport);
+    etRegistry->registerEntry(vcfConsSupport);
 
     // Spidey
     SpideySupport* spideySupport = new SpideySupport(ET_SPIDEY);
@@ -445,6 +449,8 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     //FastQC
     FastQCSupport *fastqc = new FastQCSupport(ET_FASTQC);
     etRegistry->registerEntry(fastqc);
+
+    ClarkSupport::registerTools(etRegistry);
 
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::BUILD_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::SEARCH_TOOL));
@@ -672,6 +678,8 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::FastQCFactory::init();
     LocalWorkflow::CutAdaptFastqWorkerFactory::init();
     LocalWorkflow::BedtoolsIntersectWorkerFactory::init();
+    LocalWorkflow::ClarkBuildWorkerFactory::init();
+    LocalWorkflow::ClarkClassifyWorkerFactory::init();
     LocalWorkflow::HmmerBuildWorkerFactory::init();
     LocalWorkflow::HmmerSearchWorkerFactory::init();
     LocalWorkflow::KrakenClassifyWorkerFactory::init();
