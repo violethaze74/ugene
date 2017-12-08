@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,9 +33,9 @@
 #include <U2Core/L10n.h>
 #include <U2Core/ModifySequenceObjectTask.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2Msa.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/U2Msa.h>
 
 #include <U2View/SequenceObjectContext.h>
 
@@ -50,6 +50,7 @@ DetViewSequenceEditor::DetViewSequenceEditor(DetView* _view)
       animationTimer(this) {
     reset();
     connect(&animationTimer, SIGNAL(timeout()), SLOT(sl_changeCursorColor()));
+    setParent(view);
 }
 
 DetViewSequenceEditor::~DetViewSequenceEditor() {
@@ -81,8 +82,8 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
 
     // TODO_SVEDIT: shift button!
     if (event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonRelease || event->type() == QEvent::MouseMove) {
-        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-        SAFE_POINT(mouseEvent != NULL, "", true);
+        QMouseEvent* mouseEvent = dynamic_cast<QMouseEvent*>(event);
+        SAFE_POINT(mouseEvent != NULL, "Failed to cast QEvent to QMouseEvent", true);
 
         qint64 pos = view->getRenderArea()->coordToPos(view->toRenderAreaPoint(mouseEvent->pos()));
         setCursor(pos); // use navigate and take shift into account
@@ -92,8 +93,8 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
     // TODO_SVEDIT: separate methods
     if (event->type() == QEvent::KeyPress) {
         // set cursor position
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        SAFE_POINT(keyEvent != NULL, "", true);
+        QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
+        SAFE_POINT(keyEvent != NULL, "Failed to cast QEvent to QKeyEvent", true);
 
         int key = keyEvent->key();
         bool shiftPressed = keyEvent->modifiers().testFlag(Qt::ShiftModifier);
@@ -233,7 +234,7 @@ void DetViewSequenceEditor::deleteChar(int key) {
 
     if (regionToRemove.length == view->getSequenceLength()) {
         QMessageBox msgBox;
-        msgBox.setWindowTitle("Detele the sequence");
+        msgBox.setWindowTitle(tr("Delete the sequence"));
         msgBox.setIcon(QMessageBox::Question);
         msgBox.setText(tr("Would you like to completely remove the sequence?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -248,15 +249,16 @@ void DetViewSequenceEditor::deleteChar(int key) {
         doc->removeObject(seqObj);
         return;
     }
+    CHECK(!regionToRemove.isEmpty(), );
     runModifySeqTask(seqObj, regionToRemove, DNASequence());
     setCursor(key == Qt::Key_Backspace ? cursor - 1 : cursor);
 }
 
 void DetViewSequenceEditor::runModifySeqTask(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence) {
     Settings* s = AppContext::getSettings();
-    U1AnnotationUtils::AnnotationStrategyForResize strategy = static_cast<U1AnnotationUtils::AnnotationStrategyForResize>(
-                s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
-                            U1AnnotationUtils::AnnotationStrategyForResize_Resize).toUInt());
+    U1AnnotationUtils::AnnotationStrategyForResize strategy =
+            s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
+                        U1AnnotationUtils::AnnotationStrategyForResize_Resize).value<U1AnnotationUtils::AnnotationStrategyForResize>();
     Task* t = new ModifySequenceContentTask(seqObj->getDocument()->getDocumentFormatId(), seqObj,
                                             region, sequence,
                                             s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(),

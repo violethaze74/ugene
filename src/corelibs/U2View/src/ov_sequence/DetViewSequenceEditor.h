@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,14 +35,14 @@ namespace U2 {
 
 class DetView;
 class DNASequence;
-class U2SequenceObject;
 class U2Region;
+class U2SequenceObject;
 
 class DetViewSequenceEditor : public QObject {
     Q_OBJECT
 public:
     // DetView can be reduced to GSequenceView or template for MA
-    DetViewSequenceEditor(DetView* _view);
+    DetViewSequenceEditor(DetView* view);
     ~DetViewSequenceEditor();
 
     void reset();

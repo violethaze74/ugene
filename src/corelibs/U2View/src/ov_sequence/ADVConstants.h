@@ -19,7 +19,7 @@ namespace U2 {
 
 #define SEQ_EDIT_SETTINGS_ROOT                  "sequence_edit_settings/"
 #define SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY   "annotation_strategy"
-#define SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS     "realculate_qualifiers"
+#define SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS     "recalculate_qualifiers"
 
 #define ANNOTATED_DNA_VIEW_FACTORY_ID   "AnnotatedDNAView"
 

@@ -53,8 +53,8 @@
 
 #include <U2Gui/CreateObjectRelationDialogController.h>
 #include <U2Gui/DialogUtils.h>
-#include <U2Gui/EditSettingsDialog.h>
 #include <U2Gui/EditSequenceDialogController.h>
+#include <U2Gui/EditSettingsDialog.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
@@ -1158,13 +1158,14 @@ void AnnotatedDNAView::sl_editSettings() {
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != NULL, L10N::nullPointerError("AppContext::settings"), );
     EditSettings settings;
-    settings.annotationStrategy = static_cast<U1AnnotationUtils::AnnotationStrategyForResize>(
+    settings.annotationStrategy =
                 s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
-                            U1AnnotationUtils::AnnotationStrategyForResize_Resize).toUInt());
+                            U1AnnotationUtils::AnnotationStrategyForResize_Resize).value<U1AnnotationUtils::AnnotationStrategyForResize>();
     settings.recalculateQualifiers = s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool();
 
     QObjectScopedPointer<EditSettingsDialog> dlg = new EditSettingsDialog(settings, getSequenceWidgetInFocus());
-    int res =dlg->exec();
+    int res = dlg->exec();
+    CHECK(!dlg.isNull(), );
 
     if (res == QDialog::Accepted) {
         const EditSettings& newSettings = dlg->getSettings();

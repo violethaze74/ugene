@@ -75,7 +75,6 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     connect(wrapSequenceAction, SIGNAL(triggered(bool)), SLOT(sl_wrapSequenceToggle(bool)));
 
     editor = new DetViewSequenceEditor(this);
-    editor->setParent(this);
     editAction = new QAction(tr("Edit sequence"), this);
     // TODO_SVEDIT: setup the icon
     editAction->setIcon(QIcon(":core/images/todo.png"));
