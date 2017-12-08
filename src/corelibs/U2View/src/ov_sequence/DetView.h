@@ -28,6 +28,7 @@
 #include <U2Core/U2Location.h>
 
 #include "GSequenceLineViewAnnotated.h"
+#include <U2View/SequenceObjectContext.h>
 
 
 class QActionGroup;
@@ -49,6 +50,7 @@ public:
     bool hasTranslations() const;
     bool hasComplementaryStrand() const;
     bool isWrapMode() const;
+    bool isNeedCompleteRedraw();
 
     virtual void setStartPos(qint64 pos);
     virtual void setCenterPos(qint64 pos);
@@ -64,6 +66,7 @@ public:
     void setDisabledDetViewActions(bool t);
 
     int getShift() const;
+    void setSelectedTranslations();
 
 protected slots:
     virtual void sl_sequenceChanged();
@@ -73,6 +76,10 @@ protected slots:
     void sl_showTranslationToggle(bool v);
     void sl_wrapSequenceToggle(bool v);
     void sl_verticalSrcollBarMoved(int position);
+    void sl_doNotTranslate(bool t);
+    void sl_translateAnnotationsOrSelection(bool t);
+    void sl_setUpFramesManually(bool t);
+    void sl_showAllFrames(bool t);
 
 protected:
     virtual void pack();
@@ -95,14 +102,22 @@ protected:
     QAction*        showComplementAction;
     QAction*        showTranslationAction;
     QAction*        wrapSequenceAction;
+    QAction*        doNotTranslateAction;
+    QAction*        translateAnnotationsOrSelectionAction;
+    QAction*        setUpFramesManuallyAction;
+    QAction*        showAllFramesAction;
 
     GScrollBar*     verticalScrollBar;
 
     int numShiftsInOneLine;
     int currentShiftsCounter;
+    bool needCompleteRedraw;
 
 private:
     void setupTranslationsMenu();
+    void uncheckAllTranslations();
+    void updateTranslatiosState(const U2Region& visibleRange, const bool isDirect);
+    void setTranslationState(const SequenceObjectContext::TranslationState state);
 };
 
 class DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
