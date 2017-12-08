@@ -35,6 +35,9 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/DetView.h>
 
+#include "ov_sequence/DetViewSequenceEditor.h"
+
+
 namespace U2 {
 
 /************************************************************************/
@@ -211,6 +214,32 @@ void DetViewSingleLineRenderer::drawSelection(QPainter &p, const QSize &canvasSi
     drawSequenceSelection(p, canvasSize, visibleRange);
 
     p.translate(0, -hCenter);
+}
+
+void DetViewSingleLineRenderer::drawCursor(QPainter &p, const QSize &canvasSize, const U2Region& visibleRange) {
+    CHECK(detView->isEditMode(), );
+    DetViewSequenceEditor* editor = detView->getEditor();
+    CHECK(editor != NULL, );
+    int pos = editor->getCursorPosition();
+    CHECK(visibleRange.contains(pos) || pos == visibleRange.endPos(), );
+
+    qint64 hCenter = (canvasSize.height() - getOneLineHeight()) / 2;
+    p.translate(0, hCenter);
+
+    int ymargin = commonMetrics.yCharOffset / 2;
+    int y = getLineY(directLine) - 2 * ymargin;
+    int height = commonMetrics.lineHeight + 4 * ymargin;
+    int x = posToXCoord(pos, canvasSize, visibleRange);
+
+    QPen pen(editor->getCursorColor());
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(2);
+    p.setPen(pen);
+    p.drawLine(x, y, x, y + height);
+    p.drawLine(x - ymargin, y, x + ymargin, y);
+    p.drawLine(x - ymargin, y + height, x + ymargin, y + height);
+
+    p.translate(0, - hCenter);
 }
 
 void DetViewSingleLineRenderer::update() {

@@ -46,6 +46,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/DownloadRemoteFileDialog.h \
            src/util/EditQualifierDialog.h \
            src/util/EditSequenceDialogController.h \
+           src/util/EditSettingsDialog.h \
            src/util/ExportAnnotations2CSVTask.h \
            src/util/ExportAnnotationsDialog.h \
            src/util/ExportDocumentDialogController.h \
@@ -139,6 +140,7 @@ FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/DownloadRemoteFileDialog.ui \
          src/util/EditQualifierDialog.ui \
          src/util/EditSequenceDialog.ui \
+         src/util/EditSettingsDialog.ui \
          src/util/ExportAnnotationsDialog.ui \
          src/util/ExportDocumentDialog.ui \
          src/util/ExportImageDialog.ui \
@@ -200,6 +202,7 @@ SOURCES += src/MainWindow.cpp \
            src/util/DownloadRemoteFileDialog.cpp \
            src/util/EditQualifierDialog.cpp \
            src/util/EditSequenceDialogController.cpp \
+           src/util/EditSettingsDialog.cpp \
            src/util/ExportAnnotations2CSVTask.cpp \
            src/util/ExportAnnotationsDialog.cpp \
            src/util/ExportDocumentDialogController.cpp \

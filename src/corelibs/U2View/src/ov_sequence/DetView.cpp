@@ -20,6 +20,7 @@
  */
 
 #include "DetView.h"
+#include "DetViewSequenceEditor.h"
 
 #include "ADVSequenceObjectContext.h"
 #include "view_rendering/DetViewSingleLineRenderer.h"
@@ -73,9 +74,17 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     wrapSequenceAction->setObjectName("wrap_sequence_action");
     connect(wrapSequenceAction, SIGNAL(triggered(bool)), SLOT(sl_wrapSequenceToggle(bool)));
 
+    editor = new DetViewSequenceEditor(this);
+    editAction = new QAction(tr("Edit sequence"), this);
+    // TODO_SVEDIT: setup the icon
+    editAction->setIcon(QIcon(":core/images/todo.png"));
+    editAction->setObjectName("edit_sequence_action");
+    connect(editAction, SIGNAL(triggered(bool)), editor, SLOT(sl_editMode(bool)));
+
     showComplementAction->setCheckable(true);
     showTranslationAction->setCheckable(true);
     wrapSequenceAction->setCheckable(true);
+    editAction->setCheckable(true);
 
     bool hasComplement = ctx->getComplementTT() != NULL;
     showComplementAction->setChecked(hasComplement);
@@ -98,6 +107,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     if (hasAmino) {
         setupTranslationsMenu();
     }
+    addActionToLocalToolbar(editAction);
 
     verticalScrollBar = new GScrollBar(Qt::Vertical, this);
     verticalScrollBar->setObjectName("multiline_scrollbar");
@@ -129,6 +139,11 @@ bool DetView::hasComplementaryStrand() const {
 
 bool DetView::isWrapMode() const {
     return wrapSequenceAction->isChecked();
+}
+
+bool DetView::isEditMode() const {
+    SAFE_POINT(editAction != NULL, "editAction is NULL", false);
+    return editAction->isChecked();
 }
 
 void DetView::setStartPos(qint64 newPos) {
@@ -198,6 +213,68 @@ void DetView::setDisabledDetViewActions(bool t){
 
 int DetView::getShift() const {
     return isWrapMode() ? currentShiftsCounter * getDetViewRenderArea()->getShiftHeight() : 0;
+}
+
+void DetView::ensureVisible(int pos) {
+    CHECK(pos >= 0 && pos <= getSequenceLength(), );
+
+    if (isWrapMode()) {
+        DetViewRenderArea* renderArea = getDetViewRenderArea();
+        if (!visibleRange.contains(pos)) {
+            if (pos < visibleRange.startPos) {
+                // scroll up till the line is visible
+                int line = pos / getSymbolsPerLine();
+                int listStartPos = line * getSymbolsPerLine();
+                visibleRange.startPos = listStartPos;
+                currentShiftsCounter = renderArea->getDirectLine() + 1;
+            } else {
+                // scroll down till the line is visible
+                int line = pos / getSymbolsPerLine();
+                int listStartPos = line * getSymbolsPerLine();
+                visibleRange.startPos = listStartPos;
+                currentShiftsCounter = 0;
+
+                // get the count of visible lines
+                int visibleLinesCount = renderArea->getLinesCount() + (getShift() != 0 ? 1 : 0);
+                if (renderArea->height() + getShift() - renderArea->getShiftsCount() * renderArea->getShiftHeight() * visibleLinesCount > 0) {
+                    visibleLinesCount ++;
+                }
+            }
+        } else {
+            // ensure the direct strand is visible
+            if (currentShiftsCounter > renderArea->getDirectLine() &&
+                    U2Region(visibleRange.startPos, getSymbolsPerLine()).contains(pos)) {
+                // this is the first line, just remove the shift
+                currentShiftsCounter = renderArea->getDirectLine() + 1;
+            }
+
+            if (U2Region(visibleRange.endPos() - getSymbolsPerLine(), getSymbolsPerLine()).contains(pos)) {
+                // the last visible line, scroll a little
+                // TODO_SVEDIT: check the tail
+                int availableSpace = renderArea->height() + currentShiftsCounter * renderArea->getShiftHeight();
+                int lastLinePart = availableSpace % (numShiftsInOneLine * renderArea->getShiftHeight());
+                int lastVisibleShifts = lastLinePart / renderArea->getShiftHeight();
+
+                if (lastVisibleShifts <= renderArea->getDirectLine()) {
+                    currentShiftsCounter += renderArea->getDirectLine() - lastVisibleShifts + 2;
+                }
+                if (currentShiftsCounter > numShiftsInOneLine) {
+                    currentShiftsCounter %= numShiftsInOneLine;
+                    visibleRange.startPos += getSymbolsPerLine();
+                }
+            }
+            // do nothing otherwise -- the cursor is visible
+        }
+    } else {
+        CHECK(!visibleRange.contains(pos), );
+        if (pos < visibleRange.startPos) {
+            visibleRange.startPos = pos;
+        } else {
+            visibleRange.startPos = pos - visibleRange.length;
+        }
+    }
+
+    updateVisibleRange();
 }
 
 void DetView::sl_sequenceChanged() {
@@ -606,6 +683,7 @@ void DetViewRenderArea::drawAll(QPaintDevice* pd) {
     p.drawPixmap(0, 0, *cachedView);
     p.translate(0, - scrollShift);
     renderer->drawSelection(p, canvasSize, view->getVisibleRange());
+    renderer->drawCursor(p, canvasSize, view->getVisibleRange());
     p.translate(0, scrollShift);
 
     if (view->hasFocus()) {
@@ -642,6 +720,10 @@ int DetViewRenderArea::getLinesCount() const {
 
 int DetViewRenderArea::getVisibleSymbolsCount() const {
     return getLinesCount() * getSymbolsPerLine();
+}
+
+int DetViewRenderArea::getDirectLine() const {
+    return renderer->getDirectLine();
 }
 
 int DetViewRenderArea::getShiftsCount() const {

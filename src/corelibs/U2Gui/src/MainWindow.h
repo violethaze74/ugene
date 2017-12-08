@@ -106,6 +106,7 @@ class QMainWindow;
 #define ACTION_EXPORT_OBJECT                        "export object"
 
 #define ACTION_EDIT_SEQUENCE                        "edit sequences"
+#define ACTION_EDIT_SEQUENCE_SETTINGS               "action_edit_sequences_settings"
 #define ACTION_EDIT_INSERT_SUBSEQUENCE              "action_edit_insert_sub_sequences"
 #define ACTION_EDIT_REMOVE_SUBSEQUENCE              "action_edit_remove_sub_sequences"
 #define ACTION_EDIT_REPLACE_SUBSEQUENCE             "action_edit_replace_sub_sequences"

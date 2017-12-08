@@ -19,36 +19,40 @@
  * MA 02110-1301, USA.
  */
 
-#include "DetViewRenderer.h"
-#include "DetViewSingleLineRenderer.h"
-#include "DetViewMultiLineRenderer.h"
+#ifndef _U2_EDIT_SETTINGS_DIALOG_H_
+#define _U2_EDIT_SETTINGS_DIALOG_H_
 
-#include <U2View/ADVSequenceObjectContext.h>
-#include <U2View/DetView.h>
+#include <QDialog>
 
+#include <U2Core/global.h>
+#include <U2Core/U1AnnotationUtils.h>
+
+class Ui_EditSettingDialogForm;
 
 namespace U2 {
 
-DetViewRenderer::DetViewRenderer(DetView* detView, SequenceObjectContext* ctx)
-    : SequenceViewAnnotatedRenderer(ctx),
-      detView(detView) {
+class EditSettings {
+public:
+    EditSettings()
+        : recalculateQualifiers(true),
+          annotationStrategy(U1AnnotationUtils::AnnotationStrategyForResize_Resize)
+    {}
 
-}
+    bool recalculateQualifiers;
+    U1AnnotationUtils::AnnotationStrategyForResize annotationStrategy;
+};
 
-double DetViewRenderer::getCurrentScale() const {
-    return commonMetrics.charWidth;
-}
+class U2GUI_EXPORT EditSettingsDialog : public QDialog {
+    Q_OBJECT
+public:
+    EditSettingsDialog(const EditSettings& settings, QWidget* parent);
+    ~EditSettingsDialog();
 
-qint64 DetViewRenderer::getSymbolsPerLine(const qint64 width) const {
-    return width / commonMetrics.charWidth;
-}
-
-DetViewRenderer* DetViewRendererFactory::createRenderer(DetView *detView, SequenceObjectContext *ctx, bool multiLine) {
-    if (multiLine) {
-        return new DetViewMultiLineRenderer(detView, ctx);
-    } else {
-        return new DetViewSingleLineRenderer(detView, ctx);
-    }
-}
+    EditSettings getSettings() const;
+private:
+    Ui_EditSettingDialogForm* ui;
+};
 
 } // namespace
+
+#endif // _U2_EDIT_SETTINGS_DIALOG_H_

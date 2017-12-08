@@ -50,11 +50,12 @@ class U2CORE_EXPORT U1AnnotationUtils {
 public:
 
     enum AnnotationStrategyForResize {
-        AnnotationStrategyForResize_Resize,
-        AnnotationStrategyForResize_Remove,
-        AnnotationStrategyForResize_Split_To_Joined,
-        AnnotationStrategyForResize_Split_To_Separate
+        AnnotationStrategyForResize_Resize = 0,
+        AnnotationStrategyForResize_Remove = 1,
+        AnnotationStrategyForResize_Split_To_Joined = 2,
+        AnnotationStrategyForResize_Split_To_Separate = 3
     };
+    Q_ENUMS(U2::U1AnnotationUtils::AnnotationStrategyForResize)
 
     /**
      * Corrects annotation locations for a sequence. The passed list is original locations
@@ -113,5 +114,7 @@ public:
 };
 
 } // namespace U2
+
+Q_DECLARE_METATYPE(U2::U1AnnotationUtils::AnnotationStrategyForResize)
 
 #endif

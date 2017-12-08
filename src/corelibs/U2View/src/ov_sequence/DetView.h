@@ -38,24 +38,27 @@ class Annotation;
 class DNATranslation;
 class DetViewRenderArea;
 class DetViewRenderer;
+class DetViewSequenceEditor;
 
 class U2VIEW_EXPORT DetView : public GSequenceLineViewAnnotated {
     Q_OBJECT
+    friend class DetViewSequenceEditor;
 public:
     DetView(QWidget* p, SequenceObjectContext* ctx);
+    DetViewSequenceEditor* getEditor() { return editor; }
 
     DetViewRenderArea* getDetViewRenderArea() const;
 
     bool hasTranslations() const;
     bool hasComplementaryStrand() const;
     bool isWrapMode() const;
+    bool isEditMode() const;
 
     virtual void setStartPos(qint64 pos);
     virtual void setCenterPos(qint64 pos);
 
     DNATranslation* getComplementTT() const;
     DNATranslation* getAminoTT() const;
-    // for GUI tests
     int getSymbolsPerLine() const;
 
     void setShowComplement(bool t);
@@ -64,6 +67,8 @@ public:
     void setDisabledDetViewActions(bool t);
 
     int getShift() const;
+
+    void ensureVisible(int pos);
 
 protected slots:
     virtual void sl_sequenceChanged();
@@ -95,6 +100,9 @@ protected:
     QAction*        showComplementAction;
     QAction*        showTranslationAction;
     QAction*        wrapSequenceAction;
+    QAction*        editAction;
+
+    DetViewSequenceEditor* editor;
 
     GScrollBar*     verticalScrollBar;
 
@@ -124,6 +132,7 @@ public:
     int getSymbolsPerLine() const;
     int getLinesCount() const;
     int getVisibleSymbolsCount() const;
+    int getDirectLine() const;
 
     int getShiftsCount() const;
     int getShiftHeight() const;

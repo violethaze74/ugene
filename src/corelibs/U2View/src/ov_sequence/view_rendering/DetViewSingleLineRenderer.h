@@ -67,6 +67,8 @@ public:
     qint64 getLinesCount(const QSize& canvasSize) const;
     qint64 getContentIndentY(const QSize& canvasSize, const U2Region& visibleRange) const;
 
+    int getDirectLine() const { return directLine; }
+
     int getRowsInLineCount() const;
 
     QSize getBaseCanvasSize(const U2Region &visibleRange) const;
@@ -76,6 +78,7 @@ public:
 
     virtual void drawAll(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange);
     virtual void drawSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange);
+    virtual void drawCursor(QPainter &p, const QSize &canvasSize, const U2Region& visibleRange);
 
     void update();
 
