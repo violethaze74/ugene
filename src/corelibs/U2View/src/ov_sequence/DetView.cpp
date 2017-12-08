@@ -331,7 +331,7 @@ void DetView::sl_wrapSequenceToggle(bool v) {
     GCOUNTER( cvar, tvar, "SequenceView::DetView::WrapSequence" );
     // turn off/on multiline mode
     scrollBar->setHidden(v);
-    verticalScrollBar->setHidden(!v);
+    verticalScrollBar->setVisible(v);
 
     currentShiftsCounter = 0;
 
@@ -345,17 +345,24 @@ void DetView::sl_wrapSequenceToggle(bool v) {
 
     addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
     completeUpdate();
+    if (!v) {
+        verticalScrollBar->setSliderPosition(0);
+    }
 }
 
 void DetView::sl_verticalSrcollBarMoved(int pos) {
-    currentShiftsCounter = pos % numShiftsInOneLine;
-    DetViewRenderArea* detArea = getDetViewRenderArea();
-    if (pos / numShiftsInOneLine == visibleRange.startPos / detArea->getSymbolsPerLine()) {
+    if (isWrapMode()) {
+        currentShiftsCounter = pos % numShiftsInOneLine;
+        DetViewRenderArea* detArea = getDetViewRenderArea();
+        if (pos / numShiftsInOneLine == visibleRange.startPos / detArea->getSymbolsPerLine()) {
+            updateVisibleRange();
+            completeUpdate();
+            return;
+        }
+        setStartPos((pos / numShiftsInOneLine) * detArea->getSymbolsPerLine());
+    } else {
         updateVisibleRange();
-        completeUpdate();
-        return;
     }
-    setStartPos((pos / numShiftsInOneLine) * detArea->getSymbolsPerLine());
 }
 
 void DetView::pack() {
@@ -585,34 +592,59 @@ void DetView::updateSize() {
 
 void DetView::updateVerticalScrollBar() {
     verticalScrollBar->disconnect(this);
-    if (!isWrapMode()) {
+
+    DetViewRenderArea* renderer = getDetViewRenderArea();
+    bool wasVisible = verticalScrollBar->isVisible();
+
+    const int shiftsCount = renderer->getShiftsCount();
+    const int shiftsHeight = renderer->getShiftHeight();
+    const int height = renderer->height();
+    bool isSingleViewLineNotVisible = !isWrapMode() && (height < shiftsCount * shiftsHeight);
+    verticalScrollBar->setVisible(isSingleViewLineNotVisible || isWrapMode());
+    if (wasVisible && verticalScrollBar->isHidden()) {
+        verticalScrollBar->setSliderPosition(0);
+    }
+
+    int maximum = 0;
+    if (isWrapMode()) {
+        DetViewRenderArea* detArea = getDetViewRenderArea();
+        int linesCount = seqLen / detArea->getSymbolsPerLine();
+        if (seqLen % detArea->getSymbolsPerLine() != 0) {
+            linesCount++;
+        }
+
+        numShiftsInOneLine = getDetViewRenderArea()->getShiftsCount();
+        int shiftsOnWidget = renderArea->height() / getDetViewRenderArea()->getShiftHeight();
+        maximum = numShiftsInOneLine * linesCount - shiftsOnWidget;
+    } else if (isSingleViewLineNotVisible) {
+        numShiftsInOneLine = 1;
+        const int shiftsVisible = height / shiftsHeight;
+        maximum = shiftsCount - shiftsVisible;
+        const int sliderPosition = verticalScrollBar->sliderPosition();
+        const int currentMaximum = verticalScrollBar->maximum();
+        if (sliderPosition == currentMaximum && currentMaximum > maximum) {
+            const int newSliderPos = sliderPosition - (currentMaximum - maximum);
+            verticalScrollBar->setSliderPosition(newSliderPos);
+        }
+    } else {
         return;
     }
 
-    DetViewRenderArea* detArea = getDetViewRenderArea();
-    int linesCount = seqLen / detArea->getSymbolsPerLine();
-    if (seqLen % detArea->getSymbolsPerLine() != 0) {
-        linesCount++;
-    }
-
     verticalScrollBar->setMinimum(0);
-
-    numShiftsInOneLine = getDetViewRenderArea()->getShiftsCount();
-    int shiftsOnWidget = renderArea->height() / getDetViewRenderArea()->getShiftHeight();
-
-    verticalScrollBar->setMaximum(numShiftsInOneLine * linesCount - shiftsOnWidget);
+    verticalScrollBar->setMaximum(maximum);
     verticalScrollBar->setPageStep(numShiftsInOneLine);
     updateVerticalScrollBarPosition();
-
     connect(verticalScrollBar, SIGNAL(valueChanged(int)), SLOT(sl_verticalSrcollBarMoved(int)));
 }
 
 void DetView::updateVerticalScrollBarPosition() {
-    DetViewRenderArea* detArea = getDetViewRenderArea();
-    verticalScrollBar->disconnect(this);
-    verticalScrollBar->setSliderPosition(qMin( verticalScrollBar->maximum(),
-                                               currentShiftsCounter + numShiftsInOneLine* int(visibleRange.startPos / detArea->getSymbolsPerLine())));
-    connect(verticalScrollBar, SIGNAL(valueChanged(int)), SLOT(sl_verticalSrcollBarMoved(int)));
+    if (isWrapMode()) {
+        DetViewRenderArea* detArea = getDetViewRenderArea();
+        verticalScrollBar->disconnect(this);
+        verticalScrollBar->setSliderPosition(qMin(verticalScrollBar->maximum(),
+            currentShiftsCounter + numShiftsInOneLine* int(visibleRange.startPos / detArea->getSymbolsPerLine())));
+        connect(verticalScrollBar, SIGNAL(valueChanged(int)), SLOT(sl_verticalSrcollBarMoved(int)));
+    }
 }
 
 void DetView::setupTranslationsMenu() {
@@ -621,6 +653,13 @@ void DetView::setupTranslationsMenu() {
     QToolButton *button = addActionToLocalToolbar(translationsMenu->menuAction());
     button->setPopupMode(QToolButton::InstantPopup);
     button->setObjectName("translationsMenuToolbarButton");
+}
+
+int DetView::getVerticalScrollBarPosition() {
+    if (!isWrapMode()) {
+        return verticalScrollBar->sliderPosition();
+    }
+    return 0;
 }
 
 /************************************************************************/

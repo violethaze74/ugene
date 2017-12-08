@@ -66,6 +66,7 @@ public:
 
     void setDisabledDetViewActions(bool t);
 
+    int getVerticalScrollBarPosition();
     int getShift() const;
 
     void ensureVisible(int pos);
@@ -129,12 +130,27 @@ public:
 
     DetView* getDetView() const;
 
+    /**
+    *Quantity of symbols in one line
+    */
     int getSymbolsPerLine() const;
+    /**
+    *Quantity of visible lines in the view
+    */
     int getLinesCount() const;
+    /**
+    *Quantity of symbols in all lines (in case multi-line view)
+    */
     int getVisibleSymbolsCount() const;
     int getDirectLine() const;
 
+    /**
+    *Quantity of shifts in one line
+    */
     int getShiftsCount() const;
+    /**
+    *Quantity of pixels in one shift
+    */
     int getShiftHeight() const;
 
     void updateSize();

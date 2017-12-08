@@ -122,9 +122,8 @@ U2Region DetViewSingleLineRenderer::getMirroredYRange(const U2Strand &mirroredSt
 }
 
 qint64 DetViewSingleLineRenderer::getMinimumHeight() const {
-    // 9: translations x6 + direct + complement + ruler
     // 5: indent??
-    return 9 * commonMetrics.lineHeight + 5;
+    return 5;
 }
 
 qint64 DetViewSingleLineRenderer::getOneLineHeight() const {
@@ -136,7 +135,10 @@ qint64 DetViewSingleLineRenderer::getLinesCount(const QSize& /*canvasSize*/) con
 }
 
 qint64 DetViewSingleLineRenderer::getContentIndentY(const QSize& canvasSize, const U2Region& /*visibleRange*/) const {
-   return (canvasSize.height() - getOneLineHeight()) / 2;
+    qint64 contentIndentY = (canvasSize.height() - getOneLineHeight()) / 2;
+    contentIndentY = qMax((qint64)0, contentIndentY);
+    contentIndentY -= detView->getVerticalScrollBarPosition() * commonMetrics.lineHeight;
+    return contentIndentY;
 }
 
 int DetViewSingleLineRenderer::getRowsInLineCount() const {
@@ -194,7 +196,7 @@ void DetViewSingleLineRenderer::drawAll(QPainter &p, const QSize &canvasSize, co
 void DetViewSingleLineRenderer::drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) {
     p.setPen(Qt::black);
 
-    qint64 hCenter = (canvasSize.height() - getOneLineHeight()) / 2;
+    qint64 hCenter = getContentIndentY(canvasSize, visibleRange);
     p.translate(0, hCenter);
 
     updateLines();
