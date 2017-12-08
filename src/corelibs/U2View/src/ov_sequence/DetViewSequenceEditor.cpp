@@ -54,6 +54,7 @@ DetViewSequenceEditor::DetViewSequenceEditor(DetView* _view)
 }
 
 DetViewSequenceEditor::~DetViewSequenceEditor() {
+    view->removeEventFilter(this);
     animationTimer.stop();
 }
 
