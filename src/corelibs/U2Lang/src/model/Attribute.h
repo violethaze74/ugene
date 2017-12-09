@@ -89,6 +89,7 @@ enum AttributeGroup {
 class U2LANG_EXPORT Attribute : public Descriptor {
 public:
     Attribute(const Descriptor& d, const DataTypePtr type, bool required = false, const QVariant & defaultValue = QVariant());
+    ~Attribute();
 
     // getters/setters
     const DataTypePtr getAttributeType()const;
@@ -141,17 +142,20 @@ public:
 
     virtual bool validate(ProblemList &problemList);
 
-
 private:
     void debugCheckAttributeId() const;
+    void copy(const Attribute &other);
 
 protected:
+    Attribute(const Attribute &other);
+    Attribute &operator =(const Attribute &other);
+
     // type of value
-    const DataTypePtr   type;
+    DataTypePtr   type;
     // attribute can be required or not
     // values of required attributes cannot be empty
     // used in configuration validations
-    const bool          required;
+    bool          required;
     // pure value and default pure value. if script exists, value should be processed throw it
     QVariant            value;
     QVariant            defaultValue;

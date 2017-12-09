@@ -55,6 +55,10 @@ QVariant VisibilityRelation::getAffectResult(const QVariant &influencingValue, c
     return false;
 }
 
+VisibilityRelation *VisibilityRelation::clone() const {
+    return new VisibilityRelation(*this);
+}
+
 QVariant FileExtensionRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
     DelegateTags * /*infTags*/, DelegateTags *depTags) const {
 
@@ -138,6 +142,10 @@ void FileExtensionRelation::updateDelegateTags(const QVariant &influencingValue,
     }
 }
 
+FileExtensionRelation *FileExtensionRelation::clone() const {
+    return new FileExtensionRelation(*this);
+}
+
 QVariant ValuesRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
                                          DelegateTags * /*infTags*/, DelegateTags *depTags) const {
     updateDelegateTags(influencingValue, depTags);
@@ -153,6 +161,10 @@ void ValuesRelation::updateDelegateTags(const QVariant &influencingValue, Delega
     if (items != QVariant()) {
         dependentTags->set("AvailableValues", items);
     }
+}
+
+ValuesRelation *ValuesRelation::clone() const {
+    return new ValuesRelation(*this);
 }
 
 } // U2

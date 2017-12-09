@@ -19,40 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_
-#define _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_
+#ifndef _U2_KRAKEN_BUILD_PROMPTER_H_
+#define _U2_KRAKEN_BUILD_PROMPTER_H_
 
-#include <U2Lang/LocalDomain.h>
+#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 namespace LocalWorkflow {
 
-class KrakenClassifyWorkerFactory : public DomainFactory {
+class KrakenBuildPrompter : public PrompterBase<KrakenBuildPrompter> {
+    Q_OBJECT
 public:
-    KrakenClassifyWorkerFactory();
+    KrakenBuildPrompter(Actor *actor);
 
-    Worker *createWorker(Actor *actor);
-
-    static void init();
-
-    static const QString ACTOR_ID;
-
-    static const QString INPUT_PORT_ID;
-    static const QString INPUT_PAIRED_PORT_ID;
-    static const QString OUTPUT_PORT_ID;
-
-    static const QString INPUT_DATA_ATTR_ID;
-    static const QString DATABASE_ATTR_ID;
-    static const QString QUICK_OPERATION_ATTR_ID;
-    static const QString MIN_HITS_NUMBER_ATTR_ID;
-    static const QString THREADS_NUMBER_ATTR_ID;
-    static const QString PRELOAD_DATABASE_ATTR_ID;
-
-    static const QString SINGLE_END_TEXT;
-    static const QString PAIRED_END_TEXT;
+private:
+    QString composeRichDoc();
 };
 
 }   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_
+#endif // _U2_KRAKEN_BUILD_PROMPTER_H_

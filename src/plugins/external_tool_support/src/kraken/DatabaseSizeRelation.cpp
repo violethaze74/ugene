@@ -37,7 +37,7 @@ DatabaseSizeRelation::DatabaseSizeRelation(const QString &relatedAttributeId)
 
 }
 
-QVariant DatabaseSizeRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags *infTags, DelegateTags *depTags) const {
+QVariant DatabaseSizeRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags *, DelegateTags *) const {
     const QString databaseUrl = influencingValue.toString();
     CHECK(!databaseUrl.isEmpty(), dependentValue);
     const QFileInfo databaseInfo(databaseUrl + "/database.kdb");
@@ -45,6 +45,10 @@ QVariant DatabaseSizeRelation::getAffectResult(const QVariant &influencingValue,
 
     const qint64 totalMemoryInMb = AppContext::getAppSettings()->getAppResourcePool()->getTotalPhysicalMemory();
     return databaseInfo.size() < totalMemoryInMb * 1024 * 1024;
+}
+
+DatabaseSizeRelation *DatabaseSizeRelation::clone() const {
+    return new DatabaseSizeRelation(*this);
 }
 
 }   // namespace LocalWorkflow

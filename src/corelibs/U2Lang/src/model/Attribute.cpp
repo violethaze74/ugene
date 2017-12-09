@@ -39,12 +39,43 @@ Attribute::Attribute(const Descriptor& d, const DataTypePtr t, bool req, const Q
     debugCheckAttributeId();
 }
 
+Attribute::~Attribute() {
+    qDeleteAll(relations);
+}
+
 void Attribute::debugCheckAttributeId() const {
     QString id = getId(); Q_UNUSED(id);
     assert(id != Constants::TYPE_ATTR);
     assert(id != Constants::NAME_ATTR);
     assert(id != Constants::SCRIPT_ATTR);
     assert(id != Constants::ELEM_ID_ATTR);
+}
+
+void Attribute::copy(const Attribute &other) {
+    type = other.type;
+    required = other.required;
+    value = other.value;
+    defaultValue = other.defaultValue;
+    scriptData = other.scriptData;
+
+    qDeleteAll(relations);
+    relations.clear();
+    foreach (const AttributeRelation *relation, other.relations) {
+        relations << relation->clone();
+    }
+
+    portRelations.clear();
+    portRelations = other.portRelations;
+}
+
+Attribute::Attribute(const Attribute &other) {
+    copy(other);
+}
+
+Attribute &Attribute::operator =(const Attribute &other) {
+    CHECK(this != &other, *this);
+    copy(other);
+    return *this;
 }
 
 const DataTypePtr Attribute::getAttributeType()const {

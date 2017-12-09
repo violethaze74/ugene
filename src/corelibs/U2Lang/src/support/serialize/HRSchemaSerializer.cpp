@@ -1608,11 +1608,11 @@ static QString elementsDefinitionBlock(Actor * actor, bool copyMode) {
         } else if (MARKER_GROUP == attribute->getGroup()) {
             res += HRSchemaSerializer::markersDefinition(attribute);
         } else {
-            if (attribute->getId() == BaseAttributes::URL_IN_ATTRIBUTE().getId()) {
+            if (attribute->getAttributeType() == BaseTypes::URL_DATASETS_TYPE()) {
                 QVariant v = attribute->getAttributePureValue();
                 if (v.canConvert< QList<Dataset> >()) {
                     QList<Dataset> sets = v.value< QList<Dataset> >();
-                    res += inUrlDefinitionBlocks(BaseAttributes::URL_IN_ATTRIBUTE().getId(), sets, 2);
+                    res += inUrlDefinitionBlocks(attribute->getId(), sets, 2);
                     continue;
                 }
             }
