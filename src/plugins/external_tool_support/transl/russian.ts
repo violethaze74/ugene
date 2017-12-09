@@ -609,67 +609,67 @@ a database file</source>
         <translation>Запретить пробелы (--gbar)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="284"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="281"/>
         <source>Flags</source>
         <translation>Флаги</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="296"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="293"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments for the constituent mates. This is called &amp;quot;mixed mode.&amp;quot; To disable mixed mode, set this option.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Bowtie2 runs a little faster in the mixed mode, but will only consider alignment status of pairs per se, not individual mates.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Если Bowtie2 не сможет найти пару для выполнения парного выравнивания по умолчанию будет сделано непарное выравнивание. Это называется &amp;quot;смешанным режимом.&amp;quot; Чтобы отключить смешанный режим, установите эту опцию.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Bowtie2 запустится немного быстрее в смешанном режиме чем для парного выравнивания.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="299"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="296"/>
         <source>No unpaired alignments (--no-mixed)</source>
         <translation>Только парное выравнивание (--no-mixed)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="306"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="303"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment is an alignment where both mates align uniquely, but that does not satisfy the paired-end constraints. This option disables that behavior.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;По умолчанию, Bowtie2 ищет несогласованные выравнивания, если он не может найти какие-либо согласованные выравнивания. Несогласованное выравнивание это выравнивание, в котором оба рида выровнены однозначно, но они не удовлетворяют условию парности. Это опция отключает это поведение.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="309"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="306"/>
         <source>No discordant alignments (--no-discordant)</source>
         <translation>Только согласованные выравнивания (--no-discordant)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="316"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="313"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If this option is selected, Bowtie2 will not attempt to align against the forward reference strand.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Если выбрана эта опция, Bowtie2 не будет пытаться выровнять прямую цепь.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="319"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="316"/>
         <source>No forward orientation (--nofw)</source>
         <translation>Не прямая ориентация (--nofw)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="326"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="323"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If this option is selected, Bowtie2 will not attempt to align against the reverse-complement reference strand.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Если выбрана эта опция, Bowtie2 не будет пытаться выровнять обратно-комплементарную цепь.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="329"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="326"/>
         <source>No reverse-complement orientation (--norc)</source>
         <translation>Не обратно-комплементарная ориентация (--norc)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="336"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="333"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in a concordant alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Если один участник выравнивания перекрывается с другим, то это несогласованное выравни вание. По умолчанию: участники могут перекрываться в согласованном выравнивании.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="339"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="336"/>
         <source>No overlapping mates (--no-overlap)</source>
         <translation>Без перекрытий (--no-overlap)</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="346"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="343"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the other in a concordant alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Если один участник выравнивания содержит другой, то это несогласованное выравнивание. По умолчанию одна часть выравнивания может содержать другую в согласованном выравнивании.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="349"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="346"/>
         <source>No mates containing one another (--no-contain)</source>
         <translation>Без вложений (--no-contain)</translation>
     </message>
@@ -3071,22 +3071,22 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="obsolete">Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="254"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="253"/>
         <source>Map</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="255"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="254"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="261"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="260"/>
         <source>File name</source>
         <translation>Имя файла</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="262"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="261"/>
         <source>Sequence name from file</source>
         <translation>Имя последовательности в файле</translation>
     </message>
@@ -3096,50 +3096,50 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation>Укажите выходной файл...</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="294"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="301"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="320"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="343"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="292"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="299"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="318"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="341"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="295"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="293"/>
         <source>Reference sequence is not set.</source>
         <translation>Референсная последовательность не задана.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="302"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="300"/>
         <source>No reads provided.</source>
         <translation>Риды не заданы.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="321"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="319"/>
         <source>Output file is not set.</source>
         <translation>Выходной файл не указан.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="332"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="330"/>
         <source>Overwrite the file?</source>
         <translation>Переписать этот файл?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="333"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="331"/>
         <source>The result file already exists. Would you like to overwrite it?</source>
         <translation>Такой файл уже существует. Переписать его?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="343"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="341"/>
         <source>Unable to delete the file.</source>
         <translation>Невозможно удалить этот файл.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="355"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="353"/>
         <source>Open Reference Sequence</source>
         <translation>Выбрать референсную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="366"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="364"/>
         <source>Select File(s) with Read(s)</source>
         <translation>Выбрать прочтения</translation>
     </message>
@@ -3426,23 +3426,23 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Имя базы данных содержит пробелы.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="206"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="213"/>
         <source>This file has the incompatible format for the BLAST+ search.</source>
         <translation>Этот файл имеет несовместимый формат для поиска BLAST+.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="251"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="258"/>
         <source>This file does not contain any sequence.</source>
         <translation>Этот файл не содержит последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="206"/>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="251"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="213"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="258"/>
         <source>Wrong input file</source>
         <translation>Неверный входной файл</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="297"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="304"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Неверные параметры для создания аннотаций</translation>
     </message>
@@ -3736,8 +3736,8 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation>Выберите входной файл</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="286"/>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="332"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="293"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="339"/>
         <source>Wrong input file</source>
         <translation>Неверный входной файл</translation>
     </message>
@@ -3750,27 +3750,27 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Имя базы данных содержит пробелы.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="286"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="293"/>
         <source>This file has the incompatible format for the BLAST+ search.</source>
         <translation>Этот файл имеет несовместимый формат для поиска BLAST+.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="332"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="339"/>
         <source>This file does not contain sequences.</source>
         <translation>Этот файл не содержит последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="383"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="390"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="418"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="425"/>
         <source>Path for &lt;i&gt;BLAST+ %1&lt;/i&gt; tool not selected.</source>
         <translation>Путь до &lt;i&gt;BLAST+ %1&lt;/i&gt; не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="452"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="459"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Неверные параметры для создания аннотаций</translation>
     </message>
