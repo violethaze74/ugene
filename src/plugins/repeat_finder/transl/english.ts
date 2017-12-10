@@ -172,17 +172,17 @@
         <translation>Advanced parameters</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="296"/>
+        <location filename="../src/FindTandemsDialog.ui" line="299"/>
         <source>Algorithm</source>
         <translation>Algorithm</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="253"/>
+        <location filename="../src/FindTandemsDialog.ui" line="256"/>
         <source>Minimum tandem size</source>
         <translation>Minimum tandem size</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="316"/>
+        <location filename="../src/FindTandemsDialog.ui" line="319"/>
         <source>Minimum repeat count</source>
         <translation>Minimum repeat count</translation>
     </message>
@@ -192,7 +192,7 @@
         <translation>x</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="246"/>
+        <location filename="../src/FindTandemsDialog.ui" line="249"/>
         <source>Show overlapped tandems</source>
         <translation>Show overlapped tandems</translation>
     </message>
