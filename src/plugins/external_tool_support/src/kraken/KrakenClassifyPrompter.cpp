@@ -35,21 +35,13 @@ KrakenClassifyPrompter::KrakenClassifyPrompter(Actor *actor)
 }
 
 QString KrakenClassifyPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(KrakenClassifyWorkerFactory::INPUT_PORT_ID));
-    Actor *readsProducer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    const QString readsProducerName = getProducersOrUnset(KrakenClassifyWorkerFactory::INPUT_PORT_ID, BaseSlots::URL_SLOT().getId());
+    const QString databaseUrl = getHyperlink(KrakenClassifyWorkerFactory::DATABASE_ATTR_ID, getURL(KrakenClassifyWorkerFactory::DATABASE_ATTR_ID));
 
-    IntegralBusPort *pairedInput = qobject_cast<IntegralBusPort *>(target->getPort(KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID));
-    Actor *pairedReadsProducer = pairedInput->getProducer(BaseSlots::URL_SLOT().getId());
-
-    const QString unsetString = "<font color='red'>" + tr("unset") + "</font>";
-    if (KrakenClassifyTaskSettings::SINGLE_END == getParameter(KrakenClassifyWorkerFactory::SEQUENCING_READS_ATTR_ID).toString()) {
-        const QString readsProducerName = NULL != readsProducer ? readsProducer->getLabel() : unsetString;
-        const QString databaseUrl = getHyperlink(KrakenClassifyWorkerFactory::DATABASE_ATTR_ID, getURL(KrakenClassifyWorkerFactory::DATABASE_ATTR_ID));
+    if (KrakenClassifyTaskSettings::SINGLE_END == getParameter(KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID).toString()) {
         return tr("Classify sequences from <u>%1</u> with Kraken, use %2 database.").arg(readsProducerName).arg(databaseUrl);
     } else {
-        const QString readsProducerName = NULL != readsProducer ? readsProducer->getLabel() : unsetString;
-        const QString pairedReadsProducerName = NULL != pairedReadsProducer ? pairedReadsProducer->getLabel() : unsetString;
-        const QString databaseUrl = getHyperlink(KrakenClassifyWorkerFactory::DATABASE_ATTR_ID, getURL(KrakenClassifyWorkerFactory::DATABASE_ATTR_ID));
+        const QString pairedReadsProducerName = getProducersOrUnset(KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID, BaseSlots::URL_SLOT().getId());
         return tr("Classify paired-end reads from <u>%1</u> and <u>%2</u> with Kraken, use %3 database.")
                 .arg(readsProducerName).arg(pairedReadsProducerName).arg(databaseUrl);
     }

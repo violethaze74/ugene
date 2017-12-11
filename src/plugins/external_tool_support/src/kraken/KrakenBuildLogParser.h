@@ -19,27 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DATABASE_SIZE_RELATION_H_
-#define _U2_DATABASE_SIZE_RELATION_H_
+#ifndef _U2_KRAKEN_BUILD_LOG_PARSER_H_
+#define _U2_KRAKEN_BUILD_LOG_PARSER_H_
 
-#include <U2Lang/AttributeRelation.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 namespace U2 {
-namespace LocalWorkflow {
 
-class DatabaseSizeRelation : public ValuesRelation {
+class KrakenBuildLogParser : public ExternalToolLogParser {
+    Q_OBJECT
 public:
-    DatabaseSizeRelation(const QString &relatedAttributeId);
-
-    QVariant getAffectResult(const QVariant &influencingValue,
-                             const QVariant &dependentValue,
-                             DelegateTags *infTags,
-                             DelegateTags *depTags) const;
-
-    DatabaseSizeRelation *clone() const;
+    KrakenBuildLogParser();
 };
 
-}   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_DATABASE_SIZE_RELATION_H_
+#endif // _U2_KRAKEN_BUILD_LOG_PARSER_H_

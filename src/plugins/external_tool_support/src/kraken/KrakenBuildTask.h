@@ -19,27 +19,36 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DATABASE_SIZE_RELATION_H_
-#define _U2_DATABASE_SIZE_RELATION_H_
+#ifndef _U2_KRAKEN_BUILD_TASK_H_
+#define _U2_KRAKEN_BUILD_TASK_H_
 
-#include <U2Lang/AttributeRelation.h>
+#include <U2Core/ExternalToolRunTask.h>
+
+#include "KrakenBuildTaskSettings.h"
 
 namespace U2 {
-namespace LocalWorkflow {
 
-class DatabaseSizeRelation : public ValuesRelation {
+class KrakenBuildTask : public ExternalToolSupportTask {
+    Q_OBJECT
 public:
-    DatabaseSizeRelation(const QString &relatedAttributeId);
+    KrakenBuildTask(const KrakenBuildTaskSettings &settings);
 
-    QVariant getAffectResult(const QVariant &influencingValue,
-                             const QVariant &dependentValue,
-                             DelegateTags *infTags,
-                             DelegateTags *depTags) const;
+    const QString &getResultDatabaseUrl() const;
+    const KrakenBuildTaskSettings &getSettings() const;
 
-    DatabaseSizeRelation *clone() const;
+private:
+    void prepare();
+
+    void checkSettings();
+    QStringList getDownloadTaxonomyArguments() const;
+    QStringList getAddToLibraryArguments(const QString &additionalGenomeUrl) const;
+    QStringList getBuildArguments() const;
+    QStringList getCleanArguments() const;
+    QStringList getShrinkArguments() const;
+
+    const KrakenBuildTaskSettings settings;
 };
 
-}   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_DATABASE_SIZE_RELATION_H_
+#endif // _U2_KRAKEN_BUILD_TASK_H_

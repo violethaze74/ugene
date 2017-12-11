@@ -19,17 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_
-#define _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_
+#ifndef _U2_KRAKEN_BUILD_WORKER_FACTORY_H_
+#define _U2_KRAKEN_BUILD_WORKER_FACTORY_H_
 
 #include <U2Lang/LocalDomain.h>
 
 namespace U2 {
 namespace LocalWorkflow {
 
-class KrakenClassifyWorkerFactory : public DomainFactory {
+class KrakenBuildWorkerFactory : public DomainFactory {
 public:
-    KrakenClassifyWorkerFactory();
+    KrakenBuildWorkerFactory();
 
     Worker *createWorker(Actor *actor);
 
@@ -37,22 +37,27 @@ public:
 
     static const QString ACTOR_ID;
 
-    static const QString INPUT_PORT_ID;
-    static const QString INPUT_PAIRED_PORT_ID;
     static const QString OUTPUT_PORT_ID;
 
-    static const QString INPUT_DATA_ATTR_ID;
-    static const QString DATABASE_ATTR_ID;
-    static const QString QUICK_OPERATION_ATTR_ID;
-    static const QString MIN_HITS_NUMBER_ATTR_ID;
+    static const QString MODE_ATTR_ID;
+    static const QString INPUT_DATABASE_NAME_ATTR_ID;
+    static const QString NEW_DATABASE_NAME_ATTR_ID;
+    static const QString GENOMIC_LIBRARY_ATTR_ID;
+    static const QString SHRINK_LIMIT_ATTR_ID;
+    static const QString K_MER_LENGTH_ATTR_ID;
+    static const QString MINIMIZER_LENGTH_ATTR_ID;
+    static const QString MAXIMUM_DATABASE_SIZE_ATTR_ID;
+    static const QString SHRINK_BLOCK_OFFSET_ATTR_ID;
+    static const QString CLEAN_ATTR_ID;
+    static const QString WORK_ON_DISK_ATTR_ID;
+    static const QString JELLYFISH_HASH_SIZE_ATTR_ID;
     static const QString THREADS_NUMBER_ATTR_ID;
-    static const QString PRELOAD_DATABASE_ATTR_ID;
 
-    static const QString SINGLE_END_TEXT;
-    static const QString PAIRED_END_TEXT;
+    static const QString BUILD_MODE_TEXT;
+    static const QString SHRINK_MODE_TEXT;
 };
 
 }   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_
+#endif // _U2_KRAKEN_BUILD_WORKER_FACTORY_H_

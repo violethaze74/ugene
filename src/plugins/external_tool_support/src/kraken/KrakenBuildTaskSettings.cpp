@@ -19,27 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DATABASE_SIZE_RELATION_H_
-#define _U2_DATABASE_SIZE_RELATION_H_
-
-#include <U2Lang/AttributeRelation.h>
+#include "KrakenBuildTaskSettings.h"
 
 namespace U2 {
-namespace LocalWorkflow {
 
-class DatabaseSizeRelation : public ValuesRelation {
-public:
-    DatabaseSizeRelation(const QString &relatedAttributeId);
+const QString KrakenBuildTaskSettings::BUILD = "build";
+const QString KrakenBuildTaskSettings::SHRINK = "shrink";
 
-    QVariant getAffectResult(const QVariant &influencingValue,
-                             const QVariant &dependentValue,
-                             DelegateTags *infTags,
-                             DelegateTags *depTags) const;
+KrakenBuildTaskSettings::KrakenBuildTaskSettings()
+    : mode(BUILD),
+      shrinkSize(0),
+      kMerLength(31),
+      minimizerLength(15),
+      maximumDatabaseSize(0),
+      shrinkBlockOffset(1),
+      clean(true),
+      workOnDisk(false),
+      jellyfishHashSize(0),
+      threadsNumber(1)
+{
 
-    DatabaseSizeRelation *clone() const;
-};
+}
 
-}   // namespace LocalWorkflow
 }   // namespace U2
-
-#endif // _U2_DATABASE_SIZE_RELATION_H_

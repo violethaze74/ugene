@@ -76,8 +76,8 @@ private:
  * multi - allow to select several files. Ignored, if isPath is true.
  * isPath - if it is true, allows to select only existing directory. Otherwise, files can be selected (existing or not).
  * saveFile - if it is true, allows to select file to save. File can be existing or not. Ignored, if isPath or multi is true.
- * format - the format ID. It is using only if saveFile is true. The selected file will end with an appropriate extension.
- * noFilesMode - user can select files, but the directory will be commited as the selected item. There is no possibility to select the directory in thius mode, isPath is ignored.
+ * format - the format ID. It is used only if saveFile is true. The selected file will have an appropriate extension.
+ * noFilesMode - user can select files, but the directory will be commited as the selected item. It is not possible to select the directory in this mode, isPath is ignored.
  */
 class U2DESIGNER_EXPORT URLDelegate : public PropertyDelegate {
     Q_OBJECT

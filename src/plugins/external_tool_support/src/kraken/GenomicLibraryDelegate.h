@@ -19,40 +19,34 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_
-#define _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_
+#ifndef _U2_GENOMIC_LIBRARY_DELEGATE_H_
+#define _U2_GENOMIC_LIBRARY_DELEGATE_H_
 
-#include <U2Lang/LocalDomain.h>
+#include <U2Designer/DelegateEditors.h>
 
 namespace U2 {
 namespace LocalWorkflow {
 
-class KrakenClassifyWorkerFactory : public DomainFactory {
+class GenomicLibraryDelegate : public PropertyDelegate {
+    Q_OBJECT
 public:
-    KrakenClassifyWorkerFactory();
+    GenomicLibraryDelegate(QObject *parent = 0);
 
-    Worker *createWorker(Actor *actor);
+    QVariant getDisplayValue(const QVariant &value) const;
 
-    static void init();
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
 
-    static const QString ACTOR_ID;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const;
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 
-    static const QString INPUT_PORT_ID;
-    static const QString INPUT_PAIRED_PORT_ID;
-    static const QString OUTPUT_PORT_ID;
+    PropertyDelegate *clone();
 
-    static const QString INPUT_DATA_ATTR_ID;
-    static const QString DATABASE_ATTR_ID;
-    static const QString QUICK_OPERATION_ATTR_ID;
-    static const QString MIN_HITS_NUMBER_ATTR_ID;
-    static const QString THREADS_NUMBER_ATTR_ID;
-    static const QString PRELOAD_DATABASE_ATTR_ID;
-
-    static const QString SINGLE_END_TEXT;
-    static const QString PAIRED_END_TEXT;
+private slots:
+    void sl_commit();
 };
 
 }   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_KRAKEN_CLASSIFY_WORKER_FACTORY_H_
+#endif // _U2_GENOMIC_LIBRARY_DELEGATE_H_
