@@ -382,11 +382,24 @@ bool ClarkClassifyWorker::isReady() const {
     if (isDone()) {
         return false;
     }
+    const int hasMessage1 = input->hasMessage();
+    const bool ended1 = input->isEnded();
     if (!paired) {
-        return input->hasMessage() || input->isEnded();
+        return hasMessage1 || ended1;
     }
 
-    return (input->hasMessage() && pairedInput->hasMessage()) || (input->isEnded() && pairedInput->isEnded());
+    const int hasMessage2 = pairedInput->hasMessage();
+    const bool ended2 = pairedInput->isEnded();
+
+    if (hasMessage1 && hasMessage2) {
+        return true;
+    } else if (hasMessage1) {
+        return ended2;
+    } else if (hasMessage2) {
+        return ended1;
+    }
+
+    return ended1 && ended2;
 }
 
 Task * ClarkClassifyWorker::tick() {
@@ -412,7 +425,7 @@ Task * ClarkClassifyWorker::tick() {
         reportUrl = tmpDir + "/clark_raw_classification";
 
         ClarkClassifyTask *task = new ClarkClassifyTask(cfg, readsUrl, pairedReadsUrl, reportUrl);
-        task->addListeners(createLogListeners(2)); //fixme WTF???
+        task->addListeners(createLogListeners());
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
         return task;
     }

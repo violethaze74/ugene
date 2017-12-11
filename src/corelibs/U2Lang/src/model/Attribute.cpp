@@ -70,7 +70,7 @@ void Attribute::copy(const Attribute &other) {
     portRelations = other.portRelations;
 }
 
-Attribute::Attribute(const Attribute &other) {
+Attribute::Attribute(const Attribute &other) : Descriptor(other) {
     copy(other);
 }
 
