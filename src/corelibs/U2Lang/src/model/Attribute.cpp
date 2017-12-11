@@ -52,6 +52,8 @@ void Attribute::debugCheckAttributeId() const {
 }
 
 void Attribute::copy(const Attribute &other) {
+    this->Descriptor::operator =(other);
+
     type = other.type;
     required = other.required;
     value = other.value;
