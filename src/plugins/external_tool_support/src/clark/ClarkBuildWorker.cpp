@@ -47,6 +47,9 @@
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
+#include <U2Lang/Dataset.h>
+#include <U2Lang/URLAttribute.h>
+#include <U2Lang/URLContainer.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
@@ -54,6 +57,7 @@
 #include "ClarkSupport.h"
 #include "ClarkBuildWorker.h"
 #include "ClarkClassifyWorker.h"
+#include "../kraken/GenomicLibraryDelegate.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -113,7 +117,7 @@ void ClarkBuildWorkerFactory::init() {
 
         a << new Attribute( dbUrl, BaseTypes::STRING_TYPE(), true);
 
-        a << new Attribute( taxonomy, BaseTypes::STRING_TYPE(), true);
+        a << new URLAttribute( taxonomy, BaseTypes::URL_DATASETS_TYPE(), true);
         a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);
 
         Descriptor taxUrl(TAX_DIR, ClarkBuildWorker::tr("Taxdata URL"),
@@ -136,7 +140,7 @@ void ClarkBuildWorkerFactory::init() {
         DelegateTags tags;
         tags.set(DelegateTags::PLACEHOLDER_TEXT, L10N::required());
         delegates[DB_URL] = new URLDelegate(tags, "clark/database", false, true/*isPath*/);
-        delegates[TAXONOMY] = new URLDelegate(tags, "clark/taxonomy", true/*multi*/);
+        delegates[TAXONOMY] = new GenomicLibraryDelegate();//new URLDelegate(tags, "clark/taxonomy", true/*multi*/);
         delegates[TAX_DIR] = new URLDelegate(tags, "clark/taxdata", false, true/*isPath*/);
     }
 
@@ -173,17 +177,23 @@ ClarkBuildWorker::ClarkBuildWorker(Actor *a)
 void ClarkBuildWorker::init() {
     output = ports.value(OUTPUT_PORT);
     SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
+    SAFE_POINT(! getValue<QList<Dataset> >(TAXONOMY).isEmpty(), QString("Genomic library is empty"), );
 }
 
 Task * ClarkBuildWorker::tick() {
     if (!isDone()) {
         QString databaseUrl = getValue<QString>(DB_URL);
         int rank = getValue<int>(TAXONOMY_RANK);
-        QString genUrls = getValue<QString>(TAXONOMY);
+        QStringList genUrls;// = getValue<QString>(TAXONOMY).split(';');
         QString taxdataUrl = getValue<QString>(TAX_DIR);
+        const QList<Dataset> datasets = getValue<QList<Dataset> >(TAXONOMY);
+        DatasetFilesIterator it(datasets);
+        while(it.hasNext()) {
+            genUrls << it.getNextFile();
+        }
 
-        ClarkBuildTask *task = new ClarkBuildTask(databaseUrl, genUrls.split(';'), rank, taxdataUrl);
-        task->addListeners(createLogListeners(2)); //fixme WTF???
+        ClarkBuildTask *task = new ClarkBuildTask(databaseUrl, genUrls, rank, taxdataUrl);
+        task->addListeners(createLogListeners(1));
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
         setDone();
         return task;
@@ -199,6 +209,8 @@ void ClarkBuildWorker::sl_taskFinished(Task* t) {
     }
 
     const QString dbUrl = task->getDbUrl();
+    MessageMetadata metadata("Dataset 1");
+    context->getMetadataStorage().put(metadata);
 
     QVariantMap data;
     data[BaseSlots::URL_SLOT().getId()] = dbUrl;
@@ -210,7 +222,7 @@ void ClarkBuildWorker::sl_taskFinished(Task* t) {
 
 ClarkBuildTask::ClarkBuildTask(const QString &dbUrl, const QStringList &genomeUrls, int rank, const QString &taxdataUrl)
     : ExternalToolSupportTask(tr("Build Clark database"), TaskFlags_NR_FOSE_COSC),
-    dbUrl(dbUrl), genomeUrls(genomeUrls), taxdataUrl(taxdataUrl), rank(rank)
+    dbUrl(dbUrl), taxdataUrl(taxdataUrl), genomeUrls(genomeUrls), rank(rank)
 {
   GCOUNTER(cvar, tvar, "ClarkBuildTask");
 
@@ -219,13 +231,32 @@ ClarkBuildTask::ClarkBuildTask(const QString &dbUrl, const QStringList &genomeUr
   SAFE_POINT_EXT(!genomeUrls.isEmpty(), setError("genomic URLs is empty"), );
 }
 
+class ClarkBuildLogParser : public ExternalToolLogParser {
+public:
+    ClarkBuildLogParser() {}
+
+private:
+    bool isError(const QString &line) const {
+        foreach (const QString &wellKnownError, wellKnownErrors) {
+            if (line.contains(wellKnownError)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static const QStringList wellKnownErrors;
+};
+
+const QStringList ClarkBuildLogParser::wellKnownErrors("abort");
+
 void ClarkBuildTask::prepare() {
     algoLog.info("ClarkBuildTask " + genomeUrls.join(";"));
     const QString db("custom");// = QString("custom_%1").arg(rank);
     const QString reflist = dbUrl + "/.custom";
     QDir dir(dbUrl);
     if (!dir.mkpath(db)){
-        setError(tr("Failed to create database path: %1/%2").arg(dbUrl).arg(db));
+        setError(tr("Failed to create folder for CLARK database: %1/%2").arg(dbUrl).arg(db));
         return;
     }
     {
@@ -236,7 +267,7 @@ void ClarkBuildTask::prepare() {
     }
 
   QString toolName = ET_CLARK_buildScript;
-  QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolName, getArguments(), new ExternalToolLogParser()));
+  QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolName, getArguments(), new ClarkBuildLogParser()));
   CHECK_OP(stateInfo, );
   setListenerForTask(task.data());
   addSubTask(task.take());
