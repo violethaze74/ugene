@@ -105,6 +105,7 @@
 #include "cufflinks/GffreadWorker.h"
 #include "cutadapt/CutadaptSupport.h"
 #include "cutadapt/CutadaptWorker.h"
+#include "diamond/DiamondSupport.h"
 #include "fastqc/FastqcSupport.h"
 #include "fastqc/FastqcWorker.h"
 #include "hmmer/HmmerBuildWorker.h"
@@ -454,6 +455,8 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     etRegistry->registerEntry(new KrakenSupport(KrakenSupport::BUILD_TOOL));
     etRegistry->registerEntry(new KrakenSupport(KrakenSupport::CLASSIFY_TOOL));
     etRegistry->registerEntry(new KrakenSupport(KrakenSupport::TRANSLATE_TOOL));
+
+    etRegistry->registerEntry(new DiamondSupport(DiamondSupport::TOOL_NAME));
 
     if (AppContext::getMainWindow()) {
         ExternalToolSupportAction* formatDBAction= new ExternalToolSupportAction(tr("BLAST make database..."), this, QStringList(ET_FORMATDB));
