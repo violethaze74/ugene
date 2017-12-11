@@ -45,23 +45,19 @@ namespace LocalWorkflow {
 
 const QString KrakenClassifyWorkerFactory::ACTOR_ID = "classify-reads-with-kraken";
 
-const QString KrakenClassifyWorkerFactory::INPUT_PORT_ID = "in";
+const QString KrakenClassifyWorkerFactory::INPUT_PORT_ID = "in1";
 const QString KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID = "in2";
 const QString KrakenClassifyWorkerFactory::OUTPUT_PORT_ID = "out";
 
-const QString KrakenClassifyWorkerFactory::INPUT_READS_URL_SLOT_ID = "reads-url";
-const QString KrakenClassifyWorkerFactory::INPUT_PAIRED_READS_URL_SLOT_ID = "reads2-url";
-const QString KrakenClassifyWorkerFactory::OUTPUT_REPORT_URL_SLOT_ID = "classification-url";
-
+const QString KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID = "input-data";
 const QString KrakenClassifyWorkerFactory::DATABASE_ATTR_ID = "database";
-const QString KrakenClassifyWorkerFactory::SEQUENCING_READS_ATTR_ID = "sequencing-reads";
 const QString KrakenClassifyWorkerFactory::QUICK_OPERATION_ATTR_ID = "quick-operation";
 const QString KrakenClassifyWorkerFactory::MIN_HITS_NUMBER_ATTR_ID = "min-hits";
 const QString KrakenClassifyWorkerFactory::THREADS_NUMBER_ATTR_ID = "threads";
 const QString KrakenClassifyWorkerFactory::PRELOAD_DATABASE_ATTR_ID = "preload-database";
 
-const QString KrakenClassifyWorkerFactory::SINGLE_END_TEXT = QObject::tr("Single-end");
-const QString KrakenClassifyWorkerFactory::PAIRED_END_TEXT = QObject::tr("Paired-end");
+const QString KrakenClassifyWorkerFactory::SINGLE_END_TEXT = QObject::tr("SE reads or scaffolds");
+const QString KrakenClassifyWorkerFactory::PAIRED_END_TEXT = QObject::tr("PE reads");
 
 KrakenClassifyWorkerFactory::KrakenClassifyWorkerFactory()
     : DomainFactory(ACTOR_ID)
@@ -76,14 +72,26 @@ Worker *KrakenClassifyWorkerFactory::createWorker(Actor *actor) {
 void KrakenClassifyWorkerFactory::init() {
     QList<PortDescriptor *> ports;
     {
+        const Descriptor inSlotDesc(BaseSlots::URL_SLOT().getId(),
+                                    KrakenClassifyPrompter::tr("Input URL(s)"),
+                                    KrakenClassifyPrompter::tr("Input URL(s)."));
+
+        const Descriptor inPairedSlotDesc(BaseSlots::URL_SLOT().getId(),
+                                          KrakenClassifyPrompter::tr("Input URL(s)"),
+                                          KrakenClassifyPrompter::tr("Input URL(s)."));
+
+        const Descriptor outSlotDesc(BaseSlots::URL_SLOT().getId(),
+                                     KrakenClassifyPrompter::tr("Classification result URL"),
+                                     KrakenClassifyPrompter::tr("Classification result URL."));
+
         QMap<Descriptor, DataTypePtr> inType;
-        inType[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();
+        inType[inSlotDesc] = BaseTypes::STRING_TYPE();
 
         QMap<Descriptor, DataTypePtr> inPairedType;
-        inPairedType[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();
+        inPairedType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
 
         QMap<Descriptor, DataTypePtr> outType;
-        outType[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();
+        outType[outSlotDesc] = BaseTypes::STRING_TYPE();
 
         const Descriptor inPortDesc(INPUT_PORT_ID,
                                     KrakenClassifyPrompter::tr("Input sequences 1"),
@@ -96,22 +104,24 @@ void KrakenClassifyWorkerFactory::init() {
         const Descriptor outPortDesc(OUTPUT_PORT_ID, KrakenClassifyPrompter::tr("Classified sequences"), KrakenClassifyPrompter::tr("Classification report URL."));
 
         ports << new PortDescriptor(inPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
-        ports << new PortDescriptor(inPairedPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "paired-in", inPairedType)), true /*input*/);
+        ports << new PortDescriptor(inPairedPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-paired-in", inPairedType)), true /*input*/);
         ports << new PortDescriptor(outPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
     }
 
     QList<Attribute *> attributes;
     {
+        const Descriptor inputDataDesc(INPUT_DATA_ATTR_ID, KrakenClassifyPrompter::tr("Input data"),
+                                             KrakenClassifyPrompter::tr("The input data that should be classified are provided through the input ports of the element.\n\n"
+                                                                        "To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\". The element has one input port in this case. Pass URL(s) to the corresponding files to this port.\n\n"
+                                                                        "To classify paired-end (PE) reads, set the value to \"PE reads\". The element has two input ports in this case. Pass URL(s) to the \"left\" and \"right\" reads to the first and the second port correspondingly.\n\n"
+                                                                        "The input files should be in FASTA or FASTQ formats."));
+
         const Descriptor databaseDesc(DATABASE_ATTR_ID, KrakenClassifyPrompter::tr("Database"),
                                       KrakenClassifyPrompter::tr("A path to the folder with the Kraken database files."));
 
-        const Descriptor sequencingReadsDesc(SEQUENCING_READS_ATTR_ID, KrakenClassifyPrompter::tr("Sequencing reads"),
-                                             KrakenClassifyPrompter::tr("Choose between single-end (SE) and paired-end (PE) sequencing.\n\n"
-                                                                        "After that, use the input port(s) of the element to pass URL(s) of the corresponding FASTQ files with the sequencing reads."));
-
         const Descriptor quickOperationDesc(QUICK_OPERATION_ATTR_ID, KrakenClassifyPrompter::tr("Quick operation"),
                                             KrakenClassifyPrompter::tr("Stop classification of an input read after the certain number of hits.\n\n"
-                                                                       "The value can be specified in the “Minimum number of hits” parameter."));
+                                                                       "The value can be specified in the \"Minimum number of hits\" parameter."));
 
         const Descriptor minHitsDesc(MIN_HITS_NUMBER_ATTR_ID, KrakenClassifyPrompter::tr("Minimum number of hits"),
                                      KrakenClassifyPrompter::tr("The number of hits that are required to declare an input sequence classified.\n\n"
@@ -123,13 +133,13 @@ void KrakenClassifyWorkerFactory::init() {
         const Descriptor preloadDatabaseDesc(PRELOAD_DATABASE_ATTR_ID, KrakenClassifyPrompter::tr("Preload database"),
                                              KrakenClassifyPrompter::tr("Load the Kraken database into RAM (--preload).\n\n"
                                                                         "This can be useful to improve the speed. The database size should be less than the RAM size.\n\n"
-                                                                        "The other option to improve the speed is to store the database on ramdisk. Set this parameter to “False” in this case."));
+                                                                        "The other option to improve the speed is to store the database on ramdisk. Set this parameter to \"False\" in this case."));
 
-        Attribute *databaseAttribute =  new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), true);
+        Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, KrakenClassifyTaskSettings::SINGLE_END);
+        attributes << inputDataAttribute;
+
+        Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), true);
         attributes << databaseAttribute;
-
-        Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), false, KrakenClassifyTaskSettings::SINGLE_END);
-        attributes << sequencingReadsAttribute;
 
         attributes << new Attribute(quickOperationDesc, BaseTypes::BOOL_TYPE(), false, false);
 
@@ -139,26 +149,26 @@ void KrakenClassifyWorkerFactory::init() {
         attributes << new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), false, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
         attributes << new Attribute(preloadDatabaseDesc, BaseTypes::BOOL_TYPE(), false, true);
 
-        sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(INPUT_PAIRED_PORT_ID, QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
+        inputDataAttribute->addPortRelation(PortRelationDescriptor(INPUT_PAIRED_PORT_ID, QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
         minHitsAttribute->addRelation(new VisibilityRelation(QUICK_OPERATION_ATTR_ID, "true"));
         databaseAttribute->addRelation(new DatabaseSizeRelation(PRELOAD_DATABASE_ATTR_ID));
     }
 
     QMap<QString, PropertyDelegate *> delegates;
     {
-        delegates[DATABASE_ATTR_ID] = new URLDelegate("", "kraken/database", false, true, false);
+        QVariantMap inputDataMap;
+        inputDataMap[SINGLE_END_TEXT] = KrakenClassifyTaskSettings::SINGLE_END;
+        inputDataMap[PAIRED_END_TEXT] = KrakenClassifyTaskSettings::PAIRED_END;
+        delegates[INPUT_DATA_ATTR_ID] = new ComboBoxDelegate(inputDataMap);
 
-        QVariantMap sequencingReadsMap;
-        sequencingReadsMap[SINGLE_END_TEXT] = KrakenClassifyTaskSettings::SINGLE_END;
-        sequencingReadsMap[PAIRED_END_TEXT] = KrakenClassifyTaskSettings::PAIRED_END;
-        delegates[SEQUENCING_READS_ATTR_ID] = new ComboBoxDelegate(sequencingReadsMap);
+        delegates[DATABASE_ATTR_ID] = new URLDelegate("", "kraken/database", false, true, false);
 
         delegates[QUICK_OPERATION_ATTR_ID] = new ComboBoxWithBoolsDelegate();
 
-        QVariantMap threadsMap;
-        threadsMap["minimum"] = 1;
-        threadsMap["maximum"] = QThread::idealThreadCount();
-        delegates[THREADS_NUMBER_ATTR_ID] = new SpinBoxDelegate(threadsMap);
+        QVariantMap threadsProperties;
+        threadsProperties["minimum"] = 1;
+        threadsProperties["maximum"] = QThread::idealThreadCount();
+        delegates[THREADS_NUMBER_ATTR_ID] = new SpinBoxDelegate(threadsProperties);
 
         delegates[PRELOAD_DATABASE_ATTR_ID] = new ComboBoxWithBoolsDelegate();
     }

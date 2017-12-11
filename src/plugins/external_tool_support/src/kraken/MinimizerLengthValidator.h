@@ -19,27 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DATABASE_SIZE_RELATION_H_
-#define _U2_DATABASE_SIZE_RELATION_H_
+#ifndef _U2_MINIMIZER_LENGTH_VALIDATOR_H_
+#define _U2_MINIMIZER_LENGTH_VALIDATOR_H_
 
-#include <U2Lang/AttributeRelation.h>
+#include <U2Lang/ActorValidator.h>
 
 namespace U2 {
-namespace LocalWorkflow {
+namespace Workflow {
 
-class DatabaseSizeRelation : public ValuesRelation {
+class MinimizerLengthValidator : public ActorValidator {
 public:
-    DatabaseSizeRelation(const QString &relatedAttributeId);
-
-    QVariant getAffectResult(const QVariant &influencingValue,
-                             const QVariant &dependentValue,
-                             DelegateTags *infTags,
-                             DelegateTags *depTags) const;
-
-    DatabaseSizeRelation *clone() const;
+    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
 };
 
-}   // namespace LocalWorkflow
+}   // namespace Workflow
 }   // namespace U2
 
-#endif // _U2_DATABASE_SIZE_RELATION_H_
+#endif // _U2_MINIMIZER_LENGTH_VALIDATOR_H_

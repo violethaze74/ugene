@@ -122,7 +122,26 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/hmmer/PhmmerSearchTask.h \
            src/hmmer/PhmmerSearchTaskTest.h \
            src/java/JavaSupport.h \
+           src/kraken/DatabaseSizeRelation.h \
+           src/kraken/DatabaseValidator.h \
+           src/kraken/GenomicLibraryDelegate.h \
+           src/kraken/GenomicLibraryDialog.h \
+           src/kraken/GenomicLibraryPropertyWidget.h \
+           src/kraken/KrakenBuildLogParser.h \
+           src/kraken/KrakenBuildPrompter.h \
+           src/kraken/KrakenBuildTask.h \
+           src/kraken/KrakenBuildTaskSettings.h \
+           src/kraken/KrakenBuildWorker.h \
+           src/kraken/KrakenBuildWorkerFactory.h \
+           src/kraken/KrakenClassifyLogParser.h \
+           src/kraken/KrakenClassifyPrompter.h \
+           src/kraken/KrakenClassifyTask.h \
+           src/kraken/KrakenClassifyTaskSettings.h \
+           src/kraken/KrakenClassifyWorker.h \
+           src/kraken/KrakenClassifyWorkerFactory.h \
            src/kraken/KrakenSupport.h \
+           src/kraken/KrakenTranslateLogParser.h \
+           src/kraken/MinimizerLengthValidator.h \
            src/macs/MACSSettings.h \
            src/macs/MACSSupport.h \
            src/macs/MACSTask.h \
@@ -193,16 +212,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/vcftools/VcfConsensusSupport.h \
            src/vcftools/VcfConsensusSupportTask.h \
            src/vcftools/VcfConsensusWorker.h \
-           src/vcfutils/VcfutilsSupport.h \
-    src/kraken/KrakenClassifyTaskSettings.h \
-    src/kraken/KrakenClassifyTask.h \
-    src/kraken/KrakenClassifyPrompter.h \
-    src/kraken/KrakenClassifyWorker.h \
-    src/kraken/KrakenClassifyWorkerFactory.h \
-    src/kraken/DatabaseValidator.h \
-    src/kraken/DatabaseSizeRelation.h \
-    src/kraken/KrakenTranslateLogParser.h \
-    src/kraken/KrakenClassifyLogParser.h
+           src/vcfutils/VcfutilsSupport.h
 
 FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/blast_plus/AlignToReferenceBlastDialog.ui \
@@ -221,6 +231,7 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/hmmer/HmmerBuildDialog.ui \
          src/hmmer/HmmerSearchDialog.ui \
          src/hmmer/PhmmerSearchDialog.ui \
+         src/kraken/GenomicLibraryDialog.ui \
          src/mafft/MAFFTSupportRunDialog.ui \
          src/mrbayes/MrBayesDialog.ui \
          src/phyml/PhyMLDialog.ui \
@@ -349,7 +360,26 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/hmmer/PhmmerSearchTask.cpp \
            src/hmmer/PhmmerSearchTaskTest.cpp \
            src/java/JavaSupport.cpp \
+           src/kraken/DatabaseSizeRelation.cpp \
+           src/kraken/DatabaseValidator.cpp \
+           src/kraken/GenomicLibraryDelegate.cpp \
+           src/kraken/GenomicLibraryDialog.cpp \
+           src/kraken/GenomicLibraryPropertyWidget.cpp \
+           src/kraken/KrakenBuildLogParser.cpp \
+           src/kraken/KrakenBuildPrompter.cpp \
+           src/kraken/KrakenBuildTask.cpp \
+           src/kraken/KrakenBuildTaskSettings.cpp \
+           src/kraken/KrakenBuildWorker.cpp \
+           src/kraken/KrakenBuildWorkerFactory.cpp \
+           src/kraken/KrakenClassifyLogParser.cpp \
+           src/kraken/KrakenClassifyPrompter.cpp \
+           src/kraken/KrakenClassifyTask.cpp \
+           src/kraken/KrakenClassifyTaskSettings.cpp \
+           src/kraken/KrakenClassifyWorker.cpp \
+           src/kraken/KrakenClassifyWorkerFactory.cpp \
            src/kraken/KrakenSupport.cpp \
+           src/kraken/KrakenTranslateLogParser.cpp \
+           src/kraken/MinimizerLengthValidator.cpp \
            src/macs/MACSSettings.cpp \
            src/macs/MACSSupport.cpp \
            src/macs/MACSTask.cpp \
@@ -420,16 +450,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/vcftools/VcfConsensusSupport.cpp \
            src/vcftools/VcfConsensusSupportTask.cpp \
            src/vcftools/VcfConsensusWorker.cpp \
-           src/vcfutils/VcfutilsSupport.cpp \
-    src/kraken/KrakenClassifyTaskSettings.cpp \
-    src/kraken/KrakenClassifyTask.cpp \
-    src/kraken/KrakenClassifyWorker.cpp \
-    src/kraken/KrakenClassifyPrompter.cpp \
-    src/kraken/KrakenClassifyWorkerFactory.cpp \
-    src/kraken/DatabaseValidator.cpp \
-    src/kraken/DatabaseSizeRelation.cpp \
-    src/kraken/KrakenTranslateLogParser.cpp \
-    src/kraken/KrakenClassifyLogParser.cpp
+           src/vcfutils/VcfutilsSupport.cpp
 
 RESOURCES += external_tool_support.qrc
 TRANSLATIONS += transl/english.ts \

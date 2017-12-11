@@ -30,7 +30,7 @@
 namespace U2 {
 namespace Workflow {
 
-bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const {
+bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
     const QString databaseUrl = actor->getParameter(LocalWorkflow::KrakenClassifyWorkerFactory::DATABASE_ATTR_ID)->getAttributeValueWithoutScript<QString>();
     const bool doesDatabaseDirExist = QFileInfo(databaseUrl).exists();
     CHECK_EXT(doesDatabaseDirExist,

@@ -56,8 +56,9 @@ void KrakenClassifyWorker::init() {
     SAFE_POINT(NULL != pairedInput, QString("Port with id '%1' is NULL").arg(KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID), );
     SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(KrakenClassifyWorkerFactory::OUTPUT_PORT_ID), );
 
-    pairedReadsInput = (getValue<QString>(KrakenClassifyWorkerFactory::SEQUENCING_READS_ATTR_ID) == KrakenClassifyTaskSettings::PAIRED_END);
+    pairedReadsInput = (getValue<QString>(KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID) == KrakenClassifyTaskSettings::PAIRED_END);
 
+    // FIXME: the second port is not taken into account
     output->addComplement(input);
     input->addComplement(output);
 }

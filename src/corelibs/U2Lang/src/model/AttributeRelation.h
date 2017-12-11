@@ -44,6 +44,7 @@ class U2LANG_EXPORT AttributeRelation {
 public:
     AttributeRelation(const QString &relatedAttrId)
         : relatedAttrId(relatedAttrId) {}
+    virtual ~AttributeRelation() {}
 
     /**
      * Updates tags of delegates
@@ -60,7 +61,7 @@ public:
      */
     virtual bool valueChangingRelation() const {return true;}
 
-    virtual ~AttributeRelation() {}
+    virtual AttributeRelation *clone() const = 0;
 
 protected:
     QString relatedAttrId;
@@ -79,6 +80,8 @@ public:
     virtual RelationType getType() const {return VISIBILITY;}
     virtual bool valueChangingRelation() const {return false;}
 
+    VisibilityRelation *clone() const;
+
 private:
     QVariantList visibilityValues;
 };
@@ -95,6 +98,8 @@ public:
         DelegateTags *infTags, DelegateTags *depTags) const;
     virtual void updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const;
     virtual RelationType getType() const {return FILE_EXTENSION;}
+
+    FileExtensionRelation *clone() const;
 };
 
 /**
@@ -109,6 +114,9 @@ public:
     virtual QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
         DelegateTags *infTags, DelegateTags *depTags) const;
     virtual void updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const;
+
+    ValuesRelation *clone() const;
+
 private:
     QVariantMap dependencies;
 };

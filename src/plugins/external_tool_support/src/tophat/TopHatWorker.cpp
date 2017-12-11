@@ -905,6 +905,10 @@ RelationType BowtieFilesRelation::getType() const {
     return CUSTOM_VALUE_CHANGER;
 }
 
+BowtieFilesRelation *BowtieFilesRelation::clone() const {
+    return new BowtieFilesRelation(*this);
+}
+
 static QString getBowtieIndexName(const QString &, const QString &fileName, const QRegExp &dirRx, const QRegExp &revRx) {
     QString indexName;
     if (revRx.exactMatch(fileName)) {
@@ -958,6 +962,10 @@ QVariant BowtieVersionRelation::getAffectResult(const QVariant &influencingValue
 
 RelationType BowtieVersionRelation::getType() const {
     return CUSTOM_VALUE_CHANGER;
+}
+
+BowtieVersionRelation *BowtieVersionRelation::clone() const {
+    return new BowtieVersionRelation(*this);
 }
 
 } // namespace LocalWorkflow

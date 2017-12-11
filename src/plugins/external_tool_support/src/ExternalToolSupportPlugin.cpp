@@ -116,6 +116,7 @@
 #include "hmmer/HmmerSupport.h"
 #include "hmmer/HmmerTests.h"
 #include "java/JavaSupport.h"
+#include "kraken/KrakenBuildWorkerFactory.h"
 #include "kraken/KrakenClassifyWorkerFactory.h"
 #include "kraken/KrakenSupport.h"
 #include "macs/MACSSupport.h"
@@ -682,6 +683,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::ClarkClassifyWorkerFactory::init();
     LocalWorkflow::HmmerBuildWorkerFactory::init();
     LocalWorkflow::HmmerSearchWorkerFactory::init();
+    LocalWorkflow::KrakenBuildWorkerFactory::init();
     LocalWorkflow::KrakenClassifyWorkerFactory::init();
 }
 

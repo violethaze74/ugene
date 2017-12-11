@@ -19,27 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DATABASE_SIZE_RELATION_H_
-#define _U2_DATABASE_SIZE_RELATION_H_
-
-#include <U2Lang/AttributeRelation.h>
+#include "KrakenBuildPrompter.h"
+#include "KrakenBuildWorkerFactory.h"
+#include "MinimizerLengthValidator.h"
 
 namespace U2 {
-namespace LocalWorkflow {
+namespace Workflow {
 
-class DatabaseSizeRelation : public ValuesRelation {
-public:
-    DatabaseSizeRelation(const QString &relatedAttributeId);
+bool MinimizerLengthValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
+    const int minimizerLength = actor->getParameter(LocalWorkflow::KrakenBuildWorkerFactory::MINIMIZER_LENGTH_ATTR_ID)->getAttributeValueWithoutScript<int>();
+    const int kMerLength = actor->getParameter(LocalWorkflow::KrakenBuildWorkerFactory::K_MER_LENGTH_ATTR_ID)->getAttributeValueWithoutScript<int>();
+    if (minimizerLength >= kMerLength) {
+        problemList << Problem(LocalWorkflow::KrakenBuildPrompter::tr("Minimizer length has to be less than K-mer length"), actor->getId());
+        return false;
+    }
 
-    QVariant getAffectResult(const QVariant &influencingValue,
-                             const QVariant &dependentValue,
-                             DelegateTags *infTags,
-                             DelegateTags *depTags) const;
+    return true;
+}
 
-    DatabaseSizeRelation *clone() const;
-};
-
-}   // namespace LocalWorkflow
+}   // namespace Workflow
 }   // namespace U2
-
-#endif // _U2_DATABASE_SIZE_RELATION_H_
