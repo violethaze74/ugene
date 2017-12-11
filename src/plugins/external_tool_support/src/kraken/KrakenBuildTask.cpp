@@ -51,7 +51,7 @@ void KrakenBuildTask::prepare() {
     if (settings.mode == KrakenBuildTaskSettings::BUILD) {
         int listenerNumber = 0;
 
-        ExternalToolRunTask *downloadTaxonomyTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getDownloadTaxonomyArguments(), new KrakenBuildLogParser(), "", QStringList() << "/Users/atiunov/root/qwe/1/links/");
+        ExternalToolRunTask *downloadTaxonomyTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getDownloadTaxonomyArguments(), new KrakenBuildLogParser());
         coreLog.error(QString("Listener was set: %1").arg(listenerNumber));
         setListenerForTask(downloadTaxonomyTask, listenerNumber++);
         newSubTasks << downloadTaxonomyTask;
