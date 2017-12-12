@@ -64,7 +64,8 @@ KrakenSupport::KrakenSupport(const QString &name)
 
 QStringList KrakenSupport::getAdditionalPaths() const {
     if (BUILD_TOOL == name) {
-        return QStringList() << QFileInfo(path).dir().absolutePath() + "/jellyfish";
+        return QStringList() << QFileInfo(path).dir().absolutePath() + "/jellyfish"
+                             << QFileInfo(path).dir().absolutePath() + "/util";
     }
     return QStringList();
 }
