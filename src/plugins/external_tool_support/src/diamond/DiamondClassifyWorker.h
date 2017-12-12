@@ -19,33 +19,47 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
-#define _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
+#ifndef _U2_DIAMOND_CLASSIFY_WORKER_H_
+#define _U2_DIAMOND_CLASSIFY_WORKER_H_
 
-#include <QString>
+#include <U2Lang/LocalDomain.h>
+
+#include "DiamondClassifyTaskSettings.h"
 
 namespace U2 {
+namespace LocalWorkflow {
 
-class KrakenClassifyTaskSettings {
+class DiamondClassifyWorker : public BaseWorker {
+    Q_OBJECT
 public:
-    KrakenClassifyTaskSettings();
+    DiamondClassifyWorker(Actor* actor);
 
-    QString databaseUrl;
-    QString readsUrl;
-    QString pairedReadsUrl;
-    bool quickOperation;
-    int minNumberOfHits;
-    int numberOfThreads;
-    bool preloadDatabase;
-    bool pairedReads;
+    void init();
+    Task *tick();
+    void cleanup();
+    bool isReady() const;
 
-    QString rawClassificationUrl;
-    QString translatedClassificationUrl;
+private slots:
+    void sl_taskFinished(Task *task);
 
-    static const QString SINGLE_END;
-    static const QString PAIRED_END;
+private:
+    bool isReadyToRun() const;
+    bool dataFinished() const;
+    QString checkPairedReads() const;
+
+    DiamondClassifyTaskSettings getSettings(U2OpStatus &os);
+    QString getClassificationFileName(const Message &message) const;
+
+    IntegralBus *input;
+    IntegralBus *pairedInput;
+    IntegralBus *output;
+
+    bool pairedReadsInput;
+
+    static const QString DIAMOND_DIR;
 };
 
+}   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
+#endif // _U2_DIAMOND_CLASSIFY_WORKER_H_

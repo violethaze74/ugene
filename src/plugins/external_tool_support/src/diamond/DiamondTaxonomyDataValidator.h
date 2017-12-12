@@ -19,33 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
-#define _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
+#ifndef _U2_DIAMOND_TAXONOMY_DATA_VALIDATOR_H_
+#define _U2_DIAMOND_TAXONOMY_DATA_VALIDATOR_H_
 
-#include <QString>
+#include <U2Lang/ActorValidator.h>
 
 namespace U2 {
+namespace Workflow {
 
-class KrakenClassifyTaskSettings {
+class DiamondTaxonomyDataValidator : public ActorValidator {
 public:
-    KrakenClassifyTaskSettings();
-
-    QString databaseUrl;
-    QString readsUrl;
-    QString pairedReadsUrl;
-    bool quickOperation;
-    int minNumberOfHits;
-    int numberOfThreads;
-    bool preloadDatabase;
-    bool pairedReads;
-
-    QString rawClassificationUrl;
-    QString translatedClassificationUrl;
-
-    static const QString SINGLE_END;
-    static const QString PAIRED_END;
+    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
 };
 
+}   // namespace Workflow
 }   // namespace U2
 
-#endif // _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
+#endif // _U2_DIAMOND_TAXONOMY_DATA_VALIDATOR_H_

@@ -19,33 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
-#define _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
+#ifndef _U2_DIAMOND_CLASSIFY_PROMPTER_H_
+#define _U2_DIAMOND_CLASSIFY_PROMPTER_H_
 
-#include <QString>
+#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
+namespace LocalWorkflow {
 
-class KrakenClassifyTaskSettings {
+class DiamondClassifyPrompter : public PrompterBase<DiamondClassifyPrompter> {
+    Q_OBJECT
 public:
-    KrakenClassifyTaskSettings();
+    DiamondClassifyPrompter(Actor *actor);
 
-    QString databaseUrl;
-    QString readsUrl;
-    QString pairedReadsUrl;
-    bool quickOperation;
-    int minNumberOfHits;
-    int numberOfThreads;
-    bool preloadDatabase;
-    bool pairedReads;
-
-    QString rawClassificationUrl;
-    QString translatedClassificationUrl;
-
-    static const QString SINGLE_END;
-    static const QString PAIRED_END;
+private:
+    QString composeRichDoc();
 };
 
-}   // namespace U2
+}   // namespace LocalWorkflow
+}   // namespace u2
 
-#endif // _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
+#endif // _U2_DIAMOND_CLASSIFY_PROMPTER_H_
