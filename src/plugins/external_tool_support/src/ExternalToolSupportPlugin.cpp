@@ -106,6 +106,7 @@
 #include "cutadapt/CutadaptSupport.h"
 #include "cutadapt/CutadaptWorker.h"
 #include "diamond/DiamondSupport.h"
+#include "diamond/DiamondClassifyWorkerFactory.h"
 #include "fastqc/FastqcSupport.h"
 #include "fastqc/FastqcWorker.h"
 #include "hmmer/HmmerBuildWorker.h"
@@ -680,6 +681,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::HmmerSearchWorkerFactory::init();
     LocalWorkflow::KrakenBuildWorkerFactory::init();
     LocalWorkflow::KrakenClassifyWorkerFactory::init();
+    LocalWorkflow::DiamondClassifyWorkerFactory::init();
 }
 
 //////////////////////////////////////////////////////////////////////////

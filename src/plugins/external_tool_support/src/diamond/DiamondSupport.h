@@ -34,6 +34,13 @@ public:
     DiamondSupport(const QString &name);
 
     static const QString TOOL_NAME;
+
+    static const QString TAXONOMY_DATA;
+    static const QString TAXON_PROTEIN_MAP;     // TODO: move to another place
+    static const QString TAXON_NODES;
+
+private:
+    void registerTaxonData();
 };
 
 }   // namespace U2

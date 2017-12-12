@@ -19,13 +19,20 @@
  * MA 02110-1301, USA.
  */
 
+#include <QFileInfo>
+
 #include <U2Core/AppContext.h>
+#include <U2Core/DataPathRegistry.h>
 
 #include "DiamondSupport.h"
 
 namespace U2 {
 
 const QString DiamondSupport::TOOL_NAME = "diamond";
+
+const QString DiamondSupport::TAXONOMY_DATA = "taxonomy_data";
+const QString DiamondSupport::TAXON_PROTEIN_MAP = "prot.accession2taxid.gz";
+const QString DiamondSupport::TAXON_NODES = "nodes.dmp";
 
 DiamondSupport::DiamondSupport(const QString &name)
     : ExternalTool(name)
@@ -40,7 +47,19 @@ DiamondSupport::DiamondSupport(const QString &name)
     validMessage = "diamond version ";
     versionRegExp = QRegExp("diamond version (\\d+\\.\\d+\\.\\d+)");
     executableFileName = "diamond";
-    description = tr("\"<i>Diamond</i>\" is accelerated BLAST compatible local sequence aligner.");
+    description = tr("\"<i>DIAMOND</i>\" is accelerated BLAST compatible local sequence aligner.");
+
+    registerTaxonData();
+}
+
+void DiamondSupport::registerTaxonData() {
+    U2DataPathRegistry* dpr = AppContext::getDataPathRegistry();
+    const QString taxonomyPath = QFileInfo(QString(PATH_PREFIX_DATA) + ":ngs_classification/taxonomy").absoluteFilePath();
+    U2DataPath *dataPath = new U2DataPath(TAXONOMY_DATA, taxonomyPath, tr("Taxonomy data from NCBI"));
+    bool ok = dpr->registerEntry(dataPath);
+    if (!ok) {
+        delete dataPath;
+    }
 }
 
 }   // namesapce U2
