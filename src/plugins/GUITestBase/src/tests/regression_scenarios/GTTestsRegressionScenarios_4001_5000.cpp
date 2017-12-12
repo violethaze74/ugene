@@ -743,6 +743,28 @@ GUI_TEST_CLASS_DEFINITION(test_4084) {
     CHECK_SET_ERR(NULL != annotationGroup, "Wrong annotations number");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4087) {
+    // 1. Open murine.gb
+    // 2. Open Find Pattern tab
+    // 3. Input pattern
+    // 4. Click Next a few times
+    // Expected state: the results are selected one by one from left to right, no random selection
+
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "U");
+    GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
+    GTGlobals::sleep(200);
+
+    QLabel *label = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "lblErrorMessage"));
+    
+    CHECK_SET_ERR(label->isVisible(), "Warning is not shown 1");
+    CHECK_SET_ERR(label->text().contains("Info"), "Warning is not shown 2");
+    CHECK_SET_ERR(!label->text().contains("Warning"), "Warning is shown");
+    
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4091) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
