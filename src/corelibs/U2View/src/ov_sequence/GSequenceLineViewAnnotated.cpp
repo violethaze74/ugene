@@ -231,7 +231,7 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
         }
         QList<AnnotationSelectionData> selected = selectAnnotationByCoord(p);
         annotationEvent = !selected.isEmpty();
-        if (annotationEvent) {
+        if (annotationEvent && cursor().shape() == Qt::ArrowCursor) {
             AnnotationSelectionData *asd = &selected.first();
             if (selected.size() > 1) {
                 AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();

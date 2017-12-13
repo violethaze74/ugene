@@ -31,6 +31,7 @@
 #include <U2Core/MultipleAlignment.h>
 
 #include <U2Gui/GScrollBar.h>
+#include <U2Gui/SelectionModificationHelper.h>
 
 #include "MaEditorSelection.h"
 #include "../MaEditor.h"
@@ -186,6 +187,9 @@ private slots:
     void sl_hScrollBarActionPerfermed();
 
 private:
+    void setBorderCursor(const QPoint& p);
+    void moveBorder(const Qt::CursorShape shape, const QPoint& p);
+
     int shiftRegion(int shift);
     QList<U2MsaGap> findRemovableGapColumns(int& shift);
     QList<U2MsaGap> findCommonGapColumns(int& numOfColumns);
@@ -319,6 +323,7 @@ protected:
     MaEditorSelection   baseSelection; // selection with rows indexes in absolute coordinates
 
     int                 maVersionBeforeShifting;
+    SelectionModificationHelper::MovableSide movableBorder;
 
     QList<U2MsaGap>     ctrlModeGapModel;
     bool                isCtrlPressed;

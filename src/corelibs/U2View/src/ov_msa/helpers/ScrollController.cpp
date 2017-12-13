@@ -62,6 +62,10 @@ QPoint ScrollController::getScreenPosition() const {
     return QPoint(hScrollBar->value(), vScrollBar->value());
 }
 
+QPoint ScrollController::getGlobalMousePosition(const QPoint& mousePos) const {
+    return mousePos + getScreenPosition();
+}
+
 void ScrollController::updateHorizontalScrollBar() {
     updateHorizontalScrollBarPrivate();
     emit si_visibleAreaChanged();

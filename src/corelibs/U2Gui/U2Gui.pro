@@ -86,6 +86,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/ScriptHighlighter.h \
            src/util/SearchBox.h \
            src/util/SearchGenbankSequenceDialogController.h \
+           src/util/SelectionModificationHelper.h \
            src/util/SeqPasterWidgetController.h \
            src/util/SequenceTextEdit.h \
            src/util/SuggestCompleter.h \
@@ -241,6 +242,7 @@ SOURCES += src/MainWindow.cpp \
            src/util/ScriptHighlighter.cpp \
            src/util/SearchBox.cpp \
            src/util/SearchGenbankSequenceDialogController.cpp \
+           src/util/SelectionModificationHelper.cpp \
            src/util/SeqPasterWidgetController.cpp \
            src/util/SequenceTextEdit.cpp \
            src/util/SuggestCompleter.cpp \
