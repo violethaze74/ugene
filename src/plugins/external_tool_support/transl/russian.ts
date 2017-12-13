@@ -3055,7 +3055,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="173"/>
         <source>&lt;u&gt;Filtered by quality (%1):&lt;/u&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Прочтения, отфильтрованные по качеству</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="217"/>
@@ -5738,7 +5738,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="334"/>
         <source>Mapped reads (%1):</source>
-        <translation type="unfinished"></translation>
+        <translation>Выровненные прочтения (%1):</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="340"/>
@@ -5749,7 +5749,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="345"/>
         <source>Filtered by low similarity (%1):</source>
-        <translation type="unfinished"></translation>
+        <translation>Прочтения, отфильтрованные из-за недостаточного сходства (%1):</translation>
     </message>
 </context>
 <context>
