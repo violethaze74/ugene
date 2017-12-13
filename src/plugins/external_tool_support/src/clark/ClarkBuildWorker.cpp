@@ -129,12 +129,12 @@ void ClarkBuildWorkerFactory::init() {
     QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap rankMap;
-        rankMap["Species"] = ClarkClassifySettings::Species;
-        rankMap["Genus"] = ClarkClassifySettings::Genus;
-        rankMap["Family"] = ClarkClassifySettings::Family;
-        rankMap["Order"] = ClarkClassifySettings::Order;
-        rankMap["Class"] = ClarkClassifySettings::Class;
-        rankMap["Phylum"] = ClarkClassifySettings::Phylum;
+        rankMap[ClarkBuildWorker::tr("Species")] = ClarkClassifySettings::Species;
+        rankMap[ClarkBuildWorker::tr("Genus")] = ClarkClassifySettings::Genus;
+        rankMap[ClarkBuildWorker::tr("Family")] = ClarkClassifySettings::Family;
+        rankMap[ClarkBuildWorker::tr("Order")] = ClarkClassifySettings::Order;
+        rankMap[ClarkBuildWorker::tr("Class")] = ClarkClassifySettings::Class;
+        rankMap[ClarkBuildWorker::tr("Phylum")] = ClarkClassifySettings::Phylum;
         delegates[TAXONOMY_RANK] = new ComboBoxDelegate(rankMap);
 
         DelegateTags tags;
@@ -158,6 +158,7 @@ void ClarkBuildWorkerFactory::init() {
     localDomain->registerEntry(new ClarkBuildWorkerFactory());
 }
 
+// FIXME unused ???
 void ClarkBuildWorkerFactory::cleanup() {
     delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -171,13 +172,11 @@ void ClarkBuildWorkerFactory::cleanup() {
 ClarkBuildWorker::ClarkBuildWorker(Actor *a)
 :BaseWorker(a), output(NULL)
 {
-
 }
 
 void ClarkBuildWorker::init() {
     output = ports.value(OUTPUT_PORT);
     SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
-    SAFE_POINT(! getValue<QList<Dataset> >(TAXONOMY).isEmpty(), QString("Genomic library is empty"), );
 }
 
 Task * ClarkBuildWorker::tick() {
@@ -214,7 +213,7 @@ void ClarkBuildWorker::sl_taskFinished(Task* t) {
 
     QVariantMap data;
     data[BaseSlots::URL_SLOT().getId()] = dbUrl;
-    output->put(Message(output->getBusType(), data));
+    output->put(Message(output->getBusType(), data, metadata.getId()));
     context->getMonitor()->addOutputFile(dbUrl, getActor()->getId());
 
     algoLog.trace(tr("Built Clark database"));
@@ -226,9 +225,12 @@ ClarkBuildTask::ClarkBuildTask(const QString &dbUrl, const QStringList &genomeUr
 {
   GCOUNTER(cvar, tvar, "ClarkBuildTask");
 
-  SAFE_POINT_EXT(!dbUrl.isEmpty(), setError("Db URL is empty"), );
-  SAFE_POINT_EXT(!taxdataUrl.isEmpty(), setError("Taxdata URL is empty"), );
-  SAFE_POINT_EXT(!genomeUrls.isEmpty(), setError("genomic URLs is empty"), );
+  SAFE_POINT_EXT(!dbUrl.isEmpty(), setError(tr("CLARK database URL is undefined")), );
+  SAFE_POINT_EXT(!taxdataUrl.isEmpty(), setError(tr("Taxdata URL is undefined")), );
+  SAFE_POINT_EXT(!genomeUrls.isEmpty(), setError(tr("Genomic library set is empty")), );
+  SAFE_POINT_EXT(rank >= 0 && rank <= 5, setError(tr("Failed to recognize the rank. Please provide a number between 0 and 5, according to the following:\n"
+                                                     "0: species, 1: genus, 2: family, 3: order, 4:class, and 5: phylum.")), );
+
 }
 
 class ClarkBuildLogParser : public ExternalToolLogParser {
@@ -274,16 +276,6 @@ void ClarkBuildTask::prepare() {
 }
 
 QStringList ClarkBuildTask::getArguments() {
-  // TODO: taxonomy is not processed
-
-//    QVariantMap rankMap;
-//    rankMap[ClarkClassifySettings::Species] = "--species";
-//    rankMap[ClarkClassifySettings::Genus] = "--genus";
-//    rankMap[ClarkClassifySettings::Family] = "--family";
-//    rankMap[ClarkClassifySettings::Order] = "--order";
-//    rankMap[ClarkClassifySettings::Class] = "--class";
-//    rankMap[ClarkClassifySettings::Phylum] = "--phylum";
-
 
   QStringList arguments;
 

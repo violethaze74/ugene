@@ -32,21 +32,24 @@ namespace LocalWorkflow {
 
 class ClarkClassifySettings {
 public:
-    enum Tool {
-        CLARK, CLARK_L
-    };
+    static const QString TOOL_DEFAULT;
+    static const QString TOOL_LIGHT;
+    static const QString TOOL_SPACED;
 
     enum Rank {
-        Species, Genus, Family, Order, Class, Phylum
+        // NB: values follow Clark definitions!
+        Species=0, Genus, Family, Order, Class, Phylum
     };
 
     enum Mode {
         // NB: values follow Clark definitions!
-        Full, Default, Express, Spectrum
+        Full=0, Default, Express, Spectrum
     };
 
-    QString databaseUrl;
+    ClarkClassifySettings();
 
+    QString databaseUrl;
+    QString tool;
     int gap;
     int factor;
     int minFreqTarget;
@@ -55,7 +58,6 @@ public:
     bool extOut;
     bool preloadDatabase;
     Mode mode;
-    Tool tool;
 };
 
 //////////////////////////////////////////////////
@@ -124,6 +126,5 @@ private:
 } //U2
 
 Q_DECLARE_METATYPE(U2::LocalWorkflow::ClarkClassifySettings::Mode)
-Q_DECLARE_METATYPE(U2::LocalWorkflow::ClarkClassifySettings::Tool)
 
 #endif //_U2_CLARK_WORKER_H_

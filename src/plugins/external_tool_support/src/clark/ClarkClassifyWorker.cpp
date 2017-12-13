@@ -74,7 +74,7 @@ static const QString PAIRED_INPUT_SLOT = BaseSlots::URL_SLOT().getId();
 static const QString OUTPUT_PORT("out");
 static const QString OUTPUT_SLOT("classification-url");
 
-static const QString TOOL_ID("tool-id");
+static const QString TOOL_VARIANT("tool-variant");
 static const QString DB_URL("db-url");
 static const QString TAXONOMY("taxonomy");
 static const QString TAXONOMY_RANK("taxonomy-rank");
@@ -171,7 +171,7 @@ void ClarkClassifyWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor tool(TOOL_ID, ClarkClassifyWorker::tr("Classification tool"),
+        Descriptor tool(TOOL_VARIANT, ClarkClassifyWorker::tr("Classification tool"),
             ClarkClassifyWorker::tr("Use CLARK-l on workstations with limited memory (i.e., “l” for light), this software tool provides precise classification on small metagenomes. It works with a sparse or ''light'' database (up to 4 GB of RAM) while still performing ultra accurate and fast results."
                                     "<br>Use CLARK on powerful workstations, it requires a significant amount of RAM to run with large database (e.g. all bacterial genomes from NCBI/RefSeq)."));
 
@@ -239,20 +239,20 @@ void ClarkClassifyWorkerFactory::init() {
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), false, SINGLE_END);
         sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(PAIRED_INPUT_PORT, QVariantList() << PAIRED_END));
         a << sequencingReadsAttribute;
-        a << new Attribute( tool, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::CLARK_L);
+        a << new Attribute( tool, BaseTypes::STRING_TYPE(), false, ClarkClassifySettings::TOOL_LIGHT);
         a << new Attribute( dbUrl, BaseTypes::STRING_TYPE(), true);
 //        a << new Attribute( taxonomy, BaseTypes::STRING_TYPE(), false, "Default");
 //        a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);
         Attribute *klenAttr = new Attribute( kLength, BaseTypes::NUM_TYPE(), false, 31);
-        klenAttr->addRelation(new VisibilityRelation(TOOL_ID, QVariant(ClarkClassifySettings::CLARK)));
+        klenAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_DEFAULT)));
         a << klenAttr;
         a << new Attribute( kMinFreq, BaseTypes::NUM_TYPE(), false, 0);
         a << new Attribute( mode, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Default);
         Attribute *factorAttr = new Attribute( factor, BaseTypes::NUM_TYPE(), false, 2);
-        factorAttr->addRelation(new VisibilityRelation(TOOL_ID, QVariant(ClarkClassifySettings::CLARK)));
+        factorAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_DEFAULT)));
         a << factorAttr;
         Attribute *gapAttr = new Attribute( gap, BaseTypes::NUM_TYPE(), false, 4);
-        gapAttr->addRelation(new VisibilityRelation(TOOL_ID, QVariant(ClarkClassifySettings::CLARK_L)));
+        gapAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_LIGHT)));
         a << gapAttr;
         //a << new Attribute( outFile, BaseTypes::STRING_TYPE(), false, "results.csv");
         Attribute *extAttr = new Attribute(extendedOutput, BaseTypes::BOOL_TYPE(), false, false);
@@ -270,9 +270,10 @@ void ClarkClassifyWorkerFactory::init() {
         delegates[SEQUENCING_READS] = new ComboBoxDelegate(sequencingReadsMap);
 
         QVariantMap toolMap;
-        toolMap["CLARK"] = ClarkClassifySettings::CLARK;
-        toolMap["CLARK-l"] = ClarkClassifySettings::CLARK_L;
-        delegates[TOOL_ID] = new ComboBoxDelegate(toolMap);
+        toolMap["CLARK"] = ClarkClassifySettings::TOOL_DEFAULT;
+        toolMap["CLARK-light"] = ClarkClassifySettings::TOOL_LIGHT;
+        //toolMap["CLARK-spaced"] = ClarkClassifySettings::TOOL_SPACED; //FIXME spaced not supported yet
+        delegates[TOOL_VARIANT] = new ComboBoxDelegate(toolMap);
 
 //        QVariantMap rankMap;
 //        rankMap["Species"] = ClarkClassifySettings::Species;
@@ -282,6 +283,10 @@ void ClarkClassifyWorkerFactory::init() {
 //        rankMap["Class"] = ClarkClassifySettings::Class;
 //        rankMap["Phylum"] = ClarkClassifySettings::Phylum;
 //        delegates[TAXONOMY_RANK] = new ComboBoxDelegate(rankMap);
+//
+//        DelegateTags tags;
+//        tags.set(DelegateTags::PLACEHOLDER_TEXT, L10N::defaultStr());
+//        delegates[TAXONOMY] = new URLDelegate(tags, "clark/taxonomy", true, false, false);
 
         QVariantMap lenMap;
         lenMap["minimum"] = QVariant(2);
@@ -297,6 +302,7 @@ void ClarkClassifyWorkerFactory::init() {
         modeMap["Default"] = ClarkClassifySettings::Default;
         modeMap["Full"] = ClarkClassifySettings::Full;
         modeMap["Express"] = ClarkClassifySettings::Express;
+        //modeMap["Spectrum"] = ClarkClassifySettings::Spectrum; //FIXME spaced not supported yet
         delegates[MODE] = new ComboBoxDelegate(modeMap);
 
         QVariantMap factorMap;
@@ -319,10 +325,6 @@ void ClarkClassifyWorkerFactory::init() {
         DelegateTags tags;
         tags.set(DelegateTags::PLACEHOLDER_TEXT, L10N::required());
         delegates[DB_URL] = new URLDelegate(tags, "clark/database", false, true/*isPath*/);
-
-//        DelegateTags tags;
-//        tags.set(DelegateTags::PLACEHOLDER_TEXT, L10N::defaultStr());
-//        delegates[TAXONOMY] = new URLDelegate(tags, "clark/taxonomy", true, false, false);
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
@@ -338,6 +340,7 @@ void ClarkClassifyWorkerFactory::init() {
     localDomain->registerEntry(new ClarkClassifyWorkerFactory());
 }
 
+// FIXME unused ???
 void ClarkClassifyWorkerFactory::cleanup() {
     delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -374,8 +377,11 @@ void ClarkClassifyWorker::init() {
     cfg.minFreqTarget = getValue<int>(K_MIN_FREQ);
     cfg.kmerSize = getValue<int>(K_LENGTH);
     cfg.extOut = getValue<bool>(EXTEND_OUT);
-    cfg.mode = (ClarkClassifySettings::Mode)getValue<int>(MODE);
-    cfg.tool = (ClarkClassifySettings::Tool)getValue<int>(TOOL_ID);
+    cfg.mode = (ClarkClassifySettings::Mode)getValue<int>(MODE); // FIXME template did not work with enum type
+    cfg.tool = getValue<QString>(TOOL_VARIANT).toLower();
+
+    SAFE_POINT(cfg.mode >=ClarkClassifySettings::Full && cfg.mode <= ClarkClassifySettings::Spectrum,
+               tr("Unrecognized mode of execution, expected any of: 0 (full), 1 (default), 2 (express) or 3 (spectrum)"), );
 }
 
 bool ClarkClassifyWorker::isReady() const {
@@ -491,7 +497,7 @@ private:
     static const QStringList wellKnownErrors;
 };
 
-const QStringList ClarkLogParser::wellKnownErrors;
+const QStringList ClarkLogParser::wellKnownErrors("std::bad_alloc");
 
 ClarkClassifyTask::ClarkClassifyTask(const ClarkClassifySettings &settings, const QString &readsUrl, const QString &pairedReadsUrl, const QString &reportUrl)
     : ExternalToolSupportTask(tr("Classify reads with Clark"), TaskFlags_NR_FOSE_COSC),
@@ -507,10 +513,10 @@ ClarkClassifyTask::ClarkClassifyTask(const ClarkClassifySettings &settings, cons
 
 void ClarkClassifyTask::prepare() {
     QString toolName = ET_CLARK_L;
-    if (cfg.tool == ClarkClassifySettings::CLARK) {
+    if ( QString::compare(cfg.tool, ClarkClassifySettings::TOOL_DEFAULT, Qt::CaseInsensitive) == 0) {
         toolName = ET_CLARK;
-    } else if (cfg.tool != ClarkClassifySettings::CLARK_L) {
-        stateInfo.setError(tr("Unsupported CLARK tool. Only default and light variants are supported."));
+    } else if (QString::compare(cfg.tool, ClarkClassifySettings::TOOL_LIGHT, Qt::CaseInsensitive) != 0) {
+        stateInfo.setError(tr("Unsupported CLARK variant. Only default and light variants are supported."));
         return;
     }
     QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolName, getArguments(), new ClarkLogParser()));
@@ -520,20 +526,10 @@ void ClarkClassifyTask::prepare() {
 }
 
 QStringList ClarkClassifyTask::getArguments() {
-    // TODO: taxonomy is not processed
-
-//    QVariantMap rankMap;
-//    rankMap[ClarkClassifySettings::Species] = "--species";
-//    rankMap[ClarkClassifySettings::Genus] = "--genus";
-//    rankMap[ClarkClassifySettings::Family] = "--family";
-//    rankMap[ClarkClassifySettings::Order] = "--order";
-//    rankMap[ClarkClassifySettings::Class] = "--class";
-//    rankMap[ClarkClassifySettings::Phylum] = "--phylum";
-
 
     QStringList arguments;
 
-    arguments << "-D" << cfg.databaseUrl; //FIXME ??
+    arguments << "-D" << cfg.databaseUrl;
     arguments << "-T" << cfg.databaseUrl + "/targets.txt";
     arguments << "-R" << reportUrl;
     // CLARK appends suffix unconditionally
@@ -546,7 +542,7 @@ QStringList ClarkClassifyTask::getArguments() {
         arguments << "-O" << readsUrl;
     }
 
-    if (cfg.tool == ClarkClassifySettings::CLARK_L) {
+    if (QString::compare(cfg.tool, ClarkClassifySettings::TOOL_LIGHT, Qt::CaseInsensitive) == 0) {
         arguments << "-g" << QString::number(cfg.gap);
     } else {
         arguments << "-s" << QString::number(cfg.factor);
@@ -565,6 +561,16 @@ QStringList ClarkClassifyTask::getArguments() {
 
     return arguments;
 }
+
+ClarkClassifySettings::ClarkClassifySettings()
+    : tool(ClarkClassifySettings::TOOL_LIGHT), gap(4), factor(2), minFreqTarget(0), kmerSize(31), numberOfThreads(1),
+      extOut(false), preloadDatabase(false), mode(ClarkClassifySettings::Default)
+{
+}
+
+const QString ClarkClassifySettings::TOOL_DEFAULT("default");
+const QString ClarkClassifySettings::TOOL_LIGHT("light");
+const QString ClarkClassifySettings::TOOL_SPACED("spaced");
 
 } //LocalWorkflow
 } //U2
