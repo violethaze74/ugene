@@ -297,7 +297,7 @@ For every column selects the most rare symbol in the whole alignment with percen
     <message>
         <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmStrict.cpp" line="45"/>
         <source>Strict</source>
-        <translation>Строгая схема</translation>
+        <translation>Строгий</translation>
     </message>
 </context>
 <context>

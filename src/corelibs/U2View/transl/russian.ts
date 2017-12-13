@@ -4145,7 +4145,7 @@ Do you want to convert the files and run the aligner?</source>
     <message>
         <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="79"/>
         <source>Map reads to reference...</source>
-        <translation>Выравнивание ридов на референс...</translation>
+        <translation>Выравнивание прочтений на референсную последовательность...</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="85"/>
@@ -5226,7 +5226,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditorOffsetsView.cpp" line="70"/>
         <source>Show offsets</source>
-        <translation>Показывать положение</translation>
+        <translation>Показывать колонки с положением прочтений</translation>
     </message>
 </context>
 <context>
@@ -5849,7 +5849,7 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     <message>
         <location filename="../src/ov_msa/MaEditor.cpp" line="392"/>
         <source>Edit</source>
-        <translation>Редактировать</translation>
+        <translation>Редактирование</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MaEditor.cpp" line="397"/>
@@ -6150,12 +6150,12 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     <message>
         <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="282"/>
         <source>Undo</source>
-        <translation>Изменение назад</translation>
+        <translation>Отменить</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="286"/>
         <source>Redo</source>
-        <translation>Изменение вперёд</translation>
+        <translation>Повторить</translation>
     </message>
 </context>
 <context>
@@ -6405,12 +6405,12 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/McaEditor.cpp" line="210"/>
         <source>Reset zoom</source>
-        <translation>Приближение по умолчанию</translation>
+        <translation>Восстановить масштаб по умолчанию</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditor.cpp" line="215"/>
         <source>Show chromatograms</source>
-        <translation>Показать хроматограммы</translation>
+        <translation>Показывать хроматограммы</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditor.cpp" line="222"/>
@@ -6420,7 +6420,7 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/McaEditor.cpp" line="226"/>
         <source>Open &quot;Consensus&quot; tab on the options panel</source>
-        <translation>Открыть консенсусную вкладку на панели опций</translation>
+        <translation>Открыть вкладку панели опций с настройками консенсуса</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditor.cpp" line="230"/>
@@ -6450,7 +6450,7 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/McaEditor.cpp" line="294"/>
         <source>Edit</source>
-        <translation>Редактировать</translation>
+        <translation>Редактирование</translation>
     </message>
 </context>
 <context>
@@ -6458,12 +6458,12 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/McaEditorNameList.cpp" line="48"/>
         <source>Rename read</source>
-        <translation>Переименовать рид</translation>
+        <translation>Переименовать прочтение</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditorNameList.cpp" line="51"/>
         <source>Remove read</source>
-        <translation>Удалить рид</translation>
+        <translation>Удалить прочтение</translation>
     </message>
 </context>
 <context>
@@ -6481,7 +6481,7 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="69"/>
         <source>Show/hide trace</source>
-        <translation>Показать/скрыть след</translation>
+        <translation>Показывать/скрывать отдельные сигналы</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="78"/>
@@ -6491,7 +6491,7 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="83"/>
         <source>Replace character/gap</source>
-        <translation>Переписать символ/пробел</translation>
+        <translation>Заменить символ/пробел</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="85"/>
@@ -6501,17 +6501,17 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="90"/>
         <source>Remove all columns of gaps</source>
-        <translation>Удалить все столбцы пробелов</translation>
+        <translation>Удалить все столбцы из пробелов</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="96"/>
         <source>Trim left end</source>
-        <translation>Отсечь левый конец</translation>
+        <translation>Отсечь конец прочтения слева</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="102"/>
         <source>Trim right end</source>
-        <translation>Отсечь правый конец</translation>
+        <translation>Отсечь конец прочтения справа</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="108"/>
@@ -6543,7 +6543,7 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/McaEditorStatusBar.cpp" line="52"/>
         <source>ReadPos %1 / %2</source>
-        <translation>Поз. рида %1 / %2</translation>
+        <translation>Поз. прочт. %1 / %2</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditorStatusBar.cpp" line="53"/>
@@ -6716,12 +6716,12 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/UndoRedoFramework.cpp" line="45"/>
         <source>Undo</source>
-        <translation>Изменение назад</translation>
+        <translation>Отменить</translation>
     </message>
     <message>
         <location filename="../src/UndoRedoFramework.cpp" line="51"/>
         <source>Redo</source>
-        <translation>Изменение вперёд</translation>
+        <translation>Повторить</translation>
     </message>
 </context>
 <context>

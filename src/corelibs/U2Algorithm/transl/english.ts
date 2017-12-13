@@ -363,7 +363,7 @@ For every column selects the most rare symbol in the whole alignment with percen
     <message>
         <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="203"/>
         <source>Simple extended</source>
-        <translation type="unfinished"></translation>
+        <translation>Простой с расширенным алфавитом</translation>
     </message>
 </context>
 <context>

@@ -11,12 +11,12 @@
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="26"/>
         <source>Reference</source>
-        <translation>Референс</translation>
+        <translation>Референсная последовательность</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="14"/>
         <source>Map Sanger Reads to Reference</source>
-        <translation>Выравнивание Сэнгеровских ридов на референс</translation>
+        <translation>Выравнивание данных секвенирования по Сэнгеру</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="38"/>
@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="54"/>
         <source>Reads</source>
-        <translation>Риды</translation>
+        <translation>Прочтения</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="79"/>
@@ -52,17 +52,17 @@
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="114"/>
         <source>Mapping min similarity</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимальное сходство при выравнивании</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="134"/>
         <source>Trimming quality threshold</source>
-        <translation>Порог качества отсечения</translation>
+        <translation>Порог качества для обрезания концов</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="141"/>
         <source>Read name in result alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя прочтения в выравнивании</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="162"/>
@@ -2891,7 +2891,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="57"/>
         <source>Sequence name from file</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя последовательности в файле</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="58"/>
@@ -3083,12 +3083,12 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="261"/>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя файла</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="262"/>
         <source>Sequence name from file</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя последовательности в файле</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="279"/>
@@ -3141,7 +3141,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="366"/>
         <source>Select File(s) with Read(s)</source>
-        <translation>Выбрать риды</translation>
+        <translation>Выбрать прочтения</translation>
     </message>
 </context>
 <context>
@@ -4796,12 +4796,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="468"/>
         <source>Map reads to reference...</source>
-        <translation>Выравнивание ридов на референс...</translation>
+        <translation>Выравнивание прочтений на референсную последовательность...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="493"/>
         <source>Reads de novo assembly (with %1)...</source>
-        <translation>Сборка ридов de novo (при помощи %1)...</translation>
+        <translation>Сборка прочтений de novo (при помощи %1)...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="478"/>
@@ -5690,7 +5690,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="109"/>
         <source>Mapping min similarity</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимальное сходство при выравнивании</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="110"/>
@@ -5700,7 +5700,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="113"/>
         <source>Read name in result alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя прочтения в выравнивании</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="114"/>
