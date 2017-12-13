@@ -3039,7 +3039,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="96"/>
         <source>Map Sanger reads to reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание данных секвенирования по Сэнгеру</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="113"/>
@@ -5723,17 +5723,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="259"/>
         <source>Map to reference</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="332"/>
         <source>Details</source>
-        <translation type="unfinished"></translation>
+        <translation>Детальная информация</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="333"/>
         <source>Reference sequence:</source>
-        <translation type="unfinished"></translation>
+        <translation>Референсная последовательность:</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="334"/>
@@ -5744,7 +5744,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="340"/>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="347"/>
         <source>similarity</source>
-        <translation type="unfinished"></translation>
+        <translation>сходство</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="345"/>

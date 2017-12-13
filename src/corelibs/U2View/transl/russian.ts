@@ -6113,7 +6113,7 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     <message>
         <location filename="../src/ov_msa/MaEditorStatusBar.cpp" line="134"/>
         <source>Alignment object is not locked</source>
-        <translation>Объект выравнивания рвзблокирован</translation>
+        <translation>Объект выравнивания разблокирован</translation>
     </message>
 </context>
 <context>
@@ -6125,7 +6125,7 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     <message>
         <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="191"/>
         <source>Consensus:</source>
-        <translation>Консенсус:</translation>
+        <translation>Консенсусная последовательность:</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="248"/>
