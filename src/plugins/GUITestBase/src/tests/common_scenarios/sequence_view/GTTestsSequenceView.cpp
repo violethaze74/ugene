@@ -1189,6 +1189,9 @@ GUI_TEST_CLASS_DEFINITION(test_0034){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rulers" << "Show Custom Rulers"));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
     GTGlobals::sleep(500);
+//    Set focus on tree
+	GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+	GTMouseDriver::click();
     second = GTWidget::getImage(os, panView);
     CHECK_SET_ERR(init == second, "ruler not hidden");
 //    Remove ruler
@@ -2110,7 +2113,7 @@ GUI_TEST_CLASS_DEFINITION(test_0065) {
     CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
     GTWidget::click(os, wrapButton);
 
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    //GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
     for (int i = 0; i < 5; i++) {
