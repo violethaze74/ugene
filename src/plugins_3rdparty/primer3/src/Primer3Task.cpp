@@ -1002,10 +1002,24 @@ SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& 
     annotationData->setStrand(strand);
 
     annotationData->qualifiers.append(U2Qualifier("tm", QString::number(primer.getMeltingTemperature())));
-    annotationData->qualifiers.append(U2Qualifier("gc%", QString::number(primer.getGcContent())));
     annotationData->qualifiers.append(U2Qualifier("any", QString::number(0.01*primer.getSelfAny())));
     annotationData->qualifiers.append(U2Qualifier("3'", QString::number(0.01*primer.getSelfEnd())));
     annotationData->qualifiers.append(U2Qualifier("product_size", QString::number(productSize)));
+
+    //recalculate gc content
+    QByteArray primerSequence;
+    foreach(const U2Region &region, annotationData->getRegions()) {
+        primerSequence.append(seqObj->getSequence(region, stateInfo).seq);
+    }
+
+    int gcCounter = 0;
+    foreach(QChar c, primerSequence) {
+        if (c.toUpper() == 'G' || c.toUpper() == 'C') {
+            gcCounter++;
+        }
+    }
+    double gcContentPercentage = ((double)gcCounter / primerSequence.size()) * 100;
+    annotationData->qualifiers.append(U2Qualifier("gc%", QString::number(gcContentPercentage)));
 
     return annotationData;
 }
