@@ -179,8 +179,8 @@ void KrakenClassifyWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new KrakenClassifyPrompter(NULL));
-    proto->addExternalTool(ET_KRAKEN_CLASSIFY);
-    proto->addExternalTool(ET_KRAKEN_TRANSLATE);
+    proto->addExternalTool(KrakenSupport::CLASSIFY_TOOL);
+    proto->addExternalTool(KrakenSupport::TRANSLATE_TOOL);
     proto->setValidator(new DatabaseValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(KrakenClassifyPrompter::tr("NGS: Reads Classification"), proto);     // TODO: replace the category name with a constant after extracting to a separate plugin
 

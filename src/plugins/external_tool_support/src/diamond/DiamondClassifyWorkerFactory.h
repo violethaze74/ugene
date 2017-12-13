@@ -19,33 +19,37 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
-#define _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
+#ifndef _U2_DIAMOND_CLASSIFY_WORKER_FACTORY_H_
+#define _U2_DIAMOND_CLASSIFY_WORKER_FACTORY_H_
 
-#include <QString>
+#include <U2Lang/LocalDomain.h>
 
 namespace U2 {
+namespace LocalWorkflow {
 
-class KrakenClassifyTaskSettings {
+class DiamondClassifyWorkerFactory : public DomainFactory {
 public:
-    KrakenClassifyTaskSettings();
+    DiamondClassifyWorkerFactory();
 
-    QString databaseUrl;
-    QString readsUrl;
-    QString pairedReadsUrl;
-    bool quickOperation;
-    int minNumberOfHits;
-    int numberOfThreads;
-    bool preloadDatabase;
-    bool pairedReads;
+    Worker *createWorker(Actor *actor);
 
-    QString rawClassificationUrl;
-    QString translatedClassificationUrl;
+    static void init();
 
-    static const QString SINGLE_END;
-    static const QString PAIRED_END;
+    static const QString ACTOR_ID;
+
+    static const QString INPUT_PORT_ID;
+    static const QString INPUT_PAIRED_PORT_ID;
+    static const QString OUTPUT_PORT_ID;
+    static const QString OUTPUT_SLOT_ID;
+
+    static const QString INPUT_DATA_ATTR_ID;
+    static const QString DATABASE_ATTR_ID;
+
+    static const QString SINGLE_END_TEXT;
+    static const QString PAIRED_END_TEXT;
 };
 
+}   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
+#endif // _U2_DIAMOND_CLASSIFY_WORKER_FACTORY_H_

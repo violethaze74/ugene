@@ -19,33 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
-#define _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
+#ifndef _U2_DIAMOND_CLASSIFY_LOG_PARSER_H_
+#define _U2_DIAMOND_CLASSIFY_LOG_PARSER_H_
 
-#include <QString>
+#include <U2Core/ExternalToolRunTask.h>
 
 namespace U2 {
 
-class KrakenClassifyTaskSettings {
+class DiamondClassifyLogParser : public ExternalToolLogParser {
 public:
-    KrakenClassifyTaskSettings();
-
-    QString databaseUrl;
-    QString readsUrl;
-    QString pairedReadsUrl;
-    bool quickOperation;
-    int minNumberOfHits;
-    int numberOfThreads;
-    bool preloadDatabase;
-    bool pairedReads;
-
-    QString rawClassificationUrl;
-    QString translatedClassificationUrl;
-
-    static const QString SINGLE_END;
-    static const QString PAIRED_END;
+    DiamondClassifyLogParser();
 };
 
 }   // namespace U2
 
-#endif // _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
+#endif // _U2_DIAMOND_CLASSIFY_LOG_PARSER_H_

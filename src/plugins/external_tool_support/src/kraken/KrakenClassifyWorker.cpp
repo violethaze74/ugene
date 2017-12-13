@@ -42,7 +42,8 @@ KrakenClassifyWorker::KrakenClassifyWorker(Actor *actor)
     : BaseWorker(actor, false),
       input(NULL),
       pairedInput(NULL),
-      output(NULL)
+      output(NULL),
+      pairedReadsInput(false)
 {
 
 }

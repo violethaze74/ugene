@@ -19,33 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
-#define _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
+#ifndef _U2_DIAMOND_SUPPORT_H_
+#define _U2_DIAMOND_SUPPORT_H_
 
-#include <QString>
+#include <U2Core/ExternalToolRegistry.h>
 
 namespace U2 {
 
-class KrakenClassifyTaskSettings {
+#define ET_DIAMOND DiamondSupport::DIAMOND_TOOL
+
+class DiamondSupport : public ExternalTool {
+    Q_OBJECT
 public:
-    KrakenClassifyTaskSettings();
+    DiamondSupport(const QString &name);
 
-    QString databaseUrl;
-    QString readsUrl;
-    QString pairedReadsUrl;
-    bool quickOperation;
-    int minNumberOfHits;
-    int numberOfThreads;
-    bool preloadDatabase;
-    bool pairedReads;
+    static const QString TOOL_NAME;
 
-    QString rawClassificationUrl;
-    QString translatedClassificationUrl;
+    static const QString TAXONOMY_DATA;
+    static const QString TAXON_PROTEIN_MAP;     // TODO: move to another place
+    static const QString TAXON_NODES;
 
-    static const QString SINGLE_END;
-    static const QString PAIRED_END;
+private:
+    void registerTaxonData();
 };
 
 }   // namespace U2
 
-#endif // _U2_KRAKEN_CLASSIFY_TASK_SETTINGS_H_
+#endif // _U2_DIAMOND_SUPPORT_H_
