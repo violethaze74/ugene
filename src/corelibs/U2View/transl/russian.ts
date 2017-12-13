@@ -6556,7 +6556,7 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/McaEditorWgt.cpp" line="71"/>
         <source>Reference %1:</source>
-        <translation>Референс %1:</translation>
+        <translation>Последовательность %1:</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditorWgt.cpp" line="150"/>
