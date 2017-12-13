@@ -1073,7 +1073,7 @@ Probably the data is too big.</source>
     <message>
         <location filename="../src/ov_msa/General/McaGeneralTabOptionsPanelWidget.ui" line="52"/>
         <source>Sequence number:</source>
-        <translation>Число последовательностей:</translation>
+        <translation>Число прочтений:</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/General/McaGeneralTabOptionsPanelWidget.ui" line="59"/>
@@ -1437,7 +1437,7 @@ Double-click to collapse the branch</source>
         <location filename="../src/ov_msa/General/MSAGeneralTabFactory.cpp" line="62"/>
         <location filename="../src/ov_msa/General/McaGeneralTabFactory.cpp" line="59"/>
         <source>General</source>
-        <translation>Основные</translation>
+        <translation>Общая информация</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/Highlighting/MSAHighlightingTabFactory.cpp" line="55"/>
