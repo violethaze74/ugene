@@ -1029,7 +1029,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(endRO == RO && endLO == LO, "end bookmark offsets aren't equal to the expected");
 
 //     7. Delete Start bookmark
-    GTUtilsBookmarksTreeView::deleteBookmark(os, "end bookmark");
+    GTUtilsBookmarksTreeView::deleteBookmark(os, "start bookmark");
 
 //     Expected state: start bookmark isn't present
     QTreeWidgetItem *startBookmark = GTUtilsBookmarksTreeView::findItem(os, "start bookmark", GTGlobals::FindOptions(false));
@@ -1176,8 +1176,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_3) {
 //     2. Create bookmark. Rename "New bookmark" to "start bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [m] HIV-1", "start bookmark");
 
-    const int startRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int startLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int startPos = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
 
 //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 600));
@@ -1190,8 +1189,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_3) {
 //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [m] HIV-1", "middle bookmark");
 
-    const int midRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int midLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int midPos = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
 
 //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1000));
@@ -1203,30 +1201,26 @@ GUI_TEST_CLASS_DEFINITION(test_0008_3) {
 //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [m] HIV-1", "end bookmark");
 
-    const int endRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int endLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int endPos = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
 
 //     Expected state: clicking on each bookmark will recall corresponding MSA position
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "start bookmark");
     GTGlobals::sleep(500);
 
-    int RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    int LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(startRO == RO && startLO == LO, "start bookmark offsets aren't equal to the expected");
+    int pos = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    CHECK_SET_ERR(startPos == pos, "start bookmark offsets aren't equal to the expected");
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "middle bookmark");
     GTGlobals::sleep(500);
 
-    RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(midRO == RO && midLO == LO, "middle bookmark offsets aren't equal to the expected");
+    pos = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    CHECK_SET_ERR(midPos == pos, "middle bookmark offsets aren't equal to the expected");
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "end bookmark");
     GTGlobals::sleep(500);
 
-    RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(endRO == RO && endLO == LO, "end bookmark offsets aren't equal to the expected");
+    pos = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    CHECK_SET_ERR(endPos == pos, "end bookmark offsets aren't equal to the expected");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
