@@ -1085,12 +1085,12 @@ GUI_TEST_CLASS_DEFINITION(test_0031_3){
 
 #define GET_ACTIONS QMenu *activePopupMenu = qobject_cast<QMenu *>(QApplication::activePopupWidget()); \
 CHECK_SET_ERR(NULL != activePopupMenu, "Active popup menu is NULL"); \
-QAction* direct1 = GTMenu::getMenuItem(os, activePopupMenu, "1 direct translation frame", true); \
-QAction* direct2 = GTMenu::getMenuItem(os, activePopupMenu, "2 direct translation frame", true); \
-QAction* direct3 = GTMenu::getMenuItem(os, activePopupMenu, "3 direct translation frame", true); \
-QAction* compl1 = GTMenu::getMenuItem(os, activePopupMenu, "1 complementary translation frame", true); \
-QAction* compl2 = GTMenu::getMenuItem(os, activePopupMenu, "2 complementary translation frame", true); \
-QAction* compl3 = GTMenu::getMenuItem(os, activePopupMenu, "3 complementary translation frame", true);
+QAction* direct1 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +1", true); \
+QAction* direct2 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +2", true); \
+QAction* direct3 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +3", true); \
+QAction* compl1 = GTMenu::getMenuItem(os, activePopupMenu, "Frame -1", true); \
+QAction* compl2 = GTMenu::getMenuItem(os, activePopupMenu, "Frame -2", true); \
+QAction* compl3 = GTMenu::getMenuItem(os, activePopupMenu, "Frame -3", true);
 
 GUI_TEST_CLASS_DEFINITION(test_0032){
 //    Open human_T1.fa

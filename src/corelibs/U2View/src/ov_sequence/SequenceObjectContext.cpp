@@ -54,14 +54,14 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
     clarifyAminoTT = false;
     const DNAAlphabet* al  = getAlphabet();
     if (al->isNucleic()) {
-        DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
+        DNATranslationRegistry* translationRegistry = AppContext::getDNATranslationRegistry();
         complTT = GObjectUtils::findComplementTT(seqObj->getAlphabet());
         aminoTT = GObjectUtils::findAminoTT(seqObj, true);
         clarifyAminoTT = aminoTT == NULL;
 
-        QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
+        QList<DNATranslation*> aminoTs = translationRegistry->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
         if (!aminoTs.empty()) {
-            aminoTT = aminoTT == NULL ? tr->getStandardGeneticCodeTranslation(al) : aminoTT;
+            aminoTT = aminoTT == NULL ? translationRegistry->getStandardGeneticCodeTranslation(al) : aminoTT;
             translations = new QActionGroup(this);
             foreach(DNATranslation* t, aminoTs) {
                 QAction* a = translations->addAction(t->getTranslationName());
@@ -74,11 +74,11 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
             visibleFrames = new QActionGroup(this);
             visibleFrames->setExclusive(false);
             for(int i = 0; i < 6; i++){
-                QAction* a;
-                if(i < 3){
-                    a = visibleFrames->addAction(QString("%1 direct translation frame").arg(i+1));
-                }else{
-                    a = visibleFrames->addAction(QString("%1 complementary translation frame").arg(i+1-3));
+                QAction* a = NULL;
+                if (i < 3) {
+                    a = visibleFrames->addAction(tr("Frame +%1").arg(i + 1));
+                } else {
+                    a = visibleFrames->addAction(tr("Frame -%1").arg(i + 1 - 3));
                 }
                 a->setCheckable(true);
                 a->setChecked(true);
