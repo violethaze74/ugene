@@ -29,6 +29,7 @@
 
 namespace U2 {
 
+const QString KrakenSupport::GROUP_NAME = "Kraken";
 const QString KrakenSupport::BUILD_TOOL = "kraken-build";
 const QString KrakenSupport::CLASSIFY_TOOL = "kraken";
 const QString KrakenSupport::TRANSLATE_TOOL = "kraken-translate";
@@ -36,13 +37,7 @@ const QString KrakenSupport::TRANSLATE_TOOL = "kraken-translate";
 KrakenSupport::KrakenSupport(const QString &name)
     : ExternalTool(name)
 {
-    if (NULL != AppContext::getMainWindow()) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
-
-    toolKitName = "Kraken";
+    toolKitName = GROUP_NAME;
 
     validationArguments << "--version";
     validMessage = "Kraken version ";
@@ -72,12 +67,12 @@ QStringList KrakenSupport::getAdditionalPaths() const {
 
 void KrakenSupport::initBuild() {
     executableFileName = "kraken-build";
-    description = tr("The \"<i>kraken-build</i>\" executable is used to build a Kraken database.");
+    description = tr("The tool is used to build a Kraken database.");
 }
 
 void KrakenSupport::initClassify() {
     executableFileName = "kraken";
-    description = tr("The \"<i>kraken</i>\" executable is used to classify a set of sequences. It does this by examining the k-mers within a read and querying a database with those k-mers.");
+    description = tr("The tool is used to classify a set of sequences. It does this by examining the k-mers within a read and querying a database with those k-mers.");
 }
 
 void KrakenSupport::initTranslate() {

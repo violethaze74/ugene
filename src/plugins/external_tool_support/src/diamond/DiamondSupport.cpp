@@ -37,12 +37,6 @@ const QString DiamondSupport::TAXON_NODES = "nodes.dmp";
 DiamondSupport::DiamondSupport(const QString &name)
     : ExternalTool(name)
 {
-    if (NULL != AppContext::getMainWindow()) {
-        icon = QIcon(":external_tool_support/images/cmdline.png");
-        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
-        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
-    }
-
     validationArguments << "--version";
     validMessage = "diamond version ";
     versionRegExp = QRegExp("diamond version (\\d+\\.\\d+\\.\\d+)");

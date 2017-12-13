@@ -24,7 +24,7 @@
 
 #include <U2Lang/LocalDomain.h>
 
-#include "KrakenClassifyTaskSettings.h"
+#include "KrakenClassifyTask.h"
 
 namespace U2 {
 namespace LocalWorkflow {

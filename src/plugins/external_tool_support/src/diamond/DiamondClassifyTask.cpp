@@ -19,18 +19,30 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/Counter.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "DiamondClassifyLogParser.h"
 #include "DiamondClassifyTask.h"
 #include "DiamondSupport.h"
 
 namespace U2 {
 
+const QString DiamondClassifyTaskSettings::SINGLE_END = "single-end";
+const QString DiamondClassifyTaskSettings::PAIRED_END = "paired-end";
+
+DiamondClassifyTaskSettings::DiamondClassifyTaskSettings()
+    : pairedReads(false)
+{
+
+}
+
+const QString DiamondClassifyTask::TAXONOMIC_CLASSIFICATION_OUTPUT_FORMAT = "102";  // from the DIAMOND manual
+
 DiamondClassifyTask::DiamondClassifyTask(const DiamondClassifyTaskSettings &settings)
     : ExternalToolSupportTask(tr("Classify sequences with DIAMOND"), TaskFlags_NR_FOSE_COSC),
       settings(settings)
 {
+    GCOUNTER(cvar, tvar, "DiamondClassifyTask");
     checkSettings();
     CHECK_OP(stateInfo, );
 }
@@ -40,7 +52,7 @@ const QString &DiamondClassifyTask::getClassificationUrl() const {
 }
 
 void DiamondClassifyTask::prepare() {
-    ExternalToolRunTask *classifyTask = new ExternalToolRunTask(DiamondSupport::TOOL_NAME, getArguments(), new DiamondClassifyLogParser());
+    ExternalToolRunTask *classifyTask = new ExternalToolRunTask(DiamondSupport::TOOL_NAME, getArguments(), new ExternalToolLogParser());
     setListenerForTask(classifyTask);
     addSubTask(classifyTask);
 }
@@ -59,7 +71,7 @@ QStringList DiamondClassifyTask::getArguments() const {
     QStringList arguments;
     arguments << "blastx";
     arguments << "-d" << settings.databaseUrl;
-    arguments << "-f" << "102";
+    arguments << "-f" << TAXONOMIC_CLASSIFICATION_OUTPUT_FORMAT;
     arguments << "--taxonmap" << settings.taxonMapUrl;
     arguments << "--taxonnodes" << settings.taxonNodesUrl;
     arguments << "-q" << settings.readsUrl;

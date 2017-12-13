@@ -24,9 +24,26 @@
 
 #include <U2Core/ExternalToolRunTask.h>
 
-#include "KrakenClassifyTaskSettings.h"
-
 namespace U2 {
+
+struct KrakenClassifyTaskSettings {
+    KrakenClassifyTaskSettings();
+
+    QString databaseUrl;
+    QString readsUrl;
+    QString pairedReadsUrl;
+    bool quickOperation;
+    int minNumberOfHits;
+    int numberOfThreads;
+    bool preloadDatabase;
+    bool pairedReads;
+
+    QString rawClassificationUrl;
+    QString translatedClassificationUrl;
+
+    static const QString SINGLE_END;
+    static const QString PAIRED_END;
+};
 
 class KrakenClassifyTask : public ExternalToolSupportTask {
     Q_OBJECT

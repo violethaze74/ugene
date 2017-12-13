@@ -37,6 +37,7 @@ public:
 
     QStringList getAdditionalPaths() const;
 
+    static const QString GROUP_NAME;
     static const QString BUILD_TOOL;
     static const QString CLASSIFY_TOOL;
     static const QString TRANSLATE_TOOL;

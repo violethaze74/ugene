@@ -129,12 +129,11 @@ void KrakenClassifyWorker::sl_taskFinished(Task *task) {
     }
 
     const QString rawClassificationUrl = krakenTask->getRawClassificationUrl();
-    const QString translatedClassificationUrl = krakenTask->getTranslatedClassificationUrl();
 
     QVariantMap data;
     data[BaseSlots::URL_SLOT().getId()] = rawClassificationUrl;
     output->put(Message(output->getBusType(), data));
-    context->getMonitor()->addOutputFile(translatedClassificationUrl, getActor()->getId());
+    context->getMonitor()->addOutputFile(rawClassificationUrl, getActor()->getId());
 }
 
 bool KrakenClassifyWorker::isReadyToRun() const {

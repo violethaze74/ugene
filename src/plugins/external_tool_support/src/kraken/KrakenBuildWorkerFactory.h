@@ -43,7 +43,7 @@ public:
     static const QString INPUT_DATABASE_NAME_ATTR_ID;
     static const QString NEW_DATABASE_NAME_ATTR_ID;
     static const QString GENOMIC_LIBRARY_ATTR_ID;
-    static const QString SHRINK_LIMIT_ATTR_ID;
+    static const QString NUMBER_OF_K_MERS_ATTR_ID;
     static const QString K_MER_LENGTH_ATTR_ID;
     static const QString MINIMIZER_LENGTH_ATTR_ID;
     static const QString MAXIMUM_DATABASE_SIZE_ATTR_ID;

@@ -30,6 +30,19 @@
 
 namespace U2 {
 
+const QString KrakenClassifyTaskSettings::SINGLE_END = "single-end";
+const QString KrakenClassifyTaskSettings::PAIRED_END = "paired-end";
+
+KrakenClassifyTaskSettings::KrakenClassifyTaskSettings()
+    : quickOperation(false),
+      minNumberOfHits(1),
+      numberOfThreads(1),
+      preloadDatabase(true),
+      pairedReads(false)
+{
+
+}
+
 KrakenClassifyTask::KrakenClassifyTask(const KrakenClassifyTaskSettings &settings)
     : ExternalToolSupportTask(tr("Classify reads with Kraken"), TaskFlags_NR_FOSE_COSC),
       settings(settings),
@@ -62,12 +75,13 @@ QList<Task *> KrakenClassifyTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> newSubTasks;
     CHECK_OP(stateInfo, newSubTasks);
 
-    if (classifyTask == subTask) {
-        ExternalToolRunTask *translateTask = new ExternalToolRunTask(KrakenSupport::TRANSLATE_TOOL, getTranslateArguments(), new KrakenTranslateLogParser());
-        translateTask->setStandartOutputFile(settings.translatedClassificationUrl);
-        setListenerForTask(translateTask, 1);
-        newSubTasks << translateTask;
-    }
+    // TODO: temporary turned off. Translation will be performed later.
+//    if (classifyTask == subTask) {
+//        ExternalToolRunTask *translateTask = new ExternalToolRunTask(KrakenSupport::TRANSLATE_TOOL, getTranslateArguments(), new KrakenTranslateLogParser());
+//        translateTask->setStandartOutputFile(settings.translatedClassificationUrl);
+//        setListenerForTask(translateTask, 1);
+//        newSubTasks << translateTask;
+//    }
 
     return newSubTasks;
 }

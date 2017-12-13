@@ -32,7 +32,6 @@
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/WorkflowMonitor.h>
 
-#include "DiamondClassifyTask.h"
 #include "DiamondClassifyWorker.h"
 #include "DiamondClassifyWorkerFactory.h"
 #include "DiamondSupport.h"

@@ -24,7 +24,7 @@
 
 #include <U2Lang/LocalDomain.h>
 
-#include "KrakenBuildTaskSettings.h"
+#include "KrakenBuildTask.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -37,7 +37,6 @@ public:
     void init();
     Task *tick();
     void cleanup();
-    bool isReady() const;
 
 private slots:
     void sl_taskFinished(Task *task);

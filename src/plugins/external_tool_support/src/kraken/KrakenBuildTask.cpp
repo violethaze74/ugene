@@ -21,19 +21,38 @@
 
 #include <QFileInfo>
 
+#include <U2Core/Counter.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "KrakenBuildLogParser.h"
 #include "KrakenBuildTask.h"
 #include "KrakenSupport.h"
 
 namespace U2 {
 
+const QString KrakenBuildTaskSettings::BUILD = "build";
+const QString KrakenBuildTaskSettings::SHRINK = "shrink";
+
+KrakenBuildTaskSettings::KrakenBuildTaskSettings()
+    : mode(BUILD),
+      numberOfKmers(0),
+      kMerLength(31),
+      minimizerLength(15),
+      maximumDatabaseSize(0),
+      shrinkBlockOffset(1),
+      clean(true),
+      workOnDisk(false),
+      jellyfishHashSize(0),
+      threadsNumber(1)
+{
+
+}
+
 KrakenBuildTask::KrakenBuildTask(const KrakenBuildTaskSettings &settings)
     : ExternalToolSupportTask(tr("%1 Kraken database"), TaskFlags_NR_FOSE_COSC),
       settings(settings)
 {
+    GCOUNTER(cvar, tvar, "KrakenBuildTask");
     setTaskName(settings.mode == KrakenBuildTaskSettings::BUILD ? tr("Build") : tr("Shrink"));
     checkSettings();
 }
@@ -51,31 +70,31 @@ void KrakenBuildTask::prepare() {
     if (settings.mode == KrakenBuildTaskSettings::BUILD) {
         int listenerNumber = 0;
 
-        ExternalToolRunTask *downloadTaxonomyTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getDownloadTaxonomyArguments(), new KrakenBuildLogParser());
+        ExternalToolRunTask *downloadTaxonomyTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getDownloadTaxonomyArguments(), new ExternalToolLogParser());
         coreLog.error(QString("Listener was set: %1").arg(listenerNumber));
         setListenerForTask(downloadTaxonomyTask, listenerNumber++);
         newSubTasks << downloadTaxonomyTask;
 
         foreach (const QString &additionalGenome, settings.additionalGenomesUrls) {
-            ExternalToolRunTask *addToLibraryTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getAddToLibraryArguments(additionalGenome), new KrakenBuildLogParser());
+            ExternalToolRunTask *addToLibraryTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getAddToLibraryArguments(additionalGenome), new ExternalToolLogParser());
             coreLog.error(QString("Listener was set: %1").arg(listenerNumber));
             setListenerForTask(addToLibraryTask, listenerNumber++);
             newSubTasks << addToLibraryTask;
         }
 
-        ExternalToolRunTask *buildTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getBuildArguments(), new KrakenBuildLogParser());
+        ExternalToolRunTask *buildTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getBuildArguments(), new ExternalToolLogParser());
         coreLog.error(QString("Listener was set: %1").arg(listenerNumber));
         setListenerForTask(buildTask, listenerNumber++);
         newSubTasks << buildTask;
 
         if (settings.clean) {
-            ExternalToolRunTask *cleanTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getCleanArguments(), new KrakenBuildLogParser());
+            ExternalToolRunTask *cleanTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getCleanArguments(), new ExternalToolLogParser());
             coreLog.error(QString("Listener was set: %1").arg(listenerNumber));
             setListenerForTask(cleanTask, listenerNumber++);
             newSubTasks << cleanTask;
         }
     } else if (settings.mode == KrakenBuildTaskSettings::SHRINK) {
-        ExternalToolRunTask *shrinkTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getShrinkArguments(), new KrakenBuildLogParser());
+        ExternalToolRunTask *shrinkTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getShrinkArguments(), new ExternalToolLogParser());
         setListenerForTask(shrinkTask);
         newSubTasks << shrinkTask;
     } else {
@@ -92,7 +111,7 @@ void KrakenBuildTask::checkSettings() {
     CHECK_EXT(settings.mode != KrakenBuildTaskSettings::SHRINK || QFileInfo(settings.inputDatabaseUrl).exists(), setError(tr("Input database doesn't exist")), );
     CHECK_EXT(!settings.newDatabaseUrl.isEmpty(), setError(tr("New database URL is empty")), );
     CHECK_EXT(settings.mode != KrakenBuildTaskSettings::BUILD || !settings.additionalGenomesUrls.isEmpty(), setError(tr("Genomes URLs list to build database from is empty")), );
-    SAFE_POINT_EXT(settings.mode != KrakenBuildTaskSettings::SHRINK || 0 < settings.shrinkSize, setError("K-mers count to move to a new database cannot be less than 0"), );
+    SAFE_POINT_EXT(settings.mode != KrakenBuildTaskSettings::SHRINK || 0 < settings.numberOfKmers, setError("K-mers count to move to a new database cannot be less than 0"), );
     SAFE_POINT_EXT(3 <= settings.kMerLength && settings.kMerLength <= 31, setError(QString("K-mer length is out of boundaries: %1").arg(settings.kMerLength)), );
     SAFE_POINT_EXT(1 <= settings.minimizerLength && settings.minimizerLength <= 30, setError(QString("Minimizer length is out of boundaries: %1").arg(settings.minimizerLength)), );
     SAFE_POINT_EXT(settings.minimizerLength < settings.kMerLength, setError("Minimizer length is not less than k-mer length"), );
@@ -148,7 +167,7 @@ QStringList KrakenBuildTask::getCleanArguments() const {
 
 QStringList KrakenBuildTask::getShrinkArguments() const {
     QStringList arguments;
-    arguments << "--shrink" << QString::number(settings.shrinkSize);
+    arguments << "--shrink" << QString::number(settings.numberOfKmers);
     arguments << "--db" << settings.inputDatabaseUrl;
     arguments << "--new-db" << settings.newDatabaseUrl;
     arguments << "--threads" << QString::number(settings.threadsNumber);

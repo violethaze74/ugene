@@ -57,10 +57,6 @@ void KrakenBuildWorker::cleanup() {
 
 }
 
-bool KrakenBuildWorker::isReady() const {
-    return !isDone();
-}
-
 void KrakenBuildWorker::sl_taskFinished(Task *task) {
     KrakenBuildTask *krakenTask = qobject_cast<KrakenBuildTask *>(task);
     if (!krakenTask->isFinished() || krakenTask->hasError() || krakenTask->isCanceled()) {
@@ -110,7 +106,7 @@ KrakenBuildTaskSettings KrakenBuildWorker::getSettings() {
         settings.clean = getValue<bool>(KrakenBuildWorkerFactory::CLEAN_ATTR_ID);
         settings.jellyfishHashSize = getValue<int>(KrakenBuildWorkerFactory::JELLYFISH_HASH_SIZE_ATTR_ID);
     } else {
-        settings.shrinkSize = getValue<int>(KrakenBuildWorkerFactory::SHRINK_LIMIT_ATTR_ID);
+        settings.numberOfKmers = getValue<int>(KrakenBuildWorkerFactory::NUMBER_OF_K_MERS_ATTR_ID);
         settings.inputDatabaseUrl = getValue<QString>(KrakenBuildWorkerFactory::INPUT_DATABASE_NAME_ATTR_ID);
         settings.shrinkBlockOffset = getValue<int>(KrakenBuildWorkerFactory::SHRINK_BLOCK_OFFSET_ATTR_ID);
     }

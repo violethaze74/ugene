@@ -27,7 +27,6 @@
 #include <U2Lang/WorkflowEnv.h>
 
 #include "DiamondClassifyPrompter.h"
-#include "DiamondClassifyTaskSettings.h"
 #include "DiamondClassifyWorker.h"
 #include "DiamondClassifyWorkerFactory.h"
 #include "DiamondSupport.h"
@@ -86,12 +85,12 @@ void DiamondClassifyWorkerFactory::init() {
         const Descriptor inPortDesc(INPUT_PORT_ID,
                                     DiamondClassifyPrompter::tr("Input sequences 1"),
                                     DiamondClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                                "The input files may contain single-end reads, scaffolds, or “left” reads in case of the paired-end sequencing (see “Input data” parameter of the element)."));
+                                                                "The input files may contain single-end reads, scaffolds, or \"left\" reads in case of the paired-end sequencing (see \"Input data\" parameter of the element)."));
 
         const Descriptor inPairedPortDesc(INPUT_PAIRED_PORT_ID,
                                           DiamondClassifyPrompter::tr("Input sequences 2"),
                                           DiamondClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                                      "The port is used, if paired-end sequencing was done. The input files should contain the “right” reads (see “Input data” parameter of the element)."));
+                                                                      "The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
 
         const Descriptor outPortDesc(OUTPUT_PORT_ID,
                                      DiamondClassifyPrompter::tr("DIAMOND-classified sequences"),
@@ -106,8 +105,8 @@ void DiamondClassifyWorkerFactory::init() {
     {
         const Descriptor inputDataDesc(INPUT_DATA_ATTR_ID, DiamondClassifyPrompter::tr("Input data"),
                                              DiamondClassifyPrompter::tr("The input data that should be classified are provided through the input ports of the element.\n\n"
-                                                                         "To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to “SE reads or scaffolds”. The element has one input port in this case. Pass URL(s) to the corresponding files to this port.\n\n"
-                                                                         "To classify paired-end (PE) reads, set the value to “PE reads”. The element has two input ports in this case. Pass URL(s) to the “left” and “right” reads to the first and the second port correspondingly.\n\n"
+                                                                         "To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\". The element has one input port in this case. Pass URL(s) to the corresponding files to this port.\n\n"
+                                                                         "To classify paired-end (PE) reads, set the value to \"PE reads\". The element has two input ports in this case. Pass URL(s) to the \"left\" and \"right\" reads to the first and the second port correspondingly.\n\n"
                                                                          "The input files should be in FASTA or FASTQ formats."));
 
         const Descriptor databaseDesc(DATABASE_ATTR_ID, DiamondClassifyPrompter::tr("Database"),

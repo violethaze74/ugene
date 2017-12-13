@@ -24,7 +24,7 @@
 
 #include <U2Lang/LocalDomain.h>
 
-#include "DiamondClassifyTaskSettings.h"
+#include "DiamondClassifyTask.h"
 
 namespace U2 {
 namespace LocalWorkflow {

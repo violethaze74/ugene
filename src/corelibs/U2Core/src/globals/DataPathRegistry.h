@@ -74,7 +74,6 @@ private:
     QMap<QString, QString>  dataItems; //data_file_name -> data_full_path
     Options                 options;
     bool                    valid;
-    bool                    folders;
 };
 
 class U2CORE_EXPORT U2DataPathRegistry : public QObject {

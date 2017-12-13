@@ -98,10 +98,8 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/cufflinks/GffreadWorker.h \
            src/cutadapt/CutadaptSupport.h \
            src/cutadapt/CutadaptWorker.h \
-           src/diamond/DiamondClassifyLogParser.h \
            src/diamond/DiamondClassifyPrompter.h \
            src/diamond/DiamondClassifyTask.h \
-           src/diamond/DiamondClassifyTaskSettings.h \
            src/diamond/DiamondClassifyWorker.h \
            src/diamond/DiamondClassifyWorkerFactory.h \
            src/diamond/DiamondSupport.h \
@@ -135,16 +133,13 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/kraken/GenomicLibraryDelegate.h \
            src/kraken/GenomicLibraryDialog.h \
            src/kraken/GenomicLibraryPropertyWidget.h \
-           src/kraken/KrakenBuildLogParser.h \
            src/kraken/KrakenBuildPrompter.h \
            src/kraken/KrakenBuildTask.h \
-           src/kraken/KrakenBuildTaskSettings.h \
            src/kraken/KrakenBuildWorker.h \
            src/kraken/KrakenBuildWorkerFactory.h \
            src/kraken/KrakenClassifyLogParser.h \
            src/kraken/KrakenClassifyPrompter.h \
            src/kraken/KrakenClassifyTask.h \
-           src/kraken/KrakenClassifyTaskSettings.h \
            src/kraken/KrakenClassifyWorker.h \
            src/kraken/KrakenClassifyWorkerFactory.h \
            src/kraken/KrakenSupport.h \
@@ -345,10 +340,8 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/cufflinks/GffreadWorker.cpp \
            src/cutadapt/CutadaptSupport.cpp \
            src/cutadapt/CutadaptWorker.cpp \
-           src/diamond/DiamondClassifyLogParser.cpp \
            src/diamond/DiamondClassifyPrompter.cpp \
            src/diamond/DiamondClassifyTask.cpp \
-           src/diamond/DiamondClassifyTaskSettings.cpp \
            src/diamond/DiamondClassifyWorker.cpp \
            src/diamond/DiamondClassifyWorkerFactory.cpp \
            src/diamond/DiamondSupport.cpp \
@@ -381,16 +374,13 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/kraken/GenomicLibraryDelegate.cpp \
            src/kraken/GenomicLibraryDialog.cpp \
            src/kraken/GenomicLibraryPropertyWidget.cpp \
-           src/kraken/KrakenBuildLogParser.cpp \
            src/kraken/KrakenBuildPrompter.cpp \
            src/kraken/KrakenBuildTask.cpp \
-           src/kraken/KrakenBuildTaskSettings.cpp \
            src/kraken/KrakenBuildWorker.cpp \
            src/kraken/KrakenBuildWorkerFactory.cpp \
            src/kraken/KrakenClassifyLogParser.cpp \
            src/kraken/KrakenClassifyPrompter.cpp \
            src/kraken/KrakenClassifyTask.cpp \
-           src/kraken/KrakenClassifyTaskSettings.cpp \
            src/kraken/KrakenClassifyWorker.cpp \
            src/kraken/KrakenClassifyWorkerFactory.cpp \
            src/kraken/KrakenSupport.cpp \

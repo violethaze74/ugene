@@ -35,7 +35,18 @@ const QString ExternalToolValidation::DEFAULT_DESCR_KEY = "DEFAULT_DESCR";
 
 ////////////////////////////////////////
 //ExternalTool
-ExternalTool::ExternalTool(QString _name, QString _path) : name(_name), path(_path), isValidTool(false), muted(false), isModuleTool(false) {
+ExternalTool::ExternalTool(QString _name, QString _path)
+    : name(_name),
+      path(_path),
+      isValidTool(false),
+      muted(false),
+      isModuleTool(false)
+{
+    if (NULL != AppContext::getMainWindow()) {
+        icon = QIcon(":external_tool_support/images/cmdline.png");
+        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
+        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
+    }
 }
 
 ExternalTool::~ExternalTool() {

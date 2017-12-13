@@ -37,7 +37,6 @@
 
 #include "GenomicLibraryDelegate.h"
 #include "KrakenBuildPrompter.h"
-#include "KrakenBuildTaskSettings.h"
 #include "KrakenBuildWorker.h"
 #include "KrakenBuildWorkerFactory.h"
 #include "KrakenSupport.h"
@@ -54,7 +53,7 @@ const QString KrakenBuildWorkerFactory::MODE_ATTR_ID = "mode";
 const QString KrakenBuildWorkerFactory::INPUT_DATABASE_NAME_ATTR_ID = "input-database-name";
 const QString KrakenBuildWorkerFactory::NEW_DATABASE_NAME_ATTR_ID = "new-database-name";
 const QString KrakenBuildWorkerFactory::GENOMIC_LIBRARY_ATTR_ID = "genomic-library";
-const QString KrakenBuildWorkerFactory::SHRINK_LIMIT_ATTR_ID = "shrink-limit";
+const QString KrakenBuildWorkerFactory::NUMBER_OF_K_MERS_ATTR_ID = "number-of-k-mers";
 const QString KrakenBuildWorkerFactory::K_MER_LENGTH_ATTR_ID = "k-mer-length";
 const QString KrakenBuildWorkerFactory::MINIMIZER_LENGTH_ATTR_ID = "minimizer-length";
 const QString KrakenBuildWorkerFactory::MAXIMUM_DATABASE_SIZE_ATTR_ID = "maximum-database-size";
@@ -105,8 +104,8 @@ void KrakenBuildWorkerFactory::init() {
                                             KrakenBuildPrompter::tr("Genomes that should be used to build the database.\n\n"
                                                                     "The genomes should be specified in FASTA format. The sequence IDs must contain either a GI number or a taxonomy ID (see documentation for details)."));
 
-        const Descriptor shrinkLimitDesc(SHRINK_LIMIT_ATTR_ID, KrakenBuildPrompter::tr("Shrink limit"),
-                                         KrakenBuildPrompter::tr("Count of k-mers to move from the original database to a new one (--shrink)."));
+        const Descriptor numberOfKmersDesc(NUMBER_OF_K_MERS_ATTR_ID, KrakenBuildPrompter::tr("Number of k-mers"),
+                                           KrakenBuildPrompter::tr("The new database will contain the specified number of k-mers selected from across the input database."));
 
         const Descriptor kMerLengthDesc(K_MER_LENGTH_ATTR_ID, KrakenBuildPrompter::tr("K-mer length"),
                                         KrakenBuildPrompter::tr("K-mer length in bp (--kmer-len)."));
@@ -117,8 +116,10 @@ void KrakenBuildWorkerFactory::init() {
                                                                      "Changing the value of the parameter can significantly affect the speed of Kraken, and neither increasing nor decreasing of the value will guarantee faster or slower speed."));
 
         const Descriptor maximumDatabaseSizeDesc(MAXIMUM_DATABASE_SIZE_ATTR_ID, KrakenBuildPrompter::tr("Maximum database size"),
-                                                 KrakenBuildPrompter::tr("By default, a full database build is done.\n\n"
-                                                                         "To shrink the database before the full build, input the size of the database in Mb (--max-db-size). The size is specified together for the database and the index."));
+                                                 KrakenBuildPrompter::tr("By default, a full database build is done.\n"
+                                                                         "To shrink the database before the full build, input the size of the database in Mb "
+                                                                         "(this corresponds to the --max-db-size parameter, but Mb is used instead of Gb). "
+                                                                         "The size is specified together for the database and the index."));
 
         const Descriptor shrinkBlockOffsetDesc(SHRINK_BLOCK_OFFSET_ATTR_ID, KrakenBuildPrompter::tr("Shrink block offset"),
                                                KrakenBuildPrompter::tr("When shrinking, select the k-mer that is NUM positions from the end of a block of k-mers (--shrink-block-offset)."));
@@ -131,7 +132,8 @@ void KrakenBuildWorkerFactory::init() {
 
         const Descriptor jellyfishHashSizeDesc(JELLYFISH_HASH_SIZE_ATTR_ID, KrakenBuildPrompter::tr("Jellyfish hash size"),
                                                KrakenBuildPrompter::tr("The \"kraken-build\" tool uses the \"jellyfish\" tool. This parameter specifies the hash size for Jellyfish.\n\n"
-                                                                       "Supply a smaller hash size to Jellyfish, if you encounter problems with allocating enough memory during the build process (--jellyfish-hash-size)."));
+                                                                       "Supply a smaller hash size to Jellyfish, if you encounter problems with allocating enough memory during the build process (--jellyfish-hash-size).\n\n"
+                                                                       "By default, the parameter is not used."));
 
         const Descriptor threadNumberDesc(THREADS_NUMBER_ATTR_ID, KrakenBuildPrompter::tr("Number of threads"),
                                           KrakenBuildPrompter::tr("Use multiple threads (--threads)."));
@@ -140,7 +142,7 @@ void KrakenBuildWorkerFactory::init() {
         Attribute *inputDatabaseNameAttribute = new Attribute(inputDatabaseNameDesc, BaseTypes::STRING_TYPE(), true);
         Attribute *newDatabaseName = new Attribute(newDatabaseNameDesc, BaseTypes::STRING_TYPE(), true);
         Attribute *genomicLibraryAttribute = new URLAttribute(genomicLibraryDesc, BaseTypes::URL_DATASETS_TYPE(), true);
-        Attribute *shrinkLimitAttribute = new Attribute(shrinkLimitDesc, BaseTypes::NUM_TYPE(), true, 100000000);
+        Attribute *numberOfKmersAttribute = new Attribute(numberOfKmersDesc, BaseTypes::NUM_TYPE(), true, 10000);
         Attribute *kMerLengthAttribute = new Attribute(kMerLengthDesc, BaseTypes::NUM_TYPE(), false, 31);
         Attribute *minimizerLengthAttribute = new Attribute(minimizerLengthDesc, BaseTypes::NUM_TYPE(), false, 15);;
         Attribute *maximumDatabaseSizeAttribute = new Attribute(maximumDatabaseSizeDesc, BaseTypes::NUM_TYPE(), false, 0);
@@ -154,7 +156,7 @@ void KrakenBuildWorkerFactory::init() {
         attributes << inputDatabaseNameAttribute;
         attributes << newDatabaseName;
         attributes << genomicLibraryAttribute;
-        attributes << shrinkLimitAttribute;
+        attributes << numberOfKmersAttribute;
         attributes << kMerLengthAttribute;
         attributes << minimizerLengthAttribute;
         attributes << maximumDatabaseSizeAttribute;
@@ -166,7 +168,7 @@ void KrakenBuildWorkerFactory::init() {
 
         inputDatabaseNameAttribute->addRelation(new VisibilityRelation(MODE_ATTR_ID, KrakenBuildTaskSettings::SHRINK));
         genomicLibraryAttribute->addRelation(new VisibilityRelation(MODE_ATTR_ID, KrakenBuildTaskSettings::BUILD));
-        shrinkLimitAttribute->addRelation(new VisibilityRelation(MODE_ATTR_ID, KrakenBuildTaskSettings::SHRINK));
+        numberOfKmersAttribute->addRelation(new VisibilityRelation(MODE_ATTR_ID, KrakenBuildTaskSettings::SHRINK));
         maximumDatabaseSizeAttribute->addRelation(new VisibilityRelation(MODE_ATTR_ID, KrakenBuildTaskSettings::BUILD));
         shrinkBlockOffsetAttribute->addRelation(new VisibilityRelation(MODE_ATTR_ID, KrakenBuildTaskSettings::SHRINK));
         cleanAttribute->addRelation(new VisibilityRelation(MODE_ATTR_ID, KrakenBuildTaskSettings::BUILD));
@@ -184,11 +186,11 @@ void KrakenBuildWorkerFactory::init() {
         delegates[NEW_DATABASE_NAME_ATTR_ID] = new URLDelegate("", "kraken/database", false, true, true);
         delegates[GENOMIC_LIBRARY_ATTR_ID] = new GenomicLibraryDelegate();
 
-        QVariantMap shrinkLimitProperties;
-        shrinkLimitProperties["minimum"] = 1;
-        shrinkLimitProperties["maximum"] = std::numeric_limits<int>::max();
-        shrinkLimitProperties["accelerated"] = true;
-        delegates[SHRINK_LIMIT_ATTR_ID] = new SpinBoxDelegate(shrinkLimitProperties);
+        QVariantMap numberOfKmersProperties;
+        numberOfKmersProperties["minimum"] = 1;
+        numberOfKmersProperties["maximum"] = std::numeric_limits<int>::max();
+        numberOfKmersProperties["accelerated"] = true;
+        delegates[NUMBER_OF_K_MERS_ATTR_ID] = new SpinBoxDelegate(numberOfKmersProperties);
 
         QVariantMap kMerLengthProperties;
         kMerLengthProperties["minimum"] = 3;
@@ -220,7 +222,7 @@ void KrakenBuildWorkerFactory::init() {
         jelyfishHashSizeProperties["minimum"] = 0;
         jelyfishHashSizeProperties["maximum"] = std::numeric_limits<int>::max();
         jelyfishHashSizeProperties["suffix"] = " M";
-        jelyfishHashSizeProperties["specialValueText"] = KrakenBuildPrompter::tr("Auto");
+        jelyfishHashSizeProperties["specialValueText"] = KrakenBuildPrompter::tr("Skip");
         delegates[JELLYFISH_HASH_SIZE_ATTR_ID] = new SpinBoxDelegate(jelyfishHashSizeProperties);
 
         QVariantMap threadsNumberProperties;

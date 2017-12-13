@@ -20,7 +20,7 @@
  */
 
 #include "KrakenBuildPrompter.h"
-#include "KrakenBuildTaskSettings.h"
+#include "KrakenBuildTask.h"
 #include "KrakenBuildWorkerFactory.h"
 
 namespace U2 {

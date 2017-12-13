@@ -24,9 +24,28 @@
 
 #include <U2Core/ExternalToolRunTask.h>
 
-#include "KrakenBuildTaskSettings.h"
-
 namespace U2 {
+
+struct KrakenBuildTaskSettings {
+    KrakenBuildTaskSettings();
+
+    QString mode;
+    QString inputDatabaseUrl;
+    QString newDatabaseUrl;
+    QStringList additionalGenomesUrls;
+    int numberOfKmers;
+    int kMerLength;
+    int minimizerLength;
+    int maximumDatabaseSize;
+    int shrinkBlockOffset;
+    bool clean;
+    bool workOnDisk;
+    int jellyfishHashSize;
+    int threadsNumber;
+
+    static const QString BUILD;
+    static const QString SHRINK;
+};
 
 class KrakenBuildTask : public ExternalToolSupportTask {
     Q_OBJECT

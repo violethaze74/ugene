@@ -36,6 +36,7 @@
 #include "blast/BlastAllSupport.h"
 #include "blast/FormatDBSupport.h"
 #include "blast_plus/BlastPlusSupport.h"
+#include "kraken/KrakenSupport.h"
 #include "utils/ExternalToolValidateTask.h"
 #include "clark/ClarkSupport.h"
 
@@ -512,7 +513,10 @@ void ExternalToolSupportSettingsPageWidget::sl_itemSelectionChanged() {
         descriptionTextBrowser->setText(tr("CLARK (CLAssifier based on Reduced K-mers) is a tool for supervised sequence classification "
                                            "based on discriminative k-mers. UGENE provides the GUI for CLARK and CLARK-l variants of the CLARK framework "
                                            "for solving the problem of the assignment of metagenomic reads to known genomes."));
-    } else { //no description or tool custom description
+    } else if (name == KrakenSupport::GROUP_NAME) {
+        descriptionTextBrowser->setText(tr("Kraken is a taxonomic sequence classifier that assigns taxonomic labels to short DNA reads."));
+    }
+    else { //no description or tool custom description
         ExternalTool* tool = AppContext::getExternalToolRegistry()->getByName(name);
         setDescription(tool);
     }

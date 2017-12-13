@@ -52,7 +52,7 @@ QString U2DataPath::getPathByName(const QString &name) const{
 }
 
 bool U2DataPath::operator ==(const U2DataPath &other) const {
-    return (name == other.name) && (folders == other.folders);
+    return (name == other.name) && (options == other.options);
 }
 
 bool U2DataPath::operator !=(const U2DataPath &other) const {
@@ -133,7 +133,7 @@ bool U2DataPath::isValid() const {
 }
 
 bool U2DataPath::isFolders() const {
-    return folders;
+    return options.testFlag(AddOnlyFolders);
 }
 
 QVariantMap U2DataPath::getDataItemsVariantMap() const {

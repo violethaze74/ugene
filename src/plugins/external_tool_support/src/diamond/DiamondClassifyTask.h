@@ -24,9 +24,24 @@
 
 #include <U2Core/ExternalToolRunTask.h>
 
-#include "DiamondClassifyTaskSettings.h"
-
 namespace U2 {
+
+struct DiamondClassifyTaskSettings {
+    DiamondClassifyTaskSettings();
+
+    bool pairedReads;
+    QString databaseUrl;
+    QString readsUrl;
+    QString pairedReadsUrl;
+    QString taxonMapUrl;
+    QString taxonNodesUrl;
+
+    QString classificationUrl;
+    QString pairedClassificationUrl;
+
+    static const QString SINGLE_END;
+    static const QString PAIRED_END;
+};
 
 class DiamondClassifyTask : public ExternalToolSupportTask {
     Q_OBJECT
@@ -42,6 +57,8 @@ private:
     QStringList getArguments() const;
 
     const DiamondClassifyTaskSettings settings;
+
+    static const QString TAXONOMIC_CLASSIFICATION_OUTPUT_FORMAT;
 };
 
 }   // namespace U2

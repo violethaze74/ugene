@@ -461,7 +461,6 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
 
     etRegistry->registerEntry(new KrakenSupport(KrakenSupport::BUILD_TOOL));
     etRegistry->registerEntry(new KrakenSupport(KrakenSupport::CLASSIFY_TOOL));
-    etRegistry->registerEntry(new KrakenSupport(KrakenSupport::TRANSLATE_TOOL));
 
     etRegistry->registerEntry(new DiamondSupport(DiamondSupport::TOOL_NAME));
 
