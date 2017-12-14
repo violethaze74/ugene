@@ -2227,8 +2227,8 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
     CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
     GTWidget::click(os, wrapButton);
 
-    QScrollBar* scrollBar = GTScrollBar::getScrollBar(os, "multiline_scrollbar");
-    CHECK_SET_ERR(scrollBar->minimum() == scrollBar->maximum(), "There is something to scroll");
+    QScrollBar* scrollBar = GTScrollBar::getScrollBar(os, "singleline_scrollbar");
+    CHECK_SET_ERR(scrollBar->isHidden(), "Horizontal scroll bar is visible");
 
     GTWidget::click(os, seqWgt);
     GTMouseDriver::doubleClick();
