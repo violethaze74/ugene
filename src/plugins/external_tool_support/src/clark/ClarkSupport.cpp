@@ -74,6 +74,9 @@ void ClarkSupport::registerTools(ExternalToolRegistry *etRegistry)
     etRegistry->registerEntry(new ClarkSupport(ET_CLARK_getfilesToTaxNodes));
     etRegistry->registerEntry(new ClarkSupport(ET_CLARK_getTargetsDef));
     etRegistry->registerEntry(new ClarkSupport(ET_CLARK_buildScript));
+    etRegistry->setToolkitDescription(CLARK_GROUP, tr("CLARK (CLAssifier based on Reduced K-mers) is a tool for supervised sequence classification "
+        "based on discriminative k-mers. UGENE provides the GUI for CLARK and CLARK-l variants of the CLARK framework "
+        "for solving the problem of the assignment of metagenomic reads to known genomes."));
 }
 
 void ClarkSupport::sl_toolValidationStatusChanged(bool) {

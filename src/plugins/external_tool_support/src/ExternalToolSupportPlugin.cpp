@@ -462,10 +462,45 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
 
     etRegistry->registerEntry(new KrakenSupport(KrakenSupport::BUILD_TOOL));
     etRegistry->registerEntry(new KrakenSupport(KrakenSupport::CLASSIFY_TOOL));
+    etRegistry->setToolkitDescription(KrakenSupport::GROUP_NAME, tr("Kraken is a taxonomic sequence classifier that assigns taxonomic labels to short DNA reads."));
 
     etRegistry->registerEntry(new DiamondSupport(DiamondSupport::TOOL_NAME));
 
     if (AppContext::getMainWindow()) {
+
+        etRegistry->setToolkitDescription("BLAST", tr("The <i>Basic Local Alignment Search Tool</i> (BLAST) finds regions of local similarity between sequences. "
+                               "The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance of matches. "
+                              "BLAST can be used to infer functional and evolutionary relationships between sequences as well as help identify members of gene families."));
+
+        etRegistry->setToolkitDescription("BLAST+", tr("<i>BLAST+</i> is a new version of the BLAST package from the NCBI."));
+
+        etRegistry->setToolkitDescription("GPU-BLAST+", tr("<i>BLAST+</i> is a new version of the BLAST package from the NCBI."));
+
+        etRegistry->setToolkitDescription("Bowtie", tr("<i>Bowtie<i> is an ultrafast, memory-efficient short read aligner. "
+                           "It aligns short DNA sequences (reads) to the human genome at "
+                           "a rate of over 25 million 35-bp reads per hour. "
+                           "Bowtie indexes the genome with a Burrows-Wheeler index to keep "
+                           "its memory footprint small: typically about 2.2 GB for the human "
+                           "genome (2.9 GB for paired-end). <a href='http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked'>Link text</a> "));
+
+        etRegistry->setToolkitDescription("Cufflinks", tr("<i>Cufflinks</i> assembles transcripts, estimates"
+                " their abundances, and tests for differential expression and regulation"
+                " in RNA-Seq samples. It accepts aligned RNA-Seq reads and assembles"
+                " the alignments into a parsimonious set of transcripts. It also estimates"
+                " the relative abundances of these transcripts based on how many reads"
+                " support each one, taking into account biases in library preparation protocols. "));
+
+        etRegistry->setToolkitDescription("Bowtie2", tr("<i>Bowtie 2</i> is an ultrafast and memory-efficient tool"
+                " for aligning sequencing reads to long reference sequences. It is particularly good"
+                " at aligning reads of about 50 up to 100s or 1000s of characters, and particularly"
+                " good at aligning to relatively long (e.g. mammalian) genomes."
+                " <br/><br/>It indexes the genome with an FM index to keep its memory footprint small:"
+                " for the human genome, its memory footprint is typically around 3.2Gb."
+                " <br/><br/><i>Bowtie 2</i> supports gapped, local, and paired-end alignment modes."));
+
+        etRegistry->setToolkitDescription("Cistrome", tr("<i>Cistrome</i> is a UGENE version of Cistrome pipeline which also includes some tools useful for ChIP-seq analysis"
+                "This pipeline is aimed to provide the following analysis steps: peak calling and annotating, motif search and gene ontology."));
+
         ExternalToolSupportAction* formatDBAction= new ExternalToolSupportAction(tr("BLAST make database..."), this, QStringList(ET_FORMATDB));
         formatDBAction->setObjectName(ToolsMenu::BLAST_DB);
         connect(formatDBAction, SIGNAL(triggered()), formatDBTool, SLOT(sl_runWithExtFileSpecify()));

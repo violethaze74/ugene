@@ -146,7 +146,6 @@ void ExternalToolRegistry::unregisterEntry(const QString &id){
 
         delete et;
     }
-
 }
 
 QList<ExternalTool*> ExternalToolRegistry::getAllEntries() const
