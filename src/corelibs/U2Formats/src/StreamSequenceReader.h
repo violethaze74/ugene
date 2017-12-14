@@ -47,7 +47,7 @@ class IOAdapter;
 *
 */
 
-class U2FORMATS_EXPORT StreamSequenceReader {
+class U2FORMATS_EXPORT StreamSequenceReader : public QObject {
     struct ReaderContext {
         ReaderContext() : io(NULL), format(NULL) {}
         IOAdapter* io;
@@ -64,7 +64,10 @@ class U2FORMATS_EXPORT StreamSequenceReader {
 public:
     StreamSequenceReader();
     ~StreamSequenceReader();
+
+    bool init(const QStringList& urls);
     bool init(const QList<GUrl>& urls);
+
     bool hasNext();
     bool hasError() { return errorOccured; }
     int getProgress();
