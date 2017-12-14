@@ -22,7 +22,7 @@
 #include <U2Lang/BaseSlots.h>
 
 #include "KrakenClassifyPrompter.h"
-#include "KrakenClassifyTaskSettings.h"
+#include "KrakenClassifyTask.h"
 #include "KrakenClassifyWorkerFactory.h"
 
 namespace U2 {

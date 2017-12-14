@@ -58,6 +58,7 @@ void GenomesPreparationTask::run() {
     CHECK_EXT(writerInited, setError(L10N::errorOpeningFileWrite(preparedGenomesFileUrl)), );
 
     while (reader.hasNext()) {
+        CHECK_OP(stateInfo, );
         DNASequence *sequence(reader.getNextSequenceObject());
         CHECK_EXT(NULL != sequence, setError(reader.getErrorMessage()), );
         const bool written = writer.writeNextSequence(*sequence);

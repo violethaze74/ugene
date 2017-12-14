@@ -22,7 +22,7 @@
 #include <U2Lang/BaseSlots.h>
 
 #include "DiamondClassifyPrompter.h"
-#include "DiamondClassifyTaskSettings.h"
+#include "DiamondClassifyTask.h"
 #include "DiamondClassifyWorkerFactory.h"
 
 namespace U2 {
