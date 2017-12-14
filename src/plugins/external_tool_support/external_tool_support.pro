@@ -98,12 +98,17 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/cufflinks/GffreadWorker.h \
            src/cutadapt/CutadaptSupport.h \
            src/cutadapt/CutadaptWorker.h \
+           src/diamond/DiamondBuildPrompter.h \
+           src/diamond/DiamondBuildTask.h \
+           src/diamond/DiamondBuildWorker.h \
+           src/diamond/DiamondBuildWorkerFactory.h \
            src/diamond/DiamondClassifyPrompter.h \
            src/diamond/DiamondClassifyTask.h \
            src/diamond/DiamondClassifyWorker.h \
            src/diamond/DiamondClassifyWorkerFactory.h \
            src/diamond/DiamondSupport.h \
            src/diamond/DiamondTaxonomyDataValidator.h \
+           src/diamond/GenomesPreparationTask.h \
            src/fastqc/FastqcSupport.h \
            src/fastqc/FastqcTask.h \
            src/fastqc/FastqcWorker.h \
@@ -340,12 +345,17 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/cufflinks/GffreadWorker.cpp \
            src/cutadapt/CutadaptSupport.cpp \
            src/cutadapt/CutadaptWorker.cpp \
+           src/diamond/DiamondBuildPrompter.cpp \
+           src/diamond/DiamondBuildTask.cpp \
+           src/diamond/DiamondBuildWorker.cpp \
+           src/diamond/DiamondBuildWorkerFactory.cpp \
            src/diamond/DiamondClassifyPrompter.cpp \
            src/diamond/DiamondClassifyTask.cpp \
            src/diamond/DiamondClassifyWorker.cpp \
            src/diamond/DiamondClassifyWorkerFactory.cpp \
            src/diamond/DiamondSupport.cpp \
            src/diamond/DiamondTaxonomyDataValidator.cpp \
+           src/diamond/GenomesPreparationTask.cpp \
            src/fastqc/FastqcSupport.cpp \
            src/fastqc/FastqcTask.cpp \
            src/fastqc/FastqcWorker.cpp \
