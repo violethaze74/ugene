@@ -49,6 +49,7 @@ private:
 
     DiamondClassifyTaskSettings getSettings(U2OpStatus &os);
     QString getClassificationFileName(const Message &message) const;
+    QVariantMap parseReport(const QString &url);
 
     IntegralBus *input;
     IntegralBus *pairedInput;

@@ -181,5 +181,45 @@ KrakenClassifyTaskSettings KrakenClassifyWorker::getSettings(U2OpStatus &os) {
     return settings;
 }
 
+
+QVariantMap KrakenClassifyWorker::parseReport(const QString &url)
+{
+    QVariantMap result;
+    QFile reportFile(url);
+    if (!reportFile.open(QIODevice::ReadOnly)) {
+        reportError(tr("Cannot open classification report: %1").arg(url));
+    } else {
+        QByteArray line;
+
+        while ((line = reportFile.readLine()).size() != 0) {
+            if (line.startsWith("C\t") || line.startsWith("U\t")) {
+                QList<QByteArray> row = line.split('\t');
+                if (row.size() >= 5) {
+                    QString objID = row[1];
+                    QByteArray &assStr = row[2];
+                    algoLog.trace(QString("Found Kraken classification: %1=%2").arg(objID).arg(QString(assStr)));
+
+                    bool ok = true;
+                    uint assID = assStr.toUInt(&ok);
+                    if (ok) {
+                        if (result.contains(objID)) {
+                            QString msg = tr("Duplicate sequence name '%1' have been detected in the classification output.").arg(objID);
+                            monitor()->addInfo(msg, getActorId(), Problem::U2_WARNING);
+                            coreLog.info(msg);
+                        } else {
+                            result[objID] = assID;
+                        }
+                        continue;
+                    }
+                }
+            }
+            reportError(tr("Broken Kraken report : %1").arg(url));
+            break;
+        }
+        reportFile.close();
+    }
+    return result;
+}
+
 }   // namespace LocalWorkflow
 }   // namespace U2

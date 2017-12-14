@@ -380,8 +380,9 @@ void ClarkClassifyWorker::init() {
     cfg.mode = (ClarkClassifySettings::Mode)getValue<int>(MODE); // FIXME template did not work with enum type
     cfg.tool = getValue<QString>(TOOL_VARIANT).toLower();
 
-    SAFE_POINT(cfg.mode >=ClarkClassifySettings::Full && cfg.mode <= ClarkClassifySettings::Spectrum,
-               tr("Unrecognized mode of execution, expected any of: 0 (full), 1 (default), 2 (express) or 3 (spectrum)"), );
+    if (!(cfg.mode >=ClarkClassifySettings::Full && cfg.mode <= ClarkClassifySettings::Spectrum)) {
+        reportError(tr("Unrecognized mode of execution, expected any of: 0 (full), 1 (default), 2 (express) or 3 (spectrum)"));
+    }
 }
 
 bool ClarkClassifyWorker::isReady() const {
@@ -467,17 +468,67 @@ void ClarkClassifyWorker::sl_taskFinished(Task *t) {
     }
 
     const QString rawClassificationUrl = task->getReportUrl();
+    algoLog.info(QString("CLARK produced classification: %1").arg(rawClassificationUrl));
 
     QVariantMap data;
     data[OUTPUT_SLOT] = rawClassificationUrl;
     output->put(Message(output->getBusType(), data));
     context->getMonitor()->addOutputFile(rawClassificationUrl, getActor()->getId());
 
-    algoLog.info(QString("CLARK produced classification: %1").arg(rawClassificationUrl));
+    parseReport(rawClassificationUrl);
 }
 
 void ClarkClassifyWorker::cleanup() {
 
+}
+
+//also see in clark: getObjectsDataComputeFast, getObjectsDataCompute, getObjectsDataComputeFastLight,getObjectsDataComputeFastSpaced, getObjectsDataComputeFull, printExtendedResults
+static const QByteArray DEFAULT_REPORT("Object_ID, Length, Assignment");
+static const QByteArray REPORT_PREFIX("Object_ID,");
+static const QByteArray EXTENDED_REPORT_SUFFIX(",Length,Gamma,1st_assignment,score1,2nd_assignment,score2,confidence");
+
+QVariantMap ClarkClassifyWorker::parseReport(const QString &url)
+{
+    QVariantMap result;
+    QFile reportFile(url);
+    if (!reportFile.open(QIODevice::ReadOnly)) {
+        reportError(tr("Cannot open classification report: %1").arg(url));
+    } else {
+        QByteArray line = reportFile.readLine().trimmed();
+
+        bool extended = line.endsWith(EXTENDED_REPORT_SUFFIX);
+        if (!line.startsWith(REPORT_PREFIX)) {
+            reportError(tr("Failed to recognize CLARK report format: %1").arg(QString(line)));
+        } else {
+            while ((line = reportFile.readLine().trimmed()).size() != 0) {
+                QList<QByteArray> row = line.split(',');
+                if (extended ? row.size() < 6 : row.size() != 3) {
+                    reportError(tr("Broken CLARK report: %1").arg(url));
+                    break;
+                }
+                int assignmentIdx = extended ? row.size() - 5 : 2;
+                QString objID = row[0];
+                QByteArray &assStr = row[assignmentIdx];
+                algoLog.trace(QString("Found CLARK classification: %1=%2").arg(objID).arg(QString(assStr)));
+
+                bool ok = true;
+                uint assID = (assStr != "NA") ? assStr.toUInt(&ok) : 0;
+                if (!ok) {
+                    reportError(tr("Broken CLARK report: %1").arg(url));
+                    break;
+                }
+                if (result.contains(objID)) {
+                    QString msg = tr("Duplicate sequence name '%1' have been detected in the classification output.").arg(objID);
+                    monitor()->addInfo(msg, getActorId(), Problem::U2_WARNING);
+                    coreLog.info(msg);
+                } else {
+                    result[objID] = assID;
+                }
+            }
+        }
+        reportFile.close();
+    }
+    return result;
 }
 
 class ClarkLogParser : public ExternalToolLogParser {

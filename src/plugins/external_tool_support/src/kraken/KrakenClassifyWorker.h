@@ -48,6 +48,7 @@ private:
     QString checkPairedReads() const;
 
     KrakenClassifyTaskSettings getSettings(U2OpStatus &os);
+    QVariantMap parseReport(const QString &url);
 
     IntegralBus *input;
     IntegralBus *pairedInput;

@@ -207,5 +207,43 @@ QString DiamondClassifyWorker::getClassificationFileName(const Message &message)
     return QFileInfo(metadata.getFileUrl()).baseName() + "_classification.txt";
 }
 
+QVariantMap DiamondClassifyWorker::parseReport(const QString &url)
+{
+    QVariantMap result;
+    QFile reportFile(url);
+    if (!reportFile.open(QIODevice::ReadOnly)) {
+        reportError(tr("Cannot open classification report: %1").arg(url));
+    } else {
+        QByteArray line;
+
+        while ((line = reportFile.readLine()).size() != 0) {
+
+            QList<QByteArray> row = line.split('\t');
+            if (row.size() == 3) {
+                QString objID = row[0];
+                QByteArray &assStr = row[1];
+                algoLog.trace(QString("Found Diamond classification: %1=%2").arg(objID).arg(QString(assStr)));
+
+                bool ok = true;
+                uint assID = assStr.toUInt(&ok);
+                if (ok) {
+                    if (result.contains(objID)) {
+                        QString msg = tr("Duplicate sequence name '%1' have been detected in the classification output.").arg(objID);
+                        monitor()->addInfo(msg, getActorId(), Problem::U2_WARNING);
+                        coreLog.info(msg);
+                    } else {
+                        result[objID] = assID;
+                    }
+                    continue;
+                }
+            }
+            reportError(tr("Broken Diamond report : %1").arg(url));
+            break;
+        }
+        reportFile.close();
+    }
+    return result;
+}
+
 }   // namespace LocalWorkflow
 }   // namespace U2

@@ -83,6 +83,9 @@ protected:
     Task * tick();
     void cleanup();
 
+private:
+    QVariantMap parseReport(const QString& url);
+
 private slots:
     void sl_taskFinished(Task *task);
 
