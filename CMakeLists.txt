@@ -5,18 +5,18 @@
 #   * add Qt5_DIR variable to File->Settings->Build,Execution,Deployment->CMake pointing to valid QT dir.
 #   * add UGENE_TRANSLATION_FILE environment variable to the RUN configuration and point it to *.qm file produced by qmake build
 
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.9)
 project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 1.25.0-dev)
+set(UGENE_VERSION 1.29.0-dev)
 set(UGENE_VER_MAJOR 1)
-set(UGENE_VER_MINOR 25)
+set(UGENE_VER_MINOR 29)
 set(UGENE_VER_PATCH 0)
 
-set(UGENE_MIN_VERSION_SQLITE 1.13.0)
-set(UGENE_MIN_VERSION_MYSQL 1.16.0)
+set(UGENE_MIN_VERSION_SQLITE 1.25.0)
+set(UGENE_MIN_VERSION_MYSQL 1.25.0)
 
 add_definitions(
         -DUGENE_VERSION=${UGENE_VERSION}
