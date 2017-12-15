@@ -4019,6 +4019,56 @@ GUI_TEST_CLASS_DEFINITION(test_5847) {
     CHECK_SET_ERR(errorList.isEmpty(), "Unexpected errors in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5851) {
+//    1. Set the temporary dir path to the folder with the spaces in the path.
+    QDir().mkpath(sandBoxDir + "test_5851/t e m p");
+
+    class SetTempDirPathScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            AppSettingsDialogFiller::setTemporaryDirPath(os, sandBoxDir + "test_5851/t e m p");
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetTempDirPathScenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+
+    GTLogTracer logTracer("The task uses a temporary folder to process the data. "
+                          "The folder path is required not to have spaces. "
+                          "Please set up an appropriate path for the \"Temporary files\" "
+                          "parameter on the \"Directories\" tab of the UGENE Application Settings.");
+
+//    2. Select "Tools" -> Sanger data analysis" -> "Map reads to reference...".
+//    3. Set "_common_data/sanger/reference.gb" as reference, "_common_data/sanger/sanger_*.ab1" as reads. Accept the dialog.
+//    Expected state: the task fails.
+//    4. After the task finish open the report.
+//    Expected state: there is an error message in the report: "The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the "Temporary files" parameter on the "Directories" tab of the UGENE Application Settings.".
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            AlignToReferenceBlastDialogFiller::setReference(os, testDir + "_common_data/sanger/reference.gb", dialog);
+
+            QStringList reads;
+            for (int i = 1; i < 21; i++) {
+                reads << QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+            }
+            AlignToReferenceBlastDialogFiller::setReads(os, reads, dialog);
+            AlignToReferenceBlastDialogFiller::setDestination(os, sandBoxDir + "test_5851/test_5851.ugenedb", dialog);
+
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsLog::checkContainsMessage(os, logTracer);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5872) {
     GTLogTracer logTracer("ASSERT: \"!isInRange");
 

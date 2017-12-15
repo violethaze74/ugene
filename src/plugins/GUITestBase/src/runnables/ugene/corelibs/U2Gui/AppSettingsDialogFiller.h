@@ -39,11 +39,15 @@ public:
     AppSettingsDialogFiller(HI::GUITestOpStatus &os, CustomScenario *customScenario);
     void commonScenario();
 
+    static void openTab(HI::GUITestOpStatus &os, Tabs tab);
+
     static void setExternalToolPath(HI::GUITestOpStatus &os, const QString& toolName, const QString& toolPath);
     static QString getExternalToolPath(HI::GUITestOpStatus &os, const QString& toolName);
-    static void openTab(HI::GUITestOpStatus &os, Tabs tab);
     static bool isExternalToolValid(HI::GUITestOpStatus &os, const QString& toolName);
     static void clearToolPath(HI::GUITestOpStatus &os, const QString& toolName);
+
+    static void setTemporaryDirPath(HI::GUITestOpStatus &os, const QString &path);
+
 private:
     style itemStyle;
     int r,g,b;
