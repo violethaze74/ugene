@@ -154,7 +154,7 @@ protected:
     void setSelection(const U2Region& r);
     void addSelection(const U2Region& r);
     void removeSelection(const U2Region& r);
-    virtual void setBorderCursor(const QPoint p);
+    virtual void setBorderCursor(const QPoint &p);
     virtual void moveBorder(const QPoint& p);
     virtual void pack();
     virtual int getSingleStep() const;

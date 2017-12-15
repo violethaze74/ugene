@@ -289,7 +289,7 @@ void GSequenceLineView::keyPressEvent(QKeyEvent *e) {
 }
 
 
-void GSequenceLineView::setBorderCursor(const QPoint p) {
+void GSequenceLineView::setBorderCursor(const QPoint &p) {
     const QPoint areaPoint = toRenderAreaPoint(p);
     const int sliderPos = scrollBar->isVisible() ? scrollBar->sliderPosition() : 0;
     const double scale = renderArea->getCurrentScale();

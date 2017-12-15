@@ -281,7 +281,6 @@ QRect SelectionModificationHelper::getNewSelectionForCornerMoving(MovableSide& c
 }
 
 QList<U2Region> SelectionModificationHelper::getNewSelection(MovableSide& board, const double mouseAngle, const double rotationDegree, const int sequenceLength, const int startBase, const int endBase, bool& isTwoRegions, const bool isTwoPartsLastSelecton) {
-    MovableSide b = board;
     double currentAngle = 180 * GRADUATION * mouseAngle / PI;
     currentAngle -= rotationDegree * GRADUATION;
     if (currentAngle < 0) {
@@ -317,6 +316,8 @@ QList<U2Region> SelectionModificationHelper::getNewSelection(MovableSide& board,
             newEndBase = newSelEdge;
         }
         break;
+    default:
+        return QList<U2Region>();
     }
 
     if (newStartBase == newEndBase) {
@@ -368,6 +369,8 @@ SelectionModificationHelper::MovableSide SelectionModificationHelper::getOpposit
     case BottomBorder:
         oppositeBorder = TopBorder;
         break;
+    default:
+        FAIL("An unexpected case", NoMovableBorder);
     }
 
     assert(oppositeBorder != NoMovableBorder);

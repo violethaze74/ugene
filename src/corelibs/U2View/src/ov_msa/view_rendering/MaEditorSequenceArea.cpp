@@ -1085,7 +1085,6 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
             changeTracker.finishTracking();
             shifting = false;
             QPoint globalMousePosition = ui->getScrollController()->getGlobalMousePosition(pos);
-            const QPoint screenPos = ui->getScrollController()->getScreenPosition();
             const double baseWidth = ui->getBaseWidthController()->getBaseWidth();
             const double baseHeight = ui->getRowHeightController()->getSequenceHeight();
             movableBorder = SelectionModificationHelper::getMovableSide(shape, globalMousePosition, selection.getRect(), QSize(baseWidth, baseHeight));

@@ -45,9 +45,10 @@
 namespace U2 {
 
 DetViewSequenceEditor::DetViewSequenceEditor(DetView* _view)
-    : view(_view),
-      cursorColor(Qt::black),
-      animationTimer(this) {
+    : cursorColor(Qt::black),
+      animationTimer(this),
+      view(_view)
+{
     reset();
     connect(&animationTimer, SIGNAL(timeout()), SLOT(sl_changeCursorColor()));
     setParent(view);
