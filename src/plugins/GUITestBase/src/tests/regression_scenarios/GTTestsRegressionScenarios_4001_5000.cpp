@@ -3040,7 +3040,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "svg", GTGlobals::UseMouse);
+            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
 
             QLabel *hintLabel = GTWidget::findExactWidget<QLabel *>(os, "hintLabel", dialog);
             CHECK_SET_ERR(NULL != hintLabel, "hintLabel is NULL");
@@ -3075,7 +3075,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "svg", GTGlobals::UseMouse);
+			GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
 
             QLabel *hintLabel = GTWidget::findExactWidget<QLabel *>(os, "hintLabel", dialog);
             CHECK_SET_ERR(NULL != hintLabel, "hintLabel is NULL");
