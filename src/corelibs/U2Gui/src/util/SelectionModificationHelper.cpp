@@ -193,7 +193,7 @@ U2Region SelectionModificationHelper::getNewSelectionForBorderMoving(MovableSide
         break;
     }
     case RightBorder:
-    case BottomBorder:
+    case BottomBorder: {
         int newLength = numOfNewSelBase - currentSelection.startPos;
         if (newLength < 0) {
             resultSelection = U2Region(numOfNewSelBase, qAbs(newLength));
@@ -203,6 +203,7 @@ U2Region SelectionModificationHelper::getNewSelectionForBorderMoving(MovableSide
             resultSelection = U2Region(currentSelection.startPos, newLength);
         }
         break;
+    }
     default:
         return currentSelection;
     }
