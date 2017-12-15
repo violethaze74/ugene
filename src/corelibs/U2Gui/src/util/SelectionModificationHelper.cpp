@@ -203,6 +203,8 @@ U2Region SelectionModificationHelper::getNewSelectionForBorderMoving(MovableSide
             resultSelection = U2Region(currentSelection.startPos, newLength);
         }
         break;
+    default:
+        return currentSelection;
     }
 
     return resultSelection;
@@ -267,6 +269,8 @@ QRect SelectionModificationHelper::getNewSelectionForCornerMoving(MovableSide& c
         horizontalBorder = RightBorder;
         verticalBorder = BottomBorder;
         break;
+    default:
+        return currentSelection;
     }
 
     CHECK(horizontalBorder != NoMovableBorder, QRect());
