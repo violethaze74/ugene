@@ -904,17 +904,17 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/CopyFileTask.cpp" line="32"/>
         <source>File &apos;%1&apos; copy task</source>
-        <translation type="unfinished"></translation>
+        <translation>File &apos;%1&apos; copy task</translation>
     </message>
     <message>
         <location filename="../src/tasks/CopyFileTask.cpp" line="49"/>
         <source>File &apos;%1&apos; doesn&apos;t exist</source>
-        <translation type="unfinished"></translation>
+        <translation>File &apos;%1&apos; doesn&apos;t exist</translation>
     </message>
     <message>
         <location filename="../src/tasks/CopyFileTask.cpp" line="51"/>
         <source>File copy from &apos;%1&apos; to &apos;%2&apos; failed</source>
-        <translation type="unfinished"></translation>
+        <translation>File copy from &apos;%1&apos; to &apos;%2&apos; failed</translation>
     </message>
 </context>
 <context>
@@ -2016,22 +2016,22 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="276"/>
         <source>The fileURL  to load is empty</source>
-        <translation type="unfinished"></translation>
+        <translation>The fileURL  to load is empty</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="279"/>
         <source>Cannot get an IO file adapter factory for the file URL: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot get an IO file adapter factory for the file URL: %1</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="282"/>
         <source>Cannot detect the file format: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot detect the file format: %1</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="285"/>
         <source>Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</source>
-        <translation type="unfinished"></translation>
+        <translation>Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="445"/>
