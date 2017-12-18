@@ -35,6 +35,7 @@
 #include "DiamondClassifyWorker.h"
 #include "DiamondClassifyWorkerFactory.h"
 #include "DiamondSupport.h"
+#include "utils/NgsClassificationUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -193,11 +194,11 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
     SAFE_POINT_EXT(NULL != dataPathRegistry, os.setError("U2DataPathRegistry is NULL"), settings);
 
-    U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(DiamondSupport::TAXONOMY_DATA);
+    U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsClassificationUtils::TAXONOMY_DATA_ID);
     SAFE_POINT_EXT(NULL != taxonomyDataPath, os.setError("Taxonomy data path is not registered"), settings);
     CHECK_EXT(taxonomyDataPath->isValid(), os.setError(tr("Taxonomy data is missed")), settings);
-    settings.taxonMapUrl = taxonomyDataPath->getPathByName(DiamondSupport::TAXON_PROTEIN_MAP);
-    settings.taxonNodesUrl = taxonomyDataPath->getPathByName(DiamondSupport::TAXON_NODES);
+    settings.taxonMapUrl = taxonomyDataPath->getPathByName(NgsClassificationUtils::TAXON_PROTEIN_MAP);
+    settings.taxonNodesUrl = taxonomyDataPath->getPathByName(NgsClassificationUtils::TAXON_NODES);
 
     return settings;
 }

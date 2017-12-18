@@ -21,12 +21,17 @@
 
 #include <QFileInfo>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/CopyFileTask.h>
 #include <U2Core/Counter.h>
+#include <U2Core/DataPathRegistry.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "KrakenBuildTask.h"
 #include "KrakenSupport.h"
+#include "utils/NgsClassificationUtils.h"
 
 namespace U2 {
 
@@ -54,7 +59,11 @@ KrakenBuildTask::KrakenBuildTask(const KrakenBuildTaskSettings &settings)
 {
     GCOUNTER(cvar, tvar, "KrakenBuildTask");
     setTaskName(settings.mode == KrakenBuildTaskSettings::BUILD ? tr("Build") : tr("Shrink"));
+
     checkSettings();
+    CHECK_OP(stateInfo, );
+
+    checkTaxonomy();
 }
 
 const QString &KrakenBuildTask::getResultDatabaseUrl() const {
@@ -70,10 +79,7 @@ void KrakenBuildTask::prepare() {
     if (settings.mode == KrakenBuildTaskSettings::BUILD) {
         int listenerNumber = 0;
 
-        ExternalToolRunTask *downloadTaxonomyTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getDownloadTaxonomyArguments(), new ExternalToolLogParser());
-        coreLog.error(QString("Listener was set: %1").arg(listenerNumber));
-        setListenerForTask(downloadTaxonomyTask, listenerNumber++);
-        newSubTasks << downloadTaxonomyTask;
+        newSubTasks << getCopyTaxonomyTasks();
 
         foreach (const QString &additionalGenome, settings.additionalGenomesUrls) {
             ExternalToolRunTask *addToLibraryTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getAddToLibraryArguments(additionalGenome), new ExternalToolLogParser());
@@ -121,11 +127,25 @@ void KrakenBuildTask::checkSettings() {
     SAFE_POINT_EXT(0 <= settings.threadsNumber, setError(QString("Threads number cannot be less than 0: %1").arg(settings.threadsNumber)), );
 }
 
-QStringList KrakenBuildTask::getDownloadTaxonomyArguments() const {
-    QStringList arguments;
-    arguments << "--download-taxonomy";
-    arguments << "--db" << settings.newDatabaseUrl;
-    return arguments;
+void KrakenBuildTask::checkTaxonomy() {
+    U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsClassificationUtils::TAXONOMY_DATA_ID);
+    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), setError(tr("Taxonomy data is not set")), );
+}
+
+QList<Task *> KrakenBuildTask::getCopyTaxonomyTasks() {
+    QList<Task *> copyTasks;
+
+    const QString databaseTaxonomyDirUrl = settings.newDatabaseUrl + "/taxonomy";
+    GUrlUtils::prepareDirLocation(databaseTaxonomyDirUrl, stateInfo);
+    CHECK_OP(stateInfo, copyTasks);
+
+    U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsClassificationUtils::TAXONOMY_DATA_ID);
+    const QString sourceDirUrl = taxonomyDataPath->getPath();
+
+    foreach (const QString &fileName, QDir(sourceDirUrl).entryList(QDir::NoDotAndDotDot)) {
+        copyTasks << new CopyFileTask(sourceDirUrl + "/" + fileName, databaseTaxonomyDirUrl + "/" + fileName);
+    }
+    return copyTasks;
 }
 
 QStringList KrakenBuildTask::getAddToLibraryArguments(const QString &additionalGenomeUrl) const {

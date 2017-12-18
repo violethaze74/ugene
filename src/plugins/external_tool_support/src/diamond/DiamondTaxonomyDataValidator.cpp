@@ -23,8 +23,8 @@
 #include <U2Core/DataPathRegistry.h>
 
 #include "DiamondClassifyPrompter.h"
-#include "DiamondSupport.h"
 #include "DiamondTaxonomyDataValidator.h"
+#include "utils/NgsClassificationUtils.h"
 
 namespace U2 {
 namespace Workflow {
@@ -33,14 +33,14 @@ bool DiamondTaxonomyDataValidator::validate(const Actor *actor, ProblemList &pro
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
     SAFE_POINT_EXT(NULL != dataPathRegistry, problemList << Problem("U2DataPathRegistry is NULL", actor->getId()), false);
 
-    U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(DiamondSupport::TAXONOMY_DATA);
+    U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsClassificationUtils::TAXONOMY_DATA_ID);
     CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(),
               problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("Taxonomy data is not set"), actor->getId()), false);
 
-    CHECK_EXT(!taxonomyDataPath->getPathByName(DiamondSupport::TAXON_PROTEIN_MAP).isEmpty(),
+    CHECK_EXT(!taxonomyDataPath->getPathByName(NgsClassificationUtils::TAXON_PROTEIN_MAP).isEmpty(),
               problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("file '%1' not found").arg("prot.accession2taxid.gz"), actor->getId()), false);
 
-    CHECK_EXT(!taxonomyDataPath->getPathByName(DiamondSupport::TAXON_NODES).isEmpty(),
+    CHECK_EXT(!taxonomyDataPath->getPathByName(NgsClassificationUtils::TAXON_NODES).isEmpty(),
               problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("file '%1' not found").arg("nodes.dmp"), actor->getId()), false);
 
     return true;

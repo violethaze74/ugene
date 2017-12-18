@@ -39,6 +39,7 @@
 #include "KrakenClassifyWorkerFactory.h"
 #include "KrakenClassifyPrompter.h"
 #include "KrakenSupport.h"
+#include "utils/NgsClassificationUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -182,7 +183,7 @@ void KrakenClassifyWorkerFactory::init() {
     proto->addExternalTool(KrakenSupport::CLASSIFY_TOOL);
     proto->addExternalTool(KrakenSupport::TRANSLATE_TOOL);
     proto->setValidator(new DatabaseValidator());
-    WorkflowEnv::getProtoRegistry()->registerProto(KrakenClassifyPrompter::tr("NGS: Reads Classification"), proto);     // TODO: replace the category name with a constant after extracting to a separate plugin
+    WorkflowEnv::getProtoRegistry()->registerProto(NgsClassificationUtils::ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new KrakenClassifyWorkerFactory());

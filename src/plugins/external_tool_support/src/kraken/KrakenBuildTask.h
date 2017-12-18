@@ -59,7 +59,10 @@ private:
     void prepare();
 
     void checkSettings();
-    QStringList getDownloadTaxonomyArguments() const;
+    void checkTaxonomy();
+
+    QList<Task *> getCopyTaxonomyTasks();
+
     QStringList getAddToLibraryArguments(const QString &additionalGenomeUrl) const;
     QStringList getBuildArguments() const;
     QStringList getCleanArguments() const;
