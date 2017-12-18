@@ -135,9 +135,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/java/JavaSupport.h \
            src/kraken/DatabaseSizeRelation.h \
            src/kraken/DatabaseValidator.h \
-           src/kraken/GenomicLibraryDelegate.h \
-           src/kraken/GenomicLibraryDialog.h \
-           src/kraken/GenomicLibraryPropertyWidget.h \
            src/kraken/KrakenBuildPrompter.h \
            src/kraken/KrakenBuildTask.h \
            src/kraken/KrakenBuildWorker.h \
@@ -216,6 +213,10 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/utils/ExternalToolSupportAction.h \
            src/utils/ExternalToolUtils.h \
            src/utils/ExternalToolValidateTask.h \
+           src/utils/GenomicLibraryDelegate.h \
+           src/utils/GenomicLibraryDialog.h \
+           src/utils/GenomicLibraryPropertyWidget.h \
+           src/utils/NgsClassificationUtils.h \
            src/utils/OutputCollector.h \
            src/vcftools/VcfConsensusSupport.h \
            src/vcftools/VcfConsensusSupportTask.h \
@@ -381,9 +382,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/java/JavaSupport.cpp \
            src/kraken/DatabaseSizeRelation.cpp \
            src/kraken/DatabaseValidator.cpp \
-           src/kraken/GenomicLibraryDelegate.cpp \
-           src/kraken/GenomicLibraryDialog.cpp \
-           src/kraken/GenomicLibraryPropertyWidget.cpp \
            src/kraken/KrakenBuildPrompter.cpp \
            src/kraken/KrakenBuildTask.cpp \
            src/kraken/KrakenBuildWorker.cpp \
@@ -462,6 +460,10 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/utils/ExternalToolSupportAction.cpp \
            src/utils/ExternalToolUtils.cpp \
            src/utils/ExternalToolValidateTask.cpp \
+           src/utils/GenomicLibraryDelegate.cpp \
+           src/utils/GenomicLibraryDialog.cpp \
+           src/utils/GenomicLibraryPropertyWidget.cpp \
+           src/utils/NgsClassificationUtils.cpp \
            src/utils/OutputCollector.cpp \
            src/vcftools/VcfConsensusSupport.cpp \
            src/vcftools/VcfConsensusSupportTask.cpp \

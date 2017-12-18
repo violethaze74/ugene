@@ -35,12 +35,13 @@
 #include <U2Lang/URLAttribute.h>
 #include <U2Lang/WorkflowEnv.h>
 
-#include "GenomicLibraryDelegate.h"
 #include "KrakenBuildPrompter.h"
 #include "KrakenBuildWorker.h"
 #include "KrakenBuildWorkerFactory.h"
 #include "KrakenSupport.h"
 #include "MinimizerLengthValidator.h"
+#include "utils/GenomicLibraryDelegate.h"
+#include "utils/NgsClassificationUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -239,7 +240,7 @@ void KrakenBuildWorkerFactory::init() {
     proto->setPrompter(new KrakenBuildPrompter(NULL));
     proto->addExternalTool(KrakenSupport::BUILD_TOOL);
     proto->setValidator(new MinimizerLengthValidator());
-    WorkflowEnv::getProtoRegistry()->registerProto(KrakenBuildPrompter::tr("NGS: Reads Classification"), proto);     // TODO: replace the category name with a constant after extracting to a separate plugin
+    WorkflowEnv::getProtoRegistry()->registerProto(NgsClassificationUtils::ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new KrakenBuildWorkerFactory());

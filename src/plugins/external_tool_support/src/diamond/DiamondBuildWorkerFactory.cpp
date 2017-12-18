@@ -31,7 +31,8 @@
 #include "DiamondBuildWorker.h"
 #include "DiamondBuildWorkerFactory.h"
 #include "DiamondSupport.h"
-#include "kraken/GenomicLibraryDelegate.h"
+#include "utils/GenomicLibraryDelegate.h"
+#include "utils/NgsClassificationUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -93,7 +94,7 @@ void DiamondBuildWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new DiamondBuildPrompter(NULL));
     proto->addExternalTool(DiamondSupport::TOOL_NAME);
-    WorkflowEnv::getProtoRegistry()->registerProto(DiamondBuildPrompter::tr("NGS: Reads Classification"), proto);     // TODO: replace the category name with a constant after extracting to a separate plugin
+    WorkflowEnv::getProtoRegistry()->registerProto(NgsClassificationUtils::ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new DiamondBuildWorkerFactory());

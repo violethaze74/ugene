@@ -57,7 +57,8 @@
 #include "ClarkSupport.h"
 #include "ClarkBuildWorker.h"
 #include "ClarkClassifyWorker.h"
-#include "../kraken/GenomicLibraryDelegate.h"
+#include "utils/GenomicLibraryDelegate.h"
+#include "utils/NgsClassificationUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -152,8 +153,7 @@ void ClarkBuildWorkerFactory::init() {
     proto->addExternalTool(ET_CLARK_getTargetsDef);
     proto->addExternalTool(ET_CLARK_buildScript);
 
-    // TODO: replace the category name with a constant after extracting to a separate plugin
-    WorkflowEnv::getProtoRegistry()->registerProto(ClarkBuildPrompter::tr("NGS: Reads Classification"), proto);
+    WorkflowEnv::getProtoRegistry()->registerProto(NgsClassificationUtils::ELEMENTS_GROUP, proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new ClarkBuildWorkerFactory());
 }

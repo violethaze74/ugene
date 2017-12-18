@@ -58,6 +58,7 @@
 
 #include "ClarkSupport.h"
 #include "ClarkClassifyWorker.h"
+#include "utils/NgsClassificationUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -334,8 +335,7 @@ void ClarkClassifyWorkerFactory::init() {
     proto->addExternalTool(ET_CLARK);
     proto->addExternalTool(ET_CLARK_L);
 
-    // TODO: replace the category name with a constant after extracting to a separate plugin
-    WorkflowEnv::getProtoRegistry()->registerProto(ClarkClassifyPrompter::tr("NGS: Reads Classification"), proto);
+    WorkflowEnv::getProtoRegistry()->registerProto(NgsClassificationUtils::ELEMENTS_GROUP, proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new ClarkClassifyWorkerFactory());
 }

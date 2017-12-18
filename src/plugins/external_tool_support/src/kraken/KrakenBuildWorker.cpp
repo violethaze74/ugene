@@ -116,11 +116,10 @@ KrakenBuildTaskSettings KrakenBuildWorker::getSettings() {
 
 int KrakenBuildWorker::getListenersCount(const KrakenBuildTaskSettings &settings) const {
     if (settings.mode == KrakenBuildTaskSettings::BUILD) {
-        const int downloadTaxonomyCountersCount = 1;
         const int addToLibraryCountersCount = settings.additionalGenomesUrls.size();
         const int buildDatabaseCountersCount = 1;
         const int cleanDatabaseCountersCount = settings.clean ? 1 : 0;
-        return downloadTaxonomyCountersCount + addToLibraryCountersCount + buildDatabaseCountersCount + cleanDatabaseCountersCount;
+        return addToLibraryCountersCount + buildDatabaseCountersCount + cleanDatabaseCountersCount;
     } else {
         const int shrinkDatabaseCounterCount = 1;
         return shrinkDatabaseCounterCount;

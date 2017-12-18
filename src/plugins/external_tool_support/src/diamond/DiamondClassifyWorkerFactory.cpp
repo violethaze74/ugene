@@ -31,6 +31,7 @@
 #include "DiamondClassifyWorkerFactory.h"
 #include "DiamondSupport.h"
 #include "DiamondTaxonomyDataValidator.h"
+#include "utils/NgsClassificationUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -143,7 +144,7 @@ void DiamondClassifyWorkerFactory::init() {
     proto->setPrompter(new DiamondClassifyPrompter(NULL));
     proto->addExternalTool(DiamondSupport::TOOL_NAME);
     proto->setValidator(new DiamondTaxonomyDataValidator());
-    WorkflowEnv::getProtoRegistry()->registerProto(DiamondClassifyPrompter::tr("NGS: Reads Classification"), proto);     // TODO: replace the category name with a constant after extracting to a separate plugin
+    WorkflowEnv::getProtoRegistry()->registerProto(NgsClassificationUtils::ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new DiamondClassifyWorkerFactory());
