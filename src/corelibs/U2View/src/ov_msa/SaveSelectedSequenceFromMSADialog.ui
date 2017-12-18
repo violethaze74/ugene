@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>416</width>
-    <height>195</height>
+    <height>179</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Export Selected Sequence from Alignment</string>
+   <string>Export Selected Sequence(s)</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -20,68 +20,69 @@
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
-      <widget class="QLabel" name="fileLabel">
+      <widget class="QLabel" name="folderLabel">
        <property name="text">
-        <string>Export to file</string>
+        <string>Export to folder</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="fileNameEdit"/>
-     </item>
-     <item row="0" column="2">
-      <widget class="QToolButton" name="fileButton">
-       <property name="text">
-        <string>...</string>
-       </property>
-      </widget>
+     <item row="0" column="1" colspan="2">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLineEdit" name="folderNameEdit"/>
+       </item>
+       <item>
+        <widget class="QToolButton" name="folderButton">
+         <property name="text">
+          <string>...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="formatLabel">
+      <widget class="QLabel" name="fileNameLabel">
        <property name="text">
-        <string>File format to use</string>
+        <string>File name</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1" colspan="2">
+     <item row="1" column="1">
+      <widget class="QComboBox" name="fileNameCombo"/>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="customFileNameEdit"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="formatLabel">
+       <property name="text">
+        <string>File format</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
       <widget class="QComboBox" name="formatCombo"/>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="addToProjectBox">
+    <widget class="QCheckBox" name="keepGapsBox">
      <property name="text">
-      <string>Add document to the project</string>
+      <string>Keep gaps</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="gapGroup">
-     <property name="title">
-      <string>Gap characters ('-')</string>
+    <widget class="QCheckBox" name="addToProjectBox">
+     <property name="text">
+      <string>Add to project</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QRadioButton" name="keepGapsRB">
-        <property name="text">
-         <string>Keep</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="trimGapsRB">
-        <property name="text">
-         <string>Trim</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -91,7 +92,7 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>20</width>
+       <width>395</width>
        <height>0</height>
       </size>
      </property>

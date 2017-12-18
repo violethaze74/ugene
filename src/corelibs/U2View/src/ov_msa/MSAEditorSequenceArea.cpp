@@ -47,6 +47,7 @@
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
+#include <U2Core/MultiTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -125,7 +126,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     createSubaligniment->setObjectName("Save subalignment");
     connect(createSubaligniment, SIGNAL(triggered()), SLOT(sl_createSubaligniment()));
 
-    saveSequence = new QAction(tr("Save sequence..."), this);
+    saveSequence = new QAction(tr("Export selected sequence(s)..."), this);
     saveSequence->setObjectName("Save sequence");
     connect(saveSequence, SIGNAL(triggered()), SLOT(sl_saveSequence()));
 
@@ -574,17 +575,19 @@ void MSAEditorSequenceArea::sl_createSubaligniment(){
 }
 
 void MSAEditorSequenceArea::sl_saveSequence(){
-    CHECK(getEditor() != NULL, );
-    int seqIndex = selection.y();
-
-    if(selection.height() > 1){
-        QMessageBox::critical(NULL, tr("Warning!"), tr("You must select only one sequence for export."));
-        return;
+    CHECK(getEditor() != NULL, );    
+    QStringList seqNames;
+    MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
+    QRect selection = editor->getCurrentSelection();
+    int startSeq = selection.y();
+    int endSeq = selection.y() + selection.height() - 1;
+    MSACollapsibleItemModel *model = editor->getUI()->getCollapseModel();
+    for (int i = startSeq; i <= endSeq; i++) {
+        seqNames.append(ma->getRow(model->mapToRow(i))->getName());
     }
-
-    QString seqName = editor->getMaObject()->getMultipleAlignment()->getRow(seqIndex)->getName();
+    
     QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController(editor->getMaObject()->getDocument()->getURL().dirPath(),
-        GUrlUtils::fixFileName(seqName), (QWidget*)AppContext::getMainWindow()->getQMainWindow());
+        (QWidget*)AppContext::getMainWindow()->getQMainWindow(), seqNames);
     const int rc = d->exec();
     CHECK(!d.isNull(), );
 
@@ -592,56 +595,68 @@ void MSAEditorSequenceArea::sl_saveSequence(){
         return;
     }
     //TODO: OPTIMIZATION code below can be wrapped to task
-    DNASequence seq;
-    foreach(const DNASequence &s,  MSAUtils::ma2seq(getEditor()->getMaObject()->getMsa(), d->trimGapsFlag)){
-        if (s.getName() == seqName){
-            seq = s;
-            break;
-        }
-    }
-
-    U2OpStatus2Log  os;
-    QString fullPath = GUrlUtils::prepareFileLocation(d->url, os);
-    CHECK_OP(os, );
-    GUrl url(fullPath);
-
-    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(d->url));
+    QList<Task*> tasks;
     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(d->format);
-    Document *doc;
-    QList<GObject*> objs;
-    doc = df->createNewLoadedDocument(iof, fullPath, os);
-    CHECK_OP_EXT(os, delete doc, );
-    U2SequenceObject* seqObj = DocumentFormatUtils::addSequenceObjectDeprecated(doc->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, seq.getName(), objs, seq, os);
-    CHECK_OP_EXT(os, delete doc, );
-    doc->addObject(seqObj);
-    SaveDocumentTask *t = new SaveDocumentTask(doc, doc->getIOAdapterFactory(), doc->getURL());
-
-    if (d->addToProjectFlag){
-        Project *p = AppContext::getProject();
-        Document *loadedDoc=p->findDocumentByURL(url);
-        if (loadedDoc) {
-            coreLog.details("The document already in the project");
-            QMessageBox::warning(ui, tr("warning"), tr("The document already in the project"));
-            return;
+    SAFE_POINT(df != NULL, "Unknown document format");
+    QString extension = df->getSupportedDocumentFileExtensions().first();
+    QSet<QString> existingFilenames;
+    foreach(const DNASequence &s, MSAUtils::ma2seq(getEditor()->getMaObject()->getMsa(), d->trimGapsFlag)) {
+        DNASequence seq;
+        U2OpStatus2Log  os;
+        if (!seqNames.contains(s.getName())) {
+            continue;
         }
-        p->addDocument(doc);
+        seq = s;
+        QString filePath;
+        if (d->customFileName.isEmpty()) {
+            filePath = GUrlUtils::prepareFileLocation(d->url + QDir::separator() + s.getName() + "." + extension, os);
+        } else {
+            filePath = GUrlUtils::prepareFileLocation(d->url + QDir::separator() + d->customFileName + "." + extension, os);
+        }
+        CHECK_OP(os, );
+        GUrlUtils::fixFileName(filePath);
+        QFile fileToSave(filePath);
+        filePath = GUrlUtils::rollFileName(filePath, "_", existingFilenames);
+        existingFilenames.insert(filePath);
+        GUrl url(filePath);
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(d->url));
+        DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(d->format);
+        QList<GObject*> objs;
+        Document *doc = df->createNewLoadedDocument(iof, filePath, os);
+        CHECK_OP_EXT(os, delete doc, );
+        U2SequenceObject* seqObj = DocumentFormatUtils::addSequenceObjectDeprecated(doc->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, seq.getName(), objs, seq, os);
+        CHECK_OP_EXT(os, delete doc, );
+        doc->addObject(seqObj);
+        SaveDocumentTask *t = new SaveDocumentTask(doc, doc->getIOAdapterFactory(), doc->getURL());
 
-        // Open view for created document
-        DocumentSelection ds;
-        ds.setSelection(QList<Document*>() <<doc);
-        MultiGSelection ms;
-        ms.addSelection(&ds);
-        foreach (GObjectViewFactory *f, AppContext::getObjectViewFactoryRegistry()->getAllFactories()) {
-            if (f->canCreateView(ms)) {
-                Task *tt = f->createViewTask(ms);
-                AppContext::getTaskScheduler()->registerTopLevelTask(tt);
-                break;
+        if (d->addToProjectFlag) {
+            Project *p = AppContext::getProject();
+            Document *loadedDoc = p->findDocumentByURL(url);
+            if (loadedDoc) {
+                coreLog.details("The document already in the project");
+                QMessageBox::warning(ui, tr("warning"), tr("The document already in the project"));
+                return;
             }
+            p->addDocument(doc);
+
+            // Open view for created document
+            DocumentSelection ds;
+            ds.setSelection(QList<Document*>() << doc);
+            MultiGSelection ms;
+            ms.addSelection(&ds);
+            foreach(GObjectViewFactory *f, AppContext::getObjectViewFactoryRegistry()->getAllFactories()) {
+                if (f->canCreateView(ms)) {
+                    Task *tt = f->createViewTask(ms);
+                    AppContext::getTaskScheduler()->registerTopLevelTask(tt);
+                    break;
+                }
+            }
+        } else {
+            t->addFlag(SaveDoc_DestroyAfter);
         }
-    }else{
-        t->addFlag(SaveDoc_DestroyAfter);
+        tasks.append(t);
     }
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
+    AppContext::getTaskScheduler()->registerTopLevelTask(new MultiTask(tr("Save sequences from alignment"), tasks));
 }
 
 void MSAEditorSequenceArea::sl_modelChanged() {
