@@ -80,6 +80,7 @@ protected slots:
     void sl_translateAnnotationsOrSelection();
     void sl_setUpFramesManually();
     void sl_showAllFrames();
+    void sl_onScrollBarMoved(int pos);
 
 protected:
     virtual void pack();
@@ -87,6 +88,7 @@ protected:
     void showEvent(QShowEvent * e);
     void hideEvent(QHideEvent * e);
 
+    void mousePressEvent(QMouseEvent* me);
     void mouseMoveEvent(QMouseEvent* me);
     void mouseReleaseEvent(QMouseEvent* me);
     void wheelEvent(QWheelEvent* we);
@@ -117,6 +119,9 @@ private:
     void uncheckAllTranslations();
     void updateTranslatiosState(const U2Region& visibleRange, const bool isDirect);
     void updateSelectedTranslations(const SequenceObjectContext::TranslationState state);
+    void updateSelectedAnnotations();
+
+    static void annotationRegionsForDirectTranslations(QVector<U2Region>& regions);
 };
 
 class DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {

@@ -289,9 +289,42 @@ void DetView::sl_showAllFrames() {
     updateSelectedTranslations(SequenceObjectContext::TranslationState::ShowAllFrames);
 }
 
+void DetView::sl_onScrollBarMoved(int pos) {
+    GSequenceLineViewAnnotated::sl_onScrollBarMoved(pos);
+    setSelectedTranslations();
+}
+
 void DetView::updateSelectedTranslations(const SequenceObjectContext::TranslationState state) {
     ctx->setTranslationState(state);
     setSelectedTranslations();
+}
+
+void DetView::updateSelectedAnnotations() {
+    if (!ctx->isTranslateAnnotationOrSelection()) {
+        return;
+    }
+
+    const QList<AnnotationTableObject*> aObjs = ctx->getAnnotationObjects(true).toList();
+    foreach(AnnotationTableObject* obj, aObjs) {
+        foreach(Annotation* ann, obj->getAnnotations()) {
+            const bool isDirect = ann->getStrand().isDirect();
+            QVector<U2Region> regions = ann->getRegions();
+            isDirect ? annotationRegionsForDirectTranslations(regions) : annotationRegionsForDirectTranslations(regions);
+            foreach(const U2Region& reg, regions) {
+                const int mod = isDirect ? (reg.startPos % 3) : ((ctx->getSequenceLength() - reg.endPos()) % 3);
+                ctx->showTranslationFrame(mod, true);
+            }
+        }
+    }
+}
+
+void DetView::annotationRegionsForDirectTranslations(QVector<U2Region>& regions) {
+    for (int i = 1; i < regions.size(); i++) {
+        const int offset = 3 - (regions[i - 1].length % 3);
+        regions[i - 1].length += offset;
+        regions[i].startPos += offset;
+        regions[i].length -= offset;
+    }
 }
 
 void DetView::sl_wrapSequenceToggle(bool v) {
@@ -369,6 +402,7 @@ void DetView::setSelectedTranslations() {
         } while (oneLineRegion.startPos < visibleRange.endPos());
     }
 
+    updateSelectedAnnotations();
     getDetViewRenderArea()->getRenderer()->update();
     updateVisibleRange();
     updateVerticalScrollBar();
@@ -392,6 +426,11 @@ void DetView::updateTranslatiosState(const U2Region& visibleRange, const bool is
         }
         ctx->showTranslationFrame(i, state);
     }
+}
+
+void DetView::mousePressEvent(QMouseEvent* me) {
+    GSequenceLineViewAnnotated::mousePressEvent(me);
+    setSelectedTranslations();
 }
 
 void DetView::mouseMoveEvent(QMouseEvent *me) {
@@ -480,6 +519,7 @@ void DetView::wheelEvent(QWheelEvent *we) {
         sBar->triggerAction(toMin ? QAbstractSlider::SliderSingleStepSub : QAbstractSlider::SliderSingleStepAdd);
     }
     setSelectedTranslations();
+    updateSelectedAnnotations();
 }
 
 void DetView::resizeEvent(QResizeEvent *e) {

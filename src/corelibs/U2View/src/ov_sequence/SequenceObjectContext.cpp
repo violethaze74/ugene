@@ -355,9 +355,7 @@ void SequenceObjectContext::addAutoAnnotationObject(AnnotationTableObject *obj) 
     emit si_annotationObjectAdded(obj);
 }
 
-QSet<AnnotationTableObject *> SequenceObjectContext::getAnnotationObjects(
-    bool includeAutoAnnotations) const
-{
+QSet<AnnotationTableObject *> SequenceObjectContext::getAnnotationObjects(bool includeAutoAnnotations) const {
     QSet<AnnotationTableObject *> result = annotations;
     if (includeAutoAnnotations) {
         result += autoAnnotations;
@@ -366,7 +364,7 @@ QSet<AnnotationTableObject *> SequenceObjectContext::getAnnotationObjects(
     return result;
 }
 
-void SequenceObjectContext::sl_toggleTranslations(){
+void SequenceObjectContext::sl_toggleTranslations() {
     QAction* a = qobject_cast<QAction*>(QObject::sender());
     CHECK(a != NULL, );
     if (a->isChecked()) {
