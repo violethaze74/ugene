@@ -93,6 +93,7 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
         }
     }
     annSelection = new AnnotationSelection(this);
+    translationMenuActions = new QActionGroup(this);
 }
 
 void SequenceObjectContext::guessAminoTT(const AnnotationTableObject *ao) {
@@ -212,10 +213,6 @@ void SequenceObjectContext::sl_showShowAll() {
 }
 
 void SequenceObjectContext::setTranslationState(const SequenceObjectContext::TranslationState state) {
-    if (translateAnotationOrSelection && state == SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection) {
-        return;
-    }
-
     translateAnotationOrSelection = state == SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection;
     bool needUpdate = false;
 
@@ -268,7 +265,6 @@ QMenu * SequenceObjectContext::createTranslationFramesMenu(QList<QAction*> menuA
     menu->menuAction()->setObjectName("Translation frames");
     new MultiClickMenu(menu);
 
-    translationMenuActions = new QActionGroup(this);
     foreach(QAction* a, menuActions) {
         translationMenuActions->addAction(a);
         menu->addAction(a);
@@ -371,7 +367,7 @@ QSet<AnnotationTableObject *> SequenceObjectContext::getAnnotationObjects(
 }
 
 void SequenceObjectContext::sl_toggleTranslations(){
-    QAction* a = (QAction*)QObject::sender();
+    QAction* a = qobject_cast<QAction*>(QObject::sender());
     CHECK(a != NULL, );
     if (a->isChecked()) {
         translationRowsStatus.append(a);
@@ -387,7 +383,7 @@ bool SequenceObjectContext::isRowChoosed(){
     return rowChoosed;
 }
 
-bool SequenceObjectContext::isTranslateAnnotationOrSelection() {
+bool SequenceObjectContext::isTranslateAnnotationOrSelection() const {
     return translateAnotationOrSelection;
 }
 
@@ -427,8 +423,9 @@ void SequenceObjectContext::showComlementActions(bool show) {
     }
 }
 
-void SequenceObjectContext::setActionChecked(const int numOfAction, const bool setChecked) {
+void SequenceObjectContext::showTranslationFrame(const int numOfAction, const bool setChecked) {
     QList<QAction*> actions = visibleFrames->actions();
+    SAFE_POINT(0 <= numOfAction && numOfAction < 6, "Incorrect action", );
     actions[numOfAction]->setChecked(setChecked);
 }
 

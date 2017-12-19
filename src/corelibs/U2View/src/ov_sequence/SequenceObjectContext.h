@@ -57,7 +57,7 @@ public:
     QByteArray getSequenceData(const U2Region &r, U2OpStatus &os) const;
     U2EntityRef getSequenceRef() const;
     bool        isRowChoosed();
-    bool        isTranslateAnnotationOrSelection();
+    bool        isTranslateAnnotationOrSelection() const;
 
     DNASequenceSelection*   getSequenceSelection() const {return selection;}
 
@@ -84,7 +84,7 @@ public:
     QVector<bool> getTranslationRowsVisibleStatus();
     void setTranslationsVisible(bool enable);
     void showComlementActions(bool show);
-    void setActionChecked(const int numOfAction, const bool setChecked);
+    void showTranslationFrame(const int numOfAction, const bool setChecked);
 
     enum TranslationState {
         DoNotTranslate,

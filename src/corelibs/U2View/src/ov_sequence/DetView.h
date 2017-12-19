@@ -50,7 +50,6 @@ public:
     bool hasTranslations() const;
     bool hasComplementaryStrand() const;
     bool isWrapMode() const;
-    bool isNeedCompleteRedraw();
 
     virtual void setStartPos(qint64 pos);
     virtual void setCenterPos(qint64 pos);
@@ -70,16 +69,17 @@ public:
 
 protected slots:
     virtual void sl_sequenceChanged();
+    void sl_onDNASelectionChanged(LRegionsSelection* thiz, const QVector<U2Region>& added, const QVector<U2Region>& removed);
     void sl_onAminoTTChanged();
     void sl_translationRowsChanged();
     void sl_showComplementToggle(bool v);
     void sl_showTranslationToggle(bool v);
     void sl_wrapSequenceToggle(bool v);
     void sl_verticalSrcollBarMoved(int position);
-    void sl_doNotTranslate(bool t);
-    void sl_translateAnnotationsOrSelection(bool t);
-    void sl_setUpFramesManually(bool t);
-    void sl_showAllFrames(bool t);
+    void sl_doNotTranslate();
+    void sl_translateAnnotationsOrSelection();
+    void sl_setUpFramesManually();
+    void sl_showAllFrames();
 
 protected:
     virtual void pack();
@@ -111,13 +111,12 @@ protected:
 
     int numShiftsInOneLine;
     int currentShiftsCounter;
-    bool needCompleteRedraw;
 
 private:
     void setupTranslationsMenu();
     void uncheckAllTranslations();
     void updateTranslatiosState(const U2Region& visibleRange, const bool isDirect);
-    void setTranslationState(const SequenceObjectContext::TranslationState state);
+    void updateSelectedTranslations(const SequenceObjectContext::TranslationState state);
 };
 
 class DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
