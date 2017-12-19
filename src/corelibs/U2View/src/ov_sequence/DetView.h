@@ -69,7 +69,7 @@ public:
     int getVerticalScrollBarPosition();
     int getShift() const;
 
-    void ensureVisible(int pos);
+    void ensurePositionVisible(int pos);
 
 protected slots:
     virtual void sl_sequenceChanged();

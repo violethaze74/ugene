@@ -50,9 +50,9 @@ const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "%UserProfil
 SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(const QString &defaultDir, QWidget* p, const QStringList& _seqNames)
     : QDialog(p),
       defaultDir(defaultDir),
+      seqNames(_seqNames),
       saveController(NULL),
-      ui(new Ui_SaveSelectedSequenceFromMSADialog()),
-      seqNames(_seqNames)
+      ui(new Ui_SaveSelectedSequenceFromMSADialog())
 {
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "20874989");
