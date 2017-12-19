@@ -643,6 +643,7 @@ void ADVSingleSequenceWidget::sl_onSelectRange() {
         }else{
             getSequenceContext()->getSequenceSelection()->setSelectedRegions(curRegions);
         }
+        detView->setSelectedTranslations();
     }
 }
 

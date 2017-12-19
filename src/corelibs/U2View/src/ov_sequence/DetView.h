@@ -28,6 +28,7 @@
 #include <U2Core/U2Location.h>
 
 #include "GSequenceLineViewAnnotated.h"
+#include <U2View/SequenceObjectContext.h>
 
 
 class QActionGroup;
@@ -68,17 +69,24 @@ public:
 
     int getVerticalScrollBarPosition();
     int getShift() const;
+    void setSelectedTranslations();
 
     void ensureVisible(int pos);
 
 protected slots:
     virtual void sl_sequenceChanged();
+    void sl_onDNASelectionChanged(LRegionsSelection* thiz, const QVector<U2Region>& added, const QVector<U2Region>& removed);
     void sl_onAminoTTChanged();
     void sl_translationRowsChanged();
     void sl_showComplementToggle(bool v);
     void sl_showTranslationToggle(bool v);
     void sl_wrapSequenceToggle(bool v);
     void sl_verticalSrcollBarMoved(int position);
+    void sl_doNotTranslate();
+    void sl_translateAnnotationsOrSelection();
+    void sl_setUpFramesManually();
+    void sl_showAllFrames();
+    void sl_onScrollBarMoved(int pos);
 
 protected:
     virtual void pack();
@@ -86,6 +94,7 @@ protected:
     void showEvent(QShowEvent * e);
     void hideEvent(QHideEvent * e);
 
+    void mousePressEvent(QMouseEvent* me);
     void mouseMoveEvent(QMouseEvent* me);
     void mouseReleaseEvent(QMouseEvent* me);
     void wheelEvent(QWheelEvent* we);
@@ -101,6 +110,10 @@ protected:
     QAction*        showComplementAction;
     QAction*        showTranslationAction;
     QAction*        wrapSequenceAction;
+    QAction*        doNotTranslateAction;
+    QAction*        translateAnnotationsOrSelectionAction;
+    QAction*        setUpFramesManuallyAction;
+    QAction*        showAllFramesAction;
     QAction*        editAction;
 
     DetViewSequenceEditor* editor;
@@ -112,9 +125,18 @@ protected:
 
 private:
     void setupTranslationsMenu();
+
     QPoint getRenderAreaPointAfterAutoScroll(const QPoint& pos);
     void moveBorder(const QPoint& p);
     void setBorderCursor(const QPoint& p);
+
+    void uncheckAllTranslations();
+    void updateTranslatiosState(const U2Region& visibleRange, const bool isDirect);
+    void updateSelectedTranslations(const SequenceObjectContext::TranslationState state);
+    void updateSelectedAnnotations();
+
+    static void annotationRegionsForDirectTranslations(QVector<U2Region>& regions);
+
 };
 
 class DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {

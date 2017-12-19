@@ -70,6 +70,23 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     showTranslationAction->setObjectName("translation_action");
     connect(showTranslationAction, SIGNAL(triggered(bool)), SLOT(sl_showTranslationToggle(bool)));
 
+    doNotTranslateAction = new QAction(tr("Do not translate"), this);
+    connect(doNotTranslateAction, SIGNAL(triggered(bool)), SLOT(sl_doNotTranslate()));
+    doNotTranslateAction->setCheckable(true);
+    doNotTranslateAction->setChecked(true);
+
+    translateAnnotationsOrSelectionAction = new QAction(tr("Translate annotations or selection"), this);
+    connect(translateAnnotationsOrSelectionAction, SIGNAL(triggered(bool)), SLOT(sl_translateAnnotationsOrSelection()));
+    translateAnnotationsOrSelectionAction->setCheckable(true);
+
+    setUpFramesManuallyAction = new QAction(tr("Set up frames manually"), this);
+    connect(setUpFramesManuallyAction, SIGNAL(triggered(bool)), SLOT(sl_setUpFramesManually()));
+    setUpFramesManuallyAction->setCheckable(true);
+
+    showAllFramesAction = new QAction(tr("Show all frames"), this);
+    connect(showAllFramesAction, SIGNAL(triggered(bool)), SLOT(sl_showAllFrames()));
+    showAllFramesAction->setCheckable(true);
+
     wrapSequenceAction = new QAction(tr("Wrap sequence"), this);
     wrapSequenceAction->setIcon(QIcon(":core/images/wrap_sequence.png"));
     wrapSequenceAction->setObjectName("wrap_sequence_action");
@@ -180,7 +197,7 @@ DNATranslation* DetView::getComplementTT() const {
 }
 
 DNATranslation* DetView::getAminoTT() const {
-    return showTranslationAction->isChecked() ? ctx->getAminoTT() : NULL;
+    return showTranslationAction->isChecked() || ctx->isTranslateAnnotationOrSelection() ? ctx->getAminoTT() : NULL;
 }
 
 int DetView::getSymbolsPerLine() const {
@@ -190,6 +207,7 @@ int DetView::getSymbolsPerLine() const {
 void DetView::setShowComplement(bool t) {
     showComplementAction->disconnect(this);
     showComplementAction->setChecked(t);
+    ctx->showComlementActions(t);
     connect(showComplementAction, SIGNAL(triggered(bool)), SLOT(sl_showComplementToggle(bool)));
 
     updateSize();
@@ -286,6 +304,11 @@ void DetView::sl_sequenceChanged() {
     GSequenceLineView::sl_sequenceChanged();
 }
 
+void DetView::sl_onDNASelectionChanged(LRegionsSelection* sel, const QVector<U2Region>& added, const QVector<U2Region>& removed) {
+    GSequenceLineViewAnnotated::sl_onDNASelectionChanged(sel, added, removed);
+    setSelectedTranslations();
+}
+
 void DetView::sl_onAminoTTChanged() {
     lastUpdateFlags |= GSLV_UF_NeedCompleteRedraw;
     update();
@@ -326,6 +349,60 @@ void DetView::sl_showComplementToggle(bool v) {
 void DetView::sl_showTranslationToggle(bool v) {
     GCOUNTER( cvar, tvar, "SequenceView::DetView::ShowTranslations" );
     setShowTranslation(v);
+}
+
+void DetView::sl_doNotTranslate() {
+    updateSelectedTranslations(SequenceObjectContext::TranslationState::DoNotTranslate);
+}
+
+void DetView::sl_translateAnnotationsOrSelection() {
+    updateSelectedTranslations(SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection);
+}
+
+void DetView::sl_setUpFramesManually() {
+    updateSelectedTranslations(SequenceObjectContext::TranslationState::SetUpFramesManually);
+}
+
+void DetView::sl_showAllFrames() {
+    updateSelectedTranslations(SequenceObjectContext::TranslationState::ShowAllFrames);
+}
+
+void DetView::sl_onScrollBarMoved(int pos) {
+    GSequenceLineViewAnnotated::sl_onScrollBarMoved(pos);
+    setSelectedTranslations();
+}
+
+void DetView::updateSelectedTranslations(const SequenceObjectContext::TranslationState state) {
+    ctx->setTranslationState(state);
+    setSelectedTranslations();
+}
+
+void DetView::updateSelectedAnnotations() {
+    if (!ctx->isTranslateAnnotationOrSelection()) {
+        return;
+    }
+
+    const QList<AnnotationTableObject*> aObjs = ctx->getAnnotationObjects(true).toList();
+    foreach(AnnotationTableObject* obj, aObjs) {
+        foreach(Annotation* ann, obj->getAnnotations()) {
+            const bool isDirect = ann->getStrand().isDirect();
+            QVector<U2Region> regions = ann->getRegions();
+            isDirect ? annotationRegionsForDirectTranslations(regions) : annotationRegionsForDirectTranslations(regions);
+            foreach(const U2Region& reg, regions) {
+                const int mod = isDirect ? (reg.startPos % 3) : ((ctx->getSequenceLength() - reg.endPos()) % 3);
+                ctx->showTranslationFrame(mod, true);
+            }
+        }
+    }
+}
+
+void DetView::annotationRegionsForDirectTranslations(QVector<U2Region>& regions) {
+    for (int i = 1; i < regions.size(); i++) {
+        const int offset = 3 - (regions[i - 1].length % 3);
+        regions[i - 1].length += offset;
+        regions[i].startPos += offset;
+        regions[i].length -= offset;
+    }
 }
 
 void DetView::sl_wrapSequenceToggle(bool v) {
@@ -391,6 +468,56 @@ void DetView::hideEvent(QHideEvent * e) {
     GSequenceLineViewAnnotated::hideEvent(e);
 }
 
+void DetView::uncheckAllTranslations() {
+    for (int i = 0; i < 6; i++) {
+        ctx->showTranslationFrame(i, false);
+    }
+}
+
+void DetView::setSelectedTranslations() {
+    if (ctx->isTranslateAnnotationOrSelection()) {
+        int symbolsPerLine = getSymbolsPerLine();
+        U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
+
+        uncheckAllTranslations();
+        do {
+            updateTranslatiosState(oneLineRegion, true);
+            updateTranslatiosState(oneLineRegion, false);
+            oneLineRegion.startPos += symbolsPerLine;
+        } while (oneLineRegion.startPos < visibleRange.endPos());
+    }
+
+    updateSelectedAnnotations();
+    getDetViewRenderArea()->getRenderer()->update();
+    updateVisibleRange();
+    updateVerticalScrollBar();
+    completeUpdate();
+}
+
+void DetView::updateTranslatiosState(const U2Region& visibleRange, const bool isDirect) {
+    QVector<U2Region> selectedRegions = ctx->getSequenceSelection()->getSelectedRegions();
+    QList<bool> lineState = QList<bool>() << false << false << false;
+    foreach(const U2Region& reg, selectedRegions) {
+        int mod = isDirect ? reg.startPos % 3 : ((ctx->getSequenceLength() - reg.endPos()) % 3);
+        lineState[mod] = true;
+    }
+    const int start = isDirect ? 0 : 3;
+    const int end = isDirect ? 3 : 6;
+    const int indent = isDirect ? 0 : 3;
+    for (int i = start; i < end; i++) {
+        const bool state = lineState[i - indent];
+        if (!state) {
+            continue;
+        }
+        ctx->showTranslationFrame(i, state);
+    }
+}
+
+void DetView::mousePressEvent(QMouseEvent* me) {
+    GSequenceLineViewAnnotated::mousePressEvent(me);
+    setSelectedTranslations();
+}
+
 void DetView::mouseMoveEvent(QMouseEvent *me) {
     if (!me->buttons()) {
         setBorderCursor(me->pos());
@@ -410,6 +537,7 @@ void DetView::mouseMoveEvent(QMouseEvent *me) {
     if (me->buttons() & Qt::LeftButton) {
         moveBorder(me->pos());
     }
+    setSelectedTranslations();
     QWidget::mouseMoveEvent(me);
 }
 
@@ -432,6 +560,7 @@ void DetView::mouseReleaseEvent(QMouseEvent* me) {
             }
         }
     }
+    setSelectedTranslations();
     verticalScrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
     GSequenceLineViewAnnotated::mouseReleaseEvent(me);
 }
@@ -450,6 +579,8 @@ void DetView::wheelEvent(QWheelEvent *we) {
         GScrollBar* sBar = wrapSequenceAction->isChecked() ? verticalScrollBar : scrollBar;
         sBar->triggerAction(toMin ? QAbstractSlider::SliderSingleStepSub : QAbstractSlider::SliderSingleStepAdd);
     }
+    setSelectedTranslations();
+    updateSelectedAnnotations();
 }
 
 void DetView::resizeEvent(QResizeEvent *e) {
@@ -625,7 +756,7 @@ void DetView::updateVerticalScrollBarPosition() {
 }
 
 void DetView::setupTranslationsMenu() {
-    QMenu *translationsMenu = ctx->createTranslationFramesMenu(showTranslationAction);
+    QMenu *translationsMenu = ctx->createTranslationFramesMenu(QList<QAction*>() << doNotTranslateAction << translateAnnotationsOrSelectionAction << setUpFramesManuallyAction << showAllFramesAction);
     CHECK(NULL != translationsMenu, );
     QToolButton *button = addActionToLocalToolbar(translationsMenu->menuAction());
     button->setPopupMode(QToolButton::InstantPopup);
@@ -737,7 +868,8 @@ bool DetViewRenderArea::isPosOnAnnotationYRange(const QPoint &p, Annotation *a, 
 void DetViewRenderArea::drawAll(QPaintDevice* pd) {
     GSLV_UpdateFlags uf = view->getUpdateFlags();
     bool completeRedraw = uf.testFlag(GSLV_UF_NeedCompleteRedraw)  || uf.testFlag(GSLV_UF_ViewResized)  ||
-                          uf.testFlag(GSLV_UF_VisibleRangeChanged) || uf.testFlag(GSLV_UF_AnnotationsChanged);
+                          uf.testFlag(GSLV_UF_VisibleRangeChanged) || uf.testFlag(GSLV_UF_AnnotationsChanged) ||
+                          getDetView()->getSequenceContext()->isTranslateAnnotationOrSelection();
 
     int scrollShift = getDetView()->getShift();
     QSize canvasSize(pd->width(), pd->height() + scrollShift);
@@ -745,8 +877,7 @@ void DetViewRenderArea::drawAll(QPaintDevice* pd) {
     if (completeRedraw) {
         QPainter pCached(cachedView);
         pCached.translate(0, - scrollShift);
-        renderer->drawAll(pCached, canvasSize,
-                            view->getVisibleRange());
+        renderer->drawAll(pCached, canvasSize, view->getVisibleRange());
         pCached.end();
     }
 
