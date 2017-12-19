@@ -192,7 +192,6 @@ QList<Annotation *> AnnotationTableObject::getAnnotationsByRegion(const U2Region
     ensureDataLoaded();
 
     foreach (Annotation *a, getAnnotations()) {
-        QString name = a->getName();
         if (annotationIntersectsRange(a, region, contains)) {
             result.append(a);
         }

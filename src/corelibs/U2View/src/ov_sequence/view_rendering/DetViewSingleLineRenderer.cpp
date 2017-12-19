@@ -376,21 +376,6 @@ static QByteArray translateSelection(const QVector<U2Region>& regions, DNATransl
     return resultTranslation;
 }
 
-static QByteArray translateAnnotation(const QVector<DetViewSingleLineRenderer::AnnotatedRegion>& annotationsInfo, DNATranslation* t, const char* seq, qint64 seqLen, qint64 offset, bool isDirect) {
-    foreach(const DetViewSingleLineRenderer::AnnotatedRegion& ann, annotationsInfo) {
-        const char* currentSeq(seq);
-        for (int i = 0; i < ann.regionToReplace.length; i++) {
-            const qint64 pos = ann.regionToReplace.startPos + i;
-            //currentSeq[pos] = ann.replacebleSequence[i];
-        }
-
-    }
-
-
-
-
-}
-
 static QByteArray translateComplSelection(const QVector<U2Region>& regions, DNATranslation* t, const char* seq, const qint64 seqLen, const U2Region& visibleRange) {
     QVector<U2Region> revesedRegions;
     foreach(const U2Region& reg, regions) {
@@ -405,92 +390,6 @@ static QByteArray translateComplSelection(const QVector<U2Region>& regions, DNAT
     QByteArray amino = translateSelection(revesedRegions, t, seq, seqLen, visibleRange.startPos, false);
 
     return amino;
-}
-
-static int calculateDirectSequenceStarPos(const U2Region& visibleRange, const int it, const qint64 minUsedPos) {
-    const int indent = (visibleRange.startPos + it) % 3;
-    int sequenceStarPos = visibleRange.startPos + indent - 3;
-
-    if (sequenceStarPos < minUsedPos) {
-        sequenceStarPos += 3;
-    }
-
-    return sequenceStarPos;
-}
-
-static QList<QVector<DetViewSingleLineRenderer::AnnotatedRegion> > calculateAnnotationsTranslations(const QList<SharedAnnotationData>& annotationsInRange, QByteArray& seqBlock, const U2Region& visibleRange, const qint64 minUsedPos) {
-    //QList<QVector<DetViewSingleLineRenderer::AnnotatedRegion> > resultAnnotatedRegions;
-    QList<QVector<DetViewSingleLineRenderer::AnnotatedRegion> > resultAnnotatedRegions = QList<QVector<DetViewSingleLineRenderer::AnnotatedRegion> >() <<
-                                                                                                 QVector<DetViewSingleLineRenderer::AnnotatedRegion>() <<
-                                                                                                 QVector<DetViewSingleLineRenderer::AnnotatedRegion>() <<
-                                                                                                 QVector<DetViewSingleLineRenderer::AnnotatedRegion>();
-
-    foreach(const SharedAnnotationData& ann, annotationsInRange) {
-        if (ann->type != U2FeatureType::Cds) {
-            continue;
-        }
-
-        DetViewSingleLineRenderer::AnnotatedRegion currentRegion;
-
-        const QVector<U2Region>& annotatedRegions = ann->getRegions();
-        const int size = annotatedRegions.size();
-        if (size == 1) {
-            currentRegion.annotation = annotatedRegions.first();
-            const int mod = currentRegion.annotation.startPos % 3;
-            resultAnnotatedRegions[mod] << currentRegion;
-        } else {
-            QList<bool> highlighting;
-            for (int i = 0; i < size - 1; i++) {
-                U2Region firstRegion = annotatedRegions[i];
-                U2Region secondRegion = annotatedRegions[i + 1];
-                const int endPos = firstRegion.endPos();
-
-                const int distance = secondRegion.startPos - endPos;
-                currentRegion.isHighlight = (distance % 3) != 0;
-
-                const int offset = 3 - (firstRegion.length % 3);
-
-                currentRegion.regionToReplace = U2Region(endPos, offset);
-
-                firstRegion.length += offset;
-
-                currentRegion.annotation = firstRegion;
-
-                const int mod = currentRegion.annotation.startPos % 3;
-
-                QByteArray currentBlock(seqBlock);
-                const int seqStartPos = calculateDirectSequenceStarPos(visibleRange, mod, minUsedPos);
-                const int indent = seqStartPos - minUsedPos;
-                const int sizeOfBlock = currentBlock.size();
-                currentBlock = currentBlock.right(sizeOfBlock - indent);
-
-                currentRegion.replacebleSequence = currentBlock.mid(secondRegion.startPos, offset);
-
-                //QByteArray seq(seqBlock);
-                //for (int j = secondRegion.startPos; j < secondRegion.startPos + offset; j++) {
-                //    char symbol = seq[j];
-                //    if (j == 0) {
-                //        currentRegion.replacebleSequence = seq[j];
-                //    } else {
-                //    }
-                //    currentRegion.replacebleSequence += symbol;
-                //}
-
-                secondRegion.startPos += offset;
-                secondRegion.length -= offset;
-
-                resultAnnotatedRegions[mod] << currentRegion;
-                if (i == size - 2) {
-                    DetViewSingleLineRenderer::AnnotatedRegion lastRegion;
-                    lastRegion.annotation = secondRegion;
-                    const int mod = lastRegion.annotation.startPos % 3;
-                    resultAnnotatedRegions[mod] << lastRegion;
-                }
-            }
-        }
-    }
-
-    return resultAnnotatedRegions;
 }
 
 static int correctLine(QVector<bool> visibleRows, int line) {
@@ -532,17 +431,11 @@ void DetViewSingleLineRenderer::drawTranslations(QPainter &p, const U2Region &vi
 
 void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
                                                       const U2Region &visibleRange,
-                                                      QByteArray seqBlockData,
+                                                      const char* seqBlock,
                                                       const QList<SharedAnnotationData>& annotationsInRange) {
     bool isTranslateAnnotationOrSelection = ctx->isTranslateAnnotationOrSelection();
     QVector<U2Region> regions;
     QList<QVector<U2Region> > sortedRegions = QList<QVector<U2Region> >() << QVector<U2Region>() << QVector<U2Region>() << QVector<U2Region>();
-    QList<QVector<DetViewSingleLineRenderer::AnnotatedRegion> > sortedAnnotations = QList<QVector<DetViewSingleLineRenderer::AnnotatedRegion> >() <<
-                                                                                            QVector<DetViewSingleLineRenderer::AnnotatedRegion>() <<
-                                                                                            QVector<DetViewSingleLineRenderer::AnnotatedRegion>() <<
-                                                                                            QVector<DetViewSingleLineRenderer::AnnotatedRegion>();
-    QList<QByteArray> blocks = QList<QByteArray>() << QByteArray(seqBlockData) << QByteArray(seqBlockData) << QByteArray(seqBlockData);
-
     if (isTranslateAnnotationOrSelection) {
         regions = ctx->getSequenceSelection()->getSelectedRegions();
         QList<int> mods;
@@ -562,74 +455,16 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
                 }
             }
         }
-
-        sortedAnnotations = calculateAnnotationsTranslations(annotationsInRange, seqBlockData, visibleRange, trMetrics.minUsedPos);
-
-        for (int i = 0; i < 3; i++) {
-            if (!sortedAnnotations[i].isEmpty()) {
-                trMetrics.visibleRows[i] = true;
-            }
-        }
-
-        for (int i = 0; i < 3; i++) {
-            const int seqStartPos = calculateDirectSequenceStarPos(visibleRange, i, trMetrics.minUsedPos);
-            const int line = seqStartPos % 3;
-
-            sortedAnnotations[line];
-            blocks[line];
-
-            foreach(const DetViewSingleLineRenderer::AnnotatedRegion& ann, sortedAnnotations[line]) {
-                blocks[line].replace(ann.regionToReplace.startPos, ann.regionToReplace.length, ann.replacebleSequence);
-                U2Region newRegion;
-                foreach(const U2Region& reg, sortedRegions[line]) {
-                    if (!reg.intersects(ann.annotation)) {
-                        if (reg.startPos > ann.annotation.startPos) {
-                            const int index = sortedRegions[line].indexOf(reg);
-                            sortedRegions[line].insert(index, ann.annotation);
-                            //sortedRegions[line] << ann.annotation;
-                            break;
-                        }
-                    } else {
-                        newRegion = U2Region::containingRegion(reg, ann.annotation);
-                        const int index = sortedRegions[line].indexOf(reg);
-                        sortedRegions[line].insert(index, newRegion);
-                        //sortedRegions[line] << newRegion;
-                        sortedRegions[line].removeOne(reg);
-                        break;
-                    }
-                }
-                if (!sortedRegions[line].contains(ann.annotation) && newRegion.isEmpty()) {
-                    sortedRegions[line] << ann.annotation;
-                }
-            }
-        }
     }
 
     for (int i = 0; i < 3; i++) {
-        const int seqStartPos = calculateDirectSequenceStarPos(visibleRange, i, trMetrics.minUsedPos);
-        const int line = seqStartPos % 3;// 0,1,2
-
+        int indent = (visibleRange.startPos + i) % 3;
+        qint64 seqStartPos = visibleRange.startPos + indent - 3;
+        if (seqStartPos < trMetrics.minUsedPos) {
+            seqStartPos += 3;
+        }
+        int line = seqStartPos % 3; // 0,1,2
         if (trMetrics.visibleRows[line] == true) {
-            /*QByteArray currentBlock(seqBlockData);
-            foreach(const DetViewSingleLineRenderer::AnnotatedRegion& ann, sortedAnnotations[line]) {
-                currentBlock.replace(ann.regionToReplace.startPos, ann.regionToReplace.length, ann.replacebleSequence);
-                foreach(const U2Region& reg, sortedRegions[line]) {
-                    if (!reg.intersects(ann.annotation)) {
-                        if (reg.startPos > ann.annotation.startPos) {
-                            sortedRegions[line] << ann.annotation;
-                        }
-                    } else {
-                    }
-                }
-
-                if (!sortedRegions[line].contains(ann.annotation)) {
-                    sortedRegions[line] << ann.annotation;
-                }
-            }*/
-
-
-            const char* seqBlock = blocks[line].constData();
-
             DNATranslation* translation = detView->getAminoTT();
             CHECK(translation != NULL, );
 
@@ -638,7 +473,6 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
 
             QByteArray amino;
             if (isTranslateAnnotationOrSelection) {
-                //QByteArray annotationAmino =
                 amino = translateSelection(sortedRegions[line], translation, seq, length, visibleRange.startPos, true);
             } else {
                 amino = translate(translation, seq, length);
@@ -1006,6 +840,5 @@ int DetViewSingleLineRenderer::posToComplTransLine(int p) const {
     const int absoluteLineNumber = (detView->getSequenceLength() - p) % 3;
     return getVisibleComplTransLine(absoluteLineNumber);
 }
-
 
 } // namespace

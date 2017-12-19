@@ -55,14 +55,6 @@ private:
         QFont fontIS;
     };
 public:
-    struct AnnotatedRegion {
-        U2Region    annotation;
-        U2Region    regionToReplace;
-        QByteArray  replacebleSequence;
-        bool        isHighlight;
-        AnnotatedRegion() : isHighlight(false) {};
-    };
-public:
     DetViewSingleLineRenderer(DetView* detView, SequenceObjectContext* ctx);
 
     virtual qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const;
@@ -97,7 +89,7 @@ private:
     void drawTranslations(QPainter& p, const U2Region& visibleRange);
     void drawDirectTranslations(QPainter& p,
                                 const U2Region& visibleRange,
-                                QByteArray seqBlock,
+                                const char* seqBlock,
                                 const QList<SharedAnnotationData>& annotationsInRange);
     void drawComplementTransltations(QPainter& p,
                                      const U2Region& visibleRange,
