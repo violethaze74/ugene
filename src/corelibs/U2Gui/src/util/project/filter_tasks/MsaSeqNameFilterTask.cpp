@@ -29,17 +29,17 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-/// MsaSeqNameFilterTask
+/// MaSeqNameFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-MsaSeqNameFilterTask::MsaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs)
-    : AbstractProjectFilterTask(settings, ProjectFilterNames::MSA_SEQ_NAME_FILTER_NAME, docs)
+MaSeqNameFilterTask::MaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs)
+    : AbstractProjectFilterTask(settings, ProjectFilterNames::MA_SEQ_NAME_FILTER_NAME, docs)
 {
 
 }
 
-bool MsaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
-    MultipleSequenceAlignmentObject *msaObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+bool MaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
+    MultipleAlignmentObject *msaObj = qobject_cast<MultipleAlignmentObject *>(obj);
     CHECK(NULL != msaObj, false);
 
     for (int i = 0, n = msaObj->getNumRows(); i < n; ++i) {
@@ -51,13 +51,13 @@ bool MsaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-/// MsaSeqNameFilterTaskFactory
+/// MaSeqNameFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-AbstractProjectFilterTask * MsaSeqNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
+AbstractProjectFilterTask * MaSeqNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
     const QList<QPointer<Document> > &docs) const
 {
-    return new MsaSeqNameFilterTask(settings, docs);
+    return new MaSeqNameFilterTask(settings, docs);
 }
 
 

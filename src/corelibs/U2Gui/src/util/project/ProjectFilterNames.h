@@ -31,7 +31,7 @@ namespace ProjectFilterNames {
 extern const QString OBJ_NAME_FILTER_NAME;
 extern const QString FEATURE_KEY_FILTER_NAME;
 extern const QString MSA_CONTENT_FILTER_NAME;
-extern const QString MSA_SEQ_NAME_FILTER_NAME;
+extern const QString MA_SEQ_NAME_FILTER_NAME;
 extern const QString SEQUENCE_ACC_FILTER_NAME;
 extern const QString TEXT_CONTENT_FILTER_NAME;
 

@@ -27,22 +27,22 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-/// MsaSeqNameFilterTask
+/// MaSeqNameFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-class MsaSeqNameFilterTask : public AbstractProjectFilterTask {
+class MaSeqNameFilterTask : public AbstractProjectFilterTask {
 public:
-    MsaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs); 
+    MaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs); 
 
 protected:
     bool filterAcceptsObject(GObject *obj);
 };
 
 //////////////////////////////////////////////////////////////////////////
-/// MsaSeqNameFilterTaskFactory
+/// MaSeqNameFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-class U2GUI_EXPORT MsaSeqNameFilterTaskFactory : public ProjectFilterTaskFactory {
+class U2GUI_EXPORT MaSeqNameFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
     AbstractProjectFilterTask * createNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs) const;
 };

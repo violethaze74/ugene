@@ -597,7 +597,7 @@ void MSAEditorSequenceArea::sl_saveSequence(){
     //TODO: OPTIMIZATION code below can be wrapped to task
     QList<Task*> tasks;
     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(d->format);
-    SAFE_POINT(df != NULL, "Unknown document format");
+    SAFE_POINT(df != NULL, "Unknown document format",);
     QString extension = df->getSupportedDocumentFileExtensions().first();
     QSet<QString> existingFilenames;
     foreach(const DNASequence &s, MSAUtils::ma2seq(getEditor()->getMaObject()->getMsa(), d->trimGapsFlag)) {

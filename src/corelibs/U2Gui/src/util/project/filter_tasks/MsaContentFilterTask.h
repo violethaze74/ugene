@@ -26,30 +26,30 @@
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 
 //////////////////////////////////////////////////////////////////////////
-/// MsaContentFilterTask
+/// MaContentFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-class MsaContentFilterTask : public AbstractProjectFilterTask {
+class MaContentFilterTask : public AbstractProjectFilterTask {
 public:
-    MsaContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
+    MaContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
 
 protected:
     bool filterAcceptsObject(GObject *obj);
 
 private:
-    bool msaContainsPattern(MultipleSequenceAlignmentObject *msaObject, const QString &pattern);
+    bool msaContainsPattern(MultipleAlignmentObject *maObject, const QString &pattern);
 
-    static bool patternFitsMsaAlphabet(MultipleSequenceAlignmentObject *msaObject, const QString &pattern);
+    static bool patternFitsMsaAlphabet(MultipleAlignmentObject *maObject, const QString &pattern);
 };
 
 //////////////////////////////////////////////////////////////////////////
-/// MsaContentFilterTaskFactory
+/// MaContentFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-class U2GUI_EXPORT MsaContentFilterTaskFactory : public ProjectFilterTaskFactory {
+class U2GUI_EXPORT MaContentFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
     AbstractProjectFilterTask * createNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs) const;
 };
