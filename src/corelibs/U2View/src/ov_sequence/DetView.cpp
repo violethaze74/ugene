@@ -181,7 +181,7 @@ DNATranslation* DetView::getComplementTT() const {
 }
 
 DNATranslation* DetView::getAminoTT() const {
-    return showTranslationAction->isChecked() || ctx->isTranslateAnnotationOrSelection() ? ctx->getAminoTT() : NULL;
+    return !doNotTranslateAction->isChecked() || ctx->isTranslateAnnotationOrSelection() ? ctx->getAminoTT() : NULL;
 }
 
 int DetView::getSymbolsPerLine() const {
