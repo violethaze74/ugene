@@ -197,7 +197,7 @@ DNATranslation* DetView::getComplementTT() const {
 }
 
 DNATranslation* DetView::getAminoTT() const {
-    return showTranslationAction->isChecked() || ctx->isTranslateAnnotationOrSelection() ? ctx->getAminoTT() : NULL;
+    return !doNotTranslateAction->isChecked() || (ctx->getTranslationState() == SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection) ? ctx->getAminoTT() : NULL;
 }
 
 int DetView::getSymbolsPerLine() const {
@@ -207,7 +207,7 @@ int DetView::getSymbolsPerLine() const {
 void DetView::setShowComplement(bool t) {
     showComplementAction->disconnect(this);
     showComplementAction->setChecked(t);
-    ctx->showComlementActions(t);
+    ctx->showComplementActions(t);
     connect(showComplementAction, SIGNAL(triggered(bool)), SLOT(sl_showComplementToggle(bool)));
 
     updateSize();
@@ -442,14 +442,13 @@ void DetView::uncheckAllTranslations() {
 }
 
 void DetView::setSelectedTranslations() {
-    if (ctx->isTranslateAnnotationOrSelection()) {
+    if ((ctx->getTranslationState() == SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection)) {
         int symbolsPerLine = getSymbolsPerLine();
         U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
 
         uncheckAllTranslations();
         do {
-            updateTranslatiosState(oneLineRegion, true);
-            updateTranslatiosState(oneLineRegion, false);
+            updateTranslationsState(oneLineRegion);
             oneLineRegion.startPos += symbolsPerLine;
         } while (oneLineRegion.startPos < visibleRange.endPos());
     }
@@ -460,16 +459,21 @@ void DetView::setSelectedTranslations() {
     completeUpdate();
 }
 
-void DetView::updateTranslatiosState(const U2Region& visibleRange, const bool isDirect) {
+void DetView::updateTranslationsState(const U2Region& visibleRange) {
+    updateTranslationsState(visibleRange, U2Strand::Direction::Direct);
+    updateTranslationsState(visibleRange, U2Strand::Direction::Complementary);
+}
+
+void DetView::updateTranslationsState(const U2Region& visibleRange, const U2Strand::Direction direction) {
     QVector<U2Region> selectedRegions = ctx->getSequenceSelection()->getSelectedRegions();
     QList<bool> lineState = QList<bool>() << false << false << false;
     foreach(const U2Region& reg, selectedRegions) {
-        int mod = isDirect ? reg.startPos % 3 : ((ctx->getSequenceLength() - reg.endPos()) % 3);
+        int mod = direction == U2Strand::Direction::Direct ? reg.startPos % 3 : ((ctx->getSequenceLength() - reg.endPos()) % 3);
         lineState[mod] = true;
     }
-    const int start = isDirect ? 0 : 3;
-    const int end = isDirect ? 3 : 6;
-    const int indent = isDirect ? 0 : 3;
+    const int start = direction == U2Strand::Direction::Direct ? 0 : 3;
+    const int end = direction == U2Strand::Direction::Direct ? 3 : 6;
+    const int indent = direction == U2Strand::Direction::Direct ? 0 : 3;
     for (int i = start; i < end; i++) {
         const bool state = lineState[i - indent];
         if (!state) {
@@ -828,8 +832,7 @@ bool DetViewRenderArea::isPosOnAnnotationYRange(const QPoint &p, Annotation *a, 
 void DetViewRenderArea::drawAll(QPaintDevice* pd) {
     GSLV_UpdateFlags uf = view->getUpdateFlags();
     bool completeRedraw = uf.testFlag(GSLV_UF_NeedCompleteRedraw)  || uf.testFlag(GSLV_UF_ViewResized)  ||
-                          uf.testFlag(GSLV_UF_VisibleRangeChanged) || uf.testFlag(GSLV_UF_AnnotationsChanged) ||
-                          getDetView()->getSequenceContext()->isTranslateAnnotationOrSelection();
+                          uf.testFlag(GSLV_UF_VisibleRangeChanged) || uf.testFlag(GSLV_UF_AnnotationsChanged);
 
     int scrollShift = getDetView()->getShift();
     QSize canvasSize(pd->width(), pd->height() + scrollShift);

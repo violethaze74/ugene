@@ -91,7 +91,7 @@ private:
                                 const U2Region& visibleRange,
                                 const char* seqBlock,
                                 const QList<SharedAnnotationData>& annotationsInRange);
-    void drawComplementTransltations(QPainter& p,
+    void drawComplementTranslations(QPainter& p,
                                      const U2Region& visibleRange,
                                      const char* seqBlock,
                                      const QList<SharedAnnotationData>& annotationsInRange);
