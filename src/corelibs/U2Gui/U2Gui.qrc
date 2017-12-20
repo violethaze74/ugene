@@ -183,5 +183,6 @@
         <file>images/amb_forward.png</file>
         <file>images/mismatch-backward.png</file>
         <file>images/mismatch-forward.png</file>
+        <file>images/edit.png</file>
     </qresource>
 </RCC>

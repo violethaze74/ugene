@@ -30,12 +30,12 @@
 #include <QTimer>
 
 #include <U2Core/Log.h> // TODO_SVEDIT: remove later
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 
 class DetView;
 class DNASequence;
-class U2Region;
 class U2SequenceObject;
 
 class DetViewSequenceEditor : public QObject {

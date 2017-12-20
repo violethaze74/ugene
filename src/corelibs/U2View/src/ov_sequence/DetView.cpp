@@ -78,8 +78,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
 
     editor = new DetViewSequenceEditor(this);
     editAction = new QAction(tr("Edit sequence"), this);
-    // TODO_SVEDIT: setup the icon
-    editAction->setIcon(QIcon(":core/images/todo.png"));
+    editAction->setIcon(QIcon(":core/images/edit.png"));
     editAction->setObjectName("edit_sequence_action");
     connect(editAction, SIGNAL(triggered(bool)), editor, SLOT(sl_editMode(bool)));
 
@@ -108,6 +107,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     }
     if (hasAmino) {
         setupTranslationsMenu();
+        setupGeneticCodeMenu();
     }
     addActionToLocalToolbar(editAction);
 
@@ -124,7 +124,13 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
 
     updateActions();
 
+    // TODO_SVEDIT: check its required
+    connect(ctx->getSequenceObject(), SIGNAL(si_sequenceChanged()), SLOT(sl_sequenceChanged()));
+
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+}
+DetView::~DetView() {
+    removeEventFilter(editor);
 }
 
 DetViewRenderArea* DetView::getDetViewRenderArea() const {
@@ -647,6 +653,15 @@ void DetView::setupTranslationsMenu() {
     QToolButton *button = addActionToLocalToolbar(translationsMenu->menuAction());
     button->setPopupMode(QToolButton::InstantPopup);
     button->setObjectName("translationsMenuToolbarButton");
+}
+
+void DetView::setupGeneticCodeMenu() {
+    QMenu *ttMenu = ctx->createGeneticCodeMenu();
+    CHECK(NULL != ttMenu, );
+    QToolButton *button = addActionToLocalToolbar(ttMenu->menuAction());
+    SAFE_POINT(button, QString("ToolButton for %1 is NULL").arg(ttMenu->menuAction()->objectName()), );
+    button->setPopupMode(QToolButton::InstantPopup);
+    button->setObjectName("AminoToolbarButton");
 }
 
 int DetView::getVerticalScrollBarPosition() {

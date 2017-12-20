@@ -27,6 +27,7 @@
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentModel.h>
@@ -37,10 +38,10 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2View/SequenceObjectContext.h>
-
 #include <U2View/ADVSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
+#include <U2View/SequenceObjectContext.h>
+
 
 namespace U2 {
 
@@ -135,7 +136,9 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
             break;
         default:
             if (key >= Qt::Key_A && key <= Qt::Key_Z) {
-                insertChar(key);
+                if (keyEvent->modifiers() == Qt::NoModifier) {
+                    insertChar(key);
+                }
             }
         }
         return true;
@@ -156,7 +159,7 @@ void DetViewSequenceEditor::setCursor(int newPos) {
 
 void DetViewSequenceEditor::navigate(int newPos, bool shiftPressed) {
     CHECK(newPos != cursor, );
-    CHECK(newPos >= 0 && newPos <= view->getSequenceLength(), );
+    newPos = qBound(0, newPos, (int)view->getSequenceLength());
 
     DNASequenceSelection* selection = view->getSequenceContext()->getSequenceSelection();
     if (shiftPressed) {
@@ -202,7 +205,8 @@ void DetViewSequenceEditor::navigate(int newPos, bool shiftPressed) {
 void DetViewSequenceEditor::insertChar(int character) {
     U2SequenceObject* seqObj = view->getSequenceObject();
     SAFE_POINT(seqObj != NULL, "SeqObject is NULL", );
-    U2OpStatusImpl os;
+    CHECK(seqObj->getAlphabet()->contains(character), ); // TODO_SVEDIT: support alphabet changing, separate issue
+
     const DNASequence seq(QByteArray(1, character));
     U2Region r;
     SequenceObjectContext* ctx = view->getSequenceContext();
@@ -215,7 +219,7 @@ void DetViewSequenceEditor::insertChar(int character) {
     }
     runModifySeqTask(seqObj, r, seq);
 
-    navigate(cursor + 1, false);
+    navigate(r.startPos + 1, false);
 }
 
 // TODO_SVEDIT: rename
@@ -265,14 +269,13 @@ void DetViewSequenceEditor::deleteChar(int key) {
 void DetViewSequenceEditor::runModifySeqTask(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence) {
     Settings* s = AppContext::getSettings();
     U1AnnotationUtils::AnnotationStrategyForResize strategy =
-            s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
-                        U1AnnotationUtils::AnnotationStrategyForResize_Resize).value<U1AnnotationUtils::AnnotationStrategyForResize>();
+                (U1AnnotationUtils::AnnotationStrategyForResize)s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
+                            U1AnnotationUtils::AnnotationStrategyForResize_Resize).toInt();
+
     Task* t = new ModifySequenceContentTask(seqObj->getDocument()->getDocumentFormatId(), seqObj,
                                             region, sequence,
                                             s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(),
                                             strategy, seqObj->getDocument()->getURL());
-
-    SAFE_POINT(NULL != t, L10N::nullPointerError("Edit sequence task"), );
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

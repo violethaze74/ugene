@@ -1159,13 +1159,13 @@ void AnnotatedDNAView::sl_editSettings() {
     SAFE_POINT(s != NULL, L10N::nullPointerError("AppContext::settings"), );
     EditSettings settings;
     settings.annotationStrategy =
-                s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
-                            U1AnnotationUtils::AnnotationStrategyForResize_Resize).value<U1AnnotationUtils::AnnotationStrategyForResize>();
+                (U1AnnotationUtils::AnnotationStrategyForResize)s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
+                            U1AnnotationUtils::AnnotationStrategyForResize_Resize).toInt();
     settings.recalculateQualifiers = s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool();
 
     QObjectScopedPointer<EditSettingsDialog> dlg = new EditSettingsDialog(settings, getSequenceWidgetInFocus());
     int res = dlg->exec();
-    CHECK(!dlg.isNull(), );
+    SAFE_POINT(!dlg.isNull(), "EditSettingsDialog is null!", );
 
     if (res == QDialog::Accepted) {
         const EditSettings& newSettings = dlg->getSettings();
