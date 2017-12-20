@@ -4093,49 +4093,6 @@ GUI_TEST_CLASS_DEFINITION(test_1396){
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 0, "Wrong rows number");
 }
 
-
-GUI_TEST_CLASS_DEFINITION(test_1404) {
-    class ExportMsaToSeqScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "dialog not found");
-
-            // 3. Select "FASTQ" file format in "File format to use" field
-            QComboBox *formatCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "formatCombo", dialog));
-            GTComboBox::setIndexWithText(os, formatCombo, "FASTQ");
-
-            // 4. Click the browse button and input "result" to "File name" field, then click "Save"
-            // Expected state : Field "Export to file" contain "result.fastq" at the of string.
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, "", "result", GTFileDialogUtils::Save, GTGlobals::UseMouse));
-            GTWidget::click(os, GTWidget::findWidget(os, "fileButton", dialog));
-
-            QLineEdit *fileNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "fileNameEdit", dialog));
-            QString filePath = fileNameEdit->text();
-            CHECK_SET_ERR(filePath.endsWith("result.fastq"), "Wrong file path");
-
-            // 5. Select "FASTA" extension in "File format to use" field
-            // Expected state : Field "Export to file" contain "result.fa" at the of string.
-            GTComboBox::setIndexWithText(os, formatCombo, "FASTA");
-            filePath = fileNameEdit->text();
-            CHECK_SET_ERR(filePath.endsWith("result.fa"), "Wrong file path");
-
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
-        }
-    };
-
-    // 1. Open "data/samples/CLUSTALW/COI.aln"
-    // Expected state : COI.aln is opened
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // 2. Select "Export > Save sequence" in the context menu
-    // Expected state : Opened "Export selected sequence from alignment" dialog
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save sequence"));
-    GTUtilsDialog::waitForDialog(os, new ExportSelectedSequenceFromAlignment(os, new ExportMsaToSeqScenario));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5, 5));
-    GTMouseDriver::click(Qt::RightButton);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_1405) {
     // 1) Open _common_data/scenarios/msa/ma2_gap_col.aln
     // 2) Try to delete columns with gaps (first option, 1 gap).

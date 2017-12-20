@@ -101,7 +101,7 @@ void SaveSelectedSequenceFromMSADialogController::accept() {
         }
 
     }
-    format = saveController->getFormatIdToSave();
+    format = ui->formatCombo->currentText();
     trimGapsFlag = !ui->keepGapsBox->isChecked();
     addToProjectFlag = ui->addToProjectBox->isChecked();
     customFileName = ui->customFileNameEdit->isEnabled() ? ui->customFileNameEdit->text() : "";
@@ -171,13 +171,9 @@ void SaveDocumentInFolderController::setPath(const QString &path) {
 }
 
 void SaveDocumentInFolderController::initFormatComboBox() {
-    currentFormat = formatsInfo.getFormatNameById(conf.defaultFormatId);
+    QString currentFormat = formatsInfo.getFormatNameById(conf.defaultFormatId);
     CHECK(conf.formatCombo != NULL, );
 
-    /*
-    conf.formatCombo->blockSignals(true);
-    conf.formatCombo->clear();
-    */
     QStringList items = formatsInfo.getNames();
     items.sort(Qt::CaseInsensitive);
     conf.formatCombo->addItems(items);
@@ -210,10 +206,11 @@ QString SaveDocumentInFolderController::getSaveDirName() const {
     }
     return filePath;
 }
-
+/*
 DocumentFormatId SaveDocumentInFolderController::getFormatIdToSave() const {
+    const QString currentFormat = (conf.formatCombo->currentData()).toString();
     SAFE_POINT(!currentFormat.isEmpty(), "Current format is not set", DocumentFormatId::null);
     return formatsInfo.getIdByName(currentFormat);
 }
-
+*/
 }
