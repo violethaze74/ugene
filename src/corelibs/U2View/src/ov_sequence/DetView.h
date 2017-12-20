@@ -102,7 +102,6 @@ protected:
     QAction*        showComplementAction;
     QAction*        showTranslationAction;
     QAction*        wrapSequenceAction;
-    QAction*        editAction;
 
     DetViewSequenceEditor* editor;
 

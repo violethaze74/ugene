@@ -45,11 +45,21 @@
 
 namespace U2 {
 
-DetViewSequenceEditor::DetViewSequenceEditor(DetView* _view)
+DetViewSequenceEditor::DetViewSequenceEditor(DetView* view)
     : cursorColor(Qt::black),
       animationTimer(this),
-      view(_view)
+      view(view),
+      task(NULL),
+      block(false)
 {
+    editAction = new QAction(tr("Edit sequence"), this);
+    editAction->setIcon(QIcon(":core/images/edit.png"));
+    editAction->setObjectName("edit_sequence_action");
+    editAction->setCheckable(true);
+    editAction->setDisabled(view->getSequenceObject()->isStateLocked());
+    connect(editAction, SIGNAL(triggered(bool)), SLOT(sl_editMode(bool)));
+    connect(view->getSequenceObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_objectLockStateChanged()));
+
     reset();
     connect(&animationTimer, SIGNAL(timeout()), SLOT(sl_changeCursorColor()));
     setParent(view);
@@ -64,7 +74,14 @@ void DetViewSequenceEditor::reset() {
     cursor = view->getVisibleRange().startPos;
 }
 
+bool DetViewSequenceEditor::isEditMode() const {
+    SAFE_POINT(editAction != NULL, "editAction is NULL", false);
+    return editAction->isChecked();
+}
+
 bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
+    CHECK(!block, false);
+
     SequenceObjectContext* ctx = view->getSequenceContext();
     const QList<ADVSequenceWidget*> list = ctx->getSequenceWidgets();
     CHECK(!list.isEmpty(), false);
@@ -272,11 +289,13 @@ void DetViewSequenceEditor::runModifySeqTask(U2SequenceObject* seqObj, const U2R
                 (U1AnnotationUtils::AnnotationStrategyForResize)s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
                             U1AnnotationUtils::AnnotationStrategyForResize_Resize).toInt();
 
-    Task* t = new ModifySequenceContentTask(seqObj->getDocument()->getDocumentFormatId(), seqObj,
+    task = new ModifySequenceContentTask(seqObj->getDocument()->getDocumentFormatId(), seqObj,
                                             region, sequence,
                                             s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(),
                                             strategy, seqObj->getDocument()->getURL());
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
+    connect(task, SIGNAL(si_stateChanged()), SLOT(sl_unblock()));
+    block = true;
+    AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
 void DetViewSequenceEditor::sl_editMode(bool active) {
@@ -304,6 +323,21 @@ void DetViewSequenceEditor::sl_editMode(bool active) {
 void DetViewSequenceEditor::sl_changeCursorColor() {
     cursorColor = (cursorColor == QColor(Qt::black)) ? Qt::darkGray : Qt::black;
     view->update();
+}
+
+void DetViewSequenceEditor::sl_unblock() {
+    if (task->isFinished()) {
+        block = false;
+        task = NULL;
+    }
+}
+
+void DetViewSequenceEditor::sl_objectLockStateChanged() {
+    if (isEditMode() && view->getSequenceObject()->isStateLocked()) {
+        // deactivate edit mode
+        editAction->trigger();
+    }
+    editAction->setDisabled(view->getSequenceObject()->isStateLocked());
 }
 
 } // namespace

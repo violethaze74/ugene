@@ -62,6 +62,8 @@ namespace U2 {
 DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     : GSequenceLineViewAnnotated(p, ctx)
 {
+    editor = new DetViewSequenceEditor(this);
+
     showComplementAction = new QAction(tr("Show complement strand"), this);
     showComplementAction->setIcon(QIcon(":core/images/show_compl.png"));
     showComplementAction->setObjectName("complement_action");
@@ -76,16 +78,9 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     wrapSequenceAction->setObjectName("wrap_sequence_action");
     connect(wrapSequenceAction, SIGNAL(triggered(bool)), SLOT(sl_wrapSequenceToggle(bool)));
 
-    editor = new DetViewSequenceEditor(this);
-    editAction = new QAction(tr("Edit sequence"), this);
-    editAction->setIcon(QIcon(":core/images/edit.png"));
-    editAction->setObjectName("edit_sequence_action");
-    connect(editAction, SIGNAL(triggered(bool)), editor, SLOT(sl_editMode(bool)));
-
     showComplementAction->setCheckable(true);
     showTranslationAction->setCheckable(true);
     wrapSequenceAction->setCheckable(true);
-    editAction->setCheckable(true);
 
     bool hasComplement = ctx->getComplementTT() != NULL;
     showComplementAction->setChecked(hasComplement);
@@ -109,7 +104,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
         setupTranslationsMenu();
         setupGeneticCodeMenu();
     }
-    addActionToLocalToolbar(editAction);
+    addActionToLocalToolbar(editor->getEditAction());
 
     verticalScrollBar = new GScrollBar(Qt::Vertical, this);
     verticalScrollBar->setObjectName("multiline_scrollbar");
@@ -150,8 +145,7 @@ bool DetView::isWrapMode() const {
 }
 
 bool DetView::isEditMode() const {
-    SAFE_POINT(editAction != NULL, "editAction is NULL", false);
-    return editAction->isChecked();
+    return editor->isEditMode();
 }
 
 void DetView::setStartPos(qint64 newPos) {
