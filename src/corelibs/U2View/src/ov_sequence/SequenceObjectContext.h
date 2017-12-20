@@ -57,7 +57,6 @@ public:
     QByteArray getSequenceData(const U2Region &r, U2OpStatus &os) const;
     U2EntityRef getSequenceRef() const;
     bool        isRowChoosed();
-    bool        isTranslateAnnotationOrSelection() const;
 
     DNASequenceSelection*   getSequenceSelection() const {return selection;}
 
@@ -82,8 +81,8 @@ public:
 
     QList<Annotation *> selectRelatedAnnotations(const QList<Annotation *> &alist) const;
     QVector<bool> getTranslationRowsVisibleStatus();
-    void setTranslationsVisible(bool enable);
-    void showComlementActions(bool show);
+    void setTranslationsVisible(bool visible);
+    void showComplementActions(bool show);
     void showTranslationFrame(const int numOfAction, const bool setChecked);
 
     enum TranslationState {
@@ -94,6 +93,7 @@ public:
     };
 
     void setTranslationState(const TranslationState state);
+    TranslationState getTranslationState();
 
 private slots:
     void sl_setAminoTranslation();
@@ -127,7 +127,6 @@ protected:
     QSet<AnnotationTableObject *>   autoAnnotations;
     bool                            clarifyAminoTT;
     bool                            rowChoosed;
-    bool                            translateAnotationOrSelection;
 
     // SANGER_TODO:
     AnnotationSelection* annSelection;

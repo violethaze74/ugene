@@ -52,17 +52,16 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
 {
     selection = new DNASequenceSelection(seqObj, this);
     clarifyAminoTT = false;
-    translateAnotationOrSelection = false;
     const DNAAlphabet* al  = getAlphabet();
     if (al->isNucleic()) {
-        DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
+        DNATranslationRegistry* translationRegistry = AppContext::getDNATranslationRegistry();
         complTT = GObjectUtils::findComplementTT(seqObj->getAlphabet());
         aminoTT = GObjectUtils::findAminoTT(seqObj, true);
         clarifyAminoTT = aminoTT == NULL;
 
-        QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
+        QList<DNATranslation*> aminoTs = translationRegistry->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
         if (!aminoTs.empty()) {
-            aminoTT = aminoTT == NULL ? tr->getStandardGeneticCodeTranslation(al) : aminoTT;
+            aminoTT = aminoTT == NULL ? translationRegistry->getStandardGeneticCodeTranslation(al) : aminoTT;
             translations = new QActionGroup(this);
             foreach(DNATranslation* t, aminoTs) {
                 QAction* a = translations->addAction(t->getTranslationName());
@@ -77,9 +76,9 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
             for(int i = 0; i < 6; i++) {
                 QAction* a;
                 if( i < 3) {
-                    a = visibleFrames->addAction(QString("Frame +%1").arg(i+1));
+                    a = visibleFrames->addAction(tr("Frame +%1").arg(i+1));
                 }else{
-                    a = visibleFrames->addAction(QString("Frame -%1").arg(i+1-3));
+                    a = visibleFrames->addAction(tr("Frame -%1").arg(i+1-3));
                 }
                 a->setCheckable(true);
                 a->setChecked(false);
@@ -213,7 +212,6 @@ void SequenceObjectContext::sl_showShowAll() {
 }
 
 void SequenceObjectContext::setTranslationState(const SequenceObjectContext::TranslationState state) {
-    translateAnotationOrSelection = state == SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection;
     bool needUpdate = false;
 
     const bool enableActions = state == SequenceObjectContext::TranslationState::SetUpFramesManually;
@@ -235,6 +233,33 @@ void SequenceObjectContext::setTranslationState(const SequenceObjectContext::Tra
     if (needUpdate) {
         emit si_translationRowsChanged();
     }
+}
+
+SequenceObjectContext::TranslationState SequenceObjectContext::getTranslationState() {
+    QList<QAction*> actions = translationMenuActions->actions();
+    const int size = actions.size();
+    CHECK(size == 4, SequenceObjectContext::TranslationState::DoNotTranslate);
+    SequenceObjectContext::TranslationState resultState = SequenceObjectContext::TranslationState::DoNotTranslate;
+    for (int i = 0; i < size; i++) {
+        if (actions[i]->isChecked()) {
+            switch (i) {
+            case 0:
+                resultState = SequenceObjectContext::TranslationState::DoNotTranslate;
+                break;
+            case 1:
+                resultState = SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection;
+                break;
+            case 2:
+                resultState = SequenceObjectContext::TranslationState::SetUpFramesManually;
+                break;
+            case 3:
+                resultState = SequenceObjectContext::TranslationState::ShowAllFrames;
+                break;
+            }
+        }
+    }
+
+    return resultState;
 }
 
 void SequenceObjectContext::sl_onAnnotationRelationChange() {
@@ -355,9 +380,7 @@ void SequenceObjectContext::addAutoAnnotationObject(AnnotationTableObject *obj) 
     emit si_annotationObjectAdded(obj);
 }
 
-QSet<AnnotationTableObject *> SequenceObjectContext::getAnnotationObjects(
-    bool includeAutoAnnotations) const
-{
+QSet<AnnotationTableObject *> SequenceObjectContext::getAnnotationObjects(bool includeAutoAnnotations) const {
     QSet<AnnotationTableObject *> result = annotations;
     if (includeAutoAnnotations) {
         result += autoAnnotations;
@@ -366,7 +389,7 @@ QSet<AnnotationTableObject *> SequenceObjectContext::getAnnotationObjects(
     return result;
 }
 
-void SequenceObjectContext::sl_toggleTranslations(){
+void SequenceObjectContext::sl_toggleTranslations() {
     QAction* a = qobject_cast<QAction*>(QObject::sender());
     CHECK(a != NULL, );
     if (a->isChecked()) {
@@ -383,9 +406,9 @@ bool SequenceObjectContext::isRowChoosed(){
     return rowChoosed;
 }
 
-bool SequenceObjectContext::isTranslateAnnotationOrSelection() const {
-    return translateAnotationOrSelection;
-}
+//bool SequenceObjectContext::isTranslateAnnotationOrSelection() const {
+//    return translateAnotationOrSelection;
+//}
 
 QVector<bool> SequenceObjectContext::getTranslationRowsVisibleStatus() {
     QVector<bool> result;
@@ -396,15 +419,15 @@ QVector<bool> SequenceObjectContext::getTranslationRowsVisibleStatus() {
     }
     return result;
 }
-void SequenceObjectContext::setTranslationsVisible(bool enable) {
+void SequenceObjectContext::setTranslationsVisible(bool visible) {
     bool needUpdate = false;
     foreach(QAction* a, visibleFrames->actions()) {
-        if(!enable) {//hide
+        if (!visible) {
             if(a->isChecked()) {
                 needUpdate = true;
                 a->setChecked(false);
             }
-        } else {//show
+        } else {
             if(!a->isChecked() && (translationRowsStatus.contains(a) || translationRowsStatus.isEmpty())) {
                 needUpdate = true;
                 a->setChecked(true);
@@ -416,7 +439,7 @@ void SequenceObjectContext::setTranslationsVisible(bool enable) {
     }
 }
 
-void SequenceObjectContext::showComlementActions(bool show) {
+void SequenceObjectContext::showComplementActions(bool show) {
     QList<QAction*> actions = visibleFrames->actions();
     for (int i = 3; i < 6; i++) {
         actions[i]->setVisible(show);

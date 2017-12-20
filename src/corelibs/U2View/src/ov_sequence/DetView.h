@@ -115,7 +115,8 @@ protected:
 private:
     void setupTranslationsMenu();
     void uncheckAllTranslations();
-    void updateTranslatiosState(const U2Region& visibleRange, const bool isDirect);
+    void updateTranslationsState(const U2Region& visibleRange);
+    void updateTranslationsState(const U2Region& visibleRange, const U2Strand::Direction direction);
     void updateSelectedTranslations(const SequenceObjectContext::TranslationState state);
 };
 
