@@ -126,6 +126,7 @@
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
@@ -4087,6 +4088,42 @@ GUI_TEST_CLASS_DEFINITION(test_5872) {
 
 //    Expected state: there is no message in the log starting with ﻿'ASSERT: "!isInRange'.
     GTUtilsLog::checkContainsMessage(os, logTracer, false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5905) {
+    //    1. Open 'human_T1.fa'
+    //    2. Launch Primer3 search (set results count to 50)
+    //    Expected state: check GC content of the first result pair, it should be 55 and 33
+
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    ADVSingleSequenceWidget* wgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
+    CHECK_SET_ERR(wgt != NULL, "ADVSequenceWidget is NULL");
+
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "primer3_action"));
+    Primer3DialogFiller::Primer3Settings settings;
+
+    GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
+    GTWidget::click(os, wgt, Qt::RightButton);
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);    
+
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "Annotations [MyDocument_1.gb] *"));
+    GTMouseDriver::doubleClick();
+    GTGlobals::sleep();
+
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "top_primers  (5, 0)"));
+    GTMouseDriver::doubleClick();
+    GTGlobals::sleep();
+
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "pair 1  (0, 2)"));
+    GTMouseDriver::doubleClick();
+    GTGlobals::sleep();
+
+    QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "top_primers");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "gc%", items[0]) == "55", "wrong gc percentage");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "gc%", items[1]) == "35", "wrong gc percentage");
 }
 
 } // namespace GUITest_regression_scenarios
