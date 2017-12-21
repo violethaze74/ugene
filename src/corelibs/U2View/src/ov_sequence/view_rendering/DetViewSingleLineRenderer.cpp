@@ -226,7 +226,7 @@ void DetViewSingleLineRenderer::drawCursor(QPainter &p, const QSize &canvasSize,
     int pos = editor->getCursorPosition();
     CHECK(visibleRange.contains(pos) || pos == visibleRange.endPos(), );
 
-    qint64 hCenter = (canvasSize.height() - getOneLineHeight()) / 2;
+    qint64 hCenter = getContentIndentY(canvasSize, visibleRange);
     p.translate(0, hCenter);
 
     int ymargin = commonMetrics.yCharOffset / 2;

@@ -34,6 +34,7 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DNATranslationImpl.h>
+#include <U2Core/SignalBlocker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -94,8 +95,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
 
     editor = new DetViewSequenceEditor(this);
     editAction = new QAction(tr("Edit sequence"), this);
-    // TODO_SVEDIT: setup the icon
-    editAction->setIcon(QIcon(":core/images/todo.png"));
+    editAction->setIcon(QIcon(":core/images/edit.png"));
     editAction->setObjectName("edit_sequence_action");
     connect(editAction, SIGNAL(triggered(bool)), editor, SLOT(sl_editMode(bool)));
 
@@ -124,6 +124,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     }
     if (hasAmino) {
         setupTranslationsMenu();
+        setupGeneticCodeMenu();
     }
     addActionToLocalToolbar(editAction);
 
@@ -140,7 +141,13 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
 
     updateActions();
 
+    // TODO_SVEDIT: check its required
+    connect(ctx->getSequenceObject(), SIGNAL(si_sequenceChanged()), SLOT(sl_sequenceChanged()));
+
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+}
+DetView::~DetView() {
+    removeEventFilter(editor);
 }
 
 DetViewRenderArea* DetView::getDetViewRenderArea() const {
@@ -234,48 +241,47 @@ int DetView::getShift() const {
     return isWrapMode() ? currentShiftsCounter * getDetViewRenderArea()->getShiftHeight() : 0;
 }
 
-void DetView::ensureVisible(int pos) {
+void DetView::ensurePositionVisible(int pos) {
     CHECK(pos >= 0 && pos <= getSequenceLength(), );
 
+    DetViewRenderArea* detViewRenderArea = getDetViewRenderArea();
     if (isWrapMode()) {
-        DetViewRenderArea* renderArea = getDetViewRenderArea();
         if (!visibleRange.contains(pos)) {
             if (pos < visibleRange.startPos) {
                 // scroll up till the line is visible
                 int line = pos / getSymbolsPerLine();
                 int listStartPos = line * getSymbolsPerLine();
                 visibleRange.startPos = listStartPos;
-                currentShiftsCounter = renderArea->getDirectLine() + 1;
+                currentShiftsCounter = detViewRenderArea->getDirectLine() + 1;
             } else {
-                // scroll down till the line is visible
-                int line = pos / getSymbolsPerLine();
-                int listStartPos = line * getSymbolsPerLine();
-                visibleRange.startPos = listStartPos;
-                currentShiftsCounter = 0;
+                // scroll down till the line becomes visible
+                const int line = pos / getSymbolsPerLine();
+                const int visibleShiftsCount = detViewRenderArea->height() / detViewRenderArea->getShiftHeight();
+                const int shiftToEnsureIsVisible = line * numShiftsInOneLine + detViewRenderArea->getDirectLine() + 1;
+                const int lastVisibleShift = verticalScrollBar->value() + visibleShiftsCount;
+                const int shiftsToScrollDown = shiftToEnsureIsVisible - lastVisibleShift + 1;
 
-                // get the count of visible lines
-                int visibleLinesCount = renderArea->getLinesCount() + (getShift() != 0 ? 1 : 0);
-                if (renderArea->height() + getShift() - renderArea->getShiftsCount() * renderArea->getShiftHeight() * visibleLinesCount > 0) {
-                    visibleLinesCount ++;
-                }
+                currentShiftsCounter += shiftsToScrollDown;
+                visibleRange.startPos += getSymbolsPerLine() * (currentShiftsCounter / numShiftsInOneLine);
+                currentShiftsCounter %= numShiftsInOneLine;
             }
         } else {
             // ensure the direct strand is visible
-            if (currentShiftsCounter > renderArea->getDirectLine() &&
+            if (currentShiftsCounter > detViewRenderArea->getDirectLine() &&
                     U2Region(visibleRange.startPos, getSymbolsPerLine()).contains(pos)) {
                 // this is the first line, just remove the shift
-                currentShiftsCounter = renderArea->getDirectLine() + 1;
+                currentShiftsCounter = detViewRenderArea->getDirectLine() + 1;
             }
 
             if (U2Region(visibleRange.endPos() - getSymbolsPerLine(), getSymbolsPerLine()).contains(pos)) {
                 // the last visible line, scroll a little
                 // TODO_SVEDIT: check the tail
-                int availableSpace = renderArea->height() + currentShiftsCounter * renderArea->getShiftHeight();
-                int lastLinePart = availableSpace % (numShiftsInOneLine * renderArea->getShiftHeight());
-                int lastVisibleShifts = lastLinePart / renderArea->getShiftHeight();
+                int availableSpace = detViewRenderArea->height() + currentShiftsCounter * detViewRenderArea->getShiftHeight();
+                int lastLinePart = availableSpace % (numShiftsInOneLine * detViewRenderArea->getShiftHeight());
+                int lastVisibleShifts = lastLinePart / detViewRenderArea->getShiftHeight();
 
-                if (lastVisibleShifts <= renderArea->getDirectLine()) {
-                    currentShiftsCounter += renderArea->getDirectLine() - lastVisibleShifts + 2;
+                if (lastVisibleShifts <= detViewRenderArea->getDirectLine()) {
+                    currentShiftsCounter += detViewRenderArea->getDirectLine() - lastVisibleShifts + 2;
                 }
                 if (currentShiftsCounter > numShiftsInOneLine) {
                     currentShiftsCounter %= numShiftsInOneLine;
@@ -285,6 +291,23 @@ void DetView::ensureVisible(int pos) {
             // do nothing otherwise -- the cursor is visible
         }
     } else {
+        // ensure the direct strand is visible
+        const int visibleShiftsCount = detViewRenderArea->height() / detViewRenderArea->getShiftHeight();
+        const int shiftToEnsureIsVisible = detViewRenderArea->getDirectLine() + 1;
+        const int firstVisibleShift = verticalScrollBar->value();
+        const int lastVisibleShift = verticalScrollBar->value() + visibleShiftsCount;
+
+        if (shiftToEnsureIsVisible < firstVisibleShift) {
+            // the direct line is not visible, scroll up till the line becomes visible
+            const int shiftsToScrollUp = firstVisibleShift - shiftToEnsureIsVisible + 1;
+            verticalScrollBar->setValue(verticalScrollBar->value() - shiftsToScrollUp);
+        } else if (shiftToEnsureIsVisible > lastVisibleShift) {
+            // the direct line is not visible, scroll down till the line becomes visible
+            const int shiftsToScrollDown = shiftToEnsureIsVisible - lastVisibleShift + 1;
+            verticalScrollBar->setValue(verticalScrollBar->value() + shiftsToScrollDown - 1);
+        }
+
+        // ensure horizontal position is visible
         CHECK(!visibleRange.contains(pos), );
         if (pos < visibleRange.startPos) {
             visibleRange.startPos = pos;
@@ -712,10 +735,10 @@ void DetView::updateVerticalScrollBar() {
 void DetView::updateVerticalScrollBarPosition() {
     if (isWrapMode()) {
         DetViewRenderArea* detArea = getDetViewRenderArea();
-        verticalScrollBar->disconnect(this);
+        SignalBlocker blocker(verticalScrollBar);
+        Q_UNUSED(blocker);
         verticalScrollBar->setSliderPosition(qMin(verticalScrollBar->maximum(),
-            currentShiftsCounter + numShiftsInOneLine* int(visibleRange.startPos / detArea->getSymbolsPerLine())));
-        connect(verticalScrollBar, SIGNAL(valueChanged(int)), SLOT(sl_verticalSrcollBarMoved(int)));
+            currentShiftsCounter + numShiftsInOneLine * int(visibleRange.startPos / detArea->getSymbolsPerLine())));
     }
 }
 
@@ -725,6 +748,15 @@ void DetView::setupTranslationsMenu() {
     QToolButton *button = addActionToLocalToolbar(translationsMenu->menuAction());
     button->setPopupMode(QToolButton::InstantPopup);
     button->setObjectName("translationsMenuToolbarButton");
+}
+
+void DetView::setupGeneticCodeMenu() {
+    QMenu *ttMenu = ctx->createGeneticCodeMenu();
+    CHECK(NULL != ttMenu, );
+    QToolButton *button = addActionToLocalToolbar(ttMenu->menuAction());
+    SAFE_POINT(button, QString("ToolButton for %1 is NULL").arg(ttMenu->menuAction()->objectName()), );
+    button->setPopupMode(QToolButton::InstantPopup);
+    button->setObjectName("AminoToolbarButton");
 }
 
 int DetView::getVerticalScrollBarPosition() {

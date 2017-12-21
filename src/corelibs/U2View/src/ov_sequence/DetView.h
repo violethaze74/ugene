@@ -46,6 +46,7 @@ class U2VIEW_EXPORT DetView : public GSequenceLineViewAnnotated {
     friend class DetViewSequenceEditor;
 public:
     DetView(QWidget* p, SequenceObjectContext* ctx);
+    ~DetView();
     DetViewSequenceEditor* getEditor() { return editor; }
 
     DetViewRenderArea* getDetViewRenderArea() const;
@@ -71,7 +72,7 @@ public:
     int getShift() const;
     void setSelectedTranslations();
 
-    void ensureVisible(int pos);
+    void ensurePositionVisible(int pos);
 
 protected slots:
     virtual void sl_sequenceChanged();
@@ -123,7 +124,7 @@ protected:
 
 private:
     void setupTranslationsMenu();
-
+    void setupGeneticCodeMenu();
     QPoint getRenderAreaPointAfterAutoScroll(const QPoint& pos);
     void moveBorder(const QPoint& p);
     void setBorderCursor(const QPoint& p);

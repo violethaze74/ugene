@@ -50,9 +50,9 @@ const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "%UserProfil
 SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(const QString &defaultDir, QWidget* p, const QStringList& _seqNames)
     : QDialog(p),
       defaultDir(defaultDir),
+      seqNames(_seqNames),
       saveController(NULL),
-      ui(new Ui_SaveSelectedSequenceFromMSADialog()),
-      seqNames(_seqNames)
+      ui(new Ui_SaveSelectedSequenceFromMSADialog())
 {
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "20874989");
@@ -101,7 +101,7 @@ void SaveSelectedSequenceFromMSADialogController::accept() {
         }
 
     }
-    format = saveController->getFormatIdToSave();
+    format = ui->formatCombo->currentText();
     trimGapsFlag = !ui->keepGapsBox->isChecked();
     addToProjectFlag = ui->addToProjectBox->isChecked();
     customFileName = ui->customFileNameEdit->isEnabled() ? ui->customFileNameEdit->text() : "";
@@ -171,13 +171,9 @@ void SaveDocumentInFolderController::setPath(const QString &path) {
 }
 
 void SaveDocumentInFolderController::initFormatComboBox() {
-    currentFormat = formatsInfo.getFormatNameById(conf.defaultFormatId);
+    QString currentFormat = formatsInfo.getFormatNameById(conf.defaultFormatId);
     CHECK(conf.formatCombo != NULL, );
 
-    /*
-    conf.formatCombo->blockSignals(true);
-    conf.formatCombo->clear();
-    */
     QStringList items = formatsInfo.getNames();
     items.sort(Qt::CaseInsensitive);
     conf.formatCombo->addItems(items);
@@ -210,10 +206,11 @@ QString SaveDocumentInFolderController::getSaveDirName() const {
     }
     return filePath;
 }
-
+/*
 DocumentFormatId SaveDocumentInFolderController::getFormatIdToSave() const {
+    const QString currentFormat = (conf.formatCombo->currentData()).toString();
     SAFE_POINT(!currentFormat.isEmpty(), "Current format is not set", DocumentFormatId::null);
     return formatsInfo.getIdByName(currentFormat);
 }
-
+*/
 }

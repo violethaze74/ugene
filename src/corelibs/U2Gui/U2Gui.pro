@@ -101,8 +101,8 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/ImportWidgets/ImportWidget.h \
            src/util/logview/LogView.h \
            src/util/project/filter_tasks/FeatureKeyFilterTask.h \
-           src/util/project/filter_tasks/MsaContentFilterTask.h \
-           src/util/project/filter_tasks/MsaSeqNameFilterTask.h \
+           src/util/project/filter_tasks/MaContentFilterTask.h \
+           src/util/project/filter_tasks/MaSeqNameFilterTask.h \
            src/util/project/filter_tasks/ObjectNameFilterTask.h \
            src/util/project/filter_tasks/SequenceAccFilterTask.h \
            src/util/project/filter_tasks/TextContentFilterTask.h \
@@ -257,8 +257,8 @@ SOURCES += src/MainWindow.cpp \
            src/util/ImportWidgets/ImportWidget.cpp \
            src/util/logview/LogView.cpp \
            src/util/project/filter_tasks/FeatureKeyFilterTask.cpp \
-           src/util/project/filter_tasks/MsaContentFilterTask.cpp \
-           src/util/project/filter_tasks/MsaSeqNameFilterTask.cpp \
+           src/util/project/filter_tasks/MaContentFilterTask.cpp \
+           src/util/project/filter_tasks/MaSeqNameFilterTask.cpp \
            src/util/project/filter_tasks/ObjectNameFilterTask.cpp \
            src/util/project/filter_tasks/SequenceAccFilterTask.cpp \
            src/util/project/filter_tasks/TextContentFilterTask.cpp \

@@ -19,34 +19,43 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_SEQ_NAME_FILTER_TASK_H_
-#define _U2_MSA_SEQ_NAME_FILTER_TASK_H_
+#ifndef _U2_MA_CONTENT_FILTER_TASK_H_
+#define _U2_MA_CONTENT_FILTER_TASK_H_
 
 #include <U2Core/AbstractProjectFilterTask.h>
 
 namespace U2 {
 
+class MultipleAlignmentObject;
+class U2SequenceObject;
+
 //////////////////////////////////////////////////////////////////////////
-/// MsaSeqNameFilterTask
+/// MaContentFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-class MsaSeqNameFilterTask : public AbstractProjectFilterTask {
+class MaContentFilterTask : public AbstractProjectFilterTask {
 public:
-    MsaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs); 
+    MaContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
 
 protected:
     bool filterAcceptsObject(GObject *obj);
+
+private:
+    bool maContainsPattern(const MultipleAlignmentObject *maObject, const QString &pattern);
+    bool seqContainsPattern(const U2SequenceObject* seqObject, const QString &pattern);
+
+    static bool patternFitsMaAlphabet(const MultipleAlignmentObject *maObject, const QString &pattern);
 };
 
 //////////////////////////////////////////////////////////////////////////
-/// MsaSeqNameFilterTaskFactory
+/// MaContentFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-class U2GUI_EXPORT MsaSeqNameFilterTaskFactory : public ProjectFilterTaskFactory {
+class U2GUI_EXPORT MaContentFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
     AbstractProjectFilterTask * createNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs) const;
 };
 
 } // namespace U2
 
-#endif // _U2_MSA_SEQ_NAME_FILTER_TASK_H_
+#endif // _U2_OBJ_NAME_FILTER_TASK_H_

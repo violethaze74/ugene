@@ -27,6 +27,7 @@
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentModel.h>
@@ -37,10 +38,10 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2View/SequenceObjectContext.h>
-
 #include <U2View/ADVSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
+#include <U2View/SequenceObjectContext.h>
+
 
 namespace U2 {
 
@@ -64,36 +65,39 @@ void DetViewSequenceEditor::reset() {
 }
 
 bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
-    CHECK(event->type() != QEvent::Wheel, false);
-    CHECK(event->type() != QEvent::ContextMenu, false);
-
     SequenceObjectContext* ctx = view->getSequenceContext();
     const QList<ADVSequenceWidget*> list = ctx->getSequenceWidgets();
     CHECK(!list.isEmpty(), false);
     ADVSequenceWidget* wgt = list.first();
     AnnotatedDNAView* dnaView = wgt->getAnnotatedDNAView();
     QAction* a = dnaView->removeAnnsAndQsAction;
-    if (event->type() == QEvent::FocusOut) {
+
+    switch (event->type()) {
+    case QEvent::FocusOut:
         // return delete
         a->setShortcut(QKeySequence(Qt::Key_Delete));
-    }
-    if (event->type() == QEvent::FocusIn) {
+        return true;
+    case QEvent::FocusIn:
         // block delete again
         a->setShortcut(QKeySequence());
-    }
+        return true;
 
-    // TODO_SVEDIT: shift button!
-    if (event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonRelease || event->type() == QEvent::MouseMove) {
+        // TODO_SVEDIT: shift button!
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseMove: {
         QMouseEvent* mouseEvent = dynamic_cast<QMouseEvent*>(event);
         SAFE_POINT(mouseEvent != NULL, "Failed to cast QEvent to QMouseEvent", true);
 
-        qint64 pos = view->getRenderArea()->coordToPos(view->toRenderAreaPoint(mouseEvent->pos()));
-        setCursor(pos); // use navigate and take shift into account
+        if (mouseEvent->buttons() & Qt::LeftButton) {
+            qint64 pos = view->getRenderArea()->coordToPos(view->toRenderAreaPoint(mouseEvent->pos()));
+            setCursor(pos); // use navigate and take shift into account
+        }
         return false;
     }
 
-    // TODO_SVEDIT: separate methods
-    if (event->type() == QEvent::KeyPress) {
+        // TODO_SVEDIT: separate methods
+    case QEvent::KeyPress: {
         // set cursor position
         QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
         SAFE_POINT(keyEvent != NULL, "Failed to cast QEvent to QKeyEvent", true);
@@ -132,25 +136,30 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
             break;
         default:
             if (key >= Qt::Key_A && key <= Qt::Key_Z) {
-                insertChar(key);
+                if (keyEvent->modifiers() == Qt::NoModifier) {
+                    insertChar(key);
+                }
             }
         }
+        return true;
     }
-    return true;
+    default:
+        return false;
+    }
 }
 
 void DetViewSequenceEditor::setCursor(int newPos) {
     CHECK(newPos >= 0 && newPos <= view->getSequenceLength(), );
     if (cursor != newPos) {
         cursor = newPos;
-        view->ensureVisible(cursor);
+        view->ensurePositionVisible(cursor);
         view->update();
     }
 }
 
 void DetViewSequenceEditor::navigate(int newPos, bool shiftPressed) {
     CHECK(newPos != cursor, );
-    CHECK(newPos >= 0 && newPos <= view->getSequenceLength(), );
+    newPos = qBound(0, newPos, (int)view->getSequenceLength());
 
     DNASequenceSelection* selection = view->getSequenceContext()->getSequenceSelection();
     if (shiftPressed) {
@@ -196,7 +205,8 @@ void DetViewSequenceEditor::navigate(int newPos, bool shiftPressed) {
 void DetViewSequenceEditor::insertChar(int character) {
     U2SequenceObject* seqObj = view->getSequenceObject();
     SAFE_POINT(seqObj != NULL, "SeqObject is NULL", );
-    U2OpStatusImpl os;
+    CHECK(seqObj->getAlphabet()->contains(character), ); // TODO_SVEDIT: support alphabet changing, separate issue
+
     const DNASequence seq(QByteArray(1, character));
     U2Region r;
     SequenceObjectContext* ctx = view->getSequenceContext();
@@ -209,7 +219,7 @@ void DetViewSequenceEditor::insertChar(int character) {
     }
     runModifySeqTask(seqObj, r, seq);
 
-    navigate(cursor + 1, false);
+    navigate(r.startPos + 1, false);
 }
 
 // TODO_SVEDIT: rename
@@ -259,14 +269,13 @@ void DetViewSequenceEditor::deleteChar(int key) {
 void DetViewSequenceEditor::runModifySeqTask(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence) {
     Settings* s = AppContext::getSettings();
     U1AnnotationUtils::AnnotationStrategyForResize strategy =
-            s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
-                        U1AnnotationUtils::AnnotationStrategyForResize_Resize).value<U1AnnotationUtils::AnnotationStrategyForResize>();
+                (U1AnnotationUtils::AnnotationStrategyForResize)s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
+                            U1AnnotationUtils::AnnotationStrategyForResize_Resize).toInt();
+
     Task* t = new ModifySequenceContentTask(seqObj->getDocument()->getDocumentFormatId(), seqObj,
                                             region, sequence,
                                             s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(),
                                             strategy, seqObj->getDocument()->getURL());
-
-    SAFE_POINT(NULL != t, L10N::nullPointerError("Edit sequence task"), );
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

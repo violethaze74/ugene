@@ -74,7 +74,7 @@ public:
                             QObject* parent);
     
     QString getSaveDirName() const;
-    DocumentFormatId getFormatIdToSave() const;
+    //DocumentFormatId getFormatIdToSave() const;
 signals:
     void si_pathChanged(const QString &path);
 private slots:
@@ -86,7 +86,7 @@ private:
 
     SaveDocumentInFolderControllerConfig        conf;
     SaveDocumentController::SimpleFormatsInfo   formatsInfo;
-    QString                                     currentFormat;
+    //QString                                     currentFormat;
 
     static const QString HOME_DIR_IDENTIFIER;
 };
