@@ -63,6 +63,7 @@ DetViewSequenceEditor::DetViewSequenceEditor(DetView* view)
     reset();
     connect(&animationTimer, SIGNAL(timeout()), SLOT(sl_changeCursorColor()));
     setParent(view);
+    connect(this, SIGNAL(si_blockStatusChanged()), view, SLOT(completeUpdate()));
 }
 
 DetViewSequenceEditor::~DetViewSequenceEditor() {
@@ -233,10 +234,11 @@ void DetViewSequenceEditor::insertChar(int character) {
     } else {
         // ignore multuselection for now
         r = ctx->getSequenceSelection()->getSelectedRegions().first();
+        ctx->getSequenceSelection()->clear();
     }
     runModifySeqTask(seqObj, r, seq);
 
-    navigate(r.startPos + 1, false);
+    setCursor(r.startPos + 1);
 }
 
 // TODO_SVEDIT: rename
@@ -246,8 +248,12 @@ void DetViewSequenceEditor::deleteChar(int key) {
     SAFE_POINT(seqObj != NULL, "SeqObject is NULL", );
 
     U2Region regionToRemove;
-    if (cursor > 0) {
-        regionToRemove = U2Region(key == Qt::Key_Backspace ? cursor - 1 : cursor, 1);
+    if (key == Qt::Key_Backspace) {
+        CHECK(cursor > 0, );
+        regionToRemove = U2Region(cursor - 1, 1);
+    } else {
+        CHECK(cursor < seqObj->getSequenceLength(), );
+        regionToRemove = U2Region(cursor, 1);
     }
     SequenceObjectContext* ctx = view->getSequenceContext();
     if (!ctx->getSequenceSelection()->isEmpty()) {
@@ -257,7 +263,6 @@ void DetViewSequenceEditor::deleteChar(int key) {
             runModifySeqTask(seqObj, r, DNASequence());
         }
         ctx->getSequenceSelection()->clear();
-        // TODO_SVEDIT: set up cursor position
         return;
     }
 

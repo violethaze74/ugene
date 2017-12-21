@@ -49,6 +49,7 @@ public:
     void reset();
     bool isEditMode() const;
     QAction* getEditAction() const { return editAction; }
+    bool getBlock() const { return block; }
 
     bool eventFilter(QObject *watched, QEvent *event);
 
