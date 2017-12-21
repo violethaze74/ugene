@@ -719,12 +719,12 @@ void DetViewSingleLineRenderer::updateLines() {
                 }
             }
         }
-    } else if (detView->hasComplementaryStrand()) {//&& !detView->hasTranslations()
+    } else if (detView->hasComplementaryStrand()) {
         directLine = 0;
         rulerLine = 1;
         complementLine = 2;
         numLines = 3;
-    } else {//if (!detView->hasComplementaryStrand() && detView->hasTranslations())
+    } else {
         firstDirectTransLine = 0;
         directLine = 3;
         rulerLine = 4;

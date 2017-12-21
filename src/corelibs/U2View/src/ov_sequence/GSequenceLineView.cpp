@@ -126,11 +126,15 @@ void GSequenceLineView::sl_onScrollBarMoved(int pos) {
         if (aAction == QAbstractSlider::SliderSingleStepAdd) {
             qint64 selStart = qMin(lastPressPos, visibleRange.endPos());
             qint64 selEnd = qMax(lastPressPos, visibleRange.endPos());
-            setSelection(U2Region(selStart, selEnd - selStart));
+            U2Region newSelection(selStart, selEnd - selStart);
+            resizableRegion = newSelection;
+            setSelection(newSelection);
         } else if (aAction == QAbstractSlider::SliderSingleStepSub) {
             qint64 selStart = qMin(lastPressPos, visibleRange.startPos);
             qint64 selEnd = qMax(lastPressPos, visibleRange.startPos);
-            setSelection(U2Region(selStart, selEnd - selStart));
+            U2Region newSelection(selStart, selEnd - selStart);
+            resizableRegion = newSelection;
+            setSelection(newSelection);
         }
     }
 }
