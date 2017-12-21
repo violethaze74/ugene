@@ -19,30 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CLARK_SUPPORT_H_
-#define _U2_CLARK_SUPPORT_H_
+#ifndef _U2_CLARK_SUPPORT_PLUGIN_H_
+#define _U2_CLARK_SUPPORT_PLUGIN_H_
 
-#include <U2Core/ExternalToolRegistry.h>
-#include "utils/ExternalToolSupportAction.h"
-
-#define CLARK_GROUP "CLARK package"
-#define ET_CLARK "CLARK"
-#define ET_CLARK_L "CLARK-l"
-#define ET_CLARK_getAccssnTaxID "getAccssnTaxID"
-#define ET_CLARK_getfilesToTaxNodes "getfilesToTaxNodes"
-#define ET_CLARK_getTargetsDef "getTargetsDef"
-#define ET_CLARK_buildScript "builddb.sh"
+#include <U2Core/PluginModel.h>
 
 namespace U2 {
 
-class ClarkSupport : public ExternalTool {
+class ClarkSupportPlugin : public Plugin {
     Q_OBJECT
 public:
-    ClarkSupport(const QString& name, const QString& path = "");
-    static void registerTools(ExternalToolRegistry *etRegistry);
-private slots:
-    void sl_toolValidationStatusChanged(bool isValid);
+    ClarkSupportPlugin();
+    ~ClarkSupportPlugin();
+
+    static const QString PLUGIN_NAME;
+    static const QString PLUGIN_DESCRIPRION;
 };
 
-}//namespace
-#endif // _U2_CLARK_SUPPORT_H_
+}   // namespace U2
+
+#endif // _U2_CLARK_SUPPORT_PLUGIN_H_

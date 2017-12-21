@@ -31,7 +31,7 @@
 
 #include "KrakenBuildTask.h"
 #include "KrakenSupport.h"
-#include "utils/NgsClassificationUtils.h"
+#include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
 
@@ -128,7 +128,7 @@ void KrakenBuildTask::checkSettings() {
 }
 
 void KrakenBuildTask::checkTaxonomy() {
-    U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsClassificationUtils::TAXONOMY_DATA_ID);
+    U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
     CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), setError(tr("Taxonomy data is not set")), );
 }
 
@@ -139,7 +139,7 @@ QList<Task *> KrakenBuildTask::getCopyTaxonomyTasks() {
     GUrlUtils::prepareDirLocation(databaseTaxonomyDirUrl, stateInfo);
     CHECK_OP(stateInfo, copyTasks);
 
-    U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsClassificationUtils::TAXONOMY_DATA_ID);
+    U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
     const QString sourceDirUrl = taxonomyDataPath->getPath();
 
     foreach (const QString &fileName, QDir(sourceDirUrl).entryList(QDir::NoDotAndDotDot)) {

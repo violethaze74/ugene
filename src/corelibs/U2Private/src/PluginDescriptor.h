@@ -68,6 +68,8 @@ public:
 
 class PluginDesc {
 public:
+    PluginDesc();
+
     QString             id;
     QString             name;
     Version             pluginVersion;

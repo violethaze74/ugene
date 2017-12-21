@@ -34,6 +34,7 @@ public:
     Worker *createWorker(Actor *actor);
 
     static void init();
+    static void cleanup();
 
     static const QString ACTOR_ID;
 

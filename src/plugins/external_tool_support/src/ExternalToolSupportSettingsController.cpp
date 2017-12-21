@@ -36,9 +36,7 @@
 #include "blast/BlastAllSupport.h"
 #include "blast/FormatDBSupport.h"
 #include "blast_plus/BlastPlusSupport.h"
-#include "kraken/KrakenSupport.h"
 #include "utils/ExternalToolValidateTask.h"
-#include "clark/ClarkSupport.h"
 
 namespace U2 {
 

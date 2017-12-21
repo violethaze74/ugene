@@ -25,7 +25,6 @@
 #include <U2Core/AppContext.h>
 
 #include "KrakenSupport.h"
-#include "perl/PerlSupport.h"
 
 namespace U2 {
 
@@ -42,7 +41,8 @@ KrakenSupport::KrakenSupport(const QString &name)
     validationArguments << "--version";
     validMessage = "Kraken version ";
     versionRegExp = QRegExp("Kraken version (\\d+\\.\\d+(\\.\\d+)?(\\-[a-zA-Z]*)?)");
-    dependencies << ET_PERL;
+    dependencies << "perl";
+    toolRunnerProgramm = "perl";
 
     if (BUILD_TOOL == name) {
         initBuild();

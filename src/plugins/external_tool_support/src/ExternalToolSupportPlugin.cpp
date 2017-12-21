@@ -90,9 +90,6 @@
 #include "cap3/CAP3Worker.h"
 #include "ceas/CEASReportWorker.h"
 #include "ceas/CEASSupport.h"
-#include "clark/ClarkBuildWorker.h"
-#include "clark/ClarkClassifyWorker.h"
-#include "clark/ClarkSupport.h"
 #include "clustalo/ClustalOSupport.h"
 #include "clustalo/ClustalOWorker.h"
 #include "clustalw/ClustalWSupport.h"
@@ -108,9 +105,6 @@
 #include "cufflinks/GffreadWorker.h"
 #include "cutadapt/CutadaptSupport.h"
 #include "cutadapt/CutadaptWorker.h"
-#include "diamond/DiamondSupport.h"
-#include "diamond/DiamondBuildWorkerFactory.h"
-#include "diamond/DiamondClassifyWorkerFactory.h"
 #include "fastqc/FastqcSupport.h"
 #include "fastqc/FastqcWorker.h"
 #include "hmmer/HmmerBuildWorker.h"
@@ -119,9 +113,6 @@
 #include "hmmer/HmmerSupport.h"
 #include "hmmer/HmmerTests.h"
 #include "java/JavaSupport.h"
-#include "kraken/KrakenBuildWorkerFactory.h"
-#include "kraken/KrakenClassifyWorkerFactory.h"
-#include "kraken/KrakenSupport.h"
 #include "macs/MACSSupport.h"
 #include "macs/MACSWorker.h"
 #include "mafft/MAFFTSupport.h"
@@ -454,17 +445,9 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     FastQCSupport *fastqc = new FastQCSupport(ET_FASTQC);
     etRegistry->registerEntry(fastqc);
 
-    ClarkSupport::registerTools(etRegistry);
-
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::BUILD_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::SEARCH_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::PHMMER_TOOL));
-
-    etRegistry->registerEntry(new KrakenSupport(KrakenSupport::BUILD_TOOL));
-    etRegistry->registerEntry(new KrakenSupport(KrakenSupport::CLASSIFY_TOOL));
-    etRegistry->setToolkitDescription(KrakenSupport::GROUP_NAME, tr("Kraken is a taxonomic sequence classifier that assigns taxonomic labels to short DNA reads."));
-
-    etRegistry->registerEntry(new DiamondSupport(DiamondSupport::TOOL_NAME));
 
     if (AppContext::getMainWindow()) {
 
@@ -718,14 +701,8 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::FastQCFactory::init();
     LocalWorkflow::CutAdaptFastqWorkerFactory::init();
     LocalWorkflow::BedtoolsIntersectWorkerFactory::init();
-    LocalWorkflow::ClarkBuildWorkerFactory::init();
-    LocalWorkflow::ClarkClassifyWorkerFactory::init();
     LocalWorkflow::HmmerBuildWorkerFactory::init();
     LocalWorkflow::HmmerSearchWorkerFactory::init();
-    LocalWorkflow::KrakenBuildWorkerFactory::init();
-    LocalWorkflow::KrakenClassifyWorkerFactory::init();
-    LocalWorkflow::DiamondBuildWorkerFactory::init();
-    LocalWorkflow::DiamondClassifyWorkerFactory::init();
 }
 
 //////////////////////////////////////////////////////////////////////////

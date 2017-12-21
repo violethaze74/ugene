@@ -19,37 +19,32 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DIAMOND_CLASSIFY_WORKER_FACTORY_H_
-#define _U2_DIAMOND_CLASSIFY_WORKER_FACTORY_H_
+#ifndef _U2_CLARK_SUPPORT_H_
+#define _U2_CLARK_SUPPORT_H_
 
-#include <U2Lang/LocalDomain.h>
+#include <U2Core/ExternalToolRegistry.h>
+
+#define CLARK_GROUP "CLARK package"
+#define ET_CLARK "CLARK"
+#define ET_CLARK_L "CLARK-l"
+#define ET_CLARK_getAccssnTaxID "getAccssnTaxID"
+#define ET_CLARK_getfilesToTaxNodes "getfilesToTaxNodes"
+#define ET_CLARK_getTargetsDef "getTargetsDef"
+#define ET_CLARK_buildScript "builddb.sh"
 
 namespace U2 {
-namespace LocalWorkflow {
 
-class DiamondClassifyWorkerFactory : public DomainFactory {
+class ClarkSupport : public ExternalTool {
+    Q_OBJECT
 public:
-    DiamondClassifyWorkerFactory();
+    ClarkSupport(const QString& name, const QString& path = "");
 
-    Worker *createWorker(Actor *actor);
+    static void registerTools(ExternalToolRegistry *etRegistry);
+    static void unregisterTools(ExternalToolRegistry *etRegistry);
 
-    static void init();
-
-    static const QString ACTOR_ID;
-
-    static const QString INPUT_PORT_ID;
-    static const QString INPUT_PAIRED_PORT_ID;
-    static const QString OUTPUT_PORT_ID;
-    static const QString OUTPUT_SLOT_ID;
-
-    static const QString INPUT_DATA_ATTR_ID;
-    static const QString DATABASE_ATTR_ID;
-
-    static const QString SINGLE_END_TEXT;
-    static const QString PAIRED_END_TEXT;
+private slots:
+    void sl_toolValidationStatusChanged(bool isValid);
 };
 
-}   // namespace LocalWorkflow
-}   // namespace U2
-
-#endif // _U2_DIAMOND_CLASSIFY_WORKER_FACTORY_H_
+}//namespace
+#endif // _U2_CLARK_SUPPORT_H_

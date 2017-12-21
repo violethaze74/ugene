@@ -39,7 +39,7 @@
 #include "KrakenClassifyWorkerFactory.h"
 #include "KrakenClassifyPrompter.h"
 #include "KrakenSupport.h"
-#include "utils/NgsClassificationUtils.h"
+#include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -183,10 +183,17 @@ void KrakenClassifyWorkerFactory::init() {
     proto->addExternalTool(KrakenSupport::CLASSIFY_TOOL);
     proto->addExternalTool(KrakenSupport::TRANSLATE_TOOL);
     proto->setValidator(new DatabaseValidator());
-    WorkflowEnv::getProtoRegistry()->registerProto(NgsClassificationUtils::ELEMENTS_GROUP, proto);
+    WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new KrakenClassifyWorkerFactory());
+}
+
+void KrakenClassifyWorkerFactory::cleanup() {
+    WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
+
+    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    localDomain->unregisterEntry(ACTOR_ID);
 }
 
 }   // namespace LocalWorkflow

@@ -67,9 +67,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/ceas/CEASSettings.h \
            src/ceas/CEASSupport.h \
            src/ceas/CEASSupportTask.h \
-           src/clark/ClarkBuildWorker.h \
-           src/clark/ClarkClassifyWorker.h \
-           src/clark/ClarkSupport.h \
            src/clustalo/ClustalOSupport.h \
            src/clustalo/ClustalOSupportRunDialog.h \
            src/clustalo/ClustalOSupportTask.h \
@@ -98,17 +95,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/cufflinks/GffreadWorker.h \
            src/cutadapt/CutadaptSupport.h \
            src/cutadapt/CutadaptWorker.h \
-           src/diamond/DiamondBuildPrompter.h \
-           src/diamond/DiamondBuildTask.h \
-           src/diamond/DiamondBuildWorker.h \
-           src/diamond/DiamondBuildWorkerFactory.h \
-           src/diamond/DiamondClassifyPrompter.h \
-           src/diamond/DiamondClassifyTask.h \
-           src/diamond/DiamondClassifyWorker.h \
-           src/diamond/DiamondClassifyWorkerFactory.h \
-           src/diamond/DiamondSupport.h \
-           src/diamond/DiamondTaxonomyDataValidator.h \
-           src/diamond/GenomesPreparationTask.h \
            src/fastqc/FastqcSupport.h \
            src/fastqc/FastqcTask.h \
            src/fastqc/FastqcWorker.h \
@@ -133,20 +119,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/hmmer/PhmmerSearchTask.h \
            src/hmmer/PhmmerSearchTaskTest.h \
            src/java/JavaSupport.h \
-           src/kraken/DatabaseSizeRelation.h \
-           src/kraken/DatabaseValidator.h \
-           src/kraken/KrakenBuildPrompter.h \
-           src/kraken/KrakenBuildTask.h \
-           src/kraken/KrakenBuildWorker.h \
-           src/kraken/KrakenBuildWorkerFactory.h \
-           src/kraken/KrakenClassifyLogParser.h \
-           src/kraken/KrakenClassifyPrompter.h \
-           src/kraken/KrakenClassifyTask.h \
-           src/kraken/KrakenClassifyWorker.h \
-           src/kraken/KrakenClassifyWorkerFactory.h \
-           src/kraken/KrakenSupport.h \
-           src/kraken/KrakenTranslateLogParser.h \
-           src/kraken/MinimizerLengthValidator.h \
            src/macs/MACSSettings.h \
            src/macs/MACSSupport.h \
            src/macs/MACSTask.h \
@@ -213,10 +185,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/utils/ExternalToolSupportAction.h \
            src/utils/ExternalToolUtils.h \
            src/utils/ExternalToolValidateTask.h \
-           src/utils/GenomicLibraryDelegate.h \
-           src/utils/GenomicLibraryDialog.h \
-           src/utils/GenomicLibraryPropertyWidget.h \
-           src/utils/NgsClassificationUtils.h \
            src/utils/OutputCollector.h \
            src/vcftools/VcfConsensusSupport.h \
            src/vcftools/VcfConsensusSupportTask.h \
@@ -240,7 +208,6 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/hmmer/HmmerBuildDialog.ui \
          src/hmmer/HmmerSearchDialog.ui \
          src/hmmer/PhmmerSearchDialog.ui \
-         src/kraken/GenomicLibraryDialog.ui \
          src/mafft/MAFFTSupportRunDialog.ui \
          src/mrbayes/MrBayesDialog.ui \
          src/phyml/PhyMLDialog.ui \
@@ -315,9 +282,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/ceas/CEASSettings.cpp \
            src/ceas/CEASSupport.cpp \
            src/ceas/CEASSupportTask.cpp \
-           src/clark/ClarkBuildWorker.cpp \
-           src/clark/ClarkClassifyWorker.cpp \
-           src/clark/ClarkSupport.cpp \
            src/clustalo/ClustalOSupport.cpp \
            src/clustalo/ClustalOSupportRunDialog.cpp \
            src/clustalo/ClustalOSupportTask.cpp \
@@ -346,17 +310,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/cufflinks/GffreadWorker.cpp \
            src/cutadapt/CutadaptSupport.cpp \
            src/cutadapt/CutadaptWorker.cpp \
-           src/diamond/DiamondBuildPrompter.cpp \
-           src/diamond/DiamondBuildTask.cpp \
-           src/diamond/DiamondBuildWorker.cpp \
-           src/diamond/DiamondBuildWorkerFactory.cpp \
-           src/diamond/DiamondClassifyPrompter.cpp \
-           src/diamond/DiamondClassifyTask.cpp \
-           src/diamond/DiamondClassifyWorker.cpp \
-           src/diamond/DiamondClassifyWorkerFactory.cpp \
-           src/diamond/DiamondSupport.cpp \
-           src/diamond/DiamondTaxonomyDataValidator.cpp \
-           src/diamond/GenomesPreparationTask.cpp \
            src/fastqc/FastqcSupport.cpp \
            src/fastqc/FastqcTask.cpp \
            src/fastqc/FastqcWorker.cpp \
@@ -380,20 +333,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/hmmer/PhmmerSearchTask.cpp \
            src/hmmer/PhmmerSearchTaskTest.cpp \
            src/java/JavaSupport.cpp \
-           src/kraken/DatabaseSizeRelation.cpp \
-           src/kraken/DatabaseValidator.cpp \
-           src/kraken/KrakenBuildPrompter.cpp \
-           src/kraken/KrakenBuildTask.cpp \
-           src/kraken/KrakenBuildWorker.cpp \
-           src/kraken/KrakenBuildWorkerFactory.cpp \
-           src/kraken/KrakenClassifyLogParser.cpp \
-           src/kraken/KrakenClassifyPrompter.cpp \
-           src/kraken/KrakenClassifyTask.cpp \
-           src/kraken/KrakenClassifyWorker.cpp \
-           src/kraken/KrakenClassifyWorkerFactory.cpp \
-           src/kraken/KrakenSupport.cpp \
-           src/kraken/KrakenTranslateLogParser.cpp \
-           src/kraken/MinimizerLengthValidator.cpp \
            src/macs/MACSSettings.cpp \
            src/macs/MACSSupport.cpp \
            src/macs/MACSTask.cpp \
@@ -460,10 +399,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/utils/ExternalToolSupportAction.cpp \
            src/utils/ExternalToolUtils.cpp \
            src/utils/ExternalToolValidateTask.cpp \
-           src/utils/GenomicLibraryDelegate.cpp \
-           src/utils/GenomicLibraryDialog.cpp \
-           src/utils/GenomicLibraryPropertyWidget.cpp \
-           src/utils/NgsClassificationUtils.cpp \
            src/utils/OutputCollector.cpp \
            src/vcftools/VcfConsensusSupport.cpp \
            src/vcftools/VcfConsensusSupportTask.cpp \

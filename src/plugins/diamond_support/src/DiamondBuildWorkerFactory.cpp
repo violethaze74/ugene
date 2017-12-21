@@ -31,8 +31,8 @@
 #include "DiamondBuildWorker.h"
 #include "DiamondBuildWorkerFactory.h"
 #include "DiamondSupport.h"
-#include "utils/GenomicLibraryDelegate.h"
-#include "utils/NgsClassificationUtils.h"
+#include "../../ngs_reads_classification/src/GenomicLibraryDelegate.h"
+#include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -94,10 +94,17 @@ void DiamondBuildWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new DiamondBuildPrompter(NULL));
     proto->addExternalTool(DiamondSupport::TOOL_NAME);
-    WorkflowEnv::getProtoRegistry()->registerProto(NgsClassificationUtils::ELEMENTS_GROUP, proto);
+    WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new DiamondBuildWorkerFactory());
+}
+
+void DiamondBuildWorkerFactory::cleanup() {
+    WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
+
+    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    localDomain->unregisterEntry(ACTOR_ID);
 }
 
 }   // namespace LocalWorkflow

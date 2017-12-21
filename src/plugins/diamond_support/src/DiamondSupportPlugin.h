@@ -19,31 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DIAMOND_BUILD_WORKER_FACTORY_H_
-#define _U2_DIAMOND_BUILD_WORKER_FACTORY_H_
+#ifndef _U2_KRAKEN_SUPPORT_PLUGIN_H_
+#define _U2_KRAKEN_SUPPORT_PLUGIN_H_
 
-#include <U2Lang/LocalDomain.h>
+#include <U2Core/PluginModel.h>
 
 namespace U2 {
-namespace LocalWorkflow {
 
-class DiamondBuildWorkerFactory : public DomainFactory {
+class DiamondSupportPlugin : public Plugin {
+    Q_OBJECT
 public:
-    DiamondBuildWorkerFactory();
+    DiamondSupportPlugin();
+    ~DiamondSupportPlugin();
 
-    Worker *createWorker(Actor *actor);
-
-    static void init();
-
-    static const QString ACTOR_ID;
-
-    static const QString OUTPUT_PORT_ID;
-
-    static const QString DATABASE_ATTR_ID;
-    static const QString GENOMIC_LIBRARY_ATTR_ID;
+    static const QString PLUGIN_NAME;
+    static const QString PLUGIN_DESCRIPRION;
 };
 
-}   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_DIAMOND_BUILD_WORKER_FACTORY_H_
+#endif // _U2_KRAKEN_SUPPORT_PLUGIN_H_

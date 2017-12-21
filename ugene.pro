@@ -49,35 +49,39 @@ SUBDIRS += \
           src/plugins_3rdparty/kalign \
           src/plugins_3rdparty/ptools \
           src/plugins_3rdparty/variants \
+          src/plugins/ngs_reads_classification \
+          src/plugins/CoreTests \
+          src/plugins/GUITestBase \
+          src/plugins/annotator \
+          src/plugins/api_tests \
           src/plugins/biostruct3d_view \
+          src/plugins/browser_support \
           src/plugins/chroma_view \
           src/plugins/circular_view \
-          src/plugins/annotator \
+          src/plugins/clark_support \
           src/plugins/dbi_bam \
+          src/plugins/diamond_support \
           src/plugins/dna_export \
-          src/plugins/dna_stat \
           src/plugins/dna_flexibility \
           src/plugins/dna_graphpack \
+          src/plugins/dna_stat \
+          src/plugins/dotplot \
+          src/plugins/enzymes \
+          src/plugins/external_tool_support \
+          src/plugins/genome_aligner \
+          src/plugins/kraken_support \
+          src/plugins/linkdata_support \
           src/plugins/orf_marker \
           src/plugins/pcr \
-          src/plugins/workflow_designer \
-          src/plugins/repeat_finder \
-          src/plugins/test_runner \
           src/plugins/perf_monitor \
-          src/plugins/smith_waterman \
-          src/plugins_3rdparty/primer3 \
-          src/plugins/enzymes \
-          src/plugins/remote_blast \
-          src/plugins/genome_aligner \
-          src/plugins/weight_matrix \
-          src/plugins/dotplot \
           src/plugins/query_designer \
-          src/plugins/external_tool_support \
-          src/plugins/CoreTests \
-          src/plugins/api_tests \
-          src/plugins/GUITestBase \
-          src/plugins/browser_support \
-          src/plugins/linkdata_support
+          src/plugins/remote_blast \
+          src/plugins/repeat_finder \
+          src/plugins/smith_waterman \
+          src/plugins/test_runner \
+          src/plugins/weight_matrix \
+          src/plugins/workflow_designer \
+          src/plugins_3rdparty/primer3
 
 use_cuda() {
     SUBDIRS += src/plugins/cuda_support

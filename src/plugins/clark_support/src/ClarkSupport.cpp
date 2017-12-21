@@ -20,9 +20,6 @@
  */
 
 #include "ClarkSupport.h"
-#include "seqpos/SeqPosSupport.h"
-#include "ExternalToolSupportSettingsController.h"
-#include "ExternalToolSupportSettings.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -76,7 +73,16 @@ void ClarkSupport::registerTools(ExternalToolRegistry *etRegistry)
     etRegistry->registerEntry(new ClarkSupport(ET_CLARK_buildScript));
     etRegistry->setToolkitDescription(CLARK_GROUP, tr("CLARK (CLAssifier based on Reduced K-mers) is a tool for supervised sequence classification "
         "based on discriminative k-mers. UGENE provides the GUI for CLARK and CLARK-l variants of the CLARK framework "
-        "for solving the problem of the assignment of metagenomic reads to known genomes."));
+                                                      "for solving the problem of the assignment of metagenomic reads to known genomes."));
+}
+
+void ClarkSupport::unregisterTools(ExternalToolRegistry *etRegistry) {
+    etRegistry->unregisterEntry(ET_CLARK);
+    etRegistry->unregisterEntry(ET_CLARK_L);
+    etRegistry->unregisterEntry(ET_CLARK_getAccssnTaxID);
+    etRegistry->unregisterEntry(ET_CLARK_getfilesToTaxNodes);
+    etRegistry->unregisterEntry(ET_CLARK_getTargetsDef);
+    etRegistry->unregisterEntry(ET_CLARK_buildScript);
 }
 
 void ClarkSupport::sl_toolValidationStatusChanged(bool) {

@@ -29,6 +29,7 @@
 #include <U2Lang/URLContainer.h>
 
 #include "GenomicLibraryDialog.h"
+#include "ui_GenomicLibraryDialog.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -78,12 +79,16 @@ GenomicLibraryDialog::GenomicLibraryDialog(const Dataset &dataset, QWidget *pare
     : QDialog(parent),
       singleDatasetController(new SingleDatasetController(dataset, this))
 {
-    setupUi(this);
-    cantainer->layout()->addWidget(singleDatasetController->getWigdet());
+    ui->setupUi(this);
+    ui->cantainer->layout()->addWidget(singleDatasetController->getWigdet());
 
-    new HelpButton(this, buttonBox, "42");
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Select"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    new HelpButton(this, ui->buttonBox, "42");
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Select"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+}
+
+GenomicLibraryDialog::~GenomicLibraryDialog() {
+    delete ui;
 }
 
 Dataset GenomicLibraryDialog::getDataset() const {

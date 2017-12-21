@@ -19,34 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GENOMIC_LIBRARY_DELEGATE_H_
-#define _U2_GENOMIC_LIBRARY_DELEGATE_H_
+#ifndef _U2_KRAKEN_SUPPORT_PLUGIN_H_
+#define _U2_KRAKEN_SUPPORT_PLUGIN_H_
 
-#include <U2Designer/DelegateEditors.h>
+#include <U2Core/PluginModel.h>
 
 namespace U2 {
-namespace LocalWorkflow {
 
-class GenomicLibraryDelegate : public PropertyDelegate {
+class KrakenSupportPlugin : public Plugin {
     Q_OBJECT
 public:
-    GenomicLibraryDelegate(QObject *parent = 0);
+    KrakenSupportPlugin();
+    ~KrakenSupportPlugin();
 
-    QVariant getDisplayValue(const QVariant &value) const;
-
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
-
-    void setEditorData(QWidget *editor, const QModelIndex &index) const;
-    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
-
-    PropertyDelegate *clone();
-
-private slots:
-    void sl_commit();
+    static const QString PLUGIN_NAME;
+    static const QString PLUGIN_DESCRIPRION;
 };
 
-}   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_GENOMIC_LIBRARY_DELEGATE_H_
+#endif // _U2_KRAKEN_SUPPORT_PLUGIN_H_

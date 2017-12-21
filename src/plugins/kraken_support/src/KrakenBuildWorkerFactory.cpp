@@ -40,8 +40,8 @@
 #include "KrakenBuildWorkerFactory.h"
 #include "KrakenSupport.h"
 #include "MinimizerLengthValidator.h"
-#include "utils/GenomicLibraryDelegate.h"
-#include "utils/NgsClassificationUtils.h"
+#include "../../ngs_reads_classification/src/GenomicLibraryDelegate.h"
+#include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -240,10 +240,17 @@ void KrakenBuildWorkerFactory::init() {
     proto->setPrompter(new KrakenBuildPrompter(NULL));
     proto->addExternalTool(KrakenSupport::BUILD_TOOL);
     proto->setValidator(new MinimizerLengthValidator());
-    WorkflowEnv::getProtoRegistry()->registerProto(NgsClassificationUtils::ELEMENTS_GROUP, proto);
+    WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new KrakenBuildWorkerFactory());
+}
+
+void KrakenBuildWorkerFactory::cleanup() {
+    WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
+
+    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    localDomain->unregisterEntry(ACTOR_ID);
 }
 
 }   // namespace LocalWorkflow

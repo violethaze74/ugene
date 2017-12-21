@@ -58,7 +58,7 @@
 
 #include "ClarkSupport.h"
 #include "ClarkClassifyWorker.h"
-#include "utils/NgsClassificationUtils.h"
+#include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -335,7 +335,7 @@ void ClarkClassifyWorkerFactory::init() {
     proto->addExternalTool(ET_CLARK);
     proto->addExternalTool(ET_CLARK_L);
 
-    WorkflowEnv::getProtoRegistry()->registerProto(NgsClassificationUtils::ELEMENTS_GROUP, proto);
+    WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new ClarkClassifyWorkerFactory());
 }

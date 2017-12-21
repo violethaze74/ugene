@@ -26,7 +26,7 @@
 
 #include <U2Designer/DatasetsController.h>
 
-#include "ui_GenomicLibraryDialog.h"
+class Ui_GenomicLibraryDialog;
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -54,13 +54,15 @@ private:
     URLListController *widgetController;
 };
 
-class GenomicLibraryDialog : public QDialog, public Ui_GenomicLibraryDialog {
+class GenomicLibraryDialog : public QDialog {
 public:
     GenomicLibraryDialog(const Dataset &dataset, QWidget *parent);
+    ~GenomicLibraryDialog();
 
     Dataset getDataset() const;
 
 private:
+    Ui_GenomicLibraryDialog *ui;
     SingleDatasetController *singleDatasetController;
 };
 
