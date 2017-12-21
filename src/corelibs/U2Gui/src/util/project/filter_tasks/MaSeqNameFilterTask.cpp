@@ -20,6 +20,8 @@
  */
 
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "../ProjectFilterNames.h"
@@ -39,14 +41,24 @@ MaSeqNameFilterTask::MaSeqNameFilterTask(const ProjectTreeControllerModeSettings
 }
 
 bool MaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
-    MultipleAlignmentObject *msaObj = qobject_cast<MultipleAlignmentObject *>(obj);
-    CHECK(NULL != msaObj, false);
+    MultipleAlignmentObject *maObj = qobject_cast<MultipleAlignmentObject *>(obj);
+    CHECK(NULL != maObj, false);
 
-    for (int i = 0, n = msaObj->getNumRows(); i < n; ++i) {
-        if (settings.nameFilterAcceptsString(msaObj->getRow(i)->getName())) {
+    for (int i = 0, n = maObj->getNumRows(); i < n; ++i) {
+        if (settings.nameFilterAcceptsString(maObj->getRow(i)->getName())) {
             return true;
         }
     }
+    
+    // if this is MCA -> check reference sequence name too.
+    MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(maObj);
+    if (mcaObj != NULL) {
+        U2SequenceObject* refObj = mcaObj->getReferenceObj();
+        if (refObj != NULL && settings.nameFilterAcceptsString(refObj->getSequenceName())) {
+            return true;
+        }
+    }
+    
     return false;
 }
 

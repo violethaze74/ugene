@@ -23,6 +23,9 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MaContentFilterTask.h"
@@ -41,18 +44,31 @@ MaContentFilterTask::MaContentFilterTask(const ProjectTreeControllerModeSettings
 }
 
 bool MaContentFilterTask::filterAcceptsObject(GObject *obj) {
-    MultipleAlignmentObject *maObject = qobject_cast<MultipleAlignmentObject *>(obj);
-    CHECK(NULL != maObject, false);
+    MultipleAlignmentObject *maObj = qobject_cast<MultipleAlignmentObject *>(obj);
+    CHECK(NULL != maObj, false);
 
+    MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(maObj);
+    
     foreach(const QString &pattern, settings.tokensToShow) {
-        if (patternFitsMsaAlphabet(maObject, pattern) && msaContainsPattern(maObject, pattern)) {
+        if (!patternFitsMaAlphabet(maObj, pattern)) {
+            continue;
+        }
+        if (maContainsPattern(maObj, pattern)) {
             return true;
+        }
+        
+        // if this is MCA -> check reference sequence content too.
+        if (mcaObj != NULL) {
+            U2SequenceObject* refObj = mcaObj->getReferenceObj();
+            if (refObj != NULL && seqContainsPattern(refObj, pattern)) {
+                return true;
+            }
         }
     }
     return false;
 }
 
-bool MaContentFilterTask::patternFitsMsaAlphabet(MultipleAlignmentObject *maObject, const QString &pattern) {
+bool MaContentFilterTask::patternFitsMaAlphabet(const MultipleAlignmentObject *maObject, const QString &pattern) {
     SAFE_POINT(NULL != maObject, L10N::nullPointerError("MSA object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
@@ -63,7 +79,7 @@ bool MaContentFilterTask::patternFitsMsaAlphabet(MultipleAlignmentObject *maObje
     return alphabet->containsAll(searchStr.constData(), searchStr.length());
 }
 
-bool MaContentFilterTask::msaContainsPattern(MultipleAlignmentObject *maObject, const QString &pattern) {
+bool MaContentFilterTask::maContainsPattern(const MultipleAlignmentObject *maObject, const QString &pattern) {
     SAFE_POINT(NULL != maObject, L10N::nullPointerError("MSA object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
@@ -73,7 +89,7 @@ bool MaContentFilterTask::msaContainsPattern(MultipleAlignmentObject *maObject, 
     for (int i = 0, n = mData->getNumRows(); i < n; ++i) {
         const MultipleAlignmentRow& row = mData->getRow(i);
         for (int j = 0; j < (mData->getLength() - searchStr.length() + 1); ++j) {
-            const char c = row->charAt(j);
+            char c = row->charAt(j);
             int altenateLength = 0;
             if (U2Msa::GAP_CHAR != c && MSAUtils::equalsIgnoreGaps(row, j, searchStr, altenateLength)) {
                 return true;
@@ -81,6 +97,18 @@ bool MaContentFilterTask::msaContainsPattern(MultipleAlignmentObject *maObject, 
         }
     }
     return false;
+}
+
+bool MaContentFilterTask::seqContainsPattern(const U2SequenceObject* seqObject, const QString &pattern) {
+    SAFE_POINT(seqObject != NULL, L10N::nullPointerError("Sequence object"), false);
+    SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
+
+    U2OpStatusImpl op;
+    QByteArray seqData = seqObject->getWholeSequenceData(op);
+    CHECK_OP(op, false);
+
+    const QByteArray searchStr = pattern.toUpper().toLatin1();
+    return seqData.indexOf(searchStr) >= 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
