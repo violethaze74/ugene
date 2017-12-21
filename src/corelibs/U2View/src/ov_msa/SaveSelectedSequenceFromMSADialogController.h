@@ -24,34 +24,71 @@
 
 #include <QDialog>
 
-#include <U2Core/global.h>
+#include <U2Core/DocumentModel.h>
+
+#include <U2Gui/SaveDocumentController.h>
 
 class Ui_SaveSelectedSequenceFromMSADialog;
 
 namespace U2 {
 
-class SaveDocumentController;
+class SaveDocumentInFolderController;
 
 class SaveSelectedSequenceFromMSADialogController : public QDialog {
     Q_OBJECT
 public:
-    SaveSelectedSequenceFromMSADialogController(const QString& defaultDir, const QString& defaultFileName, QWidget* p);
+    SaveSelectedSequenceFromMSADialogController(const QString& defaultDir, QWidget* p, const QStringList& seqNames);
     ~SaveSelectedSequenceFromMSADialogController();
 
     virtual void accept();
 
     QString             url;
     QString             defaultDir;
-    QString             defaultFileName;
     DocumentFormatId    format;
+    QStringList         seqNames;
+    QString             customFileName;
     bool                trimGapsFlag;
     bool                addToProjectFlag;
 
+private slots:
+    void sl_nameCBIndexChanged(int index);
 private:
     void initSaveController();
 
-    SaveDocumentController* saveController;
+    SaveDocumentInFolderController* saveController;
     Ui_SaveSelectedSequenceFromMSADialog* ui;
+};
+
+class SaveDocumentInFolderControllerConfig : public SaveDocumentControllerConfig {
+public:
+    SaveDocumentInFolderControllerConfig();
+
+    QLineEdit *folderLineEdit;
+};
+
+class SaveDocumentInFolderController : public QObject {
+    Q_OBJECT
+public:
+    SaveDocumentInFolderController(const SaveDocumentInFolderControllerConfig& config,
+                            const DocumentFormatConstraints& formatConstraints,
+                            QObject* parent);
+    
+    QString getSaveDirName() const;
+    //DocumentFormatId getFormatIdToSave() const;
+signals:
+    void si_pathChanged(const QString &path);
+private slots:
+    void sl_fileDialogButtonClicked();
+private:
+    void init();
+    void setPath(const QString &path);
+    void initFormatComboBox();
+
+    SaveDocumentInFolderControllerConfig        conf;
+    SaveDocumentController::SimpleFormatsInfo   formatsInfo;
+    //QString                                     currentFormat;
+
+    static const QString HOME_DIR_IDENTIFIER;
 };
 
 }

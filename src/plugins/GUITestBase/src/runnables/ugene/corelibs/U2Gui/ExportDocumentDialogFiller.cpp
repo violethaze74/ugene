@@ -49,16 +49,17 @@ path(_path), name(_name), useMethod(method), format(_format), compressFile(compr
         path = QDir::toNativeSeparators(__path);
     }
 
-    comboBoxItems[Genbank] = "GenBank";
-    comboBoxItems[GFF] = "GFF";
-    comboBoxItems[CLUSTALW] = "CLUSTALW";
     comboBoxItems[BAM] = "BAM";
-    comboBoxItems[VCF] = "VCFv4";
-    comboBoxItems[TEXT] = "Plain text";
-    comboBoxItems[NWK] = "Newick Standard";
+    comboBoxItems[CLUSTALW] = "CLUSTALW";
     comboBoxItems[FASTA] = "FASTA";
-    comboBoxItems[VectorNTI] = "Vector NTI sequence";
+    comboBoxItems[GFF] = "GFF";
+    comboBoxItems[Genbank] = "GenBank";
+    comboBoxItems[MEGA] = "Mega";
+    comboBoxItems[NWK] = "Newick Standard";
+    comboBoxItems[TEXT] = "Plain text";
     comboBoxItems[UGENEDB] = "UGENE Database";
+    comboBoxItems[VCF] = "VCFv4";
+    comboBoxItems[VectorNTI] = "Vector NTI sequence";
 }
 
 #define GT_METHOD_NAME "commonScenario"

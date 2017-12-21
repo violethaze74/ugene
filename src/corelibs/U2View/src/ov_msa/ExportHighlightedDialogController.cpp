@@ -57,8 +57,6 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
 
     initSaveController();
 
-    connect(ui->endLineEdit, SIGNAL(valueChanged(int)), SLOT(endPosValueChanged()));
-
     int alignLength = msaui->getEditor()->getMaObject()->getLength();
     QRect selection = msaui->getSequenceArea()->getSelection().getRect();
 
@@ -80,7 +78,10 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
 
     ui->startLineEdit->setValue(startPos);
     ui->endLineEdit->setValue(endPos);
+    
+    connect(ui->endLineEdit, SIGNAL(valueChanged(int)), SLOT(endPosValueChanged()));
 }
+
 ExportHighligtingDialogController::~ExportHighligtingDialogController(){
     delete ui;
 }

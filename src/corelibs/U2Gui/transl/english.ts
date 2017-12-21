@@ -783,6 +783,39 @@
     </message>
 </context>
 <context>
+    <name>EditSettingDialogForm</name>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="14"/>
+        <source>Annotation Settings on Sequence Editing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="23"/>
+        <source>Expand affected annotation</source>
+        <translation type="unfinished">Expand affected annotation</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="33"/>
+        <source>Remove affected annotation</source>
+        <translation type="unfinished">Remove affected annotation</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="40"/>
+        <source>Split (join annotation parts)</source>
+        <translation type="unfinished">Split (join annotation parts)</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="47"/>
+        <source>Split (separate annotations parts)</source>
+        <translation type="unfinished">Split (separate annotations parts)</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="59"/>
+        <source>Recalculate values of qualifiers</source>
+        <translation type="unfinished">Recalculate values of qualifiers</translation>
+    </message>
+</context>
+<context>
     <name>ExportDocumentDialog</name>
     <message>
         <location filename="../src/util/ExportDocumentDialog.ui" line="14"/>

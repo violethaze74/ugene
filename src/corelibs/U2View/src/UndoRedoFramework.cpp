@@ -35,6 +35,7 @@ namespace U2 {
 MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject *_maObj)
 : QObject(p),
   maObj(_maObj),
+  stateComplete(true),
   undoStepsAvailable(0),
   redoStepsAvailable(0)
 {
@@ -60,7 +61,6 @@ MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject *
     connect(maObj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(undoAction, SIGNAL(triggered()), this, SLOT(sl_undo()));
     connect(redoAction, SIGNAL(triggered()), this, SLOT(sl_redo()));
-    stateComplete = true;
 }
 
 void MsaUndoRedoFramework::sl_completeStateChanged(bool _stateComplete) {

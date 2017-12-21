@@ -188,6 +188,19 @@ void GTUtilsDocument::unlockDocument(HI::GUITestOpStatus &os, const QString &doc
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkIfDocumentIsLocked"
+void GTUtilsDocument::checkIfDocumentIsLocked(GUITestOpStatus &os, const QString &documentName, bool isLocked) {
+    const QIcon actualIcon = GTUtilsProjectTreeView::getIcon(os, GTUtilsProjectTreeView::findIndex(os, QStringList() << documentName));
+    const QIcon unlockedDocumentIcon(":/core/images/document.png");
+    const QIcon lockedDocumentIcon(":/core/images/ro_document.png");
+    if (isLocked) {
+        GT_CHECK(actualIcon.pixmap(16).toImage() == lockedDocumentIcon.pixmap(16).toImage(), QString("The '%1' document is unexpectedly unlocked").arg(documentName));
+    } else {
+        GT_CHECK(actualIcon.pixmap(16).toImage() == unlockedDocumentIcon.pixmap(16).toImage(), QString("The '%1' document is unexpectedly locked").arg(documentName));
+    }
+}
+#undef GT_METHOD_NAME
+
 QList<GObjectView*> GTUtilsDocument::getAllGObjectViews() {
 
     QList<GObjectView*> gObjectViews;

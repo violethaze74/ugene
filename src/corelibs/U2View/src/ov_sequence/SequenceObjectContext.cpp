@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -54,14 +54,14 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
     clarifyAminoTT = false;
     const DNAAlphabet* al  = getAlphabet();
     if (al->isNucleic()) {
-        DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
+        DNATranslationRegistry* translationRegistry = AppContext::getDNATranslationRegistry();
         complTT = GObjectUtils::findComplementTT(seqObj->getAlphabet());
         aminoTT = GObjectUtils::findAminoTT(seqObj, true);
         clarifyAminoTT = aminoTT == NULL;
 
-        QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
+        QList<DNATranslation*> aminoTs = translationRegistry->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
         if (!aminoTs.empty()) {
-            aminoTT = aminoTT == NULL ? tr->getStandardGeneticCodeTranslation(al) : aminoTT;
+            aminoTT = aminoTT == NULL ? translationRegistry->getStandardGeneticCodeTranslation(al) : aminoTT;
             translations = new QActionGroup(this);
             foreach(DNATranslation* t, aminoTs) {
                 QAction* a = translations->addAction(t->getTranslationName());
@@ -73,15 +73,16 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
             }
             visibleFrames = new QActionGroup(this);
             visibleFrames->setExclusive(false);
-            for(int i = 0; i < 6; i++){
+            for(int i = 0; i < 6; i++) {
                 QAction* a;
-                if(i < 3){
-                    a = visibleFrames->addAction(QString("%1 direct translation frame").arg(i+1));
+                if( i < 3) {
+                    a = visibleFrames->addAction(tr("Frame +%1").arg(i+1));
                 }else{
-                    a = visibleFrames->addAction(QString("%1 complementary translation frame").arg(i+1-3));
+                    a = visibleFrames->addAction(tr("Frame -%1").arg(i+1-3));
                 }
                 a->setCheckable(true);
-                a->setChecked(true);
+                a->setChecked(false);
+                a->setEnabled(false);
                 //set row id
                 a->setData(i);
                 //save status
@@ -91,6 +92,7 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
         }
     }
     annSelection = new AnnotationSelection(this);
+    translationMenuActions = new QActionGroup(this);
 }
 
 void SequenceObjectContext::guessAminoTT(const AnnotationTableObject *ao) {
@@ -192,12 +194,13 @@ void SequenceObjectContext::sl_showComplOnly(){
     }
 }
 
-void SequenceObjectContext::sl_showShowAll(){
+void SequenceObjectContext::sl_showShowAll() {
     GCOUNTER( cvar, tvar, "SequenceView::DetView::ShowAllTranslations" );
     bool needUpdate = false;
     translationRowsStatus.clear();
     foreach(QAction* a, visibleFrames->actions()){
-        if(!a->isChecked()) {
+        a->setEnabled(true);
+        if (!a->isChecked()) {
             needUpdate = true;
             a->setChecked(true);
             translationRowsStatus.append(a);
@@ -206,6 +209,35 @@ void SequenceObjectContext::sl_showShowAll(){
     if(needUpdate){
         emit si_translationRowsChanged();
     }
+}
+
+void SequenceObjectContext::setTranslationState(const SequenceObjectContext::TranslationState state) {
+    bool needUpdate = false;
+
+    const bool enableActions = state == SequenceObjectContext::SetUpFramesManually;
+    foreach(QAction* a, visibleFrames->actions()) {
+        a->setEnabled(enableActions);
+        bool isActionCheck = false;
+        if (enableActions) {
+            isActionCheck = translationRowsStatus.contains(a);
+        } else if (state == SequenceObjectContext::ShowAllFrames) {
+            isActionCheck = true;
+        }
+
+        if (a->isChecked() != isActionCheck) {
+            needUpdate = true;
+            a->setChecked(isActionCheck);
+        }
+    }
+
+    if (needUpdate) {
+        emit si_translationRowsChanged();
+    }
+}
+
+SequenceObjectContext::TranslationState SequenceObjectContext::getTranslationState() const {
+    CHECK(translationMenuActions->actions().size() == 4, SequenceObjectContext::DoNotTranslate);
+    return (SequenceObjectContext::TranslationState)translationMenuActions->checkedAction()->data().toInt();
 }
 
 void SequenceObjectContext::sl_onAnnotationRelationChange() {
@@ -229,19 +261,19 @@ QMenu * SequenceObjectContext::createGeneticCodeMenu() {
     return menu;
 }
 
-QMenu * SequenceObjectContext::createTranslationFramesMenu(QAction *showTranslationAction) {
+QMenu * SequenceObjectContext::createTranslationFramesMenu(QList<QAction*> menuActions) {
     SAFE_POINT(visibleFrames != NULL, "SequenceObjectContext: visibleFrames is NULL ?!", NULL);
     QMenu *menu = new QMenu(tr("Show/hide amino acid translations"));
     menu->setIcon(QIcon(":core/images/show_trans.png"));
     menu->menuAction()->setObjectName("Translation frames");
     new MultiClickMenu(menu);
 
-    menu->addAction(showTranslationAction);
-    menu->addSeparator();
+    foreach(QAction* a, menuActions) {
+        translationMenuActions->addAction(a);
+        menu->addAction(a);
+    }
+    translationMenuActions->setExclusive(true);
 
-    menu->addAction(tr("Show direct only"), this, SLOT(sl_showDirectOnly()));
-    menu->addAction(tr("Show complementary only"), this, SLOT(sl_showComplOnly()));
-    menu->addAction(tr("Show all"), this, SLOT(sl_showShowAll()));
     menu->addSeparator();
 
     foreach(QAction* a, visibleFrames->actions()) {
@@ -326,9 +358,7 @@ void SequenceObjectContext::addAutoAnnotationObject(AnnotationTableObject *obj) 
     emit si_annotationObjectAdded(obj);
 }
 
-QSet<AnnotationTableObject *> SequenceObjectContext::getAnnotationObjects(
-    bool includeAutoAnnotations) const
-{
+QSet<AnnotationTableObject *> SequenceObjectContext::getAnnotationObjects(bool includeAutoAnnotations) const {
     QSet<AnnotationTableObject *> result = annotations;
     if (includeAutoAnnotations) {
         result += autoAnnotations;
@@ -337,8 +367,14 @@ QSet<AnnotationTableObject *> SequenceObjectContext::getAnnotationObjects(
     return result;
 }
 
-void SequenceObjectContext::sl_toggleTranslations(){
-    translationRowsStatus.clear();
+void SequenceObjectContext::sl_toggleTranslations() {
+    QAction* a = qobject_cast<QAction*>(QObject::sender());
+    CHECK(a != NULL, );
+    if (a->isChecked()) {
+        translationRowsStatus.append(a);
+    } else {
+        translationRowsStatus.removeOne(a);
+    }
     rowChoosed = true;
     emit si_translationRowsChanged();
     rowChoosed = false;
@@ -348,7 +384,7 @@ bool SequenceObjectContext::isRowChoosed(){
     return rowChoosed;
 }
 
-QVector<bool> SequenceObjectContext::getTranslationRowsVisibleStatus(){
+QVector<bool> SequenceObjectContext::getTranslationRowsVisibleStatus() {
     QVector<bool> result;
     if (visibleFrames != NULL) {
         foreach(QAction* a, visibleFrames->actions()) {
@@ -357,19 +393,15 @@ QVector<bool> SequenceObjectContext::getTranslationRowsVisibleStatus(){
     }
     return result;
 }
-void SequenceObjectContext::setTranslationsVisible(bool enable){
+void SequenceObjectContext::setTranslationsVisible(bool visible) {
     bool needUpdate = false;
-    if(!enable){
-        translationRowsStatus.clear();
-    }
-    foreach(QAction* a, visibleFrames->actions()){
-        if(!enable){//hide
+    foreach(QAction* a, visibleFrames->actions()) {
+        if (!visible) {
             if(a->isChecked()) {
                 needUpdate = true;
                 a->setChecked(false);
-                translationRowsStatus.append(a);
             }
-        }else{//show
+        } else {
             if(!a->isChecked() && (translationRowsStatus.contains(a) || translationRowsStatus.isEmpty())) {
                 needUpdate = true;
                 a->setChecked(true);
@@ -379,6 +411,19 @@ void SequenceObjectContext::setTranslationsVisible(bool enable){
     if(needUpdate){
         emit si_translationRowsChanged();
     }
+}
+
+void SequenceObjectContext::showComplementActions(bool show) {
+    QList<QAction*> actions = visibleFrames->actions();
+    for (int i = 3; i < 6; i++) {
+        actions[i]->setVisible(show);
+    }
+}
+
+void SequenceObjectContext::showTranslationFrame(const int numOfAction, const bool setChecked) {
+    QList<QAction*> actions = visibleFrames->actions();
+    SAFE_POINT(0 <= numOfAction && numOfAction < 6, "Incorrect action", );
+    actions[numOfAction]->setChecked(setChecked);
 }
 
 } // namespace U2

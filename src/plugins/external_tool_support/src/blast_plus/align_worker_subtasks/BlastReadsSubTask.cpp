@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -36,6 +36,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 
 namespace U2 {
@@ -62,6 +63,10 @@ BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
 }
 
 void BlastReadsSubTask::prepare() {
+    QString tempPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
+    CHECK_EXT(!GUrlUtils::containSpaces(tempPath), setError(tr("The task uses a temporary folder to process the data. The folder path is required not to have spaces. "
+        "Please set up an appropriate path for the \"Temporary files\" parameter on the \"Directories\" tab of the UGENE Application Settings.")), );
+
     foreach (const SharedDbiDataHandler &read, reads) {
         BlastAndSwReadTask* subTask = new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, readsNames[read], storage);
         addSubTask(subTask);
@@ -106,12 +111,17 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
 void BlastAndSwReadTask::prepare() {
     blastTask = getBlastTask();
     CHECK_OP(stateInfo, );
-    SAFE_POINT_EXT(NULL != blastTask, "BLAST subtask is NULL", );
+    SAFE_POINT_EXT(NULL != blastTask, setError("BLAST subtask is NULL"), );
     addSubTask(blastTask);
 }
 
 QList<Task*> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
     QList<Task*> result;
+    if (subTask->hasError() && subTask == blastTask) {
+        QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
+        CHECK_EXT(!refObject.isNull(), setError(L10N::nullPointerError("Reference sequence")), result);
+        setError(tr("A problem occurred while mapping \"%1\" to \"%2\".").arg(readName).arg(refObject->getGObjectName()));
+    }
     CHECK(subTask != NULL, result);
     CHECK(!subTask->hasError() && !subTask->isCanceled(), result);
 

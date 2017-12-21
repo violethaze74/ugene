@@ -92,8 +92,8 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
         startPos = selection.x() + 1;
         endPos = selection.x() + selection.width();
     }
-	startLineEdit->setText(QString::number(startPos));
-	endLineEdit->setText(QString::number(endPos));
+    startLineEdit->setText(QString::number(startPos));
+    endLineEdit->setText(QString::number(endPos));
 
     for (int i=0; i<rowNumber; i++) {
         QCheckBox *cb = new QCheckBox(mobj->getMsa()->getMsaRow(i)->getName(), this);

@@ -6364,12 +6364,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>New dashboard name:</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowTabView.cpp" line="202"/>
+        <location filename="../src/WorkflowTabView.cpp" line="206"/>
         <source>Run</source>
         <translation>Run</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowTabView.cpp" line="224"/>
+        <location filename="../src/WorkflowTabView.cpp" line="228"/>
         <source>Rename</source>
         <translation>Rename</translation>
     </message>

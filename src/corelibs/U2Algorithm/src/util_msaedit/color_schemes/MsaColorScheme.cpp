@@ -306,7 +306,19 @@ void addUgeneSangerNucleotide(QVector<QColor> &colorsPerChar) {
     SET_C('G', "#DADADA");
     SET_C('T', "#FE7276");
     SET_C('N', Qt::magenta);
-    SET_C(U2Msa::GAP_CHAR, "#FF9700");
+    SET_C('M', Qt::magenta);
+    SET_C('R', Qt::magenta);
+    SET_C('W', Qt::magenta);
+    SET_C('S', Qt::magenta);
+    SET_C('Y', Qt::magenta);
+    SET_C('K', Qt::magenta);
+    SET_C('V', Qt::magenta);
+    SET_C('H', Qt::magenta);
+    SET_C('D', Qt::magenta);
+    SET_C('B', Qt::magenta);
+    SET_C('X', Qt::magenta);
+
+    colorsPerChar[U2Msa::GAP_CHAR] = "#FF9700";
 }
 
 void addZappoAmino(QVector<QColor> &colorsPerChar) {

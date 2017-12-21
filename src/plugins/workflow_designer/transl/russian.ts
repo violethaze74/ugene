@@ -6142,12 +6142,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Имя новой панели:</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowTabView.cpp" line="202"/>
+        <location filename="../src/WorkflowTabView.cpp" line="206"/>
         <source>Run</source>
         <translation>Запуск</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowTabView.cpp" line="224"/>
+        <location filename="../src/WorkflowTabView.cpp" line="228"/>
         <source>Rename</source>
         <translation>Переименовать</translation>
     </message>

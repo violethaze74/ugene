@@ -195,12 +195,6 @@ void ADVSingleSequenceWidget::init() {
     addButtonWithActionToToolbar(selectRangeAction1, hStandardBar);
     buttonTabOrederedNames->append(selectRangeAction1->objectName());
 
-    if (seqCtx->getAminoTT() != NULL) {
-        setupGeneticCodeMenu(seqCtx);
-    } else {
-        ttButton = NULL;
-    }
-
     QAction* shotScreenAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export image"), this);
     shotScreenAction->setObjectName("export_image");
     connect(shotScreenAction, SIGNAL(triggered()), this, SLOT(sl_saveScreenshot()));
@@ -242,10 +236,6 @@ void ADVSingleSequenceWidget::init() {
 
 
 ADVSingleSequenceWidget::~ADVSingleSequenceWidget() {
-    foreach(QMenu* m, tbMenues) {
-        delete m;
-    }
-
     delete buttonTabOrederedNames;
 }
 
@@ -328,9 +318,6 @@ void ADVSingleSequenceWidget::setPanViewCollapsed(bool v) {
 }
 
 void ADVSingleSequenceWidget::setDetViewCollapsed(bool v) {
-    if (ttButton != NULL) {
-        getSequenceContext()->setTranslationsVisible(!v);
-    }
     detView->setHidden(v);
     detView->setDisabledDetViewActions(v);
     toggleDetViewAction->setChecked(!v);
@@ -556,16 +543,6 @@ void ADVSingleSequenceWidget::addRulersMenu(QMenu& m) {
     m.insertSeparator(aBefore)->setObjectName("SECOND_SEP");
 }
 
-void ADVSingleSequenceWidget::setupGeneticCodeMenu(ADVSequenceObjectContext *seqCtx) {
-    QMenu *ttMenu = seqCtx->createGeneticCodeMenu();
-    CHECK(NULL != ttMenu, );
-    tbMenues.append(ttMenu);
-    QToolButton *button = detView->addActionToLocalToolbar(ttMenu->menuAction());
-    SAFE_POINT(button, QString("ToolButton for %1 is NULL").arg(ttMenu->menuAction()->objectName()), );
-    button->setPopupMode(QToolButton::InstantPopup);
-    button->setObjectName("AminoToolbarButton");
-}
-
 bool ADVSingleSequenceWidget::isWidgetOnlyObject(GObject* o) const {
     foreach(GSequenceLineView* v, lineViews) {
         SequenceObjectContext *ctx = v->getSequenceContext();
@@ -629,18 +606,18 @@ void ADVSingleSequenceWidget::sl_onSelectRange() {
     mrs->exec();
     CHECK(!mrs.isNull(), );
 
-    if (mrs->result() == QDialog::Accepted){
+    if (mrs->result() == QDialog::Accepted) {
         QVector<U2Region> curRegions = mrs->getSelectedRegions();
         if(curRegions.isEmpty()){
             return;
         }
-        if(curRegions.size() == 1){
+        if(curRegions.size() == 1) {
             U2Region r = curRegions.first();
             setSelectedRegion(r);
             if (!detView->getVisibleRange().intersects(r)) {
                 detView->setCenterPos(r.startPos);
             }
-        }else{
+        } else {
             getSequenceContext()->getSequenceSelection()->setSelectedRegions(curRegions);
         }
     }

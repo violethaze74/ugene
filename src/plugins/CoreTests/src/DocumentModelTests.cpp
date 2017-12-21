@@ -40,6 +40,8 @@
 
 #include <U2Formats/SAMFormat.h>
 
+#include <U2Gui/ImportWidget.h>
+
 #include <U2Test/GTest.h>
 
 #include "DocumentModelTests.h"
@@ -288,6 +290,8 @@ void GTest_LoadBrokenDocument::cleanup() {
 void GTest_ImportDocument::init(XMLTestFormat*, const QDomElement& el) {
     importTask = NULL;
     contextAdded = false;
+    DocumentFormatId outFormatId = el.attribute("outFormat");
+    QString outUrlAttr = el.attribute("outUrl");
     docContextName = el.attribute("index");
     needVerifyLog = false;
 
@@ -339,7 +343,10 @@ void GTest_ImportDocument::init(XMLTestFormat*, const QDomElement& el) {
     U2DbiRef destDb(SQLITE_DBI_ID, destUrl);
     QVariant variant;
     variant.setValue<U2DbiRef>(destDb);
+    hints.insert(ImportHint_FormatId, outFormatId);
+    hints.insert(ImportHint_DestinationUrl, outUrlAttr);
     hints.insert(DocumentFormat::DBI_REF_HINT, variant);
+
     importTask = bestRes->importer->createImportTask(*bestRes, false, hints);
 
     addSubTask(importTask);
@@ -399,6 +406,7 @@ void GTest_ImportBrokenDocument::init(XMLTestFormat* tf, const QDomElement& el) 
     Q_UNUSED(tf);
 
     QString             urlAttr = el.attribute("url");
+    QString             outUrlAttr = el.attribute("outUrl");
     QString             dir = el.attribute("dir");
     DocumentFormatId    formatId = el.attribute("format");
 
@@ -433,6 +441,7 @@ void GTest_ImportBrokenDocument::init(XMLTestFormat* tf, const QDomElement& el) 
     QVariant variant;
     variant.setValue<U2DbiRef>(destDb);
     hints.insert(DocumentFormat::DBI_REF_HINT, variant);
+    hints.insert(ImportHint_DestinationUrl, outUrlAttr);
     importTask = bestRes->importer->createImportTask(*bestRes, false, hints);
 
     addSubTask(importTask);

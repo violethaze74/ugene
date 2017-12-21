@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -102,16 +102,18 @@ private slots:
     void sl_addRead();
     void sl_removeRead();
     void sl_referenceChanged(const QString &);
+    void sl_outputFileSetByUser(const QString newPath);
+    void sl_outputFileEditedByUser(const QString& newPath);
+
 private:
     void initSaveController();
     void connectSlots();
-    bool fitsDefaultPattern(const QString &name) const;
 
     SaveDocumentController *saveController;
+    bool fileNameProvidedByUser;
+    
     AlignToReferenceBlastCmdlineTask::Settings settings;
     U2SavableWidget savableWidget;
-
-    static const QString defaultOutputName;
 };
 
 } // namespace

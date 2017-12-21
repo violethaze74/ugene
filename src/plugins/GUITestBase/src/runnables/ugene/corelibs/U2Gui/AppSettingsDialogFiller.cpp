@@ -52,7 +52,7 @@ QMap<AppSettingsDialogFiller::Tabs, QString> AppSettingsDialogFiller::initMap(){
         result.insert(Resourses, "  Resources");
         result.insert(Network, "  Network");
         result.insert(FileFormat, "  File Format");
-        result.insert(Directories, "  Folders");
+        result.insert(Directories, "  Directories");
         result.insert(Logging, "  Logging");
         result.insert(AlignmentColorScheme, "  Alignment Color Scheme");
         result.insert(GenomeAligner, "  Genome Aligner");
@@ -192,6 +192,17 @@ void AppSettingsDialogFiller::clearToolPath(HI::GUITestOpStatus &os, const QStri
             }
         }
     }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setTemporaryDirPath"
+void AppSettingsDialogFiller::setTemporaryDirPath(GUITestOpStatus &os, const QString &path) {
+    QWidget *dialog = QApplication::activeModalWidget();
+    GT_CHECK(NULL != dialog, "activeModalWidget is NULL");
+
+    openTab(os, Directories);
+
+    GTLineEdit::setText(os, "tmpDirPathEdit", path, dialog);
 }
 #undef GT_METHOD_NAME
 

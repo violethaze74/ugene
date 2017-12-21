@@ -29,6 +29,7 @@
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GObjectTypes.h>
 
 #include <U2Gui/GUIUtils.h>
 
@@ -303,44 +304,36 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     bool isShiftPressed = e->modifiers().testFlag(Qt::ShiftModifier);
     switch(key) {
     case Qt::Key_Up: {
-        bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect - 1);
         U2Region sel = getSelection();
-        int selStart = sel.length != 0 ? getSelection().startPos : nextSequenceToSelect;
-        if (isSeqInRange && isShiftPressed) {
-            nextSequenceToSelect--;
+        if (sel.length == 0 || sel.startPos == 0) {
+            break; // no selection or can't move up
+        }
+        curRowNumber = startSelectingRowNumber = sel.startPos - 1;
+        if (isShiftPressed) { // expanding selection up
+            nextSequenceToSelect = curRowNumber + sel.length;
             moveSelection(0);
             int seqAreaHeight = ui->getSequenceArea()->height();
             ui->getScrollController()->scrollToRowByNumber(nextSequenceToSelect, seqAreaHeight);
-        } else if (!isShiftPressed && selStart > 0) {
-            if (0 <= curRowNumber - 1) {
-                curRowNumber--;
-            }
-            if (0 <= startSelectingRowNumber - 1) {
-                startSelectingRowNumber--;
-            }
-            nextSequenceToSelect--;
+        } else { // moving selection up
+            nextSequenceToSelect = curRowNumber + sel.length - 1;
             moveSelection(-1);
         }
         break;
     }
     case Qt::Key_Down: {
-        bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect + 1);
-        int selEnd = getSelection().endPos() - 1;
-        int rowNum = ui->getSequenceArea()->getNumDisplayableSequences() - 1;
-        if (isSeqInRange && isShiftPressed) {
-            nextSequenceToSelect++;
+        U2Region sel = getSelection();
+        int numRows = ui->getSequenceArea()->getNumDisplayableSequences();
+        if (sel.length == 0 || sel.endPos() == numRows) {
+            break; // no selection or can't move down
+        }
+        curRowNumber = startSelectingRowNumber = sel.endPos();
+        if (isShiftPressed) { // expanding selection down
+            nextSequenceToSelect = sel.startPos;
             moveSelection(0);
             int seqAreaHeight = ui->getSequenceArea()->height();
             ui->getScrollController()->scrollToRowByNumber(nextSequenceToSelect, seqAreaHeight);
-        } else if (!isShiftPressed && selEnd < rowNum) {
-            int numDisplayableSequences = ui->getSequenceArea()->getNumDisplayableSequences();
-            if (numDisplayableSequences > curRowNumber + 1) {
-                curRowNumber++;
-            }
-            if (numDisplayableSequences > startSelectingRowNumber + 1) {
-                startSelectingRowNumber++;
-            }
-            nextSequenceToSelect++;
+        } else { // moving selection down
+            nextSequenceToSelect = sel.startPos + 1;
             moveSelection(1);
         }
         break;
@@ -434,7 +427,7 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
                 if (e->y() < selectionStartPoint.y()) {
                     startSelectingRowNumber = 0;
                 } else {
-                    startSelectingRowNumber = ui->getEditor()->getNumSequences() - 1;
+                    startSelectingRowNumber = seqArea->getNumDisplayableSequences() - 1;
                 }
             }
             rubberBand->setGeometry(QRect(selectionStartPoint, QSize()));
@@ -555,8 +548,8 @@ void MaEditorNameList::updateSelection(int newSeq) {
     CHECK(ui->getSequenceArea()->isSeqInRange(newSeq) || ui->getSequenceArea()->isSeqInRange(curRowNumber), );
 
     int start = qMin(curRowNumber, newSeq);
-    int count = qAbs(newSeq - curRowNumber) + 1;
-    setSelection(start, count);
+    int end = qMax(curRowNumber, newSeq);
+    setSelection(start, end - start + 1);
     int height = ui->getSequenceArea()->height();
     ui->getScrollController()->scrollToRowByNumber(newSeq, height);
 }
@@ -846,8 +839,11 @@ void MaEditorNameList::sl_editSequenceName() {
     CHECK(n >= 0, );
 
     QString curName =  maObj->getMultipleAlignment()->getRow(n)->getName();
-    QString newName = QInputDialog::getText(this, tr("Rename"),
-            tr("New sequence name:"), QLineEdit::Normal, curName, &ok);
+    
+    bool isMca = this->editor->getMaObject()->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
+    QString title = isMca ? tr("Rename Read") : tr("Rename Sequence");
+    QString newName = QInputDialog::getText(ui, title, tr("New name:"), QLineEdit::Normal, curName, &ok);
+        
     if (ok && !newName.isEmpty() && curName != newName) {
         emit si_sequenceNameChanged(curName, newName);
         maObj->renameRow(n,newName);
