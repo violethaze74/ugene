@@ -25,7 +25,7 @@
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "MsaContentFilterTask.h"
+#include "MaContentFilterTask.h"
 #include "../ProjectFilterNames.h"
 
 namespace U2 {

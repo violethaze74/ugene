@@ -24,7 +24,7 @@
 
 #include "../ProjectFilterNames.h"
 
-#include "MsaSeqNameFilterTask.h"
+#include "MaSeqNameFilterTask.h"
 
 namespace U2 {
 
