@@ -93,7 +93,7 @@ public:
     };
 
     void setTranslationState(const TranslationState state);
-    TranslationState getTranslationState();
+    TranslationState getTranslationState() const;
 
 private slots:
     void sl_setAminoTranslation();

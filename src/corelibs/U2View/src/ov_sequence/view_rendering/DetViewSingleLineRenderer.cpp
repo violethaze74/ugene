@@ -294,17 +294,15 @@ static QByteArray translate(DNATranslation* t, const char* seq, qint64 seqLen) {
     return res;
 }
 
-static QByteArray translateSelection(const QVector<U2Region>& regions, DNATranslation* t, const char* seq, qint64 seqLen, qint64 offset, const U2Strand::Direction direction) {
+static QByteArray translateSelection(const QVector<U2Region>& regions, DNATranslation* t, const char* seq, qint64 seqLen, qint64 offset, const U2Strand direction) {
     QByteArray resultTranslation;
 
     foreach(U2Region reg, regions) {
-        if (direction == U2Strand::Direction::Direct) {
-            reg = U2Region(offset, seqLen).intersect(reg);
-        }
+        reg = U2Region(direction == U2Strand::Direct ? offset : 0, seqLen).intersect(reg);
         const qint64 endPos = reg.endPos();
         const qint64 endOfVisibleArea = offset + seqLen;
 
-        if (reg.length < 3 || (direction == U2Strand::Direction::Direct && (reg.startPos > endOfVisibleArea || endPos < offset)) || (direction == U2Strand::Direction::Complementary && (reg.startPos > seqLen))) {
+        if (reg.length < 3 || (direction == U2Strand::Direct && (reg.startPos > endOfVisibleArea || endPos < offset)) || (direction == U2Strand::Complementary && (reg.startPos > seqLen))) {
             continue;
         }
 
@@ -316,7 +314,7 @@ static QByteArray translateSelection(const QVector<U2Region>& regions, DNATransl
                 length = endPos - offset - 2;
             } else {
                 length = endPos + 1;
-                if (direction == U2Strand::Direction::Direct) {
+                if (direction == U2Strand::Direct) {
                     length -= offset;
                 }
             }
@@ -326,7 +324,7 @@ static QByteArray translateSelection(const QVector<U2Region>& regions, DNATransl
                 length = endPos - offset - 3;
             } else {
                 length = endPos;
-                if (direction == U2Strand::Direction::Direct) {
+                if (direction == U2Strand::Direct) {
                     length -= offset;
                 }
             }
@@ -336,7 +334,7 @@ static QByteArray translateSelection(const QVector<U2Region>& regions, DNATransl
                 length = endPos - offset - 4;
             } else {
                 length = endPos - 1;
-                if (direction == U2Strand::Direction::Direct) {
+                if (direction == U2Strand::Direct) {
                     length -= offset;
                 }
             }
@@ -363,10 +361,6 @@ static QByteArray translateSelection(const QVector<U2Region>& regions, DNATransl
         const int indent = translationSize - selTranslationSize - resultTranslation.size();
         QByteArray gaps = QByteArray(indent, ' ');
         currentTranslation = currentTranslation.right(selTranslationSize);
-        const int numUnexpectedChars = currentTranslation.count('X');
-        if (numUnexpectedChars != 0) {
-            currentTranslation = currentTranslation.left(currentTranslation.size() - numUnexpectedChars);
-        }
         if (!currentTranslation.isEmpty()) {
             resultTranslation += gaps;
             resultTranslation += currentTranslation;
@@ -385,7 +379,7 @@ static QByteArray translateComplSelection(const QVector<U2Region>& regions, DNAT
     }
     U2Region::reverse(revesedRegions);
 
-    QByteArray amino = translateSelection(revesedRegions, t, seq, seqLen, visibleRange.startPos, U2Strand::Direction::Complementary);
+    QByteArray amino = translateSelection(revesedRegions, t, seq, seqLen, visibleRange.startPos, U2Strand::Complementary);
 
     return amino;
 }
@@ -431,7 +425,7 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
                                                       const U2Region &visibleRange,
                                                       const char* seqBlock,
                                                       const QList<SharedAnnotationData>& annotationsInRange) {
-    bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection);
+    bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection);
     QVector<U2Region> regions;
     QList<QVector<U2Region> > sortedRegions = QList<QVector<U2Region> >() << QVector<U2Region>() << QVector<U2Region>() << QVector<U2Region>();
     int upperIndent = 0;
@@ -478,7 +472,7 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
 
             QByteArray amino;
             if (isTranslateAnnotationOrSelection) {
-                amino = translateSelection(sortedRegions[line], translation, seq, length, visibleRange.startPos, U2Strand::Direction::Direct);
+                amino = translateSelection(sortedRegions[line], translation, seq, length, visibleRange.startPos, U2Strand::Direct);
             } else {
                 amino = translate(translation, seq, length);
             }
@@ -516,7 +510,7 @@ void DetViewSingleLineRenderer::drawComplementTranslations(QPainter& p,
                                                            const U2Region &visibleRange,
                                                            const char* seqBlock,
                                                            const QList<SharedAnnotationData>& annotationsInRange) {
-    bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection);
+    bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection);
     QVector<U2Region> regions;
     QList<QVector<U2Region> > sortedRegions = QList<QVector<U2Region> >() << QVector<U2Region>() << QVector<U2Region>() << QVector<U2Region>();
     if (isTranslateAnnotationOrSelection) {
@@ -626,7 +620,7 @@ void DetViewSingleLineRenderer::drawSequenceSelection(QPainter &p, const QSize &
             int translLine = posToDirectTransLine(reg.startPos);
             if (translLine >= 0 && r.length >= 3) {
                 int translLen = reg.endPos() > r.endPos() ? r.length : r.length / 3 * 3;
-                if (ctx->getTranslationState() == SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection) {
+                if (ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection) {
                     int offset = 3;
                     for (int i = 0; i < 3; i++) {
                         offset -= trMetrics.visibleRows[i] ? 1 : 0;
@@ -711,7 +705,7 @@ void DetViewSingleLineRenderer::updateLines() {
         firstComplTransLine = 6;
         numLines = 9;
 
-        if (ctx->getTranslationState() != SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection) {
+        if (ctx->getTranslationState() != SequenceObjectContext::TranslateAnnotationsOrSelection) {
             QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
             for (int i = 0; i < 6; i++) {
                 if (!v[i]) {
@@ -725,18 +719,18 @@ void DetViewSingleLineRenderer::updateLines() {
                 }
             }
         }
-    } else if (detView->hasComplementaryStrand() /*&& !detView->hasTranslations()*/) {
+    } else if (detView->hasComplementaryStrand()) {//&& !detView->hasTranslations()
         directLine = 0;
         rulerLine = 1;
         complementLine = 2;
         numLines = 3;
-    } else /*if (!detView->hasComplementaryStrand() && detView->hasTranslations())*/ {
+    } else {//if (!detView->hasComplementaryStrand() && detView->hasTranslations())
         firstDirectTransLine = 0;
         directLine = 3;
         rulerLine = 4;
         numLines = 5;
 
-        if (ctx->getTranslationState() != SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection) {
+        if (ctx->getTranslationState() != SequenceObjectContext::TranslateAnnotationsOrSelection) {
             QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
             for (int i = 0; i < 3; i++) {
                 if (!v[i]) {

@@ -214,13 +214,13 @@ void SequenceObjectContext::sl_showShowAll() {
 void SequenceObjectContext::setTranslationState(const SequenceObjectContext::TranslationState state) {
     bool needUpdate = false;
 
-    const bool enableActions = state == SequenceObjectContext::TranslationState::SetUpFramesManually;
+    const bool enableActions = state == SequenceObjectContext::SetUpFramesManually;
     foreach(QAction* a, visibleFrames->actions()) {
         a->setEnabled(enableActions);
         bool isActionCheck = false;
         if (enableActions) {
             isActionCheck = translationRowsStatus.contains(a);
-        } else if (state == SequenceObjectContext::TranslationState::ShowAllFrames) {
+        } else if (state == SequenceObjectContext::ShowAllFrames) {
             isActionCheck = true;
         }
 
@@ -235,31 +235,9 @@ void SequenceObjectContext::setTranslationState(const SequenceObjectContext::Tra
     }
 }
 
-SequenceObjectContext::TranslationState SequenceObjectContext::getTranslationState() {
-    QList<QAction*> actions = translationMenuActions->actions();
-    const int size = actions.size();
-    CHECK(size == 4, SequenceObjectContext::TranslationState::DoNotTranslate);
-    SequenceObjectContext::TranslationState resultState = SequenceObjectContext::TranslationState::DoNotTranslate;
-    for (int i = 0; i < size; i++) {
-        if (actions[i]->isChecked()) {
-            switch (i) {
-            case 0:
-                resultState = SequenceObjectContext::TranslationState::DoNotTranslate;
-                break;
-            case 1:
-                resultState = SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection;
-                break;
-            case 2:
-                resultState = SequenceObjectContext::TranslationState::SetUpFramesManually;
-                break;
-            case 3:
-                resultState = SequenceObjectContext::TranslationState::ShowAllFrames;
-                break;
-            }
-        }
-    }
-
-    return resultState;
+SequenceObjectContext::TranslationState SequenceObjectContext::getTranslationState() const {
+    CHECK(translationMenuActions->actions().size() == 4, SequenceObjectContext::DoNotTranslate);
+    return (SequenceObjectContext::TranslationState)translationMenuActions->checkedAction()->data().toInt();
 }
 
 void SequenceObjectContext::sl_onAnnotationRelationChange() {
@@ -405,10 +383,6 @@ void SequenceObjectContext::sl_toggleTranslations() {
 bool SequenceObjectContext::isRowChoosed(){
     return rowChoosed;
 }
-
-//bool SequenceObjectContext::isTranslateAnnotationOrSelection() const {
-//    return translateAnotationOrSelection;
-//}
 
 QVector<bool> SequenceObjectContext::getTranslationRowsVisibleStatus() {
     QVector<bool> result;

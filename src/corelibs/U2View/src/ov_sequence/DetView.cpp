@@ -72,19 +72,23 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     connect(showTranslationAction, SIGNAL(triggered(bool)), SLOT(sl_showTranslationToggle(bool)));
 
     doNotTranslateAction = new QAction(tr("Do not translate"), this);
+    doNotTranslateAction->setData(SequenceObjectContext::DoNotTranslate);
     connect(doNotTranslateAction, SIGNAL(triggered(bool)), SLOT(sl_doNotTranslate()));
     doNotTranslateAction->setCheckable(true);
     doNotTranslateAction->setChecked(true);
 
     translateAnnotationsOrSelectionAction = new QAction(tr("Translate annotations or selection"), this);
+    translateAnnotationsOrSelectionAction->setData(SequenceObjectContext::TranslateAnnotationsOrSelection);
     connect(translateAnnotationsOrSelectionAction, SIGNAL(triggered(bool)), SLOT(sl_translateAnnotationsOrSelection()));
     translateAnnotationsOrSelectionAction->setCheckable(true);
 
     setUpFramesManuallyAction = new QAction(tr("Set up frames manually"), this);
+    setUpFramesManuallyAction->setData(SequenceObjectContext::SetUpFramesManually);
     connect(setUpFramesManuallyAction, SIGNAL(triggered(bool)), SLOT(sl_setUpFramesManually()));
     setUpFramesManuallyAction->setCheckable(true);
 
     showAllFramesAction = new QAction(tr("Show all frames"), this);
+    showAllFramesAction->setData(SequenceObjectContext::ShowAllFrames);
     connect(showAllFramesAction, SIGNAL(triggered(bool)), SLOT(sl_showAllFrames()));
     showAllFramesAction->setCheckable(true);
 
