@@ -113,7 +113,6 @@ protected:
     QAction*        translateAnnotationsOrSelectionAction;
     QAction*        setUpFramesManuallyAction;
     QAction*        showAllFramesAction;
-    QAction*        editAction;
 
     DetViewSequenceEditor* editor;
 

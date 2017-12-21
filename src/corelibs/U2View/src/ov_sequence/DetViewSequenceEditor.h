@@ -36,6 +36,7 @@ namespace U2 {
 
 class DetView;
 class DNASequence;
+class ModifySequenceContentTask;
 class U2SequenceObject;
 
 class DetViewSequenceEditor : public QObject {
@@ -46,13 +47,16 @@ public:
     ~DetViewSequenceEditor();
 
     void reset();
+    bool isEditMode() const;
+    QAction* getEditAction() const { return editAction; }
+    bool getBlock() const { return block; }
 
     bool eventFilter(QObject *watched, QEvent *event);
 
     int             getCursorPosition() const { return cursor; }
     QColor          getCursorColor() const { return cursorColor; }
 
-    // the methods can be private!
+private:
     void setCursor(int newPos);
     void navigate(int newPos, bool shiftPressed = false);
 
@@ -61,17 +65,22 @@ public:
 
     void runModifySeqTask(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence);
 
-public slots:
-    void sl_editMode(bool active);
-
 private slots:
+    void sl_editMode(bool active);
     void sl_changeCursorColor();
+    void sl_unblock();
+    void sl_objectLockStateChanged();
 
 private:
     int         cursor; // TODO_SVEDIT: can be separate class
     QColor      cursorColor;
     QTimer      animationTimer;
     DetView*    view;
+
+    ModifySequenceContentTask* task;
+    bool        block;
+
+    QAction*    editAction;
 };
 
 } // namespace
