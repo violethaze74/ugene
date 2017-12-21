@@ -49,7 +49,7 @@ bool MaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
             return true;
         }
     }
-    
+
     // if this is MCA -> check reference sequence name too.
     MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(maObj);
     if (mcaObj != NULL) {
@@ -58,7 +58,7 @@ bool MaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
             return true;
         }
     }
-    
+
     return false;
 }
 

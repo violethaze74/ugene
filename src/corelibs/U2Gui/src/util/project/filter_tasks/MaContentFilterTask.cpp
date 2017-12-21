@@ -48,7 +48,7 @@ bool MaContentFilterTask::filterAcceptsObject(GObject *obj) {
     CHECK(NULL != maObj, false);
 
     MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(maObj);
-    
+
     foreach(const QString &pattern, settings.tokensToShow) {
         if (!patternFitsMaAlphabet(maObj, pattern)) {
             continue;
@@ -56,7 +56,7 @@ bool MaContentFilterTask::filterAcceptsObject(GObject *obj) {
         if (maContainsPattern(maObj, pattern)) {
             return true;
         }
-        
+
         // if this is MCA -> check reference sequence content too.
         if (mcaObj != NULL) {
             U2SequenceObject* refObj = mcaObj->getReferenceObj();

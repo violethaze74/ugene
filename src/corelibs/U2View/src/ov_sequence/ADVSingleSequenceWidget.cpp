@@ -606,18 +606,18 @@ void ADVSingleSequenceWidget::sl_onSelectRange() {
     mrs->exec();
     CHECK(!mrs.isNull(), );
 
-    if (mrs->result() == QDialog::Accepted){
+    if (mrs->result() == QDialog::Accepted) {
         QVector<U2Region> curRegions = mrs->getSelectedRegions();
         if(curRegions.isEmpty()){
             return;
         }
-        if(curRegions.size() == 1){
+        if(curRegions.size() == 1) {
             U2Region r = curRegions.first();
             setSelectedRegion(r);
             if (!detView->getVisibleRange().intersects(r)) {
                 detView->setCenterPos(r.startPos);
             }
-        }else{
+        } else {
             getSequenceContext()->getSequenceSelection()->setSelectedRegions(curRegions);
         }
     }

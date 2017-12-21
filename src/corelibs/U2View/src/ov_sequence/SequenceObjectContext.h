@@ -65,7 +65,7 @@ public:
     QList<GObject*> getAnnotationGObjects() const;
 
     QMenu * createGeneticCodeMenu();
-    QMenu * createTranslationFramesMenu(QAction *showTranslationAction);
+    QMenu * createTranslationFramesMenu(QList<QAction*> menuActions);
     void setAminoTranslation(const QString& tid);
 
     void addAnnotationObject(AnnotationTableObject *obj);
@@ -81,13 +81,27 @@ public:
 
     QList<Annotation *> selectRelatedAnnotations(const QList<Annotation *> &alist) const;
     QVector<bool> getTranslationRowsVisibleStatus();
-    void setTranslationsVisible(bool enable);
+    void setTranslationsVisible(bool visible);
+    void showComplementActions(bool show);
+    void showTranslationFrame(const int numOfAction, const bool setChecked);
+
+    enum TranslationState {
+        DoNotTranslate,
+        TranslateAnnotationsOrSelection,
+        SetUpFramesManually,
+        ShowAllFrames
+    };
+
+    void setTranslationState(const TranslationState state);
+    TranslationState getTranslationState() const;
+
 private slots:
     void sl_setAminoTranslation();
     void sl_toggleTranslations();
     void sl_showDirectOnly();
     void sl_showComplOnly();
     void sl_showShowAll();
+
 signals:
     void si_aminoTranslationChanged();
     void si_annotationObjectAdded(AnnotationTableObject *obj);
@@ -106,6 +120,7 @@ protected:
     DNASequenceSelection*           selection;
     QActionGroup*                   translations;
     QActionGroup*                   visibleFrames;
+    QActionGroup*                   translationMenuActions;
     QVector<QAction*>               translationRowsStatus;
     QList<ADVSequenceWidget*>       seqWidgets;
     QSet<AnnotationTableObject *>   annotations;

@@ -32,7 +32,7 @@ namespace U2 {
 
 class MaSeqNameFilterTask : public AbstractProjectFilterTask {
 public:
-    MaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs); 
+    MaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
 
 protected:
     bool filterAcceptsObject(GObject *obj);

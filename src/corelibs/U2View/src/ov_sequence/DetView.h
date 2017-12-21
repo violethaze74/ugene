@@ -28,6 +28,7 @@
 #include <U2Core/U2Location.h>
 
 #include "GSequenceLineViewAnnotated.h"
+#include <U2View/SequenceObjectContext.h>
 
 
 class QActionGroup;
@@ -69,17 +70,23 @@ public:
 
     int getVerticalScrollBarPosition();
     int getShift() const;
+    void setSelectedTranslations();
 
     void ensurePositionVisible(int pos);
 
 protected slots:
     virtual void sl_sequenceChanged();
+    void sl_onDNASelectionChanged(LRegionsSelection* thiz, const QVector<U2Region>& added, const QVector<U2Region>& removed);
     void sl_onAminoTTChanged();
     void sl_translationRowsChanged();
     void sl_showComplementToggle(bool v);
     void sl_showTranslationToggle(bool v);
     void sl_wrapSequenceToggle(bool v);
     void sl_verticalSrcollBarMoved(int position);
+    void sl_doNotTranslate();
+    void sl_translateAnnotationsOrSelection();
+    void sl_setUpFramesManually();
+    void sl_showAllFrames();
 
 protected:
     virtual void pack();
@@ -102,6 +109,10 @@ protected:
     QAction*        showComplementAction;
     QAction*        showTranslationAction;
     QAction*        wrapSequenceAction;
+    QAction*        doNotTranslateAction;
+    QAction*        translateAnnotationsOrSelectionAction;
+    QAction*        setUpFramesManuallyAction;
+    QAction*        showAllFramesAction;
     QAction*        editAction;
 
     DetViewSequenceEditor* editor;
@@ -117,6 +128,11 @@ private:
     QPoint getRenderAreaPointAfterAutoScroll(const QPoint& pos);
     void moveBorder(const QPoint& p);
     void setBorderCursor(const QPoint& p);
+
+    void uncheckAllTranslations();
+    void updateTranslationsState(const U2Region& visibleRange);
+    void updateTranslationsState(const U2Region& visibleRange, const U2Strand::Direction direction);
+    void updateSelectedTranslations(const SequenceObjectContext::TranslationState state);
 };
 
 class DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
