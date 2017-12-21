@@ -77,7 +77,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     doNotTranslateAction->setCheckable(true);
     doNotTranslateAction->setChecked(true);
 
-    translateAnnotationsOrSelectionAction = new QAction(tr("Translate annotations or selection"), this);
+    translateAnnotationsOrSelectionAction = new QAction(tr("Translate selection"), this);
     translateAnnotationsOrSelectionAction->setData(SequenceObjectContext::TranslateAnnotationsOrSelection);
     connect(translateAnnotationsOrSelectionAction, SIGNAL(triggered(bool)), SLOT(sl_translateAnnotationsOrSelection()));
     translateAnnotationsOrSelectionAction->setCheckable(true);
