@@ -202,7 +202,7 @@ DNATranslation* DetView::getComplementTT() const {
 }
 
 DNATranslation* DetView::getAminoTT() const {
-    return !doNotTranslateAction->isChecked() || (ctx->getTranslationState() == SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection) ? ctx->getAminoTT() : NULL;
+    return !doNotTranslateAction->isChecked() || (ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection) ? ctx->getAminoTT() : NULL;
 }
 
 int DetView::getSymbolsPerLine() const {
@@ -373,19 +373,19 @@ void DetView::sl_showTranslationToggle(bool v) {
 }
 
 void DetView::sl_doNotTranslate() {
-    updateSelectedTranslations(SequenceObjectContext::TranslationState::DoNotTranslate);
+    updateSelectedTranslations(SequenceObjectContext::DoNotTranslate);
 }
 
 void DetView::sl_translateAnnotationsOrSelection() {
-    updateSelectedTranslations(SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection);
+    updateSelectedTranslations(SequenceObjectContext::TranslateAnnotationsOrSelection);
 }
 
 void DetView::sl_setUpFramesManually() {
-    updateSelectedTranslations(SequenceObjectContext::TranslationState::SetUpFramesManually);
+    updateSelectedTranslations(SequenceObjectContext::SetUpFramesManually);
 }
 
 void DetView::sl_showAllFrames() {
-    updateSelectedTranslations(SequenceObjectContext::TranslationState::ShowAllFrames);
+    updateSelectedTranslations(SequenceObjectContext::ShowAllFrames);
 }
 
 void DetView::updateSelectedTranslations(const SequenceObjectContext::TranslationState state) {
@@ -463,7 +463,7 @@ void DetView::uncheckAllTranslations() {
 }
 
 void DetView::setSelectedTranslations() {
-    if ((ctx->getTranslationState() == SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection)) {
+    if ((ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection)) {
         int symbolsPerLine = getSymbolsPerLine();
         U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
 
