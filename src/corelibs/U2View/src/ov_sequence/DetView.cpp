@@ -481,20 +481,20 @@ void DetView::setSelectedTranslations() {
 }
 
 void DetView::updateTranslationsState(const U2Region& visibleRange) {
-    updateTranslationsState(visibleRange, U2Strand::Direction::Direct);
-    updateTranslationsState(visibleRange, U2Strand::Direction::Complementary);
+    updateTranslationsState(visibleRange, U2Strand::Direct);
+    updateTranslationsState(visibleRange, U2Strand::Complementary);
 }
 
 void DetView::updateTranslationsState(const U2Region& visibleRange, const U2Strand::Direction direction) {
     QVector<U2Region> selectedRegions = ctx->getSequenceSelection()->getSelectedRegions();
     QList<bool> lineState = QList<bool>() << false << false << false;
     foreach(const U2Region& reg, selectedRegions) {
-        int mod = direction == U2Strand::Direction::Direct ? reg.startPos % 3 : ((ctx->getSequenceLength() - reg.endPos()) % 3);
+        int mod = direction == U2Strand::Direct ? reg.startPos % 3 : ((ctx->getSequenceLength() - reg.endPos()) % 3);
         lineState[mod] = true;
     }
-    const int start = direction == U2Strand::Direction::Direct ? 0 : 3;
-    const int end = direction == U2Strand::Direction::Direct ? 3 : 6;
-    const int indent = direction == U2Strand::Direction::Direct ? 0 : 3;
+    const int start = direction == U2Strand::Direct ? 0 : 3;
+    const int end = direction == U2Strand::Direct ? 3 : 6;
+    const int indent = direction == U2Strand::Direct ? 0 : 3;
     for (int i = start; i < end; i++) {
         const bool state = lineState[i - indent];
         if (!state) {
