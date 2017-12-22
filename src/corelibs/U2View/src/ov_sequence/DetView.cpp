@@ -202,7 +202,7 @@ DNATranslation* DetView::getComplementTT() const {
 }
 
 DNATranslation* DetView::getAminoTT() const {
-    return !doNotTranslateAction->isChecked() || (ctx->getTranslationState() == SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection) ? ctx->getAminoTT() : NULL;
+    return !doNotTranslateAction->isChecked() || (ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection) ? ctx->getAminoTT() : NULL;
 }
 
 int DetView::getSymbolsPerLine() const {
@@ -373,19 +373,19 @@ void DetView::sl_showTranslationToggle(bool v) {
 }
 
 void DetView::sl_doNotTranslate() {
-    updateSelectedTranslations(SequenceObjectContext::TranslationState::DoNotTranslate);
+    updateSelectedTranslations(SequenceObjectContext::DoNotTranslate);
 }
 
 void DetView::sl_translateAnnotationsOrSelection() {
-    updateSelectedTranslations(SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection);
+    updateSelectedTranslations(SequenceObjectContext::TranslateAnnotationsOrSelection);
 }
 
 void DetView::sl_setUpFramesManually() {
-    updateSelectedTranslations(SequenceObjectContext::TranslationState::SetUpFramesManually);
+    updateSelectedTranslations(SequenceObjectContext::SetUpFramesManually);
 }
 
 void DetView::sl_showAllFrames() {
-    updateSelectedTranslations(SequenceObjectContext::TranslationState::ShowAllFrames);
+    updateSelectedTranslations(SequenceObjectContext::ShowAllFrames);
 }
 
 void DetView::updateSelectedTranslations(const SequenceObjectContext::TranslationState state) {
@@ -463,7 +463,7 @@ void DetView::uncheckAllTranslations() {
 }
 
 void DetView::setSelectedTranslations() {
-    if ((ctx->getTranslationState() == SequenceObjectContext::TranslationState::TranslateAnnotationsOrSelection)) {
+    if ((ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection)) {
         int symbolsPerLine = getSymbolsPerLine();
         U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
 
@@ -481,20 +481,20 @@ void DetView::setSelectedTranslations() {
 }
 
 void DetView::updateTranslationsState(const U2Region& visibleRange) {
-    updateTranslationsState(visibleRange, U2Strand::Direction::Direct);
-    updateTranslationsState(visibleRange, U2Strand::Direction::Complementary);
+    updateTranslationsState(visibleRange, U2Strand::Direct);
+    updateTranslationsState(visibleRange, U2Strand::Complementary);
 }
 
 void DetView::updateTranslationsState(const U2Region& visibleRange, const U2Strand::Direction direction) {
     QVector<U2Region> selectedRegions = ctx->getSequenceSelection()->getSelectedRegions();
     QList<bool> lineState = QList<bool>() << false << false << false;
     foreach(const U2Region& reg, selectedRegions) {
-        int mod = direction == U2Strand::Direction::Direct ? reg.startPos % 3 : ((ctx->getSequenceLength() - reg.endPos()) % 3);
+        int mod = direction == U2Strand::Direct ? reg.startPos % 3 : ((ctx->getSequenceLength() - reg.endPos()) % 3);
         lineState[mod] = true;
     }
-    const int start = direction == U2Strand::Direction::Direct ? 0 : 3;
-    const int end = direction == U2Strand::Direction::Direct ? 3 : 6;
-    const int indent = direction == U2Strand::Direction::Direct ? 0 : 3;
+    const int start = direction == U2Strand::Direct ? 0 : 3;
+    const int end = direction == U2Strand::Direct ? 3 : 6;
+    const int indent = direction == U2Strand::Direct ? 0 : 3;
     for (int i = start; i < end; i++) {
         const bool state = lineState[i - indent];
         if (!state) {
