@@ -131,7 +131,7 @@ private:
     void uncheckAllTranslations();
     void updateTranslationsState(const U2Region& visibleRange);
     void updateTranslationsState(const U2Region& visibleRange, const U2Strand::Direction direction);
-    void updateSelectedTranslations(const SequenceObjectContext::TranslationState state);
+    void updateSelectedTranslations(const SequenceObjectContext::TranslationState& state);
 };
 
 class DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {

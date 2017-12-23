@@ -86,10 +86,10 @@ public:
     void showTranslationFrame(const int numOfAction, const bool setChecked);
 
     enum TranslationState {
-        DoNotTranslate,
-        TranslateAnnotationsOrSelection,
-        SetUpFramesManually,
-        ShowAllFrames
+        TS_DoNotTranslate,
+        TS_AnnotationsOrSelection,
+        TS_SetUpFramesManually,
+        TS_ShowAllFrames
     };
 
     void setTranslationState(const TranslationState state);

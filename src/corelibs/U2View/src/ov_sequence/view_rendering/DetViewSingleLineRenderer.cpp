@@ -425,7 +425,7 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
                                                       const U2Region &visibleRange,
                                                       const char* seqBlock,
                                                       const QList<SharedAnnotationData>& annotationsInRange) {
-    bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection);
+    bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection);
     QVector<U2Region> regions;
     QList<QVector<U2Region> > sortedRegions = QList<QVector<U2Region> >() << QVector<U2Region>() << QVector<U2Region>() << QVector<U2Region>();
     int upperIndent = 0;
@@ -510,7 +510,7 @@ void DetViewSingleLineRenderer::drawComplementTranslations(QPainter& p,
                                                            const U2Region &visibleRange,
                                                            const char* seqBlock,
                                                            const QList<SharedAnnotationData>& annotationsInRange) {
-    bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection);
+    bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection);
     QVector<U2Region> regions;
     QList<QVector<U2Region> > sortedRegions = QList<QVector<U2Region> >() << QVector<U2Region>() << QVector<U2Region>() << QVector<U2Region>();
     if (isTranslateAnnotationOrSelection) {
@@ -620,7 +620,7 @@ void DetViewSingleLineRenderer::drawSequenceSelection(QPainter &p, const QSize &
             int translLine = posToDirectTransLine(reg.startPos);
             if (translLine >= 0 && r.length >= 3) {
                 int translLen = reg.endPos() > r.endPos() ? r.length : r.length / 3 * 3;
-                if (ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection) {
+                if (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection) {
                     int offset = 3;
                     for (int i = 0; i < 3; i++) {
                         offset -= trMetrics.visibleRows[i] ? 1 : 0;
@@ -705,7 +705,7 @@ void DetViewSingleLineRenderer::updateLines() {
         firstComplTransLine = 6;
         numLines = 9;
 
-        if (ctx->getTranslationState() != SequenceObjectContext::TranslateAnnotationsOrSelection) {
+        if (ctx->getTranslationState() != SequenceObjectContext::TS_AnnotationsOrSelection) {
             QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
             for (int i = 0; i < 6; i++) {
                 if (!v[i]) {
@@ -730,7 +730,7 @@ void DetViewSingleLineRenderer::updateLines() {
         rulerLine = 4;
         numLines = 5;
 
-        if (ctx->getTranslationState() != SequenceObjectContext::TranslateAnnotationsOrSelection) {
+        if (ctx->getTranslationState() != SequenceObjectContext::TS_AnnotationsOrSelection) {
             QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
             for (int i = 0; i < 3; i++) {
                 if (!v[i]) {

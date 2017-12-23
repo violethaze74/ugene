@@ -211,16 +211,16 @@ void SequenceObjectContext::sl_showShowAll() {
     }
 }
 
-void SequenceObjectContext::setTranslationState(const SequenceObjectContext::TranslationState state) {
+void SequenceObjectContext::setTranslationState(const SequenceObjectContext::TranslationState& state) {
     bool needUpdate = false;
 
-    const bool enableActions = state == SequenceObjectContext::SetUpFramesManually;
+    const bool enableActions = state == SequenceObjectContext::TS_SetUpFramesManually;
     foreach(QAction* a, visibleFrames->actions()) {
         a->setEnabled(enableActions);
         bool isActionCheck = false;
         if (enableActions) {
             isActionCheck = translationRowsStatus.contains(a);
-        } else if (state == SequenceObjectContext::ShowAllFrames) {
+        } else if (state == SequenceObjectContext::TS_ShowAllFrames) {
             isActionCheck = true;
         }
 
@@ -236,7 +236,7 @@ void SequenceObjectContext::setTranslationState(const SequenceObjectContext::Tra
 }
 
 SequenceObjectContext::TranslationState SequenceObjectContext::getTranslationState() const {
-    CHECK(translationMenuActions->actions().size() == 4, SequenceObjectContext::DoNotTranslate);
+    CHECK(translationMenuActions->actions().size() == 4, SequenceObjectContext::TS_DoNotTranslate);
     return (SequenceObjectContext::TranslationState)translationMenuActions->checkedAction()->data().toInt();
 }
 
