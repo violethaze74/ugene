@@ -241,29 +241,36 @@ void DetViewSequenceEditor::insertChar(int character) {
     setCursor(r.startPos + 1);
 }
 
-// TODO_SVEDIT: rename
 void DetViewSequenceEditor::deleteChar(int key) {
-    CHECK(key == Qt::Key_Backspace || key == Qt::Key_Delete, ); // safe_point
+    CHECK(key == Qt::Key_Backspace || key == Qt::Key_Delete, );
     U2SequenceObject* seqObj = view->getSequenceObject();
     SAFE_POINT(seqObj != NULL, "SeqObject is NULL", );
 
     U2Region regionToRemove;
-    if (key == Qt::Key_Backspace) {
-        CHECK(cursor > 0, );
-        regionToRemove = U2Region(cursor - 1, 1);
-    } else {
-        CHECK(cursor < seqObj->getSequenceLength(), );
-        regionToRemove = U2Region(cursor, 1);
-    }
     SequenceObjectContext* ctx = view->getSequenceContext();
     if (!ctx->getSequenceSelection()->isEmpty()) {
-        // check the count of region and remove from the end!
         setCursor(ctx->getSequenceSelection()->getSelectedRegions().first().startPos);
-        foreach (U2Region r, ctx->getSequenceSelection()->getSelectedRegions()) {
-            runModifySeqTask(seqObj, r, DNASequence());
-        }
+        QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
         ctx->getSequenceSelection()->clear();
-        return;
+        if (regions.size() != 1) {
+            qSort(regions);
+            for (int i = 0; i < regions.size(); i++) {
+                // can cause problems
+                runModifySeqTask(seqObj, regions[i], DNASequence());
+            }
+            return;
+        } else {
+            regionToRemove = regions.first();
+        }
+    } else {
+        setCursor(key == Qt::Key_Backspace ? cursor - 1 : cursor);
+        if (key == Qt::Key_Backspace) {
+            CHECK(cursor > 0, );
+            regionToRemove = U2Region(cursor - 1, 1);
+        } else {
+            CHECK(cursor < seqObj->getSequenceLength(), );
+            regionToRemove = U2Region(cursor, 1);
+        }
     }
 
     if (regionToRemove.length == view->getSequenceLength()) {
@@ -285,7 +292,6 @@ void DetViewSequenceEditor::deleteChar(int key) {
     }
     CHECK(!regionToRemove.isEmpty(), );
     runModifySeqTask(seqObj, regionToRemove, DNASequence());
-    setCursor(key == Qt::Key_Backspace ? cursor - 1 : cursor);
 }
 
 void DetViewSequenceEditor::runModifySeqTask(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence) {
@@ -331,6 +337,7 @@ void DetViewSequenceEditor::sl_changeCursorColor() {
 }
 
 void DetViewSequenceEditor::sl_unblock() {
+    CHECK(task != NULL, );
     if (task->isFinished()) {
         block = false;
         task = NULL;
