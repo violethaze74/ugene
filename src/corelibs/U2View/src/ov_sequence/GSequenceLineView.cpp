@@ -305,7 +305,8 @@ void GSequenceLineView::setBorderCursor(const QPoint &p) {
         for (int i = 0; i < regions.size(); i++) {
             const QRect selection(QPoint(regions[i].startPos, 0), QPoint(regions[i].endPos() - 1, 1));
             shape = SelectionModificationHelper::getCursorShape(point, selection, scale, height());
-            if (shape == Qt::SizeHorCursor) {
+            if (shape != Qt::ArrowCursor) {
+                shape = Qt::SizeHorCursor;
                 break;
             }
         }
