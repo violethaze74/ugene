@@ -84,7 +84,7 @@ SharedConnectionsDialog::SharedConnectionsDialog(QWidget *parent) :
     ui(new Ui_SharedConnectionsDialog)
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "20875202");
+    new HelpButton(this, ui->buttonBox, "20880541");
 
     init();
     connectSignals();
@@ -506,7 +506,7 @@ bool SharedConnectionsDialog::checkDbShouldBeUpgraded(const U2DbiRef &ref) {
     if (upgradeDatabase) {
         QObjectScopedPointer<QMessageBox> question = new QMessageBox(QMessageBox::Question, tr(DATABASE_UPGRADE_TITLE), tr(DATABASE_UPGRADE_TEXT), QMessageBox::Ok | QMessageBox::Cancel| QMessageBox::Help, this);
         question->button(QMessageBox::Ok)->setText(tr("Upgrade"));
-        HelpButton(question.data(), question->button(QMessageBox::Help), "20875202");
+        HelpButton(question.data(), question->button(QMessageBox::Help), "20880541");
         question->setDefaultButton(QMessageBox::Cancel);
         const int dialogResult = question->exec();
         CHECK(!question.isNull(), true);

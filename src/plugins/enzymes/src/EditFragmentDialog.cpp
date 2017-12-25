@@ -44,7 +44,7 @@ EditFragmentDialog::EditFragmentDialog( DNAFragment& fragment, QWidget* p )
 {
 
     setupUi(this);
-    new HelpButton(this, buttonBox, "20875085");
+    new HelpButton(this, buttonBox, "20880424");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
