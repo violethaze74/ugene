@@ -45,7 +45,7 @@ ClustalOSupportRunDialog::ClustalOSupportRunDialog(const MultipleSequenceAlignme
         QDialog(_parent), ma(_ma->getCopy()), settings(_settings)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20875144");
+    new HelpButton(this, buttonBox, "20880483");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -79,7 +79,7 @@ ClustalOWithExtFileSpecifySupportRunDialog::ClustalOWithExtFileSpecifySupportRun
     saveController(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20875126");
+    new HelpButton(this, buttonBox, "20880465");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

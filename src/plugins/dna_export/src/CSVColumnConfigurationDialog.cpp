@@ -34,7 +34,7 @@ CSVColumnConfigurationDialog::CSVColumnConfigurationDialog(QWidget* w, const Col
 : QDialog(w), config(_config)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20874909");
+    new HelpButton(this, buttonBox, "20880247");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

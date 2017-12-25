@@ -1148,7 +1148,7 @@ AddConstraintDialog::AddConstraintDialog(QueryScene* _scene, QDDistanceType _kin
                                          QDElement* defSrc, QDElement* defDst)
 : scene(_scene), kind(_kind) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20874755");
+    new HelpButton(this, buttonBox, "20880092");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

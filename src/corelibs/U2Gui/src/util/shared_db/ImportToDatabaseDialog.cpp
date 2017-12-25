@@ -61,7 +61,7 @@ ImportToDatabaseDialog::ImportToDatabaseDialog(Document *dbConnection, const QSt
     baseFolder(U2DbiUtils::makeFolderCanonical(defaultFolder))
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "20875204");
+    new HelpButton(this, ui->buttonBox, "20880543");
     init();
     connectSignals();
     updateState();

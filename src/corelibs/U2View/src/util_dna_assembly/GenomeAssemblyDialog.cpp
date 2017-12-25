@@ -56,7 +56,7 @@ GenomeAssemblyDialog::GenomeAssemblyDialog(QWidget* p)
     setupUi(this);
 
     QMap<QString,QString> helpPagesMap;
-    helpPagesMap.insert("SPAdes","20875150");
+    helpPagesMap.insert("SPAdes","20880489");
     new ComboboxDependentHelpButton(this, buttonBox, methodNamesBox, helpPagesMap);
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
