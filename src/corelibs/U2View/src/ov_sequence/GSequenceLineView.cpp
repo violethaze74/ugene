@@ -305,7 +305,8 @@ void GSequenceLineView::setBorderCursor(const QPoint &p) {
         for (int i = 0; i < regions.size(); i++) {
             const QRect selection(QPoint(regions[i].startPos, 0), QPoint(regions[i].endPos() - 1, 1));
             shape = SelectionModificationHelper::getCursorShape(point, selection, scale, height());
-            if (shape == Qt::SizeHorCursor) {
+            if (shape != Qt::ArrowCursor) {
+                shape = Qt::SizeHorCursor;
                 break;
             }
         }
@@ -550,7 +551,7 @@ void GSequenceLineView::resizeSelection(const QPoint& areaPoint) {
 
     if (!resizableRegion.isEmpty()) {
         foreach (const U2Region& reg, regions) {
-            if ((!reg.intersect(newSelection).isEmpty() || reg.startPos == newSelection.endPos() || reg.endPos() == newSelection.startPos)) {
+            if (!reg.intersect(newSelection).isEmpty()) {
                 newSelection = U2Region::join(QVector<U2Region>() << newSelection << reg).first();
                 if (!overlappedRegions.contains(reg)) {
                     overlappedRegions << reg;

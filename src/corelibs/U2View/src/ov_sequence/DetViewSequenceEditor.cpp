@@ -22,6 +22,8 @@
 #include "DetViewSequenceEditor.h"
 
 #include "ADVConstants.h"
+#include "ADVSequenceObjectContext.h"
+#include "AnnotatedDNAView.h"
 #include "DetView.h"
 
 #include <QMessageBox>
@@ -82,6 +84,7 @@ bool DetViewSequenceEditor::isEditMode() const {
 
 bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
     CHECK(!block, false);
+    CHECK(!view->getSequenceObject()->isStateLocked(), false)
 
     SequenceObjectContext* ctx = view->getSequenceContext();
     const QList<ADVSequenceWidget*> list = ctx->getSequenceWidgets();
@@ -263,7 +266,6 @@ void DetViewSequenceEditor::deleteChar(int key) {
             regionToRemove = regions.first();
         }
     } else {
-        setCursor(key == Qt::Key_Backspace ? cursor - 1 : cursor);
         if (key == Qt::Key_Backspace) {
             CHECK(cursor > 0, );
             regionToRemove = U2Region(cursor - 1, 1);
@@ -271,6 +273,7 @@ void DetViewSequenceEditor::deleteChar(int key) {
             CHECK(cursor < seqObj->getSequenceLength(), );
             regionToRemove = U2Region(cursor, 1);
         }
+        setCursor(key == Qt::Key_Backspace ? cursor - 1 : cursor);
     }
 
     if (regionToRemove.length == view->getSequenceLength()) {
@@ -324,6 +327,8 @@ void DetViewSequenceEditor::sl_editMode(bool active) {
         view->installEventFilter(this);
         animationTimer.start(500);
     } else {
+        editAction->setDisabled(view->getSequenceObject()->isStateLocked());
+
         view->removeEventFilter(this);
         a->setShortcut(QKeySequence(Qt::Key_Delete));
         animationTimer.stop();
@@ -341,15 +346,15 @@ void DetViewSequenceEditor::sl_unblock() {
     if (task->isFinished()) {
         block = false;
         task = NULL;
+
+        ADVSequenceObjectContext *context = qobject_cast<ADVSequenceObjectContext *>(view->getSequenceContext());
+        SAFE_POINT(NULL != context, L10N::nullPointerError("ADVSequenceObjectContext"), );
+        context->getAnnotatedDNAView()->updateAutoAnnotations();
     }
 }
 
 void DetViewSequenceEditor::sl_objectLockStateChanged() {
-    if (isEditMode() && view->getSequenceObject()->isStateLocked()) {
-        // deactivate edit mode
-        editAction->trigger();
-    }
-    editAction->setDisabled(view->getSequenceObject()->isStateLocked());
+    editAction->setDisabled(!isEditMode() && view->getSequenceObject()->isStateLocked());
 }
 
 } // namespace

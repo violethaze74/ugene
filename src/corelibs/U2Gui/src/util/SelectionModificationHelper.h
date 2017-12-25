@@ -39,12 +39,13 @@ public:
         LeftTopCorner,
         LeftBottomCorner,
         RightTopCorner,
-        RightBottomCorner,
+        RightBottomCorner
     };
 
     static MovableSide getMovableSide(const Qt::CursorShape shape, const QPoint& globalMousePos, const QRect& selection, const QSizeF& baseSize);
     static MovableSide getMovableSide(const double arcsinCurrent, const int startBase, const int endBase, const double rotationDegree, const int sequenceLength);
     static Qt::CursorShape getCursorShape(const QPoint& globalMousePos, const QRect& selection, const double baseWidth, const double baseHeight);
+    static Qt::CursorShape getCursorShape(const MovableSide border, const Qt::CursorShape currentShape);
     static Qt::CursorShape getCursorShape(const double arcsinCurrent, const int startBase, const int endBase, const double rotationDegree, const int sequenceLength);
     static Qt::CursorShape getCursorShape(const double arcsinCurrent);
     static QRect getNewSelection(MovableSide& movableSide, const QPoint& globalMousePos, const QSizeF& baseSize, const QRect& currentSelection);

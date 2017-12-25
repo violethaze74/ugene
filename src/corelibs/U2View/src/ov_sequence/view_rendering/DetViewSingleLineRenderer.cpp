@@ -428,7 +428,6 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
     bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection);
     QVector<U2Region> regions;
     QList<QVector<U2Region> > sortedRegions = QList<QVector<U2Region> >() << QVector<U2Region>() << QVector<U2Region>() << QVector<U2Region>();
-    int upperIndent = 0;
     if (isTranslateAnnotationOrSelection) {
         regions = ctx->getSequenceSelection()->getSelectedRegions();
         QList<int> mods;
@@ -446,12 +445,6 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
                 if (!mods.contains(mod)) {
                     mods << mod;
                 }
-            }
-        }
-        upperIndent = 3;
-        for (int i = 0; i < 3; i++) {
-            if (trMetrics.visibleRows[i]) {
-                upperIndent--;
             }
         }
     }
@@ -485,7 +478,7 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
             for (int k = 0; k < line; k++) {
                 yOffset += (trMetrics.visibleRows[k] == true ? 0 : 1);
             }
-            int y = getTextY(firstDirectTransLine + line - yOffset + upperIndent);
+            int y = getTextY(firstDirectTransLine + line - yOffset);
             int dx = seqStartPos - visibleRange.startPos; // -1, 0, 1, 2 (if startPos == 0)
             for (int j = 0, n = amino.length(); j < n ; j++, seq += 3) {
                 char amin = amino[j];
@@ -620,13 +613,6 @@ void DetViewSingleLineRenderer::drawSequenceSelection(QPainter &p, const QSize &
             int translLine = posToDirectTransLine(reg.startPos);
             if (translLine >= 0 && r.length >= 3) {
                 int translLen = reg.endPos() > r.endPos() ? r.length : r.length / 3 * 3;
-                if (ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection) {
-                    int offset = 3;
-                    for (int i = 0; i < 3; i++) {
-                        offset -= trMetrics.visibleRows[i] ? 1 : 0;
-                    }
-                    translLine += offset;
-                }
                 highlight(p, U2Region(r.startPos, translLen), translLine, canvasSize, visibleRange);
             }
             if (detView->hasComplementaryStrand()) {
@@ -705,8 +691,8 @@ void DetViewSingleLineRenderer::updateLines() {
         firstComplTransLine = 6;
         numLines = 9;
 
+        QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
         if (ctx->getTranslationState() != SequenceObjectContext::TranslateAnnotationsOrSelection) {
-            QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
             for (int i = 0; i < 6; i++) {
                 if (!v[i]) {
                     if (i < 3) {
@@ -718,6 +704,14 @@ void DetViewSingleLineRenderer::updateLines() {
                     numLines--;
                 }
             }
+        } else {
+            int newFirstDirectTranslation = 3;
+            for (int i = 0; i < 3; i++) {
+                if (v[i]) {
+                    newFirstDirectTranslation--;
+                }
+            }
+            firstDirectTransLine = newFirstDirectTranslation;
         }
     } else if (detView->hasComplementaryStrand()) {
         directLine = 0;
@@ -730,8 +724,8 @@ void DetViewSingleLineRenderer::updateLines() {
         rulerLine = 4;
         numLines = 5;
 
+        QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
         if (ctx->getTranslationState() != SequenceObjectContext::TranslateAnnotationsOrSelection) {
-            QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
             for (int i = 0; i < 3; i++) {
                 if (!v[i]) {
                     directLine--;
@@ -739,6 +733,14 @@ void DetViewSingleLineRenderer::updateLines() {
                     numLines--;
                 }
             }
+        } else {
+            int newFirstDirectTranslation = 3;
+            for (int i = 0; i < 3; i++) {
+                if (v[i]) {
+                    newFirstDirectTranslation--;
+                }
+            }
+            firstDirectTransLine = newFirstDirectTranslation;
         }
     }
     SAFE_POINT(numLines > 0, "Nothing to render. Lines count is less then 1", );
