@@ -147,6 +147,22 @@ Qt::CursorShape SelectionModificationHelper::getCursorShape(const QPoint& global
     return Qt::ArrowCursor;
 }
 
+Qt::CursorShape SelectionModificationHelper::getCursorShape(const SelectionModificationHelper::MovableSide border, const Qt::CursorShape currentShape) {
+    Qt::CursorShape newShape = currentShape;
+    switch (border) {
+    case RightTopCorner:
+    case LeftBottomCorner:
+        newShape = Qt::SizeBDiagCursor;
+        break;
+    case RightBottomCorner:
+    case LeftTopCorner:
+        newShape = Qt::SizeFDiagCursor;
+        break;
+    }
+
+    return newShape;
+}
+
 Qt::CursorShape SelectionModificationHelper::getCursorShape(const double arcsinCurrent, const int startBase, const int endBase, const double rotationDegree, const int sequenceLength) {
     if (getMovableSide(arcsinCurrent, startBase, endBase, rotationDegree, sequenceLength) != NoMovableBorder) {
         return getCursorShape(arcsinCurrent);
