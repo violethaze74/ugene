@@ -550,7 +550,7 @@ void GSequenceLineView::resizeSelection(const QPoint& areaPoint) {
 
     if (!resizableRegion.isEmpty()) {
         foreach (const U2Region& reg, regions) {
-            if ((!reg.intersect(newSelection).isEmpty() || reg.startPos == newSelection.endPos() || reg.endPos() == newSelection.startPos)) {
+            if (!reg.intersect(newSelection).isEmpty()) {
                 newSelection = U2Region::join(QVector<U2Region>() << newSelection << reg).first();
                 if (!overlappedRegions.contains(reg)) {
                     overlappedRegions << reg;
