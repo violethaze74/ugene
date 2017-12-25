@@ -343,7 +343,7 @@ void ProjectTreeController::sl_updateActions() {
         if (!isObjectInRecycleBin(obj) && allObjectsAreInRecycleBin) {
             allObjectsAreInRecycleBin = false;
         }
-        selectedModifiableObjectsExist &= !obj->getDocument()->isStateLocked();
+        selectedModifiableObjectsExist &= (NULL != obj->getDocument() && !obj->getDocument()->isStateLocked());
         if (!canRemoveObjectFromDocument && !allObjectsAreInRecycleBin && !selectedModifiableObjectsExist) {
             break;
         }
