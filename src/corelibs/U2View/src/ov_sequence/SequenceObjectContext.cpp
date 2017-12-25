@@ -211,7 +211,7 @@ void SequenceObjectContext::sl_showShowAll() {
     }
 }
 
-void SequenceObjectContext::setTranslationState(const SequenceObjectContext::TranslationState& state) {
+void SequenceObjectContext::setTranslationState(const SequenceObjectContext::TranslationState state) {
     bool needUpdate = false;
 
     const bool enableActions = state == SequenceObjectContext::TS_SetUpFramesManually;
