@@ -41,7 +41,6 @@ const QString DiamondClassifyWorkerFactory::ACTOR_ID = "classify-reads-with-diam
 const QString DiamondClassifyWorkerFactory::INPUT_PORT_ID = "in1";
 const QString DiamondClassifyWorkerFactory::INPUT_PAIRED_PORT_ID = "in2";
 const QString DiamondClassifyWorkerFactory::OUTPUT_PORT_ID = "out";
-const QString DiamondClassifyWorkerFactory::OUTPUT_SLOT_ID = "tax_data";
 
 const QString DiamondClassifyWorkerFactory::INPUT_DATA_ATTR_ID = "input-data";
 const QString DiamondClassifyWorkerFactory::DATABASE_ATTR_ID = "database";
@@ -70,10 +69,6 @@ void DiamondClassifyWorkerFactory::init() {
                                           DiamondClassifyPrompter::tr("Input URL(s)"),
                                           DiamondClassifyPrompter::tr("Input URL(s)."));
 
-        const Descriptor outSlotDesc(OUTPUT_SLOT_ID,
-                                     DiamondClassifyPrompter::tr("Taxonomy classification data"),
-                                     DiamondClassifyPrompter::tr("Taxonomy classification data."));
-
         QMap<Descriptor, DataTypePtr> inType;
         inType[inSlotDesc] = BaseTypes::STRING_TYPE();
 
@@ -81,7 +76,7 @@ void DiamondClassifyWorkerFactory::init() {
         inPairedType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
 
         QMap<Descriptor, DataTypePtr> outType;
-        outType[outSlotDesc] = BaseTypes::STRING_TYPE();    // The output type has to be changed to "Taxonomy classification"
+        outType[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
 
         const Descriptor inPortDesc(INPUT_PORT_ID,
                                     DiamondClassifyPrompter::tr("Input sequences 1"),

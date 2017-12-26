@@ -24,6 +24,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include "NgsReadsClassificationPlugin.h"
+#include "ClassificationFilterWorker.h"
 
 namespace U2 {
 
@@ -34,6 +35,7 @@ const QString NgsReadsClassificationPlugin::TAXONOMY_PATH = "ngs_classification/
 const QString NgsReadsClassificationPlugin::TAXONOMY_DATA_ID = "taxonomy_data";
 const QString NgsReadsClassificationPlugin::TAXON_PROTEIN_MAP = "prot.accession2taxid";   // TODO: check, if DIAMOND can work with not zipped map
 const QString NgsReadsClassificationPlugin::TAXON_NODES = "nodes.dmp";
+const QString NgsReadsClassificationPlugin::TAXON_NAMES = "names.dmp";
 
 const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_PATH = "ngs_classification/kraken";
 const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_ID = "minikraken_4gb";
@@ -70,6 +72,11 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
     registerData(REFSEQ_HUMAN_ID, REFSEQ_HUMAN_PATH, tr("RefSeq release human data from NCBI"));
     registerData(REFSEQ_BACTERIA_ID, REFSEQ_BACTERIA_PATH, tr("RefSeq release bacteria data from NCBI"));
     registerData(REFSEQ_VIRAL_ID, REFSEQ_VIRAL_PATH, tr("RefSeq release viral data from NCBI"));
+
+    LocalWorkflow::ClassificationFilterWorkerFactory::init();
+
+    // Pre-load taxonomy data
+    LocalWorkflow::TaxonomyTree::getInstance();
 }
 
 NgsReadsClassificationPlugin::~NgsReadsClassificationPlugin() {
@@ -80,10 +87,11 @@ NgsReadsClassificationPlugin::~NgsReadsClassificationPlugin() {
 
 void NgsReadsClassificationPlugin::registerData(const QString &dataId, const QString &relativePath, const QString &description, bool addAsFolder) {
     U2DataPathRegistry* dataPathRegistry = AppContext::getDataPathRegistry();
-    const QString path = QFileInfo(QString(PATH_PREFIX_DATA) + ":" + relativePath).absoluteFilePath();
+    const QString path = QFileInfo(QString(PATH_PREFIX_DATA) + "/" + relativePath).absoluteFilePath();
     U2DataPath *dataPath = new U2DataPath(dataId, path, description, addAsFolder ? U2DataPath::AddOnlyFolders : U2DataPath::None);
     bool ok = dataPathRegistry->registerEntry(dataPath);
     if (!ok) {
+        coreLog.error(QString("Failed to register DATA: %1").arg(path));
         delete dataPath;
     } else {
         registeredData << dataId;

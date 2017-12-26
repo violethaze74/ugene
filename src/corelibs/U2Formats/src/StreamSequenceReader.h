@@ -68,6 +68,9 @@ public:
     bool init(const QStringList& urls);
     bool init(const QList<GUrl>& urls);
 
+    const IOAdapter* getIO() const;
+    DocumentFormat* getFormat() const;
+
     bool hasNext();
     bool hasError() { return errorOccured; }
     int getProgress();

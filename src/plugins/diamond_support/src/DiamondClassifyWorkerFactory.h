@@ -41,7 +41,6 @@ public:
     static const QString INPUT_PORT_ID;
     static const QString INPUT_PAIRED_PORT_ID;
     static const QString OUTPUT_PORT_ID;
-    static const QString OUTPUT_SLOT_ID;
 
     static const QString INPUT_DATA_ATTR_ID;
     static const QString DATABASE_ATTR_ID;

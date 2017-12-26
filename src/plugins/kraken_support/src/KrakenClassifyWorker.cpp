@@ -131,7 +131,7 @@ void KrakenClassifyWorker::sl_taskFinished(Task *task) {
     const QString rawClassificationUrl = krakenTask->getRawClassificationUrl();
 
     QVariantMap data;
-    data[BaseSlots::URL_SLOT().getId()] = rawClassificationUrl;
+    data[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT_ID] = QVariant::fromValue<U2::LocalWorkflow::TaxonomyClassificationResult>(parseReport(rawClassificationUrl));
     output->put(Message(output->getBusType(), data));
     context->getMonitor()->addOutputFile(rawClassificationUrl, getActor()->getId());
 }
@@ -181,10 +181,9 @@ KrakenClassifyTaskSettings KrakenClassifyWorker::getSettings(U2OpStatus &os) {
     return settings;
 }
 
-
-QVariantMap KrakenClassifyWorker::parseReport(const QString &url)
+TaxonomyClassificationResult KrakenClassifyWorker::parseReport(const QString &url)
 {
-    QVariantMap result;
+    TaxonomyClassificationResult result;
     QFile reportFile(url);
     if (!reportFile.open(QIODevice::ReadOnly)) {
         reportError(tr("Cannot open classification report: %1").arg(url));
@@ -200,12 +199,12 @@ QVariantMap KrakenClassifyWorker::parseReport(const QString &url)
                     algoLog.trace(QString("Found Kraken classification: %1=%2").arg(objID).arg(QString(assStr)));
 
                     bool ok = true;
-                    uint assID = assStr.toUInt(&ok);
+                    TaxID assID = assStr.toUInt(&ok);
                     if (ok) {
                         if (result.contains(objID)) {
                             QString msg = tr("Duplicate sequence name '%1' have been detected in the classification output.").arg(objID);
                             monitor()->addInfo(msg, getActorId(), Problem::U2_WARNING);
-                            coreLog.info(msg);
+                            algoLog.info(msg);
                         } else {
                             result[objID] = assID;
                         }

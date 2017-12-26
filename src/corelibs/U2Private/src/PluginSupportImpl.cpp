@@ -444,6 +444,7 @@ void AddPluginTask::prepare() {
 
     if (!loadOk) {
         stateInfo.setError(  tr("Plugin loading error: %1, Error string %2").arg(libUrl).arg(lib->errorString()) );
+        coreLog.error(stateInfo.getError());
         return;
     }
 

@@ -81,10 +81,6 @@ void KrakenClassifyWorkerFactory::init() {
                                           KrakenClassifyPrompter::tr("Input URL(s)"),
                                           KrakenClassifyPrompter::tr("Input URL(s)."));
 
-        const Descriptor outSlotDesc(BaseSlots::URL_SLOT().getId(),
-                                     KrakenClassifyPrompter::tr("Classification result URL"),
-                                     KrakenClassifyPrompter::tr("Classification result URL."));
-
         QMap<Descriptor, DataTypePtr> inType;
         inType[inSlotDesc] = BaseTypes::STRING_TYPE();
 
@@ -92,7 +88,7 @@ void KrakenClassifyWorkerFactory::init() {
         inPairedType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
 
         QMap<Descriptor, DataTypePtr> outType;
-        outType[outSlotDesc] = BaseTypes::STRING_TYPE();
+        outType[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
 
         const Descriptor inPortDesc(INPUT_PORT_ID,
                                     KrakenClassifyPrompter::tr("Input sequences 1"),

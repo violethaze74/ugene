@@ -116,6 +116,24 @@ bool StreamSequenceReader::init( const QList<GUrl>& urls ) {
 
 }
 
+const IOAdapter *StreamSequenceReader::getIO() const
+{
+    if (currentReaderIndex < readers.count()) {
+        ReaderContext ctx = readers.at(currentReaderIndex);
+        return ctx.io;
+    }
+    return NULL;
+}
+
+DocumentFormat *StreamSequenceReader::getFormat() const
+{
+    if (currentReaderIndex < readers.count()) {
+        ReaderContext ctx = readers.at(currentReaderIndex);
+        return ctx.format;
+    }
+    return NULL;
+}
+
 QString StreamSequenceReader::getErrorMessage() {
     return taskInfo.getError();
 }

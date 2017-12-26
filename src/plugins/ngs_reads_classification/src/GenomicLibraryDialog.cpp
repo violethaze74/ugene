@@ -79,6 +79,7 @@ GenomicLibraryDialog::GenomicLibraryDialog(const Dataset &dataset, QWidget *pare
     : QDialog(parent),
       singleDatasetController(new SingleDatasetController(dataset, this))
 {
+    ui = new Ui_GenomicLibraryDialog();
     ui->setupUi(this);
     ui->cantainer->layout()->addWidget(singleDatasetController->getWigdet());
 

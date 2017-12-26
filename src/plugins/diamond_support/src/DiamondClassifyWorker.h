@@ -25,6 +25,7 @@
 #include <U2Lang/LocalDomain.h>
 
 #include "DiamondClassifyTask.h"
+#include "../ngs_reads_classification/src/TaxonomySupport.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -49,7 +50,7 @@ private:
 
     DiamondClassifyTaskSettings getSettings(U2OpStatus &os);
     QString getClassificationFileName(const Message &message) const;
-    QVariantMap parseReport(const QString &url);
+    TaxonomyClassificationResult parseReport(const QString &url);
 
     IntegralBus *input;
     IntegralBus *pairedInput;

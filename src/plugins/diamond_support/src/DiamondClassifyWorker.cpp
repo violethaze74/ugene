@@ -35,7 +35,6 @@
 #include "DiamondClassifyWorker.h"
 #include "DiamondClassifyWorkerFactory.h"
 #include "DiamondSupport.h"
-#include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -136,7 +135,7 @@ void DiamondClassifyWorker::sl_taskFinished(Task *task) {
 //    const QString pairedClassificationUrl = diamondTask->getPairedClassificationUrl();        // FIXME: diamond can't work with paired reads
 
     QVariantMap data;
-    data[DiamondClassifyWorkerFactory::OUTPUT_SLOT_ID] = classificationUrl;
+    data[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT_ID] = QVariant::fromValue<U2::LocalWorkflow::TaxonomyClassificationResult>(parseReport(classificationUrl));
     output->put(Message(output->getBusType(), data));
     context->getMonitor()->addOutputFile(classificationUrl, getActor()->getId());
 
@@ -208,9 +207,9 @@ QString DiamondClassifyWorker::getClassificationFileName(const Message &message)
     return QFileInfo(metadata.getFileUrl()).baseName() + "_classification.txt";
 }
 
-QVariantMap DiamondClassifyWorker::parseReport(const QString &url)
+TaxonomyClassificationResult DiamondClassifyWorker::parseReport(const QString &url)
 {
-    QVariantMap result;
+    TaxonomyClassificationResult result;
     QFile reportFile(url);
     if (!reportFile.open(QIODevice::ReadOnly)) {
         reportError(tr("Cannot open classification report: %1").arg(url));
@@ -226,12 +225,12 @@ QVariantMap DiamondClassifyWorker::parseReport(const QString &url)
                 algoLog.trace(QString("Found Diamond classification: %1=%2").arg(objID).arg(QString(assStr)));
 
                 bool ok = true;
-                uint assID = assStr.toUInt(&ok);
+                TaxID assID = assStr.toUInt(&ok);
                 if (ok) {
                     if (result.contains(objID)) {
                         QString msg = tr("Duplicate sequence name '%1' have been detected in the classification output.").arg(objID);
                         monitor()->addInfo(msg, getActorId(), Problem::U2_WARNING);
-                        coreLog.info(msg);
+                        algoLog.info(msg);
                     } else {
                         result[objID] = assID;
                     }

@@ -45,6 +45,7 @@ public:
     static const QString TAXONOMY_DATA_ID;
     static const QString TAXON_PROTEIN_MAP;
     static const QString TAXON_NODES;
+    static const QString TAXON_NAMES;
 
     static const QString MINIKRAKEN_4_GB_PATH;
     static const QString MINIKRAKEN_4_GB_ID;

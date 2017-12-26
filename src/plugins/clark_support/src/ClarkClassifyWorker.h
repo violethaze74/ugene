@@ -27,6 +27,8 @@
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GUrl.h>
 
+#include "../../ngs_reads_classification/src/TaxonomySupport.h"
+
 namespace U2 {
 namespace LocalWorkflow {
 
@@ -84,7 +86,7 @@ protected:
     void cleanup();
 
 private:
-    QVariantMap parseReport(const QString& url);
+    TaxonomyClassificationResult parseReport(const QString& url);
 
 private slots:
     void sl_taskFinished(Task *task);

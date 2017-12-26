@@ -58,7 +58,6 @@
 
 #include "ClarkSupport.h"
 #include "ClarkClassifyWorker.h"
-#include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -73,7 +72,6 @@ static const QString INPUT_SLOT = BaseSlots::URL_SLOT().getId();
 static const QString PAIRED_INPUT_SLOT = BaseSlots::URL_SLOT().getId();
 
 static const QString OUTPUT_PORT("out");
-static const QString OUTPUT_SLOT("classification-url");
 
 static const QString TOOL_VARIANT("tool-variant");
 static const QString DB_URL("db-url");
@@ -166,8 +164,8 @@ void ClarkClassifyWorkerFactory::init() {
         p << new PortDescriptor(inD2, DataTypePtr(new MapDataType("clark.input-paired-url", inM2)), true);
 
         QMap<Descriptor, DataTypePtr> outM;
-        outM[Descriptor(OUTPUT_SLOT, ClarkClassifyWorker::tr("Clark classification URL"), ClarkClassifyWorker::tr("Clark classification URL"))] = BaseTypes::STRING_TYPE();
-        p << new PortDescriptor(outD, DataTypePtr(new MapDataType("clark.output-url", outM)), false, true);
+        outM[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
+        p << new PortDescriptor(outD, DataTypePtr(new MapDataType("clark.output", outM)), false, true);
     }
 
     QList<Attribute*> a;
@@ -377,7 +375,7 @@ void ClarkClassifyWorker::init() {
     cfg.minFreqTarget = getValue<int>(K_MIN_FREQ);
     cfg.kmerSize = getValue<int>(K_LENGTH);
     cfg.extOut = getValue<bool>(EXTEND_OUT);
-    cfg.mode = (ClarkClassifySettings::Mode)getValue<int>(MODE); // FIXME template did not work with enum type
+    cfg.mode = getValue<U2::LocalWorkflow::ClarkClassifySettings::Mode>(MODE);
     cfg.tool = getValue<QString>(TOOL_VARIANT).toLower();
 
     if (!(cfg.mode >=ClarkClassifySettings::Full && cfg.mode <= ClarkClassifySettings::Spectrum)) {
@@ -468,14 +466,12 @@ void ClarkClassifyWorker::sl_taskFinished(Task *t) {
     }
 
     const QString rawClassificationUrl = task->getReportUrl();
-    algoLog.info(QString("CLARK produced classification: %1").arg(rawClassificationUrl));
+    algoLog.details(QString("CLARK produced classification: %1").arg(rawClassificationUrl));
 
     QVariantMap data;
-    data[OUTPUT_SLOT] = rawClassificationUrl;
+    data[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT_ID] = QVariant::fromValue<U2::LocalWorkflow::TaxonomyClassificationResult>(parseReport(rawClassificationUrl));
     output->put(Message(output->getBusType(), data));
     context->getMonitor()->addOutputFile(rawClassificationUrl, getActor()->getId());
-
-    parseReport(rawClassificationUrl);
 }
 
 void ClarkClassifyWorker::cleanup() {
@@ -487,9 +483,9 @@ static const QByteArray DEFAULT_REPORT("Object_ID, Length, Assignment");
 static const QByteArray REPORT_PREFIX("Object_ID,");
 static const QByteArray EXTENDED_REPORT_SUFFIX(",Length,Gamma,1st_assignment,score1,2nd_assignment,score2,confidence");
 
-QVariantMap ClarkClassifyWorker::parseReport(const QString &url)
+TaxonomyClassificationResult ClarkClassifyWorker::parseReport(const QString &url)
 {
-    QVariantMap result;
+    TaxonomyClassificationResult result;
     QFile reportFile(url);
     if (!reportFile.open(QIODevice::ReadOnly)) {
         reportError(tr("Cannot open classification report: %1").arg(url));
@@ -512,7 +508,7 @@ QVariantMap ClarkClassifyWorker::parseReport(const QString &url)
                 algoLog.trace(QString("Found CLARK classification: %1=%2").arg(objID).arg(QString(assStr)));
 
                 bool ok = true;
-                uint assID = (assStr != "NA") ? assStr.toUInt(&ok) : 0;
+                TaxID assID = (assStr != "NA") ? assStr.toUInt(&ok) : 0;
                 if (!ok) {
                     reportError(tr("Broken CLARK report: %1").arg(url));
                     break;
@@ -520,7 +516,7 @@ QVariantMap ClarkClassifyWorker::parseReport(const QString &url)
                 if (result.contains(objID)) {
                     QString msg = tr("Duplicate sequence name '%1' have been detected in the classification output.").arg(objID);
                     monitor()->addInfo(msg, getActorId(), Problem::U2_WARNING);
-                    coreLog.info(msg);
+                    algoLog.info(msg);
                 } else {
                     result[objID] = assID;
                 }
