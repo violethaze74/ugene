@@ -61,7 +61,7 @@ private:
     void checkSettings();
     void checkTaxonomy();
 
-    QList<Task *> getCopyTaxonomyTasks();
+    QList<Task *> prepareTaxonomyData();
 
     QStringList getAddToLibraryArguments(const QString &additionalGenomeUrl) const;
     QStringList getBuildArguments() const;

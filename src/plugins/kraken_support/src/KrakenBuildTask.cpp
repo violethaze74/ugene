@@ -79,23 +79,21 @@ void KrakenBuildTask::prepare() {
     if (settings.mode == KrakenBuildTaskSettings::BUILD) {
         int listenerNumber = 0;
 
-        newSubTasks << getCopyTaxonomyTasks();
+        newSubTasks << prepareTaxonomyData();
+        CHECK_OP(stateInfo, );
 
         foreach (const QString &additionalGenome, settings.additionalGenomesUrls) {
             ExternalToolRunTask *addToLibraryTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getAddToLibraryArguments(additionalGenome), new ExternalToolLogParser());
-            coreLog.error(QString("Listener was set: %1").arg(listenerNumber));
             setListenerForTask(addToLibraryTask, listenerNumber++);
             newSubTasks << addToLibraryTask;
         }
 
         ExternalToolRunTask *buildTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getBuildArguments(), new ExternalToolLogParser());
-        coreLog.error(QString("Listener was set: %1").arg(listenerNumber));
         setListenerForTask(buildTask, listenerNumber++);
         newSubTasks << buildTask;
 
         if (settings.clean) {
             ExternalToolRunTask *cleanTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getCleanArguments(), new ExternalToolLogParser());
-            coreLog.error(QString("Listener was set: %1").arg(listenerNumber));
             setListenerForTask(cleanTask, listenerNumber++);
             newSubTasks << cleanTask;
         }
@@ -132,7 +130,11 @@ void KrakenBuildTask::checkTaxonomy() {
     CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), setError(tr("Taxonomy data is not set")), );
 }
 
-QList<Task *> KrakenBuildTask::getCopyTaxonomyTasks() {
+QList<Task *> KrakenBuildTask::prepareTaxonomyData() {
+    // These two files are mandarory even for the cleaned database
+    static const QStringList TAXONOMY_FILES_TO_COPY = QStringList() << NgsReadsClassificationPlugin::TAXON_NODES
+                                                                    << NgsReadsClassificationPlugin::TAXON_NAMES;
+
     QList<Task *> copyTasks;
 
     const QString databaseTaxonomyDirUrl = settings.newDatabaseUrl + "/taxonomy";
@@ -140,11 +142,18 @@ QList<Task *> KrakenBuildTask::getCopyTaxonomyTasks() {
     CHECK_OP(stateInfo, copyTasks);
 
     U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
+    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), setError(tr("Cannot find taxonomy data")), copyTasks);
     const QString sourceDirUrl = taxonomyDataPath->getPath();
 
-    foreach (const QString &fileName, QDir(sourceDirUrl).entryList(QDir::NoDotAndDotDot)) {
-        copyTasks << new CopyFileTask(sourceDirUrl + "/" + fileName, databaseTaxonomyDirUrl + "/" + fileName);
+    foreach (const QString &fileName, QDir(sourceDirUrl).entryList(QDir::Files | QDir::NoDotAndDotDot)) {
+        if (!TAXONOMY_FILES_TO_COPY.contains(fileName)) {
+            const bool succeed = QFile::link(sourceDirUrl + "/" + fileName, databaseTaxonomyDirUrl + "/" + fileName);
+            CHECK_EXT(succeed, setError(tr("Can't create a symbolic link to the taxonomy file: %1").arg(sourceDirUrl + "/" + fileName)), copyTasks);
+        } else {
+            copyTasks << new CopyFileTask(sourceDirUrl + "/" + fileName, databaseTaxonomyDirUrl + "/" + fileName);
+        }
     }
+
     return copyTasks;
 }
 

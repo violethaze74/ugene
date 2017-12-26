@@ -32,8 +32,9 @@ const QString NgsReadsClassificationPlugin::PLUGIN_DESCRIPRION = QObject::tr("Th
 
 const QString NgsReadsClassificationPlugin::TAXONOMY_PATH = "ngs_classification/taxonomy";
 const QString NgsReadsClassificationPlugin::TAXONOMY_DATA_ID = "taxonomy_data";
-const QString NgsReadsClassificationPlugin::TAXON_PROTEIN_MAP = "prot.accession2taxid";   // TODO: check, if DIAMOND can work with not zipped map
+const QString NgsReadsClassificationPlugin::TAXON_PROTEIN_MAP = "prot.accession2taxid.gz";
 const QString NgsReadsClassificationPlugin::TAXON_NODES = "nodes.dmp";
+const QString NgsReadsClassificationPlugin::TAXON_NAMES = "names.dmp";
 
 const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_PATH = "ngs_classification/kraken";
 const QString NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_ID = "minikraken_4gb";
