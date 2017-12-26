@@ -694,26 +694,24 @@ void DetViewSingleLineRenderer::updateLines() {
         numLines = 9;
 
         QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
-        if (ctx->getTranslationState() != SequenceObjectContext::TranslateAnnotationsOrSelection) {
-            for (int i = 0; i < 6; i++) {
-                if (!v[i]) {
-                    if (i < 3) {
-                        directLine--;
-                        rulerLine--;
-                        complementLine--;
-                        firstComplTransLine--;
-                    }
-                    numLines--;
+        for (int i = 0; i < 6; i++) {
+            if (!v[i]) {
+                if (i < 3) {
+                    directLine--;
+                    rulerLine--;
+                    complementLine--;
+                    firstComplTransLine--;
                 }
+                numLines--;
             }
-        } else {
-            int newFirstDirectTranslation = 3;
-            for (int i = 0; i < 3; i++) {
-                if (v[i]) {
-                    newFirstDirectTranslation--;
-                }
-            }
-            firstDirectTransLine = newFirstDirectTranslation;
+        }
+
+        if (ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection && numLines == 3) {
+            directLine = 1;
+            rulerLine = 2;
+            complementLine = 3;
+            firstComplTransLine = 4;
+            numLines = 5;
         }
     } else if (detView->hasComplementaryStrand()) {
         directLine = 0;
@@ -727,22 +725,18 @@ void DetViewSingleLineRenderer::updateLines() {
         numLines = 5;
 
         QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
-        if (ctx->getTranslationState() != SequenceObjectContext::TranslateAnnotationsOrSelection) {
-            for (int i = 0; i < 3; i++) {
-                if (!v[i]) {
-                    directLine--;
-                    rulerLine--;
-                    numLines--;
-                }
+        for (int i = 0; i < 3; i++) {
+            if (!v[i]) {
+                directLine--;
+                rulerLine--;
+                numLines--;
             }
-        } else {
-            int newFirstDirectTranslation = 3;
-            for (int i = 0; i < 3; i++) {
-                if (v[i]) {
-                    newFirstDirectTranslation--;
-                }
-            }
-            firstDirectTransLine = newFirstDirectTranslation;
+        }
+
+        if (ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection && numLines == 3) {
+            directLine = 1;
+            rulerLine = 2;
+            numLines = 3;
         }
     }
     SAFE_POINT(numLines > 0, "Nothing to render. Lines count is less then 1", );

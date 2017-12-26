@@ -594,10 +594,9 @@ void GSequenceLineView::resizeSelection(const QPoint& areaPoint) {
 
     resizableRegion = newSelection;
 
-    setSelection(newSelection);
-    foreach(const U2Region& reg, regions) {
-        addSelection(reg);
-    }
+    regions << newSelection;
+    qSort(regions.begin(), regions.end());
+    ctx->getSequenceSelection()->setSelectedRegions(regions);
 }
 
 //////////////////////////////////////////////////////////////////////////
