@@ -227,6 +227,7 @@ void DetViewSequenceEditor::insertChar(int character) {
     U2SequenceObject* seqObj = view->getSequenceObject();
     SAFE_POINT(seqObj != NULL, "SeqObject is NULL", );
     CHECK(seqObj->getAlphabet()->contains(character), ); // TODO_SVEDIT: support alphabet changing, separate issue
+    cancelSelectionResizing();
 
     const DNASequence seq(QByteArray(1, character));
     U2Region r;
@@ -248,6 +249,7 @@ void DetViewSequenceEditor::deleteChar(int key) {
     CHECK(key == Qt::Key_Backspace || key == Qt::Key_Delete, );
     U2SequenceObject* seqObj = view->getSequenceObject();
     SAFE_POINT(seqObj != NULL, "SeqObject is NULL", );
+    cancelSelectionResizing();
 
     U2Region regionToRemove;
     SequenceObjectContext* ctx = view->getSequenceContext();
@@ -310,6 +312,10 @@ void DetViewSequenceEditor::runModifySeqTask(U2SequenceObject* seqObj, const U2R
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_unblock()));
     block = true;
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
+}
+
+void DetViewSequenceEditor::cancelSelectionResizing() {
+    view->cancelSelectionResizing();
 }
 
 void DetViewSequenceEditor::sl_editMode(bool active) {
