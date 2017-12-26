@@ -2209,52 +2209,52 @@ Double-click to collapse the branch</translation>
 <context>
     <name>U2::ADVSingleSequenceHeaderWidget</name>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="973"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="950"/>
         <source>Alphabet: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Alphabet: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="974"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="951"/>
         <source> Sequence size: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation> Sequence size: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="975"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="952"/>
         <source> File:&amp;nbsp;&lt;b&gt;%1&lt;/b&gt;</source>
         <translation>File:&amp;nbsp;&lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1058"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1035"/>
         <source>raw</source>
         <translation>raw</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1062"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1039"/>
         <source>amino ext</source>
         <translation>amino ext</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1064"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1041"/>
         <source>amino</source>
         <translation>amino</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1069"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1046"/>
         <source>dna</source>
         <translation>dna</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1071"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1048"/>
         <source>dna ext</source>
         <translation>dna ext</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1075"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1052"/>
         <source>rna ext</source>
         <translation>rna ext</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1073"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1050"/>
         <source>rna</source>
         <translation>rna</translation>
     </message>
@@ -2292,83 +2292,83 @@ Double-click to collapse the branch</translation>
         <translation>Create new ruler...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="204"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="198"/>
         <source>Export image</source>
         <translation>Export image</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="220"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="214"/>
         <source>Remove sequence</source>
         <translation>Remove sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="444"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="431"/>
         <source>Zoom</source>
         <translation>Zoom</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="521"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="508"/>
         <source>Select</source>
         <translation>Select</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="536"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="523"/>
         <source>Rulers...</source>
         <translation>Rulers...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="547"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="534"/>
         <source>Remove &apos;%1&apos;</source>
         <translation>Remove &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="708"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="685"/>
         <source>Zoom to range</source>
         <translation>Zoom to range</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="310"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="300"/>
         <source>Show all views</source>
         <translation>Show all views</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="310"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="300"/>
         <source>Hide all views</source>
         <translation>Hide all views</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="238"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="927"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="232"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="904"/>
         <source>Show zoom view</source>
         <translation>Show zoom view</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="238"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="927"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="232"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="904"/>
         <source>Hide zoom view</source>
         <translation>Hide zoom view</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="239"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="932"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="233"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="909"/>
         <source>Show details view</source>
         <translation>Show details view</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="239"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="932"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="233"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="909"/>
         <source>Hide details view</source>
         <translation>Hide details view</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="240"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="937"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="234"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="914"/>
         <source>Show overview</source>
         <translation>Show overview</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="240"/>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="937"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="234"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="914"/>
         <source>Hide overview</source>
         <translation>Hide overview</translation>
     </message>
@@ -3979,35 +3979,55 @@ You don&apos;t have enough rights to change file</translation>
 <context>
     <name>U2::DetView</name>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="63"/>
+        <location filename="../src/ov_sequence/DetView.cpp" line="67"/>
         <source>Show complement strand</source>
         <translation>Show complement strand</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="68"/>
+        <location filename="../src/ov_sequence/DetView.cpp" line="72"/>
         <source>Show/hide translations</source>
         <translation>Show/hide translations</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="72"/>
-        <source>Wrap sequence</source>
-        <translation>Wrap sequence</translation>
+        <location filename="../src/ov_sequence/DetView.cpp" line="76"/>
+        <source>Do not translate</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="78"/>
-        <source>Edit sequence</source>
+        <location filename="../src/ov_sequence/DetView.cpp" line="82"/>
+        <source>Translate selection</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/DetView.cpp" line="87"/>
+        <source>Set up frames manually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/DetView.cpp" line="92"/>
+        <source>Show all frames</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/DetView.cpp" line="97"/>
+        <source>Wrap sequence</source>
+        <translation>Wrap sequence</translation>
     </message>
 </context>
 <context>
     <name>U2::DetViewSequenceEditor</name>
     <message>
-        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="238"/>
+        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="55"/>
+        <source>Edit sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="271"/>
         <source>Delete the sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="240"/>
+        <location filename="../src/ov_sequence/DetViewSequenceEditor.cpp" line="273"/>
         <source>Would you like to completely remove the sequence?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4463,17 +4483,17 @@ Please, check external tools in the settings.</translation>
 <context>
     <name>U2::ExportHighligtningTask</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1018"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1035"/>
         <source>Export highlighting</source>
         <translation>Export highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1046"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1063"/>
         <source>Export highligtning finished successfully</source>
         <translation>Export highligtning finished successfully</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1046"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1063"/>
         <source>Result file:</source>
         <translation>Result file:</translation>
     </message>
@@ -5243,165 +5263,172 @@ Directory Path: %1</source>
 <context>
     <name>U2::MSAEditorSequenceArea</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="117"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="118"/>
         <source>Remove columns of gaps...</source>
         <translation>Remove columns of gaps...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="124"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="125"/>
         <source>Save subalignment...</source>
         <translation>Save subalignment...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="128"/>
         <source>Save sequence...</source>
-        <translation>Save sequence...</translation>
+        <translation type="vanished">Save sequence...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="132"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="133"/>
         <source>Go to position...</source>
         <translation>Go to position...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="139"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="140"/>
         <source>Remove all gaps</source>
         <translation>Remove all gaps</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="143"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="144"/>
         <source>Sequence from file...</source>
         <translation>Sequence from file...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="147"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="148"/>
         <source>Sequence from current project...</source>
         <translation>Sequence from current project...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="151"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="152"/>
         <source>Sort sequences by name</source>
         <translation>Sort sequences by name</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="155"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="156"/>
         <source>Switch on/off collapsing</source>
         <translation>Switch on/off collapsing</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="160"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="161"/>
         <source>Update collapsed groups</source>
         <translation>Update collapsed groups</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="165"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="166"/>
         <source>Replace selected rows with reverse-complement</source>
         <translation>Replace selected rows with reverse-complement</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="169"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="170"/>
         <source>Replace selected rows with reverse</source>
         <translation>Replace selected rows with reverse</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="173"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="174"/>
         <source>Replace selected rows with complement</source>
         <translation>Replace selected rows with complement</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="217"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="220"/>
         <source>DNAAlphabet is null in MSAEditorSequenceArea::hasAminoAlphabet()</source>
         <translation>DNAAlphabet is null in MSAEditorSequenceArea::hasAminoAlphabet()</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="215"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="218"/>
         <source>MultipleAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()</source>
         <translation>MultipleAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="366"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="129"/>
+        <source>Export selected sequence(s)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="369"/>
         <source>Colors</source>
         <translation>Colors</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="374"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="377"/>
         <source>Custom schemes</source>
         <translation>Custom schemes</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="385"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="388"/>
         <source>Create new color scheme</source>
         <translation>Create new color scheme</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="393"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="396"/>
         <source>Highlighting</source>
         <translation>Highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="416"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="419"/>
         <source>The alignment has been modified, so that its alphabet has been switched from &quot;%1&quot; to &quot;%2&quot;. Use &quot;Undo&quot;, if you&apos;d like to restore the original alignment.</source>
         <translation>The alignment has been modified, so that its alphabet has been switched from &quot;%1&quot; to &quot;%2&quot;. Use &quot;Undo&quot;, if you&apos;d like to restore the original alignment.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="464"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="528"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="823"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="467"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="531"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="840"/>
         <source>NULL collapsible model!</source>
         <translation>NULL collapsible model!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="506"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="509"/>
         <source>Go To</source>
         <translation>Go To</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="524"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="527"/>
         <source>NULL msa object!</source>
         <translation>NULL msa object!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="579"/>
         <source>Warning!</source>
-        <translation>Warning!</translation>
+        <translation type="vanished">Warning!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="579"/>
         <source>You must select only one sequence for export.</source>
-        <translation>You must select only one sequence for export.</translation>
+        <translation type="vanished">You must select only one sequence for export.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="622"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="637"/>
         <source>warning</source>
         <translation>warning</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="622"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="637"/>
         <source>The document already in the project</source>
         <translation>The document already in the project</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="742"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="745"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="659"/>
+        <source>Save sequences from alignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="759"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="762"/>
         <source>Open file with sequences</source>
         <translation>Open file with sequences</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="751"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="768"/>
         <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
         <translation>A problem occurred during adding sequences. The multiple alignment is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="837"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="854"/>
         <source>NULL Msa Object!</source>
         <translation>NULL Msa Object!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="842"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="859"/>
         <source>NULL document!</source>
         <translation>NULL document!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="978"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="995"/>
         <source>Incorrect pointer to MSACollapsibleItemModel</source>
         <translation>Incorrect pointer to MSACollapsibleItemModel</translation>
     </message>
@@ -5980,12 +6007,12 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MaEditorSequenceArea</name>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="99"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="101"/>
         <source>Replace selected character</source>
         <translation>Replace selected character</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="106"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="108"/>
         <source>Fill selection with gaps</source>
         <translation>Fill selection with gaps</translation>
     </message>
@@ -6010,7 +6037,7 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation type="vanished">Last visible sequence is out of range</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="166"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="168"/>
         <source>Invalid collapsible item model!</source>
         <translation>Invalid collapsible item model!</translation>
     </message>
@@ -6019,44 +6046,44 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation type="vanished">Sequence is out of range: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="623"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="625"/>
         <source>Alignment object is not available</source>
         <translation>Alignment object is not available</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="946"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="948"/>
         <source>No reference sequence selected</source>
         <translation>No reference sequence selected</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="947"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="949"/>
         <source>Reference sequence for current highlighting scheme is not selected. Use context menu or Highlighting tab on Options panel to select it</source>
         <translation>Reference sequence for current highlighting scheme is not selected. Use context menu or Highlighting tab on Options panel to select it</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="963"/>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1577"/>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1658"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="965"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1624"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1705"/>
         <source>Unknown alphabet</source>
         <translation>Unknown alphabet</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1008"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1010"/>
         <source>Cursor position is out of range</source>
         <translation>Cursor position is out of range</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1388"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1435"/>
         <source>Top left corner of the selection has incorrect coords</source>
         <translation>Top left corner of the selection has incorrect coords</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1390"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1437"/>
         <source>Bottom right corner of the selection has incorrect coords</source>
         <translation>Bottom right corner of the selection has incorrect coords</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1753"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1800"/>
         <source>It is not possible to insert the character into the alignment. Please use a character from set A-Z (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</source>
         <translation>It is not possible to insert the character into the alignment. Please use a character from set A-Z (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</translation>
     </message>
@@ -6077,7 +6104,7 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation type="vanished">startSeq is too big</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="94"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="96"/>
         <source>Use dots</source>
         <translation>Use dots</translation>
     </message>
@@ -6993,37 +7020,37 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::PanView</name>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="159"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="160"/>
         <source>Zoom In</source>
         <translation>Zoom In</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="163"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="164"/>
         <source>Zoom Out</source>
         <translation>Zoom Out</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="167"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="168"/>
         <source>Zoom to Selection</source>
         <translation>Zoom to Selection</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="171"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="172"/>
         <source>Zoom to Whole Sequence</source>
         <translation>Zoom to Whole Sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="175"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="176"/>
         <source>Show Main Ruler</source>
         <translation>Show Main Ruler</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="181"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="182"/>
         <source>Show Custom Rulers</source>
         <translation>Show Custom Rulers</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="483"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="484"/>
         <source>range change request: [%1, %2]</source>
         <translation>range change request: [%1, %2]</translation>
     </message>
@@ -7097,62 +7124,104 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::SaveSelectedSequenceFromMSADialog</name>
     <message>
-        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="14"/>
         <source>Export Selected Sequence from Alignment</source>
-        <translation>Export Selected Sequence from Alignment</translation>
+        <translation type="vanished">Export Selected Sequence from Alignment</translation>
+    </message>
+    <message>
+        <source>Export to file</source>
+        <translation type="vanished">Export to file</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="14"/>
+        <source>Export Selected Sequence(s)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="25"/>
-        <source>Export to file</source>
-        <translation>Export to file</translation>
+        <source>Export to folder</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="35"/>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="37"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="42"/>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="46"/>
+        <source>File name</source>
+        <translation type="unfinished">File name</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="59"/>
+        <source>File format</source>
+        <translation type="unfinished">File format</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="71"/>
+        <source>Keep gaps</source>
+        <translation type="unfinished">Keep gaps</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="81"/>
+        <source>Add to project</source>
+        <translation type="unfinished">Add to project</translation>
+    </message>
+    <message>
         <source>File format to use</source>
-        <translation>File format to use</translation>
+        <translation type="vanished">File format to use</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="54"/>
         <source>Add document to the project</source>
-        <translation>Add document to the project</translation>
+        <translation type="vanished">Add document to the project</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="64"/>
         <source>Gap characters (&apos;-&apos;)</source>
-        <translation>Gap characters (&apos;-&apos;)</translation>
+        <translation type="vanished">Gap characters (&apos;-&apos;)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="70"/>
         <source>Keep</source>
-        <translation>Keep</translation>
+        <translation type="vanished">Keep</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="80"/>
         <source>Trim</source>
-        <translation>Trim</translation>
+        <translation type="vanished">Trim</translation>
     </message>
 </context>
 <context>
     <name>U2::SaveSelectedSequenceFromMSADialogController</name>
     <message>
-        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="48"/>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="59"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="49"/>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="60"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="62"/>
+        <source>Sequence name</source>
+        <translation type="unfinished">Sequence name</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="63"/>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="90"/>
+        <source>File &quot;%1&quot; is already exists, choose custom filename or select another directory for save!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="99"/>
+        <source>File &quot;%1&quot; is already exists, choose another filename or select another directory for save!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>File name is empty!</source>
-        <translation>File name is empty!</translation>
+        <translation type="vanished">File name is empty!</translation>
     </message>
 </context>
 <context>
@@ -7361,34 +7430,41 @@ Please, load the corresponding plugins.</translation>
 <context>
     <name>U2::SequenceObjectContext</name>
     <message>
-        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="213"/>
+        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="79"/>
+        <source>Frame +%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="81"/>
+        <source>Frame -%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="245"/>
         <source>Incorrect signal sender!</source>
         <translation>Incorrect signal sender!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="222"/>
+        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="254"/>
         <source>Select genetic code</source>
         <translation>Select genetic code</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="234"/>
+        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="266"/>
         <source>Show/hide amino acid translations</source>
         <translation>Show/hide amino acid translations</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="242"/>
         <source>Show direct only</source>
-        <translation>Show direct only</translation>
+        <translation type="vanished">Show direct only</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="243"/>
         <source>Show complementary only</source>
-        <translation>Show complementary only</translation>
+        <translation type="vanished">Show complementary only</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="244"/>
         <source>Show all</source>
-        <translation>Show all</translation>
+        <translation type="vanished">Show all</translation>
     </message>
 </context>
 <context>
