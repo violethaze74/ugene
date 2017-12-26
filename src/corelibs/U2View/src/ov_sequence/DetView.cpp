@@ -102,6 +102,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     showComplementAction->setCheckable(true);
     showTranslationAction->setCheckable(true);
     wrapSequenceAction->setCheckable(true);
+    wrapSequenceAction->setChecked(true);
 
     bool hasComplement = ctx->getComplementTT() != NULL;
     showComplementAction->setChecked(hasComplement);
@@ -202,7 +203,7 @@ DNATranslation* DetView::getComplementTT() const {
 }
 
 DNATranslation* DetView::getAminoTT() const {
-    return !doNotTranslateAction->isChecked() || (ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection) ? ctx->getAminoTT() : NULL;
+    return !doNotTranslateAction->isChecked() ? ctx->getAminoTT() : NULL;
 }
 
 int DetView::getSymbolsPerLine() const {
@@ -507,23 +508,28 @@ void DetView::updateTranslationsState(const U2Region& visibleRange, const U2Stra
 void DetView::mouseMoveEvent(QMouseEvent *me) {
     if (!me->buttons()) {
         setBorderCursor(me->pos());
-    } else if (me->buttons() & Qt::LeftButton) {
-        Qt::CursorShape shape = cursor().shape();
-        if (shape != Qt::ArrowCursor) {
-            moveBorder(me->pos());
+    }
+
+    if (isSelectionResizing) {
+        if (me->buttons() & Qt::LeftButton) {
+            Qt::CursorShape shape = cursor().shape();
+            if (shape != Qt::ArrowCursor) {
+                moveBorder(me->pos());
+                QWidget::mouseMoveEvent(me);
+                return;
+            }
+        }
+
+        if (lastPressPos == -1) {
             QWidget::mouseMoveEvent(me);
             return;
         }
-    }
-
-    if (lastPressPos == -1) {
-        QWidget::mouseMoveEvent(me);
-        return;
-    }
-    if (me->buttons() & Qt::LeftButton) {
-        moveBorder(me->pos());
+        if (me->buttons() & Qt::LeftButton) {
+            moveBorder(me->pos());
+        }
     }
     setSelectedTranslations();
+
     QWidget::mouseMoveEvent(me);
 }
 

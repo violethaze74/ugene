@@ -51,7 +51,8 @@ GSequenceLineView::GSequenceLineView(QWidget* p, SequenceObjectContext* _ctx)
       coherentRangeView(NULL),
       movableBorder(SelectionModificationHelper::NoMovableBorder),
       ignoreMouseSelectionEvents(false),
-      singleBaseSelection(false)
+      singleBaseSelection(false),
+      isSelectionResizing(false)
 {
     GCOUNTER( cvar, tvar, "SequenceLineView" );
     seqLen = ctx->getSequenceLength();
@@ -161,6 +162,7 @@ void GSequenceLineView::removeSelection(const U2Region& r) {
 
 void GSequenceLineView::mousePressEvent(QMouseEvent* me) {
     setFocus();
+    isSelectionResizing = true;
 
     QPoint renderAreaPos = toRenderAreaPoint(me->pos());
     if (!renderArea->rect().contains(renderAreaPos)) {
@@ -213,7 +215,7 @@ void GSequenceLineView::mouseReleaseEvent(QMouseEvent* me) {
         }
     }
 
-    scrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
+    cancelSelectionResizing();
     lastPressPos = -1;
     resizableRegion = U2Region();
     overlappedRegions.clear();
@@ -224,22 +226,26 @@ void GSequenceLineView::mouseReleaseEvent(QMouseEvent* me) {
 void GSequenceLineView::mouseMoveEvent(QMouseEvent* me) {
     if (!me->buttons()) {
         setBorderCursor(me->pos());
-    } else if (me->buttons() & Qt::LeftButton) {
-        Qt::CursorShape shape = cursor().shape();
-        if (shape != Qt::ArrowCursor) {
-            moveBorder(me->pos());
+    }
+
+    if (isSelectionResizing) {
+        if (me->buttons() & Qt::LeftButton) {
+            Qt::CursorShape shape = cursor().shape();
+            if (shape != Qt::ArrowCursor) {
+                moveBorder(me->pos());
+                QWidget::mouseMoveEvent(me);
+                return;
+            }
+        }
+
+        if (lastPressPos == -1) {
             QWidget::mouseMoveEvent(me);
             return;
         }
-    }
 
-    if (lastPressPos == -1) {
-        QWidget::mouseMoveEvent(me);
-        return;
-    }
-
-    if (me->buttons() & Qt::LeftButton) {
-        moveBorder(me->pos());
+        if (me->buttons() & Qt::LeftButton) {
+            moveBorder(me->pos());
+        }
     }
     QWidget::mouseMoveEvent(me);
 }
@@ -512,6 +518,11 @@ void GSequenceLineView::autoScrolling(const QPoint& areaPoint) {
     }
 }
 
+void GSequenceLineView::cancelSelectionResizing() {
+    isSelectionResizing = false;
+    scrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
+}
+
 void GSequenceLineView::resizeSelection(const QPoint& areaPoint) {
     qint64 pos = renderArea->coordToPos(areaPoint);
     QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
@@ -583,10 +594,9 @@ void GSequenceLineView::resizeSelection(const QPoint& areaPoint) {
 
     resizableRegion = newSelection;
 
-    setSelection(newSelection);
-    foreach(const U2Region& reg, regions) {
-        addSelection(reg);
-    }
+    regions << newSelection;
+    qSort(regions.begin(), regions.end());
+    ctx->getSequenceSelection()->setSelectedRegions(regions);
 }
 
 //////////////////////////////////////////////////////////////////////////
