@@ -244,7 +244,6 @@ Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
 AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
     : QDialog(parent),
       saveController(NULL),
-      fileNameProvidedByUser(false),
       savableWidget(this)
 {
     setupUi(this);
@@ -264,9 +263,10 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
     saveController->setPath(outputLineEdit->text());
-    fileNameProvidedByUser = false; // in setPath saveController updates this flag -> reset it to default state
     
     new QShortcut(QKeySequence(Qt::Key_Delete), this, SLOT(sl_removeRead()));
+    
+    defaultOutputUrl = outputLineEdit->text();
 }
 
 void AlignToReferenceBlastDialog::initSaveController() {
@@ -281,8 +281,6 @@ void AlignToReferenceBlastDialog::initSaveController() {
 
     const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::UGENEDB;
     saveController = new SaveDocumentController(conf, formats, this);
-    connect(saveController, SIGNAL(si_pathChanged(const QString)), SLOT(sl_outputFileSetByUser(const QString)));
-    connect(outputLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_outputFileEditedByUser(const QString&)));
 }
 
 AlignToReferenceBlastCmdlineTask::Settings AlignToReferenceBlastDialog::getSettings() const {
@@ -386,25 +384,14 @@ void AlignToReferenceBlastDialog::sl_removeRead() {
 }
 
 void AlignToReferenceBlastDialog::sl_referenceChanged(const QString &newRef) {
-    if (fileNameProvidedByUser) {
+    if (outputLineEdit->text() != defaultOutputUrl) { // file name is set by user -> do not change
         return;
     }
-    QFileInfo outFileFi(outputLineEdit->text());
-    QFileInfo referenceFileInfo(newRef);
-    QString newOutFileName = referenceFileInfo.baseName() + "_" + DEFAULT_OUTPUT_FILE_NAME;
-    QString outUrl = outFileFi.dir().absolutePath() + "/" + newOutFileName;
-    saveController->setPath(outUrl);
-    fileNameProvidedByUser = false; // in setPath saveController updates this flag -> reset it to default state
-}
-
-void AlignToReferenceBlastDialog::sl_outputFileEditedByUser(const QString &newPath) {
-    Q_UNUSED(newPath);
-    fileNameProvidedByUser = true; // stop adjusting file name -> keep what user typed in
-}
-
-void AlignToReferenceBlastDialog::sl_outputFileSetByUser(const QString newPath) {
-    Q_UNUSED(newPath);
-    fileNameProvidedByUser = true; //stop adjusting file name -> keep what user selected in file dialog
+    // set default file name based on reference file name
+    QString outDir = QFileInfo(outputLineEdit->text()).dir().absolutePath();
+    QString outFile = QFileInfo(newRef).baseName() + "_" + DEFAULT_OUTPUT_FILE_NAME;
+    saveController->setPath(outDir + "/" + outFile);
+    defaultOutputUrl = saveController->getSaveFileName();
 }
 
 void AlignToReferenceBlastDialog::connectSlots() {
@@ -413,6 +400,5 @@ void AlignToReferenceBlastDialog::connectSlots() {
     connect(removeReadButton, SIGNAL(clicked(bool)), SLOT(sl_removeRead()));
     connect(referenceLineEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_referenceChanged(const QString &)));
 }
-
 
 } // namespace
