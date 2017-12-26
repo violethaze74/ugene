@@ -58,17 +58,17 @@
     <message>
         <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Форма</translation>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="63"/>
         <source>Save to file</source>
-        <translation type="unfinished">Сохранить в файл</translation>
+        <translation>Сохранить в файл</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="77"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -104,12 +104,12 @@
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Форма</translation>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="63"/>
         <source>Save to fiie</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Сохранить в файл</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="70"/>
@@ -679,27 +679,27 @@
     <message>
         <location filename="../src/util/EditSequenceDialog.ui" line="28"/>
         <source>Expand affected annotation</source>
-        <translation>Расширить связанную аннотацию</translation>
+        <translation>Расширить аннотацию</translation>
     </message>
     <message>
         <location filename="../src/util/EditSequenceDialog.ui" line="38"/>
         <source>Remove affected annotation</source>
-        <translation>Удалить связанную аннотацию</translation>
+        <translation>Удалить аннотацию</translation>
     </message>
     <message>
         <location filename="../src/util/EditSequenceDialog.ui" line="45"/>
         <source>Split (join annotation parts)</source>
-        <translation>Расщепление (соединить части аннотации)</translation>
+        <translation>Разделить на две соединённые части</translation>
     </message>
     <message>
         <location filename="../src/util/EditSequenceDialog.ui" line="52"/>
         <source>Split (separate annotations parts)</source>
-        <translation>Расщепление (разъединить части аннотации)</translation>
+        <translation>Разделить на две отдельные части</translation>
     </message>
     <message>
         <location filename="../src/util/EditSequenceDialog.ui" line="64"/>
         <source>Recalculate values of qualifiers</source>
-        <translation>Пересчитать значения квалификаторов</translation>
+        <translation>Пересчитать координаты в значениях квалификаторов</translation>
     </message>
     <message>
         <location filename="../src/util/EditSequenceDialog.ui" line="76"/>
@@ -787,32 +787,32 @@
     <message>
         <location filename="../src/util/EditSettingsDialog.ui" line="14"/>
         <source>Annotation Settings on Sequence Editing</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменение аннотаций при редактировании последовательности</translation>
     </message>
     <message>
         <location filename="../src/util/EditSettingsDialog.ui" line="23"/>
         <source>Expand affected annotation</source>
-        <translation type="unfinished">Расширить связанную аннотацию</translation>
+        <translation>Расширить аннотацию</translation>
     </message>
     <message>
         <location filename="../src/util/EditSettingsDialog.ui" line="33"/>
         <source>Remove affected annotation</source>
-        <translation type="unfinished">Удалить связанную аннотацию</translation>
+        <translation>Удалить аннотацию</translation>
     </message>
     <message>
         <location filename="../src/util/EditSettingsDialog.ui" line="40"/>
         <source>Split (join annotation parts)</source>
-        <translation type="unfinished">Расщепление (соединить части аннотации)</translation>
+        <translation>Разделить на две соединённые части</translation>
     </message>
     <message>
         <location filename="../src/util/EditSettingsDialog.ui" line="47"/>
         <source>Split (separate annotations parts)</source>
-        <translation type="unfinished">Расщепление (разъединить части аннотации)</translation>
+        <translation>Разделить на две отдельные части</translation>
     </message>
     <message>
         <location filename="../src/util/EditSettingsDialog.ui" line="59"/>
         <source>Recalculate values of qualifiers</source>
-        <translation type="unfinished">Пересчитать значения квалификаторов</translation>
+        <translation>Пересчитать координаты в значениях квалификаторов</translation>
     </message>
 </context>
 <context>
@@ -1425,7 +1425,7 @@ The items cannot be recovered once deleted.</source>
     <message>
         <location filename="../src/util/RemovePartFromSequenceDialog.ui" line="156"/>
         <source>Recalculate values of qualifiers</source>
-        <translation>Пересчитать значения квалификаторов</translation>
+        <translation>Пересчитать координаты в значениях квалификаторов</translation>
     </message>
 </context>
 <context>
@@ -2106,6 +2106,19 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/util/EditSequenceDialogController.cpp" line="232"/>
         <source>Select file to save...</source>
         <translation>Файл для сохранения...</translation>
+    </message>
+</context>
+<context>
+    <name>U2::EditSettingsDialog</name>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.cpp" line="40"/>
+        <source>OK</source>
+        <translation>ОК</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.cpp" line="41"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>

@@ -58,17 +58,17 @@
     <message>
         <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="63"/>
         <source>Save to file</source>
-        <translation type="unfinished">Save to file</translation>
+        <translation>Save to file</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="77"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -104,12 +104,12 @@
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="63"/>
         <source>Save to fiie</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Save to fiie</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="70"/>
@@ -2106,6 +2106,19 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/util/EditSequenceDialogController.cpp" line="232"/>
         <source>Select file to save...</source>
         <translation>Select file to save...</translation>
+    </message>
+</context>
+<context>
+    <name>U2::EditSettingsDialog</name>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.cpp" line="40"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.cpp" line="41"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
     </message>
 </context>
 <context>
