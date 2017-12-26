@@ -2896,7 +2896,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     <message>
         <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="58"/>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Имя файла</translation>
     </message>
 </context>
 <context>

@@ -6147,7 +6147,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Запуск</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowTabView.cpp" line="228"/>
+        <location filename="../src/WorkflowTabView.cpp" line="229"/>
         <source>Rename</source>
         <translation>Переименовать</translation>
     </message>
