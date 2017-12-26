@@ -77,6 +77,7 @@ QStringList SingleDatasetController::names() const {
 
 GenomicLibraryDialog::GenomicLibraryDialog(const Dataset &dataset, QWidget *parent)
     : QDialog(parent),
+      ui(new Ui_GenomicLibraryDialog),
       singleDatasetController(new SingleDatasetController(dataset, this))
 {
     ui = new Ui_GenomicLibraryDialog();

@@ -177,7 +177,6 @@ void KrakenClassifyWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new KrakenClassifyPrompter(NULL));
     proto->addExternalTool(KrakenSupport::CLASSIFY_TOOL);
-    proto->addExternalTool(KrakenSupport::TRANSLATE_TOOL);
     proto->setValidator(new DatabaseValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 

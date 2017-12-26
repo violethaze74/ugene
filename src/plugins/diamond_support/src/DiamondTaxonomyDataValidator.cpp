@@ -38,10 +38,10 @@ bool DiamondTaxonomyDataValidator::validate(const Actor *actor, ProblemList &pro
               problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("Taxonomy data is not set"), actor->getId()), false);
 
     CHECK_EXT(!taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_PROTEIN_MAP).isEmpty(),
-              problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("file '%1' not found").arg("prot.accession2taxid.gz"), actor->getId()), false);
+              problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("Taxonomy file '%1' not found").arg(NgsReadsClassificationPlugin::TAXON_PROTEIN_MAP), actor->getId()), false);
 
     CHECK_EXT(!taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES).isEmpty(),
-              problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("file '%1' not found").arg("nodes.dmp"), actor->getId()), false);
+              problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("Taxonomy file '%1' not found").arg(NgsReadsClassificationPlugin::TAXON_NODES), actor->getId()), false);
 
     return true;
 }
