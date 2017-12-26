@@ -102,6 +102,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     showComplementAction->setCheckable(true);
     showTranslationAction->setCheckable(true);
     wrapSequenceAction->setCheckable(true);
+    wrapSequenceAction->setChecked(true);
 
     bool hasComplement = ctx->getComplementTT() != NULL;
     showComplementAction->setChecked(hasComplement);
