@@ -465,6 +465,7 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
 
             QByteArray amino;
             if (isTranslateAnnotationOrSelection) {
+                qSort(sortedRegions[line].begin(), sortedRegions[line].end());
                 amino = translateSelection(sortedRegions[line], translation, seq, length, visibleRange.startPos, U2Strand::Direct);
             } else {
                 amino = translate(translation, seq, length);
@@ -553,6 +554,7 @@ void DetViewSingleLineRenderer::drawComplementTranslations(QPainter& p,
 
             QByteArray amino;
             if (isTranslateAnnotationOrSelection) {
+                qSort(sortedRegions[complLine].begin(), sortedRegions[complLine].end());
                 amino = translateComplSelection(sortedRegions[complLine], translation, seq, seqLen, visibleRange);
             } else {
                 amino = translate(translation, seq, seqLen);
