@@ -87,7 +87,7 @@ NgsReadsClassificationPlugin::~NgsReadsClassificationPlugin() {
 
 void NgsReadsClassificationPlugin::registerData(const QString &dataId, const QString &relativePath, const QString &description, bool addAsFolder) {
     U2DataPathRegistry* dataPathRegistry = AppContext::getDataPathRegistry();
-    const QString path = QFileInfo(QString(PATH_PREFIX_DATA) + "/" + relativePath).absoluteFilePath();
+    const QString path = QFileInfo(QString(PATH_PREFIX_DATA) + ":" + relativePath).absoluteFilePath();
     U2DataPath *dataPath = new U2DataPath(dataId, path, description, addAsFolder ? U2DataPath::AddOnlyFolders : U2DataPath::None);
     bool ok = dataPathRegistry->registerEntry(dataPath);
     if (!ok) {
