@@ -790,9 +790,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/util/EditSettingsDialog.ui" line="23"/>
         <source>Expand affected annotation</source>
-        <translation type="unfinished">Expand affected annotation</translation>
+        <translation type="obsolete">Expand affected annotation</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="23"/>
+        <source>Expand or crop affected annotation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/EditSettingsDialog.ui" line="33"/>
