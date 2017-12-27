@@ -125,17 +125,15 @@ void GSequenceLineView::sl_onScrollBarMoved(int pos) {
     if (lastPressPos!=-1) {
         QAbstractSlider::SliderAction aAction = scrollBar->getRepeatAction();
         if (aAction == QAbstractSlider::SliderSingleStepAdd) {
-            qint64 selStart = qMin(lastPressPos, visibleRange.endPos());
-            qint64 selEnd = qMax(lastPressPos, visibleRange.endPos());
-            U2Region newSelection(selStart, selEnd - selStart);
-            resizableRegion = newSelection;
-            setSelection(newSelection);
+            const qint64 selStart = qMin(lastPressPos, visibleRange.endPos());
+            const qint64 selEnd = qMax(lastPressPos, visibleRange.endPos());
+            const U2Region newSelection(selStart, selEnd - selStart);
+            changeSelectionOnScrollbarMoving(newSelection);
         } else if (aAction == QAbstractSlider::SliderSingleStepSub) {
-            qint64 selStart = qMin(lastPressPos, visibleRange.startPos);
-            qint64 selEnd = qMax(lastPressPos, visibleRange.startPos);
-            U2Region newSelection(selStart, selEnd - selStart);
-            resizableRegion = newSelection;
-            setSelection(newSelection);
+            const qint64 selStart = qMin(lastPressPos, visibleRange.startPos);
+            const qint64 selEnd = qMax(lastPressPos, visibleRange.startPos);
+            const U2Region newSelection(selStart, selEnd - selStart);
+            changeSelectionOnScrollbarMoving(newSelection);
         }
     }
 }
@@ -592,8 +590,17 @@ void GSequenceLineView::resizeSelection(const QPoint& areaPoint) {
         }
     }
 
-    resizableRegion = newSelection;
+    changeSelection(regions, newSelection);
+}
 
+void GSequenceLineView::changeSelectionOnScrollbarMoving(const U2Region& newSelection) {
+    QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
+    regions.removeOne(resizableRegion);
+    changeSelection(regions, newSelection);
+}
+
+void GSequenceLineView::changeSelection(QVector<U2Region>& regions, const U2Region& newSelection) {
+    resizableRegion = newSelection;
     regions << newSelection;
     qSort(regions.begin(), regions.end());
     ctx->getSequenceSelection()->setSelectedRegions(regions);
