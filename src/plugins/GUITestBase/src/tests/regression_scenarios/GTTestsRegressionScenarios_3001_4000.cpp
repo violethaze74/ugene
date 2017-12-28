@@ -3952,10 +3952,17 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTPlainTextEdit::setPlainText(os, GTWidget::findExactWidget<QPlainTextEdit *>(os, "sequenceEdit", dialog), "=");
-
+            QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit*>("sequenceEdit");
+            CHECK_SET_ERR(plainText != NULL, "plain text not found");
+            GTWidget::click(os, plainText);
+            GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
+            GTKeyboardDriver::keyClick('=');
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTGlobals::sleep();
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
+            GTGlobals::sleep();
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
     };
     Runnable *filler = new ReplaceSubsequenceDialogFiller(os, new Scenario);
