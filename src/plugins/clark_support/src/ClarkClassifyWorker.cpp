@@ -566,7 +566,7 @@ void ClarkClassifyTask::prepare() {
         stateInfo.setError(tr("Unsupported CLARK variant. Only default and light variants are supported."));
         return;
     }
-    QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolName, getArguments(), new ClarkLogParser()));
+    QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolName, getArguments(), new ClarkLogParser(), cfg.databaseUrl));
     CHECK_OP(stateInfo, );
     setListenerForTask(task.data());
     addSubTask(task.take());
