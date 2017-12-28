@@ -54,8 +54,10 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/TaskSignalMapper.h>
+#include <U2Core/Timer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+
 
 #include <U2Designer/DelegateEditors.h>
 
@@ -165,6 +167,18 @@ TaxID TaxonomyTree::match(TaxID id, QSet<TaxID> filter)
     return UNDEFINED_ID;
 }
 
+class TaxonNameComparator
+{
+public:
+    TaxonNameComparator( TaxonomyTree *tree) : tree(tree) {}
+    bool operator()(const TaxID left, const TaxID right ) const {
+        return tree->getName(left).compare(tree->getName(right));
+    }
+
+private:
+TaxonomyTree *tree;
+};
+
 TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
 {
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
@@ -184,6 +198,7 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
         algoLog.error(QString("Cannot open taxonomy classification data: %1").arg(nodesUrl));
 //        reportError(tr("Cannot open classification report: %1").arg(nodesUrl));
     } else {
+        GTIMER(cvar, tvar, "TaxonomyTree::nodes");
         QList<TaxID> &nodes = tree->nodes;
         nodes.reserve(2000000);
         QByteArray line;
@@ -246,6 +261,7 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
         algoLog.error(QString("Cannot open taxonomy classification data: %1").arg(namesUrl));
 //        reportError(tr("Cannot open classification report: %1").arg(namesUrl));
     } else {
+        GTIMER(cvar, tvar, "TaxonomyTree::names");
         QStringList &names = tree->names;
         QByteArray line;
         names.reserve(2000000);
@@ -281,6 +297,21 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
         }
         namesFile.close();
     }
+    {
+//        GTIMER(cvar, tvar, "TaxonomyTree::sort");
+//        // sort children alphabetically for nicer GUI
+//        QList<TaxID> keys; keys << 1;// = tree->childs.uniqueKeys();
+//        foreach (TaxID id, keys) {
+//            QList<TaxID> values = tree->childs.values(id);
+//            if (values.size() > 1) {
+//                qSort(values.begin(), values.end(), TaxIDComparator(tree));
+//                tree->childs.remove(id);
+//                foreach (TaxID child, values) {
+//                    tree->childs.insert(id, child);
+//                }
+//            }
+//        }
+    }
     return tree;
 }
 
@@ -307,6 +338,15 @@ public:
     QString getSelected() const;
 
 private:
+    QList<TaxID> getChildrenSorted(TaxID id) const {
+        QList<TaxID> values = tree->getChildren(id);
+        if (values.size() > 1) {
+            //qSort(values.begin(), values.end(), TaxonNameComparator(tree));
+            qSort(values.begin(), values.end(), [](const TaxID a, const TaxID b) -> bool
+            { return TaxonomyTree::getInstance()->getName(a) < TaxonomyTree::getInstance()->getName(b); });
+        }
+        return values;
+    }
 
     TaxonomyTree *tree;
     /**
@@ -376,7 +416,7 @@ bool TaxonomyTreeModel::setData(const QModelIndex &index, const QVariant &v, int
         QVector<int> checkRole(1, Qt::CheckStateRole);
         emit dataChanged(index, index, checkRole);
 
-        QList<TaxID> children = tree->getChildren(item);
+        QList<TaxID> children = getChildrenSorted(item);
         if (children.size() != 0) {
             emit dataChanged(createIndex(0,0,children.first()), createIndex(children.size()-1,3,children.last()));
         }
@@ -482,7 +522,7 @@ QModelIndex TaxonomyTreeModel::index(int row, int column, const QModelIndex &par
     else
         parentItem = static_cast<TaxID>(parent.internalId());
 
-    QList<TaxID> children = tree->getChildren(parentItem);
+    QList<TaxID> children = getChildrenSorted(parentItem);
     if (row < children.size())
         return createIndex(row, column, children.at(row));
     else
@@ -500,7 +540,7 @@ QModelIndex TaxonomyTreeModel::parent(const QModelIndex &index) const
     if (parentItem == 1)
         return QModelIndex();
 
-    QList<TaxID> siblings = tree->getChildren(tree->getParent(parentItem));
+    QList<TaxID> siblings = getChildrenSorted(tree->getParent(parentItem));
     int row = siblings.indexOf(parentItem);
     if (row >= 0)
         return createIndex(row, 0, parentItem);
@@ -633,7 +673,7 @@ TaxonSelectionDialog::TaxonSelectionDialog(const QString &value, QWidget *parent
 
     mainLayout->addWidget(buttonBox);
 
-    setWindowTitle(QApplication::translate("TaxonSelectionDialog", "Select taxons", 0));
+    setWindowTitle(QApplication::translate("TaxonSelectionDialog", "Select Taxons", 0));
     QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
