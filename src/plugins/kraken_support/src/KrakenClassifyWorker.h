@@ -52,7 +52,7 @@ private:
     TaxonomyClassificationResult parseReport(const QString &url);
 
     IntegralBus *input;
-    IntegralBus *pairedInput;
+//    IntegralBus *pairedInput;
     IntegralBus *output;
 
     bool pairedReadsInput;

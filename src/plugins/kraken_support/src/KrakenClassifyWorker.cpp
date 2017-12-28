@@ -32,6 +32,7 @@
 #include "KrakenClassifyTask.h"
 #include "KrakenClassifyWorker.h"
 #include "KrakenClassifyWorkerFactory.h"
+#include "../ngs_reads_classification/src/GetReadListWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -41,7 +42,7 @@ const QString KrakenClassifyWorker::KRAKEN_DIR = "kraken";
 KrakenClassifyWorker::KrakenClassifyWorker(Actor *actor)
     : BaseWorker(actor, false),
       input(NULL),
-      pairedInput(NULL),
+//      pairedInput(NULL),
       output(NULL),
       pairedReadsInput(false)
 {
@@ -50,11 +51,11 @@ KrakenClassifyWorker::KrakenClassifyWorker(Actor *actor)
 
 void KrakenClassifyWorker::init() {
     input = ports.value(KrakenClassifyWorkerFactory::INPUT_PORT_ID);
-    pairedInput = ports.value(KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID);
+//    pairedInput = ports.value(KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID);
     output = ports.value(KrakenClassifyWorkerFactory::OUTPUT_PORT_ID);
 
     SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(KrakenClassifyWorkerFactory::INPUT_PORT_ID), );
-    SAFE_POINT(NULL != pairedInput, QString("Port with id '%1' is NULL").arg(KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID), );
+//    SAFE_POINT(NULL != pairedInput, QString("Port with id '%1' is NULL").arg(KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID), );
     SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(KrakenClassifyWorkerFactory::OUTPUT_PORT_ID), );
 
     pairedReadsInput = (getValue<QString>(KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID) == KrakenClassifyTaskSettings::PAIRED_END);
@@ -83,12 +84,12 @@ Task *KrakenClassifyWorker::tick() {
         output->setEnded();
     }
 
-    if (pairedReadsInput) {
-        const QString error = checkPairedReads();
-        if (!error.isEmpty()) {
-            return new FailTask(error);
-        }
-    }
+//    if (pairedReadsInput) {
+//        const QString error = checkPairedReads();
+//        if (!error.isEmpty()) {
+//            return new FailTask(error);
+//        }
+//    }
 
     return NULL;
 }
@@ -104,10 +105,11 @@ bool KrakenClassifyWorker::isReady() const {
 
     const int hasMessage1 = input->hasMessage();
     const bool ended1 = input->isEnded();
-    if (!pairedReadsInput) {
+//    if (!pairedReadsInput)
+    {
         return hasMessage1 || ended1;
     }
-
+/*
     const int hasMessage2 = pairedInput->hasMessage();
     const bool ended2 = pairedInput->isEnded();
 
@@ -119,7 +121,7 @@ bool KrakenClassifyWorker::isReady() const {
         return ended1;
     }
 
-    return ended1 && ended2;
+    return ended1 && ended2;*/
 }
 
 void KrakenClassifyWorker::sl_taskFinished(Task *task) {
@@ -137,21 +139,21 @@ void KrakenClassifyWorker::sl_taskFinished(Task *task) {
 }
 
 bool KrakenClassifyWorker::isReadyToRun() const {
-    return input->hasMessage() && (!pairedReadsInput || pairedInput->hasMessage());
+    return input->hasMessage()/* && (!pairedReadsInput || pairedInput->hasMessage())*/;
 }
 
 bool KrakenClassifyWorker::dataFinished() const {
-    return input->isEnded() || (pairedReadsInput && pairedInput->isEnded());
+    return input->isEnded() /*|| (pairedReadsInput && pairedInput->isEnded())*/;
 }
 
 QString KrakenClassifyWorker::checkPairedReads() const {
-    CHECK(pairedReadsInput, "");
+    /*CHECK(pairedReadsInput, "");
     if (input->isEnded() && (!pairedInput->isEnded() || pairedInput->hasMessage())) {
         return tr("Not enough downstream reads datasets");
     }
     if (pairedInput->isEnded() && (!input->isEnded() || input->hasMessage())) {
         return tr("Not enough upstream reads datasets");
-    }
+    }*/
     return "";
 }
 
@@ -164,12 +166,12 @@ KrakenClassifyTaskSettings KrakenClassifyWorker::getSettings(U2OpStatus &os) {
     settings.preloadDatabase = getValue<bool>(KrakenClassifyWorkerFactory::PRELOAD_DATABASE_ATTR_ID);
 
     const Message message = getMessageAndSetupScriptValues(input);
-    settings.readsUrl = message.getData().toMap()[BaseSlots::URL_SLOT().getId()].toString();
+    settings.readsUrl = message.getData().toMap()[GetReadsListWorkerFactory::SE_SLOT_ID].toString();
 
     if (pairedReadsInput) {
         settings.pairedReads = true;
-        const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
-        settings.pairedReadsUrl = pairedMessage.getData().toMap()[BaseSlots::URL_SLOT().getId()].toString();
+        //const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
+        settings.pairedReadsUrl = message.getData().toMap()[GetReadsListWorkerFactory::PE_SLOT_ID].toString();//pairedMessage.getData().toMap()[BaseSlots::URL_SLOT().getId()].toString();
     }
 
     QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());

@@ -87,7 +87,7 @@ private slots:
 
 protected:
     IntegralBus *input;
-    IntegralBus *pairedOutput;
+    //IntegralBus *pairedOutput;
     IntegralBus *output;
     ClassificationFilterSettings cfg;
 };

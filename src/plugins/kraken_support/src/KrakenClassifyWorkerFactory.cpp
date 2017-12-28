@@ -40,6 +40,7 @@
 #include "KrakenClassifyPrompter.h"
 #include "KrakenSupport.h"
 #include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
+#include "../../ngs_reads_classification/src/GetReadListWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -47,7 +48,7 @@ namespace LocalWorkflow {
 const QString KrakenClassifyWorkerFactory::ACTOR_ID = "classify-reads-with-kraken";
 
 const QString KrakenClassifyWorkerFactory::INPUT_PORT_ID = "in1";
-const QString KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID = "in2";
+//const QString KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID = "in2";
 const QString KrakenClassifyWorkerFactory::OUTPUT_PORT_ID = "out";
 
 const QString KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID = "input-data";
@@ -73,19 +74,20 @@ Worker *KrakenClassifyWorkerFactory::createWorker(Actor *actor) {
 void KrakenClassifyWorkerFactory::init() {
     QList<PortDescriptor *> ports;
     {
-        const Descriptor inSlotDesc(BaseSlots::URL_SLOT().getId(),
-                                    KrakenClassifyPrompter::tr("Input URL(s)"),
-                                    KrakenClassifyPrompter::tr("Input URL(s)."));
+//        const Descriptor inSlotDesc = (BaseSlots::URL_SLOT().getId(),
+//                                    KrakenClassifyPrompter::tr("Input URL(s)"),
+//                                    KrakenClassifyPrompter::tr("Input URL(s)."));
 
-        const Descriptor inPairedSlotDesc(BaseSlots::URL_SLOT().getId(),
-                                          KrakenClassifyPrompter::tr("Input URL(s)"),
-                                          KrakenClassifyPrompter::tr("Input URL(s)."));
+//        const Descriptor inPairedSlotDesc(BaseSlots::URL_SLOT().getId(),
+//                                          KrakenClassifyPrompter::tr("Input URL(s)"),
+//                                          KrakenClassifyPrompter::tr("Input URL(s)."));
 
         QMap<Descriptor, DataTypePtr> inType;
-        inType[inSlotDesc] = BaseTypes::STRING_TYPE();
+        inType[GetReadsListWorkerFactory::SE_SLOT()] = BaseTypes::STRING_TYPE();
+        inType[GetReadsListWorkerFactory::PE_SLOT()] = BaseTypes::STRING_TYPE();
 
-        QMap<Descriptor, DataTypePtr> inPairedType;
-        inPairedType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
+//        QMap<Descriptor, DataTypePtr> inPairedType;
+//        inPairedType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
 
         QMap<Descriptor, DataTypePtr> outType;
         outType[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
@@ -93,15 +95,15 @@ void KrakenClassifyWorkerFactory::init() {
         const Descriptor inPortDesc(INPUT_PORT_ID,
                                     KrakenClassifyPrompter::tr("Input sequences 1"),
                                     KrakenClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                               "The input files may contain single-end reads, scaffolds, or \"left\" reads in case of the paired-end sequencing (see \"Sequencing reads\" parameter of the element)."));
-        const Descriptor inPairedPortDesc(INPUT_PAIRED_PORT_ID,
-                                          KrakenClassifyPrompter::tr("Input sequences 2"),
-                                          KrakenClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                                     "The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Sequencing reads\" parameter of the element)."));
+                                                               "The input files may contain single-end reads, scaffolds, or PE reads in case of the paired-end sequencing (see \"Sequencing reads\" parameter of the element)."));
+//        const Descriptor inPairedPortDesc(INPUT_PAIRED_PORT_ID,
+//                                          KrakenClassifyPrompter::tr("Input sequences 2"),
+//                                          KrakenClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
+//                                                                     "The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Sequencing reads\" parameter of the element)."));
         const Descriptor outPortDesc(OUTPUT_PORT_ID, KrakenClassifyPrompter::tr("Classified sequences"), KrakenClassifyPrompter::tr("Classification report URL."));
 
         ports << new PortDescriptor(inPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
-        ports << new PortDescriptor(inPairedPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-paired-in", inPairedType)), true /*input*/);
+//        ports << new PortDescriptor(inPairedPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-paired-in", inPairedType)), true /*input*/);
         ports << new PortDescriptor(outPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
     }
 
@@ -146,7 +148,7 @@ void KrakenClassifyWorkerFactory::init() {
         attributes << new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), false, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
         attributes << new Attribute(preloadDatabaseDesc, BaseTypes::BOOL_TYPE(), false, true);
 
-        inputDataAttribute->addPortRelation(PortRelationDescriptor(INPUT_PAIRED_PORT_ID, QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
+//        inputDataAttribute->addPortRelation(PortRelationDescriptor(INPUT_PAIRED_PORT_ID, QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
         minHitsAttribute->addRelation(new VisibilityRelation(QUICK_OPERATION_ATTR_ID, "true"));
         databaseAttribute->addRelation(new DatabaseSizeRelation(PRELOAD_DATABASE_ATTR_ID));
     }

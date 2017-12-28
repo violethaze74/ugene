@@ -58,6 +58,7 @@
 
 #include "ClarkSupport.h"
 #include "ClarkClassifyWorker.h"
+#include "../ngs_reads_classification/src/GetReadListWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -68,8 +69,8 @@ const QString ClarkClassifyWorkerFactory::ACTOR_ID("clark-classify");
 
 static const QString INPUT_PORT("in1");
 static const QString PAIRED_INPUT_PORT = "in2";
-static const QString INPUT_SLOT = BaseSlots::URL_SLOT().getId();
-static const QString PAIRED_INPUT_SLOT = BaseSlots::URL_SLOT().getId();
+static const QString INPUT_SLOT = GetReadsListWorkerFactory::SE_SLOT_ID;
+static const QString PAIRED_INPUT_SLOT = GetReadsListWorkerFactory::PE_SLOT_ID;
 
 static const QString OUTPUT_PORT("out");
 
@@ -93,15 +94,15 @@ static const QString PAIRED_END = "paired-end";
 
 
 QString ClarkClassifyPrompter::composeRichDoc() {
-    const QString databaseUrl = getHyperlink(DB_URL, getURL(DB_URL)); // getRequiredParam(DB_URL);
-    const QString readsProducerName = getProducersOrUnset(INPUT_PORT, INPUT_SLOT);
+    const QString databaseUrl = getHyperlink(DB_URL, getURL(DB_URL));
 
     if (getParameter(SEQUENCING_READS).toString() == SINGLE_END) {
+        const QString readsProducerName = getProducersOrUnset(INPUT_PORT, GetReadsListWorkerFactory::SE_SLOT_ID);
         return tr("Classify sequences from %1 with CLARK, use %2 database.").arg(readsProducerName).arg(databaseUrl);
     } else {
-        const QString pairedReadsProducerName = getProducersOrUnset(PAIRED_INPUT_PORT, PAIRED_INPUT_SLOT);
-        return tr("Classify paired-end reads from %1 and %2 with CLARK, use %3 database.")
-                .arg(readsProducerName).arg(pairedReadsProducerName).arg(databaseUrl);
+        const QString pairedReadsProducerName = getProducersOrUnset(INPUT_PORT, GetReadsListWorkerFactory::PE_SLOT_ID);
+        return tr("Classify paired-end reads from %1 with CLARK, use %2 database.")
+                .arg(pairedReadsProducerName).arg(databaseUrl);
     }
 }
 
@@ -132,7 +133,27 @@ bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, c
     }
     CHECK(missedFiles.isEmpty(), false);
 
-    return true;
+    // FIXME port validation
+    bool res = true;
+    Port *p = actor->getPort(INPUT_PORT);
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(p);
+    CHECK(NULL != input, "");
+    const bool paired = actor->getParameter(SEQUENCING_READS)->getAttributeValueWithoutScript<QString>() == PAIRED_END;
+    QList<Actor*> producers = input->getProducers(GetReadsListWorkerFactory::SE_SLOT_ID);
+    if (producers.isEmpty()) {
+        res = false;
+        problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory SE-reads slot is not connected"), actor->getId()));
+    }
+
+    if (paired) {
+        QList<Actor*> producers = input->getProducers(GetReadsListWorkerFactory::PE_SLOT_ID);
+        if (producers.isEmpty()) {
+            res = false;
+            problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory PE slot is not connected"), actor->getId()));
+        }
+    }
+
+    return res;
 }
 
 /************************************************************************/
@@ -148,20 +169,20 @@ void ClarkClassifyWorkerFactory::init() {
     QList<PortDescriptor*> p;
     {
         Descriptor inD(INPUT_PORT, ClarkClassifyWorker::tr("Input sequences 1"), ClarkClassifyWorker::tr("URL(s) to FASTQ or FASTA file(s) should be provided."
-                "<br>The input files may contain single-end reads, scaffolds, or “left” reads in case of the paired-end sequencing (see “Input data” parameter of the element)."));
-        Descriptor inD2(PAIRED_INPUT_PORT, ClarkClassifyWorker::tr("Input sequences 2"), ClarkClassifyWorker::tr("URL(s) to FASTQ or FASTA file(s) should be provided."
-                    "<br>The port is used, if paired-end sequencing was done. The input files should contain the “right” reads (see “Input data” parameter of the element)."));
+                "<br>The input files may contain single-end reads, scaffolds, or PE reads in case of the paired-end sequencing (see “Input data” parameter of the element)."));
+//        Descriptor inD2(PAIRED_INPUT_PORT, ClarkClassifyWorker::tr("Input sequences 2"), ClarkClassifyWorker::tr("URL(s) to FASTQ or FASTA file(s) should be provided."
+//                    "<br>The port is used, if paired-end sequencing was done. The input files should contain the “right” reads (see “Input data” parameter of the element)."));
         Descriptor outD(OUTPUT_PORT, ClarkClassifyWorker::tr("Output File"), ClarkClassifyWorker::tr("CLARK classification result file"));
 
         QMap<Descriptor, DataTypePtr> inM;
-        assert(INPUT_SLOT == BaseSlots::URL_SLOT().getId());
-        inM[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();
-        p << new PortDescriptor(inD, DataTypePtr(new MapDataType("clark.input-url", inM)), true);
+        inM[GetReadsListWorkerFactory::SE_SLOT()] = BaseTypes::STRING_TYPE();
+        inM[GetReadsListWorkerFactory::PE_SLOT()] = BaseTypes::STRING_TYPE();
+        p << new PortDescriptor(inD, DataTypePtr(new MapDataType("clark.input", inM)), true);
 
-        QMap<Descriptor, DataTypePtr> inM2;
-        assert(PAIRED_INPUT_SLOT == BaseSlots::URL_SLOT().getId());
-        inM2[Descriptor(BaseSlots::URL_SLOT().getId(), ClarkClassifyWorker::tr("Input paired reads URL"), ClarkClassifyWorker::tr("Input paired reads URL"))] = BaseTypes::STRING_TYPE();
-        p << new PortDescriptor(inD2, DataTypePtr(new MapDataType("clark.input-paired-url", inM2)), true);
+//        QMap<Descriptor, DataTypePtr> inM2;
+//        inM2[GetReadsListWorkerFactory::SE_SLOT()] = BaseTypes::STRING_TYPE();
+//        inM2[GetReadsListWorkerFactory::PE_SLOT()] = BaseTypes::STRING_TYPE();
+//        p << new PortDescriptor(inD2, DataTypePtr(new MapDataType("clark.input-paired-url", inM2)), true);
 
         QMap<Descriptor, DataTypePtr> outM;
         outM[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
@@ -236,7 +257,8 @@ void ClarkClassifyWorkerFactory::init() {
 
 
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), false, SINGLE_END);
-        sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(PAIRED_INPUT_PORT, QVariantList() << PAIRED_END));
+//        sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(PAIRED_INPUT_PORT, QVariantList() << PAIRED_END));
+//        sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(INPUT_PORT, QVariantList() << SINGLE_END));
         a << sequencingReadsAttribute;
         a << new Attribute( tool, BaseTypes::STRING_TYPE(), false, ClarkClassifySettings::TOOL_LIGHT);
         a << new Attribute( dbUrl, BaseTypes::STRING_TYPE(), true);
@@ -349,24 +371,24 @@ void ClarkClassifyWorkerFactory::cleanup() {
 /* ClarkClassifyWorker */
 /************************************************************************/
 ClarkClassifyWorker::ClarkClassifyWorker(Actor *a)
-:BaseWorker(a, false), input(NULL), pairedInput(NULL), output(NULL), paired(false)
+:BaseWorker(a, false), input(NULL), output(NULL), paired(false)
 {
 }
 
 void ClarkClassifyWorker::init() {
-    input = ports.value(INPUT_PORT);
-    pairedInput = ports.value(PAIRED_INPUT_PORT);
+    paired = (getValue<QString>(SEQUENCING_READS) == PAIRED_END);
+
+    input = ports.value(/*paired ? PAIRED_INPUT_PORT :*/ INPUT_PORT);
+    //pairedInput = ports.value(PAIRED_INPUT_PORT);
     output = ports.value(OUTPUT_PORT);
 
     SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), );
-    SAFE_POINT(NULL != pairedInput, QString("Port with id '%1' is NULL").arg(PAIRED_INPUT_PORT), );
+//    SAFE_POINT(NULL != pairedInput, QString("Port with id '%1' is NULL").arg(PAIRED_INPUT_PORT), );
     SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
 
     output->addComplement(input);
     input->addComplement(output);
-    //FIXME pairedInput looses complement context
 
-    paired = (getValue<QString>(SEQUENCING_READS) == PAIRED_END);
     cfg.databaseUrl = getValue<QString>(DB_URL);
     cfg.numberOfThreads = getValue<int>(NUM_THREADS);
     cfg.preloadDatabase = getValue<bool>(DB_TO_RAM);
@@ -389,10 +411,11 @@ bool ClarkClassifyWorker::isReady() const {
     }
     const int hasMessage1 = input->hasMessage();
     const bool ended1 = input->isEnded();
-    if (!paired) {
+    //if (!paired)
+    {
         return hasMessage1 || ended1;
     }
-
+/*
     const int hasMessage2 = pairedInput->hasMessage();
     const bool ended2 = pairedInput->isEnded();
 
@@ -404,19 +427,19 @@ bool ClarkClassifyWorker::isReady() const {
         return ended1;
     }
 
-    return ended1 && ended2;
+    return ended1 && ended2;*/
 }
 
 Task * ClarkClassifyWorker::tick() {
-    if (input->hasMessage() && (!paired || pairedInput->hasMessage())) {
+    if (input->hasMessage() /*&& (!paired || pairedInput->hasMessage())*/) {
         const Message message = getMessageAndSetupScriptValues(input);
 
         QString readsUrl = message.getData().toMap()[INPUT_SLOT].toString();
         QString pairedReadsUrl;
 
         if (paired) {
-            const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
-            pairedReadsUrl = pairedMessage.getData().toMap()[PAIRED_INPUT_SLOT].toString();
+//            const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
+            pairedReadsUrl = message.getData().toMap()[PAIRED_INPUT_SLOT].toString();
         }
         //TODO uncompress input files if needed
 
@@ -435,25 +458,25 @@ Task * ClarkClassifyWorker::tick() {
         return task;
     }
 
-    if (input->isEnded() || (paired && pairedInput->isEnded())) {
+    if (input->isEnded()/* || (paired && pairedInput->isEnded())*/) {
         setDone();
         algoLog.info("CLARK worker is done as input has ended");
         output->setEnded();
     }
 
-    if (paired) {
-        QString error;
-        if (input->isEnded() && (!pairedInput->isEnded() || pairedInput->hasMessage())) {
-            error = tr("Not enough downstream reads datasets");
-        }
-        if (pairedInput->isEnded() && (!input->isEnded() || input->hasMessage())) {
-            error = tr("Not enough upstream reads datasets");
-        }
+//    if (paired) {
+//        QString error;
+//        if (input->isEnded() && (!pairedInput->isEnded() || pairedInput->hasMessage())) {
+//            error = tr("Not enough downstream reads datasets");
+//        }
+//        if (pairedInput->isEnded() && (!input->isEnded() || input->hasMessage())) {
+//            error = tr("Not enough upstream reads datasets");
+//        }
 
-        if (!error.isEmpty()) {
-            return new FailTask(error);
-        }
-    }
+//        if (!error.isEmpty()) {
+//            return new FailTask(error);
+//        }
+//    }
 
     return NULL;
 }

@@ -24,6 +24,7 @@
 #include "KrakenClassifyPrompter.h"
 #include "KrakenClassifyTask.h"
 #include "KrakenClassifyWorkerFactory.h"
+#include "../ngs_reads_classification/src/GetReadListWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -35,15 +36,15 @@ KrakenClassifyPrompter::KrakenClassifyPrompter(Actor *actor)
 }
 
 QString KrakenClassifyPrompter::composeRichDoc() {
-    const QString readsProducerName = getProducersOrUnset(KrakenClassifyWorkerFactory::INPUT_PORT_ID, BaseSlots::URL_SLOT().getId());
+    const QString readsProducerName = getProducersOrUnset(KrakenClassifyWorkerFactory::INPUT_PORT_ID, GetReadsListWorkerFactory::SE_SLOT_ID);
     const QString databaseUrl = getHyperlink(KrakenClassifyWorkerFactory::DATABASE_ATTR_ID, getURL(KrakenClassifyWorkerFactory::DATABASE_ATTR_ID));
 
     if (KrakenClassifyTaskSettings::SINGLE_END == getParameter(KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID).toString()) {
-        return tr("Classify sequences from <u>%1</u> with Kraken, use %2 database.").arg(readsProducerName).arg(databaseUrl);
+        return tr("Classify sequences from %1 with Kraken, use %2 database.").arg(readsProducerName).arg(databaseUrl);
     } else {
-        const QString pairedReadsProducerName = getProducersOrUnset(KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID, BaseSlots::URL_SLOT().getId());
-        return tr("Classify paired-end reads from <u>%1</u> and <u>%2</u> with Kraken, use %3 database.")
-                .arg(readsProducerName).arg(pairedReadsProducerName).arg(databaseUrl);
+//        const QString pairedReadsProducerName = getProducersOrUnset(KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID, BaseSlots::URL_SLOT().getId());
+        return tr("Classify paired-end reads from %1 with Kraken, use %2 database.")
+                .arg(readsProducerName)/*.arg(pairedReadsProducerName)*/.arg(databaseUrl);
     }
 }
 

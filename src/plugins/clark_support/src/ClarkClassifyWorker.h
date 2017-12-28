@@ -93,7 +93,7 @@ private slots:
 
 protected:
     IntegralBus *input;
-    IntegralBus *pairedInput;
+//    IntegralBus *pairedInput;
     IntegralBus *output;
     ClarkClassifySettings cfg;
     bool paired;

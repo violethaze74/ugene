@@ -25,6 +25,7 @@
 
 #include "NgsReadsClassificationPlugin.h"
 #include "ClassificationFilterWorker.h"
+#include "GetReadListWorker.h"
 
 namespace U2 {
 
@@ -64,7 +65,7 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
 
 class LoadTaxonomyTreeTask : public Task {
 public:
-    LoadTaxonomyTreeTask() : Task(NgsReadsClassificationPlugin::tr("Pre-load taxonomy data"), TaskFlag_None) {}
+    LoadTaxonomyTreeTask() : Task(NgsReadsClassificationPlugin::tr("Pre-load NCBI taxonomy data"), TaskFlag_None) {}
     void run() {
          LocalWorkflow::TaxonomyTree::getInstance();
     }
@@ -82,6 +83,7 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
     registerData(REFSEQ_VIRAL_ID, REFSEQ_VIRAL_PATH, tr("RefSeq release viral data from NCBI"));
 
     LocalWorkflow::ClassificationFilterWorkerFactory::init();
+    LocalWorkflow::GetReadsListWorkerFactory::init();
 
     // Pre-load taxonomy data
     U2::TaskScheduler *scheduler = U2::AppContext::getTaskScheduler( );

@@ -124,7 +124,10 @@ void ClarkBuildWorkerFactory::init() {
         Descriptor taxUrl(TAX_DIR, ClarkBuildWorker::tr("Taxdata URL"),
             ClarkBuildWorker::tr("A folder with downloaded NCBI taxonomy info."));
 
-        a << new Attribute( taxUrl, BaseTypes::STRING_TYPE(), true);
+        U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
+//        CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), setError(tr("Taxonomy data is not set")), );
+        QString taxPath = taxonomyDataPath != NULL && taxonomyDataPath->isValid() ? taxonomyDataPath->getPath() : "";
+        a << new Attribute( taxUrl, BaseTypes::STRING_TYPE(), true, taxPath);
     }
 
     QMap<QString, PropertyDelegate*> delegates;
