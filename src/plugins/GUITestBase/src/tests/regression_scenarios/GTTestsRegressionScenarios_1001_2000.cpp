@@ -1204,9 +1204,9 @@ GUI_TEST_CLASS_DEFINITION(test_1065_1) {
 //    1. Select "Tools->Align to reference->Build index" from the main menu.
 //    Expected state: the "Build index" dialog appeared.
 //    2. Fill the dialog with the next values:
-//        {Align short reads method}	Bowtie
-//        {reference sequence}		_common_data/scenarios/_regression/1065/e_coli_1000.fa
-//        {Index file name}		_tmp/e_coli_1000
+//        {Align short reads method}    Bowtie
+//        {reference sequence}        _common_data/scenarios/_regression/1065/e_coli_1000.fa
+//        {Index file name}        _tmp/e_coli_1000
 //    Click the "Start" button.
 //    Expected state: task completes successfully, there are six files in the _tmp folder:
 //    e_coli_1000.1.ebwt
@@ -1236,11 +1236,11 @@ GUI_TEST_CLASS_DEFINITION(test_1065_2) {
 //    1. Select {Tools->Align to reference->Align short reads} in the main menu.
 //    Expected state: the "Align sequencing reads" dialog appeared.
 //    2. Fill the dialog with next values:
-//        {Alignmnet method}	Bowtie
-//        {Reference sequence}	_common_data/scenarios/_regression/1065/index/e_coli_100
-//        {Result file name}	_tmp/e_coli_1000.sam
-//        {Prebuild index}	checked
-//        {Short reads}		_common_data/scanarios/_regression/1065/e_coli_1000.fq
+//        {Alignmnet method}    Bowtie
+//        {Reference sequence}    _common_data/scenarios/_regression/1065/index/e_coli_100
+//        {Result file name}    _tmp/e_coli_1000.sam
+//        {Prebuild index}    checked
+//        {Short reads}        _common_data/scanarios/_regression/1065/e_coli_1000.fq
 //    And click the "Start" button.
 //    Expected state: the Bowtie task successfully completes, the "Import SAM file" dialog appeared.
 //    3. Set the {Destination URL} field with "_tmp/e_coli_1000.sam.ugenedb" value and click "Import" button.
@@ -1269,11 +1269,11 @@ GUI_TEST_CLASS_DEFINITION(test_1065_3) {
 //    1. Select {Tools->Align to reference->Align short reads} in the main menu.
 //    Expected state: the "Align sequencing reads" dialog appeared.
 //    2. Fill the dialog with next values:
-//        {Alignmnet method}	Bowtie
-//        {Reference sequence}	_common_data/scenarios/_regression/1065/e_coli_100.fa
-//        {Result file name}	_tmp/e_coli_1000.sam
-//        {Prebuild index}	unchecked
-//        {Short reads}		_common_data/scanarios/_regression/1065/e_coli_1000.fq
+//        {Alignmnet method}    Bowtie
+//        {Reference sequence}    _common_data/scenarios/_regression/1065/e_coli_100.fa
+//        {Result file name}    _tmp/e_coli_1000.sam
+//        {Prebuild index}    unchecked
+//        {Short reads}        _common_data/scanarios/_regression/1065/e_coli_1000.fq
 //    And click the "Start" button.
 //    Expected state: the Bowtie task successfully completes, the "Import SAM file" dialog appeared.
 //    3. Set the {Destination URL} field with "_tmp/e_coli_1000.sam.ugenedb" value and click "Import" button.
@@ -1682,14 +1682,14 @@ GUI_TEST_CLASS_DEFINITION(test_1122){
 //    Expected state: Result is the same as in the step 4.
 
     GTLogTracer l;
-	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/scenarios/CAP3/xyz.fa"
                                                                  << testDir + "_common_data/scenarios/CAP3/xyz.qual",
                                                                  sandBoxDir + "test_1122_1"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads de novo assembly (with CAP3)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/scenarios/CAP3/xyz.fastq",
                                                                  sandBoxDir + "test_1122_2"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads de novo assembly (with CAP3)...");
@@ -1839,10 +1839,10 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
-	GTGlobals::sleep(100);
-	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTGlobals::sleep(100);
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsWorkflowDesigner::runWorkflow(os);
-	GTGlobals::sleep(500);
+    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1154) {
@@ -4188,10 +4188,10 @@ GUI_TEST_CLASS_DEFINITION(test_1420) {
 //    1. Select {Tools->ALign to reference->Align short reads} from the main menu.
 //    Expected state: the "Align sequencing reads" dialog appeared.
 //    2. Fill this dialog with:
-//        {Alignment method:}	BWA-SW
-//        {Reference sequence:}	_common_data/fasta/NC_008253.fna
-//        {Result file name:}	somewhere in the temp folder
-//        {Short reads:}		_common_data/reads/long_reads.fasta
+//        {Alignment method:}    BWA-SW
+//        {Reference sequence:}    _common_data/fasta/NC_008253.fna
+//        {Result file name:}    somewhere in the temp folder
+//        {Short reads:}        _common_data/reads/long_reads.fasta
 //        other options: default
 //    3. Press the "Start" button.
 //    Expected state: after the task's end the "Import SAM file" appeared.
@@ -4297,7 +4297,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
     GTUtilsMdi::click(os, GTGlobals::Close);
-	GTGlobals::sleep(500);
+    GTGlobals::sleep(500);
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read HMM2 Profile");
@@ -4479,7 +4479,7 @@ GUI_TEST_CLASS_DEFINITION(test_1434_2) {
     GTGlobals::sleep(200);
 
     //3. Use these settings :
-    //	search for:ATTCACCAAAGTTGAA*TGAAGGAAAAAATGCT
+    //    search for:ATTCACCAAAGTTGAA*TGAAGGAAAAAATGCT
     // ; comment
     //Algorithm : Regular expression
     //Region : custom region(1 - 1000)
@@ -6148,7 +6148,7 @@ GUI_TEST_CLASS_DEFINITION( test_1603 ) {
     QAbstractButton *tree = GTAction::button(os,"Build Tree");
     GTWidget::click(os, tree);
     GTGlobals::sleep();
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMdi::closeWindow(os, "COI [m] COI");
     QString docName = "1603.nwk";
@@ -6401,7 +6401,7 @@ GUI_TEST_CLASS_DEFINITION(test_1640) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(4, 3), QPoint(4, 3));
 
     //3. Press ESCAPE arrow to remove the selection.
-	GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //4. Press and hold a bit shift+right arrow.
     //Qt::Key_Shift
@@ -6719,7 +6719,7 @@ GUI_TEST_CLASS_DEFINITION(test_1668){
 //    7) Deactivate the PWA tab
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    8) Select some bunch of sequences (more than two) in the name list area
-	GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 2), QPoint(-5, 6), GTGlobals::UseMouse);
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 2), QPoint(-5, 6), GTGlobals::UseMouse);
 //    9) Activate the PWA tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: previosly chosen two sequences and their order are saved
@@ -6730,7 +6730,7 @@ GUI_TEST_CLASS_DEFINITION(test_1668){
 //    10) Deactivate the PWA tab
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    11) Select exactly two sequences in the name list area
-	GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 7), QPoint(-5, 8), GTGlobals::UseMouse);
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 7), QPoint(-5, 8), GTGlobals::UseMouse);
 //    12) Activate the PWA tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: last chosen two sequences has appeared on PWA tab

@@ -457,8 +457,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsWorkflowDesigner::clickParameter(os, "Output file");
     URLWidget *urlWidget = qobject_cast<URLWidget *>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<URLWidget *>());
     GTKeyboardDriver::keySequence("aaa");
-	GTKeyboardDriver::keyPress(Qt::Key_Enter);
-	GTGlobals::sleep(500);
+    GTKeyboardDriver::keyPress(Qt::Key_Enter);
+    GTGlobals::sleep(500);
     CHECK_SET_ERR(NULL != urlWidget, "Output file url widget was not found");
     QTreeWidget *completer = urlWidget->findChild<QTreeWidget *>();
     CHECK_SET_ERR(completer != NULL, "auto completer widget was not found");
@@ -771,7 +771,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     QAbstractButton* button = GTAction::button(os, "ExtractAssemblyRegion");
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //	  3. Check expected coverage values
+    //      3. Check expected coverage values
     QLabel *coveredRegionsLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != NULL, "cannot convert widget to CoveredRegionsLabel");
 
@@ -796,7 +796,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     QAbstractButton* button = GTAction::button(os, "ExtractAssemblyRegion");
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //	  3. Check expected coverage values
+    //      3. Check expected coverage values
     QLabel *coveredRegionsLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != NULL, "cannot convert widget to CoveredRegionsLabel");
 
@@ -818,7 +818,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     QAbstractButton* button = GTAction::button(os, "ExtractAssemblyRegion");
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //	  3. Check expected coverage values
+    //      3. Check expected coverage values
     QLabel *coveredRegionsLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != NULL, "cannot convert widget to CoveredRegionsLabel");
 
@@ -917,7 +917,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
 //    1. Open assembly
     GTFile::copy(os, testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "chrM.sorted.bam.ugenedb");
     GTFileDialog::openFile(os, sandBoxDir + "chrM.sorted.bam.ugenedb");
-	GTUtilsProjectTreeView::click(os, "chrM");
+    GTUtilsProjectTreeView::click(os, "chrM");
 
 //    2. Rename assembly object
     GTUtilsProjectTreeView::rename(os, "chrM", "new_name");

@@ -1230,7 +1230,7 @@ GUI_TEST_CLASS_DEFINITION(test_0729){
 //    3) Click on "unset"
     GTUtilsWorkflowDesigner::click(os, item);
 //    Expected state: Dataset view opened
-	GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/FASTA/*");
+    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/FASTA/*");
 //    4) Click "Add folder", select data/samples/FASTA
 //    QListWidget* itemsArea = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea");
 //    GTListWidget::click(os, itemsArea, "FASTA", Qt::RightButton);
@@ -2264,7 +2264,7 @@ GUI_TEST_CLASS_DEFINITION(test_0846) {
 
 //    2. Add any annotations;
     GTUtilsAnnotationsTreeView::createAnnotation(os, "", "", "1..100");
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    3. Use popup menu {Export->Export annotations}
 //    4. Chose "csv" in combobox "File format"
@@ -2578,10 +2578,10 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTGlobals::sleep(1000);
 
     QStringList errors = GTUtilsLog::getErrors(os, l1);
-	CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1");
+    CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1");
 
     GTUtilsProjectTreeView::click(os, "Gene.fa");
-	GTGlobals::sleep();
+    GTGlobals::sleep();
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
 
     GTLogTracer l2;
@@ -2589,7 +2589,7 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-	GTGlobals::sleep(1000);
+    GTGlobals::sleep(1000);
     errors = GTUtilsLog::getErrors(os, l2);
     CHECK_SET_ERR(errors.size() == 2, "Wrong errors count 2");
     GTGlobals::sleep();

@@ -773,7 +773,7 @@ GUI_TEST_CLASS_DEFINITION(test_5252) {
 GUI_TEST_CLASS_DEFINITION(test_5268) {
 //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Create a custom color scheme for the alignment with aan ppropriate alphabet.
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl));
@@ -786,8 +786,8 @@ GUI_TEST_CLASS_DEFINITION(test_5268) {
     GTUtilsOptionPanelMsa::setColorScheme(os, "test_5268");
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-	GTKeyboardDriver::keyClick(Qt::Key_Escape);
-	GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep(500);
 //    5. Open {Settings -> Preferences -> Alignment Color Scheme}.
 //    6. Change color of the custom color scheme and click ok.
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl, NewColorSchemeCreator::Change));
@@ -801,8 +801,8 @@ GUI_TEST_CLASS_DEFINITION(test_5268) {
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-	GTKeyboardDriver::keyClick(Qt::Key_Escape);
-	GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5278) {
@@ -1003,7 +1003,7 @@ GUI_TEST_CLASS_DEFINITION(test_5363_1) {
 
     FormatDBSupportRunDialogFiller::Parameters parametersDB;
     parametersDB.inputFilePath = dataDir + "/samples/Genbank/murine.gb";
-	parametersDB.outputDirPath = QDir(sandBoxDir).absolutePath();
+    parametersDB.outputDirPath = QDir(sandBoxDir).absolutePath();
     GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, parametersDB));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST make database...");
 
@@ -1047,7 +1047,7 @@ GUI_TEST_CLASS_DEFINITION(test_5363_2) {
 
     FormatDBSupportRunDialogFiller::Parameters parametersDB;
     parametersDB.inputFilePath = dataDir + "/samples/Genbank/murine.gb";
-	parametersDB.outputDirPath = QDir(sandBoxDir).absolutePath();
+    parametersDB.outputDirPath = QDir(sandBoxDir).absolutePath();
     GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, parametersDB));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST+ make database...");
 
@@ -1456,11 +1456,11 @@ GUI_TEST_CLASS_DEFINITION(test_5469) {
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsSequenceView::clickAnnotationDet(os, "5'UTR", 1, 1);
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
-	CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size() == 2, QString("Wrong number of selected annotations expect %1, got %2").arg("2").arg(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size()));
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size() == 2, QString("Wrong number of selected annotations expect %1, got %2").arg("2").arg(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5492) {
@@ -2229,12 +2229,12 @@ GUI_TEST_CLASS_DEFINITION(test_5636) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5637) {
-	QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
-	QString fileName = "sanger_alignment_short.ugenedb";
+    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+    QString fileName = "sanger_alignment_short.ugenedb";
 
-	//1. Copy to 'sandbox' and open alignment_short.ugenedb
-	GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
-	GTFileDialog::openFile(os, sandBoxDir, fileName);
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
 
     //Expected: row length must be equal or lesser then reference length
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
@@ -2704,7 +2704,7 @@ GUI_TEST_CLASS_DEFINITION(test_5716) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
 
 //    3. Set any output file path, set any format.
-	const QString expectedOutputPath = QDir::toNativeSeparators(sandBoxDir + "test_5716.txt");
+    const QString expectedOutputPath = QDir::toNativeSeparators(sandBoxDir + "test_5716.txt");
     GTUtilsOptionPanelMsa::setExportConsensusOutputPath(os, expectedOutputPath);
 
 //    4. Open "General" options panel tab.
@@ -2724,12 +2724,12 @@ GUI_TEST_CLASS_DEFINITION(test_5716) {
 
 GUI_TEST_CLASS_DEFINITION(test_5718) {
 
-	QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
-	QString fileName = "sanger_alignment_short.ugenedb";
+    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+    QString fileName = "sanger_alignment_short.ugenedb";
 
-	//1. Copy to 'sandbox' and open alignment_short.ugenedb
-	GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
-	GTFileDialog::openFile(os, sandBoxDir, fileName);
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
 
     //2. Click reference pos 2071
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2071, 1));
@@ -2853,7 +2853,7 @@ GUI_TEST_CLASS_DEFINITION(test_5747) {
     //7. Set new name and press enter
     GTKeyboardDriver::keySequence("New name 2");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
-	GTGlobals::sleep(500);
+    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5751) {
@@ -3274,12 +3274,12 @@ GUI_TEST_CLASS_DEFINITION(test_5758) {
 
 GUI_TEST_CLASS_DEFINITION(test_5761) {
 
-	QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
-	QString fileName = "sanger_alignment_short.ugenedb";
+    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
+    QString fileName = "sanger_alignment_short.ugenedb";
 
-	//1. Copy to 'sandbox' and open alignment_short.ugenedb
-	GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
-	GTFileDialog::openFile(os, sandBoxDir, fileName);
+    //1. Copy to 'sandbox' and open alignment_short.ugenedb
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
 
     GTLogTracer trace;
     //2. Select the last char of the first row
@@ -3719,7 +3719,7 @@ GUI_TEST_CLASS_DEFINITION(test_5789_2) {
 
 //    2. Edit the MSA somehow.
     GTUtilsMsaEditor::removeRows(os, 0, 0);
-	GTGlobals::sleep(100);
+    GTGlobals::sleep(100);
 //    Expected state: the "Undo" button is enabled, the "Redo" button is disabled.
     isUndoEnabled = GTUtilsMcaEditor::isUndoEnabled(os);
     isRedoEnabled = GTUtilsMcaEditor::isRedoEnabled(os);
@@ -3849,7 +3849,7 @@ GUI_TEST_CLASS_DEFINITION(test_5798_5) {
     //2. Open sample {Convert alignments to ClustalW}
     GTUtilsWorkflowDesigner::addSample(os, "Convert alignments to ClustalW");
     //Expected state: There is "Show wizard" tool button
-	//3. Press "Show wizard" button
+    //3. Press "Show wizard" button
 
     class customWizard : public CustomScenario {
     public:
@@ -3864,8 +3864,8 @@ GUI_TEST_CLASS_DEFINITION(test_5798_5) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             //GTUtilsWizard::setParameter(os, "Result ClustalW file", "DNA.aln");
 
-			//6. Press "Run" button
-			GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+            //6. Press "Run" button
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
 
@@ -3932,13 +3932,13 @@ GUI_TEST_CLASS_DEFINITION(test_5833) {
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
-	GTUtilsTaskTreeView::waitTaskFinished(os);
-	GTGlobals::sleep(100);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(100);
 
 //    2. Select 440 base on the second read (the position is ungapped).
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2506, 1));
-	GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-	GTGlobals::sleep(100);
+    GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
+    GTGlobals::sleep(100);
 
 //    Expected state: the status bar contains the next labels: "Ln 2/16, RefPos 2500/11878, ReadPos 440/1173".
     QString rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3957,12 +3957,12 @@ GUI_TEST_CLASS_DEFINITION(test_5833) {
 //    3. Call a context menu, select "Edit" -> "Insert character/gap" menu item.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Insert character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
-	GTUtilsTaskTreeView::waitTaskFinished(os);
-	GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(500);
 
 //    4. Click 'A' key.
-	GTKeyboardDriver::keyClick('A');
-	GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick('A');
+    GTGlobals::sleep(500);
 
 //    Expected state: the new base has been inserted, the status bar contains the next labels: "Ln 2/16, RefPos gap/11878, ReadPos 440/1174".
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);

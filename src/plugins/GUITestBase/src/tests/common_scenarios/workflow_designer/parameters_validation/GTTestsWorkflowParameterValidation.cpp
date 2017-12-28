@@ -131,7 +131,7 @@ GUI_TEST_CLASS_DEFINITION( test_0002 ) {
     QPoint readAlignmentCenter = GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment");
     GTMouseDriver::moveTo(readAlignmentCenter);
     GTMouseDriver::click();
-	GTUtilsWorkflowDesigner::setDatasetInputFolder(os, outputDir.absolutePath());
+    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, outputDir.absolutePath());
     GTGlobals::sleep(2000);
     GTWidget::click(os, activeWindow);
 

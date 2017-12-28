@@ -398,7 +398,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
                                                       << "----TAAGAATAATTA------------"
                                                       << "----TAAGCCTTTTAA------------"
                                                       << "GCGCTAAGCCTTTTAAGCGCGCGCGCGC";
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
 }
@@ -440,8 +440,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
                                                       << "------TAAGAATAATTA"
                                                       << "------TAAGCCTTTTAA"
                                                       << "GCGCGCTAAGCC------";
-	GTUtilsTaskTreeView::waitTaskFinished(os);
-	const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
 }
 
@@ -474,8 +474,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
                                                       << "-----A--AGAATAATTA----------"
                                                       << "-----AAGCTTTTAA-------------"
                                                       << "GCGCTAAGCCTTTTAAGCGCGCGCGCGC";
-	GTUtilsTaskTreeView::waitTaskFinished(os);
-	const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
 }
 
@@ -508,8 +508,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
                                                       << "A--AGAATAATTA"
                                                       << "AAGCTTTTAA---"
                                                       << "A--AGAATA----";
-	GTUtilsTaskTreeView::waitTaskFinished(os);
-	const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
 }
 

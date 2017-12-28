@@ -862,7 +862,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006){
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "UGENE", PopupChecker::IsChecked));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-	GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::Highlighting);
 }
 
 namespace {
@@ -1155,8 +1155,8 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0004){
     CHECK_SET_ERR(line2 != NULL, "lineEdit 2 not found");
     GTLineEdit::setText(os, line2, "wrong name");
     CHECK_SET_ERR(GTBaseCompleter::isEmpty(os), "Completer is not empty");
-	GTKeyboardDriver::keyClick(Qt::Key_Escape);
-	GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: empty popup helper appeared
 }
 
@@ -1410,7 +1410,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0008){
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
     GTLogTracer l;
     const QString fileName = "pairwise_alignment_test_0009.aln";
-	const QString dirName = "pairwise_alignment_test_0009";
+    const QString dirName = "pairwise_alignment_test_0009";
 //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1432,7 +1432,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
     f.close();
     GTFile::setReadOnly(os, s);
 
-	setOutputPath(os, sandBoxDir + dirName, fileName);
+    setOutputPath(os, sandBoxDir + dirName, fileName);
     align(os);
     GTGlobals::sleep(500);
 //    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'pairwise_alignment_test_0009.aln' file.
@@ -2124,7 +2124,7 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0002){
 //    5. Check identity algorithm
     QComboBox* algoComboBox = GTWidget::findExactWidget<QComboBox*>(os, "algoComboBox");
     GTComboBox::setIndexWithText(os, algoComboBox, "Similarity");
-	/*
+    /*
     QString s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     CHECK_SET_ERR(s0 == "100%", QString("Unexpected similarity at line 1: %1").arg(s0));
     QString s1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);
@@ -2137,7 +2137,7 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0002){
     CHECK_SET_ERR(s0 == "604", QString("Unexpected similarity at line 1: %1").arg(s0));
     s1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);
     CHECK_SET_ERR(s1 == "498", QString("Unexpected similarity at line 2: %1").arg(s1));
-	*/
+    */
 }
 GUI_TEST_CLASS_DEFINITION(statistics_test_0003){
 //    1. Open data/samples/CLUSTALW/COI.aln

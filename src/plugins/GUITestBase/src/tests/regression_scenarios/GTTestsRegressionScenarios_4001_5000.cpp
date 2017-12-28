@@ -824,7 +824,7 @@ GUI_TEST_CLASS_DEFINITION(test_4093) {
         << ImportAnnotationsToCsvFiller::RoleColumnParameter(4, new ImportAnnotationsToCsvFiller::StrandMarkParameter(false, ""));
 
     ImportAnnotationsToCsvFiller *filler = new ImportAnnotationsToCsvFiller(os, testDir + "_common_data/scenarios/_regression/4093/test.xls",
-        sandBoxDir + "test_4093.gb", ImportAnnotationsToCsvFiller::Genbank, true, true, "	", 0, "", true, false, "misc_feature", r);
+        sandBoxDir + "test_4093.gb", ImportAnnotationsToCsvFiller::Genbank, true, true, "    ", 0, "", true, false, "misc_feature", r);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Import annotations from CSV file..."));
     GTUtilsDialog::waitForDialog(os, filler);
@@ -2242,18 +2242,18 @@ GUI_TEST_CLASS_DEFINITION(test_4306_1) {
 
 //    3. Use context menu on tree view.
 //    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
-	//    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
-	GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Zoom In", PopupChecker::IsEnabled));
-	GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
-	GTGlobals::sleep();
+    //    Expected state: there are "Zoom in", "Zoom out" and "Reset zooming" actions in the menu.
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Zoom In", PopupChecker::IsEnabled));
+    GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
+    GTGlobals::sleep();
 
-	GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Zoom Out", PopupChecker::IsEnabled));
-	GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
-	GTGlobals::sleep();
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Zoom Out", PopupChecker::IsEnabled));
+    GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
+    GTGlobals::sleep();
 
-	GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Reset Zooming", PopupChecker::IsEnabled));
-	GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
-	GTGlobals::sleep();
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Reset Zooming", PopupChecker::IsEnabled));
+    GTWidget::click(os, GTUtilsMsaEditor::getTreeView(os), Qt::RightButton);
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4306_2) {
@@ -3075,7 +3075,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-			GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
+            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
 
             QLabel *hintLabel = GTWidget::findExactWidget<QLabel *>(os, "hintLabel", dialog);
             CHECK_SET_ERR(NULL != hintLabel, "hintLabel is NULL");
@@ -4604,7 +4604,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     QWidget *sequenceAreaWidget = editor->getUI()->getSequenceArea();
 
-	GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy selection"));
     GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
     GTGlobals::sleep();

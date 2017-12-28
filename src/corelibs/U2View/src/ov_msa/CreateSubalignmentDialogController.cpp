@@ -53,15 +53,15 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Extract"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-	startLineEdit->setValidator(new QIntValidator(1, mobj->getLength(), startLineEdit));
-	endLineEdit->setValidator(new QIntValidator(1, mobj->getLength(), endLineEdit));
+    startLineEdit->setValidator(new QIntValidator(1, mobj->getLength(), startLineEdit));
+    endLineEdit->setValidator(new QIntValidator(1, mobj->getLength(), endLineEdit));
 
     connect(allButton, SIGNAL(clicked()), SLOT(sl_allButtonClicked()));
     connect(noneButton, SIGNAL(clicked()), SLOT(sl_noneButtonClicked()));
     connect(invertButton, SIGNAL(clicked()), SLOT(sl_invertButtonClicked()));
 
-	connect(startLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
-	connect(endLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
+    connect(startLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
+    connect(endLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
 
 
     int rowNumber = mobj->getNumRows();

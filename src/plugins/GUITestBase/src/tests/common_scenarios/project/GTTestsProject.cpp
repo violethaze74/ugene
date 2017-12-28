@@ -392,7 +392,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     font = GTUtilsProjectTreeView::getFont(os, item);
     CHECK_SET_ERR(font.bold(), "se2 item font is not a bold_1");
 
-	GTUtilsMdi::closeActiveWindow(os);
+    GTUtilsMdi::closeActiveWindow(os);
     GTGlobals::sleep(1000);
     item = GTUtilsProjectTreeView::findIndex(os, "se1");
     font = GTUtilsProjectTreeView::getFont(os, item);
@@ -434,7 +434,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
-	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -505,7 +505,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
 //    2. Select "Open as multiple sequence alignment" item, accept the dialog.
 //    Expected state: file opens, document contains two malignment objects, the MSA Editor is shown.
-	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -519,8 +519,8 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
 //    4. Select "Open as assembly" item, accept the dialog.
 //    Expected state: file opens, document contains two assembly objects and two sequence objects, the Assembly Browser is shown.
-	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "project_test_0033.ugenedb"));
-	//GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "project_test_0033.ugenedb"));
+    //GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
     //GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "project_test_0033.ugenedb"));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_2.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -601,7 +601,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038){
 
     //reopening windows z
     while(GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != NULL){
-		GTUtilsMdi::closeActiveWindow(os);
+        GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "action_open_view"));
     GTUtilsProjectTreeView::click(os, "BL060C3.ace", Qt::RightButton);
@@ -637,7 +637,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1){
 
     //reopening windows
     while(GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != NULL){
-		GTUtilsMdi::closeActiveWindow(os);
+        GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "action_open_view"));
     GTUtilsProjectTreeView::click(os, "test_3637_1.ugenedb", Qt::RightButton);

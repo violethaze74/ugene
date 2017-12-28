@@ -2491,7 +2491,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2_linux){
     qint64 smallSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
 
 //    CHECK_SET_ERR(bigSize==4785325 && smallSize>914000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
-	  CHECK_SET_ERR(bigSize == 5098695 && smallSize>996000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
+      CHECK_SET_ERR(bigSize == 5098695 && smallSize>996000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
 //    Expected state: image is exported
 }
 
@@ -3241,11 +3241,11 @@ void test_0039_function(HI::GUITestOpStatus &os, int comboNum, QString extention
     //    File format: CLUSTALW(use other formats too, check extension change)
     //    Amino translation: Standart genetic code
     //    Add document to project: checked
-	GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
-		<< "action_project__export_to_amino_action"));
-	GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, comboNum, UGUITest::testDir + "_common_data/scenarios/sandbox/COI_transl.aln"));
-	GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
+        << "action_project__export_to_amino_action"));
+    GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, comboNum, UGUITest::testDir + "_common_data/scenarios/sandbox/COI_transl.aln"));
+    GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: transl.aln appeared in project
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"COI_transl." + extention));
@@ -3990,7 +3990,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
                                                   << "export sequences as alignment"));
     GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    "Use Genbank "SOURCE" tags..." checkbox
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);

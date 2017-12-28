@@ -1168,7 +1168,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
     };
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new AllPopupChecker));
     GTWidget::click(os, translationsMenuToolbarButton);
-	GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 #undef GET_ACTIONS
 
@@ -1190,8 +1190,8 @@ GUI_TEST_CLASS_DEFINITION(test_0034){
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
     GTGlobals::sleep(500);
 //    Set focus on tree
-	GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-	GTMouseDriver::click();
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+    GTMouseDriver::click();
     second = GTWidget::getImage(os, panView);
     CHECK_SET_ERR(init == second, "ruler not hidden");
 //    Remove ruler
@@ -1315,7 +1315,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040){
     GTWidget::click(os, scroll);
     U2Region r = det->getVisibleRange();
     //CHECK_SET_ERR(r.startPos>98, QString("Unexpected start pos: %1").arg(r.startPos));
-	CHECK_SET_ERR(r.startPos>89, QString("Unexpected start pos: %1").arg(r.startPos));
+    CHECK_SET_ERR(r.startPos>89, QString("Unexpected start pos: %1").arg(r.startPos));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0041){

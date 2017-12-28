@@ -61,7 +61,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
 // Expected state:
 //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
@@ -116,7 +116,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
     GTUtilsDocument::checkDocument(os, "1.gb", GTUtilsDocument::DocumentUnloaded);
@@ -159,7 +159,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "multiple.fa"));
     GTMouseDriver::click();
@@ -192,7 +192,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa", ExportToSequenceFormatFiller::FASTA, true, true));
 
-	GTUtilsProjectTreeView::click(os, "HIV-1.aln", Qt::RightButton);
+    GTUtilsProjectTreeView::click(os, "HIV-1.aln", Qt::RightButton);
     GTGlobals::sleep();
 
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "export1.fa");
@@ -229,10 +229,10 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_PROJECT__EXPORT_AS_SEQUENCES_ACTION));
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa",
                                 ExportToSequenceFormatFiller::FASTA, true, false));
-	GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
+    GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "Open New View", GTGlobals::UseMouse));
-	GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
+    GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
     GTThread::waitForMainThread();
 
     QWidget *activeWindow =  GTUtilsMdi::activeWindow(os);
@@ -255,13 +255,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa",
         ExportToSequenceFormatFiller::FASTA, true, true));
 
-	GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
+    GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     GTGlobals::sleep(1000);
 
     GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "Open New View", GTGlobals::UseMouse));
-	GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
+    GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
     GTGlobals::sleep(1000);
 
     GTGlobals::sleep(1000);
@@ -288,13 +288,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa",
         ExportToSequenceFormatFiller::FASTA, true, false));
 
-	GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
+    GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     GTGlobals::sleep(1000);
 
     GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "Open New View", GTGlobals::UseMouse));
-	GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
+    GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
     GTGlobals::sleep(1000);
 
     GTGlobals::sleep(1000);
@@ -319,7 +319,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
 // Expected state:
 //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
-	GTUtilsProjectTreeView::click(os, doc1);
+    GTUtilsProjectTreeView::click(os, doc1);
     GTUtilsProjectTreeView::findIndex(os, doc1);//checks inside
     GTUtilsProjectTreeView::findIndex(os, doc2);
     if (GTUtilsDocument::isDocumentLoaded(os, doc1) || GTUtilsDocument::isDocumentLoaded(os, doc2)) {
@@ -329,7 +329,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
 // 2. Double click on [a] Annotations sequence object, in project view tree
     //QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
-	GTUtilsProjectTreeView::click(os, "Annotations");
+    GTUtilsProjectTreeView::click(os, "Annotations");
     //GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
@@ -350,7 +350,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     Runnable *filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/",
         "exp2.msf", ExportSequenceAsAlignmentFiller::Msf);
     GTUtilsDialog::waitForDialog(os, filler);
-	 GTGlobals::sleep(1000);
+     GTGlobals::sleep(1000);
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, child));
@@ -579,11 +579,11 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {
     GTFileDialog::openFile(os, dataDir + "samples/ABIF/", "A01.abi");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-	GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CHROMATOGRAM));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CHROMATOGRAM));
     Runnable *filler = new ExportChromatogramFiller(os, sandBoxDir,
         "pagefile.sys", ExportChromatogramFiller::SCF, true, true, true);
     GTUtilsDialog::waitForDialog(os, filler);
-	GTUtilsProjectTreeView::click(os, "A01.abi", Qt::RightButton);
+    GTUtilsProjectTreeView::click(os, "A01.abi", Qt::RightButton);
     }
 GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     GTFileDialog::openFile(os, dataDir + "samples/ABIF/", "A01.abi");
@@ -591,8 +591,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CHROMATOGRAM));
     Runnable *filler = new ExportChromatogramFiller(os, sandBoxDir,
         "pagefile.sys", ExportChromatogramFiller::SCF, false, true, false);
-	GTUtilsDialog::waitForDialog(os, filler);
-	GTUtilsProjectTreeView::click(os, "A01.abi", Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsProjectTreeView::click(os, "A01.abi", Qt::RightButton);
     }
 
 } // namespace

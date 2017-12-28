@@ -1916,7 +1916,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
             GTUtilsDialog::waitForDialog(os, d);
 
             GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
-			GTGlobals::sleep();
+            GTGlobals::sleep();
             //4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
@@ -2037,7 +2037,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     GTKeyboardDriver::keyClick('v', Qt::ShiftModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-	GTGlobals::sleep(500);
+    GTGlobals::sleep(500);
 
     //Expected state : first difference between reference "T" and consensus GAP
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -5221,7 +5221,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-	GTGlobals::sleep();
+    GTGlobals::sleep();
 
     //5. Push General button
     GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);

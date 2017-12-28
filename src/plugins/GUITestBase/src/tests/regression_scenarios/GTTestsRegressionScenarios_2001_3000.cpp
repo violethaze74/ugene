@@ -641,7 +641,7 @@ GUI_TEST_CLASS_DEFINITION( test_2026 ) {
 
     // Expected state: 5 sequences are selected
     CHECK_SET_ERR( 5 == GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os),
-		QString("Unexpected number of selected sequences1. Got %1, Expected %2").arg(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os)).arg(5));
+        QString("Unexpected number of selected sequences1. Got %1, Expected %2").arg(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os)).arg(5));
     CHECK_SET_ERR( GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Montana_montana")),
         "Expected sequence is not selected");
     CHECK_SET_ERR( GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Zychia_baranovi")),
@@ -653,11 +653,11 @@ GUI_TEST_CLASS_DEFINITION( test_2026 ) {
     GTGlobals::sleep( 500 );
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTGlobals::sleep(3000);
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: 6 sequences selected
     CHECK_SET_ERR( 6 == GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os),
-		QString("Unexpected number of selected sequences2. Got %1, Expected %2").arg(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os)).arg(6));
+        QString("Unexpected number of selected sequences2. Got %1, Expected %2").arg(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os)).arg(6));
     CHECK_SET_ERR( GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Montana_montana")),
         "Expected sequence is not selected");
     CHECK_SET_ERR( GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Zychia_baranovi")),
@@ -2740,7 +2740,7 @@ GUI_TEST_CLASS_DEFINITION( test_2400 ){
 //    1. Import samples/ACE/k26.ace to  ugenedb (via open file)
     QString fileName = "2400.ugenedb";
     QString ugenedb = sandBoxDir + fileName;
-	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, ugenedb));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, ugenedb));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: assembly view for Contig_1 opened with refrence sequence added to it
@@ -3102,7 +3102,7 @@ GUI_TEST_CLASS_DEFINITION(test_2437) {
     FormatDBSupportRunDialogFiller::Parameters p;
     p.inputFilePath = dataDir + "samples/FASTA/human_T1.fa";
     p.alphabetType = FormatDBSupportRunDialogFiller::Parameters::Nucleotide;
-	p.outputDirPath = QDir(sandBoxDir + "test_2437").absolutePath();
+    p.outputDirPath = QDir(sandBoxDir + "test_2437").absolutePath();
     QDir().mkpath(p.outputDirPath);
     GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, p));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST make database...");
@@ -5992,7 +5992,7 @@ GUI_TEST_CLASS_DEFINITION(test_2929){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2930){
-	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_2930"));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "test_2930"));
     GTFileDialog::openFile(os, dataDir+"samples/ACE", "K26.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
