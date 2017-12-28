@@ -259,6 +259,10 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::sl_lineEditChanged(){
     okButton->setEnabled(dbSelector->isInputDataValid() && hasValidInput);
 }
 
+namespace {
+    const char *INPUT_URL_PROP = "input_url";
+}
+
 void BlastPlusWithExtFileSpecifySupportRunDialog::sl_inputFileLineEditChanged(const QString &url){
     hasValidInput = false;
     sl_lineEditChanged();
@@ -269,17 +273,20 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::sl_inputFileLineEditChanged(co
         wasNoOpenProject = true;
     } else {
         Document *doc = proj->findDocumentByURL(url);
-        if (NULL != doc) {
-            tryApplyDoc(doc);
+        if (doc != NULL) {
+            if (doc->isLoaded()) {
+                tryApplyDoc(doc);
+            } else {
+                LoadUnloadedDocumentAndOpenViewTask *loadTask= new LoadUnloadedDocumentAndOpenViewTask(doc);
+                loadTask->setProperty(INPUT_URL_PROP, url);
+                connect(loadTask, SIGNAL(si_stateChanged()), SLOT(sl_inputFileOpened()));
+                AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
+            }
             return;
         }
     }
 
     loadDoc(url);
-}
-
-namespace {
-    const char *INPUT_URL_PROP = "input_url";
 }
 
 void BlastPlusWithExtFileSpecifySupportRunDialog::onFormatError() {
