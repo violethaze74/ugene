@@ -223,7 +223,7 @@ bool WorkflowTabView::eventFilter(QObject *watched, QEvent *event) {
     QMouseEvent *me = dynamic_cast<QMouseEvent*>(event);
     int idx = tabBar()->tabAt(me->pos());
     CHECK(idx >=0 && idx < count(), false);
-    
+
     if (Qt::RightButton == me->button()) {
         QMenu m(tabBar());
         QAction *rename = new QAction(tr("Rename"), this);
@@ -236,7 +236,7 @@ bool WorkflowTabView::eventFilter(QObject *watched, QEvent *event) {
     }
 
     if (me->button() == Qt::MiddleButton) {
-        removeTab(idx);     
+        removeTab(idx);
         return true;
     }
     return false;

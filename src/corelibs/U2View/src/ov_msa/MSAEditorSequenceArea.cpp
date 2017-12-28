@@ -575,7 +575,7 @@ void MSAEditorSequenceArea::sl_createSubaligniment(){
 }
 
 void MSAEditorSequenceArea::sl_saveSequence(){
-    CHECK(getEditor() != NULL, );    
+    CHECK(getEditor() != NULL, );
     QStringList seqNames;
     MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
     QRect selection = editor->getCurrentSelection();
@@ -585,7 +585,7 @@ void MSAEditorSequenceArea::sl_saveSequence(){
     for (int i = startSeq; i <= endSeq; i++) {
         seqNames.append(ma->getRow(model->mapToRow(i))->getName());
     }
-    
+
     QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController(editor->getMaObject()->getDocument()->getURL().dirPath(),
         (QWidget*)AppContext::getMainWindow()->getQMainWindow(), seqNames);
     const int rc = d->exec();

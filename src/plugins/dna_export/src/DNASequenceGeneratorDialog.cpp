@@ -72,7 +72,7 @@ DNASequenceGeneratorDialog::DNASequenceGeneratorDialog(QWidget* p)
 
     seedSpinBox->setEnabled(false);
     referenceButton->setChecked(true);
-    
+
     percentASpin->setValue(percentMap.value('A')*100.0);
     percentCSpin->setValue(percentMap.value('C')*100.0);
     percentGSpin->setValue(percentMap.value('G')*100.0);
@@ -82,7 +82,7 @@ DNASequenceGeneratorDialog::DNASequenceGeneratorDialog(QWidget* p)
     int iGCSkew = (int)(gcSkew * 100);
     gcSkew = (float(iGCSkew))/100.0;
     percentGCSpin->setValue(gcSkew);
-    
+
     initSaveController();
 
     generateButton = buttonBox->button(QDialogButtonBox::Ok);
@@ -94,7 +94,7 @@ DNASequenceGeneratorDialog::DNASequenceGeneratorDialog(QWidget* p)
     connect(referenceButton, SIGNAL(clicked()), SLOT(sl_enableRefMode()));
     connect(baseContentRadioButton, SIGNAL(clicked()), SLOT(sl_enableBaseMode()));
     connect(gcSkewRadioButton, SIGNAL(clicked()), SLOT(sl_enableGCSkewMode()));
-    
+
     QString lastUsedMode = AppContext::getSettings()->getValue(ROOT_SETTING + SELECTED_OPTION).toString();
     if (lastUsedMode == OPTION_BASE_CONTENT) {
         sl_enableBaseMode();
@@ -149,7 +149,7 @@ void DNASequenceGeneratorDialog::sl_generate() {
     cfg.window = windowSpinBox->value();
     cfg.alphabet = cfg.useRef ? NULL : AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     cfg.seed = seedCheckBox->isChecked() ? seedSpinBox->value() : -1;
-    
+
     if (cfg.window > cfg.length) {
         QMessageBox::critical(this, tr("DNA Sequence Generator"), tr("Windows size bigger than sequence length"));
         return;
@@ -159,12 +159,12 @@ void DNASequenceGeneratorDialog::sl_generate() {
         QMessageBox::critical(this, tr("DNA Sequence Generator"), tr("Reference url is not specified."));
         return;
     }
-    
+
     if (cfg.outUrl.isEmpty()) {
         QMessageBox::critical(this, tr("DNA Sequence Generator"), tr("Output file is no specified."));
         return;
     }
-    
+
     Settings *s = AppContext::getSettings();
     if (baseContentRadioButton->isChecked()) {
         s->setValue(ROOT_SETTING + SELECTED_OPTION, OPTION_BASE_CONTENT);

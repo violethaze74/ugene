@@ -860,7 +860,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006){
             .arg("UGENE").arg(currentScheme));
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "UGENE", PopupChecker::IsChecked));
-    GTUtilsMSAEditorSequenceArea::callContextMenu(os);	
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
 	GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::Highlighting);
 }
@@ -1526,7 +1526,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0002){
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
-    
+
 //    4. Fill build tree dialog with defaulb values
 //    Expected state: tree built.
     GTWidget::findWidget(os, "treeView");
@@ -1638,7 +1638,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005){
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
-    
+
     QCheckBox* showNamesCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showNamesCheck"));
     CHECK_SET_ERR(showNamesCheck != NULL, "showNamesCheck not found");
     QCheckBox* showDistancesCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showDistancesCheck"));

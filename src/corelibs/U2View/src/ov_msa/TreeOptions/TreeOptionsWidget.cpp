@@ -387,10 +387,10 @@ AddTreeWidget::AddTreeWidget(MSAEditor* msa)
     buildTreeButton->setFixedWidth(102);
     buttonLayout->addWidget(buildTreeButton);
     buildTreeButton->setObjectName( "BuildTreeButton" );
-    
+
     MultipleSequenceAlignmentObject* maObj = editor->getMaObject();
     buildTreeButton->setDisabled(editor->getNumSequences() < 2 || maObj->isStateLocked());
-    
+
     mainLayout->addLayout(buttonLayout);
 
     connect(openTreeButton, SIGNAL(clicked()), SLOT(sl_onOpenTreeTriggered()));

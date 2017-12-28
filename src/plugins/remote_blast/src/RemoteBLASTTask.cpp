@@ -69,13 +69,13 @@ QList<Task*> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task* subTask) {
         stateInfo.setError( tr("The object was removed\n"));
         return res;
     }
-    
+
     if (subTask != queryTask) {
         return res;
     }
 
     // Query was finished
-    
+
     RemoteBLASTTask * rrTask = qobject_cast<RemoteBLASTTask *>(queryTask);
     SAFE_POINT(NULL != rrTask, "Invalid remote BLAST task!", res);
     QList<SharedAnnotationData> anns = rrTask->getResultedAnnotations();
@@ -97,7 +97,7 @@ QList<Task*> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task* subTask) {
             return res;
         }
     }
-    
+
     // Add annotations to aobj: shift annotations according to offset first
     QList<SharedAnnotationData> annotations;
     for (QMutableListIterator<SharedAnnotationData> it_ad(anns); it_ad.hasNext();) {

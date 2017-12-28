@@ -106,7 +106,7 @@ public:
     int getSimilarity(int row1, int row2, bool usePercents);
 
     const MSADistanceMatrix& getMatrix() const;
-        
+
     virtual QString getDescription() const {return factory->getDescription();}
 
     virtual QString getName() const {return factory->getName();}

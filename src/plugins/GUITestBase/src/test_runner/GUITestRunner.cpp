@@ -73,7 +73,7 @@ GUITestRunner::GUITestRunner(UGUITestBase* _guiTestBase, QWidget *parent) :
     delTextAction = new QAction(this);
     delTextAction->setShortcut(QKeySequence(tr("Esc")));
     filter->addAction(delTextAction);
-    
+
     QString lastUsedFilter = AppContext::getSettings()->getValue(LAST_FILTER_SETTING_NAME, "").toString();
     filter->setText(lastUsedFilter);
 
@@ -88,7 +88,7 @@ GUITestRunner::GUITestRunner(UGUITestBase* _guiTestBase, QWidget *parent) :
 
     show();
     filter->setFocus();
-    
+
     revisible(filter->text());
 }
 

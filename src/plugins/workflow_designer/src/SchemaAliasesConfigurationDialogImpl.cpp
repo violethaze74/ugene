@@ -34,7 +34,7 @@ SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl( cons
 : QDialog(p) {
     setupUi(this);
     new HelpButton(this, buttonBox, "20880621");
-    
+
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     QPushButton* cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
@@ -146,7 +146,7 @@ void SchemaAliasesConfigurationDialogImpl::sl_procSelected( int row ) {
 
         QTableWidgetItem * helpItem = new QTableWidgetItem(model.help.value(currentActor).value(it.key()));
         paramAliasesTableWidget->setItem(rowInd, 2, helpItem);
-        paramAliasesTableWidget->horizontalHeader()->setStretchLastSection(true);        
+        paramAliasesTableWidget->horizontalHeader()->setStretchLastSection(true);
 
         rowInd++;
         ++it;

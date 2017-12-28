@@ -428,11 +428,11 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-	
+
 	GTUtilsProjectTreeView::click(os, "NC_001363");
     GTKeyboardDriver::keyPress(Qt::Key_Delete);
     GTGlobals::sleep(200);
-   
+
 	GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
 	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
 	GTUtilsProjectTreeView::click(os, "NC_001363 features", Qt::RightButton);
@@ -471,13 +471,13 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTGlobals::sleep(200);
-	GTUtilsProjectTreeView::click(os, "Ca21chr5 features");    
+	GTUtilsProjectTreeView::click(os, "Ca21chr5 features");
 	GTUtilsProjectTreeView::click(os, "Ca21chr1 features");
     GTKeyboardDriver::keyRelease( Qt::Key_Control);
     GTGlobals::sleep(200);
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ, PopupChecker::NotExists));
-    GTMouseDriver::click(Qt::RightButton);	
+    GTMouseDriver::click(Qt::RightButton);
 }
 
 }

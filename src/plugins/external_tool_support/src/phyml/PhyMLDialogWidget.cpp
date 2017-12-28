@@ -85,7 +85,7 @@ PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
     connect(treeImprovementsCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_checkTreeImprovement(int )));
     connect(inputFilePathButton, SIGNAL(clicked ()), SLOT(sl_inputPathButtonClicked()));
     connect(optTopologyCheckbox, SIGNAL(clicked(bool)), SLOT(sl_optTopologyCheckboxClicked(bool)));
-    
+
     optBranchCheckboxSavedState = optBranchCheckbox->isChecked();
     sl_optTopologyCheckboxClicked(optTopologyCheckbox->isChecked());
     sl_checkUserTreeType(treeTypesCombo->currentIndex());

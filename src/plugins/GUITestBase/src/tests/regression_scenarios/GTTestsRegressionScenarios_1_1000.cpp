@@ -1640,7 +1640,7 @@ GUI_TEST_CLASS_DEFINITION(test_0792) {
 //    2) Put "Read Sequence" worker on the scheme
     GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
 //    Expected state: Dataset view opened
-	
+
 //    3) Click "Add folder", select data/samples/Genbank
     GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/Genbank/*");
 //    4) Click on appeared item in the file list
@@ -2579,7 +2579,7 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
 
     QStringList errors = GTUtilsLog::getErrors(os, l1);
 	CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1");
-  	
+
     GTUtilsProjectTreeView::click(os, "Gene.fa");
 	GTGlobals::sleep();
     GTKeyboardDriver::keyClick( Qt::Key_Delete);

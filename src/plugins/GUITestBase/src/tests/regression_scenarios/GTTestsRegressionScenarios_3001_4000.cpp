@@ -4802,7 +4802,7 @@ GUI_TEST_CLASS_DEFINITION(test_3744) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
     GTGlobals::sleep(500);
-   
+
     GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Regular expression");
 
     GTUtilsOptionPanelSequenceView::enterPattern(os, "ACG.T", true);

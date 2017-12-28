@@ -78,7 +78,7 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
 
     ui->startLineEdit->setValue(startPos);
     ui->endLineEdit->setValue(endPos);
-    
+
     connect(ui->endLineEdit, SIGNAL(valueChanged(int)), SLOT(endPosValueChanged()));
 }
 

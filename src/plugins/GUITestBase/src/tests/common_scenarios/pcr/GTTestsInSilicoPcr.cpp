@@ -424,7 +424,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //5. Click "Find product(s) anyway".
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);    
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: one product is found.
     CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count");
@@ -432,7 +432,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //6. Choose "Inner" annotation extraction.
     QComboBox *annsComboBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "annsComboBox"));
     GTComboBox::setCurrentIndex(os, annsComboBox, 1);
-    
+
     //7. Click "Export product(s)".
     GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -653,7 +653,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 GUI_TEST_CLASS_DEFINITION(test_0017) {
     // Reverse-complement for the extended DNA alphabet
     // 1. Open the PCT OP
-    // 2. Enter primer with whitespaces 
+    // 2. Enter primer with whitespaces
     // Expected state: whitespaces removed successfuly
     GTUtilsPcr::clearPcrDir(os);
 

@@ -406,7 +406,7 @@ void LoadDataFromEntrezTask::run( )
     createLoopAndNetworkManager(traceFetchUrl);
 
     ioLog.trace( traceFetchUrl );
-    QUrl requestUrl(EntrezUtils::NCBI_EFETCH_URL.arg(db).arg(accNumber).arg(format)); 
+    QUrl requestUrl(EntrezUtils::NCBI_EFETCH_URL.arg(db).arg(accNumber).arg(format));
     downloadReply = networkManager->get( QNetworkRequest( requestUrl ) );
     connect( downloadReply, SIGNAL( error( QNetworkReply::NetworkError ) ),
         this, SLOT( sl_onError( QNetworkReply::NetworkError ) ) );

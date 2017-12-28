@@ -53,7 +53,7 @@
 
 
 #define DEFAULT_OUTPUT_FILE_NAME QString("sanger_reads_alignment.ugenedb")
- 
+
 namespace U2 {
 
 AlignToReferenceBlastCmdlineTask::Settings::Settings()
@@ -112,7 +112,7 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
     if (referenceUrl.isLocalFile()) {
         CHECK_EXT(QFileInfo(referenceUrl.getURLString()).exists(), setError(tr("The '%1' reference file doesn't exist.").arg(settings.referenceUrl)),);
     }
-    
+
     FormatDetectionConfig config;
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(referenceUrl, config);
     CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError(tr("wrong reference format")), );
@@ -249,7 +249,7 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
     setupUi(this);
     GCOUNTER(cvar, tvar, "'Map reads to reference' dialog opening");
 
-    new HelpButton(this, buttonBox, "20880571"); 
+    new HelpButton(this, buttonBox, "20880571");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Map"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -263,9 +263,9 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
     saveController->setPath(outputLineEdit->text());
-    
+
     new QShortcut(QKeySequence(Qt::Key_Delete), this, SLOT(sl_removeRead()));
-    
+
     defaultOutputUrl = outputLineEdit->text();
 }
 

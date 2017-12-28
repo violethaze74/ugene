@@ -72,7 +72,7 @@ public:
     SaveDocumentInFolderController(const SaveDocumentInFolderControllerConfig& config,
                             const DocumentFormatConstraints& formatConstraints,
                             QObject* parent);
-    
+
     QString getSaveDirName() const;
     //DocumentFormatId getFormatIdToSave() const;
 signals:

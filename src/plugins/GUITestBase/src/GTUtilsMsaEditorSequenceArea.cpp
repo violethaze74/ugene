@@ -347,10 +347,10 @@ int GTUtilsMSAEditorSequenceArea::getLeftOffset(GUITestOpStatus &os)
 {
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", -1);
-    
+
     ScrollController* scrollController = msaEditArea->getEditor()->getUI()->getScrollController();
-    int clippedIdx = scrollController->getFirstVisibleBase(true); 
-    int notClippedIdx = scrollController->getFirstVisibleBase(false); 
+    int clippedIdx = scrollController->getFirstVisibleBase(true);
+    int notClippedIdx = scrollController->getFirstVisibleBase(false);
     return clippedIdx + (clippedIdx == notClippedIdx ? 0 : 1);
 }
 #undef GT_METHOD_NAME

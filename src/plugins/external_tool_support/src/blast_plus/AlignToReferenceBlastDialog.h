@@ -108,7 +108,7 @@ private:
     void connectSlots();
 
     SaveDocumentController *saveController;
-    
+
     AlignToReferenceBlastCmdlineTask::Settings settings;
     U2SavableWidget savableWidget;
     QString defaultOutputUrl;

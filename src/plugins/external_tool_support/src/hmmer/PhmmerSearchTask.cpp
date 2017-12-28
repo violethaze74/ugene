@@ -175,7 +175,7 @@ QStringList PhmmerSearchTask::getArguments() const {
         arguments << "--domT" << QString::number(settings.domT);
     } else if (PhmmerSearchSettings::OPTION_NOT_SET != settings.domE) {
         arguments << "--domE" << QString::number(settings.domE);
-    }    
+    }
 
     if (PhmmerSearchSettings::OPTION_NOT_SET != settings.domZ) {
         arguments << "--domZ" << QString::number(settings.domZ);

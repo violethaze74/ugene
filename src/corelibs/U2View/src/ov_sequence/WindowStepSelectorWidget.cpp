@@ -111,7 +111,7 @@ MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget* p, double min, double max, b
     maxBox->setObjectName("maxBox");
 
     normalPalette = maxBox->palette();
-    
+
     QFormLayout* l = new QFormLayout;
     l->setSizeConstraint(QLayout::SetMinAndMaxSize);
     l->addRow(tr("Minimum"), minBox);
@@ -123,7 +123,7 @@ MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget* p, double min, double max, b
     mainLayout->setMargin(0);
     mainLayout->addWidget(minmaxGroup);
     setLayout(mainLayout);
-    
+
     connect(minBox, SIGNAL(valueChanged(const QString &)), SLOT(sl_valueChanged(const QString &)));
     connect(maxBox, SIGNAL(valueChanged(const QString &)), SLOT(sl_valueChanged(const QString &)));
 }
@@ -149,7 +149,7 @@ void MinMaxSelectorWidget::sl_valueChanged(const QString &) {
     QPalette p = normalPalette;
     if (min >= max) {
         p.setColor(QPalette::Base, QColor(255,200,200));
-    } 
+    }
     ((MinMaxDoubleSpinBox*)minBox)->getLineEdit()->setPalette(p);
     ((MinMaxDoubleSpinBox*)maxBox)->getLineEdit()->setPalette(p);
 }

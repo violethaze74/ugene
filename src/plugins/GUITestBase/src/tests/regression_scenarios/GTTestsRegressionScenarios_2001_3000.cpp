@@ -4646,7 +4646,7 @@ GUI_TEST_CLASS_DEFINITION(test_2701) {
 
             GTComboBox::setIndexWithText(os, formatsBox, "JPG");
             CHECK_SET_ERR( spin->isVisible(), "Quality spin box not visible!");
-            
+
             QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
             CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
             QPushButton* button = box->button(QDialogButtonBox::Cancel);

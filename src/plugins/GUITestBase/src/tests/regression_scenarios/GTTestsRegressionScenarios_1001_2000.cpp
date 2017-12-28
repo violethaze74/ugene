@@ -1840,9 +1840,9 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
 	GTGlobals::sleep(100);
-	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));   
-    GTUtilsWorkflowDesigner::runWorkflow(os);	
-	GTGlobals::sleep(500);   
+	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+	GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1154) {
@@ -6408,7 +6408,7 @@ GUI_TEST_CLASS_DEFINITION(test_1640) {
     for (int i=0; i<12; i++) {
         GTKeyboardDriver::keyClick( Qt::Key_Right, Qt::ShiftModifier);
     }
- 
+
     //Expected state: all sequences of each selected column are selected
     GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     QString chars = GTClipboard::text(os);

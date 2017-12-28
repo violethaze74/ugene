@@ -287,7 +287,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_PROJECT__EXPORT_AS_SEQUENCES_ACTION));
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa",
         ExportToSequenceFormatFiller::FASTA, true, false));
-   
+
 	GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     GTGlobals::sleep(1000);
 
@@ -333,7 +333,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
-	
+
 // Expected result: NC_001363 sequence has been opened in sequence view
     GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow*> (GTUtilsMdi::activeWindow(os));
     if (! activeWindow->getViewName().contains("NC_001363")) {

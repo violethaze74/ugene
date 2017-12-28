@@ -146,16 +146,16 @@ void DotPlotFilesDialog::accept() {
     }
 
     if (firstFileName.isEmpty() || secondFileName.isEmpty()) {
-        QString error = oneSequenceCheckBox->isChecked() ? 
+        QString error = oneSequenceCheckBox->isChecked() ?
                     tr("Select a file with a sequence to build dotplot!")
-                  : firstFileName.isEmpty()? 
+                  : firstFileName.isEmpty()?
                         tr("Select first file with a sequence to build dotplot!")
                       : tr("Select second file with a sequence to build dotplot!");
         QObjectScopedPointer<QMessageBox> mb = new QMessageBox(QMessageBox::Critical, tr("Select files"), error);
         mb->exec();
         return;
     }
-    
+
     FormatDetectionConfig conf;
     QList<FormatDetectionResult> results = DocumentUtils::detectFormat(firstFileName, conf);
     if (results.isEmpty()){

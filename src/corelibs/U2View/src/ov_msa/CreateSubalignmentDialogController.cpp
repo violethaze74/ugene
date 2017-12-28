@@ -55,15 +55,15 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
 
 	startLineEdit->setValidator(new QIntValidator(1, mobj->getLength(), startLineEdit));
 	endLineEdit->setValidator(new QIntValidator(1, mobj->getLength(), endLineEdit));
-    
+
     connect(allButton, SIGNAL(clicked()), SLOT(sl_allButtonClicked()));
     connect(noneButton, SIGNAL(clicked()), SLOT(sl_noneButtonClicked()));
     connect(invertButton, SIGNAL(clicked()), SLOT(sl_invertButtonClicked()));
 
 	connect(startLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
 	connect(endLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
-    
-    
+
+
     int rowNumber = mobj->getNumRows();
     int alignLength = mobj->getLength();
 
@@ -156,7 +156,7 @@ void CreateSubalignmentDialogController::sl_regionChanged() {
     QPalette happyP = filepathEdit->palette();
     startLineEdit->setPalette(happyP);
     endLineEdit->setPalette(happyP);
-    
+
     if (start <= 0) {
         QPalette p = startLineEdit->palette();
         p.setColor(QPalette::Base, QColor(255,200,200));

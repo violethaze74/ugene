@@ -44,7 +44,7 @@ public:
     DocumentFormatId getFormatId();
     U2Region getRegion();
     QStringList getSelectedSeqNames();
-    
+
 
 private slots:
     void sl_allButtonClicked();

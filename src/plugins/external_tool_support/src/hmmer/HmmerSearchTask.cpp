@@ -221,7 +221,7 @@ QStringList HmmerSearchTask::getArguments() const {
     arguments << "--domtblout" << settings.workingDir + "/" + PER_DOMAIN_HITS_FILENAME;
     arguments << settings.hmmProfileUrl;
     arguments << settings.sequenceUrl;
-    
+
     return arguments;
 }
 

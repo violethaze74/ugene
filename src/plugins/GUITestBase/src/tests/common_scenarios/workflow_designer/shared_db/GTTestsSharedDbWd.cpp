@@ -88,7 +88,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0001) {
 
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
-	
+
 	CHECK_SET_ERR(1 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("1").arg(datasetList->count()));
     CHECK_SET_ERR("et0001_sequence" == datasetList->item(0)->text(), "Invalid dataset item name");
 }
@@ -264,7 +264,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0009) {
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0004_assembly", acceptableTypes));
     GTWidget::click(os, addFromDbButton);
 
-	GTUtilsWorkflowDesigner::setDatasetInputFolder(os, QDir(testDir + "_common_data/bam").absolutePath()); 
+	GTUtilsWorkflowDesigner::setDatasetInputFolder(os, QDir(testDir + "_common_data/bam").absolutePath());
 
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");

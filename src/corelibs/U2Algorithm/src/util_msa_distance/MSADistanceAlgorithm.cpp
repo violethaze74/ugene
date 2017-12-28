@@ -110,7 +110,7 @@ void MSADistanceAlgorithm::setExcludeGaps(bool _excludeGaps) {
     distanceMatrix.excludeGaps = _excludeGaps;
 }
 
-MSADistanceMatrix::MSADistanceMatrix() 
+MSADistanceMatrix::MSADistanceMatrix()
 : usePercents(true), excludeGaps(false), alignmentLength(0) {
 }
 

@@ -302,7 +302,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "murine.gb"));
     GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, testDir + "_common_data/genbank/.dir/", "murine_copy1.gb",
                                                    ExportDocumentDialogFiller::Genbank, false, true, GTGlobals::UseMouse));
-    
+
     GTMouseDriver::click(Qt::RightButton);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "murine_copy1.gb"));

@@ -981,7 +981,7 @@ void BioStruct3DGLWidget::sl_settings()
 void BioStruct3DGLWidget::sl_exportImage()
 {
     BioStruct3DImageExportController factory(this);
-    
+
     QString fileName = GUrlUtils::fixFileName(getBioStruct3DObjectName());
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::MolView,
                              fileName, ExportImageDialog::SupportScaling, this);

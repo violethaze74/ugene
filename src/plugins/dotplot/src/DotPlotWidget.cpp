@@ -73,7 +73,7 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
     clearedByRepitSel(false)
 {
     textSpace = w = h = 0; // values are used and will be initialized in drawAll.
-    
+
     dpDirectResultListener = new DotPlotResultsListener();
     dpRevComplResultsListener = new DotPlotRevComplResultsListener();
     dpFilteredResults = QSharedPointer<QList<DotPlotResults> >( new QList<DotPlotResults>() );
@@ -994,12 +994,12 @@ void DotPlotWidget::drawAll(QPainter& p, qreal rulerFontScale, bool _drawFocus,
     }
 
     QFontMetrics fm = p.fontMetrics();
-    // min textSpace is 4 characters: this is important for sequence name labels 
+    // min textSpace is 4 characters: this is important for sequence name labels
     textSpace = fm.width("0") * qMax(4, qRound(1 + log10(sequenceX->getSequenceLength())));
     // border around view
     w = width() - 2 * textSpace;
     h = height() - 2 * textSpace;
-    
+
     if (dotPlotIsCalculating) {
         GUIUtils::showMessage(this, p, tr("Dotplot is calculating..."));
     } else {
@@ -1164,7 +1164,7 @@ void DotPlotWidget::drawRulers(QPainter &p, qreal fontScale) const{
 
         extraLen = QPoint(0.5*ratioX, 0.5*ratioY);
     }
-    
+
     GraphUtils::drawRuler(p, QPoint(textSpace + extraLen.x(), textSpace), w - 2*extraLen.x(), startX+1, endX, rulerFont, rConf);
 
     rConf.direction = GraphUtils::TopToBottom;

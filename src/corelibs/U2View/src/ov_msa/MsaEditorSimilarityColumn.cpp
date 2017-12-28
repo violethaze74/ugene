@@ -72,7 +72,7 @@ QString MsaEditorSimilarityColumn::getTextForRow( int s ) {
     U2OpStatusImpl os;
     const int refSequenceIndex = ma->getRowIndexByRowId(referenceRowId, os);
     CHECK_OP(os, QString());
-    
+
     int sim = matrix->getSimilarity(refSequenceIndex, s);
     CHECK(-1 != sim, tr("-"));
     const QString units = matrix->isPercentSimilarity() ? "%" : "";

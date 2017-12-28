@@ -110,7 +110,7 @@ QList<GUrl> DnaAssemblyToRefTaskSettings::getShortReadUrls() const
     return res;
 }
 
-DnaAssemblyToRefTaskSettings::DnaAssemblyToRefTaskSettings() 
+DnaAssemblyToRefTaskSettings::DnaAssemblyToRefTaskSettings()
     : pairedReads(false),
     filterUnpaired(false),
     prebuiltIndex(false),

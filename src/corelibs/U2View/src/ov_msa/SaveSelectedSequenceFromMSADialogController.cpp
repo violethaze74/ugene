@@ -131,12 +131,12 @@ void SaveSelectedSequenceFromMSADialogController::initSaveController() {
     saveController = new SaveDocumentInFolderController(config, formatConstraints, this);
 }
 
-SaveDocumentInFolderControllerConfig::SaveDocumentInFolderControllerConfig() : 
+SaveDocumentInFolderControllerConfig::SaveDocumentInFolderControllerConfig() :
     SaveDocumentControllerConfig(),
     folderLineEdit(NULL) {
 }
 
-SaveDocumentInFolderController::SaveDocumentInFolderController(const SaveDocumentInFolderControllerConfig& config, const DocumentFormatConstraints& formatConstraints, QObject* parent) 
+SaveDocumentInFolderController::SaveDocumentInFolderController(const SaveDocumentInFolderControllerConfig& config, const DocumentFormatConstraints& formatConstraints, QObject* parent)
     : QObject(parent),
     conf(config) {
     DocumentFormatConstraints fc(formatConstraints);

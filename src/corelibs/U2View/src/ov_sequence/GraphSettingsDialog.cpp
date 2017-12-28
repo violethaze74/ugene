@@ -58,7 +58,7 @@ GraphSettingsDialog::GraphSettingsDialog( GSequenceGraphDrawer* d, const U2Regio
     const GSequenceGraphMinMaxCutOffData& cutOffData = d->getCutOffData();
     wss = new WindowStepSelectorWidget(this, range, windowData.window, windowData.step);
     mms = new MinMaxSelectorWidget(this, cutOffData.minEdge, cutOffData.maxEdge, cutOffData.enableCuttoff);
-    
+
     QFormLayout* form = wss->getFormLayout();
     foreach(const QString& key, colorMap.keys()) {
         QPushButton* colorChangeButton = new QPushButton();
@@ -74,7 +74,7 @@ GraphSettingsDialog::GraphSettingsDialog( GSequenceGraphDrawer* d, const U2Regio
 
         form->addRow(QString("%1:").arg(key), colorChangeButton);
     }
-    
+
     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     buttonBox->setObjectName("buttonBox");
 

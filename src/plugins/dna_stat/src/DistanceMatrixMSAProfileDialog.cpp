@@ -92,7 +92,7 @@ void DistanceMatrixMSAProfileDialog::initSaveController() {
     config.fileNameEdit = fileEdit;
     config.parentWidget = this;
     config.saveTitle = tr("Save file");
-    
+
     SaveDocumentController::SimpleFormatsInfo formats;
     formats.addFormat(HTML, HTML.toUpper(), QStringList() << HTML);
     formats.addFormat(CSV, CSV.toUpper(), QStringList() << CSV);

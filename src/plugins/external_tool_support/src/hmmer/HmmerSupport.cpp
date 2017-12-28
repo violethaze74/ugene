@@ -345,16 +345,16 @@ void HmmerAdvContext::sl_search() {
         return;
     }
 
-#ifdef Q_PROCESSOR_X86_32    
+#ifdef Q_PROCESSOR_X86_32
     // do not show action on 32 bit platforms for large services
     quint64 seqLen = seqCtx->getSequenceLength();
     if (seqLen > MAX_HMMSEARCH_SEQUENCE_LENGTH_X86) {
         QMessageBox::critical(parent, tr("Error"), tr("Sequences larger 2Gb are not supported on 32-bit architecture."));
         return;
     }
-#endif    
-    
-    
+#endif
+
+
     QObjectScopedPointer<HmmerSearchDialog> searchDlg = new HmmerSearchDialog(seqCtx, parent);
     searchDlg->exec();
 }

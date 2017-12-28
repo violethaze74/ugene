@@ -58,7 +58,7 @@ public:
 
 private slots:
     void sl_valueChanged(const QString &);
-    
+
 private:
     QGroupBox* minmaxGroup;
     QDoubleSpinBox* minBox;
