@@ -595,12 +595,10 @@ void AnnotatedDNAView::addEditMenu(QMenu* m) {
     }
 
     rm->addAction(editSettingsAction);
-    // TODO: the next actions were commented because of editing mode implementing (https://local.ugene.unipro.ru/tracker/browse/UGENE-5821)
-    // There is not enough time to remove them at all right now, remove them, their slots, the appropriate dialogs, filles, tests, test scenarios and etc.
-//    rm->addAction(addSequencePart);
-//    rm->addAction(replaceSequencePart);
+    rm->addAction(addSequencePart);
+    rm->addAction(replaceSequencePart);
     sl_selectionChanged();
-//    rm->addAction(removeSequencePart);
+    rm->addAction(removeSequencePart);
     if (seqCtx->getComplementTT() != NULL) {
         reverseComplementSequenceAction->setEnabled(true);
         complementSequenceAction->setEnabled(true);
