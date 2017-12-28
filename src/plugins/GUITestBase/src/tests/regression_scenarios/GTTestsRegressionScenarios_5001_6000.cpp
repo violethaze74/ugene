@@ -2475,10 +2475,9 @@ GUI_TEST_CLASS_DEFINITION(test_5714_1) {
 
     //6. Press Ctrl + Shift + Backspace
     GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace, Qt::ShiftModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
+    GTGlobals::sleep();
 
     //Expected: row length must be lesser than row length before trim
     qint64 currentLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
@@ -2496,10 +2495,9 @@ GUI_TEST_CLASS_DEFINITION(test_5714_1) {
 
     //9. Press Ctrl + Shift + Delete
     GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace, Qt::ShiftModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
+    GTGlobals::sleep();
 
     //Expected: row length must be lesser than row length before trim
     currentLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
