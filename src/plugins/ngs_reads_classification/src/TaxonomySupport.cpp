@@ -307,22 +307,36 @@ public:
     QString getSelected() const;
 
 private:
-//    void setupModelData(const QStringList &lines, TreeItem *parent);
 
     TaxonomyTree *tree;
+    /**
+     * Set of actually selected items
+     */
     QSet<TaxID> selected;
+    /**
+     * Keeps all (grand) parents of actually selected items.
+     * Used to compute partially checked state.
+     */
+    QMultiMap<TaxID, TaxID> tristate;
 };
 
 TaxonomyTreeModel::TaxonomyTreeModel(const QString &data, QObject *parent)
     : QAbstractItemModel(parent), tree(TaxonomyTree::getInstance())
 {
-    QStringList taxons = data.split(";");
+    QStringList taxons = data.split(";", QString::SkipEmptyParts);
     foreach (const QString &idStr, taxons) {
         selected.insert(idStr.toInt());
     }
+    foreach (TaxID id, selected) {
+        TaxID parent = tree->getParent(id);
+        while (parent > 1) {
+            tristate.insert(parent, id);
+            parent = tree->getParent(parent);
+        }
+    }
 }
 
-int TaxonomyTreeModel::columnCount(const QModelIndex &parent) const
+int TaxonomyTreeModel::columnCount(const QModelIndex &) const
 {
     return 3;
 }
@@ -339,7 +353,7 @@ QString TaxonomyTreeModel::getSelected() const
     return res;
 }
 
-bool TaxonomyTreeModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool TaxonomyTreeModel::setData(const QModelIndex &index, const QVariant &v, int role)
 {
     if (role != Qt::CheckStateRole || index.column() != 0)
         return false;
@@ -347,17 +361,36 @@ bool TaxonomyTreeModel::setData(const QModelIndex &index, const QVariant &value,
     TaxID item = static_cast<TaxID>(index.internalId());
     bool result = false;
     bool old = selected.contains(item);
-    if (value.toInt() == Qt::Unchecked && old) {
+    int value = v.toInt();
+    algoLog.info(QString("check %1 for %2 ").arg(value).arg(item));
+
+    if (value == Qt::Unchecked && old) {
         selected.remove(item);
         result = true;
-    } else if (value.toInt() == Qt::Checked && !old) {
-        selected.insert(item);
+    } else if (value == Qt::Checked && !old) {
+        selected << item;
         result = true;
     }
 
-    if (result)
-        emit dataChanged(index, index);
+    if (result) {
+        QVector<int> checkRole(1, Qt::CheckStateRole);
+        emit dataChanged(index, index, checkRole);
 
+        QList<TaxID> children = tree->getChildren(item);
+        if (children.size() != 0) {
+            emit dataChanged(createIndex(0,0,children.first()), createIndex(children.size()-1,3,children.last()));
+        }
+        TaxID parent = tree->getParent(item);
+        while (parent > 1) {
+            if (value == Qt::Checked) {
+                tristate.insert(parent, item);
+            } else {
+                tristate.remove(parent, item);
+            }
+            emit dataChanged(createIndex(0,0,parent), createIndex(0,3,parent), checkRole);
+            parent = tree->getParent(parent);
+        }
+    }
     return result;
 }
 
@@ -368,9 +401,15 @@ QVariant TaxonomyTreeModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     TaxID item = static_cast<TaxID>(index.internalId());
-
     if ( role == Qt::CheckStateRole && index.column() == 0 ) {
-        return selected.contains(item) ? Qt::Checked : Qt::Unchecked;
+        while (item > 1) {
+            if (selected.contains(item)) {
+                return Qt::Checked;
+            }
+            item = tree->getParent(item);
+        }
+        item = static_cast<TaxID>(index.internalId());
+        return tristate.contains(item) ? Qt::PartiallyChecked : Qt::Unchecked;
     }
     if (role == Qt::DisplayRole) {
         switch (index.column()) {
@@ -391,10 +430,23 @@ Qt::ItemFlags TaxonomyTreeModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return 0;
 
-    Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    Qt::ItemFlags flags = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 
-    if ( index.column() == 0 )
-        flags |= Qt::ItemIsUserCheckable;
+    TaxID item = static_cast<TaxID>(index.internalId());
+
+    if (!selected.contains(item)) {
+        while (item > 1) {
+            item = tree->getParent(item);
+            if (selected.contains(item)) {
+                flags &= ~Qt::ItemIsEnabled;
+                break;
+            }
+        }
+    }
+
+    if ( index.column() == 0 ) {
+        flags |= Qt::ItemIsUserCheckable | Qt::ItemIsTristate;
+    }
 
     return flags;
 }
@@ -470,55 +522,6 @@ int TaxonomyTreeModel::rowCount(const QModelIndex &parent) const
 
     return tree->getChildren(parentItem).size();
 }
-
-/*void TaxonomyTreeModel::setupModelData(const QStringList &lines, TreeItem *parent)
-{
-    QList<TreeItem*> parents;
-    QList<int> indentations;
-    parents << parent;
-    indentations << 0;
-
-    int number = 0;
-
-    while (number < lines.count()) {
-        int position = 0;
-        while (position < lines[number].length()) {
-            if (lines[number].mid(position, 1) != " ")
-                break;
-            position++;
-        }
-
-        QString lineData = lines[number].mid(position).trimmed();
-
-        if (!lineData.isEmpty()) {
-            // Read the column data from the rest of the line.
-            QStringList columnStrings = lineData.split("\t", QString::SkipEmptyParts);
-            QList<QVariant> columnData;
-            for (int column = 0; column < columnStrings.count(); ++column)
-                columnData << columnStrings[column];
-
-            if (position > indentations.last()) {
-                // The last child of the current parent is now the new parent
-                // unless the current parent has no children.
-
-                if (parents.last()->childCount() > 0) {
-                    parents << parents.last()->child(parents.last()->childCount()-1);
-                    indentations << position;
-                }
-            } else {
-                while (position < indentations.last() && parents.count() > 0) {
-                    parents.pop_back();
-                    indentations.pop_back();
-                }
-            }
-
-            // Append a new item to the current parent's list of children.
-            parents.last()->appendChild(new TreeItem(columnData, parents.last()));
-        }
-
-        number++;
-    }
-}*/
 
 static const QString PLACEHOLDER("Select taxons...");
 
@@ -601,8 +604,6 @@ public:
 
 private:
     QVBoxLayout *mainLayout;
-    QWidget *cantainer;
-    QVBoxLayout *containerLayout;
     QDialogButtonBox *buttonBox;
     QTreeView *treeView;
     TaxonomyTreeModel *treeModel;
@@ -613,16 +614,17 @@ TaxonSelectionDialog::TaxonSelectionDialog(const QString &value, QWidget *parent
 {
     if (objectName().isEmpty())
         setObjectName(QStringLiteral("TaxonSelectionDialog"));
-    resize(400, 300);
     mainLayout = new QVBoxLayout(this);
     mainLayout->setObjectName(QStringLiteral("mainLayout"));
-    cantainer = new QWidget(this);
-    cantainer->setObjectName(QStringLiteral("cantainer"));
-    containerLayout = new QVBoxLayout(cantainer);
-    containerLayout->setObjectName(QStringLiteral("containerLayout"));
-    containerLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
-    mainLayout->addWidget(cantainer);
+    treeView = new QTreeView(this);
+    treeModel = new TaxonomyTreeModel(value); //fixme delete
+    treeView->setModel(treeModel);
+    for (int column = 0; column < treeModel->columnCount(); ++column) {
+        treeView->resizeColumnToContents(column);
+    }
+    mainLayout->addWidget(treeView);
 
     buttonBox = new QDialogButtonBox(this);
     buttonBox->setObjectName(QStringLiteral("buttonBox"));
@@ -631,25 +633,19 @@ TaxonSelectionDialog::TaxonSelectionDialog(const QString &value, QWidget *parent
 
     mainLayout->addWidget(buttonBox);
 
-
     setWindowTitle(QApplication::translate("TaxonSelectionDialog", "Select taxons", 0));
     QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
     QMetaObject::connectSlotsByName(this);
 
-    treeView = new QTreeView(this);
-    treeModel = new TaxonomyTreeModel(value); //fixme delete
-    treeView->setModel(treeModel);
-    for (int column = 0; column < treeModel->columnCount(); ++column) {
-        treeView->resizeColumnToContents(column);
-    }
-
-    cantainer->layout()->addWidget(treeView);
-
     new HelpButton(this, buttonBox, "43");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Select"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+
+  //  adjustSize();
+//    resize(450, 450);
+    setSizePolicy( QSizePolicy::Expanding,  QSizePolicy::Expanding);
 }
 
 

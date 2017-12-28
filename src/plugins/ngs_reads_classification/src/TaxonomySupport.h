@@ -64,9 +64,25 @@ private:
     static TaxonomyTree *the_tree;
     static TaxonomyTree *load(TaxonomyTree *);
 
+    /**
+     * Index array of taxons. Value at a given index keeps parent ID (+ rank index in the upper byte).
+     * Used for down-top traversal.
+     */
     QList<TaxID> nodes;
+
+    /**
+     * Index array of scientific taxon names.
+     */
     QStringList  names;
+
+    /**
+     * Names of ranks
+     */
     QStringList  ranks;
+
+    /**
+     * Keeps parent-children relation for top-down traversal.
+     */
     QMultiMap<TaxID, TaxID> childs;
 };
 

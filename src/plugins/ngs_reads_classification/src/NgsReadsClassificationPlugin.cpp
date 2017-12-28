@@ -62,6 +62,14 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     return plugin;
 }
 
+class LoadTaxonomyTreeTask : public Task {
+public:
+    LoadTaxonomyTreeTask() : Task(NgsReadsClassificationPlugin::tr("Pre-load taxonomy data"), TaskFlag_None) {}
+    void run() {
+         LocalWorkflow::TaxonomyTree::getInstance();
+    }
+};
+
 NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
     : Plugin(PLUGIN_NAME, PLUGIN_DESCRIPRION)
 {
@@ -76,7 +84,9 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
     LocalWorkflow::ClassificationFilterWorkerFactory::init();
 
     // Pre-load taxonomy data
-    LocalWorkflow::TaxonomyTree::getInstance();
+    U2::TaskScheduler *scheduler = U2::AppContext::getTaskScheduler( );
+    CHECK( NULL != scheduler, );
+    scheduler->registerTopLevelTask( new LoadTaxonomyTreeTask );
 }
 
 NgsReadsClassificationPlugin::~NgsReadsClassificationPlugin() {
