@@ -74,11 +74,11 @@ Worker *KrakenClassifyWorkerFactory::createWorker(Actor *actor) {
 void KrakenClassifyWorkerFactory::init() {
     QList<PortDescriptor *> ports;
     {
-        const Descriptor inSlotDesc = (GetReadsListWorkerFactory::SE_SLOT().getId(),
+        const Descriptor inSlotDesc(GetReadsListWorkerFactory::SE_SLOT().getId(),
                                        KrakenClassifyPrompter::tr("Input URL 1"),
                                        KrakenClassifyPrompter::tr("Input URL 1."));
 
-        const Descriptor inPairedSlotDesc(GetReadsListWorkerFactory::SE_SLOT().getId(),
+        const Descriptor inPairedSlotDesc(GetReadsListWorkerFactory::PE_SLOT().getId(),
                                           KrakenClassifyPrompter::tr("Input URL 2"),
                                           KrakenClassifyPrompter::tr("Input URL 2."));
 

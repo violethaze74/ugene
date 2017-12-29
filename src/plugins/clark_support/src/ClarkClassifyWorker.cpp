@@ -177,7 +177,7 @@ void ClarkClassifyWorkerFactory::init() {
         Descriptor outD(OUTPUT_PORT, ClarkClassifyWorker::tr("CLARK-classified sequences"), ClarkClassifyWorker::tr("A map of sequence names with the associated taxonomy IDs, classified by CLARK."));
 
         Descriptor inSlot1Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClarkClassifyWorker::tr("Input URL 1"), ClarkClassifyWorker::tr("Input URL 1."));
-        Descriptor inSlot2Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClarkClassifyWorker::tr("Input URL 2"), ClarkClassifyWorker::tr("Input URL 2."));
+        Descriptor inSlot2Descriptor(GetReadsListWorkerFactory::PE_SLOT().getId(), ClarkClassifyWorker::tr("Input URL 2"), ClarkClassifyWorker::tr("Input URL 2."));
 
         QMap<Descriptor, DataTypePtr> inM;
         inM[inSlot1Descriptor] = BaseTypes::STRING_TYPE();

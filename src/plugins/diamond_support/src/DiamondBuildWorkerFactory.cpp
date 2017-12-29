@@ -74,7 +74,7 @@ void DiamondBuildWorkerFactory::init() {
         const Descriptor genomicLibraryDesc(GENOMIC_LIBRARY_ATTR_ID, DiamondBuildPrompter::tr("Genomic library"),
                                             DiamondBuildPrompter::tr("Genomes that should be used to build the database."));
 
-        Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), true, "diamond_db.dmnd");
+        Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), true);
         Attribute *genomicLibraryAttribute = new URLAttribute(genomicLibraryDesc, BaseTypes::URL_DATASETS_TYPE(), true);
 
         attributes << databaseAttribute;
