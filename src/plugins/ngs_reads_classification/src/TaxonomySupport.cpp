@@ -675,6 +675,8 @@ TaxonSelectionDialog::TaxonSelectionDialog(const QString &value, QWidget *parent
     for (int column = 0; column < treeModel->columnCount(); ++column) {
         treeView->resizeColumnToContents(column);
     }
+    treeView->header()->resizeSection(0, 370);
+    treeView->header()->resizeSection(1, 120);
     mainLayout->addWidget(treeView);
 
     buttonBox = new QDialogButtonBox(this);
@@ -695,7 +697,7 @@ TaxonSelectionDialog::TaxonSelectionDialog(const QString &value, QWidget *parent
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
   //  adjustSize();
-    resize(450, 450);
+    resize(580, 440);
     setSizePolicy( QSizePolicy::Expanding,  QSizePolicy::Expanding);
 }
 
