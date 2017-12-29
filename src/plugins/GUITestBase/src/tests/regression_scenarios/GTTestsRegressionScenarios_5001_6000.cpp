@@ -2355,6 +2355,8 @@ GUI_TEST_CLASS_DEFINITION(test_5665) {
             GTLineEdit::setText(os, filepathLineEdit, dataDir + "long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_.fa");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
         }
     };
     //Expected: the dialog about external modification of documents appears.
