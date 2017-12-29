@@ -74,6 +74,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     connect(showTranslationAction, SIGNAL(triggered(bool)), SLOT(sl_showTranslationToggle(bool)));
 
     doNotTranslateAction = new QAction(tr("Do not translate"), this);
+    doNotTranslateAction->setObjectName("do_not_translate_radiobutton");
     doNotTranslateAction->setData(SequenceObjectContext::TS_DoNotTranslate);
     connect(doNotTranslateAction, SIGNAL(triggered(bool)), SLOT(sl_doNotTranslate()));
     doNotTranslateAction->setCheckable(true);
@@ -90,6 +91,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     setUpFramesManuallyAction->setCheckable(true);
 
     showAllFramesAction = new QAction(tr("Show all frames"), this);
+    showAllFramesAction->setObjectName("show_all_frames_radiobutton");
     showAllFramesAction->setData(SequenceObjectContext::TS_ShowAllFrames);
     connect(showAllFramesAction, SIGNAL(triggered(bool)), SLOT(sl_showAllFrames()));
     showAllFramesAction->setCheckable(true);
