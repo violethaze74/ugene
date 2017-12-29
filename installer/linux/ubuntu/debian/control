@@ -5,7 +5,7 @@ Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 XSBC-Original-Maintainer: Ivan Efremov <iefremov@unipro.ru>
 Build-Depends: qt5-default, qttools5-dev-tools, libqt5webkit5-dev, libqt5opengl5-dev, libqt5sql5-mysql, qtscript5-dev, libqt5svg5-dev, zlib1g-dev, libprocps4-dev, debhelper (>=5.0.38)
 Standards-Version: 3.9.3
-Homepage: http://ugene.unipro.ru
+Homepage: http://ugene.net
 
 Package: ugene
 Architecture: any

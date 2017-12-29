@@ -330,7 +330,7 @@ GUI_TEST_CLASS_DEFINITION(test_1013) {
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "replace_selected_rows_with_reverse-complement"));
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(-1, 0));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(-1, 0), GTGlobals::UseMouse);
     GTMouseDriver::click(Qt::RightButton);
 
 }
@@ -1839,13 +1839,10 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
-
-
-    GTGlobals::sleep(100);
-    GTUtilsWorkflowDesigner::runWorkflow(os);
-	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-	
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+	GTGlobals::sleep(100);
+	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));   
+    GTUtilsWorkflowDesigner::runWorkflow(os);	
+	GTGlobals::sleep(500);   
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1154) {
@@ -4096,49 +4093,6 @@ GUI_TEST_CLASS_DEFINITION(test_1396){
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 0, "Wrong rows number");
 }
 
-
-GUI_TEST_CLASS_DEFINITION(test_1404) {
-    class ExportMsaToSeqScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "dialog not found");
-
-            // 3. Select "FASTQ" file format in "File format to use" field
-            QComboBox *formatCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "formatCombo", dialog));
-            GTComboBox::setIndexWithText(os, formatCombo, "FASTQ");
-
-            // 4. Click the browse button and input "result" to "File name" field, then click "Save"
-            // Expected state : Field "Export to file" contain "result.fastq" at the of string.
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, "", "result", GTFileDialogUtils::Save, GTGlobals::UseMouse));
-            GTWidget::click(os, GTWidget::findWidget(os, "fileButton", dialog));
-
-            QLineEdit *fileNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "fileNameEdit", dialog));
-            QString filePath = fileNameEdit->text();
-            CHECK_SET_ERR(filePath.endsWith("result.fastq"), "Wrong file path");
-
-            // 5. Select "FASTA" extension in "File format to use" field
-            // Expected state : Field "Export to file" contain "result.fa" at the of string.
-            GTComboBox::setIndexWithText(os, formatCombo, "FASTA");
-            filePath = fileNameEdit->text();
-            CHECK_SET_ERR(filePath.endsWith("result.fa"), "Wrong file path");
-
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
-        }
-    };
-
-    // 1. Open "data/samples/CLUSTALW/COI.aln"
-    // Expected state : COI.aln is opened
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // 2. Select "Export > Save sequence" in the context menu
-    // Expected state : Opened "Export selected sequence from alignment" dialog
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save sequence"));
-    GTUtilsDialog::waitForDialog(os, new ExportSelectedSequenceFromAlignment(os, new ExportMsaToSeqScenario));
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5, 5));
-    GTMouseDriver::click(Qt::RightButton);
-}
-
 GUI_TEST_CLASS_DEFINITION(test_1405) {
     // 1) Open _common_data/scenarios/msa/ma2_gap_col.aln
     // 2) Try to delete columns with gaps (first option, 1 gap).
@@ -6156,7 +6110,7 @@ GUI_TEST_CLASS_DEFINITION(test_1600_7) {
 
 //    Expected state: New gaps have been added, collapsible item has retained
     seq = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Isophya_altaica_EF540820");
-    CHECK_SET_ERR(seq == "-AAG-TTACTAA----", "unexpected sequence1: " + seq);
+    CHECK_SET_ERR(seq == "-AAG-TTACTAA---", "unexpected sequence1: " + seq);
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off 2");
 }
 
@@ -6446,20 +6400,20 @@ GUI_TEST_CLASS_DEFINITION(test_1640) {
     //2. Click the MSA Editor.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(4, 3), QPoint(4, 3));
 
-    //3. Press ctrl+left arrow to remove the selection.
-    GTKeyboardDriver::keyClick( Qt::Key_Left, Qt::ControlModifier);
+    //3. Press ESCAPE arrow to remove the selection.
+	GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //4. Press and hold a bit shift+right arrow.
     //Qt::Key_Shift
     for (int i=0; i<12; i++) {
         GTKeyboardDriver::keyClick( Qt::Key_Right, Qt::ShiftModifier);
     }
-    //GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-
+ 
     //Expected state: all sequences of each selected column are selected
     GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     QString chars = GTClipboard::text(os);
-    CHECK_SET_ERR(chars == "TCAGTCTATTAA", "Wrong selection: " + chars);
+    CHECK_SET_ERR(chars == "TCTATTAA", "Wrong selection: " + QString("Wrong selection : %1").arg(chars));
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1643) {
@@ -6803,7 +6757,7 @@ GUI_TEST_CLASS_DEFINITION(test_1672) {
     QCheckBox* showDistancesColumnCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showDistancesColumnCheck"));
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
     QComboBox *algoCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "algoComboBox"));
-    GTComboBox::setIndexWithText(os, algoCombo, "Identity");
+    GTComboBox::setIndexWithText(os, algoCombo, "Similarity");
     QString num1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 8);
     CHECK_SET_ERR(num1 == "100%", "unexpected sumilarity value an line 1: " + num1);
 }

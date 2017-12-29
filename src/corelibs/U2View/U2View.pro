@@ -162,6 +162,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_sequence/AutoAnnotationUtils.h \
            src/ov_sequence/CreateRulerDialogController.h \
            src/ov_sequence/DetView.h \
+           src/ov_sequence/DetViewSequenceEditor.h \
            src/ov_sequence/GSequenceGraphView.h \
            src/ov_sequence/GSequenceGraphViewWithFactory.h \
            src/ov_sequence/GSequenceLineView.h \
@@ -422,6 +423,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_sequence/AutoAnnotationUtils.cpp \
            src/ov_sequence/CreateRulerDialogController.cpp \
            src/ov_sequence/DetView.cpp \
+           src/ov_sequence/DetViewSequenceEditor.cpp \
            src/ov_sequence/GraphLabelModel.cpp \
            src/ov_sequence/GraphLabelsSelectDialog.cpp \
            src/ov_sequence/GraphMenu.cpp \

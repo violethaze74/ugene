@@ -71,8 +71,6 @@ void AprImporterTask::prepare() {
     IOAdapterRegistry *ioar = AppContext::getIOAdapterRegistry();
     SAFE_POINT_EXT(NULL != ioar, stateInfo.setError(tr("Invalid I/O environment!")), );
 
-    IOAdapterFactory *iof = ioar->getIOAdapterFactoryById(IOAdapterUtils::url2io(dstUrl));
-
     QFileInfo fileInfo(dstUrl);
     QDir qDir = fileInfo.dir();
     QString dir = qDir.path();

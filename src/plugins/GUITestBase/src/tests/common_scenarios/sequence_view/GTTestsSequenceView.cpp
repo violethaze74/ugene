@@ -1085,12 +1085,12 @@ GUI_TEST_CLASS_DEFINITION(test_0031_3){
 
 #define GET_ACTIONS QMenu *activePopupMenu = qobject_cast<QMenu *>(QApplication::activePopupWidget()); \
 CHECK_SET_ERR(NULL != activePopupMenu, "Active popup menu is NULL"); \
-QAction* direct1 = GTMenu::getMenuItem(os, activePopupMenu, "1 direct translation frame", true); \
-QAction* direct2 = GTMenu::getMenuItem(os, activePopupMenu, "2 direct translation frame", true); \
-QAction* direct3 = GTMenu::getMenuItem(os, activePopupMenu, "3 direct translation frame", true); \
-QAction* compl1 = GTMenu::getMenuItem(os, activePopupMenu, "1 complementary translation frame", true); \
-QAction* compl2 = GTMenu::getMenuItem(os, activePopupMenu, "2 complementary translation frame", true); \
-QAction* compl3 = GTMenu::getMenuItem(os, activePopupMenu, "3 complementary translation frame", true);
+QAction* direct1 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +1", true); \
+QAction* direct2 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +2", true); \
+QAction* direct3 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +3", true); \
+QAction* compl1 = GTMenu::getMenuItem(os, activePopupMenu, "Frame -1", true); \
+QAction* compl2 = GTMenu::getMenuItem(os, activePopupMenu, "Frame -2", true); \
+QAction* compl3 = GTMenu::getMenuItem(os, activePopupMenu, "Frame -3", true);
 
 GUI_TEST_CLASS_DEFINITION(test_0032){
 //    Open human_T1.fa
@@ -1189,6 +1189,9 @@ GUI_TEST_CLASS_DEFINITION(test_0034){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rulers" << "Show Custom Rulers"));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
     GTGlobals::sleep(500);
+//    Set focus on tree
+	GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+	GTMouseDriver::click();
     second = GTWidget::getImage(os, panView);
     CHECK_SET_ERR(init == second, "ruler not hidden");
 //    Remove ruler
@@ -1311,7 +1314,8 @@ GUI_TEST_CLASS_DEFINITION(test_0040){
     QScrollBar* scroll = det->findChild<QScrollBar*>();
     GTWidget::click(os, scroll);
     U2Region r = det->getVisibleRange();
-    CHECK_SET_ERR(r.startPos>98, QString("Unexpected start pos: %1").arg(r.startPos));
+    //CHECK_SET_ERR(r.startPos>98, QString("Unexpected start pos: %1").arg(r.startPos));
+	CHECK_SET_ERR(r.startPos>89, QString("Unexpected start pos: %1").arg(r.startPos));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0041){
@@ -2110,7 +2114,7 @@ GUI_TEST_CLASS_DEFINITION(test_0065) {
     CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
     GTWidget::click(os, wrapButton);
 
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    //GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
     for (int i = 0; i < 5; i++) {
@@ -2224,8 +2228,8 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
     CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
     GTWidget::click(os, wrapButton);
 
-    QScrollBar* scrollBar = GTScrollBar::getScrollBar(os, "multiline_scrollbar");
-    CHECK_SET_ERR(scrollBar->minimum() == scrollBar->maximum(), "There is something to scroll");
+    QScrollBar* scrollBar = GTScrollBar::getScrollBar(os, "singleline_scrollbar");
+    CHECK_SET_ERR(scrollBar->isHidden(), "Horizontal scroll bar is visible");
 
     GTWidget::click(os, seqWgt);
     GTMouseDriver::doubleClick();

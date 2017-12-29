@@ -30,6 +30,7 @@
 namespace U2 {
 
 const QString MaEditorStatusBar::NONE_MARK = "-";
+const QString MaEditorStatusBar::GAP_MARK = "gap";
 
 MaEditorStatusBar::TwoArgPatternLabel::TwoArgPatternLabel(QString textPattern, QString tooltipPattern,
                                                           QString objectName, QWidget* parent)
@@ -107,11 +108,11 @@ void MaEditorStatusBar::sl_lockStateChanged() {
     updateLock();
 }
 
-const QString NONE_SELECTION = QObject::tr("none");
+static const QString NONE_SELECTION = QObject::tr("none");
 
 QPair<QString, QString> MaEditorStatusBar::getGappedPositionInfo(const QPoint& pos) const{
     if (pos.isNull()) {
-        return  QPair<QString, QString>(MaEditorStatusBar::NONE_MARK, MaEditorStatusBar::NONE_MARK);
+        return QPair<QString, QString>(NONE_MARK, NONE_MARK);
     }
 
     QPair<QString, QString> p;
@@ -120,9 +121,9 @@ QPair<QString, QString> MaEditorStatusBar::getGappedPositionInfo(const QPoint& p
     SAFE_POINT(editor->getMaObject(), "MaObject is NULL", p);
     const MultipleAlignmentRow row = editor->getMaObject()->getRow(seqArea->getSelectedRows().startPos);
     QString len = QString::number(row->getUngappedLength());
-    if (row->charAt(pos.x()) == U2Msa::GAP_CHAR){
-        return QPair<QString, QString>(QString("gap"), len);
-    } else{
+    if (row->charAt(pos.x()) == U2Msa::GAP_CHAR) {
+        return QPair<QString, QString>(GAP_MARK, len);
+    } else {
         return QPair<QString, QString>(QString::number(row->getUngappedPosition(pos.x()) + 1), len);
     }
 }
@@ -135,8 +136,10 @@ void MaEditorStatusBar::updateLock() {
 
 void MaEditorStatusBar::updateLineLabel() {
     MaEditorSelection selection = seqArea->getSelection();
-    lineLabel->update(selection.isEmpty() ? MaEditorStatusBar::NONE_MARK : QString::number(selection.y() + 1),
-                      QString::number(aliObj->getNumRows()));
+    int firstSelected = selection.y();
+    int totalVisible = seqArea->getNumDisplayableSequences();
+    lineLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(firstSelected + 1),
+                      QString::number(totalVisible));
 }
 
 void MaEditorStatusBar::updatePositionLabel() {
@@ -150,7 +153,7 @@ void MaEditorStatusBar::updateColumnLabel() {
     MaEditorSelection selection = seqArea->getSelection();
     const QPoint& pos = selection.topLeft();
 
-    colomnLabel->update(selection.isEmpty() ? MaEditorStatusBar::NONE_MARK : QString::number(pos.x() + 1),
+    colomnLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(pos.x() + 1),
                         QString::number(aliObj->getLength()));
 }
 
@@ -170,4 +173,3 @@ void MaEditorStatusBar::updateSelectionLabel() {
 }
 
 }//namespace
-

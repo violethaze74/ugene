@@ -172,7 +172,14 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
         const QRect sliderSpaceRect = hBar->style()->subControlRect(QStyle::CC_ScrollBar, &hScrollBarOptions, QStyle::SC_ScrollBarGroove, hBar);
         const QPoint rightEdge(sliderSpaceRect.x() + sliderSpaceRect.width(), sliderSpaceRect.height() / 2);
 
-        GTMouseDriver::moveTo(hBar->mapToGlobal(rightEdge) - QPoint(1, 0));
+        int lastBase = msaSeqArea->getLastVisibleBase(true);
+        QPoint p;
+        if (position.x() == lastBase) {
+            p = hBar->mapToGlobal(rightEdge) + QPoint(3, 0);
+        } else {
+            p = hBar->mapToGlobal(rightEdge) - QPoint(1, 0);
+        }
+        GTMouseDriver::moveTo(p);
         GTMouseDriver::click();
     }
 
@@ -340,9 +347,11 @@ int GTUtilsMSAEditorSequenceArea::getLeftOffset(GUITestOpStatus &os)
 {
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", -1);
-
-    return msaEditArea->getEditor()->getUI()->getScrollController()->getFirstVisibleBase(true) + 1; // тут не уверен, есть еще класс MSAEditorOffsetsViewWidget (файл MSAEditorOffsetsViewWidget.h)
-                                                   // мне кажется более правильно будет от туда офсет вытащить.
+    
+    ScrollController* scrollController = msaEditArea->getEditor()->getUI()->getScrollController();
+    int clippedIdx = scrollController->getFirstVisibleBase(true); 
+    int notClippedIdx = scrollController->getFirstVisibleBase(false); 
+    return clippedIdx + (clippedIdx == notClippedIdx ? 0 : 1);
 }
 #undef GT_METHOD_NAME
 

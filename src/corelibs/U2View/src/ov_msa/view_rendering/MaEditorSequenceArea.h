@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,6 +31,7 @@
 #include <U2Core/MultipleAlignment.h>
 
 #include <U2Gui/GScrollBar.h>
+#include <U2Gui/SelectionModificationHelper.h>
 
 #include "MaEditorSelection.h"
 #include "../MaEditor.h"
@@ -185,6 +186,16 @@ protected slots:
 private slots:
     void sl_hScrollBarActionPerfermed();
 
+private:
+    void setBorderCursor(const QPoint& p);
+    void moveBorder(const Qt::CursorShape shape, const QPoint& p);
+
+    int shiftRegion(int shift);
+    QList<U2MsaGap> findRemovableGapColumns(int& shift);
+    QList<U2MsaGap> findCommonGapColumns(int& numOfColumns);
+    U2MsaGap addTrailingGapColumns(int count);
+    QList<U2MsaGap> findRestorableGapColumns(const int shift);
+
 signals:
     void si_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
     void si_selectionChanged(const QStringList& selectedRows);
@@ -312,6 +323,11 @@ protected:
     MaEditorSelection   baseSelection; // selection with rows indexes in absolute coordinates
 
     int                 maVersionBeforeShifting;
+    SelectionModificationHelper::MovableSide movableBorder;
+
+    QList<U2MsaGap>     ctrlModeGapModel;
+    bool                isCtrlPressed;
+    qint64              lengthOnMousePress;
 
     QAction*            useDotsAction;
 

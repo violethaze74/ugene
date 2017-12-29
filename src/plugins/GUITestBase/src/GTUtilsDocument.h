@@ -51,6 +51,8 @@ public:
     static void lockDocument(HI::GUITestOpStatus &os, const QString& documentName);
     static void unlockDocument(HI::GUITestOpStatus &os, const QString& documentName);
 
+    static void checkIfDocumentIsLocked(HI::GUITestOpStatus &os, const QString &documentName, bool isLocked);
+
 protected:
     static GObjectView* getDocumentGObjectView(HI::GUITestOpStatus &os, Document* d);
 

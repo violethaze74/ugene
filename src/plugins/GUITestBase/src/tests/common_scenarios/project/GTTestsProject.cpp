@@ -434,6 +434,8 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
+	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");

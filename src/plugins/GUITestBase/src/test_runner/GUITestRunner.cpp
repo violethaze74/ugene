@@ -23,6 +23,9 @@
 #include <QTreeView>
 #include <QMessageBox>
 
+#include <U2Core/Settings.h>
+#include <U2Core/AppContext.h>
+
 #include <U2Test/GUITestThread.h>
 #include <U2Test/UGUITestBase.h>
 #include <U2Test/GUITestService.h>
@@ -30,6 +33,8 @@
 #include "GUITestRunner.h"
 
 namespace U2 {
+
+#define LAST_FILTER_SETTING_NAME QString("GUI_TEST_RUNNER/last-filter")
 
 #define ULOG_CAT_TEST_RUNNER "GUI Test Runner Log"
 static Logger log(ULOG_CAT_TEST_RUNNER);
@@ -68,6 +73,9 @@ GUITestRunner::GUITestRunner(UGUITestBase* _guiTestBase, QWidget *parent) :
     delTextAction = new QAction(this);
     delTextAction->setShortcut(QKeySequence(tr("Esc")));
     filter->addAction(delTextAction);
+    
+    QString lastUsedFilter = AppContext::getSettings()->getValue(LAST_FILTER_SETTING_NAME, "").toString();
+    filter->setText(lastUsedFilter);
 
     connect(delTextAction, SIGNAL(triggered()), this, SLOT(sl_filterCleared()));
 
@@ -80,6 +88,8 @@ GUITestRunner::GUITestRunner(UGUITestBase* _guiTestBase, QWidget *parent) :
 
     show();
     filter->setFocus();
+    
+    revisible(filter->text());
 }
 
 GUITestRunner::~GUITestRunner()
@@ -139,6 +149,7 @@ void GUITestRunner::sl_filterCleared(){
     tree->collapseAll();
 }
 void GUITestRunner::sl_filterChanged(const QString &nameFilter) {
+    AppContext::getSettings()->setValue(LAST_FILTER_SETTING_NAME, nameFilter);
     revisible(nameFilter);
 }
 

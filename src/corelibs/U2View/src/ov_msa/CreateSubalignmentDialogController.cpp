@@ -49,7 +49,7 @@ namespace U2{
 CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleSequenceAlignmentObject *_mobj, const QRect& selection, QWidget *p)
 : QDialog(p), mobj(_mobj), saveController(NULL){
     setupUi(this);
-    new HelpButton(this, buttonBox, "20874987");
+    new HelpButton(this, buttonBox, "20880326");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Extract"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -92,8 +92,8 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
         startPos = selection.x() + 1;
         endPos = selection.x() + selection.width();
     }
-	startLineEdit->setText(QString::number(startPos));
-	endLineEdit->setText(QString::number(endPos));
+    startLineEdit->setText(QString::number(startPos));
+    endLineEdit->setText(QString::number(endPos));
 
     for (int i=0; i<rowNumber; i++) {
         QCheckBox *cb = new QCheckBox(mobj->getMsa()->getMsaRow(i)->getName(), this);

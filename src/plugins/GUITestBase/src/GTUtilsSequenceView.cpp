@@ -402,7 +402,8 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, QString na
 
 
     const U2Region &vr = seq->getDetView()->getVisibleRange();
-    const U2Region &r = a->getLocation().data()->regions.first();
+    QVector <U2Region> regions = a->getLocation().data()->regions;
+    const U2Region &r = regions.first();
 
     if (!r.intersects(vr)) {
         int center = r.center();

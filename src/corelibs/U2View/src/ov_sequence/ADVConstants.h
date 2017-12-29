@@ -17,6 +17,10 @@ namespace U2 {
 #define ADV_MENU_SECTION2_SEP           "ADV_MENU_SEC2_SEP"
 #define ADV_MENU_EDIT                   "ADV_MENU_EDIT"
 
+#define SEQ_EDIT_SETTINGS_ROOT                  "sequence_edit_settings/"
+#define SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY   "annotation_strategy"
+#define SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS     "recalculate_qualifiers"
+
 #define ANNOTATED_DNA_VIEW_FACTORY_ID   "AnnotatedDNAView"
 
 } //namespace

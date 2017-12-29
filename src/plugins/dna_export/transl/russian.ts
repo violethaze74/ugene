@@ -1428,32 +1428,37 @@
         <translation>Объединить последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="54"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="55"/>
         <source>Export</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="55"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="56"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="187"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="188"/>
         <source>Export Sequences</source>
         <translation>Экспорт последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="149"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="150"/>
         <source>Select organism</source>
         <translation>Выберите организм</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="234"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="236"/>
         <source>File is empty</source>
         <translation>Не указано имя файла</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="239"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="242"/>
+        <source>File name is too long!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportSequencesDialog.cpp" line="247"/>
         <source>Organism for back translation not specified</source>
         <translation>Не выбран организм для обратной трансляции</translation>
     </message>
