@@ -320,6 +320,14 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
 
 class TreeItem;
 
+namespace {
+
+bool taxIdLessThan(const TaxID a, const TaxID b) {
+    return TaxonomyTree::getInstance()->getName(a) < TaxonomyTree::getInstance()->getName(b);
+}
+
+}
+
 class TaxonomyTreeModel : public QAbstractItemModel
 {
 public:
@@ -342,8 +350,7 @@ private:
         QList<TaxID> values = tree->getChildren(id);
         if (values.size() > 1) {
             //qSort(values.begin(), values.end(), TaxonNameComparator(tree));
-            qSort(values.begin(), values.end(), [](const TaxID a, const TaxID b) -> bool
-            { return TaxonomyTree::getInstance()->getName(a) < TaxonomyTree::getInstance()->getName(b); });
+            qSort(values.begin(), values.end(), taxIdLessThan);
         }
         return values;
     }
