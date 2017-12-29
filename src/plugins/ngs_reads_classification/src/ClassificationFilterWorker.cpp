@@ -165,7 +165,7 @@ void ClassificationFilterWorkerFactory::init() {
 //                        ClassificationFilterWorker::tr("URL(s) to the filtered FASTQ or FASTA file(s). The files contain \"right\" reads in case of paired-end sequencing (see \"Input data\" parameter of the element)."));
 
         Descriptor inSlot1Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClassificationFilterWorker::tr("Input URL 1"), ClassificationFilterWorker::tr("Input URL 1."));
-        Descriptor inSlot2Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClassificationFilterWorker::tr("Input URL 2"), ClassificationFilterWorker::tr("Input URL 2."));
+        Descriptor inSlot2Descriptor(GetReadsListWorkerFactory::PE_SLOT().getId(), ClassificationFilterWorker::tr("Input URL 2"), ClassificationFilterWorker::tr("Input URL 2."));
 
         QMap<Descriptor, DataTypePtr> inM;
         inM[inSlot1Descriptor] = BaseTypes::STRING_TYPE();
