@@ -428,7 +428,6 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
     bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection);
     QVector<U2Region> regions;
     QList<QVector<U2Region> > sortedRegions = QList<QVector<U2Region> >() << QVector<U2Region>() << QVector<U2Region>() << QVector<U2Region>();
-    int upperIndent = 0;
     if (isTranslateAnnotationOrSelection) {
         regions = ctx->getSequenceSelection()->getSelectedRegions();
         QList<int> mods;
@@ -446,12 +445,6 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
                 if (!mods.contains(mod)) {
                     mods << mod;
                 }
-            }
-        }
-        upperIndent = 3;
-        for (int i = 0; i < 3; i++) {
-            if (trMetrics.visibleRows[i]) {
-                upperIndent--;
             }
         }
     }
@@ -472,6 +465,7 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
 
             QByteArray amino;
             if (isTranslateAnnotationOrSelection) {
+                qSort(sortedRegions[line].begin(), sortedRegions[line].end());
                 amino = translateSelection(sortedRegions[line], translation, seq, length, visibleRange.startPos, U2Strand::Direct);
             } else {
                 amino = translate(translation, seq, length);
@@ -485,7 +479,7 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
             for (int k = 0; k < line; k++) {
                 yOffset += (trMetrics.visibleRows[k] == true ? 0 : 1);
             }
-            int y = getTextY(firstDirectTransLine + line - yOffset + upperIndent);
+            int y = getTextY(firstDirectTransLine + line - yOffset);
             int dx = seqStartPos - visibleRange.startPos; // -1, 0, 1, 2 (if startPos == 0)
             for (int j = 0, n = amino.length(); j < n ; j++, seq += 3) {
                 char amin = amino[j];
@@ -560,6 +554,7 @@ void DetViewSingleLineRenderer::drawComplementTranslations(QPainter& p,
 
             QByteArray amino;
             if (isTranslateAnnotationOrSelection) {
+                qSort(sortedRegions[complLine].begin(), sortedRegions[complLine].end());
                 amino = translateComplSelection(sortedRegions[complLine], translation, seq, seqLen, visibleRange);
             } else {
                 amino = translate(translation, seq, seqLen);
@@ -620,13 +615,6 @@ void DetViewSingleLineRenderer::drawSequenceSelection(QPainter &p, const QSize &
             int translLine = posToDirectTransLine(reg.startPos);
             if (translLine >= 0 && r.length >= 3) {
                 int translLen = reg.endPos() > r.endPos() ? r.length : r.length / 3 * 3;
-                if (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection) {
-                    int offset = 3;
-                    for (int i = 0; i < 3; i++) {
-                        offset -= trMetrics.visibleRows[i] ? 1 : 0;
-                    }
-                    translLine += offset;
-                }
                 highlight(p, U2Region(r.startPos, translLen), translLine, canvasSize, visibleRange);
             }
             if (detView->hasComplementaryStrand()) {
@@ -705,19 +693,25 @@ void DetViewSingleLineRenderer::updateLines() {
         firstComplTransLine = 6;
         numLines = 9;
 
-        if (ctx->getTranslationState() != SequenceObjectContext::TS_AnnotationsOrSelection) {
-            QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
-            for (int i = 0; i < 6; i++) {
-                if (!v[i]) {
-                    if (i < 3) {
-                        directLine--;
-                        rulerLine--;
-                        complementLine--;
-                        firstComplTransLine--;
-                    }
-                    numLines--;
+        QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
+        for (int i = 0; i < 6; i++) {
+            if (!v[i]) {
+                if (i < 3) {
+                    directLine--;
+                    rulerLine--;
+                    complementLine--;
+                    firstComplTransLine--;
                 }
+                numLines--;
             }
+        }
+
+        if (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection && numLines == 3) {
+            directLine = 1;
+            rulerLine = 2;
+            complementLine = 3;
+            firstComplTransLine = 4;
+            numLines = 5;
         }
     } else if (detView->hasComplementaryStrand()) {
         directLine = 0;
@@ -730,15 +724,19 @@ void DetViewSingleLineRenderer::updateLines() {
         rulerLine = 4;
         numLines = 5;
 
-        if (ctx->getTranslationState() != SequenceObjectContext::TS_AnnotationsOrSelection) {
-            QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
-            for (int i = 0; i < 3; i++) {
-                if (!v[i]) {
-                    directLine--;
-                    rulerLine--;
-                    numLines--;
-                }
+        QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
+        for (int i = 0; i < 3; i++) {
+            if (!v[i]) {
+                directLine--;
+                rulerLine--;
+                numLines--;
             }
+        }
+
+        if (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection && numLines == 3) {
+            directLine = 1;
+            rulerLine = 2;
+            numLines = 3;
         }
     }
     SAFE_POINT(numLines > 0, "Nothing to render. Lines count is less then 1", );

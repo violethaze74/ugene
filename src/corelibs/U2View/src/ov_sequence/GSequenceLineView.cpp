@@ -51,7 +51,8 @@ GSequenceLineView::GSequenceLineView(QWidget* p, SequenceObjectContext* _ctx)
       coherentRangeView(NULL),
       movableBorder(SelectionModificationHelper::NoMovableBorder),
       ignoreMouseSelectionEvents(false),
-      singleBaseSelection(false)
+      singleBaseSelection(false),
+      isSelectionResizing(false)
 {
     GCOUNTER( cvar, tvar, "SequenceLineView" );
     seqLen = ctx->getSequenceLength();
@@ -124,17 +125,15 @@ void GSequenceLineView::sl_onScrollBarMoved(int pos) {
     if (lastPressPos!=-1) {
         QAbstractSlider::SliderAction aAction = scrollBar->getRepeatAction();
         if (aAction == QAbstractSlider::SliderSingleStepAdd) {
-            qint64 selStart = qMin(lastPressPos, visibleRange.endPos());
-            qint64 selEnd = qMax(lastPressPos, visibleRange.endPos());
-            U2Region newSelection(selStart, selEnd - selStart);
-            resizableRegion = newSelection;
-            setSelection(newSelection);
+            const qint64 selStart = qMin(lastPressPos, visibleRange.endPos());
+            const qint64 selEnd = qMax(lastPressPos, visibleRange.endPos());
+            const U2Region newSelection(selStart, selEnd - selStart);
+            changeSelectionOnScrollbarMoving(newSelection);
         } else if (aAction == QAbstractSlider::SliderSingleStepSub) {
-            qint64 selStart = qMin(lastPressPos, visibleRange.startPos);
-            qint64 selEnd = qMax(lastPressPos, visibleRange.startPos);
-            U2Region newSelection(selStart, selEnd - selStart);
-            resizableRegion = newSelection;
-            setSelection(newSelection);
+            const qint64 selStart = qMin(lastPressPos, visibleRange.startPos);
+            const qint64 selEnd = qMax(lastPressPos, visibleRange.startPos);
+            const U2Region newSelection(selStart, selEnd - selStart);
+            changeSelectionOnScrollbarMoving(newSelection);
         }
     }
 }
@@ -161,6 +160,7 @@ void GSequenceLineView::removeSelection(const U2Region& r) {
 
 void GSequenceLineView::mousePressEvent(QMouseEvent* me) {
     setFocus();
+    isSelectionResizing = true;
 
     QPoint renderAreaPos = toRenderAreaPoint(me->pos());
     if (!renderArea->rect().contains(renderAreaPos)) {
@@ -213,7 +213,7 @@ void GSequenceLineView::mouseReleaseEvent(QMouseEvent* me) {
         }
     }
 
-    scrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
+    cancelSelectionResizing();
     lastPressPos = -1;
     resizableRegion = U2Region();
     overlappedRegions.clear();
@@ -224,22 +224,26 @@ void GSequenceLineView::mouseReleaseEvent(QMouseEvent* me) {
 void GSequenceLineView::mouseMoveEvent(QMouseEvent* me) {
     if (!me->buttons()) {
         setBorderCursor(me->pos());
-    } else if (me->buttons() & Qt::LeftButton) {
-        Qt::CursorShape shape = cursor().shape();
-        if (shape != Qt::ArrowCursor) {
-            moveBorder(me->pos());
+    }
+
+    if (isSelectionResizing) {
+        if (me->buttons() & Qt::LeftButton) {
+            Qt::CursorShape shape = cursor().shape();
+            if (shape != Qt::ArrowCursor) {
+                moveBorder(me->pos());
+                QWidget::mouseMoveEvent(me);
+                return;
+            }
+        }
+
+        if (lastPressPos == -1) {
             QWidget::mouseMoveEvent(me);
             return;
         }
-    }
 
-    if (lastPressPos == -1) {
-        QWidget::mouseMoveEvent(me);
-        return;
-    }
-
-    if (me->buttons() & Qt::LeftButton) {
-        moveBorder(me->pos());
+        if (me->buttons() & Qt::LeftButton) {
+            moveBorder(me->pos());
+        }
     }
     QWidget::mouseMoveEvent(me);
 }
@@ -305,7 +309,8 @@ void GSequenceLineView::setBorderCursor(const QPoint &p) {
         for (int i = 0; i < regions.size(); i++) {
             const QRect selection(QPoint(regions[i].startPos, 0), QPoint(regions[i].endPos() - 1, 1));
             shape = SelectionModificationHelper::getCursorShape(point, selection, scale, height());
-            if (shape == Qt::SizeHorCursor) {
+            if (shape != Qt::ArrowCursor) {
+                shape = Qt::SizeHorCursor;
                 break;
             }
         }
@@ -511,6 +516,11 @@ void GSequenceLineView::autoScrolling(const QPoint& areaPoint) {
     }
 }
 
+void GSequenceLineView::cancelSelectionResizing() {
+    isSelectionResizing = false;
+    scrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
+}
+
 void GSequenceLineView::resizeSelection(const QPoint& areaPoint) {
     qint64 pos = renderArea->coordToPos(areaPoint);
     QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
@@ -550,7 +560,7 @@ void GSequenceLineView::resizeSelection(const QPoint& areaPoint) {
 
     if (!resizableRegion.isEmpty()) {
         foreach (const U2Region& reg, regions) {
-            if ((!reg.intersect(newSelection).isEmpty() || reg.startPos == newSelection.endPos() || reg.endPos() == newSelection.startPos)) {
+            if (!reg.intersect(newSelection).isEmpty()) {
                 newSelection = U2Region::join(QVector<U2Region>() << newSelection << reg).first();
                 if (!overlappedRegions.contains(reg)) {
                     overlappedRegions << reg;
@@ -580,12 +590,20 @@ void GSequenceLineView::resizeSelection(const QPoint& areaPoint) {
         }
     }
 
-    resizableRegion = newSelection;
+    changeSelection(regions, newSelection);
+}
 
-    setSelection(newSelection);
-    foreach(const U2Region& reg, regions) {
-        addSelection(reg);
-    }
+void GSequenceLineView::changeSelectionOnScrollbarMoving(const U2Region& newSelection) {
+    QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
+    regions.removeOne(resizableRegion);
+    changeSelection(regions, newSelection);
+}
+
+void GSequenceLineView::changeSelection(QVector<U2Region>& regions, const U2Region& newSelection) {
+    resizableRegion = newSelection;
+    regions << newSelection;
+    qSort(regions.begin(), regions.end());
+    ctx->getSequenceSelection()->setSelectedRegions(regions);
 }
 
 //////////////////////////////////////////////////////////////////////////

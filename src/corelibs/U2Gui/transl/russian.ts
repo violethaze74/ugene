@@ -790,9 +790,13 @@
         <translation>Изменение аннотаций при редактировании последовательности</translation>
     </message>
     <message>
-        <location filename="../src/util/EditSettingsDialog.ui" line="23"/>
         <source>Expand affected annotation</source>
-        <translation>Расширить аннотацию</translation>
+        <translation type="vanished">Расширить аннотацию</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="23"/>
+        <source>Expand or crop affected annotation</source>
+        <translation>Расширить или уменьшить аннотацию</translation>
     </message>
     <message>
         <location filename="../src/util/EditSettingsDialog.ui" line="33"/>

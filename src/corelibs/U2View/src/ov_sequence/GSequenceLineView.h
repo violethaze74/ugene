@@ -161,6 +161,9 @@ protected:
     virtual int getPageStep() const;
     void autoScrolling(const QPoint& areaPoint);
     virtual void resizeSelection(const QPoint& areaPoint);
+    void cancelSelectionResizing();
+    void changeSelectionOnScrollbarMoving(const U2Region& newSelection);
+    void changeSelection(QVector<U2Region>& regions, const U2Region& newSelection);
 
     SequenceObjectContext*          ctx;
     GSequenceLineViewRenderArea*    renderArea;
@@ -181,6 +184,7 @@ protected:
     // any changes to selection on mouse ops
     bool                            ignoreMouseSelectionEvents;
     bool                            singleBaseSelection;
+    bool                            isSelectionResizing;
 };
 
 class U2VIEW_EXPORT GSequenceLineViewRenderArea : public QWidget  {

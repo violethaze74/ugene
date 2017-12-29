@@ -1191,6 +1191,8 @@ void MaEditorSequenceArea::moveBorder(const Qt::CursorShape shape, const QPoint&
 
     QRect newSelection = SelectionModificationHelper::getNewSelection(movableBorder, globalMousePos, QSizeF(baseWidth, baseHeight), selection.getRect());
 
+    setCursor(SelectionModificationHelper::getCursorShape(movableBorder, cursor().shape()));
+
     CHECK(!newSelection.isEmpty(), );
     if (!isPosInRange(newSelection.right())) {
         newSelection.setRight(selection.getRect().right());

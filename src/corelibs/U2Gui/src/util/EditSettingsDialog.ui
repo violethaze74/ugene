@@ -20,7 +20,7 @@
    <item>
     <widget class="QRadioButton" name="resizeRadioButton">
      <property name="text">
-      <string>Expand affected annotation</string>
+      <string>Expand or crop affected annotation</string>
      </property>
      <property name="checked">
       <bool>true</bool>

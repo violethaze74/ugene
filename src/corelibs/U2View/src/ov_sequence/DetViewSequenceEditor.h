@@ -64,6 +64,7 @@ private:
     void deleteChar(int key);
 
     void runModifySeqTask(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence);
+    void cancelSelectionResizing();
 
 private slots:
     void sl_editMode(bool active);
