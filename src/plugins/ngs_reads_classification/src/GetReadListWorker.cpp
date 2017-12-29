@@ -54,7 +54,7 @@ static const QString PE_URL_ATTR("url-pe");
 
 const Descriptor GetReadsListWorkerFactory::SE_SLOT()
 {
-    return Descriptor(SE_SLOT_ID, GetReadsListWorker::tr("Source URL"), GetReadsListWorker::tr("Source URL"));
+    return Descriptor(SE_SLOT_ID, GetReadsListWorker::tr("Source URL 1"), GetReadsListWorker::tr("Source URL 1"));
 }
 
 const Descriptor GetReadsListWorkerFactory::PE_SLOT()
@@ -151,7 +151,7 @@ void GetReadsListWorkerFactory::init() {
         if(AppContext::isGUIMode()) {
             proto->setIcon( GUIUtils::createRoundIcon(QColor(85,85,255), 22));
         }
-        WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
+        WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
         WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new GetReadsListWorkerFactory(SE_ACTOR_ID));
     }
     ///////////////////////// PE reads //////////////////////////////
@@ -187,7 +187,7 @@ void GetReadsListWorkerFactory::init() {
         if(AppContext::isGUIMode()) {
             proto->setIcon( GUIUtils::createRoundIcon(QColor(85,85,255), 22));
         }
-        WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
+        WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
         WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new GetReadsListWorkerFactory(PE_ACTOR_ID));
     }
 
@@ -201,13 +201,7 @@ Worker *GetReadsListWorkerFactory::createWorker(Actor *a) {
 /* Prompter */
 /************************************************************************/
 QString GetReadsListPrompter::composeRichDoc() {
-    QString url = getHyperlink(SE_URL_ATTR, getURL(SE_URL_ATTR));
-    if (target->getId() == GetReadsListWorkerFactory::SE_ACTOR_ID) {
-        return tr("Read and output the files URLs.");//.arg(url);
-    } else {
-        QString url2 = getHyperlink(PE_URL_ATTR, getURL(PE_URL_ATTR));
-        return tr("Read and output the PE reads URLs.");//tr("Gets paths of PE reads: %1 and %2.").arg(url).arg(url2);
-    }
+    return tr("Read and output the files URLs.");
 }
 
 } // LocalWorkflow

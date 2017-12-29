@@ -47,7 +47,7 @@ namespace LocalWorkflow {
 
 const QString KrakenClassifyWorkerFactory::ACTOR_ID = "classify-reads-with-kraken";
 
-const QString KrakenClassifyWorkerFactory::INPUT_PORT_ID = "in1";
+const QString KrakenClassifyWorkerFactory::INPUT_PORT_ID = "in";
 //const QString KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID = "in2";
 const QString KrakenClassifyWorkerFactory::OUTPUT_PORT_ID = "out";
 
@@ -74,17 +74,17 @@ Worker *KrakenClassifyWorkerFactory::createWorker(Actor *actor) {
 void KrakenClassifyWorkerFactory::init() {
     QList<PortDescriptor *> ports;
     {
-//        const Descriptor inSlotDesc = (BaseSlots::URL_SLOT().getId(),
-//                                    KrakenClassifyPrompter::tr("Input URL(s)"),
-//                                    KrakenClassifyPrompter::tr("Input URL(s)."));
+        const Descriptor inSlotDesc = (GetReadsListWorkerFactory::SE_SLOT().getId(),
+                                       KrakenClassifyPrompter::tr("Input URL 1"),
+                                       KrakenClassifyPrompter::tr("Input URL 1."));
 
-//        const Descriptor inPairedSlotDesc(BaseSlots::URL_SLOT().getId(),
-//                                          KrakenClassifyPrompter::tr("Input URL(s)"),
-//                                          KrakenClassifyPrompter::tr("Input URL(s)."));
+        const Descriptor inPairedSlotDesc(GetReadsListWorkerFactory::SE_SLOT().getId(),
+                                          KrakenClassifyPrompter::tr("Input URL 2"),
+                                          KrakenClassifyPrompter::tr("Input URL 2."));
 
         QMap<Descriptor, DataTypePtr> inType;
-        inType[GetReadsListWorkerFactory::SE_SLOT()] = BaseTypes::STRING_TYPE();
-        inType[GetReadsListWorkerFactory::PE_SLOT()] = BaseTypes::STRING_TYPE();
+        inType[inSlotDesc] = BaseTypes::STRING_TYPE();
+        inType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
 
 //        QMap<Descriptor, DataTypePtr> inPairedType;
 //        inPairedType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
@@ -93,14 +93,16 @@ void KrakenClassifyWorkerFactory::init() {
         outType[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
 
         const Descriptor inPortDesc(INPUT_PORT_ID,
-                                    KrakenClassifyPrompter::tr("Input sequences 1"),
+                                    KrakenClassifyPrompter::tr("Input sequences"),
                                     KrakenClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                               "The input files may contain single-end reads, scaffolds, or PE reads in case of the paired-end sequencing (see \"Sequencing reads\" parameter of the element)."));
+                                                               "In case of SE reads or scaffolds use the \"Input URL 1\" slot only.\n\n"
+                                                               "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
+                                                               "See also the \"Input data\" parameter of the element."));
 //        const Descriptor inPairedPortDesc(INPUT_PAIRED_PORT_ID,
 //                                          KrakenClassifyPrompter::tr("Input sequences 2"),
 //                                          KrakenClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
 //                                                                     "The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Sequencing reads\" parameter of the element)."));
-        const Descriptor outPortDesc(OUTPUT_PORT_ID, KrakenClassifyPrompter::tr("Classified sequences"), KrakenClassifyPrompter::tr("Classification report URL."));
+        const Descriptor outPortDesc(OUTPUT_PORT_ID, KrakenClassifyPrompter::tr("Kraken-classified sequences"), KrakenClassifyPrompter::tr("A map of sequence names with the associated taxonomy IDs, classified by Kraken."));
 
         ports << new PortDescriptor(inPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
 //        ports << new PortDescriptor(inPairedPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-paired-in", inPairedType)), true /*input*/);
@@ -110,28 +112,28 @@ void KrakenClassifyWorkerFactory::init() {
     QList<Attribute *> attributes;
     {
         const Descriptor inputDataDesc(INPUT_DATA_ATTR_ID, KrakenClassifyPrompter::tr("Input data"),
-                                             KrakenClassifyPrompter::tr("The input data that should be classified are provided through the input ports of the element.\n\n"
-                                                                        "To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\". The element has one input port in this case. Pass URL(s) to the corresponding files to this port.\n\n"
-                                                                        "To classify paired-end (PE) reads, set the value to \"PE reads\". The element has two input ports in this case. Pass URL(s) to the \"left\" and \"right\" reads to the first and the second port correspondingly.\n\n"
+                                             KrakenClassifyPrompter::tr("To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\".<br><br>"
+                                                                        "To classify paired-end (PE) reads, set the value to \"PE reads\".<br><br>"
+                                                                        "One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.<br><br>"
                                                                         "The input files should be in FASTA or FASTQ formats."));
 
         const Descriptor databaseDesc(DATABASE_ATTR_ID, KrakenClassifyPrompter::tr("Database"),
                                       KrakenClassifyPrompter::tr("A path to the folder with the Kraken database files."));
 
         const Descriptor quickOperationDesc(QUICK_OPERATION_ATTR_ID, KrakenClassifyPrompter::tr("Quick operation"),
-                                            KrakenClassifyPrompter::tr("Stop classification of an input read after the certain number of hits.\n\n"
+                                            KrakenClassifyPrompter::tr("Stop classification of an input read after the certain number of hits.<br><br>"
                                                                        "The value can be specified in the \"Minimum number of hits\" parameter."));
 
         const Descriptor minHitsDesc(MIN_HITS_NUMBER_ATTR_ID, KrakenClassifyPrompter::tr("Minimum number of hits"),
-                                     KrakenClassifyPrompter::tr("The number of hits that are required to declare an input sequence classified.\n\n"
+                                     KrakenClassifyPrompter::tr("The number of hits that are required to declare an input sequence classified.<br><br>"
                                                                 "This can be especially useful with custom databases when testing to see if sequences either do or do not belong to a particular genome."));
 
         const Descriptor threadsDesc(THREADS_NUMBER_ATTR_ID, KrakenClassifyPrompter::tr("Number of threads"),
                                      KrakenClassifyPrompter::tr("Use multiple threads (--threads)."));
 
         const Descriptor preloadDatabaseDesc(PRELOAD_DATABASE_ATTR_ID, KrakenClassifyPrompter::tr("Preload database"),
-                                             KrakenClassifyPrompter::tr("Load the Kraken database into RAM (--preload).\n\n"
-                                                                        "This can be useful to improve the speed. The database size should be less than the RAM size.\n\n"
+                                             KrakenClassifyPrompter::tr("Load the Kraken database into RAM (--preload).<br><br>"
+                                                                        "This can be useful to improve the speed. The database size should be less than the RAM size.<br><br>"
                                                                         "The other option to improve the speed is to store the database on ramdisk. Set this parameter to \"False\" in this case."));
 
         Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, KrakenClassifyTaskSettings::SINGLE_END);

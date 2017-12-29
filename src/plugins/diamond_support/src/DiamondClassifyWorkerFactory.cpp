@@ -79,7 +79,7 @@ void DiamondClassifyWorkerFactory::init() {
         outType[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
 
         const Descriptor inPortDesc(INPUT_PORT_ID,
-                                    DiamondClassifyPrompter::tr("Input sequences 1"),
+                                    DiamondClassifyPrompter::tr("Input sequences"),
                                     DiamondClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
                                                                 "The input files may contain single-end reads, scaffolds, or \"left\" reads in case of the paired-end sequencing (see \"Input data\" parameter of the element)."));
 
@@ -130,7 +130,7 @@ void DiamondClassifyWorkerFactory::init() {
     const Descriptor desc(ACTOR_ID,
                           DiamondClassifyPrompter::tr("Classify Sequences with DIAMOND"),
                           DiamondClassifyPrompter::tr("In general, DIAMOND is a sequence aligner for protein and translated DNA searches similar to "
-                                                      "the NCBI BLAST software tools. However, it provides a speedup of BLAST ranging up to x20,000.\n"
+                                                      "the NCBI BLAST software tools. However, it provides a speedup of BLAST ranging up to x20,000.<br>"
                                                       "Using this workflow element one can use DIAMOND for taxonomic classification of short DNA reads "
                                                       "and longer sequences such as scaffolds."));
 

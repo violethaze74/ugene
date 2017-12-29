@@ -73,8 +73,6 @@ static const QString DB_URL("db-url");
 static const QString TAXONOMY("taxonomy");
 static const QString TAXONOMY_RANK("taxonomy-rank");
 
-static const QString TAX_DIR("taxdir");
-
 /************************************************************************/
 /* ClarkBuildPrompter */
 /************************************************************************/
@@ -89,15 +87,17 @@ QString ClarkBuildPrompter::composeRichDoc() {
 void ClarkBuildWorkerFactory::init() {
 
     Descriptor desc( ACTOR_ID, ClarkBuildWorker::tr("Build CLARK Database"),
-        ClarkBuildWorker::tr("Build a CLARK database from a set of reference sequences (“targets”)."
+        ClarkBuildWorker::tr("Build a CLARK database from a set of reference sequences (\"targets\").\n"
                              "NCBI taxonomy data are used to map the accession number found in each reference sequence to its taxonomy ID.") );
 
     QList<PortDescriptor*> p;
     {
         Descriptor outD(OUTPUT_PORT, ClarkBuildWorker::tr("Output CLARK database"), ClarkBuildWorker::tr("URL to the folder with the CLARK database."));
 
+        Descriptor outSlotDescription(BaseSlots::URL_SLOT().getId(), ClarkBuildWorker::tr("Output URL"), ClarkBuildWorker::tr("Output URL."));
+
         QMap<Descriptor, DataTypePtr> outM;
-        outM[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();
+        outM[outSlotDescription] = BaseTypes::STRING_TYPE();
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType("clark.db-url", outM)), false, true);
     }
 
@@ -107,12 +107,12 @@ void ClarkBuildWorkerFactory::init() {
             ClarkBuildWorker::tr("A folder that should be used to store the database files."));
 
         Descriptor taxonomy(TAXONOMY, ClarkBuildWorker::tr("Genomic library"),
-            ClarkBuildWorker::tr("Genomes that should be used to build the database (“targets”)."
-                                 "<br>The genomes should be specified in FASTA format. There should be one FASTA file per reference sequence. A sequence header must contain an accession number (i.e., &gt;accession.number ... or &gt;gi|number|ref|accession.number| ...)."));
+            ClarkBuildWorker::tr("Genomes that should be used to build the database (\"targets\").<br><br>"
+                                 "The genomes should be specified in FASTA format. There should be one FASTA file per reference sequence. A sequence header must contain an accession number (i.e., &gt;accession.number ... or &gt;gi|number|ref|accession.number| ...)."));
 
         Descriptor rank(TAXONOMY_RANK, ClarkBuildWorker::tr("Taxonomy rank"),
-            ClarkBuildWorker::tr("Set the taxonomy rank for the database."
-                                    "<br>CLARK classifies metagenomic samples by using only one taxonomy rank. So as a general rule, "
+            ClarkBuildWorker::tr("Set the taxonomy rank for the database.<br><br>"
+                                    "CLARK classifies metagenomic samples by using only one taxonomy rank. So as a general rule, "
                                     "consider first the genus or species rank, then if a high proportion of reads "
                                     "cannot be classified, reset your targets definition at a higher taxonomy rank (e.g., family or phylum)."));
 
@@ -120,14 +120,6 @@ void ClarkBuildWorkerFactory::init() {
 
         a << new URLAttribute( taxonomy, BaseTypes::URL_DATASETS_TYPE(), true);
         a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);
-
-        Descriptor taxUrl(TAX_DIR, ClarkBuildWorker::tr("Taxdata URL"),
-            ClarkBuildWorker::tr("A folder with downloaded NCBI taxonomy info."));
-
-        U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-//        CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), setError(tr("Taxonomy data is not set")), );
-        QString taxPath = taxonomyDataPath != NULL && taxonomyDataPath->isValid() ? taxonomyDataPath->getPath() : "";
-        a << new Attribute( taxUrl, BaseTypes::STRING_TYPE(), true, taxPath);
     }
 
     QMap<QString, PropertyDelegate*> delegates;
@@ -145,7 +137,6 @@ void ClarkBuildWorkerFactory::init() {
         tags.set(DelegateTags::PLACEHOLDER_TEXT, L10N::required());
         delegates[DB_URL] = new URLDelegate(tags, "clark/database", false, true/*isPath*/);
         delegates[TAXONOMY] = new GenomicLibraryDelegate();//new URLDelegate(tags, "clark/taxonomy", true/*multi*/);
-        delegates[TAX_DIR] = new URLDelegate(tags, "clark/taxdata", false, true/*isPath*/);
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
@@ -187,7 +178,11 @@ Task * ClarkBuildWorker::tick() {
         QString databaseUrl = getValue<QString>(DB_URL);
         int rank = getValue<int>(TAXONOMY_RANK);
         QStringList genUrls;// = getValue<QString>(TAXONOMY).split(';');
-        QString taxdataUrl = getValue<QString>(TAX_DIR);
+
+        U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
+        CHECK(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), new FailTask(tr("Taxonomy data is not found.")));
+        QString taxdataUrl = taxonomyDataPath->getPath();
+
         const QList<Dataset> datasets = getValue<QList<Dataset> >(TAXONOMY);
         DatasetFilesIterator it(datasets);
         while(it.hasNext()) {

@@ -409,6 +409,10 @@ bool TaxonomyTreeModel::setData(const QModelIndex &index, const QVariant &v, int
     bool result = false;
     bool old = selected.contains(item);
     int value = v.toInt();
+    if (value == Qt::PartiallyChecked) {
+        // workaround for Qt5.4: https://bugreports.qt.io/browse/QTBUG-43473
+        value = Qt::Checked;
+    }
     algoLog.info(QString("check %1 for %2 ").arg(value).arg(item));
 
     if (value == Qt::Unchecked && old) {
@@ -691,7 +695,7 @@ TaxonSelectionDialog::TaxonSelectionDialog(const QString &value, QWidget *parent
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
   //  adjustSize();
-//    resize(450, 450);
+    resize(450, 450);
     setSizePolicy( QSizePolicy::Expanding,  QSizePolicy::Expanding);
 }
 
