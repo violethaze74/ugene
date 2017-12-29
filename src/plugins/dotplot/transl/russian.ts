@@ -296,13 +296,6 @@
     </message>
     <message>
         <location filename="../src/DotPlotFilesDialog.cpp" line="151"/>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="159"/>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="169"/>
-        <source>Select files</source>
-        <translation>Выберите файлы</translation>
-    </message>
-    <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="151"/>
         <source>Unable to detect file format %1.
 Select valid file to build dotplot</source>
         <translation type="unfinished"></translation>
@@ -312,6 +305,13 @@ Select valid file to build dotplot</source>
         <source>Unable to detect format of given file %1.
 Select valid file to build dotplot</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="151"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="159"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="169"/>
+        <source>Select files</source>
+        <translation>Выберите файлы</translation>
     </message>
     <message>
         <location filename="../src/DotPlotFilesDialog.cpp" line="169"/>

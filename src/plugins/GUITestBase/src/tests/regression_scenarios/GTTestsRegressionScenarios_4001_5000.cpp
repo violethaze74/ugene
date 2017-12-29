@@ -301,12 +301,11 @@ GUI_TEST_CLASS_DEFINITION(test_4013) {
     GTFileDialog::openFile(os, dataDir+"samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    int length = GTUtilsMSAEditorSequenceArea::getLength(os);
 
-    GTUtilsMSAEditorSequenceArea::scrollToPosition(os, QPoint(length - 1, 1));
     int columnsNumber = GTUtilsMSAEditorSequenceArea::getNumVisibleBases(os);
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(columnsNumber - 10, 0), QPoint(columnsNumber, 10));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(columnsNumber - 10, 0), QPoint(columnsNumber, 10), GTGlobals::UseMouse);
 
+    GTGlobals::sleep(1000);
     GTKeyboardDriver::keyClick( Qt::Key_Space);
 
     GTGlobals::sleep();
@@ -751,6 +750,28 @@ GUI_TEST_CLASS_DEFINITION(test_4084) {
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 1)");
     CHECK_SET_ERR(NULL != annotationGroup, "Wrong annotations number");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4087) {
+    // 1. Open murine.gb
+    // 2. Open Find Pattern tab
+    // 3. Input pattern
+    // 4. Click Next a few times
+    // Expected state: the results are selected one by one from left to right, no random selection
+
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "U");
+    GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
+    GTGlobals::sleep(200);
+
+    QLabel *label = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "lblErrorMessage"));
+    
+    CHECK_SET_ERR(label->isVisible(), "Warning is not shown 1");
+    CHECK_SET_ERR(label->text().contains("Info"), "Warning is not shown 2");
+    CHECK_SET_ERR(!label->text().contains("Warning"), "Warning is shown");
+    
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4091) {
@@ -1213,7 +1234,7 @@ GUI_TEST_CLASS_DEFINITION(test_4118){
     GTLogTracer l;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     QMap<QString, QVariant> parameters;
-    parameters.insert("FASTQ files", QVariant(QDir().absoluteFilePath(testDir + "_common_data/NGS_tutorials/RNA-Seq_Analysis/Prepare_Raw_Data/lymph.fastq")));
+    parameters.insert("FASTQ files", QVariant(QDir().absoluteFilePath(testDir + "_common_data/fastq/lymph.fastq")));
     parameters.insert("Adapters", QVariant(""));
 
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Raw RNA-Seq Data Processing", QStringList()<<"Skip mapping"<<"Single-end"));
@@ -1221,7 +1242,7 @@ GUI_TEST_CLASS_DEFINITION(test_4118){
     GTUtilsWorkflowDesigner::addSample(os, "Raw RNA-Seq data processing");
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
+    //GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);
 
 }
@@ -3028,7 +3049,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "svg", GTGlobals::UseMouse);
+            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
 
             QLabel *hintLabel = GTWidget::findExactWidget<QLabel *>(os, "hintLabel", dialog);
             CHECK_SET_ERR(NULL != hintLabel, "hintLabel is NULL");
@@ -3063,7 +3084,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "svg", GTGlobals::UseMouse);
+			GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
 
             QLabel *hintLabel = GTWidget::findExactWidget<QLabel *>(os, "hintLabel", dialog);
             CHECK_SET_ERR(NULL != hintLabel, "hintLabel is NULL");
@@ -3090,6 +3111,18 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
         .arg(sandBoxDir + "test_4508/test_4508.svg"));
     GTUtilsLog::check(os, logTracer);
 }
+
+GUI_TEST_CLASS_DEFINITION(test_4515) {
+
+    GTFileDialog::openFile(os, dataDir + "samples/ABIF/", "A01.abi");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "K");
+
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 0/0"), "Results string not match");
+}
+
 
 GUI_TEST_CLASS_DEFINITION(test_4524) {
     // Open "data/samples/CLUSTALW/COI.aln".
@@ -3136,6 +3169,26 @@ GUI_TEST_CLASS_DEFINITION(test_4537) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.sam"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Open as...");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_4552){
+    
+    // Open .
+    // Align the sequences with MUSCLE.
+    // While MUSCLE is running, open the "Tree" context menu.
+    // Expected state: the "Build tree" action is disabled while the modification is not finished.
+    // Current state: the "Build tree" action is enabled.
+    
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/1000_sequences.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align" << "Align with MUSCLE..."));
+    GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_TREES << "Build Tree", PopupChecker::IsDisabled));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
+}
+
 
 GUI_TEST_CLASS_DEFINITION(test_4557){
 //    1. Open "samples/FASTA/human_T1.fa".

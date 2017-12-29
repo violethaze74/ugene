@@ -765,17 +765,18 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Default: 250.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>The number of megabytes of memory a given thread is given to store path descriptors in --best mode.
-Best-first search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost.
-Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases.
-If you receive an error message saying that chunk memory has been exhausted in --best mode,
-try adjusting this parameter up to dedicate more memory to the descriptors.
+        <location filename="../src/bowtie/BowtieSettings.ui" line="215"/>
+        <source>The number of megabytes of memory a given thread is given to store path descriptors in --best mode. 
+Best-first search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost. 
+Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases. 
+If you receive an error message saying that chunk memory has been exhausted in --best mode, 
+try adjusting this parameter up to dedicate more memory to the descriptors. 
 Default: 64.</source>
-        <translation type="vanished">The number of megabytes of memory a given thread is given to store path descriptors in --best mode.
-Best-first search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost.
-Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases.
-If you receive an error message saying that chunk memory has been exhausted in --best mode,
-try adjusting this parameter up to dedicate more memory to the descriptors.
+        <translation>The number of megabytes of memory a given thread is given to store path descriptors in --best mode. 
+Best-first search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost. 
+Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases. 
+If you receive an error message saying that chunk memory has been exhausted in --best mode, 
+try adjusting this parameter up to dedicate more memory to the descriptors. 
 Default: 64.</translation>
     </message>
     <message>
@@ -828,16 +829,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/bowtie/BowtieSettings.ui" line="189"/>
         <source>Maximum of backtracks (--maxbts)</source>
         <translation>Maximum of backtracks (--maxbts)</translation>
-    </message>
-    <message>
-        <location filename="../src/bowtie/BowtieSettings.ui" line="215"/>
-        <source>The number of megabytes of memory a given thread is given to store path descriptors in --best mode. 
-Best-first search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost. 
-Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases. 
-If you receive an error message saying that chunk memory has been exhausted in --best mode, 
-try adjusting this parameter up to dedicate more memory to the descriptors. 
-Default: 64.</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bowtie/BowtieSettings.ui" line="223"/>
@@ -1866,13 +1857,9 @@ p, li { white-space: pre-wrap; }
         <translation>Check latest version of external tools package</translation>
     </message>
     <message>
-        <source>&lt;a href=&quot;http://ugene.net/external.html&quot;&gt;external tools package&lt;/a&gt;</source>
-        <translation type="vanished">&lt;a href=&quot;http://ugene.net/external.html&quot;&gt;external tools package&lt;/a&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/ETSSettingsWidget.ui" line="50"/>
-        <source>&lt;a href=&quot;http://ugene.unipro.ru/external.html&quot;&gt;external tools package&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;http://ugene.unipro.ru/external.html&quot;&gt;external tools package&lt;/a&gt;</translation>
+        <source>&lt;a href=&quot;http://ugene.net/external.html&quot;&gt;external tools package&lt;/a&gt;</source>
+        <translation>&lt;a href=&quot;http://ugene.net/external.html&quot;&gt;external tools package&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/ETSSettingsWidget.ui" line="70"/>
@@ -2653,9 +2640,9 @@ p, li { white-space: pre-wrap; }
         <translation>Transition / transversion ratio </translation>
     </message>
     <message>
-        <source>Check to set user value.
+        <source>Check to set user value. 
 Uncheck to get the maximum likelihood estimate.</source>
-        <translation type="vanished">Check to set user value.
+        <translation type="vanished">Check to set user value. 
 Uncheck to get the maximum likelihood estimate.</translation>
     </message>
     <message>
@@ -3054,24 +3041,29 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::AlignToReferenceBlastCmdlineTask</name>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="93"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="96"/>
         <source>Map Sanger reads to reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="110"/>
         <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="113"/>
+        <source>The &apos;%1&apos; reference file doesn&apos;t exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="118"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="121"/>
         <source>wrong reference format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="165"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="173"/>
         <source>&lt;u&gt;Filtered by quality (%1):&lt;/u&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="209"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="212"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="217"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="220"/>
         <source>wrong output format</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3083,75 +3075,75 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="obsolete">Align</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="246"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="254"/>
         <source>Map</source>
         <translation>Map</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="247"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="255"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="253"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="261"/>
         <source>File name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="254"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="262"/>
         <source>Sequence name from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="270"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="279"/>
         <source>Select Output File...</source>
         <translation>Select Output File...</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="283"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="290"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="309"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="332"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="294"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="301"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="320"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="343"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="284"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="295"/>
         <source>Reference sequence is not set.</source>
         <translation>Reference sequence is not set.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="291"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="302"/>
         <source>No reads provided.</source>
         <translation>No reads provided.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="310"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="321"/>
         <source>Output file is not set.</source>
         <translation>Output file is not set.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="321"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="332"/>
         <source>Overwrite the file?</source>
         <translation>Overwrite the file?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="322"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="333"/>
         <source>The result file already exists. Would you like to overwrite it?</source>
         <translation>The result file already exists. Would you like to overwrite it?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="332"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="343"/>
         <source>Unable to delete the file.</source>
         <translation>Unable to delete the file.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="344"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="355"/>
         <source>Open Reference Sequence</source>
         <translation>Open Reference Sequence</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="355"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="366"/>
         <source>Select File(s) with Read(s)</source>
         <translation>Select File(s) with Read(s)</translation>
     </message>
@@ -5299,16 +5291,18 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="342"/>
-        <source>error</source>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="344"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="352"/>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+    <message>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="352"/>
+        <source>Sequences larger 2Gb are not supported on 32-bit architecture.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation type="obsolete">Error</translation>
-    </message>
-    <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="342"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="344"/>
         <source>No sequence in focus found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5736,27 +5730,28 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="345"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="332"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="346"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="333"/>
         <source>Reference sequence:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="347"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="334"/>
         <source>Mapped reads (%1):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="351"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="340"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="347"/>
         <source>similarity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="356"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="345"/>
         <source>Filtered by low similarity (%1):</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6527,13 +6522,14 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>Mode</translation>
     </message>
     <message>
-        <source>When the -n option is specified (which is the default), bowtie determines which alignments
-are valid according to the following policy, which is similar to Maq&apos;s default policy.
-In -v mode, alignments may have no more than V mismatches, where V may be a number from 0
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="113"/>
+        <source>When the -n option is specified (which is the default), bowtie determines which alignments                               
+are valid according to the following policy, which is similar to Maq&apos;s default policy.                               
+In -v mode, alignments may have no more than V mismatches, where V may be a number from 0                               
 through 3 set using the -v option. Quality values are ignored. The -v option is mutually exclusive with the -n option.</source>
-        <translation type="vanished">When the -n option is specified (which is the default), bowtie determines which alignments
-are valid according to the following policy, which is similar to Maq&apos;s default policy.
-In -v mode, alignments may have no more than V mismatches, where V may be a number from 0
+        <translation>When the -n option is specified (which is the default), bowtie determines which alignments                               
+are valid according to the following policy, which is similar to Maq&apos;s default policy.                               
+In -v mode, alignments may have no more than V mismatches, where V may be a number from 0                               
 through 3 set using the -v option. Quality values are ignored. The -v option is mutually exclusive with the -n option.</translation>
     </message>
     <message>
@@ -6542,24 +6538,11 @@ through 3 set using the -v option. Quality values are ignored. The -v option is 
         <translation>Number of mismatches</translation>
     </message>
     <message>
-        <source>Sets the number of mismatches to allowed in a seed alignment. Can be set to 0 or 1.
-Setting this higher makes alignment slower (often much slower) but increases sensitivity.</source>
-        <translation type="vanished">Sets the number of mismatches to allowed in a seed alignment. Can be set to 0 or 1.
-Setting this higher makes alignment slower (often much slower) but increases sensitivity.</translation>
-    </message>
-    <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="113"/>
-        <source>When the -n option is specified (which is the default), bowtie determines which alignments                               
-are valid according to the following policy, which is similar to Maq&apos;s default policy.                               
-In -v mode, alignments may have no more than V mismatches, where V may be a number from 0                               
-through 3 set using the -v option. Quality values are ignored. The -v option is mutually exclusive with the -n option.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="120"/>
         <source>Sets the number of mismatches to allowed in a seed alignment. Can be set to 0 or 1.                               
 Setting this higher makes alignment slower (often much slower) but increases sensitivity.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sets the number of mismatches to allowed in a seed alignment. Can be set to 0 or 1.                               
+Setting this higher makes alignment slower (often much slower) but increases sensitivity.</translation>
     </message>
     <message>
         <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="124"/>
@@ -6610,37 +6593,7 @@ Setting this higher makes alignment slower (often much slower) but increases sen
         <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="141"/>
         <source>Launch specified number of parallel search threads. Threads will run on separate processors/cores and synchronize                               
 when parsing reads and outputting alignments. Searching for alignments is highly parallel, and speedup is close to linear.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="146"/>
-        <source>If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments                               
-for the constituent mates. This is called &quot;mixed mode.&quot; To disable mixed mode, set this option. Bowtie2 runs a little                               
-faster in the mixed mode, but will only consider alignment status of pairs per se, not individual mates.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="152"/>
-        <source>By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment                               
-is an alignment where both mates align uniquely, but that does not satisfy the paired-end constraints. This option disables that behavior.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="165"/>
-        <source>If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in                                 
-a concordant alignment.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="170"/>
-        <source>If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the                                
-other in a concordant alignment.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Launch specified number of parallel search threads. Threads will run on separate processors/cores and synchronize
-when parsing reads and outputting alignments. Searching for alignments is highly parallel, and speedup is close to linear.</source>
-        <translation type="vanished">Launch specified number of parallel search threads. Threads will run on separate processors/cores and synchronize
+        <translation>Launch specified number of parallel search threads. Threads will run on separate processors/cores and synchronize                               
 when parsing reads and outputting alignments. Searching for alignments is highly parallel, and speedup is close to linear.</translation>
     </message>
     <message>
@@ -6649,11 +6602,12 @@ when parsing reads and outputting alignments. Searching for alignments is highly
         <translation>No unpaired alignments (--no-mixed)</translation>
     </message>
     <message>
-        <source>If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments
-for the constituent mates. This is called &quot;mixed mode.&quot; To disable mixed mode, set this option. Bowtie2 runs a little
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="146"/>
+        <source>If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments                               
+for the constituent mates. This is called &quot;mixed mode.&quot; To disable mixed mode, set this option. Bowtie2 runs a little                               
 faster in the mixed mode, but will only consider alignment status of pairs per se, not individual mates.</source>
-        <translation type="vanished">If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments
-for the constituent mates. This is called &quot;mixed mode.&quot; To disable mixed mode, set this option. Bowtie2 runs a little
+        <translation>If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments                               
+for the constituent mates. This is called &quot;mixed mode.&quot; To disable mixed mode, set this option. Bowtie2 runs a little                               
 faster in the mixed mode, but will only consider alignment status of pairs per se, not individual mates.</translation>
     </message>
     <message>
@@ -6662,9 +6616,10 @@ faster in the mixed mode, but will only consider alignment status of pairs per s
         <translation>No discordant alignments (--no-discordant)</translation>
     </message>
     <message>
-        <source>By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="152"/>
+        <source>By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment                               
 is an alignment where both mates align uniquely, but that does not satisfy the paired-end constraints. This option disables that behavior.</source>
-        <translation type="vanished">By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment
+        <translation>By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment                               
 is an alignment where both mates align uniquely, but that does not satisfy the paired-end constraints. This option disables that behavior.</translation>
     </message>
     <message>
@@ -6693,9 +6648,10 @@ is an alignment where both mates align uniquely, but that does not satisfy the p
         <translation>No overlapping mates (--no-overlap)</translation>
     </message>
     <message>
-        <source>If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="165"/>
+        <source>If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in                                 
 a concordant alignment.</source>
-        <translation type="vanished">If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in
+        <translation>If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in                                 
 a concordant alignment.</translation>
     </message>
     <message>
@@ -6704,9 +6660,10 @@ a concordant alignment.</translation>
         <translation>No mates containing one another (--no-contain)</translation>
     </message>
     <message>
-        <source>If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the
+        <location filename="../src/bowtie2/Bowtie2Worker.cpp" line="170"/>
+        <source>If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the                                
 other in a concordant alignment.</source>
-        <translation type="vanished">If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the
+        <translation>If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the                                
 other in a concordant alignment.</translation>
     </message>
     <message>
@@ -6806,11 +6763,11 @@ other in a concordant alignment.</translation>
     <message>
         <location filename="../src/bowtie/BowtieWorker.cpp" line="184"/>
         <source>The number of megabytes of memory a given thread is given to store path descriptors in --best mode. Best-first                                search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost.                                Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases.                                If you receive an error message saying that chunk memory has been exhausted in --best mode,                                try adjusting this parameter up to dedicate more memory to the descriptors. Default: 64.</source>
-        <translation>The number of megabytes of memory a given thread is given to store path descriptors in --best mode.
-Best-first search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost.
-Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases.
-If you receive an error message saying that chunk memory has been exhausted in --best mode,
-try adjusting this parameter up to dedicate more memory to the descriptors.
+        <translation>The number of megabytes of memory a given thread is given to store path descriptors in --best mode. 
+Best-first search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost. 
+Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases. 
+If you receive an error message saying that chunk memory has been exhausted in --best mode, 
+try adjusting this parameter up to dedicate more memory to the descriptors. 
 Default: 64.</translation>
     </message>
     <message>
@@ -8971,16 +8928,17 @@ Default: 64.</translation>
         <translation>Report mode</translation>
     </message>
     <message>
-        <source>&lt;b&gt;%1 (%2)&lt;/b&gt; - %3
-&lt;b&gt;%4 (%5)&lt;/b&gt; - %6
-&lt;b&gt;%7 (%8)&lt;/b&gt; - %9
-&lt;b&gt;%10 (%11)&lt;/b&gt; - %12
-&lt;b&gt;%13 (%14)&lt;/b&gt; - %15
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="516"/>
+        <source>&lt;b&gt;%1 (%2)&lt;/b&gt; - %3 
+&lt;b&gt;%4 (%5)&lt;/b&gt; - %6 
+&lt;b&gt;%7 (%8)&lt;/b&gt; - %9 
+&lt;b&gt;%10 (%11)&lt;/b&gt; - %12 
+&lt;b&gt;%13 (%14)&lt;/b&gt; - %15 
 </source>
-        <translation type="vanished">&lt;b&gt;%1 (%2)&lt;/b&gt; - %3
-&lt;b&gt;%4 (%5)&lt;/b&gt; - %6
-&lt;b&gt;%7 (%8)&lt;/b&gt; - %9
-&lt;b&gt;%10 (%11)&lt;/b&gt; - %12
+        <translation>&lt;b&gt;%1 (%2)&lt;/b&gt; - %3 
+&lt;b&gt;%4 (%5)&lt;/b&gt; - %6 
+&lt;b&gt;%7 (%8)&lt;/b&gt; - %9 
+&lt;b&gt;%10 (%11)&lt;/b&gt; - %12 
 &lt;b&gt;%13 (%14)&lt;/b&gt; - %15</translation>
     </message>
     <message>
@@ -9069,16 +9027,6 @@ Default: 64.</translation>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="585"/>
         <source>Input file</source>
         <translation>Input file</translation>
-    </message>
-    <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="516"/>
-        <source>&lt;b&gt;%1 (%2)&lt;/b&gt; - %3 
-&lt;b&gt;%4 (%5)&lt;/b&gt; - %6 
-&lt;b&gt;%7 (%8)&lt;/b&gt; - %9 
-&lt;b&gt;%10 (%11)&lt;/b&gt; - %12 
-&lt;b&gt;%13 (%14)&lt;/b&gt; - %15 
-</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="529"/>
@@ -12478,27 +12426,37 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::Workflow::BlastAndSwReadTask</name>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="86"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="91"/>
         <source>Map one read with BLAST &amp; SW task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="153"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="123"/>
+        <source>A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="133"/>
         <source>%1 was skipped. No BLAST results.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="197"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="177"/>
         <source>%1 was skipped. Low similarity: %2. Minimum similarity was set to %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="320"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="275"/>
+        <source>Read doesn&apos;t contain meaningful data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="356"/>
         <source>The %1 algorithm is not found. Add the %1 plugin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="323"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="359"/>
         <source>The %1 algorithm is not found. Check that the %1 plugin is up to date.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12506,8 +12464,13 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::Workflow::BlastReadsSubTask</name>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="53"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="54"/>
         <source>Map reads with BLAST &amp; SW task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="67"/>
+        <source>The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

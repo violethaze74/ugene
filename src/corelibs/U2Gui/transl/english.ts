@@ -58,17 +58,17 @@
     <message>
         <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="63"/>
         <source>Save to file</source>
-        <translation type="unfinished">Save to file</translation>
+        <translation>Save to file</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AceImportWidget.ui" line="77"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -104,12 +104,12 @@
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="63"/>
         <source>Save to fiie</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Save to fiie</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="70"/>
@@ -780,6 +780,43 @@
         <location filename="../src/util/EditSequenceDialog.ui" line="212"/>
         <source>Merge annotations to this file</source>
         <translation>Merge annotations to this file</translation>
+    </message>
+</context>
+<context>
+    <name>EditSettingDialogForm</name>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="14"/>
+        <source>Annotation Settings on Sequence Editing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expand affected annotation</source>
+        <translation type="obsolete">Expand affected annotation</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="23"/>
+        <source>Expand or crop affected annotation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="33"/>
+        <source>Remove affected annotation</source>
+        <translation type="unfinished">Remove affected annotation</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="40"/>
+        <source>Split (join annotation parts)</source>
+        <translation type="unfinished">Split (join annotation parts)</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="47"/>
+        <source>Split (separate annotations parts)</source>
+        <translation type="unfinished">Split (separate annotations parts)</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.ui" line="59"/>
+        <source>Recalculate values of qualifiers</source>
+        <translation type="unfinished">Recalculate values of qualifiers</translation>
     </message>
 </context>
 <context>
@@ -2073,6 +2110,19 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/util/EditSequenceDialogController.cpp" line="232"/>
         <source>Select file to save...</source>
         <translation>Select file to save...</translation>
+    </message>
+</context>
+<context>
+    <name>U2::EditSettingsDialog</name>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.cpp" line="40"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/util/EditSettingsDialog.cpp" line="41"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
     </message>
 </context>
 <context>

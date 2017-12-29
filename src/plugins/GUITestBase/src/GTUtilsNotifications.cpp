@@ -71,7 +71,7 @@ NotificationDialogFiller::NotificationDialogFiller(HI::GUITestOpStatus &os, cons
     Filler(os, "NotificationDialog"),
     message(message)
 {
-
+    settings.timeout = 350000;
 }
 
 #define GT_METHOD_NAME "commonScenario"

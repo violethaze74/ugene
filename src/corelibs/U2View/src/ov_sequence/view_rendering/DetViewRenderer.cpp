@@ -31,7 +31,7 @@ namespace U2 {
 
 DetViewRenderer::DetViewRenderer(DetView* detView, SequenceObjectContext* ctx)
     : SequenceViewAnnotatedRenderer(ctx),
-      detView(detView)   {
+      detView(detView) {
 
 }
 

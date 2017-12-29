@@ -58,7 +58,9 @@
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSequenceWidget.h>
+#include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
+#include <U2View/DetView.h>
 
 #include "FindPatternWidget.h"
 
@@ -1259,7 +1261,14 @@ void FindPatternWidget::sl_findPatrernTaskStateChanged() {
             getAnnotationsPushButton->setEnabled(true);
             checkState();
             correctSearchInCombo();
-            showCurrentResult();
+            ADVSingleSequenceWidget* seqWdgt = qobject_cast<ADVSingleSequenceWidget*>(annotatedDnaView->getSequenceWidgetInFocus());
+            if (seqWdgt != NULL) {
+                if (seqWdgt->getDetView() != NULL && !seqWdgt->getDetView()->isEditMode()) {
+                    showCurrentResult();
+                }
+            } else {
+                showCurrentResult();
+            }
         }
         disconnect(this, SLOT(sl_loadPatternTaskStateChanged()));
         searchTask = NULL;

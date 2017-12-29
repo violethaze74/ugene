@@ -404,17 +404,17 @@
 <context>
     <name>U2::AprImporter</name>
     <message>
-        <location filename="../src/apr/AprImporter.cpp" line="119"/>
+        <location filename="../src/apr/AprImporter.cpp" line="117"/>
         <source>Vector NTI/AlignX file importer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/apr/AprImporter.cpp" line="123"/>
+        <location filename="../src/apr/AprImporter.cpp" line="121"/>
         <source>Vector NTI/AlignX files importer is used to convert conventional APR files to a multiple sequence alignment formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/apr/AprImporter.cpp" line="138"/>
+        <location filename="../src/apr/AprImporter.cpp" line="136"/>
         <source>Convert to another format:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -428,7 +428,7 @@
     </message>
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="66"/>
-        <location filename="../src/apr/AprImporter.cpp" line="94"/>
+        <location filename="../src/apr/AprImporter.cpp" line="92"/>
         <source>Empty destination url</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2803,7 +2803,7 @@
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="993"/>
-        <source>Unexpected row count! Query: &apos;%1&apos;, rows: %2</source>
+        <source>Unexpected row count. Query: &apos;%1&apos;, rows: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

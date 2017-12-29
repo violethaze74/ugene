@@ -57,7 +57,7 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl& _sourceUrl, BAMInfo& _b
       sourceUrl(_sourceUrl),
       bamInfo(_bamInfo) {
     ui.setupUi(this);
-    new HelpButton(this, ui.buttonBox, "20875004");
+    new HelpButton(this, ui.buttonBox, "20880344");
     ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Import"));
     ui.buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

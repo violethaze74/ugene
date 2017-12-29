@@ -20,44 +20,56 @@
  */
 
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "../ProjectFilterNames.h"
 
-#include "MsaSeqNameFilterTask.h"
+#include "MaSeqNameFilterTask.h"
 
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-/// MsaSeqNameFilterTask
+/// MaSeqNameFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-MsaSeqNameFilterTask::MsaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs)
-    : AbstractProjectFilterTask(settings, ProjectFilterNames::MSA_SEQ_NAME_FILTER_NAME, docs)
+MaSeqNameFilterTask::MaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs)
+    : AbstractProjectFilterTask(settings, ProjectFilterNames::MA_SEQ_NAME_FILTER_NAME, docs)
 {
 
 }
 
-bool MsaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
-    MultipleSequenceAlignmentObject *msaObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-    CHECK(NULL != msaObj, false);
+bool MaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
+    MultipleAlignmentObject *maObj = qobject_cast<MultipleAlignmentObject *>(obj);
+    CHECK(NULL != maObj, false);
 
-    for (int i = 0, n = msaObj->getNumRows(); i < n; ++i) {
-        if (settings.nameFilterAcceptsString(msaObj->getRow(i)->getName())) {
+    for (int i = 0, n = maObj->getNumRows(); i < n; ++i) {
+        if (settings.nameFilterAcceptsString(maObj->getRow(i)->getName())) {
             return true;
         }
     }
+
+    // if this is MCA -> check reference sequence name too.
+    MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(maObj);
+    if (mcaObj != NULL) {
+        U2SequenceObject* refObj = mcaObj->getReferenceObj();
+        if (refObj != NULL && settings.nameFilterAcceptsString(refObj->getSequenceName())) {
+            return true;
+        }
+    }
+
     return false;
 }
 
 //////////////////////////////////////////////////////////////////////////
-/// MsaSeqNameFilterTaskFactory
+/// MaSeqNameFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-AbstractProjectFilterTask * MsaSeqNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
+AbstractProjectFilterTask * MaSeqNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
     const QList<QPointer<Document> > &docs) const
 {
-    return new MsaSeqNameFilterTask(settings, docs);
+    return new MaSeqNameFilterTask(settings, docs);
 }
 
 

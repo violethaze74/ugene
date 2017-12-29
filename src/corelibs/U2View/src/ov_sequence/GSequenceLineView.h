@@ -24,6 +24,7 @@
 
 #include <U2Core/U2Region.h>
 
+#include <U2Gui/SelectionModificationHelper.h>
 #include <U2Gui/WidgetWithLocalToolbar.h>
 
 #include <QFlag>
@@ -153,26 +154,37 @@ protected:
     void setSelection(const U2Region& r);
     void addSelection(const U2Region& r);
     void removeSelection(const U2Region& r);
+    virtual void setBorderCursor(const QPoint &p);
+    virtual void moveBorder(const QPoint& p);
     virtual void pack();
     virtual int getSingleStep() const;
     virtual int getPageStep() const;
+    void autoScrolling(const QPoint& areaPoint);
+    virtual void resizeSelection(const QPoint& areaPoint);
+    void cancelSelectionResizing();
+    void changeSelectionOnScrollbarMoving(const U2Region& newSelection);
+    void changeSelection(QVector<U2Region>& regions, const U2Region& newSelection);
 
     SequenceObjectContext*          ctx;
     GSequenceLineViewRenderArea*    renderArea;
     U2Region                        visibleRange;
     GScrollBar*                     scrollBar;
     qint64                          lastPressPos;
+    U2Region                        resizableRegion;
+    QList<U2Region>                 overlappedRegions;
     qint64                          seqLen;
     GSLV_UpdateFlags                lastUpdateFlags;
     GSLV_FeatureFlags               featureFlags;
     GSequenceLineView*              frameView;
     GSequenceLineView*              coherentRangeView;
     double                          coefScrollBarMapping;
+    SelectionModificationHelper::MovableSide movableBorder;
 
     // special flag setup by child classes that tells to this class do or skip
     // any changes to selection on mouse ops
     bool                            ignoreMouseSelectionEvents;
     bool                            singleBaseSelection;
+    bool                            isSelectionResizing;
 };
 
 class U2VIEW_EXPORT GSequenceLineViewRenderArea : public QWidget  {

@@ -2573,12 +2573,11 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
 
     QStringList errors = GTUtilsLog::getErrors(os, l1);
-    CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1");
-    //CHECK_SET_ERR(errors[0].contains(""), " 1");
-
+	CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1");
+  	
     GTUtilsProjectTreeView::click(os, "Gene.fa");
 	GTGlobals::sleep();
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
@@ -2588,8 +2587,7 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-	GTGlobals::sleep();
+	GTGlobals::sleep(1000);
     errors = GTUtilsLog::getErrors(os, l2);
     CHECK_SET_ERR(errors.size() == 2, "Wrong errors count 2");
     GTGlobals::sleep();

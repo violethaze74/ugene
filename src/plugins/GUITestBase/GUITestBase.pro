@@ -154,7 +154,9 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsExternalTools.h \
             src/GTUtilsLog.h \
             src/GTUtilsMcaEditor.h \
+            src/GTUtilsMcaEditorReference.h \
             src/GTUtilsMcaEditorSequenceArea.h \
+            src/GTUtilsMcaEditorStatusWidget.h \
             src/GTUtilsMdi.h \
             src/GTUtilsMsaEditor.h \
             src/GTUtilsMsaEditorSequenceArea.h \
@@ -408,7 +410,9 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsExternalTools.cpp \
             src/GTUtilsLog.cpp \
             src/GTUtilsMcaEditor.cpp \
+            src/GTUtilsMcaEditorReference.cpp \
             src/GTUtilsMcaEditorSequenceArea.cpp \
+            src/GTUtilsMcaEditorStatusWidget.cpp \
             src/GTUtilsMdi.cpp \
             src/GTUtilsMsaEditor.cpp \
             src/GTUtilsMsaEditorSequenceArea.cpp \

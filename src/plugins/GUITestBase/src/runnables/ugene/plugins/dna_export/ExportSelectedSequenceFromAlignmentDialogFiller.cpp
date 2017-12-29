@@ -71,7 +71,7 @@ void ExportSelectedSequenceFromAlignment::commonScenario()
     GT_CHECK(lineEdit != NULL, "line edit not found");
     GTLineEdit::setText(os, lineEdit, path);
 
-    QComboBox *comboBox = dialog->findChild<QComboBox*>();
+    QComboBox *comboBox = dialog->findChild<QComboBox*>("formatCombo");
     GT_CHECK(comboBox != NULL, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
@@ -81,14 +81,8 @@ void ExportSelectedSequenceFromAlignment::commonScenario()
     QCheckBox *addToProjectBox = dialog->findChild<QCheckBox*>("addToProjectBox");
     GTCheckBox::setChecked(os, addToProjectBox, addToProj);
 
-    if(keepGaps){
-        QRadioButton* keepGapsRB = dialog->findChild<QRadioButton*>("keepGapsRB");
-        GTRadioButton::click(os,keepGapsRB);
-    }
-    else{
-        QRadioButton* trimGapsRB = dialog->findChild<QRadioButton*>("trimGapsRB");
-        GTRadioButton::click(os,trimGapsRB);
-    }
+    QCheckBox *keepGapsBox = dialog->findChild<QCheckBox*>("keepGapsBox");
+    GTCheckBox::setChecked(os, keepGapsBox, keepGaps);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

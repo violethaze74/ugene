@@ -382,6 +382,18 @@ void GTUtilsMsaEditor::redo(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "isUndoEnabled"
+bool GTUtilsMsaEditor::isUndoEnabled(GUITestOpStatus &os) {
+    return GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo")->isEnabled();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isRedoEnabled"
+bool GTUtilsMsaEditor::isRedoEnabled(GUITestOpStatus &os) {
+    return GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo")->isEnabled();
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "buildPhylogeneticTree"
 void GTUtilsMsaEditor::buildPhylogeneticTree(GUITestOpStatus &os, const QString &pathToSave) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, pathToSave, 0, 0, true));

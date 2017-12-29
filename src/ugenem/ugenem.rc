@@ -28,7 +28,7 @@ BEGIN
             VALUE "OriginalFilename", "ugenem"
             VALUE "ProductName",      "Unipro UGENE"
             VALUE "ProductVersion",   UGENE_VERSION_STRING
-            VALUE "Comments",         "UGENE is a free cross-platform genome analysis suite: http://ugene.unipro.ru/"
+            VALUE "Comments",         "UGENE is a free cross-platform genome analysis suite: http://ugene.net/"
         END
     END
 END

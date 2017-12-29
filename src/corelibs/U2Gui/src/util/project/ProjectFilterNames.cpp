@@ -30,7 +30,7 @@ namespace ProjectFilterNames {
 const QString OBJ_NAME_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Object name");
 const QString FEATURE_KEY_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Annotation feature key");
 const QString MSA_CONTENT_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Multiple alignment content");
-const QString MSA_SEQ_NAME_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Multiple alignment sequence name");
+const QString MA_SEQ_NAME_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Multiple alignment sequence name");
 const QString SEQUENCE_ACC_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Sequence accession number");
 const QString TEXT_CONTENT_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Text content");
 
