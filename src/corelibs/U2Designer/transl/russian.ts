@@ -598,7 +598,7 @@ Set up the folder:</source>
         <source>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subdirectory of the folder is created for each run of a workflow.
 
 Set up the folder:</source>
-        <translation type="unfinished">Выходная директория для схемы это общая директория, которая используется для сохранения всех выходных файлов в дизайнере вычислительных схем. Для каждого запуска схемы будет создана отдельная директория.
+        <translation>Выходная директория для схемы это общая директория, которая используется для сохранения всех выходных файлов в дизайнере вычислительных схем. Для каждого запуска схемы будет создана отдельная директория.
 
 Установить директорию:</translation>
     </message>
