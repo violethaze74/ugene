@@ -169,11 +169,11 @@ void ClarkClassifyWorkerFactory::init() {
     QList<PortDescriptor*> p;
     {
         Descriptor inD(INPUT_PORT, ClarkClassifyWorker::tr("Input sequences"), ClarkClassifyWorker::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                                                                       "In case of SE reads or scaffolds use the “Input URL 1” slot only.\n\n"
-                                                                                                       "In case of PE reads input “left” reads to “Input URL 1”, “right” reads to “Input URL 2”.\n\n"
-                                                                                                       "See also the “Input data” parameter of the element."));
+                                                                                                       "In case of SE reads or scaffolds use the \"Input URL 1\" slot only.\n\n"
+                                                                                                       "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
+                                                                                                       "See also the \"Input data\" parameter of the element."));
 //        Descriptor inD2(PAIRED_INPUT_PORT, ClarkClassifyWorker::tr("Input sequences 2"), ClarkClassifyWorker::tr("URL(s) to FASTQ or FASTA file(s) should be provided."
-//                    "<br>The port is used, if paired-end sequencing was done. The input files should contain the “right” reads (see “Input data” parameter of the element)."));
+//                    "<br>The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
         Descriptor outD(OUTPUT_PORT, ClarkClassifyWorker::tr("CLARK-classified sequences"), ClarkClassifyWorker::tr("A map of sequence names with the associated taxonomy IDs, classified by CLARK."));
 
         Descriptor inSlot1Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClarkClassifyWorker::tr("Input URL 1"), ClarkClassifyWorker::tr("Input URL 1."));
@@ -197,12 +197,12 @@ void ClarkClassifyWorkerFactory::init() {
     QList<Attribute*> a;
     {
         Descriptor tool(TOOL_VARIANT, ClarkClassifyWorker::tr("Classification tool"),
-            ClarkClassifyWorker::tr("Use CLARK-l on workstations with limited memory (i.e., “l” for light), this software tool provides precise classification on small metagenomes. It works with a sparse or ''light'' database (up to 4 GB of RAM) while still performing ultra accurate and fast results.<br><br>"
+            ClarkClassifyWorker::tr("Use CLARK-l on workstations with limited memory (i.e., \"l\" for light), this software tool provides precise classification on small metagenomes. It works with a sparse or ''light'' database (up to 4 GB of RAM) while still performing ultra accurate and fast results.<br><br>"
                                     "Use CLARK on powerful workstations, it requires a significant amount of RAM to run with large database (e.g. all bacterial genomes from NCBI/RefSeq)."));
 
         Descriptor dbUrl(DB_URL, ClarkClassifyWorker::tr("Database"),
             ClarkClassifyWorker::tr("A path to the folder with the CLARK database files (-D).<br><br>"
-                                    "It is assumed that “targets.txt” file is located in this folder (the file is passed to the “classify_metagenome.sh” script from the CLARK package via parameter -T)."));
+                                    "It is assumed that \"targets.txt\" file is located in this folder (the file is passed to the \"classify_metagenome.sh\" script from the CLARK package via parameter -T)."));
 
 //        Descriptor taxonomy(TAXONOMY, ClarkClassifyWorker::tr("Taxonomy"),
 //            ClarkClassifyWorker::tr("A set of files that define the taxonomic name and tree information, and the GI number to taxon map."
@@ -214,9 +214,9 @@ void ClarkClassifyWorkerFactory::init() {
         Descriptor kLength(K_LENGTH, ClarkClassifyWorker::tr("K-mer length"),
             ClarkClassifyWorker::tr("Set the k-mer length (-k).<br><br>"
                                     "This value is critical for the classification accuracy and speed.<br><br>"
-                                    "For high sensitivity, it is recommended to set this value to 20 or 21 (along with the “Full” mode).<br><br>"
+                                    "For high sensitivity, it is recommended to set this value to 20 or 21 (along with the \"Full\" mode).<br><br>"
                                     "However, if the precision and the speed are the main concern, use any value between 26 and 32.<br><br>"
-                                    "Note that the higher the value, the higher is the RAM usage. So, as a good tradeoff between speed, precision, and RAM usage, it is recommended to set this value to 31 (along with the “Default” or “Express” mode)."));
+                                    "Note that the higher the value, the higher is the RAM usage. So, as a good tradeoff between speed, precision, and RAM usage, it is recommended to set this value to 31 (along with the \"Default\" or \"Express\" mode)."));
 
 
         Descriptor kMinFreq(K_MIN_FREQ, ClarkClassifyWorker::tr("Minimum k-mer frequency"),
@@ -225,9 +225,9 @@ void ClarkClassifyWorkerFactory::init() {
 
         Descriptor mode(MODE, ClarkClassifyWorker::tr("Mode"),
             ClarkClassifyWorker::tr("Set the mode of the execution (-m):<ul>"
-                                    "<li>“Full” to get detailed results, confidence scores and other statistics."
-                                    "<li>“Default” to get results summary and perform best trade-off between classification speed, accuracy and RAM usage."
-                                    "<li>“Express” to get results summary with the highest speed possible."
+                                    "<li>\"Full\" to get detailed results, confidence scores and other statistics."
+                                    "<li>\"Default\" to get results summary and perform best trade-off between classification speed, accuracy and RAM usage."
+                                    "<li>\"Express\" to get results summary with the highest speed possible."
                                     "</ul>"));
 
         Descriptor factor(FACTOR, ClarkClassifyWorker::tr("Sampling factor value"),
@@ -236,7 +236,7 @@ void ClarkClassifyWorkerFactory::init() {
                                     "The higher the factor is, the lower the RAM usage is and the higher the classification speed/precision is. However, the sensitivity can be quickly degraded, especially for values higher than 3."));
 
         Descriptor gap(GAP, ClarkClassifyWorker::tr("Gap"),
-            ClarkClassifyWorker::tr("“Gap” or number of non-overlapping k-mers to pass when creating the database (-п).<br><br>"
+            ClarkClassifyWorker::tr("\"Gap\" or number of non-overlapping k-mers to pass when creating the database (-п).<br><br>"
                                     "Increase the value if it is required to reduce the RAM usage. Note that this will degrade the sensitivity."));
 
         Descriptor outFile(OUT_FILE, ClarkClassifyWorker::tr("Output file"),
@@ -249,14 +249,14 @@ void ClarkClassifyWorkerFactory::init() {
         Descriptor db2ram(DB_TO_RAM, ClarkClassifyWorker::tr("Load database into memory"),
             ClarkClassifyWorker::tr("Request the loading of database file by memory mapped-file (--ldm).<br><br>"
                                     "This option accelerates the loading time but it will require an additional amount of RAM significant. "
-                                    "This option also allows to load the database in multithreaded-task (see also the “Number of threads” parameter)."));
+                                    "This option also allows to load the database in multithreaded-task (see also the \"Number of threads\" parameter)."));
 
         Descriptor numThreads(NUM_THREADS, ClarkClassifyWorker::tr("Number of threads"),
-            ClarkClassifyWorker::tr("Use multiple threads for the classification and, with the “Load database into memory” option enabled, for the loading of the database into RAM (-n)."));
+            ClarkClassifyWorker::tr("Use multiple threads for the classification and, with the \"Load database into memory\" option enabled, for the loading of the database into RAM (-n)."));
 
         Descriptor sequencingReadsDesc(SEQUENCING_READS, ClarkClassifyWorker::tr("Input data"),
-                                             ClarkClassifyWorker::tr("To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to “SE reads or scaffolds”.<br><br>"
-                                                                     "To classify paired-end (PE) reads, set the value to “PE reads”.<br><br>"
+                                             ClarkClassifyWorker::tr("To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\".<br><br>"
+                                                                     "To classify paired-end (PE) reads, set the value to \"PE reads\".<br><br>"
                                                                      "One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.<br><br>"
                                                                      "The input files should be in FASTA or FASTQ formats."));
 

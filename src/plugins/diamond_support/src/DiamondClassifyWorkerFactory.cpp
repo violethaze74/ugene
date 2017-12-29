@@ -38,7 +38,7 @@ namespace LocalWorkflow {
 
 const QString DiamondClassifyWorkerFactory::ACTOR_ID = "classify-reads-with-diamond";
 
-const QString DiamondClassifyWorkerFactory::INPUT_PORT_ID = "in1";
+const QString DiamondClassifyWorkerFactory::INPUT_PORT_ID = "in";
 const QString DiamondClassifyWorkerFactory::INPUT_PAIRED_PORT_ID = "in2";
 const QString DiamondClassifyWorkerFactory::OUTPUT_PORT_ID = "out";
 
@@ -62,18 +62,18 @@ void DiamondClassifyWorkerFactory::init() {
     QList<PortDescriptor *> ports;
     {
         const Descriptor inSlotDesc(BaseSlots::URL_SLOT().getId(),
-                                    DiamondClassifyPrompter::tr("Input URL(s)"),
-                                    DiamondClassifyPrompter::tr("Input URL(s)."));
+                                    DiamondClassifyPrompter::tr("Input URL"),
+                                    DiamondClassifyPrompter::tr("Input URL."));
 
-        const Descriptor inPairedSlotDesc(BaseSlots::URL_SLOT().getId(),
-                                          DiamondClassifyPrompter::tr("Input URL(s)"),
-                                          DiamondClassifyPrompter::tr("Input URL(s)."));
+//        const Descriptor inPairedSlotDesc(BaseSlots::URL_SLOT().getId(),
+//                                          DiamondClassifyPrompter::tr("Input URL(s)"),
+//                                          DiamondClassifyPrompter::tr("Input URL(s)."));
 
         QMap<Descriptor, DataTypePtr> inType;
         inType[inSlotDesc] = BaseTypes::STRING_TYPE();
 
-        QMap<Descriptor, DataTypePtr> inPairedType;
-        inPairedType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
+//        QMap<Descriptor, DataTypePtr> inPairedType;
+//        inPairedType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
 
         QMap<Descriptor, DataTypePtr> outType;
         outType[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();

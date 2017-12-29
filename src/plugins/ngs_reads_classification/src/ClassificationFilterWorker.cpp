@@ -69,12 +69,12 @@ namespace LocalWorkflow {
 //ClassificationFilter
 const QString ClassificationFilterWorkerFactory::ACTOR_ID("classification-filter");
 
-static const QString INPUT_PORT("in1");
+static const QString INPUT_PORT("in");
 //static const QString PAIRED_INPUT_PORT = "in2";
 //static const QString INPUT_SLOT_CLASSIFICATION = TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT().getId();
 
-static const QString OUTPUT_PORT("out1");
-static const QString OUTPUT_PORT2("out2");
+static const QString OUTPUT_PORT("out");
+//static const QString OUTPUT_PORT2("out2");
 static const QString OUTPUT_SLOT = BaseSlots::URL_SLOT().getId();
 
 
@@ -145,27 +145,31 @@ void ClassificationFilterWorkerFactory::init() {
 
     QList<PortDescriptor*> p;
     {
-        Descriptor inD(INPUT_PORT, ClassificationFilterWorker::tr("Input sequences and classification"),
+        Descriptor inD(INPUT_PORT, ClassificationFilterWorker::tr("Input sequences and tax IDs"),
                        ClassificationFilterWorker::tr("The following input should be provided: <ul>"
                                                       "<li>URL(s) to FASTQ or FASTA file(s)."
                                                       "<li>Corresponding taxonomy classification of sequences in the files."
                                                       "</ul>"
-                                                      "To process single-end reads or scaffolds, pass the URL(s) to  the “Input URL(s) 1” slot."
-                                                      "<br>To process paired-end reads, pass the URL(s) to files with the “left” and “right” reads to the “Input URL(s) 1” and “Input URL(s) 2” slots correspondingly."
-                                                      "<br>The taxonomy classification data are received by one of the classification tools (Kraken, CLARK, or DIAMOND) and should correspond to the input files."
+                                                      "To process single-end reads or scaffolds, pass the URL(s) to  the \"Input URL 1\" slot.<br><br>"
+                                                      "To process paired-end reads, pass the URL(s) to files with the \"left\" and \"right\" reads to the \"Input URL 1\" and \"Input URL 2\" slots correspondingly.<br><br>"
+                                                      "The taxonomy classification data are received by one of the classification tools (Kraken, CLARK, or DIAMOND) and should correspond to the input files."
                 ));
 //        Descriptor inD2(PAIRED_INPUT_PORT, ClassificationFilterWorker::tr("Input sequences 2"), ClassificationFilterWorker::tr("URL(s) to FASTQ or FASTA file(s) should be provided."
-//                    "<br>The port is used, if paired-end sequencing was done. The input files should contain the “right” reads (see “Input data” parameter of the element)."));
-        Descriptor outD(OUTPUT_PORT, ClassificationFilterWorker::tr("Output sequences 1"),
-                        ClassificationFilterWorker::tr("URL(s) to the filtered FASTQ or FASTA file(s). The files contain single-end reads, scaffolds, or “left” reads in case "
-                                                       "of paired-end sequencing (see “Input data” parameter of the element)."));
+//                    "<br>The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
+        Descriptor outD(OUTPUT_PORT, ClassificationFilterWorker::tr("Output classified sequences"),
+                        ClassificationFilterWorker::tr("The port outputs URLs to files with NGS reads, classified by taxon IDs: one file per each specified taxon ID per each input file (or pair of files in case of PE reads).\n\n"
+                                                       "Either one (for SE reads or scaffolds) or two (for PE reads) output slots are used depending on the input data.\n\n"
+                                                       "See also the \"Input data\" parameter of the element."));
 
-        Descriptor outD2(OUTPUT_PORT2, ClassificationFilterWorker::tr("Output sequences 2"),
-                        ClassificationFilterWorker::tr("URL(s) to the filtered FASTQ or FASTA file(s). The files contain “right” reads in case of paired-end sequencing (see “Input data” parameter of the element)."));
+//        Descriptor outD2(OUTPUT_PORT2, ClassificationFilterWorker::tr("Output sequences 2"),
+//                        ClassificationFilterWorker::tr("URL(s) to the filtered FASTQ or FASTA file(s). The files contain \"right\" reads in case of paired-end sequencing (see \"Input data\" parameter of the element)."));
+
+        Descriptor inSlot1Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClassificationFilterWorker::tr("Input URL 1"), ClassificationFilterWorker::tr("Input URL 1."));
+        Descriptor inSlot2Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClassificationFilterWorker::tr("Input URL 2"), ClassificationFilterWorker::tr("Input URL 2."));
 
         QMap<Descriptor, DataTypePtr> inM;
-        inM[GetReadsListWorkerFactory::SE_SLOT()] = BaseTypes::STRING_TYPE();
-        inM[GetReadsListWorkerFactory::PE_SLOT()] = BaseTypes::STRING_TYPE();
+        inM[inSlot1Descriptor] = BaseTypes::STRING_TYPE();
+        inM[inSlot2Descriptor] = BaseTypes::STRING_TYPE();
         inM[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
         p << new PortDescriptor(inD, DataTypePtr(new MapDataType("filter.input", inM)), true);
 
@@ -174,39 +178,44 @@ void ClassificationFilterWorkerFactory::init() {
 //        inM2[Descriptor(BaseSlots::URL_SLOT().getId(), ClassificationFilterWorker::tr("Input paired reads URL"), ClassificationFilterWorker::tr("Input paired reads URL"))] = BaseTypes::STRING_TYPE();
 //        p << new PortDescriptor(inD2, DataTypePtr(new MapDataType("filter.input-paired-url", inM2)), true);
 
+        Descriptor outSlot1Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClassificationFilterWorker::tr("Output URL 1"), ClassificationFilterWorker::tr("Output URL 1."));
+        Descriptor outSlot2Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClassificationFilterWorker::tr("Output URL 2"), ClassificationFilterWorker::tr("Output URL 2."));
+
         QMap<Descriptor, DataTypePtr> outM;
         //outM[Descriptor(OUTPUT_SLOT, ClassificationFilterWorker::tr("Output URL(s)"), ClassificationFilterWorker::tr("Output URL(s)"))] = BaseTypes::STRING_TYPE();
-        outM[GetReadsListWorkerFactory::SE_SLOT()] = BaseTypes::STRING_TYPE();
-        outM[GetReadsListWorkerFactory::PE_SLOT()] = BaseTypes::STRING_TYPE();
+        outM[outSlot1Descriptor] = BaseTypes::STRING_TYPE();
+        outM[outSlot2Descriptor] = BaseTypes::STRING_TYPE();
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType("filter.output-url", outM)), false, true);
         //p << new PortDescriptor(outD2, DataTypePtr(new MapDataType("filter.output-url", outM)), false, true);
     }
 
     QList<Attribute*> a;
     {
-        Descriptor resolution(RESOLUTION, ClassificationFilterWorker::tr("Resolution for filtered"),
-            ClassificationFilterWorker::tr("The parameter defines how to process the input reads or scaffolds for which taxonomy classification with the specified rank is not available."
-                                           "<br>The possible values are: <ul>"
-                                             "<li>“Save separately”: put all unspecific sequence to a separate file."
-                                             "<li>“Randomly distribute”: distribute all unspecific sequences randomly between the other files."
-                                             "<li>“Discard”: discard all unspecific sequences."));
+        Descriptor resolution(RESOLUTION, ClassificationFilterWorker::tr("Resolution for unspecific"),
+            ClassificationFilterWorker::tr("The parameter defines how to process the input sequences that do not belong to the specified taxonomic groups.<br><br>"
+                                           "The possible values are: "
+                                           "<ul>"
+                                                "<li>\"Discard\": discard all unspecific sequences.</li>"
+                                                "<li>\"Save separately\": put all unspecific sequences to a separate file.</li>"
+                                           "</ul>"));
 
 //        Descriptor rank(TAXONOMY_RANK, ClassificationFilterWorker::tr("Taxonomy rank"),
 //            ClassificationFilterWorker::tr("Set the taxonomy rank for the filtering."));
 
         Descriptor sequencingReadsDesc(SEQUENCING_READS, ClassificationFilterWorker::tr("Input data"),
-                                             ClassificationFilterWorker::tr("The input data that should be classified are provided through the input ports of the element."
-            "<br>To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to “SE reads or scaffolds”. The element has one input port in this case. Pass URL(s) to the corresponding files to this port."
-            "<br>To classify paired-end (PE) reads, set the value to “PE reads”. The element has two input ports in this case. Pass URL(s) to the “left” and “right” reads to the first and the second port correspondingly."
-            "<br>The input files should be in FASTA or FASTQ formats."));
+                                             ClassificationFilterWorker::tr("To filter single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\". Use the \"Input URL 1\" slot of the input port.<br><br>"
+                                                                            "To filter paired-end (PE) reads, set the value to \"PE reads\". Use the \"\"Input URL 1\" and \"Input URL 2\" slots of the input port to input the NGS reads data.<br><br>"
+                                                                            "Also, input the classification data, received from Kraken, CLARK, or DIAMOND, to the \"Taxonomy classification data\" input slot.<br><br>"
+                                                                            "Either one or two slots of the output port are used depending on the input data."));
 
         Descriptor taxons(TAXONS, ClassificationFilterWorker::tr("Taxons"),
-            ClassificationFilterWorker::tr("Set the taxIDs the filtering."));
+            ClassificationFilterWorker::tr("Choose at least one taxonomic group.<br><br>"
+                                           "All input sequences that belong to a specified group will be put into a separate file."));
 
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), false, SINGLE_END);
         a << sequencingReadsAttribute;
 //        a << new Attribute( rank, BaseTypes::STRING_TYPE(), false, ClassificationFilterSettings::SPECIES);
-        a << new Attribute( resolution, BaseTypes::STRING_TYPE(), false, ClassificationFilterSettings::RESOLUTION_SEPARATE);
+        a << new Attribute( resolution, BaseTypes::STRING_TYPE(), false, ClassificationFilterSettings::RESOLUTION_DISCARD);
         a << new Attribute( taxons, BaseTypes::STRING_TYPE(), true);
 
         //sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(OUTPUT_PORT2, QVariantList() << PAIRED_END));
