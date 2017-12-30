@@ -4020,6 +4020,47 @@ GUI_TEST_CLASS_DEFINITION(test_5847) {
     CHECK_SET_ERR(errorList.isEmpty(), "Unexpected errors in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5849) {
+    //CHECK_SET_ERR(!undoButton->isEnabled(), "'Undo' button is unexpectedly enabled");
+    
+    // 1. Open "..\general_common_data\fasta\empty.fa".
+    
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "empty.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    // 2. Click the "Align sequence to this alignment" button on the toolbar.
+    // Expected state: the file selection dialog is opened.
+    // Select "..\samples\CLUSTALW\COI.aln" in the dialog.
+    
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+
+    // 3. Select a sequence.
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 2));
+    GTGlobals::sleep();
+    QAbstractButton *undoButton = GTAction::button(os, "msa_action_undo");
+
+    // 4. Click the "Undo" button.
+    GTWidget::click(os, undoButton);
+    QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
+    CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
+    
+    // Expected state: the selection has been cleared.
+    QLabel* line = qobject_cast<QLabel*>(GTWidget::findWidget(os, "Line", msaEditorStatusBar));
+    CHECK_SET_ERR(line != NULL, "Line of MSAEditorStatusBar is NULL");
+    QLabel* column = qobject_cast<QLabel*>(GTWidget::findWidget(os, "Column", msaEditorStatusBar));
+    CHECK_SET_ERR(column != NULL, "Column of MSAEditorStatusBar is NULL");
+    QLabel* position = qobject_cast<QLabel*>(GTWidget::findWidget(os, "Position", msaEditorStatusBar));
+    CHECK_SET_ERR(position != NULL, "Position of MSAEditorStatusBar is NULL");
+    QLabel* selection = qobject_cast<QLabel*>(GTWidget::findWidget(os, "Selection", msaEditorStatusBar));
+    CHECK_SET_ERR(selection != NULL, "Selection of MSAEditorStatusBar is NULL");
+    
+    CHECK_SET_ERR(line->text() == "Ln - / 0", "Line is " + line->text());
+    CHECK_SET_ERR(column->text() == "Col - / 0", "Column is " + column->text());
+    CHECK_SET_ERR(position->text() == "Pos - / -", "Position is " + position->text());
+    CHECK_SET_ERR(selection->text() == "Sel none", "Selection is " + selection->text());
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5851) {
 //    1. Set the temporary dir path to the folder with the spaces in the path.
     QDir().mkpath(sandBoxDir + "test_5851/t e m p");
