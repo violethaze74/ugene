@@ -301,6 +301,9 @@ void ScrollController::scrollToMovedSelection(ScrollController::Direction direct
 }
 
 int ScrollController::getFirstVisibleBase(bool countClipped) const {
+    if (maEditor->getAlignmentLen() == 0) {
+        return 0;
+    }
     const bool removeClippedBase = !countClipped && (getAdditionalXOffset() != 0);
     const int firstVisibleBase = ui->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value()) + (removeClippedBase ? 1 : 0);
     assert(firstVisibleBase < maEditor->getAlignmentLen());

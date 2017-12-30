@@ -50,7 +50,7 @@ private:
     static QList<U2Sequence> importSequences(const DbiConnection &con, const QString &folder, const MultipleSequenceAlignment &al, U2OpStatus &os);
     static void splitToCharsAndGaps(const DbiConnection &con, QList<U2Sequence> &sequences, U2MsaListGapModel &gapModel, U2OpStatus &os);
     static void setChildRankForSequences(const DbiConnection &con, const QList<U2Sequence> &sequences, U2OpStatus &os);
-    static QList<U2MsaRow> importRows(const DbiConnection &con, MultipleSequenceAlignment &al, U2Msa &msa, const QList<U2Sequence> &rows, const U2MsaListGapModel &msaGapModel, U2OpStatus &os);
+    static QList<U2MsaRow> importRows(const DbiConnection &con, MultipleSequenceAlignment &al, const U2DataId &msaId, const QList<U2Sequence> &rows, const U2MsaListGapModel &msaGapModel, U2OpStatus &os);
 };
 
 } // namespace

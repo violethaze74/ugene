@@ -56,6 +56,9 @@ void MSAConsensusUtils::updateConsensus(const MultipleAlignment& ma, const QVect
 
 
 QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment& ma, int pos, int minReportPercent, int maxReportChars) {
+    if (ma->getLength() == 0) {
+        return QString();
+    }
     QVector<QPair<int, char> > freqs(32); //TODO: try QVarLengthArray?
     assert(pos>=0 && pos < ma->getLength());
     int nSeq = ma->getNumRows();
