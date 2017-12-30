@@ -353,52 +353,52 @@
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="60"/>
         <source>Unexpected end of file</source>
-        <translation type="unfinished">Неожиданный конец файла</translation>
+        <translation>Неожиданный конец файла</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="70"/>
         <source>There is no sequences in alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание не содержит последовательностей</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="97"/>
         <source>Attemt to find any number in the string failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Attemt to find any number in the string failed</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="139"/>
         <source>Vector NTI/AlignX</source>
-        <translation type="unfinished"></translation>
+        <translation>Vector NTI/AlignX</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="140"/>
         <source>Vector NTI/AlignX is a Vector NTI format for multiple alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Vector NTI/AlignX это Vector NTI формат для множественных выравниваний</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="161"/>
         <source>Open in read-only mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть только для чтения</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="171"/>
         <source>File doesn&apos;t contain any msa objects</source>
-        <translation type="unfinished">Файл не содержит msa объектов</translation>
+        <translation>Файл не содержит msa объектов</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="193"/>
         <source>Illegal header line</source>
-        <translation type="unfinished">Неправильная строка заголовка</translation>
+        <translation>Неправильная строка заголовка</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="209"/>
         <source>Sequences not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Последовательности не найдены</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="217"/>
         <source>Alphabet is unknown</source>
-        <translation type="unfinished">Неизвестный алфавит</translation>
+        <translation>Неизвестный алфавит</translation>
     </message>
 </context>
 <context>
@@ -406,17 +406,17 @@
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="117"/>
         <source>Vector NTI/AlignX file importer</source>
-        <translation type="unfinished"></translation>
+        <translation>Инструмент для импорта Vector NTI/AlignX файлов</translation>
     </message>
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="121"/>
         <source>Vector NTI/AlignX files importer is used to convert conventional APR files to a multiple sequence alignment formats</source>
-        <translation type="unfinished"></translation>
+        <translation>Инструмент для импорта Vector NTI/AlignX файлов используется для конвертации APR файлов в формат множественного выравнивания</translation>
     </message>
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="136"/>
         <source>Convert to another format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Конвертировать в другой формат:</translation>
     </message>
 </context>
 <context>
@@ -424,18 +424,18 @@
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="54"/>
         <source>APR file import: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>APR file import: %1</translation>
     </message>
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="66"/>
         <location filename="../src/apr/AprImporter.cpp" line="92"/>
         <source>Empty destination url</source>
-        <translation type="unfinished"></translation>
+        <translation>Empty destination url</translation>
     </message>
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="72"/>
         <source>Invalid I/O environment!</source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid I/O environment!</translation>
     </message>
 </context>
 <context>
@@ -1654,7 +1654,7 @@
     <message>
         <location filename="../src/GenbankPlainTextFormat.cpp" line="47"/>
         <source>GenBank</source>
-        <translation type="unfinished"></translation>
+        <translation>GenBank</translation>
     </message>
     <message>
         <location filename="../src/GenbankPlainTextFormat.cpp" line="49"/>
@@ -2804,7 +2804,7 @@
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="993"/>
         <source>Unexpected row count. Query: &apos;%1&apos;, rows: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Unexpected row count. Query: &apos;%1&apos;, rows: %2</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="810"/>
@@ -2840,7 +2840,7 @@
         <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="56"/>
         <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="67"/>
         <source>An error occurred during updating UDR</source>
-        <translation type="unfinished"></translation>
+        <translation>An error occurred during updating UDR</translation>
     </message>
 </context>
 <context>
