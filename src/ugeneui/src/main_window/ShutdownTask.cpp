@@ -205,10 +205,6 @@ void CloseWindowsTask::prepare() {
 }
 
 QList<Task *> CloseWindowsTask::onSubTaskFinished(Task *subTask) {
-    if (subTask->isCanceled()) {
-        stateInfo.cancelFlag = true;
-        return QList<Task*>();
-    }
     coreLog.trace(tr("Closing views"));
     if (!closeViews()) {
         getTopLevelParentTask()->cancel();
