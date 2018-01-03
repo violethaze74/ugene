@@ -109,17 +109,17 @@
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="63"/>
         <source>Save to fiie</source>
-        <translation type="unfinished">Сохранить в файл</translation>
+        <translation>Сохранить в файл</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="70"/>
         <source>File format</source>
-        <translation type="unfinished">Формат файла</translation>
+        <translation>Формат файла</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="87"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -580,7 +580,7 @@
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="79"/>
         <source>Save to directory:</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить в директорию:</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="104"/>
@@ -595,7 +595,7 @@
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="135"/>
         <source>Add to project</source>
-        <translation type="unfinished">Добавить в проект</translation>
+        <translation>Добавить в проект</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="145"/>
@@ -953,7 +953,7 @@
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="40"/>
         <source>Process directories recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>Обработать директории рекурсивно</translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="47"/>
@@ -1015,7 +1015,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="148"/>
         <source>Number of unknown symbols (N - for nucleic or X - for amino) between parts:</source>
-        <translation type="unfinished"></translation>
+        <translation>Число неизвестных символов (N - для нуклеотидных или X - для амино) между частями:</translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="193"/>
@@ -1657,7 +1657,7 @@ To append data to existing file press &apos;Append&apos;.</source>
     <message>
         <location filename="../src/util/ImportWidgets/AceImportWidget.cpp" line="60"/>
         <source>Destination UGENEDB file</source>
-        <translation type="unfinished">Место назначения UGENEDB файла</translation>
+        <translation>Место назначения UGENEDB файла</translation>
     </message>
 </context>
 <context>
@@ -1978,22 +1978,22 @@ complement(5..15)</translation>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="199"/>
         <source>There are more than 100 files found for download.
 Are you sure you want to open all of them?</source>
-        <translation type="unfinished"></translation>
+        <translation>Найдено более 100 файлов для скачивания. Открыть их все?</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="200"/>
         <source>Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>Предупреждение</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="201"/>
         <source>Open anyway</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="201"/>
         <source>Don&apos;t open</source>
-        <translation type="unfinished"></translation>
+        <translation>Не открывать</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="223"/>
@@ -2223,7 +2223,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/util/ExportAnnotationsDialog.ui" line="58"/>
         <source>Add to project</source>
-        <translation type="unfinished">Добавить в проект</translation>
+        <translation>Добавить в проект</translation>
     </message>
     <message>
         <location filename="../src/util/ExportAnnotationsDialog.ui" line="68"/>
@@ -2385,7 +2385,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/options_panel/GroupOptionsWidget.cpp" line="67"/>
         <source>Help</source>
-        <translation type="unfinished">Помощь</translation>
+        <translation>Помощь</translation>
     </message>
 </context>
 <context>
@@ -2591,7 +2591,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/OpenViewTask.cpp" line="250"/>
         <source>Load remote document</source>
-        <translation type="unfinished"></translation>
+        <translation>Load remote document</translation>
     </message>
     <message>
         <location filename="../src/OpenViewTask.cpp" line="296"/>
@@ -2601,12 +2601,12 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/OpenViewTask.cpp" line="346"/>
         <source>Failed to download %1 from %2. Error: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно скачать %1 из %2. Ошибка: %3</translation>
     </message>
     <message>
         <location filename="../src/OpenViewTask.cpp" line="352"/>
         <source>Document was successfully downloaded: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Документ был успешно загружен: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -2631,7 +2631,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/util/logview/LogView.cpp" line="72"/>
         <source>Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки...</translation>
     </message>
     <message>
         <location filename="../src/util/logview/LogView.cpp" line="76"/>
