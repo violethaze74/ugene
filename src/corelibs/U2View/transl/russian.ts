@@ -785,7 +785,7 @@ Probably the data is too big.</source>
     <message>
         <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="44"/>
         <source>Alphabet:</source>
-        <translation type="unfinished"></translation>
+        <translation>Алфавит:</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="73"/>
@@ -795,7 +795,7 @@ Probably the data is too big.</source>
     <message>
         <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="102"/>
         <source>Sequences:</source>
-        <translation type="unfinished"></translation>
+        <translation>Строки:</translation>
     </message>
     <message>
         <source>Sequence number:</source>
@@ -1082,7 +1082,7 @@ Probably the data is too big.</source>
     <message>
         <location filename="../src/ov_msa/General/McaGeneralTabOptionsPanelWidget.ui" line="52"/>
         <source>Sequences:</source>
-        <translation type="unfinished"></translation>
+        <translation>Строки:</translation>
     </message>
     <message>
         <source>Sequence number:</source>
@@ -5028,7 +5028,8 @@ Please, check external tools in the settings.</source>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="267"/>
         <source>Unable to create output folder for result assembly.
 Directory Path: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно создать выходную папку для сборки.
+Путь: %1</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="332"/>
@@ -5272,7 +5273,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="129"/>
         <source>Export selected sequence(s)...</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт выделенных последовательностей...</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="133"/>
@@ -5377,7 +5378,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="659"/>
         <source>Save sequences from alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить последовательности из выравнивания</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="759"/>
@@ -5990,12 +5991,12 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     <message>
         <location filename="../src/ov_msa/MaEditorNameList.cpp" line="852"/>
         <source>Rename Sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Переименовать последовательность</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MaEditorNameList.cpp" line="853"/>
         <source>New name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Новое имя:</translation>
     </message>
     <message>
         <source>New sequence name:</source>
@@ -7116,12 +7117,12 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="14"/>
         <source>Export Selected Sequence(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт выделенных последовательностей</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="25"/>
         <source>Export to folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспортировать в папку</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="37"/>
@@ -7131,22 +7132,22 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="46"/>
         <source>File name</source>
-        <translation type="unfinished">Имя файла</translation>
+        <translation>Имя файла</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="59"/>
         <source>File format</source>
-        <translation type="unfinished">Формат файла</translation>
+        <translation>Формат файла</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="71"/>
         <source>Keep gaps</source>
-        <translation type="unfinished">Наличие пробелов</translation>
+        <translation>Наличие пробелов</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialog.ui" line="81"/>
         <source>Add to project</source>
-        <translation type="unfinished">Добавить в проект</translation>
+        <translation>Добавить в проект</translation>
     </message>
     <message>
         <source>File format to use</source>
@@ -7184,22 +7185,22 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="62"/>
         <source>Sequence name</source>
-        <translation type="unfinished">Имя последовательности</translation>
+        <translation>Имя последовательности</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="63"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Другое</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="90"/>
         <source>File &quot;%1&quot; is already exists, choose custom filename or select another directory for save!</source>
-        <translation type="unfinished"></translation>
+        <translation>File &quot;%1&quot; is already exists, choose custom filename or select another directory for save!</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp" line="99"/>
         <source>File &quot;%1&quot; is already exists, choose another filename or select another directory for save!</source>
-        <translation type="unfinished"></translation>
+        <translation>File &quot;%1&quot; is already exists, choose another filename or select another directory for save!</translation>
     </message>
     <message>
         <source>File name is empty!</source>
