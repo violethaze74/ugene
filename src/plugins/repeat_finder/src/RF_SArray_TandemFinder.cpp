@@ -135,7 +135,7 @@ public:
 };
 
 void TandemFinder::prepare() {
-    Q_ASSERT(settings.minRepeatCount >= 3);
+    Q_ASSERT(settings.minRepeatCount >= 2);
     int chunkSize = 32*1024*1024; // optimized for 32Mb mem-chunk
     addSubTask(new SequenceWalkerTask(TF_WalkerConfig(sequence, settings.seqRegion.length, chunkSize), this, tr("Find tandems"), TaskFlags_NR_FOSCOE));
 }
