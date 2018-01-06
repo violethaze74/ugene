@@ -792,6 +792,9 @@ void Primer3Dialog::sl_loadSettings()
 {
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(this, tr("Load settings"), lod.dir, "Text files (*.txt)");
+    if (lod.url.isNull()) { // user clicked 'Cancel' button
+        return; 
+    }
 
     QSettings diagSettings(lod.url, QSettings::IniFormat);
 
