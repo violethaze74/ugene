@@ -58,7 +58,8 @@ private:
     U2MsaDbi*                   dbi;
     U2EntityRef                 entityRef;
     U2UseCommonUserModStep*     modStep;
-    MaModificationInfo           mi;
+    MaModificationInfo          mi;
+    bool                        seqListHasEmptySequencesOnly;
 
     static const int maxErrorListSize;
     /** Returns the max length of the rows including trailing gaps */
