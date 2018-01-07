@@ -65,6 +65,7 @@ MSAGeneralTab::MSAGeneralTab(MSAEditor* _msa)
 }
 
 void MSAGeneralTab::sl_alignmentChanged() {
+    alignmentAlphabet->setText(msa->getMaObject()->getAlphabet()->getName());
     alignmentLength->setText(QString::number(msa->getAlignmentLen()));
     alignmentHeight->setText(QString::number(msa->getNumSequences()));
 }
@@ -107,6 +108,7 @@ void MSAGeneralTab::connectSignals() {
 
 void MSAGeneralTab::initializeParameters() {
     // Alignment info
+    alignmentAlphabet->setText(msa->getMaObject()->getAlphabet()->getName());
     alignmentLength->setText(QString::number(msa->getAlignmentLen()));
     alignmentHeight->setText(QString::number(msa->getNumSequences()));
 

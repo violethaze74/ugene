@@ -243,6 +243,10 @@ AddSequencesFromDocumentsToAlignmentTask::AddSequencesFromDocumentsToAlignmentTa
 void AddSequencesFromDocumentsToAlignmentTask::prepare() {
     AddSequenceObjectsToAlignmentTask::prepare();
     seqList = PasteUtils::getSequences(docs, stateInfo);
+    if (seqList.isEmpty()) {
+        stateInfo.setError("No valid sequences found to add to the alignment.");
+        return;
+    }
     processObjectsAndSetResultingAlphabet();
 }
 
