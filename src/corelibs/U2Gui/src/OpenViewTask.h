@@ -67,6 +67,7 @@ public:
                                       LoadRemoteDocumentMode mode = LoadRemoteDocumentMode_OpenView);
     LoadRemoteDocumentAndAddToProjectTask(const GUrl& url);
     virtual void prepare();
+    virtual QString generateReport() const;
 protected:
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:

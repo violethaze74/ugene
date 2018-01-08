@@ -205,16 +205,23 @@ void DownloadRemoteFileDialog::accept()
             addToProject = false;
         }
     }
+    bool hasLoadOnlyDocuments = false;
     foreach (const QString &resId, resIds) {
         LoadRemoteDocumentMode mode = LoadRemoteDocumentMode_LoadOnly;
         if (addToProject) {
             mode = taskCount < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS ? LoadRemoteDocumentMode_OpenView : LoadRemoteDocumentMode_AddToProject;
         }
+        hasLoadOnlyDocuments = hasLoadOnlyDocuments || mode == LoadRemoteDocumentMode_LoadOnly;
         tasks.append(new LoadRemoteDocumentAndAddToProjectTask(resId, dbId, fullPath, fileFormat, hints, mode));
         taskCount++;
     }
 
-    AppContext::getTaskScheduler()->registerTopLevelTask(new MultiTask(tr("Download remote documents"), tasks));
+    TaskFlags flags = TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported;
+    if (hasLoadOnlyDocuments) {
+        flags = flags | TaskFlag_ReportingIsEnabled;
+    }
+    Task* topLevelTask = new MultiTask(tr("Download remote documents"), tasks, false, flags);
+    AppContext::getTaskScheduler()->registerTopLevelTask(topLevelTask);
 
     QDialog::accept();
 }
