@@ -304,36 +304,44 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     bool isShiftPressed = e->modifiers().testFlag(Qt::ShiftModifier);
     switch(key) {
     case Qt::Key_Up: {
+        bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect - 1);
         U2Region sel = getSelection();
-        if (sel.length == 0 || sel.startPos == 0) {
-            break; // no selection or can't move up
-        }
-        curRowNumber = startSelectingRowNumber = sel.startPos - 1;
-        if (isShiftPressed) { // expanding selection up
-            nextSequenceToSelect = curRowNumber + sel.length;
+        int selStart = sel.length != 0 ? getSelection().startPos : nextSequenceToSelect;
+        if (isSeqInRange && isShiftPressed) {
+            nextSequenceToSelect--;
             moveSelection(0);
             int seqAreaHeight = ui->getSequenceArea()->height();
             ui->getScrollController()->scrollToRowByNumber(nextSequenceToSelect, seqAreaHeight);
-        } else { // moving selection up
-            nextSequenceToSelect = curRowNumber + sel.length - 1;
+        } else if (!isShiftPressed && selStart > 0) {
+            if (0 <= curRowNumber - 1) {
+                curRowNumber--;
+            }
+            if (0 <= startSelectingRowNumber - 1) {
+                startSelectingRowNumber--;
+            }
+            nextSequenceToSelect--;
             moveSelection(-1);
         }
         break;
     }
     case Qt::Key_Down: {
-        U2Region sel = getSelection();
-        int numRows = ui->getSequenceArea()->getNumDisplayableSequences();
-        if (sel.length == 0 || sel.endPos() == numRows) {
-            break; // no selection or can't move down
-        }
-        curRowNumber = startSelectingRowNumber = sel.endPos();
-        if (isShiftPressed) { // expanding selection down
-            nextSequenceToSelect = sel.startPos;
+        bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect + 1);
+        int selEnd = getSelection().endPos() - 1;
+        int rowNum = ui->getSequenceArea()->getNumDisplayableSequences() - 1;
+        if (isSeqInRange && isShiftPressed) {
+            nextSequenceToSelect++;
             moveSelection(0);
             int seqAreaHeight = ui->getSequenceArea()->height();
             ui->getScrollController()->scrollToRowByNumber(nextSequenceToSelect, seqAreaHeight);
-        } else { // moving selection down
-            nextSequenceToSelect = sel.startPos + 1;
+        } else if (!isShiftPressed && selEnd < rowNum) {
+            int numDisplayableSequences = ui->getSequenceArea()->getNumDisplayableSequences();
+            if (numDisplayableSequences > curRowNumber + 1) {
+                curRowNumber++;
+            }
+            if (numDisplayableSequences > startSelectingRowNumber + 1) {
+                startSelectingRowNumber++;
+            }
+            nextSequenceToSelect++;
             moveSelection(1);
         }
         break;
