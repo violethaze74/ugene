@@ -130,6 +130,7 @@
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 
 namespace U2 {
 
@@ -2338,6 +2339,16 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 }
+
+GUI_TEST_CLASS_DEFINITION(test_5663){
+    
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, false, true, false,
+                                                                        sandBoxDir));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::waitForNotification(os, false);
+}
+
 
 GUI_TEST_CLASS_DEFINITION(test_5665) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
