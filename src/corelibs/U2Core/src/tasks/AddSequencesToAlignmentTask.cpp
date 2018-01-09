@@ -31,8 +31,6 @@
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2MsaDbi.h>
-#include <U2Gui/MainWindow.h>
-#include <U2Gui/Notification.h>
 
 #include "AddSequencesToAlignmentTask.h"
 
@@ -47,8 +45,7 @@ AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSeq
       stateLock(NULL),
       msaAlphabet(maObj->getAlphabet()),
       dbi(NULL),
-      modStep(NULL),
-      seqListHasEmptySequencesOnly(false)      
+      modStep(NULL)
 {
     entityRef = maObj->getEntityRef();
 }
@@ -84,11 +81,6 @@ void AddSequenceObjectsToAlignmentTask::run() {
         return;
     }
     CHECK_OP(stateInfo, );
-    
-    if (rows.isEmpty()) { // seqList is not empty, but rows are empty and there is no error -> user tries adding empty sequence.
-        seqListHasEmptySequencesOnly = true;
-        return;        
-    }
     addRows(rows, maxLength);
     CHECK_OP(stateInfo, );
     updateAlphabet();
@@ -116,13 +108,6 @@ Task::ReportResult AddSequenceObjectsToAlignmentTask::report() {
         return ReportResult_Finished;
     }
 
-    if (seqListHasEmptySequencesOnly) {
-        const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
-        CHECK(notificationStack != NULL, ReportResult_Finished);
-        notificationStack->addNotification(tr("Can't insert empty sequence into the alignment."), Warning_Not);
-        return ReportResult_Finished;
-    }
-    
     // Update object
     maObj->updateCachedMultipleAlignment(mi);
 
