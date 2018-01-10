@@ -84,6 +84,7 @@
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsNotifications.h"
+#include "GTUtilsOptionPanelMca.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsOptionsPanel.h"
@@ -2749,7 +2750,9 @@ GUI_TEST_CLASS_DEFINITION(test_5718) {
     //3. Insert gap
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    int lengthBeforeGapColumnsRemoving = GTUtilsMcaEditorSequenceArea::getReferenceLengthWithGaps(os);
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
+    const int lengthBeforeGapColumnsRemoving = GTUtilsOptionPanelMca::getLength(os);
+    GTUtilsOptionPanelMca::closeTab(os, GTUtilsOptionPanelMca::General);
 
     //4. Remove all columns of gaps
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Remove all columns of gaps"));
@@ -2757,7 +2760,9 @@ GUI_TEST_CLASS_DEFINITION(test_5718) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: before gap column removig < after gap column removig
-    int lengthAfterGapColumnsRemoving = GTUtilsMcaEditorSequenceArea::getReferenceLengthWithGaps(os);
+    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
+    int lengthAfterGapColumnsRemoving = GTUtilsOptionPanelMca::getLength(os);
+    GTUtilsOptionPanelMca::closeTab(os, GTUtilsOptionPanelMca::General);
     CHECK_SET_ERR(lengthAfterGapColumnsRemoving < lengthBeforeGapColumnsRemoving, QString("Expected: before gap column removig > after gap column removig, current: before %1, after %2").arg(QString::number(lengthBeforeGapColumnsRemoving)).arg(QString::number(lengthAfterGapColumnsRemoving)));
 
 }
