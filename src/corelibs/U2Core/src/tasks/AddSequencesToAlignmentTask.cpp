@@ -48,6 +48,11 @@ AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSeq
       modStep(NULL)
 {
     entityRef = maObj->getEntityRef();
+    
+    // reset modification inf.
+    mi.alignmentLengthChanged = false;
+    mi.rowContentChanged = false;
+    mi.rowListChanged = false;
 }
 
 void AddSequenceObjectsToAlignmentTask::prepare() {
@@ -77,7 +82,7 @@ void AddSequenceObjectsToAlignmentTask::run() {
     }
     QList<U2MsaRow> rows;
     qint64 maxLength = createRows(rows);
-    if (isCanceled() || hasError()) {
+    if (isCanceled() || hasError() || rows.isEmpty()) {
         return;
     }
     CHECK_OP(stateInfo, );
@@ -135,9 +140,15 @@ qint64 AddSequenceObjectsToAlignmentTask::createRows(QList<U2MsaRow> &rows) {
 }
 
 void AddSequenceObjectsToAlignmentTask::addRows(QList<U2MsaRow> &rows, qint64 maxLength) {
-    // Add rows
+    if (rows.isEmpty()) {
+        return;
+    }
+    
     dbi->addRows(entityRef.entityId, rows, stateInfo);
     CHECK_OP(stateInfo, );
+    
+    mi.rowListChanged = true;
+    mi.alignmentLengthChanged = true;
 
     if (maxLength > maObj->getLength()) {
         dbi->updateMsaLength(entityRef.entityId, maxLength, stateInfo);

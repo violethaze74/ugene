@@ -146,6 +146,7 @@ private slots:
     void sl_copyFormattedSelection();
     void sl_paste();
     void sl_pasteFinished(Task* pasteTask);
+    void sl_addSequencesToAlignmentFinished(Task* task);
     void sl_delCol();
     void sl_goto();
     void sl_removeAllGaps();

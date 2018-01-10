@@ -739,7 +739,19 @@ void MSAEditorSequenceArea::sl_pasteFinished(Task* _pasteTask){
     const QList<Document*>& docs = pasteTask->getDocuments();
 
     AddSequencesFromDocumentsToAlignmentTask *task = new AddSequencesFromDocumentsToAlignmentTask(msaObject, docs);
+    connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_addSequencesToAlignmentFinished(Task*)));
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
+}
+
+void MSAEditorSequenceArea::sl_addSequencesToAlignmentFinished(Task *task) {
+    AddSequencesFromDocumentsToAlignmentTask *addSeqTask = qobject_cast<AddSequencesFromDocumentsToAlignmentTask*>(task);
+    CHECK(addSeqTask != NULL, );
+    const MaModificationInfo& mi = addSeqTask->getMaModificationInfo();
+    if (!mi.rowListChanged) {
+        const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
+        CHECK(notificationStack != NULL,);
+        notificationStack->addNotification(tr("No new sequences were inserted into the alignment."), Warning_Not);
+    }
 }
 
 void MSAEditorSequenceArea::sl_addSeqFromFile()
