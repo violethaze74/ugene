@@ -163,7 +163,6 @@ bool MWMDIManagerImpl::eventFilter(QObject *obj, QEvent *event) {
         }
         items.removeAll(item);
         delete item;
-        mdiArea->removeSubWindow(qw);
         updateState();
     } else if (t == QEvent::WindowStateChange) {
         QMdiSubWindow* qw = qobject_cast<QMdiSubWindow*>(obj);
@@ -171,6 +170,7 @@ bool MWMDIManagerImpl::eventFilter(QObject *obj, QEvent *event) {
     }
     return QObject::eventFilter(obj, event);
 }
+
 
 void MWMDIManagerImpl::updateState() {
     updateActions();
