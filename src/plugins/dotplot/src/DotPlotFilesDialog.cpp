@@ -150,7 +150,7 @@ void DotPlotFilesDialog::accept() {
                     tr("Select a file with a sequence to build dotplot!")
                   : firstFileName.isEmpty()?
                         tr("Select first file with a sequence to build dotplot!")
-                      : tr("Select second file with a sequence to build dotplot!");
+                      : tr("Input the second sequence or check the 'Compare sequence against itself' option.");
         QObjectScopedPointer<QMessageBox> mb = new QMessageBox(QMessageBox::Critical, tr("Select files"), error);
         mb->exec();
         return;
