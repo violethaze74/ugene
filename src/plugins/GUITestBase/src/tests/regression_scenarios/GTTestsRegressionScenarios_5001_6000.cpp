@@ -2420,6 +2420,28 @@ GUI_TEST_CLASS_DEFINITION(test_5681) {
     GTUtilsProjectTreeView::checkItem(os, "murine_annotations.gb");
 }
 
+
+GUI_TEST_CLASS_DEFINITION(test_5696) {
+    //1. Open "COI.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Select region with gaps
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(41, 1), QPoint(43, 3));
+
+    //4. Copy this subalignment
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);     // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);     // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
+    GTUtilsNotifications::waitForNotification(os, true, "No new sequences were inserted into the alignment.");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5714_1) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
