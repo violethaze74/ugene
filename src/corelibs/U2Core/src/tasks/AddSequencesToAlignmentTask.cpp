@@ -48,7 +48,7 @@ AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSeq
       modStep(NULL)
 {
     entityRef = maObj->getEntityRef();
-    
+
     // reset modification inf.
     mi.alignmentLengthChanged = false;
     mi.rowContentChanged = false;
@@ -143,10 +143,10 @@ void AddSequenceObjectsToAlignmentTask::addRows(QList<U2MsaRow> &rows, qint64 ma
     if (rows.isEmpty()) {
         return;
     }
-    
+
     dbi->addRows(entityRef.entityId, rows, stateInfo);
     CHECK_OP(stateInfo, );
-    
+
     mi.rowListChanged = true;
     mi.alignmentLengthChanged = true;
 

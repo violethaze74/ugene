@@ -2342,7 +2342,7 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5663){
-    
+
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, false, true, false,
                                                                         sandBoxDir));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
@@ -2438,8 +2438,8 @@ GUI_TEST_CLASS_DEFINITION(test_5696) {
     GTUtilsNotifications::waitForNotification(os, true, "No new sequences were inserted into the alignment.");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
-    
+
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5714_1) {

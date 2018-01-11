@@ -44,9 +44,9 @@ public:
     virtual void prepare();
     virtual void run();
     ReportResult report();
-    
+
     const MaModificationInfo& getMaModificationInfo() const {return mi;}
-    
+
 protected:
     void processObjectsAndSetResultingAlphabet();
 
