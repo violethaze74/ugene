@@ -30,19 +30,44 @@ namespace U2 {
 /// MaSeqNameFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-class MaSeqNameFilterTask : public AbstractProjectFilterTask {
+class MsaSeqNameFilterTask : public AbstractProjectFilterTask {
 public:
-    MaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
+    MsaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
+protected:
+    bool filterAcceptsObject(GObject *obj);
+};
+
+class McaReadNameFilterTask : public AbstractProjectFilterTask {
+public:
+    McaReadNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
+protected:
+    bool filterAcceptsObject(GObject *obj);
+};
+
+class McaReferenceNameFilterTask : public AbstractProjectFilterTask {
+public:
+    McaReferenceNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
 
 protected:
     bool filterAcceptsObject(GObject *obj);
 };
 
+
 //////////////////////////////////////////////////////////////////////////
 /// MaSeqNameFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-class U2GUI_EXPORT MaSeqNameFilterTaskFactory : public ProjectFilterTaskFactory {
+class U2GUI_EXPORT MsaSeqNameFilterTaskFactory : public ProjectFilterTaskFactory {
+protected:
+    AbstractProjectFilterTask * createNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs) const;
+};
+
+class U2GUI_EXPORT McaReadNameFilterTaskFactory : public ProjectFilterTaskFactory {
+protected:
+    AbstractProjectFilterTask * createNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs) const;
+};
+
+class U2GUI_EXPORT McaReferenceNameFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
     AbstractProjectFilterTask * createNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs) const;
 };

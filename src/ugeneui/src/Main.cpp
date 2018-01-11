@@ -289,9 +289,13 @@ static void initProjectFilterTaskRegistry() {
     ProjectFilterTaskRegistry *registry = AppContext::getProjectFilterTaskRegistry();
 
     registry->registerTaskFactory(new ObjectNameFilterTaskFactory);
-    registry->registerTaskFactory(new MaSeqNameFilterTaskFactory);
+    registry->registerTaskFactory(new MsaSeqNameFilterTaskFactory);
+    registry->registerTaskFactory(new MsaContentFilterTaskFactory);
+    registry->registerTaskFactory(new McaReadNameFilterTaskFactory);
+    registry->registerTaskFactory(new McaReferenceNameFilterTaskFactory);
+    registry->registerTaskFactory(new McaReadContentFilterTaskFactory);
+    registry->registerTaskFactory(new McaReferenceContentFilterTaskFactory);
     registry->registerTaskFactory(new SequenceContentFilterTaskFactory);
-    registry->registerTaskFactory(new MaContentFilterTaskFactory);
     registry->registerTaskFactory(new TextContentFilterTaskFactory);
     registry->registerTaskFactory(new SequenceAccFilterTaskFactory);
     registry->registerTaskFactory(new FeatureKeyFilterTaskFactory);

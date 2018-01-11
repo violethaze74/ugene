@@ -33,25 +33,43 @@ class U2SequenceObject;
 /// MaContentFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-class MaContentFilterTask : public AbstractProjectFilterTask {
-public:
-    MaContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
-
+class MsaContentFilterTask : public AbstractProjectFilterTask {
+public:    
+    MsaContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
 protected:
     bool filterAcceptsObject(GObject *obj);
+    
+};
 
-private:
-    bool maContainsPattern(const MultipleAlignmentObject *maObject, const QString &pattern);
-    bool seqContainsPattern(const U2SequenceObject* seqObject, const QString &pattern);
+class McaReadContentFilterTask : public AbstractProjectFilterTask {
+public:    
+    McaReadContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
+protected:
+    bool filterAcceptsObject(GObject *obj);
+};
 
-    static bool patternFitsMaAlphabet(const MultipleAlignmentObject *maObject, const QString &pattern);
+class McaReferenceContentFilterTask : public AbstractProjectFilterTask {
+public:    
+    McaReferenceContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
+protected:
+    bool filterAcceptsObject(GObject *obj);
 };
 
 //////////////////////////////////////////////////////////////////////////
 /// MaContentFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-class U2GUI_EXPORT MaContentFilterTaskFactory : public ProjectFilterTaskFactory {
+class U2GUI_EXPORT MsaContentFilterTaskFactory : public ProjectFilterTaskFactory {
+protected:
+    AbstractProjectFilterTask * createNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs) const;
+};
+
+class U2GUI_EXPORT McaReadContentFilterTaskFactory : public ProjectFilterTaskFactory {
+protected:
+    AbstractProjectFilterTask * createNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs) const;
+};
+
+class U2GUI_EXPORT McaReferenceContentFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
     AbstractProjectFilterTask * createNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs) const;
 };
