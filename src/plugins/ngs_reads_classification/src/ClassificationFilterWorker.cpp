@@ -179,7 +179,7 @@ void ClassificationFilterWorkerFactory::init() {
 //        p << new PortDescriptor(inD2, DataTypePtr(new MapDataType("filter.input-paired-url", inM2)), true);
 
         Descriptor outSlot1Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClassificationFilterWorker::tr("Output URL 1"), ClassificationFilterWorker::tr("Output URL 1."));
-        Descriptor outSlot2Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClassificationFilterWorker::tr("Output URL 2"), ClassificationFilterWorker::tr("Output URL 2."));
+        Descriptor outSlot2Descriptor(GetReadsListWorkerFactory::PE_SLOT().getId(), ClassificationFilterWorker::tr("Output URL 2"), ClassificationFilterWorker::tr("Output URL 2."));
 
         QMap<Descriptor, DataTypePtr> outM;
         //outM[Descriptor(OUTPUT_SLOT, ClassificationFilterWorker::tr("Output URL(s)"), ClassificationFilterWorker::tr("Output URL(s)"))] = BaseTypes::STRING_TYPE();
