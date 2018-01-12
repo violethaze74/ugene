@@ -47,7 +47,7 @@ class NCBISearchContext {
 public:
     NCBISearchContext() {
         rules << "AND" << "OR" << "NOT";
-        fields << QObject::tr("Author") << QObject::tr("Gene name") << QObject::tr("Organism");
+        fields << "Author" << "Gene name"<< "Organism";
     }
 
     QStringList fields;
