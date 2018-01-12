@@ -332,7 +332,7 @@ void ExportAutoAnnotationsGroupTask::prepare() {
         aData.append(data);
     }
 
-    SAFE_POINT(!aData.isEmpty(), "No auto-annotations to export!", );
+    CHECK(!aData.isEmpty(), );
 
     createTask = new ADVCreateAnnotationsTask(seqCtx->getAnnotatedDNAView(), aRef, aGroup->getName(), aData);
     addSubTask(createTask);

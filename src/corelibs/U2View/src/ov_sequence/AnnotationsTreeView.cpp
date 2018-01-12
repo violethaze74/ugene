@@ -860,7 +860,7 @@ void AnnotationsTreeView::sl_onBuildPopupMenu(GObjectView*, QMenu* m) {
     if (selItems.size() == 1) {
         AVItem* avItem = static_cast<AVItem*>(selItems.first());
         AnnotationTableObject *aObj = avItem->getAnnotationTableObject();
-        if (AutoAnnotationsSupport::isAutoAnnotation(aObj)) {
+        if (AutoAnnotationsSupport::isAutoAnnotation(aObj) && !aObj->getAnnotations().isEmpty()) {
              if (avItem->parent() != NULL) {
                 m->addAction(exportAutoAnnotationsGroup);
             }
