@@ -50,8 +50,8 @@ public:
     static bool isCollapsed(GUITestOpStatus &os, QString seqName);
     static bool collapsingMode(GUITestOpStatus &os);
 
-    static int getLeftOffset(GUITestOpStatus &os);
-    static int getRightOffset(GUITestOpStatus &os);
+    static int getFirstVisibleBase(GUITestOpStatus &os);
+    static int getLastVisibleBase(GUITestOpStatus &os);
 
     static int getLength(GUITestOpStatus &os);
     static int getNumVisibleBases(GUITestOpStatus &os);

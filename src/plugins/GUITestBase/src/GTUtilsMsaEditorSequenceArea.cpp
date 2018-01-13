@@ -342,8 +342,8 @@ bool GTUtilsMSAEditorSequenceArea::collapsingMode(GUITestOpStatus &os){
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getLeftOffset"
-int GTUtilsMSAEditorSequenceArea::getLeftOffset(GUITestOpStatus &os)
+#define GT_METHOD_NAME "getFirstVisibleBase"
+int GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(GUITestOpStatus &os)
 {
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", -1);
@@ -355,13 +355,16 @@ int GTUtilsMSAEditorSequenceArea::getLeftOffset(GUITestOpStatus &os)
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getLeftOffset"
-int GTUtilsMSAEditorSequenceArea::getRightOffset(GUITestOpStatus &os)
+#define GT_METHOD_NAME "getLastVisibleBase"
+int GTUtilsMSAEditorSequenceArea::getLastVisibleBase(GUITestOpStatus &os)
 {
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", -1);
 
-    return msaEditArea->getEditor()->getUI()->getScrollController()->getLastVisibleBase(msaEditArea->width(), true) + 1; // тут такая же фигня как getLeftOffset()
+    ScrollController* scrollController = msaEditArea->getEditor()->getUI()->getScrollController();
+    int clippedIdx = scrollController->getLastVisibleBase(msaEditArea->width(), true);
+    int notClippedIdx = scrollController->getLastVisibleBase(msaEditArea->width(), false);
+    return clippedIdx + (clippedIdx == notClippedIdx ? 0 : 1);
 }
 #undef GT_METHOD_NAME
 
