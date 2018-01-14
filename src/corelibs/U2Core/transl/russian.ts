@@ -1562,47 +1562,47 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Не удалось переименовать %1 в %2</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="312"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="313"/>
         <source>Folder is not specified</source>
         <translation>Папка не указана</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="317"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="318"/>
         <source>Folder can&apos;t be created: %1</source>
         <translation>Невозможно создать папку: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="322"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="323"/>
         <source>Folder can&apos;t be read: %1</source>
         <translation>Файлы папки %1 невозможно открыть на чтение</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="364"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="365"/>
         <source>File path is not specified</source>
         <translation>Путь до файла не задан</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="367"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="368"/>
         <source>Folder path instead of file path</source>
         <translation>Путь до папки вместо пути до файла</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="425"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="426"/>
         <source>Can not create a folder: %1</source>
         <translation>Невозможно создать папку: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="475"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="476"/>
         <source>%1 is not a local file [%2].</source>
         <translation>%1 is not a local file [%2].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="484"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="485"/>
         <source>Can not create a folder [%1].</source>
         <translation>Can not create a folder [%1].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="489"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="490"/>
         <source>%1 is a folder [%2].</source>
         <translation>%1 is a folder [%2].</translation>
     </message>
@@ -2163,47 +2163,47 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ModifySequenceContentTask</name>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="54"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="56"/>
         <source>Modify sequence task</source>
         <translation>Задача изменения последовательности</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="64"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="66"/>
         <source>Document is locked</source>
         <translation>Документ заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="68"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="70"/>
         <source>Region to delete is larger than the whole sequence</source>
         <translation>Регион для удаления больше чем вся последовательность</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="125"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="128"/>
         <source>Some annotations have qualifiers referring a sequence region that has been removed during the sequence editing. You might want to change the qualifiers manually. Find them in the table below</source>
         <translation>Некоторые аннотации имеют квалификаторы, которые ссылаются на регионы последовательности, которые были удалены в процессе редактирования</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="129"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="132"/>
         <source>Annotation Name</source>
         <translation>Имя аннотации</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="131"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="134"/>
         <source>Annotation Location</source>
         <translation>Расположение аннотации</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="133"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="136"/>
         <source>Qualifier Name</source>
         <translation>Имя квалификатора</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="135"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="138"/>
         <source>Referenced Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="140"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="143"/>
         <source>Unexpected qualifiers count</source>
         <translation>Unexpected qualifiers count</translation>
     </message>
