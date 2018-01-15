@@ -1307,7 +1307,7 @@ GUI_TEST_CLASS_DEFINITION(test_0746) {
     GTWidget::click(os, toggleViewButton);
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "translation_action", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "do_not_translate_radiobutton", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
     GTGlobals::sleep();
     QAbstractButton* complement = GTAction::button(os, "complement_action");

@@ -201,7 +201,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTWidget::click(os, toggleViewButton);
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "translation_action", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "do_not_translate_radiobutton", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
 
     GTGlobals::sleep();
@@ -236,7 +236,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTWidget::click(os, toggleViewButton);
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "translation_action", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "do_not_translate_radiobutton", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
 
     GTGlobals::sleep();
@@ -265,7 +265,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     GTWidget::click(os, toggleViewButton);
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "translation_action", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "do_not_translate_radiobutton", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
 
     GTGlobals::sleep();
@@ -1102,8 +1102,13 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Click "Amino translations" button on mdi toolbar
     QWidget *translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList()<<"Show direct only"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Set up frames manually"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Frame -1"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Frame -2"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Frame -3"));
     GTWidget::click(os, translationsMenuToolbarButton);
+    //GTWidget::click(os, translationsMenuToolbarButton);
+
 //    Check "Show direct only"
     class DirectPopupChecker : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -1126,7 +1131,12 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
     GTWidget::click(os, translationsMenuToolbarButton);
 
     //    Check "Show complementary only"
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList()<<"Show complementary only"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Frame +1"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Frame +2"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Frame +3"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Frame -1"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Frame -2"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Frame -3"));
     GTWidget::click(os, translationsMenuToolbarButton);
 
     class ComplPopupChecker : public CustomScenario {
@@ -1150,7 +1160,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
     GTWidget::click(os, translationsMenuToolbarButton);
 
     //    Check "Show all"
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList()<<"Show all"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList()<<"Show all frames"));
     GTWidget::click(os, translationsMenuToolbarButton);
 
     class AllPopupChecker : public CustomScenario {
@@ -2280,7 +2290,7 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
     CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "translation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "show_all_frames_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
     CHECK_SET_ERR(visibleRange != GTUtilsSequenceView::getVisibleRange(os), "Visible range was not changed on translation show/hide");
 
@@ -2374,13 +2384,13 @@ GUI_TEST_CLASS_DEFINITION(test_0075) {
     CHECK_SET_ERR(NULL != menu, "No menu");
 
     //3. Click "Show/hide translations".
-    GTMenu::clickMenuItem(os, menu, "translation_action");
+    GTMenu::clickMenuItem(os, menu, "do_not_translate_radiobutton");
 
     //Expected: the menu doesn't disappear.
     CHECK_SET_ERR(NULL != QApplication::activePopupWidget(), "Menu disappeared 1");
 
     //4. Click "Show all".
-    GTMenu::clickMenuItemByText(os, menu, QStringList() << "Show all");
+    GTMenu::clickMenuItemByText(os, menu, QStringList() << "Show all frames");
 
     //Expected: the menu doesn't disappear.
     CHECK_SET_ERR(NULL != QApplication::activePopupWidget(), "Menu disappeared 2");
