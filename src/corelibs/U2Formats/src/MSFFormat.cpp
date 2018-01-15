@@ -136,7 +136,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
     //read info
     int sum = 0;
-    QMap <QString, int> seqs;
+    QList <QPair <QString, int> > seqs;
     QVector<int> rowLens;
     while (!ti.isCoR()) {
         QByteArray line;
@@ -144,8 +144,9 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
             ti.setError(MSFFormat::tr("Unexpected end of file"));
             return;
         }
-        if (line.startsWith(SECTION_SEPARATOR))
+        if (line.startsWith(SECTION_SEPARATOR)) {
             break;
+        }
 
         bool ok = false;
         QString name = QString::fromLocal8Bit(getField(line, NAME_FIELD).data());
@@ -157,7 +158,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
             sum = check = CHECK_SUM_MOD;
         }
 
-        seqs.insert(name, check);
+        seqs.append(QPair<QString, int>(name, check));
         al->addRow(name, QByteArray());
         rowLens.append(0);
         if (sum < CHECK_SUM_MOD) {
@@ -173,6 +174,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
     //read data
     bool eof = false;
+    int i = 0;
     while (!eof && !ti.isCoR()) {
         QByteArray line;
         eof = getNextLine(io, line);
@@ -180,15 +182,17 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
             continue;
         }
 
-        int i = 0, n = al->getNumRows();
-        for (; i < n; i++) {
-            const MultipleSequenceAlignmentRow row = al->getMsaRow(i);
-            QByteArray t = row->getName().toLocal8Bit();
-            if (line.startsWith(t) && line[t.length()] == ' ') {
+        const int numRows = al->getNumRows();
+        int j = i;
+        for (j; j < numRows; j++) {
+            const MultipleSequenceAlignmentRow row = al->getMsaRow(j);
+            const QByteArray rowName = row->getName().toLocal8Bit();
+            if (line.startsWith(rowName) && line[rowName.length()] == ' ') {
                 break;
             }
         }
-        if (i == n) {
+        if (j >= numRows) {
+            i = 0;
             continue;
         }
         for (int q, p = line.indexOf(' ') + 1; p > 0; p = q + 1) {
@@ -197,19 +201,19 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
             al->appendChars(i, rowLens[i], subSeq.constData(), subSeq.length());
             rowLens[i] = rowLens[i] + subSeq.length();
         }
-
+        i++;
         ti.setProgress(io->getProgress());
     }
 
     //checksum
     U2OpStatus2Log seqCheckOs;
-    for (int i=0; i<al->getNumRows(); i++) {
+    const int numRows = al->getNumRows();
+    for (int i = 0; i < numRows; i++) {
         const MultipleSequenceAlignmentRow row = al->getMsaRow(i);
-        int expectedCheckSum = seqs[row->getName()];
-        int sequenceCheckSum = getCheckSum(row->toByteArray(seqCheckOs, al->getLength()));
+        const int expectedCheckSum = seqs[i].second;
+        const int sequenceCheckSum = getCheckSum(row->toByteArray(seqCheckOs, al->getLength()));
         if ( expectedCheckSum < CHECK_SUM_MOD &&  sequenceCheckSum != expectedCheckSum) {
-            ti.setError(MSFFormat::tr("Check sum test failed"));
-            return;
+            coreLog.info(tr("Unexpected check sum in the row number %1, name: %2; expected value: %3, current value %4").arg(i + 1).arg(row->getName()).arg(expectedCheckSum).arg(sequenceCheckSum));
         }
         al->replaceChars(i, '.', U2Msa::GAP_CHAR);
         al->replaceChars(i, '~', U2Msa::GAP_CHAR);
@@ -244,7 +248,7 @@ static bool writeBlock(IOAdapter *io, U2OpStatus& ti, const QByteArray& buf) {
 
 void MSFFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
     MultipleSequenceAlignmentObject* obj = NULL;
-    if((d->getObjects().size() != 1) || ((obj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first())) == NULL)) {
+    if ((d->getObjects().size() != 1) || ((obj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first())) == NULL)) {
         os.setError("No data to write;");
         return;
     }
