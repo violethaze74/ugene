@@ -46,16 +46,17 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 
-#include "system/GTClipboard.h"
-#include "GTGlobals.h"
 #include <drivers/GTKeyboardDriver.h>
-#include "utils/GTKeyboardUtils.h"
-#include "primitives/GTMenu.h"
 #include <drivers/GTMouseDriver.h>
+#include <GTGlobals.h>
+#include <primitives/GTLineEdit.h>
+#include <primitives/GTMenu.h>
 #include <primitives/GTToolbar.h>
+#include <primitives/PopupChooser.h>
+#include <runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h>
+#include <system/GTClipboard.h>
+#include <utils/GTKeyboardUtils.h>
 
-#include "primitives/PopupChooser.h"
-#include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 
 namespace U2 {
 using namespace HI;
@@ -279,11 +280,10 @@ void GTUtilsSequenceView::goToPosition(HI::GUITestOpStatus &os, int position) {
     QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
     GT_CHECK(NULL != toolbar, "Can't find the toolbar");
 
-    QWidget* positionLineEdit = GTWidget::findWidget(os, "go_to_pos_line_edit", toolbar);
+    QLineEdit* positionLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "go_to_pos_line_edit", toolbar);
     GT_CHECK(NULL != positionLineEdit, "Can't find the position line edit");
 
-    GTWidget::click(os, positionLineEdit);
-    GTKeyboardDriver::keySequence(QString::number(position));
+    GTLineEdit::setText(os, positionLineEdit, QString::number(position));
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
 #undef GT_METHOD_NAME
