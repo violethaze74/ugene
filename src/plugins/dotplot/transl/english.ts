@@ -306,7 +306,7 @@
     </message>
     <message>
         <location filename="../src/DotPlotFilesDialog.cpp" line="153"/>
-        <source>Select second file with a sequence to build dotplot!</source>
+        <source>Input the second sequence or check the &apos;Compare sequence against itself&apos; option.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

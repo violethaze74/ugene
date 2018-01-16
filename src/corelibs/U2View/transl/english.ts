@@ -788,12 +788,12 @@ Probably the data is too big.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="73"/>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="86"/>
         <source>Length:</source>
         <translation>Length:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="102"/>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="128"/>
         <source>Sequences:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -802,12 +802,12 @@ Probably the data is too big.</translation>
         <translation type="vanished">Sequence number:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="137"/>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="176"/>
         <source>Format:</source>
         <translation>Format:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="147"/>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="186"/>
         <source>Copy</source>
         <translation>Copy</translation>
     </message>
@@ -1663,27 +1663,25 @@ Double-click to collapse the branch</translation>
         <translation>Algorithm</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="36"/>
         <source>Range Start:</source>
-        <translation>Range Start:</translation>
+        <translation type="vanished">Range Start:</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="59"/>
         <source>Range End:</source>
-        <translation>Range End:</translation>
+        <translation type="vanished">Range End:</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="86"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="39"/>
         <source>Results:</source>
         <translation>Results:</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="120"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="73"/>
         <source>Total predicted:</source>
         <translation>Total predicted:</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="127"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="80"/>
         <source>0</source>
         <translation>0</translation>
     </message>
@@ -4017,12 +4015,12 @@ You don&apos;t have enough rights to change file</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="93"/>
+        <location filename="../src/ov_sequence/DetView.cpp" line="94"/>
         <source>Show all frames</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="99"/>
+        <location filename="../src/ov_sequence/DetView.cpp" line="100"/>
         <source>Wrap sequence</source>
         <translation>Wrap sequence</translation>
     </message>
@@ -4496,17 +4494,17 @@ Please, check external tools in the settings.</translation>
 <context>
     <name>U2::ExportHighligtningTask</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1035"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1047"/>
         <source>Export highlighting</source>
         <translation>Export highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1063"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1075"/>
         <source>Export highligtning finished successfully</source>
         <translation>Export highligtning finished successfully</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1063"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1075"/>
         <source>Result file:</source>
         <translation>Result file:</translation>
     </message>
@@ -5382,7 +5380,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="467"/>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="531"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="840"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="852"/>
         <source>NULL collapsible model!</source>
         <translation>NULL collapsible model!</translation>
     </message>
@@ -5420,28 +5418,33 @@ Directory Path: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="759"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="762"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="753"/>
+        <source>No new sequences were inserted into the alignment.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="771"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="774"/>
         <source>Open file with sequences</source>
         <translation>Open file with sequences</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="768"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="780"/>
         <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
         <translation>A problem occurred during adding sequences. The multiple alignment is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="854"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="866"/>
         <source>NULL Msa Object!</source>
         <translation>NULL Msa Object!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="859"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="871"/>
         <source>NULL document!</source>
         <translation>NULL document!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="995"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1007"/>
         <source>Incorrect pointer to MSACollapsibleItemModel</source>
         <translation>Incorrect pointer to MSACollapsibleItemModel</translation>
     </message>
@@ -7290,27 +7293,27 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::SecStructDialog</name>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="66"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="67"/>
         <source>Predict</source>
         <translation>Predict</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="67"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="68"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="68"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="69"/>
         <source>Save</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="87"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="78"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="88"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="79"/>
         <source>Structure Type</source>
         <translation>Structure Type</translation>
     </message>
