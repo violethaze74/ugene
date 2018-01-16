@@ -1102,7 +1102,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Click "Amino translations" button on mdi toolbar
     QWidget *translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Set up frames manually"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "set_up_frames_manuallt_radiobutton"));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Frame -1"));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Frame -2"));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Frame -3"));
@@ -1160,7 +1160,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
     GTWidget::click(os, translationsMenuToolbarButton);
 
     //    Check "Show all"
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList()<<"Show all frames"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"show_all_frames_radiobutton"));
     GTWidget::click(os, translationsMenuToolbarButton);
 
     class AllPopupChecker : public CustomScenario {
@@ -2293,9 +2293,6 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "show_all_frames_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
     CHECK_SET_ERR(visibleRange != GTUtilsSequenceView::getVisibleRange(os), "Visible range was not changed on translation show/hide");
-
-    GTWidget::click(os, GTAction::button(os, "complement_action"));
-    CHECK_SET_ERR(visibleRange != GTUtilsSequenceView::getVisibleRange(os), "Visible range was not changed on complement strand show/hide");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0069) {

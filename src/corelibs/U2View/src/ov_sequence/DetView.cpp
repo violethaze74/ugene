@@ -86,6 +86,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     translateAnnotationsOrSelectionAction->setCheckable(true);
 
     setUpFramesManuallyAction = new QAction(tr("Set up frames manually"), this);
+    setUpFramesManuallyAction->setObjectName("set_up_frames_manuallt_radiobutton");
     setUpFramesManuallyAction->setData(SequenceObjectContext::TS_SetUpFramesManually);
     connect(setUpFramesManuallyAction, SIGNAL(triggered(bool)), SLOT(sl_setUpFramesManually()));
     setUpFramesManuallyAction->setCheckable(true);
