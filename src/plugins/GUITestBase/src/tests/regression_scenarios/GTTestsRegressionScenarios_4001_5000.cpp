@@ -98,6 +98,7 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
+#include "api/GTMSAEditorStatusWidget.h"
 #include "runnables/ugene/corelibs/U2Gui/AddNewDocumentDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
@@ -3138,6 +3139,36 @@ GUI_TEST_CLASS_DEFINITION(test_4524) {
     // Current state : "undo" action becomes disabled.
     QWidget *undoButton = GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is disabled unexpectedly");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4536) {
+//    1. Open "_common_data/fasta/empty.fa".
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: there are next values on the statusbar: "Ln - / 0  Col - / 0  Pos - / -".
+    const QString rowNumberString = GTMSAEditorStatusWidget::getRowNumberString(os);
+    const QString rowsCountString = GTMSAEditorStatusWidget::getRowsCountString(os);
+    const QString columnNumberString = GTMSAEditorStatusWidget::getColumnNumberString(os);
+    const QString columnsCountString = GTMSAEditorStatusWidget::getColumnsCountString(os);
+    const QString sequenceUngappedPositionString = GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
+    const QString sequenceUngappedLengthString = GTMSAEditorStatusWidget::getSequenceUngappedLengthString(os);
+
+    CHECK_SET_ERR("-" == rowNumberString, QString("An incorrect row number label: expected '%1', got '%2'").arg("-").arg(rowNumberString));
+    CHECK_SET_ERR("0" == rowsCountString, QString("An incorrect rows count label: expected '%1', got '%2'").arg("-").arg(rowsCountString));
+    CHECK_SET_ERR("-" == columnNumberString, QString("An incorrect column number label: expected '%1', got '%2'").arg("-").arg(columnNumberString));
+    CHECK_SET_ERR("0" == columnsCountString, QString("An incorrect columns count label: expected '%1', got '%2'").arg("-").arg(columnsCountString));
+    CHECK_SET_ERR("-" == sequenceUngappedPositionString, QString("An incorrect sequence ungapped position label: expected '%1', got '%2'").arg("-").arg(sequenceUngappedPositionString));
+    CHECK_SET_ERR("-" == sequenceUngappedLengthString, QString("An incorrect sequence ungapped length label: expected '%1', got '%2'").arg("-").arg(sequenceUngappedLengthString));
+
+//    2. Open "general" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+
+//    Expected state: there are next values: Length: 0, Sequences: 0.
+    const int length = GTUtilsOptionPanelMsa::getLength(os);
+    const int height = GTUtilsOptionPanelMsa::getHeight(os);
+    CHECK_SET_ERR(0 == length, QString("An incorrect alignment length is on the options panel: expected %1, got %2").arg(0).arg(length));
+    CHECK_SET_ERR(0 == height, QString("An incorrect alignment height is on the options panel: expected %1, got %2").arg(0).arg(height));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4537) {

@@ -158,6 +158,8 @@ Qt::CursorShape SelectionModificationHelper::getCursorShape(const SelectionModif
     case LeftTopCorner:
         newShape = Qt::SizeFDiagCursor;
         break;
+    default:
+        newShape = Qt::ArrowCursor;
     }
 
     return newShape;
