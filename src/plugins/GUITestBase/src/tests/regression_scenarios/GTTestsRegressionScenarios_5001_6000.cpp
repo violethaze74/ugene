@@ -4236,6 +4236,9 @@ GUI_TEST_CLASS_DEFINITION(test_5905) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument_1.gb"));
+    GTGlobals::sleep();
+
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "Annotations [MyDocument_1.gb] *"));
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
