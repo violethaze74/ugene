@@ -788,12 +788,12 @@ Probably the data is too big.</source>
         <translation>Алфавит:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="73"/>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="86"/>
         <source>Length:</source>
         <translation>Длина:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="102"/>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="128"/>
         <source>Sequences:</source>
         <translation>Строки:</translation>
     </message>
@@ -802,12 +802,12 @@ Probably the data is too big.</source>
         <translation type="vanished">Число последовательностей:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="137"/>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="176"/>
         <source>Format:</source>
         <translation>Формат:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="147"/>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="186"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
@@ -1661,27 +1661,25 @@ Double-click to collapse the branch</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="36"/>
         <source>Range Start:</source>
-        <translation>Начало региона:</translation>
+        <translation type="vanished">Начало региона:</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="59"/>
         <source>Range End:</source>
-        <translation>Конец региона:</translation>
+        <translation type="vanished">Конец региона:</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="86"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="39"/>
         <source>Results:</source>
         <translation>Результаты:</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="120"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="73"/>
         <source>Total predicted:</source>
         <translation>Всего предсказано:</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="127"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.ui" line="80"/>
         <source>0</source>
         <translation>0</translation>
     </message>
@@ -4007,12 +4005,12 @@ You don&apos;t have enough rights to change file</source>
         <translation>Выбрать рамки считывания</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="93"/>
+        <location filename="../src/ov_sequence/DetView.cpp" line="94"/>
         <source>Show all frames</source>
         <translation>Отображать все рамки считывания</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/DetView.cpp" line="99"/>
+        <location filename="../src/ov_sequence/DetView.cpp" line="100"/>
         <source>Wrap sequence</source>
         <translation>Свернуть последовательность</translation>
     </message>
@@ -4484,17 +4482,17 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::ExportHighligtningTask</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1035"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1047"/>
         <source>Export highlighting</source>
         <translation>Экспорт подсвеченного</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1063"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1075"/>
         <source>Export highligtning finished successfully</source>
         <translation>Export highligtning finished successfully</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1063"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1075"/>
         <source>Result file:</source>
         <translation>Выходной файл:</translation>
     </message>
@@ -5028,7 +5026,12 @@ Please, check external tools in the settings.</source>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="267"/>
         <source>Unable to create output folder for result assembly.
 Directory Path: %1</source>
-        <translation>Невозможно создать выходную папку для сборки.
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create output folder for result assembly.
+Directory Path: %1</source>
+        <translation type="vanished">Невозможно создать выходную папку для сборки.
 Путь: %1</translation>
     </message>
     <message>
@@ -5348,7 +5351,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="467"/>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="531"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="840"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="852"/>
         <source>NULL collapsible model!</source>
         <translation>NULL collapsible model!</translation>
     </message>
@@ -5381,28 +5384,33 @@ Directory Path: %1</source>
         <translation>Сохранить последовательности из выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="759"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="762"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="753"/>
+        <source>No new sequences were inserted into the alignment.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="771"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="774"/>
         <source>Open file with sequences</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="768"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="780"/>
         <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
         <translation>A problem occurred during adding sequences. The multiple alignment is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="854"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="866"/>
         <source>NULL Msa Object!</source>
         <translation>NULL Msa Object!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="859"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="871"/>
         <source>NULL document!</source>
         <translation>NULL document!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="995"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1007"/>
         <source>Incorrect pointer to MSACollapsibleItemModel</source>
         <translation>Incorrect pointer to MSACollapsibleItemModel</translation>
     </message>
@@ -7260,27 +7268,27 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::SecStructDialog</name>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="66"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="67"/>
         <source>Predict</source>
         <translation>Предсказать</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="67"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="68"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="68"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="69"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="87"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="78"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="88"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="79"/>
         <source>Structure Type</source>
         <translation>Тип структуры</translation>
     </message>

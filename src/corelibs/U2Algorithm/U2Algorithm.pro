@@ -214,4 +214,4 @@ SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/util_gpu/opencl/OpenCLUtils.cpp
 
 RESOURCES += U2Algorithm.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

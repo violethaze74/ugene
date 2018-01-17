@@ -14,22 +14,42 @@
         <translation>Аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectFilterNames.cpp" line="32"/>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="33"/>
         <source>Multiple alignment content</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectFilterNames.cpp" line="33"/>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="34"/>
         <source>Multiple alignment sequence name</source>
         <translation>Имя множественного выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectFilterNames.cpp" line="34"/>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="36"/>
+        <source>Sanger read name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="37"/>
+        <source>Sanger reference name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="38"/>
+        <source>Sanger read content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="39"/>
+        <source>Sanger reference content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="41"/>
         <source>Sequence accession number</source>
         <translation>Порядковый номер последовательности</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectFilterNames.cpp" line="35"/>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="42"/>
         <source>Text content</source>
         <translation>Текст</translation>
     </message>
@@ -1230,19 +1250,16 @@ The items cannot be recovered once deleted.</source>
         <translation>Невозможно экспортировать изображение %1.</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="50"/>
         <source>Author</source>
-        <translation>Автор</translation>
+        <translation type="vanished">Автор</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="50"/>
         <source>Gene name</source>
-        <translation>Имя гена</translation>
+        <translation type="vanished">Имя гена</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="50"/>
         <source>Organism</source>
-        <translation>Организм</translation>
+        <translation type="vanished">Организм</translation>
     </message>
 </context>
 <context>

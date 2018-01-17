@@ -28,8 +28,7 @@ SOURCES += src/GTest.cpp \
            src/xmltest/XMLTestUtils.cpp \
            src/gui_tests/UGUITest.cpp
 
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts
 
 FORMS += src/gui_tests/GUITestingWindow.ui
 

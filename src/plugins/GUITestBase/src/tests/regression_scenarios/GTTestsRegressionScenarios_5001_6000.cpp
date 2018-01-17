@@ -124,6 +124,7 @@
 #include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h"
+#include "runnables/ugene/plugins/orf_marker/OrfDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
@@ -882,6 +883,54 @@ GUI_TEST_CLASS_DEFINITION(test_5314) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
     CHECK_SET_ERR(!lt.hasError(), "Log shouldn't contain errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5335) {
+//    1. Open "data/samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Click "Find ORFs" button on the toolbar.
+    class PartialSearchScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modla widget is NULL");
+
+//    3. Set region to 1..4. Accept the dialog.
+            GTLineEdit::setText(os, "end_edit_line", "4", dialog);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new OrfDialogFiller(os, new PartialSearchScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find ORFs");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: an empty auto-annotation group is added to the auto-annotation table.
+    QTreeWidgetItem *orfGroup = GTUtilsAnnotationsTreeView::findItem(os, "orf  (0, 0)");
+
+//    4. Open the context menu on this group.
+//    Expected state:  there is no "Make auto-annotations persistent" menu item.
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Make auto-annotations persistent", PopupChecker::NotExists));
+    GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, orfGroup);
+
+//    5. Click "Find ORFs" button on the toolbar.
+//    6. Accept the dialog.
+    GTUtilsDialog::waitForDialog(os, new OrfDialogFiller(os));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find ORFs");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the auto-annotation group is now contains some annotations.
+    orfGroup = GTUtilsAnnotationsTreeView::findItem(os, "orf  (0, 837)");
+
+//    7. Open the context menu on this group.
+//    Expected state: there is "Make auto-annotations persistent" menu item, it is enabled.
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Make auto-annotations persistent"));
+    GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, orfGroup);
+
+    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5346) {
@@ -1643,7 +1692,6 @@ GUI_TEST_CLASS_DEFINITION(test_5520_2) {
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(os, new Scenario()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST+...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5562_1) {
@@ -4187,6 +4235,9 @@ GUI_TEST_CLASS_DEFINITION(test_5905) {
     GTWidget::click(os, wgt, Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument_1.gb"));
+    GTGlobals::sleep();
 
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "Annotations [MyDocument_1.gb] *"));
     GTMouseDriver::doubleClick();

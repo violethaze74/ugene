@@ -612,22 +612,22 @@
 <context>
     <name>U2::AddSequenceObjectsToAlignmentTask</name>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="55"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="60"/>
         <source>Object is empty.</source>
         <translation>Объект пуст.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="60"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="65"/>
         <source>Object is locked for modifications.</source>
         <translation>Объект заблокирован для редактирования.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="161"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="172"/>
         <source>Some sequences have wrong alphabet: </source>
         <translation>Некоторые последовательности имеют неправильный алфавит: </translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="164"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="175"/>
         <source> and others</source>
         <translation> и другие</translation>
     </message>

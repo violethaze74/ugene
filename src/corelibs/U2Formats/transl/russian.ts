@@ -1821,13 +1821,17 @@
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="170"/>
-        <location filename="../src/MSFFormat.cpp" line="211"/>
+        <location filename="../src/MSFFormat.cpp" line="171"/>
         <source>Check sum test failed</source>
         <translation>Проверка контрольной суммы не удалась</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="219"/>
+        <location filename="../src/MSFFormat.cpp" line="216"/>
+        <source>Unexpected check sum in the row number %1, name: %2; expected value: %3, current value %4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/MSFFormat.cpp" line="223"/>
         <source>Alphabet unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>

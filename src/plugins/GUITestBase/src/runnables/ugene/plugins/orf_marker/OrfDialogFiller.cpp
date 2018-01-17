@@ -27,8 +27,14 @@ namespace U2 {
 
 #define GT_CLASS_NAME "OrfDialogFiller"
 
-OrfDialogFiller::OrfDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario) :
-    Filler(os, "ORFDialogBase", scenario)
+OrfDialogFiller::OrfDialogFiller(GUITestOpStatus &os)
+    : Filler(os, "ORFDialogBase")
+{
+
+}
+
+OrfDialogFiller::OrfDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+    : Filler(os, "ORFDialogBase", scenario)
 {
 
 }
