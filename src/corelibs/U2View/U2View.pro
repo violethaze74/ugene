@@ -486,5 +486,4 @@ SOURCES += src/LicenseDialog.cpp \
            src/util_smith_waterman/SmithWatermanDialog.cpp \
            src/util_smith_waterman/SubstMatrixDialog.cpp
 
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts
