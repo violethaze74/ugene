@@ -72,7 +72,7 @@ SecStructDialog::SecStructDialog( ADVSequenceObjectContext* _ctx, QWidget *p ) :
 
     regionSelector = new RegionSelector(this, ctx->getSequenceLength(), false, ctx->getSequenceSelection());
     rangeSelectorLayout->addWidget(regionSelector);
-    
+
     resultsTable->setColumnCount(2);
     QStringList headerNames;
     headerNames.append(tr("Region"));

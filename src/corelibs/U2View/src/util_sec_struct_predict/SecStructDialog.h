@@ -52,9 +52,9 @@ private:
     QPushButton *startButton;
     QPushButton *cancelButton;
     RegionSelector* regionSelector;
-    
+
     U2Region region;
-    
+
     void connectGUI();
     void updateState();
     void showResults();
