@@ -5499,7 +5499,6 @@ GUI_TEST_CLASS_DEFINITION(test_4934) {
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     //3. while aligning lock document for editing
-    GTGlobals::sleep();
     GTUtilsDocument::lockDocument(os, "ty3.aln.gz");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
