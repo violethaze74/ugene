@@ -49,6 +49,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/ExportConsensus/MaExportConsensusTabFactory.h \
            src/ov_msa/ExportConsensus/MaExportConsensusWidget.h \
            src/ov_msa/ExportHighlightedDialogController.h \
+           src/ov_msa/ExportSequencesTask.h \
            src/ov_msa/General/MaConsensusModeWidget.h \
            src/ov_msa/General/McaGeneralTab.h \
            src/ov_msa/General/McaGeneralTabFactory.h \
@@ -316,6 +317,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/ExportConsensus/MaExportConsensusTabFactory.cpp \
            src/ov_msa/ExportConsensus/MaExportConsensusWidget.cpp \
            src/ov_msa/ExportHighlightedDialogController.cpp \
+           src/ov_msa/ExportSequencesTask.cpp \
            src/ov_msa/General/MaConsensusModeWidget.cpp \
            src/ov_msa/General/McaGeneralTab.cpp \
            src/ov_msa/General/McaGeneralTabFactory.cpp \

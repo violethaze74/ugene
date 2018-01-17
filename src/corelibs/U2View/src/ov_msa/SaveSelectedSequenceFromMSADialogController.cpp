@@ -47,7 +47,7 @@ const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "~/";
 const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "%UserProfile%/";
 #endif
 
-SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(const QString &defaultDir, QWidget* p, const QStringList& _seqNames)
+SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(const QString &defaultDir, QWidget* p, const QStringList& _seqNames, const QString& defaultCustomFilename)
     : QDialog(p),
       defaultDir(defaultDir),
       seqNames(_seqNames),
@@ -59,13 +59,8 @@ SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogCo
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    ui->fileNameCombo->addItem(tr("Sequence name"), QVariant(false));
-    ui->fileNameCombo->addItem(tr("Custom"), QVariant(true));
-    ui->fileNameCombo->setCurrentIndex(0);
-
     ui->customFileNameEdit->setDisabled(true);
-
-    connect(ui->fileNameCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_nameCBIndexChanged(int)));
+    ui->customFileNameEdit->setText(defaultCustomFilename);
 
     trimGapsFlag = false;
     addToProjectFlag = true;
@@ -109,8 +104,26 @@ void SaveSelectedSequenceFromMSADialogController::accept() {
     QDialog::accept();
 }
 
-void SaveSelectedSequenceFromMSADialogController::sl_nameCBIndexChanged(int index) {
-    ui->customFileNameEdit->setEnabled(ui->fileNameCombo->itemData(index).toBool());
+
+
+QString SaveSelectedSequenceFromMSADialogController::getUrl() const {
+    return url;
+}
+
+DocumentFormatId SaveSelectedSequenceFromMSADialogController::getFormat() const {
+    return format;
+}
+
+QString SaveSelectedSequenceFromMSADialogController::getCustomFileName() const {
+    return customFileName;
+}
+
+bool SaveSelectedSequenceFromMSADialogController::getTrimGapsFlag() const {
+    return trimGapsFlag;
+}
+
+bool SaveSelectedSequenceFromMSADialogController::getAddToProjectFlag() const {
+    return addToProjectFlag;
 }
 
 void SaveSelectedSequenceFromMSADialogController::initSaveController() {
@@ -206,11 +219,5 @@ QString SaveDocumentInFolderController::getSaveDirName() const {
     }
     return filePath;
 }
-/*
-DocumentFormatId SaveDocumentInFolderController::getFormatIdToSave() const {
-    const QString currentFormat = (conf.formatCombo->currentData()).toString();
-    SAFE_POINT(!currentFormat.isEmpty(), "Current format is not set", DocumentFormatId::null);
-    return formatsInfo.getIdByName(currentFormat);
-}
-*/
+
 }

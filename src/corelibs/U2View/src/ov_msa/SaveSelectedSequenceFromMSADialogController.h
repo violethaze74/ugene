@@ -37,10 +37,18 @@ class SaveDocumentInFolderController;
 class SaveSelectedSequenceFromMSADialogController : public QDialog {
     Q_OBJECT
 public:
-    SaveSelectedSequenceFromMSADialogController(const QString& defaultDir, QWidget* p, const QStringList& seqNames);
+    SaveSelectedSequenceFromMSADialogController(const QString& defaultDir, QWidget* p, const QStringList& seqNames, const QString& defaultCustomFilename);
     ~SaveSelectedSequenceFromMSADialogController();
 
     virtual void accept();
+
+    QString getUrl() const;
+    DocumentFormatId getFormat() const;
+    QString getCustomFileName() const;
+    bool getTrimGapsFlag() const;
+    bool getAddToProjectFlag() const;
+private:
+    void initSaveController();
 
     QString             url;
     QString             defaultDir;
@@ -49,12 +57,6 @@ public:
     QString             customFileName;
     bool                trimGapsFlag;
     bool                addToProjectFlag;
-
-private slots:
-    void sl_nameCBIndexChanged(int index);
-private:
-    void initSaveController();
-
     SaveDocumentInFolderController* saveController;
     Ui_SaveSelectedSequenceFromMSADialog* ui;
 };
@@ -74,7 +76,6 @@ public:
                             QObject* parent);
 
     QString getSaveDirName() const;
-    //DocumentFormatId getFormatIdToSave() const;
 signals:
     void si_pathChanged(const QString &path);
 private slots:
