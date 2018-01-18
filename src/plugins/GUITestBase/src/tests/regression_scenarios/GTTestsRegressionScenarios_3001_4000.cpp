@@ -1959,6 +1959,7 @@ GUI_TEST_CLASS_DEFINITION(test_3288){
     QString text = taskProgressBar->text();
     CHECK_SET_ERR(text.contains("%"), "unexpected text: " + text);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000 * 150);
 //Expected state: the task progress is correct.
 }
 
