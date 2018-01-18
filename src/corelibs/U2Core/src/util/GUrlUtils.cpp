@@ -181,9 +181,10 @@ static void getPreNPost(const QString &originalUrl, QString &pre, QString &post,
         }
         idx = pre.lastIndexOf(rolledSuffix);
         if (idx != -1) {
-            QString possibleNumber = pre.mid(idx + rolledSuffix.length());
-            i = possibleNumber.toInt();
-            if (i > 0) {
+            QString possibleNumberString = pre.mid(idx + rolledSuffix.length());
+            int possibleNumber = possibleNumberString.toInt();
+            if (possibleNumber > 0 && QString::number(possibleNumber) == possibleNumberString) {
+                i = possibleNumber;
                 pre = pre.left(idx);
             }
         }
