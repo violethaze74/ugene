@@ -305,7 +305,10 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     switch(key) {
     case Qt::Key_Up: {
         bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect - 1);
-        U2Region sel = getSelection();
+        const U2Region sel = getSelection();
+        if (sel.isEmpty()) {
+            break;
+        }
         int selStart = sel.length != 0 ? getSelection().startPos : nextSequenceToSelect;
         if (isSeqInRange && isShiftPressed) {
             nextSequenceToSelect--;
@@ -326,7 +329,11 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     }
     case Qt::Key_Down: {
         bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect + 1);
-        int selEnd = getSelection().endPos() - 1;
+        const U2Region sel = getSelection();
+        if (sel.isEmpty()) {
+            break;
+        }
+        int selEnd = sel.endPos() - 1;
         int rowNum = ui->getSequenceArea()->getNumDisplayableSequences() - 1;
         if (isSeqInRange && isShiftPressed) {
             nextSequenceToSelect++;
