@@ -4197,6 +4197,32 @@ GUI_TEST_CLASS_DEFINITION(test_5851) {
     GTUtilsLog::checkContainsMessage(os, logTracer);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5853) {
+    //1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select the "Tettigonia_viridissima" sequence in the Name List area.
+    GTUtilsMsaEditor::clickSequence(os, 9);
+    GTGlobals::sleep();
+
+    //3. Press the Esc key.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep();
+
+    //Expected state : the selection is cleared.
+    int numSelSeq = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
+    CHECK_SET_ERR(numSelSeq == 0, QString("First check, incorrect num of selected sequences, expected: 0, current : %1").arg(numSelSeq));
+
+    //4. Press the down arrow key.
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTGlobals::sleep();
+
+    //Expected: nothing should be selected
+    numSelSeq = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
+    CHECK_SET_ERR(numSelSeq == 0, QString("Second checdk, incorrect num of selected sequences, expected: 0, current : %1").arg(numSelSeq));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5872) {
     GTLogTracer logTracer("ASSERT: \"!isInRange");
 
