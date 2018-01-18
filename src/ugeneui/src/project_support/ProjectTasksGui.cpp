@@ -61,7 +61,7 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 ///Close project
-CloseProjectTask::CloseProjectTask() : Task(tr("Close project"), TaskFlags(TaskFlag_NoRun))
+CloseProjectTask::CloseProjectTask() : Task(tr("Close project"), TaskFlags(TaskFlag_NoRun) | TaskFlag_CancelOnSubtaskCancel)
 {
 }
 
@@ -70,18 +70,24 @@ void CloseProjectTask::prepare() {
         stateInfo.setError(  tr("No active project found") );
         return;
     }
-
-    Project *p = AppContext::getProject();
-    if (p->isTreeItemModified()) {
-        addSubTask(AppContext::getProjectService()->saveProjectTask(SaveProjectTaskKind_SaveProjectAndDocumentsAskEach));
+    /* TODO: this is done by project view. Need to cleanup this part! 
+    addSubTask(new SaveProjectTask(SaveProjectTaskKind_SaveProjectAndDocumentsAskEach));
+    */
+    QList<Task*> tasks;
+    /**/
+    Project *pp = AppContext::getProject();
+    if (pp->isTreeItemModified()) {
+        tasks.append(AppContext::getProjectService()->saveProjectTask(SaveProjectTaskKind_SaveProjectAndDocumentsAskEach));
     }
-    
+    /**/
     ServiceRegistry* sr = AppContext::getServiceRegistry();
     QList<Service*> services = sr->findServices(Service_Project);
-    SAFE_POINT(services.size() == 1, "Expected to get exactly 1 project instance", );
-    
-    addSubTask(sr->unregisterServiceTask(services.first()));
+    assert(services.size() == 1);
+    Service* projectService = services.first();
+    tasks.append(sr->unregisterServiceTask(projectService));
+    addSubTask(new MultiTask(tr("Save and close project"), tasks));
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 /// OpenProjectTask
