@@ -419,9 +419,11 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025) {
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
 
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj4.uprj");
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_load_selected_documents", GTGlobals::UseMouse));
@@ -438,7 +440,6 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026) {

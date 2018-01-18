@@ -57,10 +57,12 @@ namespace GUITest_common_scenarios_project_sequence_exporting_from_project_view 
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
 
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
 // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 // Expected state:
@@ -70,9 +72,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
 // 2. Double click on [a] Annotations sequence object, in project view tree
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
+    GTGlobals::sleep(500);
     GTMouseDriver::moveTo(itemPos);
+    GTGlobals::sleep(500);
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTGlobals::sleep(500);
 
 // Expected result: NC_001363 sequence has been opened in sequence view
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
@@ -108,14 +112,15 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
 
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
-// 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
@@ -124,10 +129,13 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
 // 2. Double click on [a] Annotations sequence object, in project view tree
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
+    GTGlobals::sleep(500);
     GTMouseDriver::moveTo(itemPos);
+    GTGlobals::sleep(500);
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
-// Expected result: NC_001363 sequence has been opened in sequence view
+    GTGlobals::sleep(500);
+
+    // Expected result: NC_001363 sequence has been opened in sequence view
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
 
 // 3. Right click on [s] NC_001363 sequence object, in project view tree. Use context menu item {Export->Export sequence as alignment}
@@ -153,7 +161,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -309,11 +316,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     const QString doc1("1.gb"), doc2("2.gb");
-// 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj4.uprj");
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
+
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
@@ -370,15 +379,16 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     const QString doc1("1.gb"), doc2("2.gb");
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
+
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj4.uprj");
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
@@ -432,17 +442,16 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_1) {
-
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     const QString doc1("1.gb"), doc2("2.gb");
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
 
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj4.uprj");
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
@@ -501,14 +510,13 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_2) {
-
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
-
     const QString doc1("1.gb"), doc2("2.gb");
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
 
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj4.uprj");
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
@@ -562,7 +570,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {

@@ -26,6 +26,7 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "utils/GTUtilsApp.h"
+#include <base_dialogs/GTFileDialog.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <system/GTFile.h>
@@ -46,9 +47,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
 
-    GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "1.gb");
@@ -62,7 +65,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 }
