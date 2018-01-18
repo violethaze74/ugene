@@ -5029,12 +5029,6 @@ Directory Path: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to create output folder for result assembly.
-Directory Path: %1</source>
-        <translation type="vanished">Невозможно создать выходную папку для сборки.
-Путь: %1</translation>
-    </message>
-    <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="332"/>
         <source>Select output folder</source>
         <translation>Выберите выходную папку</translation>
