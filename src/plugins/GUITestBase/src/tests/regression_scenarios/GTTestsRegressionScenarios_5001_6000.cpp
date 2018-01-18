@@ -4262,10 +4262,12 @@ GUI_TEST_CLASS_DEFINITION(test_5905) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument_1.gb"));
+    QMap<QString, QStringList> docs = GTUtilsProjectTreeView::getDocuments(os);
+    const QString key = docs.keys()[1];
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, key));
     GTGlobals::sleep();
 
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "Annotations [MyDocument_1.gb] *"));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, QString("Annotations [%1] *").arg(key)));
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
