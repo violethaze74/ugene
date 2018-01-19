@@ -66,8 +66,14 @@ using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
     const QString fileName = "proj4.uprj";
+    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    const QString firstAnnFileName = "1.gb";
+    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    const QString secondAnnFaleName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -135,8 +141,14 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
     const QString fileName = "proj4.uprj";
+    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    const QString firstAnnFileName = "1.gb";
+    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    const QString secondAnnFaleName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -185,8 +197,14 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     const QString doc1("1.gb"), doc2("2.gb");
     const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
     const QString fileName = "proj4.uprj";
+    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    const QString firstAnnFileName = "1.gb";
+    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    const QString secondAnnFaleName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -241,8 +259,14 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
     const QString fileName = "proj4.uprj";
+    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    const QString firstAnnFileName = "1.gb";
+    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    const QString secondAnnFaleName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -269,8 +293,14 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
     const QString fileName = "proj4.uprj";
+    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    const QString firstAnnFileName = "1.gb";
+    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    const QString secondAnnFaleName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);

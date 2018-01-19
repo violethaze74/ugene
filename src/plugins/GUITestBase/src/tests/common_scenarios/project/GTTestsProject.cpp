@@ -421,8 +421,14 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 GUI_TEST_CLASS_DEFINITION(test_0025) {
     const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
     const QString fileName = "proj4.uprj";
+    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    const QString firstAnnFileName = "1.gb";
+    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    const QString secondAnnFaleName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
