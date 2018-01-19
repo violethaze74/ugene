@@ -1515,37 +1515,36 @@ The items cannot be recovered once deleted.</source>
         <translation>Поисковый запрос:</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="102"/>
         <source>History...</source>
-        <translation>История...</translation>
+        <translation type="vanished">История...</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="111"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="87"/>
         <source>Results:</source>
         <translation>Результаты:</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="128"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="104"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="133"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="109"/>
         <source>Desc</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="138"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="114"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="148"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="124"/>
         <source>Result limit:</source>
         <translation>Количество результатов:</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="181"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="157"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
