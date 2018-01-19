@@ -140,6 +140,7 @@ class U2CORE_EXPORT BaseIOAdapters {
 public:
     static const IOAdapterId LOCAL_FILE;
     static const IOAdapterId GZIPPED_LOCAL_FILE;
+    static const IOAdapterId LZMA_LOCAL_FILE;
     static const IOAdapterId HTTP_FILE;
     static const IOAdapterId GZIPPED_HTTP_FILE;
     static const IOAdapterId VFS_FILE;

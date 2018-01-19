@@ -21,6 +21,7 @@
 
 #include "LocalFileAdapter.h"
 #include "ZlibAdapter.h"
+#include "LZMAAdapter.h"
 
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/DocumentModel.h>
@@ -42,6 +43,17 @@ GzippedLocalFileAdapterFactory::GzippedLocalFileAdapterFactory(QObject* o)
 
 IOAdapter* GzippedLocalFileAdapterFactory::createIOAdapter() {
     return new ZlibAdapter(new LocalFileAdapter(this));
+}
+
+
+LZMALocalFileAdapterFactory::LZMALocalFileAdapterFactory(QObject *p)
+    : LocalFileAdapterFactory(p) {
+       name = tr("7z file");
+}
+
+IOAdapter *LZMALocalFileAdapterFactory::createIOAdapter()
+{
+    return new LZMAAdapter((this));
 }
 
 const quint64 LocalFileAdapter::BUF_SIZE = DocumentFormat::READ_BUFF_SIZE;

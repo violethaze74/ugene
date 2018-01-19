@@ -151,6 +151,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/io/VFSAdapter.h \
            src/io/VirtualFileSystem.h \
            src/io/ZlibAdapter.h \
+           src/io/LZMAAdapter.h \
            src/models/BunchMimeData.h \
            src/models/DocumentImport.h \
            src/models/DocumentModel.h \
@@ -379,6 +380,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/io/VFSAdapter.cpp \
            src/io/VirtualFileSystem.cpp \
            src/io/ZlibAdapter.cpp \
+           src/io/LZMAAdapter.cpp \
            src/models/BunchMimeData.cpp \
            src/models/DocumentImport.cpp \
            src/models/DocumentModel.cpp \
