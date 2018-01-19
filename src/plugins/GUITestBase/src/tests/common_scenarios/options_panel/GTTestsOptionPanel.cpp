@@ -336,7 +336,15 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
+    QString name;
+    foreach(const QString& key, keys) {
+        if (key.startsWith("MyDocument")) {
+            name = key;
+            break;
+        }
+    }
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 

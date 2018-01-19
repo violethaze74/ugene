@@ -2038,7 +2038,15 @@ GUI_TEST_CLASS_DEFINITION(test_3307){
     GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
+    QString name;
+    foreach(const QString& key, keys) {
+        if (key.startsWith("MyDocument")) {
+            name = key;
+            break;
+        }
+    }
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep(500);
