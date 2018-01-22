@@ -3606,7 +3606,7 @@ GUI_TEST_CLASS_DEFINITION(test_5770) {
     //3. Hold the _Shift_ key and press the _down arrow_ key.
     GTGlobals::sleep(500);
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR51");
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTGlobals::sleep(500);
 
