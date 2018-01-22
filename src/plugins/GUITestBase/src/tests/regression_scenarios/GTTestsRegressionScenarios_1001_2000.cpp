@@ -1837,9 +1837,8 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/1155", "crash.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
-    GTGlobals::sleep(100);
+
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(500);
