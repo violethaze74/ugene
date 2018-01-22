@@ -63,11 +63,11 @@ void PredictSecondaryStructureDialogFiller::commonScenario() {
     QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
-    QSpinBox* startSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "rangeStartSpinBox", dialog));
+    QSpinBox* startSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "start_edit_line", dialog));
     GT_CHECK(startSpinBox != NULL, "Start spinbox is NULL");
     GTSpinBox::setValue(os, startSpinBox, startPos);
 
-    QSpinBox* endSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "rangeEndSpinBox", dialog));
+    QSpinBox* endSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "end_edit_line", dialog));
     GT_CHECK(endSpinBox != NULL, "End spinbox is NULL");
     GTSpinBox::setValue(os, endSpinBox, endPos);
 

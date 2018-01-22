@@ -3490,8 +3490,9 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
             GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), algorithm);
 
 //    3. Fill fields "Range start" and "Range end" with values "1" and "2" respectively.
-            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "rangeStartSpinBox", dialog), 1, GTGlobals::UseKeyBoard);
-            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "rangeEndSpinBox", dialog), 2, GTGlobals::UseKeyBoard);
+
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "start_edit_line", dialog), "1");
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "end_edit_line", dialog), "2");
 
 //    4. Press "Start prediction".
             GTGlobals::sleep();
@@ -3535,16 +3536,19 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
     };
 
 //    Expected state: Error notification appears.
+    GTLogTracer lt1;
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze" << "Predict secondary structure..."));
     GTUtilsDialog::waitForDialog(os, new PredictSecondaryStructureDialogFiller(os, new Scenario("GORIV")));
-    GTUtilsNotifications::waitForNotification(os, true, "'Secondary structure predict' task failed: The size of sequence is less then minimal allowed size (5 residues).");
+    //GTUtilsNotifications::waitForNotification(os, true, "'Secondary structure predict' task failed: The size of sequence is less then minimal allowed size (5 residues).");
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 
     GTGlobals::sleep();
+    GTUtilsLog::checkContainsError(os, lt1, QString("Task {Secondary structure predict} finished with error: The size of sequence is less then minimal allowed size (5 residues)"));
 
 //    5. Repeat steps 2, 3, then choose another algorithm in dialog.
 //    6. Press "Start prediction".
 //    Expected state: Error notification appears.
+    GTLogTracer lt2;
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze" << "Predict secondary structure..."));
     GTUtilsDialog::waitForDialog(os, new PredictSecondaryStructureDialogFiller(os, new DodgeLicenceDialogScenario("PsiPred")));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
@@ -3552,9 +3556,11 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze" << "Predict secondary structure..."));
     GTUtilsDialog::waitForDialog(os, new PredictSecondaryStructureDialogFiller(os, new Scenario("PsiPred")));
-    GTUtilsNotifications::waitForNotification(os, true, "'Secondary structure predict' task failed: The size of sequence is less then minimal allowed size (5 residues).");
+    //GTUtilsNotifications::waitForNotification(os, true, "'Secondary structure predict' task failed: The size of sequence is less then minimal allowed size (5 residues).");
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 
+    GTGlobals::sleep();
+    GTUtilsLog::checkContainsError(os, lt2, QString("Task {Secondary structure predict} finished with error: The size of sequence is less then minimal allowed size (5 residues)"));
     GTGlobals::sleep();
 }
 
