@@ -4533,11 +4533,7 @@ GUI_TEST_CLASS_DEFINITION(test_4735) {
     QImage img = pixmap.toImage();
     QRgb rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
     QColor c(rgb);
-#ifdef Q_OS_WIN
-    CHECK_SET_ERR(c.name() == "#e7e7e7", "First check: simple overview has wrong color on windows. Expected: #e7e7e7, Found: " + c.name());
-#else
     CHECK_SET_ERR(c.name() == "#ededed", "First check: simple overview has wrong color. Expected: #ededed, Found: " + c.name());
-#endif
     //3. Add sequence eas.fastq to alignment
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from file"));
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/fastq/", "eas.fastq");
@@ -4550,11 +4546,7 @@ GUI_TEST_CLASS_DEFINITION(test_4735) {
     img = pixmap.toImage();
     rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
     c = QColor(rgb);
-#ifdef Q_OS_WIN
-    CHECK_SET_ERR(c.name() == "#bde7bd", "simple overview has wrong color on windows. Expected: #bde7bd, Found: " + c.name());
-#else
     CHECK_SET_ERR(c.name() == "#c3ebc3", "simple overview has wrong color. Expected: #c3ebc3, Found: " + c.name());
-#endif
 
     //4. Undo changes
     GTUtilsMsaEditor::undo(os);
@@ -4566,11 +4558,7 @@ GUI_TEST_CLASS_DEFINITION(test_4735) {
     img = pixmap.toImage();
     rgb = img.pixel(simple->rect().topLeft() + QPoint(5, 5));
     c = QColor(rgb);
-#ifdef Q_OS_WIN
-    CHECK_SET_ERR(c.name() == "#e7e7e7", "Second check: simple overview has wrong color on windows. Expected: #e7e7e7, Found: " + c.name());
-#else
     CHECK_SET_ERR(c.name() == "#ededed", "Second check: simple overview has wrong color. Expected: #ededed, Found: " + c.name());
-#endif
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4764_1) {
