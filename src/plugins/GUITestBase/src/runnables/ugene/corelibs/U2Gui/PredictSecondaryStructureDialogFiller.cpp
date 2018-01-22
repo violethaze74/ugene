@@ -23,6 +23,7 @@
 #include "PredictSecondaryStructureDialogFiller.h"
 
 #include <base_dialogs/GTFileDialog.h>
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 
@@ -63,13 +64,13 @@ void PredictSecondaryStructureDialogFiller::commonScenario() {
     QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
-    QSpinBox* startSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "start_edit_line", dialog));
-    GT_CHECK(startSpinBox != NULL, "Start spinbox is NULL");
-    GTSpinBox::setValue(os, startSpinBox, startPos);
+    QLineEdit * startLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "start_edit_line", dialog));
+    GT_CHECK(startLineEdit != NULL, "Start lineEdit is NULL");
+    GTLineEdit::setText(os, startLineEdit, QString::number(startPos));
 
-    QSpinBox* endSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "end_edit_line", dialog));
-    GT_CHECK(endSpinBox != NULL, "End spinbox is NULL");
-    GTSpinBox::setValue(os, endSpinBox, endPos);
+    QLineEdit * endLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "end_edit_line", dialog));
+    GT_CHECK(endLineEdit != NULL, "Start lineEdit is NULL");
+    GTLineEdit::setText(os, endLineEdit, QString::number(endPos));
 
     QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
 
