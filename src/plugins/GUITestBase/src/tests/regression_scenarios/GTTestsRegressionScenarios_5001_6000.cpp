@@ -624,11 +624,10 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
 //        ﻿Windows and Linux: Shift+Ins
 //        macOS: Meta+Y
 #ifndef Q_OS_MAC
-    GTKeyboardDriver::keyClick(Qt::Key_Insert, Qt::ShiftModifier);
+    GTKeyboardUtils::paste(os);
 #else
     GTKeyboardDriver::keyClick('y', Qt::MetaModifier);
 #endif
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    Expected state: a new sequence is added to the alignment. There are no new objects and documents in the Project View.
