@@ -1606,37 +1606,37 @@ p, li { white-space: pre-wrap; }
         <translation>Band expansion size (-a)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="315"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="318"/>
         <source>Max gap length in any overlap (-f)</source>
         <translation>Max gap length in any overlap (-f)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="335"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="338"/>
         <source>Assembly reverse reads (-r)</source>
         <translation>Assembly reverse reads (-r)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="361"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="364"/>
         <source>Similarity score of an overlap</source>
         <translation>Similarity score of an overlap</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="367"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="370"/>
         <source>Mismatch score factor (-n)</source>
         <translation>Mismatch score factor (-n)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="387"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="390"/>
         <source>Overlap similarity score cutoff (-s)</source>
         <translation>Overlap similarity score cutoff (-s)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="407"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="410"/>
         <source>Gap penalty factor (-g)</source>
         <translation>Gap penalty factor (-g)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="414"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="417"/>
         <source>Match score factor (-m)</source>
         <translation>Match score factor (-m)</translation>
     </message>
@@ -3041,29 +3041,29 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::AlignToReferenceBlastCmdlineTask</name>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="96"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="97"/>
         <source>Map Sanger reads to reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="113"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="114"/>
         <source>The &apos;%1&apos; reference file doesn&apos;t exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="118"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="121"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="119"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="122"/>
         <source>wrong reference format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="173"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="174"/>
         <source>&lt;u&gt;Filtered by quality (%1):&lt;/u&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="217"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="220"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="218"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="221"/>
         <source>wrong output format</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3075,75 +3075,75 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="obsolete">Align</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="253"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="252"/>
         <source>Map</source>
         <translation>Map</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="254"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="253"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="260"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="259"/>
         <source>File name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="261"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="260"/>
         <source>Sequence name from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="279"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="278"/>
         <source>Select Output File...</source>
         <translation>Select Output File...</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="292"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="299"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="318"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="341"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="291"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="298"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="317"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="340"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="293"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="292"/>
         <source>Reference sequence is not set.</source>
         <translation>Reference sequence is not set.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="300"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="299"/>
         <source>No reads provided.</source>
         <translation>No reads provided.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="319"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="318"/>
         <source>Output file is not set.</source>
         <translation>Output file is not set.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="330"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="329"/>
         <source>Overwrite the file?</source>
         <translation>Overwrite the file?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="331"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="330"/>
         <source>The result file already exists. Would you like to overwrite it?</source>
         <translation>The result file already exists. Would you like to overwrite it?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="341"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="340"/>
         <source>Unable to delete the file.</source>
         <translation>Unable to delete the file.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="353"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="352"/>
         <source>Open Reference Sequence</source>
         <translation>Open Reference Sequence</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="364"/>
+        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="363"/>
         <source>Select File(s) with Read(s)</source>
         <translation>Select File(s) with Read(s)</translation>
     </message>
