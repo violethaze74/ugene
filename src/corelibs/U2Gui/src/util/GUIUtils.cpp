@@ -216,9 +216,7 @@ void GUIUtils::setMutedLnF( QTreeWidgetItem* item, bool enableMute, bool recursi
         int childCount = item->childCount();
         for (int i = 0; i < childCount; ++i) {
             QTreeWidgetItem* childItem = item->child(i);
-            if (!isMutedLnF(childItem)) {
-                setMutedLnF(childItem, enableMute, recursive);
-            }
+            setMutedLnF(childItem, enableMute, recursive);
         }
     }
 }
