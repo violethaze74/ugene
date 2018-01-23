@@ -1839,7 +1839,9 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
 
+#ifdef Q_OS_WIN
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+#endif
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(500);
 }
