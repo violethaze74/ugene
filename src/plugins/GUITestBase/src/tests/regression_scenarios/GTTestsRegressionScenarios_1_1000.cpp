@@ -1222,35 +1222,6 @@ GUI_TEST_CLASS_DEFINITION(test_0703) {
     //Expected state : UGENE not crashes
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0729){
-//    1) Open WD
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    2) Put "Read Sequence" worker on the scheme
-    WorkflowProcessItem* item = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
-//    3) Click on "unset"
-    GTUtilsWorkflowDesigner::click(os, item);
-//    Expected state: Dataset view opened
-    QString dir;
-#ifdef Q_OS_WIN
-    dir = dataDir + "samples/FASTA/*";
-#else
-    dir = dataDir + "samples/FASTA";
-#endif
-    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dir);
-//    4) Click "Add folder", select data/samples/FASTA
-//    QListWidget* itemsArea = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea");
-//    GTListWidget::click(os, itemsArea, "FASTA", Qt::RightButton);
-//    5) Click on appeared item in the file list
-//    Expected state:
-//        the following widgets appears:
-//            Include mask, Exclude mask lineedits;
-//            Recursive checkbox
- //   GTWidget::findWidget(os, "includeMaskEdit");
- //   GTWidget::findWidget(os, "excludeMaskEdit");
- //   GTWidget::findWidget(os, "recursiveBox");
- //   GTWidget::click(os, GTUtilsMdi::activeWindow(os));
-
-}
 
 GUI_TEST_CLASS_DEFINITION(test_0733) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
