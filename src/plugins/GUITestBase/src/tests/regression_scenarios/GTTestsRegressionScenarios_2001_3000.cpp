@@ -2944,6 +2944,7 @@ GUI_TEST_CLASS_DEFINITION(test_2410) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 166740, 166755));
+    GTGlobals::sleep(1000);
 
     QWidget *sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     CHECK_SET_ERR(NULL != sequenceWidget, "sequenceWidget is not present");
