@@ -1230,7 +1230,13 @@ GUI_TEST_CLASS_DEFINITION(test_0729){
 //    3) Click on "unset"
     GTUtilsWorkflowDesigner::click(os, item);
 //    Expected state: Dataset view opened
-    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/FASTA/*");
+    QString dir;
+#ifdef Q_OS_WIN
+    dir = dataDir + "samples/FASTA/*";
+#else
+    dir = dataDir + "samples/FASTA";
+#endif
+    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dir);
 //    4) Click "Add folder", select data/samples/FASTA
 //    QListWidget* itemsArea = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea");
 //    GTListWidget::click(os, itemsArea, "FASTA", Qt::RightButton);
@@ -1642,7 +1648,13 @@ GUI_TEST_CLASS_DEFINITION(test_0792) {
 //    Expected state: Dataset view opened
 
 //    3) Click "Add folder", select data/samples/Genbank
-    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/Genbank/*");
+    QString dir;
+#ifdef Q_OS_WIN
+    dir = dataDir + "samples/Genbank/*";
+#else
+    dir = dataDir + "samples/Genbank";
+#endif
+    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dir);
 //    4) Click on appeared item in the file list
     QWidget* datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
     QListWidget* items = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea", datasetWidget);
