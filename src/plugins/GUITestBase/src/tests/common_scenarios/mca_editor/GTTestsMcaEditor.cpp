@@ -1745,23 +1745,29 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //5. Select vertical slider between reads named and read area
-    //6. Move the slider to the left until part of the name becomes invisible
-    GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(os, -250);
-    GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(os, 5);
-
-    //Expected state : Horizontal scrolls bar appears
     QScrollBar *hscroll = GTWidget::findExactWidget<QScrollBar *>(os, "horizontal_names_scroll");
     bool isHidden = hscroll->isHidden();
+
+    //5. Select vertical slider between reads named and read area
+    //6. Move the slider to the left until part of the name becomes invisible
+    while (isHidden) {
+        GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(os, -20);
+        isHidden = hscroll->isHidden();
+    }
+
+    //Expected state : Horizontal scrolls bar appears
     CHECK_SET_ERR(!isHidden, "Horizontal scrolls bar not found");
 
-    //7. Move the slider to the right until all names become visible
-    GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(os, 600);
-    GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(os, -5);
-
-    //Expected state : Horizontal scrolls bar disappears
     hscroll = GTWidget::findExactWidget<QScrollBar *>(os, "horizontal_names_scroll");
     isHidden = hscroll->isHidden();
+
+    //7. Move the slider to the right until all names become visible
+    while (!isHidden) {
+        GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(os, 20);
+        isHidden = hscroll->isHidden();
+    }
+
+    //Expected state : Horizontal scrolls bar disappears
     CHECK_SET_ERR(isHidden, "Horizontal scrolls bar is found");
 
 }
