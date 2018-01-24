@@ -3614,6 +3614,9 @@ GUI_TEST_CLASS_DEFINITION(test_3556) {
     GTUtilsMSAEditorSequenceArea::scrollToBottom(os);
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0cA");
 
+    const QPoint pos = GTMouseDriver::getMousePosition();
+    GTMouseDriver::moveTo(QPoint(pos.x(), pos.y() - 4));
+
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "set_seq_as_reference"));
     GTMouseDriver::click(Qt::RightButton);
 
