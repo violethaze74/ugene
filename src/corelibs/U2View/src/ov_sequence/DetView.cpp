@@ -729,7 +729,8 @@ void DetView::updateVerticalScrollBar() {
             verticalScrollBar->setSliderPosition(newSliderPos);
         }
     } else {
-        return;
+        maximum = 0;
+        numShiftsInOneLine = 0;
     }
 
     verticalScrollBar->setMinimum(0);
