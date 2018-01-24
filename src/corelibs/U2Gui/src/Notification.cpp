@@ -243,7 +243,7 @@ void Notification::sl_timeout() {
     QRect rect = geometry();
     if(rect.height() >= TT_HEIGHT) {
         ++timeCounter;
-        if(timeCounter > 100) {
+        if(timeCounter > 250) {
             dissapear();
         }
     } else {        
