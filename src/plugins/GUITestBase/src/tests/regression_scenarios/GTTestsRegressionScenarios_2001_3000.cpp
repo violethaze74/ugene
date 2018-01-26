@@ -2955,6 +2955,7 @@ GUI_TEST_CLASS_DEFINITION(test_2410) {
     QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
     Runnable *chooser = new PopupChooser(os, QStringList() << "GC Content (%)");
     GTUtilsDialog::waitForDialog(os, chooser);
+    GTGlobals::sleep(100);
 
     GTWidget::click(os, graphAction);
     GTUtilsTaskTreeView::waitTaskFinished(os);
