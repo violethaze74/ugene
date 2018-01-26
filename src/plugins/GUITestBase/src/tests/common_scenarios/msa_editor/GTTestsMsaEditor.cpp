@@ -1019,15 +1019,15 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(midRO == RO && midLO == LO, "middle bookmark offsets aren't equal to the expected");
-
+    //CHECK_SET_ERR(1!=1, QString("middle bookmark offsets aren't equal to the expected: midRO=%1 RO=%2 midLO=%3 LO=%4").arg(midRO).arg(RO).arg(midLO).arg(LO));
+    CHECK_SET_ERR(midRO == RO && midLO == LO, QString("middle bookmark offsets aren't equal to the expected: midRO=%1 RO=%2 midLO=%3 LO=%4").arg(midRO).arg(RO).arg(midLO).arg(LO));
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "end bookmark");
     GTGlobals::sleep(500);
 
     RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(endRO == RO && endLO == LO, "end bookmark offsets aren't equal to the expected");
-
+    //CHECK_SET_ERR(endRO == RO && endLO == LO, "end bookmark offsets aren't equal to the expected");
+    CHECK_SET_ERR(endRO == RO && endLO == LO, QString("end bookmark offsets aren't equal to the expected: endRO=%1 RO=%2 endLO=%3 LO=%4").arg(endRO).arg(RO).arg(endLO).arg(LO));
 //     7. Delete Start bookmark
     GTUtilsBookmarksTreeView::deleteBookmark(os, "start bookmark");
 
