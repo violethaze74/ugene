@@ -1259,12 +1259,12 @@ You could also reset the dialog to the initial state.</source>
 <context>
     <name>U2::LocalWorkflow::AminoTranslationPrompter</name>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="231"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="252"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="232"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="253"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation>из &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
@@ -1272,67 +1272,67 @@ You could also reset the dialog to the initial state.</source>
 <context>
     <name>U2::LocalWorkflow::AminoTranslationWorker</name>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="164"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="185"/>
         <source>Input Data</source>
         <translation>Входная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="165"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="186"/>
         <source>An input sequence to translate in amino.</source>
         <translation>Транслировать входную последовательность в амино.</translation>
     </message>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="168"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="189"/>
         <source>Amino sequence</source>
         <translation>Амино последовательность</translation>
     </message>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="169"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="190"/>
         <source>Sequence has been translated.</source>
         <translation>Последовательности транслированы.</translation>
     </message>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="180"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="201"/>
         <source>Translate from </source>
         <translation>Транслировать из</translation>
     </message>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="180"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="201"/>
         <source>What position would sequence translated from : first, second, third or from all positions.</source>
         <translation>Позиция, с которой будет транслирована последовательность: с первой, второй, третьей или все позиции.</translation>
     </message>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="183"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="204"/>
         <source>Auto selected genetic code</source>
         <translation>Автоматическая установка генетического кода</translation>
     </message>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="183"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="204"/>
         <source>Set if genetic code will be selected automatically.</source>
         <translation>Установить если генетический код будет выбран автоматически.</translation>
     </message>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="187"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="208"/>
         <source>Amino Translation</source>
         <translation>Трансляция</translation>
     </message>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="188"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="209"/>
         <source>Translate sequence into it&apos;s amino translation . Output a sequence.</source>
         <translation>Транслировать последовательность в аминокислотную последовательность. </translation>
     </message>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="191"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="212"/>
         <source>Genetic code</source>
         <translation>Генетический код</translation>
     </message>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="191"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="212"/>
         <source>Which genetic code should be used for translating the input nucleotide sequence.</source>
         <translation>Выбор генетического кода, который будет использован для трансляции входной нуклеотидной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/library/AminoTranslationWorker.cpp" line="382"/>
+        <location filename="../src/library/AminoTranslationWorker.cpp" line="403"/>
         <source>Error on getting %1 sequence: </source>
         <translation>Error on getting %1 sequence: </translation>
     </message>
