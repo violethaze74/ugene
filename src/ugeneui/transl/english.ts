@@ -1075,22 +1075,22 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::ExportProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="332"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="330"/>
         <source>Export project task</source>
         <translation>Export project task</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="360"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="358"/>
         <source>One of the project documents has empty URL</source>
         <translation>One of the project documents has empty URL</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="379"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="377"/>
         <source>Error during coping documents: file already exist</source>
         <translation>Error during coping documents: file already exist</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="381"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="379"/>
         <source>Error during coping documents</source>
         <translation>Error during coping documents</translation>
     </message>
@@ -1124,17 +1124,17 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::GTest_ExportProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="483"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="481"/>
         <source>GTest_ExportProject::prepare unable to clean folder for exporting</source>
         <translation>GTest_ExportProject::prepare unable to clean folder for exporting</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="488"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="486"/>
         <source>GTest_ExportProject::prepare unable to create folder for exporting</source>
         <translation>GTest_ExportProject::prepare unable to create folder for exporting</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="508"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="506"/>
         <source>GTest_ExportProject::cleanup unable to delete exported files</source>
         <translation>GTest_ExportProject::cleanup unable to delete exported files</translation>
     </message>
@@ -1142,17 +1142,17 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::GTest_LoadDocumentFromProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="569"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="567"/>
         <source>No project loaded</source>
         <translation>No project loaded</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="573"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="571"/>
         <source>Document name to load is empty</source>
         <translation>Document name to load is empty</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="588"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="586"/>
         <source>File %1 not found in project</source>
         <translation>File %1 not found in project</translation>
     </message>
@@ -1160,7 +1160,7 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::GTest_LoadProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="430"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="428"/>
         <source>Unload previous project, then load new</source>
         <translation>Unload previous project, then load new</translation>
     </message>
@@ -1168,27 +1168,27 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::LoadProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="306"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="304"/>
         <source>Unable to detect parser for project</source>
         <translation>Unable to detect parser for project</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="286"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="284"/>
         <source>Load project</source>
         <translation>Load project</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="297"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="295"/>
         <source>Loading project from: %1</source>
         <translation>Loading project from: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="307"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="305"/>
         <source>failed to parse project file %1</source>
         <translation>failed to parse project file %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="312"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="310"/>
         <source>Project loaded: %1</source>
         <translation>Project loaded: %1</translation>
     </message>
@@ -2022,7 +2022,7 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::RegisterProjectServiceTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="322"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="320"/>
         <source>Register project</source>
         <translation>Register project</translation>
     </message>
@@ -2038,12 +2038,12 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::SaveOnlyProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="209"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="207"/>
         <source>Save project</source>
         <translation>Save project</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="269"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="267"/>
         <source>Saving project %1</source>
         <translation>Saving project %1</translation>
     </message>
@@ -2074,7 +2074,7 @@ Do you want view online documentation?</translation>
         <translation>Save project</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="201"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="199"/>
         <source>Save documents, remove phantom docs, save project</source>
         <translation type="unfinished"></translation>
     </message>
