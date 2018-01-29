@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-const QString DiamondSupport::TOOL_NAME = "diamond";
+const QString DiamondSupport::TOOL_NAME = "DIAMOND";
 
 DiamondSupport::DiamondSupport(const QString &name)
     : ExternalTool(name)
@@ -32,7 +32,8 @@ DiamondSupport::DiamondSupport(const QString &name)
     validMessage = "diamond version ";
     versionRegExp = QRegExp("diamond version (\\d+\\.\\d+\\.\\d+)");
     executableFileName = "diamond";
-    description = tr("\"<i>DIAMOND</i>\" is accelerated BLAST compatible local sequence aligner.");
+    description = tr("In general, DIAMOND is a sequence aligner for protein and translated DNA searches similar to the NCBI BLAST software tools. "
+                     "In UGENE it is integrated as one of the taxonomic classification tool.");
 }
 
 }   // namesapce U2
