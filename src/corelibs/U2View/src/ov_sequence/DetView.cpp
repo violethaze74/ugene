@@ -519,8 +519,8 @@ void DetView::mouseMoveEvent(QMouseEvent *me) {
             if (shape != Qt::ArrowCursor) {
                 moveBorder(me->pos());
                 QWidget::mouseMoveEvent(me);
+                return;
             }
-            return;
         }
 
         if (lastPressPos == -1) {
