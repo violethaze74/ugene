@@ -55,14 +55,14 @@ struct LZMASupport {
     /*
     if you need cache, use these 3 variables.
     */
-    UInt32 blockIndex = 0xFFFFFFFF; /* it can have any value before first call (if outBuffer = 0) */
-    Byte *outBuffer = 0; /* it must be 0 before first call for each new archive. */
-    size_t outBufferSize = 0;  /* it can have any value before first call (if outBuffer = 0) */
+    UInt32 blockIndex; /* it can have any value before first call (if outBuffer = 0) */
+    Byte *outBuffer; /* it must be 0 before first call for each new archive. */
+    size_t outBufferSize;  /* it can have any value before first call (if outBuffer = 0) */
 
-    size_t offset = 0;
-    size_t outSizeProcessed = 0;
+    size_t offset;
+    size_t outSizeProcessed;
 
-    Byte *outBufferProcessed = 0;
+    Byte *outBufferProcessed;
 };
 
 LZMAAdapter::LZMAAdapter(IOAdapterFactory* iof)
@@ -295,7 +295,7 @@ bool LZMASupport::init(const char* fname, const char* entry) {
     if (res == SZ_OK)
     {
         UInt16 *temp = NULL;
-        size_t tempSize = 0;
+//        size_t tempSize = 0;
 
         res = SzArEx_Open(&db, &lookStream.vt, &allocImp, &allocTempImp);
 
@@ -361,7 +361,7 @@ bool LZMASupport::init(const char* fname, const char* entry) {
         fprintf(stderr, "CRC error\n");
     else
     {
-        char s[32];
+//        char s[32];
         //UInt64ToStr(res, s, 0);
         //fprintf(stderr, "Error decoding 7z archive: %s\n", s);
     }
