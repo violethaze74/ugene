@@ -473,7 +473,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
-
     QList<ExportCoverageDialogFiller::Action> actions;
 
 //    2. Call context menu on the consensus area, select {Export coverage} menu item.
@@ -517,15 +516,18 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     //Expected: "Unassociate" is disabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+    GTGlobals::sleep();
 
     //5. Click "Set reference sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "setReferenceAction"));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+    GTGlobals::sleep();
 
     //6. Right click on the reference area.
     //Expected: "Unassociate" is enabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+    GTGlobals::sleep(100);
 
     //7. Click "Unassociate".
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "unassociateReferenceAction"));
