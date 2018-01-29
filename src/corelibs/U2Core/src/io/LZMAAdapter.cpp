@@ -37,7 +37,7 @@ const QString LZMAAdapter::LZMA_FILE_EXT(".7z");
 
 
 struct LZMASupport {
-    LZMASupport(): res(-1), entry_idx(UINT_MAX), outBuffer(NULL), outBufferProcessed(NULL) {}
+    LZMASupport();
     void destroy();
 
     bool init(const char* fname, const char* entry);
@@ -97,7 +97,7 @@ QStringList LZMAAdapter::getArchivedFileURLs() {
 
 QStringList LZMAAdapter::getArchivedFileNames()
 {
-    assert(!isOpen());
+    assert(isOpen());
     QStringList lst;
     if (isOpen()) {
         UInt16 *temp = NULL;
@@ -366,6 +366,19 @@ bool LZMASupport::init(const char* fname, const char* entry) {
         //fprintf(stderr, "Error decoding 7z archive: %s\n", s);
     }
     return false;
+}
+
+LZMASupport::LZMASupport()
+    : res(-1),
+      entry_idx(UINT_MAX),
+      blockIndex(0xFFFFFFFF),
+      outBuffer(NULL),
+      outBufferSize(0),
+      offset(0),
+      outSizeProcessed(0),
+      outBufferProcessed(NULL)
+{
+
 }
 
 void LZMASupport::destroy() {

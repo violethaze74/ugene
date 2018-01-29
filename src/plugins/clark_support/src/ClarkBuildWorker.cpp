@@ -249,7 +249,7 @@ private:
     static const QStringList wellKnownErrors;
 };
 
-const QStringList ClarkBuildLogParser::wellKnownErrors("abort", "core dumped");
+const QStringList ClarkBuildLogParser::wellKnownErrors = QStringList() << "abort" << "core dumped";
 
 void ClarkBuildTask::prepare() {
     algoLog.info("ClarkBuildTask " + genomeUrls.join(";"));
