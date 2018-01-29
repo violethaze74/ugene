@@ -35,6 +35,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -219,10 +220,8 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
         DocumentFormat *format = formats.first().format;
         CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT), setError(tr("wrong output format")), result);
 
-        LoadDocumentTask *loadTask= new LoadDocumentTask(format->getFormatId(),
-                                                         settings.outAlignment, AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.outAlignment)));
-        AddDocumentAndOpenViewTask *openTask = new AddDocumentAndOpenViewTask(loadTask);
-        AppContext::getTaskScheduler()->registerTopLevelTask(openTask);
+        Task *loadTask = AppContext::getProjectLoader()->openWithProjectTask(settings.outAlignment);
+        AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
     }
 
     return result;
