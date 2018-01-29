@@ -189,7 +189,8 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/vcftools/VcfConsensusSupport.h \
            src/vcftools/VcfConsensusSupportTask.h \
            src/vcftools/VcfConsensusWorker.h \
-           src/vcfutils/VcfutilsSupport.h
+           src/vcfutils/VcfutilsSupport.h \
+           src/wevote/WevoteSupport.h
 
 FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/blast_plus/AlignToReferenceBlastDialog.ui \
@@ -403,7 +404,8 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/vcftools/VcfConsensusSupport.cpp \
            src/vcftools/VcfConsensusSupportTask.cpp \
            src/vcftools/VcfConsensusWorker.cpp \
-           src/vcfutils/VcfutilsSupport.cpp
+           src/vcfutils/VcfutilsSupport.cpp \
+           src/wevote/WevoteSupport.cpp
 
 RESOURCES += external_tool_support.qrc
 TRANSLATIONS += transl/english.ts \

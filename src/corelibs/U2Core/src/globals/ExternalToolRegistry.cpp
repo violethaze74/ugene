@@ -39,6 +39,7 @@ ExternalTool::ExternalTool(QString _name, QString _path)
     : name(_name),
       path(_path),
       isValidTool(false),
+      toolKitName(_name),
       muted(false),
       isModuleTool(false)
 {
