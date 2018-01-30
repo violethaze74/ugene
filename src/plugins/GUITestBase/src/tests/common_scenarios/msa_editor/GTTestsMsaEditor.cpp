@@ -1094,7 +1094,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  //CHANGES: default names used
 
     RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(endRO == RO && endLO == LO, "end bookmark offsets aren't equal to the expected");
+    CHECK_SET_ERR(endLO == LO,  QString("end bookmark offsets aren't equal to the expected: endLO=%1 LO=%2").arg(endLO).arg(LO));
 
 //     7. Delete Start bookmark
     GTUtilsBookmarksTreeView::deleteBookmark(os, "New bookmark");
@@ -1163,7 +1163,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
 
     RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(endRO == RO && endLO == LO, "end bookmark offsets aren't equal to the expected");
+    CHECK_SET_ERR(endLO == LO, QString("end bookmark offsets aren't equal to the expected: endLO=%1 LO=%2").arg(endLO).arg(LO));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008_3) {
