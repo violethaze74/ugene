@@ -468,11 +468,11 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
 GUI_TEST_CLASS_DEFINITION(test_0016) {
 //    Test for dialog availability
-
+    QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0016.ugenedb");
 //    1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+
+    GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0016.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
     QList<ExportCoverageDialogFiller::Action> actions;
 
 //    2. Call context menu on the consensus area, select {Export coverage} menu item.
