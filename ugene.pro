@@ -105,8 +105,8 @@ exclude_list_enabled() {
 if(exists( ./src/libs_3rdparty/QSpec/QSpec.pro ):!exclude_list_enabled()) {
     message( "QSpec exists, enable GUI testing..." )
     !exists( ./src/libs_3rdparty/QSpec/custom.pri) {
-        unix: system( cp ./installer/_common_data/humimit_custom.pri ./src/libs_3rdparty/QSpec/custom.pri )
-        win32: system (copy /B installer\_common_data\humimit_custom.pri src\libs_3rdparty\QSpec\custom.pri)
+        unix: system( cp ./installer/_common_data/QSpec_custom.pri ./src/libs_3rdparty/QSpec/custom.pri )
+        win32: system (copy /B installer\_common_data\QSpec_custom.pri src\libs_3rdparty\QSpec\custom.pri)
     }
 }
 !exists( ./src/libs_3rdparty/QSpec/QSpec.pro ){
@@ -154,7 +154,7 @@ system($$[QT_INSTALL_BINS]/lrelease-qt5 -version > $$UGENE_DEV_NULL 2> $$UGENE_D
 
 #foreach 'language'
 for( i, UGENE_TRANSL_IDX ) {
-    UGENE_TRANSLATIONS = 
+    UGENE_TRANSLATIONS =
 
     curTranslFile = $$member( UGENE_TRANSL_FILES, $$i )
     curTranslTag  = $$member( UGENE_TRANSL_TAG, $$i )
@@ -193,7 +193,7 @@ unix {
     transl.files = ./src/_release/transl_en.qm
     transl.files += ./src/_release/transl_ru.qm
     transl.path = $$UGENE_INSTALL_DIR
-    
+
     plugins.files = ./src/_release/plugins/*
     plugins.path = $$UGENE_INSTALL_DIR/plugins
 
@@ -221,4 +221,4 @@ unix {
 
     INSTALLS += binscript ugene_starter transl plugins scripts data desktop pixmaps mime icons manual
 }
- 
+
