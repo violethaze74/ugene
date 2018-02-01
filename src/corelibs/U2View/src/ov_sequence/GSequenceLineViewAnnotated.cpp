@@ -266,7 +266,7 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
                 //select region
                 if (expandAnnotationSelectionToSequence) {
                     QVector<U2Region> regionsToSelect;
-                    foreach (const AnnotationSelectionData &asd, asel->getSelection()) {
+                    foreach(const AnnotationSelectionData &asd, asel->getSelection()) {
                         AnnotationTableObject *aobj = asd.annotation->getGObject();
                         const QSet<AnnotationTableObject *> aObjs = ctx->getAnnotationObjects(true);
                         if (!aObjs.contains(aobj)) {
@@ -274,12 +274,14 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
                         }
                         regionsToSelect << asd.getSelectedRegions();
                     }
-                    if (!ctx->getSequenceObject()->isCircular()) {
-                        ctx->getSequenceSelection()->setRegion(U2Region::containingRegion(regionsToSelect));
-                    } else {
-                        QVector<U2Region> regSelection = U2Region::circularContainingRegion(regionsToSelect, ctx->getSequenceLength());
-                        foreach (const U2Region reg, regSelection) {
-                            ctx->getSequenceSelection()->addRegion(reg);
+                    if (!regionsToSelect.isEmpty()) {
+                        if (!ctx->getSequenceObject()->isCircular()) {
+                            ctx->getSequenceSelection()->setRegion(U2Region::containingRegion(regionsToSelect));
+                        } else {
+                            QVector<U2Region> regSelection = U2Region::circularContainingRegion(regionsToSelect, ctx->getSequenceLength());
+                            foreach (const U2Region reg, regSelection) {
+                                ctx->getSequenceSelection()->addRegion(reg);
+                            }
                         }
                     }
                 }
