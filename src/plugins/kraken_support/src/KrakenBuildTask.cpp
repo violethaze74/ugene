@@ -58,7 +58,7 @@ KrakenBuildTask::KrakenBuildTask(const KrakenBuildTaskSettings &settings)
       settings(settings)
 {
     GCOUNTER(cvar, tvar, "KrakenBuildTask");
-    setTaskName(settings.mode == KrakenBuildTaskSettings::BUILD ? tr("Build") : tr("Shrink"));
+    setTaskName(getTaskName().arg(settings.mode == KrakenBuildTaskSettings::BUILD ? tr("Build") : tr("Shrink")));
 
     checkSettings();
     CHECK_OP(stateInfo, );

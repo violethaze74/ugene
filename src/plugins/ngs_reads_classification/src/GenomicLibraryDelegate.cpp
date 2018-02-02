@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/L10n.h>
+
 #include <U2Lang/URLContainer.h>
 
 #include "GenomicLibraryDelegate.h"
@@ -52,6 +54,7 @@ PropertyWidget *GenomicLibraryDelegate::createWizardWidget(U2OpStatus &, QWidget
 void GenomicLibraryDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
     const QVariant value = index.model()->data(index, ConfigurationEditor::ItemValueRole);
     GenomicLibraryPropertyWidget *propertyWidget = qobject_cast<GenomicLibraryPropertyWidget *>(editor);
+    SAFE_POINT(NULL != editor, L10N::nullPointerError("GenomicLibraryPropertyWidget"), );
     propertyWidget->setValue(value);
 }
 
