@@ -22,6 +22,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
@@ -166,9 +167,14 @@ EvaluateBaseContentTask* DNASequenceGeneratorTask::createEvaluationTask(Document
     return NULL;
 }
 
-DNASequenceGeneratorTask::DNASequenceGeneratorTask(const DNASequenceGeneratorConfig& cfg_)
-: Task(tr("Generate sequence task"), TaskFlag_NoRun), cfg(cfg_), loadRefTask(NULL),
-evalTask(NULL), generateTask(NULL), saveTask(NULL) {
+DNASequenceGeneratorTask::DNASequenceGeneratorTask(const DNASequenceGeneratorConfig& cfg)
+    : Task(tr("Generate sequence task"), TaskFlag_NoRun),
+      cfg(cfg),
+      loadRefTask(NULL),
+      evalTask(NULL),
+      generateTask(NULL),
+      saveTask(NULL) {
+    GCOUNTER( cvar, tvar, "DNASequenceGeneratorTask" );
     if (cfg.useReference()) {
         // do not load reference file if it is already in project and has loaded state
         const QString& docUrl = cfg.getReferenceUrl();
