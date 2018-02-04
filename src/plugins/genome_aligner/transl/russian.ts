@@ -28,7 +28,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/BuildSuffixArraySettings.ui" line="92"/>
         <source>Resources</source>
-        <translation type="unfinished"></translation>
+        <translation>Источники</translation>
     </message>
     <message>
         <location filename="../src/BuildSuffixArraySettings.ui" line="109"/>
@@ -166,12 +166,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="513"/>
         <source>You can choose a temporary directory for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы можете задать временную папку для сохранения индексных файлов для референса, которые будут построены в процессе выравнивания. Если необходимо запустить этот алгоритм снова с той же референсной последовательностью и с тем же параметром разбиения, вы можете использовать этот индексный файл, который будет сохранен во временной папки.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="545"/>
         <source>Directory for index files:</source>
-        <translation type="unfinished"></translation>
+        <translation>Директория для индексных файлов:</translation>
     </message>
     <message>
         <source>Folder for index files:</source>
