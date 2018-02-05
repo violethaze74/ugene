@@ -26,7 +26,6 @@
 
 namespace U2 {
 
-// TODO
 class GenomesPreparationTask : public Task {
     Q_OBJECT
 public:
