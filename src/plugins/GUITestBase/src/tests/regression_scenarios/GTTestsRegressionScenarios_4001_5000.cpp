@@ -2094,42 +2094,48 @@ GUI_TEST_CLASS_DEFINITION(test_4276) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4284){
-/* 1. Open "data/samples/CLUSTALW/ty3.aln.gz".
- * 2. Select a sequence that is two sequences above the last visible sequence in the name list area.
- * 3. Press and hold "shift" key.
- * 4. Click "down" key twice.
- *   Expected state: three sequences are selected, the msa is not scrolled down.
- * 5. Click "down" again.
- *   Expected state: four sequences are selected, the msa is scrolled down for one line.
- *   Current state: the state is not changed.
-*/
-    GTFileDialog::openFile( os, dataDir + "samples/CLUSTALW", "ty3.aln.gz" );
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+//    1. Open "data/samples/CLUSTALW/ty3.aln.gz".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+//    2. Select a sequence that is two sequences above the last visible sequence in the name list area.
+    MSAEditorSequenceArea *msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
     const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getLastVisibleRowNumber(msaEdistorSequenceArea->height());
 
-    GTUtilsMSAEditorSequenceArea::click( os, QPoint( -5, endPos-1 ) );
+    GTUtilsMsaEditor::clickSequence(os, endPos - 1);
     GTGlobals::sleep(200);
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( 0, endPos-1, 1234, 1 ) );
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, endPos - 1, 1234, 1));
 
+//    3. Press and hold "shift" key.
+//    4. Click "down" key once.
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTKeyboardDriver::keyClick(Qt::Key_Down );
-    GTGlobals::sleep(50);
-    GTKeyboardDriver::keyClick(Qt::Key_Down );
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
     GTGlobals::sleep(50);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( 0, endPos-1, 1234, 3 ) );
 
+//    Expected state: two sequences are selected, the msa is not scrolled down.
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, endPos - 1, 1234, 2));
+
+//    4. Click "down" key again.
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTKeyboardDriver::keyClick(Qt::Key_Down );
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
     GTGlobals::sleep(50);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( 0, endPos-1, 1234, 4 ) );
+
+//    Expected state: three sequences are selected, the msa is scrolled down for one line.
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, endPos - 1, 1234, 3));
+
+//    5. Click "down" key again.
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+    GTGlobals::sleep(50);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+//    Expected state: four sequences are selected, the msa is scrolled down for two lines.
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, endPos - 1, 1234, 4));
 
     const int firstVisibleSequence = msaEdistorSequenceArea->getEditor()->getUI()->getScrollController()->getFirstVisibleRowNumber(false);
-    CHECK_SET_ERR(firstVisibleSequence == 1, "MSA not scrolled");
+    CHECK_SET_ERR(firstVisibleSequence == 2, QString("MSA scrolled incorrectly: expected first fully visible sequence %1, got %2").arg(2).arg(firstVisibleSequence));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4295) {
