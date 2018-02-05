@@ -895,10 +895,6 @@ void DetViewRenderArea::drawAll(QPaintDevice* pd) {
     if (view->hasFocus()) {
         drawFocus(p);
     }
-
-    if (getDetView()->getEditor()->getBlock()) {
-        p.fillRect(QRect(QPoint(0, 0), canvasSize), QBrush(QColor(215, 214, 213, 64)));
-    }
 }
 
 qint64 DetViewRenderArea::coordToPos(const QPoint& p) const {

@@ -24,14 +24,18 @@
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/Annotation.h>
+#include <U2Core/DNASequence.h>
+#include <U2Core/GUrl.h>
 
 namespace U2 {
 
 class DNAAlphabet;
+class Document;
 class AnnotationTableObject;
 class GObject;
 class GObjectReference;
 class U2SequenceObject;
+class U2OpStatus;
 
 class U2CORE_EXPORT AnnotatedRegion {
 public:
@@ -111,6 +115,38 @@ public:
 
     static QString lowerCaseAnnotationName;
     static QString upperCaseAnnotationName;
+};
+
+class U2CORE_EXPORT FixAnnotationsUtils {
+public:
+    static QMap<Annotation *, QList<QPair<QString, QString> > > fixAnnotations(U2OpStatus* os, U2SequenceObject *seqObj, const U2Region &regionToReplace, const DNASequence &sequence2Insert,
+                                                                               bool recalculateQualifiers = false,
+                                                                               U1AnnotationUtils::AnnotationStrategyForResize str = U1AnnotationUtils::AnnotationStrategyForResize_Resize,
+                                                                               QList<Document *> docs = QList<Document*>());
+
+private:
+    FixAnnotationsUtils(U2OpStatus* os, U2SequenceObject *seqObj, const U2Region &regionToReplace, const DNASequence &sequence2Insert,
+                        bool recalculateQualifiers = false,
+                        U1AnnotationUtils::AnnotationStrategyForResize str = U1AnnotationUtils::AnnotationStrategyForResize_Resize,
+                        QList<Document *> docs = QList<Document*>());
+    void fixAnnotations();
+
+    QMap<QString, QList<SharedAnnotationData> > fixAnnotation(Annotation *an, bool &annIsRemoved);
+    void fixAnnotationQualifiers(Annotation *an);
+    void fixTranslationQualifier(SharedAnnotationData &ad);
+    void fixTranslationQualifier(Annotation *an);
+    U2Qualifier getFixedTranslationQualifier(const SharedAnnotationData &ad);
+    bool isRegionValid(const U2Region &region) const;
+private:
+    bool                                                    recalculateQualifiers;
+    U1AnnotationUtils::AnnotationStrategyForResize          strat;
+    QList<Document *>                                       docs;
+    U2SequenceObject *                                      seqObj;
+    U2Region                                                regionToReplace;
+    DNASequence                                             sequence2Insert;
+    QMap<Annotation *, QList<QPair<QString, QString> > >    annotationForReport;
+
+    U2OpStatus* stateInfo;
 };
 
 } // namespace U2

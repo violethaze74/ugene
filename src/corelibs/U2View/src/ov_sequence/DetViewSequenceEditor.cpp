@@ -50,9 +50,7 @@ namespace U2 {
 DetViewSequenceEditor::DetViewSequenceEditor(DetView* view)
     : cursorColor(Qt::black),
       animationTimer(this),
-      view(view),
-      task(NULL),
-      block(false)
+      view(view)
 {
     editAction = new QAction(tr("Edit sequence"), this);
     editAction->setIcon(QIcon(":core/images/edit.png"));
@@ -83,7 +81,6 @@ bool DetViewSequenceEditor::isEditMode() const {
 }
 
 bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
-    CHECK(!block, false);
     CHECK(!view->getSequenceObject()->isStateLocked(), false)
 
     SequenceObjectContext* ctx = view->getSequenceContext();
@@ -305,13 +302,14 @@ void DetViewSequenceEditor::runModifySeqTask(U2SequenceObject* seqObj, const U2R
                 (U1AnnotationUtils::AnnotationStrategyForResize)s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
                             U1AnnotationUtils::AnnotationStrategyForResize_Resize).toInt();
 
-    task = new ModifySequenceContentTask(seqObj->getDocument()->getDocumentFormatId(), seqObj,
-                                            region, sequence,
-                                            s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(),
-                                            strategy, seqObj->getDocument()->getURL());
-    connect(task, SIGNAL(si_stateChanged()), SLOT(sl_unblock()));
-    block = true;
-    AppContext::getTaskScheduler()->registerTopLevelTask(task);
+    U2OpStatusImpl os;
+    seqObj->replaceRegion(region, sequence, os);
+    FixAnnotationsUtils::fixAnnotations(&os, seqObj, region,
+                                    sequence, s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(), strategy);
+    SAFE_POINT_OP(os, );
+    ADVSequenceObjectContext* context = qobject_cast<ADVSequenceObjectContext*>(view->getSequenceContext());
+    SAFE_POINT(context != NULL, L10N::nullPointerError("ADVSequenceObjectContext"), );
+    context->getAnnotatedDNAView()->updateAutoAnnotations();
 }
 
 void DetViewSequenceEditor::cancelSelectionResizing() {
@@ -345,18 +343,6 @@ void DetViewSequenceEditor::sl_editMode(bool active) {
 void DetViewSequenceEditor::sl_changeCursorColor() {
     cursorColor = (cursorColor == QColor(Qt::black)) ? Qt::darkGray : Qt::black;
     view->update();
-}
-
-void DetViewSequenceEditor::sl_unblock() {
-    CHECK(task != NULL, );
-    if (task->isFinished()) {
-        block = false;
-        task = NULL;
-
-        ADVSequenceObjectContext *context = qobject_cast<ADVSequenceObjectContext *>(view->getSequenceContext());
-        SAFE_POINT(NULL != context, L10N::nullPointerError("ADVSequenceObjectContext"), );
-        context->getAnnotatedDNAView()->updateAutoAnnotations();
-    }
 }
 
 void DetViewSequenceEditor::sl_objectLockStateChanged() {

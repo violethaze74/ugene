@@ -49,7 +49,6 @@ public:
     void reset();
     bool isEditMode() const;
     QAction* getEditAction() const { return editAction; }
-    bool getBlock() const { return block; }
 
     bool eventFilter(QObject *watched, QEvent *event);
 
@@ -69,7 +68,6 @@ private:
 private slots:
     void sl_editMode(bool active);
     void sl_changeCursorColor();
-    void sl_unblock();
     void sl_objectLockStateChanged();
 
 private:
@@ -77,9 +75,6 @@ private:
     QColor      cursorColor;
     QTimer      animationTimer;
     DetView*    view;
-
-    ModifySequenceContentTask* task;
-    bool        block;
 
     QAction*    editAction;
 };

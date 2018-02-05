@@ -27,6 +27,7 @@
 #include <U2Core/Task.h>
 #include <U2Core/U1AnnotationUtils.h>
 
+
 namespace U2 {
 
 class Document;
@@ -42,14 +43,7 @@ public:
     QString generateReport() const;
 
 private:
-    void fixAnnotations();
-    QMap<QString, QList<SharedAnnotationData> > fixAnnotation(Annotation *an, bool &annIsRemoved);
-    void fixAnnotationQualifiers(Annotation *an);
-    void fixTranslationQualifier(SharedAnnotationData &ad);
-    void fixTranslationQualifier(Annotation *an);
-    U2Qualifier getFixedTranslationQualifier(const SharedAnnotationData &ad);
     void cloneSequenceAndAnnotations();
-    bool isRegionValid(const U2Region &region) const;
 
     DocumentFormatId                                        resultFormatId;
     bool                                                    mergeAnnotations;
