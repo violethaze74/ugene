@@ -658,12 +658,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     QFontComboBox* fontComboBox = qobject_cast<QFontComboBox*>(GTWidget::findWidget(os, "fontComboBox"));
     CHECK_SET_ERR( fontComboBox != NULL, "Font comboBox is NULL");
 
-    GTComboBox::setIndexWithText(os, fontComboBox, "Serif", false);
-#ifndef Q_OS_MAC
-    GTComboBox::setIndexWithText(os, fontComboBox, "Sans Serif", false);
-#else
-    GTComboBox::setIndexWithText(os, fontComboBox, "Microsoft Sans Serif");
-#endif
+    GTComboBox::setIndexWithText(os, fontComboBox, "Verdana", false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0019) {
