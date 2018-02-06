@@ -830,11 +830,22 @@ void DetViewSingleLineRenderer::highlight(QPainter &p, const U2Region &regionToH
 
     int x = posToXCoord(regionToHighlight.startPos, canvasSize, visibleRange);
     int width = posToXCoord(regionToHighlight.endPos(), canvasSize, visibleRange) - x;
+    int y = getLineY(line);
+    int height = commonMetrics.lineHeight;
+    p.save();
 
-    int ymargin = commonMetrics.yCharOffset / 2;
-    int y = getLineY(line) + ymargin;
-    int height = commonMetrics.lineHeight - 2 * ymargin;
+    QPen pen = p.pen();
+    pen.setColor(Qt::gray);
+    pen.setWidth(2);
+    p.setPen(pen);
+    p.setBrush(Qt::NoBrush);
     p.drawRect(x, y, width, height);
+
+    p.setBrush(Qt::darkGray);
+    p.setCompositionMode(QPainter::CompositionMode_ColorBurn);
+    p.drawRect(x, y, width, height);
+
+    p.restore();
 }
 
 int DetViewSingleLineRenderer::posToDirectTransLine(int p) const {
