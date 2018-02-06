@@ -680,7 +680,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     Primer3DialogFiller::Primer3Settings settings;
     settings.resultsCount = 50;
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-    GTWidget::click(os, wgt, Qt::RightButton);
+    GTWidget::click(os, wgt->getDetView(), Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
