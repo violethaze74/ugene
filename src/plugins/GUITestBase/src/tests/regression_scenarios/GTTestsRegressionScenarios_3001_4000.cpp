@@ -3641,7 +3641,7 @@ GUI_TEST_CLASS_DEFINITION(test_3557) {
     GTGlobals::sleep(500);
 
     const int rowsCount = GTUtilsMsaEditor::getSequencesCount(os);
-    GTUtilsMsaEditor::selectRows(os, rowsCount - 2, rowsCount - 1);
+    GTUtilsMsaEditor::selectRows(os, rowsCount - 2, rowsCount - 1, GTGlobals::UseMouse);
 
     //4. Open the "Pairwise Alignment" OP tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
