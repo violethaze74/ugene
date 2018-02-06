@@ -655,7 +655,7 @@ U2Qualifier FixAnnotationsUtils::getFixedTranslationQualifier(const SharedAnnota
     QString completeTranslation;
     foreach (const U2Region &r, ad->getRegions()) {
         const QByteArray annotatedData = seqObj->getSequenceData(r, *stateInfo);
-        CHECK(stateInfo->isCoR(), U2Qualifier());
+        CHECK(!stateInfo->isCoR(), U2Qualifier());
 
         const DNAAlphabet *dstAlphabet = aminoTranslation->getDstAlphabet();
         QByteArray transContent(annotatedData.size() / 3, dstAlphabet->getDefaultSymbol());
