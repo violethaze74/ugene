@@ -3630,29 +3630,29 @@ GUI_TEST_CLASS_DEFINITION(test_3556) {
 
 GUI_TEST_CLASS_DEFINITION(test_3557) {
     //1. Open "_common_data/muscul4/prefab_1_ref.aln".
-    //2. Press the "Switch on/off collapsing" tool button.
-    //3. Select the "2|1a0cA|gi|32470780" and "1a0cA" sequences.
-    //4. Open the "Pairwise Alignment" OP tab.
-    //Expected: "2|1a0cA|gi|32470780" and "1a0cA" are in the OP.
-
     GTFileDialog::openFile(os, testDir + "_common_data/muscul4/", "prefab_1_ref.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, GTAction::button(os, "Enable collapsing"));
+
+    //2. Press the "Switch on/off collapsing" tool button.
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Switch on/off collapsing");
+
+    //3. Select the "2|1a0cA|gi|32470780" and "1a0cA" sequences.
     GTUtilsMSAEditorSequenceArea::scrollToBottom(os);
     GTGlobals::sleep(500);
 
-    GTUtilsMSAEditorSequenceArea::selectSequence(os, "2|1a0cA|gi|32470780");
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0cA");
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    const int rowsCount = GTUtilsMsaEditor::getSequencesCount(os);
+    GTUtilsMsaEditor::selectRows(os, rowsCount - 2, rowsCount - 1);
 
-    GTWidget::click(os, GTWidget::findWidget(os, "OP_PAIRALIGN"));
-    GTGlobals::sleep(10000);
+    //4. Open the "Pairwise Alignment" OP tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 
-    QLineEdit *firstEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "sequenceLineEdit", GTWidget::findWidget(os, "firstSeqSelectorWC")));
-    QLineEdit *secondEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "sequenceLineEdit", GTWidget::findWidget(os, "secondSeqSelectorWC")));
-    CHECK_SET_ERR(firstEdit->text() == "2|1a0cA|gi|32470780", "Wrong first sequence: " + firstEdit->text());
-    CHECK_SET_ERR(secondEdit->text() == "1a0cA", "Wrong second sequence: " + secondEdit->text());
+    //Expected: "2|1a0cA|gi|32470780" and "1a0cA" are in the OP.
+    const QString firstRowName = GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(os, 1);
+    const QString secondRowName = GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(os, 2);
+    const QString expectedFirstRowName = "2|1a0cA|gi|32470780";
+    const QString expectedSecondRowName = "1a0cA";
+    CHECK_SET_ERR(firstRowName == expectedFirstRowName, QString("Wrong first sequence: expected '%1', got '%'2").arg(expectedFirstRowName).arg(firstRowName));
+    CHECK_SET_ERR(secondRowName == expectedSecondRowName, QString("Wrong second sequence: expected '%1', got '%'2").arg(expectedSecondRowName).arg(secondRowName));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3563_1) {
