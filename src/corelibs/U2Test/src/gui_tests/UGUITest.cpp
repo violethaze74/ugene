@@ -62,22 +62,41 @@ QString getTestDir(){
 #endif
 }
 
-QString getDataDir(){
-    bool ok;
-    int i = qgetenv("UGENE_GUI_TEST_SUITE_NUMBER").toInt(&ok);
+QString getDataDir() {
+    QString dataDir = qgetenv("UGENE_DATA_PATH");
+    if (!dataDir.isEmpty()) {
+        if (!QFileInfo(dataDir).exists()) {
+            coreLog.error(QString("UGENE_DATA_PATH is defined, but doesn't exist: '%1'").arg(dataDir));
+        } else {
+            return dataDir + (dataDir.endsWith("/") ? "" : "/");
+        }
+    }
+
+    bool ok = false;
+    const int suiteNumber = qgetenv("UGENE_GUI_TEST_SUITE_NUMBER").toInt(&ok);
 #ifdef Q_OS_MAC
-    if ( ok && i>1 ){
-        return QString("data%1/").arg(i-1);
-    }else{
-        return QString("data/");
+    if (ok && suiteNumber > 1) {
+        dataDir = QString("data%1/").arg(suiteNumber - 1);
+    } else {
+        dataDir = QString("data/");
     }
 #else
-    if ( ok && i>1){
-        return QString("../../data%1/").arg(i-1);
-    }else{
-        return QString("../../data/");
+    if (ok && suiteNumber > 1) {
+        dataDir = QString("../../data%1/").arg(suiteNumber - 1);
+    } else {
+        dataDir = "../../data/";
+    }
+
+    if (!QFileInfo(dataDir).exists()) {
+        dataDir = "data/";
     }
 #endif
+
+    if (!QFileInfo(dataDir).exists()) {
+        coreLog.error(QString("dataDir not found in the default places"));
+    }
+
+    return dataDir;
 }
 
 QString getScreenshotDir(){
