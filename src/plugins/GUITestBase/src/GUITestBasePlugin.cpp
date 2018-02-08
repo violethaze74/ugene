@@ -1416,7 +1416,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_project::test_0038_1);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0039);
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0040, "UGENE-5042");
-    REGISTER_TEST(GUITest_common_scenarios_project::test_0041);
+    REGISTER_TEST_NOT_FOR_MAC(GUITest_common_scenarios_project::test_0041);     // There is no "Shift + Insert" hotkey on mac
     REGISTER_TEST(GUITest_common_scenarios_project::test_0042);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0043);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0045);
