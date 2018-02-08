@@ -108,7 +108,8 @@ QList<Task*> ExportSequencesTask::onSubTaskFinished(Task* subTask) {
             U2SequenceObject* seqObj = DocumentFormatUtils::addSequenceObjectDeprecated(doc->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, s.getName(), objs, s, stateInfo);
             CHECK_OP(stateInfo, res);
             doc->addObject(seqObj);
-            SaveDocumentTask *t = new SaveDocumentTask(doc.take(), doc->getIOAdapterFactory(), doc->getURL());
+            Document *takenDoc = doc.take();
+            SaveDocumentTask *t = new SaveDocumentTask(takenDoc, takenDoc->getIOAdapterFactory(), takenDoc->getURL());
             if (addToProjectFlag) {
                 t->addFlag(SaveDoc_OpenAfter);
             } else {
