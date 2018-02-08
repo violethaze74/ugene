@@ -2110,7 +2110,7 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
 //    4. Click "down" key once.
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick(Qt::Key_Down);
-    GTGlobals::sleep(50);
+    GTGlobals::sleep(500);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
 //    Expected state: two sequences are selected, the msa is not scrolled down.
@@ -2119,7 +2119,7 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
 //    4. Click "down" key again.
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick(Qt::Key_Down);
-    GTGlobals::sleep(50);
+    GTGlobals::sleep(500);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
 //    Expected state: three sequences are selected, the msa is scrolled down for one line.
@@ -2128,7 +2128,7 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
 //    5. Click "down" key again.
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick(Qt::Key_Down);
-    GTGlobals::sleep(50);
+    GTGlobals::sleep(500);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
 //    Expected state: four sequences are selected, the msa is scrolled down for two lines.
