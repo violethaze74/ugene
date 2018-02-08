@@ -126,10 +126,10 @@ signals:
 
 protected:
     void resizeEvent(QResizeEvent* e);
-    void mouseDoubleClickEvent(QMouseEvent* me);
     void mousePressEvent(QMouseEvent* me);
     void mouseReleaseEvent(QMouseEvent* me);
     void mouseMoveEvent(QMouseEvent* me);
+    void mouseDoubleClickEvent(QMouseEvent* me);
     void wheelEvent(QWheelEvent* we);
     void focusInEvent(QFocusEvent* fe);
     void focusOutEvent(QFocusEvent* fe);
@@ -146,6 +146,7 @@ protected slots:
     virtual void sl_sequenceChanged();
     void sl_onFrameRangeChanged();
     void sl_onCoherentRangeViewRangeChanged();
+    void sl_onLocalCenteringRequest(qint64 pos);
     void completeUpdate();
 
 protected:

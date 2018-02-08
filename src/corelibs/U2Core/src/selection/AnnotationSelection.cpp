@@ -132,11 +132,8 @@ int AnnotationSelectionData::getSelectedRegionsLen() const {
     return len;
 }
 
-AnnotationSelection::AnnotationSelection(QObject *p)
-    : GSelection(GSelectionTypes::ANNOTATIONS, p)
-{
-    connect(this, SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)),
-        SLOT(sl_selectionChanged()));
+AnnotationSelection::AnnotationSelection(QObject *p) : GSelection(GSelectionTypes::ANNOTATIONS, p) {
+    connect(this, SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)), SLOT(sl_selectionChanged()));
 }
 
 const QList<AnnotationSelectionData> & AnnotationSelection::getSelection() const {

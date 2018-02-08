@@ -190,6 +190,10 @@ public:
 
     PanViewRenderArea* getRenderArea() const;
 
+private:
+    const U2Region getRegionToZoom() const;
+
+public:
     U2Region            frameRange;
     int                 minNuclsPerScreen;
 

@@ -390,13 +390,10 @@ void PanView::updateActions() {
 
 void PanView::sl_zoomInAction() {
     assert(visibleRange.length >= minNuclsPerScreen);
-    DNASequenceSelection* sel = getSequenceContext()->getSequenceSelection();
-    if (!sel->isEmpty()) {
-        const U2Region& selRange = sel->getSelectedRegions().first();
-        if (selRange.length >= minNuclsPerScreen && visibleRange.contains(selRange) && visibleRange != selRange) {
-            sl_zoomToSelection();
-            return;
-        }
+    const U2Region selRange = getRegionToZoom();
+    if (!selRange.isEmpty() && selRange.length >= minNuclsPerScreen && visibleRange.contains(selRange) && visibleRange != selRange) {
+        sl_zoomToSelection();
+        return;
     }
     U2Region newVisibleRange = visibleRange;
     newVisibleRange.length = qMax((visibleRange.length + 1) / 2, (qint64)minNuclsPerScreen);
@@ -423,15 +420,14 @@ void PanView::sl_onDNASelectionChanged(LRegionsSelection* s, const QVector<U2Reg
 }
 
 void PanView::sl_zoomToSelection() {
-    const QVector<U2Region>& sel = ctx->getSequenceSelection()->getSelectedRegions();
-    if (sel.isEmpty()) {
+    const U2Region selRegion = getRegionToZoom();
+    if (selRegion.isEmpty()) {
         return;
     }
-    U2Region selRegion = sel.first();
     if (selRegion.length < minNuclsPerScreen) {
         return;
     }
-    if (visibleRange==selRegion) {
+    if (visibleRange == selRegion) {
         return;
     }
     SAFE_POINT(U2Region(0, ctx->getSequenceObject()->getSequenceLength()).contains(selRegion), "Invalid selection region",);
@@ -454,7 +450,6 @@ void PanView::setVisibleRange(const U2Region& newRange, bool signal) {
     }
     GSequenceLineView::setVisibleRange(newRange, signal);
 }
-
 
 void PanView::ensureVisible(Annotation *a, int locationIdx) {
     AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
@@ -589,6 +584,19 @@ void PanView::showEvent(QShowEvent *ev){
 
 void PanView::sl_updateRows(){
     updateRows();
+}
+
+const U2Region PanView::getRegionToZoom() const {
+    const QVector<U2Region>& sel = ctx->getSequenceSelection()->getSelectedRegions();
+    const QList<AnnotationSelectionData> annotationSel = getSequenceContext()->getAnnotationsSelection()->getSelection();
+    U2Region selRegion;
+    if (!sel.isEmpty()) {
+        selRegion = sel.first();
+    } else if (!annotationSel.isEmpty()) {
+        selRegion = U2Region::containingRegion(annotationSel.first().annotation->getRegions());
+    }
+
+    return selRegion;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -25,6 +25,7 @@
 #include <QFileInfo>
 #include <QHeaderView>
 #include <QLineEdit>
+#include <QMap>
 #include <QMenu>
 #include <QMessageBox>
 #include <QPainter>
@@ -41,12 +42,14 @@
 #include <U2Core/ClipboardController.h>
 #include <U2Core/DBXRefRegistry.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
-#include <U2Core/TaskSignalMapper.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
+#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -58,7 +61,6 @@
 #include <U2Gui/ProjectTreeController.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 #include <U2Gui/TreeWidgetUtils.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include "ADVConstants.h"
 #include "ADVSequenceObjectContext.h"
@@ -132,6 +134,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx) : ctx(_ctx), dn
 
     connect(tree, SIGNAL(itemEntered(QTreeWidgetItem*, int)), SLOT(sl_itemEntered(QTreeWidgetItem*, int)));
     connect(tree, SIGNAL(itemClicked(QTreeWidgetItem*, int)), SLOT(sl_itemClicked(QTreeWidgetItem*, int)));
+    connect(tree, SIGNAL(itemPressed(QTreeWidgetItem*, int)), SLOT(sl_itemPressed(QTreeWidgetItem*, int)));
     connect(tree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), SLOT(sl_itemDoubleClicked(QTreeWidgetItem*, int)));
     connect(tree, SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(sl_itemExpanded(QTreeWidgetItem*)));
 
@@ -145,9 +148,15 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx) : ctx(_ctx), dn
     connect(ctx, SIGNAL(si_buildPopupMenu(GObjectView*, QMenu*)), SLOT(sl_onBuildPopupMenu(GObjectView*, QMenu*)));
     connect(ctx, SIGNAL(si_annotationObjectAdded(AnnotationTableObject*)), SLOT(sl_onAnnotationObjectAdded(AnnotationTableObject*)));
     connect(ctx, SIGNAL(si_annotationObjectRemoved(AnnotationTableObject*)), SLOT(sl_onAnnotationObjectRemoved(AnnotationTableObject*)));
+    connect(ctx, SIGNAL(si_sequenceAdded(ADVSequenceObjectContext*)), SLOT(sl_sequenceAdded(ADVSequenceObjectContext*)));
+    connect(ctx, SIGNAL(si_sequenceRemoved(ADVSequenceObjectContext*)), SLOT(sl_sequenceRemoved(ADVSequenceObjectContext*)));
     QList<AnnotationTableObject *> aObjs = ctx->getAnnotationObjects(true);
     foreach (AnnotationTableObject *obj, aObjs) {
         sl_onAnnotationObjectAdded(obj);
+    }
+    const QList<ADVSequenceObjectContext*> seqContexts = ctx->getSequenceContexts();
+    foreach(ADVSequenceObjectContext* context, seqContexts) {
+        connectAnnotationTableObject(context);
     }
     connectAnnotationSelection();
     connectAnnotationGroupSelection();
@@ -348,15 +357,22 @@ QList<AVAnnotationItem *> AnnotationsTreeView::findAnnotationItems(Annotation *a
     return res;
 }
 
+void AnnotationsTreeView::connectAnnotationTableObject(ADVSequenceObjectContext* advContext) {
+    connect(advContext, SIGNAL(si_annotationSelection(AnnotationSelectionData*)), SLOT(sl_annotationClicked(AnnotationSelectionData*)));
+    connect(advContext, SIGNAL(si_annotationSequenceSelection(AnnotationSelectionData*)), SLOT(sl_annotationDoubleClicked(AnnotationSelectionData*)));
+    connect(advContext, SIGNAL(si_clearSelectedAnnotationRegions()), SLOT(sl_clearSelectedAnnotations()));
+}
+
 void AnnotationsTreeView::connectAnnotationSelection() {
-    connect(ctx->getAnnotationsSelection(), SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)),
-        SLOT(sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)));
+    connect(ctx->getAnnotationsSelection(),
+            SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)),
+            SLOT(sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)));
 }
 
 void AnnotationsTreeView::connectAnnotationGroupSelection() {
     connect(ctx->getAnnotationsGroupSelection(),
-        SIGNAL(si_selectionChanged(AnnotationGroupSelection *, const QList<AnnotationGroup *> &, const QList<AnnotationGroup *> &)),
-        SLOT(sl_onAnnotationGroupSelectionChanged(AnnotationGroupSelection *, const QList<AnnotationGroup *> &, const QList<AnnotationGroup *> &)));
+            SIGNAL(si_selectionChanged(AnnotationGroupSelection *, const QList<AnnotationGroup *> &, const QList<AnnotationGroup *> &)),
+            SLOT(sl_onAnnotationGroupSelectionChanged(AnnotationGroupSelection *, const QList<AnnotationGroup *> &, const QList<AnnotationGroup *> &)));
 }
 
 void AnnotationsTreeView::sl_onItemSelectionChanged() {
@@ -1554,6 +1570,18 @@ void AnnotationsTreeView::sl_itemEntered(QTreeWidgetItem * i, int column) {
 
 void AnnotationsTreeView::sl_itemDoubleClicked(QTreeWidgetItem *i, int) {
     AVItem* item = static_cast<AVItem*>(i);
+
+    if (item->type == AVItemType_Annotation) {
+        AVAnnotationItem *ai = dynamic_cast<AVAnnotationItem *>(item);
+
+        QVector<U2Region> annotationRegions = ai->annotation->getRegions();
+        SAFE_POINT(!annotationRegions.isEmpty(), "Annotation regions are empty", );
+
+        foreach(const U2Region& region, annotationRegions) {
+            annotationDoubleClicked(ai, region);
+        }
+    }
+
     if (item->type == AVItemType_Qualifier) {
         AVQualifierItem *qi = static_cast<AVQualifierItem *>(item);
         editQualifierItem(qi);
@@ -1562,7 +1590,7 @@ void AnnotationsTreeView::sl_itemDoubleClicked(QTreeWidgetItem *i, int) {
 
 void AnnotationsTreeView::sl_itemClicked(QTreeWidgetItem *i, int column) {
     AVItem *item = static_cast<AVItem *>(i);
-    if (lastMB != Qt::LeftButton || item==NULL || !item->isColumnLinked(column)) {
+    if (lastMB != Qt::LeftButton || item == NULL || !item->isColumnLinked(column)) {
         return;
     }
     QString fileUrl = item->getFileUrl(column);
@@ -1571,6 +1599,16 @@ void AnnotationsTreeView::sl_itemClicked(QTreeWidgetItem *i, int column) {
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     } else {
         GUIUtils::runWebBrowser(item->buildLinkURL(column));
+    }
+}
+
+void AnnotationsTreeView::sl_itemPressed(QTreeWidgetItem *i, int column) {
+    AVItem *item = static_cast<AVItem *>(i);
+
+    if (item->type == AVItemType_Annotation) {
+        AVAnnotationItem* ai = dynamic_cast<AVAnnotationItem*>(item);
+        QMap<AVAnnotationItem*, QList<U2Region> > sortedAnnotationSelections = sortAnnotationSelection(QList<AnnotationTableObject*>() << ai->getAnnotationTableObject());
+        annotationClicked(ai, sortedAnnotationSelections);
     }
 }
 
@@ -1587,6 +1625,177 @@ void AnnotationsTreeView::sl_itemExpanded(QTreeWidgetItem *qi) {
     } else {
         SAFE_POINT(ai->childIndicatorPolicy() == QTreeWidgetItem::DontShowIndicatorWhenChildless, "Unexpected tree child indicator policy", );
     }
+}
+
+void AnnotationsTreeView::sl_annotationClicked(AnnotationSelectionData* asd) {
+    AnnotationSelection* annotationSelection = ctx->getAnnotationsSelection();
+
+    const QList<AVAnnotationItem*> annotationItems = findAnnotationItems(asd->annotation);
+    CHECK(annotationItems.size() == 1, );
+    AVAnnotationItem* item = annotationItems.first();
+
+    const QVector<U2Region> selectedRegions = asd->getSelectedRegions();
+    CHECK(selectedRegions.size() == 1, );
+    const U2Region selectedRegion = selectedRegions.first();
+
+    bool setSelected = true;
+
+    const ADVSequenceObjectContext* advctx = qobject_cast<ADVSequenceObjectContext*>(sender());
+    SAFE_POINT(advctx != NULL, "Incorrect sender", );
+
+    QList<AnnotationTableObject*> annotationObjects = advctx->getAnnotationObjects().toList();
+
+    QMap<AVAnnotationItem*, QList<U2Region> > sortedAnnotationSelections = sortAnnotationSelection(annotationObjects);
+
+    //In case of joined annotation, we need to check "Did we click to this region of annotation already?"
+    //If yes - remove this selected region
+    //If no - we have no need to do smth, because if this click continue as double-click, we will expand selected regions of this annotation for current region too
+    //Check "selectedAnnotation.value(item).size() == 1" here because we need to know - if we want to remove the last selected region of current annotation, we need also to remove annotation selection too
+    const bool removeLastRegion = (sortedAnnotationSelections.value(item).size() == 1) && sortedAnnotationSelections.value(item).contains(selectedRegion);
+
+    if (removeLastRegion) {
+        foreach(int loc, asd->locationIdxList) {
+            if (annotationSelection->contains(asd->annotation, loc)) {
+                annotationSelection->removeFromSelection(asd->annotation);
+                setSelected = false;
+            }
+        }
+    }
+
+    expandItemRecursevly(item);
+    item->setSelected(setSelected);
+    annotationClicked(item, sortedAnnotationSelections, selectedRegion);
+}
+
+//TODO: refactor this method
+//UTI-155
+//See review for details
+void AnnotationsTreeView::sl_annotationDoubleClicked(AnnotationSelectionData* asd) {
+    if (!ctx->getAnnotationsSelection()->contains(asd->annotation)) {
+        foreach(int loc, asd->locationIdxList) {
+            ctx->getAnnotationsSelection()->addToSelection(asd->annotation, loc);
+        }
+    }
+
+    const U2Region regionToSelect = asd->getSelectedRegions().first();
+    QList<AVAnnotationItem*> annotationItems = findAnnotationItems(asd->annotation);
+    foreach(AVAnnotationItem* item, annotationItems) {
+        expandItemRecursevly(item);
+        item->setSelected(true);
+        annotationDoubleClicked(item, regionToSelect);
+    }
+}
+
+void AnnotationsTreeView::expandItemRecursevly(QTreeWidgetItem* item) {
+    QTreeWidgetItem* parent = item->parent();
+    if (parent != NULL) {
+        expandItemRecursevly(parent);
+    }
+    tree->expandItem(item);
+}
+
+//In case of several sequences, we need to sort only selections of the current sequence
+QMap<AVAnnotationItem*, QList<U2Region> > AnnotationsTreeView::sortAnnotationSelection(QList<AnnotationTableObject*> annotationObjects) {
+    QMap<AVAnnotationItem*, QList<U2Region> > sortedAnnotation;
+    foreach(AVAnnotationItem* key, selectedAnnotation.keys()) {
+        AnnotationTableObject* tableObject = key->getAnnotationTableObject();
+        if (annotationObjects.contains(tableObject)) {
+            sortedAnnotation.insert(key, selectedAnnotation[key]);
+        }
+    }
+
+    return sortedAnnotation;
+}
+
+void AnnotationsTreeView::sl_clearSelectedAnnotations() {
+    const ADVSequenceObjectContext* advctx = qobject_cast<ADVSequenceObjectContext*>(sender());
+    SAFE_POINT(advctx != NULL, "Incorrect sender", );
+
+    QList<AnnotationTableObject*> annotationObjects = advctx->getAnnotationObjects().toList();
+    QMap<AVAnnotationItem*, QList<U2Region> > currentAnnotationSelections = sortAnnotationSelection(annotationObjects);
+
+    foreach(AVAnnotationItem* key, currentAnnotationSelections.keys()) {
+        selectedAnnotation.remove(key);
+    }
+}
+
+void AnnotationsTreeView::sl_sequenceAdded(ADVSequenceObjectContext* advContext) {
+    connectAnnotationTableObject(advContext);
+}
+
+void AnnotationsTreeView::sl_sequenceRemoved(ADVSequenceObjectContext* advContext) {
+    disconnect(advContext, SIGNAL(si_annotationSelection(AnnotationSelectionData*)), this, SLOT(sl_annotationClicked(AnnotationSelectionData*)));
+    disconnect(advContext, SIGNAL(si_annotationSequenceSelection(AnnotationSelectionData*)), this, SLOT(sl_annotationDoubleClicked(AnnotationSelectionData*)));
+    disconnect(advContext, SIGNAL(si_clearSelectedAnnotationRegions()), this, SLOT(sl_clearSelectedAnnotations()));
+}
+
+//TODO: refactoring of annotationClicked and annotationDoubleClicked methods.
+//It's too difficult to understand what's going on in this methods
+//UTI-155
+void AnnotationsTreeView::annotationClicked(AVAnnotationItem* item, QMap<AVAnnotationItem*, QList<U2Region> > selectedAnnotations, const U2Region selectedRegion) {
+    ADVSequenceObjectContext* seqObjCtx = ctx->getSequenceContext(item->getAnnotationTableObject());
+    SAFE_POINT(seqObjCtx != NULL, "ADVSequenceObjectContext is NULL", );
+
+    DNASequenceSelection* sequenceSelection = seqObjCtx->getSequenceSelection();
+    SAFE_POINT(sequenceSelection != NULL, "DNASequenceSelection is NULL", );
+
+    Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
+    const bool controlOfShiftPressed = km.testFlag(Qt::ControlModifier) || km.testFlag(Qt::ShiftModifier);
+    const QVector<U2Region> selection = sequenceSelection->getSelectedRegions();
+    if (!controlOfShiftPressed) {
+        sequenceSelection->clear();
+        foreach(AVAnnotationItem* key, selectedAnnotations.keys()) {
+            selectedAnnotation.remove(key);
+        }
+    } else {
+        QVector<U2Region> toSelect;
+        if (!selectedRegion.isEmpty() && selectedAnnotations.value(item).contains(selectedRegion)) {
+            selectedAnnotation[item].removeOne(selectedRegion);
+            selectedAnnotations[item].removeOne(selectedRegion);
+            if (selectedAnnotation[item].isEmpty()) {
+                selectedAnnotation.remove(item);
+            }
+        }
+        foreach(AVAnnotationItem* annItem, selectedAnnotations.keys()) {
+            foreach(U2Region newRegion, selectedAnnotations.value(annItem)) {
+                foreach(const U2Region& toSel, toSelect) {
+                    if (toSel.intersects(newRegion)) {
+                        newRegion = U2Region::containingRegion(newRegion, toSel);
+                        toSelect.removeOne(toSel);
+                    }
+                }
+                toSelect << newRegion;
+            }
+        }
+        sequenceSelection->clear();
+        sequenceSelection->setSelectedRegions(toSelect);
+    }
+}
+
+void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const U2Region& selectedRegion) {
+    selectedAnnotation[item] << selectedRegion;
+
+    ADVSequenceObjectContext* seqObjCtx = ctx->getSequenceContext(item->getAnnotationTableObject());
+    SAFE_POINT(seqObjCtx != NULL, "ADVSequenceObjectContext is NULL", );
+
+    DNASequenceSelection* sequenceSelection = seqObjCtx->getSequenceSelection();
+    SAFE_POINT(sequenceSelection != NULL, "DNASequenceSelection is NULL", );
+
+    AnnotationSelection* annotationSelection = seqObjCtx->getAnnotationsSelection();
+    SAFE_POINT(annotationSelection != NULL, "AnnotationSelection is NULL", );
+
+    annotationSelection->addToSelection(item->annotation);
+
+    U2Region regionToSelect = selectedRegion;
+
+    const QVector<U2Region> regions = sequenceSelection->getSelectedRegions();
+    foreach(const U2Region& reg, regions) {
+        if (reg.intersects(regionToSelect)) {
+            sequenceSelection->removeRegion(reg);
+            regionToSelect = U2Region::containingRegion(reg, regionToSelect);
+        }
+    }
+    sequenceSelection->addRegion(regionToSelect);
 }
 
 void AnnotationsTreeView::sl_onCopyQualifierValue() {
