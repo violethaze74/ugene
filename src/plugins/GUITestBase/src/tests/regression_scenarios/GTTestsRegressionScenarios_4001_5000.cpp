@@ -2110,7 +2110,7 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
 //    4. Click "down" key once.
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick(Qt::Key_Down);
-    GTGlobals::sleep(50);
+    GTGlobals::sleep(500);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
 //    Expected state: two sequences are selected, the msa is not scrolled down.
@@ -2119,7 +2119,7 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
 //    4. Click "down" key again.
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick(Qt::Key_Down);
-    GTGlobals::sleep(50);
+    GTGlobals::sleep(500);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
 //    Expected state: three sequences are selected, the msa is scrolled down for one line.
@@ -2128,7 +2128,7 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
 //    5. Click "down" key again.
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick(Qt::Key_Down);
-    GTGlobals::sleep(50);
+    GTGlobals::sleep(500);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
 //    Expected state: four sequences are selected, the msa is scrolled down for two lines.
@@ -4003,6 +4003,31 @@ GUI_TEST_CLASS_DEFINITION(test_4694) {
     //Expected state "Undo" button is disabled
     QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(!undo->isEnabled(), "Button should be disabled");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4699) {
+    
+    // 1. Open "samples/Genbank/NC_014267.1.gb"
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "AaaI"));
+    GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    QTreeWidget *tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
+    QTreeWidgetItem *item = GTTreeWidget::findItem(os, tree, "76105..76110");
+    GTTreeWidget::click(os, item);
+    
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "AacLI"));
+    GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    QTreeWidget *newtree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
+    QTreeWidgetItem *newitem = GTTreeWidget::findItem(os, newtree, "10101..10106");
+    GTTreeWidget::click(os, newitem);
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4700) {

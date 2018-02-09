@@ -1056,7 +1056,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4030);
     REGISTER_TEST(GUITest_regression_scenarios::test_4033);
     REGISTER_TEST(GUITest_regression_scenarios::test_4034);
-    REGISTER_TEST(GUITest_regression_scenarios::test_4035);
+    REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_4035, 300000);
     REGISTER_TEST(GUITest_regression_scenarios::test_4036);
     REGISTER_TEST(GUITest_regression_scenarios::test_4045);
     REGISTER_TEST(GUITest_regression_scenarios::test_4046);
@@ -1183,6 +1183,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4689_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4689_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4694);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4699);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_4700);
     REGISTER_TEST(GUITest_regression_scenarios::test_4702_1);
@@ -1416,7 +1417,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_project::test_0038_1);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0039);
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0040, "UGENE-5042");
-    REGISTER_TEST(GUITest_common_scenarios_project::test_0041);
+    REGISTER_TEST_NOT_FOR_MAC(GUITest_common_scenarios_project::test_0041);     // There is no "Shift + Insert" hotkey on mac
     REGISTER_TEST(GUITest_common_scenarios_project::test_0042);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0043);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0045);
@@ -1908,7 +1909,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0046);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0047);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0048);
-    REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_msa_editor::test_0049, "UGENE-3680");
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0049);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0050);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0051);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0052);
