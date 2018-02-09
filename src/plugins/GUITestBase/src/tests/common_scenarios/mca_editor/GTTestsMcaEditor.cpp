@@ -3305,6 +3305,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
     //GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
 
     //7. Select the item.
+    GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Replace character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
