@@ -2482,7 +2482,7 @@ GUI_TEST_CLASS_DEFINITION(test_5696) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);     // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
-    GTUtilsNotifications::waitForNotification(os, true, "No new sequences were inserted into the alignment.");
+    GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
