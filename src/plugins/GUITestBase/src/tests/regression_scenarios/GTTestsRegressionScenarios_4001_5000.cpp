@@ -4005,6 +4005,31 @@ GUI_TEST_CLASS_DEFINITION(test_4694) {
     CHECK_SET_ERR(!undo->isEnabled(), "Button should be disabled");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4699) {
+    
+    // 1. Open "samples/Genbank/NC_014267.1.gb"
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "AaaI"));
+    GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    QTreeWidget *tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
+    QTreeWidgetItem *item = GTTreeWidget::findItem(os, tree, "76105..76110");
+    GTTreeWidget::click(os, item);
+    
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "AacLI"));
+    GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    QTreeWidget *newtree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
+    QTreeWidgetItem *newitem = GTTreeWidget::findItem(os, newtree, "10101..10106");
+    GTTreeWidget::click(os, newitem);
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4700) {
     //1. Open assembly
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4700/", "almost-empty.ugenedb");
