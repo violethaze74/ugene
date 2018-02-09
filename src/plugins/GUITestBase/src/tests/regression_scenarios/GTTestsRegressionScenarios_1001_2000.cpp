@@ -694,7 +694,10 @@ GUI_TEST_CLASS_DEFINITION(test_1022) {
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep();
 
-    GTGlobals::sleep(5000);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Dotplot" << "Remove"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1029) {
