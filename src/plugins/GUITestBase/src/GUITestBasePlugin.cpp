@@ -973,7 +973,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_3690, "hotkeys on mac");
     REGISTER_TEST(GUITest_regression_scenarios::test_3697);
 
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3702, "UGENE-3748");
+    REGISTER_TEST(GUITest_regression_scenarios::test_3702);
     REGISTER_TEST(GUITest_regression_scenarios::test_3710);
     REGISTER_TEST(GUITest_regression_scenarios::test_3715);
     REGISTER_TEST(GUITest_regression_scenarios::test_3717);
