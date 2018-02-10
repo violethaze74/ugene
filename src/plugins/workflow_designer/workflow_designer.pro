@@ -214,4 +214,4 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/util/WriteSequenceValidator.cpp
 
 RESOURCES += workflow_designer.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts
