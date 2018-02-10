@@ -481,6 +481,37 @@ GUI_TEST_CLASS_DEFINITION(test_5090) {
     CHECK_SET_ERR("join(10..15,20..25)" == joinComplementAnnRegion, QString("An incorrect annotation region: expected '%1', got '%2'").arg("join(10..15,20..25)").arg(simpleAnnRegion));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5110) {
+
+    //    1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, QString("NC_001363 features [murine.gb]")));
+    GTMouseDriver::doubleClick();
+    GTGlobals::sleep();
+
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "CDS  (0, 4)"));
+    GTMouseDriver::doubleClick();
+    GTGlobals::sleep();
+
+    QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "codon_start", items[0]) == "1", "wrong qualifier value");
+    
+    //    4. Open the "Annotation highlighting" OP widget.
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_ANNOT_HIGHLIGHT"));    
+    
+    QCheckBox* showAnnotations = GTWidget::findExactWidget<QCheckBox*>(os, "checkShowHideAnnots");
+    GTCheckBox::setChecked(os, showAnnotations, false);
+    GTCheckBox::setChecked(os, showAnnotations, true);
+    
+    QTreeWidgetItem* item = items[0];
+    QBrush expectedBrush = QApplication::palette().brush(QPalette::Active, QPalette::Foreground);
+    QBrush actualBrush = item->foreground(1);
+    CHECK_SET_ERR(expectedBrush == actualBrush, "wrong item color");
+    
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5128) {
     //1. Open any 3D structure.
     GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
@@ -492,6 +523,8 @@ GUI_TEST_CLASS_DEFINITION(test_5128) {
     GTWidget::click(os, GTWidget::findWidget(os, "1-1CF7"), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
+
+
 
 GUI_TEST_CLASS_DEFINITION(test_5137) {
     //    1. Open document test/_common_data/clustal/big.aln
