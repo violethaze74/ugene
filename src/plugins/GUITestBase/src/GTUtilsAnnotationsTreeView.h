@@ -46,6 +46,7 @@ public:
     static QTreeWidgetItem * findFirstAnnotation(HI::GUITestOpStatus &os, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
     static QTreeWidgetItem * findItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
     static QTreeWidgetItem * findItem(HI::GUITestOpStatus &os, const QString &itemName, QTreeWidgetItem* parentItem, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static QTreeWidgetItem * findItemWithIndex(HI::GUITestOpStatus &os, const QString &itemName, const int index);
     static QList<QTreeWidgetItem*> findItems(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
 
     static QStringList getGroupNames(HI::GUITestOpStatus &os, const QString &annotationTableName = "");
@@ -70,6 +71,8 @@ public:
 
     static void selectItems(HI::GUITestOpStatus &os, const QStringList& items);
     static void selectItems(HI::GUITestOpStatus &os, const QList<QTreeWidgetItem *> &items);
+
+    static void clickItem(HI::GUITestOpStatus &os, const QString &item, const int numOfItem, bool isDoubleClick);
 
     // location string format: 1..51
     static void createAnnotation(HI::GUITestOpStatus &os, const QString &groupName, const QString &annotationName, const QString &location, bool createNewTable = true, const QString &saveTo = "");
