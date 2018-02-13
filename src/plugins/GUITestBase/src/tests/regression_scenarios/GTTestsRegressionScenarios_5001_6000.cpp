@@ -3657,6 +3657,29 @@ GUI_TEST_CLASS_DEFINITION(test_5770) {
     CHECK_SET_ERR(names.size() == 2, QString("Incorrect selection. Expected: 2 selected rows, current: %1 selected rows").arg(names.size()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5773) {
+    //    1. Open "_common_data/sanger/alignment.ugenedb".
+    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/reference_sanger_reads_alignment.ugenedb", filePath);
+    //GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(100);
+    
+    GTUtilsProjectTreeView::filterProject(os, "GTTCTCGGG");
+
+    GTUtilsProjectTreeView::checkFilteredGroup(os, "Sanger read content", QStringList(),
+        QStringList() << "Aligned reads" << "ugene_gui_test", QStringList() << "HIV-1.aln");
+    
+    GTUtilsProjectTreeView::checkFilteredGroup(os, "Sanger reference content", QStringList(),
+        QStringList() << "Aligned reads" << "ugene_gui_test", QStringList() << "HIV-1.aln");
+
+    GTUtilsProjectTreeView::filterProject(os, "KM0");
+    GTUtilsProjectTreeView::checkFilteredGroup(os, "Sanger reference name", QStringList(),
+        QStringList() << "Aligned reads" << "ugene_gui_test", QStringList() << "HIV-1.aln");
+    
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5786_1) {
 //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
