@@ -812,22 +812,22 @@
 <context>
     <name>U2::DNASequenceGeneratorTask</name>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="165"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="166"/>
         <source>Reference for sequence generator has to be a sequence or an alignment</source>
         <translation>Reference for sequence generator has to be a sequence or an alignment</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="170"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="171"/>
         <source>Generate sequence task</source>
         <translation>Generate sequence task</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="194"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="200"/>
         <source>Incorrect reference file</source>
         <translation>Incorrect reference file</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="306"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="312"/>
         <source>Generated MSA</source>
         <translation>Generated MSA</translation>
     </message>
@@ -835,12 +835,12 @@
 <context>
     <name>U2::EvaluateBaseContentTask</name>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="378"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="384"/>
         <source>Evaluate base content task</source>
         <translation>Evaluate base content task</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="391"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="397"/>
         <source>Base content can be evaluated for sequence or sequence alignment</source>
         <translation>Base content can be evaluated for sequence or sequence alignment</translation>
     </message>
@@ -1554,7 +1554,7 @@
 <context>
     <name>U2::GenerateDNASequenceTask</name>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="398"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="404"/>
         <source>Generate DNA sequence task</source>
         <translation>Generate DNA sequence task</translation>
     </message>
