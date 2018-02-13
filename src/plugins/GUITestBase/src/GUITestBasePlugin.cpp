@@ -74,6 +74,7 @@
 #include "tests/common_scenarios/repeat_finder/GTTestsRepeatFinder.h"
 #include "tests/common_scenarios/sanger/GTTestsSanger.h"
 #include "tests/common_scenarios/sequence_edit/GTTestsSequenceEdit.h"
+#include "tests/common_scenarios/sequence_selection/GTTestsSequenceSelection.h"
 #include "tests/common_scenarios/sequence_view/GTTestsSequenceView.h"
 #include "tests/common_scenarios/shared_database/GTTestsSharedDatabase.h"
 #include "tests/common_scenarios/smith_waterman_dialog/GTTestsSWDialog.h"
@@ -1637,6 +1638,22 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0015_2_neg);
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0016_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0016_2);
+
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/sequence selection/
+    //////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_sequence_selection::double_click_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_selection::double_click_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_selection::double_click_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_selection::double_click_test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_selection::mixed_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_selection::mixed_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_selection::mixed_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_selection::one_click_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_selection::one_click_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_selection::one_click_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_selection::one_click_test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_selection::one_click_test_0005);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/remote request/

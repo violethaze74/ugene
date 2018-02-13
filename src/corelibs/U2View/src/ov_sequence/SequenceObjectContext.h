@@ -32,6 +32,7 @@
 namespace U2 {
 
 class AnnotatedDNAView;
+class AnnotationSelectionData;
 class U2SequenceObject;
 class DNAAlphabet;
 class DNATranslation;
@@ -71,6 +72,9 @@ public:
     void addAnnotationObject(AnnotationTableObject *obj);
     void addAutoAnnotationObject(AnnotationTableObject *obj);
     void removeAnnotationObject(AnnotationTableObject *obj);
+    void emitAnnotationSelection(AnnotationSelectionData* asd);
+    void emitAnnotationSequenceSelection(AnnotationSelectionData* asd);
+    void emitClearSelectedAnnotationRegions();
 
     // temporary virtual
     virtual AnnotationSelection * getAnnotationsSelection() const;
@@ -106,6 +110,9 @@ signals:
     void si_aminoTranslationChanged();
     void si_annotationObjectAdded(AnnotationTableObject *obj);
     void si_annotationObjectRemoved(AnnotationTableObject *obj);
+    void si_annotationSelection(AnnotationSelectionData* asd);
+    void si_annotationSequenceSelection(AnnotationSelectionData* asd);
+    void si_clearSelectedAnnotationRegions();
     void si_translationRowsChanged();
 
 protected slots:

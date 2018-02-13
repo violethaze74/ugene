@@ -471,6 +471,11 @@ void GSequenceLineView::sl_onCoherentRangeViewRangeChanged() {
     setVisibleRange(newRange);
 }
 
+void GSequenceLineView::sl_onLocalCenteringRequest(qint64 pos) {
+    setCenterPos(pos);
+}
+
+
 void GSequenceLineView::setVisibleRange(const U2Region& newRange, bool signal) {
     SAFE_POINT(newRange.startPos >=0 && newRange.endPos() <= seqLen, "Failed to update visible range. Range is out of the sequence range!",);
 

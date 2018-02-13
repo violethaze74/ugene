@@ -60,8 +60,8 @@ public:
     static QString getSeqName(HI::GUITestOpStatus &os, ADVSingleSequenceWidget *seqWidget);
 
     //clicks on simple annotation on sequence view
-    static void clickAnnotationDet(HI::GUITestOpStatus &os, QString name, int startpos, int number = 0, Qt::MouseButton button = Qt::LeftButton);
-    static void clickAnnotationPan(HI::GUITestOpStatus &os, QString name, int startpos, int number = 0, Qt::MouseButton button = Qt::LeftButton);
+    static void clickAnnotationDet(HI::GUITestOpStatus &os, QString name, int startpos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
+    static void clickAnnotationPan(HI::GUITestOpStatus &os, QString name, int startpos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
 
     static GSequenceGraphView* getGraphView(HI::GUITestOpStatus &os);
     static QList<QVariant> getLabelPositions(HI::GUITestOpStatus &os, GSequenceGraphView* graph);

@@ -203,8 +203,9 @@ void ADVClipboard::sl_copyAnnotationSequence() {
 #endif
 
     //BUG528: add alphabet symbol role: insertion mark
-    char gapSym = '-';
-    for (int i=0, n = as.size(); i < n; i++) {
+    const char gapSym = '-';
+    const int size = as.size();
+    for (int i = 0; i < size; i++) {
         const AnnotationSelectionData& sd = as.at(i);
         if (i!=0) {
             res.append('\n');
@@ -240,10 +241,11 @@ void ADVClipboard::sl_copyAnnotationSequenceTranslation() {
 
     //BUG528: add alphabet symbol role: insertion mark
     //TODO: reuse AnnotationSelection utils
-    char gapSym = '-';
-    for (int i=0, n = as.size(); i < n; i++) {
+    const char gapSym = '-';
+    const int size = as.size();
+    for (int i = 0; i < size; i++) {
         const AnnotationSelectionData& sd = as.at(i);
-        if (i!=0) {
+        if (i != 0) {
             res.append('\n');
         }
         ADVSequenceObjectContext* seqCtx = ctx->getSequenceContext(sd.annotation->getGObject());
@@ -260,7 +262,7 @@ void ADVClipboard::sl_copyAnnotationSequenceTranslation() {
         QList<QByteArray> parts = U2SequenceUtils::extractRegions(seqCtx->getSequenceRef(), sd.annotation->getRegions(), complTT,
             aminoTT, sd.annotation->isJoin(), os);
         CHECK_OP(os,);
-        res = U1SequenceUtils::joinRegions(parts);
+        res += U1SequenceUtils::joinRegions(parts);
     }
     putIntoClipboard(res);
 }
@@ -274,6 +276,7 @@ void ADVClipboard::updateActions() {
     bool selectionIsNotEmpty = hasSequence && !sel->getSelectedRegions().isEmpty();
 
     copySequenceAction->setEnabled(selectionIsNotEmpty);
+    copySequenceAction->setShortcut(selectionIsNotEmpty ? QKeySequence::Copy : QKeySequence());
     copyTranslationAction->setEnabled(selectionIsNotEmpty && hasTranslation);
     copyComplementSequenceAction->setEnabled(selectionIsNotEmpty && hasComplement);
     copyComplementTranslationAction->setEnabled(selectionIsNotEmpty && hasComplement && hasTranslation);
@@ -296,6 +299,7 @@ void ADVClipboard::updateActions() {
         }
     }
     copyAnnotationSequenceAction->setEnabled(hasAnnotationSelection && hasSequenceForAnnotations);
+    copyAnnotationSequenceAction->setShortcut(selectionIsNotEmpty ? QKeySequence() : QKeySequence::Copy);
     copyAnnotationSequenceTranslationAction->setEnabled(hasAnnotationSelection && hasTranslationForAnnotations);
 }
 

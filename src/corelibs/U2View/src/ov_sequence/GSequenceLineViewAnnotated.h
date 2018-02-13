@@ -55,6 +55,7 @@ public:
 
 protected:
     void                                    mousePressEvent(QMouseEvent *e);
+    void                                    mouseDoubleClickEvent(QMouseEvent* me);
 
     virtual bool                            event(QEvent *e);
     virtual QString                         createToolTip(QHelpEvent *e);
