@@ -176,7 +176,7 @@ private:
     // searches for annotation items that has not-null document added to the view
     QList<AVAnnotationItem *> findAnnotationItems(Annotation *a) const;
 
-    void connectAnnotationTableObject(ADVSequenceObjectContext* advContext);
+    void onSequenceAdded(ADVSequenceObjectContext* advContext);
 
     void connectAnnotationSelection();
     void connectAnnotationGroupSelection();

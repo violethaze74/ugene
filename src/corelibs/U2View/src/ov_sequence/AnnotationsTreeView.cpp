@@ -156,7 +156,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx) : ctx(_ctx), dn
     }
     const QList<ADVSequenceObjectContext*> seqContexts = ctx->getSequenceContexts();
     foreach(ADVSequenceObjectContext* context, seqContexts) {
-        connectAnnotationTableObject(context);
+        onSequenceAdded(context);
     }
     connectAnnotationSelection();
     connectAnnotationGroupSelection();
@@ -357,7 +357,7 @@ QList<AVAnnotationItem *> AnnotationsTreeView::findAnnotationItems(Annotation *a
     return res;
 }
 
-void AnnotationsTreeView::connectAnnotationTableObject(ADVSequenceObjectContext* advContext) {
+void AnnotationsTreeView::onSequenceAdded(ADVSequenceObjectContext* advContext) {
     connect(advContext, SIGNAL(si_annotationSelection(AnnotationSelectionData*)), SLOT(sl_annotationClicked(AnnotationSelectionData*)));
     connect(advContext, SIGNAL(si_annotationSequenceSelection(AnnotationSelectionData*)), SLOT(sl_annotationDoubleClicked(AnnotationSelectionData*)));
     connect(advContext, SIGNAL(si_clearSelectedAnnotationRegions()), SLOT(sl_clearSelectedAnnotations()));
@@ -1669,7 +1669,7 @@ void AnnotationsTreeView::sl_annotationClicked(AnnotationSelectionData* asd) {
 
 //TODO: refactor this method
 //UTI-155
-//See review for details
+//See review of UGENE-5936 for details
 void AnnotationsTreeView::sl_annotationDoubleClicked(AnnotationSelectionData* asd) {
     if (!ctx->getAnnotationsSelection()->contains(asd->annotation)) {
         foreach(int loc, asd->locationIdxList) {
@@ -1720,7 +1720,7 @@ void AnnotationsTreeView::sl_clearSelectedAnnotations() {
 }
 
 void AnnotationsTreeView::sl_sequenceAdded(ADVSequenceObjectContext* advContext) {
-    connectAnnotationTableObject(advContext);
+    onSequenceAdded(advContext);
 }
 
 void AnnotationsTreeView::sl_sequenceRemoved(ADVSequenceObjectContext* advContext) {
