@@ -136,9 +136,9 @@ void MaEditorStatusBar::updateLock() {
 
 void MaEditorStatusBar::updateLineLabel() {
     MaEditorSelection selection = seqArea->getSelection();
-    int firstSelected = selection.y();
-    int totalVisible = seqArea->getNumDisplayableSequences();
-    lineLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(firstSelected + 1),
+    const int firstSelected = seqArea->getRowIndex(selection.y());
+    const int totalVisible = aliObj->getNumRows();
+    lineLabel->update(selection.isEmpty() || firstSelected == -1 ? NONE_MARK : QString::number(firstSelected + 1),
                       QString::number(totalVisible));
 }
 
