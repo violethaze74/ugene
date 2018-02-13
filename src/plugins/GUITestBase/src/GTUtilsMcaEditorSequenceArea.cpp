@@ -49,6 +49,7 @@
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsProjectTreeView.cpp"
 
 namespace U2 {
 using namespace HI;
@@ -117,6 +118,10 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
     GT_CHECK(NULL != mcaSeqArea, "MSA Editor sequence area is not found");
     GT_CHECK(mcaSeqArea->isInRange(position), "Position is out of range");
     CHECK(!mcaSeqArea->isVisible(position, false), );
+
+    if (GTUtilsProjectTreeView::isVisible(os)){
+        GTUtilsProjectTreeView::toggleView(os);
+    }
 
     if (!mcaSeqArea->isRowVisible(position.y(), false)) {
         GTUtilsMcaEditor::scrollToRead(os, position.y());
