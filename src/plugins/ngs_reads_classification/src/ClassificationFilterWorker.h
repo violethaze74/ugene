@@ -19,7 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#pragma once
+#ifndef _U2_CLASSIFICATION_FILTER_H_
+#define _U2_CLASSIFICATION_FILTER_H_
 
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GUrl.h>
@@ -131,3 +132,5 @@ private:
 
 } //LocalWorkflow
 } //U2
+
+#endif

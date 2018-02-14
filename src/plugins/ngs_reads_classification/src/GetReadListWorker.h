@@ -19,7 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#pragma once
+#ifndef _U2_GET_READ_LIST_WORKER_H_
+#define _U2_GET_READ_LIST_WORKER_H_
+
+#include "NgsReadsClassificationPlugin.h"
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -56,7 +59,7 @@ private:
 
 };
 
-class GetReadsListWorkerFactory : public DomainFactory {
+class U2NGS_READS_CLASSIFICATION_EXPORT GetReadsListWorkerFactory : public DomainFactory {
 public:
     static const QString SE_ACTOR_ID;
     static const QString PE_ACTOR_ID;
@@ -75,3 +78,5 @@ public:
 
 } // LocalWorkflow
 } // U2
+
+#endif

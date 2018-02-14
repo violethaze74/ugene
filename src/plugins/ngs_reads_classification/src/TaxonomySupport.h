@@ -19,7 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#pragma once
+#ifndef _U2_TAXONOMY_SUPPORT_H_
+#define _U2_TAXONOMY_SUPPORT_H_
 
 #include <QSet>
 #include <QMap>
@@ -140,3 +141,4 @@ Q_DECLARE_METATYPE(U2::LocalWorkflow::TaxID)
 Q_DECLARE_METATYPE(U2::LocalWorkflow::TaxIDSet)
 Q_DECLARE_METATYPE(U2::LocalWorkflow::TaxonomyClassificationResult)
 
+#endif

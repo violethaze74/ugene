@@ -19,7 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#pragma once
+#ifndef _U2_LZMA_ADAPTER_H_
+#define _U2_LZMA_ADAPTER_H_
+
 #include <U2Core/IOAdapter.h>
 
 namespace U2 {
@@ -68,3 +70,4 @@ private:
 
 }//namespace
 
+#endif
