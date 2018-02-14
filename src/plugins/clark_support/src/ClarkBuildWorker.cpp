@@ -252,7 +252,6 @@ private:
 const QStringList ClarkBuildLogParser::wellKnownErrors = QStringList() << "abort" << "core dumped";
 
 void ClarkBuildTask::prepare() {
-    algoLog.info("ClarkBuildTask " + genomeUrls.join(";"));
     const QString db("custom");// = QString("custom_%1").arg(rank);
     const QString reflist = dbUrl + "/.custom";
     QDir dir(dbUrl);
@@ -265,13 +264,10 @@ void ClarkBuildTask::prepare() {
     LZMAAdapter* a = (LZMAAdapter*)iof->createIOAdapter();
     foreach (QString s, genomeUrls) {
         if (s.endsWith(LZMAAdapter::LZMA_FILE_EXT)) {
-            algoLog.details(QString("request 7z: %1").arg(s));
-            a->open(s, IOAdapterMode_Read);
+			a->open(s, IOAdapterMode_Read);
             QStringList l = a->getArchivedFileURLs();
             a->close();
-            algoLog.details(QString("got 7z: %1").arg(l.join(";")));
             expanded << l;
-            algoLog.details(QString("appended: %1").arg(expanded.join(";")));
         } else {
             expanded << s;
         }

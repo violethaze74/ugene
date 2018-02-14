@@ -37,7 +37,9 @@ const QString LZMAAdapter::LZMA_FILE_EXT(".7z");
 
 
 struct LZMASupport {
-    LZMASupport();
+	LZMASupport();
+	~LZMASupport();
+
     void destroy();
 
     bool init(const char* fname, const char* entry);
@@ -379,6 +381,10 @@ LZMASupport::LZMASupport()
       outBufferProcessed(NULL)
 {
 
+}
+
+LZMASupport::~LZMASupport() {
+	destroy();
 }
 
 void LZMASupport::destroy() {
