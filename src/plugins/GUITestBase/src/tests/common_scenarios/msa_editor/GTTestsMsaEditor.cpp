@@ -990,7 +990,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "middle bookmark");
 
-    const int midRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     5. Scroll msa to the end.
@@ -1003,7 +1002,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "end bookmark");
 
-    const int endRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     Expected state: clicking on each bookmark will recall corresponding MSA position
@@ -1058,7 +1056,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  //CHANGES: default names used
 //     4. Create bookmark. Do not rename the new bookmark.
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI");
 
-    const int midRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     5. Scroll msa to the end.
@@ -1071,7 +1068,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  //CHANGES: default names used
 //     6. Create bookmark. Do not rename the new bookmark.
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI");
 
-    const int endRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     Expected state: clicking on each bookmark will recall corresponding MSA position
@@ -1127,7 +1123,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
 //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "middle bookmark");
 
-    const int midRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     5. Scroll msa to the end.
@@ -1140,7 +1135,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
 //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "end bookmark");
 
-    const int endRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     Expected state: clicking on each bookmark will recall corresponding MSA position
