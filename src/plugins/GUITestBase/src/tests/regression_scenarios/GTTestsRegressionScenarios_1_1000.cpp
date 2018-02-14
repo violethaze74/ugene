@@ -2126,6 +2126,7 @@ GUI_TEST_CLASS_DEFINITION(test_0840) {
     //4. Select this annotation.
     CHECK_SET_ERR(1 == GTUtilsAnnotationsTreeView::findItems(os, "EcoRV").size(), "Unexpected annotation count");
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "EcoRV");
+    GTMouseDriver::doubleClick();
 
     //5. Select "New annotation" in context menu.
     //6. Fill fields with: "Group name" - "enzyme", "Annotation name" - "EcoRV".

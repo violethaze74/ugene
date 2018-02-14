@@ -429,7 +429,11 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, QString na
 
     const QRect annotationRect(x1, y.startPos, rw, y.length);
     GTMouseDriver::moveTo(det->mapToGlobal(annotationRect.center()));
-    GTMouseDriver::click(button);
+    if (isDoubleClick) {
+        GTMouseDriver::doubleClick();
+    } else {
+        GTMouseDriver::click(button);
+    }
 }
 #undef GT_METHOD_NAME
 

@@ -4192,7 +4192,7 @@ GUI_TEST_CLASS_DEFINITION(test_1409){
 //    Expected state: sequence viewer had opened.
 
 //    2. Click on some annotation in the sequence view (not in the annotation tree).
-    GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 1042);
+    GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 1042, 0, true);
 //    Expected state: the clicked annotation is selected.
 
 //    3. Press F2 on the keyboard.
