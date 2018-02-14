@@ -3660,8 +3660,7 @@ GUI_TEST_CLASS_DEFINITION(test_5770) {
 GUI_TEST_CLASS_DEFINITION(test_5773) {
     //    1. Open "_common_data/sanger/alignment.ugenedb".
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
-    GTFile::copy(os, testDir + "_common_data/sanger/reference_sanger_reads_alignment.ugenedb", filePath);
-    //GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(100);
