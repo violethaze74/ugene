@@ -4306,7 +4306,7 @@ GUI_TEST_CLASS_DEFINITION(test_5854) {
     CHECK_SET_ERR(index == 14, QString("Unexpected index, expected: 14, current: %1").arg(index));
     GTGlobals::sleep();
 
-    //4. Select "Mecopoda_elongata__Ishigaki__J" sequence
+    //4. Select "Mecopoda_sp.__Malaysia_" sequence
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Mecopoda_sp.__Malaysia_");
 
     //Expected:: current index 16
