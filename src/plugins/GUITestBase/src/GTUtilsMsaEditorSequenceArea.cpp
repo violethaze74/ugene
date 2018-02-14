@@ -104,10 +104,10 @@ void GTUtilsMSAEditorSequenceArea::selectArea(GUITestOpStatus &os, QPoint p1, QP
     GT_CHECK(sequenceArea != NULL, "MsaEditorSequenceArea not found");
 
     p1.rx() = (p1.x() == -1 ? sequenceArea->getNumVisibleBases() - 1 : p1.x());
-    p1.ry() = (p1.y() == -1 ? sequenceArea->getDisplayableRowsCount() - 1 : p1.y());
+    p1.ry() = (p1.y() == -1 ? sequenceArea->getNumDisplayableSequences() - 1 : p1.y());
 
     p2.rx() = (p2.x() == -1 ? sequenceArea->getNumVisibleBases() - 1 : p2.x());
-    p2.ry() = (p2.y() == -1 ? sequenceArea->getDisplayableRowsCount() - 1 : p2.y());
+    p2.ry() = (p2.y() == -1 ? sequenceArea->getNumDisplayableSequences() - 1 : p2.y());
 
     switch (method) {
     case GTGlobals::UseKey:

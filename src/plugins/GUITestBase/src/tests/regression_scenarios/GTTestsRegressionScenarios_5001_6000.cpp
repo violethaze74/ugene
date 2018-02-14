@@ -4287,6 +4287,36 @@ GUI_TEST_CLASS_DEFINITION(test_5853) {
     CHECK_SET_ERR(numSelSeq == 0, QString("Second checdk, incorrect num of selected sequences, expected: 0, current : %1").arg(numSelSeq));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5854) {
+    //1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Switch on the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    //3. Select "Mecopoda_elongata__Ishigaki__J" sequence
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "Mecopoda_elongata__Ishigaki__J");
+
+    MSAEditorSequenceArea* seqArea =  GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    MaEditorSelection sel = seqArea->getSelection();
+    int index = seqArea->getRowIndex(sel.y()) + 1;
+
+    //Expected:: current index 14
+    CHECK_SET_ERR(index == 14, QString("Unexpected index, expected: 14, current: %1").arg(index));
+    GTGlobals::sleep();
+
+    //4. Select "Mecopoda_elongata__Ishigaki__J" sequence
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "Mecopoda_sp.__Malaysia_");
+
+    //Expected:: current index 16
+    sel = seqArea->getSelection();
+    index = seqArea->getRowIndex(sel.y()) + 1;
+    CHECK_SET_ERR(index == 16, QString("Unexpected index, expected: 16, current: %1").arg(index));
+    GTGlobals::sleep();
+}
+
+
 GUI_TEST_CLASS_DEFINITION(test_5872) {
     GTLogTracer logTracer("ASSERT: \"!isInRange");
 

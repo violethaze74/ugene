@@ -158,15 +158,18 @@ int MaEditorSequenceArea::getNumVisibleBases() const {
     return ui->getDrawHelper()->getVisibleBasesCount(width());
 }
 
-int MaEditorSequenceArea::getDisplayableRowsCount() const {
-    return ui->getCollapseModel()->getDisplayableRowsCount();
-}
-
 int MaEditorSequenceArea::getNumDisplayableSequences() const {
     CHECK(!isAlignmentEmpty(), 0);
     MSACollapsibleItemModel *model = ui->getCollapseModel();
     SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
     return model->getDisplayableRowsCount();
+}
+
+int MaEditorSequenceArea::getRowIndex(const int num) const {
+    CHECK(!isAlignmentEmpty(), -1);
+    MSACollapsibleItemModel *model = ui->getCollapseModel();
+    SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
+    return model->mapToRow(num);
 }
 
 bool MaEditorSequenceArea::isAlignmentEmpty() const {

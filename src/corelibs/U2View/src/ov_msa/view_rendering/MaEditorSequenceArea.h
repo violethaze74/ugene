@@ -76,13 +76,14 @@ public:
     int getFirstVisibleBase() const;
     int getLastVisibleBase(bool countClipped) const;
     int getNumVisibleBases() const;
-    int getDisplayableRowsCount() const;
 
     /*
      * Returns count of sequences that are drawn on the widget by taking into account
      * collapsed rows.
      */
     int getNumDisplayableSequences() const;
+
+    int getRowIndex(const int num) const;
 
     bool isAlignmentEmpty() const;
 
