@@ -37,6 +37,8 @@ MsaEditorStatusBar::MsaEditorStatusBar(MultipleAlignmentObject* mobj, MaEditorSe
     : MaEditorStatusBar(mobj, seqArea) {
     setObjectName("msa_editor_status_bar");
 
+    lineLabel->setPatterns(tr("Seq %1 / %2"), tr("Sequence %1 of %2"));
+
     connect(mobj, SIGNAL(si_alphabetChanged(const MaModificationInfo&, const DNAAlphabet *)), SLOT(sl_alphabetChanged()));
 
     prevButton = new QPushButton();

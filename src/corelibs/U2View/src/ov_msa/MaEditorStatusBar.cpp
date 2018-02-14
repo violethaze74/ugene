@@ -79,7 +79,7 @@ MaEditorStatusBar::MaEditorStatusBar(MultipleAlignmentObject* mobj, MaEditorSequ
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
 
     selectionPattern = tr("Sel %1");
-    lineLabel = new TwoArgPatternLabel(tr("Seq %1 / %2"), tr("Line %1 of %2"), "Sequence", this);
+    lineLabel = new TwoArgPatternLabel(tr("Ln %1 / %2"), tr("Line %1 of %2"), "Line", this);
     colomnLabel = new TwoArgPatternLabel(tr("Col %1 / %2"), tr("Column %1 of %2"), "Column", this);
     positionLabel = new TwoArgPatternLabel(tr("Pos %1 / %2"), tr("Position %1 of %2"), "Position", this);
     selectionLabel = new TwoArgPatternLabel(selectionPattern, tr("Selection width and height are %1"), "Selection", this);

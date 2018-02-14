@@ -75,7 +75,7 @@ QString GTMSAEditorStatusWidget::getRowNumberString(GUITestOpStatus &os) {
     GT_CHECK_RESULT(lineLabel != NULL, "Line label is NULL", "-1");
 
     const QString labelText = lineLabel->text();
-    return labelText.mid(QString("Ln ").length() - 1).section('/', 0, 0).trimmed();
+    return labelText.mid(QString("Seq ").length() - 1).section('/', 0, 0).trimmed();
 }
 #undef GT_METHOD_NAME
 
@@ -85,7 +85,7 @@ QString GTMSAEditorStatusWidget::getRowsCountString(GUITestOpStatus &os) {
     GT_CHECK_RESULT(lineLabel != NULL, "Line label is NULL", "-1");
 
     const QString labelText = lineLabel->text();
-    return labelText.mid(QString("Ln ").length() - 1).section('/', 1, 1).trimmed();
+    return labelText.mid(QString("Seq ").length() - 1).section('/', 1, 1).trimmed();
 }
 #undef GT_METHOD_NAME
 
