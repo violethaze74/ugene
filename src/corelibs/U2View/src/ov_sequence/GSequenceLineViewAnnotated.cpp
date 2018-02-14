@@ -279,6 +279,8 @@ void GSequenceLineViewAnnotated::mouseDoubleClickEvent(QMouseEvent* me) {
         if (regionToSelect.contains(currentPos)) {
             ctx->emitAnnotationSequenceSelection(asd);
         }
+    } else {
+        GSequenceLineView::mouseDoubleClickEvent(me);
     }
 }
 
