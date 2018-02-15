@@ -5097,7 +5097,7 @@ GUI_TEST_CLASS_DEFINITION(test_2773) {
     QFile::copy(testDir + "_common_data/cmdline/_proto/translateTest.usa", "../../data/workflow_samples/users/translateTest.usa");
 #endif
     GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/cmdline/custom-script-worker-functions/translateTest/", "translateTest.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
