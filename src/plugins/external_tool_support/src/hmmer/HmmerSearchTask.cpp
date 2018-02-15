@@ -28,6 +28,7 @@
 #include <U2Core/Counter.h>
 #include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -133,16 +134,11 @@ QString getTaskTempDirName(const QString &prefix, Task *task) {
 void HmmerSearchTask::prepareWorkingDir() {
     if (settings.workingDir.isEmpty()) {
         QString tempDirName = getTaskTempDirName("hmmer_search_", this);
-        settings.workingDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(HMMER_TEMP_DIR) + "/" + tempDirName;
+        settings.workingDir = GUrlUtils::rollFileName(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(HMMER_TEMP_DIR) + "/" + tempDirName, "_");
         removeWorkingDir = true;
     }
 
     QDir tempDir(settings.workingDir);
-    if (tempDir.exists()) {
-        ExternalToolSupportUtils::removeTmpDir(settings.workingDir, stateInfo);
-        CHECK_OP(stateInfo, );
-    }
-
     if (!tempDir.mkpath(settings.workingDir)) {
         setError(tr("Cannot create a folder for temporary files."));
         return;
