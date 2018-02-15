@@ -3148,9 +3148,9 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     CHECK_SET_ERR(height == 16, QString("Incorrect height, expected: 16, current: %1").arg(QString::number(height)));
     GTGlobals::sleep();
 
-    //Expected state: Reference length: 11933
+    //Expected state: Reference length: 11937
     int length = GTUtilsOptionPanelMca::getLength(os);
-    CHECK_SET_ERR(length == 11933, QString("Incorrect length, expected: 11933, current: %1").arg(QString::number(length)))
+    CHECK_SET_ERR(length == 11937, QString("Incorrect length, expected: 11937, current: %1").arg(QString::number(length)))
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0034) {

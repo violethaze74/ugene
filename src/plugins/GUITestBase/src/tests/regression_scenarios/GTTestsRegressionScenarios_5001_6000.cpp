@@ -4204,7 +4204,7 @@ GUI_TEST_CLASS_DEFINITION(test_5849) {
     QLabel* selection = qobject_cast<QLabel*>(GTWidget::findWidget(os, "Selection", msaEditorStatusBar));
     CHECK_SET_ERR(selection != NULL, "Selection of MSAEditorStatusBar is NULL");
 
-    CHECK_SET_ERR(line->text() == "Ln - / 0", "Line is " + line->text());
+    CHECK_SET_ERR(line->text() == "Seq - / 0", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col - / 0", "Column is " + column->text());
     CHECK_SET_ERR(position->text() == "Pos - / -", "Position is " + position->text());
     CHECK_SET_ERR(selection->text() == "Sel none", "Selection is " + selection->text());

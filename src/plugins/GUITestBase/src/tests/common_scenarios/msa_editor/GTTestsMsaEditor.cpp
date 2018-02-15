@@ -520,20 +520,20 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
 // 2. Put cursor in 5th symbol for Tettigonia_virdissima sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
-// Expected state: coordinates in status bar Ln 4/10 Col 5/14
-    CHECK_SET_ERR(line->text() == "Ln 4 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 4/10 Col 5/14
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 5 / 14", "Column is " + column->text());
 
 // 3. Put cursor in 2nd symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(1, 8));
-// Expected state: coordinates in status bar Ln 9/10 Col 2/14
-    CHECK_SET_ERR(line->text() == "Ln 9 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 9/10 Col 2/14
+    CHECK_SET_ERR(line->text() == "Seq 9 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 2 / 14", "Column is " + column->text());
 
 // 4. Select area from 8th symbol for Tettigonia_virdissima sequence(top left corner) to 13th symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
-// Expected state: coordinates in status bar Ln 4/10 Col 8/14
-    CHECK_SET_ERR(line->text() == "Ln 4 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 4/10 Col 8/14
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 8 / 14", "Column is " + column->text());
 }
 
@@ -561,20 +561,20 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
 // CHANGES: click order changed
 // 3. Put cursor in 2nd symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(1, 8));
-// Expected state: coordinates in status bar Ln 9/10 Col 2/14
-    CHECK_SET_ERR(line->text() == "Ln 9 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 9/10 Col 2/14
+    CHECK_SET_ERR(line->text() == "Seq 9 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 2 / 14", "Column is " + column->text());
 
 // 2. Put cursor in 5th symbol for Tettigonia_virdissima sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
-// Expected state: coordinates in status bar Ln 4/10 Col 5/14
-    CHECK_SET_ERR(line->text() == "Ln 4 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 4/10 Col 5/14
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 5 / 14", "Column is " + column->text());
 
 // 4. Select area from 8th symbol for Tettigonia_virdissima sequence(top left corner) to 13th symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
-// Expected state: coordinates in status bar Ln 4/10 Col 8/14
-    CHECK_SET_ERR(line->text() == "Ln 4 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 4/10 Col 8/14
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 8 / 14", "Column is " + column->text());
 }
 
@@ -601,8 +601,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
 
 // 2. Put cursor in 5th symbol for Tettigonia_virdissima sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
-// Expected state: coordinates in status bar Ln 4/10 Col 5/14
-    CHECK_SET_ERR(line->text() == "Ln 4 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 4/10 Col 5/14
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 5 / 14", "Column is " + column->text());
 
 // CHANGES: close and open MDI window, hide projectTreeView
@@ -626,14 +626,14 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
 
 // 3. Put cursor in 2nd symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(1, 8));
-// Expected state: coordinates in status bar Ln 9/10 Col 2/14
-    CHECK_SET_ERR(line->text() == "Ln 9 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 9/10 Col 2/14
+    CHECK_SET_ERR(line->text() == "Seq 9 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 2 / 14", "Column is " + column->text());
 
 // 4. Select area from 8th symbol for Tettigonia_virdissima sequence(top left corner) to 13th symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
-// Expected state: coordinates in status bar Ln 4/10 Col 8/14
-    CHECK_SET_ERR(line->text() == "Ln 4 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 4/10 Col 8/14
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 8 / 14", "Column is " + column->text());
 }
 
@@ -2311,10 +2311,10 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) { //DIFFERENCE: Line label is tested
 //2. Select the thirs character in "Phaneroptera_falcata"(G)
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 0));
 
-//Expected state: Statistics "Ln" in right bottom is "Ln 1 / 10"
+//Expected state: Statistics "Seq" in right bottom is "Seq 1 / 10"
     QLabel* lineLabel = GTWidget::findExactWidget<QLabel *>(os, "Line");
     CHECK_SET_ERR(lineLabel, "Line label not found");
-    CHECK_SET_ERR(lineLabel->text() == "Ln 1 / 10", "Expected text: Ln 1 / 10. Found: " + lineLabel->text());
+    CHECK_SET_ERR(lineLabel->text() == "Seq 1 / 10", "Expected text: Seq 1 / 10. Found: " + lineLabel->text());
 
 //3. Select and delete 5 lines
     GTUtilsMsaEditor::selectRows(os, 3, 7);
@@ -2322,8 +2322,8 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) { //DIFFERENCE: Line label is tested
 
 //4. Select char at 4 position in "Phaneroptera_falcata"(A)
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(3, 0));
-//Expected state: Gaps are inserted, statistics "Ln" in right bottom is "Ln 1 / 5"
-    CHECK_SET_ERR(lineLabel->text() == "Ln 1 / 5", "Expected text: Ln 1 / 5. Found: " + lineLabel->text());
+//Expected state: Gaps are inserted, statistics "Seq" in right bottom is "Seq 1 / 5"
+    CHECK_SET_ERR(lineLabel->text() == "Seq 1 / 5", "Expected text: Seq 1 / 5. Found: " + lineLabel->text());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0023){
