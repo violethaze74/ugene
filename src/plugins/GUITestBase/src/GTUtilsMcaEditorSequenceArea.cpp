@@ -130,8 +130,6 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
     if (!mcaSeqArea->isPositionVisible(position.x(), false)) {
         scrollToBase(os, position.x());
     }
-
-    CHECK_SET_ERR(mcaSeqArea->isVisible(position, false), "The position is still invisible after scrolling");
 }
 #undef GT_METHOD_NAME
 
