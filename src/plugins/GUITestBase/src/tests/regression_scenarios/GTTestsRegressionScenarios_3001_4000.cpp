@@ -3651,8 +3651,8 @@ GUI_TEST_CLASS_DEFINITION(test_3557) {
     const QString secondRowName = GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(os, 2);
     const QString expectedFirstRowName = "2|1a0cA|gi|32470780";
     const QString expectedSecondRowName = "1a0cA";
-    CHECK_SET_ERR(firstRowName == expectedFirstRowName, QString("Wrong first sequence: expected '%1', got '%'2").arg(expectedFirstRowName).arg(firstRowName));
-    CHECK_SET_ERR(secondRowName == expectedSecondRowName, QString("Wrong second sequence: expected '%1', got '%'2").arg(expectedSecondRowName).arg(secondRowName));
+    CHECK_SET_ERR(firstRowName == expectedFirstRowName, QString("Wrong first sequence: expected %1, got %2").arg(expectedFirstRowName).arg(firstRowName));
+    CHECK_SET_ERR(secondRowName == expectedSecondRowName, QString("Wrong second sequence: expected %1, got %2").arg(expectedSecondRowName).arg(secondRowName));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3563_1) {
