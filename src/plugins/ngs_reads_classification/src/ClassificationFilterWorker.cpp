@@ -131,7 +131,33 @@ bool InputValidator::validate(const Actor *actor, ProblemList &problemList, cons
     }
     CHECK(missedFiles.isEmpty(), false);
 */
-    return true;
+    bool res = true;
+
+    Attribute *attr = actor->getParameter(SEQUENCING_READS);
+    QString attrName = attr->getAttributeValueWithoutScript<QString>();
+    const bool paired = attrName == PAIRED_END;
+    Port* inputPort = actor->getPort(INPUT_PORT);
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(inputPort);
+    if (input == NULL) {
+        res = false;
+        problemList.append(Problem(ClassificationFilterPrompter::tr("IntegralBusPort member is NULL"), actor->getId()));
+    }
+
+    QList<Actor*> producers = input->getProducers(LocalWorkflow::GetReadsListWorkerFactory::SE_SLOT_ID);
+    if (producers.isEmpty()) {
+        res = false;
+        problemList.append(Problem(ClassificationFilterPrompter::tr("The mandatory SE-reads slot is not connected"), actor->getId()));
+    }
+
+    if (paired) {
+        QList<Actor*> producers = input->getProducers(LocalWorkflow::GetReadsListWorkerFactory::PE_SLOT_ID);
+        if (producers.isEmpty()) {
+            res = false;
+            problemList.append(Problem(ClassificationFilterPrompter::tr("The mandatory PE slot is not connected"), actor->getId()));
+        }
+    }
+
+    return res;
 }
 
 /************************************************************************/
