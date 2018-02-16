@@ -811,8 +811,8 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0004) {
     GTUtilsProjectTreeView::dragAndDrop(os, objItem, dirItem1);
     dirItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir1");
     dirItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir2");
-    CHECK_SET_ERR(2 == model->rowCount(dirItem1), "Invalid child item count");
-    CHECK_SET_ERR(0 == model->rowCount(dirItem2), "Invalid child item count");
+    CHECK_SET_ERR(2 == model->rowCount(dirItem1), QString("Invalid child item pt0004_dir1 Expected: 2; actual: %1").arg(model->rowCount(dirItem1)));
+    CHECK_SET_ERR(0 == model->rowCount(dirItem2), QString("Invalid child item pt0004_dir2 Expected: 0; actual: %1").arg(model->rowCount(dirItem2)));
     CHECK_SET_ERR(!lt.hasError(), "errors in log");
 }
 
@@ -852,9 +852,9 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0005) {
     const QModelIndex dirItem3 = GTUtilsProjectTreeView::findIndex(os, "pt0005_dir3");
     const QModelIndex objItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0005_human_T1");
     const QModelIndex objItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0005_COI");
-    CHECK_SET_ERR(4 == model->rowCount(dirItem1), QString("Invalid child item count 1 Expected: 4; actual: %1").arg(model->rowCount(dirItem1)));
-    CHECK_SET_ERR(0 == model->rowCount(dirItem2), QString("Invalid child item count 2 Expected: 0; actual: %1").arg(model->rowCount(dirItem2)));
-    CHECK_SET_ERR(0 == model->rowCount(dirItem3), QString("Invalid child item count 3 Expected: 0; actual: %1").arg(model->rowCount(dirItem3)));
+    CHECK_SET_ERR(4 == model->rowCount(dirItem1), QString("Invalid child item count pt0005_dir1 Expected: 4; actual: %1").arg(model->rowCount(dirItem1)));
+    CHECK_SET_ERR(0 == model->rowCount(dirItem2), QString("Invalid child item count pt0005_dir2 Expected: 0; actual: %1").arg(model->rowCount(dirItem2)));
+    CHECK_SET_ERR(0 == model->rowCount(dirItem3), QString("Invalid child item count pt0005_dir3 Expected: 0; actual: %1").arg(model->rowCount(dirItem3)));
     CHECK_SET_ERR(dirItem1 == dirItem2.parent(), "Invalid parent item 1");
     CHECK_SET_ERR(dirItem1 == dirItem3.parent(), "Invalid parent item 2");
     CHECK_SET_ERR(dirItem1 == objItem1.parent(), "Invalid parent item 3");
