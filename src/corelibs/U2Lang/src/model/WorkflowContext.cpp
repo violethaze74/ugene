@@ -26,10 +26,12 @@
 #include <QTextStream>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/AppFileStorage.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/BaseTypes.h>
@@ -194,7 +196,7 @@ QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus &os) {
     if (useOutputDir()) {
         root = WorkflowSettings::getWorkflowOutputDirectory();
     } else {
-        root = QDir::currentPath();
+		root = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("");
     }
 
     // 2. Create folder if it does not exist
