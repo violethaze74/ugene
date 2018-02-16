@@ -4195,6 +4195,11 @@ GUI_TEST_CLASS_DEFINITION(test_1409){
     GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 1042, 0, true);
 //    Expected state: the clicked annotation is selected.
 
+    const QPoint pos = GTMouseDriver::getMousePosition();
+    GTMouseDriver::moveTo(QPoint(pos.x(), pos.y() - 100));
+    GTMouseDriver::click();
+    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
+
 //    3. Press F2 on the keyboard.
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, "CDS", "1042..2658"));
     GTKeyboardDriver::keyClick( Qt::Key_F2);
