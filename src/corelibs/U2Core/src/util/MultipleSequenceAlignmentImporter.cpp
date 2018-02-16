@@ -107,7 +107,7 @@ U2Msa MultipleSequenceAlignmentImporter::importMsaObject(const DbiConnection& co
     SAFE_POINT(NULL != alphabet, "The alignment alphabet is NULL during importing!", U2Msa());
 
     msa.alphabet.id = alphabet->getId();
-    msa.length = 0; // no rows added yet
+    msa.length = al->getLength();
     msa.visualName = al->getName();
     if (msa.visualName.isEmpty()) {
         QDate date = QDate::currentDate();
