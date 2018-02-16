@@ -1403,7 +1403,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042){
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Select annotation
-    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
+    GTUtilsAnnotationsTreeView::clickItem(os, "misc_feature", 1, true);
 //    Expected: annotation selected
     QString selected = GTUtilsAnnotationsTreeView::getSelectedItem(os);
     CHECK_SET_ERR(selected == "misc_feature", "Unexpected selected anntoation: " + selected);
