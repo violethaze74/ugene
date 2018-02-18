@@ -4,4 +4,4 @@ include (perf_monitor.pri)
 HEADERS += src/PerfMonitorPlugin.h src/PerfMonitorView.h
 SOURCES += src/PerfMonitorPlugin.cpp src/PerfMonitorView.cpp
 RESOURCES += perf_monitor.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts
