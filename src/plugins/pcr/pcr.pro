@@ -75,7 +75,6 @@ SOURCES += src/EditPrimerDialog.cpp \
            src/import/ImportPrimersFromFolderTask.cpp \
            src/import/ImportPrimersMultiTask.cpp \
 
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts
 
 RESOURCES += pcr.qrc
