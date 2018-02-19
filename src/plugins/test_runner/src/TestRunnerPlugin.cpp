@@ -235,6 +235,7 @@ void TestRunnerService::addTestSuite(GTestSuite *ts) {
         }
     }
     readEnvForKeys(tsEnvResultedKeys);
+    saveSuites();
 
     emit si_testSuiteAdded(ts);
 }
@@ -245,10 +246,10 @@ void TestRunnerService::removeTestSuite(GTestSuite* ts) {
 
     //todo: cleanup vars, but leave built-in
     saveEnv();
+    saveSuites();
 
     emit si_testSuiteRemoved(ts);
 }
-
 
 GTestSuite* TestRunnerService::findTestSuiteByURL(const QString& url) {
     foreach(GTestSuite* t, suites) {
