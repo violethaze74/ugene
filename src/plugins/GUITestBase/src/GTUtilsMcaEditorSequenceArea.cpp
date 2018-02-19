@@ -103,6 +103,8 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
     GT_CHECK(mcaSeqArea->isInRange(globalMaPosition), "Position is out of range");
 
     scrollToPosition(os, globalMaPosition);
+    GTGlobals::sleep();
+
     const QPoint positionCenter(mcaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(globalMaPosition.x()),
         mcaSeqArea->getEditor()->getUI()->getRowHeightController()->getRowScreenRangeByNumber(globalMaPosition.y()).center());
     GT_CHECK(mcaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
@@ -130,6 +132,8 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
     if (!mcaSeqArea->isPositionVisible(position.x(), false)) {
         scrollToBase(os, position.x());
     }
+
+    CHECK_SET_ERR(mcaSeqArea->isVisible(position, false), "The position is still invisible after scrolling");
 }
 #undef GT_METHOD_NAME
 
