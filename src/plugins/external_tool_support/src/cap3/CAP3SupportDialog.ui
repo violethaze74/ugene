@@ -155,7 +155,7 @@ p, li { white-space: pre-wrap; }
              <number>6</number>
             </property>
             <property name="maximum">
-             <number>1000</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>250</number>
@@ -184,7 +184,7 @@ p, li { white-space: pre-wrap; }
              <number>16</number>
             </property>
             <property name="maximum">
-             <number>65535</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>40</number>
@@ -204,7 +204,7 @@ p, li { white-space: pre-wrap; }
              <number>66</number>
             </property>
             <property name="maximum">
-             <number>65535</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>80</number>
@@ -243,7 +243,7 @@ p, li { white-space: pre-wrap; }
              <number>21</number>
             </property>
             <property name="maximum">
-             <number>1000</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>200</number>
@@ -279,7 +279,7 @@ p, li { white-space: pre-wrap; }
              <number>31</number>
             </property>
             <property name="maximum">
-             <number>1000</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>300</number>
@@ -305,7 +305,7 @@ p, li { white-space: pre-wrap; }
              <number>10</number>
             </property>
             <property name="maximum">
-             <number>65535</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>20</number>
@@ -325,7 +325,7 @@ p, li { white-space: pre-wrap; }
              <number>2</number>
             </property>
             <property name="maximum">
-             <number>65535</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>20</number>
@@ -374,7 +374,7 @@ p, li { white-space: pre-wrap; }
           <item row="1" column="1">
            <widget class="QSpinBox" name="mismatchScoreFactorBox">
             <property name="minimum">
-             <number>-65536</number>
+             <number>-214748364</number>
             </property>
             <property name="maximum">
              <number>-1</number>
@@ -397,7 +397,7 @@ p, li { white-space: pre-wrap; }
              <number>251</number>
             </property>
             <property name="maximum">
-             <number>1000</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>900</number>
@@ -424,7 +424,7 @@ p, li { white-space: pre-wrap; }
              <number>1</number>
             </property>
             <property name="maximum">
-             <number>100</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>6</number>
@@ -437,7 +437,7 @@ p, li { white-space: pre-wrap; }
              <number>1</number>
             </property>
             <property name="maximum">
-             <number>65535</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>2</number>
