@@ -97,6 +97,8 @@ public:
 
     static void checkSelection(GUITestOpStatus &os, const QPoint& start, const QPoint& end, const QString& expected);
 
+    static bool isAlignmentLocked(GUITestOpStatus &os);
+
     static const QString highlightningColorName;
 };
 

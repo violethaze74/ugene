@@ -664,6 +664,15 @@ void GTUtilsMSAEditorSequenceArea::checkSelection(GUITestOpStatus &os, const QPo
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "isAlignmentLocked"
+bool GTUtilsMSAEditorSequenceArea::isAlignmentLocked(GUITestOpStatus &os) {
+    MSAEditorSequenceArea* msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    GT_CHECK_RESULT(msaSeqArea != NULL, "MsaEditorSequenceArea is not found", false);
+
+    return msaSeqArea->isAlignmentLocked();
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 } // namespace

@@ -128,6 +128,7 @@
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.cpp"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
@@ -1931,6 +1932,27 @@ GUI_TEST_CLASS_DEFINITION(test_2292) {
     GTKeyboardDriver::keyClick( Qt::Key_Escape);
 
     GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_2295) {
+    //1. Open samples/APR/DNA.apr in read-only mode
+    GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
+    GTFileDialog::openFile(os, dataDir + "samples/APR/DNA.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: Alignent is locked
+    bool isLocked = GTUtilsMSAEditorSequenceArea::isAlignmentLocked(os);
+    CHECK_SET_ERR(isLocked, "Alignment is unexpectably unlocked");
+
+    //2. Export alignment to read-write format
+    GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, 0, sandBoxDir + "DNA"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_PROJECT__EXPORT_TO_AMINO_ACTION));
+    GTUtilsProjectTreeView::callContextMenu(os, "DNA.apr");
+    GTGlobals::sleep();
+
+    //Expected: Alignent is locked
+    isLocked = GTUtilsMSAEditorSequenceArea::isAlignmentLocked(os);
+    CHECK_SET_ERR(!isLocked, "Alignment is unexpectably locked");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2298) {
