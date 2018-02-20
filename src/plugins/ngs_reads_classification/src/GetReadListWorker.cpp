@@ -204,5 +204,43 @@ QString GetReadsListPrompter::composeRichDoc() {
     return tr("Read and output the files URLs.");
 }
 
+/************************************************************************/
+/* SeReadsListSplitter */
+/************************************************************************/
+const QString SeReadsListSplitter::ID = "se-reads";
+
+SeReadsListSplitter::SeReadsListSplitter()
+    : CandidatesSplitter(ID)
+{
+
+}
+
+bool SeReadsListSplitter::canSplit(const Descriptor &toDesc, DataTypePtr toDatatype) {
+    return ((BaseTypes::STRING_TYPE() == toDatatype) && (toDesc.getId() == GetReadsListWorkerFactory::SE_SLOT().getId()));
+}
+
+bool SeReadsListSplitter::isMain(const QString &candidateSlotId) {
+    return (candidateSlotId == GetReadsListWorkerFactory::SE_SLOT().getId());
+}
+
+/************************************************************************/
+/* PeReadsListSplitter */
+/************************************************************************/
+const QString PeReadsListSplitter::ID = "pe-reads";
+
+PeReadsListSplitter::PeReadsListSplitter()
+    : CandidatesSplitter(ID)
+{
+
+}
+
+bool PeReadsListSplitter::canSplit(const Descriptor &toDesc, DataTypePtr toDatatype) {
+    return ((BaseTypes::STRING_TYPE() == toDatatype) && (toDesc.getId() == GetReadsListWorkerFactory::PE_SLOT().getId()));
+}
+
+bool PeReadsListSplitter::isMain(const QString &candidateSlotId) {
+    return (candidateSlotId == GetReadsListWorkerFactory::PE_SLOT().getId());
+}
+
 } // LocalWorkflow
 } // U2

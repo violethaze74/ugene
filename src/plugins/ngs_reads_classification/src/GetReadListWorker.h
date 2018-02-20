@@ -24,6 +24,7 @@
 
 #include "NgsReadsClassificationPlugin.h"
 
+#include <U2Lang/IntegralBusUtils.h>
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
@@ -75,6 +76,31 @@ public:
     virtual Worker *createWorker(Actor *a);
 
 };
+
+class SeReadsListSplitter : public U2::Workflow::CandidatesSplitter {
+public:
+    SeReadsListSplitter();
+
+    bool canSplit(const Descriptor &toDesc, DataTypePtr toDatatype);
+
+    static const QString ID;
+
+private:
+    bool isMain(const QString &candidateSlotId);
+};
+
+class PeReadsListSplitter : public U2::Workflow::CandidatesSplitter {
+public:
+    PeReadsListSplitter();
+
+    bool canSplit(const Descriptor &toDesc, DataTypePtr toDatatype);
+
+    static const QString ID;
+
+private:
+    bool isMain(const QString &candidateSlotId);
+};
+
 
 } // LocalWorkflow
 } // U2

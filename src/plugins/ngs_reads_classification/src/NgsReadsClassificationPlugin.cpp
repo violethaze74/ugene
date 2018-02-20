@@ -85,6 +85,9 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
     LocalWorkflow::ClassificationFilterWorkerFactory::init();
     LocalWorkflow::GetReadsListWorkerFactory::init();
 
+    CandidatesSplitterRegistry::instance()->registerSplitter(new LocalWorkflow::SeReadsListSplitter());
+    CandidatesSplitterRegistry::instance()->registerSplitter(new LocalWorkflow::PeReadsListSplitter());
+
     // Pre-load taxonomy data
     U2::TaskScheduler *scheduler = U2::AppContext::getTaskScheduler( );
     CHECK( NULL != scheduler, );
@@ -92,6 +95,9 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
 }
 
 NgsReadsClassificationPlugin::~NgsReadsClassificationPlugin() {
+    CandidatesSplitterRegistry::instance()->unregisterSplitter(LocalWorkflow::SeReadsListSplitter::ID);
+    CandidatesSplitterRegistry::instance()->unregisterSplitter(LocalWorkflow::PeReadsListSplitter::ID);
+
     foreach (const QString &dataId, registeredData) {
         unregisterData(dataId);
     }

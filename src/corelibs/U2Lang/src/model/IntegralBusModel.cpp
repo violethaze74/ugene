@@ -39,19 +39,6 @@ namespace Workflow {
 /*******************************
  * IntegralBusPort
  *******************************/
-static void filterAmbiguousSlots(QList<Descriptor>& keys, const QMap<Descriptor, DataTypePtr>& map, StrStrMap& result) {
-    foreach(const Descriptor &slot, map.keys()) {
-        DataTypePtr val = map[slot];
-        const QList<Descriptor> lst = IntegralBusUtils::getSlotsByType(map, slot, val);
-        if (lst.size() != 1) {
-            foreach(Descriptor d, lst) {
-                result.insert(d.getId(), "");
-                keys.removeOne(d);
-            }
-        }
-    }
-}
-
 static Actor* getLinkedActor(ActorId id, Port* output, QList<Actor*> visitedActors) {
     if (visitedActors.contains(output->owner())) {
         return NULL;
@@ -352,7 +339,6 @@ void IntegralBusPort::setupBusMap() {
     DataTypePtr from = bindings.uniqueKeys().first()->getType();
     QList<Descriptor> keys = to->getAllDescriptors();
     StrStrMap busMap = getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
-    filterAmbiguousSlots(keys, to->getDatatypesMap(), busMap);
     foreach(const Descriptor & key, keys) {
         // FIXME: hack for not binding 'Location' slot
         // 'Location' slot should NOT be binded for any writers to avoid writing to source of data
