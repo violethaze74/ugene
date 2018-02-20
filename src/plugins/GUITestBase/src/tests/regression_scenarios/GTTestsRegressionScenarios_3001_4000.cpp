@@ -3611,7 +3611,10 @@ GUI_TEST_CLASS_DEFINITION(test_3556) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTAction::button(os, "Enable collapsing"));
 
-    GTUtilsMSAEditorSequenceArea::scrollToBottom(os);
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0dA");
+    GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ControlModifier);
+    GTGlobals::sleep();
+    //GTUtilsMSAEditorSequenceArea::scrollToBottom(os);
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0cA");
 
     const QPoint pos = GTMouseDriver::getMousePosition();
@@ -3637,11 +3640,16 @@ GUI_TEST_CLASS_DEFINITION(test_3557) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Switch on/off collapsing");
 
     //3. Select the "2|1a0cA|gi|32470780" and "1a0cA" sequences.
-    GTUtilsMSAEditorSequenceArea::scrollToBottom(os);
-    GTGlobals::sleep(500);
+    //GTUtilsMSAEditorSequenceArea::scrollToBottom(os);
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0dA");
+    GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ControlModifier);
+    GTGlobals::sleep();
 
     const int rowsCount = GTUtilsMsaEditor::getSequencesCount(os);
-    GTUtilsMsaEditor::selectRows(os, rowsCount - 2, rowsCount - 1, GTGlobals::UseMouse);
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "2|1a0cA|gi|32470780");
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0cA");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     //4. Open the "Pairwise Alignment" OP tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
