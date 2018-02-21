@@ -59,7 +59,7 @@ private:
     const QString id;
 };
 
-class CandidatesSplitterRegistry {
+class U2LANG_EXPORT CandidatesSplitterRegistry {
 public:
     ~CandidatesSplitterRegistry();
     static CandidatesSplitterRegistry * instance();
