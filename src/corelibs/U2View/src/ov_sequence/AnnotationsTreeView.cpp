@@ -1662,7 +1662,7 @@ void AnnotationsTreeView::sl_annotationClicked(AnnotationSelectionData* asd) {
         }
     }
 
-    expandItemRecursevly(item);
+    expandItemRecursevly(item->parent());
     item->setSelected(setSelected);
     annotationClicked(item, sortedAnnotationSelections, selectedRegion);
 }
@@ -1680,13 +1680,14 @@ void AnnotationsTreeView::sl_annotationDoubleClicked(AnnotationSelectionData* as
     const U2Region regionToSelect = asd->getSelectedRegions().first();
     QList<AVAnnotationItem*> annotationItems = findAnnotationItems(asd->annotation);
     foreach(AVAnnotationItem* item, annotationItems) {
-        expandItemRecursevly(item);
+        expandItemRecursevly(item->parent());
         item->setSelected(true);
         annotationDoubleClicked(item, regionToSelect);
     }
 }
 
 void AnnotationsTreeView::expandItemRecursevly(QTreeWidgetItem* item) {
+    CHECK(item != NULL, );
     QTreeWidgetItem* parent = item->parent();
     if (parent != NULL) {
         expandItemRecursevly(parent);
