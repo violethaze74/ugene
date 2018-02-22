@@ -115,7 +115,7 @@ bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, c
     const QString databaseUrl = actor->getParameter(DB_URL)->getAttributeValueWithoutScript<QString>();
     const bool doesDatabaseDirExist = QFileInfo(databaseUrl).exists();
     CHECK_EXT(doesDatabaseDirExist,
-              problemList.append(Problem(ClarkClassifyPrompter::tr("The database folder doesn't exist: %1").arg(databaseUrl), actor->getId())),
+              problemList.append(Problem(ClarkClassifyPrompter::tr("The database folder doesn't exist: %1.").arg(databaseUrl), actor->getId())),
               false);
 
     const QStringList files = QStringList() << "targets.txt" << ".custom.fileToAccssnTaxID" << ".custom.fileToTaxIDs";
@@ -129,7 +129,7 @@ bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, c
     }
 
     foreach (const QString &missedFile, missedFiles) {
-        problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory database file doesn't exist: %1").arg(missedFile), actor->getId()));
+        problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory database file doesn't exist: %1.").arg(missedFile), actor->getId()));
     }
     CHECK(missedFiles.isEmpty(), false);
 
@@ -142,14 +142,14 @@ bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, c
     QList<Actor*> producers = input->getProducers(GetReadsListWorkerFactory::SE_SLOT_ID);
     if (producers.isEmpty()) {
         res = false;
-        problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory SE-reads slot is not connected"), actor->getId()));
+        problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory \"Input URL 1\" slot is not connected."), actor->getId()));
     }
 
     if (paired) {
         QList<Actor*> producers = input->getProducers(GetReadsListWorkerFactory::PE_SLOT_ID);
         if (producers.isEmpty()) {
             res = false;
-            problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory PE slot is not connected"), actor->getId()));
+            problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory \"Input URL 2\" slot is not connected."), actor->getId()));
         }
     }
 

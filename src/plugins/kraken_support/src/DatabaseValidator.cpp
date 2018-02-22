@@ -35,7 +35,7 @@ bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, c
     const QString databaseUrl = actor->getParameter(LocalWorkflow::KrakenClassifyWorkerFactory::DATABASE_ATTR_ID)->getAttributeValueWithoutScript<QString>();
     const bool doesDatabaseDirExist = QFileInfo(databaseUrl).exists();
     CHECK_EXT(doesDatabaseDirExist,
-              problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The database folder doesn't exist"), actor->getId())),
+              problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The database folder \"%1\" doesn't exist.").arg(databaseUrl), actor->getId())),
               false);
 
     const QStringList files = QStringList() << "database.kdb"
@@ -50,7 +50,7 @@ bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, c
     }
 
     foreach (const QString &missedFile, missedFiles) {
-        problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The mandatory database file doesn't exist: %1").arg(databaseUrl + "/" + missedFile), actor->getId()));
+        problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The mandatory database file \"%1\" doesn't exist.").arg(databaseUrl + "/" + missedFile), actor->getId()));
     }
     CHECK(missedFiles.isEmpty(), false);
 
@@ -63,14 +63,14 @@ bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, c
     QList<Actor*> producers = input->getProducers(LocalWorkflow::GetReadsListWorkerFactory::SE_SLOT_ID);
     if (producers.isEmpty()) {
         res = false;
-        problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The mandatory SE-reads slot is not connected"), actor->getId()));
+        problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The mandatory \"Input URL 1\" slot is not connected."), actor->getId()));
     }
 
     if (paired) {
         QList<Actor*> producers = input->getProducers(LocalWorkflow::GetReadsListWorkerFactory::PE_SLOT_ID);
         if (producers.isEmpty()) {
             res = false;
-            problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The mandatory PE slot is not connected"), actor->getId()));
+            problemList.append(Problem(LocalWorkflow::KrakenClassifyPrompter::tr("The mandatory \"Input URL 2\" slot is not connected."), actor->getId()));
         }
     }
 

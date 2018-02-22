@@ -35,13 +35,13 @@ bool DiamondTaxonomyDataValidator::validate(const Actor *actor, ProblemList &pro
 
     U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
     CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(),
-              problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("Taxonomy data is not set"), actor->getId()), false);
+              problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("Taxonomy data is not set."), actor->getId()), false);
 
     CHECK_EXT(!taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_PROTEIN_MAP).isEmpty(),
-              problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("Taxonomy file '%1' not found").arg(NgsReadsClassificationPlugin::TAXON_PROTEIN_MAP), actor->getId()), false);
+              problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_PROTEIN_MAP), actor->getId()), false);
 
     CHECK_EXT(!taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES).isEmpty(),
-              problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("Taxonomy file '%1' not found").arg(NgsReadsClassificationPlugin::TAXON_NODES), actor->getId()), false);
+              problemList << Problem(LocalWorkflow::DiamondClassifyPrompter::tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_NODES), actor->getId()), false);
 
     return true;
 }

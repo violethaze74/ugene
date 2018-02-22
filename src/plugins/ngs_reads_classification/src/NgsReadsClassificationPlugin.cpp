@@ -65,7 +65,7 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
 
 class LoadTaxonomyTreeTask : public Task {
 public:
-    LoadTaxonomyTreeTask() : Task(NgsReadsClassificationPlugin::tr("Pre-load NCBI taxonomy data"), TaskFlag_None) {}
+    LoadTaxonomyTreeTask() : Task(NgsReadsClassificationPlugin::tr("Loading NCBI taxonomy data"), TaskFlag_None) {}
     void run() {
          LocalWorkflow::TaxonomyTree::getInstance();
     }

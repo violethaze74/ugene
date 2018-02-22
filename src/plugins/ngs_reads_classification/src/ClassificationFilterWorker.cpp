@@ -146,14 +146,14 @@ bool InputValidator::validate(const Actor *actor, ProblemList &problemList, cons
     QList<Actor*> producers = input->getProducers(LocalWorkflow::GetReadsListWorkerFactory::SE_SLOT_ID);
     if (producers.isEmpty()) {
         res = false;
-        problemList.append(Problem(ClassificationFilterPrompter::tr("The mandatory SE-reads slot is not connected"), actor->getId()));
+        problemList.append(Problem(ClassificationFilterPrompter::tr("The mandatory \"Input URL 1\" slot is not connected."), actor->getId()));
     }
 
     if (paired) {
         QList<Actor*> producers = input->getProducers(LocalWorkflow::GetReadsListWorkerFactory::PE_SLOT_ID);
         if (producers.isEmpty()) {
             res = false;
-            problemList.append(Problem(ClassificationFilterPrompter::tr("The mandatory PE slot is not connected"), actor->getId()));
+            problemList.append(Problem(ClassificationFilterPrompter::tr("The mandatory \"Input URL 2\" slot is not connected."), actor->getId()));
         }
     }
 
