@@ -149,7 +149,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         }
 
         bool ok = false;
-        QString name = QString::fromLocal8Bit(getField(line, NAME_FIELD).data());
+        QString name = QString::fromUtf8(getField(line, NAME_FIELD).data());
         if (name.isEmpty()) {
             continue;
         }
@@ -181,18 +181,17 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         if (line.isEmpty()) {
             continue;
         }
-
         const int numRows = al->getNumRows();
-        int j = i;
-        for (j; j < numRows; j++) {
-            const MultipleSequenceAlignmentRow row = al->getMsaRow(j);
-            const QByteArray rowName = row->getName().toLocal8Bit();
+        bool noHit = true;
+        for (i = 0; i < numRows; i++) {
+            const MultipleSequenceAlignmentRow row = al->getMsaRow(i);
+            const QByteArray rowName = row->getName().toUtf8();
             if (line.startsWith(rowName) && line[rowName.length()] == ' ') {
+                noHit = false;
                 break;
             }
         }
-        if (j >= numRows) {
-            i = 0;
+        if (noHit) {
             continue;
         }
         for (int q, p = line.indexOf(' ') + 1; p > 0; p = q + 1) {
@@ -201,7 +200,6 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
             al->appendChars(i, rowLens[i], subSeq.constData(), subSeq.length());
             rowLens[i] = rowLens[i] + subSeq.length();
         }
-        i++;
         ti.setProgress(io->getProgress());
     }
 
@@ -390,7 +388,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
         QList<MultipleSequenceAlignmentRow>::ConstIterator ri = rows.constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
             const MultipleSequenceAlignmentRow &row = *ri;
-            QByteArray line = uniqueRowNames[row->getRowId()].leftJustified(maxNameLen + 1).toLocal8Bit();
+            QByteArray line = uniqueRowNames[row->getRowId()].leftJustified(maxNameLen + 1).toUtf8();
 
             for (int j = 0; j < CHARS_IN_ROW && i + j < maLen; j += CHARS_IN_WORD) {
                 line += ' ';

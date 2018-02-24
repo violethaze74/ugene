@@ -114,7 +114,7 @@ static QByteArray getSequenceContent(QString string, int sequenceLength) {
     int sequenceLengthSize = QString::number(sequenceLength).size();
     int infoPos = SIZE_BEFORE_NUMBER_SEQUENCE_LENGTH + sequenceLengthSize + 1;
     QString info = string.mid(infoPos, sequenceLength);
-    QByteArray byteArrayInfo = info.toLocal8Bit();
+    QByteArray byteArrayInfo = info.toUtf8();
     return byteArrayInfo;
 }
 
@@ -188,7 +188,7 @@ void AprFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     QString bufferString(buff);
     QTextStream bufferStream(&bufferString);
     QString header = bufferStream.readLine();
-    QByteArray mainHeader = header.toLocal8Bit();
+    QByteArray mainHeader = header.toUtf8();
     if (!lineOk || !readBuffer.startsWith(mainHeader)) {
         os.setError(AprFormat::tr("Illegal header line"));
         return;
