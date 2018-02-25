@@ -2338,7 +2338,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003_1){//
 
     //setValues
     GTComboBox::setIndexWithText(os, algorithmVersion, "SW_classic");
-    GTComboBox::setIndexWithText(os, scoringMatrix, "nuc", false);
+    GTComboBox::setIndexWithText(os, scoringMatrix, "dna", false);
     GTSpinBox::setValue(os, gapOpen, 5);
     GTSpinBox::setValue(os, gapExtd, 5);
 
@@ -2361,7 +2361,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003_1){//
     CHECK_SET_ERR(l2->text() == "Isophya_altaica_EF540820", QString("unexpected seq2: %1").arg(l2->text()));
     CHECK_SET_ERR(algorithmListComboBox->currentText() == "Smith-Waterman", QString("unexpected current text").arg(algorithmListComboBox->currentText()));
     CHECK_SET_ERR(algorithmVersion->currentText() == "SW_classic", QString("unexpected algorithm: %1").arg(algorithmVersion->currentText()));
-    CHECK_SET_ERR(scoringMatrix->currentText().contains("nuc"), QString("unexpected scoring matrix").arg(scoringMatrix->currentText()));
+    CHECK_SET_ERR(scoringMatrix->currentText().contains("dna"), QString("unexpected scoring matrix").arg(scoringMatrix->currentText()));
     CHECK_SET_ERR(gapOpen->value() == 5, QString("unexpected gap open value: %1").arg(gapOpen->value()));
     CHECK_SET_ERR(gapExtd->value() == 5, QString("unexpected gap ext value: %1").arg(gapExtd->value()));
 }
