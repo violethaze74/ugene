@@ -1360,8 +1360,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0014) {
-    QString filePath = testDir + "_common_data/sanger/alignment_short.ugenedb";
-    QString fileName = "sanger_alignment.ugenedb";
+    QString filePath = testDir + "_common_data/sanger/alignment_mca_0014.ugenedb";
+    QString fileName = "alignment_mca_0014.ugenedb";
 
     //1. Copy to 'sandbox' and open alignment_short.ugenedb
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
