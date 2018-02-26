@@ -3643,7 +3643,7 @@ GUI_TEST_CLASS_DEFINITION(test_3557) {
     //GTUtilsMSAEditorSequenceArea::scrollToBottom(os);
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0dA");
     GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     const int rowsCount = GTUtilsMsaEditor::getSequencesCount(os);
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "2|1a0cA|gi|32470780");
