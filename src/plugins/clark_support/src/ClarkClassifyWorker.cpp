@@ -174,7 +174,7 @@ void ClarkClassifyWorkerFactory::init() {
                                                                                                        "See also the \"Input data\" parameter of the element."));
 //        Descriptor inD2(PAIRED_INPUT_PORT, ClarkClassifyWorker::tr("Input sequences 2"), ClarkClassifyWorker::tr("URL(s) to FASTQ or FASTA file(s) should be provided."
 //                    "<br>The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
-        Descriptor outD(OUTPUT_PORT, ClarkClassifyWorker::tr("CLARK-classified sequences"), ClarkClassifyWorker::tr("A map of sequence names with the associated taxonomy IDs, classified by CLARK."));
+        Descriptor outD(OUTPUT_PORT, ClarkClassifyWorker::tr("CLARK Classification"), ClarkClassifyWorker::tr("A map of sequence names with the associated taxonomy IDs, classified by CLARK."));
 
         Descriptor inSlot1Descriptor(GetReadsListWorkerFactory::SE_SLOT().getId(), ClarkClassifyWorker::tr("Input URL 1"), ClarkClassifyWorker::tr("Input URL 1."));
         Descriptor inSlot2Descriptor(GetReadsListWorkerFactory::PE_SLOT().getId(), ClarkClassifyWorker::tr("Input URL 2"), ClarkClassifyWorker::tr("Input URL 2."));

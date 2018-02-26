@@ -130,7 +130,7 @@ void GetReadsListWorkerFactory::init() {
             DataTypePtr outTypeSet(new MapDataType(BasePorts::OUT_TEXT_PORT_ID(), outTypeMap));
 
             portDescs << new PortDescriptor(Descriptor(OUT_PORT_ID,
-                                                       GetReadsListWorker::tr("Output SE reads or scaffolds"),
+                                                       GetReadsListWorker::tr("Output File"),
                                                        GetReadsListWorker::tr("The port outputs one or several URLs of files with NGS single-end reads or scaffolds.")), outTypeSet, false, true);
         }
 
@@ -164,7 +164,7 @@ void GetReadsListWorkerFactory::init() {
             DataTypePtr outTypeSet(new MapDataType(BasePorts::OUT_TEXT_PORT_ID(), outTypeMap));
 
             portDescs << new PortDescriptor(Descriptor(OUT_PORT_ID,
-                                                       GetReadsListWorker::tr("Output PE reads"),
+                                                       GetReadsListWorker::tr("Output File"),
                                                        GetReadsListWorker::tr("The port outputs one or several pairs of URLs of files with NGS paired-end reads.")), outTypeSet, false, true);
         }
 

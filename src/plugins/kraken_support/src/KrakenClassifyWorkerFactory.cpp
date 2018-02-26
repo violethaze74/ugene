@@ -102,7 +102,7 @@ void KrakenClassifyWorkerFactory::init() {
 //                                          KrakenClassifyPrompter::tr("Input sequences 2"),
 //                                          KrakenClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
 //                                                                     "The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Sequencing reads\" parameter of the element)."));
-        const Descriptor outPortDesc(OUTPUT_PORT_ID, KrakenClassifyPrompter::tr("Kraken-classified sequences"), KrakenClassifyPrompter::tr("A map of sequence names with the associated taxonomy IDs, classified by Kraken."));
+        const Descriptor outPortDesc(OUTPUT_PORT_ID, KrakenClassifyPrompter::tr("Kraken Classification"), KrakenClassifyPrompter::tr("A map of sequence names with the associated taxonomy IDs, classified by Kraken."));
 
         ports << new PortDescriptor(inPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
 //        ports << new PortDescriptor(inPairedPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-paired-in", inPairedType)), true /*input*/);

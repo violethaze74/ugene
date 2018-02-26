@@ -182,7 +182,7 @@ void ClassificationFilterWorkerFactory::init() {
                 ));
 //        Descriptor inD2(PAIRED_INPUT_PORT, ClassificationFilterWorker::tr("Input sequences 2"), ClassificationFilterWorker::tr("URL(s) to FASTQ or FASTA file(s) should be provided."
 //                    "<br>The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
-        Descriptor outD(OUTPUT_PORT, ClassificationFilterWorker::tr("Output classified sequences"),
+        Descriptor outD(OUTPUT_PORT, ClassificationFilterWorker::tr("Output File(s)"),
                         ClassificationFilterWorker::tr("The port outputs URLs to files with NGS reads, classified by taxon IDs: one file per each specified taxon ID per each input file (or pair of files in case of PE reads).\n\n"
                                                        "Either one (for SE reads or scaffolds) or two (for PE reads) output slots are used depending on the input data.\n\n"
                                                        "See also the \"Input data\" parameter of the element."));

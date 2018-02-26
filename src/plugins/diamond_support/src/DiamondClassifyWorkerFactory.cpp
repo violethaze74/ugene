@@ -89,7 +89,7 @@ void DiamondClassifyWorkerFactory::init() {
                                                                       "The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
 
         const Descriptor outPortDesc(OUTPUT_PORT_ID,
-                                     DiamondClassifyPrompter::tr("DIAMOND-classified sequences"),
+                                     DiamondClassifyPrompter::tr("DIAMOND Classification"),
                                      DiamondClassifyPrompter::tr("A list of sequence names with the associated taxonomy IDs, classified by DIAMOND."));
 
         ports << new PortDescriptor(inPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);

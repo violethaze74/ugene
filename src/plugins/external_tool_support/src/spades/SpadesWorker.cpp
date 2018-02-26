@@ -250,7 +250,7 @@ void SpadesWorkerFactory::init() {
         SpadesWorker::tr("Output scaffolds URL."));
 
     Descriptor outPortDesc(OUT_PORT_DESCR,
-        SpadesWorker::tr("SPAdes output data"),
+        SpadesWorker::tr("Output File"),
         SpadesWorker::tr("Output assembly files."));
 
     outTypeMap[scaffoldOutDesc] = BaseTypes::STRING_TYPE();
