@@ -92,7 +92,7 @@ void MsaEditorSimilarityColumn::setSettings(const UpdatedWidgetSettings* _settin
     const SimilarityStatisticsSettings* set= static_cast<const SimilarityStatisticsSettings*>(_settings);
     CHECK(NULL != set,);
     autoUpdate = set->autoUpdate;
-    if(curSettings.algoName != set->algoName) {
+    if (curSettings.algoId != set->algoId) {
         state = DataIsOutdated;
     }
     if(curSettings.excludeGaps != set->excludeGaps) {
@@ -175,7 +175,7 @@ CreateDistanceMatrixTask::CreateDistanceMatrixTask(const SimilarityStatisticsSet
 }
 
 void CreateDistanceMatrixTask::prepare() {
-    MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoName);
+    MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
     CHECK(NULL != factory,);
     if(s.excludeGaps){
         factory->setFlag(DistanceAlgorithmFlag_ExcludeGaps);

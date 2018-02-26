@@ -42,7 +42,7 @@ class Task;
 class SimilarityStatisticsSettings : public UpdatedWidgetSettings {
 public:
     SimilarityStatisticsSettings() : usePercents(false), excludeGaps(false){}
-    QString                         algoName;// selected algorithm
+    QString                         algoId;// selected algorithm
     bool                            usePercents;
     bool                            excludeGaps;
 };

@@ -73,7 +73,7 @@ class DistanceMatrixMSAProfileTaskSettings {
 public:
     DistanceMatrixMSAProfileTaskSettings();
 
-    QString                         algoName;    // selected algorithm
+    QString                         algoId;    // selected algorithm id
     QString                         profileName; // usually object name
     QString                         profileURL;  // document url
     MultipleSequenceAlignment                      ma;

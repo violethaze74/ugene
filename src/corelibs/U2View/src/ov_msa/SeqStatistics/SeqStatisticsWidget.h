@@ -38,7 +38,7 @@ public:
     SeqStatisticsWidget(MSAEditor* msa);
 
 private slots:
-    void sl_onAlgoChanged(const QString & text);
+    void sl_onAlgoChanged(int index);
     void sl_onGapsChanged(int state);
     void sl_onUnitsChanged(bool);
     void sl_onUpdateClicked();
