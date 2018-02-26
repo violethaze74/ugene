@@ -104,8 +104,18 @@ static QString getRowName(QString string, int sequenceLength) {
     int sequenceLengthSize = QString::number(sequenceLength).size();
     int stringLength = string.length();
     int namePos = SIZE_BEFORE_NUMBER_SEQUENCE_LENGTH + sequenceLengthSize + sequenceLength + 2;
-    int nameSize = stringLength - namePos;
-    QString name = string.mid(namePos, nameSize);
+    QString name = string.mid(namePos);
+    if (name.startsWith("\\")) {
+        const int colonNumber = name.indexOf(':');
+        if (colonNumber != -1) {
+            bool lengthToInt = false;
+            const int nameLength = name.mid(1, colonNumber - 1).toInt(&lengthToInt);
+            const QString newName = name.right(name.size() - colonNumber - 1);
+            if (lengthToInt && newName.size() == nameLength) {
+                name = newName;
+            }
+        }
+    }
     return name;
 }
 
