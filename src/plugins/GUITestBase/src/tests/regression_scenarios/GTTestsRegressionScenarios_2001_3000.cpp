@@ -2875,7 +2875,6 @@ GUI_TEST_CLASS_DEFINITION( test_2404 ) {
 */
     GTFileDialog::openFile( os, dataDir + "samples/FASTA/", "human_T1.fa" );
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
     GTUtilsOptionsPanel::runFindPatternWithHotKey("AAAAA", os);
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
@@ -2885,7 +2884,8 @@ GUI_TEST_CLASS_DEFINITION( test_2404 ) {
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
     GTWidget::showNormal(os, mw);
     GTWidget::resizeWidget(os, mw, QSize(800, 800));
-    GTGlobals::sleep();
+
+    GTGlobals::sleep(1000);
     QScrollArea* sa = qobject_cast<QScrollArea*>(GTWidget::findWidget( os, "OP_SCROLL_AREA" ));
     QScrollBar* scroll = sa->verticalScrollBar();
     CHECK_SET_ERR( scroll != NULL, "Scroll bar is NULL");
