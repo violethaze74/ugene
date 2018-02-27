@@ -44,6 +44,10 @@ public:
     QString getInfo() const;
 
     bool isFileToFileInfo() const;
+    void forceSetFileToFileInfo(bool isFileToFileInfo);
+
+private:
+    bool forcedFileToFileInfo;
 };
 
 class U2CORE_EXPORT WorkflowProcess {

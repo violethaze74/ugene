@@ -80,8 +80,8 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-const QString TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT_ID("taxonomy-classification-report");
-static const QString CLASSIFICATION_SLOT_TYPE_ID("taxonomy-classification-report-type");
+const QString TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT_ID("tax-data");
+static const QString CLASSIFICATION_SLOT_TYPE_ID("tax-classification");
 
 const TaxID TaxonomyTree::UNDEFINED_ID = (TaxID)-1;
 TaxonomyTree *TaxonomyTree::the_tree = NULL;

@@ -118,6 +118,7 @@ PLUGIN_LIST="annotator \
             umuscle \
             variants \
             weight_matrix \
+            wevote_support \
             workflow_designer"
 
 if [ "$1" == "-test" ]

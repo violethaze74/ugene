@@ -138,7 +138,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/peak2gene/Peak2GeneSupport.h \
            src/peak2gene/Peak2GeneTask.h \
            src/peak2gene/Peak2GeneWorker.h \
-           src/peak2gene/TabulatedFormatReader.h \
            src/perl/PerlSupport.h \
            src/phyml/PhyMLDialogWidget.h \
            src/phyml/PhyMLSupport.h \
@@ -189,8 +188,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/vcftools/VcfConsensusSupport.h \
            src/vcftools/VcfConsensusSupportTask.h \
            src/vcftools/VcfConsensusWorker.h \
-           src/vcfutils/VcfutilsSupport.h \
-           src/wevote/WevoteSupport.h
+           src/vcfutils/VcfutilsSupport.h
 
 FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/blast_plus/AlignToReferenceBlastDialog.ui \
@@ -353,7 +351,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/peak2gene/Peak2GeneSupport.cpp \
            src/peak2gene/Peak2GeneTask.cpp \
            src/peak2gene/Peak2GeneWorker.cpp \
-           src/peak2gene/TabulatedFormatReader.cpp \
            src/perl/PerlSupport.cpp \
            src/phyml/PhyMLDialogWidget.cpp \
            src/phyml/PhyMLSupport.cpp \
@@ -404,8 +401,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/vcftools/VcfConsensusSupport.cpp \
            src/vcftools/VcfConsensusSupportTask.cpp \
            src/vcftools/VcfConsensusWorker.cpp \
-           src/vcfutils/VcfutilsSupport.cpp \
-           src/wevote/WevoteSupport.cpp
+           src/vcfutils/VcfutilsSupport.cpp
 
 RESOURCES += external_tool_support.qrc
 TRANSLATIONS += transl/english.ts \

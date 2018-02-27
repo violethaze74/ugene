@@ -163,6 +163,7 @@ public:
     const DelegateTags &operator = (const DelegateTags &other);
 
     static const QString PLACEHOLDER_TEXT;
+    static const QString FILTER;
 
 private:
     QVariantMap tags;
