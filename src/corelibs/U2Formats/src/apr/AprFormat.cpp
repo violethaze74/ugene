@@ -102,7 +102,6 @@ static int getNumber(QString string, int startPos, U2OpStatus& os) {
 static QString getRowName(QString string, int sequenceLength) {
     string = string.simplified();
     int sequenceLengthSize = QString::number(sequenceLength).size();
-    int stringLength = string.length();
     int namePos = SIZE_BEFORE_NUMBER_SEQUENCE_LENGTH + sequenceLengthSize + sequenceLength + 2;
     QString name = string.mid(namePos);
     if (name.startsWith("\\")) {
