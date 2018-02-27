@@ -116,6 +116,7 @@ add-plugin smith_waterman
 add-plugin umuscle
 add-plugin variants
 add-plugin weight_matrix
+add-plugin wevote_support
 add-plugin workflow_designer
 
 if [ "$1" == "-test" ]

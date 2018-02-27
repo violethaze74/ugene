@@ -36,6 +36,7 @@ const QString StorageRoles::SORTED_BAM("SORTED_BAM");
 const QString StorageRoles::IMPORTED_BAM("IMPORTED_BAM");
 const QString StorageRoles::HASH("HASH");
 const QString StorageRoles::SAM_TO_BAM("SAM_TO_BAM");
+const QString StorageRoles::CUSTOM_FILE_TO_FILE("CUSTOM_FILE_TO_FILE");
 
 static const QString DB_FILE_NAME("fileinfo.ugenedb");
 static const QString WD_DIR_NAME("workflow_data");
@@ -45,13 +46,15 @@ namespace FileStorage {
 /* FileInfo */
 /************************************************************************/
 FileInfo::FileInfo(const QString &url, const QString &role, const QString &info)
-: U2Triplet(url, role, info)
+    : U2Triplet(url, role, info),
+      forcedFileToFileInfo(false)
 {
 
 }
 
 FileInfo::FileInfo(const U2Triplet &triplet)
-: U2Triplet(triplet)
+    : U2Triplet(triplet),
+      forcedFileToFileInfo(false)
 {
 
 }
@@ -65,10 +68,15 @@ QString FileInfo::getInfo() const {
 }
 
 bool FileInfo::isFileToFileInfo() const {
+    CHECK(StorageRoles::CUSTOM_FILE_TO_FILE != getRole(), true);
     CHECK(StorageRoles::SORTED_BAM != getRole(), true);
     CHECK(StorageRoles::SAM_TO_BAM != getRole(), true);
     CHECK(StorageRoles::IMPORTED_BAM != getRole(), true);
     return false;
+}
+
+void FileInfo::forceSetFileToFileInfo(bool _isFileToFileInfo) {
+    forcedFileToFileInfo = _isFileToFileInfo;
 }
 
 /************************************************************************/

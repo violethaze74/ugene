@@ -204,9 +204,10 @@ add-plugin repeat_finder
 add-plugin sitecon
 add-plugin smith_waterman
 add-plugin umuscle
-add-plugin workflow_designer
-add-plugin weight_matrix
 add-plugin variants
+add-plugin weight_matrix
+add-plugin wevote_support
+add-plugin workflow_designer
 
 if [ "$1" == "-test" ]; then
   add-plugin test_runner

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,44 +19,41 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TABULATED_FORMAT_READER_H_
-#define _U2_TABULATED_FORMAT_READER_H_
+#ifndef _U2_WEVOTE_WORKER_H_
+#define _U2_WEVOTE_WORKER_H_
 
-#include <QObject>
-#include <QStringList>
+#include <U2Lang/LocalDomain.h>
+
+#include "WevoteTask.h"
 
 namespace U2 {
+namespace LocalWorkflow {
 
-class IOAdapter;
-class U2OpStatus;
-
-class TabulatedFormatReader : public QObject {
+class WevoteWorker : public BaseWorker {
     Q_OBJECT
 public:
-    TabulatedFormatReader(U2OpStatus &os, IOAdapter *ioAdapter);
+    WevoteWorker(Actor *actor);
 
-    bool hasNextLine() const;
-    QStringList getNextLine();
-    qint64 getCurrentLineNumber() const;
+    void init();
+    Task *tick();
+    void cleanup();
 
-    const QStringList &getComments() const;
+private slots:
+    void sl_taskFinished(Task *task);
 
 private:
-    void readNextLine();
-    QString read();
-    static bool isComment(const QString &line);
-    void storeLine(const QString &line);
+    bool isReadyToRun() const;
+    bool dataFinished() const;
 
-    IOAdapter *ioAdapter;
+    WevoteTaskSettings getSettings(U2OpStatus &os);
 
-    QStringList storedLine;
-    QStringList comments;
+    IntegralBus *input;
+    IntegralBus *output;
 
-    static const int BUFFER_SIZE = 4096;
-    char buffer[BUFFER_SIZE];
-    qint64 currentLine;
+    static const QString WEVOTE_DIR;
 };
 
+}   // namespace LocalWorkflow
 }   // namespace U2
 
-#endif // _U2_TABULATED_FORMAT_READER_H_
+#endif // _U2_WEVOTE_WORKER_H_

@@ -147,7 +147,6 @@
 #include "vcftools/VcfConsensusSupport.h"
 #include "vcftools/VcfConsensusWorker.h"
 #include "vcfutils/VcfutilsSupport.h"
-#include "wevote/WevoteSupport.h"
 
 #define EXTERNAL_TOOL_SUPPORT_FACTORY_ID "ExternalToolSupport"
 #define TOOLS "tools"
@@ -449,9 +448,6 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::BUILD_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::SEARCH_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::PHMMER_TOOL));
-
-    // WEVOTE
-    etRegistry->registerEntry(new WevoteSupport());
 
     if (AppContext::getMainWindow()) {
 
