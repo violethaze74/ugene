@@ -4377,6 +4377,49 @@ GUI_TEST_CLASS_DEFINITION(test_5905) {
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "gc%", items[1]) == "35", "wrong gc percentage");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5947) {
+    
+    //    1. Open "data/samples/PDB/1CF7.PDB".
+        GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    //    2. Set focus to the first sequence.
+        GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+        
+            QLineEdit * startLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "start_edit_line", dialog));
+            //GT_CHECK(startLineEdit != NULL, "Start lineEdit is NULL");
+            GTLineEdit::setText(os, startLineEdit, "10");
+        
+            QLineEdit * endLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "end_edit_line", dialog));
+            //GT_CHECK(endLineEdit != NULL, "Start lineEdit is NULL");
+            GTLineEdit::setText(os, endLineEdit, "50");
+
+            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), "PsiPred");
+            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+
+            QTableWidget *resultsTable = GTWidget::findExactWidget<QTableWidget *>(os, "resultsTable", dialog);
+            GTGlobals::sleep();
+            CHECK_SET_ERR(resultsTable != NULL, "resultsTable is NULL");
+            const int resultsCount = resultsTable->rowCount();
+            CHECK_SET_ERR(resultsCount == 3, QString("Unexpected results count: expected %1, got %2").arg(4).arg(resultsCount));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PredictSecondaryStructureDialogFiller(os, new Scenario));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Predict secondary structure");
+    GTGlobals::sleep();
+    
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2

@@ -38,4 +38,4 @@ SOURCES += src/WeightMatrixPlugin.cpp \
            src/WMQuery.cpp
 
 RESOURCES += weight_matrix.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

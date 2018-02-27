@@ -35,4 +35,4 @@ SOURCES += src/FindRepeatsDialog.cpp \
            src/RepeatQuery.cpp \
            src/TandemQuery.cpp
 RESOURCES += repeat_finder.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

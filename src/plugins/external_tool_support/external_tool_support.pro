@@ -406,5 +406,4 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/vcfutils/VcfutilsSupport.cpp
 
 RESOURCES += external_tool_support.qrc
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts

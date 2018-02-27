@@ -99,10 +99,11 @@ PairAlign::PairAlign(MSAEditor* _msa)
 
     initLayout();
     initSaveController();
-    connectSignals();
+    
     initParameters();
-
     U2WidgetStateStorage::restoreWidgetState(savableTab);
+
+    connectSignals();
 
     checkState();
 }
@@ -122,7 +123,7 @@ bool PairAlign::isValidSequenceId(qint64 sequenceId) const {
 }
 
 void PairAlign::initParameters() {
-    if (2 == msa->getCurrentSelection().height()) {
+    if (msa->getCurrentSelection().height() == 2) {
         int selectionPos = msa->getCurrentSelection().y();
         qint64 firstRowId = msa->getRowByLineNumber(selectionPos)->getRowId();
         firstSeqSelectorWC->setSequenceId(firstRowId);
@@ -149,10 +150,17 @@ void PairAlign::initParameters() {
     SAFE_POINT(par != NULL, "AlignmentAlgorithmsRegistry is NULL.", );
     QStringList algList = par->getAvailableAlgorithmIds(PairwiseAlignment);
     algorithmListComboBox->addItems(algList);
-    int index = algorithmListComboBox->findText(pairwiseAlignmentWidgetsSettings->algorithmName);
-    if (index != -1) {
-        algorithmListComboBox->setCurrentIndex(index);
+    if (pairwiseAlignmentWidgetsSettings->algorithmName.isEmpty()) {
+        pairwiseAlignmentWidgetsSettings->algorithmName = algList[0];
+    } else {
+        int index = algorithmListComboBox->findText(pairwiseAlignmentWidgetsSettings->algorithmName);
+        if (index != -1) {
+            algorithmListComboBox->setCurrentIndex(index);
+        } else {
+            pairwiseAlignmentWidgetsSettings->algorithmName = algList[0];
+        }
     }
+    sl_algorithmSelected(pairwiseAlignmentWidgetsSettings->algorithmName);
 
     lblMessage->setStyleSheet(
         "color: " + L10N::errorColorLabelStr() + ";"
@@ -220,19 +228,18 @@ void PairAlign::sl_checkState(){
 void PairAlign::sl_alignmentChanged() {
     const DNAAlphabet* dnaAlphabet = msa->getMaObject()->getAlphabet();
     SAFE_POINT(NULL != dnaAlphabet, "Alignment alphabet is not defined.", );
-    if(dnaAlphabet->getId() != pairwiseAlignmentWidgetsSettings->customSettings.value(PairwiseAlignmentTaskSettings::ALPHABET, "").toString()) {
-        pairwiseAlignmentWidgetsSettings->customSettings.insert("alphabet", dnaAlphabet->getId());
+    
+    pairwiseAlignmentWidgetsSettings->customSettings.insert("alphabet", dnaAlphabet->getId());
 
-        QString curAlgorithmId = pairwiseAlignmentWidgetsSettings->algorithmName;
-        AlignmentAlgorithm* alg = getAlgorithmById(curAlgorithmId);
-        SAFE_POINT(NULL != alg, QString("Algorithm %1 not found.").arg(curAlgorithmId), );
-        alphabetIsOk = alg->checkAlphabet(dnaAlphabet);
+    QString curAlgorithmId = pairwiseAlignmentWidgetsSettings->algorithmName;
+    AlignmentAlgorithm* alg = getAlgorithmById(curAlgorithmId);
+    SAFE_POINT(NULL != alg, QString("Algorithm %1 not found.").arg(curAlgorithmId), );
+    alphabetIsOk = alg->checkAlphabet(dnaAlphabet);
 
-        if(NULL != settingsWidget) {
-            settingsWidget->updateWidget();
-        }
-        checkState();
+    if (settingsWidget != NULL) {
+        settingsWidget->updateWidget();
     }
+    checkState();
 }
 
 void PairAlign::checkState() {
@@ -366,13 +373,11 @@ void PairAlign::sl_alignButtonPressed() {
     DbiConnection con(msaRef.dbiRef, os);
     CHECK_OP(os, );
 
-    U2DataId firstSeqId = getSequenceIdByRowId(msa,
-        pairwiseAlignmentWidgetsSettings->firstSequenceId, os);
+    U2DataId firstSeqId = getSequenceIdByRowId(msa, pairwiseAlignmentWidgetsSettings->firstSequenceId, os);
     CHECK_OP(os, );
     U2EntityRef firstSequenceRef = U2EntityRef(msaRef.dbiRef, firstSeqId);
 
-    U2DataId secondSeqId = getSequenceIdByRowId(msa,
-        pairwiseAlignmentWidgetsSettings->secondSequenceId, os);
+    U2DataId secondSeqId = getSequenceIdByRowId(msa, pairwiseAlignmentWidgetsSettings->secondSequenceId, os);
     CHECK_OP(os, );
     U2EntityRef secondSequenceRef = U2EntityRef(msaRef.dbiRef, secondSeqId);
 

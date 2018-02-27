@@ -16,5 +16,4 @@ SOURCES += src/GTestScriptWrapper.cpp \
            src/TestViewReporter.cpp \
            src/ExcludeReasonDialog.cpp
 RESOURCES += test_runner.qrc
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts

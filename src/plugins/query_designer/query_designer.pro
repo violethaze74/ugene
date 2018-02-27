@@ -45,4 +45,4 @@ SOURCES += src/QueryDesignerPlugin.cpp \
            src/library/QDGcContentActor.cpp
 
 RESOURCES += query_designer.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

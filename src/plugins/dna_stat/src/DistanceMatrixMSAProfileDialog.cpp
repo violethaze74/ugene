@@ -60,8 +60,10 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Generate"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    QStringList algo = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds();
-    algoCombo->addItems(algo);
+    QList<MSADistanceAlgorithmFactory*> algos = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactories();
+    foreach(MSADistanceAlgorithmFactory* a, algos) {
+        algoCombo->addItem(a->getName(), a->getId());    
+    }
 
     MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj != NULL) {
@@ -113,7 +115,7 @@ void DistanceMatrixMSAProfileDialog::accept() {
     s.profileName = msaObj->getGObjectName();
     s.profileURL = msaObj->getDocument()->getURLString();
     s.usePercents = percentsRB->isChecked();
-    s.algoName = algoCombo->currentText();
+    s.algoId = algoCombo->currentData().toString();
     s.ma = msaObj->getMsaCopy();
     s.excludeGaps = checkBox->isChecked();
     s.showGroupStatistic = groupStatisticsCheck->isChecked();
@@ -154,7 +156,7 @@ DistanceMatrixMSAProfileTask::DistanceMatrixMSAProfileTask(const DistanceMatrixM
 }
 
 void DistanceMatrixMSAProfileTask::prepare() {
-    MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoName);
+    MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
     if(s.excludeGaps){
         factory->setFlag(DistanceAlgorithmFlag_ExcludeGaps);
     }else{

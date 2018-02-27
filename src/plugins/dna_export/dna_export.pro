@@ -76,4 +76,4 @@ SOURCES += src/CSVColumnConfigurationDialog.cpp \
            src/tasks/ConvertMca2MsaTask.cpp \
            src/tasks/ExportMca2MsaTask.cpp
 
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

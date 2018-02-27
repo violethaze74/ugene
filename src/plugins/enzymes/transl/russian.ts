@@ -699,12 +699,12 @@ Choose another region.</translation>
     <message>
         <location filename="../src/DigestSequenceDialog.cpp" line="63"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/DigestSequenceDialog.cpp" line="64"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/DigestSequenceDialog.cpp" line="126"/>
@@ -790,12 +790,12 @@ Choose another region.</translation>
     <message>
         <location filename="../src/EditFragmentDialog.cpp" line="48"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/EditFragmentDialog.cpp" line="49"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/EditFragmentDialog.cpp" line="134"/>
@@ -966,12 +966,12 @@ To start ligation create a project or open an existing.</source>
     <message>
         <location filename="../src/EnzymesQuery.cpp" line="144"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/EnzymesQuery.cpp" line="145"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -1090,12 +1090,12 @@ To start ligation create a project or open an existing.</source>
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="520"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="521"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="552"/>

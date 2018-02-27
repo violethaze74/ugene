@@ -31,7 +31,6 @@ MSADistanceAlgorithmFactoryHamming::MSADistanceAlgorithmFactoryHamming(QObject* 
 
 }
 
-
 QString MSADistanceAlgorithmFactoryHamming::getDescription() const {
     return tr("Based on Hamming distance between two sequences");
 }

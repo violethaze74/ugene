@@ -94,7 +94,7 @@ void MsaEditorWgt::showSimilarity() {
     if(NULL == similarityStatistics) {
         SimilarityStatisticsSettings settings;
         settings.ma = getEditor()->getMaObject();
-        settings.algoName = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds().at(0);
+        settings.algoId = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds().at(0);
         settings.ui = this;
 
         dataList = new MsaEditorSimilarityColumn(this, new QScrollBar(Qt::Horizontal), &settings);
