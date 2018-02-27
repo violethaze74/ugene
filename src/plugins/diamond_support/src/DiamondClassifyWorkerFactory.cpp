@@ -31,6 +31,7 @@
 #include "DiamondClassifyWorkerFactory.h"
 #include "DiamondSupport.h"
 #include "DiamondTaxonomyDataValidator.h"
+#include "../../ngs_reads_classification/src/GetReadListWorker.h"
 #include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
@@ -61,7 +62,7 @@ Worker *DiamondClassifyWorkerFactory::createWorker(Actor *actor) {
 void DiamondClassifyWorkerFactory::init() {
     QList<PortDescriptor *> ports;
     {
-        const Descriptor inSlotDesc(BaseSlots::URL_SLOT().getId(),
+        const Descriptor inSlotDesc(GetReadsListWorkerFactory::SE_SLOT().getId(),
                                     DiamondClassifyPrompter::tr("Input URL"),
                                     DiamondClassifyPrompter::tr("Input URL."));
 
