@@ -153,7 +153,11 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
     CHECK_SET_ERR(items.size() == 4, QString("Incorect size of CDS items in the tree, expcted: 4, current: %1").arg(items.size()));
     CHECK_SET_ERR(items[2]->isSelected(), "Item is not selected");
-    CHECK_SET_ERR(items[2]->isExpanded(), "Item is not expanded");
+    QTreeWidgetItem* par = items[2]->parent();
+    while (par != NULL) {
+        CHECK_SET_ERR(par->isExpanded(), "Item is not expanded");
+        par = par->parent();
+    }
 
     //3. Click on the "Zoom In" button in the Zoom View left toolbar.
     QAction* zoom = GTAction::findActionByText(os, "Zoom In");
@@ -629,7 +633,11 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
     QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
     CHECK_SET_ERR(items.size() == 4, QString("Incorect size of CDS items in the tree, expcted: 4, current: %1").arg(items.size()));
     CHECK_SET_ERR(items[2]->isSelected(), "Item is not selected");
-    CHECK_SET_ERR(items[2]->isExpanded(), "Item is not expanded");
+    QTreeWidgetItem* par = items[2]->parent();
+    while (par != NULL) {
+        CHECK_SET_ERR(par->isExpanded(), "Item is not expanded");
+        par = par->parent();
+    }
 
     //3. Click on the "Zoom In" button in the Zoom View left toolbar.
     QAction* zoom = GTAction::findActionByText(os, "Zoom In");
