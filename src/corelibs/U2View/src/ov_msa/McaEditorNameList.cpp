@@ -57,7 +57,7 @@ U2Region McaEditorNameList::getSelection() const {
     return localSelection;
 }
 
-void McaEditorNameList::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection &oldSelection) {
+void McaEditorNameList::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection & /*oldSelection*/) {
     setSelection(current.y(), current.height());
     sl_updateActions();
 }

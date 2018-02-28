@@ -134,7 +134,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx) : ctx(_ctx), dn
 
     connect(tree, SIGNAL(itemEntered(QTreeWidgetItem*, int)), SLOT(sl_itemEntered(QTreeWidgetItem*, int)));
     connect(tree, SIGNAL(itemClicked(QTreeWidgetItem*, int)), SLOT(sl_itemClicked(QTreeWidgetItem*, int)));
-    connect(tree, SIGNAL(itemPressed(QTreeWidgetItem*, int)), SLOT(sl_itemPressed(QTreeWidgetItem*, int)));
+    connect(tree, SIGNAL(itemPressed(QTreeWidgetItem*, int)), SLOT(sl_itemPressed(QTreeWidgetItem*)));
     connect(tree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), SLOT(sl_itemDoubleClicked(QTreeWidgetItem*, int)));
     connect(tree, SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(sl_itemExpanded(QTreeWidgetItem*)));
 
@@ -1602,7 +1602,7 @@ void AnnotationsTreeView::sl_itemClicked(QTreeWidgetItem *i, int column) {
     }
 }
 
-void AnnotationsTreeView::sl_itemPressed(QTreeWidgetItem *i, int column) {
+void AnnotationsTreeView::sl_itemPressed(QTreeWidgetItem *i) {
     AVItem *item = static_cast<AVItem *>(i);
 
     if (item->type == AVItemType_Annotation) {

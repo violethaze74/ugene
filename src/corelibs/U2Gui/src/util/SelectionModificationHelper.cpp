@@ -100,7 +100,7 @@ SelectionModificationHelper::MovableSide SelectionModificationHelper::getMovable
 }
 
 
-SelectionModificationHelper::MovableSide SelectionModificationHelper::getMovableSide(const double arcsinCurrent, const int startBase, const int endBase, const double rotationDegree, const int sequenceLength) {
+SelectionModificationHelper::MovableSide SelectionModificationHelper::getMovableSide(const double arcsinCurrent, const int startBase, const int endBase, const int sequenceLength) {
     double asinStart = 0;
     double asinEnd = 0;
     int selectionSize = endBase - startBase;
@@ -174,8 +174,8 @@ Qt::CursorShape SelectionModificationHelper::getCursorShape(const SelectionModif
     return newShape;
 }
 
-Qt::CursorShape SelectionModificationHelper::getCursorShape(const double arcsinCurrent, const int startBase, const int endBase, const double rotationDegree, const int sequenceLength) {
-    if (getMovableSide(arcsinCurrent, startBase, endBase, rotationDegree, sequenceLength) != NoMovableBorder) {
+Qt::CursorShape SelectionModificationHelper::getCursorShape(const double arcsinCurrent, const int startBase, const int endBase, const int sequenceLength) {
+    if (getMovableSide(arcsinCurrent, startBase, endBase, sequenceLength) != NoMovableBorder) {
         return getCursorShape(arcsinCurrent);
     }
 
@@ -312,7 +312,7 @@ QRect SelectionModificationHelper::getNewSelectionForCornerMoving(MovableSide& c
     return resultSelection;
 }
 
-QList<U2Region> SelectionModificationHelper::getNewSelection(MovableSide& board, const double mouseAngle, const double rotationDegree, const int sequenceLength, const int startBase, const int endBase, bool& isTwoRegions, const bool isTwoPartsLastSelecton) {
+QList<U2Region> SelectionModificationHelper::getNewSelection(MovableSide& board, const double mouseAngle, const double rotationDegree, const int sequenceLength, const int startBase, const int endBase, bool& isTwoRegions) {
     double currentAngle = 180 * GRADUATION * mouseAngle / PI;
     currentAngle -= rotationDegree * GRADUATION;
     if (currentAngle < 0) {

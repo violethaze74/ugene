@@ -128,7 +128,7 @@ void GTUtilsMSAEditorSequenceArea::selectArea(GUITestOpStatus &os, QPoint p1, QP
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "cancelSelection"
-void GTUtilsMSAEditorSequenceArea::cancelSelection(GUITestOpStatus &os) {
+void GTUtilsMSAEditorSequenceArea::cancelSelection(GUITestOpStatus & /*os*/) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 #undef GT_METHOD_NAME

@@ -1521,7 +1521,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<QScrollBar*> list = pan->findChildren<QScrollBar*>();
-    QScrollBar* vertical;
+    QScrollBar* vertical = NULL;
     foreach (QScrollBar* b, list) {
         if(b->orientation() == Qt::Vertical){
             vertical = b;

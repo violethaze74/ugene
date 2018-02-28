@@ -577,9 +577,6 @@ void MaEditorNameList::wheelEvent(QWheelEvent *we) {
 
 void MaEditorNameList::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev)
 {
-    Q_UNUSED(current);
-    Q_UNUSED(prev);
-
     if (current.y() == prev.y() && current.height() == prev.height()) {
         return;
     }

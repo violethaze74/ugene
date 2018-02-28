@@ -1072,6 +1072,8 @@ bool TaskThread::event(QEvent *event) {
     case QEvent::Timer:
         timerEvent = dynamic_cast<QTimerEvent *>(event);
         assert(NULL != timerEvent);
+        Q_UNUSED(timerEvent);
+
         if(ti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && (ti->task->isCanceled()
             || ti->task->hasError()))
         {

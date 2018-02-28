@@ -137,7 +137,7 @@ private slots:
 
     void sl_itemEntered(QTreeWidgetItem *i, int column);
     void sl_itemClicked(QTreeWidgetItem *item, int column);
-    void sl_itemPressed(QTreeWidgetItem *item, int column);
+    void sl_itemPressed(QTreeWidgetItem *item);
     void sl_itemDoubleClicked (QTreeWidgetItem *item, int column);
     void sl_itemExpanded(QTreeWidgetItem *);
 

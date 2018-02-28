@@ -362,13 +362,19 @@ QString MonitorUtils::toSlashedUrl(const QString &url) {
 
 namespace {
 
+class Registrator {
+    static const bool isMetaRegistered;
+};
+
 static bool registerMeta() {
     qRegisterMetaType<Monitor::TaskState>("Monitor::TaskState");
     return true;
 }
-static const bool isMetaRegistered = registerMeta();
+
+const bool Registrator::isMetaRegistered = registerMeta();
 
 }
+
 
 /************************************************************************/
 /* WDListener */

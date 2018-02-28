@@ -117,6 +117,8 @@ private:
     QList<AnnotationGroup *>        subgroups;
     QList<Annotation *>             annotations;
     QHash<U2DataId, Annotation *>   annotationById;
+
+    static const bool annotationGroupMetaRegistered;
 };
 
 } // namespace U2

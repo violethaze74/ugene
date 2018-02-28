@@ -3662,19 +3662,19 @@ GUI_TEST_CLASS_DEFINITION(test_5773) {
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(100);
-    
+
     GTUtilsProjectTreeView::filterProject(os, "GTTCTCGGG");
 
     GTUtilsProjectTreeView::checkFilteredGroup(os, "Sanger read content", QStringList(),
         QStringList() << "Aligned reads" << "ugene_gui_test", QStringList() << "HIV-1.aln");
-    
+
     GTUtilsProjectTreeView::checkFilteredGroup(os, "Sanger reference content", QStringList(),
         QStringList() << "Aligned reads" << "ugene_gui_test", QStringList() << "HIV-1.aln");
 
     GTUtilsProjectTreeView::filterProject(os, "KM0");
     GTUtilsProjectTreeView::checkFilteredGroup(os, "Sanger reference name", QStringList(),
         QStringList() << "Aligned reads" << "ugene_gui_test", QStringList() << "HIV-1.aln");
-    
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5786_1) {
@@ -4376,24 +4376,24 @@ GUI_TEST_CLASS_DEFINITION(test_5905) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5947) {
-    
+
     //    1. Open "data/samples/PDB/1CF7.PDB".
         GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
         GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     //    2. Set focus to the first sequence.
         GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
-    
+
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-        
+
             QLineEdit * startLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "start_edit_line", dialog));
             //GT_CHECK(startLineEdit != NULL, "Start lineEdit is NULL");
             GTLineEdit::setText(os, startLineEdit, "10");
-        
+
             QLineEdit * endLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "end_edit_line", dialog));
             //GT_CHECK(endLineEdit != NULL, "Start lineEdit is NULL");
             GTLineEdit::setText(os, endLineEdit, "50");
@@ -4415,7 +4415,7 @@ GUI_TEST_CLASS_DEFINITION(test_5947) {
     GTUtilsDialog::waitForDialog(os, new PredictSecondaryStructureDialogFiller(os, new Scenario));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Predict secondary structure");
     GTGlobals::sleep();
-    
+
 }
 
 } // namespace GUITest_regression_scenarios

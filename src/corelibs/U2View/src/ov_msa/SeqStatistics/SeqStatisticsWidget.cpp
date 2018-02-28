@@ -111,7 +111,7 @@ void SeqStatisticsWidget::updateWidgetsSettings(){
 }
 
 void SeqStatisticsWidget::connectSlots() {
-    connect(ui.algoComboBox,             SIGNAL(currentIndexChanged(int)),  SLOT(sl_onAlgoChanged(int)));
+    connect(ui.algoComboBox,             SIGNAL(currentIndexChanged(int)),              SLOT(sl_onAlgoChanged()));
     connect(ui.excludeGapsCheckBox,      SIGNAL(stateChanged (int)),                    SLOT(sl_onGapsChanged(int)));
     connect(ui.countsButton,             SIGNAL(clicked(bool)),                         SLOT(sl_onUnitsChanged(bool)));
     connect(ui.percentsButton,           SIGNAL(clicked(bool)),                         SLOT(sl_onUnitsChanged(bool)));
@@ -143,7 +143,7 @@ void SeqStatisticsWidget::restoreSettings() {
     }
 }
 
-void SeqStatisticsWidget::sl_onAlgoChanged(int index) {
+void SeqStatisticsWidget::sl_onAlgoChanged() {
     settings->algoId = ui.algoComboBox->currentData().toString();
     msaUI->setSimilaritySettings(settings);
 }

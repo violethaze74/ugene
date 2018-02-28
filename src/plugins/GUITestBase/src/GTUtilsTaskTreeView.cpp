@@ -85,7 +85,7 @@ void GTUtilsTaskTreeView::openView(HI::GUITestOpStatus& os) {
     }
 }
 
-void GTUtilsTaskTreeView::toggleView(HI::GUITestOpStatus& os) {
+void GTUtilsTaskTreeView::toggleView(HI::GUITestOpStatus& /*os*/) {
     GTKeyboardDriver::keyClick('2', Qt::AltModifier);
 }
 

@@ -64,7 +64,7 @@ private:
     QByteArray toProductSequence(const QByteArray &targetSequence) const;
     void addProductAnnotations(AnnotationTableObject *targetObject, const U2EntityRef &annsRef) const;
 
-    static SharedAnnotationData getPrimerAnnotation(const QByteArray &primer, int matchLengh, U2Strand::Direction strand, int sequenceLength);
+    static SharedAnnotationData getPrimerAnnotation(int matchLengh, U2Strand::Direction strand, int sequenceLength);
 
 private:
     InSilicoPcrProduct product;

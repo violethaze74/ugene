@@ -189,7 +189,7 @@ private slots:
 
 private:
     void setBorderCursor(const QPoint& p);
-    void moveBorder(const Qt::CursorShape shape, const QPoint& p);
+    void moveBorder(const QPoint& p);
 
     int shiftRegion(int shift);
     QList<U2MsaGap> findRemovableGapColumns(int& shift);

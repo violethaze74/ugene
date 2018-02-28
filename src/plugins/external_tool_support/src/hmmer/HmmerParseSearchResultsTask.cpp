@@ -58,6 +58,7 @@ void HmmerParseSearchResultsTask::run() {
     while (!ioAdapter->isEof()) {
         qint64 bytesRead = ioAdapter->readLine(buff.data(), BUFF_SIZE);
         assert(bytesRead < BUFF_SIZE);
+        Q_UNUSED(bytesRead);
 
         QString readData(buff.data());
 

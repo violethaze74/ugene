@@ -61,7 +61,7 @@ public:
 
     virtual void adjustReferenceLength(U2OpStatus& os);
 
-    const MaAmbiguousCharactersController * const getAmbiguousCharactersController() const;
+    MaAmbiguousCharactersController * getAmbiguousCharactersController() const;
 
     QMenu *getTraceActionsMenu() const;
     QAction *getIncreasePeaksHeightAction() const;

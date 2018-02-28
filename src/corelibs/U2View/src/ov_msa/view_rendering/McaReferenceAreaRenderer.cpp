@@ -52,7 +52,7 @@ qint64 McaReferenceAreaRenderer::getMinimumHeight() const {
     return commonMetrics.lineHeight;
 }
 
-float McaReferenceAreaRenderer::posToXCoordF(const qint64 position, const QSize &/*canvasSize*/, const U2Region &visibleRange) const {
+float McaReferenceAreaRenderer::posToXCoordF(const qint64 position, const QSize & /*canvasSize*/, const U2Region & /*visibleRange*/) const {
     const int baseCenterX = maEditor->getUI()->getBaseWidthController()->getBaseScreenRange(position).center();
     const int columnWidth = maEditor->getUI()->getBaseWidthController()->getBaseWidth();
     return baseCenterX - columnWidth / 2;

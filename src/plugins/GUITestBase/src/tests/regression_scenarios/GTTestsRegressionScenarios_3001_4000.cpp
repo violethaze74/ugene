@@ -3645,7 +3645,7 @@ GUI_TEST_CLASS_DEFINITION(test_3557) {
     GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const int rowsCount = GTUtilsMsaEditor::getSequencesCount(os);
+//    const int rowsCount = GTUtilsMsaEditor::getSequencesCount(os);
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "2|1a0cA|gi|32470780");
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0cA");

@@ -25,7 +25,7 @@ namespace U2 {
 
 OutputCollector::OutputCollector() : ExternalToolListener(), firstLineSkipped(false) {}
 
-void OutputCollector::addNewLogMessage(const QString& message, int messageType) {
+void OutputCollector::addNewLogMessage(const QString& message, int /*messageType*/) {
     //skip first line of the output with tool calling string
     if (collectedLog.isEmpty() && !firstLineSkipped) {
         firstLineSkipped = true;

@@ -149,7 +149,11 @@ bool registerDataId() {
     return true;
 }
 
-bool u2DataIdRegistered = registerDataId();
+class Registrator {
+    static const bool u2DataIdRegistered;
+};
+
+const bool Registrator::u2DataIdRegistered = registerDataId();
 
 }
 

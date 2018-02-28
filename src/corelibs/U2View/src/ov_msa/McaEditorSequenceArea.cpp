@@ -149,7 +149,7 @@ void McaEditorSequenceArea::adjustReferenceLength(U2OpStatus& os) {
     }
 }
 
-const MaAmbiguousCharactersController * const McaEditorSequenceArea::getAmbiguousCharactersController() const {
+MaAmbiguousCharactersController *McaEditorSequenceArea::getAmbiguousCharactersController() const {
     return ambiguousCharactersController;
 }
 
@@ -279,7 +279,7 @@ void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
     sl_completeUpdate();
 }
 
-void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
+void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView * /*v*/, QToolBar *t) {
     if (scaleAction != NULL) {
         t->addAction(scaleAction);
     } else {

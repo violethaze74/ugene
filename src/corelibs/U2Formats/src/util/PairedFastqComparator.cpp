@@ -120,7 +120,7 @@ void PairedFastqComparator::compare(U2OpStatus &os) {
     out_2->close();
 }
 
-void PairedFastqComparator::dropUntilItem(U2OpStatus& os, QList<FastqSequenceInfo>& list, const FastqSequenceInfo& untilItem) {
+void PairedFastqComparator::dropUntilItem(U2OpStatus& /*os*/, QList<FastqSequenceInfo>& list, const FastqSequenceInfo& untilItem) {
     CHECK(!list.isEmpty(), );
 
     FastqSequenceInfo item;

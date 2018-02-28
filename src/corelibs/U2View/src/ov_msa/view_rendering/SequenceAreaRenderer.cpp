@@ -58,9 +58,8 @@ bool SequenceAreaRenderer::drawContent(QPainter &painter, const U2Region &region
     //Use dots to draw regions, which are similar to reference sequence
     highlightingScheme->setUseDots(seqAreaWgt->getUseDotsCheckedState());
 
-    int rowHeight = 0;
     foreach (const int rowIndex, seqIdx) {
-        rowHeight = drawRow(painter, ma, rowIndex, region, xStart, yStart);
+        drawRow(painter, ma, rowIndex, region, xStart, yStart);
         yStart += ui->getRowHeightController()->getRowHeight(rowIndex);
     }
 

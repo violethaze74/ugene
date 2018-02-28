@@ -626,7 +626,7 @@ void GTUtilsProjectTreeView::dragAndDropSeveralElements(HI::GUITestOpStatus &os,
 }
 #undef GT_METHOD_NAME
 
-void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus &os, const QPoint &enterPos, const QPoint &dropPos) {
+void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus & /*os*/, const QPoint &enterPos, const QPoint &dropPos) {
     GTMouseDriver::dragAndDrop(enterPos, dropPos);
     GTGlobals::sleep(1000);
 }

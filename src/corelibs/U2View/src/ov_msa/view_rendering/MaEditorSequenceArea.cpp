@@ -1091,7 +1091,7 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
             const double baseWidth = ui->getBaseWidthController()->getBaseWidth();
             const double baseHeight = ui->getRowHeightController()->getSequenceHeight();
             movableBorder = SelectionModificationHelper::getMovableSide(shape, globalMousePosition, selection.getRect(), QSize(baseWidth, baseHeight));
-            moveBorder(shape, pos);
+            moveBorder(pos);
         } else if (!shifting) {
             selecting = true;
             rubberBandOrigin = e->pos();
@@ -1166,7 +1166,7 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
 
         Qt::CursorShape shape = cursor().shape();
         if (shape != Qt::ArrowCursor) {
-            moveBorder(shape, p);
+            moveBorder(p);
         } else if (shifting && editingEnabled) {
             shiftSelectedRegion(newCurPos.x() - cursorPos.x());
         } else if (selecting) {
@@ -1184,7 +1184,7 @@ void MaEditorSequenceArea::setBorderCursor(const QPoint& p) {
     setCursor(SelectionModificationHelper::getCursorShape(globalMousePos, selection.getRect(), ui->getBaseWidthController()->getBaseWidth(), ui->getRowHeightController()->getSequenceHeight()));
 }
 
-void MaEditorSequenceArea::moveBorder(const Qt::CursorShape shape, const QPoint& screenMousePos) {
+void MaEditorSequenceArea::moveBorder(const QPoint& screenMousePos) {
     CHECK(movableBorder != SelectionModificationHelper::NoMovableBorder, );
 
     QPoint globalMousePos = ui->getScrollController()->getGlobalMousePosition(screenMousePos);

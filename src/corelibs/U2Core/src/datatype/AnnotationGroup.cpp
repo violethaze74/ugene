@@ -368,8 +368,9 @@ bool registerAnnotationGroupMeta() {
     qRegisterMetaType<AnnotationGroup>("AnnotationGroup");
     return true;
 }
-static const bool annotationGroupMetaRegistered = registerAnnotationGroupMeta();
 
 }
+
+const bool AnnotationGroup::annotationGroupMetaRegistered = registerAnnotationGroupMeta();
 
 } // namespace U2

@@ -37,7 +37,7 @@ public:
     U2Region getSelection() const;
 
 protected slots:
-    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& oldSelection);
+    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection &oldSelection);
 
 private slots:
     void sl_clearSelection();

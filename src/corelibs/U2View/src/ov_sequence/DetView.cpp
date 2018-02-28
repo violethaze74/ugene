@@ -468,14 +468,8 @@ void DetView::uncheckAllTranslations() {
 
 void DetView::setSelectedTranslations() {
     if ((ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection)) {
-        int symbolsPerLine = getSymbolsPerLine();
-        U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
-
         uncheckAllTranslations();
-        do {
-            updateTranslationsState(oneLineRegion);
-            oneLineRegion.startPos += symbolsPerLine;
-        } while (oneLineRegion.startPos < visibleRange.endPos());
+        updateTranslationsState();
     }
 
     getDetViewRenderArea()->getRenderer()->update();
@@ -484,12 +478,12 @@ void DetView::setSelectedTranslations() {
     completeUpdate();
 }
 
-void DetView::updateTranslationsState(const U2Region& visibleRange) {
-    updateTranslationsState(visibleRange, U2Strand::Direct);
-    updateTranslationsState(visibleRange, U2Strand::Complementary);
+void DetView::updateTranslationsState() {
+    updateTranslationsState(U2Strand::Direct);
+    updateTranslationsState(U2Strand::Complementary);
 }
 
-void DetView::updateTranslationsState(const U2Region& visibleRange, const U2Strand::Direction direction) {
+void DetView::updateTranslationsState(const U2Strand::Direction direction) {
     QVector<U2Region> selectedRegions = ctx->getSequenceSelection()->getSelectedRegions();
     QList<bool> lineState = QList<bool>() << false << false << false;
     foreach(const U2Region& reg, selectedRegions) {

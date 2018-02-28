@@ -55,7 +55,7 @@ qint64 DNAQuality::memoryHint() const {
 void DNAQuality::setQualCodes(const QByteArray& qualCodes) {
     bool zeroQuality = true;
     int prev = -1;
-    for (uint i  = 0; i < qualCodes.size(); i++) {
+    for (int i = 0; i < qualCodes.size(); i++) {
         if (i > 0) {
             if (prev != qualCodes[i]) {
                 zeroQuality = false;
