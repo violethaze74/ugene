@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <system/GTFile.h>
+
 #include "GTTestsRegressionScenarios_6001_7000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
@@ -75,7 +77,10 @@ GUI_TEST_CLASS_DEFINITION(test_6031) {
 GUI_TEST_CLASS_DEFINITION(test_6043) {
 //    1. Open "_common_data/ugenedb/sec1_9_ugenedb.ugenedb".
 //    Expected state: the assembly is successfully opened, the coverage calculation finished, UGENE doens't crash
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb/sec1_9_ugenedb.ugenedb");
+    const QString filePath = sandBoxDir + "test_6043.ugenedb";
+    GTFile::copy(os, testDir + "_common_data/ugenedb/sec1_9_ugenedb.ugenedb", filePath);
+
+    GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
