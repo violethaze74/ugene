@@ -4006,7 +4006,6 @@ GUI_TEST_CLASS_DEFINITION(test_4694) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4699) {
-    
     // 1. Open "samples/Genbank/NC_014267.1.gb"
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4015,19 +4014,18 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "AaaI"));
     GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     QTreeWidget *tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
     QTreeWidgetItem *item = GTTreeWidget::findItem(os, tree, "76105..76110");
     GTTreeWidget::click(os, item);
-    
+
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "AacLI"));
     GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     QTreeWidget *newtree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
     QTreeWidgetItem *newitem = GTTreeWidget::findItem(os, newtree, "10101..10106");
     GTTreeWidget::click(os, newitem);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4700) {

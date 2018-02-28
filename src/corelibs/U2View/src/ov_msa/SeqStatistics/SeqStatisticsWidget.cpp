@@ -93,7 +93,7 @@ void SeqStatisticsWidget::copySettings() {
 void SeqStatisticsWidget::updateWidgetsSettings(){
     QList<MSADistanceAlgorithmFactory*> algos = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactories();
     foreach(MSADistanceAlgorithmFactory* a, algos) {
-        ui.algoComboBox->addItem(a->getName(), a->getId());    
+        ui.algoComboBox->addItem(a->getName(), a->getId());
     }
     ui.algoComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
 

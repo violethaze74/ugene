@@ -99,7 +99,7 @@ PairAlign::PairAlign(MSAEditor* _msa)
 
     initLayout();
     initSaveController();
-    
+
     initParameters();
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 
@@ -228,7 +228,7 @@ void PairAlign::sl_checkState(){
 void PairAlign::sl_alignmentChanged() {
     const DNAAlphabet* dnaAlphabet = msa->getMaObject()->getAlphabet();
     SAFE_POINT(NULL != dnaAlphabet, "Alignment alphabet is not defined.", );
-    
+
     pairwiseAlignmentWidgetsSettings->customSettings.insert("alphabet", dnaAlphabet->getId());
 
     QString curAlgorithmId = pairwiseAlignmentWidgetsSettings->algorithmName;

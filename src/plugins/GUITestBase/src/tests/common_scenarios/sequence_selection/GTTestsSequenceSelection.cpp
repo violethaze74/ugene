@@ -210,9 +210,9 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0004) {
     GTKeyboardDriver::keyClick('g');
     GTGlobals::sleep();
 
-	//Expected state:
-	//The "misc_feature" annotations with locations (2..590) and (13..15) have been removed.
-	//The sequence has been modified. It starts from characters "AGTGGGGGCT".
+    //Expected state:
+    //The "misc_feature" annotations with locations (2..590) and (13..15) have been removed.
+    //The sequence has been modified. It starts from characters "AGTGGGGGCT".
     QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "misc_feature");
     CHECK_SET_ERR(items.size() == 1, "Annotation was not removed");
 }

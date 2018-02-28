@@ -486,7 +486,7 @@ GUI_TEST_CLASS_DEFINITION(test_5110) {
     //    1. Open "data/samples/Genbank/murine.gb".
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, QString("NC_001363 features [murine.gb]")));
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
@@ -497,19 +497,18 @@ GUI_TEST_CLASS_DEFINITION(test_5110) {
 
     QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "codon_start", items[0]) == "1", "wrong qualifier value");
-    
+
     //    4. Open the "Annotation highlighting" OP widget.
-    GTWidget::click(os, GTWidget::findWidget(os, "OP_ANNOT_HIGHLIGHT"));    
-    
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_ANNOT_HIGHLIGHT"));
+
     QCheckBox* showAnnotations = GTWidget::findExactWidget<QCheckBox*>(os, "checkShowHideAnnots");
     GTCheckBox::setChecked(os, showAnnotations, false);
     GTCheckBox::setChecked(os, showAnnotations, true);
-    
+
     QTreeWidgetItem* item = items[0];
     QBrush expectedBrush = QApplication::palette().brush(QPalette::Active, QPalette::Foreground);
     QBrush actualBrush = item->foreground(1);
     CHECK_SET_ERR(expectedBrush == actualBrush, "wrong item color");
-    
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5128) {
@@ -2519,16 +2518,15 @@ GUI_TEST_CLASS_DEFINITION(test_5696) {
     GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     QString sequence = "фыва...";
     QClipboard *clipboard = QApplication::clipboard();
     clipboard->setText(sequence);
-    
+
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);     // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
     GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5714_1) {

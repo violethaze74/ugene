@@ -62,7 +62,7 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
 
     QList<MSADistanceAlgorithmFactory*> algos = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactories();
     foreach(MSADistanceAlgorithmFactory* a, algos) {
-        algoCombo->addItem(a->getName(), a->getId());    
+        algoCombo->addItem(a->getName(), a->getId());
     }
 
     MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
