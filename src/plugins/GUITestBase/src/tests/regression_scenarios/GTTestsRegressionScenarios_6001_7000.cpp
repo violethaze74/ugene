@@ -72,6 +72,17 @@ GUI_TEST_CLASS_DEFINITION(test_6031) {
     }
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6043) {
+//    1. Open "_common_data/ugenedb/sec1_9_ugenedb.ugenedb".
+//    Expected state: the assembly is successfully opened, the coverage calculation finished, UGENE doens't crash
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb/sec1_9_ugenedb.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const bool assemblyExists = GTUtilsProjectTreeView::checkItem(os, "sec1_and_others");
+    CHECK_SET_ERR(assemblyExists, "Assembly object is not found in the project view");
+}
 
 } // namespace GUITest_regression_scenarios
 
