@@ -113,26 +113,27 @@ public:
 
 bool DatabaseValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
     const QString databaseUrl = actor->getParameter(DB_URL)->getAttributeValueWithoutScript<QString>();
-    const bool doesDatabaseDirExist = QFileInfo(databaseUrl).exists();
-    CHECK_EXT(doesDatabaseDirExist,
-              problemList.append(Problem(ClarkClassifyPrompter::tr("The database folder doesn't exist: %1.").arg(databaseUrl), actor->getId())),
-              false);
+    if (!databaseUrl.isEmpty()) {
+        const bool doesDatabaseDirExist = QFileInfo(databaseUrl).exists();
+        CHECK_EXT(doesDatabaseDirExist,
+                  problemList.append(Problem(ClarkClassifyPrompter::tr("The database folder doesn't exist: %1.").arg(databaseUrl), actor->getId())),
+                  false);
 
-    const QStringList files = QStringList() << "targets.txt" << ".custom.fileToAccssnTaxID" << ".custom.fileToTaxIDs";
+        const QStringList files = QStringList() << "targets.txt" << ".custom.fileToAccssnTaxID" << ".custom.fileToTaxIDs";
 
-    QStringList missedFiles;
-    foreach (const QString &file, files) {
-        QString f = databaseUrl + "/" + file;
-        if (!QFileInfo(f).exists()) {
-            missedFiles << f;
+        QStringList missedFiles;
+        foreach (const QString &file, files) {
+            QString f = databaseUrl + "/" + file;
+            if (!QFileInfo(f).exists()) {
+                missedFiles << f;
+            }
         }
-    }
 
-    foreach (const QString &missedFile, missedFiles) {
-        problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory database file doesn't exist: %1.").arg(missedFile), actor->getId()));
+        foreach (const QString &missedFile, missedFiles) {
+            problemList.append(Problem(ClarkClassifyPrompter::tr("The mandatory database file doesn't exist: %1.").arg(missedFile), actor->getId()));
+        }
+        CHECK(missedFiles.isEmpty(), false);
     }
-    CHECK(missedFiles.isEmpty(), false);
-
     // FIXME port validation
     bool res = true;
     Port *p = actor->getPort(INPUT_PORT);

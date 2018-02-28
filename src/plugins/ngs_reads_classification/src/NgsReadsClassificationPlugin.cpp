@@ -25,6 +25,7 @@
 
 #include "NgsReadsClassificationPlugin.h"
 #include "ClassificationFilterWorker.h"
+#include "EnsembleClassificationWorker.h"
 #include "GetReadListWorker.h"
 
 namespace U2 {
@@ -84,6 +85,7 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
 
     LocalWorkflow::ClassificationFilterWorkerFactory::init();
     LocalWorkflow::GetReadsListWorkerFactory::init();
+    LocalWorkflow::EnsembleClassificationWorkerFactory::init();
 
     CandidatesSplitterRegistry::instance()->registerSplitter(new LocalWorkflow::SeReadsListSplitter());
     CandidatesSplitterRegistry::instance()->registerSplitter(new LocalWorkflow::PeReadsListSplitter());
