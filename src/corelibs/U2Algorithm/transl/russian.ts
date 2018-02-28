@@ -343,7 +343,7 @@ For every column selects the most rare symbol in the whole alignment with percen
     </message>
     <message>
         <location filename="../src/util_msa_distance/MSADistanceAlgorithmSimilarity.cpp" line="40"/>
-        <source>Simple identity</source>
+        <source>Similarity</source>
         <translation>Простое сходство</translation>
     </message>
 </context>

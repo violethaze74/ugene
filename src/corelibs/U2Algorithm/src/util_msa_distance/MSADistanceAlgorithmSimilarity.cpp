@@ -37,7 +37,7 @@ QString MSADistanceAlgorithmFactorySimilarity::getDescription() const {
 }
 
 QString MSADistanceAlgorithmFactorySimilarity::getName() const {
-    return tr("Simple identity");
+    return tr("Similarity");
 }
 
 
