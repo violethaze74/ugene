@@ -32,21 +32,12 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
-#include <U2Core/GObject.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Formats/BAMUtils.h>
-#include <U2Formats/FastaFormat.h>
-#include <U2Formats/FastqFormat.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/ActorValidator.h>
@@ -59,7 +50,6 @@
 #include <U2Lang/WorkflowMonitor.h>
 
 #include "EnsembleClassificationWorker.h"
-#include "NgsReadsClassificationPlugin.h"
 #include "TaxonomySupport.h"
 
 namespace U2 {
@@ -202,7 +192,6 @@ void EnsembleClassificationWorker::init() {
     output->addComplement(input);
     input->addComplement(output);
 
-
     outputFile = getValue<QString>(OUT_FILE);
 
     Port* inputPort = actor->getPort(INPUT_PORT);
@@ -234,19 +223,19 @@ Task * EnsembleClassificationWorker::tick() {
             TaxID id2 = tax2.value(seq, TaxonomyTree::UNDEFINED_ID);
             TaxID id3 = tax3.value(seq, TaxonomyTree::UNDEFINED_ID);
             if (id1 == TaxonomyTree::UNDEFINED_ID) {
-                QString msg = tr("Taxonomy classification for '%1' is missing from %2").arg(seq).arg(INPUT_SLOT1);
+                QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT1);
                 algoLog.trace(msg);
                 hasMissing = true;
                 continue;
             }
             if (id2 == TaxonomyTree::UNDEFINED_ID) {
-                QString msg = tr("Taxonomy classification for '%1' is missing from %2").arg(seq).arg(INPUT_SLOT2);
+                QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT2);
                 algoLog.trace(msg);
                 hasMissing = true;
                 continue;
             }
             if (tripleInput && id3 == TaxonomyTree::UNDEFINED_ID) {
-                QString msg = tr("Taxonomy classification for '%1' is missing from %2").arg(seq).arg(INPUT_SLOT3);
+                QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT3);
                 algoLog.trace(msg);
                 hasMissing = true;
                 continue;
@@ -263,17 +252,19 @@ Task * EnsembleClassificationWorker::tick() {
             monitor()->addInfo(msg, getActorId(), Problem::U2_WARNING);
         }
 
-        U2OpStatus2Log os;
-        QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
-        tmpDir = GUrlUtils::createDirectory(tmpDir, "_", os);
-        if (os.hasError()) {
-            return new FailTask(os.getError());
+        QString reportUrl = outputFile;
+        if (!QFileInfo(reportUrl).isAbsolute()) {
+            U2OpStatus2Log os;
+            QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
+            tmpDir = GUrlUtils::createDirectory(tmpDir, "_", os);
+            if (os.hasError()) {
+                return new FailTask(os.getError());
+            }
+            reportUrl = tmpDir + '/' + outputFile;
         }
-        QString reportUrl = tmpDir + "/ensemble.csv";
-        algoLog.trace(QString("Ensemble produced : %1").arg(reportUrl));
 
         QFile csvFile(reportUrl);
-        csvFile.open(QIODevice::WriteOnly);
+        csvFile.open(QIODevice::Append);
         csvFile.write(csv.toLocal8Bit());
         csvFile.close();
         context->getMonitor()->addOutputFile(reportUrl, getActor()->getId());
@@ -290,7 +281,7 @@ Task * EnsembleClassificationWorker::tick() {
 
     if (input->isEnded()) {
         setDone();
-        algoLog.info("Filter worker is done as input has ended");
+        algoLog.info("Ensemble worker is done as input has ended");
         output->setEnded();
     }
 
