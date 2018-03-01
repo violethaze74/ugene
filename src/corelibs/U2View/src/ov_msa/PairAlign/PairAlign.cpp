@@ -140,7 +140,11 @@ void PairAlign::initParameters() {
 
     inNewWindowCheckBox->setChecked(pairwiseAlignmentWidgetsSettings->inNewWindow);
 
-    outputFileLineEdit->setText(pairwiseAlignmentWidgetsSettings->resultFileName);
+    QString outputFileName = pairwiseAlignmentWidgetsSettings->resultFileName;
+    if (outputFileName.isEmpty()) {
+        outputFileName = getDefaultFilePath();
+    }
+    outputFileLineEdit->setText(outputFileName);
     outputFileLineEdit->setEnabled(inNewWindowCheckBox->isChecked());
     outputFileSelectButton->setEnabled(inNewWindowCheckBox->isChecked());
 

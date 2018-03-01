@@ -1494,11 +1494,11 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0011){
     GTWidget::click(os, outputFileLineEdit);
     GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
     GTGlobals::sleep(300);
-    GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(300);
     QString finalText = outputFileLineEdit->text();
 //Expected state: empty path can not be set
-    CHECK_SET_ERR(initialText == finalText, QString("wrong text: %1").arg(finalText));
+    CHECK_SET_ERR(initialText == finalText, QString("wrong text! expected: '%1', actual: '%2'").arg(initialText).arg(finalText));
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0001){
