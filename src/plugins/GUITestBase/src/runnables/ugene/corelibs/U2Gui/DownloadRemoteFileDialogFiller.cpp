@@ -47,8 +47,12 @@ DownloadRemoteFileDialogFiller::DownloadRemoteFileDialogFiller(HI::GUITestOpStat
 {
 }
 
-DownloadRemoteFileDialogFiller::DownloadRemoteFileDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c):
-    Filler(os, "DownloadRemoteFileDialog", c){}
+DownloadRemoteFileDialogFiller::DownloadRemoteFileDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
+    : Filler(os, "DownloadRemoteFileDialog", c),
+      dialog(NULL)
+{
+
+}
 
 #define GT_METHOD_NAME "commonScenario"
 void DownloadRemoteFileDialogFiller::commonScenario() {

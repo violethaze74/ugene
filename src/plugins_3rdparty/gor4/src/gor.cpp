@@ -225,6 +225,7 @@ void readFile(QFile& file, int nprot, char **obs, char **title, int *pnter, U2::
             if(nres > MAXRES) {
                 printf("The value of MAXRES should be increased: %d",MAXRES);
                 os.setError(U2::GorIVAlgTask::tr("The value of MAXRES should be increased: %1").arg(QString::number(MAXRES)));
+                free(keep);
                 return;
             }
             if((c >= 'A' && c < 'Z') && c != 'B' && c != 'J' && c != 'O' && c != 'U') {
@@ -235,6 +236,7 @@ void readFile(QFile& file, int nprot, char **obs, char **title, int *pnter, U2::
                 printf("Invalid amino acid type or secondary structure state: ==>%c<==\n",c);
                 os.setError(U2::GorIVAlgTask::tr("protein: %1 residue: %2\nInvalid amino acid type or secondary structure state : ==>%3<==")
                     .arg(QString::number(ip)).arg(QString::number(nres).arg(c)));
+                free(keep);
                 return;
             }
         }

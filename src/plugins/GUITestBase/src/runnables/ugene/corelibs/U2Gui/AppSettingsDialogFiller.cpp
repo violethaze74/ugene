@@ -230,7 +230,14 @@ NewColorSchemeCreator::NewColorSchemeCreator(HI::GUITestOpStatus &_os, QString _
 
 }
 
-NewColorSchemeCreator::NewColorSchemeCreator(HI::GUITestOpStatus &os, CustomScenario *c): Filler(os, "AppSettingsDialog", c){}
+NewColorSchemeCreator::NewColorSchemeCreator(HI::GUITestOpStatus &os, CustomScenario *c)
+    : Filler(os, "AppSettingsDialog", c),
+      al(nucl),
+      act(Create),
+      cancel(true)
+{
+
+}
 
 #define GT_CLASS_NAME "NewColorSchemeCreator"
 #define GT_METHOD_NAME "commonScenario"

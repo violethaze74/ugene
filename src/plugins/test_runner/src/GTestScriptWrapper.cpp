@@ -140,7 +140,7 @@ QScriptValue GTestScriptWrapper::qtestMouseMoveE(QScriptContext *ctx, QScriptEng
                     result="correctly";
                     break;
                 case 3:
-                    QTest::mouseMove(widget,ctx->argument(1).toVariant().toPoint(),ctx->argument(2).toInteger());                   result=true;
+                    QTest::mouseMove(widget,ctx->argument(1).toVariant().toPoint(),ctx->argument(2).toInteger());
                     //result=true;
                     result="correctly";
                     break;

@@ -147,7 +147,6 @@ void NeighborJoinCalculateTreeTask::run(){
 
             stateInfo.setDescription("Calculating trees");
 
-            bool initial = true;
             for (int i = 0; i < settings.replicates; i++){
                 stateInfo.progress = (int)(i/(float)settings.replicates * 100);
 

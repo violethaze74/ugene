@@ -71,7 +71,7 @@ void HRVisualParser::parse(U2OpStatus &os) {
                 }
             }
         }
-    } catch(ReadFailed e) {
+    } catch(const ReadFailed &e) {
         os.setError(e.what);
     }
 }

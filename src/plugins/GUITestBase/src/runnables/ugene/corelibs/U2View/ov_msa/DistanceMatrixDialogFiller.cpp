@@ -62,8 +62,16 @@ DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, 
 
 }
 
-DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c):
-    Filler(os, "DistanceMatrixMSAProfileDialog", c){}
+DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
+    : Filler(os, "DistanceMatrixMSAProfileDialog", c),
+      hamming(false),
+      counts(false),
+      excludeGaps(false),
+      saveToFile(false),
+      format(NONE)
+{
+
+}
 
 #define GT_METHOD_NAME "run"
 void DistanceMatrixDialogFiller::commonScenario(){

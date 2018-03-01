@@ -44,7 +44,9 @@ ImportACEFileFiller::ImportACEFileFiller(HI::GUITestOpStatus &os,
 }
 
 ImportACEFileFiller::ImportACEFileFiller(HI::GUITestOpStatus &os, CustomScenario* _c)
-  : Filler(os, "Select Document Format", _c) {
+  : Filler(os, "Select Document Format", _c),
+    isReadOnly(false)
+{
     settings.timeout = 120000;
 }
 

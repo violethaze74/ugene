@@ -362,7 +362,7 @@ QList<Dataset> HRSchemaSerializer::parseUrlAttribute(const QString attrId, QList
             if (name.isEmpty()) {
                 throw ReadFailed(tr("Url definition does not contain dataset name"));
             }
-        } catch (ReadFailed ex) {
+        } catch (const ReadFailed &ex) {
             foreach (URLContainer *url, urls) {
                 delete url;
             }

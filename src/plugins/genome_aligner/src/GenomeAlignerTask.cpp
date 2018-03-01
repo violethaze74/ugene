@@ -216,7 +216,7 @@ QList<Task*> GenomeAlignerTask::onSubTaskFinished( Task* subTask ) {
         } else {
             try {
                 seqWriter = new GenomeAlignerDbiWriter(settings.resultFileName.getURLString(), index->getSeqName(), index->getSeqLength());
-            } catch (QString exeptionMessage) {
+            } catch (const QString &exeptionMessage) {
                 setError(exeptionMessage);
                 if (NULL != pWriteTask) {
                     pWriteTask->setFinished();

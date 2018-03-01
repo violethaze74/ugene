@@ -35,6 +35,39 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::GraphSettingsDialogFiller"
 #define GT_METHOD_NAME "run"
 
+GraphSettingsDialogFiller::GraphSettingsDialogFiller(GUITestOpStatus &os,
+                                                     int _window,
+                                                     int _steps,
+                                                     double _cutoff_min,
+                                                     double _cutoff_max,
+                                                     int _r,
+                                                     int _g,
+                                                     int _b)
+    : Filler(os, "GraphSettingsDialog"),
+      window(_window),
+      steps(_steps),
+      cutoff_min(_cutoff_min),
+      cutoff_max(_cutoff_max),
+      r(_r),
+      g(_g),
+      b(_b)
+{
+
+}
+
+GraphSettingsDialogFiller::GraphSettingsDialogFiller(GUITestOpStatus &os, CustomScenario *c)
+    : Filler(os, "GraphSettingsDialog", c),
+      window(0),
+      steps(0),
+      cutoff_min(0),
+      cutoff_max(0),
+      r(0),
+      g(0),
+      b(0)
+{
+
+}
+
 void GraphSettingsDialogFiller::commonScenario(){
     QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");

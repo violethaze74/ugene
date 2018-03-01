@@ -379,7 +379,7 @@ void HMMBuildTask::_run() {
     int atype = ma->getAlphabet()->isNucleic() ? hmmNUCLEIC :hmmAMINO;
     try {
         hmm = UHMMBuild::build(msa, atype, settings, stateInfo);
-    } catch (HMMException e) {
+    } catch (const HMMException &e) {
         stateInfo.setError(  e.error );
     }
     

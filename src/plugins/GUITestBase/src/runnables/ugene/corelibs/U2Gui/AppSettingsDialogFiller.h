@@ -75,7 +75,7 @@ public:
 
     CreateAlignmentColorSchemeDialogFiller(HI::GUITestOpStatus &os, QString _schemeName, NewColorSchemeCreator::alphabet _al):
         Filler(os, "CreateMSAScheme"), schemeName(_schemeName), al(_al){}
-    CreateAlignmentColorSchemeDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c): Filler(os, "CreateMSAScheme", c){}
+    CreateAlignmentColorSchemeDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c): Filler(os, "CreateMSAScheme", c), al(NewColorSchemeCreator::nucl) {}
     virtual void commonScenario();
 private:
     QString schemeName;
