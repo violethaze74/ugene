@@ -698,7 +698,6 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
 
     QWidget* hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll");
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area");
-    CHECK_SET_ERR(!hNameScroll->isVisible(), "Scroll bar at the botton of name list area is visible");
 
     QSplitter* splitter = qobject_cast<QSplitter *>(GTWidget::findWidget(os, "msa_editor_horizontal_splitter"));
     CHECK_SET_ERR(splitter != NULL, "MSA Splitter not found");
@@ -710,14 +709,19 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
 
     GTWidget::click(os, handle);
     QPoint p = GTMouseDriver::getMousePosition();
-    p.setX(p.x() - 2 * nameList->width() / 3);
+    const bool isHorVisible = hNameScroll->isVisible();
+    if (isHorVisible) {
+        p.setX(p.x() + 3 * nameList->width());
+    } else {
+        p.setX(p.x() - 2 * nameList->width() / 3);
+    }
     GTMouseDriver::press();
     GTMouseDriver::moveTo(p);
     GTMouseDriver::release();
 
     GTThread::waitForMainThread();
 
-    CHECK_SET_ERR(hNameScroll->isVisible(), "Scroll bar at the botton of name list area is invisible");
+    CHECK_SET_ERR(hNameScroll->isVisible() != isHorVisible, "Scroll bar state at the bottom of name list area isn't changes");
 
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/fungal - all.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
