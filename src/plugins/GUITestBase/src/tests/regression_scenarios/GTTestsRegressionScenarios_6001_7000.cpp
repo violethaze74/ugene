@@ -89,6 +89,17 @@ GUI_TEST_CLASS_DEFINITION(test_6043) {
     CHECK_SET_ERR(assemblyExists, "Assembly object is not found in the project view");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6047) {
+    //1. Open and convert APR file
+    GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, false, sandBoxDir + "test_6047", "MSF"));
+    GTFileDialog::openFile(os, testDir + "_common_data/apr/HCVtest.apr");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Check msa length and number of sequences
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 488, "Unexpected length of msa");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).size() == 231, "Unexpected quantaty of sequences");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
