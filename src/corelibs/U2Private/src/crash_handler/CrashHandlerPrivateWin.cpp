@@ -44,8 +44,9 @@ void rollbackStack();
 
 namespace U2 {
 
-CrashHandlerPrivateWin()
-    : crashDirWasSucessfullyCreated(false),
+CrashHandlerPrivateWin::CrashHandlerPrivateWin()
+    : CrashHandlerPrivate(),
+      crashDirWasSucessfullyCreated(false),
       dumpWasSuccessfullySaved(false)
 {
 
