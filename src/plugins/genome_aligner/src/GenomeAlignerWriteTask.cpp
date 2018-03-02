@@ -64,7 +64,7 @@ void GenomeAlignerWriteTask::flush() {
         }
         results.clear();
         writeMutex.unlock();
-    } catch (QString exeptionMessage) {
+    } catch (const QString &exeptionMessage) {
         setError(exeptionMessage);
     }
 }
@@ -95,7 +95,7 @@ void GenomeAlignerWriteTask::run() {
             }
             writeMutex.unlock();
         } while (!end);
-    } catch (QString exeptionMessage) {
+    } catch (const QString &exeptionMessage) {
         setError(exeptionMessage);
     }
 }

@@ -76,7 +76,14 @@ DetViewSingleLineRenderer::TranslationMetrics::TranslationMetrics(DetView* detVi
 }
 
 DetViewSingleLineRenderer::DetViewSingleLineRenderer(DetView *detView, SequenceObjectContext *ctx)
-    : DetViewRenderer(detView, ctx) {
+    : DetViewRenderer(detView, ctx),
+      numLines(0),
+      rulerLine(0),
+      directLine(0),
+      complementLine(0),
+      firstDirectTransLine(0),
+      firstComplTransLine(0)
+{
 
 }
 

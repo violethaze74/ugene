@@ -29,28 +29,33 @@ using namespace HI;
 
 class ExtractSelectedAsMSADialogFiller : public Filler {
 public:
-    ExtractSelectedAsMSADialogFiller(HI::GUITestOpStatus &os,QString _filepath, QStringList _list, int _from=0, int _to=0,bool _addToProj=true,
-                                     bool _invertButtonPress=false,bool _allButtonPress=false,
-                                     bool _noneButtonPress=false, bool _dontCheckFilepath = false, QString format = "") : Filler(os, "CreateSubalignmentDialog"),
-        filepath(_filepath),
-        format(format),
-        list(_list),
-        from(_from),
-        to(_to),
-        addToProj(_addToProj),
-        invertButtonPress(_invertButtonPress),
-        allButtonPress(_allButtonPress),
-        noneButtonPress(_noneButtonPress),
-        dontCheckFilepath(_dontCheckFilepath) {}
-    ExtractSelectedAsMSADialogFiller(HI::GUITestOpStatus &os, CustomScenario *c): Filler(os, "CreateSubalignmentDialog", c){}
+    ExtractSelectedAsMSADialogFiller(HI::GUITestOpStatus &os,
+                                     QString filepath,
+                                     QStringList list,
+                                     int from = 0,
+                                     int to = 0,
+                                     bool addToProj = true,
+                                     bool invertButtonPress = false,
+                                     bool allButtonPress = false,
+                                     bool noneButtonPress = false,
+                                     bool dontCheckFilepath = false,
+                                     QString format = "");
+    ExtractSelectedAsMSADialogFiller(HI::GUITestOpStatus &os, CustomScenario *c);
+
     virtual void commonScenario();
     static QStringList getSequences(HI::GUITestOpStatus &os, bool selected = true);
+
 private:
     QString filepath;
     QString format;
     QStringList list;
-    int from,to;
-    bool addToProj, invertButtonPress, allButtonPress, noneButtonPress, dontCheckFilepath;
+    int from;
+    int to;
+    bool addToProj;
+    bool invertButtonPress;
+    bool allButtonPress;
+    bool noneButtonPress;
+    bool dontCheckFilepath;
 };
 
 }

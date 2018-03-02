@@ -36,7 +36,7 @@ namespace U2 {
 
 class CrashHandlerPrivateWin : public CrashHandlerPrivate {
 public:
-    CrashHandlerPrivateWin() {};
+    CrashHandlerPrivateWin();
     ~CrashHandlerPrivateWin();
 
     void setupHandler();

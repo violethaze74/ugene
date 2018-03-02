@@ -24,6 +24,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "DockManagerImpl.h"
 #include "DockWidgetPainter.h"
@@ -375,7 +376,9 @@ bool MWDockManagerImpl::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::MouseButtonRelease) {
         QMouseEvent* me = (QMouseEvent*)event;
         if (me->button() == Qt::LeftButton) {
-            DockData* data = findDockByLabel((QLabel*)obj);
+            QLabel *label = qobject_cast<QLabel *>(obj);
+            SAFE_POINT(NULL != label, "Can't cast obj to QLabel *", false);
+            DockData* data = findDockByLabel(label);
             assert(data);
             if (!data) {
                 return false;

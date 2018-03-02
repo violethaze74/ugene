@@ -130,7 +130,8 @@ void ConvertSnpeffVariationsToAnnotationsFactory::init() {
 }
 
 ConvertSnpeffVariationsToAnnotationsWorker::ConvertSnpeffVariationsToAnnotationsWorker(Actor *actor)
-    : BaseWorker(actor)
+    : BaseWorker(actor),
+      input(NULL)
 {
 
 }

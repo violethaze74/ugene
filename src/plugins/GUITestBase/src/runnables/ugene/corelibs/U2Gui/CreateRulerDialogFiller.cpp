@@ -32,6 +32,21 @@ namespace U2 {
 #define GT_CLASS_NAME "CreateRulerDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 
+CreateRulerDialogFiller::CreateRulerDialogFiller(GUITestOpStatus &os, QString _rulerName, int _startPos)
+    : Filler(os, "CreateRulerDialog"),
+      rulerName(_rulerName),
+      startPos(_startPos)
+{
+
+}
+
+CreateRulerDialogFiller::CreateRulerDialogFiller(GUITestOpStatus &os, CustomScenario *c)
+    : Filler(os, "CreateRulerDialog", c),
+      startPos(0)
+{
+
+}
+
 void CreateRulerDialogFiller::commonScenario(){
     QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(NULL != dialog, "activeModalWidget is NULL");

@@ -103,7 +103,7 @@ void HMMSearchTask::onRegion(SequenceWalkerSubtask* t, TaskStateInfo& si)
     QList<UHMMSearchResult> sresults;
     try {
         sresults = UHMMSearch::search(hmm, localSeq, localSeqSize, settings, si);
-    } catch (HMMException e) {
+    } catch (const HMMException &e) {
         stateInfo.setError(e.error);
     }
     if (si.hasError()) {

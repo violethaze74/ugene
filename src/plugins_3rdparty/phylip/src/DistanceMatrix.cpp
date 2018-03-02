@@ -264,6 +264,15 @@ void DistanceMatrix::calculateOutOfAlignment( const MultipleSequenceAlignment& m
     }
 }
 
+DistanceMatrix::DistanceMatrix()
+    : rawdata(NULL),
+      size(),
+      malignment(NULL),
+      treedata(NULL)
+{
+
+}
+
 DistanceMatrix::~DistanceMatrix(){
     if(NULL != y) {
         for (int i = 0; i < spp; i++) {

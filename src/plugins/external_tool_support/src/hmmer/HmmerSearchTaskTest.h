@@ -88,6 +88,8 @@ private:
 
 class UHMM3SearchSeqDomainResult {
 public:
+    UHMM3SearchSeqDomainResult() : score(0), bias(0), ival(0), cval(0), acc(0), isSignificant(false) {}
+
     float   score;
     float   bias;
     double  ival; /* independent e-value */
@@ -111,7 +113,7 @@ public:
     int     reportedDomainsNum;
     bool    isReported;
 
-    UHMM3SearchCompleteSeqResult() : isReported(false) {}
+    UHMM3SearchCompleteSeqResult() : eval(0), score(0), bias(0), expectedDomainsNum(0), reportedDomainsNum(0), isReported(false) {}
 }; // UHMM3SearchCompleteSeqResult
 
 class UHMM3SearchResult {

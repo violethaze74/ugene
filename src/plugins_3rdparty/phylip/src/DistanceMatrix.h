@@ -49,10 +49,12 @@ private:
     QString errorMessage;
 
 public:
+    DistanceMatrix();
+    ~DistanceMatrix();
+
     matrix rawMatrix;
     bool isValid();
     void calculateOutOfAlignment(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings);
-    ~DistanceMatrix();
     const QString& getErrorMessage() {return errorMessage;}
     void freeMemory(void*& allocatedMemory){free(allocatedMemory);}
 
