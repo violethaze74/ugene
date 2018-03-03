@@ -106,7 +106,8 @@ private:
 
     int getAvailableSpace(DNAAlphabetType alphabetType) const;
 
-    QString  formTableRow(const QString& caption, const QString &value, int availableSpace) const;
+    QString formTableRow(const QString& caption, const QString &value, int availableSpace) const;
+    QString tableValue(double value, int prec = 2) const;
 
     AnnotatedDNAView* annotatedDnaView;
 

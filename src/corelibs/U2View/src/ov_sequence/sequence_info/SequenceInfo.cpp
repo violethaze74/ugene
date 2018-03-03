@@ -132,6 +132,9 @@ namespace {
 /** Formats long number by separating each three digits */
 QString getFormattedLongNumber(qint64 num)
 {
+    if (num == 0) {
+        return QString("N/A");
+    }
     QString result;
 
     int DIVIDER = 1000;
@@ -167,21 +170,29 @@ void SequenceInfo::updateCommonStatisticsLayout() {
     QString statsInfo = QString("<table cellspacing=%1>").arg(COMMON_STATISTICS_TABLE_CELLSPACING);
     statsInfo += formTableRow(CAPTION_SEQ_REGION_LENGTH, getFormattedLongNumber(currentCommonStatistics.length), availableSpace);
     if (ctx->getAlphabet()->isNucleic()) {
-        statsInfo += formTableRow(CAPTION_SEQ_GC_CONTENT, QString::number(currentCommonStatistics.gcContent, 'f', 2) + "%", availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_WEIGHT, QString::number(currentCommonStatistics.molarWeight, 'f', 2) + " Da", availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_EXT_COEF, QString::number(currentCommonStatistics.molarExtCoef) + " I/mol", availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TM, QString::number(currentCommonStatistics.meltingTm, 'f', 2) + " C", availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_GC_CONTENT, tableValue(currentCommonStatistics.gcContent) + "%", availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_WEIGHT, tableValue(currentCommonStatistics.molarWeight) + " Da", availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_EXT_COEF, tableValue(currentCommonStatistics.molarExtCoef) + " I/mol", availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TM, tableValue(currentCommonStatistics.meltingTm) + " C", availableSpace);
 
-        statsInfo += formTableRow(CAPTION_SEQ_NMOLE_OD, QString::number(currentCommonStatistics.nmoleOD260, 'f', 2), availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MG_OD, QString::number(currentCommonStatistics.mgOD260, 'f', 2), availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_NMOLE_OD, tableValue(currentCommonStatistics.nmoleOD260, 2), availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MG_OD, tableValue(currentCommonStatistics.mgOD260), availableSpace);
     } else if (ctx->getAlphabet()->isAmino()) {
-        statsInfo += formTableRow(CAPTION_SEQ_MOLECULAR_WEIGHT, QString::number(currentCommonStatistics.molecularWeight, 'f', 2), availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_ISOELECTIC_POINT, QString::number(currentCommonStatistics.isoelectricPoint, 'f', 2), availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MOLECULAR_WEIGHT, tableValue(currentCommonStatistics.molecularWeight), availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_ISOELECTIC_POINT, tableValue(currentCommonStatistics.isoelectricPoint), availableSpace);
     }
 
     statsInfo += "</table>";
 
     statisticLabel->setText(statsInfo);
+}
+
+QString SequenceInfo::tableValue(double value, int prec) const {
+    if (value == 0) {
+        return QString("N/A");
+    } else {
+        return QString::number(value, 'f', prec);
+    }
 }
 
 void SequenceInfo::updateCharOccurLayout()
@@ -443,7 +454,7 @@ void SequenceInfo::sl_updateCharOccurData()
         charOccurInfo += "<tr>";
         charOccurInfo += QString("<td><b>") + result.getChar() + QString(":&nbsp;&nbsp;</td>");
         charOccurInfo += "<td>" + getFormattedLongNumber(result.getNumberOfOccur()) + "&nbsp;&nbsp;</td>";
-        charOccurInfo += "<td>" + QString::number(result.getPercentage(), 'f', 1) + "%" + "&nbsp;&nbsp;</td>";
+        charOccurInfo += "<td>" + tableValue(result.getPercentage(), 1) + "%" + "&nbsp;&nbsp;</td>";
         charOccurInfo += "</tr>";
     }
     charOccurInfo += "</table>";
