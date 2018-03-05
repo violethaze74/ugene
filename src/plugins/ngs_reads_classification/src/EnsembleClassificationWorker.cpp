@@ -140,7 +140,7 @@ void EnsembleClassificationWorkerFactory::init() {
     QList<Attribute*> a;
     {
         Descriptor outFileDesc(OUT_FILE, EnsembleClassificationWorker::tr("Output file"),
-            EnsembleClassificationWorker::tr("Specify the output file. The classification data are stored in CSV format with the following columns:<br><br>"
+            EnsembleClassificationWorker::tr("Specify the output file. The classification data are stored in CSV format with the following columns:"
                                              "<ol><li> a sequence name"
                                              "<li>taxID from the first tool"
                                              "<li>taxID from the second tool"
