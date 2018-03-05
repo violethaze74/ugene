@@ -31,7 +31,7 @@ WevotePrompter::WevotePrompter(Actor *actor)
 }
 
 QString WevotePrompter::composeRichDoc() {
-    return "Ensemble classification data, produced by other tools.";
+    return tr("Ensemble classification data, produced by other tools.");
 }
 
 }   // namespace LocalWorkflow

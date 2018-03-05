@@ -36,6 +36,7 @@ const QString StorageRoles::SORTED_BAM("SORTED_BAM");
 const QString StorageRoles::IMPORTED_BAM("IMPORTED_BAM");
 const QString StorageRoles::HASH("HASH");
 const QString StorageRoles::SAM_TO_BAM("SAM_TO_BAM");
+const QString StorageRoles::CUSTOM_FILE_TO_FILE("CUSTOM_FILE_TO_FILE");
 
 static const QString DB_FILE_NAME("fileinfo.ugenedb");
 static const QString WD_DIR_NAME("workflow_data");
@@ -67,7 +68,7 @@ QString FileInfo::getInfo() const {
 }
 
 bool FileInfo::isFileToFileInfo() const {
-    CHECK(!forcedFileToFileInfo, true);
+    CHECK(StorageRoles::CUSTOM_FILE_TO_FILE != getRole(), true);
     CHECK(StorageRoles::SORTED_BAM != getRole(), true);
     CHECK(StorageRoles::SAM_TO_BAM != getRole(), true);
     CHECK(StorageRoles::IMPORTED_BAM != getRole(), true);

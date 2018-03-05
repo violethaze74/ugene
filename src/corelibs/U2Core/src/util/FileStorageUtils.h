@@ -35,6 +35,10 @@ public:
      */
     static QString getFileToFileInfo(const QString &srcUrl, const QString &role, FileStorage::WorkflowProcess &process);
 
+    /**
+     * Adds info about file to file relation to the storage.
+     * Creates hash for both destination and source files.
+     */
     static void addFileToFileInfo(const FileStorage::FileInfo &fileToFileInfo, FileStorage::WorkflowProcess &process);
 
     /**

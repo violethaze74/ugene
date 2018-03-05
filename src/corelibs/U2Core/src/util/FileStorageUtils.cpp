@@ -38,11 +38,6 @@ static QString getCommonHashForFile(const QString &url) {
     return QByteArray::number(modified);
 }
 
-/**
- * Finds the destination file by @srcUrl and @role.
- * Checks hash for both destination and source files.
- * If hashes are ok then returns the destination file.
- */
 QString FileStorageUtils::getFileToFileInfo(const QString &srcUrl, const QString &role, WorkflowProcess &process) {
     AppFileStorage *fileStorage = AppContext::getAppFileStorage();
 
