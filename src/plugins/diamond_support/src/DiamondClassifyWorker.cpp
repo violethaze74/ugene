@@ -35,6 +35,7 @@
 #include "DiamondClassifyWorker.h"
 #include "DiamondClassifyWorkerFactory.h"
 #include "DiamondSupport.h"
+#include "../../ngs_reads_classification/src/GetReadListWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -173,7 +174,7 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
     settings.databaseUrl = getValue<QString>(DiamondClassifyWorkerFactory::DATABASE_ATTR_ID);
 
     const Message message = getMessageAndSetupScriptValues(input);
-    settings.readsUrl = message.getData().toMap()[BaseSlots::URL_SLOT().getId()].toString();
+    settings.readsUrl = message.getData().toMap()[GetReadsListWorkerFactory::SE_SLOT().getId()].toString();
 
     QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
     tmpDir = GUrlUtils::createDirectory(tmpDir + DIAMOND_DIR , "_", os);
@@ -183,7 +184,7 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
     if (pairedReadsInput) {
         settings.pairedReads = true;
         const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
-        settings.pairedReadsUrl = pairedMessage.getData().toMap()[BaseSlots::URL_SLOT().getId()].toString();
+        settings.pairedReadsUrl = pairedMessage.getData().toMap()[GetReadsListWorkerFactory::PE_SLOT().getId()].toString();
         settings.pairedClassificationUrl = tmpDir + "/" + getClassificationFileName(pairedMessage);
         if (settings.classificationUrl == settings.pairedClassificationUrl) {
             settings.pairedClassificationUrl = GUrlUtils::rollFileName(settings.pairedClassificationUrl, QSet<QString>() << settings.classificationUrl);
