@@ -28,6 +28,7 @@
 namespace U2 {
 
 class ADVSingleSequenceWidget;
+class DetView;
 class PanView;
 class U2Region;
 class Overview;
@@ -45,6 +46,7 @@ public:
     static U2Region getVisibleRange(HI::GUITestOpStatus &os, int widgetNumber = 0);
     static void checkSequence(HI::GUITestOpStatus &os, const QString &expectedSequence);
     static void selectSequenceRegion(HI::GUITestOpStatus &os, int from, int to);
+    static void selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString multipleRangeString);
 
     static void openSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
     static void addSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
@@ -52,6 +54,7 @@ public:
     static void goToPosition(HI::GUITestOpStatus &os, int position);
 
     static ADVSingleSequenceWidget * getSeqWidgetByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static DetView * getDetViewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
     static PanView * getPanViewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
     static Overview* getOverviewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
     static int getSeqWidgetsNumber(HI::GUITestOpStatus &os);

@@ -1802,6 +1802,178 @@ GUI_TEST_CLASS_DEFINITION(test_4179) {
     QString qualifier = GTUtilsAnnotationsTreeView::getQualifierValue(os,"1", item);
     CHECK_SET_ERR(qualifier.indexOf("The reference") > 0, "Expected string is not found");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_4188_1) {
+    //1. Open "COI.aln"
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select area: from 16 to 26 col, from 6 to 16 seq
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(16, 6), QPoint(26, 16), GTGlobals::UseMouse);
+
+    //3. Move left border to the left
+    GTUtilsMSAEditorSequenceArea::expandSelectedRegion(os, 3, -2);
+
+    //Expected selection x: 14, y: 6, width: 13, height: 11
+    QRect selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selectedRect == QRect(14, 6, 13, 11),
+                  QString("Unexpected selection. Expected x: 14, y: 6, width: 13, height: 11. Current x: %1, y: %2, width: %3, height: %4")
+                  .arg(selectedRect.x()).arg(selectedRect.y()).arg(selectedRect.width()).arg(selectedRect.height()));
+
+    //4. Move top border upper
+    GTUtilsMSAEditorSequenceArea::expandSelectedRegion(os, 0, -2);
+
+    //Expected selection x: 14, y: 4, width: 13, height: 13
+    selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selectedRect == QRect(14, 4, 13, 13),
+        QString("Unexpected selection. Expected x: 14, y: 4, width: 13, height: 13. Current x: %1, y: %2, width: %3, height: %4")
+        .arg(selectedRect.x()).arg(selectedRect.y()).arg(selectedRect.width()).arg(selectedRect.height()));
+
+    //5. Move right border to the left
+    GTUtilsMSAEditorSequenceArea::expandSelectedRegion(os, 1, -3);
+
+    //Expected selection x: 14, y: 4, width: 10, height: 13
+    selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selectedRect == QRect(14, 4, 10, 13),
+        QString("Unexpected selection. Expected x: 14, y: 4, width: 13, height: 10. Current x: %1, y: %2, width: %3, height: %4")
+        .arg(selectedRect.x()).arg(selectedRect.y()).arg(selectedRect.width()).arg(selectedRect.height()));
+
+
+    //5. Move bottom border upper
+    GTUtilsMSAEditorSequenceArea::expandSelectedRegion(os, 2, -3);
+
+    //Expected selection x: 14, y: 4, width: 10, height: 10
+    selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selectedRect == QRect(14, 4, 10, 10),
+        QString("Unexpected selection. Expected x: 14, y: 4, width: 10, height: 10. Current x: %1, y: %2, width: %3, height: %4")
+        .arg(selectedRect.x()).arg(selectedRect.y()).arg(selectedRect.width()).arg(selectedRect.height()));
+
+    //6. Move top right corner
+    GTUtilsMSAEditorSequenceArea::expandSelectedRegion(os, 4, 1);
+
+    //Expected selection x: 14, y: 3, width: 11, height: 11
+    selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selectedRect == QRect(14, 3, 11, 11),
+        QString("Unexpected selection. Expected x: 14, y: 3, width: 11, height: 11. Current x: %1, y: %2, width: %3, height: %4")
+        .arg(selectedRect.x()).arg(selectedRect.y()).arg(selectedRect.width()).arg(selectedRect.height()));
+
+    //7. Move bottom right corner
+    GTUtilsMSAEditorSequenceArea::expandSelectedRegion(os, 5, -4);
+
+    //Expected selection x: 14, y: 3, width: 7, height: 7
+    selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selectedRect == QRect(14, 3, 7, 7),
+        QString("Unexpected selection. Expected x: 14, y: 3, width: 7, height: 7. Current x: %1, y: %2, width: %3, height: %4")
+        .arg(selectedRect.x()).arg(selectedRect.y()).arg(selectedRect.width()).arg(selectedRect.height()));
+
+    //8. Move bottom left corner
+    GTUtilsMSAEditorSequenceArea::expandSelectedRegion(os, 6, 2);
+
+    //Expected selection x: 16, y: 3, width: 5, height: 5
+    selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selectedRect == QRect(16, 3, 5, 5),
+        QString("Unexpected selection. Expected x: 16, y: 3, width: 5, height: 5. Current x: %1, y: %2, width: %3, height: %4")
+        .arg(selectedRect.x()).arg(selectedRect.y()).arg(selectedRect.width()).arg(selectedRect.height()));
+
+
+    //9. Move top left corner
+    GTUtilsMSAEditorSequenceArea::expandSelectedRegion(os, 7, 3);
+
+    //Expected selection x: 19, y: 6, width: 2, height: 2
+    selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(selectedRect == QRect(19, 6, 2, 2),
+        QString("Unexpected selection. Expected x: 19, y: 6, width: 2, height: 2. Current x: %1, y: %2, width: %3, height: %4")
+        .arg(selectedRect.x()).arg(selectedRect.y()).arg(selectedRect.width()).arg(selectedRect.height()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4188_2) {
+    //1. Open human_T1.fa
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select region from 40000 to 60000
+    GTUtilsSequenceView::selectSequenceRegion(os, 40000, 60000);
+
+    //3. Drag and drop left border to the right in the Zoom View
+    PanViewRenderArea* panViewRenderArea = GTUtilsSequenceView::getPanViewByNumber(os)->getRenderArea();
+    CHECK_SET_ERR(panViewRenderArea != NULL, "PanViewRenderArea not found");
+
+    const double panScale = panViewRenderArea->getCurrentScale();
+    const QPoint startPan((int)(40000 * panScale), panViewRenderArea->height() / 2);
+    const QPoint startPanGlobal = panViewRenderArea->mapToGlobal(startPan);
+    const QPoint endPanGlobal(startPanGlobal.x() + panViewRenderArea->width() / 2, startPanGlobal.y());
+    GTMouseDriver::dragAndDrop(startPanGlobal, endPanGlobal);
+
+    //Expected: one region, start - 60000
+    QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(selection.size() == 1, QString("Unexpected selected regions quantity, expected 1, current %1").arg(selection.size()));
+    U2Region sel = selection.first();
+    CHECK_SET_ERR(sel.startPos == 60000, QString("Unexpected selected region start, expected: 60000, current: %1").arg(sel.startPos));
+
+    //4. Select several regions
+    GTUtilsSequenceView::selectSeveralRegionsByDialog(os, "40000..60000,80000..100000");
+
+    //5. Join regions by moving the right border of the left region to the right in the Zoom View
+    const QPoint startMultiplePan((int)(60000 * panScale), panViewRenderArea->height() / 2);
+    const QPoint startMultiplePanGlobal = panViewRenderArea->mapToGlobal(startMultiplePan);
+    const QPoint endMultiplePanGlobal(startMultiplePanGlobal.x() + (int)(30000 * panScale), startMultiplePanGlobal.y());
+    GTMouseDriver::dragAndDrop(startMultiplePanGlobal, endMultiplePanGlobal);
+
+    //Expected: one region, start - 39999, end - 1000000
+    selection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(selection.size() == 1, QString("Unexpected selected regions quantity, expected 1, current %1").arg(selection.size()));
+    sel = selection.first();
+    CHECK_SET_ERR(sel == U2Region(39999, 60001), QString("Unexpected selected region. Expected start: 39999, end: 100000. Current start: %1, end: %2").arg(sel.startPos).arg(sel.endPos()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4188_3) {
+    //1. Open human_T1.fa
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Turn off wrap mode
+    QAction* wrapMode = GTAction::findActionByText(os, "Wrap sequence");
+    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    GTWidget::click(os, GTAction::button(os, wrapMode));
+
+    //3. Select region from 10 to 20
+    GTUtilsSequenceView::selectSequenceRegion(os, 10, 20);
+
+    //4. Drag and drop left border to the right in the Details View
+    DetViewRenderArea* detViewRenderArea = GTUtilsSequenceView::getDetViewByNumber(os)->getDetViewRenderArea();
+    CHECK_SET_ERR(detViewRenderArea != NULL, "DetViewRenderArea not found");
+
+    const double detScale = detViewRenderArea->getCurrentScale();
+    const QPoint startDet((int)(9 * detScale), detViewRenderArea->height() / 2);
+    const QPoint startDetGlobal = detViewRenderArea->mapToGlobal(startDet);
+    const QPoint endDetGlobal(startDetGlobal.x() + detViewRenderArea->width() / 2, startDetGlobal.y());
+
+    GTMouseDriver::dragAndDrop(startDetGlobal, endDetGlobal);
+
+    //Expected: one region, start - 20
+    QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(selection.size() == 1, QString("Unexpected selected regions quantity, expected 1, current %1").arg(selection.size()));
+    U2Region sel = selection.first();
+    CHECK_SET_ERR(sel.startPos == 20, QString("Unexpected selected region start, expected: 20, current: %1").arg(sel.startPos));
+
+    //5. Select several regions
+    GTUtilsSequenceView::selectSeveralRegionsByDialog(os, "10..20,30..40");
+
+    //6. Join regions by moving the right border of the left region to the right in the Zoom View
+    const QPoint startMultipleDet((int)(20 * detScale), detViewRenderArea->height() / 2);
+    const QPoint startMultipleDetGlobal = detViewRenderArea->mapToGlobal(startMultipleDet);
+    const QPoint endMultipleDetGlobal(startMultipleDetGlobal.x() + (int)(15 * detScale), startMultipleDetGlobal.y());
+    GTMouseDriver::dragAndDrop(startMultipleDetGlobal, endMultipleDetGlobal);
+
+    //Expected: one region, start - 9, end - 40
+    selection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(selection.size() == 1, QString("Unexpected selected regions quantity, expected 1, current %1").arg(selection.size()));
+    sel = selection.first();
+    CHECK_SET_ERR(sel == U2Region(9, 31), QString("Unexpected selected region. Expected start: 9, end: 40. Current start: %1, end: %2").arg(sel.startPos).arg(sel.endPos()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4194) {
 /* 1. Open WD
  * 2. Add element "Filter Annotations by Name"
@@ -1809,6 +1981,7 @@ GUI_TEST_CLASS_DEFINITION(test_4194) {
  * 3. Click the toolbar button "Validate workflow"
  * Expected state: Showed error message about empty fields
 */
+
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     WorkflowProcessItem* filter = GTUtilsWorkflowDesigner::addElement(os, "Filter Annotations by Name");
     CHECK_SET_ERR( filter != NULL, "Failed to add an element Filter annotations by name");

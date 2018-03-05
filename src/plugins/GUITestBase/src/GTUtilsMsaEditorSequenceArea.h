@@ -99,6 +99,11 @@ public:
 
     static bool isAlignmentLocked(GUITestOpStatus &os);
 
+    /*
+    *expandedBorder: 0 - top, 1 - right, 2 - bottom, 3 - left, 4 - right top, 5 - right bottom, 6 - left bottom, 7 - left top
+    */
+    static void expandSelectedRegion(GUITestOpStatus &os, const int expandedBorder, const int symbolsToExpand);
+
     static const QString highlightningColorName;
 };
 

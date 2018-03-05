@@ -255,6 +255,24 @@ void GTUtilsSequenceView::selectSequenceRegion(HI::GUITestOpStatus &os, int from
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "selectSeveralRegionsByDialog"
+void GTUtilsSequenceView::selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString multipleRangeString) {
+    MainWindow* mw = AppContext::getMainWindow();
+    GT_CHECK(mw != NULL, "MainWindow == NULL");
+
+    MWMDIWindow *mdiWindow = mw->getMDIManager()->getActiveWindow();
+    GT_CHECK(mdiWindow != NULL, "MDI window == NULL");
+
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, multipleRangeString));
+
+    GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
+    GTMouseDriver::click();
+
+    GTKeyboardUtils::selectAll(os);
+    GTGlobals::sleep(1000);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "openSequenceView"
 void GTUtilsSequenceView::openSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "action_open_view", GTGlobals::UseMouse));
@@ -304,6 +322,24 @@ ADVSingleSequenceWidget* GTUtilsSequenceView::getSeqWidgetByNumber(HI::GUITestOp
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getDetViewByNumber"
+DetView* GTUtilsSequenceView::getDetViewByNumber(HI::GUITestOpStatus &os, int number, const GTGlobals::FindOptions &options) {
+    ADVSingleSequenceWidget* seq = getSeqWidgetByNumber(os, number, options);
+    if (options.failIfNotFound){
+        GT_CHECK_RESULT(seq != NULL, QString("sequence view with num %1 not found").arg(number), NULL);
+    } else {
+        return NULL;
+    }
+
+    DetView* result = seq->findChild<DetView*>();
+    if (options.failIfNotFound){
+        GT_CHECK_RESULT(seq != NULL, QString("det view with number %1 not found").arg(number), NULL)
+    }
+
+    return result;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getPanViewByNumber"
 PanView* GTUtilsSequenceView::getPanViewByNumber(HI::GUITestOpStatus &os, int number, const GTGlobals::FindOptions &options){
     ADVSingleSequenceWidget* seq = getSeqWidgetByNumber(os, number, options);
@@ -315,7 +351,7 @@ PanView* GTUtilsSequenceView::getPanViewByNumber(HI::GUITestOpStatus &os, int nu
 
     PanView* result = seq->findChild<PanView*>();
     if(options.failIfNotFound){
-        GT_CHECK_RESULT(seq != NULL, QString("pan view with number %1 not fount").arg(number), NULL)
+        GT_CHECK_RESULT(seq != NULL, QString("pan view with number %1 not found").arg(number), NULL)
     }
 
     return result;
@@ -333,7 +369,7 @@ Overview* GTUtilsSequenceView::getOverviewByNumber(HI::GUITestOpStatus &os, int 
 
     Overview* result = seq->findChild<Overview*>();
     if(options.failIfNotFound){
-        GT_CHECK_RESULT(seq != NULL, QString("pan view with number %1 not fount").arg(number), NULL)
+        GT_CHECK_RESULT(seq != NULL, QString("pan view with number %1 not found").arg(number), NULL)
     }
 
     return result;

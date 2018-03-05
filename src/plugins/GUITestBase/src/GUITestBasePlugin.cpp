@@ -1104,6 +1104,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_4164, "mem");
     REGISTER_TEST(GUITest_regression_scenarios::test_4170);
     REGISTER_TEST(GUITest_regression_scenarios::test_4179);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4188_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4188_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4188_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_4194);
 
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_4209, "test consumes too much memory");

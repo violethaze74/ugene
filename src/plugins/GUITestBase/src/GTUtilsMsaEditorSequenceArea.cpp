@@ -673,6 +673,105 @@ bool GTUtilsMSAEditorSequenceArea::isAlignmentLocked(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "expandSelectedRegion"
+void GTUtilsMSAEditorSequenceArea::expandSelectedRegion(GUITestOpStatus &os, const int expandedBorder, const int symbolsToExpand) {
+    MsaEditorWgt* ui = GTUtilsMsaEditor::getEditorUi(os);
+    CHECK_SET_ERR(ui != NULL, "MsaEditorWgt not found");
+
+    const int height = ui->getRowHeightController()->getSequenceHeight();
+    const int width = ui->getBaseWidthController()->getBaseWidth();
+    const QRect selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+
+    QPoint startPos;
+    switch (expandedBorder) {
+    case (0) :
+        startPos = QPoint(selection.center().x(), selection.top());
+        break;
+    case (1) :
+        startPos = QPoint(selection.right(), selection.center().y());
+        break;
+    case (2) :
+        startPos = QPoint(selection.center().x(), selection.bottom());
+        break;
+    case (3) :
+        startPos = QPoint(selection.left(), selection.center().y());
+        break;
+    case (4) :
+        startPos = selection.topRight();
+        break;
+    case (5) :
+        startPos = selection.bottomRight();
+        break;
+    case (6) :
+        startPos = selection.bottomLeft();
+        break;
+    case (7) :
+        startPos = selection.topLeft();
+        break;
+    default:
+        CHECK_SET_ERR(false, QString("Unexpected movable border"));
+    }
+
+    startPos = convertCoordinates(os, startPos);
+
+    switch (expandedBorder) {
+    case (0) :
+        startPos = QPoint(startPos.x(), startPos.y() - height / 2);
+        break;
+    case (1) :
+        startPos = QPoint(startPos.x() + width / 2, startPos.y());
+        break;
+    case (2) :
+        startPos = QPoint(startPos.x(), startPos.y() + height / 2);
+        break;
+    case (3) :
+        startPos = QPoint(startPos.x() - width / 2, startPos.y());
+        break;
+    case (4) :
+        startPos = QPoint(startPos.x() + width / 2, startPos.y() - height / 2);
+        break;
+    case (5) :
+        startPos = QPoint(startPos.x() + width / 2, startPos.y() + height / 2);
+        break;
+    case (6) :
+        startPos = QPoint(startPos.x() - width / 2, startPos.y() + height / 2);
+        break;
+    case (7) :
+        startPos = QPoint(startPos.x() - width / 2, startPos.y() - height / 2);
+        break;
+    }
+
+    GTMouseDriver::moveTo(startPos);
+    GTGlobals::sleep(500);
+    GTMouseDriver::press();
+
+    QPoint endPos;
+    switch (expandedBorder) {
+    case (0) :
+    case (2) :
+        endPos = QPoint(startPos.x(), startPos.y() + symbolsToExpand * height);
+        break;
+    case (1) :
+    case (3) :
+        endPos = QPoint(startPos.x() + symbolsToExpand * width, startPos.y());
+        break;
+    case (4) :
+    case (6) :
+        endPos = QPoint(startPos.x() + symbolsToExpand * width, startPos.y() - symbolsToExpand * height);
+        break;
+    case (5) :
+    case (7) :
+        endPos = QPoint(startPos.x() + symbolsToExpand * width, startPos.y() + symbolsToExpand * height);
+        break;
+    }
+
+    GTMouseDriver::moveTo(endPos);
+    GTMouseDriver::release();
+    GTGlobals::sleep(500);
+}
+#undef GT_METHOD_NAME
+
+
 #undef GT_CLASS_NAME
 
 } // namespace
