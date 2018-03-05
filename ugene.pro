@@ -81,6 +81,7 @@ SUBDIRS += \
           src/plugins/smith_waterman \
           src/plugins/test_runner \
           src/plugins/weight_matrix \
+          src/plugins/wevote_support \
           src/plugins/workflow_designer \
           src/plugins_3rdparty/primer3
 

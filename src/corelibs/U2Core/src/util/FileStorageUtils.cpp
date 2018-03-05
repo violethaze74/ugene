@@ -43,7 +43,7 @@ static QString getCommonHashForFile(const QString &url) {
  * Checks hash for both destination and source files.
  * If hashes are ok then returns the destination file.
  */
-static QString getFileToFileInfo(const QString &srcUrl, const QString &role, WorkflowProcess &process) {
+QString FileStorageUtils::getFileToFileInfo(const QString &srcUrl, const QString &role, WorkflowProcess &process) {
     AppFileStorage *fileStorage = AppContext::getAppFileStorage();
 
     if (NULL != fileStorage) {
@@ -72,20 +72,20 @@ static QString getFileToFileInfo(const QString &srcUrl, const QString &role, Wor
     return "";
 }
 
-void addFileToFileInfo(const FileInfo &fToFInfo, WorkflowProcess &process) {
-    CHECK(fToFInfo.isFileToFileInfo(), );
+void FileStorageUtils::addFileToFileInfo(const FileInfo &fileToFileInfo, WorkflowProcess &process) {
+    CHECK(fileToFileInfo.isFileToFileInfo(), );
     AppFileStorage *fileStorage = AppContext::getAppFileStorage();
     CHECK(NULL != fileStorage, );
 
     U2OpStatus2Log os;
-    fileStorage->addFileInfo(fToFInfo, process, os);
+    fileStorage->addFileInfo(fileToFileInfo, process, os);
     CHECK_OP(os, );
 
-    FileInfo srcHashInfo(fToFInfo.getFile(), StorageRoles::HASH, getCommonHashForFile(fToFInfo.getFile()));
+    FileInfo srcHashInfo(fileToFileInfo.getFile(), StorageRoles::HASH, getCommonHashForFile(fileToFileInfo.getFile()));
     fileStorage->addFileInfo(srcHashInfo, process, os);
     CHECK_OP(os, );
 
-    FileInfo dstHashInfo(fToFInfo.getInfo(), StorageRoles::HASH, getCommonHashForFile(fToFInfo.getInfo()));
+    FileInfo dstHashInfo(fileToFileInfo.getInfo(), StorageRoles::HASH, getCommonHashForFile(fileToFileInfo.getInfo()));
     fileStorage->addFileInfo(dstHashInfo, process, os);
     CHECK_OP(os, );
 }
