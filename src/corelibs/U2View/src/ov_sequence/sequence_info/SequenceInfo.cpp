@@ -172,7 +172,7 @@ void SequenceInfo::updateCommonStatisticsLayout() {
     if (ctx->getAlphabet()->isNucleic()) {
         statsInfo += formTableRow(CAPTION_SEQ_GC_CONTENT, tableValue(currentCommonStatistics.gcContent) + "%", availableSpace);
         statsInfo += formTableRow(CAPTION_SEQ_MOLAR_WEIGHT, tableValue(currentCommonStatistics.molarWeight) + " Da", availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_EXT_COEF, tableValue(currentCommonStatistics.molarExtCoef) + " I/mol", availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_EXT_COEF, tableValue(currentCommonStatistics.molarExtCoef, 0) + " I/mol", availableSpace);
         statsInfo += formTableRow(CAPTION_SEQ_MELTING_TM, tableValue(currentCommonStatistics.meltingTm) + " C", availableSpace);
 
         statsInfo += formTableRow(CAPTION_SEQ_NMOLE_OD, tableValue(currentCommonStatistics.nmoleOD260, 2), availableSpace);
