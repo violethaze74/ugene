@@ -34,7 +34,7 @@ namespace U2 {
 
 class U2CORE_EXPORT DBXRefInfo {
 public:
-    DBXRefInfo(){};
+    DBXRefInfo(){}
     DBXRefInfo(const QString& _name, const QString& _url,
                const QString& _fileUrl, const QString& _comment)
                : name(_name), url(_url), fileUrl(_fileUrl), comment(_comment){}

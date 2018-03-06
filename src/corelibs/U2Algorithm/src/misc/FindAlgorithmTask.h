@@ -36,13 +36,11 @@ class DNATranslation;
 class U2ALGORITHM_EXPORT FindAlgorithmTaskSettings : public FindAlgorithmSettings {
 public:
     FindAlgorithmTaskSettings()
-        : sequenceAlphabet(NULL), searchIsCircular(false) {}
+        : searchIsCircular(false), countTask(true) {}
     FindAlgorithmTaskSettings(const FindAlgorithmSettings& f)
-            : FindAlgorithmSettings(f), sequenceAlphabet(f.sequenceAlphabet), searchIsCircular(false),countTask(true) {}
+            : FindAlgorithmSettings(f), searchIsCircular(false), countTask(true) {}
 
     QByteArray  sequence;
-    /** Alphabet of the sequence. May be NULL if unknown */
-    const DNAAlphabet* sequenceAlphabet;
     bool        searchIsCircular;
     QString     name;
     bool        countTask;

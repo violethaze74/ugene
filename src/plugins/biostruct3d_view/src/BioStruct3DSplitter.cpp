@@ -335,7 +335,7 @@ const QList<QAction* > BioStruct3DSplitter::getSettingsMenuActions() const
     return actions;
 }
 
-QList<BioStruct3DGLWidget*> BioStruct3DSplitter::getChildWidgets()
+QList<BioStruct3DGLWidget*> BioStruct3DSplitter::getChildWidgets() const
 {
     return biostrucViewMap.values();
 }

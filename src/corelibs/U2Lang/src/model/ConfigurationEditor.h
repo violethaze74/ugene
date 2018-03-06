@@ -160,7 +160,7 @@ public:
     static QString getString(const DelegateTags *tags, const QString &name);
     static QStringList getStringList(const DelegateTags *tags, const QString &name);
 
-    const DelegateTags &operator = (const DelegateTags &other);
+    DelegateTags &operator =(const DelegateTags &other);
 
     static const QString PLACEHOLDER_TEXT;
 

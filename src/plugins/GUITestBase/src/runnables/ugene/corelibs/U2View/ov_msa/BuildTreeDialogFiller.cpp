@@ -49,7 +49,10 @@ BuildTreeDialogFiller::BuildTreeDialogFiller(HI::GUITestOpStatus &os, const QStr
     saveTree(saveTree),
     model(model),
     replicates(0),
+    seed(0),
     alpha(alpha),
+    fraction(0),
+    type(MAJORITYEXT),
     displayWithMsa(displayWithMsa)
 {
 
@@ -68,7 +71,8 @@ BuildTreeDialogFiller::BuildTreeDialogFiller(HI::GUITestOpStatus &os,
     seed(seed),
     alpha(0),
     fraction(fraction),
-    type(type)
+    type(type),
+    displayWithMsa(false)
 {
 
 }

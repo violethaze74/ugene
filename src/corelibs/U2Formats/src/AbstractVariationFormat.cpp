@@ -59,7 +59,8 @@ QList<U2Variant> splitVariants(const U2Variant& v, const QList<QString>& altAlle
 
 AbstractVariationFormat::AbstractVariationFormat(QObject *p, const QStringList &fileExts, bool _isSupportHeader)
     : DocumentFormat(p, DocumentFormatFlags_SW, fileExts),
-      isSupportHeader(_isSupportHeader)
+      isSupportHeader(_isSupportHeader),
+      maxColumnNumber(0)
 {
     supportedObjectTypes += GObjectTypes::VARIANT_TRACK;
     formatDescription = tr("SNP formats are used to store single-nucleotide polymorphism data");

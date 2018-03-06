@@ -789,9 +789,8 @@ void AssemblyBrowser::updateZoomingActions() {
 
     // decide if on next zoom cellWidth will increase max width
     {
-        bool enableZoomIn = false;
         double curZoomFactor = zoomFactor;
-        enableZoomIn = !(zoomInFromSize(getCellWidth()) > MAX_CELL_WIDTH);
+        bool enableZoomIn = !(zoomInFromSize(getCellWidth()) > MAX_CELL_WIDTH);
         zoomFactor = curZoomFactor;
         zoomInAction->setEnabled(enableZoomIn);
     }

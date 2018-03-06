@@ -126,7 +126,7 @@ BioStruct3DReference BioStruct3DSubsetEditor::getSubset() {
     }
 }
 
-QString BioStruct3DSubsetEditor::validate() {
+QString BioStruct3DSubsetEditor::validate() const {
     if (regionEdit->isEnabled()) {
         QString regionText = regionEdit->text();
         if (!QRegExp("[0-9]*\\.\\.[0-9]*").exactMatch(regionText)) {
@@ -147,7 +147,7 @@ QString BioStruct3DSubsetEditor::validate() {
     return QString("");
 }
 
-U2Region BioStruct3DSubsetEditor::getRegion() {
+U2Region BioStruct3DSubsetEditor::getRegion() const {
     U2Region ret;
 
     QString text = regionEdit->text();

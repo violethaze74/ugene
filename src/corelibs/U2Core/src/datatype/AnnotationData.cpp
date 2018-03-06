@@ -68,6 +68,7 @@ AnnotationData & AnnotationData::operator =(const AnnotationData &a) {
     name = a.name;
     location = a.location;
     qualifiers = a.qualifiers;
+    caseAnnotation = a.caseAnnotation;
     return *this;
 }
 

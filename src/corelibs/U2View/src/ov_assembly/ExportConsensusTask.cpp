@@ -39,7 +39,9 @@
 namespace U2 {
 
 ExportConsensusTask::ExportConsensusTask(const ExportConsensusTaskSettings &settings_)
-    : DocumentProviderTask("", TaskFlags_NR_FOSE_COSC), settings(settings_)
+    : DocumentProviderTask("", TaskFlags_NR_FOSE_COSC),
+      settings(settings_),
+      consensusTask(NULL)
 {
     setTaskName(tr("Export consensus of assembly '%1' to '%2'")
                 .arg(settings.model->getAssembly().visualName)

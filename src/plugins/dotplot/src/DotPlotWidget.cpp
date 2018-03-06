@@ -359,7 +359,7 @@ void DotPlotWidget::sl_timer(){
 }
 
 void DotPlotWidget::sl_taskStateChanged() {
-    if (!dotPlotTask || (dotPlotTask && dotPlotTask->getState() != Task::State_Finished)) {
+    if (!dotPlotTask || dotPlotTask->getState() != Task::State_Finished) {
         return;
     }
     dotPlotTask = NULL;
@@ -370,7 +370,7 @@ void DotPlotWidget::sl_taskStateChanged() {
 }
 
 void DotPlotWidget::sl_filteringTaskStateChanged() {
-    if (!dotPlotTask || (dotPlotTask && dotPlotTask->getState() != Task::State_Finished)) {
+    if (!dotPlotTask || dotPlotTask->getState() != Task::State_Finished) {
         return;
     }
     dotPlotTask = NULL;
@@ -382,7 +382,7 @@ void DotPlotWidget::sl_filteringTaskStateChanged() {
 
 void DotPlotWidget::sl_buildDotplotTaskStateChanged() {
 
-    if (!dotPlotTask || (dotPlotTask && dotPlotTask->getState() != Task::State_Finished)) {
+    if (!dotPlotTask || dotPlotTask->getState() != Task::State_Finished) {
         return;
     }
 

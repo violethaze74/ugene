@@ -278,8 +278,8 @@ void CircularViewContext::toggleViews(AnnotatedDNAView *av) {
 
 void CircularViewContext::sl_showCircular() {
     CircularViewAction* a = qobject_cast<CircularViewAction*>(sender());
-    ADVSingleSequenceWidget* sw = qobject_cast<ADVSingleSequenceWidget*>(a->seqWidget);
     SAFE_POINT(NULL != a, "Invalid CV action", );
+    ADVSingleSequenceWidget* sw = qobject_cast<ADVSingleSequenceWidget*>(a->seqWidget);
     if (a->isChecked()) {
         a->setText(tr("Remove circular view"));
         assert(a->view == NULL);

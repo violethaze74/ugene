@@ -89,10 +89,9 @@ static void fill1To3(BackTranslationRules& map,
 
     QByteArray alph = srcAl->getAlphabetChars();
     QList<TripletP> v;
-    int sump;
     foreach (char c, alph) {
         v.clear();
-        sump = 0;
+        int sump = 0;
         for(int i=0; i<len; i++) {
             if (amino[i] != c) continue;
             char c1 = n1[i];

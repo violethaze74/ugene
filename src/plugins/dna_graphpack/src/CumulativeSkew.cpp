@@ -78,13 +78,11 @@ CumulativeSkewGraphAlgorithm::CumulativeSkewGraphAlgorithm(const QPair<char, cha
 float CumulativeSkewGraphAlgorithm::getValue(int begin, int end, const QByteArray& seq)
 {
     int leap = end - begin;
-    int first = 0;
-    int second = 0;
     float resultValue = 0;
     int len;
     for (int window = 0; window < end; window += leap)    {
-        first = 0;
-        second = 0;
+        int first = 0;
+        int second = 0;
         if (window + leap > end) len = window - end; else len = leap;
         for (int i = 0; i < len; ++i)    {
             char c = seq[window + i];

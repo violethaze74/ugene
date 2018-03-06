@@ -527,13 +527,12 @@ Task::ReportResult GTest_CheckAnnotationsNumInTwoObjects::report() {
     const QList<GObject*>& objs = doc->getObjects();
     const QList<GObject*>& objs2 = doc2->getObjects();
     GObject*obj=NULL;
-    GObject*obj2=NULL;
-    AnnotationTableObject * myAnnotation;
-    AnnotationTableObject * myAnnotation2;
+    AnnotationTableObject * myAnnotation = NULL;
+    AnnotationTableObject * myAnnotation2 = NULL;
 
     for(int i=0;(i!=objs.size())&&(i!=objs2.size());i++){
         obj = objs.at(i);
-        obj2 = objs2.at(i);
+        GObject *obj2 = objs2.at(i);
 
         if((obj->getGObjectType() == GObjectTypes::ANNOTATION_TABLE)&&(obj2->getGObjectType() == GObjectTypes::ANNOTATION_TABLE)){
             myAnnotation = qobject_cast<AnnotationTableObject*>(obj);
@@ -663,13 +662,12 @@ Task::ReportResult GTest_CheckAnnotationsLocationsInTwoObjects::report() {
     const QList<GObject *> &objs = doc->getObjects();
     const QList<GObject *> &objs2 = doc2->getObjects();
     GObject *obj = NULL;
-    GObject *obj2 = NULL;
     AnnotationTableObject *myAnnotation = NULL;
     AnnotationTableObject *myAnnotation2 = NULL;
 
     for (int i = 0; (i != objs.size()) && (i != objs2.size()); i++) {
         obj = objs.at(i);
-        obj2 = objs2.at(i);
+        GObject *obj2 = objs2.at(i);
 
         if ((obj->getGObjectType() == GObjectTypes::ANNOTATION_TABLE)&&(obj2->getGObjectType() == GObjectTypes::ANNOTATION_TABLE)) {
             myAnnotation = qobject_cast<AnnotationTableObject*>(obj);
@@ -835,13 +833,12 @@ Task::ReportResult GTest_CheckAnnotationsQualifiersInTwoObjects::report() {
     const QList<GObject*>& objs = doc->getObjects();
     const QList<GObject*>& objs2 = doc2->getObjects();
     GObject*obj=NULL;
-    GObject*obj2=NULL;
-    AnnotationTableObject * myAnnotation;
-    AnnotationTableObject * myAnnotation2;
+    AnnotationTableObject * myAnnotation = NULL;
+    AnnotationTableObject * myAnnotation2 = NULL;
 
     for(int i=0;(i!=objs.size())&&(i!=objs2.size());i++){
         obj = objs.at(i);
-        obj2 = objs2.at(i);
+        GObject *obj2 = objs2.at(i);
 
         if((obj->getGObjectType() == GObjectTypes::ANNOTATION_TABLE)&&(obj2->getGObjectType() == GObjectTypes::ANNOTATION_TABLE)){
             myAnnotation = qobject_cast<AnnotationTableObject*>(obj);
@@ -922,13 +919,12 @@ Task::ReportResult GTest_CheckAnnotationsNamesInTwoObjects::report() {
     const QList<GObject*>& objs = doc->getObjects();
     const QList<GObject*>& objs2 = doc2->getObjects();
     GObject*obj=NULL;
-    GObject*obj2=NULL;
-    AnnotationTableObject * myAnnotation;
-    AnnotationTableObject * myAnnotation2;
+    AnnotationTableObject * myAnnotation = NULL;
+    AnnotationTableObject * myAnnotation2 = NULL;
 
     for(int i=0;(i!=objs.size())&&(i!=objs2.size());i++){
         obj = objs.at(i);
-        obj2 = objs2.at(i);
+        GObject *obj2 = objs2.at(i);
 
         if((obj->getGObjectType() == GObjectTypes::ANNOTATION_TABLE)&&(obj2->getGObjectType() == GObjectTypes::ANNOTATION_TABLE)){
             myAnnotation = qobject_cast<AnnotationTableObject*>(obj);
@@ -1044,7 +1040,7 @@ Task::ReportResult GTest_FindAnnotationByLocation::report() {
             continue;
         }
         foreach (const U2Region &r, a->getRegions()) {
-            if (r == location && (annotationName.isEmpty() || (!annotationName.isEmpty() && a->getName() == annotationName))) {
+            if (r == location && (annotationName.isEmpty() || a->getName() == annotationName)) {
                 result = a;
                 break;
             }

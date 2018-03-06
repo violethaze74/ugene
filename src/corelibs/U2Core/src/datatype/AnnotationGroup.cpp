@@ -271,9 +271,8 @@ AnnotationGroup * AnnotationGroup::getSubgroup(const QString &path, bool create)
 AnnotationGroup * AnnotationGroup::addSubgroup(const U2Feature &feature) {
     SAFE_POINT(feature.hasValidId() && feature.featureClass == U2Feature::Group, "Unexpected feature provided", NULL);
 
-    AnnotationGroup *result = NULL;
     if (feature.parentFeatureId == id) {
-        result = new AnnotationGroup(feature.id, feature.name, this, parentObject);
+        AnnotationGroup *result = new AnnotationGroup(feature.id, feature.name, this, parentObject);
         subgroups.append(result);
         parentObject->emit_onGroupCreated(result);
         return result;

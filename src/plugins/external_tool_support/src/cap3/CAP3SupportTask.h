@@ -104,7 +104,7 @@ public:
     void prepare();
     void run();
     bool onlyCopyInputFiles() { return onlyCopyFiles; }
-    const QString& getPreparedPath() { return preparedPath; }
+    const QString& getPreparedPath() const { return preparedPath; }
 private:
     QList<CopyDataTask*> copyTasks;
     QStringList inputUrls;

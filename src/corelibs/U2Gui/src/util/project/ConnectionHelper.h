@@ -28,6 +28,7 @@
 namespace U2 {
 
 class ConnectionHelper {
+    Q_DISABLE_COPY(ConnectionHelper)
 public:
     ConnectionHelper(const U2DbiRef &dbiRef, U2OpStatus &os);
     ~ConnectionHelper();

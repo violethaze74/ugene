@@ -118,6 +118,7 @@ enum DelegateType {
 };
 
 class CfgListItem {
+    Q_DISABLE_COPY(CfgListItem)
 public:
     CfgListItem(DelegateType t)  {
         if(t == DelegateForPort) {

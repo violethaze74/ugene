@@ -119,7 +119,6 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
     int num_sequence = 0;
 
     qint64 sequenceStart = 0;
-    int sequenceSize = 0;
     int fullSequenceSize = 0;
     const int objectsCountLimit = fs.contains(DocumentReadingMode_MaxObjectsInDoc) ? fs[DocumentReadingMode_MaxObjectsInDoc].toInt() : -1;
 
@@ -141,7 +140,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
             CHECK_OP(os, );
         }
 
-        sequenceSize = 0;
+        int sequenceSize = 0;
         os.setDescription(tr("Reading entry header"));
         int offset = 0;
         if (merge && num_sequence > 0) {

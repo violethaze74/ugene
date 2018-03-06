@@ -147,7 +147,7 @@ AnnotationSettings::AnnotationSettings() {
 }
 
 AnnotationSettings::AnnotationSettings(const QString& _name, bool _amino, const QColor& _color, bool _visible)
-: name(_name), color(_color), amino(_amino), visible(_visible)
+: name(_name), color(_color), amino(_amino), visible(_visible), showNameQuals(false)
 {
 }
 

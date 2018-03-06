@@ -84,7 +84,7 @@ Task* FilterAnnotationsByQualifierWorker::tick() {
 }
 
 void FilterAnnotationsByQualifierWorker::sl_taskFinished(Task *t) {
-    if(t->isCanceled() || t->hasError() || t->hasError()){
+    if (t->isCanceled() || t->hasError()) {
         return;
     }
     const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(inputAnns);

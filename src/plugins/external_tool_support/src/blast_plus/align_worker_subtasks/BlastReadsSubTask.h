@@ -79,10 +79,6 @@ public:
                        const QString &readName,
                        DbiDataStorage *storage);
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task *subTask);
-    ReportResult report();
-
     bool isComplement() const;
     const SharedDbiDataHandler& getRead() const;
     const U2MsaRowGapModel&      getReferenceGaps() const;
@@ -95,6 +91,10 @@ public:
     int         getReadIdentity() const;
 
 private:
+    void prepare();
+    QList<Task*> onSubTaskFinished(Task *subTask);
+    ReportResult report();
+
     BlastNPlusSupportTask *getBlastTask();
     void checkRead(const QByteArray &sequenceData);
 

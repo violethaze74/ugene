@@ -389,9 +389,8 @@ AppSettingsGUIPageState* ExternalToolSupportSettingsPageWidget::getState(QString
     Q_UNUSED(err);
 
     ExternalToolSupportSettingsPageState* state = new ExternalToolSupportSettingsPageState();
-    ExternalTool* externalTool;
     foreach (ExternalToolInfo info, externalToolsInfo){
-        externalTool = new ExternalTool(info.name, info.path);
+        ExternalTool* externalTool = new ExternalTool(info.name, info.path);
         externalTool->setValid(info.valid);
         externalTool->setVersion(info.version);
         state->externalTools.append(externalTool);
@@ -588,7 +587,6 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolKitPath(){
 void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
     LastUsedDirHelper lod("toolpack path");
     QString dirPath;
-    bool isPathValid = false;
     lod.dir = dirPath = U2FileDialog::getExistingDirectory(this, tr("Choose Folder With External Tools Pack"), lod.dir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
     if (!dirPath.isEmpty()) {
@@ -597,6 +595,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
         assert(listOfItems.length() != 0);
         QStringList toolNames;
         StrStrMap toolPaths;
+        bool isPathValid = false;
 
         foreach (ExternalTool* et, AppContext::getExternalToolRegistry()->getAllEntries()) {
             if (et->isModule()) {

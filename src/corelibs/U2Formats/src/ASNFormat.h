@@ -86,6 +86,8 @@ public:
 
         // Parsing state
         struct ParseState {
+            ParseState() : atEnd(false), numOpenedTags(0) {}
+
             QByteArray parentName;
             bool atEnd;
             int numOpenedTags;

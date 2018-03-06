@@ -55,7 +55,7 @@ public:
     /** Validate the subset.
       * @returns "" on 0k, error message on fail
       */
-    QString validate();
+    QString validate() const;
 
     /** Fill and @return choosen subset */
     BioStruct3DReference getSubset();
@@ -65,7 +65,7 @@ public:
 
 private:
     /** Convert text from region Edit to U2Region */
-    U2Region getRegion();
+    U2Region getRegion() const;
 
     /** Set text in region Edit from U2Region */
     void setRegion(const U2Region &region);

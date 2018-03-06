@@ -540,7 +540,6 @@ void DetViewSingleLineRenderer::drawComplementTranslations(QPainter& p,
     QByteArray revComplDna(trMetrics.seqBlockRegion.length, 0);
     complTable->translate(seqBlock, trMetrics.seqBlockRegion.length, revComplDna.data(), trMetrics.seqBlockRegion.length);
     TextUtils::reverse(revComplDna.data(), revComplDna.size());
-    int complLine = 0;
     for (int i = 0; i < 3; i++) {
         int indent = (detView->getSequenceLength() - visibleRange.endPos() + i) % 3;
         qint64 revComplStartPos = visibleRange.endPos() - indent + 3; // start of the reverse complement sequence in direct coords
@@ -549,7 +548,7 @@ void DetViewSingleLineRenderer::drawComplementTranslations(QPainter& p,
         }
         qint64 revComplDnaOffset = trMetrics.maxUsedPos - revComplStartPos;
         SAFE_POINT(revComplDnaOffset >= 0, "Complement translations offset is negative", );
-        complLine = (detView->getSequenceLength() - revComplStartPos) % 3;
+        int complLine = (detView->getSequenceLength() - revComplStartPos) % 3;
 
         if (trMetrics.visibleRows[complLine + 3] == true) {
             DNATranslation* translation = detView->getAminoTT();

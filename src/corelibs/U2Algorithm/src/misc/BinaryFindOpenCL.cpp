@@ -43,6 +43,7 @@ BinaryFindOpenCL::BinaryFindOpenCL(const NumberType *_haystack,
                            const NumberType *_needles,
                            const int _needlesSize,
                            const int *_windowSizes) :
+        isError(false),
         haystack(_haystack),
         haystackSize(_haystackSize),
         needles(_needles),

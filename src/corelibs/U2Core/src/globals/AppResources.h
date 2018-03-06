@@ -164,8 +164,6 @@ public:
         return -1;
     }
 
-    QString name;
-    QString suffix;
 private:
     QReadWriteLock* resource;
 };
@@ -302,17 +300,26 @@ private:
 class MemoryLocker {
 public:
     MemoryLocker(U2OpStatus& os, int preLockMB = 10, AppResource::MemoryLockType memoryLockType = AppResource::TaskMemory)
-        : os(&os), preLockMB(preLockMB), lockedMB(0), needBytes(0), resource(NULL), memoryLockType(memoryLockType) {
+        : os(&os),
+          preLockMB(preLockMB > 0 ? preLockMB : 0),
+          lockedMB(0),
+          needBytes(0),
+          resource(NULL),
+          memoryLockType(memoryLockType)
+    {
         resource = AppResourcePool::instance()->getResource(RESOURCE_MEMORY);
-
-        preLockMB = preLockMB>0?preLockMB : 0;
         tryAcquire(0);
     }
-    MemoryLocker(int preLockMB = 10, AppResource::MemoryLockType memoryLockType = AppResource::TaskMemory)
-        : os(NULL), preLockMB(preLockMB), lockedMB(0), needBytes(0), resource(NULL), memoryLockType(memoryLockType) {
-        resource = AppResourcePool::instance()->getResource(RESOURCE_MEMORY);
 
-        preLockMB = preLockMB>0?preLockMB : 0;
+    MemoryLocker(int preLockMB = 10, AppResource::MemoryLockType memoryLockType = AppResource::TaskMemory)
+        : os(NULL),
+          preLockMB(preLockMB > 0 ? preLockMB : 0),
+          lockedMB(0),
+          needBytes(0),
+          resource(NULL),
+          memoryLockType(memoryLockType)
+    {
+        resource = AppResourcePool::instance()->getResource(RESOURCE_MEMORY);
         tryAcquire(0);
     }
 

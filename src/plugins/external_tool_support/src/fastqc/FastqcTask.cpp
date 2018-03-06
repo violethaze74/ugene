@@ -122,7 +122,7 @@ void FastQCTask::run(){
 }
 
 QString FastQCTask::getResFileUrl() const{
-    QString res = "";
+    QString res;
 
     QFileInfo fi(settings.inputUrl);
     QString name = fi.fileName();

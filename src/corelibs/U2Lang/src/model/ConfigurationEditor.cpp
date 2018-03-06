@@ -146,7 +146,7 @@ QStringList DelegateTags::getStringList(const DelegateTags *tags, const QString 
     return tags->get(name).toStringList();
 }
 
-const DelegateTags &DelegateTags::operator =(const DelegateTags &other) {
+DelegateTags &DelegateTags::operator =(const DelegateTags &other) {
     tags = other.tags;
     return *this;
 }

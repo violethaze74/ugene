@@ -118,6 +118,7 @@ public:
 
 template <typename T>
 class IndexedMapping3To1 {
+    Q_DISABLE_COPY(IndexedMapping3To1)
 public:
     IndexedMapping3To1(const QList<Mapping3To1<T> >& rawMapping, const T& defaultVal) {
         //init index;

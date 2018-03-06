@@ -1742,7 +1742,6 @@ void AnnotationsTreeView::annotationClicked(AVAnnotationItem* item, QMap<AVAnnot
 
     Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
     const bool controlOfShiftPressed = km.testFlag(Qt::ControlModifier) || km.testFlag(Qt::ShiftModifier);
-    const QVector<U2Region> selection = sequenceSelection->getSelectedRegions();
     if (!controlOfShiftPressed) {
         sequenceSelection->clear();
         foreach(AVAnnotationItem* key, selectedAnnotations.keys()) {
@@ -2557,10 +2556,9 @@ void FindQualifierTask::run() {
     AVItem* rootGroup = groupToSearchIn;
 
     int childCount = rootGroup->childCount();
-    bool found = false;
     int startIdx = getStartIndexGroup(rootGroup);
     for (int i = startIdx; i < childCount && !stateInfo.isCanceled(); i++) {
-        found = false;
+        bool found = false;
         stateInfo.setProgress(i/childCount);
         AVItem *child = static_cast<AVItem*>(rootGroup->child(i));
         if (child->type == AVItemType_Annotation) {

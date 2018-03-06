@@ -33,7 +33,7 @@ public:
     ExternalToolSupportAction(QObject* p, GObjectView* v, const QString& _text, int order, const QStringList& _toolNames);
     ExternalToolSupportAction(const QString& text, QObject* p, const QStringList& _toolNames);
 
-    const QStringList getToolNames(){return toolNames;}
+    const QStringList getToolNames() const {return toolNames;}
 
 private slots:
     void sl_pathChanged();

@@ -257,7 +257,7 @@ void CutAdaptFastqTask::prepareStep(){
 QStringList CutAdaptFastqTask::getParameters(U2OpStatus &/*os*/) {
     QStringList res;
 
-    QString val = "";
+    QString val;
 
     val = settings.customParameters[ADAPTERS_URL].toString();
     if(!val.isEmpty()){
