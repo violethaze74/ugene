@@ -147,7 +147,7 @@ QString BioStruct3DSubsetEditor::validate() const {
     return QString("");
 }
 
-U2Region BioStruct3DSubsetEditor::getRegion() {
+U2Region BioStruct3DSubsetEditor::getRegion() const {
     U2Region ret;
 
     QString text = regionEdit->text();
