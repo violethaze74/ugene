@@ -55,7 +55,6 @@ private:
     static const QString WEVOTE_NAMES;
     static const qint64 BUFFER_SIZE;
     static const QString SCIENTIFIC_NAME;
-    static const QString WEVOTE_TAXONOMY_FILE_ROLE;
 };
 
 }   // namespace U2

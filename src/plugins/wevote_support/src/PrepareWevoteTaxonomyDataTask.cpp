@@ -38,7 +38,6 @@ const QString PrepareWevoteTaxonomyDataTask::WEVOTE_NODES = "nodes_wevote.dmp";
 const QString PrepareWevoteTaxonomyDataTask::WEVOTE_NAMES = "names_wevote.dmp";
 const qint64 PrepareWevoteTaxonomyDataTask::BUFFER_SIZE = 4 * 1024 * 1024;
 const QString PrepareWevoteTaxonomyDataTask::SCIENTIFIC_NAME = "scientific_name";
-const QString PrepareWevoteTaxonomyDataTask::WEVOTE_TAXONOMY_FILE_ROLE = "WEVOTE_TAXONOMY_FILE";
 
 PrepareWevoteTaxonomyDataTask::PrepareWevoteTaxonomyDataTask(FileStorage::WorkflowProcess &_workflowProcess)
     : Task(tr("Prepare taxonomy data for WEVOTE"), TaskFlag_None),
@@ -90,8 +89,8 @@ Task::ReportResult PrepareWevoteTaxonomyDataTask::report() {
 }
 
 bool PrepareWevoteTaxonomyDataTask::isActual() const {
-    const QString wevoteNamesUrl = FileStorageUtils::getFileToFileInfo(taxonomyNamesUrl, WEVOTE_TAXONOMY_FILE_ROLE, workflowProcess);
-    const QString wevoteNodesUrl = FileStorageUtils::getFileToFileInfo(taxonomyNodesUrl, WEVOTE_TAXONOMY_FILE_ROLE, workflowProcess);
+    const QString wevoteNamesUrl = FileStorageUtils::getFileToFileInfo(taxonomyNamesUrl, StorageRoles::CUSTOM_FILE_TO_FILE, workflowProcess);
+    const QString wevoteNodesUrl = FileStorageUtils::getFileToFileInfo(taxonomyNodesUrl, StorageRoles::CUSTOM_FILE_TO_FILE, workflowProcess);
     return !wevoteNamesUrl.isEmpty() && !wevoteNodesUrl.isEmpty();
 }
 
@@ -114,8 +113,7 @@ void PrepareWevoteTaxonomyDataTask::prepareNamesFile() {
         }
     }
 
-    FileStorage::FileInfo fileInfo(sourceFile.fileName(), WEVOTE_TAXONOMY_FILE_ROLE, destinationFile.fileName());
-    fileInfo.forceSetFileToFileInfo(true);
+    FileStorage::FileInfo fileInfo(sourceFile.fileName(), StorageRoles::CUSTOM_FILE_TO_FILE, destinationFile.fileName());
     FileStorageUtils::addFileToFileInfo(fileInfo, workflowProcess);
 }
 
@@ -135,8 +133,7 @@ void PrepareWevoteTaxonomyDataTask::prepareNodesFile() {
         writeStream << readStream.read(BUFFER_SIZE).replace(QChar(' '), QChar('_'));
     }
 
-    FileStorage::FileInfo fileInfo(sourceFile.fileName(), WEVOTE_TAXONOMY_FILE_ROLE, destinationFile.fileName());
-    fileInfo.forceSetFileToFileInfo(true);
+    FileStorage::FileInfo fileInfo(sourceFile.fileName(), StorageRoles::CUSTOM_FILE_TO_FILE, destinationFile.fileName());
     FileStorageUtils::addFileToFileInfo(fileInfo, workflowProcess);
 }
 

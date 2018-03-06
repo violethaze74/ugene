@@ -46,15 +46,13 @@ namespace FileStorage {
 /* FileInfo */
 /************************************************************************/
 FileInfo::FileInfo(const QString &url, const QString &role, const QString &info)
-    : U2Triplet(url, role, info),
-      forcedFileToFileInfo(false)
+    : U2Triplet(url, role, info)
 {
 
 }
 
 FileInfo::FileInfo(const U2Triplet &triplet)
-    : U2Triplet(triplet),
-      forcedFileToFileInfo(false)
+    : U2Triplet(triplet)
 {
 
 }
@@ -73,10 +71,6 @@ bool FileInfo::isFileToFileInfo() const {
     CHECK(StorageRoles::SAM_TO_BAM != getRole(), true);
     CHECK(StorageRoles::IMPORTED_BAM != getRole(), true);
     return false;
-}
-
-void FileInfo::forceSetFileToFileInfo(bool _isFileToFileInfo) {
-    forcedFileToFileInfo = _isFileToFileInfo;
 }
 
 /************************************************************************/
