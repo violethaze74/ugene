@@ -102,10 +102,11 @@ QList<Task*> ExportSequencesTask::onSubTaskFinished(Task* subTask) {
             IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
             DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(format);
             SAFE_POINT(df != NULL, "Cant get DocuemtFormat by given DocumentFormatId", res);
-            QList<GObject*> objs;
             QScopedPointer<Document> doc(df->createNewLoadedDocument(iof, filePath, stateInfo));
             CHECK_OP(stateInfo, res);
-            U2SequenceObject* seqObj = DocumentFormatUtils::addSequenceObjectDeprecated(doc->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, s.getName(), objs, s, stateInfo);
+            QVariantMap hints;
+            hints.insert(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER);
+            U2SequenceObject* seqObj = DocumentFormatUtils::addSequenceObject(doc->getDbiRef(), s.getName(), s.constSequence(), s.circular, hints, stateInfo);
             CHECK_OP(stateInfo, res);
             doc->addObject(seqObj);
             Document *takenDoc = doc.take();

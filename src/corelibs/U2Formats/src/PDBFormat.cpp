@@ -843,8 +843,9 @@ Document * PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef &dbiRef, BioS
         dnaSeq.info.insert(DNAInfo::DEFINITION, sequenceName);
         dnaSeq.info.insert(DNAInfo::COMMENT, bioStruct.descr);
         dnaSeq.info.insert(DNAInfo::CHAIN_ID, key);
-        U2SequenceObject* seqObj = DocumentFormatUtils::addSequenceObjectDeprecated(dbiRef, folder, sequenceName, objects, dnaSeq, os);
+        U2SequenceObject* seqObj = DocumentFormatUtils::addSequenceObject(dbiRef, sequenceName, dnaSeq.constSequence(), dnaSeq.circular, hints, os);
         SAFE_POINT(seqObj, QString("Got NULL object from DocumentFormatUtils addSequenceObjectDeprecated, os.error = %1").arg(os.getError()), NULL);
+        objects.append(seqObj);
         dbiObjects.objects << seqObj->getSequenceRef().entityId;
         if (os.isCoR()) {
             break;
