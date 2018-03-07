@@ -449,16 +449,7 @@ Task * ClarkClassifyWorker::tick() {
         }
         //TODO uncompress input files if needed
 
-        QString reportUrl;
-        U2OpStatus2Log os;
-        QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
-        tmpDir = GUrlUtils::createDirectory(tmpDir + "clark", "_", os);
-        if (os.hasError()) {
-            return new FailTask(os.getError());
-        }
-        reportUrl = tmpDir + "/clark_raw_classification";
-
-        ClarkClassifyTask *task = new ClarkClassifyTask(cfg, readsUrl, pairedReadsUrl, reportUrl);
+        ClarkClassifyTask *task = new ClarkClassifyTask(cfg, readsUrl, pairedReadsUrl, context->workingDir());
         task->addListeners(createLogListeners());
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
         return task;
@@ -595,6 +586,10 @@ void ClarkClassifyTask::prepare() {
         stateInfo.setError(tr("Unsupported CLARK variant. Only default and light variants are supported."));
         return;
     }
+    QString tmpDir = FileAndDirectoryUtils::createWorkingDir(reportUrl, FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", reportUrl);
+    tmpDir = GUrlUtils::createDirectory(tmpDir + "clark", "_", stateInfo);
+    reportUrl = tmpDir + "/clark_raw_classification";
+    CHECK_OP(stateInfo, );
     QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolName, getArguments(), new ClarkLogParser(), cfg.databaseUrl));
     CHECK_OP(stateInfo, );
     setListenerForTask(task.data());

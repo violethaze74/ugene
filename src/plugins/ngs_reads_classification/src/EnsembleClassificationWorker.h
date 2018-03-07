@@ -48,9 +48,10 @@ protected:
     Task * tick();
     void cleanup() {}
 
-private:
+private slots:
+    void sl_taskFinished(Task *task);
 
-protected:
+private:
     IntegralBus *input;
     IntegralBus *output;
     QString outputFile;
@@ -64,6 +65,24 @@ public:
     static void cleanup();
     EnsembleClassificationWorkerFactory() : DomainFactory(ACTOR_ID) {}
     Worker* createWorker(Actor* a) { return new EnsembleClassificationWorker(a); }
+};
+
+class EnsembleClassificationTask : public Task {
+    Q_OBJECT
+public:
+    EnsembleClassificationTask(const QVariantMap &data, const bool tripleInput, const QString &outputFile, const QString &workingDir);
+    bool foundMismatches() const {return hasMissing;}
+    QString getOutputFile() const {return outputFile;}
+
+private:
+    void run();
+
+    const QVariantMap data;
+    const bool tripleInput;
+    const QString workingDir;
+
+    QString outputFile;
+    bool hasMissing;
 };
 
 } //LocalWorkflow

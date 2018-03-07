@@ -34,6 +34,7 @@
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
+#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -84,10 +85,7 @@ bool EnsembleSlotValidator::validate(const Actor *actor, ProblemList &problemLis
 
     Port* inputPort = actor->getPort(INPUT_PORT);
     IntegralBusPort* input = qobject_cast<IntegralBusPort*>(inputPort);
-    if (input == NULL) {
-        res = false;
-        problemList.append(Problem(EnsembleClassificationPrompter::tr("IntegralBusPort member is NULL"), actor->getId()));
-    }
+    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), false);
 
     QList<Actor*> producers1 = input->getProducers(INPUT_SLOT1);
     QList<Actor*> producers2 = input->getProducers(INPUT_SLOT2);
@@ -203,80 +201,11 @@ void EnsembleClassificationWorker::init() {
 Task * EnsembleClassificationWorker::tick() {
     if (input->hasMessage()) {
         const Message message = getMessageAndSetupScriptValues(input);
-
         QVariantMap data = message.getData().toMap();
-        TaxonomyClassificationResult tax1 = data[INPUT_SLOT1].value<U2::LocalWorkflow::TaxonomyClassificationResult>();
-        TaxonomyClassificationResult tax2 = data[INPUT_SLOT2].value<U2::LocalWorkflow::TaxonomyClassificationResult>();
-        TaxonomyClassificationResult tax3 = data[INPUT_SLOT3].value<U2::LocalWorkflow::TaxonomyClassificationResult>();
 
-        QStringList seqs = tax1.keys();
-        seqs << tax2.keys();
-        if (tripleInput) {
-            seqs << tax3.keys();
-        }
-        seqs.removeDuplicates();
-        seqs.sort();
-        QString csv;csv.reserve(seqs.size() * 64);
-        bool hasMissing = false;
-        foreach (QString seq, seqs) {
-            TaxID id1 = tax1.value(seq, TaxonomyTree::UNDEFINED_ID);
-            TaxID id2 = tax2.value(seq, TaxonomyTree::UNDEFINED_ID);
-            TaxID id3 = tax3.value(seq, TaxonomyTree::UNDEFINED_ID);
-            if (id1 == TaxonomyTree::UNDEFINED_ID) {
-                QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT1);
-                algoLog.trace(msg);
-                hasMissing = true;
-                continue;
-            }
-            if (id2 == TaxonomyTree::UNDEFINED_ID) {
-                QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT2);
-                algoLog.trace(msg);
-                hasMissing = true;
-                continue;
-            }
-            if (tripleInput && id3 == TaxonomyTree::UNDEFINED_ID) {
-                QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT3);
-                algoLog.trace(msg);
-                hasMissing = true;
-                continue;
-            }
-            csv.append(seq).append(',').append(QString::number(id1)).append(',').append(QString::number(id2));
-            if (tripleInput) {
-                csv.append(',').append(QString::number(id3));
-            }
-            csv.append('\n');
-        }
-        if (hasMissing) {
-            QString msg = tr("Different taxonomy data do not match. Some sequence names were skipped.");
-            algoLog.info(msg);
-            monitor()->addInfo(msg, getActorId(), Problem::U2_WARNING);
-        }
-
-        QString reportUrl = outputFile;
-        if (!QFileInfo(reportUrl).isAbsolute()) {
-            U2OpStatus2Log os;
-            QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
-            tmpDir = GUrlUtils::createDirectory(tmpDir, "_", os);
-            if (os.hasError()) {
-                return new FailTask(os.getError());
-            }
-            reportUrl = tmpDir + '/' + outputFile;
-        }
-
-        QFile csvFile(reportUrl);
-        csvFile.open(QIODevice::Append);
-        csvFile.write(csv.toLocal8Bit());
-        csvFile.close();
-        context->getMonitor()->addOutputFile(reportUrl, getActor()->getId());
-        QVariantMap m;
-        m[OUTPUT_SLOT] = reportUrl;
-//            QString datasetName = "Dataset 1"; //TODO use input url or dataset name???
-//            m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
-//            MessageMetadata metadata(url, datasetName);
-//            context->getMetadataStorage().put(metadata);
-        output->put(Message(output->getBusType(), m/*, metadata.getId()*/));
-
-        return NULL;
+        Task* t = new EnsembleClassificationTask(data, tripleInput, outputFile, context->workingDir());
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        return t;
     }
 
     if (input->isEnded()) {
@@ -286,6 +215,92 @@ Task * EnsembleClassificationWorker::tick() {
     }
 
     return NULL;
+}
+
+void EnsembleClassificationWorker::sl_taskFinished(Task *t)
+{
+    EnsembleClassificationTask *task = qobject_cast<EnsembleClassificationTask *>(t);
+    SAFE_POINT(NULL != task, "Invalid task is encountered", );
+    if (!task->isFinished() || task->hasError() || task->isCanceled()) {
+        return;
+    }
+    QString reportUrl = task->getOutputFile();
+    QVariantMap m;
+    m[OUTPUT_SLOT] = reportUrl;
+    output->put(Message(output->getBusType(), m/*, metadata.getId()*/));
+    monitor()->addOutputFile(reportUrl, getActor()->getId());
+    if (task->foundMismatches()) {
+        QString msg = tr("Different taxonomy data do not match. Some sequence names were skipped.");
+        algoLog.info(msg);
+        monitor()->addInfo(msg, getActorId(), Problem::U2_WARNING);
+    }
+}
+
+void EnsembleClassificationTask::run() {
+    TaxonomyClassificationResult tax1 = data[INPUT_SLOT1].value<U2::LocalWorkflow::TaxonomyClassificationResult>();
+    TaxonomyClassificationResult tax2 = data[INPUT_SLOT2].value<U2::LocalWorkflow::TaxonomyClassificationResult>();
+    TaxonomyClassificationResult tax3 = data[INPUT_SLOT3].value<U2::LocalWorkflow::TaxonomyClassificationResult>();
+
+    QStringList seqs = tax1.keys();
+    seqs << tax2.keys();
+    if (tripleInput) {
+        seqs << tax3.keys();
+    }
+    CHECK_OP(stateInfo, );
+    seqs.removeDuplicates();
+    CHECK_OP(stateInfo, );
+    seqs.sort();
+    QString csv;csv.reserve(seqs.size() * 64);
+    int counter = 0;
+    foreach (QString seq, seqs) {
+        CHECK_OP(stateInfo, );
+        stateInfo.setProgress(++counter * 100 /seqs.size());
+
+        TaxID id1 = tax1.value(seq, TaxonomyTree::UNDEFINED_ID);
+        TaxID id2 = tax2.value(seq, TaxonomyTree::UNDEFINED_ID);
+        TaxID id3 = tax3.value(seq, TaxonomyTree::UNDEFINED_ID);
+        if (id1 == TaxonomyTree::UNDEFINED_ID) {
+            QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT1);
+            algoLog.trace(msg);
+            hasMissing = true;
+            continue;
+        }
+        if (id2 == TaxonomyTree::UNDEFINED_ID) {
+            QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT2);
+            algoLog.trace(msg);
+            hasMissing = true;
+            continue;
+        }
+        if (tripleInput && id3 == TaxonomyTree::UNDEFINED_ID) {
+            QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT3);
+            algoLog.trace(msg);
+            hasMissing = true;
+            continue;
+        }
+        csv.append(seq).append(',').append(QString::number(id1)).append(',').append(QString::number(id2));
+        if (tripleInput) {
+            csv.append(',').append(QString::number(id3));
+        }
+        csv.append('\n');
+    }
+
+    if (!QFileInfo(outputFile).isAbsolute()) {
+        QString tmpDir = FileAndDirectoryUtils::createWorkingDir(workingDir, FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", workingDir);
+        tmpDir = GUrlUtils::createDirectory(tmpDir, "_", stateInfo);
+        CHECK_OP(stateInfo, );
+        outputFile = tmpDir + '/' + outputFile;
+    }
+
+    QFile csvFile(outputFile);
+    csvFile.open(QIODevice::Append);
+    csvFile.write(csv.toLocal8Bit());
+    csvFile.close();
+}
+
+EnsembleClassificationTask::EnsembleClassificationTask(const QVariantMap &data, const bool tripleInput, const QString &outputFile, const QString &workingDir)
+    : Task(tr("Ensemble different classifications"), TaskFlag_None), data(data), tripleInput(tripleInput), outputFile(outputFile), workingDir(workingDir), hasMissing(false)
+{
+
 }
 
 } //LocalWorkflow

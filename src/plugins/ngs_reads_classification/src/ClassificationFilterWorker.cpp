@@ -138,10 +138,7 @@ bool InputValidator::validate(const Actor *actor, ProblemList &problemList, cons
     const bool paired = attrName == PAIRED_END;
     Port* inputPort = actor->getPort(INPUT_PORT);
     IntegralBusPort* input = qobject_cast<IntegralBusPort*>(inputPort);
-    if (input == NULL) {
-        res = false;
-        problemList.append(Problem(ClassificationFilterPrompter::tr("IntegralBusPort member is NULL"), actor->getId()));
-    }
+    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), false);
 
     QList<Actor*> producers = input->getProducers(LocalWorkflow::GetReadsListWorkerFactory::SE_SLOT_ID);
     if (producers.isEmpty()) {
@@ -450,10 +447,6 @@ ClassificationFilterTask::ClassificationFilterTask(const ClassificationFilterSet
     SAFE_POINT_EXT(!settings.workingDir.isEmpty(), setError("Working dir is not specified"), );
 }
 
-void ClassificationFilterTask::prepare() {
-    dir = GUrlUtils::createDirectory(cfg.workingDir + "filter", "_", stateInfo);
-}
-
 static QString composeOutputName(GUrl input, QString suffix, QString dir) {
     QString ext = input.fileName();
     QString prefix = GUrlUtils::getUncompressedCompleteBaseName(ext);
@@ -476,7 +469,12 @@ void ClassificationFilterTask::run()
 
     algoLog.trace(QString("Going to filter file: %1").arg(readsUrl));
 
+    dir = GUrlUtils::createDirectory(cfg.workingDir + "filter", "_", stateInfo);
+    CHECK_OP(stateInfo, );
+
     while(reader.hasNext()) {
+        CHECK_OP(stateInfo, );
+
         DNASequence *seq = reader.getNextSequenceObject(), *pairedSeq;
         algoLog.trace(QString("Got seq: %1").arg(seq->getName()));
         if (cfg.paired) {

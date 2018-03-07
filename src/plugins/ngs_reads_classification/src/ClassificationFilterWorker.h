@@ -114,7 +114,6 @@ public:
     bool hasMissed() const {return missed;}
 
 private:
-    void prepare();
     void run();
     QString filter(DNASequence *seq, QString inputName);
     bool write(DNASequence *seq, QString fileName, const StreamSequenceReader &original);
