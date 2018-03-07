@@ -103,9 +103,8 @@ inline quint32 getNextInt(QByteArray &data, bool &eol, bool &intErr) {
     QByteArray result = data.left(commaIdx).trimmed();
     data = data.mid(commaIdx+1).trimmed();
 
-    char c = 0;
     for (int i = 0; i < result.length(); i++) {
-        c = result[i];
+        char c = result[i];
         if (c <'0' || c>'9') {
             intErr = true;
             return -1;

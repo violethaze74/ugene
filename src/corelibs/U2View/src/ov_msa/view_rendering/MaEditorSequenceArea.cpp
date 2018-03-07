@@ -253,7 +253,6 @@ void MaEditorSequenceArea::updateSelection() {
     if (selectionHeight <= 1 && itemIndex >= 0) {
         const MSACollapsableItem& collapsibleItem = m->getItem(itemIndex);
         if(newEnd == collapsibleItem.row && !collapsibleItem.isCollapsed) {
-            newEnd = collapsibleItem.row ;
             selectionHeight = qMax(selectionHeight, endPos - newStart + collapsibleItem.numRows);
         }
     }

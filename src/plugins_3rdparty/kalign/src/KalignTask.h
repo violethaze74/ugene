@@ -92,7 +92,7 @@ public:
     QPointer<StateLock>         lock;
     KalignTask*                 kalignTask;
     KalignTaskSettings          config;
-    LoadDocumentTask*   loadDocumentTask;
+    LoadDocumentTask*           loadDocumentTask;
 
 };
 

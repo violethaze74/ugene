@@ -64,7 +64,7 @@ public:
     static const int DEFAULT_REMOTE_REQUEST_TIMEOUT_SECONDS;
     static const QString HTTP_BODY_SEPARATOR;
 
-    RemoteRequestConfig() {}
+    RemoteRequestConfig() : remoteRequestTimeout(DEFAULT_REMOTE_REQUEST_TIMEOUT_SECONDS) {}
     int remoteRequestTimeout;
 };
 

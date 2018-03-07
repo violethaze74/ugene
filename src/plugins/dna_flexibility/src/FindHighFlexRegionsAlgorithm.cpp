@@ -44,7 +44,6 @@ void FindHighFlexRegionsAlgorithm::find(
         "Internal error: a user is not allowed to input such window step",)
 
     int windowLeft = 0;
-    double windowThreshold = 0;
     bool previousWindowIsHighFlex = false;
     int areaHighFlexLeft = 0;
     int areaHighFlexWindowsNumber = 0;
@@ -54,7 +53,7 @@ void FindHighFlexRegionsAlgorithm::find(
     while (windowLeft <= seqLength - settings.windowSize)
     {
         // Calculating the threshold in the current window
-        windowThreshold = 0;
+        double windowThreshold = 0;
         for (int i = windowLeft; i < windowLeft + settings.windowSize - 1; ++i)
         {
             windowThreshold += flexibilityAngle(sequence[i], sequence[i + 1]);

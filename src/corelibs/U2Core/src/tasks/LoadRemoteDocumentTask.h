@@ -162,9 +162,9 @@ private:
     QString getRetType() const;
 
     GUrl fileUrl;
-    bool openView;
     LoadDataFromEntrezTask* loadDataFromEntrezTask;
-    QString accNumber, dbName;
+    QString accNumber;
+    QString dbName;
 };
 
 class U2CORE_EXPORT BaseEntrezRequestTask : public Task {
@@ -207,13 +207,14 @@ private slots:
     void sl_cancelCheck();
 
 private:
-    QNetworkReply* searchReply;
+    QNetworkReply* searchReply;     // TODO: I think, it is unsed variable. Check if you can remove it.
     QNetworkReply* downloadReply;
     QXmlSimpleReader xmlReader;
-    QString db, accNumber;
-    bool copyDataMode;
+    QString db;
+    QString accNumber;
     QString resultIndex;
-    QString fullPath, format;
+    QString fullPath;
+    QString format;
 };
 
 class U2CORE_EXPORT EntrezQueryTask : public BaseEntrezRequestTask {
@@ -254,6 +255,8 @@ public:
 
 
 struct EntrezSummary {
+    EntrezSummary() : size(0) {}
+
     QString id;
     QString name;
     QString title;

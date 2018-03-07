@@ -45,6 +45,9 @@ MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *pare
     colorsByRange[2] = QColor("#CCCCFF");
     colorsByRange[3] = QColor();
 
+    memset(tmpChars, 0, sizeof(char) * 4);
+    memset(tmpRanges, 0, sizeof(int) * 4);
+
     connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
 }
 

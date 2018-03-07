@@ -55,9 +55,12 @@ bool MSACollapsableItem::isValid() const {
 //////////////////////////////////////////////////////////////////////////
 
 MSACollapsibleItemModel::MSACollapsibleItemModel(MaEditorWgt *p)
-: QObject(p), ui(p)
+    : QObject(p),
+      ui(p),
+      trivialGroupsPolicy(Allow),
+      fakeModel(false)
 {
-    fakeModel = false;
+
 }
 
 void MSACollapsibleItemModel::reset(const QVector<U2Region>& itemRegions) {

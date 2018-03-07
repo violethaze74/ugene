@@ -74,8 +74,10 @@ const QString RenameChomosomeInVariationWorkerFactory::ACTOR_ID("rename-chromoso
 /* Worker */
 /************************************************************************/
 
-RenameChomosomeInVariationWorker::RenameChomosomeInVariationWorker(Actor *actor) :
-    BaseThroughWorker(actor, INPUT_PORT, OUTPUT_PORT)
+RenameChomosomeInVariationWorker::RenameChomosomeInVariationWorker(Actor *actor)
+    : BaseThroughWorker(actor, INPUT_PORT, OUTPUT_PORT),
+      inputUrlPort(NULL),
+      outputUrlPort(NULL)
 {
 
 }

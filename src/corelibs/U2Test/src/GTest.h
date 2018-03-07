@@ -100,7 +100,7 @@ class GTestSuite;
 class U2TEST_EXPORT GTestRef {
 public:
     GTestRef(const QString& _url, const QString& sName, const GTestFormatId f)
-        : url(_url), shortName(sName), formatId(f){}
+        : url(_url), shortName(sName), formatId(f), suite(NULL) {}
 
     const QString& getURL() const {return url;}
 

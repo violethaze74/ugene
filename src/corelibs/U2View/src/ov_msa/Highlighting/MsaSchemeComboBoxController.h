@@ -71,8 +71,8 @@ private:
 };
 
 template <class Factory, class Registry>
-MsaSchemeComboBoxController<Factory, Registry>::MsaSchemeComboBoxController(MSAEditor *msa, Registry *registry, QWidget *parent /*= NULL*/)
-    : ComboBoxSignalHandler(parent), msa(msa), registry(registry) {
+MsaSchemeComboBoxController<Factory, Registry>::MsaSchemeComboBoxController(MSAEditor *_msa, Registry *_registry, QWidget *parent /*= NULL*/)
+    : ComboBoxSignalHandler(parent), msa(_msa), registry(_registry) {
     init();
 }
 

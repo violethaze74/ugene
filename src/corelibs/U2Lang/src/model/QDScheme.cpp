@@ -824,7 +824,7 @@ void QDResultGroup::buildGroupFromSingleResult(const QDResultUnit& ru, QList<QDR
 //AttributeValueMapper
 //////////////////////////////////////////////////////////////////////////
 
-const QMap<QString, bool> QDAttributeValueMapper::BOOLEAN_MAP(initBooleanMap());
+const QMap<QString, bool> QDAttributeValueMapper::BOOLEAN_MAP = initBooleanMap();
 
 QMap<QString, bool> QDAttributeValueMapper::initBooleanMap() {
     QMap<QString, bool> map;

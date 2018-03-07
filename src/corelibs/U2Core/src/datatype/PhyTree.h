@@ -54,7 +54,7 @@ public:
 
     void renameNodes(const QMap<QString, QString>& newNamesByOldNames);
 private:
-    PhyTreeData & operator= (const PhyTreeData &) {return *this;}
+    PhyTreeData & operator= (const PhyTreeData &);
     PhyNode* rootNode;
     bool haveNodeLabels;
 };

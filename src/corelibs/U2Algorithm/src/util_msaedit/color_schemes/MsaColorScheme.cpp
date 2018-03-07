@@ -222,7 +222,7 @@ void MsaColorSchemeRegistry::sl_onCustomSettingsChanged() {
         MsaColorSchemeCustomFactory *customSchemeFactory = getCustomSchemeFactoryById(scheme.name);
         if (NULL == customSchemeFactory) {
             addCustomScheme(scheme);
-            schemesListChanged |= true;
+            schemesListChanged = true;
         } else {
             customSchemeFactory->setScheme(scheme);
             factoriesToRemove.removeOne(customSchemeFactory);

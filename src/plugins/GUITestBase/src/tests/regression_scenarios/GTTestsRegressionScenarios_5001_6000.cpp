@@ -283,8 +283,8 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
     //Expected state : there is problem on dashboard "A problem occurred during allocating memory for running SnpEff."
     class MemorySetter : public CustomScenario {
     public:
-        MemorySetter(int memValue)
-            : memValue(memValue) {}
+        MemorySetter(int _memValue)
+            : memValue(_memValue) {}
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");

@@ -36,11 +36,7 @@ class PsipredPlugin : public Plugin {
 public:
     PsipredPlugin();
 	~PsipredPlugin();
-
-private:
-    GObjectViewWindowContext* viewCtx;
 };
-
 
 } //namespace
 

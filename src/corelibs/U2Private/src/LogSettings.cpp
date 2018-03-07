@@ -40,8 +40,15 @@ void LogCategories::init() {
     localizedLevelNames[LogLevel_ERROR]   = tr("ERROR");
 }
 
-LogSettings::LogSettings() {
+LogSettings::LogSettings() :
+    showDate(false),
+    showLevel(false),
+    showCategory(false),
+    enableColor(false),
+    toFile(false)
+{
     //created in not inited state
+    memset(activeLevelGlobalFlag, 0, sizeof(bool) * LogLevel_NumLevels);
 }
 
 const LoggerSettings& LogSettings::getLoggerSettings(const QString& cName) {

@@ -220,7 +220,7 @@ void SearchQueryContainer::clear() {
 
 }
 
-quint64 SearchQueryContainer::size() {
+quint64 SearchQueryContainer::size() const {
     return length;
 }
 

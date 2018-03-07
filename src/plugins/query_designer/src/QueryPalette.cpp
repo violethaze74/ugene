@@ -279,7 +279,7 @@ void QueryPalette::mouseMoveEvent(QMouseEvent *event) {
         }
 
         drag->setMimeData(mimeData);
-        drag->exec(Qt::CopyAction | Qt::CopyAction);
+        drag->exec(Qt::CopyAction);
         return;
     }
 

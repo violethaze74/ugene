@@ -38,6 +38,7 @@ char* k_printf(const char *format, ...) {
 	int n = vsprintf(str, format, ArgList);
 	assert(n>=0 && n < 1024);
 	Q_UNUSED(n);
+    va_end(ArgList);
 	U2::setTaskDesc(get_kalign_context(), str);
 	return str;
 }

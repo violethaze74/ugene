@@ -42,7 +42,8 @@ InSilicoPcrTaskSettings::InSilicoPcrTaskSettings()
 }
 
 InSilicoPcrProduct::InSilicoPcrProduct()
-    : forwardPrimerMatchLength(0),
+    : ta(Primer::INVALID_TM),
+      forwardPrimerMatchLength(0),
       reversePrimerMatchLength(0)
 {
 

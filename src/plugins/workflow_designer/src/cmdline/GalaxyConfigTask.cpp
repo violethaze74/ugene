@@ -271,7 +271,7 @@ bool GalaxyConfigTask::getHelpMessage() {
     }
     const int commentLength = commentEndPosition - commentStartPosition;
 
-    QString comment = QString();
+    QString comment;
     comment = schemeContent.mid( commentStartPosition, commentLength );
     comment.replace( Constants::SERVICE_SYM, "\n" );
     galaxyHelpMessage += comment;

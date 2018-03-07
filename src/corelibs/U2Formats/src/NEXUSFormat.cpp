@@ -410,8 +410,7 @@ bool NEXUSParser::readDataContents(Context &ctx) {
                 name.replace('_', ' ');
 
                 // Read value
-                QString value = "";
-                value = tz.readUntil(QRegExp("(;|\\n|\\r)"));
+                QString value = tz.readUntil(QRegExp("(;|\\n|\\r)"));
 
                 // Remove spaces
                 value.remove(QRegExp("\\s"));

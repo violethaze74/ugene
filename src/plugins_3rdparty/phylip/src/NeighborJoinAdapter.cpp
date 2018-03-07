@@ -43,11 +43,6 @@ QMutex NeighborJoinCalculateTreeTask::runLock;
 
 void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, double m, boolean njoin, node *start, PhyNode* root, int bootstrap_repl)
 {
-    /* used in fitch & neighbor */
-    long i=0;
-    naym* nayme = getNayme();
-    static int counter = 0;
-
     PhyNode* current = NULL;
 
     if (p == start) {
@@ -56,6 +51,7 @@ void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, d
         current = new PhyNode;
     }
     if(p){
+        static int counter = 0;
         if (p->tip) {
             if(bootstrap_repl != 0){
                 current->setName(QString::fromLatin1(p->nayme));

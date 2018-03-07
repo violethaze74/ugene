@@ -161,8 +161,13 @@ void PDBFormat::initUtilityMaps()
     }
 }
 
-PDBFormat::PDBParser::PDBParser(IOAdapter* _io) : io(_io), currentPDBLine(""), currentChainIndex(' ') {
-    currentChainIndex = 1;
+PDBFormat::PDBParser::PDBParser(IOAdapter* _io)
+    : io(_io),
+      currentPDBLine(""),
+      currentChainIndex(1),
+      currentMoleculeIndex(0),
+      residueOrder(0)
+{
     currentModelIndex = 0;
     currentChainIndentifier = ' ';
     flagMultipleModels = false;

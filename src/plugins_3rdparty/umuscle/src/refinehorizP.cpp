@@ -164,7 +164,6 @@ namespace U2 {
 
     void RefineWorker::_run() {
 
-        unsigned i = 0;
 #if TRACE
         algoLog.trace(QString("Worker %1 start. Wait...").arg(QString::number(workerID)));
 #endif
@@ -177,7 +176,7 @@ namespace U2 {
         {
             MSA msaIn;
             
-            i = workpool->refineGetJob(&msaIn, workerID);
+            unsigned i = workpool->refineGetJob(&msaIn, workerID);
 
             MuscleContext *ctx = workpool->ctx;
 //            unsigned &g_uTreeSplitNode1 = ctx->muscle.g_uTreeSplitNode1;

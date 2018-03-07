@@ -66,7 +66,7 @@ IndexPart::~IndexPart() {
     delete[] partFiles;
 }
 
-SAType IndexPart::getLoadedPartSize() {
+SAType IndexPart::getLoadedPartSize() const {
     assert(currentPart>=0);
     return saLengths[currentPart];
 }

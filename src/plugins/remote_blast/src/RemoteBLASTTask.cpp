@@ -156,8 +156,10 @@ const QList<SharedAnnotationData> & RemoteBLASTTask::getResultedAnnotations() co
 
 RemoteBlastHttpRequestTask::RemoteBlastHttpRequestTask(const RemoteBLASTTaskSettings& cfg)
     : Task(tr("Http Blast requests task"), TaskFlags_FOSE_COSC),
-      cfg(cfg)
+      cfg(cfg),
+      timeout(false)
 {
+
 }
 
 void RemoteBlastHttpRequestTask::prepare() {
