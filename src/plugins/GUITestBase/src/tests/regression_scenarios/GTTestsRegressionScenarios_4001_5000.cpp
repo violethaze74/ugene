@@ -180,10 +180,12 @@ GUI_TEST_CLASS_DEFINITION(test_4007) {
     murineFile.close();
 
     GTGlobals::sleep(5000);
-
-
     GTGlobals::FindOptions murineOptions(false);
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findFirstAnnotation(os, murineOptions) != NULL, "Annotations are connected to murine.gb");
+    GTUtilsDocument::removeDocument(os, "human_T1.fa");
+
+    QList<U2Region> regs = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
+    CHECK_SET_ERR(regs.isEmpty(), QString("Annotations are connected to murine.gb %1").arg(regs.isEmpty()));
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
 
     //    Expected state: the file is reloaded, annotations object still have an association only with human_T1 sequence (if annotations object exists and has the same name as before reloading),
     //there is no errors in the log.
