@@ -2869,7 +2869,6 @@ GUI_TEST_CLASS_DEFINITION( test_2404 ) {
     2. Open Search in sequence OP tab
     3. Input "AAAAA" pattern to the Search for: field
     4. Expand all available parameters
-    5. Resize the main UGENE window
     Expected: scrollbar appears
     Current: layout breaks
 */
@@ -2880,16 +2879,11 @@ GUI_TEST_CLASS_DEFINITION( test_2404 ) {
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Other settings"));
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Save annotation(s) to"));
-    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Annotation parameters"));
-    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    GTWidget::showNormal(os, mw);
-    GTWidget::resizeWidget(os, mw, QSize(800, 800));
-
-    GTGlobals::sleep(1000);
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Annotation parameters")); 
     QScrollArea* sa = qobject_cast<QScrollArea*>(GTWidget::findWidget( os, "OP_SCROLL_AREA" ));
     QScrollBar* scroll = sa->verticalScrollBar();
     CHECK_SET_ERR( scroll != NULL, "Scroll bar is NULL");
-    CHECK_SET_ERR( scroll->isVisible(), "Scroll bar is visible!");
+    CHECK_SET_ERR( scroll->isVisible(), "Scroll bar is invisible!");
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2406 ) {
