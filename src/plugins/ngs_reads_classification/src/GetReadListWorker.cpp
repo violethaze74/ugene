@@ -149,7 +149,7 @@ void GetReadsListWorkerFactory::init() {
         proto->setPrompter(new GetReadsListPrompter());
     //    proto->setValidator(new DatasetValidator());
         if(AppContext::isGUIMode()) {
-            proto->setIcon( GUIUtils::createRoundIcon(QColor(85,85,255), 22));
+            proto->setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
         }
         WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
         WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new GetReadsListWorkerFactory(SE_ACTOR_ID));
@@ -185,7 +185,7 @@ void GetReadsListWorkerFactory::init() {
         proto->setPrompter(new GetReadsListPrompter());
     //    proto->setValidator(new DatasetValidator());
         if(AppContext::isGUIMode()) {
-            proto->setIcon( GUIUtils::createRoundIcon(QColor(85,85,255), 22));
+            proto->setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
         }
         WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
         WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new GetReadsListWorkerFactory(PE_ACTOR_ID));

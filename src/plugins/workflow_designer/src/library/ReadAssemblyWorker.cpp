@@ -138,7 +138,7 @@ ReadAssemblyProto::ReadAssemblyProto()
 
     setPrompter(new ReadDocPrompter(ReadAssemblyWorker::tr("Reads assembly from <u>%1</u>.")));
     if (AppContext::isGUIMode()) {
-        setIcon(GUIUtils::createRoundIcon(QColor(85,85,255), 22));
+        setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
     }
 }
 
