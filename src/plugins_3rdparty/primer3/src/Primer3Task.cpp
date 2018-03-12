@@ -996,9 +996,6 @@ SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& 
         annotationData->location.data()->op = U2LocationOperator_Join;
     }
 
-    if (strand == U2Strand::Complementary) {
-        start -= length - 1;
-    }
     annotationData->setStrand(strand);
 
     annotationData->qualifiers.append(U2Qualifier("tm", QString::number(primer.getMeltingTemperature())));

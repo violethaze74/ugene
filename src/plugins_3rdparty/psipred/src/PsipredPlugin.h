@@ -29,8 +29,6 @@
 
 namespace U2 {
 
-class XMLTestFactory;
-
 class PsipredPlugin : public Plugin {
 	Q_OBJECT
 public:
@@ -41,5 +39,3 @@ public:
 } //namespace
 
 #endif // _U2_PSIPRED_PLUGIN_H_
-
-

@@ -33,15 +33,20 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 
-PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions) :
-    Filler(os, "PWMBuildDialog"),
-    dialog(NULL),
-    actions(actions)
+PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions)
+    : Filler(os, "PWMBuildDialog"),
+      dialog(NULL),
+      actions(actions)
 {
+
 }
 
-PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c):
-    Filler(os, "PWMBuildDialog", c){}
+PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
+    : Filler(os, "PWMBuildDialog", c),
+      dialog(NULL)
+{
+
+}
 
 #define GT_METHOD_NAME "run"
 void PwmBuildDialogFiller::commonScenario() {

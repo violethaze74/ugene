@@ -55,6 +55,8 @@ typedef QFlags<PluginModeFlag> PluginMode;
 
 class PlatformInfo {
 public:
+    PlatformInfo() : name(PlatformName_Unknown), arch(PlatformArch_Unknown) {}
+
     PlatformName name;
     PlatformArch arch;
     bool operator == (const PlatformInfo& p) const  {return name == p.name && arch == p.arch;}

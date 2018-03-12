@@ -48,8 +48,17 @@ UniprobeInfo::UniprobeInfo(const QString& data) {
     }
 }
 
+PWMatrix::PWMatrix()
+    : length(0),
+      type(PWM_MONONUCLEOTIDE),
+      minSum(0),
+      maxSum(0)
+{
+
+}
+
 PWMatrix::PWMatrix(const QVarLengthArray<float>& matrix, const PWMatrixType& _type)
-: data(matrix), type(_type)
+    : data(matrix), type(_type)
 {
     length = (type == PWM_MONONUCLEOTIDE) ? (matrix.size() / 4) : (matrix.size() / 16);
     minSum = 0, maxSum = 0;

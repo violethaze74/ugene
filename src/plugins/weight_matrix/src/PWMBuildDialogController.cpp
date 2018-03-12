@@ -168,11 +168,11 @@ void PWMBuildDialogController::reportError(const QString &message) {
 }
 
 void PWMBuildDialogController::replaceLogo(const MultipleSequenceAlignment& ma) {
-    int logoheight = 150;
     if (ma->getLength() < 50) {
+        static const int LOGO_HEIGHT = 150;
         AlignmentLogoSettings logoSettings(ma);
-        logoWidget->resize(logoWidget->width(), logoheight);
-        logoWidget->setMinimumHeight(logoheight);
+        logoWidget->resize(logoWidget->width(), LOGO_HEIGHT);
+        logoWidget->setMinimumHeight(LOGO_HEIGHT);
         logoWidget->show();
 
         if (logoArea != NULL) {
