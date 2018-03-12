@@ -52,32 +52,6 @@ static int getIntSettings(const QVariantMap& fs, const char* sName, int defVal) 
     return v.toInt();
 }
 
-U2SequenceObject * DocumentFormatUtils::addSequenceObject(const U2DbiRef& dbiRef,
-                                                          const QString& name,
-                                                          const QByteArray& seq,
-                                                          bool circular,
-                                                          const QVariantMap& hints,
-                                                          U2OpStatus& os)
-{
-    U2SequenceImporter importer;
-
-    const QString folder = hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    importer.startSequence(os, dbiRef, folder, name, circular);
-    CHECK_OP(os, NULL);
-
-    importer.addBlock(seq.constData(), seq.length(), os);
-    CHECK_OP(os, NULL);
-
-    U2Sequence sequence = importer.finalizeSequenceAndValidate(os);
-    TmpDbiObjects dbiObjects(dbiRef, os);
-    dbiObjects.objects << sequence.id;
-    CHECK_OP(os, NULL);
-
-    U2SequenceObject* so = new U2SequenceObject(name, U2EntityRef(dbiRef, sequence.id));
-    return so;
-}
-
-
 AnnotationTableObject * DocumentFormatUtils::addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
                                                                                const U2DbiRef& dbiRef,
                                                                                const QStringList &contigNames,

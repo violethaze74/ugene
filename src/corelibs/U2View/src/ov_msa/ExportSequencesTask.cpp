@@ -25,6 +25,7 @@
 #include <QScopedPointer>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentSelection.h>
 #include <U2Core/GUrlUtils.h>
@@ -34,6 +35,7 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2SequenceUtils.h>
 
 #include <U2Gui/ObjectViewModel.h>
 
@@ -106,7 +108,8 @@ QList<Task*> ExportSequencesTask::onSubTaskFinished(Task* subTask) {
             CHECK_OP(stateInfo, res);
             QVariantMap hints;
             hints.insert(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER);
-            U2SequenceObject* seqObj = DocumentFormatUtils::addSequenceObject(doc->getDbiRef(), s.getName(), s.constSequence(), s.circular, hints, stateInfo);
+            U2EntityRef ref = U2SequenceUtils::import(stateInfo, doc->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, s, s.alphabet->getId());
+            U2SequenceObject *seqObj = new U2SequenceObject(s.getName(), ref);
             CHECK_OP(stateInfo, res);
             doc->addObject(seqObj);
             Document *takenDoc = doc.take();

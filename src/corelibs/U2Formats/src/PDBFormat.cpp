@@ -41,6 +41,7 @@
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2SequenceUtils.h>
 
 #include "DocumentFormatUtils.h"
 #include "PDBFormat.h"
@@ -817,7 +818,7 @@ Document * PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef &dbiRef, BioS
     const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
     QVariantMap hints;
-    hints.insert(DBI_FOLDER_HINT, fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
+    hints.insert(DBI_FOLDER_HINT, folder);
     BioStruct3DObject* biostrucObj = BioStruct3DObject::createInstance(bioStruct, objectName, dbiRef, os, hints);
     CHECK_OP(os, NULL);
     QMap<int, QList<SharedAnnotationData> > anns = bioStruct.generateAnnotations();
@@ -843,7 +844,8 @@ Document * PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef &dbiRef, BioS
         dnaSeq.info.insert(DNAInfo::DEFINITION, sequenceName);
         dnaSeq.info.insert(DNAInfo::COMMENT, bioStruct.descr);
         dnaSeq.info.insert(DNAInfo::CHAIN_ID, key);
-        U2SequenceObject* seqObj = DocumentFormatUtils::addSequenceObject(dbiRef, sequenceName, dnaSeq.constSequence(), dnaSeq.circular, hints, os);
+        U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dnaSeq, dnaSeq.alphabet->getId());
+        U2SequenceObject* seqObj = new U2SequenceObject(dnaSeq.getName(), ref);
         SAFE_POINT(seqObj, QString("Got NULL object from DocumentFormatUtils addSequenceObjectDeprecated, os.error = %1").arg(os.getError()), NULL);
         objects.append(seqObj);
         dbiObjects.objects << seqObj->getSequenceRef().entityId;

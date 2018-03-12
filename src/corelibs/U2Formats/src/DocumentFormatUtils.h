@@ -59,8 +59,6 @@ public:
 
     static void updateFormatHints(QList<GObject*>& objects, QVariantMap& fs);
 
-    static U2SequenceObject* addSequenceObject(const U2DbiRef& dbiRef, const QString& name, const QByteArray& seq, bool circular, const QVariantMap& hints, U2OpStatus& os);
-
     /** Doc URL here is used to set up sequence<->annotation relations */
     static AnnotationTableObject * addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
                                                                      const U2DbiRef& dbiRef,

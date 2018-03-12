@@ -36,6 +36,7 @@
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2SequenceUtils.h>
 
 #include "ABIFormat.h"
 #include "DocumentFormatUtils.h"
@@ -442,10 +443,10 @@ Document* ABIFormat::parseABI(const U2DbiRef& dbiRef, SeekableBuf* fp, IOAdapter
 
     QList<GObject*> objects;
     QVariantMap hints;
-    hints.insert(DBI_FOLDER_HINT, fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
-    U2SequenceObject* seqObj = DocumentFormatUtils::addSequenceObject(dbiRef, dna.getName(), dna.constSequence(), dna.circular, hints, os);
-    CHECK_OP(os, NULL);
-    SAFE_POINT(seqObj != NULL, "DocumentFormatUtils::addSequenceObject returned NULL but didn't set error", NULL);
+    QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
+    hints.insert(DBI_FOLDER_HINT, folder);
+    U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dna);
+    U2SequenceObject* seqObj = new U2SequenceObject(dna.getName(), ref);
     objects.append(seqObj);
 
     DNAChromatogramObject* chromObj = DNAChromatogramObject::createInstance(cd, "Chromatogram", dbiRef, os, hints);

@@ -35,6 +35,7 @@
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2SequenceUtils.h>
 
 #include "DocumentFormatUtils.h"
 #include "IOLibUtils.h"
@@ -528,8 +529,10 @@ Document* SCFFormat::parseSCF(const U2DbiRef& dbiRef, IOAdapter* io, const QVari
 
     QVariantMap hints;
     hints.insert(DBI_FOLDER_HINT, fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
-
-    U2SequenceObject* seqObj = DocumentFormatUtils::addSequenceObject(dbiRef, seqObjName, dna.constSequence(), dna.circular, hints, os);
+    QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
+    hints.insert(DBI_FOLDER_HINT, folder);
+    U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dna);
+    U2SequenceObject* seqObj = new U2SequenceObject(seqObjName, ref);
     CHECK_OP(os, NULL);
     SAFE_POINT(seqObj != NULL, "DocumentFormatUtils::addSequenceObject returned NULL but didn't set error", NULL);
     seqObj->setQuality(dna.quality);
