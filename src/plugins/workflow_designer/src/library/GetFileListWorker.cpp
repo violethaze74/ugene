@@ -114,7 +114,7 @@ void GetFileListWorkerFactory::init() {
     proto->setPrompter(new GetFileListPrompter());
     proto->setValidator(new DatasetValidator());
     if(AppContext::isGUIMode()) {
-        proto->setIcon( GUIUtils::createRoundIcon(QColor(85,85,255), 22));
+        proto->setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
     }
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
