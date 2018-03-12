@@ -39,11 +39,11 @@ public:
     static const QString ACTOR_ID;
 
     static const QString INPUT_PORT_ID;
-//    static const QString INPUT_PAIRED_PORT_ID;
     static const QString OUTPUT_PORT_ID;
 
     static const QString INPUT_DATA_ATTR_ID;
     static const QString DATABASE_ATTR_ID;
+    static const QString OUTPUT_URL_ATTR_ID;
     static const QString QUICK_OPERATION_ATTR_ID;
     static const QString MIN_HITS_NUMBER_ATTR_ID;
     static const QString THREADS_NUMBER_ATTR_ID;

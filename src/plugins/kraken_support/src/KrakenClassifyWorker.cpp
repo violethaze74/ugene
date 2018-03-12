@@ -130,7 +130,7 @@ void KrakenClassifyWorker::sl_taskFinished(Task *task) {
         return;
     }
 
-    const QString rawClassificationUrl = krakenTask->getRawClassificationUrl();
+    const QString rawClassificationUrl = krakenTask->getClassificationUrl();
 
     QVariantMap data;
     data[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT_ID] = QVariant::fromValue<U2::LocalWorkflow::TaxonomyClassificationResult>(parseReport(rawClassificationUrl));
@@ -177,8 +177,12 @@ KrakenClassifyTaskSettings KrakenClassifyWorker::getSettings(U2OpStatus &os) {
     QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
     tmpDir = GUrlUtils::createDirectory(tmpDir + KRAKEN_DIR , "_", os);
 
-    settings.rawClassificationUrl = tmpDir + "/raw_classification.txt";
-    settings.translatedClassificationUrl = tmpDir + "/translated_classification.txt";
+    settings.classificationUrl = getValue<QString>(KrakenClassifyWorkerFactory::OUTPUT_URL_ATTR_ID);
+    if (settings.classificationUrl.isEmpty()) {
+        const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
+        settings.classificationUrl = tmpDir + "/" + QFileInfo(metadata.getFileUrl()).completeBaseName() + "_Kraken_classification.txt";
+    }
+    settings.classificationUrl = GUrlUtils::rollFileName(settings.classificationUrl, "_");
 
     return settings;
 }

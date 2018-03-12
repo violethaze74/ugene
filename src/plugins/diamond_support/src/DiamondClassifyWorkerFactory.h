@@ -44,6 +44,7 @@ public:
 
     static const QString INPUT_DATA_ATTR_ID;
     static const QString DATABASE_ATTR_ID;
+    static const QString OUTPUT_URL_ATTR_ID;
 
     static const QString SINGLE_END_TEXT;
     static const QString PAIRED_END_TEXT;

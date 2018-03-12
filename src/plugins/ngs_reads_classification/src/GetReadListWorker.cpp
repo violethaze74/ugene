@@ -98,11 +98,10 @@ Task * GetReadsListWorker::tick() {
                 return NULL;
             }
         }
-//        QString datasetName = files->getLastDatasetName();
-//        m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
-//        MessageMetadata metadata(url, datasetName);
-//        context->getMetadataStorage().put(metadata);
-        outChannel->put(Message(outChannel->getBusType(), m/*, metadata.getId()*/));
+        QString datasetName = files->getLastDatasetName();
+        MessageMetadata metadata(url, datasetName);
+        context->getMetadataStorage().put(metadata);
+        outChannel->put(Message(outChannel->getBusType(), m, metadata.getId()));
     } else {
         if (pairedFiles != NULL && pairedFiles->hasNext()) {
             reportError(tr("Missing left PE read for the right read: %1").arg(pairedFiles->getNextFile()));

@@ -24,9 +24,12 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/L10n.h>
 
 #include <U2Designer/DelegateEditors.h>
+
+#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseSlots.h>
@@ -48,11 +51,11 @@ namespace LocalWorkflow {
 const QString KrakenClassifyWorkerFactory::ACTOR_ID = "classify-reads-with-kraken";
 
 const QString KrakenClassifyWorkerFactory::INPUT_PORT_ID = "in";
-//const QString KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID = "in2";
 const QString KrakenClassifyWorkerFactory::OUTPUT_PORT_ID = "out";
 
 const QString KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID = "input-data";
 const QString KrakenClassifyWorkerFactory::DATABASE_ATTR_ID = "database";
+const QString KrakenClassifyWorkerFactory::OUTPUT_URL_ATTR_ID = "output-url";
 const QString KrakenClassifyWorkerFactory::QUICK_OPERATION_ATTR_ID = "quick-operation";
 const QString KrakenClassifyWorkerFactory::MIN_HITS_NUMBER_ATTR_ID = "min-hits";
 const QString KrakenClassifyWorkerFactory::THREADS_NUMBER_ATTR_ID = "threads";
@@ -86,9 +89,6 @@ void KrakenClassifyWorkerFactory::init() {
         inType[inSlotDesc] = BaseTypes::STRING_TYPE();
         inType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
 
-//        QMap<Descriptor, DataTypePtr> inPairedType;
-//        inPairedType[inPairedSlotDesc] = BaseTypes::STRING_TYPE();
-
         QMap<Descriptor, DataTypePtr> outType;
         outType[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT()] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
 
@@ -98,14 +98,9 @@ void KrakenClassifyWorkerFactory::init() {
                                                                "In case of SE reads or scaffolds use the \"Input URL 1\" slot only.\n\n"
                                                                "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
                                                                "See also the \"Input data\" parameter of the element."));
-//        const Descriptor inPairedPortDesc(INPUT_PAIRED_PORT_ID,
-//                                          KrakenClassifyPrompter::tr("Input sequences 2"),
-//                                          KrakenClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-//                                                                     "The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Sequencing reads\" parameter of the element)."));
         const Descriptor outPortDesc(OUTPUT_PORT_ID, KrakenClassifyPrompter::tr("Kraken Classification"), KrakenClassifyPrompter::tr("A map of sequence names with the associated taxonomy IDs, classified by Kraken."));
 
         ports << new PortDescriptor(inPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
-//        ports << new PortDescriptor(inPairedPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-paired-in", inPairedType)), true /*input*/);
         ports << new PortDescriptor(outPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
     }
 
@@ -119,6 +114,9 @@ void KrakenClassifyWorkerFactory::init() {
 
         const Descriptor databaseDesc(DATABASE_ATTR_ID, KrakenClassifyPrompter::tr("Database"),
                                       KrakenClassifyPrompter::tr("A path to the folder with the Kraken database files."));
+
+        const Descriptor outputUrlDesc(OUTPUT_URL_ATTR_ID, KrakenClassifyPrompter::tr("Output file"),
+                                       KrakenClassifyPrompter::tr("Specify the output file name."));
 
         const Descriptor quickOperationDesc(QUICK_OPERATION_ATTR_ID, KrakenClassifyPrompter::tr("Quick operation"),
                                             KrakenClassifyPrompter::tr("Stop classification of an input read after the certain number of hits.<br><br>"
@@ -136,21 +134,20 @@ void KrakenClassifyWorkerFactory::init() {
                                                                         "This can be useful to improve the speed. The database size should be less than the RAM size.<br><br>"
                                                                         "The other option to improve the speed is to store the database on ramdisk. Set this parameter to \"False\" in this case."));
 
-        Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, KrakenClassifyTaskSettings::SINGLE_END);
-        attributes << inputDataAttribute;
+        attributes << new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), Attribute::None, KrakenClassifyTaskSettings::SINGLE_END);
 
         Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), true);
         attributes << databaseAttribute;
 
-        attributes << new Attribute(quickOperationDesc, BaseTypes::BOOL_TYPE(), false, false);
+        attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        attributes << new Attribute(quickOperationDesc, BaseTypes::BOOL_TYPE(), Attribute::None, false);
 
-        Attribute *minHitsAttribute = new Attribute(minHitsDesc, BaseTypes::NUM_TYPE(), false, 1);
+        Attribute *minHitsAttribute = new Attribute(minHitsDesc, BaseTypes::NUM_TYPE(), Attribute::None, 1);
         attributes << minHitsAttribute;
 
-        attributes << new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), false, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
-        attributes << new Attribute(preloadDatabaseDesc, BaseTypes::BOOL_TYPE(), false, true);
+        attributes << new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+        attributes << new Attribute(preloadDatabaseDesc, BaseTypes::BOOL_TYPE(), Attribute::None, true);
 
-//        inputDataAttribute->addPortRelation(PortRelationDescriptor(INPUT_PAIRED_PORT_ID, QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
         minHitsAttribute->addRelation(new VisibilityRelation(QUICK_OPERATION_ATTR_ID, "true"));
         databaseAttribute->addRelation(new DatabaseSizeRelation(PRELOAD_DATABASE_ATTR_ID));
     }
@@ -163,6 +160,12 @@ void KrakenClassifyWorkerFactory::init() {
         delegates[INPUT_DATA_ATTR_ID] = new ComboBoxDelegate(inputDataMap);
 
         delegates[DATABASE_ATTR_ID] = new URLDelegate("", "kraken/database", false, true, false);
+
+        DelegateTags outputUrlTags;
+        outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "auto");
+        outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT, true, QStringList()));
+        outputUrlTags.set(DelegateTags::FORMAT, BaseDocumentFormats::PLAIN_TEXT);
+        delegates[OUTPUT_URL_ATTR_ID] = new URLDelegate(outputUrlTags, "kraken/output");
 
         delegates[QUICK_OPERATION_ATTR_ID] = new ComboBoxWithBoolsDelegate();
 

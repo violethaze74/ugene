@@ -33,8 +33,19 @@ using namespace WorkflowSerialize;
 /*************************************
  *  Attribute
  *************************************/
+Attribute::Attribute(const Descriptor &_descriptor, const DataTypePtr _type, const Flags _flags, const QVariant &_defaultValue)
+    : Descriptor(_descriptor),
+      type(_type),
+      flags(_flags),
+      defaultValue(_defaultValue)
+{
+    value = defaultValue;
+    debugCheckAttributeId();
+}
+
 Attribute::Attribute(const Descriptor& d, const DataTypePtr t, bool req, const QVariant & defaultValue )
-: Descriptor(d), type(t), required(req), defaultValue(defaultValue) {
+: Descriptor(d), type(t), defaultValue(defaultValue) {
+    flags |= req ? Required : None;
     value = defaultValue;
     debugCheckAttributeId();
 }
@@ -55,7 +66,7 @@ void Attribute::copy(const Attribute &other) {
     this->Descriptor::operator =(other);
 
     type = other.type;
-    required = other.required;
+    flags = other.flags;
     value = other.value;
     defaultValue = other.defaultValue;
     scriptData = other.scriptData;
@@ -87,7 +98,15 @@ const DataTypePtr Attribute::getAttributeType()const {
 }
 
 bool Attribute::isRequiredAttribute() const {
-    return required;
+    return flags.testFlag(Required);
+}
+
+bool Attribute::canBeEmpty() const {
+    return flags.testFlag(CanBeEmpty);
+}
+
+Attribute::Flags Attribute::getFlags() const {
+    return flags;
 }
 
 void Attribute::setAttributeValue(const QVariant & newVal) {
@@ -194,7 +213,7 @@ void Attribute::updateActorIds(const QMap<ActorId, ActorId> &actorIdsMap) {
 }
 
 bool Attribute::validate(ProblemList &problemList) {
-    if(!isRequiredAttribute()) {
+    if(!isRequiredAttribute() || canBeEmpty()) {
         return true;
     }
     if( (isEmpty() || isEmptyString()) && getAttributeScript().isEmpty()) {

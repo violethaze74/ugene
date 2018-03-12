@@ -38,8 +38,7 @@ struct KrakenClassifyTaskSettings {
     bool preloadDatabase;
     bool pairedReads;
 
-    QString rawClassificationUrl;
-    QString translatedClassificationUrl;
+    QString classificationUrl;
 
     static const QString SINGLE_END;
     static const QString PAIRED_END;
@@ -50,15 +49,13 @@ class KrakenClassifyTask : public ExternalToolSupportTask {
 public:
     KrakenClassifyTask(const KrakenClassifyTaskSettings &settings);
 
-    const QString &getRawClassificationUrl() const;
+    const QString &getClassificationUrl() const;
     const QString &getTranslatedClassificationUrl() const;
 
 private:
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
 
-    QStringList getClassifyArguments();
-    QStringList getTranslateArguments();
+    QStringList getArguments();
 
     const KrakenClassifyTaskSettings settings;
 

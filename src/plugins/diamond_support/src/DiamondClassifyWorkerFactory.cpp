@@ -19,7 +19,11 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/BaseDocumentFormats.h>
+
 #include <U2Designer/DelegateEditors.h>
+
+#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseSlots.h>
@@ -45,6 +49,7 @@ const QString DiamondClassifyWorkerFactory::OUTPUT_PORT_ID = "out";
 
 const QString DiamondClassifyWorkerFactory::INPUT_DATA_ATTR_ID = "input-data";
 const QString DiamondClassifyWorkerFactory::DATABASE_ATTR_ID = "database";
+const QString DiamondClassifyWorkerFactory::OUTPUT_URL_ATTR_ID = "output-url";
 
 const QString DiamondClassifyWorkerFactory::SINGLE_END_TEXT = QObject::tr("SE reads or scaffolds");
 const QString DiamondClassifyWorkerFactory::PAIRED_END_TEXT = QObject::tr("PE reads");
@@ -100,20 +105,25 @@ void DiamondClassifyWorkerFactory::init() {
 
     QList<Attribute *> attributes;
     {
-        const Descriptor inputDataDesc(INPUT_DATA_ATTR_ID, DiamondClassifyPrompter::tr("Input data"),
-                                             DiamondClassifyPrompter::tr("The input data that should be classified are provided through the input ports of the element.\n\n"
-                                                                         "To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\". The element has one input port in this case. Pass URL(s) to the corresponding files to this port.\n\n"
-                                                                         "To classify paired-end (PE) reads, set the value to \"PE reads\". The element has two input ports in this case. Pass URL(s) to the \"left\" and \"right\" reads to the first and the second port correspondingly.\n\n"
-                                                                         "The input files should be in FASTA or FASTQ formats."));
+//        const Descriptor inputDataDesc(INPUT_DATA_ATTR_ID, DiamondClassifyPrompter::tr("Input data"),
+//                                             DiamondClassifyPrompter::tr("The input data that should be classified are provided through the input ports of the element.\n\n"
+//                                                                         "To classify single-end (SE) reads or scaffolds, received by reads de novo assembly, set this parameter to \"SE reads or scaffolds\". The element has one input port in this case. Pass URL(s) to the corresponding files to this port.\n\n"
+//                                                                         "To classify paired-end (PE) reads, set the value to \"PE reads\". The element has two input ports in this case. Pass URL(s) to the \"left\" and \"right\" reads to the first and the second port correspondingly.\n\n"
+//                                                                         "The input files should be in FASTA or FASTQ formats."));
 
         const Descriptor databaseDesc(DATABASE_ATTR_ID, DiamondClassifyPrompter::tr("Database"),
                                       DiamondClassifyPrompter::tr("Input a binary DIAMOND database file."));
 
+        const Descriptor outputUrlDesc(OUTPUT_URL_ATTR_ID, DiamondClassifyPrompter::tr("Output file"),
+                                       DiamondClassifyPrompter::tr("Specify the output file name."));
+
 //        Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, DiamondClassifyTaskSettings::SINGLE_END);       // FIXME: diamond can't work with paired reads
-        Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), true);
+        Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required);
+        Attribute *outputUrlAttribute = new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
 
 //        attributes << inputDataAttribute;       // FIXME: diamond can't work with paired reads
         attributes << databaseAttribute;
+        attributes << outputUrlAttribute;
 
 //        inputDataAttribute->addPortRelation(PortRelationDescriptor(INPUT_PAIRED_PORT_ID, QVariantList() << DiamondClassifyTaskSettings::PAIRED_END));       // FIXME: diamond can't work with paired reads
     }
@@ -126,6 +136,12 @@ void DiamondClassifyWorkerFactory::init() {
 //        delegates[INPUT_DATA_ATTR_ID] = new ComboBoxDelegate(inputDataMap);       // FIXME: diamond can't work with paired reads
 
         delegates[DATABASE_ATTR_ID] = new URLDelegate("", "diamond/database", false, false, false);
+
+        DelegateTags outputUrlTags;
+        outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "auto");
+        outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT, true, QStringList()));
+        outputUrlTags.set(DelegateTags::FORMAT, BaseDocumentFormats::PLAIN_TEXT);
+        delegates[OUTPUT_URL_ATTR_ID] = new URLDelegate(outputUrlTags, "diamond/output");
     }
 
     const Descriptor desc(ACTOR_ID,

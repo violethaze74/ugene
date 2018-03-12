@@ -44,7 +44,7 @@
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Formats/BAMUtils.h>
+#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/ActorValidator.h>
@@ -76,6 +76,7 @@ static const QString OUTPUT_PORT("out");
 
 static const QString TOOL_VARIANT("tool-variant");
 static const QString DB_URL("db-url");
+static const QString OUTPUT_URL("output-url");
 static const QString TAXONOMY("taxonomy");
 static const QString TAXONOMY_RANK("taxonomy-rank");
 static const QString K_LENGTH("k-length");
@@ -83,7 +84,6 @@ static const QString K_MIN_FREQ("k-min-freq");
 static const QString MODE("mode");
 static const QString FACTOR("factor");
 static const QString GAP("gap");
-static const QString OUT_FILE("output-file");
 static const QString EXTEND_OUT("extend-out");
 static const QString DB_TO_RAM("preload-database");
 static const QString NUM_THREADS("threads");
@@ -205,6 +205,9 @@ void ClarkClassifyWorkerFactory::init() {
             ClarkClassifyWorker::tr("A path to the folder with the CLARK database files (-D).<br><br>"
                                     "It is assumed that \"targets.txt\" file is located in this folder (the file is passed to the \"classify_metagenome.sh\" script from the CLARK package via parameter -T)."));
 
+        Descriptor outputUrl(OUTPUT_URL, ClarkClassifyWorker::tr("Output file"),
+                         ClarkClassifyWorker::tr("Specify the output file name."));
+
 //        Descriptor taxonomy(TAXONOMY, ClarkClassifyWorker::tr("Taxonomy"),
 //            ClarkClassifyWorker::tr("A set of files that define the taxonomic name and tree information, and the GI number to taxon map."
 //                                    "<br>The NCBI taxonomy is used by default."));
@@ -240,10 +243,6 @@ void ClarkClassifyWorkerFactory::init() {
             ClarkClassifyWorker::tr("\"Gap\" or number of non-overlapping k-mers to pass when creating the database (-п).<br><br>"
                                     "Increase the value if it is required to reduce the RAM usage. Note that this will degrade the sensitivity."));
 
-        Descriptor outFile(OUT_FILE, ClarkClassifyWorker::tr("Output file"),
-            ClarkClassifyWorker::tr("File to store the results in the CSV format (-R)."
-                                    "<br>The file format depends on the mode that was selected. See the documentation for details."));
-
         Descriptor extendedOutput(EXTEND_OUT, ClarkClassifyWorker::tr("Extended output"),
             ClarkClassifyWorker::tr("Request an extended output for the result file (--extended)."));
 
@@ -266,27 +265,27 @@ void ClarkClassifyWorkerFactory::init() {
 //        sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(PAIRED_INPUT_PORT, QVariantList() << PAIRED_END));
 //        sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(INPUT_PORT, QVariantList() << SINGLE_END));
         a << sequencingReadsAttribute;
-        a << new Attribute( tool, BaseTypes::STRING_TYPE(), false, ClarkClassifySettings::TOOL_LIGHT);
-        a << new Attribute( dbUrl, BaseTypes::STRING_TYPE(), true);
+        a << new Attribute( tool, BaseTypes::STRING_TYPE(), Attribute::None, ClarkClassifySettings::TOOL_LIGHT);
+        a << new Attribute( dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required);
+        a << new Attribute( outputUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
 //        a << new Attribute( taxonomy, BaseTypes::STRING_TYPE(), false, "Default");
 //        a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);
-        Attribute *klenAttr = new Attribute( kLength, BaseTypes::NUM_TYPE(), false, 31);
+        Attribute *klenAttr = new Attribute( kLength, BaseTypes::NUM_TYPE(), Attribute::None, 31);
         klenAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_DEFAULT)));
         a << klenAttr;
-        a << new Attribute( kMinFreq, BaseTypes::NUM_TYPE(), false, 0);
-        a << new Attribute( mode, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Default);
-        Attribute *factorAttr = new Attribute( factor, BaseTypes::NUM_TYPE(), false, 2);
+        a << new Attribute( kMinFreq, BaseTypes::NUM_TYPE(), Attribute::None, 0);
+        a << new Attribute( mode, BaseTypes::NUM_TYPE(), Attribute::None, ClarkClassifySettings::Default);
+        Attribute *factorAttr = new Attribute( factor, BaseTypes::NUM_TYPE(), Attribute::None, 2);
         factorAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_DEFAULT)));
         a << factorAttr;
-        Attribute *gapAttr = new Attribute( gap, BaseTypes::NUM_TYPE(), false, 4);
+        Attribute *gapAttr = new Attribute( gap, BaseTypes::NUM_TYPE(), Attribute::None, 4);
         gapAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_LIGHT)));
         a << gapAttr;
-        //a << new Attribute( outFile, BaseTypes::STRING_TYPE(), false, "results.csv");
-        Attribute *extAttr = new Attribute(extendedOutput, BaseTypes::BOOL_TYPE(), false, false);
+        Attribute *extAttr = new Attribute(extendedOutput, BaseTypes::BOOL_TYPE(), Attribute::None, false);
         extAttr->addRelation(new VisibilityRelation(MODE, QVariant(ClarkClassifySettings::Full)));
         a << extAttr;
-        a << new Attribute( db2ram, BaseTypes::BOOL_TYPE(), false, false);
-        a << new Attribute( numThreads, BaseTypes::NUM_TYPE(), false, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+        a << new Attribute( db2ram, BaseTypes::BOOL_TYPE(), Attribute::None, false);
+        a << new Attribute( numThreads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
     }
 
     QMap<QString, PropertyDelegate*> delegates;
@@ -301,6 +300,11 @@ void ClarkClassifyWorkerFactory::init() {
         toolMap["CLARK-l"] = ClarkClassifySettings::TOOL_LIGHT;
         //toolMap["CLARK-spaced"] = ClarkClassifySettings::TOOL_SPACED; //FIXME spaced not supported yet
         delegates[TOOL_VARIANT] = new ComboBoxDelegate(toolMap);
+
+        DelegateTags outputUrlTags;
+        outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "auto");
+        outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareFileFilter("CSV", QStringList("csv"), false, QStringList()));
+        delegates[OUTPUT_URL] = new URLDelegate(outputUrlTags, "clark/output");
 
 //        QVariantMap rankMap;
 //        rankMap["Species"] = ClarkClassifySettings::Species;
@@ -346,8 +350,6 @@ void ClarkClassifyWorkerFactory::init() {
         thrMap["minimum"] = QVariant(1);
         thrMap["maximum"] = QVariant(AppResourcePool::instance()->getIdealThreadCount());
         delegates[NUM_THREADS] = new SpinBoxDelegate(thrMap);
-
-        delegates[OUT_FILE] = new URLDelegate("", "clark/output", false, false, true /*saveFile*/);
 
         DelegateTags tags;
         tags.set(DelegateTags::PLACEHOLDER_TEXT, L10N::required());
@@ -443,13 +445,26 @@ Task * ClarkClassifyWorker::tick() {
         QString readsUrl = message.getData().toMap()[INPUT_SLOT].toString();
         QString pairedReadsUrl;
 
+        U2OpStatusImpl os;
+        QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
+        tmpDir = GUrlUtils::createDirectory(tmpDir + "clark", "_", os);
+        CHECK_OP(os, new FailTask(os.getError()));
+
+        QString reportUrl = getValue<QString>(OUTPUT_URL);
+        if (reportUrl.isEmpty()) {
+            const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
+            reportUrl = tmpDir + "/" + QFileInfo(metadata.getFileUrl()).completeBaseName() + "_CLARK_classification.csv";
+        }
+        reportUrl = GUrlUtils::ensureFileExt(reportUrl, QStringList("csv")).getURLString();
+        reportUrl = GUrlUtils::rollFileName(reportUrl, "_");
+
         if (paired) {
 //            const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
             pairedReadsUrl = message.getData().toMap()[PAIRED_INPUT_SLOT].toString();
         }
         //TODO uncompress input files if needed
 
-        ClarkClassifyTask *task = new ClarkClassifyTask(cfg, readsUrl, pairedReadsUrl, context->workingDir());
+        ClarkClassifyTask *task = new ClarkClassifyTask(cfg, readsUrl, pairedReadsUrl, reportUrl);
         task->addListeners(createLogListeners());
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
         return task;
@@ -586,10 +601,6 @@ void ClarkClassifyTask::prepare() {
         stateInfo.setError(tr("Unsupported CLARK variant. Only default and light variants are supported."));
         return;
     }
-    QString tmpDir = FileAndDirectoryUtils::createWorkingDir(reportUrl, FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", reportUrl);
-    tmpDir = GUrlUtils::createDirectory(tmpDir + "clark", "_", stateInfo);
-    reportUrl = tmpDir + "/clark_raw_classification";
-    CHECK_OP(stateInfo, );
     QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolName, getArguments(), new ClarkLogParser(), cfg.databaseUrl));
     CHECK_OP(stateInfo, );
     setListenerForTask(task.data());
@@ -602,9 +613,12 @@ QStringList ClarkClassifyTask::getArguments() {
 
     arguments << "-D" << cfg.databaseUrl;
     arguments << "-T" << cfg.databaseUrl + "/targets.txt";
-    arguments << "-R" << reportUrl;
-    // CLARK appends suffix unconditionally
-    reportUrl += ".csv";
+
+    // CLARK will add "csv" extension unconditinally
+    if (!reportUrl.endsWith(".csv")) {
+        reportUrl += ".csv";
+    }
+    arguments << "-R" << QFileInfo(reportUrl).dir().path() + "/" + QFileInfo(reportUrl).completeBaseName();
 
     if (!pairedReadsUrl.isEmpty()) {
         arguments << "-P" << readsUrl << pairedReadsUrl;

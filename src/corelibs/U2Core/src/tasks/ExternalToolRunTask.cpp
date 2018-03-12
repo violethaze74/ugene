@@ -174,7 +174,7 @@ QList<long> ExternalToolRunTask::getChildPidsRecursive(long parentPid) {
     QList<long> res;
 
     QProcess p;
-    p.start("ps", QStringList() << QString("-axo pid,ppid").arg(parentPid));
+    p.start("ps", QStringList() << "-axo pid,ppid");
     p.waitForFinished();
     const QStringList lines = QString(p.readAllStandardOutput()).split('\n');
     p.close();
