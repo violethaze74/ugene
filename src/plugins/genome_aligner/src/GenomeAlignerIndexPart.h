@@ -42,7 +42,7 @@ public:
     BMType          *bitMask;
     char            *seq;
 
-    SAType getLoadedPartSize();
+    SAType getLoadedPartSize() const;
     SAType getMaxLength();
     SAType getLoadedSeqStart();
     int getCurrentPart() {return currentPart;}

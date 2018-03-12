@@ -83,7 +83,10 @@ void OptionsPanel::sl_groupHeaderPressed(QString groupId) {
         QString("Internal error: can't open a group with ID '%1' on the Options Panel.").arg(groupId),);
 
     // Implement the logic of the groups opening/closing
-    if (OPMainWidgetState_Closed == widget->getState()) {
+    if (widget->getState() == OPMainWidgetState_Closed) {
+        if (activeGroupId != groupId) {
+            closeOptionsGroup(activeGroupId);            
+        }
         widget->openOptionsPanel();
         openOptionsGroup(groupId);
         return;
@@ -141,13 +144,8 @@ void OptionsPanel::closeOptionsGroup(const QString& groupId) {
         return;
     }
 
-    OPWidgetFactory* opWidgetFactory = findFactoryByGroupId(groupId);
-    SAFE_POINT(NULL != opWidgetFactory,
-        QString("Internal error: can't open a group with ID '%1' on the Options Panel.").arg(groupId),);
-
     GroupHeaderImageWidget* headerWidget = widget->findHeaderWidgetByGroupId(groupId);
-    SAFE_POINT(NULL != headerWidget,
-        QString("Internal error: can't find a header widget for group '%1'").arg(groupId),);
+    SAFE_POINT(NULL != headerWidget, QString("Internal error: can't find a header widget for group '%1'").arg(groupId),);
 
     widget->deleteOptionsWidget(groupId);
     headerWidget->setHeaderDeselected();

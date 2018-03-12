@@ -41,6 +41,8 @@ namespace {
     const int BUFFER_SIZE = 4*1024*1024;
 
     class DbiHelper {
+        Q_DISABLE_COPY(DbiHelper)
+
         DbiConnection *con;
     public:
         DbiHelper(const U2DbiRef &dbiRef, U2OpStatus &os)

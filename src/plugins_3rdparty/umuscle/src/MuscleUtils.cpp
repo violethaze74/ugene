@@ -65,6 +65,7 @@ int ugene_printf(FILE *f, const char *format, ...) {
     int n = vsprintf(str, format, ArgList);
     assert(n>=0 && n < 1024);
     Q_UNUSED(n);
+    va_end(ArgList);
 
     FILEStub* s = static_cast<FILEStub*>(f);
     s->tsi.setDescription(QString::fromLatin1(str));

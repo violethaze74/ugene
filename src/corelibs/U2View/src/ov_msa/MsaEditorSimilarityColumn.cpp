@@ -46,9 +46,10 @@ const QString MsaEditorAlignmentDependentWidget::DataIsBeingUpdatedMessage(QStri
 MsaEditorSimilarityColumn::MsaEditorSimilarityColumn(MsaEditorWgt* ui, QScrollBar* nhBar, const SimilarityStatisticsSettings* _settings)
     : MaEditorNameList(ui, nhBar),
       matrix(NULL),
+      newSettings(*_settings),
+      curSettings(*_settings),
       autoUpdate(true)
 {
-    newSettings = curSettings = *_settings;
     updateDistanceMatrix();
     setObjectName("msa_editor_similarity_column");
 }

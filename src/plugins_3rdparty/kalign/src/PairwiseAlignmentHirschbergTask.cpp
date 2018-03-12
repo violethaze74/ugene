@@ -36,8 +36,14 @@ const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_BONUS_SCORE("H_bonus
 const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_REALIZATION_NAME("H_realizationName");
 const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_DEFAULT_RESULT_FILE_NAME("H_Alignment_Result.aln");
 
-PairwiseAlignmentHirschbergTaskSettings::PairwiseAlignmentHirschbergTaskSettings(const PairwiseAlignmentTaskSettings &s) :
-    PairwiseAlignmentTaskSettings(s) {
+PairwiseAlignmentHirschbergTaskSettings::PairwiseAlignmentHirschbergTaskSettings(const PairwiseAlignmentTaskSettings &s)
+    : PairwiseAlignmentTaskSettings(s),
+      gapOpen(0),
+      gapExtd(0),
+      gapTerm(0),
+      bonusScore(0)
+{
+
 }
 
 PairwiseAlignmentHirschbergTaskSettings::~PairwiseAlignmentHirschbergTaskSettings() {

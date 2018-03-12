@@ -94,7 +94,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSeq
     struct parameters* param = 0;
     struct aln_tree_node* tree2 = 0;
 
-    param = (parameters*)malloc(sizeof(struct parameters));
+    param = static_cast<parameters *>(malloc(sizeof(struct parameters)));
 
     param =  interface(param,0,0);
 
@@ -219,8 +219,8 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSeq
     //	profile_alignment_main(aln,param,submatrix);
     //}
 
-    float** dm = 0;
     if(param->ntree > 1){
+        float** dm = 0;
         //if(byg_start(param->distance,"pairclustalPAIRCLUSTAL") != -1){
         //	if(byg_start(param->tree,"njNJ") != -1){
         //		dm = protein_pairwise_alignment_distance(aln,dm,param,submatrix,1);
@@ -381,9 +381,8 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSeq
     }
 
     //clear up sequence array to be reused as gap array....
-    int *p = 0;
     for (quint32 i = 0; i < numseq;i++){
-        p = aln->s[i];
+        int *p = aln->s[i];
         for (a = 0; a < aln->sl[i];a++){
             p[a] = 0;
         }

@@ -95,20 +95,32 @@ enum ORFAlgorithmStrand {
 class U2ALGORITHM_EXPORT ORFAlgorithmSettings {
 public:
     ORFAlgorithmSettings(ORFAlgorithmStrand strand = ORFAlgorithmStrand_Both,
-        DNATranslation* complementTT = NULL,
-        DNATranslation* proteinTT = NULL,
-        const U2Region& searchRegion = U2Region(),
-        int minLen = 0,
-        bool mustFit = false,
-        bool mustInit = true,
-        bool allowAltStart = false,
-        bool allowOverlap = false,
-        bool includeStopCodon = false,
-        bool circularSearch = false
-        ) : strand(strand), complementTT(complementTT), proteinTT(proteinTT),
-        searchRegion(searchRegion), minLen(minLen), mustFit(mustFit),
-        mustInit(mustInit), allowAltStart(allowAltStart), allowOverlap(allowOverlap),
-        includeStopCodon(includeStopCodon), circularSearch(circularSearch) {}
+                         DNATranslation* complementTT = NULL,
+                         DNATranslation* proteinTT = NULL,
+                         const U2Region& searchRegion = U2Region(),
+                         int minLen = 0,
+                         bool mustFit = false,
+                         bool mustInit = true,
+                         bool allowAltStart = false,
+                         bool allowOverlap = false,
+                         bool includeStopCodon = false,
+                         bool circularSearch = false)
+        : strand(strand),
+          complementTT(complementTT),
+          proteinTT(proteinTT),
+          searchRegion(searchRegion),
+          minLen(minLen),
+          mustFit(mustFit),
+          mustInit(mustInit),
+          allowAltStart(allowAltStart),
+          allowOverlap(allowOverlap),
+          includeStopCodon(includeStopCodon),
+          circularSearch(circularSearch),
+          maxResult2Search(0),
+          isResultsLimited(false)
+    {
+
+    }
 
     ORFAlgorithmStrand          strand;
     DNATranslation*             complementTT;

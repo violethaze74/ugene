@@ -1536,16 +1536,13 @@ GUI_TEST_CLASS_DEFINITION(test_1113){//commit AboutDialogController.cpp
 
             QWidget* dialog = QApplication::activeModalWidget();
 //getting an info string
-            QWidget *w = new QWidget();
-            w=dialog->findChild<QWidget*>("about_widget");
+            QWidget *w=dialog->findChild<QWidget*>("about_widget");
             CHECK_SET_ERR(w!=NULL, "aboutWidget not found");
 
-            QObject *parent = new QObject();
-            parent= w->findChild<QObject*>("parent");
+            QObject *parent= w->findChild<QObject*>("parent");
             CHECK_SET_ERR(parent!=NULL, "parentObject not found");
 
-            QObject *child = new QObject();
-            child=parent->findChild<QObject*>();
+            QObject *child=parent->findChild<QObject*>();
             CHECK_SET_ERR(child!=NULL, "childObject not found");
 
             QString text = child->objectName();
@@ -1588,16 +1585,13 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1){//commit AboutDialogController.cpp
 #endif
             QWidget* dialog = QApplication::activeModalWidget();
 //getting an info string
-            QWidget *w = new QWidget();
-            w=dialog->findChild<QWidget*>("about_widget");
+            QWidget *w=dialog->findChild<QWidget*>("about_widget");
             CHECK_SET_ERR(w!=NULL, "aboutWidget not found");
 
-            QObject *parent = new QObject();
-            parent= w->findChild<QObject*>("parent");
+            QObject *parent= w->findChild<QObject*>("parent");
             CHECK_SET_ERR(parent!=NULL, "parentObject not found");
 
-            QObject *child = new QObject();
-            child=parent->findChild<QObject*>();
+            QObject *child=parent->findChild<QObject*>();
             CHECK_SET_ERR(child!=NULL, "childObject not found");
 
             QString text = child->objectName();

@@ -81,7 +81,6 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef,  QList<GObject*>& object
     writer.open(QIODevice::WriteOnly);
     TmpDbiObjects dbiObjects(dbiRef, os);
     bool ok = true;
-    int len = 0;
     bool isStarted = false;
     int sequenceCounter = 0;
     bool terminatorFound = false;
@@ -89,7 +88,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef,  QList<GObject*>& object
 
 
     while (ok && !io->isEof()) {
-        len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE, &terminatorFound);
+        int len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE, &terminatorFound);
         if (len <= 0){
             continue;
         }

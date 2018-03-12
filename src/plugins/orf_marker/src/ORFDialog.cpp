@@ -306,9 +306,8 @@ void ORFDialog::importResults() {
     QList<ORFFindResult> newResults = task->popResults();
     if (!newResults.empty()) {
         resultsTree->setSortingEnabled(false);
-        ORFListItem* item = NULL;
         foreach(const ORFFindResult& r, newResults) {
-            item = NULL;//findItem(r, lbResult);
+            ORFListItem* item = NULL;//findItem(r, lbResult);
             if (item==NULL) {
                 item = new ORFListItem(r);
                 resultsTree->addTopLevelItem(item);

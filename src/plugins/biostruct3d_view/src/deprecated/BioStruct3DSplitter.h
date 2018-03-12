@@ -81,7 +81,7 @@ public:
     /*!
     * @return List of splitter children widgets.
     */
-    QList<BioStruct3DGLWidget*> getChildWidgets();
+    QList<BioStruct3DGLWidget*> getChildWidgets() const;
     /*!
     * @return Current active view.
     */

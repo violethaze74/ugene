@@ -48,7 +48,6 @@ QWidget* McaGeneralTabFactory::createWidget(GObjectView *objView) {
     McaGeneralTab *widget = new McaGeneralTab(msa);
     widget->setObjectName("McaGeneralTab");
     return widget;
-    return NULL;
 }
 
 const QString & McaGeneralTabFactory::getGroupId() {

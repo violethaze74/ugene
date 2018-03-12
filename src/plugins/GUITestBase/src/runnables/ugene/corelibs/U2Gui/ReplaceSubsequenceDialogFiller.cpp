@@ -42,13 +42,16 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::replaceSubsequenceDialogFiller"
 ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus &_os, const QString &_pasteDataHere, bool recalculateQuals)
-    : Filler(_os, "EditSequenceDialog"), pasteDataHere(_pasteDataHere), recalculateQuals(recalculateQuals)
+    : Filler(_os, "EditSequenceDialog"),
+      pasteDataHere(_pasteDataHere),
+      recalculateQuals(recalculateQuals)
 {
 
 }
 
 ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
-    : Filler(os, "EditSequenceDialog", scenario)
+    : Filler(os, "EditSequenceDialog", scenario),
+      recalculateQuals(false)
 {
 
 }

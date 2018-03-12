@@ -29,21 +29,13 @@
 
 namespace U2 {
 
-class XMLTestFactory;
-
 class PsipredPlugin : public Plugin {
 	Q_OBJECT
 public:
     PsipredPlugin();
 	~PsipredPlugin();
-
-private:
-    GObjectViewWindowContext* viewCtx;
 };
-
 
 } //namespace
 
 #endif // _U2_PSIPRED_PLUGIN_H_
-
-

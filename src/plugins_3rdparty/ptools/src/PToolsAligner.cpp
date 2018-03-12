@@ -126,7 +126,7 @@ StructuralAlignment PToolsAligner::align(const StructuralAlignmentTaskSettings &
             }
         }
     }
-    catch (std::exception e) {
+    catch (const std::exception &e) {
         error = QString("Internal ptools error: %1").arg(e.what());
     }
     catch (...) {

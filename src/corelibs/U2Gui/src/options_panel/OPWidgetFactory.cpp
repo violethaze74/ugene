@@ -42,10 +42,16 @@ bool OPFactoryFilterVisitor::atLeastOneAlphabetPass(DNAAlphabetType factoryAlpha
     return false;
 }
 
-OPWidgetFactory::OPWidgetFactory() {
+OPWidgetFactory::OPWidgetFactory()
+    : QObject(),
+      objView(NULL),
+      objectViewOfWidget(ObjViewType_SequenceView)
+{
+
 }
 
 OPWidgetFactory::~OPWidgetFactory() {
+
 }
 
 bool OPWidgetFactory::passFiltration( OPFactoryFilterVisitorInterface* filter ){

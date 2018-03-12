@@ -64,9 +64,8 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/ ) {
     settings.setIncludedRegion(seqRange.startPos + settings.getFirstBaseIndex(), seqRange.length);
 
     QList< U2Region > list;
-    bool ok = false;
     const QString& excludedRegsStr = cfg->getParameter(EXCLUDED_REGIONS_ATTR)->getAttributeValueWithoutScript<QString>();
-    ok = Primer3Dialog::parseIntervalList(excludedRegsStr, ",", &list);
+    bool ok = Primer3Dialog::parseIntervalList(excludedRegsStr, ",", &list);
     if (ok) {
         settings.setExcludedRegion(list);
     } else {

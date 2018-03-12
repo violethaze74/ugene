@@ -349,12 +349,11 @@ Task::ReportResult GenomeAlignerTask::report() {
 int GenomeAlignerTask::calculateWindowSize(bool absMismatches, int nMismatches, int ptMismatches, int minReadLength, int maxReadLength) {
     int CMAX = nMismatches;
     int windowSize = MAX_BIT_MASK_LENGTH;
-    int q = 0;
     for (int len = minReadLength; len <= maxReadLength; len++) {
         if (!absMismatches) {
             CMAX = len*ptMismatches/MAX_PERCENTAGE;
         }
-        q = len/(CMAX + 1);
+        int q = len/(CMAX + 1);
         if (windowSize > q) {
             windowSize = q;
         }

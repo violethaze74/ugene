@@ -29,6 +29,8 @@ namespace U2 {
 
     struct Range
     {
+        Range() : m_uBestColLeft(0), m_uBestColRight(0) {}
+
         unsigned m_uBestColLeft;
         unsigned m_uBestColRight;
     };

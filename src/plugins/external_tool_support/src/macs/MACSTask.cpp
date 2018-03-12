@@ -219,14 +219,14 @@ MACSLogParser::MACSLogParser()
 
 int MACSLogParser::getProgress(){
     //parsing INFO  @ Fri, 07 Dec 2012 19:30:16: #1 read tag files...
-    int max_step = 5;
     if(!lastPartOfLog.isEmpty()){
         QString lastMessage=lastPartOfLog.last();
         QRegExp rx(" #(\\d+) \\w");
         if(lastMessage.contains(rx)){
             SAFE_POINT(rx.indexIn(lastMessage) > -1, "bad progress index", 0);
             int step = rx.cap(1).toInt();
-            return  progress = (100 * step)/ float(qMax(step, max_step));
+            static const int MAX_STEP = 5;
+            return  progress = (100 * step)/ float(qMax(step, MAX_STEP));
         }
     }
     return progress;

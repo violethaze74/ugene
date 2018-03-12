@@ -41,11 +41,6 @@
 
 namespace U2 {
 
-struct Range {
-    unsigned m_uBestColLeft;
-    unsigned m_uBestColRight;
-};
-
 /////////////////////////////////////////////////////////////////////
 
 MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, const MuscleTaskSettings& _config, MuscleContext* ctx)
@@ -251,15 +246,13 @@ void MusclePrepareTask::alignPrepareUnsafe()
     }
 #endif
 
-    Task *progAlignTask, *refineTreeTask, *refineTask;
-
-    progAlignTask = new ProgressiveAlignTask(workpool);
+    Task *progAlignTask = new ProgressiveAlignTask(workpool);
     res << progAlignTask;
     if (workpool->ctx->params.g_uMaxIters == 1) {
         progAlignTask->setSubtaskProgressWeight(0.9f);
     } else {
-        refineTreeTask = new RefineTreeTask(workpool);
-        refineTask = new RefineTask(workpool);
+        Task *refineTreeTask = new RefineTreeTask(workpool);
+        Task *refineTask = new RefineTask(workpool);
         progAlignTask->setSubtaskProgressWeight(0.3f);
         refineTreeTask->setSubtaskProgressWeight(0.1f);
         refineTask->setSubtaskProgressWeight(0.5f);

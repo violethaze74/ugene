@@ -49,6 +49,7 @@ const QString PhmmerSearchTask::PER_DOMAIN_HITS_FILENAME = "per_domain_hits.txt"
 PhmmerSearchTask::PhmmerSearchTask(const PhmmerSearchSettings &settings)
     : ExternalToolSupportTask(tr("Search with phmmer"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
+      saveSequenceTask(NULL),
       phmmerTask(NULL),
       parseTask(NULL),
       removeWorkingDir(false)
