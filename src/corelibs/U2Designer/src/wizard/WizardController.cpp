@@ -907,7 +907,7 @@ void GroupBox::changeView(const QString &buttonText, const QString &showHide) {
     if (!title().isEmpty()) {
         parametersStr = title().toLower();
     }
-    tip->setText(showHide + " " + parametersStr + tr(" parameters"));
+    tip->setText(showHide + " " + parametersStr + tr(" settings"));
     showHideButton->setToolTip(tip->text());
 
     CHECK(NULL != hLayout, );

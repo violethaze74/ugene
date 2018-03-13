@@ -45,7 +45,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-const QString KrakenClassifyWorkerFactory::ACTOR_ID = "classify-reads-with-kraken";
+const QString KrakenClassifyWorkerFactory::ACTOR_ID = "kraken-classify";
 
 const QString KrakenClassifyWorkerFactory::INPUT_PORT_ID = "in";
 //const QString KrakenClassifyWorkerFactory::INPUT_PAIRED_PORT_ID = "in2";
@@ -56,7 +56,7 @@ const QString KrakenClassifyWorkerFactory::DATABASE_ATTR_ID = "database";
 const QString KrakenClassifyWorkerFactory::QUICK_OPERATION_ATTR_ID = "quick-operation";
 const QString KrakenClassifyWorkerFactory::MIN_HITS_NUMBER_ATTR_ID = "min-hits";
 const QString KrakenClassifyWorkerFactory::THREADS_NUMBER_ATTR_ID = "threads";
-const QString KrakenClassifyWorkerFactory::PRELOAD_DATABASE_ATTR_ID = "preload-database";
+const QString KrakenClassifyWorkerFactory::PRELOAD_DATABASE_ATTR_ID = "preload";
 
 const QString KrakenClassifyWorkerFactory::SINGLE_END_TEXT = QObject::tr("SE reads or scaffolds");
 const QString KrakenClassifyWorkerFactory::PAIRED_END_TEXT = QObject::tr("PE reads");
@@ -131,7 +131,7 @@ void KrakenClassifyWorkerFactory::init() {
         const Descriptor threadsDesc(THREADS_NUMBER_ATTR_ID, KrakenClassifyPrompter::tr("Number of threads"),
                                      KrakenClassifyPrompter::tr("Use multiple threads (--threads)."));
 
-        const Descriptor preloadDatabaseDesc(PRELOAD_DATABASE_ATTR_ID, KrakenClassifyPrompter::tr("Preload database"),
+        const Descriptor preloadDatabaseDesc(PRELOAD_DATABASE_ATTR_ID, KrakenClassifyPrompter::tr("Load database into memory"),
                                              KrakenClassifyPrompter::tr("Load the Kraken database into RAM (--preload).<br><br>"
                                                                         "This can be useful to improve the speed. The database size should be less than the RAM size.<br><br>"
                                                                         "The other option to improve the speed is to store the database on ramdisk. Set this parameter to \"False\" in this case."));
@@ -147,8 +147,8 @@ void KrakenClassifyWorkerFactory::init() {
         Attribute *minHitsAttribute = new Attribute(minHitsDesc, BaseTypes::NUM_TYPE(), false, 1);
         attributes << minHitsAttribute;
 
-        attributes << new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), false, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
         attributes << new Attribute(preloadDatabaseDesc, BaseTypes::BOOL_TYPE(), false, true);
+        attributes << new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), false, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 
 //        inputDataAttribute->addPortRelation(PortRelationDescriptor(INPUT_PAIRED_PORT_ID, QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
         minHitsAttribute->addRelation(new VisibilityRelation(QUICK_OPERATION_ATTR_ID, "true"));

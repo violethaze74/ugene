@@ -44,13 +44,13 @@ namespace LocalWorkflow {
 const QString GetReadsListWorkerFactory::SE_ACTOR_ID("get-se-reads-list");
 const QString GetReadsListWorkerFactory::PE_ACTOR_ID("get-pe-reads-list");
 
-const QString GetReadsListWorkerFactory::SE_SLOT_ID("se-reads-url");
-const QString GetReadsListWorkerFactory::PE_SLOT_ID("pe-reads-url");
+const QString GetReadsListWorkerFactory::SE_SLOT_ID("reads-url1");
+const QString GetReadsListWorkerFactory::PE_SLOT_ID("reads-url2");
 
 static const QString OUT_PORT_ID("out");
 
-static const QString SE_URL_ATTR("url-se");
-static const QString PE_URL_ATTR("url-pe");
+static const QString SE_URL_ATTR("url1");
+static const QString PE_URL_ATTR("url2");
 
 const Descriptor GetReadsListWorkerFactory::SE_SLOT()
 {

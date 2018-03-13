@@ -37,7 +37,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-const QString DiamondBuildWorkerFactory::ACTOR_ID = "build-diamond-database";
+const QString DiamondBuildWorkerFactory::ACTOR_ID = "diamond-build";
 
 const QString DiamondBuildWorkerFactory::OUTPUT_PORT_ID = "out";
 

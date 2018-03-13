@@ -45,7 +45,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-const QString WevoteWorkerFactory::ACTOR_ID = "improve-classification-with-wevote";
+const QString WevoteWorkerFactory::ACTOR_ID = "wevote-classify";
 
 const QString WevoteWorkerFactory::INPUT_PORT_ID = "in";
 const QString WevoteWorkerFactory::OUTPUT_PORT_ID = "out";
@@ -53,7 +53,7 @@ const QString WevoteWorkerFactory::OUTPUT_PORT_ID = "out";
 const QString WevoteWorkerFactory::PENALTY_ATTR_ID = "penalty";
 const QString WevoteWorkerFactory::NUMBER_OF_AGREED_TOOLS_ATTR_ID = "number-of-agreed-tools";
 const QString WevoteWorkerFactory::SCORE_THRESHOLD_ATTR_ID = "score-threshold";
-const QString WevoteWorkerFactory::NUMBER_OF_THREADS_ATTR_ID = "number-of-threads";
+const QString WevoteWorkerFactory::NUMBER_OF_THREADS_ATTR_ID = "threads";
 const QString WevoteWorkerFactory::OUTPUT_FILE_ATTR_ID = "output-file";
 
 WevoteWorkerFactory::WevoteWorkerFactory()

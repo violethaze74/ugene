@@ -37,7 +37,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-const QString DiamondClassifyWorkerFactory::ACTOR_ID = "classify-reads-with-diamond";
+const QString DiamondClassifyWorkerFactory::ACTOR_ID = "diamond-classify";
 
 const QString DiamondClassifyWorkerFactory::INPUT_PORT_ID = "in";
 const QString DiamondClassifyWorkerFactory::INPUT_PAIRED_PORT_ID = "in2";

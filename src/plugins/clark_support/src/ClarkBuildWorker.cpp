@@ -66,11 +66,11 @@ namespace LocalWorkflow {
 
 ///////////////////////////////////////////////////////////////
 //ClarkBuild
-const QString ClarkBuildWorkerFactory::ACTOR_ID("clark-build-db");
+const QString ClarkBuildWorkerFactory::ACTOR_ID("clark-build");
 
 static const QString OUTPUT_PORT("out");
 
-static const QString DB_URL("db-url");
+static const QString DB_URL("database");
 static const QString TAXONOMY("taxonomy");
 static const QString TAXONOMY_RANK("taxonomy-rank");
 

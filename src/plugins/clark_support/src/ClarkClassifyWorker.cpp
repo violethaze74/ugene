@@ -75,7 +75,7 @@ static const QString PAIRED_INPUT_SLOT = GetReadsListWorkerFactory::PE_SLOT_ID;
 static const QString OUTPUT_PORT("out");
 
 static const QString TOOL_VARIANT("tool-variant");
-static const QString DB_URL("db-url");
+static const QString DB_URL("database");
 static const QString TAXONOMY("taxonomy");
 static const QString TAXONOMY_RANK("taxonomy-rank");
 static const QString K_LENGTH("k-length");
@@ -266,25 +266,34 @@ void ClarkClassifyWorkerFactory::init() {
 //        sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(PAIRED_INPUT_PORT, QVariantList() << PAIRED_END));
 //        sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(INPUT_PORT, QVariantList() << SINGLE_END));
         a << sequencingReadsAttribute;
+
         a << new Attribute( tool, BaseTypes::STRING_TYPE(), false, ClarkClassifySettings::TOOL_LIGHT);
         a << new Attribute( dbUrl, BaseTypes::STRING_TYPE(), true);
+
 //        a << new Attribute( taxonomy, BaseTypes::STRING_TYPE(), false, "Default");
 //        a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);
+
         Attribute *klenAttr = new Attribute( kLength, BaseTypes::NUM_TYPE(), false, 31);
         klenAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_DEFAULT)));
         a << klenAttr;
+
         a << new Attribute( kMinFreq, BaseTypes::NUM_TYPE(), false, 0);
         a << new Attribute( mode, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Default);
-        Attribute *factorAttr = new Attribute( factor, BaseTypes::NUM_TYPE(), false, 2);
-        factorAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_DEFAULT)));
-        a << factorAttr;
-        Attribute *gapAttr = new Attribute( gap, BaseTypes::NUM_TYPE(), false, 4);
-        gapAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_LIGHT)));
-        a << gapAttr;
-        //a << new Attribute( outFile, BaseTypes::STRING_TYPE(), false, "results.csv");
+
         Attribute *extAttr = new Attribute(extendedOutput, BaseTypes::BOOL_TYPE(), false, false);
         extAttr->addRelation(new VisibilityRelation(MODE, QVariant(ClarkClassifySettings::Full)));
         a << extAttr;
+
+        Attribute *factorAttr = new Attribute( factor, BaseTypes::NUM_TYPE(), false, 2);
+        factorAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_DEFAULT)));
+        a << factorAttr;
+
+        Attribute *gapAttr = new Attribute( gap, BaseTypes::NUM_TYPE(), false, 4);
+        gapAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_LIGHT)));
+        a << gapAttr;
+
+        //a << new Attribute( outFile, BaseTypes::STRING_TYPE(), false, "results.csv");
+
         a << new Attribute( db2ram, BaseTypes::BOOL_TYPE(), false, false);
         a << new Attribute( numThreads, BaseTypes::NUM_TYPE(), false, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
     }

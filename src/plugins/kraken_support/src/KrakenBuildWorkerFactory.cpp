@@ -46,13 +46,13 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-const QString KrakenBuildWorkerFactory::ACTOR_ID = "build-kraken-database";
+const QString KrakenBuildWorkerFactory::ACTOR_ID = "kraken-build";
 
 const QString KrakenBuildWorkerFactory::OUTPUT_PORT_ID = "out";
 
 const QString KrakenBuildWorkerFactory::MODE_ATTR_ID = "mode";
-const QString KrakenBuildWorkerFactory::INPUT_DATABASE_NAME_ATTR_ID = "input-database-name";
-const QString KrakenBuildWorkerFactory::NEW_DATABASE_NAME_ATTR_ID = "new-database-name";
+const QString KrakenBuildWorkerFactory::INPUT_DATABASE_NAME_ATTR_ID = "input-database";
+const QString KrakenBuildWorkerFactory::NEW_DATABASE_NAME_ATTR_ID = "database";
 const QString KrakenBuildWorkerFactory::GENOMIC_LIBRARY_ATTR_ID = "genomic-library";
 const QString KrakenBuildWorkerFactory::NUMBER_OF_K_MERS_ATTR_ID = "number-of-k-mers";
 const QString KrakenBuildWorkerFactory::K_MER_LENGTH_ATTR_ID = "k-mer-length";
@@ -62,7 +62,7 @@ const QString KrakenBuildWorkerFactory::SHRINK_BLOCK_OFFSET_ATTR_ID = "shrink-bl
 const QString KrakenBuildWorkerFactory::CLEAN_ATTR_ID = "clean";
 const QString KrakenBuildWorkerFactory::WORK_ON_DISK_ATTR_ID = "work-on-disk";
 const QString KrakenBuildWorkerFactory::JELLYFISH_HASH_SIZE_ATTR_ID = "jellyfish-hash-size";
-const QString KrakenBuildWorkerFactory::THREADS_NUMBER_ATTR_ID = "threads-number";
+const QString KrakenBuildWorkerFactory::THREADS_NUMBER_ATTR_ID = "threads";
 
 const QString KrakenBuildWorkerFactory::BUILD_MODE_TEXT = QObject::tr("Build");
 const QString KrakenBuildWorkerFactory::SHRINK_MODE_TEXT = QObject::tr("Shrink");
