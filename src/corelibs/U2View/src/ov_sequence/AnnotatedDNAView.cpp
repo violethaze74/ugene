@@ -1337,6 +1337,24 @@ void AnnotatedDNAView::sl_sequenceModifyTaskStateChanged() {
                 }
             }
         }
+        
+        ModifySequenceContentTask* modifyContentTask = qobject_cast<ModifySequenceContentTask*>(t);
+        if (modifyContentTask != NULL) {
+            qint64 seqSizeDelta = modifyContentTask->getSequenceLengthDelta();
+            if (seqSizeDelta > 0) { // try keeping all maximized zooms in max state
+                U2Region newMaxRange(0, modifyContentTask->getSequenceObject()->getSequenceLength());
+                U2Region oldMaxRange(0,  newMaxRange.length - seqSizeDelta);
+                foreach (ADVSequenceObjectContext * seqCtx, seqContexts) {
+                    if (seqCtx->getSequenceGObject() == modifyContentTask->getSequenceObject()) {
+                        foreach (ADVSequenceWidget *w, seqCtx->getSequenceWidgets()) {
+                            if (w->getVisibleRange() == oldMaxRange) {
+                                w->setVisibleRange(newMaxRange);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         updateMultiViewActions();
         emit si_sequenceModified(seqCtx);
     }

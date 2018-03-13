@@ -156,6 +156,10 @@ QString ModifySequenceContentTask::generateReport() const {
     return report;
 }
 
+qint64 ModifySequenceContentTask::getSequenceLengthDelta() const {
+    return sequence2Insert.length() + regionToReplace.length;
+}
+
 void ModifySequenceContentTask::cloneSequenceAndAnnotations() {
     IOAdapterRegistry *ioReg = AppContext::getIOAdapterRegistry();
     IOAdapterFactory* iof = ioReg->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
