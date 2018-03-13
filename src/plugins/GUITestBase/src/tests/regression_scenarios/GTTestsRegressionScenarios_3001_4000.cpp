@@ -3642,11 +3642,13 @@ GUI_TEST_CLASS_DEFINITION(test_3557) {
     //3. Select the "2|1a0cA|gi|32470780" and "1a0cA" sequences.
     //GTUtilsMSAEditorSequenceArea::scrollToBottom(os);
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0dA");
+    GTGlobals::sleep();
     GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
+    GTGlobals::sleep();
 //    const int rowsCount = GTUtilsMsaEditor::getSequencesCount(os);
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "2|1a0cA|gi|32470780");
+    GTGlobals::sleep();
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0cA");
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
@@ -3659,8 +3661,8 @@ GUI_TEST_CLASS_DEFINITION(test_3557) {
     const QString secondRowName = GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(os, 2);
     const QString expectedFirstRowName = "2|1a0cA|gi|32470780";
     const QString expectedSecondRowName = "1a0cA";
-    CHECK_SET_ERR(firstRowName == expectedFirstRowName, QString("Wrong first sequence: expected %1, got %2").arg(expectedFirstRowName).arg(firstRowName));
-    CHECK_SET_ERR(secondRowName == expectedSecondRowName, QString("Wrong second sequence: expected %1, got %2").arg(expectedSecondRowName).arg(secondRowName));
+    CHECK_SET_ERR(firstRowName == expectedFirstRowName, QString("Wrong first sequence: expected '%1', got '%2'").arg(expectedFirstRowName).arg(firstRowName));
+    CHECK_SET_ERR(secondRowName == expectedSecondRowName, QString("Wrong second sequence: expected '%1', got '%2'").arg(expectedSecondRowName).arg(secondRowName));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3563_1) {
