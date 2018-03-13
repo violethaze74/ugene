@@ -142,7 +142,7 @@ void KrakenBuildWorkerFactory::init() {
         Attribute *modeAttribute = new Attribute(modeDesc, BaseTypes::STRING_TYPE(), false, KrakenBuildTaskSettings::BUILD);
         Attribute *inputDatabaseNameAttribute = new Attribute(inputDatabaseNameDesc, BaseTypes::STRING_TYPE(), true);
         Attribute *newDatabaseName = new Attribute(newDatabaseNameDesc, BaseTypes::STRING_TYPE(), true);
-        Attribute *genomicLibraryAttribute = new URLAttribute(genomicLibraryDesc, BaseTypes::URL_DATASETS_TYPE(), true);
+        Attribute *genomicLibraryAttribute = new Attribute(genomicLibraryDesc, BaseTypes::URL_DATASETS_TYPE(), true);
         Attribute *numberOfKmersAttribute = new Attribute(numberOfKmersDesc, BaseTypes::NUM_TYPE(), true, 10000);
         Attribute *kMerLengthAttribute = new Attribute(kMerLengthDesc, BaseTypes::NUM_TYPE(), false, 31);
         Attribute *minimizerLengthAttribute = new Attribute(minimizerLengthDesc, BaseTypes::NUM_TYPE(), false, 15);;
