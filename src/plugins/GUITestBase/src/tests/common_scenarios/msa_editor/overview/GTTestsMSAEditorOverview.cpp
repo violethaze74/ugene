@@ -119,15 +119,19 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 //    1. Open "_common_data/clustal/COI_na.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+//    2. Align "samples/CLUSTALW/HIV-1.aln"
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/HIV-1.aln"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
-//    Expected state: simple overview is enabled.
+//    3. Expected state: simple overview is enabled.
     QWidget *simple = GTWidget::findWidget(os, "msa_overview_area_simple");
     CHECK_SET_ERR(simple->isVisible(), "simple overveiw is not visiable");
 
-//    2. Resize Ugene window to make overview area smaller.
+//    4. Resize Ugene window to make overview area smaller.
     QMainWindow *window = AppContext::getMainWindow()->getQMainWindow();
     if (window->isMaximized()) {
         GTWidget::showNormal(os, window);
