@@ -266,19 +266,19 @@ void ClarkClassifyWorkerFactory::init() {
 //        sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(INPUT_PORT, QVariantList() << SINGLE_END));
         a << sequencingReadsAttribute;
 
-        a << new Attribute( tool, BaseTypes::STRING_TYPE(), Attribute::None, ClarkClassifySettings::TOOL_LIGHT);
-        a << new Attribute( dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required);
-        a << new Attribute( outputUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        a << new Attribute(tool, BaseTypes::STRING_TYPE(), Attribute::None, ClarkClassifySettings::TOOL_LIGHT);
+        a << new Attribute(dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required);
+        a << new Attribute(outputUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
 
 //        a << new Attribute( taxonomy, BaseTypes::STRING_TYPE(), false, "Default");
 //        a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);
 
-        Attribute *klenAttr = new Attribute( kLength, BaseTypes::NUM_TYPE(), Attribute::None, 31);
+        Attribute *klenAttr = new Attribute(kLength, BaseTypes::NUM_TYPE(), Attribute::None, 31);
         klenAttr->addRelation(new VisibilityRelation(TOOL_VARIANT, QVariant(ClarkClassifySettings::TOOL_DEFAULT)));
         a << klenAttr;
 
-        a << new Attribute( kMinFreq, BaseTypes::NUM_TYPE(), Attribute::None, 0);
-        a << new Attribute( mode, BaseTypes::NUM_TYPE(), Attribute::None, ClarkClassifySettings::Default);
+        a << new Attribute(kMinFreq, BaseTypes::NUM_TYPE(), Attribute::None, 0);
+        a << new Attribute(mode, BaseTypes::NUM_TYPE(), Attribute::None, ClarkClassifySettings::Default);
 
         Attribute *extAttr = new Attribute(extendedOutput, BaseTypes::BOOL_TYPE(), Attribute::None, false);
         extAttr->addRelation(new VisibilityRelation(MODE, QVariant(ClarkClassifySettings::Full)));

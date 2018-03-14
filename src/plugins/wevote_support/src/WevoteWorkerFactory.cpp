@@ -54,7 +54,7 @@ const QString WevoteWorkerFactory::PENALTY_ATTR_ID = "penalty";
 const QString WevoteWorkerFactory::NUMBER_OF_AGREED_TOOLS_ATTR_ID = "number-of-agreed-tools";
 const QString WevoteWorkerFactory::SCORE_THRESHOLD_ATTR_ID = "score-threshold";
 const QString WevoteWorkerFactory::NUMBER_OF_THREADS_ATTR_ID = "threads";
-const QString WevoteWorkerFactory::OUTPUT_FILE_ATTR_ID = "output-file";
+const QString WevoteWorkerFactory::OUTPUT_FILE_ATTR_ID = "output-url";
 
 WevoteWorkerFactory::WevoteWorkerFactory()
     : DomainFactory(ACTOR_ID)
@@ -109,11 +109,11 @@ void WevoteWorkerFactory::init() {
         const Descriptor outputFileDesc(OUTPUT_FILE_ATTR_ID, WevotePrompter::tr("Output file"),
                                         WevotePrompter::tr("Specify the output text file name."));
 
-        Attribute *penaltyAttribute = new Attribute(penaltyDesc, BaseTypes::NUM_TYPE(), false, 2);
-        Attribute *numberOfAgreedToolsAttribute = new Attribute(numberOfAgreedToolsDesc, BaseTypes::NUM_TYPE(), false, 0);
-        Attribute *scoreThresholdAttribute = new Attribute(scoreThresholdDesc, BaseTypes::NUM_TYPE(), false, 0);
-        Attribute *numberOfThreadsAttribute = new Attribute(numberOfThreadsDesc, BaseTypes::NUM_TYPE(), false, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
-        Attribute *outputFileAttribute = new Attribute(outputFileDesc, BaseTypes::STRING_TYPE(), true);
+        Attribute *penaltyAttribute = new Attribute(penaltyDesc, BaseTypes::NUM_TYPE(), Attribute::None, 2);
+        Attribute *numberOfAgreedToolsAttribute = new Attribute(numberOfAgreedToolsDesc, BaseTypes::NUM_TYPE(), Attribute::None, 0);
+        Attribute *scoreThresholdAttribute = new Attribute(scoreThresholdDesc, BaseTypes::NUM_TYPE(), Attribute::None, 0);
+        Attribute *numberOfThreadsAttribute = new Attribute(numberOfThreadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+        Attribute *outputFileAttribute = new Attribute(outputFileDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
 
         attributes << penaltyAttribute;
         attributes << numberOfAgreedToolsAttribute;
