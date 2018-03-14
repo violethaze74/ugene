@@ -5344,6 +5344,33 @@ GUI_TEST_CLASS_DEFINITION(test_3813) {
     GTGlobals::sleep(3000);
 }
 
+
+GUI_TEST_CLASS_DEFINITION(test_3814) {
+    //1. Open "samples/Genbank/murine.gb"
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Unload "human_T1.fa"
+    GTUtilsDocument::unloadDocument(os, "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);    
+
+    BlastAllSupportDialogFiller::Parameters settings;
+    settings.withInputFile = true;
+    settings.runBlast = true;
+    
+    settings.inputPath = dataDir + "/samples/FASTA/human_T1.fa";
+    settings.dbPath = testDir + "_common_data/cmdline/external-tool-support/blastplus/human_T1/human_T1.nhr";
+    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(settings, os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST search...");
+    GTGlobals::sleep(3000);
+    
+    CHECK_SET_ERR(GTUtilsDocument::isDocumentLoaded(os, "human_T1.fa"), "The file is not loaded");
+    QString title = GTUtilsMdi::activeWindowTitle(os);
+    CHECK_SET_ERR(title.contains("human_"), "Wrong MDI window is active");    
+    
+}
+
+
 GUI_TEST_CLASS_DEFINITION(test_3815) {
     GTLogTracer l;
     //1. Open "_common_data/fasta/cant_translate.fa".
