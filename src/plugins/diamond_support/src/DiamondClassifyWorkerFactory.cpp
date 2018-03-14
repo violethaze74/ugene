@@ -19,7 +19,14 @@
  * MA 02110-1301, USA.
  */
 
+#include <QThread>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/AppResources.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNATranslation.h>
 
 #include <U2Designer/DelegateEditors.h>
 
@@ -31,6 +38,7 @@
 #include <U2Lang/WorkflowEnv.h>
 
 #include "DiamondClassifyPrompter.h"
+#include "DiamondClassifyTask.h"
 #include "DiamondClassifyWorker.h"
 #include "DiamondClassifyWorkerFactory.h"
 #include "DiamondSupport.h"
@@ -47,9 +55,19 @@ const QString DiamondClassifyWorkerFactory::INPUT_PORT_ID = "in";
 const QString DiamondClassifyWorkerFactory::INPUT_PAIRED_PORT_ID = "in2";
 const QString DiamondClassifyWorkerFactory::OUTPUT_PORT_ID = "out";
 
-const QString DiamondClassifyWorkerFactory::INPUT_DATA_ATTR_ID = "input-data";
-const QString DiamondClassifyWorkerFactory::DATABASE_ATTR_ID = "database";
-const QString DiamondClassifyWorkerFactory::OUTPUT_URL_ATTR_ID = "output-url";
+const QString DiamondClassifyWorkerFactory::INPUT_DATA_ATTR_ID("input-data");
+const QString DiamondClassifyWorkerFactory::DATABASE_ATTR_ID("database");
+const QString DiamondClassifyWorkerFactory::GENCODE_ATTR_ID("genetic-code");
+const QString DiamondClassifyWorkerFactory::SENSITIVE_ATTR_ID("sensitive-mode");
+const QString DiamondClassifyWorkerFactory::FSHIFT_ATTR_ID("frame-shift");
+const QString DiamondClassifyWorkerFactory::EVALUE_ATTR_ID("e-value");
+const QString DiamondClassifyWorkerFactory::MATRIX_ATTR_ID("matrix");
+const QString DiamondClassifyWorkerFactory::GO_PEN_ATTR_ID("gap-open");
+const QString DiamondClassifyWorkerFactory::GE_PEN_ATTR_ID("gap-extend");
+const QString DiamondClassifyWorkerFactory::THREADS_ATTR_ID("threads");
+const QString DiamondClassifyWorkerFactory::BSIZE_ATTR_ID("block-size");
+const QString DiamondClassifyWorkerFactory::CHUNKS_ATTR_ID("index-chunks");
+const QString DiamondClassifyWorkerFactory::OUTPUT_URL_ATTR_ID("output-url");
 
 const QString DiamondClassifyWorkerFactory::SINGLE_END_TEXT = QObject::tr("SE reads or scaffolds");
 const QString DiamondClassifyWorkerFactory::PAIRED_END_TEXT = QObject::tr("PE reads");
@@ -114,18 +132,35 @@ void DiamondClassifyWorkerFactory::init() {
         const Descriptor databaseDesc(DATABASE_ATTR_ID, DiamondClassifyPrompter::tr("Database"),
                                       DiamondClassifyPrompter::tr("Input a binary DIAMOND database file."));
 
+        const Descriptor code(GENCODE_ATTR_ID, DiamondClassifyPrompter::tr("Genetic code"), DiamondClassifyPrompter::tr("Genetic code used for translation of query sequences (--query-gencode)."));
+        const Descriptor sense(SENSITIVE_ATTR_ID, DiamondClassifyPrompter::tr("Sensitive mode"), DiamondClassifyPrompter::tr("The sensitive modes (--sensitive, --more-sensitive) are generally recommended for aligning longer sequences. The default mode is mainly designed for short read alignment, i.e. finding significant matches of >50 bits on 30-40aa fragments."));
+        const Descriptor fshift(FSHIFT_ATTR_ID, DiamondClassifyPrompter::tr("Frameshift"), DiamondClassifyPrompter::tr("Penalty for frameshift in DNA-vs-protein alignments. Values around 15 are reasonable for this parameter. Enabling this feature will have the aligner tolerate missing bases in DNA sequences and is most recommended for long, error-prone sequences like MinION reads."));
+        const Descriptor evalue(EVALUE_ATTR_ID, DiamondClassifyPrompter::tr("Expected value"), DiamondClassifyPrompter::tr("Maximum expected value to report an alignment."));
+        const Descriptor matrix(MATRIX_ATTR_ID, DiamondClassifyPrompter::tr("Matrix"), DiamondClassifyPrompter::tr("Scoring matrix (--matrix)."));
+        const Descriptor gapopen(GO_PEN_ATTR_ID, DiamondClassifyPrompter::tr("Gap open penalty"), DiamondClassifyPrompter::tr("Gap open penalty (--gapopen)."));
+        const Descriptor gapextend(GE_PEN_ATTR_ID, DiamondClassifyPrompter::tr("Gap extension penalty"), DiamondClassifyPrompter::tr("Gap extension penalty (--gapextend)."));
+        const Descriptor threads(THREADS_ATTR_ID, DiamondClassifyPrompter::tr("Number of threads"), DiamondClassifyPrompter::tr("Number of CPU threads (--treads)."));
+        const Descriptor bsize(BSIZE_ATTR_ID, DiamondClassifyPrompter::tr("Block size"), DiamondClassifyPrompter::tr(" 	Block size in billions of sequence letters to be processed at a time (--block-size). This is the main parameter for controlling the program’s memory usage. Bigger numbers will increase the use of memory and temporary disk space, but also improve performance. The program can be expected to use roughly six times this number of memory (in GB). "));
+        const Descriptor chunks(CHUNKS_ATTR_ID, DiamondClassifyPrompter::tr("Index chunks"), DiamondClassifyPrompter::tr("The number of chunks for processing the seed index (--index-chunks). This option can be additionally used to tune the performance. It is recommended to set this to 1 on a high memory server, which will increase performance and memory usage, but not the usage of temporary disk space."));
         const Descriptor outputUrlDesc(OUTPUT_URL_ATTR_ID, DiamondClassifyPrompter::tr("Output file"),
                                        DiamondClassifyPrompter::tr("Specify the output file name."));
 
 //        Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, DiamondClassifyTaskSettings::SINGLE_END);       // FIXME: diamond can't work with paired reads
-        Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required);
-        Attribute *outputUrlAttribute = new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-
 //        attributes << inputDataAttribute;       // FIXME: diamond can't work with paired reads
-        attributes << databaseAttribute;
-        attributes << outputUrlAttribute;
-
 //        inputDataAttribute->addPortRelation(PortRelationDescriptor(INPUT_PAIRED_PORT_ID, QVariantList() << DiamondClassifyTaskSettings::PAIRED_END));       // FIXME: diamond can't work with paired reads
+
+        attributes << new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required);
+        attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        attributes << new Attribute(code, BaseTypes::NUM_TYPE(), Attribute::None, 1);
+        attributes << new Attribute(sense, BaseTypes::STRING_TYPE(), Attribute::None, DiamondClassifyTaskSettings::SENSITIVE_DEFAULT);
+        attributes << new Attribute(fshift, BaseTypes::NUM_TYPE(), Attribute::None, 0);
+        attributes << new Attribute(evalue, BaseTypes::NUM_TYPE(), Attribute::None, 0.001);
+        attributes << new Attribute(matrix, BaseTypes::STRING_TYPE(), Attribute::None, DiamondClassifyTaskSettings::BLOSUM62);
+        attributes << new Attribute(gapopen, BaseTypes::NUM_TYPE(), Attribute::None, -1);
+        attributes << new Attribute(gapextend, BaseTypes::NUM_TYPE(), Attribute::None, -1);
+        attributes << new Attribute(threads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+        attributes << new Attribute(bsize, BaseTypes::NUM_TYPE(), Attribute::None, 2.0);
+        attributes << new Attribute(chunks, BaseTypes::NUM_TYPE(), Attribute::None, 0);
     }
 
     QMap<QString, PropertyDelegate *> delegates;
@@ -136,6 +171,86 @@ void DiamondClassifyWorkerFactory::init() {
 //        delegates[INPUT_DATA_ATTR_ID] = new ComboBoxDelegate(inputDataMap);       // FIXME: diamond can't work with paired reads
 
         delegates[DATABASE_ATTR_ID] = new URLDelegate("", "diamond/database", false, false, false);
+        {
+            QVariantMap idMap;
+            QList<DNATranslation*> TTs = AppContext::getDNATranslationRegistry()->
+                lookupTranslation(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()),
+                DNATranslationType_NUCL_2_AMINO);
+            int prefixLen = QString(DNATranslationID(1)).size() - 1;
+            foreach(DNATranslation* tt, TTs) {
+                QString id = tt->getTranslationId();
+                idMap[tt->getTranslationName()] = id.mid(prefixLen).toInt();
+            }
+            delegates[GENCODE_ATTR_ID] = new ComboBoxDelegate(idMap);
+        }
+        {
+            QVariantMap map;
+            map[DiamondClassifyPrompter::tr("Default")] = DiamondClassifyTaskSettings::SENSITIVE_DEFAULT;
+            map[DiamondClassifyPrompter::tr("Sensitive")] = DiamondClassifyTaskSettings::SENSITIVE_HIGH;
+            map[DiamondClassifyPrompter::tr("More sensitive")] = DiamondClassifyTaskSettings::SENSITIVE_ULTRA;
+            delegates[SENSITIVE_ATTR_ID] = new ComboBoxDelegate(map);
+        }
+        {
+            QVariantMap map;
+            map[DiamondClassifyTaskSettings::BLOSUM45] = DiamondClassifyTaskSettings::BLOSUM45;
+            map[DiamondClassifyTaskSettings::BLOSUM50] = DiamondClassifyTaskSettings::BLOSUM50;
+            map[DiamondClassifyTaskSettings::BLOSUM62] = DiamondClassifyTaskSettings::BLOSUM62;
+            map[DiamondClassifyTaskSettings::BLOSUM80] = DiamondClassifyTaskSettings::BLOSUM80;
+            map[DiamondClassifyTaskSettings::BLOSUM90] = DiamondClassifyTaskSettings::BLOSUM90;
+            delegates[MATRIX_ATTR_ID] = new ComboBoxDelegate(map);
+        }
+
+        {
+            QVariantMap map;
+            map["minimum"] = -1;
+            map["specialValueText"] = DiamondClassifyPrompter::tr("Default");
+            delegates[GO_PEN_ATTR_ID] = new SpinBoxDelegate(map);
+        }
+        {
+            QVariantMap map;
+            map["minimum"] = -1;
+            map["specialValueText"] = DiamondClassifyPrompter::tr("Default");
+            delegates[GE_PEN_ATTR_ID] = new SpinBoxDelegate(map);
+        }
+
+        {
+            QVariantMap map;
+            map["minimum"] = 0;
+            //map["maximum"];
+            map["specialValueText"] = DiamondClassifyPrompter::tr("Skipped");
+            delegates[FSHIFT_ATTR_ID] = new SpinBoxDelegate(map);
+        }
+        {
+            QVariantMap map;
+            map["minimum"] = 0;
+            delegates[CHUNKS_ATTR_ID] = new SpinBoxDelegate(map);
+        }
+
+        {
+            QVariantMap map;
+            map["minimum"] = 0;
+            //map["maximum"] = QVariant(INT_MAX);
+            map["singleStep"] = 0.01;
+            map["decimals"] = 4;
+    //        map["suffix"] = "%";
+            delegates[EVALUE_ATTR_ID] = new DoubleSpinBoxDelegate(map);
+        }
+
+        {
+            QVariantMap map;
+            map["minimum"] = 0;
+            //map["maximum"] = QVariant(INT_MAX);
+    //        map["singleStep"] = 1;
+            map["decimals"] = 4;
+    //        map["suffix"] = "%";
+            delegates[BSIZE_ATTR_ID] = new DoubleSpinBoxDelegate(map);
+        }
+
+        QVariantMap threadsNumberProperties;
+        threadsNumberProperties["minimum"] = 1;
+        threadsNumberProperties["maximum"] = QThread::idealThreadCount();
+        delegates[THREADS_ATTR_ID] = new SpinBoxDelegate(threadsNumberProperties);
+
 
         DelegateTags outputUrlTags;
         outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "auto");

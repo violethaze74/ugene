@@ -185,6 +185,18 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
     }
     settings.classificationUrl = GUrlUtils::rollFileName(settings.classificationUrl, "_");
 
+    settings.sensitive = getValue<QString>(DiamondClassifyWorkerFactory::SENSITIVE_ATTR_ID);
+    settings.matrix = getValue<QString>(DiamondClassifyWorkerFactory::MATRIX_ATTR_ID);
+    settings.max_evalue = getValue<double>(DiamondClassifyWorkerFactory::EVALUE_ATTR_ID);
+    settings.block_size = getValue<double>(DiamondClassifyWorkerFactory::BSIZE_ATTR_ID);
+    settings.gencode = getValue<unsigned>(DiamondClassifyWorkerFactory::GENCODE_ATTR_ID);
+    settings.frame_shift = getValue<int>(DiamondClassifyWorkerFactory::FSHIFT_ATTR_ID);
+    settings.gap_open = getValue<int>(DiamondClassifyWorkerFactory::GO_PEN_ATTR_ID);
+    settings.gap_extend = getValue<int>(DiamondClassifyWorkerFactory::GE_PEN_ATTR_ID);
+    settings.index_chunks = getValue<int>(DiamondClassifyWorkerFactory::CHUNKS_ATTR_ID);
+    settings.num_threads = getValue<int>(DiamondClassifyWorkerFactory::THREADS_ATTR_ID);
+
+
 //    if (pairedReadsInput) {
 //        settings.pairedReads = true;
 //        const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);

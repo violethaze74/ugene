@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/AppContext.h>
+#include <U2Core/DNATranslation.h>
 #include <U2Core/Counter.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -29,10 +31,23 @@ namespace U2 {
 
 const QString DiamondClassifyTaskSettings::SINGLE_END = "single-end";
 const QString DiamondClassifyTaskSettings::PAIRED_END = "paired-end";
+const QString DiamondClassifyTaskSettings::SENSITIVE_DEFAULT("default");
+const QString DiamondClassifyTaskSettings::SENSITIVE_ULTRA("ultra");
+const QString DiamondClassifyTaskSettings::SENSITIVE_HIGH("high");
+const QString DiamondClassifyTaskSettings::BLOSUM45("BLOSUM45");
+const QString DiamondClassifyTaskSettings::BLOSUM50("BLOSUM50");
+const QString DiamondClassifyTaskSettings::BLOSUM62("BLOSUM62");
+const QString DiamondClassifyTaskSettings::BLOSUM80("BLOSUM80");
+const QString DiamondClassifyTaskSettings::BLOSUM90("BLOSUM90");
+const QString DiamondClassifyTaskSettings::PAM250("PAM250");
+const QString DiamondClassifyTaskSettings::PAM70("PAM70");
+const QString DiamondClassifyTaskSettings::PAM30("PAM30");
 
 DiamondClassifyTaskSettings::DiamondClassifyTaskSettings()
-    : pairedReads(false)
+    : pairedReads(false), sensitive(SENSITIVE_DEFAULT), matrix(BLOSUM62), max_evalue(0.001), block_size(2.0),
+      gencode(1), frame_shift(0), gap_open(-1), gap_extend(-1), index_chunks(.0), num_threads(1)
 {
+
 
 }
 
@@ -65,6 +80,10 @@ void DiamondClassifyTask::checkSettings() {
     SAFE_POINT_EXT(!settings.pairedReads || !settings.pairedClassificationUrl.isEmpty(), setError("URL to paired DIAMOND classification is empty"), );
     SAFE_POINT_EXT(!settings.taxonMapUrl.isEmpty(), setError("Taxon map URL is empty"), );
     SAFE_POINT_EXT(!settings.taxonNodesUrl.isEmpty(), setError("Taxon nodes URL is empty"), );
+    QString id = DNATranslationID(%1);
+    SAFE_POINT_EXT(AppContext::getDNATranslationRegistry()->lookupTranslation(id.arg(settings.gencode)) != NULL,
+                   setError(tr("Invalid genetic code: %1").arg(settings.gencode)), );
+    // TODO validate matrix??
 }
 
 QStringList DiamondClassifyTask::getArguments() const {
@@ -76,6 +95,34 @@ QStringList DiamondClassifyTask::getArguments() const {
     arguments << "--taxonnodes" << settings.taxonNodesUrl;
     arguments << "-q" << settings.readsUrl;
     arguments << "-o" << settings.classificationUrl;
+
+    if (DiamondClassifyTaskSettings::SENSITIVE_HIGH.compare(settings.sensitive, Qt::CaseInsensitive) == 0) {
+        arguments << "--sensitive";
+    } else if (DiamondClassifyTaskSettings::SENSITIVE_ULTRA.compare(settings.sensitive, Qt::CaseInsensitive) == 0) {
+        arguments << "--more-sensitive";
+    } else if (DiamondClassifyTaskSettings::SENSITIVE_DEFAULT.compare(settings.sensitive, Qt::CaseInsensitive) != 0) {
+        algoLog.error(tr("Unknown sensitivity value: %1, ignored.").arg(settings.sensitive));
+    }
+    arguments << "--matrix" << settings.matrix;
+    arguments << "-e" << QString::number(settings.max_evalue);
+    arguments << "-b" << QString::number(settings.block_size);
+    arguments << "-p" << QString::number(settings.num_threads);
+    if (settings.gencode > 1) {
+        arguments << "--query-gencode" << QString::number(settings.gencode);
+    }
+    if (settings.frame_shift != 0) {
+        arguments << "-F" << QString::number(settings.frame_shift);
+    }
+    if (settings.gap_open != -1) {
+        arguments << "--gapopen" << QString::number(settings.gap_open);
+    }
+    if (settings.gap_extend != -1) {
+        arguments << "--gapextend" << QString::number(settings.gap_extend);
+    }
+    if (settings.index_chunks != 0) {
+        arguments << "--index-chunks" << QString::number(settings.index_chunks);
+    }
+
     return arguments;
 }
 

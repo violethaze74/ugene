@@ -39,8 +39,32 @@ struct DiamondClassifyTaskSettings {
     QString classificationUrl;
     QString pairedClassificationUrl;
 
+    QString sensitive;
+    QString matrix;
+    double max_evalue;
+    double block_size;
+    unsigned gencode;
+    int frame_shift;
+    int gap_open;
+    int gap_extend;
+    int index_chunks;
+    int num_threads;
+
     static const QString SINGLE_END;
     static const QString PAIRED_END;
+
+    static const QString SENSITIVE_DEFAULT;
+    static const QString SENSITIVE_ULTRA;
+    static const QString SENSITIVE_HIGH;
+
+    static const QString BLOSUM45;
+    static const QString BLOSUM50;
+    static const QString BLOSUM62;
+    static const QString BLOSUM80;
+    static const QString BLOSUM90;
+    static const QString PAM250;
+    static const QString PAM70;
+    static const QString PAM30;
 };
 
 class DiamondClassifyTask : public ExternalToolSupportTask {
