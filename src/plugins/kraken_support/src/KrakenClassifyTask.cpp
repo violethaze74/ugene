@@ -53,40 +53,20 @@ KrakenClassifyTask::KrakenClassifyTask(const KrakenClassifyTaskSettings &setting
     SAFE_POINT_EXT(!settings.readsUrl.isEmpty(), setError("Reads URL is empty"), );
     SAFE_POINT_EXT(!settings.pairedReads || !settings.readsUrl.isEmpty(), setError("Paired reads URL is empty, but the 'paired reads' option is set"), );
     SAFE_POINT_EXT(!settings.databaseUrl.isEmpty(), setError("Kraken database URL is empty"), );
-    SAFE_POINT_EXT(!settings.rawClassificationUrl.isEmpty(), setError("Kraken classification URL is empty"), );
-    SAFE_POINT_EXT(!settings.translatedClassificationUrl.isEmpty(), setError("URL to write translated Kraken classification is empty"), );
+    SAFE_POINT_EXT(!settings.classificationUrl.isEmpty(), setError("Kraken classification URL is empty"), );
 }
 
-const QString &KrakenClassifyTask::getRawClassificationUrl() const {
-    return settings.rawClassificationUrl;
-}
-
-const QString &KrakenClassifyTask::getTranslatedClassificationUrl() const {
-    return settings.translatedClassificationUrl;
+const QString &KrakenClassifyTask::getClassificationUrl() const {
+    return settings.classificationUrl;
 }
 
 void KrakenClassifyTask::prepare() {
-    classifyTask = new ExternalToolRunTask(KrakenSupport::CLASSIFY_TOOL, getClassifyArguments(), new KrakenClassifyLogParser());
+    classifyTask = new ExternalToolRunTask(KrakenSupport::CLASSIFY_TOOL, getArguments(), new KrakenClassifyLogParser());
     setListenerForTask(classifyTask);
     addSubTask(classifyTask);
 }
 
-QList<Task *> KrakenClassifyTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> newSubTasks;
-    CHECK_OP(stateInfo, newSubTasks);
-
-    // TODO: temporary turned off. Translation will be performed later.
-//    if (classifyTask == subTask) {
-//        ExternalToolRunTask *translateTask = new ExternalToolRunTask(KrakenSupport::TRANSLATE_TOOL, getTranslateArguments(), new KrakenTranslateLogParser());
-//        translateTask->setStandartOutputFile(settings.translatedClassificationUrl);
-//        setListenerForTask(translateTask, 1);
-//        newSubTasks << translateTask;
-//    }
-
-    return newSubTasks;
-}
-
-QStringList KrakenClassifyTask::getClassifyArguments() {
+QStringList KrakenClassifyTask::getArguments() {
     QStringList arguments;
     arguments << "--db" << settings.databaseUrl;
     arguments << "--threads" << QString::number(settings.numberOfThreads);
@@ -96,7 +76,7 @@ QStringList KrakenClassifyTask::getClassifyArguments() {
         arguments << "--min-hits" << QString::number(settings.minNumberOfHits);
     }
 
-    arguments << "--output" << settings.rawClassificationUrl;
+    arguments << "--output" << settings.classificationUrl;
     if (settings.preloadDatabase) {
         arguments << "--preload";
     }
@@ -111,13 +91,6 @@ QStringList KrakenClassifyTask::getClassifyArguments() {
         arguments << settings.pairedReadsUrl;
     }
 
-    return arguments;
-}
-
-QStringList KrakenClassifyTask::getTranslateArguments() {
-    QStringList arguments;
-    arguments << "--db" << settings.databaseUrl;
-    arguments << settings.rawClassificationUrl;
     return arguments;
 }
 

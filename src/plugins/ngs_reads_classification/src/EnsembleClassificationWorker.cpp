@@ -298,7 +298,7 @@ void EnsembleClassificationTask::run() {
 }
 
 EnsembleClassificationTask::EnsembleClassificationTask(const QVariantMap &data, const bool tripleInput, const QString &outputFile, const QString &workingDir)
-    : Task(tr("Ensemble different classifications"), TaskFlag_None), data(data), tripleInput(tripleInput), outputFile(outputFile), workingDir(workingDir), hasMissing(false)
+    : Task(tr("Ensemble different classifications"), TaskFlag_None), data(data), tripleInput(tripleInput), workingDir(workingDir), outputFile(outputFile), hasMissing(false)
 {
 
 }

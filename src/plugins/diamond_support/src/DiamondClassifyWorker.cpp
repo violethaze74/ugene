@@ -179,17 +179,21 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
     QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
     tmpDir = GUrlUtils::createDirectory(tmpDir + DIAMOND_DIR , "_", os);
 
-    settings.classificationUrl = tmpDir + "/" + getClassificationFileName(message);
-
-    if (pairedReadsInput) {
-        settings.pairedReads = true;
-        const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
-        settings.pairedReadsUrl = pairedMessage.getData().toMap()[GetReadsListWorkerFactory::PE_SLOT().getId()].toString();
-        settings.pairedClassificationUrl = tmpDir + "/" + getClassificationFileName(pairedMessage);
-        if (settings.classificationUrl == settings.pairedClassificationUrl) {
-            settings.pairedClassificationUrl = GUrlUtils::rollFileName(settings.pairedClassificationUrl, QSet<QString>() << settings.classificationUrl);
-        }
+    settings.classificationUrl = getValue<QString>(DiamondClassifyWorkerFactory::OUTPUT_URL_ATTR_ID);
+    if (settings.classificationUrl.isEmpty()) {
+        settings.classificationUrl = tmpDir + "/" + getClassificationFileName(message);
     }
+    settings.classificationUrl = GUrlUtils::rollFileName(settings.classificationUrl, "_");
+
+//    if (pairedReadsInput) {
+//        settings.pairedReads = true;
+//        const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
+//        settings.pairedReadsUrl = pairedMessage.getData().toMap()[GetReadsListWorkerFactory::PE_SLOT().getId()].toString();
+//        settings.pairedClassificationUrl = tmpDir + "/" + getClassificationFileName(pairedMessage);
+//        if (settings.classificationUrl == settings.pairedClassificationUrl) {
+//            settings.pairedClassificationUrl = GUrlUtils::rollFileName(settings.pairedClassificationUrl, QSet<QString>() << settings.classificationUrl);
+//        }
+//    }
 
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
     SAFE_POINT_EXT(NULL != dataPathRegistry, os.setError("U2DataPathRegistry is NULL"), settings);
@@ -205,7 +209,7 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
 
 QString DiamondClassifyWorker::getClassificationFileName(const Message &message) const {
     const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
-    return QFileInfo(metadata.getFileUrl()).baseName() + "_classification.txt";
+    return QFileInfo(metadata.getFileUrl()).baseName() + "_DIAMOND_classification.txt";
 }
 
 TaxonomyClassificationResult DiamondClassifyWorker::parseReport(const QString &url)

@@ -460,8 +460,8 @@ QVariantMap ComboBoxWithBoolsDelegate::boolMap() {
 URLDelegate::URLDelegate(const QString& filter, const QString& type, bool multi, bool isPath, bool saveFile, QObject *parent, const QString &format, bool _noFilesMode)
 : PropertyDelegate(parent), lastDirType(type), multi(multi), isPath(isPath), saveFile(saveFile), noFilesMode(_noFilesMode)
 {
-    tags()->set("filter", filter);
-    tags()->set("format", format);
+    tags()->set(DelegateTags::FILTER, filter);
+    tags()->set(DelegateTags::FORMAT, format);
 }
 
 URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, bool multi, bool isPath, bool saveFile, QObject *parent, bool noFilesMode) :

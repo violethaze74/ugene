@@ -124,7 +124,7 @@ void URLAttribute::copy(const URLAttribute &other) {
 }
 
 bool URLAttribute::validate(ProblemList &problemList) {
-    if (!isRequiredAttribute()) {
+    if (!isRequiredAttribute() || canBeEmpty()) {
         return true;
     }
     if (sets.isEmpty()) {

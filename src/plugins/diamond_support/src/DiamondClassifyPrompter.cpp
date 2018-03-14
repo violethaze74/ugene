@@ -19,11 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Lang/BaseSlots.h>
-
 #include "DiamondClassifyPrompter.h"
 #include "DiamondClassifyTask.h"
 #include "DiamondClassifyWorkerFactory.h"
+#include "../../ngs_reads_classification/src/GetReadListWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -35,15 +34,15 @@ DiamondClassifyPrompter::DiamondClassifyPrompter(Actor *actor)
 }
 
 QString DiamondClassifyPrompter::composeRichDoc() {
-    const QString readsProducerName = getProducersOrUnset(DiamondClassifyWorkerFactory::INPUT_PORT_ID, BaseSlots::URL_SLOT().getId());
+    const QString readsProducerName = getProducersOrUnset(DiamondClassifyWorkerFactory::INPUT_PORT_ID, GetReadsListWorkerFactory::SE_SLOT().getId());
     const QString databaseUrl = getHyperlink(DiamondClassifyWorkerFactory::DATABASE_ATTR_ID, getURL(DiamondClassifyWorkerFactory::DATABASE_ATTR_ID));
 
     if (true || DiamondClassifyTaskSettings::SINGLE_END == getParameter(DiamondClassifyWorkerFactory::INPUT_DATA_ATTR_ID).toString()) {
         return tr("Classify sequences from <u>%1</u> with DIAMOND, use %2 database.").arg(readsProducerName).arg(databaseUrl);
     } else {
-        const QString pairedReadsProducerName = getProducersOrUnset(DiamondClassifyWorkerFactory::INPUT_PORT_ID, BaseSlots::URL_SLOT().getId());
-        return tr("Classify paired-end reads from <u>%1</u> and <u>%1</u> with DIAMOND, use %3 database.")
-                .arg(readsProducerName).arg(pairedReadsProducerName).arg(databaseUrl);
+//        const QString pairedReadsProducerName = getProducersOrUnset(DiamondClassifyWorkerFactory::INPUT_PORT_ID, BaseSlots::URL_SLOT().getId());
+//        return tr("Classify paired-end reads from <u>%1</u> and <u>%1</u> with DIAMOND, use %3 database.")
+//                .arg(readsProducerName).arg(pairedReadsProducerName).arg(databaseUrl);
     }
 }
 
