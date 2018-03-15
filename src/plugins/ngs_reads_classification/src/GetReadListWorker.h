@@ -73,11 +73,11 @@ public:
 
     GetReadsListWorkerFactory(const QString &id) : DomainFactory(id) {}
     static void init();
+    static void cleanup();
     virtual Worker *createWorker(Actor *a);
-
 };
 
-class SeReadsListSplitter : public U2::Workflow::CandidatesSplitter {
+class SeReadsListSplitter : public Workflow::CandidatesSplitter {
 public:
     SeReadsListSplitter();
 
@@ -89,7 +89,7 @@ private:
     bool isMain(const QString &candidateSlotId);
 };
 
-class PeReadsListSplitter : public U2::Workflow::CandidatesSplitter {
+class PeReadsListSplitter : public Workflow::CandidatesSplitter {
 public:
     PeReadsListSplitter();
 

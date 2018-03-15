@@ -51,13 +51,13 @@ PrepareWevoteTaxonomyDataTask::PrepareWevoteTaxonomyDataTask(FileStorage::Workfl
     SAFE_POINT_EXT(NULL != taxonomyDataPath, setError("Taxonomy data path is not registered"), );
     CHECK_EXT(taxonomyDataPath->isValid(), setError(tr("Taxonomy data are missed")), );
 
-    taxonomyNamesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NAMES);
-    taxonomyNodesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES);
+    taxonomyNamesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID);
+    taxonomyNodesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID);
 
     CHECK_EXT(!taxonomyNamesUrl.isEmpty(),
-              setError(tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_NODES)), );
+              setError(tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID)), );
     CHECK_EXT(!taxonomyNodesUrl.isEmpty(),
-              setError(tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_NAMES)), );
+              setError(tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID)), );
 
     wevoteTaxonomyDir = AppContext::getAppFileStorage()->getStorageDir() + "/" + WEVOTE_DIR;
     QDir().mkpath(wevoteTaxonomyDir);

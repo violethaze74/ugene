@@ -132,8 +132,8 @@ void KrakenBuildTask::checkTaxonomy() {
 
 QList<Task *> KrakenBuildTask::prepareTaxonomyData() {
     // These two files are mandarory even for the cleaned database
-    static const QStringList TAXONOMY_FILES_TO_COPY = QStringList() << NgsReadsClassificationPlugin::TAXON_NODES
-                                                                    << NgsReadsClassificationPlugin::TAXON_NAMES;
+    static const QStringList TAXONOMY_FILES_TO_COPY = QStringList() << NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID
+                                                                    << NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID;
 
     QList<Task *> copyTasks;
 

@@ -104,7 +104,7 @@ void ClarkBuildWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor dbUrl(DB_URL, ClarkBuildWorker::tr("Database URL"),
+        Descriptor dbUrl(DB_URL, ClarkBuildWorker::tr("Database"),
             ClarkBuildWorker::tr("A folder that should be used to store the database files."));
 
         Descriptor taxonomy(TAXONOMY, ClarkBuildWorker::tr("Genomic library"),
@@ -134,9 +134,13 @@ void ClarkBuildWorkerFactory::init() {
         rankMap[ClarkBuildWorker::tr("Phylum")] = ClarkClassifySettings::Phylum;
         delegates[TAXONOMY_RANK] = new ComboBoxDelegate(rankMap);
 
+        const URLDelegate::Options options = URLDelegate::AllowSelectOnlyExistingDir |
+                                             URLDelegate::SelectFileToSave |
+                                             URLDelegate::DoNotUseWorkflowOutputFolder;
         DelegateTags tags;
         tags.set(DelegateTags::PLACEHOLDER_TEXT, L10N::required());
-        delegates[DB_URL] = new URLDelegate(tags, "clark/database", false, true/*isPath*/);
+        delegates[DB_URL] = new URLDelegate(tags, "clark/database", options);
+
         delegates[TAXONOMY] = new GenomicLibraryDelegate();//new URLDelegate(tags, "clark/taxonomy", true/*multi*/);
     }
 
@@ -153,7 +157,6 @@ void ClarkBuildWorkerFactory::init() {
     localDomain->registerEntry(new ClarkBuildWorkerFactory());
 }
 
-// FIXME unused ???
 void ClarkBuildWorkerFactory::cleanup() {
     delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

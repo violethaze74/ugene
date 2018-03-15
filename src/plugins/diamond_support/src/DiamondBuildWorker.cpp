@@ -88,6 +88,9 @@ void DiamondBuildWorker::sl_taskFinished(Task *task) {
 DiamondBuildTaskSettings DiamondBuildWorker::getSettings(U2OpStatus &os) {
     DiamondBuildTaskSettings settings;
     settings.databaseUrl = getValue<QString>(DiamondBuildWorkerFactory::DATABASE_ATTR_ID);
+    settings.databaseUrl = GUrlUtils::ensureFileExt(settings.databaseUrl, QStringList("dmnd")).getURLString();
+    settings.databaseUrl = GUrlUtils::rollFileName(settings.databaseUrl, "_");
+
     const QList<Dataset> datasets = getValue<QList<Dataset> >(DiamondBuildWorkerFactory::GENOMIC_LIBRARY_ATTR_ID);
     if (!datasets.isEmpty()) {
         foreach (URLContainer *urlContainer, datasets.first().getUrls()) {

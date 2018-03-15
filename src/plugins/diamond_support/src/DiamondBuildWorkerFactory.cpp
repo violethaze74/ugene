@@ -21,6 +21,8 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/DialogUtils.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
@@ -83,7 +85,11 @@ void DiamondBuildWorkerFactory::init() {
 
     QMap<QString, PropertyDelegate *> delegates;
     {
-        delegates[DATABASE_ATTR_ID] = new URLDelegate("", "diamond/database", false, true, true);
+        const URLDelegate::Options options = URLDelegate::SelectFileToSave | URLDelegate::DoNotUseWorkflowOutputFolder;
+        DelegateTags tags;
+        tags.set(DelegateTags::FILTER, DialogUtils::prepareFileFilter("DIAMOND database", QStringList("dmnd"), false, QStringList()));
+        delegates[DATABASE_ATTR_ID] = new URLDelegate(tags, "diamond/database", options);
+
         delegates[GENOMIC_LIBRARY_ATTR_ID] = new GenomicLibraryDelegate();
     }
 
@@ -101,10 +107,10 @@ void DiamondBuildWorkerFactory::init() {
 }
 
 void DiamondBuildWorkerFactory::cleanup() {
-    WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
+    delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
-    localDomain->unregisterEntry(ACTOR_ID);
+    delete localDomain->unregisterEntry(ACTOR_ID);
 }
 
 }   // namespace LocalWorkflow

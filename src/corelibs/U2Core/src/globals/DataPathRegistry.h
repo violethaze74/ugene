@@ -41,7 +41,8 @@ public:
         None = 0,
         AddOnlyFolders = 1 << 0,
         AddRecursively = 1 << 1,
-        CutFileExtension = 1 << 2
+        CutFileExtension = 1 << 2,
+        AddTopLevelFolder = 1 << 3
     };
     Q_DECLARE_FLAGS(Options, Option)
 
@@ -65,7 +66,7 @@ public:
 
 private:
     void init();
-    void fillDataItems(const QDir &dir, bool recurcive);
+    void fillDataItems(const QDir &dir, bool recursive);
     QString chopExtention(QString name);
 
     QString                 name;

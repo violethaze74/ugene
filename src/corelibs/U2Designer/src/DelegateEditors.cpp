@@ -457,47 +457,80 @@ QVariantMap ComboBoxWithBoolsDelegate::boolMap() {
 /********************************
 * URLDelegate
 ********************************/
-URLDelegate::URLDelegate(const QString& filter, const QString& type, bool multi, bool isPath, bool saveFile, QObject *parent, const QString &format, bool _noFilesMode)
-: PropertyDelegate(parent), lastDirType(type), multi(multi), isPath(isPath), saveFile(saveFile), noFilesMode(_noFilesMode)
+URLDelegate::URLDelegate(const QString &filter, const QString &type, const Options &_options, QObject *parent, const QString &format)
+    : PropertyDelegate(parent),
+      lastDirType(type),
+      options(_options)
 {
     tags()->set(DelegateTags::FILTER, filter);
     tags()->set(DelegateTags::FORMAT, format);
 }
 
-URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, bool multi, bool isPath, bool saveFile, QObject *parent, bool noFilesMode) :
-    PropertyDelegate(parent),
-    lastDirType(type),
-    multi(multi),
-    isPath(isPath),
-    saveFile(saveFile),
-    noFilesMode(noFilesMode)
+URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, const Options &_options, QObject *parent)
+    : PropertyDelegate(parent),
+      lastDirType(type),
+      options(_options)
 {
     *tags() = _tags;
+}
+
+URLDelegate::URLDelegate(const QString& filter, const QString& type, bool multi, bool isPath, bool saveFile, QObject *parent, const QString &format, bool noFilesMode)
+    : PropertyDelegate(parent), lastDirType(type)
+{
+    tags()->set(DelegateTags::FILTER, filter);
+    tags()->set(DelegateTags::FORMAT, format);
+
+    options |= multi ? AllowSelectSeveralFiles : None;
+    options |= isPath ? AllowSelectOnlyExistingDir : None;
+    options |= saveFile ? SelectFileToSave : None;
+    options |= noFilesMode ? SelectParentDirInsteadSelectedFile : None;
+}
+
+URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, bool multi, bool isPath, bool saveFile, QObject *parent, bool noFilesMode) :
+    PropertyDelegate(parent),
+    lastDirType(type)
+{
+    *tags() = _tags;
+
+    options |= multi ? AllowSelectSeveralFiles : None;
+    options |= isPath ? AllowSelectOnlyExistingDir : None;
+    options |= saveFile ? SelectFileToSave : None;
+    options |= noFilesMode ? SelectParentDirInsteadSelectedFile : None;
 }
 
 QVariant URLDelegate::getDisplayValue(const QVariant &v) const {
     return v.toString().isEmpty() ? QVariant(DelegateTags::getString(tags(), DelegateTags::PLACEHOLDER_TEXT)) : v;
 }
 
-URLWidget * URLDelegate::createWidget(QWidget *parent) const {
+URLWidget *URLDelegate::createWidget(QWidget *parent) const {
     URLWidget *result;
-    if (noFilesMode) {
+    if (options.testFlag(SelectParentDirInsteadSelectedFile)) {
         bool isPath = false; // noFilesMode: choose a file but its dir will be committed
-        result = new NoFileURLWidget(lastDirType, multi, isPath, saveFile, tags(), parent);
+        result = new NoFileURLWidget(lastDirType,
+                                     options.testFlag(AllowSelectSeveralFiles),
+                                     isPath,
+                                     options.testFlag(SelectFileToSave),
+                                     tags(),
+                                     parent);
     } else {
-        result = new URLWidget(lastDirType, multi, isPath, saveFile, tags(), parent);
+        result = new URLWidget(lastDirType,
+                               options.testFlag(AllowSelectSeveralFiles),
+                               options.testFlag(AllowSelectOnlyExistingDir),
+                               options.testFlag(SelectFileToSave),
+                               tags(),
+                               parent);
     }
-    if (saveFile) {
+    if (options.testFlag(SelectFileToSave) && !options.testFlag(DoNotUseWorkflowOutputFolder)) {
         result->setSchemaConfig(schemaConfig);
     }
     return result;
 }
 
-PropertyWidget * URLDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
+PropertyWidget *URLDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
     return createWidget(parent);
 }
 
-QWidget * URLDelegate::createEditor(QWidget *parent,
+QWidget *URLDelegate::createEditor(QWidget *parent,
                                        const QStyleOptionViewItem &/* option */,
                                        const QModelIndex &/* index */) const
 {
@@ -529,7 +562,7 @@ void URLDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
     QStringList urls = val.split(";", QString::SkipEmptyParts);
     val = urls.join(";");
     model->setData(index, val, ConfigurationEditor::ItemValueRole);
-    if (multi) {
+    if (options.testFlag(AllowSelectSeveralFiles)) {
         QVariantList vl;
         foreach(QString s, val.split(";")) {
             vl.append(s.trimmed());
@@ -538,11 +571,15 @@ void URLDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
     }
 }
 
+PropertyDelegate *URLDelegate::clone() {
+    return new URLDelegate(*tags(), lastDirType, options, parent());
+}
+
 PropertyDelegate::Type URLDelegate::type() const {
-    if (isPath) {
-        return saveFile ? OUTPUT_DIR : INPUT_DIR;
+    if (options.testFlag(AllowSelectOnlyExistingDir)) {
+        return options.testFlag(SelectFileToSave) ? OUTPUT_DIR : INPUT_DIR;
     }
-    return saveFile ? OUTPUT_FILE : INPUT_FILE;
+    return options.testFlag(SelectFileToSave) ? OUTPUT_FILE : INPUT_FILE;
 }
 
 /********************************

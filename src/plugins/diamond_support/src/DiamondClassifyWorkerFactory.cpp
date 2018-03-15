@@ -19,7 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DataPathRegistry.h>
 
 #include <U2Designer/DelegateEditors.h>
 
@@ -35,6 +37,7 @@
 #include "DiamondClassifyWorkerFactory.h"
 #include "DiamondSupport.h"
 #include "DiamondTaxonomyDataValidator.h"
+#include "../../ngs_reads_classification/src/DatabaseDelegate.h"
 #include "../../ngs_reads_classification/src/GetReadListWorker.h"
 #include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
@@ -89,10 +92,10 @@ void DiamondClassifyWorkerFactory::init() {
                                     DiamondClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
                                                                 "The input files may contain single-end reads, scaffolds, or \"left\" reads in case of the paired-end sequencing (see \"Input data\" parameter of the element)."));
 
-        const Descriptor inPairedPortDesc(INPUT_PAIRED_PORT_ID,
-                                          DiamondClassifyPrompter::tr("Input sequences 2"),
-                                          DiamondClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                                      "The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
+//        const Descriptor inPairedPortDesc(INPUT_PAIRED_PORT_ID,
+//                                          DiamondClassifyPrompter::tr("Input sequences 2"),
+//                                          DiamondClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
+//                                                                      "The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
 
         const Descriptor outPortDesc(OUTPUT_PORT_ID,
                                      DiamondClassifyPrompter::tr("DIAMOND Classification"),
@@ -118,7 +121,19 @@ void DiamondClassifyWorkerFactory::init() {
                                        DiamondClassifyPrompter::tr("Specify the output file name."));
 
 //        Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, DiamondClassifyTaskSettings::SINGLE_END);       // FIXME: diamond can't work with paired reads
+
+        QString diamondDatabasePath;
+        U2DataPath *uniref50DataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_DATA_ID);
+        if (NULL != uniref50DataPath && uniref50DataPath->isValid()) {
+            diamondDatabasePath = uniref50DataPath->getPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_ITEM_ID);
+        } else {
+            U2DataPath *clarkViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_90_DATABASE_DATA_ID);
+            if (NULL != clarkViralDataPath && clarkViralDataPath->isValid()) {
+                diamondDatabasePath = clarkViralDataPath->getPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_90_DATABASE_ITEM_ID);
+            }
+        }
         Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required);
+
         Attribute *outputUrlAttribute = new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
 
 //        attributes << inputDataAttribute;       // FIXME: diamond can't work with paired reads
@@ -135,7 +150,10 @@ void DiamondClassifyWorkerFactory::init() {
 //        inputDataMap[PAIRED_END_TEXT] = DiamondClassifyTaskSettings::PAIRED_END;
 //        delegates[INPUT_DATA_ATTR_ID] = new ComboBoxDelegate(inputDataMap);       // FIXME: diamond can't work with paired reads
 
-        delegates[DATABASE_ATTR_ID] = new URLDelegate("", "diamond/database", false, false, false);
+        QList<StrStrPair> dataPathItems;
+        dataPathItems << StrStrPair(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_DATA_ID, NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_ITEM_ID);
+        dataPathItems << StrStrPair(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_90_DATABASE_DATA_ID, NgsReadsClassificationPlugin::DIAMOND_UNIPROT_90_DATABASE_ITEM_ID);
+        delegates[DATABASE_ATTR_ID] = new DatabaseDelegate(ACTOR_ID, DATABASE_ATTR_ID, dataPathItems, "diamond/database", false);
 
         DelegateTags outputUrlTags;
         outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "auto");
@@ -163,10 +181,10 @@ void DiamondClassifyWorkerFactory::init() {
 }
 
 void DiamondClassifyWorkerFactory::cleanup() {
-    WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
+    delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
-    localDomain->unregisterEntry(ACTOR_ID);
+    delete localDomain->unregisterEntry(ACTOR_ID);
 }
 
 }   // namespace LocalWorkflow

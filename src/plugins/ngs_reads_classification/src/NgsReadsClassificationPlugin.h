@@ -43,27 +43,38 @@ public:
 
     static const QString TAXONOMY_PATH;
     static const QString TAXONOMY_DATA_ID;
-    static const QString TAXON_PROTEIN_MAP;
-    static const QString TAXON_NODES;
-    static const QString TAXON_NAMES;
+    static const QString TAXON_PROTEIN_MAP_ITEM_ID;
+    static const QString TAXON_NODES_ITEM_ID;
+    static const QString TAXON_NAMES_ITEM_ID;
+
+    static const QString CLARK_VIRAL_DATABASE_PATH;
+    static const QString CLARK_VIRAL_DATABASE_DATA_ID;
+    static const QString CLARK_VIRAL_DATABASE_ITEM_ID;
+
+    static const QString CLARK_BACTERIA_VIRAL_DATABASE_PATH;
+    static const QString CLARK_BACTERIA_VIRAL_DATABASE_DATA_ID;
+    static const QString CLARK_BACTERIA_VIRAL_DATABASE_ITEM_ID;
 
     static const QString MINIKRAKEN_4_GB_PATH;
-    static const QString MINIKRAKEN_4_GB_ID;
+    static const QString MINIKRAKEN_4_GB_DATA_ID;
+    static const QString MINIKRAKEN_4_GB_ITEM_ID;
 
     static const QString DIAMOND_UNIPROT_50_DATABASE_PATH;
-    static const QString DIAMOND_UNIPROT_50_DATABASE_ID;
+    static const QString DIAMOND_UNIPROT_50_DATABASE_DATA_ID;
+    static const QString DIAMOND_UNIPROT_50_DATABASE_ITEM_ID;
 
     static const QString DIAMOND_UNIPROT_90_DATABASE_PATH;
-    static const QString DIAMOND_UNIPROT_90_DATABASE_ID;
+    static const QString DIAMOND_UNIPROT_90_DATABASE_DATA_ID;
+    static const QString DIAMOND_UNIPROT_90_DATABASE_ITEM_ID;
 
     static const QString REFSEQ_HUMAN_PATH;
-    static const QString REFSEQ_HUMAN_ID;
+    static const QString REFSEQ_HUMAN_DATA_ID;
 
     static const QString REFSEQ_BACTERIA_PATH;
-    static const QString REFSEQ_BACTERIA_ID;
+    static const QString REFSEQ_BACTERIA_DATA_ID;
 
     static const QString REFSEQ_VIRAL_PATH;
-    static const QString REFSEQ_VIRAL_ID;
+    static const QString REFSEQ_VIRAL_DATA_ID;
 
     static const QString WORKFLOW_ELEMENTS_GROUP;
 
