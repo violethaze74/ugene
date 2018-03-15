@@ -2879,7 +2879,7 @@ GUI_TEST_CLASS_DEFINITION( test_2404 ) {
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Other settings"));
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Save annotation(s) to"));
-    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Annotation parameters")); 
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Annotation parameters"));
     QScrollArea* sa = qobject_cast<QScrollArea*>(GTWidget::findWidget( os, "OP_SCROLL_AREA" ));
     QScrollBar* scroll = sa->verticalScrollBar();
     CHECK_SET_ERR( scroll != NULL, "Scroll bar is NULL");

@@ -3795,7 +3795,7 @@ GUI_TEST_CLASS_DEFINITION(test_4624) {
     //1. Open assembly with DNA extended alphabet
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "extended_dna.ace.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view" << "Open new view: Assembly Browser" ));
     GTUtilsProjectTreeView::click(os, "extended_dna.ace.ugenedb", Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);

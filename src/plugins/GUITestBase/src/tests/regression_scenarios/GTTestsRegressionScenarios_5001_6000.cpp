@@ -4324,21 +4324,21 @@ GUI_TEST_CLASS_DEFINITION(test_5855) {
     //3. Select "Mecopoda_elongata__Ishigaki__J" sequence
     //3. Press the Shift key
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Conocephalus_percaudata");
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);    
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Mecopoda_elongata__Ishigaki__J");
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Mecopoda_sp.__Malaysia_");
-    
+
     MSAEditorSequenceArea* seqArea =  GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
     MaEditorSelection sel = seqArea->getSelection();
     int index = seqArea->getRowIndex(sel.y()) + 1;
 
     //Expected:: current index 13
     CHECK_SET_ERR(index == 13, QString("Unexpected index, expected: 14, current: %1").arg(index));
-    GTGlobals::sleep();    
-    
+    GTGlobals::sleep();
+
     //2. Switch off the collapsing mode.
     GTUtilsMsaEditor::toggleCollapsingMode(os);
-    
+
     CHECK_SET_ERR(index == 13, QString("Unexpected index, expected: 14, current: %1").arg(index));
     GTGlobals::sleep();
 }

@@ -1337,7 +1337,7 @@ void AnnotatedDNAView::sl_sequenceModifyTaskStateChanged() {
                 }
             }
         }
-        
+
         ModifySequenceContentTask* modifyContentTask = qobject_cast<ModifySequenceContentTask*>(t);
         if (modifyContentTask != NULL) {
             qint64 seqSizeDelta = modifyContentTask->getSequenceLengthDelta();
