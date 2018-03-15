@@ -996,7 +996,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0010_1){
     GTUtilsOptionPanelMsa::addReference(os, "CfT-1_Cladosporium_fulvum");
 //    4. Check Gaps highlighting type
     setHighlightingType(os, "Gaps");
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#c0c0c0");
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,1), "#c0c0c0");
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0011){
