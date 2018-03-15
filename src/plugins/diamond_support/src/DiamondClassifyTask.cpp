@@ -45,7 +45,7 @@ const QString DiamondClassifyTaskSettings::PAM30("PAM30");
 
 DiamondClassifyTaskSettings::DiamondClassifyTaskSettings()
     : pairedReads(false), sensitive(SENSITIVE_DEFAULT), matrix(BLOSUM62), max_evalue(0.001), block_size(2.0),
-      gencode(1), frame_shift(0), gap_open(-1), gap_extend(-1), index_chunks(.0), num_threads(1)
+      gencode(1), frame_shift(0), gap_open(-1), gap_extend(-1), index_chunks(4), num_threads(1)
 {
 
 
@@ -73,17 +73,17 @@ void DiamondClassifyTask::prepare() {
 }
 
 void DiamondClassifyTask::checkSettings() {
-    SAFE_POINT_EXT(!settings.readsUrl.isEmpty(), setError("Reads URL is empty"), );
-    SAFE_POINT_EXT(!settings.pairedReads || !settings.readsUrl.isEmpty(), setError("Paired reads URL is empty, but the 'paired reads' option is set"), );
-    SAFE_POINT_EXT(!settings.databaseUrl.isEmpty(), setError("DIAMOND database URL is empty"), );
-    SAFE_POINT_EXT(!settings.classificationUrl.isEmpty(), setError("DIAMOND classification URL is empty"), );
-    SAFE_POINT_EXT(!settings.pairedReads || !settings.pairedClassificationUrl.isEmpty(), setError("URL to paired DIAMOND classification is empty"), );
-    SAFE_POINT_EXT(!settings.taxonMapUrl.isEmpty(), setError("Taxon map URL is empty"), );
-    SAFE_POINT_EXT(!settings.taxonNodesUrl.isEmpty(), setError("Taxon nodes URL is empty"), );
+    SAFE_POINT_EXT(!settings.readsUrl.isEmpty(), setError(tr("Reads URL is empty")), );
+    SAFE_POINT_EXT(!settings.pairedReads || !settings.readsUrl.isEmpty(), setError(tr("Paired reads URL is empty, but the 'paired reads' option is set")), );
+    SAFE_POINT_EXT(!settings.databaseUrl.isEmpty(), setError(tr("DIAMOND database URL is empty")), );
+    SAFE_POINT_EXT(!settings.classificationUrl.isEmpty(), setError(tr("DIAMOND classification URL is empty")), );
+    SAFE_POINT_EXT(!settings.pairedReads || !settings.pairedClassificationUrl.isEmpty(), setError(tr("URL to paired DIAMOND classification is empty")), );
+    SAFE_POINT_EXT(!settings.taxonMapUrl.isEmpty(), setError(tr("Taxon map URL is empty")), );
+    SAFE_POINT_EXT(!settings.taxonNodesUrl.isEmpty(), setError(tr("Taxon nodes URL is empty")), );
     QString id = DNATranslationID(%1);
     SAFE_POINT_EXT(AppContext::getDNATranslationRegistry()->lookupTranslation(id.arg(settings.gencode)) != NULL,
                    setError(tr("Invalid genetic code: %1").arg(settings.gencode)), );
-    // TODO validate matrix??
+    // TODO validate matrix value??
 }
 
 QStringList DiamondClassifyTask::getArguments() const {

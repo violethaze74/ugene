@@ -44,7 +44,7 @@ struct DiamondClassifyTaskSettings {
     double max_evalue;
     double block_size;
     unsigned gencode;
-    int frame_shift;
+    unsigned frame_shift;
     int gap_open;
     int gap_extend;
     int index_chunks;

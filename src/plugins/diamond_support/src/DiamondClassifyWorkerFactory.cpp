@@ -159,8 +159,8 @@ void DiamondClassifyWorkerFactory::init() {
         attributes << new Attribute(gapopen, BaseTypes::NUM_TYPE(), Attribute::None, -1);
         attributes << new Attribute(gapextend, BaseTypes::NUM_TYPE(), Attribute::None, -1);
         attributes << new Attribute(threads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
-        attributes << new Attribute(bsize, BaseTypes::NUM_TYPE(), Attribute::None, 2.0);
-        attributes << new Attribute(chunks, BaseTypes::NUM_TYPE(), Attribute::None, 0);
+        attributes << new Attribute(bsize, BaseTypes::NUM_TYPE(), Attribute::None, 2.0); //NB: unless --very-sensitive supported
+        attributes << new Attribute(chunks, BaseTypes::NUM_TYPE(), Attribute::None, 4); //NB: unless --very-sensitive supported
     }
 
     QMap<QString, PropertyDelegate *> delegates;
@@ -216,13 +216,13 @@ void DiamondClassifyWorkerFactory::init() {
         {
             QVariantMap map;
             map["minimum"] = 0;
-            //map["maximum"];
             map["specialValueText"] = DiamondClassifyPrompter::tr("Skipped");
             delegates[FSHIFT_ATTR_ID] = new SpinBoxDelegate(map);
         }
         {
             QVariantMap map;
             map["minimum"] = 0;
+            map["specialValueText"] = DiamondClassifyPrompter::tr("Default");
             delegates[CHUNKS_ATTR_ID] = new SpinBoxDelegate(map);
         }
 
@@ -230,7 +230,7 @@ void DiamondClassifyWorkerFactory::init() {
             QVariantMap map;
             map["minimum"] = 0;
             //map["maximum"] = QVariant(INT_MAX);
-            map["singleStep"] = 0.01;
+            map["singleStep"] = 0.001;
             map["decimals"] = 4;
     //        map["suffix"] = "%";
             delegates[EVALUE_ATTR_ID] = new DoubleSpinBoxDelegate(map);
@@ -240,9 +240,10 @@ void DiamondClassifyWorkerFactory::init() {
             QVariantMap map;
             map["minimum"] = 0;
             //map["maximum"] = QVariant(INT_MAX);
-    //        map["singleStep"] = 1;
-            map["decimals"] = 4;
+            map["singleStep"] = 0.1;
+            map["decimals"] = 2;
     //        map["suffix"] = "%";
+            map["specialValueText"] = DiamondClassifyPrompter::tr("Default");
             delegates[BSIZE_ATTR_ID] = new DoubleSpinBoxDelegate(map);
         }
 

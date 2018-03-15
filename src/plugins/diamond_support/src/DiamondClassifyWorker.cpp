@@ -190,7 +190,7 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
     settings.max_evalue = getValue<double>(DiamondClassifyWorkerFactory::EVALUE_ATTR_ID);
     settings.block_size = getValue<double>(DiamondClassifyWorkerFactory::BSIZE_ATTR_ID);
     settings.gencode = getValue<unsigned>(DiamondClassifyWorkerFactory::GENCODE_ATTR_ID);
-    settings.frame_shift = getValue<int>(DiamondClassifyWorkerFactory::FSHIFT_ATTR_ID);
+    settings.frame_shift = getValue<unsigned>(DiamondClassifyWorkerFactory::FSHIFT_ATTR_ID);
     settings.gap_open = getValue<int>(DiamondClassifyWorkerFactory::GO_PEN_ATTR_ID);
     settings.gap_extend = getValue<int>(DiamondClassifyWorkerFactory::GE_PEN_ATTR_ID);
     settings.index_chunks = getValue<int>(DiamondClassifyWorkerFactory::CHUNKS_ATTR_ID);
