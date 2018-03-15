@@ -574,7 +574,7 @@ int TaxonomyTreeModel::rowCount(const QModelIndex &parent) const
     return tree->getChildren(parentItem).size();
 }
 
-static const QString PLACEHOLDER("Select groups...");
+static const QString PLACEHOLDER("Select IDs...");
 
 TaxonomyDelegate::TaxonomyDelegate(QObject *parent)
     : PropertyDelegate(parent)

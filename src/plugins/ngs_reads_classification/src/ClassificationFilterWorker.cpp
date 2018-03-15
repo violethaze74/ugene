@@ -78,17 +78,13 @@ static const QString OUTPUT_PORT("out");
 static const QString OUTPUT_SLOT = BaseSlots::URL_SLOT().getId();
 
 
-static const QString RESOLUTION("resolution");
+static const QString SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID("save-unspecific-sequences");
 static const QString TAXONOMY_RANK("taxonomy-rank");
 static const QString SEQUENCING_READS("sequencing-reads");
 static const QString TAXONS("tax-ids");
 
 static const QString SINGLE_END("single-end");
 static const QString PAIRED_END("paired-end");
-
-const QString ClassificationFilterSettings::RESOLUTION_SEPARATE("separate");
-//const QString ClassificationFilterSettings::RESOLUTION_DISTRIBUTE("distribute");
-const QString ClassificationFilterSettings::RESOLUTION_DISCARD("discard");
 
 //const QString ClassificationFilterSettings::SPECIES("species");
 //const QString ClassificationFilterSettings::GENUS("genus");
@@ -103,13 +99,22 @@ QString ClassificationFilterPrompter::composeRichDoc() {
     return tr("Put input sequences that belong to the specified taxonomic group(s) to separate file(s).");
 }
 
-class InputValidator : public ActorValidator {
+class ClassificationFilterValidator : public ActorValidator {
 public:
     bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const;
+
+private:
+    bool validateSlots(const Actor *actor, ProblemList &problemList) const;
+    bool validateParameters(const Actor *actor, ProblemList &problemList) const;
 };
 
-bool InputValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
-    //todo validate IDs
+bool ClassificationFilterValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
+    bool result = validateSlots(actor, problemList);
+    result &= validateParameters(actor, problemList);
+    return result;
+}
+
+bool ClassificationFilterValidator::validateSlots(const Actor *actor, ProblemList &problemList) const {
 /*    const QString databaseUrl = actor->getParameter(DB_URL)->getAttributeValueWithoutScript<QString>();
     const bool doesDatabaseDirExist = QFileInfo(databaseUrl).exists();
     CHECK_EXT(doesDatabaseDirExist,
@@ -157,14 +162,42 @@ bool InputValidator::validate(const Actor *actor, ProblemList &problemList, cons
     return res;
 }
 
+bool ClassificationFilterValidator::validateParameters(const Actor *actor, ProblemList &problemList) const {
+    const bool saveUnspecificSequences = actor->getParameter(SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID)->getAttributeValueWithoutScript<bool>();
+
+    const QStringList taxonsTokens = actor->getParameter(TAXONS)->getAttributeValueWithoutScript<QString>().split(";", QString::SkipEmptyParts);
+    QSet<TaxID> taxons;
+    foreach (const QString &idStr, taxonsTokens) {
+        bool OK = true;
+        TaxID id = idStr.toInt(&OK);
+        if (OK) {
+            taxons.insert(id);
+        } else {
+            problemList << Problem(ClassificationFilterPrompter::tr("Invalid taxon ID: %1").arg(idStr), actor->getId());
+            return false;
+        }
+    }
+
+    if (!saveUnspecificSequences && taxons.isEmpty()) {
+        problemList << Problem(ClassificationFilterPrompter::tr("Set \"%1\" to \"True\" or select a taxon in \"%2\".")
+                               .arg(actor->getParameter(SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID)->getDisplayName())
+                               .arg(actor->getParameter(TAXONS)->getDisplayName()), actor->getId());
+        return false;
+    }
+
+    return true;
+}
+
 /************************************************************************/
 /* ClassificationFilterWorkerFactory */
 /************************************************************************/
 void ClassificationFilterWorkerFactory::init() {
 
     Descriptor desc( ACTOR_ID, ClassificationFilterWorker::tr("Filter by Classification"),
-        ClassificationFilterWorker::tr("The filter takes files with NGS reads or scaffold, classified by one of the tools: Kraken, CLARK, or DIAMOND. "
-                                       "Then it spreads the sequences from the files into separate files, based on their classification.") );
+        ClassificationFilterWorker::tr("The filter takes files with NGS reads or scaffolds, classified by one of the tools: "
+                                       "Kraken, CLARK, DIAMOND, WEVOTE. For each input file it outputs a file with unspecific "
+                                       "sequences (i.e. sequences not classified by the tools, taxID = 0) and/or one or several "
+                                       "files with sequences that belong to specific taxonomic group(s).") );
 
     QList<PortDescriptor*> p;
     {
@@ -214,13 +247,9 @@ void ClassificationFilterWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
-        Descriptor resolution(RESOLUTION, ClassificationFilterWorker::tr("Resolution for unspecific"),
-            ClassificationFilterWorker::tr("The parameter defines how to process the input sequences that do not belong to the specified taxonomic groups.<br><br>"
-                                           "The possible values are: "
-                                           "<ul>"
-                                                "<li>\"Discard\": discard all unspecific sequences.</li>"
-                                                "<li>\"Save separately\": put all unspecific sequences to a separate file.</li>"
-                                           "</ul>"));
+        Descriptor saveUnspecificSequencesDescription(SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID, ClassificationFilterWorker::tr("Save unspecific sequences"),
+            ClassificationFilterWorker::tr("Select \"True\" to put all unspecific input sequences (i. e. sequences with tax ID = 0) into a separate file.<br>"
+                                           "Select \"False\" to skip unspecific sequences. At least one specific taxon should be selected in the \"Save sequences with taxID\" parameter in this case."));
 
 //        Descriptor rank(TAXONOMY_RANK, ClassificationFilterWorker::tr("Taxonomy rank"),
 //            ClassificationFilterWorker::tr("Set the taxonomy rank for the filtering."));
@@ -231,17 +260,15 @@ void ClassificationFilterWorkerFactory::init() {
                                                                             "Also, input the classification data, received from Kraken, CLARK, or DIAMOND, to the \"Taxonomy classification data\" input slot.<br><br>"
                                                                             "Either one or two slots of the output port are used depending on the input data."));
 
-        Descriptor taxons(TAXONS, ClassificationFilterWorker::tr("Taxonomic groups"),
-            ClassificationFilterWorker::tr("Choose at least one taxonomic group.<br><br>"
-                                           "All input sequences that belong to a specified group will be put into a separate file."));
+        Descriptor saveSequencesWithTaxidDescription(TAXONS, ClassificationFilterWorker::tr("Save sequences with taxID"),
+            ClassificationFilterWorker::tr("Select a taxID to put all sequences that belong to this taxonomic group "
+                                           "(i. e. the specified taxID and all children in the taxonomy tree) into a separate file."));
 
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), false, SINGLE_END);
         a << sequencingReadsAttribute;
 //        a << new Attribute( rank, BaseTypes::STRING_TYPE(), false, ClassificationFilterSettings::SPECIES);
-        a << new Attribute( resolution, BaseTypes::STRING_TYPE(), false, ClassificationFilterSettings::RESOLUTION_DISCARD);
-        a << new Attribute( taxons, BaseTypes::STRING_TYPE(), true);
-
-        //sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(OUTPUT_PORT2, QVariantList() << PAIRED_END));
+        a << new Attribute(saveUnspecificSequencesDescription, BaseTypes::BOOL_TYPE(), false, true);
+        a << new Attribute(saveSequencesWithTaxidDescription, BaseTypes::STRING_TYPE());
     }
 
     QMap<QString, PropertyDelegate*> delegates;
@@ -260,19 +287,14 @@ void ClassificationFilterWorkerFactory::init() {
 //        rankMap[ClassificationFilterWorker::tr("Phylum")] = ClassificationFilterSettings::PHYLUM;
 //        delegates[TAXONOMY_RANK] = new ComboBoxDelegate(rankMap);
 
-        QVariantMap resolutionMap;
-        resolutionMap[ClassificationFilterWorker::tr("Save separately")] = ClassificationFilterSettings::RESOLUTION_SEPARATE;
-//        resolutionMap[ClassificationFilterWorker::tr("Randomly distribute")] = ClassificationFilterSettings::RESOLUTION_DISTRIBUTE;
-        resolutionMap[ClassificationFilterWorker::tr("Discard")] = ClassificationFilterSettings::RESOLUTION_DISCARD;
-        delegates[RESOLUTION] = new ComboBoxDelegate(resolutionMap);
-
+        delegates[SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID] = new ComboBoxWithBoolsDelegate();
         delegates[TAXONS] = new TaxonomyDelegate();
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new ClassificationFilterPrompter());
-    proto->setValidator(new InputValidator());
+    proto->setValidator(new ClassificationFilterValidator());
 
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -311,14 +333,9 @@ void ClassificationFilterWorker::init() {
     cfg.paired = (getValue<QString>(SEQUENCING_READS) == PAIRED_END);
 //    cfg.rank = getValue<QString>(TAXONOMY_RANK);
 
-    cfg.resolution = getValue<QString>(RESOLUTION).toLower();
-    if (!(cfg.resolution == ClassificationFilterSettings::RESOLUTION_DISCARD
-          || cfg.resolution == ClassificationFilterSettings::RESOLUTION_SEPARATE)) {
-        reportError(tr("Unrecognized resolution parameter, expected either 'discard' or 'separate'"));
-        return;
-    }
+    cfg.saveUnspecificSequences = getValue<bool>(SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID);
 
-    QStringList taxons = getValue<QString>(TAXONS).split(";");
+    QStringList taxons = getValue<QString>(TAXONS).split(";", QString::SkipEmptyParts);
     foreach (const QString &idStr, taxons) {
         bool OK = true;
         TaxID id = idStr.toInt(&OK);
@@ -329,8 +346,10 @@ void ClassificationFilterWorker::init() {
             return;
         }
     }
-    if (cfg.taxons.isEmpty()) {
-        reportError(tr("No taxon IDs specified for filtering"));
+    if (!cfg.saveUnspecificSequences && cfg.taxons.isEmpty()) {
+        reportError(tr("Set \"%1\" to \"True\" or select a taxon in \"%2\".")
+                    .arg(getActor()->getParameter(SAVE_UNSPECIFIC_SEQUENCES_ATTR_ID)->getDisplayName())
+                    .arg(getActor()->getParameter(TAXONS)->getDisplayName()));
         return;
     }
     algoLog.trace(QString("Filter taxa num: %1").arg(cfg.taxons.size()));
@@ -527,7 +546,7 @@ QString ClassificationFilterTask::filter(DNASequence *seq, QString inputName)
     } else {
         // Unclassified
         foundIDs.insertMulti(inputName, 0); // save anyway to track inputs for dashboard
-        if (cfg.resolution == ClassificationFilterSettings::RESOLUTION_SEPARATE) {
+        if (cfg.saveUnspecificSequences) {
             return QString("0_unclassified");
         }
     }
@@ -561,7 +580,7 @@ bool ClassificationFilterTask::write(DNASequence *seq, QString fileName, const S
 }
 
 ClassificationFilterSettings::ClassificationFilterSettings()
-    : /*rank(ClassificationFilterSettings::SPECIES),*/ resolution(ClassificationFilterSettings::RESOLUTION_SEPARATE), paired(false)
+    : /*rank(ClassificationFilterSettings::SPECIES),*/ saveUnspecificSequences(false), paired(false)
 {
 }
 

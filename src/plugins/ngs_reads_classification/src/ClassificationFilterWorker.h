@@ -38,10 +38,6 @@ namespace LocalWorkflow {
 
 class ClassificationFilterSettings {
 public:
-    static const QString RESOLUTION_SEPARATE;
-//    static const QString RESOLUTION_DISTRIBUTE;
-    static const QString RESOLUTION_DISCARD;
-
 //    static const QString SPECIES;
 //    static const QString GENUS;
 //    static const QString FAMILY;
@@ -52,7 +48,7 @@ public:
     ClassificationFilterSettings();
 
 //    QString rank;
-    QString resolution;
+    bool saveUnspecificSequences;
     QSet<TaxID> taxons;
     QString workingDir;
     bool paired;
