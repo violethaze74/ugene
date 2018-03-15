@@ -81,7 +81,7 @@ static const QString OUTPUT_SLOT = BaseSlots::URL_SLOT().getId();
 static const QString RESOLUTION("resolution");
 static const QString TAXONOMY_RANK("taxonomy-rank");
 static const QString SEQUENCING_READS("sequencing-reads");
-static const QString TAXONS("taxons");
+static const QString TAXONS("tax-ids");
 
 static const QString SINGLE_END("single-end");
 static const QString PAIRED_END("paired-end");
@@ -100,7 +100,7 @@ const QString ClassificationFilterSettings::RESOLUTION_DISCARD("discard");
 
 
 QString ClassificationFilterPrompter::composeRichDoc() {
-    return tr("Put input sequences that belong to the specified taxon(s) to separate file(s).");
+    return tr("Put input sequences that belong to the specified taxonomic group(s) to separate file(s).");
 }
 
 class InputValidator : public ActorValidator {
@@ -231,7 +231,7 @@ void ClassificationFilterWorkerFactory::init() {
                                                                             "Also, input the classification data, received from Kraken, CLARK, or DIAMOND, to the \"Taxonomy classification data\" input slot.<br><br>"
                                                                             "Either one or two slots of the output port are used depending on the input data."));
 
-        Descriptor taxons(TAXONS, ClassificationFilterWorker::tr("Taxons"),
+        Descriptor taxons(TAXONS, ClassificationFilterWorker::tr("Taxonomic groups"),
             ClassificationFilterWorker::tr("Choose at least one taxonomic group.<br><br>"
                                            "All input sequences that belong to a specified group will be put into a separate file."));
 
@@ -333,7 +333,7 @@ void ClassificationFilterWorker::init() {
         reportError(tr("No taxon IDs specified for filtering"));
         return;
     }
-    algoLog.trace(QString("Filter taxons num: %1").arg(cfg.taxons.size()));
+    algoLog.trace(QString("Filter taxa num: %1").arg(cfg.taxons.size()));
     //TODO validate ids relations
 
     cfg.workingDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());

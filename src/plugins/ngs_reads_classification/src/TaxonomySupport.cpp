@@ -574,7 +574,7 @@ int TaxonomyTreeModel::rowCount(const QModelIndex &parent) const
     return tree->getChildren(parentItem).size();
 }
 
-static const QString PLACEHOLDER("Select taxons...");
+static const QString PLACEHOLDER("Select groups...");
 
 TaxonomyDelegate::TaxonomyDelegate(QObject *parent)
     : PropertyDelegate(parent)
@@ -686,7 +686,7 @@ TaxonSelectionDialog::TaxonSelectionDialog(const QString &value, QWidget *parent
 
     mainLayout->addWidget(buttonBox);
 
-    setWindowTitle(QApplication::translate("TaxonSelectionDialog", "Select Taxons", 0));
+    setWindowTitle(QApplication::translate("TaxonSelectionDialog", "Select Taxa", 0));
     QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
