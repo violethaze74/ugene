@@ -540,7 +540,7 @@ Actor* HRSchemaSerializer::parseElementsDefinition(Tokenizer & tokenizer, const 
             parseGrouperOutSlots(proc, pairs.blockPairs.values(key), key);
         } else if (MARKER_GROUP == a->getGroup()) {
             parseMarkers(proc, pairs.blockPairs.values(key), key);
-        } else if (NULL != dynamic_cast<URLAttribute*>(a)) {
+        } else if (a->getAttributeType()->getId() == BaseTypes::URL_DATASETS_TYPE()->getId()) {
             QList<Dataset> sets = parseUrlAttribute(a->getId(), pairs.blockPairsList);
             a->setAttributeValue(qVariantFromValue< QList<Dataset> >(sets));
         } else {
@@ -786,7 +786,7 @@ QMap<ActorId, QVariantMap> HRSchemaSerializer::parseIteration(Tokenizer & tokeni
                 cfg[actorId][attrId] =
                     getAttrValue(actorMap[actorName], attrId, pairs.equalPairs[attrId]);
             }
-            if (NULL == dynamic_cast<URLAttribute*>(attr)) {
+            if (attr->getAttributeType()->getId() != BaseTypes::URL_DATASETS_TYPE()->getId()) {
                 continue;
             }
             QList<Dataset> sets = parseUrlAttribute(attrId, pairs.blockPairsList);

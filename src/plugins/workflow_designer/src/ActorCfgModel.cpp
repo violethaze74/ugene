@@ -161,7 +161,7 @@ int ActorCfgModel::rowCount( const QModelIndex & parent ) const {
 
 bool ActorCfgModel::isVisible(Attribute *a) const {
     CHECK(NULL != subject, true);
-    if (NULL != dynamic_cast<URLAttribute*>(a) && NULL == subject->getEditor()->getDelegate(a->getId())) {
+    if (NULL != dynamic_cast<URLAttribute*>(a)) {
         return false;
     }
     return subject->isAttributeVisible(a);

@@ -579,7 +579,7 @@ void SpecialParametersPanel::editActor(Actor *a) {
         Attribute *attr = a->getParameter(attrId);
         CHECK(NULL != attr, );
         URLAttribute *urlAttr = dynamic_cast<URLAttribute*>(attr);
-        if (NULL == urlAttr || NULL != a->getEditor()->getDelegate(attrId)) {
+        if (NULL == urlAttr) {
             continue;
         }
         sets[attrId] = urlAttr->getAttributePureValue().value< QList<Dataset> >();

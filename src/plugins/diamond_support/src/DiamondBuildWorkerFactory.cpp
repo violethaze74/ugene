@@ -75,7 +75,7 @@ void DiamondBuildWorkerFactory::init() {
                                             DiamondBuildPrompter::tr("Genomes that should be used to build the database."));
 
         Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), true);
-        Attribute *genomicLibraryAttribute = new URLAttribute(genomicLibraryDesc, BaseTypes::URL_DATASETS_TYPE(), true);
+        Attribute *genomicLibraryAttribute = new Attribute(genomicLibraryDesc, BaseTypes::URL_DATASETS_TYPE(), true);
 
         attributes << databaseAttribute;
         attributes << genomicLibraryAttribute;

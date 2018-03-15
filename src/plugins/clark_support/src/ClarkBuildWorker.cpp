@@ -119,7 +119,7 @@ void ClarkBuildWorkerFactory::init() {
 
         a << new Attribute( dbUrl, BaseTypes::STRING_TYPE(), true);
 
-        a << new URLAttribute( taxonomy, BaseTypes::URL_DATASETS_TYPE(), true);
+        a << new Attribute( taxonomy, BaseTypes::URL_DATASETS_TYPE(), true);
         a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);
     }
 
