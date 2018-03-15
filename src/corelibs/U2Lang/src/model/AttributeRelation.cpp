@@ -150,7 +150,7 @@ QVariant ValuesRelation::getAffectResult(const QVariant &influencingValue, const
                                          DelegateTags * /*infTags*/, DelegateTags *depTags) const {
     updateDelegateTags(influencingValue, depTags);
     QVariantMap items = dependencies.value(influencingValue.toString()).toMap();
-    if (items != QVariant()) {
+    if (!items.isEmpty()) {
         return items.value(items.keys().first());
     }
     return dependentValue;
@@ -158,7 +158,7 @@ QVariant ValuesRelation::getAffectResult(const QVariant &influencingValue, const
 
 void ValuesRelation::updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const {
     QVariantMap items = dependencies.value(influencingValue.toString()).toMap();
-    if (items != QVariant()) {
+    if (!items.isEmpty()) {
         dependentTags->set("AvailableValues", items);
     }
 }
