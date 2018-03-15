@@ -85,7 +85,7 @@ static const QString MODE("mode");
 static const QString FACTOR("factor");
 static const QString GAP("gap");
 static const QString EXTEND_OUT("extend-out");
-static const QString DB_TO_RAM("preload-database");
+static const QString DB_TO_RAM("preload");
 static const QString NUM_THREADS("threads");
 static const QString SEQUENCING_READS = "sequencing-reads";
 
