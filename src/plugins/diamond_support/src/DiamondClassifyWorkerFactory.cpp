@@ -140,7 +140,7 @@ void DiamondClassifyWorkerFactory::init() {
         const Descriptor gapopen(GO_PEN_ATTR_ID, DiamondClassifyPrompter::tr("Gap open penalty"), DiamondClassifyPrompter::tr("Gap open penalty (--gapopen)."));
         const Descriptor gapextend(GE_PEN_ATTR_ID, DiamondClassifyPrompter::tr("Gap extension penalty"), DiamondClassifyPrompter::tr("Gap extension penalty (--gapextend)."));
         const Descriptor threads(THREADS_ATTR_ID, DiamondClassifyPrompter::tr("Number of threads"), DiamondClassifyPrompter::tr("Number of CPU threads (--treads)."));
-        const Descriptor bsize(BSIZE_ATTR_ID, DiamondClassifyPrompter::tr("Block size"), DiamondClassifyPrompter::tr(" 	Block size in billions of sequence letters to be processed at a time (--block-size). This is the main parameter for controlling the program’s memory usage. Bigger numbers will increase the use of memory and temporary disk space, but also improve performance. The program can be expected to use roughly six times this number of memory (in GB). "));
+        const Descriptor bsize(BSIZE_ATTR_ID, DiamondClassifyPrompter::tr("Block size"), DiamondClassifyPrompter::tr("Block size in billions of sequence letters to be processed at a time (--block-size). This is the main parameter for controlling the program’s memory usage. Bigger numbers will increase the use of memory and temporary disk space, but also improve performance. The program can be expected to use roughly six times this number of memory (in GB)."));
         const Descriptor chunks(CHUNKS_ATTR_ID, DiamondClassifyPrompter::tr("Index chunks"), DiamondClassifyPrompter::tr("The number of chunks for processing the seed index (--index-chunks). This option can be additionally used to tune the performance. It is recommended to set this to 1 on a high memory server, which will increase performance and memory usage, but not the usage of temporary disk space."));
         const Descriptor outputUrlDesc(OUTPUT_URL_ATTR_ID, DiamondClassifyPrompter::tr("Output file"),
                                        DiamondClassifyPrompter::tr("Specify the output file name."));
@@ -229,20 +229,16 @@ void DiamondClassifyWorkerFactory::init() {
         {
             QVariantMap map;
             map["minimum"] = 0;
-            //map["maximum"] = QVariant(INT_MAX);
             map["singleStep"] = 0.001;
             map["decimals"] = 4;
-    //        map["suffix"] = "%";
             delegates[EVALUE_ATTR_ID] = new DoubleSpinBoxDelegate(map);
         }
 
         {
             QVariantMap map;
             map["minimum"] = 0;
-            //map["maximum"] = QVariant(INT_MAX);
             map["singleStep"] = 0.1;
             map["decimals"] = 2;
-    //        map["suffix"] = "%";
             map["specialValueText"] = DiamondClassifyPrompter::tr("Default");
             delegates[BSIZE_ATTR_ID] = new DoubleSpinBoxDelegate(map);
         }
