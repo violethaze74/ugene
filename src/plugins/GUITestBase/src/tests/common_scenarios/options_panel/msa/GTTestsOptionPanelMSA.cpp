@@ -894,10 +894,10 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0007){
     CHECK_SET_ERR(g == "#4eade1", QString("g has color %1").arg(g));
     CHECK_SET_ERR(c == "#70f970", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
- /* GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#fcff92");//yellow    
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,2), "#ff99b1");//red    
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2,0),"#4eade1"); //blue  
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4,0), "#70f970");//green  
+ /* GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#fcff92");//yellow
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,2), "#ff99b1");//red
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2,0),"#4eade1"); //blue
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4,0), "#70f970");//green
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4,2), "#ffffff");//white
 */
 }
@@ -928,7 +928,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0008){
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
     //    4. Check Agreements highlighting type
     setHighlightingType(os, "Agreements");
-   
+
     QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 0));
     QString gap1 = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 2));
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2, 0));
@@ -939,7 +939,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0008){
     CHECK_SET_ERR(g == "#4eade1", QString("g has color %1 intead of %2").arg(g).arg("#4eade1"));
     CHECK_SET_ERR(gap2 == "#ffffff", QString("gap2 has color%1 intead of %2").arg(gap2).arg("#ffffff"));
     CHECK_SET_ERR(gap3 == "#ffffff", QString("gap3 has color %1 intead of %2").arg(gap3).arg("#ffffff"));
-    /*    
+    /*
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#fcff92");
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,2), "#ffffff");
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2,0), "#4eade1");
