@@ -265,6 +265,7 @@ void ClassificationFilterWorkerFactory::init() {
                                            "(i. e. the specified taxID and all children in the taxonomy tree) into a separate file."));
 
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), false, SINGLE_END);
+        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, GetReadsListWorkerFactory::PE_SLOT().getId(), QVariantList() << PAIRED_END));
         a << sequencingReadsAttribute;
 //        a << new Attribute( rank, BaseTypes::STRING_TYPE(), false, ClassificationFilterSettings::SPECIES);
         a << new Attribute(saveUnspecificSequencesDescription, BaseTypes::BOOL_TYPE(), false, true);

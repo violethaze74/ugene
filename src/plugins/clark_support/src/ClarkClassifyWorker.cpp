@@ -264,6 +264,7 @@ void ClarkClassifyWorkerFactory::init() {
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), Attribute::None, SINGLE_END);
 //        sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(PAIRED_INPUT_PORT, QVariantList() << PAIRED_END));
 //        sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(INPUT_PORT, QVariantList() << SINGLE_END));
+        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, GetReadsListWorkerFactory::PE_SLOT().getId(), QVariantList() << PAIRED_END));
         a << sequencingReadsAttribute;
 
         a << new Attribute(tool, BaseTypes::STRING_TYPE(), Attribute::None, ClarkClassifySettings::TOOL_LIGHT);

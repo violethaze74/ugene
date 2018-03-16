@@ -79,6 +79,9 @@ void Attribute::copy(const Attribute &other) {
 
     portRelations.clear();
     portRelations = other.portRelations;
+
+    slotRelations.clear();
+    slotRelations = other.slotRelations;
 }
 
 Attribute::Attribute(const Attribute &other)
@@ -199,6 +202,13 @@ const QList<PortRelationDescriptor>& Attribute::getPortRelations() const {
     return portRelations;
 }
 
+void Attribute::addSlotRelation(const SlotRelationDescriptor& relationDesc) {
+    slotRelations << relationDesc;
+}
+
+const QList<SlotRelationDescriptor>& Attribute::getSlotRelations() const {
+    return slotRelations;
+}
 
 Attribute *Attribute::clone() {
     return new Attribute(*this);

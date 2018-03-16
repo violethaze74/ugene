@@ -40,6 +40,7 @@
 #include <U2Lang/WorkflowScriptEngine.h>
 
 #include "PortRelation.h"
+#include "SlotRelation.h"
 
 namespace U2 {
 
@@ -137,8 +138,10 @@ public:
     QVector<const AttributeRelation*> &getRelations();
 
     void addPortRelation(const PortRelationDescriptor& relationDesc);
-
     const QList<PortRelationDescriptor>& getPortRelations() const;
+
+    void addSlotRelation(const SlotRelationDescriptor& relationDesc);
+    const QList<SlotRelationDescriptor>& getSlotRelations() const;
 
     virtual bool isEmpty() const;
     virtual Attribute *clone();
@@ -173,6 +176,7 @@ protected:
 
     QVector<const AttributeRelation*> relations;
     QList<PortRelationDescriptor>     portRelations;
+    QList<SlotRelationDescriptor>     slotRelations;
 
 }; // Attribute
 

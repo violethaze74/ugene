@@ -134,7 +134,9 @@ void KrakenClassifyWorkerFactory::init() {
                                                                         "This can be useful to improve the speed. The database size should be less than the RAM size.<br><br>"
                                                                         "The other option to improve the speed is to store the database on ramdisk. Set this parameter to \"False\" in this case."));
 
-        attributes << new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), Attribute::None, KrakenClassifyTaskSettings::SINGLE_END);
+        Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, KrakenClassifyTaskSettings::SINGLE_END);
+        inputDataAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT_ID, GetReadsListWorkerFactory::PE_SLOT().getId(), QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
+        attributes << inputDataAttribute;
 
         Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), true);
         attributes << databaseAttribute;
