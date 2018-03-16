@@ -586,7 +586,7 @@ QString GTUtilsMSAEditorSequenceArea::getColor(GUITestOpStatus &os, QPoint p){
     GT_CHECK_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", "");
 
     QPoint global = convertCoordinates(os, p);
-    global.setY(global.y() + (getRowHeight(os, p.y())/2 - 1));
+    global.setY(global.y() + (getRowHeight(os, p.y())/2 - 2));
     QPoint local = msaEditArea->mapFromGlobal(global);
     QColor c = GTWidget::getColor(os, msaEditArea, local);
     QString name = c.name();

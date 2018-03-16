@@ -42,6 +42,10 @@ public:
     Task::ReportResult report();
     QString generateReport() const;
 
+    // Returns number of bases inserted into sequence. If sequence size is reduced the returned value is < 0
+    qint64 getSequenceLengthDelta() const;
+    U2SequenceObject* getSequenceObject() const {return seqObj;}
+
 private:
     void cloneSequenceAndAnnotations();
 
