@@ -51,6 +51,7 @@ public:
     DataTypePtr getOutputType() const;
     void setNewType(const DataTypePtr &newType);
     QMap<Descriptor, DataTypePtr> getOwnTypeMap() const;
+    void setVisibleSlot(const QString& slotId, const bool isVisible);
 
 protected:
     // type of data that this port contains
@@ -62,6 +63,9 @@ protected:
     // for user purposes
     // see usage in implementations e.g. IntegralBusModel.cpp
     uint flags;
+
+private:
+    DataTypePtr defaultType;
 
 }; // PortDescriptor
 

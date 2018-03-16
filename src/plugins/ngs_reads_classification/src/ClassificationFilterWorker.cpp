@@ -236,6 +236,7 @@ void ClassificationFilterWorkerFactory::init() {
                                            "All input sequences that belong to a specified group will be put into a separate file."));
 
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), false, SINGLE_END);
+        sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, GetReadsListWorkerFactory::PE_SLOT().getId(), QVariantList() << PAIRED_END));
         a << sequencingReadsAttribute;
 //        a << new Attribute( rank, BaseTypes::STRING_TYPE(), false, ClassificationFilterSettings::SPECIES);
         a << new Attribute( resolution, BaseTypes::STRING_TYPE(), false, ClassificationFilterSettings::RESOLUTION_DISCARD);

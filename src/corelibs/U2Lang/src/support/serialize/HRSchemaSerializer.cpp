@@ -577,7 +577,7 @@ Actor* HRSchemaSerializer::parseElementsDefinition(Tokenizer & tokenizer, const 
             proc->addCustomValidator(desc);
         }
     }
-    proc->updatePortsAvailability();
+    proc->updateItemsAvailability();
 
     return proc;
 }
