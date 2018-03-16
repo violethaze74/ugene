@@ -32,6 +32,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/TextUtils.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
@@ -445,7 +446,12 @@ Document* ABIFormat::parseABI(const U2DbiRef& dbiRef, SeekableBuf* fp, IOAdapter
     QVariantMap hints;
     QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     hints.insert(DBI_FOLDER_HINT, folder);
-    U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dna);
+    if (dna.alphabet == NULL) {
+        dna.alphabet = U2AlphabetUtils::findBestAlphabet(dna.seq);
+        CHECK_EXT(dna.alphabet != NULL, os.setError(tr("Undefined sequence alphabet")), NULL);
+    }
+    U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dna, dna.alphabet->getId());
+    CHECK_OP(os, NULL);
     U2SequenceObject* seqObj = new U2SequenceObject(dna.getName(), ref);
     objects.append(seqObj);
 
