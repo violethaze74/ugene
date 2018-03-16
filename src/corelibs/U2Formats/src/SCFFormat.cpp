@@ -526,7 +526,8 @@ Document* SCFFormat::parseSCF(const U2DbiRef& dbiRef, IOAdapter* io, const QVari
     }
 
     const QString seqObjName = dna.getName().isEmpty() ? "Sequence" : dna.getName() + " sequence";
-
+    const QString chromaObjName = dna.getName().isEmpty() ? "Chromatogram" : dna.getName() + " chromatogram";
+    dna.setName(seqObjName);
     QVariantMap hints;
     hints.insert(DBI_FOLDER_HINT, fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
     QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
@@ -537,7 +538,6 @@ Document* SCFFormat::parseSCF(const U2DbiRef& dbiRef, IOAdapter* io, const QVari
     SAFE_POINT(seqObj != NULL, "DocumentFormatUtils::addSequenceObject returned NULL but didn't set error", NULL);
     seqObj->setQuality(dna.quality);
 
-    const QString chromaObjName = dna.getName().isEmpty() ? "Chromatogram" : dna.getName() + " chromatogram";
     DNAChromatogramObject* chromObj = DNAChromatogramObject::createInstance(cd, chromaObjName, dbiRef, os, hints);
     CHECK_OP(os, NULL);
 

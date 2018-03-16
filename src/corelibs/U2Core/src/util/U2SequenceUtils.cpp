@@ -361,6 +361,7 @@ void U2SequenceImporter::startSequence(U2OpStatus &os,
 
     if (!lazyMode) {
         con.dbi->getSequenceDbi()->createSequenceObject(sequence, folder, os);
+        SAFE_POINT(!sequence.alphabet.id.isEmpty(), "Alphabet id is empty!", );
         CHECK_OP(os, );
         sequenceCreated = true;
     }
