@@ -150,7 +150,6 @@ void DiamondClassifyWorkerFactory::init() {
 //        inputDataAttribute->addPortRelation(PortRelationDescriptor(INPUT_PAIRED_PORT_ID, QVariantList() << DiamondClassifyTaskSettings::PAIRED_END));       // FIXME: diamond can't work with paired reads
 
         attributes << new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required);
-        attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
         attributes << new Attribute(code, BaseTypes::NUM_TYPE(), Attribute::None, 1);
         attributes << new Attribute(sense, BaseTypes::STRING_TYPE(), Attribute::None, DiamondClassifyTaskSettings::SENSITIVE_DEFAULT);
         attributes << new Attribute(fshift, BaseTypes::NUM_TYPE(), Attribute::None, 0);
@@ -158,9 +157,10 @@ void DiamondClassifyWorkerFactory::init() {
         attributes << new Attribute(matrix, BaseTypes::STRING_TYPE(), Attribute::None, DiamondClassifyTaskSettings::BLOSUM62);
         attributes << new Attribute(gapopen, BaseTypes::NUM_TYPE(), Attribute::None, -1);
         attributes << new Attribute(gapextend, BaseTypes::NUM_TYPE(), Attribute::None, -1);
-        attributes << new Attribute(threads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
         attributes << new Attribute(bsize, BaseTypes::NUM_TYPE(), Attribute::None, 2.0); //NB: unless --very-sensitive supported
         attributes << new Attribute(chunks, BaseTypes::NUM_TYPE(), Attribute::None, 4); //NB: unless --very-sensitive supported
+        attributes << new Attribute(threads, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+        attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
     }
 
     QMap<QString, PropertyDelegate *> delegates;
