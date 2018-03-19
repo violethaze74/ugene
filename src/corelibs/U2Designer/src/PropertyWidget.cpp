@@ -67,7 +67,9 @@ void DefaultPropertyWidget::setValue(const QVariant &value) {
 }
 
 void DefaultPropertyWidget::setRequired() {
-    lineEdit->setPlaceholderText(L10N::required());
+    if (lineEdit->placeholderText().isEmpty()) {
+        lineEdit->setPlaceholderText(L10N::required());
+    }
 }
 
 void DefaultPropertyWidget::sl_valueChanged(const QString &value) {
@@ -536,7 +538,9 @@ void URLWidget::setValue(const QVariant &value) {
 }
 
 void URLWidget::setRequired() {
-    urlLine->setPlaceholderText(L10N::required());
+    if (urlLine->placeholderText().isEmpty()) {
+        urlLine->setPlaceholderText(L10N::required());
+    }
 }
 
 void URLWidget::activate() {
