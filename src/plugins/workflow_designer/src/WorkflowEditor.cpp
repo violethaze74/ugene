@@ -302,7 +302,9 @@ void WorkflowEditor::reset() {
     paramBox->setTitle(tr("Parameters"));
     setDescriptor(NULL);
     edit(NULL);
-    disconnect(actor, SIGNAL(si_modified()), this, SLOT(sl_updatePortTable()));
+    if (NULL != actor) {
+        disconnect(actor, SIGNAL(si_modified()), this, SLOT(sl_updatePortTable()));
+    }
     actor = NULL;
     actorModel->setActor(NULL);
     propDoc->setText("");
