@@ -463,7 +463,7 @@ ClassificationFilterTask::ClassificationFilterTask(const ClassificationFilterSet
 
     SAFE_POINT_EXT(!readsUrl.isEmpty(), setError("Reads URL is empty"), );
     SAFE_POINT_EXT(!cfg.paired || !pairedReadsUrl.isEmpty(), setError("Classification report URL is empty"), );
-    SAFE_POINT_EXT(!cfg.taxons.isEmpty(), setError("Taxon filter is empty"), );
+    SAFE_POINT_EXT(cfg.saveUnspecificSequences || !cfg.taxons.isEmpty(), setError("Taxon filter is empty"), );
     SAFE_POINT_EXT(!settings.workingDir.isEmpty(), setError("Working dir is not specified"), );
 }
 

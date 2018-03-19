@@ -1447,7 +1447,7 @@ bool WorkflowView::sl_validate(bool notify) {
             tr("Please fix issues listed in the error list (located under workflow)."));
     } else {
         if (notify) {
-            QString message = tr("Workflow is valid.\n");
+            QString message = tr("Workflow is valid. \n");
             if (lst.isEmpty()) {
                 message += tr("Well done!");
             } else {
