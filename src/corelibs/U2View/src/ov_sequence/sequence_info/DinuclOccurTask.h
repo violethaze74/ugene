@@ -29,6 +29,8 @@
 
 namespace U2 {
 
+typedef QMap<QByteArray, qint64> DinucleotidesOccurrence;
+
 class DNAAlphabet;
 class U2SequenceObject;
 class U2Region;
