@@ -4151,6 +4151,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
 //    Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    
 //    Open "Color schemes" dialog.
     class customAppSettingsFiller: public CustomScenario{
     public:
@@ -4158,7 +4159,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "", GTFileDialogUtils::Choose));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, QFileInfo(sandBoxDir).absoluteFilePath(), "", GTFileDialogUtils::Choose));
             GTWidget::click(os, GTWidget::findWidget(os, "colorsDirButton", dialog));
 
             GTGlobals::sleep(500);
