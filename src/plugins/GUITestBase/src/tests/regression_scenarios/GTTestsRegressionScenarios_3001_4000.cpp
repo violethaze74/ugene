@@ -5713,6 +5713,10 @@ GUI_TEST_CLASS_DEFINITION(test_3901) {
     //2. Toggle circular view.
     GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
 
+    QAction* wrapMode = GTAction::findActionByText(os, "Wrap sequence");
+    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    GTWidget::click(os, GTAction::button(os, wrapMode));
+
     //3. Create an annotation with region: join(50..60,20..30,80..90).
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "group", "feature", "join(50..60,20..30,80..90)"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Add" << "New annotation...");
@@ -5720,7 +5724,7 @@ GUI_TEST_CLASS_DEFINITION(test_3901) {
     //GTGlobals::sleep(500000);
 
     //4. Click to the arrow (80..90).
-    GTUtilsSequenceView::clickAnnotationDet(os, "feature", 80);
+    GTUtilsSequenceView::clickAnnotationDet(os, "feature", 80, 0, true);
 
     //Expected state: the arrow's region is selected.
     ADVSingleSequenceWidget *w=(ADVSingleSequenceWidget*)GTWidget::findWidget(os,"ADV_single_sequence_widget_0");

@@ -422,8 +422,10 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, QString na
     QList<Annotation*> anns;
     foreach (const AnnotationTableObject *ao, context->getAnnotationObjects(true)) {
         foreach (Annotation *a, ao->getAnnotations()) {
-            if(a->getLocation().data()->regions.first().startPos == startpos-1 && a->getName() == name){
-                anns<<a;
+            foreach (const U2Region& r, a->getLocation().data()->regions) {
+                if (a->getName() == name && r.startPos == startpos - 1) {
+                    anns << a;
+                }
             }
         }
     }
@@ -439,7 +441,16 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, QString na
 
     const U2Region &vr = seq->getDetView()->getVisibleRange();
     QVector <U2Region> regions = a->getLocation().data()->regions;
-    const U2Region &r = regions.first();
+    U2Region r;
+    int regionId = 0;
+    foreach (const U2Region& reg, regions) {
+        if (reg.startPos == startpos - 1) {
+            r = reg;
+            break;
+        }
+        regionId++;
+    }
+    GT_CHECK(!r.isEmpty(), "Region not found");
 
     if (!r.intersects(vr)) {
         int center = r.center();
@@ -450,7 +461,7 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, QString na
     const U2Region visibleLocation = r.intersect(vr);
 
     U2Region y;
-    y = det->getAnnotationYRange(a, 0, as);
+    y = det->getAnnotationYRange(a, regionId, as);
 
     float start = visibleLocation.startPos;
     float end = visibleLocation.endPos();
