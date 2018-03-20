@@ -36,6 +36,7 @@
 #include "DiamondClassifyWorkerFactory.h"
 #include "DiamondSupport.h"
 #include "../../ngs_reads_classification/src/GetReadListWorker.h"
+#include "../../ngs_reads_classification/src/NgsReadsClassificationUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -181,7 +182,8 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
 
     settings.classificationUrl = getValue<QString>(DiamondClassifyWorkerFactory::OUTPUT_URL_ATTR_ID);
     if (settings.classificationUrl.isEmpty()) {
-        settings.classificationUrl = tmpDir + "/" + getClassificationFileName(message);
+        const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
+        settings.classificationUrl = tmpDir + "/" + NgsReadsClassificationUtils::getClassificationFileName(metadata.getFileUrl(), "DIAMOND", "txt", false);
     }
     settings.classificationUrl = GUrlUtils::rollFileName(settings.classificationUrl, "_");
 
@@ -217,11 +219,6 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
     settings.taxonNodesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID);
 
     return settings;
-}
-
-QString DiamondClassifyWorker::getClassificationFileName(const Message &message) const {
-    const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
-    return QFileInfo(metadata.getFileUrl()).baseName() + "_DIAMOND_classification.txt";
 }
 
 TaxonomyClassificationResult DiamondClassifyWorker::parseReport(const QString &url)
