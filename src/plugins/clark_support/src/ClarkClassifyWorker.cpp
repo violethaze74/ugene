@@ -278,8 +278,6 @@ void ClarkClassifyWorkerFactory::init() {
         }
         a << new Attribute(dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required, clarkDatabasePath);
 
-        a << new Attribute(outputUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-
 //        a << new Attribute( taxonomy, BaseTypes::STRING_TYPE(), false, "Default");
 //        a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);
 
