@@ -36,6 +36,7 @@
 #endif
 #if defined(Q_OS_LINUX)
 #include <proc/readproc.h>
+#include <fstream>
 #endif
 
 #ifdef Q_OS_WIN
@@ -45,6 +46,38 @@
 #endif
 
 namespace U2 {
+
+#if defined(Q_OS_LINUX)
+void process_mem_usage(size_t& vm_usage) {
+    using std::ios_base;
+    using std::ifstream;
+    using std::string;
+
+    vm_usage = 0;
+
+    // 'file' stat seems to give the most reliable results
+    ifstream stat_stream("/proc/self/stat");
+    CHECK(stat_stream.good());
+    
+    // dummy vars for leading entries in stat that we don't care about
+    string pid, comm, state, ppid, pgrp, session, tty_nr;
+    string tpgid, flags, minflt, cminflt, majflt, cmajflt;
+    string utime, stime, cutime, cstime, priority, nice;
+    string O, itrealvalue, starttime;
+
+    // the two fields we want
+    unsigned long vsize;
+
+    stat_stream >> pid >> comm >> state >> ppid >> pgrp >> session >> tty_nr
+        >> tpgid >> flags >> minflt >> cminflt >> majflt >> cmajflt
+        >> utime >> stime >> cutime >> cstime >> priority >> nice
+        >> O >> itrealvalue >> starttime >> vsize; // don't care about the rest
+
+    stat_stream.close();
+
+    vm_usage = vsize;
+}
+#endif
 
 #define SETTINGS_ROOT QString("app_resource/")
 
@@ -161,11 +194,11 @@ size_t AppResourcePool::getCurrentAppMemory() {
 #ifdef Q_OS_WIN
     PROCESS_MEMORY_COUNTERS memCounter;
     bool result = GetProcessMemoryInfo(GetCurrentProcess(), &memCounter, sizeof(memCounter));
-    return result ? memCounter.WorkingSetSize : -1;
+    return result ? memCounter.WorkingSetSize : 0;
 #elif defined(Q_OS_LINUX)
-    struct proc_t usage;
-    look_up_our_self(&usage);
-    return usage.vsize;
+    size_t vm = 0;
+    process_mem_usage(vm);
+    return vm;
 #elif defined(Q_OS_FREEBSD)
      QProcess p;
      p.start("ps", QStringList() << "-o" << "vsize=" << "-p" << QString("%1").arg(getpid()));
@@ -175,7 +208,7 @@ size_t AppResourcePool::getCurrentAppMemory() {
      bool ok = false;
      qlonglong output_mem = ps_vsize.toLongLong(&ok);
      if (ok) {
-         return output_mem / 1024;
+         return output_mem;
      }
 #elif defined(Q_OS_MAC)
 //    qint64 pid = QCoreApplication::applicationPid();
