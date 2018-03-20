@@ -213,8 +213,8 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
     U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
     SAFE_POINT_EXT(NULL != taxonomyDataPath, os.setError("Taxonomy data path is not registered"), settings);
     CHECK_EXT(taxonomyDataPath->isValid(), os.setError(tr("Taxonomy data is missed")), settings);
-    settings.taxonMapUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_PROTEIN_MAP);
-    settings.taxonNodesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES);
+    settings.taxonMapUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_PROTEIN_MAP_ITEM_ID);
+    settings.taxonNodesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID);
 
     return settings;
 }

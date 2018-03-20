@@ -165,10 +165,10 @@ void WevoteWorkerFactory::init() {
 }
 
 void WevoteWorkerFactory::cleanup() {
-    WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
+    delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
-    localDomain->unregisterEntry(ACTOR_ID);
+    delete localDomain->unregisterEntry(ACTOR_ID);
 }
 
 }   // namespace LocalWorkflow

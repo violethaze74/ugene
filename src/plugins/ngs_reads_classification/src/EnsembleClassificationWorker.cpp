@@ -164,7 +164,6 @@ void EnsembleClassificationWorkerFactory::init() {
     localDomain->registerEntry(new EnsembleClassificationWorkerFactory());
 }
 
-// FIXME unused ???
 void EnsembleClassificationWorkerFactory::cleanup() {
     delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

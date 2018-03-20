@@ -95,10 +95,10 @@ void KrakenBuildWorkerFactory::init() {
                                   KrakenBuildPrompter::tr("Select \"Build\" to create a new database from a genomic library (--build).<br><br>"
                                                           "Select \"Shrink\" to shrink an existing database to have only specified number of k-mers (--shrink)."));
 
-        const Descriptor inputDatabaseNameDesc(INPUT_DATABASE_NAME_ATTR_ID, KrakenBuildPrompter::tr("Input database name"),
+        const Descriptor inputDatabaseNameDesc(INPUT_DATABASE_NAME_ATTR_ID, KrakenBuildPrompter::tr("Input database"),
                                                KrakenBuildPrompter::tr("Name of the input database that should be shrunk (corresponds to --db that is used with --shrink)."));
 
-        const Descriptor newDatabaseNameDesc(NEW_DATABASE_NAME_ATTR_ID, KrakenBuildPrompter::tr("New database name"),
+        const Descriptor newDatabaseNameDesc(NEW_DATABASE_NAME_ATTR_ID, KrakenBuildPrompter::tr("Database"),
                                              KrakenBuildPrompter::tr("Name of the output Kraken database (corresponds to --db that is used with --build, and to --new-db that is used with --shrink)."));
 
         const Descriptor genomicLibraryDesc(GENOMIC_LIBRARY_ATTR_ID, KrakenBuildPrompter::tr("Genomic library"),
@@ -182,9 +182,12 @@ void KrakenBuildWorkerFactory::init() {
         modeValues[BUILD_MODE_TEXT] = KrakenBuildTaskSettings::BUILD;
         modeValues[SHRINK_MODE_TEXT] = KrakenBuildTaskSettings::SHRINK;
         delegates[MODE_ATTR_ID] = new ComboBoxDelegate(modeValues);
-
         delegates[INPUT_DATABASE_NAME_ATTR_ID] = new URLDelegate("", "kraken/database", false, true, false);
-        delegates[NEW_DATABASE_NAME_ATTR_ID] = new URLDelegate("", "kraken/database", false, true, true);
+
+        const URLDelegate::Options options = URLDelegate::AllowSelectOnlyExistingDir |
+                                             URLDelegate::SelectFileToSave |
+                                             URLDelegate::DoNotUseWorkflowOutputFolder;
+        delegates[NEW_DATABASE_NAME_ATTR_ID] = new URLDelegate("", "kraken/database", options);
         delegates[GENOMIC_LIBRARY_ATTR_ID] = new GenomicLibraryDelegate();
 
         QVariantMap numberOfKmersProperties;
@@ -247,10 +250,10 @@ void KrakenBuildWorkerFactory::init() {
 }
 
 void KrakenBuildWorkerFactory::cleanup() {
-    WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
+    delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
-    localDomain->unregisterEntry(ACTOR_ID);
+    delete localDomain->unregisterEntry(ACTOR_ID);
 }
 
 }   // namespace LocalWorkflow

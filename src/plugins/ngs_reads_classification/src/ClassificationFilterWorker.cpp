@@ -302,7 +302,6 @@ void ClassificationFilterWorkerFactory::init() {
     localDomain->registerEntry(new ClassificationFilterWorkerFactory());
 }
 
-// FIXME unused ???
 void ClassificationFilterWorkerFactory::cleanup() {
     delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

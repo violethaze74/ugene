@@ -70,6 +70,9 @@ void U2DataPath::init() {
     path = filePath;
 
     if (fi.isDir()) {
+        if (options.testFlag(AddTopLevelFolder)) {
+            dataItems.insertMulti(fi.fileName(), filePath);
+        }
         fillDataItems(fi.absoluteFilePath(), options.testFlag(AddRecursively));
 
     } else if (fi.isFile()) {
@@ -82,7 +85,7 @@ void U2DataPath::init() {
     valid = true;
 }
 
-void U2DataPath::fillDataItems(const QDir &dir, bool recurcive) {
+void U2DataPath::fillDataItems(const QDir &dir, bool recursive) {
     QFileInfoList infoList = dir.entryInfoList( QDir::Dirs | QDir::NoDotAndDotDot | QDir::Files);
 
     foreach (const QFileInfo &fi, infoList) {
@@ -101,8 +104,8 @@ void U2DataPath::fillDataItems(const QDir &dir, bool recurcive) {
                 dataItems.insertMulti(fileName, filePath);
             }
 
-            if (recurcive) {
-                fillDataItems(fi.absoluteFilePath(), recurcive);
+            if (recursive) {
+                fillDataItems(fi.absoluteFilePath(), recursive);
             }
         }
     }

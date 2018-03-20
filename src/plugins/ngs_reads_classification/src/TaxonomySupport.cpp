@@ -192,7 +192,7 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
         return tree;
     }
 
-    QString nodesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES);
+    QString nodesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID);
     QFile nodesFile(nodesUrl);
     if (!nodesFile.open(QIODevice::ReadOnly)) {
         algoLog.error(QString("Cannot open taxonomy classification data: %1").arg(nodesUrl));
@@ -255,7 +255,7 @@ TaxonomyTree *TaxonomyTree::load(TaxonomyTree *tree)
         nodesFile.close();
     }
 
-    QString namesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NAMES);
+    QString namesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID);
     QFile namesFile(namesUrl);
     if (!namesFile.open(QIODevice::ReadOnly)) {
         algoLog.error(QString("Cannot open taxonomy classification data: %1").arg(namesUrl));

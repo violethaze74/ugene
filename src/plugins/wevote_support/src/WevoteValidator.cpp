@@ -43,13 +43,13 @@ bool WevoteValidator::validateTaxonomyData(const Actor *actor, ProblemList &prob
     SAFE_POINT_EXT(NULL != taxonomyDataPath, problemList.append(Problem("Taxonomy data path is not registered", actor->getId())), false);
     CHECK_EXT(taxonomyDataPath->isValid(), problemList.append(Problem(LocalWorkflow::WevotePrompter::tr("Taxonomy data are missed"), actor->getId())), false);
 
-    if (taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES).isEmpty()) {
-        problemList << Problem(LocalWorkflow::WevotePrompter::tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_NODES), actor->getId());
+    if (taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID).isEmpty()) {
+        problemList << Problem(LocalWorkflow::WevotePrompter::tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID), actor->getId());
         isValid = false;
     }
 
-    if (taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NAMES).isEmpty()) {
-        problemList << Problem(LocalWorkflow::WevotePrompter::tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_NAMES), actor->getId());
+    if (taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID).isEmpty()) {
+        problemList << Problem(LocalWorkflow::WevotePrompter::tr("Taxonomy file '%1' is not found.").arg(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID), actor->getId());
         isValid = false;
     }
 

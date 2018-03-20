@@ -9,6 +9,6 @@ HEADERS += src/ClarkBuildWorker.h \
 SOURCES += src/ClarkBuildWorker.cpp \
            src/ClarkClassifyWorker.cpp \
            src/ClarkSupport.cpp \
-           src/ClarkSupportPlugin.cpp \
+           src/ClarkSupportPlugin.cpp
 
 TRANSLATIONS += transl/english.ts transl/russian.ts

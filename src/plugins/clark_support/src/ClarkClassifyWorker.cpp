@@ -56,8 +56,9 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
-#include "ClarkSupport.h"
 #include "ClarkClassifyWorker.h"
+#include "ClarkSupport.h"
+#include "../ngs_reads_classification/src/DatabaseDelegate.h"
 #include "../ngs_reads_classification/src/GetReadListWorker.h"
 
 namespace U2 {
@@ -260,15 +261,24 @@ void ClarkClassifyWorkerFactory::init() {
                                                                      "One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.<br><br>"
                                                                      "The input files should be in FASTA or FASTQ formats."));
 
-
         Attribute *sequencingReadsAttribute = new Attribute(sequencingReadsDesc, BaseTypes::STRING_TYPE(), Attribute::None, SINGLE_END);
-//        sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(PAIRED_INPUT_PORT, QVariantList() << PAIRED_END));
-//        sequencingReadsAttribute->addPortRelation(PortRelationDescriptor(INPUT_PORT, QVariantList() << SINGLE_END));
         sequencingReadsAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT, GetReadsListWorkerFactory::PE_SLOT().getId(), QVariantList() << PAIRED_END));
         a << sequencingReadsAttribute;
-
         a << new Attribute(tool, BaseTypes::STRING_TYPE(), Attribute::None, ClarkClassifySettings::TOOL_LIGHT);
-        a << new Attribute(dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required);
+
+        QString clarkDatabasePath;
+        U2DataPath *clarkBacteriaViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_DATA_ID);
+        if (NULL != clarkBacteriaViralDataPath && clarkBacteriaViralDataPath->isValid()) {
+            clarkDatabasePath = clarkBacteriaViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_ITEM_ID);
+        } else {
+            U2DataPath *clarkViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_DATA_ID);
+            if (NULL != clarkViralDataPath && clarkViralDataPath->isValid()) {
+                clarkDatabasePath = clarkViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_ITEM_ID);
+            }
+        }
+        a << new Attribute(dbUrl, BaseTypes::STRING_TYPE(), Attribute::Required, clarkDatabasePath);
+
+        a << new Attribute(outputUrl, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
 
 //        a << new Attribute( taxonomy, BaseTypes::STRING_TYPE(), false, "Default");
 //        a << new Attribute( rank, BaseTypes::NUM_TYPE(), false, ClarkClassifySettings::Species);
@@ -362,9 +372,10 @@ void ClarkClassifyWorkerFactory::init() {
         thrMap["maximum"] = QVariant(AppResourcePool::instance()->getIdealThreadCount());
         delegates[NUM_THREADS] = new SpinBoxDelegate(thrMap);
 
-        DelegateTags tags;
-        tags.set(DelegateTags::PLACEHOLDER_TEXT, L10N::required());
-        delegates[DB_URL] = new URLDelegate(tags, "clark/database", false, true/*isPath*/);
+        QList<StrStrPair> dataPathItems;
+        dataPathItems << StrStrPair(NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_DATA_ID, NgsReadsClassificationPlugin::CLARK_BACTERIA_VIRAL_DATABASE_ITEM_ID);
+        dataPathItems << StrStrPair(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_DATA_ID, NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_ITEM_ID);
+        delegates[DB_URL] = new DatabaseDelegate(ACTOR_ID, DB_URL, dataPathItems, "clark/database", true);
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
@@ -379,7 +390,6 @@ void ClarkClassifyWorkerFactory::init() {
     localDomain->registerEntry(new ClarkClassifyWorkerFactory());
 }
 
-// FIXME unused ???
 void ClarkClassifyWorkerFactory::cleanup() {
     delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

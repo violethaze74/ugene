@@ -25,6 +25,7 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DataPathRegistry.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
 
@@ -43,6 +44,7 @@
 #include "DiamondClassifyWorkerFactory.h"
 #include "DiamondSupport.h"
 #include "DiamondTaxonomyDataValidator.h"
+#include "../../ngs_reads_classification/src/DatabaseDelegate.h"
 #include "../../ngs_reads_classification/src/GetReadListWorker.h"
 #include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
@@ -107,10 +109,10 @@ void DiamondClassifyWorkerFactory::init() {
                                     DiamondClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
                                                                 "The input files may contain single-end reads, scaffolds, or \"left\" reads in case of the paired-end sequencing (see \"Input data\" parameter of the element)."));
 
-        const Descriptor inPairedPortDesc(INPUT_PAIRED_PORT_ID,
-                                          DiamondClassifyPrompter::tr("Input sequences 2"),
-                                          DiamondClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
-                                                                      "The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
+//        const Descriptor inPairedPortDesc(INPUT_PAIRED_PORT_ID,
+//                                          DiamondClassifyPrompter::tr("Input sequences 2"),
+//                                          DiamondClassifyPrompter::tr("URL(s) to FASTQ or FASTA file(s) should be provided.\n\n"
+//                                                                      "The port is used, if paired-end sequencing was done. The input files should contain the \"right\" reads (see \"Input data\" parameter of the element)."));
 
         const Descriptor outPortDesc(OUTPUT_PORT_ID,
                                      DiamondClassifyPrompter::tr("DIAMOND Classification"),
@@ -146,10 +148,22 @@ void DiamondClassifyWorkerFactory::init() {
                                        DiamondClassifyPrompter::tr("Specify the output file name."));
 
 //        Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, DiamondClassifyTaskSettings::SINGLE_END);       // FIXME: diamond can't work with paired reads
+
+        QString diamondDatabasePath;
+        U2DataPath *uniref50DataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_DATA_ID);
+        if (NULL != uniref50DataPath && uniref50DataPath->isValid()) {
+            diamondDatabasePath = uniref50DataPath->getPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_ITEM_ID);
+        } else {
+            U2DataPath *clarkViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_90_DATABASE_DATA_ID);
+            if (NULL != clarkViralDataPath && clarkViralDataPath->isValid()) {
+                diamondDatabasePath = clarkViralDataPath->getPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_90_DATABASE_ITEM_ID);
+            }
+        }
+
 //        attributes << inputDataAttribute;       // FIXME: diamond can't work with paired reads
 //        inputDataAttribute->addPortRelation(PortRelationDescriptor(INPUT_PAIRED_PORT_ID, QVariantList() << DiamondClassifyTaskSettings::PAIRED_END));       // FIXME: diamond can't work with paired reads
 
-        attributes << new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required);
+        attributes << new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required, diamondDatabasePath);
         attributes << new Attribute(code, BaseTypes::NUM_TYPE(), Attribute::None, 1);
         attributes << new Attribute(sense, BaseTypes::STRING_TYPE(), Attribute::None, DiamondClassifyTaskSettings::SENSITIVE_DEFAULT);
         attributes << new Attribute(fshift, BaseTypes::NUM_TYPE(), Attribute::None, 0);
@@ -170,7 +184,12 @@ void DiamondClassifyWorkerFactory::init() {
 //        inputDataMap[PAIRED_END_TEXT] = DiamondClassifyTaskSettings::PAIRED_END;
 //        delegates[INPUT_DATA_ATTR_ID] = new ComboBoxDelegate(inputDataMap);       // FIXME: diamond can't work with paired reads
 
-        delegates[DATABASE_ATTR_ID] = new URLDelegate("", "diamond/database", false, false, false);
+        {
+            QList<StrStrPair> dataPathItems;
+            dataPathItems << StrStrPair(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_DATA_ID, NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_ITEM_ID);
+            dataPathItems << StrStrPair(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_90_DATABASE_DATA_ID, NgsReadsClassificationPlugin::DIAMOND_UNIPROT_90_DATABASE_ITEM_ID);
+            delegates[DATABASE_ATTR_ID] = new DatabaseDelegate(ACTOR_ID, DATABASE_ATTR_ID, dataPathItems, "diamond/database", false);
+        }
         {
             QVariantMap idMap;
             QList<DNATranslation*> TTs = AppContext::getDNATranslationRegistry()->
@@ -248,7 +267,6 @@ void DiamondClassifyWorkerFactory::init() {
         threadsNumberProperties["maximum"] = QThread::idealThreadCount();
         delegates[THREADS_ATTR_ID] = new SpinBoxDelegate(threadsNumberProperties);
 
-
         DelegateTags outputUrlTags;
         outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "auto");
         outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT, true, QStringList()));
@@ -275,10 +293,10 @@ void DiamondClassifyWorkerFactory::init() {
 }
 
 void DiamondClassifyWorkerFactory::cleanup() {
-    WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
+    delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
-    localDomain->unregisterEntry(ACTOR_ID);
+    delete localDomain->unregisterEntry(ACTOR_ID);
 }
 
 }   // namespace LocalWorkflow

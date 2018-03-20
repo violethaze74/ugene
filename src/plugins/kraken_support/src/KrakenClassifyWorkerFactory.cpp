@@ -25,6 +25,7 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DataPathRegistry.h>
 #include <U2Core/L10n.h>
 
 #include <U2Designer/DelegateEditors.h>
@@ -42,8 +43,9 @@
 #include "KrakenClassifyWorkerFactory.h"
 #include "KrakenClassifyPrompter.h"
 #include "KrakenSupport.h"
-#include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
+#include "../../ngs_reads_classification/src/DatabaseDelegate.h"
 #include "../../ngs_reads_classification/src/GetReadListWorker.h"
+#include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -138,7 +140,12 @@ void KrakenClassifyWorkerFactory::init() {
         inputDataAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT_ID, GetReadsListWorkerFactory::PE_SLOT().getId(), QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
         attributes << inputDataAttribute;
 
-        Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), true);
+        QString minikrakenPath;
+        U2DataPath *minikrakenDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_DATA_ID);
+        if (NULL != minikrakenDataPath && minikrakenDataPath->isValid()) {
+            minikrakenPath = minikrakenDataPath->getPathByName(NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_ITEM_ID);
+        }
+        Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), Attribute::Required, minikrakenPath);
         attributes << databaseAttribute;
 
         attributes << new Attribute(quickOperationDesc, BaseTypes::BOOL_TYPE(), Attribute::None, false);
@@ -161,7 +168,12 @@ void KrakenClassifyWorkerFactory::init() {
         inputDataMap[PAIRED_END_TEXT] = KrakenClassifyTaskSettings::PAIRED_END;
         delegates[INPUT_DATA_ATTR_ID] = new ComboBoxDelegate(inputDataMap);
 
-        delegates[DATABASE_ATTR_ID] = new URLDelegate("", "kraken/database", false, true, false);
+        delegates[DATABASE_ATTR_ID] = new DatabaseDelegate(ACTOR_ID,
+                                                           DATABASE_ATTR_ID,
+                                                           NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_DATA_ID,
+                                                           NgsReadsClassificationPlugin::MINIKRAKEN_4_GB_ITEM_ID,
+                                                           "kraken/database",
+                                                           true);
 
         DelegateTags outputUrlTags;
         outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "auto");
@@ -194,10 +206,10 @@ void KrakenClassifyWorkerFactory::init() {
 }
 
 void KrakenClassifyWorkerFactory::cleanup() {
-    WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
+    delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
-    localDomain->unregisterEntry(ACTOR_ID);
+    delete localDomain->unregisterEntry(ACTOR_ID);
 }
 
 }   // namespace LocalWorkflow

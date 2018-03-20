@@ -189,7 +189,16 @@ void GetReadsListWorkerFactory::init() {
         WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
         WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new GetReadsListWorkerFactory(PE_ACTOR_ID));
     }
+}
 
+void GetReadsListWorkerFactory::cleanup() {
+    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+
+    delete WorkflowEnv::getProtoRegistry()->unregisterProto(SE_ACTOR_ID);
+    delete localDomain->unregisterEntry(SE_ACTOR_ID);
+
+    delete WorkflowEnv::getProtoRegistry()->unregisterProto(PE_ACTOR_ID);
+    delete localDomain->unregisterEntry(PE_ACTOR_ID);
 }
 
 Worker *GetReadsListWorkerFactory::createWorker(Actor *a) {
