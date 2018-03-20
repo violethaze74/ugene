@@ -24,13 +24,15 @@
 
 #include <U2Designer/DelegateEditors.h>
 
+#include "NgsReadsClassificationPlugin.h"
+
 namespace U2 {
 
 class U2DataPath;
 
 namespace LocalWorkflow {
 
-class DatabaseDelegate : public URLDelegate {
+class U2NGS_READS_CLASSIFICATION_EXPORT DatabaseDelegate : public URLDelegate {
 public:
     DatabaseDelegate(const QString &actorPrototypeId,
                      const QString &attributeName,
