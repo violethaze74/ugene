@@ -200,6 +200,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_sequence/sequence_info/DinuclOccurTask.h \
            src/ov_sequence/sequence_info/SequenceInfo.h \
            src/ov_sequence/sequence_info/SequenceInfoFactory.h \
+           src/ov_sequence/sequence_info/StatisticsCache.h \
            src/ov_sequence/view_rendering/DetViewMultiLineRenderer.h \
            src/ov_sequence/view_rendering/DetViewRenderer.h \
            src/ov_sequence/view_rendering/DetViewSingleLineRenderer.h \

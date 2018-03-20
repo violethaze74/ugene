@@ -33,8 +33,6 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2View/ADVSequenceObjectContext.h>
-
 #include "AutoAnnotationsSupport.h"
 
 namespace U2 {

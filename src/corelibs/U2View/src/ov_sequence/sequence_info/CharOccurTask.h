@@ -33,21 +33,21 @@ class DNAAlphabet;
 class U2SequenceObject;
 class U2Region;
 
-
 struct CharOccurResult
 {
 public:
     CharOccurResult(char charInSequence, qint64 numberOfOccurrence, double percentageOfOccur);
 
-    inline char     getChar() { return charInSequence; }
-    inline qint64   getNumberOfOccur() { return numberOfOccurr; }
-    inline double   getPercentage() { return percentageOfOccur; }
+    inline char     getChar() const { return charInSequence; }
+    inline qint64   getNumberOfOccur() const { return numberOfOccurr; }
+    inline double   getPercentage() const { return percentageOfOccur; }
 private:
     char        charInSequence;
     qint64      numberOfOccurr;
     double      percentageOfOccur;
 };
 
+typedef QList<CharOccurResult> CharactersOccurrence;
 
 class U2VIEW_EXPORT CharOccurTask : public BackgroundTask< QList<CharOccurResult> >
 {

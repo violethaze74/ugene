@@ -28,6 +28,10 @@
 #include <QMenu>
 #include <QSet>
 
+#include <U2View/CharOccurTask.h>
+#include <U2View/DinuclOccurTask.h>
+#include <U2View/DNAStatisticsTask.h>
+#include <U2View/StatisticsCache.h>
 
 namespace U2 {
 
@@ -99,6 +103,10 @@ public:
     void setTranslationState(const TranslationState state);
     TranslationState getTranslationState() const;
 
+    StatisticsCache<DNAStatistics> *getCommonStatisticsCache();
+    StatisticsCache<CharactersOccurrence> *getCharactersOccurrenceCache();
+    StatisticsCache<DinucleotidesOccurrence> *getDinucleotidesOccurrenceCache();
+
 private slots:
     void sl_setAminoTranslation();
     void sl_toggleTranslations();
@@ -134,6 +142,11 @@ protected:
     QSet<AnnotationTableObject *>   autoAnnotations;
     bool                            clarifyAminoTT;
     bool                            rowChoosed;
+
+    // Caches
+    StatisticsCache<DNAStatistics>              commonStatisticsCache;
+    StatisticsCache<CharactersOccurrence>       charactersOccurrenceCache;
+    StatisticsCache<DinucleotidesOccurrence>    dinucleotidesOccurrenceCache;
 
     // SANGER_TODO:
     AnnotationSelection* annSelection;

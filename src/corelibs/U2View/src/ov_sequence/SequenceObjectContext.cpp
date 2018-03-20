@@ -93,6 +93,14 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
     }
     annSelection = new AnnotationSelection(this);
     translationMenuActions = new QActionGroup(this);
+
+    connect(seqObj, SIGNAL(si_sequenceChanged()), &commonStatisticsCache, SLOT(sl_invalidate()));
+    connect(seqObj, SIGNAL(si_sequenceChanged()), &charactersOccurrenceCache, SLOT(sl_invalidate()));
+    connect(seqObj, SIGNAL(si_sequenceChanged()), &dinucleotidesOccurrenceCache, SLOT(sl_invalidate()));
+
+    connect(selection, SIGNAL(si_onSelectionChanged(GSelection *)), &commonStatisticsCache, SLOT(sl_invalidate()));
+    connect(selection, SIGNAL(si_onSelectionChanged(GSelection *)), &charactersOccurrenceCache, SLOT(sl_invalidate()));
+    connect(selection, SIGNAL(si_onSelectionChanged(GSelection *)), &dinucleotidesOccurrenceCache, SLOT(sl_invalidate()));
 }
 
 void SequenceObjectContext::guessAminoTT(const AnnotationTableObject *ao) {
@@ -238,6 +246,18 @@ void SequenceObjectContext::setTranslationState(const SequenceObjectContext::Tra
 SequenceObjectContext::TranslationState SequenceObjectContext::getTranslationState() const {
     CHECK(translationMenuActions->actions().size() == 4, SequenceObjectContext::TS_DoNotTranslate);
     return (SequenceObjectContext::TranslationState)translationMenuActions->checkedAction()->data().toInt();
+}
+
+StatisticsCache<DNAStatistics> *SequenceObjectContext::getCommonStatisticsCache() {
+    return &commonStatisticsCache;
+}
+
+StatisticsCache<CharactersOccurrence> *SequenceObjectContext::getCharactersOccurrenceCache() {
+    return &charactersOccurrenceCache;
+}
+
+StatisticsCache<DinucleotidesOccurrence> *SequenceObjectContext::getDinucleotidesOccurrenceCache() {
+    return &dinucleotidesOccurrenceCache;
 }
 
 void SequenceObjectContext::sl_onAnnotationRelationChange() {

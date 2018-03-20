@@ -32,6 +32,7 @@
 #include "CharOccurTask.h"
 #include "DinuclOccurTask.h"
 #include "DNAStatisticsTask.h"
+#include "StatisticsCache.h"
 
 class QLabel;
 
@@ -58,7 +59,7 @@ private slots:
     void sl_onFocusChanged(ADVSequenceWidget *from, ADVSequenceWidget *to);
 
     /** A sequence part was added, removed or replaced */
-    void sl_onSequenceModified(ADVSequenceObjectContext*);
+    void sl_onSequenceModified();
 
     /** A sequence object has been added */
     void sl_onSequenceAdded(ADVSequenceObjectContext*);
@@ -77,9 +78,16 @@ private:
 
     /** Show or hide widgets depending on the alphabet of the sequence in focus */
     void updateLayout(); // calls the following update functions
-    void updateCommonStatisticsLayout();
     void updateCharOccurLayout();
     void updateDinuclLayout();
+
+    void updateData();
+    void updateCommonStatisticsData();
+    void updateCommonStatisticsData(const DNAStatistics &commonStatistics);
+    void updateCharactersOccurrenceData();
+    void updateCharactersOccurrenceData(const CharactersOccurrence &charactersOccurrence);
+    void updateDinucleotidesOccurrenceData();
+    void updateDinucleotidesOccurrenceData(const DinucleotidesOccurrence &dinucleotidesOccurrence);
 
     /**  Listen when something has been changed in the AnnotatedDNAView or in the Options Panel */
     void connectSlotsForSeqContext(ADVSequenceObjectContext*);
@@ -107,22 +115,25 @@ private:
     int getAvailableSpace(DNAAlphabetType alphabetType) const;
 
     QString formTableRow(const QString& caption, const QString &value, int availableSpace) const;
-    QString tableValue(double value, int prec = 2) const;
+
+    StatisticsCache<DNAStatistics> *getCommonStatisticsCache() const;
+    StatisticsCache<CharactersOccurrence> *getCharactersOccurrenceCache() const;
+    StatisticsCache<DinucleotidesOccurrence> *getDinucleotidesOccurrenceCache() const;
 
     AnnotatedDNAView* annotatedDnaView;
 
     ShowHideSubgroupWidget* statsWidget;
     QLabel* statisticLabel;
-    BackgroundTaskRunner< DNAStatistics > dnaStatisticsTaskRunner;
+    BackgroundTaskRunner<DNAStatistics> dnaStatisticsTaskRunner;
     DNAStatistics currentCommonStatistics;
 
     ShowHideSubgroupWidget* charOccurWidget;
     QLabel* charOccurLabel;
-    BackgroundTaskRunner< QList<CharOccurResult> > charOccurTaskRunner;
+    BackgroundTaskRunner<CharactersOccurrence> charOccurTaskRunner;
 
     ShowHideSubgroupWidget* dinuclWidget;
     QLabel* dinuclLabel;
-    BackgroundTaskRunner< QMap<QByteArray, qint64> > dinuclTaskRunner;
+    BackgroundTaskRunner<DinucleotidesOccurrence> dinuclTaskRunner;
 
     U2Region currentRegion;
 
