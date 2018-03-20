@@ -49,7 +49,6 @@ private:
     QString checkPairedReads() const;
 
     DiamondClassifyTaskSettings getSettings(U2OpStatus &os);
-    QString getClassificationFileName(const Message &message) const;
     TaxonomyClassificationResult parseReport(const QString &url);
 
     IntegralBus *input;

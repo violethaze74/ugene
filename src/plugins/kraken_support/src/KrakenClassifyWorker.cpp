@@ -33,6 +33,7 @@
 #include "KrakenClassifyWorker.h"
 #include "KrakenClassifyWorkerFactory.h"
 #include "../ngs_reads_classification/src/GetReadListWorker.h"
+#include "../ngs_reads_classification/src/NgsReadsClassificationUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -180,7 +181,7 @@ KrakenClassifyTaskSettings KrakenClassifyWorker::getSettings(U2OpStatus &os) {
     settings.classificationUrl = getValue<QString>(KrakenClassifyWorkerFactory::OUTPUT_URL_ATTR_ID);
     if (settings.classificationUrl.isEmpty()) {
         const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
-        settings.classificationUrl = tmpDir + "/" + QFileInfo(metadata.getFileUrl()).completeBaseName() + "_Kraken_classification.txt";
+        settings.classificationUrl = tmpDir + "/" + NgsReadsClassificationUtils::getClassificationFileName(metadata.getFileUrl(), "Kraken", "txt", pairedReadsInput);
     }
     settings.classificationUrl = GUrlUtils::rollFileName(settings.classificationUrl, "_");
 

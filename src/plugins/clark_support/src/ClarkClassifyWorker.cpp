@@ -60,6 +60,7 @@
 #include "ClarkSupport.h"
 #include "../ngs_reads_classification/src/DatabaseDelegate.h"
 #include "../ngs_reads_classification/src/GetReadListWorker.h"
+#include "../ngs_reads_classification/src/NgsReadsClassificationUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -472,7 +473,7 @@ Task * ClarkClassifyWorker::tick() {
         QString reportUrl = getValue<QString>(OUTPUT_URL);
         if (reportUrl.isEmpty()) {
             const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
-            reportUrl = tmpDir + "/" + QFileInfo(metadata.getFileUrl()).completeBaseName() + "_CLARK_classification.csv";
+            reportUrl = tmpDir + "/" + NgsReadsClassificationUtils::getClassificationFileName(metadata.getFileUrl(), "CLARK", "csv", paired);
         }
         reportUrl = GUrlUtils::ensureFileExt(reportUrl, QStringList("csv")).getURLString();
         reportUrl = GUrlUtils::rollFileName(reportUrl, "_");
