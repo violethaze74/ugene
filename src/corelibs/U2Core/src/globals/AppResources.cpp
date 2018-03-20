@@ -48,26 +48,24 @@
 namespace U2 {
 
 #if defined(Q_OS_LINUX)
-void process_mem_usage(double& vm_usage, double& resident_set) {
+void process_mem_usage(size_t& vm_usage) {
     using std::ios_base;
     using std::ifstream;
     using std::string;
 
-    vm_usage = 0.0;
+    vm_usage = 0;
 
     // 'file' stat seems to give the most reliable results
-    //
     ifstream stat_stream("/proc/self/stat");
-
+    CHECK(stat_stream.good());
+    
     // dummy vars for leading entries in stat that we don't care about
-    //
     string pid, comm, state, ppid, pgrp, session, tty_nr;
     string tpgid, flags, minflt, cminflt, majflt, cmajflt;
     string utime, stime, cutime, cstime, priority, nice;
     string O, itrealvalue, starttime;
 
     // the two fields we want
-    //
     unsigned long vsize;
 
     stat_stream >> pid >> comm >> state >> ppid >> pgrp >> session >> tty_nr
@@ -77,7 +75,7 @@ void process_mem_usage(double& vm_usage, double& resident_set) {
 
     stat_stream.close();
 
-    vm_usage = vsize / 1024.0;
+    vm_usage = vsize;
 }
 #endif
 
@@ -196,9 +194,9 @@ size_t AppResourcePool::getCurrentAppMemory() {
 #ifdef Q_OS_WIN
     PROCESS_MEMORY_COUNTERS memCounter;
     bool result = GetProcessMemoryInfo(GetCurrentProcess(), &memCounter, sizeof(memCounter));
-    return result ? memCounter.WorkingSetSize : -1;
+    return result ? memCounter.WorkingSetSize : 0;
 #elif defined(Q_OS_LINUX)
-    double vm;
+    size_t vm = 0;
     process_mem_usage(vm);
     return vm;
 #elif defined(Q_OS_FREEBSD)
@@ -210,7 +208,7 @@ size_t AppResourcePool::getCurrentAppMemory() {
      bool ok = false;
      qlonglong output_mem = ps_vsize.toLongLong(&ok);
      if (ok) {
-         return output_mem / 1024;
+         return output_mem;
      }
 #elif defined(Q_OS_MAC)
 //    qint64 pid = QCoreApplication::applicationPid();
