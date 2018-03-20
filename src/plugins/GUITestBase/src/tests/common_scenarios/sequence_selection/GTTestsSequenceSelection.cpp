@@ -158,6 +158,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
         CHECK_SET_ERR(par->isExpanded(), "Item is not expanded");
         par = par->parent();
     }
+    CHECK_SET_ERR(!items[2]->isExpanded(), "Item is expanded");
 
     //3. Click on the "Zoom In" button in the Zoom View left toolbar.
     QAction* zoom = GTAction::findActionByText(os, "Zoom In");
@@ -638,6 +639,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
         CHECK_SET_ERR(par->isExpanded(), "Item is not expanded");
         par = par->parent();
     }
+    CHECK_SET_ERR(!items[2]->isExpanded(), "Item is expanded");
 
     //3. Click on the "Zoom In" button in the Zoom View left toolbar.
     QAction* zoom = GTAction::findActionByText(os, "Zoom In");
