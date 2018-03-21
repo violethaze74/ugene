@@ -87,6 +87,7 @@ void SequenceInfo::initLayout()
     statisticLabelContainer->layout()->setContentsMargins(0, 0, 0, 0);
 
     statisticLabel = new QLabel(statisticLabelContainer);
+    statisticLabel->installEventFilter(this);
     statisticLabel->setMinimumWidth(1);
     statisticLabel->setObjectName("Common Statistics");
     statisticLabelContainer->layout()->addWidget(statisticLabel);
@@ -130,11 +131,7 @@ void SequenceInfo::updateLayout()
 namespace {
 
 /** Formats long number by separating each three digits */
-QString getFormattedLongNumber(qint64 num)
-{
-    if (num == 0) {
-        return QString("N/A");
-    }
+QString getFormattedLongNumber(qint64 num) {
     QString result;
 
     int DIVIDER = 1000;
@@ -403,6 +400,13 @@ void SequenceInfo::sl_subgroupStateChanged(QString subgroupId) {
     }
 }
 
+bool SequenceInfo::eventFilter(QObject *object, QEvent *event) {
+    if (event->type() == QEvent::Resize && object == statisticLabel) {
+        updateCommonStatisticsData();
+    }
+    return false;
+}
+
 void SequenceInfo::updateCurrentRegion()
 {
     ADVSequenceObjectContext* seqContext = annotatedDnaView->getSequenceInFocus();
@@ -455,11 +459,6 @@ void SequenceInfo::launchCalculations(QString subgroupId)
             updateCommonStatisticsData(getCommonStatisticsCache()->getStatistics());
         }
     }
-}
-
-void SequenceInfo::resizeEvent(QResizeEvent *event) {
-    updateCommonStatisticsData();
-    QWidget::resizeEvent(event);
 }
 
 int SequenceInfo::getAvailableSpace(DNAAlphabetType alphabetType) const {

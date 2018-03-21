@@ -28,7 +28,7 @@ namespace U2 {
 
 class StatisticsCacheBase : public QObject {
     Q_OBJECT
-public:
+public slots:
     virtual void sl_invalidate() = 0;
 };
 
