@@ -72,6 +72,8 @@ private slots:
     /** A subgroup (e.g. characters occurrence subgroup) has been opened/closed */
     void sl_subgroupStateChanged(QString subgroupId);
 
+    bool eventFilter(QObject *object, QEvent *event);
+
 private:
     /** Initializes the whole layout of the widget */
     void initLayout();
@@ -109,8 +111,6 @@ private:
      * Empty subgroupId means that the signal has come from other place and all required calculation should be re-done.
      */
     void launchCalculations(QString subgroupId = QString(""));
-
-    void resizeEvent(QResizeEvent *event);
 
     int getAvailableSpace(DNAAlphabetType alphabetType) const;
 
