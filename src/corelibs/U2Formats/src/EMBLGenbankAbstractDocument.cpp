@@ -51,7 +51,7 @@
 
 namespace U2 {
 
-const int ParserState::LOCAL_READ_BUFFER_SIZE = 40000;
+const int ParserState::LOCAL_READ_BUFFER_SIZE = 4 * 1024 * 1024;
 
 const QString EMBLGenbankAbstractDocument::REMOTE_ENTRY_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The file contains features of another remote GenBank file. These features have been skipped.");
 const QString EMBLGenbankAbstractDocument::JOIN_COMPLEMENT_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.");
