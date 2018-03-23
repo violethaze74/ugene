@@ -191,23 +191,23 @@ void DiamondClassifyWorkerFactory::init() {
             delegates[DATABASE_ATTR_ID] = new DatabaseDelegate(ACTOR_ID, DATABASE_ATTR_ID, dataPathItems, "diamond/database", false);
         }
         {
-            QVariantMap idMap;
+            QList<ComboItem> idMap;
             QList<DNATranslation*> TTs = AppContext::getDNATranslationRegistry()->
                 lookupTranslation(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()),
                 DNATranslationType_NUCL_2_AMINO);
             int prefixLen = QString(DNATranslationID(1)).size() - 1;
             foreach(DNATranslation* tt, TTs) {
                 QString id = tt->getTranslationId();
-                idMap[tt->getTranslationName()] = id.mid(prefixLen).toInt();
+                idMap.append(qMakePair(tt->getTranslationName(), id.mid(prefixLen).toInt()));
             }
             delegates[GENCODE_ATTR_ID] = new ComboBoxDelegate(idMap);
         }
         {
-            QVariantMap map;
-            map[DiamondClassifyPrompter::tr("Default")] = DiamondClassifyTaskSettings::SENSITIVE_DEFAULT;
-            map[DiamondClassifyPrompter::tr("Sensitive")] = DiamondClassifyTaskSettings::SENSITIVE_HIGH;
-            map[DiamondClassifyPrompter::tr("More sensitive")] = DiamondClassifyTaskSettings::SENSITIVE_ULTRA;
-            delegates[SENSITIVE_ATTR_ID] = new ComboBoxDelegate(map);
+            QList<ComboItem> items;
+            items.append(qMakePair(DiamondClassifyPrompter::tr("Default"), DiamondClassifyTaskSettings::SENSITIVE_DEFAULT));
+            items.append(qMakePair(DiamondClassifyPrompter::tr("Sensitive"), DiamondClassifyTaskSettings::SENSITIVE_HIGH));
+            items.append(qMakePair(DiamondClassifyPrompter::tr("More sensitive"), DiamondClassifyTaskSettings::SENSITIVE_ULTRA));
+            delegates[SENSITIVE_ATTR_ID] = new ComboBoxDelegate(items);
         }
         {
             QVariantMap map;
@@ -216,18 +216,23 @@ void DiamondClassifyWorkerFactory::init() {
             map[DiamondClassifyTaskSettings::BLOSUM62] = DiamondClassifyTaskSettings::BLOSUM62;
             map[DiamondClassifyTaskSettings::BLOSUM80] = DiamondClassifyTaskSettings::BLOSUM80;
             map[DiamondClassifyTaskSettings::BLOSUM90] = DiamondClassifyTaskSettings::BLOSUM90;
+            map[DiamondClassifyTaskSettings::PAM30] = DiamondClassifyTaskSettings::PAM30;
+            map[DiamondClassifyTaskSettings::PAM70] = DiamondClassifyTaskSettings::PAM70;
+            map[DiamondClassifyTaskSettings::PAM250] = DiamondClassifyTaskSettings::PAM250;
             delegates[MATRIX_ATTR_ID] = new ComboBoxDelegate(map);
         }
 
         {
             QVariantMap map;
             map["minimum"] = -1;
+            map["maximum"] = std::numeric_limits<int>::max();
             map["specialValueText"] = DiamondClassifyPrompter::tr("Default");
             delegates[GO_PEN_ATTR_ID] = new SpinBoxDelegate(map);
         }
         {
             QVariantMap map;
             map["minimum"] = -1;
+            map["maximum"] = std::numeric_limits<int>::max();
             map["specialValueText"] = DiamondClassifyPrompter::tr("Default");
             delegates[GE_PEN_ATTR_ID] = new SpinBoxDelegate(map);
         }
@@ -235,12 +240,14 @@ void DiamondClassifyWorkerFactory::init() {
         {
             QVariantMap map;
             map["minimum"] = 0;
+            map["maximum"] = std::numeric_limits<int>::max();
             map["specialValueText"] = DiamondClassifyPrompter::tr("Skipped");
             delegates[FSHIFT_ATTR_ID] = new SpinBoxDelegate(map);
         }
         {
             QVariantMap map;
             map["minimum"] = 0;
+            map["maximum"] = std::numeric_limits<int>::max();
             map["specialValueText"] = DiamondClassifyPrompter::tr("Default");
             delegates[CHUNKS_ATTR_ID] = new SpinBoxDelegate(map);
         }

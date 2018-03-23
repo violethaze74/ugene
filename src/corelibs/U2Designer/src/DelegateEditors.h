@@ -34,6 +34,7 @@
 #include <QLineEdit>
 #include <QListWidget>
 #include <QModelIndex>
+#include <QPair>
 #include <QPointer>
 #include <QPushButton>
 #include <QSpinBox>
@@ -186,7 +187,8 @@ private:
 class U2DESIGNER_EXPORT ComboBoxDelegate : public PropertyDelegate {
     Q_OBJECT
 public:
-    ComboBoxDelegate(const QVariantMap& items, QObject *parent = 0);    // items: visible name -> value
+    ComboBoxDelegate(const QVariantMap& comboItems, QObject *parent = 0);    // items: visible name -> value
+    ComboBoxDelegate(const QList<ComboItem>& comboItems, QObject *parent = 0);    // items: visible name -> value
     virtual ~ComboBoxDelegate() {}
 
       QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
@@ -199,11 +201,13 @@ public:
       QVariant getDisplayValue(const QVariant&) const;
 
       virtual PropertyDelegate *clone() {
-          return new ComboBoxDelegate(items, parent());
+          return new ComboBoxDelegate(comboItems, parent());
       }
 
       void getItems( QVariantMap &items ) const;
-      QVariantMap getItems() const;
+
+protected:
+      QVariantMap getAvailableItems() const;
 
 signals:
     void si_valueChanged( const QString & newVal ) const;
@@ -212,7 +216,7 @@ private slots:
     void sl_commit();
 
 protected:
-    QVariantMap items;
+    QList<ComboItem> comboItems;
 };
 
 class U2DESIGNER_EXPORT ComboBoxEditableDelegate : public PropertyDelegate {
@@ -347,7 +351,7 @@ public:
     virtual ~FileModeDelegate() {}
 
     virtual PropertyDelegate *clone() {
-        return new FileModeDelegate(3 == items.size(), parent());
+        return new FileModeDelegate(3 == comboItems.size(), parent());
     }
 };
 

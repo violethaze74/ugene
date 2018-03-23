@@ -191,21 +191,37 @@ void DoubleSpinBoxDelegate::sl_commit() {
 * ComboBoxDelegate
 ********************************/
 ComboBoxDelegate::ComboBoxDelegate(const QVariantMap &items, QObject *parent)
+    : PropertyDelegate(parent)
+{
+    foreach (QString key, items.keys()) {
+        comboItems.append(qMakePair(key, items.value(key)));
+    }
+}
+ComboBoxDelegate::ComboBoxDelegate(const QList<ComboItem> &items, QObject *parent)
     : PropertyDelegate(parent),
-      items(items)
+      comboItems(items)
 {
 
 }
 
 PropertyWidget * ComboBoxDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
-    return new ComboBoxWidget(items, parent);
+    return new ComboBoxWidget(comboItems, parent);
 }
 
 QWidget *ComboBoxDelegate::createEditor(QWidget *parent,
                                         const QStyleOptionViewItem &/* option */,
                                         const QModelIndex &/* index */) const
 {
-    ComboBoxWidget *editor = new ComboBoxWidget(getItems(), parent);
+    QList<ComboItem> l;
+    QVariantMap m = getAvailableItems();
+    if (m.isEmpty()) {
+         l = comboItems;
+    } else {
+        foreach (QString key, m.keys()) {
+            l.append(qMakePair(key, m.value(key)));
+        }
+    }
+    ComboBoxWidget *editor = new ComboBoxWidget(l, parent);
     connect(editor, SIGNAL(valueChanged(const QString &)),
         SLOT(sl_commit()));
     connect(editor, SIGNAL(valueChanged(const QString &)),
@@ -230,23 +246,29 @@ void ComboBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
 }
 
 QVariant ComboBoxDelegate::getDisplayValue(const QVariant& val) const {
-    QString display = getItems().key(val);
+    QVariantMap m; getItems(m);
+    QString display = m.key(val);
     emit si_valueChanged( display );
     return QVariant( display );
 }
 
 void ComboBoxDelegate::getItems( QVariantMap &items ) const {
-    items = getItems();
+    items = getAvailableItems();
+    if (items.isEmpty()) {
+        foreach(ComboItem p, comboItems) {
+            items.insert(p.first, p.second);
+        }
+    }
 }
 
-QVariantMap ComboBoxDelegate::getItems() const {
+QVariantMap ComboBoxDelegate::getAvailableItems() const {
     DelegateTags *t = tags();
     if (t != NULL) {
         if (t->get("AvailableValues") != QVariant()) {
             return t->get("AvailableValues").toMap();
         }
     }
-    return items;
+    return QVariantMap();
 }
 
 void ComboBoxDelegate::sl_commit() {
@@ -587,10 +609,10 @@ PropertyDelegate::Type URLDelegate::type() const {
 ********************************/
 FileModeDelegate::FileModeDelegate(bool appendSupported, QObject *parent)
 : ComboBoxDelegate(QVariantMap(), parent) {
-    items.insert(U2::WorkflowUtils::tr("Overwrite"), SaveDoc_Overwrite);
-    items.insert(U2::WorkflowUtils::tr("Rename"), SaveDoc_Roll);
+    comboItems.append(qMakePair(U2::WorkflowUtils::tr("Overwrite"), SaveDoc_Overwrite));
+    comboItems.append(qMakePair(U2::WorkflowUtils::tr("Rename"), SaveDoc_Roll));
     if (appendSupported) {
-        items.insert(U2::WorkflowUtils::tr("Append"), SaveDoc_Append);
+        comboItems.append(qMakePair(U2::WorkflowUtils::tr("Append"), SaveDoc_Append));
     }
 }
 
@@ -602,8 +624,8 @@ const QString SchemaRunModeDelegate::REMOTE_COMPUTER_STR    = SchemaRunModeDeleg
 
 SchemaRunModeDelegate::SchemaRunModeDelegate( QObject * parent )
 : ComboBoxDelegate( QVariantMap(), parent ) {
-    items.insert( THIS_COMPUTER_STR, true );
-    items.insert( REMOTE_COMPUTER_STR, false );
+    comboItems.append(qMakePair( THIS_COMPUTER_STR, true ));
+    comboItems.append(qMakePair( REMOTE_COMPUTER_STR, false ));
 
     connect( this, SIGNAL( si_valueChanged( const QString & ) ), this,
         SLOT( sl_valueChanged( const QString & ) ) );
