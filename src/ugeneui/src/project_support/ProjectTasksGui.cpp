@@ -70,18 +70,24 @@ void CloseProjectTask::prepare() {
         stateInfo.setError(  tr("No active project found") );
         return;
     }
-
-    Project *p = AppContext::getProject();
-    if (p->isTreeItemModified()) {
-        addSubTask(AppContext::getProjectService()->saveProjectTask(SaveProjectTaskKind_SaveProjectAndDocumentsAskEach));
+    /* TODO: this is done by project view. Need to cleanup this part! 
+    addSubTask(new SaveProjectTask(SaveProjectTaskKind_SaveProjectAndDocumentsAskEach));
+    */
+    QList<Task*> tasks;
+    /**/
+    Project *pp = AppContext::getProject();
+    if (pp->isTreeItemModified()) {
+        tasks.append(AppContext::getProjectService()->saveProjectTask(SaveProjectTaskKind_SaveProjectAndDocumentsAskEach));
     }
-    
+    /**/
     ServiceRegistry* sr = AppContext::getServiceRegistry();
     QList<Service*> services = sr->findServices(Service_Project);
-    SAFE_POINT(services.size() == 1, "Expected to get exactly 1 project instance", );
-    
-    addSubTask(sr->unregisterServiceTask(services.first()));
+    assert(services.size() == 1);
+    Service* projectService = services.first();
+    tasks.append(sr->unregisterServiceTask(projectService));
+    addSubTask(new MultiTask(tr("Save and close project"), tasks));
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 /// OpenProjectTask
@@ -144,9 +150,9 @@ void SaveProjectTask::prepare() {
 
         QWidget* mainWindow = AppContext::getMainWindow()->getQMainWindow();
         int code;
-        if (silentSave == true){
+        if(silentSave == true){
             code = QDialogButtonBox::Yes;
-        } else {
+        }else{
             code = savedSaveProjectState;
             if (QDialogButtonBox::NoButton == savedSaveProjectState) {
                 // QMessageBox::NoButton is a special invalid button state, represents that no saved choise was made
@@ -162,10 +168,11 @@ void SaveProjectTask::prepare() {
                     AppContext::getAppSettings()->getUserAppsSettings()->setAskToSaveProject(code);
                 }
             }
-            if (code == QDialogButtonBox::Cancel) {
-                cancel();
-                return;
-            }
+        }
+
+        if (code == QDialogButtonBox::Cancel) {
+            cancel();
+            return;
         }
 
         if (code == QDialogButtonBox::Yes) {
@@ -181,6 +188,7 @@ void SaveProjectTask::prepare() {
                 }
                 AppContext::getProject()->setProjectURL(url);
             } else {
+                cancel();
                 return;
             }
         }
