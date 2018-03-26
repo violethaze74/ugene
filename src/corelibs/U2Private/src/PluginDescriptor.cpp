@@ -313,9 +313,13 @@ QList<PluginDesc> PluginDescriptorHelper::orderPlugins(const QList<PluginDesc>& 
     rootNode->root = true;
     allNodes.qlist.append(rootNode);
 
-    bool changed = false;
     QList<PluginDesc> queue = unordered;
+
+    int iterations = 0;
+    int maxIterations = queue.size();
+
     do  {
+        maxIterations = queue.size();
         PluginDesc desc = queue.takeFirst();
         QList<DepNode*> nodes;
         int nDeps = desc.dependsList.size();
@@ -337,11 +341,12 @@ QList<PluginDesc> PluginDescriptorHelper::orderPlugins(const QList<PluginDesc>& 
                 node->childNodes.append(descNode);
                 descNode->parentNodes.append(node);
             }
-            changed = true;
+            iterations = 0;
             continue;
         }
         queue.append(desc);
-    } while (changed && !queue.isEmpty());
+        iterations++;
+    } while (!queue.isEmpty() && iterations <= maxIterations);
 
     if (!queue.isEmpty()) {
         err = tr("Can't satisfy dependencies for %1 !").arg(queue.first().id);
