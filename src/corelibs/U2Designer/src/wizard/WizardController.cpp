@@ -497,6 +497,7 @@ QVariant WizardController::getAttributeValue(const AttributeInfo &info) const {
 void WizardController::setAttributeValue(const AttributeInfo &info, const QVariant &value) {
     values[info.toString()] = value;
 
+    Actor *actor = WorkflowUtils::actorById(currentActors, info.actorId);
     // Check attribute relations
     Attribute *attr = getAttribute(info);
     CHECK(NULL != attr, );
@@ -507,7 +508,6 @@ void WizardController::setAttributeValue(const AttributeInfo &info, const QVaria
         AttributeInfo related(info.actorId, relation->getRelatedAttrId());
         QVariant newValue = relation->getAffectResult(value, getAttributeValue(related), getTags(info),
                                                       getTags(related, true));
-        Actor *actor = WorkflowUtils::actorById(currentActors, info.actorId);
         Attribute *attr = getAttribute(info);
 
         bool canSetValue = false;
@@ -523,6 +523,23 @@ void WizardController::setAttributeValue(const AttributeInfo &info, const QVaria
             setAttributeValue(related, newValue);
             if (propertyControllers.contains(related.toString())) {
                 propertyControllers[related.toString()]->updateGUI(newValue);
+            }
+        }
+    }
+    foreach (Attribute* otherAttr, actor->getParameters().values()) {
+        if (otherAttr == attr) {
+            continue;
+        }
+        foreach (const AttributeRelation *relation, otherAttr->getRelations()) {
+            if (relation->getType() != VISIBILITY || relation->getRelatedAttrId() != attr->getId()) {
+                continue;
+            }
+            AttributeInfo related(info.actorId, otherAttr->getId());
+            if (propertyControllers.contains(related.toString())) {
+                bool isVisible = true;
+                //isVisible &= isAttributeVisible(masterAttribute);
+                isVisible &= relation->getAffectResult(value, getAttributeValue(related)).toBool();
+                propertyControllers[related.toString()]->updateVisibility(isVisible);
             }
         }
     }
@@ -774,6 +791,14 @@ void PageContentCreator::visit(DefaultPageContent *content) {
             contentLayout->addWidget(paramsWC.getResult());
             paramsWC.getResult()->setMinimumSize(paramsWidth, paramsHeight);
             controllers << paramsWC.getControllers();
+
+            //let it process attribute relations
+            foreach (WidgetController *wcc, controllers) {
+                PropertyWizardController *pwc = qobject_cast<PropertyWizardController*>(wcc);
+                if (pwc) {
+                    wc->setAttributeValue(pwc->attributeWidget()->getInfo(), wc->getAttributeValue(pwc->attributeWidget()->getInfo()));
+                }
+            }
         }
     }
     layout->addLayout(contentLayout);
