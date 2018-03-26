@@ -25,6 +25,8 @@
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
+#include "TaxonomySupport.h"
+
 namespace U2 {
 namespace LocalWorkflow {
 
@@ -43,7 +45,9 @@ class EnsembleClassificationWorker: public BaseWorker {
     Q_OBJECT
 public:
     EnsembleClassificationWorker(Actor *a);
+
 protected:
+    bool isReady() const;
     void init();
     Task * tick();
     void cleanup() {}
@@ -52,7 +56,13 @@ private slots:
     void sl_taskFinished(Task *task);
 
 private:
-    IntegralBus *input;
+    bool isReadyToRun() const;
+    bool dataFinished() const;
+    QString checkSimultaneousFinish() const;
+
+    IntegralBus *input1;
+    IntegralBus *input2;
+    IntegralBus *input3;
     IntegralBus *output;
     QString outputFile;
     bool tripleInput;
@@ -70,14 +80,15 @@ public:
 class EnsembleClassificationTask : public Task {
     Q_OBJECT
 public:
-    EnsembleClassificationTask(const QVariantMap &data, const bool tripleInput, const QString &outputFile, const QString &workingDir);
+    EnsembleClassificationTask(const QList<TaxonomyClassificationResult> &taxData, const bool tripleInput, const QString &outputFile, const QString &workingDir);
+
     bool foundMismatches() const {return hasMissing;}
-    QString getOutputFile() const {return outputFile;}
+    const QString &getOutputFile() const {return outputFile;}
 
 private:
     void run();
 
-    const QVariantMap data;
+    QList<TaxonomyClassificationResult> taxData;
     const bool tripleInput;
     const QString workingDir;
 

@@ -51,7 +51,6 @@
 #include <U2Lang/WorkflowMonitor.h>
 
 #include "EnsembleClassificationWorker.h"
-#include "TaxonomySupport.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -60,41 +59,22 @@ namespace LocalWorkflow {
 //EnsembleClassification
 const QString EnsembleClassificationWorkerFactory::ACTOR_ID("ensemble-classification");
 
-static const QString INPUT_PORT("in");
-static const QString INPUT_SLOT1("tax_data1");
-static const QString INPUT_SLOT2("tax_data2");
-static const QString INPUT_SLOT3("tax_data3");
+static const QString INPUT_PORT1("tax-data1");
+static const QString INPUT_PORT2("tax-data2");
+static const QString INPUT_PORT3("tax-data3");
+static const QString INPUT_SLOT1("in");
+static const QString INPUT_SLOT2("in");
+static const QString INPUT_SLOT3("in");
 
 static const QString OUTPUT_PORT("out");
 static const QString OUTPUT_SLOT = BaseSlots::URL_SLOT().getId();
 
+static const QString NUMBER_OF_TOOLS("number-tools");
 static const QString OUT_FILE("out-file");
 
 QString EnsembleClassificationPrompter::composeRichDoc() {
     const QString outFile = getHyperlink(OUT_FILE, getURL(OUT_FILE));
     return tr("Ensemble classification data from other elements into %1").arg(outFile);
-}
-
-class EnsembleSlotValidator : public ActorValidator {
-public:
-    bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const;
-};
-
-bool EnsembleSlotValidator::validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &) const {
-    bool res = true;
-
-    Port* inputPort = actor->getPort(INPUT_PORT);
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(inputPort);
-    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), false);
-
-    QList<Actor*> producers1 = input->getProducers(INPUT_SLOT1);
-    QList<Actor*> producers2 = input->getProducers(INPUT_SLOT2);
-    if (producers1.isEmpty() || producers2.isEmpty()) {
-        res = false;
-        problemList.append(Problem(EnsembleClassificationPrompter::tr("It is required to input taxonomy data for at least the first and the second slot."), actor->getId()));
-    }
-
-    return res;
 }
 
 /************************************************************************/
@@ -109,10 +89,15 @@ void EnsembleClassificationWorkerFactory::init() {
 
     QList<PortDescriptor*> p;
     {
-        Descriptor inD(INPUT_PORT, EnsembleClassificationWorker::tr("Input taxonomy data"),
-                       EnsembleClassificationWorker::tr("Three input slots are available for taxonomy classification data. "
-                                                        "At least first and second slots should be connected to classification data slots."
-                ));
+        Descriptor inputPortDescriptor1(INPUT_PORT1, EnsembleClassificationWorker::tr("Input taxonomy data 1"),
+                       EnsembleClassificationWorker::tr("An input slot for taxonomy classification data."));
+
+        Descriptor inputPortDescriptor2(INPUT_PORT2, EnsembleClassificationWorker::tr("Input taxonomy data 2"),
+                       EnsembleClassificationWorker::tr("An input slot for taxonomy classification data."));
+
+        Descriptor inputPortDescriptor3(INPUT_PORT3, EnsembleClassificationWorker::tr("Input taxonomy data 3"),
+                       EnsembleClassificationWorker::tr("An input slot for taxonomy classification data."));
+
         Descriptor outD(OUTPUT_PORT, EnsembleClassificationWorker::tr("Ensembled classification"),
                         EnsembleClassificationWorker::tr("URL to the CSV file with ensembled classification data."));
 
@@ -121,12 +106,18 @@ void EnsembleClassificationWorkerFactory::init() {
         Descriptor inSlot2(INPUT_SLOT2, EnsembleClassificationWorker::tr("Input tax data 2"), EnsembleClassificationWorker::tr("Input tax data 2."));
         Descriptor inSlot3(INPUT_SLOT3, EnsembleClassificationWorker::tr("Input tax data 3"), EnsembleClassificationWorker::tr("Input tax data 3."));
 
-        QMap<Descriptor, DataTypePtr> inM;
-        inM[inSlot1] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
-        inM[inSlot2] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
-        inM[inSlot3] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
+        QMap<Descriptor, DataTypePtr> inputMap1;
+        inputMap1[inSlot1] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
 
-        p << new PortDescriptor(inD, DataTypePtr(new MapDataType("ensemble.input", inM)), true);
+        QMap<Descriptor, DataTypePtr> inputMap2;
+        inputMap2[inSlot2] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
+
+        QMap<Descriptor, DataTypePtr> inputMap3;
+        inputMap3[inSlot3] = TaxonomySupport::TAXONOMY_CLASSIFICATION_TYPE();
+
+        p << new PortDescriptor(inputPortDescriptor1, DataTypePtr(new MapDataType("ensemble.input", inputMap1)), true);
+        p << new PortDescriptor(inputPortDescriptor2, DataTypePtr(new MapDataType("ensemble.input", inputMap2)), true);
+        p << new PortDescriptor(inputPortDescriptor3, DataTypePtr(new MapDataType("ensemble.input", inputMap3)), true);
 
         Descriptor outSlot(OUTPUT_SLOT, EnsembleClassificationWorker::tr("Output URL"), EnsembleClassificationWorker::tr("Output URL."));
 
@@ -137,6 +128,9 @@ void EnsembleClassificationWorkerFactory::init() {
 
     QList<Attribute*> a;
     {
+        Descriptor numberOfToolsDescriptor(NUMBER_OF_TOOLS, EnsembleClassificationWorker::tr("Number of tools"),
+                                           EnsembleClassificationWorker::tr("Specify the number of classification tools. The corresponding data should be provided using the input ports."));
+
         Descriptor outFileDesc(OUT_FILE, EnsembleClassificationWorker::tr("Output file"),
             EnsembleClassificationWorker::tr("Specify the output file. The classification data are stored in CSV format with the following columns:"
                                              "<ol><li> a sequence name"
@@ -145,19 +139,28 @@ void EnsembleClassificationWorkerFactory::init() {
                                              "<li>optionally, taxID from the third tool</ol>"
                                            ));
 
+        Attribute *numberOfTools = new Attribute(numberOfToolsDescriptor, BaseTypes::NUM_TYPE(), Attribute::None, 2);
         Attribute *outFileAttribute = new Attribute(outFileDesc, BaseTypes::STRING_TYPE(), true, "ensemble.csv");
+
+        a << numberOfTools;
         a << outFileAttribute;
+
+        numberOfTools->addPortRelation(PortRelationDescriptor(INPUT_PORT3, QVariantList() << 3));
     }
 
     QMap<QString, PropertyDelegate*> delegates;
     {
+        QVariantMap numberOfToolsMap;
+        numberOfToolsMap["2"] = 2;
+        numberOfToolsMap["3"] = 3;
+        delegates[NUMBER_OF_TOOLS] = new ComboBoxDelegate(numberOfToolsMap);
+
         delegates[OUT_FILE] = new URLDelegate(".csv", "classification/ensemble");
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new EnsembleClassificationPrompter());
-    proto->setValidator(new EnsembleSlotValidator());
 
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -175,49 +178,96 @@ void EnsembleClassificationWorkerFactory::cleanup() {
 /* EnsembleClassificationWorker */
 /************************************************************************/
 EnsembleClassificationWorker::EnsembleClassificationWorker(Actor *a)
-:BaseWorker(a, false), input(NULL), /*pairedOutput(NULL),*/ output(NULL), tripleInput(false)
+    : BaseWorker(a, false),
+      input1(NULL),
+      input2(NULL),
+      input3(NULL),
+      output(NULL),
+      tripleInput(false)
 {
+
+}
+
+bool EnsembleClassificationWorker::isReady() const {
+    if (isDone()) {
+        return false;
+    }
+
+    const int hasMessage1 = input1->hasMessage();
+    const bool isEnded1 = input1->isEnded();
+
+    const int hasMessage2 = input2->hasMessage();
+    const bool isEnded2 = input2->isEnded();
+
+    const int hasMessage3 = input3->hasMessage();
+    const bool isEnded3 = input3->isEnded();
+
+    const bool allPortsHaveMessage = hasMessage1 && hasMessage2 && (!tripleInput || hasMessage3);
+    const bool nobodyHasMessage = isEnded1 && isEnded2 && isEnded3;
+
+    const bool firstPortHasExtraMessage = hasMessage1 && isEnded2 && (!tripleInput || isEnded3);
+    const bool secondPortHasExtraMessage = isEnded1 && hasMessage2 && (!tripleInput || isEnded3);
+    const bool thirdPortHasExtraMessage = isEnded1 && isEnded2 && tripleInput && hasMessage3;
+
+    const bool firstPortLackMessage = isEnded1 && hasMessage2 && tripleInput && hasMessage3;
+    const bool secondPortLackMessage = hasMessage1 && isEnded2 && tripleInput && hasMessage3;
+    const bool thirdPortLackMessage = hasMessage1 && hasMessage2 && tripleInput && isEnded3;
+
+    const bool somethingWrongWithMessages = firstPortHasExtraMessage ||
+                                            secondPortHasExtraMessage ||
+                                            thirdPortHasExtraMessage ||
+                                            firstPortLackMessage ||
+                                            secondPortLackMessage ||
+                                            thirdPortLackMessage;
+
+    return allPortsHaveMessage || nobodyHasMessage || somethingWrongWithMessages;
 }
 
 void EnsembleClassificationWorker::init() {
-    input = ports.value(INPUT_PORT);
+    input1 = ports.value(INPUT_PORT1);
+    input2 = ports.value(INPUT_PORT2);
+    input3 = ports.value(INPUT_PORT3);
     output = ports.value(OUTPUT_PORT);
 
-    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(INPUT_PORT), );
+    SAFE_POINT(NULL != input1, QString("Port with id '%1' is NULL").arg(INPUT_PORT1), );
+    SAFE_POINT(NULL != input2, QString("Port with id '%1' is NULL").arg(INPUT_PORT2), );
+    SAFE_POINT(NULL != input3, QString("Port with id '%1' is NULL").arg(INPUT_PORT3), );
     SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
 
-    output->addComplement(input);
-    input->addComplement(output);
-
     outputFile = getValue<QString>(OUT_FILE);
-
-    Port* inputPort = actor->getPort(INPUT_PORT);
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(inputPort);
-    QList<Actor*> producers3 = input->getProducers(INPUT_SLOT3);
-    tripleInput = !producers3.isEmpty();
+    tripleInput = getValue<int>(NUMBER_OF_TOOLS) == 3;
 }
 
 Task * EnsembleClassificationWorker::tick() {
-    if (input->hasMessage()) {
-        const Message message = getMessageAndSetupScriptValues(input);
-        QVariantMap data = message.getData().toMap();
+    if (isReadyToRun()) {
+        QList<TaxonomyClassificationResult> taxData;
 
-        Task* t = new EnsembleClassificationTask(data, tripleInput, outputFile, context->workingDir());
+        taxData << getMessageAndSetupScriptValues(input1).getData().toMap()[INPUT_SLOT1].value<TaxonomyClassificationResult>();
+        taxData << getMessageAndSetupScriptValues(input2).getData().toMap()[INPUT_SLOT2].value<TaxonomyClassificationResult>();
+        if (tripleInput) {
+            taxData << getMessageAndSetupScriptValues(input3).getData().toMap()[INPUT_SLOT3].value<TaxonomyClassificationResult>();
+        }
+
+        Task* t = new EnsembleClassificationTask(taxData, tripleInput, outputFile, context->workingDir());
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
         return t;
     }
 
-    if (input->isEnded()) {
+    if (dataFinished()) {
         setDone();
         algoLog.info("Ensemble worker is done as input has ended");
         output->setEnded();
+
+        const QString error = checkSimultaneousFinish();
+        if (!error.isEmpty()) {
+            return new FailTask(error);
+        }
     }
 
     return NULL;
 }
 
-void EnsembleClassificationWorker::sl_taskFinished(Task *t)
-{
+void EnsembleClassificationWorker::sl_taskFinished(Task *t) {
     EnsembleClassificationTask *task = qobject_cast<EnsembleClassificationTask *>(t);
     SAFE_POINT(NULL != task, "Invalid task is encountered", );
     if (!task->isFinished() || task->hasError() || task->isCanceled()) {
@@ -235,29 +285,70 @@ void EnsembleClassificationWorker::sl_taskFinished(Task *t)
     }
 }
 
-void EnsembleClassificationTask::run() {
-    TaxonomyClassificationResult tax1 = data[INPUT_SLOT1].value<U2::LocalWorkflow::TaxonomyClassificationResult>();
-    TaxonomyClassificationResult tax2 = data[INPUT_SLOT2].value<U2::LocalWorkflow::TaxonomyClassificationResult>();
-    TaxonomyClassificationResult tax3 = data[INPUT_SLOT3].value<U2::LocalWorkflow::TaxonomyClassificationResult>();
+bool EnsembleClassificationWorker::isReadyToRun() const {
+    return input1->hasMessage() && input2->hasMessage() && (!tripleInput || input3->hasMessage());
+}
 
-    QStringList seqs = tax1.keys();
-    seqs << tax2.keys();
+bool EnsembleClassificationWorker::dataFinished() const {
+    return input1->isEnded() || input2->isEnded() || (tripleInput && input3->isEnded());
+}
+
+QString EnsembleClassificationWorker::checkSimultaneousFinish() const {
+    if (!input1->isEnded() && input2->isEnded() && (!tripleInput || input3->isEnded())) {
+        if (tripleInput) {
+            return tr("Not enough classified data in the ports '%1' and '%2'").arg(input2->getPortId()).arg(input3->getPortId());
+        } else {
+            return tr("Not enough classified data in the port '%1'").arg(input2->getPortId());
+        }
+    }
+
+    if (input1->isEnded() && !input2->isEnded() && (!tripleInput || input3->isEnded())) {
+        if (tripleInput) {
+            return tr("Not enough classified data in the ports '%1' and '%2'").arg(input1->getPortId()).arg(input3->getPortId());
+        } else {
+            return tr("Not enough classified data in the port '%1'").arg(input1->getPortId());
+        }
+    }
+
+    if (input1->isEnded() && input2->isEnded() && tripleInput && !input3->isEnded()) {
+        return tr("Not enough classified data in the ports '%1' and '%2'").arg(input1->getPortId()).arg(input2->getPortId());
+    }
+
+    if (!input1->isEnded() && !input2->isEnded() && tripleInput && input3->isEnded()) {
+        return tr("Not enough classified data in the port '%1'").arg(input3->getPortId());
+    }
+
+    if (!input1->isEnded() && input2->isEnded() && tripleInput && !input3->isEnded()) {
+        return tr("Not enough classified data in the port '%1'").arg(input2->getPortId());
+    }
+
+    if (input1->isEnded() && !input2->isEnded() && tripleInput && !input3->isEnded()) {
+        return tr("Not enough classified data in the port '%1'").arg(input1->getPortId());
+    }
+
+    return "";
+}
+
+void EnsembleClassificationTask::run() {
+    QStringList seqs = taxData[0].keys();
+    seqs << taxData[1].keys();
     if (tripleInput) {
-        seqs << tax3.keys();
+        seqs << taxData[2].keys();
     }
     CHECK_OP(stateInfo, );
     seqs.removeDuplicates();
     CHECK_OP(stateInfo, );
     seqs.sort();
-    QString csv;csv.reserve(seqs.size() * 64);
+    QString csv;
+    csv.reserve(seqs.size() * 64);
     int counter = 0;
     foreach (QString seq, seqs) {
         CHECK_OP(stateInfo, );
         stateInfo.setProgress(++counter * 100 /seqs.size());
 
-        TaxID id1 = tax1.value(seq, TaxonomyTree::UNDEFINED_ID);
-        TaxID id2 = tax2.value(seq, TaxonomyTree::UNDEFINED_ID);
-        TaxID id3 = tax3.value(seq, TaxonomyTree::UNDEFINED_ID);
+        TaxID id1 = taxData[0].value(seq, TaxonomyTree::UNDEFINED_ID);
+        TaxID id2 = taxData[1].value(seq, TaxonomyTree::UNDEFINED_ID);
+        TaxID id3 = taxData[2].value(seq, TaxonomyTree::UNDEFINED_ID);
         if (id1 == TaxonomyTree::UNDEFINED_ID) {
             QString msg = tr("Taxonomy classification for '%1' is missing from %2 slot").arg(seq).arg(INPUT_SLOT1);
             algoLog.trace(msg);
@@ -296,10 +387,21 @@ void EnsembleClassificationTask::run() {
     csvFile.close();
 }
 
-EnsembleClassificationTask::EnsembleClassificationTask(const QVariantMap &data, const bool tripleInput, const QString &outputFile, const QString &workingDir)
-    : Task(tr("Ensemble different classifications"), TaskFlag_None), data(data), tripleInput(tripleInput), workingDir(workingDir), outputFile(outputFile), hasMissing(false)
+EnsembleClassificationTask::EnsembleClassificationTask(const QList<TaxonomyClassificationResult> &_taxData,
+                                                       const bool _tripleInput,
+                                                       const QString &_outputFile,
+                                                       const QString &_workingDir)
+    : Task(tr("Ensemble different classifications"), TaskFlag_None),
+      taxData(_taxData),
+      tripleInput(_tripleInput),
+      workingDir(_workingDir),
+      outputFile(_outputFile),
+      hasMissing(false)
 {
-
+    SAFE_POINT_EXT(taxData.size() == 2 || (taxData.size() == 3 && tripleInput), setError("Incorrect size on input data"), );
+    if (!tripleInput) {
+        taxData << TaxonomyClassificationResult();
+    }
 }
 
 } //LocalWorkflow
