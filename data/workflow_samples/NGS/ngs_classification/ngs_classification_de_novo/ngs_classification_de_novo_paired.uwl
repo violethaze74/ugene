@@ -1,0 +1,372 @@
+#@UGENE_WORKFLOW
+
+
+
+workflow "PE reads assembly and classification"{
+
+    fastqc-before-1 {
+        type:fastqc;
+        name:"FastQC Before 1";
+    }
+    casava-filter-1 {
+        type:CASAVAFilter;
+        name:"CASAVA Filter 1";
+    }
+    cut-adapt-1 {
+        type:CutAdaptFastq;
+        name:"Cut Adapter 1";
+        adapters-url:"";
+    }
+    quality-trim-1 {
+        type:QualityTrim;
+        name:"Trim by Quality 1";
+    }
+    fastqc-after-1 {
+        type:fastqc;
+        name:"FastQC After 1";
+    }
+    kraken-classify {
+        type:kraken-classify;
+        name:Kraken;
+    }
+    spades {
+        type:spades-id;
+        name:SPAdes;
+    }
+    get-pe-reads-list {
+        type:get-pe-reads-list;
+        name:"Read NGS PE Reads";
+        url1 {
+            dataset:"Dataset 1";
+        }
+        url2 {
+            dataset:"Dataset 1";
+        }
+    }
+    fastqc-before-2 {
+        type:fastqc;
+        name:"FastQC Before 2";
+    }
+    quality-trim-2 {
+        type:QualityTrim;
+        name:"Trim by Quality 2";
+    }
+    casava-filter-2 {
+        type:CASAVAFilter;
+        name:"CASAVA Filter 2";
+    }
+    cut-adapt-2 {
+        type:CutAdaptFastq;
+        name:"Cut Adapter 2";
+        adapters-url:"";
+    }
+    multiplexer {
+        type:multiplexer;
+        name:Multiplexer;
+    }
+    fastqc-after-2 {
+        type:fastqc;
+        name:"FastQC After 2";
+    }
+
+    .actor-bindings {
+        casava-filter-2.out-file->cut-adapt-2.in-file
+        get-pe-reads-list.out->casava-filter-1.in-file
+        get-pe-reads-list.out->fastqc-before-1.in-file
+        get-pe-reads-list.out->casava-filter-2.in-file
+        get-pe-reads-list.out->fastqc-before-2.in-file
+        casava-filter-1.out-file->cut-adapt-1.in-file
+        quality-trim-1.out-file->fastqc-after-1.in-file
+        quality-trim-1.out-file->multiplexer.input-data-1
+        cut-adapt-2.out-file->quality-trim-2.in-file
+        quality-trim-2.out-file->multiplexer.input-data-2
+        quality-trim-2.out-file->fastqc-after-2.in-file
+        multiplexer.output-data->spades.in-data
+        spades.out-data->kraken-classify.in
+        cut-adapt-1.out-file->quality-trim-1.in-file
+    }
+
+    get-pe-reads-list.reads-url1->fastqc-before-1.in-file.url
+    get-pe-reads-list.reads-url1->casava-filter-1.in-file.url
+    casava-filter-1.url->cut-adapt-1.in-file.url
+    cut-adapt-1.url->quality-trim-1.in-file.url
+    quality-trim-1.url->fastqc-after-1.in-file.url
+    spades.scaffolds-out->kraken-classify.in.reads-url1
+    quality-trim-2.url->spades.in-data.readspairedurl
+    quality-trim-1.url->spades.in-data.readsurl
+    get-pe-reads-list.reads-url2->fastqc-before-2.in-file.url
+    cut-adapt-2.url->quality-trim-2.in-file.url
+    get-pe-reads-list.reads-url2->casava-filter-2.in-file.url
+    casava-filter-2.url->cut-adapt-2.in-file.url
+    quality-trim-2.url->fastqc-after-2.in-file.url
+
+    .meta {
+        visual {
+            casava-filter-1 {
+                pos:"-590 -645";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in-file.angle:180;
+                out-file.angle:360;
+            }
+            casava-filter-2 {
+                pos:"-726 -413";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in-file.angle:103.134;
+                out-file.angle:360;
+            }
+            cut-adapt-1 {
+                pos:"-398 -644";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in-file.angle:180;
+                out-file.angle:360;
+            }
+            cut-adapt-2 {
+                pos:"-532 -413";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in-file.angle:180;
+                out-file.angle:360;
+            }
+            fastqc-after-1 {
+                pos:"-29 -605";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:171.87;
+            }
+            fastqc-after-2 {
+                pos:"-302 -263";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:90;
+            }
+            fastqc-before-1 {
+                pos:"-657 -730";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:227.203;
+            }
+            fastqc-before-2 {
+                pos:"-812 -492";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:85.7636;
+            }
+            get-pe-reads-list {
+                pos:"-808 -643";
+                style:simple;
+                bg-color-simple:"23 106 239 255";
+                out.angle:360;
+            }
+            kraken-classify {
+                pos:"-101 -240";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:90;
+                out.angle:268.977;
+            }
+            multiplexer {
+                pos:"-197 -490";
+                style:simple;
+                bg-color-simple:"51 51 51 255";
+                input-data-1.angle:92.2906;
+                input-data-2.angle:207.255;
+                output-data.angle:319.236;
+            }
+            quality-trim-1 {
+                pos:"-195 -645";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in-file.angle:180;
+                out-file.angle:272.437;
+            }
+            quality-trim-2 {
+                pos:"-337 -413";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in-file.angle:180;
+                out-file.angle:357.839;
+            }
+            spades {
+                pos:"-102 -385";
+                style:simple;
+                bg-color-simple:"168 50 117 255";
+                in-data.angle:90;
+                out-data.angle:272.49;
+            }
+            casava-filter-1.out-file->cut-adapt-1.in-file {
+                text-pos:"-37.3359 -27";
+            }
+            casava-filter-2.out-file->cut-adapt-2.in-file {
+                text-pos:"-37.3359 -27";
+            }
+            cut-adapt-1.out-file->quality-trim-1.in-file {
+                text-pos:"-37.3359 -27";
+            }
+            cut-adapt-2.out-file->quality-trim-2.in-file {
+                text-pos:"-37.3359 -27";
+            }
+            get-pe-reads-list.out->casava-filter-1.in-file {
+                text-pos:"-37.3359 -27";
+            }
+            get-pe-reads-list.out->casava-filter-2.in-file {
+                text-pos:"-17.3359 14";
+            }
+            get-pe-reads-list.out->fastqc-before-1.in-file {
+                text-pos:"-44.3359 -31";
+            }
+            get-pe-reads-list.out->fastqc-before-2.in-file {
+                text-pos:"-77.3359 16";
+            }
+            multiplexer.output-data->spades.in-data {
+                text-pos:"-16 -36";
+            }
+            quality-trim-1.out-file->fastqc-after-1.in-file {
+                text-pos:"-25.3359 -27";
+            }
+            quality-trim-1.out-file->multiplexer.input-data-1 {
+                text-pos:"-59.3359 -1";
+            }
+            quality-trim-2.out-file->fastqc-after-2.in-file {
+                text-pos:"-59.3359 4";
+            }
+            quality-trim-2.out-file->multiplexer.input-data-2 {
+                text-pos:"-34.3359 -15";
+            }
+            spades.out-data->kraken-classify.in {
+                text-pos:"-22.3359 -13";
+            }
+        }
+        wizard {
+            name:"PE Reads Assembly and Classification Wizard";
+            page {
+                id:1;
+                next:2;
+                title:"Input data";
+                parameters-area {
+                    group {
+                        title:"Paired-end reads";
+                        label-size:120;
+                        get-pe-reads-list.url1 {
+                            label:"FASTQ file(s) 1";
+                        }
+                        get-pe-reads-list.url2 {
+                            label:"FASTQ file(s) 2";
+                        }
+                    }
+                }
+            }
+            page {
+                id:2;
+                next:3;
+                title:Pre-proccessing;
+                parameters-area {
+                    group {
+                        title:"Reads filtration 1";
+                        label-size:120;
+                        quality-trim-1.qual-id {
+                        }
+                        quality-trim-1.len-id {
+                            label:"Min length";
+                        }
+                        cut-adapt-1.front-url {
+                            label:"5’ adapters";
+                        }
+                        cut-adapt-1.adapters-url {
+                            label:"3’ adapters";
+                        }
+                        cut-adapt-1.anywhere-url {
+                            label:"5’ and 3’ adapters";
+                        }
+                    }
+                    group {
+                        title:"Reads filtration 2";
+                        label-size:120;
+                        quality-trim-2.qual-id {
+                        }
+                        quality-trim-2.len-id {
+                            label:"Min length";
+                        }
+                        cut-adapt-2.front-url {
+                            label:"5’ adapters";
+                        }
+                        cut-adapt-2.adapters-url {
+                            label:"3’ adapters";
+                        }
+                        cut-adapt-2.anywhere-url {
+                            label:"5’ and 3’ adapters";
+                        }
+                    }
+                }
+            }
+            page {
+                id:3;
+                next:4;
+                title:"SPAdes settings";
+                parameters-area {
+                    group {
+                        title:"Reads de novo assembly";
+                        label-size:180;
+                        spades.dataset-type {
+                        }
+                        spades.running-mode {
+                        }
+                        spades.k-mer {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        spades.memlimit {
+                        }
+                        spades.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:4;
+                next:5;
+                title:"Kraken settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        kraken-classify.database {
+                        }
+                        kraken-classify.quick-operation {
+                        }
+                        kraken-classify.min-hits {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        kraken-classify.preload {
+                        }
+                        kraken-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:5;
+                title:"Output data";
+                parameters-area {
+                    group {
+                        title:"Classification output";
+                        label-size:180;
+                        kraken-classify.output-url {
+                            label:"Kraken output file";
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
