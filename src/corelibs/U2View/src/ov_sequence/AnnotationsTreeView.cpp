@@ -503,7 +503,7 @@ void AnnotationsTreeView::sl_onAnnotationObjectAdded(AnnotationTableObject *obj)
     tree->addTopLevelItem(groupItem);
     connect(obj, SIGNAL(si_onAnnotationsAdded(const QList<Annotation *> &)), SLOT(sl_onAnnotationsAdded(const QList<Annotation *> &)));
     connect(obj, SIGNAL(si_onAnnotationsRemoved(const QList<Annotation *> &)), SLOT(sl_onAnnotationsRemoved(const QList<Annotation *> &)));
-    connect(obj, SIGNAL(si_onAnnotationModified(const AnnotationModification &)), SLOT(sl_onAnnotationModified(const AnnotationModification &)));
+    connect(obj, SIGNAL(si_onAnnotationsModified(const QList<AnnotationModification> &)), SLOT(sl_onAnnotationsModified(const QList<AnnotationModification> &)));
 
     connect(obj, SIGNAL(si_onGroupCreated(AnnotationGroup *)), SLOT(sl_onGroupCreated(AnnotationGroup *)));
     connect(obj, SIGNAL(si_onGroupRemoved(AnnotationGroup *, AnnotationGroup *)), SLOT(sl_onGroupRemoved(AnnotationGroup *, AnnotationGroup *)));
@@ -515,6 +515,7 @@ void AnnotationsTreeView::sl_onAnnotationObjectAdded(AnnotationTableObject *obj)
 
 void AnnotationsTreeView::sl_onAnnotationObjectRemoved(AnnotationTableObject *obj) {
     TreeSorter ts(this);
+    Q_UNUSED(ts);
 
     AVGroupItem *groupItem = findGroupItem(obj->getRootGroup());
     // it's safe to delete NULL pointer
@@ -625,62 +626,64 @@ void AnnotationsTreeView::sl_onAnnotationsRemoved(const QList<Annotation *> &as)
     sl_onItemSelectionChanged();
 }
 
-void AnnotationsTreeView::sl_onAnnotationModified(const AnnotationModification &md) {
-    switch(md.type) {
-    case AnnotationModification_NameChanged:
-    case AnnotationModification_LocationChanged:
-    case AnnotationModification_TypeChanged:
-        {
-            QList<AVAnnotationItem *> aItems = findAnnotationItems(md.annotation);
-            assert(!aItems.isEmpty());
-            foreach(AVAnnotationItem *ai, aItems) {
-                ai->updateVisual(ATVAnnUpdateFlag_BaseColumns);
-            }
-        }
-        break;
-
-    case AnnotationModification_QualifierRemoved:
-        {
-            const QualifierModification &qm = static_cast<const QualifierModification &>(md);
-            QList<AVAnnotationItem *> aItems  = findAnnotationItems(qm.annotation);
-            foreach (AVAnnotationItem *ai, aItems) {
-                ai->removeQualifier(qm.qualifier);
-            }
-        }
-        break;
-    case AnnotationModification_QualifierAdded:
-        {
-            const QualifierModification &qm = static_cast<const QualifierModification &>(md);
-            QList<AVAnnotationItem *> aItems  = findAnnotationItems(qm.annotation);
-            foreach (AVAnnotationItem *ai, aItems) {
-                if (ai->isExpanded() || ai->childCount() > 1) { //if item was expanded - add real qualifier items
-                    ai->addQualifier(qm.qualifier);
-                } else {
-                    ai->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator); //otherwise process indicator only
+void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications) {
+    foreach (const AnnotationModification &annotationModification, annotationModifications) {
+        switch (annotationModification.type) {
+        case AnnotationModification_NameChanged:
+        case AnnotationModification_LocationChanged:
+        case AnnotationModification_TypeChanged:
+            {
+                QList<AVAnnotationItem *> aItems = findAnnotationItems(annotationModification.annotation);
+                assert(!aItems.isEmpty());
+                foreach(AVAnnotationItem *ai, aItems) {
+                    ai->updateVisual(ATVAnnUpdateFlag_BaseColumns);
                 }
             }
-        }
-        break;
-    case AnnotationModification_AddedToGroup:
-        {
-            const AnnotationGroupModification &gmd = static_cast<const AnnotationGroupModification &>(md);
-            AVGroupItem *gi = findGroupItem(gmd.group);
-            SAFE_POINT(NULL != gi, L10N::nullPointerError("annotation view group item"), );
-            buildAnnotationTree(gi, gmd.annotation);
-            gi->updateVisual();
-        }
-        break;
+            break;
 
-    case AnnotationModification_RemovedFromGroup:
-        {
-            const AnnotationGroupModification &gmd = static_cast<const AnnotationGroupModification &>(md);
-            AVAnnotationItem *ai = findAnnotationItem(gmd.group, gmd.annotation);
-            SAFE_POINT(NULL != ai, L10N::nullPointerError("annotation view item"), );
-            AVGroupItem *gi = dynamic_cast<AVGroupItem*>(ai->parent());
-            delete ai;
-            gi->updateVisual();
+        case AnnotationModification_QualifierRemoved:
+            {
+                const QualifierModification &qm = static_cast<const QualifierModification &>(annotationModification);
+                QList<AVAnnotationItem *> aItems  = findAnnotationItems(qm.annotation);
+                foreach (AVAnnotationItem *ai, aItems) {
+                    ai->removeQualifier(qm.qualifier);
+                }
+            }
+            break;
+        case AnnotationModification_QualifierAdded:
+            {
+                const QualifierModification &qm = static_cast<const QualifierModification &>(annotationModification);
+                QList<AVAnnotationItem *> aItems  = findAnnotationItems(qm.annotation);
+                foreach (AVAnnotationItem *ai, aItems) {
+                    if (ai->isExpanded() || ai->childCount() > 1) { //if item was expanded - add real qualifier items
+                        ai->addQualifier(qm.qualifier);
+                    } else {
+                        ai->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator); //otherwise process indicator only
+                    }
+                }
+            }
+            break;
+        case AnnotationModification_AddedToGroup:
+            {
+                const AnnotationGroupModification &gmd = static_cast<const AnnotationGroupModification &>(annotationModification);
+                AVGroupItem *gi = findGroupItem(gmd.group);
+                SAFE_POINT(NULL != gi, L10N::nullPointerError("annotation view group item"), );
+                buildAnnotationTree(gi, gmd.annotation);
+                gi->updateVisual();
+            }
+            break;
+
+        case AnnotationModification_RemovedFromGroup:
+            {
+                const AnnotationGroupModification &gmd = static_cast<const AnnotationGroupModification &>(annotationModification);
+                AVAnnotationItem *ai = findAnnotationItem(gmd.group, gmd.annotation);
+                SAFE_POINT(NULL != ai, L10N::nullPointerError("annotation view item"), );
+                AVGroupItem *gi = dynamic_cast<AVGroupItem*>(ai->parent());
+                delete ai;
+                gi->updateVisual();
+            }
+            break;
         }
-        break;
     }
 }
 
@@ -1531,10 +1534,13 @@ void AnnotationsTreeView::finishDragAndDrop(Qt::DropAction dndAction) {
     }
 
     i = 0;
+    QMap<AnnotationTableObject *, QList<AnnotationModification> > annotationModifications;
     foreach (AnnotationGroup *g, srcGroupList) {
-        AnnotationGroupModification md(AnnotationModification_RemovedFromGroup, dndToRemove.at(i), g);
-        g->getGObject()->emit_onAnnotationModified(md);
+        annotationModifications[g->getGObject()] << AnnotationGroupModification(AnnotationModification_RemovedFromGroup, dndToRemove.at(i), g);
         i++;
+    }
+    foreach (AnnotationTableObject *annotationTableObject, annotationModifications.keys()) {
+        annotationTableObject->emit_onAnnotationsModified(annotationModifications[annotationTableObject]);
     }
 
     // Process groups

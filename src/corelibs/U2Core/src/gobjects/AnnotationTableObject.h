@@ -95,7 +95,8 @@ public:
     // Access to signals that drive GUI //////////////////////////////////////
 
     void                    emit_onAnnotationsAdded(const QList<Annotation *> &l);
-    void                    emit_onAnnotationModified(const AnnotationModification &md);
+    void                    emit_onAnnotationsModified(const AnnotationModification &annotationModification);
+    void                    emit_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications);
     void                    emit_onAnnotationsRemoved(const QList<Annotation *> &a);
     void                    emit_onGroupCreated(AnnotationGroup *g);
     void                    emit_onGroupRemoved(AnnotationGroup *p, AnnotationGroup *g);
@@ -106,7 +107,7 @@ signals:
     void                    si_onAnnotationsAdded(const QList<Annotation *> &a);
     void                    si_onAnnotationsRemoved(const QList<Annotation *> &a);
     void                    si_onAnnotationsInGroupRemoved(const QList<Annotation *> &l, AnnotationGroup *g);
-    void                    si_onAnnotationModified(const AnnotationModification &md);
+    void                    si_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications);
     void                    si_onGroupCreated(AnnotationGroup *g);
     void                    si_onGroupRemoved(AnnotationGroup *p, AnnotationGroup *removed);
     void                    si_onGroupRenamed(AnnotationGroup *g);

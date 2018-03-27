@@ -63,7 +63,6 @@ DetViewSequenceEditor::DetViewSequenceEditor(DetView* view)
     reset();
     connect(&animationTimer, SIGNAL(timeout()), SLOT(sl_changeCursorColor()));
     setParent(view);
-    connect(this, SIGNAL(si_blockStatusChanged()), view, SLOT(completeUpdate()));
 }
 
 DetViewSequenceEditor::~DetViewSequenceEditor() {

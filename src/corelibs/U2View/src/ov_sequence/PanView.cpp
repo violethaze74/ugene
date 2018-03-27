@@ -300,15 +300,17 @@ void PanView::sl_onRowBarMoved(int v) {
     update();
 }
 
-void PanView::sl_onAnnotationsModified(const AnnotationModification& md) {
+void PanView::sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications) {
     QList<Annotation *> modified;
-    modified << md.annotation;
+    foreach (const AnnotationModification &annotationModification, annotationModifications) {
+        modified << annotationModification.annotation;
+    }
     unregisterAnnotations(modified);
     registerAnnotations(modified);
 
     addUpdateFlags(GSLV_UF_AnnotationsChanged);
     update();
-    GSequenceLineViewAnnotated::sl_onAnnotationsModified(md);
+    GSequenceLineViewAnnotated::sl_onAnnotationsModified(annotationModifications);
 }
 
 void PanView::sl_onAnnotationSettingsChanged(const QStringList& changedSettings) {

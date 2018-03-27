@@ -391,8 +391,8 @@ void AnnotHighlightWidget::connectSlotsForAnnotTableObj(const AnnotationTableObj
         SLOT(sl_onAnnotationsAdded(const QList<Annotation *> &)));
     connect(annotTableObj, SIGNAL(si_onAnnotationsRemoved(const QList<Annotation *> &)),
         SLOT(sl_onAnnotationsRemoved(const QList<Annotation *> &)));
-    connect(annotTableObj, SIGNAL(si_onAnnotationModified(const AnnotationModification &)),
-        SLOT(sl_onAnnotationModified(const AnnotationModification &)));
+    connect(annotTableObj, SIGNAL(si_onAnnotationsModified(const QList<AnnotationModification> &)),
+            SLOT(sl_onAnnotationsModified()));
 }
 
 void AnnotHighlightWidget::disconnectSlotsForAnnotTableObj(const AnnotationTableObject *annotTableObj) {
@@ -400,8 +400,8 @@ void AnnotHighlightWidget::disconnectSlotsForAnnotTableObj(const AnnotationTable
         this, SLOT(sl_onAnnotationsAdded(const QList<Annotation *> &)));
     disconnect(annotTableObj, SIGNAL(si_onAnnotationsRemoved(const QList<Annotation *> &)),
         this, SLOT(sl_onAnnotationsRemoved(const QList<Annotation *> &)));
-    disconnect(annotTableObj, SIGNAL(si_onAnnotationModified(const AnnotationModification &)),
-        this, SLOT(sl_onAnnotationModified(const AnnotationModification &)));
+    disconnect(annotTableObj, SIGNAL(si_onAnnotationsModified(const QList<AnnotationModification> &)),
+        this, SLOT(sl_onAnnotationsModified()));
 }
 
 void AnnotHighlightWidget::sl_onShowAllStateChanged() {
@@ -602,8 +602,7 @@ void AnnotHighlightWidget::sl_onAnnotationsRemoved(const QList<Annotation *> &an
     }
 }
 
-void AnnotHighlightWidget::sl_onAnnotationModified(const AnnotationModification& /* modifications */)
-{
+void AnnotHighlightWidget::sl_onAnnotationsModified() {
     loadAnnotTypes();
 }
 

@@ -151,7 +151,7 @@ protected:
 
 protected slots:
     virtual void sl_sequenceChanged();
-    void sl_onAnnotationsModified(const AnnotationModification& md);
+    virtual void sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications);
 
 private slots:
     void sl_zoomInAction();
