@@ -35,11 +35,11 @@ workflow "SE reads assembly and classification"{
     kraken-classify {
         type:kraken-classify;
         name:Kraken;
-        input-data:paired-end;
     }
     spades {
         type:spades-id;
         name:SPAdes;
+        output-dir:spades_out;
     }
 
     .actor-bindings {
@@ -47,9 +47,9 @@ workflow "SE reads assembly and classification"{
         get-se-reads-list.out->casava-filter.in-file
         quality-trim.out-file->fastqc-after.in-file
         quality-trim.out-file->spades.in-data
-        spades.out-data->kraken-classify.in
         cut-adapt.out-file->quality-trim.in-file
         casava-filter.out-file->cut-adapt.in-file
+        spades.out-data->kraken-classify.in
     }
 
     get-se-reads-list.reads-url1->fastqc-before.in-file.url
@@ -184,10 +184,10 @@ workflow "SE reads assembly and classification"{
             page {
                 id:3;
                 next:4;
-                title:"SPAdes settings"
+                title:"SPAdes settings";
                 parameters-area {
                     group {
-                        title:"Reads de novo assembly"
+                        title:"Reads de novo assembly";
                         label-size:180;
                         spades.dataset-type {
                         }

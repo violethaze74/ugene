@@ -32,6 +32,7 @@ workflow "PE reads assembly and classification"{
     spades {
         type:spades-id;
         name:SPAdes;
+        output-dir:spades_out;
     }
     get-pe-reads-list {
         type:get-pe-reads-list;
@@ -70,20 +71,20 @@ workflow "PE reads assembly and classification"{
     }
 
     .actor-bindings {
-        casava-filter-2.out-file->cut-adapt-2.in-file
+        cut-adapt-2.out-file->quality-trim-2.in-file
         get-pe-reads-list.out->casava-filter-1.in-file
         get-pe-reads-list.out->fastqc-before-1.in-file
         get-pe-reads-list.out->casava-filter-2.in-file
         get-pe-reads-list.out->fastqc-before-2.in-file
+        multiplexer.output-data->spades.in-data
+        spades.out-data->kraken-classify.in
         casava-filter-1.out-file->cut-adapt-1.in-file
         quality-trim-1.out-file->fastqc-after-1.in-file
         quality-trim-1.out-file->multiplexer.input-data-1
-        cut-adapt-2.out-file->quality-trim-2.in-file
+        cut-adapt-1.out-file->quality-trim-1.in-file
+        casava-filter-2.out-file->cut-adapt-2.in-file
         quality-trim-2.out-file->multiplexer.input-data-2
         quality-trim-2.out-file->fastqc-after-2.in-file
-        multiplexer.output-data->spades.in-data
-        spades.out-data->kraken-classify.in
-        cut-adapt-1.out-file->quality-trim-1.in-file
     }
 
     get-pe-reads-list.reads-url1->fastqc-before-1.in-file.url
