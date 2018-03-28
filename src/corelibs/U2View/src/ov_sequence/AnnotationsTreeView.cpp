@@ -646,7 +646,7 @@ void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModific
                 const QualifierModification &qm = static_cast<const QualifierModification &>(annotationModification);
                 QList<AVAnnotationItem *> aItems  = findAnnotationItems(qm.annotation);
                 foreach (AVAnnotationItem *ai, aItems) {
-                    ai->removeQualifier(qm.qualifier);
+                    ai->removeQualifier(qm.getQualifier());
                 }
             }
             break;
@@ -656,7 +656,7 @@ void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModific
                 QList<AVAnnotationItem *> aItems  = findAnnotationItems(qm.annotation);
                 foreach (AVAnnotationItem *ai, aItems) {
                     if (ai->isExpanded() || ai->childCount() > 1) { //if item was expanded - add real qualifier items
-                        ai->addQualifier(qm.qualifier);
+                        ai->addQualifier(qm.getQualifier());
                     } else {
                         ai->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator); //otherwise process indicator only
                     }
@@ -666,7 +666,7 @@ void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModific
         case AnnotationModification_AddedToGroup:
             {
                 const AnnotationGroupModification &gmd = static_cast<const AnnotationGroupModification &>(annotationModification);
-                AVGroupItem *gi = findGroupItem(gmd.group);
+                AVGroupItem *gi = findGroupItem(gmd.getGroup());
                 SAFE_POINT(NULL != gi, L10N::nullPointerError("annotation view group item"), );
                 buildAnnotationTree(gi, gmd.annotation);
                 gi->updateVisual();
@@ -676,7 +676,7 @@ void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModific
         case AnnotationModification_RemovedFromGroup:
             {
                 const AnnotationGroupModification &gmd = static_cast<const AnnotationGroupModification &>(annotationModification);
-                AVAnnotationItem *ai = findAnnotationItem(gmd.group, gmd.annotation);
+                AVAnnotationItem *ai = findAnnotationItem(gmd.getGroup(), gmd.annotation);
                 SAFE_POINT(NULL != ai, L10N::nullPointerError("annotation view item"), );
                 AVGroupItem *gi = dynamic_cast<AVGroupItem*>(ai->parent());
                 delete ai;

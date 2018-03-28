@@ -59,4 +59,6 @@ public:
 
 } // namespace
 
+Q_DECLARE_METATYPE(U2::U2Qualifier)
+
 #endif
