@@ -1,7 +1,0 @@
-#include "../../../libs_3rdparty/7z/src/CpuArch.h"
-#include "../../../libs_3rdparty/7z/src/7z.h"
-#include "../../../libs_3rdparty/7z/src/7zAlloc.h"
-#include "../../../libs_3rdparty/7z/src/7zBuf.h"
-#include "../../../libs_3rdparty/7z/src/7zCrc.h"
-#include "../../../libs_3rdparty/7z/src/7zFile.h"
-#include "../../../libs_3rdparty/7z/src/7zVersion.h"

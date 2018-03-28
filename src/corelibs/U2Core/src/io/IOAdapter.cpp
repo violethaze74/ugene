@@ -27,7 +27,6 @@ namespace U2 {
 
 const IOAdapterId BaseIOAdapters::LOCAL_FILE("local_file");
 const IOAdapterId BaseIOAdapters::GZIPPED_LOCAL_FILE("local_file_gzip");
-const IOAdapterId BaseIOAdapters::LZMA_LOCAL_FILE("local_file_7z");
 const IOAdapterId BaseIOAdapters::HTTP_FILE( "http_file" );
 const IOAdapterId BaseIOAdapters::GZIPPED_HTTP_FILE( "http_file_gzip" );
 const IOAdapterId BaseIOAdapters::VFS_FILE( "memory_buffer" );
