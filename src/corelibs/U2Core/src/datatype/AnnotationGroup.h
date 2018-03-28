@@ -22,6 +22,8 @@
 #ifndef _U2_ANNOTATION_GROUP_H_
 #define _U2_ANNOTATION_GROUP_H_
 
+#include <QMetaType>
+
 namespace U2 {
 
 class Annotation;
@@ -122,5 +124,8 @@ private:
 };
 
 } // namespace U2
+
+Q_DECLARE_METATYPE(U2::AnnotationGroup)
+Q_DECLARE_METATYPE(U2::AnnotationGroup *)
 
 #endif //
