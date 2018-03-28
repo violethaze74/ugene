@@ -56,7 +56,6 @@ IOAdapterFactory* IOAdapterRegistryImpl::getIOAdapterFactoryById(IOAdapterId id)
 void IOAdapterRegistryImpl::init() {
     registerIOAdapter(new LocalFileAdapterFactory(this));
     registerIOAdapter(new GzippedLocalFileAdapterFactory(this));
-    registerIOAdapter(new LZMALocalFileAdapterFactory(this));
     registerIOAdapter( new HttpFileAdapterFactory(this) );
     registerIOAdapter( new GzippedHttpFileAdapterFactory(this) );
     registerIOAdapter( new VFSAdapterFactory(this) );

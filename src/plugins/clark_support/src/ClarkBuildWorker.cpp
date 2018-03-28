@@ -32,7 +32,6 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <../../../corelibs/U2Core/src/io/LZMAAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/TaskSignalMapper.h>
@@ -252,7 +251,7 @@ private:
     static const QStringList wellKnownErrors;
 };
 
-const QStringList ClarkBuildLogParser::wellKnownErrors = QStringList() << "abort" << "core dumped";
+const QStringList ClarkBuildLogParser::wellKnownErrors("abort");
 
 void ClarkBuildTask::prepare() {
     const QString db("custom");// = QString("custom_%1").arg(rank);
@@ -262,23 +261,11 @@ void ClarkBuildTask::prepare() {
         setError(tr("Failed to create folder for CLARK database: %1/%2").arg(dbUrl).arg(db));
         return;
     }
-    QStringList expanded;
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LZMA_LOCAL_FILE);
-    LZMAAdapter* a = (LZMAAdapter*)iof->createIOAdapter();
-    foreach (QString s, genomeUrls) {
-        if (s.endsWith(LZMAAdapter::LZMA_FILE_EXT)) {
-			a->open(s, IOAdapterMode_Read);
-            QStringList l = a->getArchivedFileURLs();
-            a->close();
-            expanded << l;
-        } else {
-            expanded << s;
-        }
-    }
+
     {
         QFile refdata(reflist);
         refdata.open(QIODevice::WriteOnly);
-        refdata.write(expanded.join("\n").toLocal8Bit());
+        refdata.write(genomeUrls.join("\n").toLocal8Bit());
         refdata.close();
     }
 

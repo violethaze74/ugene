@@ -25,7 +25,6 @@ SUBDIRS += \
           src/libs_3rdparty/sqlite3 \
           src/libs_3rdparty/samtools \
           src/libs_3rdparty/QSpec \
-          src/libs_3rdparty/7z \
           src/corelibs/U2Core \
           src/corelibs/U2Test \
           src/corelibs/U2Algorithm \

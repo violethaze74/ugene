@@ -57,15 +57,6 @@ public:
     virtual IOAdapterId getAdapterId() const {return BaseIOAdapters::GZIPPED_LOCAL_FILE;}
 };
 
-class U2CORE_EXPORT LZMALocalFileAdapterFactory: public LocalFileAdapterFactory {
-    Q_OBJECT
-public:
-    LZMALocalFileAdapterFactory(QObject* p = NULL);
-
-    virtual IOAdapter* createIOAdapter();
-
-    virtual IOAdapterId getAdapterId() const {return BaseIOAdapters::LZMA_LOCAL_FILE;}
-};
 
 
 class U2CORE_EXPORT LocalFileAdapter: public IOAdapter {
