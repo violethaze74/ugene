@@ -72,6 +72,7 @@ private:
     bool isSameNode(const LogEntry& prev, const LogEntry& cur) const;
 
     int lastEntryIndex;
+    QMap <QString, int> taskCount;
     const ExternalToolsWidgetController* ctrl;
 
     static const QString LINE_BREAK;

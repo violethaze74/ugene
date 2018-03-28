@@ -112,9 +112,13 @@ void ExternalToolsWidget::sl_onLogUpdate() {
 }
 
 void ExternalToolsWidget::addInfoToWidget(const LogEntry &entry) {
-    QString tabId = "log_tab_id_" + entry.actorName;
+    const QString tabId = "log_tab_id_" + entry.actorName;
+    const QString runId = entry.toolName + " run " + QString::number(entry.runNumber);
+    const QString mapId = tabId + "_" + runId;
+    if (!taskCount.contains(mapId)) {
+        taskCount[mapId] = 0;
+    }
 
-    QString runId = entry.toolName + " run " + QString::number(entry.runNumber);
     QString lastPartOfLog = entry.lastLine;
 
     lastPartOfLog.replace(QRegExp("\\n"), LINE_BREAK);
@@ -130,21 +134,25 @@ void ExternalToolsWidget::addInfoToWidget(const LogEntry &entry) {
     switch(entry.logType) {
     case ERROR_LOG:
         addLogFunc += "'" + lastPartOfLog + "', ";
+        addLogFunc += "'0', ";
         addLogFunc += "'error')";
         container.evaluateJavaScript(addLogFunc);
         break;
     case OUTPUT_LOG:
         addLogFunc += "'" + lastPartOfLog + "', ";
+        addLogFunc += "'0', ";
         addLogFunc += "'output')";
         container.evaluateJavaScript(addLogFunc);
         break;
     case PROGRAM_PATH:
         addLogFunc += "'" + lastPartOfLog + "', ";
+        addLogFunc += "'" + QString::number(++taskCount[mapId]) + "', ";
         addLogFunc += "'program')";
         container.evaluateJavaScript(addLogFunc);
         break;
     case ARGUMENTS:
         addLogFunc += "'" + lastPartOfLog + "', ";
+        addLogFunc += "'" + QString::number(taskCount[mapId]) + "', ";
         addLogFunc += "'arguments')";
         container.evaluateJavaScript(addLogFunc);
         break;
