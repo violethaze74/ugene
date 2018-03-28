@@ -106,7 +106,7 @@ private slots:
 
     void sl_onAnnotationsAdded(const QList<Annotation *> &);
     void sl_onAnnotationsRemoved(const QList<Annotation *> &);
-    void sl_onAnnotationModified(const AnnotationModification &md);
+    void sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications);
     void sl_annotationObjectModifiedStateChanged();
 
     void sl_onGroupCreated(AnnotationGroup *);

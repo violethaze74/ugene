@@ -65,30 +65,23 @@ Overview::Overview(ADVSingleSequenceWidget *p, ADVSequenceObjectContext *ctx)
     connect(ctx, SIGNAL(si_annotationObjectAdded(AnnotationTableObject *)), SLOT(sl_annotationObjectAdded(AnnotationTableObject *)));
     connect(ctx, SIGNAL(si_annotationObjectRemoved(AnnotationTableObject *)), SLOT(sl_annotationObjectRemoved(AnnotationTableObject *)));
     foreach (AnnotationTableObject *at, ctx->getAnnotationObjects(true)) {
-        connect(at, SIGNAL(si_onAnnotationsAdded(const QList<Annotation *> &)), SLOT(sl_annotationsAdded(const QList<Annotation *> &)));
-        connect(at, SIGNAL(si_onAnnotationsRemoved(const QList<Annotation *> &)), SLOT(sl_annotationsRemoved(const QList<Annotation *> &)));
-        connect(at, SIGNAL(si_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *)),
-            SLOT(sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *)));
-        connect(at, SIGNAL(si_onAnnotationModified(const AnnotationModification &)), SLOT(sl_annotationModified(const AnnotationModification &)));
-        connect(AppContext::getAnnotationsSettingsRegistry(), SIGNAL(si_annotationSettingsChanged(const QStringList &)),
-            SLOT(sl_onAnnotationSettingsChanged(const QStringList &)));
+        connectAnnotationTableObject(at);
     }
-    sl_visibleRangeChanged();
+    connect(AppContext::getAnnotationsSettingsRegistry(), SIGNAL(si_annotationSettingsChanged(const QStringList &)),
+        SLOT(sl_onAnnotationSettingsChanged(const QStringList &)));
 
+    sl_visibleRangeChanged();
     pack();
 }
 
 void Overview::sl_annotationObjectAdded(AnnotationTableObject *obj) {
-    connect(obj, SIGNAL(si_onAnnotationsAdded(const QList<Annotation *> &)), SLOT(sl_annotationsAdded(const QList<Annotation *> &)));
-    connect(obj, SIGNAL(si_onAnnotationsRemoved(const QList<Annotation *> &)), SLOT(sl_annotationsRemoved(const QList<Annotation *> &)));
-    connect(obj, SIGNAL(si_onAnnotationModified(const AnnotationModification &)), SLOT(sl_annotationModified(const AnnotationModification &)));
+    connectAnnotationTableObject(obj);
     addUpdateFlags(GSLV_UF_AnnotationsChanged);
     update();
 }
 
 void Overview::sl_annotationObjectRemoved(AnnotationTableObject *obj) {
-    Q_UNUSED(obj);
-
+    disconnect(obj, NULL, this, NULL);
     addUpdateFlags(GSLV_UF_AnnotationsChanged);
     update();
 }
@@ -112,10 +105,13 @@ void Overview::sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, Annot
     update();
 }
 
-void Overview::sl_annotationModified(const AnnotationModification &md) {
-    if (md.type==AnnotationModification_LocationChanged) {
-        addUpdateFlags(GSLV_UF_AnnotationsChanged);
-        update();
+void Overview::sl_annotationsModified(const QList<AnnotationModification> &annotationModifications) {
+    foreach (const AnnotationModification &annotationModification, annotationModifications) {
+        if (annotationModification.type == AnnotationModification_LocationChanged) {
+            addUpdateFlags(GSLV_UF_AnnotationsChanged);
+            update();
+            break;
+        }
     }
 }
 
@@ -372,6 +368,18 @@ PanView *Overview::getPan() const {
 
 DetView *Overview::getDet() const {
     return detView;
+}
+
+void Overview::connectAnnotationTableObject(AnnotationTableObject *object) {
+    CHECK(NULL != object, );
+    connect(object, SIGNAL(si_onAnnotationsAdded(const QList<Annotation *> &)),
+            SLOT(sl_annotationsAdded(const QList<Annotation *> &)));
+    connect(object, SIGNAL(si_onAnnotationsRemoved(const QList<Annotation *> &)),
+            SLOT(sl_annotationsRemoved(const QList<Annotation *> &)));
+    connect(object, SIGNAL(si_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *)),
+            SLOT(sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *)));
+    connect(object, SIGNAL(si_onAnnotationsModified(const QList<AnnotationModification> &)),
+            SLOT(sl_annotationsModified(const QList<AnnotationModification> &)));
 }
 
 //////////////////////////////////////////////////////////////////////////

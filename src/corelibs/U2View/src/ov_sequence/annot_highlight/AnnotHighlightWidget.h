@@ -69,7 +69,7 @@ private slots:
     void sl_onSequenceModified(ADVSequenceObjectContext *);
     void sl_onAnnotationsAdded(const QList<Annotation *> &);
     void sl_onAnnotationsRemoved(const QList<Annotation *> &);
-    void sl_onAnnotationModified(const AnnotationModification &annotModifs);
+    void sl_onAnnotationsModified();
     void sl_onAnnotationObjectAdded(AnnotationTableObject *);
     void sl_onAnnotationObjectRemoved(AnnotationTableObject *);
     void sl_onNextAnnotationClick();

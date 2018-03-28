@@ -69,8 +69,9 @@ void GSequenceLineViewAnnotated::connectAnnotationObject(const AnnotationTableOb
     connect(ao, SIGNAL(si_onAnnotationsAdded(const QList<Annotation *> &)), SLOT(sl_onAnnotationsAdded(const QList<Annotation *> &)));
     connect(ao, SIGNAL(si_onAnnotationsRemoved(const QList<Annotation *> &)), SLOT(sl_onAnnotationsRemoved(const QList<Annotation *> &)));
     connect(ao, SIGNAL(si_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *)),
-        SLOT(sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *)));
-    connect(ao, SIGNAL(si_onAnnotationModified(const AnnotationModification &)), SLOT(sl_onAnnotationsModified(const AnnotationModification &)));
+            SLOT(sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *)));
+    connect(ao, SIGNAL(si_onAnnotationsModified(const QList<AnnotationModification> &)),
+            SLOT(sl_onAnnotationsModified(const QList<AnnotationModification> &)));
 }
 
 void GSequenceLineViewAnnotated::sl_onAnnotationSettingsChanged(const QStringList &) {
@@ -434,12 +435,18 @@ QString GSequenceLineViewAnnotated::createToolTip(QHelpEvent *e) {
     return tip;
 }
 
-void GSequenceLineViewAnnotated::sl_onAnnotationsModified(const AnnotationModification& md) {
-    if (md.type == AnnotationModification_LocationChanged || md.type == AnnotationModification_NameChanged || md.type == AnnotationModification_TypeChanged) {
-        addUpdateFlags(GSLV_UF_AnnotationsChanged);
-        update();
+void GSequenceLineViewAnnotated::sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications) {
+    foreach (const AnnotationModification &annotationModification, annotationModifications) {
+        if (annotationModification.type == AnnotationModification_LocationChanged ||
+            annotationModification.type == AnnotationModification_NameChanged ||
+            annotationModification.type == AnnotationModification_TypeChanged) {
+            addUpdateFlags(GSLV_UF_AnnotationsChanged);
+            update();
+            break;
+        }
     }
 }
+
 bool GSequenceLineViewAnnotated::isAnnotationSelectionInVisibleRange() const {
     const QSet<AnnotationTableObject*> aos = ctx->getAnnotationObjects(true);
     AnnotationSelection* as = ctx->getAnnotationsSelection();

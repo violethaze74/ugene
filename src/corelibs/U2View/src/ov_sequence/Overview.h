@@ -51,11 +51,12 @@ protected slots:
     void sl_annotationsAdded(const QList<Annotation *> &a);
     void sl_annotationsRemoved(const QList<Annotation *> &a);
     void sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *);
-    void sl_annotationModified(const AnnotationModification &md);
+    void sl_annotationsModified(const QList<AnnotationModification> &annotationModifications);
     void sl_onAnnotationSettingsChanged(const QStringList &changedSettings);
     void sl_annotationObjectAdded(AnnotationTableObject *obj);
     void sl_annotationObjectRemoved(AnnotationTableObject *obj);
     void sl_sequenceChanged();
+
 protected:
     void pack();
     virtual bool event(QEvent* e);
@@ -75,14 +76,16 @@ protected:
     bool        panSliderMovedLeft;
 
     qint64         offset;
+
 private:
+    void connectAnnotationTableObject(AnnotationTableObject *object);
+
     PanView*        panView;
     DetView*        detView;
     QPoint          mousePosToSlider;
     ADVSingleSequenceWidget* seqWidget;
 
-
-friend class OverviewRenderArea;
+    friend class OverviewRenderArea;
 };
 
 class OverviewRenderArea : public GSequenceLineViewRenderArea {
