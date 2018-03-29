@@ -377,6 +377,7 @@ U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDb
     row.gstart = 0;
     row.gend = seq.length;
     row.length = MsaRowUtils::getRowLengthWithoutTrailing(dnaSeq.seq, row.gaps);
+    MsaRowUtils::chopGapModel(row.gaps, row.length);
     return row;
 }
 

@@ -97,7 +97,12 @@ void SaveDocumentTask::run() {
         return;
     }
 
-    coreLog.info(tr("Saving document %1\n").arg(url.getURLString()));
+    const QString message = tr("Saving document %1\n").arg(url.getURLString());
+    if (flags.testFlag(SaveDoc_ReduceLoggingLevel)) {
+        coreLog.details(message);
+    } else {
+        coreLog.info(message);
+    }
     DocumentFormat* df = doc->getDocumentFormat();
 
     QString originalFilePath = url.getURLString();
