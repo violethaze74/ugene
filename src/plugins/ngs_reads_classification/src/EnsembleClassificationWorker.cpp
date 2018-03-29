@@ -257,11 +257,13 @@ Task * EnsembleClassificationWorker::tick() {
         setDone();
         algoLog.info("Ensemble worker is done as input has ended");
         output->setEnded();
+    }
 
-        const QString error = checkSimultaneousFinish();
-        if (!error.isEmpty()) {
-            return new FailTask(error);
-        }
+    const QString error = checkSimultaneousFinish();
+    if (!error.isEmpty()) {
+        setDone();
+        output->setEnded();
+        return new FailTask(error);
     }
 
     return NULL;
