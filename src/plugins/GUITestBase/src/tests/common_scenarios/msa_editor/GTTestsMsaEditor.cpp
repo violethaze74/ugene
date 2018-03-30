@@ -4151,7 +4151,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
 //    Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
 //    Open "Color schemes" dialog.
     class customAppSettingsFiller: public CustomScenario{
     public:
