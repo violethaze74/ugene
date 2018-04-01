@@ -35,6 +35,7 @@
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
+#include <U2Core/DNATranslation.h>
 #include <U2Core/U2Dbi.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2Msa.h>
@@ -114,11 +115,11 @@ SmithWatermanReportCallbackMAImpl::SmithWatermanReportCallbackMAImpl(
     const QString &_resultFolderName, const QString &_mobjectNamesTemplate,
     const QString &_refSubseqTemplate, const QString &_ptrnSubseqTemplate,
     const QByteArray &_refSequence, const QByteArray &_pattern, const QString &_refSeqName,
-    const QString &_patternName, const DNAAlphabet *_alphabet, WhatDoYouWantFromMe _plan)
+    const QString &_patternName, const DNAAlphabet *_alphabet, const DNATranslation* _aminoTT, WhatDoYouWantFromMe _plan)
     : plan(_plan), resultDirPath(_resultFolderName),
     mobjectNamesTemplate(_mobjectNamesTemplate), refSubseqTemplate(_refSubseqTemplate),
     ptrnSubseqTemplate(_ptrnSubseqTemplate), refSequenceData(_refSequence),
-    ptrnSequenceData(_pattern), alphabet(_alphabet), expansionInfo(_refSeqName, _patternName)
+    ptrnSequenceData(_pattern), alphabet(_alphabet), aminoTT(_aminoTT), expansionInfo(_refSeqName, _patternName)
 {
 
 }
@@ -140,6 +141,7 @@ SmithWatermanReportCallbackMAImpl::SmithWatermanReportCallbackMAImpl(
     const U2AlphabetId alphabetId = msaDbi->getMsaObject(sourceMsaRef.entityId, os).alphabet;
     CHECK_OP(os,);
     alphabet = U2AlphabetUtils::getById(alphabetId);
+    aminoTT = NULL;
     SAFE_POINT(NULL != alphabet, "Invalid alphabet detected!",);
 }
 
@@ -164,6 +166,7 @@ SmithWatermanReportCallbackMAImpl::SmithWatermanReportCallbackMAImpl(
     }
     alphabet = U2AlphabetUtils::getById(alphabetId);
     SAFE_POINT(NULL != alphabet, "Invalid alphabet detected!",);
+    aminoTT = NULL;
 }
 
 QString SmithWatermanReportCallbackMAImpl::report(const QList<SmithWatermanResult> &_results) {
@@ -205,6 +208,12 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
         CHECK_OP(stateInfo, tr("SmithWatermanReportCallback failed to create new MA document"));
 
         QByteArray curResultRefSubseq = refSequenceData.mid(pairAlignSeqs.refSubseq.startPos, pairAlignSeqs.refSubseq.length);
+        if (aminoTT != NULL) {
+            int buflen = curResultRefSubseq.length() / 3;
+            QByteArray buf(buflen, '\0');
+            aminoTT->translate(curResultRefSubseq.constData(), curResultRefSubseq.length(), buf.data(), buflen);
+            curResultRefSubseq = buf;
+        }
         QByteArray curResultPtrnSubseq = ptrnSequenceData.mid(pairAlignSeqs.ptrnSubseq.startPos, pairAlignSeqs.ptrnSubseq.length);
         alignSequences(curResultRefSubseq, curResultPtrnSubseq, pairAlignSeqs.pairAlignment);
 

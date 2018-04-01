@@ -97,6 +97,7 @@ public:
                                     const QByteArray &refSequence,
                                     const QByteArray &pattern, const QString &refSeqName,
                                     const QString &patternName, const DNAAlphabet *alphabet,
+                                    const DNATranslation* amitoTT = NULL,                                                                  
                                     WhatDoYouWantFromMe plan = SequenceView_Search);
 
                                 //Smith-Waterman alignment in MSA Editor (in new window)
@@ -142,6 +143,7 @@ private:
     QByteArray                  refSequenceData;
     QByteArray                  ptrnSequenceData;
     const DNAAlphabet *         alphabet;
+    const DNATranslation*       aminoTT; // not null if result must be translated.
     TagExpansionPossibleData    expansionInfo;
 
     U2EntityRef                 firstSequenceRef;

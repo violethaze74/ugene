@@ -504,7 +504,7 @@ void SmithWatermanDialog::sl_bttnRun()
                                                                         refSubseqNameTmpl->text(), patternSubseqNameTmpl->text(),
                                                                         seqData, config.ptrn,
                                                                         sequence->getSequenceName(), patternSequenceName->text(),
-                                                                        sequence->getAlphabet());
+                                                                        sequence->getAlphabet(), config.aminoTT);
         }
         config.resultListener = new SmithWatermanResultListener;
 
