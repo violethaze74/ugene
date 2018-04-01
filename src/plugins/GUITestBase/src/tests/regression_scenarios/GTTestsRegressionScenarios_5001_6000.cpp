@@ -709,6 +709,38 @@ GUI_TEST_CLASS_DEFINITION(test_5216) {
     //GTUtilsProjectTreeView::filterProject(os, "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
 }
 
+
+GUI_TEST_CLASS_DEFINITION(test_5220) {
+
+    //    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+        
+    QDir().mkdir(QFileInfo(sandBoxDir + "test_5220/COI.nwk").dir().absolutePath());
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_5220/COI.nwk", 0, 0, true));
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::click(os, "COI.nwk");
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
+
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI"));
+    GTMouseDriver::doubleClick();
+    GTGlobals::sleep( 1000 );
+    
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
+    
+    QDir().mkdir(QFileInfo(sandBoxDir + "test_5220/COI1.nwk").dir().absolutePath());
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_5220/COI1.nwk", 0, 0, true));
+    
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    bool isTabOpened = GTUtilsOptionPanelMsa::isTabOpened(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
+    CHECK_SET_ERR(!isTabOpened, "The 'PairwiseAlignment' tab is unexpectedly opened");
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5227) {
     GTUtilsPcr::clearPcrDir(os);
 
