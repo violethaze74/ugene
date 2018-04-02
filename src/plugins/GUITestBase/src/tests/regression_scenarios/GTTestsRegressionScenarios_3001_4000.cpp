@@ -2982,8 +2982,8 @@ GUI_TEST_CLASS_DEFINITION(test_3451) {
             QSpinBox *endPos = dialog->findChild<QSpinBox*>("endLineEdit");
             CHECK_SET_ERR( endPos != NULL, "endLineEdit is NULL");
 
-            GTSpinBox::checkLimits(os, startPos, 1, 603);
-            GTSpinBox::checkLimits(os, endPos, 2, 604);
+            GTSpinBox::checkLimits(os, startPos, 1, 604);
+            GTSpinBox::checkLimits(os, endPos, 1, 604);
 
             //GTGlobals::sleep();
 

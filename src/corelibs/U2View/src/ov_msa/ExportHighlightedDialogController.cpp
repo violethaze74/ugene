@@ -74,7 +74,7 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
     ui->endLineEdit->setMaximum(alignLength);
 
     ui->startLineEdit->setMinimum(1);
-    ui->endLineEdit->setMinimum(2);
+    ui->endLineEdit->setMinimum(1);
 
     ui->startLineEdit->setValue(startPos);
     ui->endLineEdit->setValue(endPos);
@@ -112,7 +112,7 @@ void ExportHighligtingDialogController::lockKeepGaps(){
 }
 
 void ExportHighligtingDialogController::endPosValueChanged(){
-    ui->startLineEdit->setMaximum(ui->endLineEdit->value() - 1);
+    ui->startLineEdit->setMaximum(ui->endLineEdit->value());
 }
 
 void ExportHighligtingDialogController::initSaveController() {
