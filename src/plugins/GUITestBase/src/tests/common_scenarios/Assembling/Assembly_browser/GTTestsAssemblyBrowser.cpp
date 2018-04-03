@@ -983,6 +983,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035){
 GUI_TEST_CLASS_DEFINITION(test_0036){
     //1. Open assembly
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+	GTUtilsTaskTreeView::waitTaskFinished(os);
     //Check these hotkeys: up, down, left, right, +, -, pageup, pagedown
     GTUtilsAssemblyBrowser::zoomToReads(os);
 
@@ -1022,7 +1023,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036){
 
     GTKeyboardDriver::keyClick(Qt::Key_PageDown);
     GTGlobals::sleep(500);
-    CHECK_SET_ERR(ver->value() > 100, QString("unexpected vertical value 3: %1").arg(ver->value()));
+    CHECK_SET_ERR(ver->value() > 90, QString("unexpected vertical value 3: %1").arg(ver->value()));
 
     GTKeyboardDriver::keyClick(Qt::Key_PageUp);
     GTGlobals::sleep(500);
