@@ -66,7 +66,7 @@ MSFFormat::MSFFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlags(Documen
     formatDescription = tr("MSF format is used to store multiple aligned sequences. Files include the sequence name and the sequence itself, which is usually aligned with other sequences in the file.");
 }
 
-static bool getNextLine(IOAdapter* io, QByteArray& line) {
+static bool getNextLine(IOAdapter* io, QByteArray& line, bool simplify = true) {
     QByteArray readBuffer(DocumentFormat::READ_BUFF_SIZE, '\0');
     char* buff = readBuffer.data();
 
@@ -82,7 +82,9 @@ static bool getNextLine(IOAdapter* io, QByteArray& line) {
     if (len != DocumentFormat::READ_BUFF_SIZE) {
         line.resize(line.size() + len - DocumentFormat::READ_BUFF_SIZE);
     }
-    line = line.simplified();
+    if (simplify) {
+        line = line.simplified();
+    }
     return eof;
 }
 
@@ -114,6 +116,14 @@ int MSFFormat::getCheckSum(const QByteArray& seq) {
     return sum;
 }
 
+struct MsfRow {
+    MsfRow () : checksum(0), length(0) {}
+
+    QString name;
+    int checksum;
+    int length;
+};
+
 void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& ti) {
     MultipleSequenceAlignment al(io->getURL().baseFileName());
 
@@ -136,8 +146,10 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
     //read info
     int sum = 0;
-    QList <QPair <QString, int> > seqs;
-    QVector<int> rowLens;
+    QList<MsfRow> msfRows;
+
+    QMap<QString, int> duplicatedNamesCount;        // a workaround for incorrectly saved files
+
     while (!ti.isCoR()) {
         QByteArray line;
         if (getNextLine(io, line)) {
@@ -158,9 +170,18 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
             sum = check = CHECK_SUM_MOD;
         }
 
-        seqs.append(QPair<QString, int>(name, check));
+        foreach (const MsfRow &msfRow, msfRows) {
+            if (name == msfRow.name) {
+                duplicatedNamesCount[name] = duplicatedNamesCount.value(name, 1) + 1;
+            }
+        }
+
+        MsfRow row;
+        row.name = name;
+        row.checksum = check;
+
+        msfRows << row;
         al->addRow(name, QByteArray());
-        rowLens.append(0);
         if (sum < CHECK_SUM_MOD) {
             sum = (sum + check) % CHECK_SUM_MOD;
         }
@@ -168,38 +189,69 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         ti.setProgress(io->getProgress());
     }
     if (checkSum < CHECK_SUM_MOD && sum < CHECK_SUM_MOD && sum != checkSum) {
-        ti.setError(MSFFormat::tr("Check sum test failed"));
-        return;
+        coreLog.info(tr("File check sum is incorrect: expected value: %1, current value %2").arg(checkSum).arg(sum));
     }
 
     //read data
     bool eof = false;
-    int i = 0;
+
+    QRegExp coordsRegexp("^\\s+\\d+(\\s+\\d+)?\\s*$");
+    QRegExp onlySpacesRegexp("^\\s+$");
+
+    QMap<QString, int> processedDuplicatedNames;
+
     while (!eof && !ti.isCoR()) {
         QByteArray line;
-        eof = getNextLine(io, line);
-        if (line.isEmpty()) {
+        eof = getNextLine(io, line, false);
+
+        if (line.isEmpty() || -1 != onlySpacesRegexp.indexIn(line) || -1 != coordsRegexp.indexIn(line)) {
+            // Skip empty lines, lines with spaces only and lines with alignment coordinates
             continue;
         }
-        const int numRows = al->getNumRows();
-        bool noHit = true;
-        for (i = 0; i < numRows; i++) {
-            const MultipleSequenceAlignmentRow row = al->getMsaRow(i);
-            const QByteArray rowName = row->getName().toUtf8();
-            if (line.startsWith(rowName) && line[rowName.length()] == ' ') {
-                noHit = false;
-                break;
+
+        line = line.simplified();
+        const int spaceIndex = line.indexOf(" ");
+        if (-1 == spaceIndex) {
+            // Skip the line without spaces
+            continue;
+        }
+
+        const QByteArray name = line.mid(0, spaceIndex);
+        int msfRowNumber = -1;
+        int duplicatesSkipped = 0;
+        for (int i = 0; i < msfRows.length(); i++) {
+            if (msfRows[i].name.toUtf8() == name) {
+                if (duplicatesSkipped == processedDuplicatedNames.value(name, 0)) {
+                    // This row is not processed yet
+                    msfRowNumber = i;
+                    if (duplicatedNamesCount.contains(name)) {
+                        // Mark the row as processed
+                        processedDuplicatedNames[name] = duplicatesSkipped + 1;
+                        if (processedDuplicatedNames.value(name, 0) == duplicatedNamesCount.value(name, 0)) {
+                            // All rows in this block are already processed, prepare for the next block
+                            processedDuplicatedNames[name] = 0;
+                        }
+                    }
+                    break;
+                } else {
+                    // This row is already processed, skip it
+                    duplicatesSkipped++;
+                }
             }
         }
-        if (noHit) {
+
+        if (-1 == msfRowNumber) {
+            // Skip the line with unknown row name
             continue;
         }
+
         for (int q, p = line.indexOf(' ') + 1; p > 0; p = q + 1) {
             q = line.indexOf(' ', p);
-            QByteArray subSeq = (q < 0) ? line.mid(p) : line.mid(p, q - p);
-            al->appendChars(i, rowLens[i], subSeq.constData(), subSeq.length());
-            rowLens[i] = rowLens[i] + subSeq.length();
+            QString subSeq = (q < 0) ? line.mid(p) : line.mid(p, q - p);
+            al->appendChars(msfRowNumber, msfRows[msfRowNumber].length, subSeq.toUtf8().constData(), subSeq.length());
+            msfRows[msfRowNumber].length += subSeq.length();
         }
+
         ti.setProgress(io->getProgress());
     }
 
@@ -208,7 +260,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     const int numRows = al->getNumRows();
     for (int i = 0; i < numRows; i++) {
         const MultipleSequenceAlignmentRow row = al->getMsaRow(i);
-        const int expectedCheckSum = seqs[i].second;
+        const int expectedCheckSum = msfRows[i].checksum;
         const int sequenceCheckSum = getCheckSum(row->toByteArray(seqCheckOs, al->getLength()));
         if ( expectedCheckSum < CHECK_SUM_MOD &&  sequenceCheckSum != expectedCheckSum) {
             coreLog.info(tr("Unexpected check sum in the row number %1, name: %2; expected value: %3, current value %4").arg(i + 1).arg(row->getName()).arg(expectedCheckSum).arg(sequenceCheckSum));
