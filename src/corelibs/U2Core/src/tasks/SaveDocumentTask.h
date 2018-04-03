@@ -42,7 +42,8 @@ enum SaveDocFlag {
     SaveDoc_DestroyAfter = 1 << 3,
     SaveDoc_DestroyButDontUnload = 1 << 4,
     SaveDoc_OpenAfter = 1 << 5,
-    SaveDoc_UnloadAfter = 1 << 6
+    SaveDoc_UnloadAfter = 1 << 6,
+    SaveDoc_ReduceLoggingLevel = 1 << 7
 };
 Q_DECLARE_FLAGS(SaveDocFlags, SaveDocFlag)
 
