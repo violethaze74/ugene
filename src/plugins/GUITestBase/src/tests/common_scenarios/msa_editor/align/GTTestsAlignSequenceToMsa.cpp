@@ -374,8 +374,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
 //    3. Click "Align sequence to this alignment" button on the toolbar.
-//    4. Select "_common_data/scenarios/msa/add_and_align_1.fa" in the dialog.
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_1.fa"));
+//    4. Select "_common_data/scenarios/add_and_align/add_and_align_1.fa" in the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_1.fa"));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
 
 //    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row.
@@ -416,8 +416,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
 //    3. Click "Align sequence to this alignment" button on the toolbar.
-//    4. Select "_common_data/scenarios/msa/add_and_align_2.fa" in the dialog.
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_2.fa"));
+//    4. Select "_common_data/scenarios/add_and_align/add_and_align_2.fa" in the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_2.fa"));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
 
 //    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row.
@@ -458,8 +458,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
 //    3. Click "Align sequence to this alignment" button on the toolbar.
-//    4. Select "_common_data/scenarios/msa/add_and_align_1.fa" in the dialog.
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_1.fa"));
+//    4. Select "_common_data/scenarios/add_and_align/add_and_align_1.fa" in the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_1.fa"));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
 
 //    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row, columns with gaps were removed
@@ -492,8 +492,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     CHECK_SET_ERR(mafftTool->isValid(), "MAFFT tool is not valid");
 
 //    3. Click "Align sequence to this alignment" button on the toolbar.
-//    4. Select "_common_data/scenarios/msa/add_and_align_3.fa" in the dialog.
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_3.fa"));
+//    4. Select "_common_data/scenarios/add_and_align/add_and_align_3.fa" in the dialog.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_3.fa"));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
 
 //    Expected state: an additional row appeared in the alignment, the forth column doesn't consist only of gaps, there are no columns of gaps even in the end of the alignment.
@@ -507,7 +507,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
                                                       << "AAGCTTT---TAA"
                                                       << "A--AGAATAATTA"
                                                       << "AAGCTTTTAA---"
-                                                      << "A--AGAATA----";
+                                                      << "AAGAATA------";
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
@@ -524,10 +524,10 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    3. Click "Align sequence to this alignment" button on the toolbar.
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/msa/add_and_align_3.fa"));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_3.fa"));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
 
-//    4. Select "_common_data/scenarios/msa/add_and_align_3.fa" in the dialog.
+//    4. Select "_common_data/scenarios/add_and_align/add_and_align_3.fa" in the dialog.
 //    Expected state: an additional row appeared in the alignment, the forth column doesn't consist only of gaps, there are no columns of gaps even in the end of the alignment.
     const QStringList expectedMsaData = QStringList() << "AAGCTTCTTTTAA"
                                                       << "AAGTTACTAA---"
