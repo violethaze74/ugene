@@ -175,6 +175,9 @@ private:
     AVAnnotationItem * findAnnotationItem(const AVGroupItem *gi, Annotation *a) const;
     // searches for annotation items that has not-null document added to the view
     QList<AVAnnotationItem *> findAnnotationItems(Annotation *a) const;
+    // searches all annotation items recursively in a group
+    QList<AVAnnotationItem *> findAnnotationItems(const AVGroupItem *gi) const;
+    void removeGroupAnnotationsFromCache(const AVGroupItem *groupItem);
 
     void onSequenceAdded(ADVSequenceObjectContext* advContext);
 
