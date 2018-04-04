@@ -44,6 +44,7 @@
 #include "GUrlTests.h"
 #include "LoadRemoteDocumentTests.h"
 #include "McaObjectTests.h"
+#include "MsaObjectTests.h"
 #include "PWMatrixTests.h"
 #include "PhyTreeObjectTests.h"
 #include "SMatrixTests.h"
@@ -94,6 +95,9 @@ void CoreTests::registerFactories() {
 
     // MultipleChromatogramAlignmentObject Tests
     registerFactory<McaObjectTests>(xmlTestFormat);
+
+    // MultipleSequenceAlignmentObject Tests
+    registerFactory<MsaObjectTests>(xmlTestFormat);
 
     //U2SequenceObject Tests
     registerFactory<DNASequenceObjectTests>(xmlTestFormat);
