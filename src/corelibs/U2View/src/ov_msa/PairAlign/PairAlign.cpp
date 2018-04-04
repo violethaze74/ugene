@@ -99,8 +99,8 @@ PairAlign::PairAlign(MSAEditor* _msa)
 
     initLayout();
     initSaveController();
-
     initParameters();
+    
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 
     connectSignals();
@@ -142,9 +142,10 @@ void PairAlign::initParameters() {
 
     QString outputFileName = pairwiseAlignmentWidgetsSettings->resultFileName;
     if (outputFileName.isEmpty()) {
-        outputFileName = getDefaultFilePath();
+        saveController->setPath(getDefaultFilePath()); // controller will roll file name here
+    } else {
+        outputFileLineEdit->setText(outputFileName);
     }
-    outputFileLineEdit->setText(outputFileName);
     outputFileLineEdit->setEnabled(inNewWindowCheckBox->isChecked());
     outputFileSelectButton->setEnabled(inNewWindowCheckBox->isChecked());
 
@@ -193,7 +194,6 @@ void PairAlign::updateWarningMessage(int type) {
 
 void PairAlign::initSaveController() {
     SaveDocumentControllerConfig config;
-    config.defaultFileName = getDefaultFilePath();
     config.defaultFormatId = BaseDocumentFormats::CLUSTAL_ALN;
     config.fileDialogButton = outputFileSelectButton;
     config.fileNameEdit = outputFileLineEdit;
@@ -203,6 +203,7 @@ void PairAlign::initSaveController() {
     const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::CLUSTAL_ALN;
 
     saveController = new SaveDocumentController(config, formats, this);
+    saveController->setPath(getDefaultFilePath()); // controller will roll file name here
 }
 
 QString PairAlign::getDefaultFilePath() {
