@@ -322,7 +322,7 @@ void ClarkClassifyWorkerFactory::init() {
         delegates[TOOL_VARIANT] = new ComboBoxDelegate(toolMap);
 
         DelegateTags outputUrlTags;
-        outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "auto");
+        outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "Auto");
         outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareFileFilter("CSV", QStringList("csv"), false, QStringList()));
         delegates[OUTPUT_URL] = new URLDelegate(outputUrlTags, "clark/output");
 

@@ -145,7 +145,7 @@ void WevoteWorkerFactory::init() {
         delegates[NUMBER_OF_THREADS_ATTR_ID] = new SpinBoxDelegate(numberOfThreadsProperties);
 
         DelegateTags tags;
-        tags.set(DelegateTags::PLACEHOLDER_TEXT, WevotePrompter::tr("auto"));
+        tags.set(DelegateTags::PLACEHOLDER_TEXT, WevotePrompter::tr("Auto"));
         tags.set(DelegateTags::FILTER, DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT, true));
         delegates[OUTPUT_FILE_ATTR_ID] = new URLDelegate(tags, "wevote/output_file");
     }

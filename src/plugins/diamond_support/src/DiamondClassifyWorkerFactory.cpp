@@ -275,7 +275,7 @@ void DiamondClassifyWorkerFactory::init() {
         delegates[THREADS_ATTR_ID] = new SpinBoxDelegate(threadsNumberProperties);
 
         DelegateTags outputUrlTags;
-        outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "auto");
+        outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "Auto");
         outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT, true, QStringList()));
         outputUrlTags.set(DelegateTags::FORMAT, BaseDocumentFormats::PLAIN_TEXT);
         delegates[OUTPUT_URL_ATTR_ID] = new URLDelegate(outputUrlTags, "diamond/output");
