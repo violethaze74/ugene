@@ -5116,6 +5116,7 @@ GUI_TEST_CLASS_DEFINITION(test_2773) {
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/cmdline/custom-script-worker-functions/translateTest/", "translateTest.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+	GTGlobals::sleep(5000);
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
     GTUtilsWorkflowDesigner::setDatasetInputFile( os, testDir + "_common_data/cmdline/DNA.fa" );
