@@ -115,7 +115,7 @@ function lwAddTreeNode(nodeName, activeTabName, activeTabId, content, nodeNum, c
         return;
     }
 
-    var infoNode = document.getElementById(launchNodeId + '_info');
+    var infoNode = document.getElementById(launchNodeId + '_info_' + nodeNum);
     var launchSpan = document.getElementById(launchNodeId + '_span');
     switch(contentType) {
         case "error":
