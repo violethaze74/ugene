@@ -101,8 +101,9 @@ QList<SharedAnnotationData> FindTandemsToAnnotationsTask::importTandemAnnotation
             if (ad->location->isEmpty()){
                 continue;
             }
-            ad->qualifiers.append(U2Qualifier("repeat_len", QString::number(tan.repeatLen)));
-            ad->qualifiers.append(U2Qualifier("tandem_size", QString::number(tan.size)));
+            ad->qualifiers.append(U2Qualifier("num_of_repeats", QString::number(tan.size / tan.repeatLen)));
+            ad->qualifiers.append(U2Qualifier("repeat_length", QString::number(tan.repeatLen)));
+            ad->qualifiers.append(U2Qualifier("whole_length", QString::number(tan.size)));
             U1AnnotationUtils::addDescriptionQualifier(ad, annDescription);
             res.append(ad);
             offset++;
