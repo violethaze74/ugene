@@ -38,6 +38,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/corelibs/U2Gui/EditGroupAnnotationsDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/EditQualifierDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/EditSequenceDialogFiller.h \
+            src/runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/ExportChromatogramFiller.h \
             src/runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h \
@@ -296,6 +297,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/corelibs/U2Gui/EditGroupAnnotationsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/EditQualifierDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/EditSequenceDialogFiller.cpp \
+            src/runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/ExportChromatogramFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.cpp \

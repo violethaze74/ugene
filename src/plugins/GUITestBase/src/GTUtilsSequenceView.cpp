@@ -19,44 +19,44 @@
  * MA 02110-1301, USA.
  */
 
-#include <QClipboard>
 #include <QApplication>
-#include <QPushButton>
-#include <QPlainTextEdit>
+#include <QClipboard>
 #include <QDialogButtonBox>
 #include <QMainWindow>
+#include <QPlainTextEdit>
+#include <QPushButton>
 
-#include <U2Core/AnnotationSettings.h>
-#include <U2Core/U1AnnotationUtils.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/DNASequenceSelection.h>
-
-#include <U2Gui/MainWindow.h>
-
-#include <U2View/ADVConstants.h>
-#include <U2View/ADVSingleSequenceWidget.h>
-#include <U2View/DetView.h>
-#include <U2View/ADVSequenceObjectContext.h>
-#include <U2View/GSequenceLineViewAnnotated.h>
-#include <U2View/GSequenceGraphView.h>
-#include <U2View/Overview.h>
-
-#include "utils/GTUtilsDialog.h"
-#include "GTUtilsMdi.h"
-#include "GTUtilsProjectTreeView.h"
-#include "GTUtilsSequenceView.h"
-
+#include <GTGlobals.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
-#include <GTGlobals.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/PopupChooser.h>
-#include <runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h>
 #include <system/GTClipboard.h>
 #include <utils/GTKeyboardUtils.h>
 
+#include <U2Core/AnnotationSettings.h>
+#include <U2Core/AppContext.h>
+#include <U2Core/DNASequenceSelection.h>
+#include <U2Core/U1AnnotationUtils.h>
+
+#include <U2Gui/MainWindow.h>
+
+#include <U2View/ADVConstants.h>
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/ADVSingleSequenceWidget.h>
+#include <U2View/DetView.h>
+#include <U2View/DetViewRenderer.h>
+#include <U2View/GSequenceGraphView.h>
+#include <U2View/GSequenceLineViewAnnotated.h>
+#include <U2View/Overview.h>
+
+#include "GTUtilsMdi.h"
+#include "GTUtilsProjectTreeView.h"
+#include "GTUtilsSequenceView.h"
+#include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
 using namespace HI;
@@ -439,37 +439,37 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, QString na
     AnnotationSettings* as = asr->getAnnotationSettings(aData);
 
 
-    const U2Region &vr = seq->getDetView()->getVisibleRange();
+    const U2Region &visibleRange = seq->getDetView()->getVisibleRange();
     QVector <U2Region> regions = a->getLocation().data()->regions;
-    U2Region r;
+    U2Region annotationRegion;
     int regionId = 0;
     foreach (const U2Region& reg, regions) {
         if (reg.startPos == startpos - 1) {
-            r = reg;
+            annotationRegion = reg;
             break;
         }
         regionId++;
     }
-    GT_CHECK(!r.isEmpty(), "Region not found");
+    GT_CHECK(!annotationRegion.isEmpty(), "Region not found");
 
-    if (!r.intersects(vr)) {
-        int center = r.center();
+    if (!annotationRegion.intersects(visibleRange)) {
+        int center = annotationRegion.center();
         goToPosition(os, center);
         GTGlobals::sleep();
     }
 
-    const U2Region visibleLocation = r.intersect(vr);
+    const U2Region visibleRegionPart = annotationRegion.intersect(visibleRange);
 
     U2Region y;
     y = det->getAnnotationYRange(a, regionId, as);
 
-    float start = visibleLocation.startPos;
-    float end = visibleLocation.endPos();
-    if (seq->getDetView()->isWrapMode()) {
-        end = visibleLocation.startPos + seq->getDetView()->getSymbolsPerLine();
+    float visibleRegionPartStart = visibleRegionPart.startPos;
+    float visibleRegionPartEnd = visibleRegionPart.endPos();
+    if (seq->getDetView()->isWrapMode() && annotationRegion.endPos() > visibleRange.endPos()) {
+        visibleRegionPartEnd = visibleRegionPart.startPos + seq->getDetView()->getSymbolsPerLine();
     }
-    float x1f = (float)(start - vr.startPos) * det->getCharWidth();
-    float x2f = (float)(end - vr.startPos) * det->getCharWidth();
+    float x1f = (float)(visibleRegionPartStart - visibleRange.startPos) * det->getCharWidth();
+    float x2f = (float)(visibleRegionPartEnd - visibleRange.startPos) * det->getCharWidth();
 
     int rw = qMax(MIN_ANNOTATION_WIDTH, qRound(x2f - x1f));
     int x1 = qRound(x1f);
@@ -570,6 +570,32 @@ QColor GTUtilsSequenceView::getGraphColor(HI::GUITestOpStatus & /*os*/, GSequenc
     QColor result = map.value("Default color");
     return result;
 }
+
+#define GT_METHOD_NAME "enableEditingMode"
+void GTUtilsSequenceView::enableEditingMode(GUITestOpStatus &os, bool enable, int sequenceNumber) {
+    DetView *detView = getDetViewByNumber(os, sequenceNumber);
+    QToolButton *editButton = qobject_cast<QToolButton *>(GTToolbar::getWidgetForActionTooltip(os, GTWidget::findExactWidget<QToolBar *>(os, "", detView), "Edit sequence"));
+    CHECK_SET_ERR(NULL != editButton, "'Edit sequence' button is NULL");
+    if (editButton->isChecked() != enable) {
+        GTWidget::click(os, editButton);
+    }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setCursor"
+void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position) {
+    // Scrolling to make the position visible is not implemented
+    // Multiline view is no supported correctly
+
+    DetView *detView = getDetViewByNumber(os, 0);
+    CHECK_SET_ERR(NULL != detView, "DetView is NULL");
+
+    SAFE_POINT_EXT(detView->getVisibleRange().contains(position), os.setError("scrolling is not implemented"), );
+    const int coord = detView->getDetViewRenderArea()->getRenderer()->posToXCoord(position, detView->getRenderArea()->size(), detView->getVisibleRange());
+    GTMouseDriver::moveTo(detView->getRenderArea()->mapToGlobal(QPoint(coord, 40)));    // TODO: replace the hardcoded value with method in renderer
+    GTMouseDriver::click();
+}
+#undef GT_METHOD_NAME
 
 #undef MIN_ANNOTATION_WIDTH
 

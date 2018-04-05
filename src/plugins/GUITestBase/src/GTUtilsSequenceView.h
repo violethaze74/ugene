@@ -70,6 +70,13 @@ public:
     static QList<QVariant> getLabelPositions(HI::GUITestOpStatus &os, GSequenceGraphView* graph);
     static QList<TextLabel*> getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView* graph);
     static QColor getGraphColor(HI::GUITestOpStatus &os, GSequenceGraphView* graph);
+
+    static void enableEditingMode(HI::GUITestOpStatus &os, bool enable = true, int sequenceNumber = 0);
+
+    /** It is supposed, that the editing mode is enabled and DetView is visible.
+      * The method sets the cursor before the @position (0-based) in the first sequence in the view
+      **/
+    static void setCursor(HI::GUITestOpStatus &os, qint64 position);
 };
 
 } // namespace U2
