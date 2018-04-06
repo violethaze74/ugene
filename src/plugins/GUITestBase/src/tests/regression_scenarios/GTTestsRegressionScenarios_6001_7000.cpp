@@ -19,7 +19,11 @@
  * MA 02110-1301, USA.
  */
 
+#include <drivers/GTKeyboardDriver.h>
 #include <system/GTFile.h>
+#include <primitives/PopupChooser.h>
+
+#include <U2View/DetView.h>
 
 #include "GTTestsRegressionScenarios_6001_7000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -54,6 +58,7 @@
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 
+#include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 
 namespace U2 {
@@ -98,6 +103,44 @@ GUI_TEST_CLASS_DEFINITION(test_6047) {
     //Check msa length and number of sequences
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 488, "Unexpected length of msa");
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).size() == 231, "Unexpected quantaty of sequences");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6066) {
+//    1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Select "Edit" -> "Annotations settings on sequence editing..." menu item in the Details View context menu.
+//    3. Choose "Split (separate annotations parts)" and press "OK".
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Annotations settings on sequence editing..."));
+    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitSeparateAnnotationParts, false));
+    GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
+
+//    4. Turn on the editing mode.
+    GTUtilsSequenceView::enableEditingMode(os);
+
+//    5. Set cursor after position 60.
+    GTUtilsSequenceView::setCursor(os, 60);
+
+//    6. Click Space key.
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+//    Expected state: a gap is inserted, the annotation is split.
+    // Do not check it here, to avoid view state changing
+
+//    7. Doubleclick the first part if the split annotation and click Delete key.
+    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+
+//    Expected state: the annotation is removed from the Details View and from the Annotations Tree View.
+    // Do not check it here, to avoid view state changing
+
+//    8. Doubleclick the second part of the split annotation.
+    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 3, 0, true);
+
+//    Expected state: UGENE doesn't crash.
 }
 
 } // namespace GUITest_regression_scenarios

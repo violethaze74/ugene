@@ -33,7 +33,7 @@ class DetView;
 /************************************************************************/
 /* DetViewRenderer */
 /************************************************************************/
-class DetViewRenderer : public SequenceViewAnnotatedRenderer {
+class U2VIEW_EXPORT DetViewRenderer : public SequenceViewAnnotatedRenderer {
 public:
     DetViewRenderer(DetView* detView, SequenceObjectContext* ctx);
     virtual ~DetViewRenderer() {}

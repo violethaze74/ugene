@@ -357,6 +357,41 @@ QList<AVAnnotationItem *> AnnotationsTreeView::findAnnotationItems(Annotation *a
     return res;
 }
 
+QList<AVAnnotationItem *> AnnotationsTreeView::findAnnotationItems(const AVGroupItem *gi) const {
+    QList<AVAnnotationItem *> annotationItems;
+    for (int i = 0; i < gi->childCount(); ++i) {
+        AVItem *childItem = dynamic_cast<AVItem *>(gi->child(i));
+        SAFE_POINT(NULL != childItem, "Can't cast 'QTreeWidgetItem *' to 'AVItem *'", QList<AVAnnotationItem *>());
+        switch (childItem->type) {
+        case AVItemType_Annotation: {
+            AVAnnotationItem *annotationItem = dynamic_cast<AVAnnotationItem *>(childItem);
+            SAFE_POINT(NULL != annotationItem, "Can't cast 'AVItem *' to 'AVAnnotationItem *'", QList<AVAnnotationItem *>());
+            annotationItems << annotationItem;
+            break;
+        }
+        case AVItemType_Group: {
+            AVGroupItem *groupItem = dynamic_cast<AVGroupItem *>(childItem);
+            SAFE_POINT(NULL != groupItem, "Can't cast 'AVItem *' to 'AVGroupItem *'", QList<AVAnnotationItem *>());
+            annotationItems << findAnnotationItems(groupItem);
+            break;
+        }
+        default:
+            ; // Do nothing
+        }
+    }
+    return annotationItems;
+}
+
+void AnnotationsTreeView::removeGroupAnnotationsFromCache(const AVGroupItem *groupItem) {
+    CHECK(!selectedAnnotation.isEmpty(), );
+    const QSet<AVAnnotationItem *> annotationItems = findAnnotationItems(groupItem).toSet();
+    foreach (AVAnnotationItem *annotationItem, selectedAnnotation.keys()) {
+        if (annotationItems.contains(annotationItem)) {
+            selectedAnnotation.remove(annotationItem);
+        }
+    }
+}
+
 void AnnotationsTreeView::onSequenceAdded(ADVSequenceObjectContext* advContext) {
     connect(advContext, SIGNAL(si_annotationSelection(AnnotationSelectionData*)), SLOT(sl_annotationClicked(AnnotationSelectionData*)));
     connect(advContext, SIGNAL(si_annotationSequenceSelection(AnnotationSelectionData*)), SLOT(sl_annotationDoubleClicked(AnnotationSelectionData*)));
@@ -518,7 +553,7 @@ void AnnotationsTreeView::sl_onAnnotationObjectRemoved(AnnotationTableObject *ob
     Q_UNUSED(ts);
 
     AVGroupItem *groupItem = findGroupItem(obj->getRootGroup());
-    // it's safe to delete NULL pointer
+    removeGroupAnnotationsFromCache(groupItem);
     delete groupItem;
 
     obj->disconnect(this);
@@ -597,6 +632,7 @@ void AnnotationsTreeView::sl_onAnnotationsAdded(const QList<Annotation *> &as) {
 
 void AnnotationsTreeView::sl_onAnnotationsRemoved(const QList<Annotation *> &as) {
     TreeSorter ts(this);
+    Q_UNUSED(ts);
 
     tree->disconnect(this, SIGNAL(sl_onItemSelectionChanged()));
 
@@ -609,6 +645,8 @@ void AnnotationsTreeView::sl_onAnnotationsRemoved(const QList<Annotation *> &as)
         QList<AVAnnotationItem *> aItems;
         groupItem->findAnnotationItems(aItems, a);
         foreach (AVAnnotationItem *ai, aItems) {
+            selectedAnnotation.remove(ai);
+
             AVGroupItem *parentGroup = static_cast<AVGroupItem*>(ai->parent());
             if (groups2RemovedCount.contains(parentGroup)) {
                 ++groups2RemovedCount[parentGroup];
@@ -679,6 +717,7 @@ void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModific
                 AVAnnotationItem *ai = findAnnotationItem(gmd.getGroup(), gmd.annotation);
                 SAFE_POINT(NULL != ai, L10N::nullPointerError("annotation view item"), );
                 AVGroupItem *gi = dynamic_cast<AVGroupItem*>(ai->parent());
+                selectedAnnotation.remove(ai);
                 delete ai;
                 gi->updateVisual();
             }
@@ -701,6 +740,8 @@ void AnnotationsTreeView::sl_onGroupRemoved(AnnotationGroup *parent, AnnotationG
     }
 
     tree->disconnect(this, SIGNAL(sl_onItemSelectionChanged()));
+
+    removeGroupAnnotationsFromCache(pg);
 
     for (int i = 0, n = pg->childCount(); i < n; i++) {
         AVItem *item = static_cast<AVItem *>(pg->child(i));

@@ -19,27 +19,32 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_TESTS_REGRESSION_SCENARIOS_6001_7000_H_
-#define _U2_GT_TESTS_REGRESSION_SCENARIOS_6001_7000_H_
+#ifndef _U2_EDIT_SETTINGS_DIALOG_FILLER_H_
+#define _U2_EDIT_SETTINGS_DIALOG_FILLER_H_
 
-#include <U2Test/UGUITestBase.h>
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
+using namespace HI;
 
-namespace GUITest_regression_scenarios {
+class EditSettingsDialogFiller : public Filler {
+public:
+    enum AnnotationPolicy {
+        ExpandOrCropAffectedAnnotation,
+        RemoveAffectedAnnotation,
+        SplitJoinAnnotationParts,
+        SplitSeparateAnnotationParts
+    };
 
-#undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_regression_scenarios"
+    EditSettingsDialogFiller(HI::GUITestOpStatus &os, AnnotationPolicy policy, bool recalculateQualifiers);
 
-GUI_TEST_CLASS_DECLARATION(test_6031)
-GUI_TEST_CLASS_DECLARATION(test_6043)
-GUI_TEST_CLASS_DECLARATION(test_6047)
-GUI_TEST_CLASS_DECLARATION(test_6066)
+    void commonScenario();
 
-#undef GUI_TEST_SUITE
-
-}   // namespace GUITest_regression_scenarios
+private:
+    const AnnotationPolicy policy;
+    const bool recalculateQualifiers;
+};
 
 }   // namespace U2
 
-#endif // _U2_GT_TESTS_REGRESSION_SCENARIOS_6001_7000_H_
+#endif // _U2_EDIT_SETTINGS_DIALOG_FILLER_H_

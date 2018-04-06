@@ -136,7 +136,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     findPatternAction->setShortcutContext(Qt::WindowShortcut);
     connect(findPatternAction, SIGNAL(triggered()), SLOT(sl_onFindPatternClicked()));
 
-    editSettingsAction = new QAction(tr("Annotations settings on sequence editing"), this);
+    editSettingsAction = new QAction(tr("Annotations settings on sequence editing..."), this);
     editSettingsAction->setObjectName(ACTION_EDIT_SEQUENCE_SETTINGS);
     connect(editSettingsAction, SIGNAL(triggered()), this, SLOT(sl_editSettings()));
 
