@@ -716,7 +716,7 @@ GUI_TEST_CLASS_DEFINITION(test_5220) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
-        
+
     QDir().mkdir(QFileInfo(sandBoxDir + "test_5220/COI.nwk").dir().absolutePath());
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_5220/COI.nwk", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
@@ -727,15 +727,15 @@ GUI_TEST_CLASS_DEFINITION(test_5220) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI"));
     GTMouseDriver::doubleClick();
     GTGlobals::sleep( 1000 );
-    
+
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
-    
+
     QDir().mkdir(QFileInfo(sandBoxDir + "test_5220/COI1.nwk").dir().absolutePath());
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_5220/COI1.nwk", 0, 0, true));
-    
+
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     bool isTabOpened = GTUtilsOptionPanelMsa::isTabOpened(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
     CHECK_SET_ERR(!isTabOpened, "The 'PairwiseAlignment' tab is unexpectedly opened");
 
@@ -4479,6 +4479,40 @@ GUI_TEST_CLASS_DEFINITION(test_5947) {
     GTGlobals::sleep();
 
 }
+
+GUI_TEST_CLASS_DEFINITION(test_5950) {
+    //    1. Open 'human_T1.fa'
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Switch on the editing mode.
+    QAction* editMode = GTAction::findActionByText(os, "Edit sequence");
+    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    GTWidget::click(os, GTAction::button(os, editMode));
+
+    const QPoint point = GTMouseDriver::getMousePosition();
+    GTMouseDriver::moveTo(QPoint(point.x() + 100, point.y()));
+    GTMouseDriver::press();
+
+    for (int i = 0; i < 2; i++) {
+        for (int j = 1; j < 5; j++) {
+            const QPoint point = GTMouseDriver::getMousePosition();
+            const int multiplier = i == 0 ? 1 : (-1);
+            GTMouseDriver::moveTo(QPoint(point.x() + multiplier * 16, point.y()));
+            QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);
+            CHECK_SET_ERR(selection.size() == 1, "Incorrect selection");
+
+            U2Region sel = selection.first();
+            CHECK_SET_ERR(sel.length != 0, "Selection length is 0");
+
+            GTGlobals::sleep(200);
+        }
+    }
+
+    GTMouseDriver::release();
+
+}
+
 
 } // namespace GUITest_regression_scenarios
 
