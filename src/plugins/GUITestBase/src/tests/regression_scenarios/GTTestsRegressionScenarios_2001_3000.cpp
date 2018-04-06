@@ -1476,7 +1476,7 @@ GUI_TEST_CLASS_DEFINITION( test_2187 ) {
     Runnable * tDialog = new FindTandemsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/result_2187.gb");
     GTUtilsDialog::waitForDialog(os, tDialog);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find tandems...", GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find tandem repeats...", GTGlobals::UseMouse);
     GTGlobals::sleep(200);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
