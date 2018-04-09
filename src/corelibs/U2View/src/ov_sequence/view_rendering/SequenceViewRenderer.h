@@ -24,6 +24,7 @@
 
 #include <QFont>
 
+#include <U2Core/global.h>
 
 namespace U2 {
 
@@ -48,7 +49,7 @@ struct CommonSequenceViewMetrics {
 /************************************************************************/
 /* SequenceViewRenderer */
 /************************************************************************/
-class SequenceViewRenderer {
+class U2VIEW_EXPORT SequenceViewRenderer {
 public:
     SequenceViewRenderer(SequenceObjectContext* ctx);
 
