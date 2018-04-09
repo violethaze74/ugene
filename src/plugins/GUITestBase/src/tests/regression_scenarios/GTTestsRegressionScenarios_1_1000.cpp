@@ -1330,7 +1330,7 @@ GUI_TEST_CLASS_DEFINITION(test_0762) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new FindTandemsDialogFiller(os, sandBoxDir + "test_0762.gb"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find tandems");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find tandem repeats");
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -2222,22 +2222,22 @@ GUI_TEST_CLASS_DEFINITION(test_0844) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
+            QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "algoComboBox"));
+            CHECK_SET_ERR(combo != NULL, "algoComboBox not found!");
+            GTComboBox::setIndexWithText(os, combo, "Suffix array");
+
             QLineEdit* pathEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leNewTablePath"));
             pathEdit->setText(sandBoxDir + "test_0844.gb");
             GTGlobals::sleep();
 
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget"), 1);
 
-            QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "algoComboBox"));
-            CHECK_SET_ERR(combo != NULL, "algoComboBox not found!");
-            GTComboBox::setIndexWithText(os, combo , "Suffix array");
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
     GTUtilsDialog::waitForDialog(os, new FindTandemsDialogFiller(os, new Scenario));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find tandems");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find tandem repeats");
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
