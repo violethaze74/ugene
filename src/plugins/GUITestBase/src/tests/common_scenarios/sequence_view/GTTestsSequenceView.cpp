@@ -675,6 +675,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "150000..199950,1..50000"));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+	GTGlobals::sleep(200);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "primer3_action"));
     Primer3DialogFiller::Primer3Settings settings;
