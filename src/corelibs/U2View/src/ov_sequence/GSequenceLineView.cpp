@@ -561,6 +561,8 @@ void GSequenceLineView::resizeSelection(const QPoint& areaPoint) {
     } else if (selStart + selLen > seqLen) {
             selLen = seqLen - selStart;
     }
+    CHECK(selLen != 0, );
+
     U2Region newSelection(selStart, selLen);
 
     if (!resizableRegion.isEmpty()) {

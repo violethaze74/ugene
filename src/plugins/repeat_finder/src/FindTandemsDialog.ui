@@ -10,47 +10,67 @@
     <x>0</x>
     <y>0</y>
     <width>627</width>
-    <height>318</height>
+    <height>447</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Find Tandems</string>
+   <string>Find Tandem Repeats</string>
   </property>
   <property name="windowIcon">
    <iconset>
     <normaloff>:/repeat_finder/repeats_image</normaloff>:/repeat_finder/repeats_image</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Base</string>
+       <string>General</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="0" column="0">
         <widget class="QGroupBox" name="paramsBox">
          <property name="title">
-          <string>Tandem finder parameters</string>
+          <string>Settings</string>
          </property>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
+          <item row="8" column="1">
+           <widget class="QLabel" name="label_4">
             <property name="text">
-             <string>Tandem preset</string>
+             <string>Min length of repeated sequence</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
+          <item row="8" column="5" colspan="2">
+           <widget class="QSpinBox" name="minPeriodBox">
+            <property name="suffix">
+             <string> n</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>1000000</number>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="3">
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="3" column="3">
            <spacer name="horizontalSpacer_2">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -63,7 +83,7 @@
             </property>
            </spacer>
           </item>
-          <item row="0" column="2">
+          <item row="3" column="5" colspan="2">
            <widget class="QComboBox" name="repeatLenComboBox">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -88,47 +108,34 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>Min period</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <spacer name="horizontalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
+          <item row="3" column="1">
+           <widget class="QLabel" name="label_2">
+            <property name="minimumSize">
              <size>
-              <width>40</width>
-              <height>20</height>
+              <width>0</width>
+              <height>0</height>
              </size>
             </property>
-           </spacer>
-          </item>
-          <item row="1" column="2">
-           <widget class="QSpinBox" name="minPeriodBox">
-            <property name="suffix">
-             <string> n</string>
-            </property>
-            <property name="minimum">
-             <number>1</number>
-            </property>
-            <property name="maximum">
-             <number>1000000</number>
+            <property name="text">
+             <string>Preset settings</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="13" column="1">
+           <widget class="QCheckBox" name="overlappedTandemsCheckBox">
+            <property name="text">
+             <string>Show overlapped tandems</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>Max period</string>
+             <string>Max length of repeated sequence</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="9" column="3">
            <spacer name="horizontalSpacer_5">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -141,7 +148,7 @@
             </property>
            </spacer>
           </item>
-          <item row="2" column="2">
+          <item row="9" column="5" colspan="2">
            <widget class="QSpinBox" name="maxPeriodBox">
             <property name="suffix">
              <string> n</string>
@@ -157,38 +164,121 @@
             </property>
            </widget>
           </item>
+          <item row="10" column="1">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Min length of tandem repeat</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="3">
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>297</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="10" column="5" colspan="2">
+           <widget class="QSpinBox" name="minTandemSizeBox">
+            <property name="minimum">
+             <number>3</number>
+            </property>
+            <property name="maximum">
+             <number>1000000000</number>
+            </property>
+            <property name="value">
+             <number>9</number>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="1">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Min number of repeats</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="3">
+           <spacer name="horizontalSpacer_10">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>291</width>
+              <height>13</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="11" column="5" colspan="2">
+           <widget class="QSpinBox" name="minRepeatsBox">
+            <property name="prefix">
+             <string>x</string>
+            </property>
+            <property name="minimum">
+             <number>2</number>
+            </property>
+            <property name="maximum">
+             <number>1000000000</number>
+            </property>
+            <property name="value">
+             <number>3</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="5" colspan="2">
+           <widget class="QComboBox" name="algoComboBox">
+            <property name="sizeAdjustPolicy">
+             <enum>QComboBox::AdjustToContents</enum>
+            </property>
+            <property name="minimumContentsLength">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3">
+           <spacer name="horizontalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>295</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Algorithm</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
-       <item>
+       <item row="1" column="0">
         <widget class="QGroupBox" name="regionBox">
          <property name="title">
-          <string>Region to process</string>
+          <string>Search in</string>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
            <layout class="QHBoxLayout" name="rangeSelectorLayout"/>
           </item>
          </layout>
         </widget>
        </item>
-       <item>
-        <widget class="QWidget" name="annotationsWidget" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item>
+       <item row="2" column="0">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -205,125 +295,26 @@
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>Advanced</string>
+       <string>Output</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Advanced parameters</string>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QWidget" name="annotationsWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="1">
-           <spacer name="horizontalSpacer_6">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="2" column="2">
-           <widget class="QSpinBox" name="minRepeatsBox">
-            <property name="prefix">
-             <string>x</string>
-            </property>
-            <property name="minimum">
-             <number>2</number>
-            </property>
-            <property name="maximum">
-             <number>1000000000</number>
-            </property>
-            <property name="value">
-             <number>3</number>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QCheckBox" name="overlappedTandemsCheckBox">
-            <property name="text">
-             <string>Show overlapped tandems</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Minimum tandem size</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QComboBox" name="algoComboBox">
-            <property name="sizeAdjustPolicy">
-             <enum>QComboBox::AdjustToContents</enum>
-            </property>
-            <property name="minimumContentsLength">
-             <number>10</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <spacer name="horizontalSpacer_7">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="1" column="2">
-           <widget class="QSpinBox" name="minTandemSizeBox">
-            <property name="minimum">
-             <number>3</number>
-            </property>
-            <property name="maximum">
-             <number>1000000000</number>
-            </property>
-            <property name="value">
-             <number>9</number>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Algorithm</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <spacer name="horizontalSpacer_10">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_9">
-            <property name="text">
-             <string>Minimum repeat count</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
         </widget>
        </item>
-       <item>
+       <item row="1" column="0">
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -340,7 +331,7 @@
      </widget>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
@@ -351,6 +342,38 @@
  </widget>
  <resources/>
  <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>FindTandemsDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>313</x>
+     <y>290</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>313</x>
+     <y>155</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>FindTandemsDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>313</x>
+     <y>290</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>313</x>
+     <y>155</y>
+    </hint>
+   </hints>
+  </connection>
   <connection>
    <sender>repeatLenComboBox</sender>
    <signal>activated(int)</signal>
@@ -400,54 +423,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>algoComboBox</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>FindTandemsDialog</receiver>
-   <slot>customization()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>544</x>
-     <y>148</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>237</x>
-     <y>151</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>minTandemSizeBox</sender>
-   <signal>editingFinished()</signal>
-   <receiver>FindTandemsDialog</receiver>
-   <slot>customization()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>558</x>
-     <y>175</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>342</x>
-     <y>176</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>minRepeatsBox</sender>
-   <signal>editingFinished()</signal>
-   <receiver>FindTandemsDialog</receiver>
-   <slot>customization()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>558</x>
-     <y>197</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>235</x>
-     <y>201</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>maxPeriodBox</sender>
    <signal>editingFinished()</signal>
    <receiver>FindTandemsDialog</receiver>
@@ -476,38 +451,6 @@
     <hint type="destinationlabel">
      <x>336</x>
      <y>70</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>FindTandemsDialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>313</x>
-     <y>290</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>313</x>
-     <y>155</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>FindTandemsDialog</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>313</x>
-     <y>290</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>313</x>
-     <y>155</y>
     </hint>
    </hints>
   </connection>
