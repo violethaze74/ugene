@@ -146,7 +146,7 @@ Document* RawDNASequenceFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiR
 FormatCheckResult RawDNASequenceFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
     const char* data = rawData.constData();
     int size = rawData.size();
-    if(QRegExp("[a-zA-Z\r\n-]*").exactMatch(rawData)) {
+    if (QRegExp("[a-zA-Z\r\n-*]*").exactMatch(rawData)) {
         return FormatDetection_VeryHighSimilarity;
     }
     bool hasBinaryData = TextUtils::contains(TextUtils::BINARY, data, size);
