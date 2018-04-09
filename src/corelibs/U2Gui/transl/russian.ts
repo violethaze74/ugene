@@ -2144,72 +2144,72 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ExportAnnotations2CSVTask</name>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="40"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="42"/>
         <source>Export annotations to CSV format</source>
         <translation>Экспорт аннотаций в формат CSV</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="78"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="80"/>
         <source>Invalid I/O environment!</source>
         <translation>Invalid I/O environment!</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="81"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="83"/>
         <source>No IO adapter found for URL: %1</source>
         <translation>No IO adapter found for URL: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="91"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="93"/>
         <source>Group</source>
         <translation>Группа</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="91"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="93"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="91"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="93"/>
         <source>Start</source>
         <translation>Начало</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="91"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="93"/>
         <source>End</source>
         <translation>Конец</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="91"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="93"/>
         <source>Length</source>
         <translation>Длина</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="91"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="93"/>
         <source>Complementary</source>
         <translation>Комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="93"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="95"/>
         <source>Sequence name</source>
         <translation>Имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="96"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="98"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="122"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="129"/>
         <source>yes</source>
         <translation>да</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="122"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="129"/>
         <source>no</source>
         <translation>нет</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="156"/>
+        <location filename="../src/util/ExportAnnotations2CSVTask.cpp" line="175"/>
         <source>Attaching a sequence to an annotation was ignored. The annotation is on the complementary strand. Can not generate a complementary sequence for a non-nucleic alphabet.</source>
         <translation>Прикрепление последовательности к аннотации не было выполнено. Аннотация находится в комплементарной цепи. Невозможно сгенерировать комплементарную последовательность для алфавита, который не является нуклеиновым.</translation>
     </message>
@@ -2420,7 +2420,7 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::HelpButton</name>
     <message>
-        <location filename="../src/util/HelpButton.cpp" line="34"/>
+        <location filename="../src/util/HelpButton.cpp" line="36"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
@@ -2971,12 +2971,12 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ProjectTreeItemSelectorDialogImpl</name>
     <message>
-        <location filename="../src/util/ProjectTreeItemSelectorDialog.cpp" line="44"/>
+        <location filename="../src/util/ProjectTreeItemSelectorDialog.cpp" line="45"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/ProjectTreeItemSelectorDialog.cpp" line="45"/>
+        <location filename="../src/util/ProjectTreeItemSelectorDialog.cpp" line="46"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
