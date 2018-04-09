@@ -311,7 +311,7 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
     typeInfoIndexByType[PromoterEukaryotic] = infoCounter++;
     featureTypeInfos << U2FeatureTypeInfo(PromoterProkaryotic, "Promoter Prokaryotic", Alphabet_Nucleic);
     typeInfoIndexByType[PromoterProkaryotic] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Propeptide, "Propeptide", Alphabet_Amino);
+    featureTypeInfos << U2FeatureTypeInfo(Propeptide, "Propeptide", Alphabet_Nucleic | Alphabet_Amino);
     typeInfoIndexByType[Propeptide] = infoCounter++;
     featureTypeInfos << U2FeatureTypeInfo(Proprotein, "Proprotein", Alphabet_Amino);
     typeInfoIndexByType[Proprotein] = infoCounter++;
