@@ -25,6 +25,8 @@
 
 #include <U2View/DetView.h>
 
+#include <drivers/GTKeyboardDriver.h>
+
 #include "GTTestsRegressionScenarios_6001_7000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
@@ -77,6 +79,37 @@ GUI_TEST_CLASS_DEFINITION(test_6031) {
     foreach(const QString& name, nameList) {
         CHECK_SET_ERR(!name.startsWith("\27"), QString("Unexpected start of the name"));
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6033) {
+    //    1. Open 'human_T1.fa'
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select the whole sequence.
+    GTUtilsSequenceView::selectSequenceRegion(os, 1, 199950);
+
+    //3. Copy translation.
+    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
+
+    //4. Open the Project View, paste the data.
+    if (!GTUtilsProjectTreeView::isVisible(os)) {
+        GTUtilsProjectTreeView::openView(os);
+    }
+
+    GTUtilsProjectTreeView::click(os, "human_T1.fa");
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    bool correct = false;
+    foreach(const QString& name, GTUtilsProjectTreeView::getDocuments(os).keys()) {
+        if (name.contains("clipboard") && name.contains(".seq")) {
+            correct = true;
+            break;
+        }
+    }
+
+    CHECK_SET_ERR(correct, "Incorrect paste operation");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6043) {
