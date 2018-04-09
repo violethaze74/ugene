@@ -64,7 +64,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
 {
     editor = new DetViewSequenceEditor(this);
 
-    showComplementAction = new QAction(tr("Show complement strand"), this);
+    showComplementAction = new QAction(tr("Show complementary strand"), this);
     showComplementAction->setIcon(QIcon(":core/images/show_compl.png"));
     showComplementAction->setObjectName("complement_action");
     connect(showComplementAction, SIGNAL(triggered(bool)), SLOT(sl_showComplementToggle(bool)));

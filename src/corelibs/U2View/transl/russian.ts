@@ -3981,7 +3981,7 @@ You don&apos;t have enough rights to change file</source>
     <name>U2::DetView</name>
     <message>
         <location filename="../src/ov_sequence/DetView.cpp" line="67"/>
-        <source>Show complement strand</source>
+        <source>Show complementary strand</source>
         <translation>Показывать комплeментарную последовательность</translation>
     </message>
     <message>
