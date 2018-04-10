@@ -1212,18 +1212,20 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0005_1){
     CHECK_SET_ERR(lblMessage->text() == "Pairwise alignment is not available for alignments with \"Raw\" alphabet.",
                   QString("wrong label text: %1").arg(lblMessage->text()));
 //    3. Add two sequences to PA line edits
-    GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "seq7");
-    GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "seq7_1");
+    GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "seq7_1");
+    GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "seq7");
 //    Expected state: sequenseq added
     QLineEdit* line1 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 1);
     QLineEdit* line2 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 2);
     CHECK_SET_ERR(line1 != NULL, "line edit1 not found");
     CHECK_SET_ERR(line2 != NULL, "line edit2 not found");
-    CHECK_SET_ERR(line1->text() == "seq7", QString("wrong text in line edit1: %1").arg(line1->text()));
-    CHECK_SET_ERR(line2->text() == "seq7_1", QString("wrong text in line edit2: %1").arg(line2->text()));
+    CHECK_SET_ERR(line1->text() == "seq7_1", QString("wrong text in line edit1: %1").arg(line1->text()));
+    CHECK_SET_ERR(line2->text() == "seq7", QString("wrong text in line edit2: %1").arg(line2->text()));
 //    4. Remove sequenses
-    GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 1));
+    GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 1));		
     GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 2));
+	GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 1));
+	
 //    Expected state: sequences removed
     CHECK_SET_ERR(line1->text().isEmpty(), QString("wrong text in line edit1: %1").arg(line1->text()));
     CHECK_SET_ERR(line2->text().isEmpty(), QString("wrong text in line edit2: %1").arg(line2->text()));
