@@ -5719,11 +5719,11 @@ GUI_TEST_CLASS_DEFINITION(test_3901) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "group", "feature", "join(50..60,20..30,80..90)"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Add" << "New annotation...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(5000);
+	GTGlobals::sleep();
 
     //4. Click to the arrow (80..90).
     GTUtilsSequenceView::clickAnnotationDet(os, "feature", 80, 0, true);
-
+	GTGlobals::sleep(200);
     //Expected state: the arrow's region is selected.
     ADVSingleSequenceWidget *w=(ADVSingleSequenceWidget*)GTWidget::findWidget(os,"ADV_single_sequence_widget_0");
     QVector<U2Region> selection = w->getSequenceSelection()->getSelectedRegions();
