@@ -153,24 +153,15 @@ void BlastAllSupportContext::sl_showDialog() {
 
     if (dlg->result() == QDialog::Accepted) {
         BlastTaskSettings settings = dlg->getSettings();
-        //prepare query
-        DNASequenceSelection* s = seqCtx->getSequenceSelection();
-        QVector<U2Region> regions;
-        if(s->isEmpty()) {
-            regions.append(U2Region(0, seqCtx->getSequenceLength()));
-        } else {
-            regions =  s->getSelectedRegions();
-        }
-        foreach(const U2Region& r, regions) {
-            settings.querySequence = seqCtx->getSequenceData(r, os);
-            CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
-            settings.offsInGlobalSeq=r.startPos;
-            SAFE_POINT(seqCtx->getSequenceObject() != NULL, tr("Sequence object is NULL"), );
-            settings.isSequenceCircular = seqCtx->getSequenceObject()->isCircular();
-            settings.querySequenceObject = seqCtx->getSequenceObject();
-            Task * t = new BlastAllSupportTask(settings);
-            AppContext::getTaskScheduler()->registerTopLevelTask( t );
-        }
+        U2Region region = dlg->getSelectedRegion();
+        settings.querySequence = seqCtx->getSequenceData(region, os);
+        CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
+        settings.offsInGlobalSeq=region.startPos;
+        SAFE_POINT(seqCtx->getSequenceObject() != NULL, tr("Sequence object is NULL"), );
+        settings.isSequenceCircular = seqCtx->getSequenceObject()->isCircular();
+        settings.querySequenceObject = seqCtx->getSequenceObject();
+        Task * t = new BlastAllSupportTask(settings);
+        AppContext::getTaskScheduler()->registerTopLevelTask( t );
     }
 }
 

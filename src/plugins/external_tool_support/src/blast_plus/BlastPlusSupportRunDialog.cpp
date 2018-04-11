@@ -51,6 +51,7 @@
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
+#include <U2Gui/RegionSelector.h>
 
 #include "BlastPlusSupport.h"
 #include "BlastPlusSupportRunDialog.h"
@@ -71,7 +72,7 @@ namespace {
 ////////////////////////////////////////
 //BlastAllSupportRunDialog
 BlastPlusSupportRunDialog::BlastPlusSupportRunDialog(ADVSequenceObjectContext* seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent)
-: BlastRunCommonDialog(parent, BlastPlus, true, getCompValues()), lastDBPath(lastDBPath), lastDBName(lastDBName), seqCtx(seqCtx)
+: BlastRunCommonDialog(parent, BlastPlus, true, getCompValues()), lastDBPath(lastDBPath), lastDBName(lastDBName), seqCtx(seqCtx), regionSelector(NULL)
 {
     dnaso = seqCtx->getSequenceObject();
     CreateAnnotationModel ca_m;
@@ -82,7 +83,11 @@ BlastPlusSupportRunDialog::BlastPlusSupportRunDialog(ADVSequenceObjectContext* s
     ca_m.sequenceLen = dnaso->getSequenceLength();
     ca_c = new CreateAnnotationWidgetController(ca_m, this);
     annotationWidgetLayout->addWidget(ca_c->getWidget());
-
+    
+    int lastRow = settingsGridLayout->rowCount();
+    regionSelector = new RegionSelector(this, seqCtx->getSequenceLength(), false, seqCtx->getSequenceSelection());
+    settingsGridLayout->addWidget(regionSelector, lastRow, 0, 1, 3);
+    
     //programName->removeItem(3);//cuda-blastp
     if(dnaso->getAlphabet()->getType() == DNAAlphabet_AMINO){
         programName->removeItem(0);//blastn
@@ -98,6 +103,10 @@ BlastPlusSupportRunDialog::BlastPlusSupportRunDialog(ADVSequenceObjectContext* s
     dbSelector->databasePathLineEdit->setText(lastDBPath);
     dbSelector->baseNameLineEdit->setText(lastDBName);
     connect(cancelButton,SIGNAL(clicked()),SLOT(reject()));
+}
+
+U2Region BlastPlusSupportRunDialog::getSelectedRegion() const {
+    return regionSelector->isWholeSequenceSelected() ? U2Region(0, seqCtx->getSequenceLength()) : regionSelector->getRegion();
 }
 
 void BlastPlusSupportRunDialog::sl_lineEditChanged(){
