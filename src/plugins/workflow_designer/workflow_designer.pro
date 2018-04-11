@@ -98,6 +98,7 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/util/RequiredSlotsValidator.h \
            src/util/SaveSchemaImageUtils.h \
            src/util/WorkerNameValidator.h \
+           src/util/WriteAnnotationsValidator.h \
            src/util/WriteSequenceValidator.h
 
 FORMS += src/ChooseItemDialog.ui \
@@ -211,6 +212,7 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/util/RequiredSlotsValidator.cpp \
            src/util/SaveSchemaImageUtils.cpp \
            src/util/WorkerNameValidator.cpp \
+           src/util/WriteAnnotationsValidator.cpp \
            src/util/WriteSequenceValidator.cpp
 
 RESOURCES += workflow_designer.qrc
