@@ -47,6 +47,9 @@ private:
     QString                 url;
     bool                    append;
     QString                 separator;
+
+public:
+    static const QString    SEQUENCE_NAME;
 };
 
 } // namespace U2
