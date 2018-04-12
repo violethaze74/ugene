@@ -4397,6 +4397,41 @@ GUI_TEST_CLASS_DEFINITION(test_5872) {
     GTUtilsLog::checkContainsMessage(os, logTracer, false);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5898) {
+//    1. Open the sequence and the corresponding annotations in separate file:
+//        primer3/NM_001135099_no_anns.fa
+//        primer3/NM_001135099_annotations.gb
+//    2. Add opened annotaions to the sequence
+//    3. Open Primer3 dialog
+//    4. Check RT-PCR and pick primers
+//    Expected state: no error in the log, exon annotations in separate file were successfully found
+    GTLogTracer l;
+
+    GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "NM_001135099_no_anns.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTFileDialog::openFile(os, testDir + "/_common_data/primer3", "NM_001135099_annotations.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "NM_001135099 features");
+    QWidget* sequence = GTUtilsSequenceView::getSeqWidgetByNumber(os);
+    CHECK_SET_ERR(sequence != NULL, "Sequence widget not found");
+
+    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
+    GTUtilsProjectTreeView::dragAndDrop(os, idx, sequence);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "primer3_action"));
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.rtPcrDesign = true;
+
+    GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
+    GTWidget::click(os, sequence, Qt::RightButton);
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(!l.hasError(), "There is an error in the log");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5903) {
     //1. Open 'human_T1.fa'
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
