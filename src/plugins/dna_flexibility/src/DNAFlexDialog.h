@@ -51,6 +51,7 @@ private slots:
     void sl_spinThresholdChanged(double);
     void sl_rememberSettings();
     void sl_defaultSettings();
+    void sl_updateSizes(int);
 
 private:
     ADVSequenceObjectContext* ctx;
