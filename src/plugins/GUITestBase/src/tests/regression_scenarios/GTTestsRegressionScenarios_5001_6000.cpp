@@ -4553,6 +4553,56 @@ GUI_TEST_CLASS_DEFINITION(test_5950) {
 
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5972_1) {
+    //1. Open file _common_data/regression/5972/5972_1.uwl
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/5972", "5972_1.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Set input file _common_data/regression/5972/seq_with_orfs.fa
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", testDir + "_common_data/regression/5972/seq_with_orfs.fa");
+
+    //3. Set output file sandBoxDir "/test_5972_1.csv"
+    GTUtilsWorkflowDesigner::click(os, "Write Annotations");
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_5972_1.csv", GTUtilsWorkflowDesigner::textValue);
+
+    GTLogTracer tr;
+    //4. Run workflow
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: There are no errors in the log
+    CHECK_SET_ERR(tr.getError().isEmpty(), QString("Errors in the log"));
+
+    //Expected: The result file is equal to "_common_data/regression/5972/seq_with_orfs_1.csv"
+    bool check = GTFile::equals(os, testDir + "_common_data/regression/5972/seq_with_orfs_1.csv", QDir(sandBoxDir).absolutePath() + "/test_5972_1.csv");
+    CHECK_SET_ERR(check, QString("files are not equal"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5972_2) {
+    //1. Open file _common_data/regression/5972/5972_2.uwl
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/5972", "5972_2.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Set input file _common_data/regression/5972/seq_with_orfs.fa
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", testDir + "_common_data/regression/5972/seq_with_orfs.fa");
+
+    //3. Set output file sandBoxDir "/test_5972_1.csv"
+    GTUtilsWorkflowDesigner::click(os, "Write Annotations");
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_5972_2.csv", GTUtilsWorkflowDesigner::textValue);
+
+    GTLogTracer tr;
+
+    //4. Run workflow
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: Error in the log "Sequence names were not saved, the input slot 'Sequence' is empty."
+    GTUtilsLog::checkContainsError(os, tr, QString("Sequence names were not saved, the input slot 'Sequence' is empty."));
+
+    //Expected: The result file is equal to "_common_data/regression/5972/seq_with_orfs_1.csv"
+    bool check = GTFile::equals(os, testDir + "_common_data/regression/5972/seq_with_orfs_2.csv", QDir(sandBoxDir).absolutePath() + "/test_5972_2.csv");
+    CHECK_SET_ERR(check, QString("files are not equal"));
+}
 
 } // namespace GUITest_regression_scenarios
 
