@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+#include <drivers/GTKeyboardDriver.h>
 #include "Primer3DialogFiller.h"
 #include <primitives/GTCheckBox.h>
-#include <drivers/GTKeyboardDriver.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
@@ -89,6 +90,14 @@ void Primer3DialogFiller::commonScenario() {
     QCheckBox* rightCheckbox = dialog->findChild<QCheckBox*>("checkbox_PICK_RIGHT");
     GT_CHECK(rightCheckbox != NULL, "checkbox_PICK_RIGHT is NULL");
     GTCheckBox::setChecked(os, rightCheckbox, settings.pickRight);
+
+    if (settings.rtPcrDesign) {
+        GTTabWidget::setCurrentIndex(os, tabWidget, 4);
+
+        QGroupBox* groupBox = dialog->findChild<QGroupBox*>("spanIntronExonBox");
+        GT_CHECK(groupBox != NULL, "spanIntronExonBox is NULL");
+        GTGroupBox::setChecked(os, groupBox);
+    }
 
     if(!settings.shortRegion) {
         QPushButton* button = dialog->findChild<QPushButton*>("pickPrimersButton");

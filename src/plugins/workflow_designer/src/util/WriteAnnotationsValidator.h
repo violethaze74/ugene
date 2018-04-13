@@ -19,49 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_FLEX_DIALOG_H_
-#define _U2_DNA_FLEX_DIALOG_H_
+#ifndef _U2_WRITE_ANNOTATIONS_VALIDATOR_H_
+#define _U2_WRITE_ANNOTATIONS_VALIDATOR_H_
 
-#include "ui_DNAFlexDialog.h"
-
-#include "HighFlexSettings.h"
-
+#include <U2Lang/IntegralBusModel.h>
+#include <QCoreApplication>
 
 namespace U2 {
+namespace Workflow {
 
-
-class ADVSequenceObjectContext;
-class CreateAnnotationWidgetController;
-
-
-/**
- * Main and the only dialog of the DNA Flexibility plugin.
- */
-class DNAFlexDialog : public QDialog, public Ui_DNAFlexDialog
-{
-    Q_OBJECT
-
+class WriteAnnotationsValidator : public ActorValidator {
+    Q_DECLARE_TR_FUNCTIONS(WriteAnnotationsValidator)
 public:
-    DNAFlexDialog(ADVSequenceObjectContext* ctx);
-    virtual void accept();
-
-private slots:
-    void sl_spinWindowSizeChanged(int);
-    void sl_spinWindowStepChanged(int);
-    void sl_spinThresholdChanged(double);
-    void sl_rememberSettings();
-    void sl_defaultSettings();
-    void sl_updateSizes(int);
-
-private:
-    ADVSequenceObjectContext* ctx;
-    CreateAnnotationWidgetController* annotController;
-    HighFlexSettings settings;
-
-    void updateHighFlexValues();
+    virtual bool validate(const Actor *actor, ProblemList &problemList, const QMap<QString, QString> &options) const;
 };
 
+} // Workflow
+} // U2
 
-} // namespace
-
-#endif
+#endif // _U2_WRITE_ANNOTATIONS_VALIDATOR_H_

@@ -32,21 +32,27 @@
 namespace U2 {
 
 class ADVSequenceObjectContext;
+class RegionSelector;
 
 class BlastPlusSupportRunDialog : public BlastRunCommonDialog {
     Q_OBJECT
 public:
     BlastPlusSupportRunDialog(ADVSequenceObjectContext* seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent);
+    
+    U2Region getSelectedRegion() const;
+    
 protected slots:
     virtual void sl_runQuery();
     virtual void sl_lineEditChanged();
 
 private:
-    U2SequenceObject*  dnaso;
     bool checkToolPath();
+    
+    U2SequenceObject*  dnaso;
     QString &lastDBPath;
     QString &lastDBName;
     ADVSequenceObjectContext* seqCtx;
+    RegionSelector* regionSelector;
 };
 
 class BlastPlusWithExtFileSpecifySupportRunDialog : public BlastRunCommonDialog {

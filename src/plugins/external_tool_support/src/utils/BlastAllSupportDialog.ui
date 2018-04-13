@@ -52,7 +52,7 @@
         <enum>QLayout::SetFixedSize</enum>
        </property>
        <item>
-        <layout class="QGridLayout" name="gridLayout_2">
+        <layout class="QGridLayout" name="settingsGridLayout">
          <property name="sizeConstraint">
           <enum>QLayout::SetFixedSize</enum>
          </property>

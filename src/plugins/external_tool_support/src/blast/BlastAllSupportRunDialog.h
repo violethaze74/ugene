@@ -32,11 +32,15 @@
 namespace U2 {
 
 class ADVSequenceObjectContext;
+class RegionSelector;
 
 class BlastAllSupportRunDialog : public BlastRunCommonDialog {
     Q_OBJECT
+
 public:
     BlastAllSupportRunDialog(ADVSequenceObjectContext* seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent);
+    U2Region getSelectedRegion() const;
+
 protected slots:
     virtual void sl_runQuery();
     virtual void sl_lineEditChanged();
@@ -48,6 +52,7 @@ private:
     QPushButton*                okButton;
     QPushButton*                cancelButton;
     ADVSequenceObjectContext*   seqCtx;
+    RegionSelector*             regionSelector;
 };
 
 class BlastAllWithExtFileSpecifySupportRunDialog : public BlastRunCommonDialog {
