@@ -157,7 +157,7 @@ void ProjectImpl::removeDocument(Document* d, bool autodelete) {
             resourceTracker->release(resourceUsage[d->getName()]);
             resourceUsage.remove(d->getName());
         }
-        delete d;
+        d->deleteLater();
     }
     setModified(true);
 } 
