@@ -4589,12 +4589,15 @@ GUI_TEST_CLASS_DEFINITION(test_5950) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5972_1) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);   
+    
     //1. Open file _common_data/regression/5972/5972_1.uwl
-    GTFileDialog::openFile(os, testDir + "_common_data/regression/5972", "5972_1.uwl");
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/5972/5972_1.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Set input file _common_data/regression/5972/seq_with_orfs.fa
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", testDir + "_common_data/regression/5972/seq_with_orfs.fa");
+    GTUtilsWorkflowDesigner::click(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/regression/5972/seq_with_orfs.fa");
 
     //3. Set output file sandBoxDir "/test_5972_1.csv"
     GTUtilsWorkflowDesigner::click(os, "Write Annotations");
@@ -4614,12 +4617,15 @@ GUI_TEST_CLASS_DEFINITION(test_5972_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5972_2) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
     //1. Open file _common_data/regression/5972/5972_2.uwl
-    GTFileDialog::openFile(os, testDir + "_common_data/regression/5972", "5972_2.uwl");
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/5972/5972_2.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Set input file _common_data/regression/5972/seq_with_orfs.fa
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", testDir + "_common_data/regression/5972/seq_with_orfs.fa");
+    GTUtilsWorkflowDesigner::click(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/regression/5972/seq_with_orfs.fa");
 
     //3. Set output file sandBoxDir "/test_5972_1.csv"
     GTUtilsWorkflowDesigner::click(os, "Write Annotations");
