@@ -73,6 +73,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef,  QList<GObject*>& object
 
     QBitArray ALPHAS = TextUtils::ALPHA_NUMS;
     ALPHAS['-'] = true;
+    ALPHAS['*'] = true;
 
     QByteArray seq;
     QString seqName(io->getURL().baseFileName());
