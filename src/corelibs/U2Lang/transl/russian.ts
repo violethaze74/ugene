@@ -7,7 +7,7 @@
         <location filename="../src/model/PairedReadsPortValidator.cpp" line="39"/>
         <location filename="../src/model/PairedReadsPortValidator.cpp" line="45"/>
         <source>The mandatory &quot;%1&quot; slot is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Обязательный слот &quot;%1&quot; не соединён.</translation>
     </message>
 </context>
 <context>
@@ -1539,7 +1539,7 @@
     <message>
         <location filename="../src/library/BaseActorCategories.cpp" line="63"/>
         <source>NGS: Map/Assemble Reads</source>
-        <translation type="unfinished"></translation>
+        <translation>NGS: выравнивание коротких ридов</translation>
     </message>
     <message>
         <location filename="../src/library/BaseActorCategories.cpp" line="79"/>
