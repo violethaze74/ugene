@@ -377,17 +377,6 @@ For every column selects the most rare symbol in the whole alignment with percen
     </message>
 </context>
 <context>
-    <name>U2::MsaColorSchemeFactory</name>
-    <message>
-        <source>Nucleotide</source>
-        <translation type="vanished">Нуклеотидная</translation>
-    </message>
-    <message>
-        <source>Amino</source>
-        <translation type="vanished">Аминокислотная</translation>
-    </message>
-</context>
-<context>
     <name>U2::MsaColorSchemeRegistry</name>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="545"/>
@@ -456,17 +445,6 @@ For every column selects the most rare symbol in the whole alignment with percen
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="600"/>
         <source>Clustal X</source>
         <translation>Clustal X</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MsaHighlightingSchemeFactory</name>
-    <message>
-        <source>Nucleotide</source>
-        <translation type="vanished">Нуклеотидная</translation>
-    </message>
-    <message>
-        <source>Amino</source>
-        <translation type="vanished">Аминокислотная</translation>
     </message>
 </context>
 <context>
