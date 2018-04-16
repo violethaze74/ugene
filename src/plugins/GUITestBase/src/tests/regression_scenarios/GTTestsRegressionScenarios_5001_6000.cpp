@@ -1036,11 +1036,13 @@ GUI_TEST_CLASS_DEFINITION(test_5352) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsWorkflowDesigner::removeItem(os, "Align with MUSCLE");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     WorkflowProcessItem* read = GTUtilsWorkflowDesigner::getWorker(os, "Read alignment");
     WorkflowProcessItem* write = GTUtilsWorkflowDesigner::getWorker(os, "Write alignment");
+
+    GTUtilsWorkflowDesigner::click(os, "Align with MUSCLE");
+    GTUtilsWorkflowDesigner::removeItem(os, "Align with MUSCLE");
     GTUtilsWorkflowDesigner::connect(os, read, write);
 
     GTUtilsWorkflowDesigner::click(os, "Read alignment");
