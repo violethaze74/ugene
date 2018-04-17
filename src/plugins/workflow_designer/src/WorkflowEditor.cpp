@@ -190,12 +190,14 @@ void WorkflowEditor::createInputPortTable(Actor* a) {
             p->setEditor(ed);
             QWidget *w = ed->getWidget();
             inputLayout->addWidget(w);
-            bool visible = ed && !ed->isEmpty();
+            bool visible = ed && !ed->isEmpty() && p->isEnabled();
             if (visible) {
                 inputHeight += ed->getOptimalHeight();
                 w->setVisible(inputPortBox->isChecked());
                 inputPortBox->setEnabled(true);
                 inputPortBox->setVisible(true);
+            } else {
+                w->setVisible(false);
             }
 
             connect(ed, SIGNAL(si_showDoc(const QString&)), SLOT(sl_showDoc(const QString&)));
@@ -224,12 +226,14 @@ void WorkflowEditor::createOutputPortTable(Actor* a) {
             p->setEditor(ed);
             QWidget *w = ed->getWidget();
             outputLayout->addWidget(w);
-            bool visible = ed && !ed->isEmpty();
+            bool visible = ed && !ed->isEmpty() && p->isEnabled();
             if (visible) {
                 outputHeight += ed->getOptimalHeight();
                 w->setVisible(outputPortBox->isChecked());
                 outputPortBox->setEnabled(true);
                 outputPortBox->setVisible(true);
+            } else {
+                w->setVisible(false);
             }
 
             connect(ed, SIGNAL(si_showDoc(const QString&)), SLOT(sl_showDoc(const QString&)));
