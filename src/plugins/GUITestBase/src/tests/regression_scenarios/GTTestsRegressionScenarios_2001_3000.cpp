@@ -1489,6 +1489,17 @@ GUI_TEST_CLASS_DEFINITION( test_2187 ) {
 
     Runnable *filler = new EditAnnotationChecker(os, "repeat_unit", "251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259");
     GTUtilsDialog::waitForDialog(os, filler);
+    static QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "repeat_unit");
+    foreach(QTreeWidgetItem* item, items) {
+        if (item->text(2) == "251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259")
+        {
+            CHECK_SET_ERR("9" == GTUtilsAnnotationsTreeView::getQualifierValue(os, "num_of_repeats", item), "Wrong num_of_repeats value");
+            CHECK_SET_ERR("1" == GTUtilsAnnotationsTreeView::getQualifierValue(os, "repeat_length", item), "Wrong repeat_length value");
+            CHECK_SET_ERR("9" == GTUtilsAnnotationsTreeView::getQualifierValue(os, "whole_length", item), "Wrong whole_length value");
+            break;
+        }
+    }
+
 
     GTKeyboardDriver::keyClick( Qt::Key_F2);
     GTGlobals::sleep();
