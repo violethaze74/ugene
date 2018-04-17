@@ -50,7 +50,7 @@ public:
     GUrl url;
 
 private slots:
-    void endPosValueChanged();
+    void sl_regionChanged();
 
 private:
     void initSaveController();
