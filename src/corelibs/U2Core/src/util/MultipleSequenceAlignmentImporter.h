@@ -45,8 +45,8 @@ public:
         U2OpStatus &os, const QList<U2Sequence> &alignedSequences = QList<U2Sequence>());
 
 private:
-    static U2Msa importMsaObject(const DbiConnection &con, const QString &folder, const MultipleSequenceAlignment &al, U2OpStatus &os);
-    static void importMsaInfo(const DbiConnection &con, const U2DataId &msaId, const MultipleSequenceAlignment &al, U2OpStatus &os);
+    static U2DataId createEmptyMsaObject(const DbiConnection &con, const QString &folder, const QString& name, const DNAAlphabet* alphabet, U2OpStatus &os);
+    static void importMsaInfo(const DbiConnection &con, const U2DataId &msaId, const QVariantMap& alInfo, U2OpStatus &os);
     static QList<U2Sequence> importSequences(const DbiConnection &con, const QString &folder, const MultipleSequenceAlignment &al, U2OpStatus &os);
     static void splitToCharsAndGaps(const DbiConnection &con, QList<U2Sequence> &sequences, U2MsaListGapModel &gapModel, U2OpStatus &os);
     static void setChildRankForSequences(const DbiConnection &con, const QList<U2Sequence> &sequences, U2OpStatus &os);
