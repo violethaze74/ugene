@@ -82,6 +82,11 @@ MultipleSequenceAlignmentObject * MultipleSequenceAlignmentImporter::createAlign
     QList<U2MsaRow> rows = importRows(con, al, msaId, sequences, gapModel, os);
     CHECK_OP(os, NULL);
     SAFE_POINT_EXT(rows.size() == al->getNumRows(), os.setError(QObject::tr("Unexpected error on MSA rows import")), NULL);
+    
+    // As the result of importRows length of MSA may be updated -> reload it
+    qint64 len = con.dbi->getMsaDbi()->getMsaLength(msaId, os);
+    CHECK_OP(os, NULL);
+    al->setLength(len);
 
     for (int i = 0, n = al->getNumRows(); i < n; ++i) {
         al->getMsaRow(i)->setRowDbInfo(rows.at(i));

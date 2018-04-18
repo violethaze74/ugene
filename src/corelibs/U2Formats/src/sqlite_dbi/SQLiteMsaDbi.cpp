@@ -255,7 +255,7 @@ void SQLiteMsaDbi::addRows(const U2DataId& msaId, QList<U2MsaRow>& rows, U2OpSta
         maxLength = qMax(maxLength, row.length);
     }
     qint64 currentMsaLength = getMsaLength(msaId, os);
-    if (maxLength > currentMsaLength) {
+    if (maxLength != currentMsaLength) {
         updateMsaLength(updateAction, msaId, maxLength, os);
         CHECK_OP(os, );
     }

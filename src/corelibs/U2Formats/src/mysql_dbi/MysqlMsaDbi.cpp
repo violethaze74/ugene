@@ -1349,7 +1349,7 @@ void MysqlMsaDbi::updateGapModel(MysqlModificationAction &updateAction, const U2
     }
     len += getRowSequenceLength(msaId, msaRowId, os);
     SAFE_POINT_OP(os, );
-    if (len > getMsaLength(msaId, os)) {
+    if (len != getMsaLength(msaId, os)) {
         updateMsaLength(updateAction, msaId, len, os);
     }
     SAFE_POINT_OP(os, );
