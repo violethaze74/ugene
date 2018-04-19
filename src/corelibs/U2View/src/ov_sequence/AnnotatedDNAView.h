@@ -216,6 +216,7 @@ private slots:
     void sl_complementSequence();
     void sl_selectionChanged();
     void sl_aminoTranslationChanged();
+    void sl_updatePasteAction();
 
     virtual void sl_onDocumentAdded(Document*);
     virtual void sl_onDocumentLoadedStateChanged();
@@ -236,6 +237,8 @@ private:
     void createCodonTableAction();
 
     void reverseComplementSequence(bool reverse = true, bool complement = true);
+
+    static QAction* getEditActionFromSequenceWidget(ADVSequenceWidget* seqWgt);
 
     QAction * createPasteAction();
 

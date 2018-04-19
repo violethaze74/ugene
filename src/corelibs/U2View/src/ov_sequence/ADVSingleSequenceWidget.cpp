@@ -803,8 +803,7 @@ void ADVSingleSequenceWidget::saveState(QVariantMap& m) {
 }
 
 // QT 4.5.0 bug workaround
-void ADVSingleSequenceWidget::sl_closeView()
-{
+void ADVSingleSequenceWidget::sl_closeView() {
     closeView();
 }
 
