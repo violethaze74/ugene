@@ -164,6 +164,7 @@ GUI_TEST_CLASS_DEFINITION(test_5004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5012) {
+    GTLogTracer l;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
@@ -191,6 +192,8 @@ GUI_TEST_CLASS_DEFINITION(test_5012) {
     GTUtilsWorkflowDesigner::setParameter(os, "Output variants file", QDir(sandBoxDir).absoluteFilePath("test_5012.vcf"), GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!l.hasError(), "There is an error in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5012_1) {
