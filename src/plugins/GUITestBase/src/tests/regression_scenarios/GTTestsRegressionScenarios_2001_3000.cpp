@@ -5116,7 +5116,8 @@ GUI_TEST_CLASS_DEFINITION(test_2773) {
     // out: some/valid/path
     // 3. run sheme.
     // Expected state: UGENE doesn't crash, error message appears.
-
+    
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //need to copy enlement to data dir
 #ifdef Q_OS_MAC
     QFile::copy(testDir + "_common_data/cmdline/_proto/translateTest.usa", "data/workflow_samples/users/translateTest.usa");
@@ -5125,9 +5126,8 @@ GUI_TEST_CLASS_DEFINITION(test_2773) {
 #endif
     GTLogTracer l;
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/cmdline/custom-script-worker-functions/translateTest/", "translateTest.uwl");
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/cmdline/custom-script-worker-functions/translateTest/translateTest.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-	GTGlobals::sleep(5000);
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
     GTUtilsWorkflowDesigner::setDatasetInputFile( os, testDir + "_common_data/cmdline/DNA.fa" );
