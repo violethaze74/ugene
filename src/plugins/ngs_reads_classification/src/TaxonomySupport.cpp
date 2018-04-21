@@ -84,6 +84,8 @@ const QString TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT_ID("tax-data");
 static const QString CLASSIFICATION_SLOT_TYPE_ID("tax-classification");
 
 const TaxID TaxonomyTree::UNDEFINED_ID = (TaxID)-1;
+const TaxID TaxonomyTree::UNCLASSIFIED_ID = 0;
+
 TaxonomyTree *TaxonomyTree::the_tree = NULL;
 const int RANK_SHIFT = (sizeof(TaxID) - sizeof(char))* 8;
 const TaxID RANK_MASK = 0xFF << RANK_SHIFT;

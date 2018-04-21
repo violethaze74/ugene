@@ -2,6 +2,7 @@ include (ngs_reads_classification.pri)
 
 # Input
 HEADERS += src/ClassificationFilterWorker.h \
+           src/ClassificationReportWorker.h \
            src/DatabaseDelegate.h \
            src/EnsembleClassificationWorker.h \
            src/GenomicLibraryDelegate.h \
@@ -13,6 +14,7 @@ HEADERS += src/ClassificationFilterWorker.h \
            src/TaxonomySupport.h
 
 SOURCES += src/ClassificationFilterWorker.cpp \
+           src/ClassificationReportWorker.cpp \
            src/DatabaseDelegate.cpp \
            src/EnsembleClassificationWorker.cpp \
            src/GenomicLibraryDelegate.cpp \

@@ -49,7 +49,11 @@ class TaxonomyTreeModel;
 
 class TaxonomyTree {
 public:
+    /** Id to mark unknown or undefined value (e.g. search result or default initialization). */
     static const TaxID UNDEFINED_ID;
+    /** Id to mark unclassified reads in results. */
+    static const TaxID UNCLASSIFIED_ID;
+
     static TaxonomyTree *getInstance();
     QString getName(TaxID id) const;
     QString getRank(TaxID id) const;

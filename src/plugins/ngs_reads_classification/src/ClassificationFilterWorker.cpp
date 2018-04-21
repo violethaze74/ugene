@@ -535,7 +535,7 @@ QString ClassificationFilterTask::filter(DNASequence *seq, QString inputName)
     if (id == TaxonomyTree::UNDEFINED_ID) {
             algoLog.info(tr("Warning: classification result for the ‘%1’ (from '%2') hasn’t been found.").arg(seq->getName()).arg(inputName));
             missed = true;
-    } else if (id != 0) {
+    } else if (id != TaxonomyTree::UNCLASSIFIED_ID) {
         id = TaxonomyTree::getInstance()->match(id, cfg.taxons);
         if (id != TaxonomyTree::UNDEFINED_ID) {
             foundIDs.insertMulti(inputName, id);

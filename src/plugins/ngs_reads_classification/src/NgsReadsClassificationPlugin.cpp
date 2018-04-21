@@ -25,6 +25,7 @@
 
 #include "NgsReadsClassificationPlugin.h"
 #include "ClassificationFilterWorker.h"
+#include "ClassificationReportWorker.h"
 #include "EnsembleClassificationWorker.h"
 #include "GetReadListWorker.h"
 
@@ -97,6 +98,7 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
     registerData(REFSEQ_VIRAL_DATA_ID, REFSEQ_VIRAL_PATH, tr("RefSeq release viral data from NCBI"));
 
     LocalWorkflow::ClassificationFilterWorkerFactory::init();
+    LocalWorkflow::ClassificationReportWorkerFactory::init();
     LocalWorkflow::GetReadsListWorkerFactory::init();
     LocalWorkflow::EnsembleClassificationWorkerFactory::init();
 
@@ -116,6 +118,7 @@ NgsReadsClassificationPlugin::~NgsReadsClassificationPlugin() {
     LocalWorkflow::EnsembleClassificationWorkerFactory::cleanup();
     LocalWorkflow::GetReadsListWorkerFactory::cleanup();
     LocalWorkflow::ClassificationFilterWorkerFactory::cleanup();
+    LocalWorkflow::ClassificationReportWorkerFactory::cleanup();
 
     foreach (const QString &dataId, registeredData) {
         unregisterData(dataId);
