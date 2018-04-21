@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/ABIFormat.cpp" line="451"/>
         <source>Undefined sequence alphabet</source>
-        <translation type="unfinished">Неизвестный алфавит</translation>
+        <translation>Неизвестный алфавит</translation>
     </message>
 </context>
 <context>
@@ -1238,7 +1238,8 @@
         <location filename="../src/FastaFormat.cpp" line="279"/>
         <source>Skipped sequences: %1.
 </source>
-        <translation>Пропущены последовательности: %1.</translation>
+        <translation>Пропущены последовательности: %1.
+</translation>
     </message>
     <message>
         <location filename="../src/FastaFormat.cpp" line="280"/>
@@ -1826,7 +1827,7 @@
     <message>
         <location filename="../src/MSFFormat.cpp" line="192"/>
         <source>File check sum is incorrect: expected value: %1, current value %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Контрольная сумма некорректна: ожидается значение %1, текущее значение %2</translation>
     </message>
     <message>
         <source>Check sum test failed</source>
@@ -1835,7 +1836,7 @@
     <message>
         <location filename="../src/MSFFormat.cpp" line="266"/>
         <source>Unexpected check sum in the row number %1, name: %2; expected value: %3, current value %4</source>
-        <translation type="unfinished"></translation>
+        <translation>Некорректная контрольная сумма в ряду %1, имя: %2; ожидается значение: %3, текущее значение %4</translation>
     </message>
     <message>
         <location filename="../src/MSFFormat.cpp" line="273"/>
@@ -1968,7 +1969,7 @@
     <message>
         <location filename="../src/NEXUSFormat.cpp" line="692"/>
         <source>#NEXUS header missing</source>
-        <translation>Отсутствует заголовок #NEXUS </translation>
+        <translation>Отсутствует заголовок #NEXUS</translation>
     </message>
 </context>
 <context>
@@ -2284,12 +2285,12 @@
     <message>
         <location filename="../src/StreamSequenceReader.cpp" line="91"/>
         <source>File %1 unsupported format.</source>
-        <translation type="unfinished"></translation>
+        <translation>File %1 unsupported format.</translation>
     </message>
     <message>
         <location filename="../src/StreamSequenceReader.cpp" line="109"/>
         <source>Unsupported file format or short reads list is empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Unsupported file format or short reads list is empty</translation>
     </message>
 </context>
 <context>
@@ -2355,7 +2356,7 @@
     <message>
         <location filename="../src/util/TabulatedFormatReader.cpp" line="36"/>
         <source>IO adapter is not opened</source>
-        <translation type="unfinished"></translation>
+        <translation>IO adapter is not opened</translation>
     </message>
 </context>
 <context>
