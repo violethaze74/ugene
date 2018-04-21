@@ -251,7 +251,7 @@ private:
     static const QStringList wellKnownErrors;
 };
 
-const QStringList ClarkBuildLogParser::wellKnownErrors("abort");
+const QStringList ClarkBuildLogParser::wellKnownErrors = QStringList() << "abort" << "core dumped";
 
 void ClarkBuildTask::prepare() {
     const QString db("custom");// = QString("custom_%1").arg(rank);
@@ -262,11 +262,16 @@ void ClarkBuildTask::prepare() {
         return;
     }
 
+    QFile refdata(reflist);
+    if (refdata.open(QIODevice::WriteOnly))
     {
-        QFile refdata(reflist);
-        refdata.open(QIODevice::WriteOnly);
         refdata.write(genomeUrls.join("\n").toLocal8Bit());
         refdata.close();
+    }
+    else
+    {
+        setError(refdata.errorString());
+        CHECK_OP(stateInfo, );
     }
 
   QString toolName = ET_CLARK_buildScript;

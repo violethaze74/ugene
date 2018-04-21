@@ -384,9 +384,12 @@ void EnsembleClassificationTask::run() {
     }
 
     QFile csvFile(outputFile);
-    csvFile.open(QIODevice::Append);
-    csvFile.write(csv.toLocal8Bit());
-    csvFile.close();
+    if (csvFile.open(QIODevice::Append)) {
+        csvFile.write(csv.toLocal8Bit());
+        csvFile.close();
+    } else {
+        setError(csvFile.errorString());
+    }
 }
 
 EnsembleClassificationTask::EnsembleClassificationTask(const QList<TaxonomyClassificationResult> &_taxData,

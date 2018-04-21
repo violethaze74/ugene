@@ -425,9 +425,9 @@ void ClarkClassifyWorker::init() {
     cfg.minFreqTarget = getValue<int>(K_MIN_FREQ);
     cfg.kmerSize = getValue<int>(K_LENGTH);
     cfg.extOut = getValue<bool>(EXTEND_OUT);
-    cfg.mode = getValue<U2::LocalWorkflow::ClarkClassifySettings::Mode>(MODE);
     cfg.tool = getValue<QString>(TOOL_VARIANT).toLower();
 
+    cfg.mode = (U2::LocalWorkflow::ClarkClassifySettings::Mode)getValue<int>(MODE);
     if (!(cfg.mode >=ClarkClassifySettings::Full && cfg.mode <= ClarkClassifySettings::Spectrum)) {
         reportError(tr("Unrecognized mode of execution, expected any of: 0 (full), 1 (default), 2 (express) or 3 (spectrum)"));
     }
@@ -563,7 +563,7 @@ TaxonomyClassificationResult ClarkClassifyWorker::parseReport(const QString &url
                 algoLog.trace(QString("Found CLARK classification: %1=%2").arg(objID).arg(QString(assStr)));
 
                 bool ok = true;
-                TaxID assID = (assStr != "NA") ? assStr.toUInt(&ok) : 0;
+                TaxID assID = (assStr != "NA") ? assStr.toUInt(&ok) : TaxonomyTree::UNCLASSIFIED_ID;
                 if (!ok) {
                     reportError(tr("Broken CLARK report: %1").arg(url));
                     break;
