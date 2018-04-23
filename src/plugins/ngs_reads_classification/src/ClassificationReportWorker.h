@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CLASSIFICATION_REPORT_H_
-#define _U2_CLASSIFICATION_REPORT_H_
+#ifndef _U2_CLASSIFICATION_REPORT_WORKER_H_
+#define _U2_CLASSIFICATION_REPORT_WORKER_H_
 
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GUrl.h>
@@ -42,7 +42,7 @@ class ClassificationReportPrompter;
 typedef PrompterBase<ClassificationReportPrompter> ClassificationReportBase;
 
 class ClassificationReportPrompter : public ClassificationReportBase {
-    Q_OBJECT
+     Q_DECLARE_TR_FUNCTIONS(ClassificationReportPrompter)
 public:
     ClassificationReportPrompter(Actor* p = 0) : ClassificationReportBase(p) {}
 protected:
@@ -55,7 +55,6 @@ public:
     ClassificationReportWorker(Actor *a);
 protected:
     void init();
-//    bool isReady() const;
     Task * tick();
     void cleanup() {}
 

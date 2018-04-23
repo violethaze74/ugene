@@ -106,7 +106,7 @@ void ClassificationReportWorkerFactory::init() {
 
     QMap<QString, PropertyDelegate*> delegates;
     {
-        const URLDelegate::Options options = URLDelegate::SelectFileToSave;// | URLDelegate::DoNotUseWorkflowOutputFolder;
+        const URLDelegate::Options options = URLDelegate::SelectFileToSave;
         DelegateTags tags;
         tags.set(DelegateTags::PLACEHOLDER_TEXT, L10N::required());
         delegates[OUT_FILE] = new URLDelegate(tags, "classify/report", options);
@@ -185,6 +185,25 @@ ClassificationReportTask::ClassificationReportTask(const QMap<TaxID,uint> &data,
 }
 
 struct ClassificationReportLine {
+
+    ClassificationReportLine() {
+        tax_id = 0;
+        directly_num = 0;
+        directly_proportion_all = 0.;
+        directly_proportion_classified = 0.;
+        clade_num = 0;
+        clade_proportion_all = 0.;
+        clade_proportion_classified = 0.;
+
+        kingdom_tax_id = 0;
+        phylum_tax_id = 0;
+        class_tax_id = 0;
+        order_tax_id = 0;
+        family_tax_id = 0;
+        genus_tax_id = 0;
+        species_tax_id = 0;
+    }
+
     TaxID tax_id;
     QString tax_name;
     QString rank;
@@ -210,10 +229,12 @@ struct ClassificationReportLine {
     double clade_proportion_all;
     double clade_proportion_classified;
 
-    QString fmt(QString s) {
+    static QString fmt(QString s) {
         return s.isEmpty() ? "-" : s;
     }
-    QByteArray toString() {
+
+    // TODO it might be better to write to stream instead of bytearray buffer
+    QByteArray toString() const {
         QByteArray line;
         line.reserve(400);
         return line.append(QByteArray::number(tax_id)).append('\t').append(tax_name).append('\t').append(rank).append('\t').append(lineage).append('\t')
@@ -226,7 +247,7 @@ struct ClassificationReportLine {
     }
 };
 
-static QString write(QString path, QMap<TaxID, ClassificationReportLine> report);
+static QString write(QString path, QHash<TaxID, ClassificationReportLine> report);
 
 static const QString SPECIES("species");
 static const QString GENUS("genus");
@@ -238,7 +259,7 @@ static const QString KINGDOM("kingdom");
 static const QString header("tax_id\ttax_name\trank\tlineage\tkingdom_tax_id\tkingdom_name\tphylum_tax_id\tphylum_name\tclass_tax_id\tclass_name\torder_tax_id\torder_name\tfamily_tax_id\tfamily_name\tgenus_tax_id\tgenus_name\tspecies_tax_id\tspecies_name\tdirectly_num\tdirectly_proportion_all(%)\tdirectly_proportion_classified(%)\tclade_num\tclade_proportion_all(%)\tclade_proportion_classified(%)");
 
 
-static void fill(ClassificationReportLine &line, QMap<TaxID, uint> &claded) {
+static void fill(ClassificationReportLine &line, QHash<TaxID, uint> &claded) {
     TaxonomyTree *tree = TaxonomyTree::getInstance();
 
     TaxID id = line.tax_id;
@@ -287,8 +308,11 @@ static void fill(ClassificationReportLine &line, QMap<TaxID, uint> &claded) {
 void ClassificationReportTask::run()
 {
     uint classifiedCount = totalCount - data.remove(TaxonomyTree::UNCLASSIFIED_ID);
-    QMap<TaxID, ClassificationReportLine> report;
-    QMap<TaxID, uint> claded;
+    QHash<TaxID, ClassificationReportLine> report;
+    QHash<TaxID, uint> claded;
+    report.reserve(data.size());
+    claded.reserve(data.size() * 8);
+
     QMapIterator<TaxID, uint> i(data);
     while (i.hasNext()) {
         i.next();
@@ -302,12 +326,12 @@ void ClassificationReportTask::run()
         fill(line, claded);
     }
 
-    QMapIterator<TaxID, uint> i2(claded);
+    QHashIterator<TaxID, uint> i2(claded);
     while (i2.hasNext()) {
         i2.next();
         TaxID id = i2.key();
         uint count = i2.value();
-        QMap<TaxID, ClassificationReportLine>::iterator line = report.find(id);
+        QHash<TaxID, ClassificationReportLine>::iterator line = report.find(id);
         if (line != report.end()) {
             line.value().clade_num = count;
             line.value().clade_proportion_all = double(count) / totalCount;
@@ -330,10 +354,10 @@ static bool compare(const ClassificationReportLine* first, const ClassificationR
     return first->clade_num > second->clade_num;
 }
 
-QString write(QString fileName, QMap<TaxID, ClassificationReportLine> report)
+QString write(QString fileName, QHash<TaxID, ClassificationReportLine> report)
 {
     QList<ClassificationReportLine*> sorted;
-    for (QMap<TaxID, ClassificationReportLine>::iterator i = report.begin(); i != report.end(); ++i) {
+    for (QHash<TaxID, ClassificationReportLine>::iterator i = report.begin(); i != report.end(); ++i) {
         sorted << &*i;
     }
     std::sort(sorted.begin(), sorted.end(), compare);
