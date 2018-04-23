@@ -47,7 +47,7 @@ typedef QMap<QString, TaxID> TaxonomyClassificationResult;
 
 class TaxonomyTreeModel;
 
-class TaxonomyTree {
+class U2NGS_READS_CLASSIFICATION_EXPORT TaxonomyTree {
 public:
     /** Id to mark unknown or undefined value (e.g. search result or default initialization). */
     static const TaxID UNDEFINED_ID;
