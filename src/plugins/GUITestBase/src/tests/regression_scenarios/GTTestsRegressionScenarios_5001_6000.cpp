@@ -4560,6 +4560,28 @@ GUI_TEST_CLASS_DEFINITION(test_5947) {
 
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5948) {
+    //1. Open "samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+
+    //2. Make sure the editing mode is switched off.
+    QAction* editMode = GTAction::findActionByText(os, "Edit sequence");
+    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    if (editMode->isChecked()) {
+        GTWidget::click(os, GTAction::button(os, editMode));
+    }
+
+    //3. Copy a sequence region
+    GTUtilsSequenceView::selectSequenceRegion(os, 10, 20);
+    GTKeyboardUtils::copy(os);
+
+    //4. "Copy/Paste > Paste sequence" is disabled in the context menu.
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste" << "Paste sequence", PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    MWMDIWindow *mdiWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
+    GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
+    GTMouseDriver::click(Qt::RightButton);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5950) {
     //    1. Open 'human_T1.fa'
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");

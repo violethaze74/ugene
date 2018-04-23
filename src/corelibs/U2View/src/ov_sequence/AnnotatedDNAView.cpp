@@ -220,7 +220,7 @@ QWidget* AnnotatedDNAView::createWidget() {
         ADVSingleSequenceWidget* block = new ADVSingleSequenceWidget(seqCtx, this);
         connect(block, SIGNAL(si_titleClicked(ADVSequenceWidget*)), SLOT(sl_onSequenceWidgetTitleClicked(ADVSequenceWidget*)));
         connect(seqCtx, SIGNAL(si_aminoTranslationChanged()), SLOT(sl_aminoTranslationChanged()));
-        block->setObjectName("ADV_single_sequence_widget_"+QString::number(i));
+        block->setObjectName("ADV_single_sequence_widget_" + QString::number(i));
         addSequenceWidget(block);
         block->addAction(createPasteAction());
     }
@@ -235,7 +235,9 @@ QWidget* AnnotatedDNAView::createWidget() {
     scrollArea->setWidget(scrolledWidget);
 
     clipb = new ADVClipboard(this);
-    connect(clipb->getPasteSequenceAction(), SIGNAL(triggered()), this, SLOT(sl_paste()));
+    QAction* pasteAction = clipb->getPasteSequenceAction();
+    pasteAction->setEnabled(false);
+    connect(pasteAction, SIGNAL(triggered()), this, SLOT(sl_paste()));
 
     mainSplitter->installEventFilter(this);
     mainSplitter->setAcceptDrops(true);
@@ -397,6 +399,7 @@ void AnnotatedDNAView::setFocusedSequenceWidget(ADVSequenceWidget* v) {
     ADVSequenceWidget* prevFocus = focusedWidget;
     focusedWidget = v;
     updateMultiViewActions();
+    sl_updatePasteAction();
     emit si_focusChanged(prevFocus, focusedWidget);
 }
 
@@ -678,12 +681,19 @@ bool AnnotatedDNAView::isChildWidgetObject(GObject* obj) const {
 void AnnotatedDNAView::addSequenceWidget(ADVSequenceWidget* v) {
     assert(!seqViews.contains(v));
     seqViews.append(v);
+
+    QAction* editAction = getEditActionFromSequenceWidget(v);
+    SAFE_POINT(editAction != NULL, "Edit action is not found", );
+
+    connect(editAction, SIGNAL(triggered()), SLOT(sl_updatePasteAction()));
+
     QList<ADVSequenceObjectContext*> contexts = v->getSequenceContexts();
     foreach(ADVSequenceObjectContext* c, contexts) {
         c->addSequenceWidget(v);
         addAutoAnnotations(c);
         addGraphs(c);
         connect(c->getSequenceSelection(), SIGNAL(si_selectionChanged(LRegionsSelection*, QVector<U2Region>, QVector<U2Region>)), SLOT(sl_selectionChanged()));
+        clipb->connectSequence(c);
     }
     scrolledWidgetLayout->addWidget(v);
     v->setVisible(true);
@@ -737,6 +747,20 @@ void AnnotatedDNAView::updateMultiViewActions() {
         }
         posSelector->updateRange(1, currentSequenceLength);
     }
+}
+
+void AnnotatedDNAView::sl_updatePasteAction() {
+    CHECK(focusedWidget != NULL, );
+
+    QAction* editAction = getEditActionFromSequenceWidget(focusedWidget);
+    SAFE_POINT(editAction != NULL, "Edit action is not found", );
+
+    const bool isEditModeChecked = editAction->isChecked();
+
+    QAction* pasteAction = clipb->getPasteSequenceAction();
+    SAFE_POINT(pasteAction != NULL, "Paste action is NULL", );
+
+    pasteAction->setEnabled(isEditModeChecked);
 }
 
 void AnnotatedDNAView::sl_onContextMenuRequested() {
@@ -859,6 +883,7 @@ QString AnnotatedDNAView::addObject(GObject *o) {
                 SLOT(sl_onSequenceWidgetTitleClicked(ADVSequenceWidget *)));
             block->setObjectName("ADV_single_sequence_widget_" + QString::number(seqViews.count()));
             addSequenceWidget(block);
+            block->addAction(createPasteAction());
             setFocusedSequenceWidget(block);
         }
         addRelatedAnnotations(sc);
@@ -1367,7 +1392,10 @@ void AnnotatedDNAView::sl_paste(){
     bool focus = false;
     int pastePoint = -1;
     ADVSingleSequenceWidget *wgt = qobject_cast<ADVSingleSequenceWidget*> (focusedWidget);
+
     if (wgt != NULL) {
+        CHECK(wgt->getDetView()->getEditor()->isEditMode(), );
+
         QList<GSequenceLineView*> views = wgt->getLineViews();
         foreach (GSequenceLineView* v, views) {
             if (v->hasFocus()) {
@@ -1503,6 +1531,22 @@ void AnnotatedDNAView::reverseComplementSequence(bool reverse, bool complement) 
 
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_sequenceModifyTaskStateChanged()));
+}
+
+QAction* AnnotatedDNAView::getEditActionFromSequenceWidget(ADVSequenceWidget* seqWgt) {
+    ADVSingleSequenceWidget *wgt = qobject_cast<ADVSingleSequenceWidget*> (seqWgt);
+    SAFE_POINT(wgt != NULL, "ADVSingleSequenceWidget is NULL", NULL);
+
+    DetView* detView = wgt->getDetView();
+    SAFE_POINT(detView != NULL, "DetView is NULL", NULL);
+
+    DetViewSequenceEditor* editor = detView->getEditor();
+    SAFE_POINT(editor != NULL, "DetViewSequenceEditor is NULL", NULL);
+
+    QAction* editAction = editor->getEditAction();
+    SAFE_POINT(editAction != NULL, "EditAction is NULL", NULL);
+
+    return editAction;
 }
 
 bool AnnotatedDNAView::areAnnotationsInRange(const QList<Annotation *> &toCheck) {
