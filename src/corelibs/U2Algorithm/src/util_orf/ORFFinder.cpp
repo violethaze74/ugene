@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -392,9 +392,8 @@ void ORFFindAlgorithm::checkStopCodonOnJunction(const U2SequenceObject &dnaSeq, 
 
     if (strand == ORFAlgorithmStrand_Complement)
     {
-        char *tmp;
         for (int i = 1; i <=2; i++) {
-            tmp = getCodonFromJunction(dnaSeq, strand, i);
+            char *tmp = getCodonFromJunction(dnaSeq, strand, i);
             SAFE_POINT(tmp != NULL, "Incorrect codon", );
             cfg.complementTT->translate(tmp, 3);
 

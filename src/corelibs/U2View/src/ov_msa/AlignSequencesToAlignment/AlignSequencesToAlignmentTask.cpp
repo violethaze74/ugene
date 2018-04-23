@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,13 @@ const int LoadSequencesTask::maxErrorListSize = 5;
 /************************************************************************/
 /* SequencesExtractor */
 /************************************************************************/
-SequenceObjectsExtractor::SequenceObjectsExtractor() : extractFromMsa(false), sequencesMaxLength(0) {}
+SequenceObjectsExtractor::SequenceObjectsExtractor()
+    : seqsAlphabet(NULL),
+      extractFromMsa(false),
+      sequencesMaxLength(0)
+{
+
+}
 
 void SequenceObjectsExtractor::setAlphabet(const DNAAlphabet* newAlphabet) {
     seqsAlphabet = newAlphabet;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
     updateCurrentRegion();
     initLayout();
     connectSlots();
-    launchCalculations();
+    updateData();
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 }
@@ -87,6 +87,7 @@ void SequenceInfo::initLayout()
     statisticLabelContainer->layout()->setContentsMargins(0, 0, 0, 0);
 
     statisticLabel = new QLabel(statisticLabelContainer);
+    statisticLabel->installEventFilter(this);
     statisticLabel->setMinimumWidth(1);
     statisticLabel->setObjectName("Common Statistics");
     statisticLabelContainer->layout()->addWidget(statisticLabel);
@@ -130,8 +131,7 @@ void SequenceInfo::updateLayout()
 namespace {
 
 /** Formats long number by separating each three digits */
-QString getFormattedLongNumber(qint64 num)
-{
+QString getFormattedLongNumber(qint64 num) {
     QString result;
 
     int DIVIDER = 1000;
@@ -155,75 +155,141 @@ QString getFormattedLongNumber(qint64 num)
 
 }
 
-void SequenceInfo::updateCommonStatisticsLayout() {
-    ADVSequenceWidget *wgt = annotatedDnaView->getSequenceWidgetInFocus();
-    CHECK(wgt != NULL, );
-    ADVSequenceObjectContext *ctx = wgt->getActiveSequenceContext();
-    SAFE_POINT(ctx != NULL, tr("Sequence context is NULL"), );
-    SAFE_POINT(ctx->getAlphabet() != NULL, tr("Sequence alphbet is NULL"), );
-
-    int availableSpace = getAvailableSpace(ctx->getAlphabet()->getType());
-
-    QString statsInfo = QString("<table cellspacing=%1>").arg(COMMON_STATISTICS_TABLE_CELLSPACING);
-    statsInfo += formTableRow(CAPTION_SEQ_REGION_LENGTH, getFormattedLongNumber(currentCommonStatistics.length), availableSpace);
-    if (ctx->getAlphabet()->isNucleic()) {
-        statsInfo += formTableRow(CAPTION_SEQ_GC_CONTENT, QString::number(currentCommonStatistics.gcContent, 'f', 2) + "%", availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_WEIGHT, QString::number(currentCommonStatistics.molarWeight, 'f', 2) + " Da", availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_EXT_COEF, QString::number(currentCommonStatistics.molarExtCoef) + " I/mol", availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TM, QString::number(currentCommonStatistics.meltingTm, 'f', 2) + " C", availableSpace);
-
-        statsInfo += formTableRow(CAPTION_SEQ_NMOLE_OD, QString::number(currentCommonStatistics.nmoleOD260, 'f', 2), availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MG_OD, QString::number(currentCommonStatistics.mgOD260, 'f', 2), availableSpace);
-    } else if (ctx->getAlphabet()->isAmino()) {
-        statsInfo += formTableRow(CAPTION_SEQ_MOLECULAR_WEIGHT, QString::number(currentCommonStatistics.molecularWeight, 'f', 2), availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_ISOELECTIC_POINT, QString::number(currentCommonStatistics.isoelectricPoint, 'f', 2), availableSpace);
-    }
-
-    statsInfo += "</table>";
-
-    statisticLabel->setText(statsInfo);
-}
-
-void SequenceInfo::updateCharOccurLayout()
-{
+void SequenceInfo::updateCharOccurLayout() {
     ADVSequenceObjectContext* activeSequenceContext = annotatedDnaView->getSequenceInFocus();
-    if (0 != activeSequenceContext)
-    {
+    if (0 != activeSequenceContext)     {
         const DNAAlphabet* activeSequenceAlphabet = activeSequenceContext->getAlphabet();
         SAFE_POINT(0 != activeSequenceAlphabet, "An active sequence alphabet is NULL!",);
-
-        if ((activeSequenceAlphabet->isNucleic()) ||
-            (activeSequenceAlphabet->isAmino()))
-        {
+        if ((activeSequenceAlphabet->isNucleic()) || (activeSequenceAlphabet->isAmino())) {
             charOccurWidget->show();
-        }
-        else
-        {
+        } else {
             // Do not show the characters occurrence for raw alphabet
             charOccurWidget->hide();
         }
     }
 }
 
-
-void SequenceInfo::updateDinuclLayout()
-{
+void SequenceInfo::updateDinuclLayout() {
     ADVSequenceObjectContext* activeSequenceContext = annotatedDnaView->getSequenceInFocus();
     SAFE_POINT(0 != activeSequenceContext, "A sequence context is NULL!",);
 
     const DNAAlphabet* activeSequenceAlphabet = activeSequenceContext->getAlphabet();
     SAFE_POINT(0 != activeSequenceAlphabet, "An active sequence alphabet is NULL!",);
 
-    QString alphabetId = activeSequenceAlphabet->getId();
-
-    if ((alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) ||
-        (alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT()))
-    {
+    const QString alphabetId = activeSequenceAlphabet->getId();
+    if ((alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) || (alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT())) {
         dinuclWidget->show();
-    }
-    else
-    {
+    } else {
         dinuclWidget->hide();
+    }
+}
+
+void SequenceInfo::updateData() {
+    updateCommonStatisticsData();
+    updateCharactersOccurrenceData();
+    updateDinucleotidesOccurrenceData();
+}
+
+void SequenceInfo::updateCommonStatisticsData() {
+    if (!getCommonStatisticsCache()->isValid(currentRegion)) {
+        launchCalculations(STAT_GROUP_ID);
+    } else {
+        updateCommonStatisticsData(getCommonStatisticsCache()->getStatistics());
+    }
+}
+
+namespace {
+
+QString getValue(const QString &value, bool isValid) {
+    return isValid ? value : "N/A";
+}
+
+}
+
+void SequenceInfo::updateCommonStatisticsData(const DNAStatistics &commonStatistics) {
+    ADVSequenceWidget *wgt = annotatedDnaView->getSequenceWidgetInFocus();
+    CHECK(wgt != NULL, );
+    ADVSequenceObjectContext *ctx = wgt->getActiveSequenceContext();
+    SAFE_POINT(ctx != NULL, tr("Sequence context is NULL"), );
+    SAFE_POINT(ctx->getAlphabet() != NULL, tr("Sequence alphabet is NULL"), );
+
+    int availableSpace = getAvailableSpace(ctx->getAlphabet()->getType());
+
+    const bool isValid = dnaStatisticsTaskRunner.isIdle();
+
+    QString statsInfo = QString("<table cellspacing=%1>").arg(COMMON_STATISTICS_TABLE_CELLSPACING);
+    statsInfo += formTableRow(CAPTION_SEQ_REGION_LENGTH, getValue(getFormattedLongNumber(commonStatistics.length), isValid), availableSpace);
+    if (ctx->getAlphabet()->isNucleic()) {
+        statsInfo += formTableRow(CAPTION_SEQ_GC_CONTENT, getValue(QString::number(commonStatistics.gcContent, 'f', 2) + "%", isValid), availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_WEIGHT, getValue(QString::number(commonStatistics.molarWeight, 'f', 2) + " Da", isValid), availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_EXT_COEF, getValue(QString::number(commonStatistics.molarExtCoef) + " I/mol", isValid), availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TM, getValue(QString::number(commonStatistics.meltingTm, 'f', 2) + " C", isValid), availableSpace);
+
+        statsInfo += formTableRow(CAPTION_SEQ_NMOLE_OD, getValue(QString::number(commonStatistics.nmoleOD260, 'f', 2), isValid), availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MG_OD, getValue(QString::number(commonStatistics.mgOD260, 'f', 2), isValid), availableSpace);
+    } else if (ctx->getAlphabet()->isAmino()) {
+        statsInfo += formTableRow(CAPTION_SEQ_MOLECULAR_WEIGHT, getValue(QString::number(commonStatistics.molecularWeight, 'f', 2), isValid), availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_ISOELECTIC_POINT, getValue(QString::number(commonStatistics.isoelectricPoint, 'f', 2), isValid), availableSpace);
+    }
+
+    statsInfo += "</table>";
+
+    if (statisticLabel->text() != statsInfo) {
+        statisticLabel->setText(statsInfo);
+    }
+}
+
+void SequenceInfo::updateCharactersOccurrenceData() {
+    if (!getCharactersOccurrenceCache()->isValid(currentRegion)) {
+        launchCalculations(CHAR_OCCUR_GROUP_ID);
+    } else {
+        updateCharactersOccurrenceData(getCharactersOccurrenceCache()->getStatistics());
+    }
+}
+
+void SequenceInfo::updateCharactersOccurrenceData(const CharactersOccurrence &charactersOccurrence) {
+    const bool isValid = charOccurTaskRunner.isIdle();
+
+    QString charOccurInfo = "<table cellspacing=5>";
+    foreach (const CharOccurResult &result, charactersOccurrence) {
+        charOccurInfo += "<tr>";
+        charOccurInfo += QString("<td><b>") + result.getChar() + QString(":&nbsp;&nbsp;</td>");
+        charOccurInfo += "<td>" + getValue(getFormattedLongNumber(result.getNumberOfOccur()), isValid) + "&nbsp;&nbsp;</td>";
+        charOccurInfo += "<td>" + getValue(QString::number(result.getPercentage(), 'f', 1) + "%", isValid) + "&nbsp;&nbsp;</td>";
+        charOccurInfo += "</tr>";
+    }
+    charOccurInfo += "</table>";
+
+    if (charOccurLabel->text() != charOccurInfo) {
+        charOccurLabel->setText(charOccurInfo);
+    }
+}
+
+void SequenceInfo::updateDinucleotidesOccurrenceData() {
+    if (!getDinucleotidesOccurrenceCache()->isValid(currentRegion)) {
+        launchCalculations(DINUCL_OCCUR_GROUP_ID);
+    } else {
+        updateDinucleotidesOccurrenceData(getDinucleotidesOccurrenceCache()->getStatistics());
+    }
+}
+
+void SequenceInfo::updateDinucleotidesOccurrenceData(const DinucleotidesOccurrence &dinucleotidesOccurrence) {
+    const bool isValid = dinuclTaskRunner.isIdle();
+
+    DinucleotidesOccurrence::const_iterator i = dinucleotidesOccurrence.constBegin();
+    DinucleotidesOccurrence::const_iterator end = dinucleotidesOccurrence.constEnd();
+    QString dinuclInfo = "<table cellspacing=5>";
+    while (i != end) {
+        dinuclInfo += "<tr>";
+        dinuclInfo += QString("<td><b>") + i.key() + QString(":&nbsp;&nbsp;</td>");
+        dinuclInfo += "<td>" + getValue(getFormattedLongNumber(i.value()), isValid) + "&nbsp;&nbsp;</td>";
+        dinuclInfo += "</tr>";
+        ++i;
+    }
+    dinuclInfo += "</table>";
+
+    if (dinuclLabel->text() != dinuclInfo) {
+        dinuclLabel->setText(dinuclInfo);
     }
 }
 
@@ -234,6 +300,8 @@ void SequenceInfo::connectSlotsForSeqContext(ADVSequenceObjectContext* seqContex
     connect(seqContext->getSequenceSelection(),
         SIGNAL(si_selectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)),
         SLOT(sl_onSelectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)));
+
+    connect(seqContext->getSequenceObject(), SIGNAL(si_sequenceChanged()), SLOT(sl_onSequenceModified()));
 }
 
 
@@ -248,7 +316,7 @@ void SequenceInfo::connectSlots()
 
     // A sequence has been modified (a subsequence added, removed, etc.)
     connect(annotatedDnaView, SIGNAL(si_sequenceModified(ADVSequenceObjectContext*)),
-        this, SLOT(sl_onSequenceModified(ADVSequenceObjectContext*)));
+        this, SLOT(sl_onSequenceModified()));
 
     // A user has selected a sequence region
     foreach (ADVSequenceObjectContext* seqContext, seqContexts) {
@@ -272,41 +340,35 @@ void SequenceInfo::connectSlots()
 
 void SequenceInfo::sl_onSelectionChanged(LRegionsSelection*,
                                          const QVector<U2Region>& added,
-                                         const QVector<U2Region>& removed)
-{
+                                         const QVector<U2Region>& removed) {
     // Each time selection is changed the signal is emitted
     // with the whole previously selected region(s) removed and
     // the whole currently selected region(s) added,
     // e.g. "removed: 3..10, added: 3..11"
-    if (!added.empty())
-    {
+    if (!added.empty()) {
         // Only the first region is taken into account
         const U2Region& region = added.first();
 
         // Skip, if a signal with the same region has already came
-        if (region == currentRegion)
-        {
+        if (region == currentRegion) {
             return;
-        }
-        else
-        {
+        } else {
             currentRegion = region;
-            launchCalculations();
         }
     } else {
         // None is selected
         if (!removed.empty()) {
             updateCurrentRegion();
-            launchCalculations();
         }
     }
+
+    updateData();
 }
 
 
-void SequenceInfo::sl_onSequenceModified(ADVSequenceObjectContext* /* seqContext */)
-{
+void SequenceInfo::sl_onSequenceModified() {
     updateCurrentRegion();
-    launchCalculations();
+    updateData();
 }
 
 
@@ -315,22 +377,35 @@ void SequenceInfo::sl_onFocusChanged(ADVSequenceWidget * /*from*/, ADVSequenceWi
     if (0 != to) { // i.e. the sequence has been deleted
         updateLayout();
         updateCurrentRegion();
-        launchCalculations();
+        updateData();
     }
 }
 
 
-void SequenceInfo::sl_onSequenceAdded(ADVSequenceObjectContext* seqContext)
-{
+void SequenceInfo::sl_onSequenceAdded(ADVSequenceObjectContext* seqContext) {
     connectSlotsForSeqContext(seqContext);
 }
 
+void SequenceInfo::sl_subgroupStateChanged(QString subgroupId) {
+    if (STAT_GROUP_ID == subgroupId) {
+        updateCommonStatisticsData();
+    }
 
-void SequenceInfo::sl_subgroupStateChanged(QString subgroupId)
-{
-    launchCalculations(subgroupId);
+    if (CHAR_OCCUR_GROUP_ID == subgroupId) {
+        updateCharactersOccurrenceData();
+    }
+
+    if (DINUCL_OCCUR_GROUP_ID == subgroupId) {
+        updateDinucleotidesOccurrenceData();
+    }
 }
 
+bool SequenceInfo::eventFilter(QObject *object, QEvent *event) {
+    if (event->type() == QEvent::Resize && object == statisticLabel) {
+        updateCommonStatisticsData();
+    }
+    return false;
+}
 
 void SequenceInfo::updateCurrentRegion()
 {
@@ -340,12 +415,9 @@ void SequenceInfo::updateCurrentRegion()
     DNASequenceSelection* selection = seqContext->getSequenceSelection();
 
     QVector<U2Region> selectedRegions = selection->getSelectedRegions();
-    if (!selectedRegions.empty())
-    {
+    if (!selectedRegions.empty()) {
         currentRegion = selectedRegions.first();
-    }
-    else
-    {
+    } else {
         currentRegion = U2Region(0, seqContext->getSequenceLength());
     }
 }
@@ -361,40 +433,32 @@ void SequenceInfo::launchCalculations(QString subgroupId)
     U2EntityRef seqRef = seqObj->getSequenceRef();
     const DNAAlphabet* alphabet = activeContext->getAlphabet();
 
-    if (subgroupId.isEmpty() || subgroupId == CHAR_OCCUR_GROUP_ID)
-    {
-        if ((!charOccurWidget->isHidden()) && (charOccurWidget->isSubgroupOpened()))
-        {
+    if (subgroupId.isEmpty() || subgroupId == CHAR_OCCUR_GROUP_ID) {
+        if ((!charOccurWidget->isHidden()) && (charOccurWidget->isSubgroupOpened())) {
             charOccurWidget->showProgress();
-
             charOccurTaskRunner.run(new CharOccurTask(alphabet, seqRef, currentRegion));
+            getCharactersOccurrenceCache()->sl_invalidate();
+            updateCharactersOccurrenceData(getCharactersOccurrenceCache()->getStatistics());
         }
     }
 
-    if (subgroupId.isEmpty() || subgroupId == DINUCL_OCCUR_GROUP_ID)
-    {
-        if ((!dinuclWidget->isHidden()) && (dinuclWidget->isSubgroupOpened()))
-        {
+    if (subgroupId.isEmpty() || subgroupId == DINUCL_OCCUR_GROUP_ID) {
+        if ((!dinuclWidget->isHidden()) && (dinuclWidget->isSubgroupOpened())) {
             dinuclWidget->showProgress();
-
             dinuclTaskRunner.run(new DinuclOccurTask(alphabet, seqRef, currentRegion));
+            getDinucleotidesOccurrenceCache()->sl_invalidate();
+            updateDinucleotidesOccurrenceData(getDinucleotidesOccurrenceCache()->getStatistics());
         }
     }
 
-    if (subgroupId.isEmpty() || subgroupId == STAT_GROUP_ID)
-    {
-        if ((!statsWidget->isHidden()) && (statsWidget->isSubgroupOpened()))
-        {
+    if (subgroupId.isEmpty() || subgroupId == STAT_GROUP_ID) {
+        if ((!statsWidget->isHidden()) && (statsWidget->isSubgroupOpened())) {
             statsWidget->showProgress();
-
             dnaStatisticsTaskRunner.run(new DNAStatisticsTask(alphabet, seqRef, currentRegion));
+            getCommonStatisticsCache()->sl_invalidate();
+            updateCommonStatisticsData(getCommonStatisticsCache()->getStatistics());
         }
     }
-}
-
-void SequenceInfo::resizeEvent(QResizeEvent *event) {
-    updateCommonStatisticsLayout();
-    QWidget::resizeEvent(event);
 }
 
 int SequenceInfo::getAvailableSpace(DNAAlphabetType alphabetType) const {
@@ -432,50 +496,23 @@ int SequenceInfo::getAvailableSpace(DNAAlphabetType alphabetType) const {
     return availableSize;
 }
 
-void SequenceInfo::sl_updateCharOccurData()
-{
+void SequenceInfo::sl_updateCharOccurData() {
     charOccurWidget->hideProgress();
-
-    QList<CharOccurResult> charOccurResults = charOccurTaskRunner.getResult();
-
-    QString charOccurInfo = "<table cellspacing=5>";
-    foreach (CharOccurResult result, charOccurResults) {
-        charOccurInfo += "<tr>";
-        charOccurInfo += QString("<td><b>") + result.getChar() + QString(":&nbsp;&nbsp;</td>");
-        charOccurInfo += "<td>" + getFormattedLongNumber(result.getNumberOfOccur()) + "&nbsp;&nbsp;</td>";
-        charOccurInfo += "<td>" + QString::number(result.getPercentage(), 'f', 1) + "%" + "&nbsp;&nbsp;</td>";
-        charOccurInfo += "</tr>";
-    }
-    charOccurInfo += "</table>";
-
-    charOccurLabel->setText(charOccurInfo);
+    getCharactersOccurrenceCache()->setStatistics(charOccurTaskRunner.getResult(), currentRegion);
+    updateCharactersOccurrenceData(getCharactersOccurrenceCache()->getStatistics());
 }
 
 
-void SequenceInfo::sl_updateDinuclData()
-{
+void SequenceInfo::sl_updateDinuclData() {
     dinuclWidget->hideProgress();
-
-    QMap<QByteArray, qint64> dinuclOccurrence = dinuclTaskRunner.getResult();
-
-    QMap<QByteArray, qint64>::const_iterator i = dinuclOccurrence.constBegin();
-    QString dinuclInfo = "<table cellspacing=5>";
-    while (i != dinuclOccurrence.constEnd()) {
-        dinuclInfo += "<tr>";
-        dinuclInfo += QString("<td><b>") + i.key() + QString(":&nbsp;&nbsp;</td>");
-        dinuclInfo += "<td>" + getFormattedLongNumber(i.value()) + "&nbsp;&nbsp;</td>";
-        dinuclInfo += "</tr>";
-        ++i;
-    }
-    dinuclInfo += "</table>";
-
-    dinuclLabel->setText(dinuclInfo);
+    getDinucleotidesOccurrenceCache()->setStatistics(dinuclTaskRunner.getResult(), currentRegion);
+    updateDinucleotidesOccurrenceData(getDinucleotidesOccurrenceCache()->getStatistics());
 }
 
 void SequenceInfo::sl_updateStatData() {
     statsWidget->hideProgress();
-    currentCommonStatistics = dnaStatisticsTaskRunner.getResult();
-    updateCommonStatisticsLayout();
+    getCommonStatisticsCache()->setStatistics(dnaStatisticsTaskRunner.getResult(), currentRegion);
+    updateCommonStatisticsData(getCommonStatisticsCache()->getStatistics());
 }
 
 QString SequenceInfo::formTableRow(const QString& caption, const QString &value, int availableSpace) const {
@@ -486,6 +523,24 @@ QString SequenceInfo::formTableRow(const QString& caption, const QString &value,
             + metrics.elidedText(value, Qt::ElideRight, availableSpace)
             + "</td></tr>";
     return result;
+}
+
+StatisticsCache<DNAStatistics> *SequenceInfo::getCommonStatisticsCache() const {
+    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getSequenceInFocus();
+    SAFE_POINT(0 != sequenceContext, "A sequence context is NULL!", NULL);
+    return sequenceContext->getCommonStatisticsCache();
+}
+
+StatisticsCache<CharactersOccurrence> *SequenceInfo::getCharactersOccurrenceCache() const {
+    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getSequenceInFocus();
+    SAFE_POINT(0 != sequenceContext, "A sequence context is NULL!", NULL);
+    return sequenceContext->getCharactersOccurrenceCache();
+}
+
+StatisticsCache<DinucleotidesOccurrence> *SequenceInfo::getDinucleotidesOccurrenceCache() const {
+    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getSequenceInFocus();
+    SAFE_POINT(0 != sequenceContext, "A sequence context is NULL!", NULL);
+    return sequenceContext->getDinucleotidesOccurrenceCache();
 }
 
 } // namespace

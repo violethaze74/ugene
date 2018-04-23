@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -185,6 +185,10 @@ void WorkflowTabView::sl_dashboardsLoaded() {
     foreach (const QString &dbPath, t->getOpenedDashboards()) {
         addDashboard(new Dashboard(dbPath, this));
     }
+    int nDashboards = count();
+    if (nDashboards > 0) {
+        setCurrentIndex(nDashboards - 1);
+    }
 }
 
 QStringList WorkflowTabView::allNames() const {
@@ -217,17 +221,25 @@ bool WorkflowTabView::eventFilter(QObject *watched, QEvent *event) {
     CHECK(QEvent::MouseButtonRelease == event->type(), false);
 
     QMouseEvent *me = dynamic_cast<QMouseEvent*>(event);
-    CHECK(Qt::RightButton == me->button(), false);
     int idx = tabBar()->tabAt(me->pos());
     CHECK(idx >=0 && idx < count(), false);
-    QMenu m(tabBar());
-    QAction *rename = new QAction(tr("Rename"), this);
-    rename->setData(idx);
-    connect(rename, SIGNAL(triggered()), SLOT(sl_renameTab()));
-    m.addAction(rename);
-    m.move(tabBar()->mapToGlobal(me->pos()));
-    m.exec();
-    return true;
+
+    if (Qt::RightButton == me->button()) {
+        QMenu m(tabBar());
+        QAction *rename = new QAction(tr("Rename"), this);
+        rename->setData(idx);
+        connect(rename, SIGNAL(triggered()), SLOT(sl_renameTab()));
+        m.addAction(rename);
+        m.move(tabBar()->mapToGlobal(me->pos()));
+        m.exec();
+        return true;
+    }
+
+    if (me->button() == Qt::MiddleButton) {
+        removeTab(idx);
+        return true;
+    }
+    return false;
 }
 
 

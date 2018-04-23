@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,15 +33,20 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 
-PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions) :
-    Filler(os, "PWMBuildDialog"),
-    dialog(NULL),
-    actions(actions)
+PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions)
+    : Filler(os, "PWMBuildDialog"),
+      dialog(NULL),
+      actions(actions)
 {
+
 }
 
-PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c):
-    Filler(os, "PWMBuildDialog", c){}
+PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
+    : Filler(os, "PWMBuildDialog", c),
+      dialog(NULL)
+{
+
+}
 
 #define GT_METHOD_NAME "run"
 void PwmBuildDialogFiller::commonScenario() {

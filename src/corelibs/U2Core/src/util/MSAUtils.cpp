@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-bool MSAUtils::equalsIgnoreGaps(const MultipleSequenceAlignmentRow& row, int startPos, const QByteArray& pat, int &alternateLen) {
+bool MSAUtils::equalsIgnoreGaps(const MultipleAlignmentRow& row, int startPos, const QByteArray& pat, int &alternateLen) {
     int sLen = row->getCoreEnd();
     int pLen = pat.size();
     int i = startPos;
@@ -377,6 +377,7 @@ U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDb
     row.gstart = 0;
     row.gend = seq.length;
     row.length = MsaRowUtils::getRowLengthWithoutTrailing(dnaSeq.seq, row.gaps);
+    MsaRowUtils::chopGapModel(row.gaps, row.length);
     return row;
 }
 

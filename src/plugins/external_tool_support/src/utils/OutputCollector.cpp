@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@ namespace U2 {
 
 OutputCollector::OutputCollector() : ExternalToolListener(), firstLineSkipped(false) {}
 
-void OutputCollector::addNewLogMessage(const QString& message, int messageType) {
+void OutputCollector::addNewLogMessage(const QString& message, int /*messageType*/) {
     //skip first line of the output with tool calling string
     if (collectedLog.isEmpty() && !firstLineSkipped) {
         firstLineSkipped = true;

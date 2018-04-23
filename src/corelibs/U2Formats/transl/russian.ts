@@ -353,70 +353,70 @@
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="60"/>
         <source>Unexpected end of file</source>
-        <translation type="unfinished">Неожиданный конец файла</translation>
+        <translation>Неожиданный конец файла</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="70"/>
         <source>There is no sequences in alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание не содержит последовательностей</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="97"/>
         <source>Attemt to find any number in the string failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Attemt to find any number in the string failed</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="139"/>
         <source>Vector NTI/AlignX</source>
-        <translation type="unfinished"></translation>
+        <translation>Vector NTI/AlignX</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="140"/>
         <source>Vector NTI/AlignX is a Vector NTI format for multiple alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Vector NTI/AlignX это Vector NTI формат для множественных выравниваний</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="161"/>
         <source>Open in read-only mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть только для чтения</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="171"/>
         <source>File doesn&apos;t contain any msa objects</source>
-        <translation type="unfinished">Файл не содержит msa объектов</translation>
+        <translation>Файл не содержит msa объектов</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="193"/>
         <source>Illegal header line</source>
-        <translation type="unfinished">Неправильная строка заголовка</translation>
+        <translation>Неправильная строка заголовка</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="209"/>
         <source>Sequences not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Последовательности не найдены</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="217"/>
         <source>Alphabet is unknown</source>
-        <translation type="unfinished">Неизвестный алфавит</translation>
+        <translation>Неизвестный алфавит</translation>
     </message>
 </context>
 <context>
     <name>U2::AprImporter</name>
     <message>
-        <location filename="../src/apr/AprImporter.cpp" line="119"/>
+        <location filename="../src/apr/AprImporter.cpp" line="117"/>
         <source>Vector NTI/AlignX file importer</source>
-        <translation type="unfinished"></translation>
+        <translation>Инструмент для импорта Vector NTI/AlignX файлов</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprImporter.cpp" line="123"/>
+        <location filename="../src/apr/AprImporter.cpp" line="121"/>
         <source>Vector NTI/AlignX files importer is used to convert conventional APR files to a multiple sequence alignment formats</source>
-        <translation type="unfinished"></translation>
+        <translation>Инструмент для импорта Vector NTI/AlignX файлов используется для конвертации APR файлов в формат множественного выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprImporter.cpp" line="138"/>
+        <location filename="../src/apr/AprImporter.cpp" line="136"/>
         <source>Convert to another format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Конвертировать в другой формат:</translation>
     </message>
 </context>
 <context>
@@ -424,18 +424,18 @@
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="54"/>
         <source>APR file import: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>APR file import: %1</translation>
     </message>
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="66"/>
-        <location filename="../src/apr/AprImporter.cpp" line="94"/>
+        <location filename="../src/apr/AprImporter.cpp" line="92"/>
         <source>Empty destination url</source>
-        <translation type="unfinished"></translation>
+        <translation>Empty destination url</translation>
     </message>
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="72"/>
         <source>Invalid I/O environment!</source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid I/O environment!</translation>
     </message>
 </context>
 <context>
@@ -1654,7 +1654,7 @@
     <message>
         <location filename="../src/GenbankPlainTextFormat.cpp" line="47"/>
         <source>GenBank</source>
-        <translation type="unfinished"></translation>
+        <translation>GenBank</translation>
     </message>
     <message>
         <location filename="../src/GenbankPlainTextFormat.cpp" line="49"/>
@@ -1821,13 +1821,17 @@
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="170"/>
-        <location filename="../src/MSFFormat.cpp" line="211"/>
+        <location filename="../src/MSFFormat.cpp" line="171"/>
         <source>Check sum test failed</source>
         <translation>Проверка контрольной суммы не удалась</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="219"/>
+        <location filename="../src/MSFFormat.cpp" line="216"/>
+        <source>Unexpected check sum in the row number %1, name: %2; expected value: %3, current value %4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/MSFFormat.cpp" line="223"/>
         <source>Alphabet unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
@@ -2443,7 +2447,7 @@
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="118"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="217"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="653"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="373"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="374"/>
         <source>Msa object not found</source>
         <translation>Объект msa не найден</translation>
     </message>
@@ -2517,8 +2521,8 @@
     <message>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1196"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1305"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1326"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1336"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1327"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1337"/>
         <source>An error occurred during updating an msa length</source>
         <translation>An error occurred during updating an msa length</translation>
     </message>
@@ -2768,16 +2772,16 @@
         <translation>An object single modification step not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="525"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="540"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="733"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="526"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="541"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="734"/>
         <source>Msa object not found!</source>
         <translation>Msa object not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="623"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="793"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="831"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="624"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="794"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="832"/>
         <source>Msa row not found!</source>
         <translation>Msa row not found!</translation>
     </message>
@@ -2803,8 +2807,8 @@
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="993"/>
-        <source>Unexpected row count! Query: &apos;%1&apos;, rows: %2</source>
-        <translation type="unfinished"></translation>
+        <source>Unexpected row count. Query: &apos;%1&apos;, rows: %2</source>
+        <translation>Unexpected row count. Query: &apos;%1&apos;, rows: %2</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="810"/>
@@ -2840,7 +2844,7 @@
         <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="56"/>
         <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="67"/>
         <source>An error occurred during updating UDR</source>
-        <translation type="unfinished"></translation>
+        <translation>An error occurred during updating UDR</translation>
     </message>
 </context>
 <context>

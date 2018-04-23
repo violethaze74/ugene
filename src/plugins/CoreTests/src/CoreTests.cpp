@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,6 +43,8 @@
 #include "FormatDetectionTests.h"
 #include "GUrlTests.h"
 #include "LoadRemoteDocumentTests.h"
+#include "McaObjectTests.h"
+#include "MsaObjectTests.h"
 #include "PWMatrixTests.h"
 #include "PhyTreeObjectTests.h"
 #include "SMatrixTests.h"
@@ -90,6 +92,12 @@ void CoreTests::registerFactories() {
 
     //Document model tests
     registerFactory<DocumentModelTests>(xmlTestFormat);
+
+    // MultipleChromatogramAlignmentObject Tests
+    registerFactory<McaObjectTests>(xmlTestFormat);
+
+    // MultipleSequenceAlignmentObject Tests
+    registerFactory<MsaObjectTests>(xmlTestFormat);
 
     //U2SequenceObject Tests
     registerFactory<DNASequenceObjectTests>(xmlTestFormat);

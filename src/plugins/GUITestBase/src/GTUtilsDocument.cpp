@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -185,6 +185,19 @@ void GTUtilsDocument::lockDocument(HI::GUITestOpStatus &os, const QString &docum
 void GTUtilsDocument::unlockDocument(HI::GUITestOpStatus &os, const QString &documentName) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Unlock document for editing"));
     GTUtilsProjectTreeView::click(os, documentName, Qt::RightButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkIfDocumentIsLocked"
+void GTUtilsDocument::checkIfDocumentIsLocked(GUITestOpStatus &os, const QString &documentName, bool isLocked) {
+    const QIcon actualIcon = GTUtilsProjectTreeView::getIcon(os, GTUtilsProjectTreeView::findIndex(os, QStringList() << documentName));
+    const QIcon unlockedDocumentIcon(":/core/images/document.png");
+    const QIcon lockedDocumentIcon(":/core/images/ro_document.png");
+    if (isLocked) {
+        GT_CHECK(actualIcon.pixmap(16).toImage() == lockedDocumentIcon.pixmap(16).toImage(), QString("The '%1' document is unexpectedly unlocked").arg(documentName));
+    } else {
+        GT_CHECK(actualIcon.pixmap(16).toImage() == unlockedDocumentIcon.pixmap(16).toImage(), QString("The '%1' document is unexpectedly locked").arg(documentName));
+    }
 }
 #undef GT_METHOD_NAME
 

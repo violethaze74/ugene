@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,11 +37,12 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Gui/CreateAnnotationDialog.h>
 #include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/HelpButton.h>
-#include <U2Core/QObjectScopedPointer.h>
+#include <U2Gui/RegionSelector.h>
 
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/ADVSequenceObjectContext.h>
@@ -51,10 +52,10 @@
 
 namespace U2 {
 
-SecStructDialog::SecStructDialog( ADVSequenceObjectContext* _ctx, QWidget *p ) : QDialog(p), rangeStart(0), rangeEnd(0), ctx(_ctx), task(NULL)
+SecStructDialog::SecStructDialog( ADVSequenceObjectContext* _ctx, QWidget *p ) : QDialog(p), ctx(_ctx), task(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20875090");
+    new HelpButton(this, buttonBox, "20880429");
 
     sspr = AppContext::getSecStructPredictAlgRegistry();
     algorithmComboBox->addItems(sspr->getAlgNameList());
@@ -69,18 +70,8 @@ SecStructDialog::SecStructDialog( ADVSequenceObjectContext* _ctx, QWidget *p ) :
 
     saveAnnotationButton->setDisabled(true);
 
-    U2Region initialSelection = ctx->getSequenceSelection()->isEmpty() ? U2Region() : ctx->getSequenceSelection()->getSelectedRegions().first();
-
-    int seqLen = ctx->getSequenceLength();
-
-    rangeStartSpinBox->setMinimum(1);
-    rangeStartSpinBox->setMaximum(seqLen);
-
-    rangeEndSpinBox->setMinimum(1);
-    rangeEndSpinBox->setMaximum(seqLen);
-
-    rangeStartSpinBox->setValue(initialSelection.isEmpty() ? 1 : initialSelection.startPos + 1);
-    rangeEndSpinBox->setValue(initialSelection.isEmpty() ? seqLen : initialSelection.endPos());
+    regionSelector = new RegionSelector(this, ctx->getSequenceLength(), false, ctx->getSequenceSelection());
+    rangeSelectorLayout->addWidget(regionSelector);
 
     resultsTable->setColumnCount(2);
     QStringList headerNames;
@@ -94,33 +85,12 @@ SecStructDialog::SecStructDialog( ADVSequenceObjectContext* _ctx, QWidget *p ) :
 
 }
 
-void SecStructDialog::connectGUI()
-{
-    connect(rangeStartSpinBox, SIGNAL(valueChanged(int)), this, SLOT(sl_spinRangeStartChanged(int)));
-    connect(rangeEndSpinBox, SIGNAL(valueChanged(int)), this, SLOT(sl_spinRangeEndChanged(int)));
+void SecStructDialog::connectGUI() {
     connect(startButton, SIGNAL(clicked()), this, SLOT(sl_onStartPredictionClicked()));
     connect(saveAnnotationButton, SIGNAL(clicked()), this, SLOT(sl_onSaveAnnotations()));
-
-
 }
 
-void SecStructDialog::sl_spinRangeStartChanged( int val )
-{
-    if (val > rangeEndSpinBox->value()) {
-        rangeEndSpinBox->setValue(val);
-    }
-
-}
-
-void SecStructDialog::sl_spinRangeEndChanged( int val )
-{
-    if (val < rangeStartSpinBox->value()) {
-        rangeStartSpinBox->setValue(val);
-    }
-}
-
-void SecStructDialog::updateState()
-{
+void SecStructDialog::updateState() {
     bool haveActiveTask = task!=NULL;
     bool haveResults = !results.isEmpty();
 
@@ -157,15 +127,11 @@ void SecStructDialog::sl_onStartPredictionClicked() {
     }
 
     //prepare target sequence
-    rangeStart = rangeStartSpinBox->value();
-    rangeEnd = rangeEndSpinBox->value();
+    region = regionSelector->getRegion();
+    SAFE_POINT(region.length > 0 && region.startPos >= 0 && region.endPos() <= ctx->getSequenceLength(), "Illegal region!", );
 
-    SAFE_POINT(rangeStart <= rangeEnd, "Illegal region!", );
-    SAFE_POINT(rangeStart >= 0 && rangeEnd <= ctx->getSequenceLength(), "Illegal region!", );
-
-    U2Region r(rangeStart, rangeEnd - rangeStart);
     U2OpStatusImpl os;
-    QByteArray seqPart = ctx->getSequenceData(r, os);
+    QByteArray seqPart = ctx->getSequenceData(region, os);
     CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
 
     task = factory->createTaskInstance(seqPart);
@@ -184,11 +150,9 @@ void SecStructDialog::sl_onTaskFinished(Task* t) {
     //shifting results according to startPos
     for (QMutableListIterator<SharedAnnotationData> it_ad(results); it_ad.hasNext(); ) {
         SharedAnnotationData &ad = it_ad.next();
-        U2Region::shift(rangeStart, ad->location->regions);
+        U2Region::shift(region.startPos, ad->location->regions);
     }
     task = NULL;
-    rangeStart = 0;
-    rangeEnd = 0;
     updateState();
 }
 

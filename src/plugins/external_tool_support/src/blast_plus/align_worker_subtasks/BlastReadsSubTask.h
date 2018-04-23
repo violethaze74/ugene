@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -79,10 +79,6 @@ public:
                        const QString &readName,
                        DbiDataStorage *storage);
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task *subTask);
-    ReportResult report();
-
     bool isComplement() const;
     const SharedDbiDataHandler& getRead() const;
     const U2MsaRowGapModel&      getReferenceGaps() const;
@@ -95,6 +91,10 @@ public:
     int         getReadIdentity() const;
 
 private:
+    void prepare();
+    QList<Task*> onSubTaskFinished(Task *subTask);
+    ReportResult report();
+
     BlastNPlusSupportTask *getBlastTask();
     void checkRead(const QByteArray &sequenceData);
 

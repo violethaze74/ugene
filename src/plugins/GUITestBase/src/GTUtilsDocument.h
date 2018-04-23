@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,6 +50,8 @@ public:
 
     static void lockDocument(HI::GUITestOpStatus &os, const QString& documentName);
     static void unlockDocument(HI::GUITestOpStatus &os, const QString& documentName);
+
+    static void checkIfDocumentIsLocked(HI::GUITestOpStatus &os, const QString &documentName, bool isLocked);
 
 protected:
     static GObjectView* getDocumentGObjectView(HI::GUITestOpStatus &os, Document* d);

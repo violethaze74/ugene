@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,6 +53,8 @@
 #include <U2Gui/ExportAnnotations2CSVTask.h>
 
 #include "BaseDocWriter.h"
+
+#include "util/WriteAnnotationsValidator.h"
 
 #include "WriteAnnotationsWorker.h"
 
@@ -225,7 +227,7 @@ void WriteAnnotationsWorker::fetchIncomingAnnotations(const QVariantMap &incomin
         foreach (AnnotationTableObject *annTable, annTables) {
             foreach (Annotation *annotation, annTable->getAnnotations()) {
                 U2Qualifier seqNameQual;
-                seqNameQual.name = "Sequence Name";
+                seqNameQual.name = ExportAnnotations2CSVTask::SEQUENCE_NAME;
                 seqNameQual.value = seqObjName;
                 annotation->addQualifier(seqNameQual);
             }
@@ -321,7 +323,7 @@ Task * WriteAnnotationsWorker::getSaveDocTask(const QString &formatId, SaveDocFl
             }
 
             task = new ExportAnnotations2CSVTask(annotations, QByteArray(), QString(), NULL, false,
-                false, filepath, fl.testFlag(SaveDoc_Append), getValue<QString>(SEPARATOR));
+                   getValue<bool>(WRITE_NAMES), filepath, fl.testFlag(SaveDoc_Append), getValue<QString>(SEPARATOR));
         } else {
             fl |= SaveDoc_DestroyAfter;
             IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filepath));
@@ -505,6 +507,7 @@ void WriteAnnotationsWorkerFactory::init() {
     proto->setPrompter(new WriteAnnotationsPrompter());
     proto->setPortValidator(BasePorts::IN_ANNOTATIONS_PORT_ID(),
                             new ScreenedSlotValidator(QStringList() << BaseSlots::URL_SLOT().getId() << BaseSlots::DNA_SEQUENCE_SLOT().getId()));
+    proto->setValidator(new WriteAnnotationsValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASINK(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new WriteAnnotationsWorkerFactory());
 }

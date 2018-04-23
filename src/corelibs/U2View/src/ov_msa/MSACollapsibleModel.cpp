@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,9 +55,12 @@ bool MSACollapsableItem::isValid() const {
 //////////////////////////////////////////////////////////////////////////
 
 MSACollapsibleItemModel::MSACollapsibleItemModel(MaEditorWgt *p)
-: QObject(p), ui(p)
+    : QObject(p),
+      ui(p),
+      trivialGroupsPolicy(Allow),
+      fakeModel(false)
 {
-    fakeModel = false;
+
 }
 
 void MSACollapsibleItemModel::reset(const QVector<U2Region>& itemRegions) {

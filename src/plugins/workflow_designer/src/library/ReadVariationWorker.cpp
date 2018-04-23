@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -218,7 +218,7 @@ ReadVariationProto::ReadVariationProto()
 
     setPrompter(new ReadDocPrompter(ReadVariationWorker::tr("Reads variations from <u>%1</u>.")));
     if (AppContext::isGUIMode()) {
-        setIcon( GUIUtils::createRoundIcon(QColor(85,85,255), 22));
+        setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
     }
 }
 

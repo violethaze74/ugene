@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,6 +35,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -50,6 +51,9 @@
 
 #include "AlignToReferenceBlastDialog.h"
 #include "AlignToReferenceBlastWorker.h"
+
+
+#define DEFAULT_OUTPUT_FILE_NAME QString("sanger_reads_alignment.ugenedb")
 
 namespace U2 {
 
@@ -105,8 +109,13 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
     SAFE_POINT_EXT(opened, setError(L10N::errorOpeningFileWrite(reportFile.fileName())), );
     reportFile.close();
 
+    GUrl referenceUrl(settings.referenceUrl);
+    if (referenceUrl.isLocalFile()) {
+        CHECK_EXT(QFileInfo(referenceUrl.getURLString()).exists(), setError(tr("The '%1' reference file doesn't exist.").arg(settings.referenceUrl)),);
+    }
+
     FormatDetectionConfig config;
-    QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.referenceUrl, config);
+    QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(referenceUrl, config);
     CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError(tr("wrong reference format")), );
 
     DocumentFormat *format = formats.first().format;
@@ -211,10 +220,8 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
         DocumentFormat *format = formats.first().format;
         CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT), setError(tr("wrong output format")), result);
 
-        LoadDocumentTask *loadTask= new LoadDocumentTask(format->getFormatId(),
-                                                         settings.outAlignment, AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.outAlignment)));
-        AddDocumentAndOpenViewTask *openTask = new AddDocumentAndOpenViewTask(loadTask);
-        AppContext::getTaskScheduler()->registerTopLevelTask(openTask);
+        Task *loadTask = AppContext::getProjectLoader()->openWithProjectTask(settings.outAlignment);
+        AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
     }
 
     return result;
@@ -232,7 +239,6 @@ Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
     return ReportResult_Finished;
 }
 
-const QString AlignToReferenceBlastDialog::defaultOutputName("sanger_reads_alignment.ugenedb");
 
 AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
     : QDialog(parent),
@@ -242,7 +248,7 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
     setupUi(this);
     GCOUNTER(cvar, tvar, "'Map reads to reference' dialog opening");
 
-    new HelpButton(this, buttonBox, "20875232"); 
+    new HelpButton(this, buttonBox, "20880571");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Map"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -258,6 +264,8 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
     saveController->setPath(outputLineEdit->text());
 
     new QShortcut(QKeySequence(Qt::Key_Delete), this, SLOT(sl_removeRead()));
+
+    defaultOutputUrl = outputLineEdit->text();
 }
 
 void AlignToReferenceBlastDialog::initSaveController() {
@@ -268,7 +276,7 @@ void AlignToReferenceBlastDialog::initSaveController() {
     conf.formatCombo = NULL;
     conf.parentWidget = this;
     conf.saveTitle = tr("Select Output File...");
-    conf.defaultFileName = GUrlUtils::getDefaultDataPath() + "/" + defaultOutputName;
+    conf.defaultFileName = GUrlUtils::getDefaultDataPath() + "/" + DEFAULT_OUTPUT_FILE_NAME;
 
     const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::UGENEDB;
     saveController = new SaveDocumentController(conf, formats, this);
@@ -375,15 +383,14 @@ void AlignToReferenceBlastDialog::sl_removeRead() {
 }
 
 void AlignToReferenceBlastDialog::sl_referenceChanged(const QString &newRef) {
-    QFileInfo outFileFi(outputLineEdit->text());
-    if (!fitsDefaultPattern(outFileFi.fileName())) {
+    if (outputLineEdit->text() != defaultOutputUrl) { // file name is set by user -> do not change
         return;
     }
-    
-    QFileInfo referenceFileInfo(newRef);
-    QString newOutFileName = referenceFileInfo.baseName() + "_" + defaultOutputName;
-    QString outUrl = outFileFi.dir().absolutePath() + "/" + newOutFileName;
-    saveController->setPath(outUrl);
+    // set default file name based on reference file name
+    QString outDir = QFileInfo(outputLineEdit->text()).dir().absolutePath();
+    QString outFile = QFileInfo(newRef).baseName() + "_" + DEFAULT_OUTPUT_FILE_NAME;
+    saveController->setPath(outDir + "/" + outFile);
+    defaultOutputUrl = saveController->getSaveFileName();
 }
 
 void AlignToReferenceBlastDialog::connectSlots() {
@@ -391,13 +398,6 @@ void AlignToReferenceBlastDialog::connectSlots() {
     connect(addReadButton, SIGNAL(clicked(bool)), SLOT(sl_addRead()));
     connect(removeReadButton, SIGNAL(clicked(bool)), SLOT(sl_removeRead()));
     connect(referenceLineEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_referenceChanged(const QString &)));
-}
-
-bool AlignToReferenceBlastDialog::fitsDefaultPattern(const QString &name) const {
-    if (name.endsWith(defaultOutputName)) {
-        return true;
-    }
-    return false;
 }
 
 } // namespace

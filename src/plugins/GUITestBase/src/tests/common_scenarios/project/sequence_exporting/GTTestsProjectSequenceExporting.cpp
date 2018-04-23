@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -64,10 +64,19 @@ namespace GUITest_common_scenarios_project_sequence_exporting {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
-// 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
+    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    const QString firstAnnFileName = "1.gb";
+    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    const QString secondAnnFaleName = "2.gb";
+
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "1.gb");
     GTUtilsDocument::checkDocument(os, "2.gb");
@@ -127,14 +136,22 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
-// 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
+    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    const QString firstAnnFileName = "1.gb";
+    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    const QString secondAnnFaleName = "2.gb";
+
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
 // Expected state:
 //     1) Project view with document "1.gb" and "2.gb" is opened
@@ -174,15 +191,22 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
     const QString doc1("1.gb"), doc2("2.gb");
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
+    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    const QString firstAnnFileName = "1.gb";
+    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    const QString secondAnnFaleName = "2.gb";
 
-// 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj4.uprj");
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
@@ -230,13 +254,22 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
-    GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj4.uprj");
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
+    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    const QString firstAnnFileName = "1.gb";
+    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    const QString secondAnnFaleName = "2.gb";
+
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::checkDocument(os, "1.gb");
     GTUtilsDocument::checkDocument(os, "2.gb");
@@ -256,11 +289,20 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj4.uprj");
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
+    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    const QString firstAnnFileName = "1.gb";
+    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    const QString secondAnnFaleName = "2.gb";
+
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QModelIndex nc_001363 = GTUtilsProjectTreeView::findIndex(os,"NC_001363 sequence", GTUtilsProjectTreeView::findIndex(os, "1.gb"));
@@ -370,10 +412,10 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-	GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
-	GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, new CustomExportSelectedRegion()));
-	GTUtilsProjectTreeView::click(os, "NC_001363", Qt::RightButton);
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
+    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, new CustomExportSelectedRegion()));
+    GTUtilsProjectTreeView::click(os, "NC_001363", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
 }
 
@@ -382,9 +424,9 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-	GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
-	GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "Project_export_test_0009.fa"));
-	GTUtilsProjectTreeView::click(os, "NC_001363 features", Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
+    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "Project_export_test_0009.fa"));
+    GTUtilsProjectTreeView::click(os, "NC_001363 features", Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -399,11 +441,11 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTFileDialog::openFile(os, dataDir + "samples/GFF/", "5prime_utr_intron_A21.gff");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-	GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
-	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-	GTUtilsProjectTreeView::click(os, "Ca21chr5 features", Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsProjectTreeView::click(os, "Ca21chr5 features", Qt::RightButton);
 
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // the rest part of the test checks that a newly created association can be used for sequence export
 
@@ -414,9 +456,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, idxGff, seqArea);
 
-	GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
-	GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "Project_export_test_0010.fa"));
-	GTUtilsProjectTreeView::click(os, "Ca21chr5 features", Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
+    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "Project_export_test_0010.fa"));
+    GTUtilsProjectTreeView::click(os, "Ca21chr5 features", Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     const QModelIndex docIndex = GTUtilsProjectTreeView::findIndex(os, "Project_export_test_0010.fa");
@@ -429,13 +471,13 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-	GTUtilsProjectTreeView::click(os, "NC_001363");
+    GTUtilsProjectTreeView::click(os, "NC_001363");
     GTKeyboardDriver::keyPress(Qt::Key_Delete);
     GTGlobals::sleep(200);
 
-	GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
-	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-	GTUtilsProjectTreeView::click(os, "NC_001363 features", Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsProjectTreeView::click(os, "NC_001363 features", Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {
@@ -455,9 +497,9 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     //GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
     //GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "Project_export_test_0012.fa"));
     //GTMouseDriver::click(Qt::RightButton);
-	GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
-	GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "Project_export_test_0012.fa"));
-	GTUtilsProjectTreeView::click(os, "NC_001363 features", Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
+    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "Project_export_test_0012.fa"));
+    GTUtilsProjectTreeView::click(os, "NC_001363 features", Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     const QModelIndex docIndex = GTUtilsProjectTreeView::findIndex(os, "Project_export_test_0012.fa");
@@ -471,8 +513,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTGlobals::sleep(200);
-	GTUtilsProjectTreeView::click(os, "Ca21chr5 features");
-	GTUtilsProjectTreeView::click(os, "Ca21chr1 features");
+    GTUtilsProjectTreeView::click(os, "Ca21chr5 features");
+    GTUtilsProjectTreeView::click(os, "Ca21chr1 features");
     GTKeyboardDriver::keyRelease( Qt::Key_Control);
     GTGlobals::sleep(200);
 

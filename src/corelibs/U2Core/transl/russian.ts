@@ -612,22 +612,22 @@
 <context>
     <name>U2::AddSequenceObjectsToAlignmentTask</name>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="55"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="60"/>
         <source>Object is empty.</source>
         <translation>Объект пуст.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="60"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="65"/>
         <source>Object is locked for modifications.</source>
         <translation>Объект заблокирован для редактирования.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="161"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="172"/>
         <source>Some sequences have wrong alphabet: </source>
         <translation>Некоторые последовательности имеют неправильный алфавит: </translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="164"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="175"/>
         <source> and others</source>
         <translation> и другие</translation>
     </message>
@@ -904,17 +904,17 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/CopyFileTask.cpp" line="32"/>
         <source>File &apos;%1&apos; copy task</source>
-        <translation type="unfinished"></translation>
+        <translation>File &apos;%1&apos; copy task</translation>
     </message>
     <message>
         <location filename="../src/tasks/CopyFileTask.cpp" line="49"/>
         <source>File &apos;%1&apos; doesn&apos;t exist</source>
-        <translation type="unfinished"></translation>
+        <translation>File &apos;%1&apos; doesn&apos;t exist</translation>
     </message>
     <message>
         <location filename="../src/tasks/CopyFileTask.cpp" line="51"/>
         <source>File copy from &apos;%1&apos; to &apos;%2&apos; failed</source>
-        <translation type="unfinished"></translation>
+        <translation>File copy from &apos;%1&apos; to &apos;%2&apos; failed</translation>
     </message>
 </context>
 <context>
@@ -1562,52 +1562,52 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Не удалось переименовать %1 в %2</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="312"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="313"/>
         <source>Folder is not specified</source>
         <translation>Папка не указана</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="317"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="318"/>
         <source>Folder can&apos;t be created: %1</source>
         <translation>Невозможно создать папку: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="322"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="323"/>
         <source>Folder can&apos;t be read: %1</source>
         <translation>Файлы папки %1 невозможно открыть на чтение</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="364"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="365"/>
         <source>File path is not specified</source>
         <translation>Путь до файла не задан</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="367"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="368"/>
         <source>Folder path instead of file path</source>
         <translation>Путь до папки вместо пути до файла</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="425"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="426"/>
         <source>Can not create a folder: %1</source>
         <translation>Невозможно создать папку: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="475"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="476"/>
         <source>%1 is not a local file [%2].</source>
         <translation>%1 is not a local file [%2].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="484"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="485"/>
         <source>Can not create a folder [%1].</source>
         <translation>Can not create a folder [%1].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.cpp" line="489"/>
+        <location filename="../src/util/GUrlUtils.cpp" line="490"/>
         <source>%1 is a folder [%2].</source>
         <translation>%1 is a folder [%2].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.h" line="136"/>
+        <location filename="../src/util/GUrlUtils.h" line="138"/>
         <source>Output URL</source>
         <translation>Выходной путь</translation>
     </message>
@@ -2016,22 +2016,22 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="276"/>
         <source>The fileURL  to load is empty</source>
-        <translation type="unfinished"></translation>
+        <translation>The fileURL  to load is empty</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="279"/>
         <source>Cannot get an IO file adapter factory for the file URL: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot get an IO file adapter factory for the file URL: %1</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="282"/>
         <source>Cannot detect the file format: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot detect the file format: %1</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="285"/>
         <source>Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</source>
-        <translation type="unfinished"></translation>
+        <translation>Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="445"/>
@@ -2163,47 +2163,47 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ModifySequenceContentTask</name>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="54"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="56"/>
         <source>Modify sequence task</source>
         <translation>Задача изменения последовательности</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="64"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="66"/>
         <source>Document is locked</source>
         <translation>Документ заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="68"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="70"/>
         <source>Region to delete is larger than the whole sequence</source>
         <translation>Регион для удаления больше чем вся последовательность</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="125"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="128"/>
         <source>Some annotations have qualifiers referring a sequence region that has been removed during the sequence editing. You might want to change the qualifiers manually. Find them in the table below</source>
         <translation>Некоторые аннотации имеют квалификаторы, которые ссылаются на регионы последовательности, которые были удалены в процессе редактирования</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="129"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="132"/>
         <source>Annotation Name</source>
         <translation>Имя аннотации</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="131"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="134"/>
         <source>Annotation Location</source>
         <translation>Расположение аннотации</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="133"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="136"/>
         <source>Qualifier Name</source>
         <translation>Имя квалификатора</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="135"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="138"/>
         <source>Referenced Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="140"/>
+        <location filename="../src/tasks/ModifySequenceObjectTask.cpp" line="143"/>
         <source>Unexpected qualifiers count</source>
         <translation>Unexpected qualifiers count</translation>
     </message>
@@ -2221,7 +2221,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Не удалось вставить пробелы в выравнивание!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1104"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1111"/>
         <source>Failed to crop an alignment!</source>
         <translation>Не удалось обрезать выравнивание!</translation>
     </message>

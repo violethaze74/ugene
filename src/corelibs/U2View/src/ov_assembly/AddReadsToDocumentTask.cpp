@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2SequenceUtils.h>
 
 #include <U2Formats/DocumentFormatUtils.h>
 
@@ -46,10 +47,11 @@ void AddReadsToDocumentTask::run() {
     TmpDbiObjects objectsGuard(dbiRef, stateInfo);
 
     foreach (const U2AssemblyRead &r, reads) {
-        QScopedPointer<U2SequenceObject> seqObj(DocumentFormatUtils::addSequenceObject(dbiRef,
-            r->name, r->readSequence, false, QVariantMap(), stateInfo));
+        DNASequence dna(r->name, r->readSequence);
+        dna.quality = DNAQuality(r->quality, DNAQualityType_Sanger);
+        U2EntityRef ref = U2SequenceUtils::import(stateInfo, dbiRef, dna);
+        QScopedPointer<U2SequenceObject> seqObj(new U2SequenceObject(dna.getName(), ref));
         CHECK_OP(stateInfo, );
-        seqObj->setQuality(DNAQuality(r->quality, DNAQualityType_Sanger));
 
         seqNameById[seqObj->getEntityRef().entityId] = seqObj->getGObjectName();
 

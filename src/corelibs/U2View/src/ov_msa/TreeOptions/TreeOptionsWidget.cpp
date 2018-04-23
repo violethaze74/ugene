@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -387,10 +387,10 @@ AddTreeWidget::AddTreeWidget(MSAEditor* msa)
     buildTreeButton->setFixedWidth(102);
     buttonLayout->addWidget(buildTreeButton);
     buildTreeButton->setObjectName( "BuildTreeButton" );
-    
+
     MultipleSequenceAlignmentObject* maObj = editor->getMaObject();
     buildTreeButton->setDisabled(editor->getNumSequences() < 2 || maObj->isStateLocked());
-    
+
     mainLayout->addLayout(buttonLayout);
 
     connect(openTreeButton, SIGNAL(clicked()), SLOT(sl_onOpenTreeTriggered()));

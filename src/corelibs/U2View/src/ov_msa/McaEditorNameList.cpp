@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ U2Region McaEditorNameList::getSelection() const {
     return localSelection;
 }
 
-void McaEditorNameList::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection &oldSelection) {
+void McaEditorNameList::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection & /*oldSelection*/) {
     setSelection(current.y(), current.height());
     sl_updateActions();
 }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,10 +41,10 @@ DNAFlexDialog::DNAFlexDialog(ADVSequenceObjectContext* _ctx)
   : QDialog(_ctx->getAnnotatedDNAView()->getWidget())
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20875058");
+    new HelpButton(this, buttonBox, "20880397");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-
+    
     ctx = _ctx;
 
     // Get the sequence length
@@ -61,15 +61,16 @@ DNAFlexDialog::DNAFlexDialog(ADVSequenceObjectContext* _ctx)
     // Initializing and adding the annotations widget
     annotController = new CreateAnnotationWidgetController(annotModel, this);
     QWidget* annotWidget = annotController->getWidget();
-    annotationsWidget->layout()->addWidget(annotWidget);
-
+    tabOutput->layout()->addWidget(annotWidget);
+    
     // Setting the dialog icon to the standard UGENE icon
     setWindowIcon(QIcon(":/ugene/images/ugene_16.png"));
 
     // Setting the bounds for the parameters
     spinBoxWindowSize->setMaximum(sequenceLength);
     spinBoxWindowStep->setMaximum(sequenceLength - 2); // Approximate value. In real life the step should be 1 or small enough.
-                                                       // "-2" is added as the first window should be at least 2 nucleotides.
+    
+    // "-2" is added as the first window should be at least 2 nucleotides.
     if(settings.windowSize >  sequenceLength){
         settings.windowSize = sequenceLength;
     }
@@ -83,7 +84,9 @@ DNAFlexDialog::DNAFlexDialog(ADVSequenceObjectContext* _ctx)
     connect(doubleSpinBoxThreshold, SIGNAL(valueChanged(double)), SLOT(sl_spinThresholdChanged(double)));
     connect(btnRemember, SIGNAL(clicked()), SLOT(sl_rememberSettings()));
     connect(btnDefaults, SIGNAL(clicked()), SLOT(sl_defaultSettings()));
-
+    connect(tabWidget,SIGNAL(currentChanged(int)),this, SLOT(sl_updateSizes(int)));
+    
+    sl_updateSizes(0);
 }
 
 void DNAFlexDialog::accept()
@@ -160,6 +163,18 @@ void DNAFlexDialog::updateHighFlexValues()
     spinBoxWindowSize->setValue(settings.windowSize);
     spinBoxWindowStep->setValue(settings.windowStep);
     doubleSpinBoxThreshold->setValue(settings.threshold);
+}
+
+void DNAFlexDialog::sl_updateSizes(int index) {
+    for (int i=0; i < tabWidget->count(); i++) {
+        tabWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    }
+    QWidget *widget = tabWidget->currentWidget();
+    widget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    widget->resize(widget->minimumSizeHint());
+    widget->adjustSize();
+    tabWidget->resize(tabWidget->minimumSizeHint());
+    tabWidget->adjustSize();
 }
 
 } // namespace

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -146,6 +146,7 @@ private slots:
     void sl_copyFormattedSelection();
     void sl_paste();
     void sl_pasteFinished(Task* pasteTask);
+    void sl_addSequencesToAlignmentFinished(Task* task);
     void sl_delCol();
     void sl_goto();
     void sl_removeAllGaps();

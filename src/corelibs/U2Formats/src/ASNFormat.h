@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -86,6 +86,8 @@ public:
 
         // Parsing state
         struct ParseState {
+            ParseState() : atEnd(false), numOpenedTags(0) {}
+
             QByteArray parentName;
             bool atEnd;
             int numOpenedTags;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -831,7 +831,7 @@ void SaveProjectDialogController::sl_clicked(QAbstractButton *button) {
 //////////////////////////////////////////////////////////////////////////
 ProjectDialogController::ProjectDialogController(ProjectDialogController::Mode m, QWidget *p):QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20874826");
+    new HelpButton(this, buttonBox, "20880163");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

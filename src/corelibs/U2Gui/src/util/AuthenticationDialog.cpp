@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ AuthenticationDialog::AuthenticationDialog(const QString &text, QWidget* parent)
     authenticationWidget(new AuthenticationWidget)
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "20875202");
+    new HelpButton(this, ui->buttonBox, "20880541");
     ui->mainLayout->insertWidget(1, authenticationWidget);
 
     if (text.isEmpty()) {

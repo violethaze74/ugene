@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -149,7 +149,11 @@ bool registerDataId() {
     return true;
 }
 
-bool u2DataIdRegistered = registerDataId();
+class Registrator {
+    static const bool u2DataIdRegistered;
+};
+
+const bool Registrator::u2DataIdRegistered = registerDataId();
 
 }
 

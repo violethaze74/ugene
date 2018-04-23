@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -199,8 +199,12 @@ int MrBayesLogParser::getProgress(){
 }
 
 MrBayesGetCalculatedTreeTask::MrBayesGetCalculatedTreeTask(const QString& url)
-:Task(tr("Generating output trees from MrBayes"), TaskFlags_NR_FOSCOE), baseFileName(url){
-   loadTmpDocumentTask = NULL;
+    : Task(tr("Generating output trees from MrBayes"), TaskFlags_NR_FOSCOE),
+      baseFileName(url),
+      loadTmpDocumentTask(NULL),
+      phyObject(NULL)
+{
+
 }
 
 void MrBayesGetCalculatedTreeTask::prepare(){

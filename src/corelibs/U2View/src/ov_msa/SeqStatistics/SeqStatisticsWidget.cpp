@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -91,8 +91,10 @@ void SeqStatisticsWidget::copySettings() {
 }
 
 void SeqStatisticsWidget::updateWidgetsSettings(){
-    QStringList algoList = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds();
-    ui.algoComboBox->addItems(algoList);
+    QList<MSADistanceAlgorithmFactory*> algos = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactories();
+    foreach(MSADistanceAlgorithmFactory* a, algos) {
+        ui.algoComboBox->addItem(a->getName(), a->getId());
+    }
     ui.algoComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
 
     ui.refSeqWarning->setText(tr("Hint: select a reference above"));
@@ -109,7 +111,7 @@ void SeqStatisticsWidget::updateWidgetsSettings(){
 }
 
 void SeqStatisticsWidget::connectSlots() {
-    connect(ui.algoComboBox,             SIGNAL(currentIndexChanged(const QString &)),  SLOT(sl_onAlgoChanged(const QString &)));
+    connect(ui.algoComboBox,             SIGNAL(currentIndexChanged(int)),              SLOT(sl_onAlgoChanged()));
     connect(ui.excludeGapsCheckBox,      SIGNAL(stateChanged (int)),                    SLOT(sl_onGapsChanged(int)));
     connect(ui.countsButton,             SIGNAL(clicked(bool)),                         SLOT(sl_onUnitsChanged(bool)));
     connect(ui.percentsButton,           SIGNAL(clicked(bool)),                         SLOT(sl_onUnitsChanged(bool)));
@@ -128,11 +130,11 @@ void SeqStatisticsWidget::restoreSettings() {
     ui.updateButton->setEnabled(!settings->autoUpdate);
     ui.dataState->setEnabled(!settings->autoUpdate);
 
-    int index = ui.algoComboBox->findText(settings->algoName);
+    int index = ui.algoComboBox->findData(settings->algoId);
     if(0 <= index) {
         ui.algoComboBox->setCurrentIndex(index);
     } else {
-        settings->algoName = ui.algoComboBox->currentText();
+        settings->algoId = ui.algoComboBox->currentData().toString();
     }
     if(!statisticsIsShown) {
         hideSimilaritySettings();
@@ -141,8 +143,8 @@ void SeqStatisticsWidget::restoreSettings() {
     }
 }
 
-void SeqStatisticsWidget::sl_onAlgoChanged(const QString &algoName) {
-    settings->algoName = algoName;
+void SeqStatisticsWidget::sl_onAlgoChanged() {
+    settings->algoId = ui.algoComboBox->currentData().toString();
     msaUI->setSimilaritySettings(settings);
 }
 

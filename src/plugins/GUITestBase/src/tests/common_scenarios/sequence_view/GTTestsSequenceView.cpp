@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -201,7 +201,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTWidget::click(os, toggleViewButton);
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "translation_action", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "do_not_translate_radiobutton", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
 
     GTGlobals::sleep();
@@ -236,7 +236,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTWidget::click(os, toggleViewButton);
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "translation_action", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "do_not_translate_radiobutton", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
 
     GTGlobals::sleep();
@@ -265,7 +265,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     GTWidget::click(os, toggleViewButton);
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "translation_action", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "do_not_translate_radiobutton", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
 
     GTGlobals::sleep();
@@ -675,12 +675,13 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "150000..199950,1..50000"));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+	GTGlobals::sleep(200);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "primer3_action"));
     Primer3DialogFiller::Primer3Settings settings;
     settings.resultsCount = 50;
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-    GTWidget::click(os, wgt, Qt::RightButton);
+    GTWidget::click(os, wgt->getDetView(), Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -836,6 +837,10 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
 
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank", "sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
+    CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
+    GTWidget::click(os, wrapButton);
 
     QAction* zoom = GTAction::findActionByText(os, "Zoom In");
     CHECK_SET_ERR(zoom != NULL, "Cannot find Zoom In action");
@@ -1014,7 +1019,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_2){
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Select annotation
-    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
+    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
 //    Use context menu {Copy->Copy reverse complement sequence}
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY
                                                       << "action_copy_annotation_sequence"));
@@ -1022,15 +1027,11 @@ GUI_TEST_CLASS_DEFINITION(test_0031_2){
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 
     QString clipboardtext = GTClipboard::text(os);
-    QString expected = "AATGAAAGACCCCACCCGTAGGTGGCAAGCTAGCTTAAGTAACGCCACTTTGCAAGGCATGGAAAAATACATAACTGAGAATAGAAAAGTTCAGATCAAGGTC"
-            "AGGAACAAAGAAACAGCTGAATACCAAACAGGATATCTGTGGTAAGCGGTTCCTGCCCCGGCTCAGGGCCAAGAACAGATGAGACAGCTGAGTGATGGGCCAAACAGGATATCT"
-            "GTGGTAAGCAGTTCCTGCCCCGGCTCGGGGCCAAGAACAGATGGTCCCCAGATGCGGTCCAGCCCTCAGCAGTTTCTAGTGAATCATCAGATGTTTCCAGGGTGCCCCAAGGA"
-            "CCTGAAAATGACCCTGTACCTTATTTGAACTAACCAATCAGTTCGCTTCTCGCTTCTGTTCGCGCGCTTCCGCTCTCCGAGCTCAATAAAAGAGCCCACAACCCCTCACTCGGC"
-            "GCGCCAGTCTTCCGATAGACTGCGTCGCCCGGGTACCCGTATTCCCAATAAAGCCTCTTGCTGTTTGCATCCGAATCGTGGTCTCGCTGTTCCTTGGGAGGGTCTCCTCTGAGTGATTGACTACCCACGACGGGGGTCTTTCATT";
-    CHECK_SET_ERR(clipboardtext == expected, "Unexpected reverse complement: " + clipboardtext);
+    CHECK_SET_ERR(clipboardtext.startsWith("AATGAAAGAC"), "Unexpected reverse complement start: " + clipboardtext.left(10));
+    CHECK_SET_ERR(clipboardtext.endsWith("GTCTTTCATT"), "Unexpected reverse complement end: " + clipboardtext.right(10));
 
 //    Check joined annotations
-    GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 2970);
+    GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 2970, 0, true);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY
                                                       << "action_copy_annotation_sequence"));
@@ -1038,12 +1039,8 @@ GUI_TEST_CLASS_DEFINITION(test_0031_2){
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 
     clipboardtext = GTClipboard::text(os);
-    expected = "ATGGTAGCAGCCATTGCCGTACTGACAAAGGATGCAGGCAAGCTAACCATGGGACAGCCACTAGTCATTCTGGCCCCCCATGCAGTAGAGGCACTAGTCAAACAACCCCC"
-            "CGACCGCTGGCTTTCCAACGCCCGGATGACTCACTATCAGGCCTTGCTTTTGGACACGGACCGGGTCCAGTTCAGACCGGTGGTAGCCCTGAACCCGGCTACGCTGCTCCCAC"
-            "TGCCTGAGAAAGGGCTGCAACACAACTGCCTTGATATCCTGGCCGAAGCTCATGGAACCCGACCCGACCTAACGGACCAGCCGCTCCCAGACGCCGACCACACCTGGTACACG"
-            "GATGGAAGCAGTCTTTTACAAGAGGGACAGCGTAAGGCGGGAGCTGCGGTGACCACCGAGACCGAGAAGCCTTCCCAACCAAGAAAAAAAACCGCCAAGGTCGTAAAT";
-    CHECK_SET_ERR(clipboardtext == expected, "Unexpected reverse complement for joined annotation: " + clipboardtext);
-
+    CHECK_SET_ERR(clipboardtext.startsWith("ATGGTAGCAG"), "Unexpected reverse complement for joined annotation start: " + clipboardtext.left(10));
+    CHECK_SET_ERR(clipboardtext.endsWith("TCTAGACTGA"), "Unexpected reverse complement for joined annotation end: " + clipboardtext.right(10));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0031_3){
@@ -1051,7 +1048,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_3){
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Select annotation
-    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
+    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
 //    Use context menu {Copy->Copy reverse complement sequence}
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY
                                                       << "action_copy_annotation_sequence"));
@@ -1059,15 +1056,11 @@ GUI_TEST_CLASS_DEFINITION(test_0031_3){
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 
     QString clipboardtext = GTClipboard::text(os);
-    QString expected = "AATGAAAGACCCCACCCGTAGGTGGCAAGCTAGCTTAAGTAACGCCACTTTGCAAGGCATGGAAAAATACATAACTGAGAATAGAAAAGTTCAGATCAAGGTC"
-            "AGGAACAAAGAAACAGCTGAATACCAAACAGGATATCTGTGGTAAGCGGTTCCTGCCCCGGCTCAGGGCCAAGAACAGATGAGACAGCTGAGTGATGGGCCAAACAGGATATCT"
-            "GTGGTAAGCAGTTCCTGCCCCGGCTCGGGGCCAAGAACAGATGGTCCCCAGATGCGGTCCAGCCCTCAGCAGTTTCTAGTGAATCATCAGATGTTTCCAGGGTGCCCCAAGGA"
-            "CCTGAAAATGACCCTGTACCTTATTTGAACTAACCAATCAGTTCGCTTCTCGCTTCTGTTCGCGCGCTTCCGCTCTCCGAGCTCAATAAAAGAGCCCACAACCCCTCACTCGGC"
-            "GCGCCAGTCTTCCGATAGACTGCGTCGCCCGGGTACCCGTATTCCCAATAAAGCCTCTTGCTGTTTGCATCCGAATCGTGGTCTCGCTGTTCCTTGGGAGGGTCTCCTCTGAGTGATTGACTACCCACGACGGGGGTCTTTCATT";
-    CHECK_SET_ERR(clipboardtext == expected, "Unexpected reverse complement: " + clipboardtext);
+    CHECK_SET_ERR(clipboardtext.startsWith("AATGAAAGAC"), "Unexpected reverse complement start: " + clipboardtext.left(10));
+    CHECK_SET_ERR(clipboardtext.endsWith("GTCTTTCATT"), "Unexpected reverse complement end: " + clipboardtext.right(10));
 
 //    Check joined annotations
-    GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 2970);
+    GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 2970, 0, true);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY
                                                       << "action_copy_annotation_sequence"));
@@ -1075,32 +1068,44 @@ GUI_TEST_CLASS_DEFINITION(test_0031_3){
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 
     clipboardtext = GTClipboard::text(os);
-    expected = "ATGGTAGCAGCCATTGCCGTACTGACAAAGGATGCAGGCAAGCTAACCATGGGACAGCCACTAGTCATTCTGGCCCCCCATGCAGTAGAGGCACTAGTCAAACAACCCCC"
-            "CGACCGCTGGCTTTCCAACGCCCGGATGACTCACTATCAGGCCTTGCTTTTGGACACGGACCGGGTCCAGTTCAGACCGGTGGTAGCCCTGAACCCGGCTACGCTGCTCCCAC"
-            "TGCCTGAGAAAGGGCTGCAACACAACTGCCTTGATATCCTGGCCGAAGCTCATGGAACCCGACCCGACCTAACGGACCAGCCGCTCCCAGACGCCGACCACACCTGGTACACG"
-            "GATGGAAGCAGTCTTTTACAAGAGGGACAGCGTAAGGCGGGAGCTGCGGTGACCACCGAGACCGAGAAGCCTTCCCAACCAAGAAAAAAAACCGCCAAGGTCGTAAAT";
-    CHECK_SET_ERR(clipboardtext == expected, "Unexpected reverse complement for joined annotation: " + clipboardtext);
-
+    CHECK_SET_ERR(clipboardtext.startsWith("ATGGTAGCAG"), "Unexpected reverse complement for joined annotation start: " + clipboardtext.left(10));
+    CHECK_SET_ERR(clipboardtext.endsWith("TCTAGACTGA"), "Unexpected reverse complement for joined annotation end: " + clipboardtext.right(10));
 }
 
 #define GET_ACTIONS QMenu *activePopupMenu = qobject_cast<QMenu *>(QApplication::activePopupWidget()); \
 CHECK_SET_ERR(NULL != activePopupMenu, "Active popup menu is NULL"); \
-QAction* direct1 = GTMenu::getMenuItem(os, activePopupMenu, "1 direct translation frame", true); \
-QAction* direct2 = GTMenu::getMenuItem(os, activePopupMenu, "2 direct translation frame", true); \
-QAction* direct3 = GTMenu::getMenuItem(os, activePopupMenu, "3 direct translation frame", true); \
-QAction* compl1 = GTMenu::getMenuItem(os, activePopupMenu, "1 complementary translation frame", true); \
-QAction* compl2 = GTMenu::getMenuItem(os, activePopupMenu, "2 complementary translation frame", true); \
-QAction* compl3 = GTMenu::getMenuItem(os, activePopupMenu, "3 complementary translation frame", true);
+QAction* direct1 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +1", true); \
+QAction* direct2 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +2", true); \
+QAction* direct3 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +3", true); \
+QAction* compl1 = GTMenu::getMenuItem(os, activePopupMenu, "Frame -1", true); \
+QAction* compl2 = GTMenu::getMenuItem(os, activePopupMenu, "Frame -2", true); \
+QAction* compl3 = GTMenu::getMenuItem(os, activePopupMenu, "Frame -3", true);
 
 GUI_TEST_CLASS_DEFINITION(test_0032){
 //    Open human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-//    Click "Amino translations" button on mdi toolbar
+//  Click "Amino translations" button on mdi toolbar
     QWidget *translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList()<<"Show direct only"));
+
+    class UncheckComplement : public CustomScenario {
+        void run (HI::GUITestOpStatus &os) {
+            QMenu* activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+            CHECK_SET_ERR(NULL != activePopupMenu, "Active popup menu is NULL");
+            GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Set up frames manually");
+            GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Frame -1");
+            GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Frame -2");
+            GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Frame -3");
+            GTGlobals::sleep();
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
+
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new UncheckComplement));
     GTWidget::click(os, translationsMenuToolbarButton);
-//    Check "Show direct only"
+
+//  Check "Show direct only"
     class DirectPopupChecker : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             GET_ACTIONS
@@ -1122,7 +1127,23 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
     GTWidget::click(os, translationsMenuToolbarButton);
 
     //    Check "Show complementary only"
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList()<<"Show complementary only"));
+
+    class UncheckDirectCheckComplement : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QMenu* activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+            CHECK_SET_ERR(NULL != activePopupMenu, "Active popup menu is NULL");
+            GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Frame +1");
+            GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Frame +2");
+            GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Frame +3");
+            GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Frame -1");
+            GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Frame -2");
+            GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Frame -3");
+            GTGlobals::sleep();
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new UncheckDirectCheckComplement));
     GTWidget::click(os, translationsMenuToolbarButton);
 
     class ComplPopupChecker : public CustomScenario {
@@ -1146,7 +1167,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
     GTWidget::click(os, translationsMenuToolbarButton);
 
     //    Check "Show all"
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList()<<"Show all"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"show_all_frames_radiobutton"));
     GTWidget::click(os, translationsMenuToolbarButton);
 
     class AllPopupChecker : public CustomScenario {
@@ -1168,7 +1189,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
     };
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new AllPopupChecker));
     GTWidget::click(os, translationsMenuToolbarButton);
-	GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 #undef GET_ACTIONS
 
@@ -1189,6 +1210,9 @@ GUI_TEST_CLASS_DEFINITION(test_0034){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rulers" << "Show Custom Rulers"));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
     GTGlobals::sleep(500);
+//    Set focus on tree
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+    GTMouseDriver::click();
     second = GTWidget::getImage(os, panView);
     CHECK_SET_ERR(init == second, "ruler not hidden");
 //    Remove ruler
@@ -1307,20 +1331,32 @@ GUI_TEST_CLASS_DEFINITION(test_0040){
 //scrollbar on seq view
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
+    CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
+    GTWidget::click(os, wrapButton);
+
     DetView* det = GTWidget::findExactWidget<DetView*>(os, "det_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    QScrollBar* scroll = det->findChild<QScrollBar*>();
+    QScrollBar* scroll = GTScrollBar::getScrollBar(os, "singleline_scrollbar");
+
     GTWidget::click(os, scroll);
     U2Region r = det->getVisibleRange();
-    CHECK_SET_ERR(r.startPos>98, QString("Unexpected start pos: %1").arg(r.startPos));
+    CHECK_SET_ERR(r.startPos > 89, QString("Unexpected start pos: %1").arg(r.startPos));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0041){
     //test key events
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
+    CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
+    GTWidget::click(os, wrapButton);
+
     DetView* det = GTWidget::findExactWidget<DetView*>(os, "det_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    int initLength = det->getVisibleRange().length;
     GTWidget::click(os, det);
+    GTGlobals::sleep(500);
+    int initLength = det->getVisibleRange().length;
 
     GTKeyboardDriver::keyClick(Qt::Key_Down);
     GTGlobals::sleep(500);
@@ -1361,7 +1397,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041){
     GTGlobals::sleep(500);
     start = GTUtilsSequenceView::getVisiableStart(os);
     CHECK_SET_ERR(start == 0, QString("8 Unexpected sequence start: %1").arg(start));
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0042){
@@ -1369,7 +1404,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042){
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Select annotation
-    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
+    GTUtilsAnnotationsTreeView::clickItem(os, "misc_feature", 1, true);
 //    Expected: annotation selected
     QString selected = GTUtilsAnnotationsTreeView::getSelectedItem(os);
     CHECK_SET_ERR(selected == "misc_feature", "Unexpected selected anntoation: " + selected);
@@ -1487,7 +1522,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<QScrollBar*> list = pan->findChildren<QScrollBar*>();
-    QScrollBar* vertical;
+    QScrollBar* vertical = NULL;
     foreach (QScrollBar* b, list) {
         if(b->orientation() == Qt::Vertical){
             vertical = b;
@@ -1697,14 +1732,14 @@ GUI_TEST_CLASS_DEFINITION(test_0052_1){
     GTGlobals::sleep(1000);
     QImage image1 = GTWidget::getImage(os, det);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "translation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "show_all_frames_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
     GTGlobals::sleep(2000);
     GTWidget::click(os, det);
     GTGlobals::sleep(1000);
     QImage image2 = GTWidget::getImage(os, det);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "translation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "do_not_translate_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
     GTGlobals::sleep(2000);
     GTWidget::click(os, det);
@@ -2011,9 +2046,10 @@ GUI_TEST_CLASS_DEFINITION(test_0061_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0062) {
 //    1. Open any sequence (e.g. murine.gb)
-//    2. "Wrap sequence" button is not checked
-//    3. Click "Wrap sequence" button on the local toolbar
-//    Expected state: the view was not resized, horizontal scrollbar is hidden, vertical scrollbar appeared, sequence is split into lines
+//    2. "Wrap sequence" button is checked by default
+//    Expected state: vertical scrollbar is present, horizontal scrollbar is hidden, sequence is split into lines
+//    3. Uncheck "Wrap sequence" button on the local toolbar
+//    Expected state: the view is not resized, horizontal scrollbar appears, vertical scrollbar is hidden, sequence is in one line
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
 
@@ -2021,28 +2057,29 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
     CHECK_SET_ERR(seqWgt != NULL, "No sequence widget found");
     QSize seqWgtSize = seqWgt->size();
 
-    QScrollBar* hScrollBar = GTScrollBar::getScrollBar(os, "singleline_scrollbar");
-    CHECK_SET_ERR(hScrollBar != NULL, "Cannot find singleline_scrollbar");
-    CHECK_SET_ERR(hScrollBar->isVisible(), "singleline_scrollbar is not visible");
-
-    QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
-    CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
-    GTWidget::click(os, wrapButton);
-    CHECK_SET_ERR(seqWgtSize == seqWgt->size(), "Multi-line mode resized the view");
-    CHECK_SET_ERR(hScrollBar->isHidden(), "singleline_scrollbar is visible");
-
     QScrollBar* scrollBar = GTScrollBar::getScrollBar(os, "multiline_scrollbar");
     CHECK_SET_ERR(scrollBar != NULL, "Cannot find multiline_scrollbar");
     CHECK_SET_ERR(scrollBar->isVisible(), "multiline_scrollbar is hidden");
+
+    QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
+    CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
+    GTWidget::click(os, wrapButton);
+    CHECK_SET_ERR(seqWgtSize == seqWgt->size(), "Multi-line mode resized the view");
+    CHECK_SET_ERR(scrollBar->isHidden(), "multiline_scrollbar is visible");
+
+    QScrollBar* hScrollBar = GTScrollBar::getScrollBar(os, "singleline_scrollbar");
+    CHECK_SET_ERR(hScrollBar != NULL, "Cannot find singleline_scrollbar");
+    CHECK_SET_ERR(hScrollBar->isVisible(), "singleline_scrollbar is not visible");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0063) {
 //    1. Open any sequence (e.g. murine.gb)
 //    2. Scroll to the middle of the sequence (say visible range starts from X position)
-//    3. Click "Wrap sequence" (say visible range starts from Y position now)
-//    4. Expected state: X position is located in the first visible line
-//    5. Uncheck "Wrap sequence"
-//    Expected state: sequence is displayed in one line, and visible range starts from Y position
+//    3. Uncheck "Wrap sequence"
+//    Expected state: visible range starts from X position
+//    4. Scroll a little (say visible range starts from Y position now in a single line mode)
+//    5. Check "Wrap sequence" back
+//    Expected state: sequence is displayed in lines, and first line contains Y pos
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
 
@@ -2051,20 +2088,23 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
     GTGlobals::sleep();
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
     CHECK_SET_ERR(visibleRange.contains(pos), "Visible range does not contain 789 position");
+    pos = visibleRange.startPos;
 
     QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
-    CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
+    CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
     GTWidget::click(os, wrapButton);
     GTGlobals::sleep();
 
     visibleRange = GTUtilsSequenceView::getVisibleRange(os);
-    CHECK_SET_ERR(visibleRange.contains(pos), "Visible range does not contain requeried position");
+    CHECK_SET_ERR(visibleRange.startPos == pos, "Visible range does not contain requeried position");
+    GTUtilsSequenceView::goToPosition(os, pos + 20);
+    visibleRange = GTUtilsSequenceView::getVisibleRange(os);
     pos = visibleRange.startPos;
 
     GTWidget::click(os, wrapButton);
     GTGlobals::sleep();
     visibleRange = GTUtilsSequenceView::getVisibleRange(os);
-    CHECK_SET_ERR(visibleRange.startPos == pos, "Start position of visible range was changed");
+    CHECK_SET_ERR(visibleRange.contains(pos), "Start position of visible range was changed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0064) {
@@ -2073,8 +2113,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "seq4.fa");
     QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
-    CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
-    GTWidget::click(os, wrapButton);
+    CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
 
     QScrollBar* scrollBar = GTScrollBar::getScrollBar(os, "multiline_scrollbar");
     CHECK_SET_ERR(scrollBar != NULL, "Cannot find multiline_scrollbar");
@@ -2107,10 +2146,9 @@ GUI_TEST_CLASS_DEFINITION(test_0065) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
 
     QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
-    CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
-    GTWidget::click(os, wrapButton);
+    CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
 
-    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTWidget::setFocus(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView());
 
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
     for (int i = 0; i < 5; i++) {
@@ -2160,8 +2198,7 @@ GUI_TEST_CLASS_DEFINITION(test_0066) {
     GTGlobals::sleep();
 
     QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
-    CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
-    GTWidget::click(os, wrapButton);
+    CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
 
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
     QSplitter* splitter = qobject_cast<QSplitter*>(GTWidget::findWidget(os, "annotated_DNA_splitter"));
@@ -2221,11 +2258,10 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
     CHECK_SET_ERR(seqWgt != NULL, "No sequence widget found");
 
     QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
-    CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
-    GTWidget::click(os, wrapButton);
+    CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
 
-    QScrollBar* scrollBar = GTScrollBar::getScrollBar(os, "multiline_scrollbar");
-    CHECK_SET_ERR(scrollBar->minimum() == scrollBar->maximum(), "There is something to scroll");
+    QScrollBar* scrollBar = GTScrollBar::getScrollBar(os, "singleline_scrollbar");
+    CHECK_SET_ERR(scrollBar->isHidden(), "Horizontal scroll bar is visible");
 
     GTWidget::click(os, seqWgt);
     GTMouseDriver::doubleClick();
@@ -2245,7 +2281,7 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
 GUI_TEST_CLASS_DEFINITION(test_0068) {
 //    1. Open any sequence (e.g. murine.gb)
 //    Optionally: enlarge the widget for a better view
-//    2. Click "Wrap seqeence"
+//    2. "Wrap seqeence" is on be default
 //    3. Uncheck "Show amino translations" button
 //    Expected state: the view is updated, the lines fill all available space
 //    4. Uncheck "Show complement strand"
@@ -2258,16 +2294,14 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
 
     QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
-    CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
-    GTWidget::click(os, wrapButton);
+    CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "translation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "show_all_frames_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
     CHECK_SET_ERR(visibleRange != GTUtilsSequenceView::getVisibleRange(os), "Visible range was not changed on translation show/hide");
-
-    GTWidget::click(os, GTAction::button(os, "complement_action"));
-    CHECK_SET_ERR(visibleRange != GTUtilsSequenceView::getVisibleRange(os), "Visible range was not changed on complement strand show/hide");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0069) {
@@ -2280,8 +2314,7 @@ GUI_TEST_CLASS_DEFINITION(test_0069) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
 
     QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
-    CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
-    GTWidget::click(os, wrapButton);
+    CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
 
     ADVSingleSequenceWidget* seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os);
     CHECK_SET_ERR(seqWgt != NULL, "Cannot find sequence widget");
@@ -2309,24 +2342,24 @@ GUI_TEST_CLASS_DEFINITION(test_0070) {
 //    Expected state: clicked annotation is selected
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
-    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
-    QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);
-    CHECK_SET_ERR(!selection.isEmpty(), "Nothing is selected");
-
     QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
-    CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
+    CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
     GTWidget::click(os, wrapButton);
 
-    GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 1042);
+    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
+    QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(!selection.isEmpty(), "Nothing is selected");
+    GTWidget::click(os, wrapButton);
+
+    GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 1042, 0, true);
     CHECK_SET_ERR(!GTUtilsSequenceView::getSelection(os).isEmpty(), "Selection is empty");
     CHECK_SET_ERR(GTUtilsSequenceView::getSelection(os) != selection, "Selection was not changed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0071) {
 //    1. Open any sequence (e.g. murine.gb)
-//    2. Click "Wrap sequence"
-//    3. Click "Export image"
-//    4. Fill the dialog (select a region from the middle of the sequence) and export the dialog
+//    2. Click "Export image"
+//    3. Fill the dialog (select a region from the middle of the sequence) and export the dialog
 //    Expected state: the result file contains the lines of the sequence started from the specified position, no extra empty space
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
@@ -2334,8 +2367,7 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
     CHECK_SET_ERR(seqWgt != NULL, "Cannot find sequence widget");
 
     QAbstractButton* wrapButton = GTAction::button(os, "wrap_sequence_action");
-    CHECK_SET_ERR(!wrapButton->isChecked(), "Multi-line mode is unexpectedly active");
-    GTWidget::click(os, wrapButton);
+    CHECK_SET_ERR(wrapButton->isChecked(), "Multi-line mode is unexpectedly inactive");
 
     ExportSequenceImage::Settings s(ExportSequenceImage::DetailsView, U2Region(1, 2000));
     GTUtilsDialog::waitForDialog(os, new ExportSequenceImage(os, sandBoxDir + "seq_image_0071", s));
@@ -2358,13 +2390,13 @@ GUI_TEST_CLASS_DEFINITION(test_0075) {
     CHECK_SET_ERR(NULL != menu, "No menu");
 
     //3. Click "Show/hide translations".
-    GTMenu::clickMenuItem(os, menu, "translation_action");
+    GTMenu::clickMenuItem(os, menu, "do_not_translate_radiobutton");
 
     //Expected: the menu doesn't disappear.
     CHECK_SET_ERR(NULL != QApplication::activePopupWidget(), "Menu disappeared 1");
 
     //4. Click "Show all".
-    GTMenu::clickMenuItemByText(os, menu, QStringList() << "Show all");
+    GTMenu::clickMenuItemByText(os, menu, QStringList() << "Show all frames");
 
     //Expected: the menu doesn't disappear.
     CHECK_SET_ERR(NULL != QApplication::activePopupWidget(), "Menu disappeared 2");

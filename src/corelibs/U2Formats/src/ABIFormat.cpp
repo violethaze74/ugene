@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,10 +32,12 @@
 #include <U2Core/L10n.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/TextUtils.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2SequenceUtils.h>
 
 #include "ABIFormat.h"
 #include "DocumentFormatUtils.h"
@@ -441,13 +443,18 @@ Document* ABIFormat::parseABI(const U2DbiRef& dbiRef, SeekableBuf* fp, IOAdapter
     }
 
     QList<GObject*> objects;
-    const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    U2SequenceObject* seqObj = DocumentFormatUtils::addSequenceObjectDeprecated(dbiRef, folder, dna.getName(), objects, dna, os);
-    CHECK_OP(os, NULL);
-    SAFE_POINT(seqObj != NULL, "DocumentFormatUtils::addSequenceObject returned NULL but didn't set error", NULL);
-
     QVariantMap hints;
-    hints.insert(DBI_FOLDER_HINT, fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
+    QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
+    hints.insert(DBI_FOLDER_HINT, folder);
+    if (dna.alphabet == NULL) {
+        dna.alphabet = U2AlphabetUtils::findBestAlphabet(dna.seq);
+        CHECK_EXT(dna.alphabet != NULL, os.setError(tr("Undefined sequence alphabet")), NULL);
+    }
+    U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dna, dna.alphabet->getId());
+    CHECK_OP(os, NULL);
+    U2SequenceObject* seqObj = new U2SequenceObject(dna.getName(), ref);
+    objects.append(seqObj);
+
     DNAChromatogramObject* chromObj = DNAChromatogramObject::createInstance(cd, "Chromatogram", dbiRef, os, hints);
     CHECK_OP(os, NULL);
     objects.append(chromObj);

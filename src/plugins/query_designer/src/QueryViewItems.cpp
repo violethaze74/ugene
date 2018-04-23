@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1221,8 +1221,6 @@ void QDRulerItem::sl_updateText() {
             QDSchemeUnit* src = units.at(i);
             QDSchemeUnit* dst = units.at(j);
             QList<QDPath*> paths = scheme->findPaths(src, dst);
-            int curMinDist=0;
-            int curMaxDist=0;
             foreach(QDPath* path, paths) {
                 QDDistanceConstraint* dc = path->toConstraint();
                 if(!dc) {
@@ -1230,8 +1228,8 @@ void QDRulerItem::sl_updateText() {
                     update();
                     return;
                 }
-                curMinDist = dc->getMin();
-                curMaxDist = dc->getMax();
+                int curMinDist = dc->getMin();
+                int curMaxDist = dc->getMax();
                 QDSchemeUnit* dcSrc = dc->getSource();
                 QDSchemeUnit* dcDst = dc->getDestination();
                 if (dc->distanceType()==S2S) {

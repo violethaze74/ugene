@@ -759,7 +759,7 @@
     <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="486"/>
         <source>folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</source>
-        <translation type="unfinished"></translation>
+        <translation>назначение папки: ожидается &apos;%1&apos; или &apos;%2&apos;, найдено &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="494"/>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,6 +44,7 @@
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OpenViewTask.h>
+#include <U2Gui/RegionSelector.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
@@ -58,7 +59,7 @@ namespace U2 {
 ////////////////////////////////////////
 //BlastAllSupportRunDialog
 BlastAllSupportRunDialog::BlastAllSupportRunDialog(ADVSequenceObjectContext* seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent)
-: BlastRunCommonDialog(parent, BlastAll, false, QStringList()), lastDBPath(lastDBPath), lastDBName(lastDBName), seqCtx(seqCtx)
+: BlastRunCommonDialog(parent, BlastAll, false, QStringList()), lastDBPath(lastDBPath), lastDBName(lastDBName), seqCtx(seqCtx), regionSelector(NULL)
 {
     dnaso = seqCtx->getSequenceObject();
     CreateAnnotationModel ca_m;
@@ -70,6 +71,10 @@ BlastAllSupportRunDialog::BlastAllSupportRunDialog(ADVSequenceObjectContext* seq
     ca_c = new CreateAnnotationWidgetController(ca_m, this);
     annotationWidgetLayout->addWidget(ca_c->getWidget());
 
+    int lastRow = settingsGridLayout->rowCount();
+    regionSelector = new RegionSelector(this, seqCtx->getSequenceLength(), false, seqCtx->getSequenceSelection());
+    settingsGridLayout->addWidget(regionSelector, lastRow, 0, 1, 3);
+    
     okButton = buttonBox->button(QDialogButtonBox::Ok);
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
 
@@ -87,6 +92,10 @@ BlastAllSupportRunDialog::BlastAllSupportRunDialog(ADVSequenceObjectContext* seq
     dbSelector->databasePathLineEdit->setText(lastDBPath);
     dbSelector->baseNameLineEdit->setText(lastDBName);
     connect(cancelButton,SIGNAL(clicked()),SLOT(reject()));
+}
+
+U2Region BlastAllSupportRunDialog::getSelectedRegion() const {
+    return regionSelector->isWholeSequenceSelected() ? U2Region(0, seqCtx->getSequenceLength()) : regionSelector->getRegion();
 }
 
 void BlastAllSupportRunDialog::sl_lineEditChanged(){
@@ -179,6 +188,10 @@ void BlastAllWithExtFileSpecifySupportRunDialog::sl_lineEditChanged(){
     okButton->setEnabled(dbSelector->isInputDataValid() && hasValidInput);
 }
 
+namespace {
+    const char *INPUT_URL_PROP = "input_url";
+}
+
 void BlastAllWithExtFileSpecifySupportRunDialog::sl_inputFileLineEditChanged(const QString &url){
     hasValidInput = false;
     sl_lineEditChanged();
@@ -189,17 +202,20 @@ void BlastAllWithExtFileSpecifySupportRunDialog::sl_inputFileLineEditChanged(con
         wasNoOpenProject = true;
     } else {
         Document *doc = proj->findDocumentByURL(url);
-        if (NULL != doc) {
-            tryApplyDoc(doc);
+        if (doc != NULL) {
+            if (doc->isLoaded()) {
+                tryApplyDoc(doc);
+            } else {
+                LoadUnloadedDocumentAndOpenViewTask *loadTask= new LoadUnloadedDocumentAndOpenViewTask(doc);
+                loadTask->setProperty(INPUT_URL_PROP, url);
+                connect(loadTask, SIGNAL(si_stateChanged()), SLOT(sl_inputFileOpened()));
+                AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
+            }
             return;
         }
     }
 
     loadDoc(url);
-}
-
-namespace {
-    const char *INPUT_URL_PROP = "input_url";
 }
 
 void BlastAllWithExtFileSpecifySupportRunDialog::onFormatError() {

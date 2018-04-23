@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,9 +30,20 @@ using namespace HI;
 
 class GTMSAEditorStatusWidget {
 public:
+    static QWidget *getStatusWidget(HI::GUITestOpStatus &os);
+
     // fails if the widget is NULL or can't get length
     static int length(HI::GUITestOpStatus& os, QWidget* w);
     static int getSequencesCount(HI::GUITestOpStatus &os, QWidget *w);
+
+    static QString getRowNumberString(HI::GUITestOpStatus &os);
+    static QString getRowsCountString(HI::GUITestOpStatus &os);
+
+    static QString getColumnNumberString(HI::GUITestOpStatus &os);
+    static QString getColumnsCountString(HI::GUITestOpStatus &os);
+
+    static QString getSequenceUngappedPositionString(HI::GUITestOpStatus &os);
+    static QString getSequenceUngappedLengthString(HI::GUITestOpStatus &os);
 };
 
 }

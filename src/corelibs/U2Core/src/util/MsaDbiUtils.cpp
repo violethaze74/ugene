@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -952,6 +952,7 @@ void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& row
         rows.append(row);
     }
 
+    int trailingGapsColumns = count;
     foreach (U2MsaRow row, rows) {
         // Calculate the new gap model
         calculateGapModelAfterInsert(row.gaps, pos, count);
@@ -959,6 +960,9 @@ void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& row
         // Trim trailing gap (if any)
         qint64 seqLength = row.gend - row.gstart;
         qint64 gapsLength = 0;
+        int diff = alLength - row.length;
+        trailingGapsColumns = diff < trailingGapsColumns ? diff : trailingGapsColumns;
+
         for (int i = 0, n = row.gaps.count(); i < n; ++i) {
             const U2MsaGap& gap = row.gaps[i];
             if ((i == n - 1) && (gap.offset >= seqLength + gapsLength)) {
@@ -984,7 +988,10 @@ void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& row
             CHECK_OP(os, );
         }
     } else {
-        msaDbi->updateMsaLength(msaRef.entityId, msaObj.length + count, os);
+        int newLength = msaObj.length + count - trailingGapsColumns;
+        if (msaObj.length < newLength) {
+            msaDbi->updateMsaLength(msaRef.entityId, msaObj.length + count, os);
+        }
         CHECK_OP(os, );
     }
 }

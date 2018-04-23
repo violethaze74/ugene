@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,6 +35,8 @@ class TaskStateInfo;
 class Logger;
 class U2OpStatus;
 
+/* Maximum file name length for Linux, Windows and MacOS X is 255 characters. */
+#define MAX_OS_FILE_NAME_LENGTH 255
 
 class U2CORE_EXPORT GUrlUtils : public QObject {
     Q_OBJECT

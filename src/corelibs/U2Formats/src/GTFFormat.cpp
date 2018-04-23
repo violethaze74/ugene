@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -549,7 +549,6 @@ GTFLineData GTFFormat::parseAndValidateLine(QString line, GTFLineValidateFlags& 
 
 
 void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
-    bool noErrorsDuringStoring = true;
     QList<GObject*> annotTables = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
 
     QStringList cleanFields;
@@ -647,11 +646,6 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
                 }
             }
         }
-    }
-
-    if (!noErrorsDuringStoring) {
-        ioLog.error(tr("GTF saving error: one or more errors occurred while saving a file,"
-            " see TRACE log for details!"));
     }
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -330,6 +330,8 @@ void HmmerAdvContext::initViewContext(GObjectView *view) {
     connect(searchAction, SIGNAL(triggered()), SLOT(sl_search()));
 }
 
+#define MAX_HMMSEARCH_SEQUENCE_LENGTH_X86 (2*1024*1024)
+
 void HmmerAdvContext::sl_search() {
     QWidget *parent = getParentWidget(sender());
     assert(NULL != parent);
@@ -339,9 +341,19 @@ void HmmerAdvContext::sl_search() {
     SAFE_POINT(NULL != adv, "AnnotatedDNAView is NULL", );
     ADVSequenceObjectContext *seqCtx = adv->getSequenceInFocus();
     if (NULL == seqCtx) {
-        QMessageBox::critical(parent, tr("error"), tr("No sequence in focus found"));
+        QMessageBox::critical(parent, tr("Error"), tr("No sequence in focus found"));
         return;
     }
+
+#ifdef Q_PROCESSOR_X86_32
+    // do not show action on 32 bit platforms for large services
+    quint64 seqLen = seqCtx->getSequenceLength();
+    if (seqLen > MAX_HMMSEARCH_SEQUENCE_LENGTH_X86) {
+        QMessageBox::critical(parent, tr("Error"), tr("Sequences larger 2Gb are not supported on 32-bit architecture."));
+        return;
+    }
+#endif
+
 
     QObjectScopedPointer<HmmerSearchDialog> searchDlg = new HmmerSearchDialog(seqCtx, parent);
     searchDlg->exec();

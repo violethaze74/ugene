@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@ namespace U2 {
 
 const QString McaGeneralTabFactory::GROUP_ID = "OP_MCA_GENERAL";
 const QString McaGeneralTabFactory::GROUP_ICON_STR = ":core/images/settings2.png";
-const QString McaGeneralTabFactory::GROUP_DOC_PAGE = "20875214";
+const QString McaGeneralTabFactory::GROUP_DOC_PAGE = "20880553";
 
 McaGeneralTabFactory::McaGeneralTabFactory() {
     objectViewOfWidget = ObjViewType_ChromAlignmentEditor;
@@ -48,7 +48,6 @@ QWidget* McaGeneralTabFactory::createWidget(GObjectView *objView) {
     McaGeneralTab *widget = new McaGeneralTab(msa);
     widget->setObjectName("McaGeneralTab");
     return widget;
-    return NULL;
 }
 
 const QString & McaGeneralTabFactory::getGroupId() {

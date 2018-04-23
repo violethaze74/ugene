@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -990,7 +990,7 @@ void SQLiteObjectDbi::setObjectRank(const U2DataId &objectId, U2DbiObjectRank ne
     query->bindInt32(1, newRank);
     query->bindDataId(2, objectId);
     const int affectedRowsCount = query->update(-1);
-    SAFE_POINT_EXT(-1 == affectedRowsCount || 0 == affectedRowsCount || affectedRowsCount == 1, os.setError(U2DbiL10n::tr("Unexpected row count! Query: '%1', rows: %2").arg(query->getQueryText()).arg(affectedRowsCount)), );
+    SAFE_POINT_EXT(-1 == affectedRowsCount || 0 == affectedRowsCount || affectedRowsCount == 1, os.setError(U2DbiL10n::tr("Unexpected row count. Query: '%1', rows: %2").arg(query->getQueryText()).arg(affectedRowsCount)), );
 }
 
 U2DbiObjectRank SQLiteObjectDbi::getObjectRank(const U2DataId &objectId, U2OpStatus& os) {

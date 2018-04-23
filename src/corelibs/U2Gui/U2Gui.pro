@@ -46,6 +46,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/DownloadRemoteFileDialog.h \
            src/util/EditQualifierDialog.h \
            src/util/EditSequenceDialogController.h \
+           src/util/EditSettingsDialog.h \
            src/util/ExportAnnotations2CSVTask.h \
            src/util/ExportAnnotationsDialog.h \
            src/util/ExportDocumentDialogController.h \
@@ -85,6 +86,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/ScriptHighlighter.h \
            src/util/SearchBox.h \
            src/util/SearchGenbankSequenceDialogController.h \
+           src/util/SelectionModificationHelper.h \
            src/util/SeqPasterWidgetController.h \
            src/util/SequenceTextEdit.h \
            src/util/SuggestCompleter.h \
@@ -99,8 +101,8 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/ImportWidgets/ImportWidget.h \
            src/util/logview/LogView.h \
            src/util/project/filter_tasks/FeatureKeyFilterTask.h \
-           src/util/project/filter_tasks/MsaContentFilterTask.h \
-           src/util/project/filter_tasks/MsaSeqNameFilterTask.h \
+           src/util/project/filter_tasks/MaContentFilterTask.h \
+           src/util/project/filter_tasks/MaSeqNameFilterTask.h \
            src/util/project/filter_tasks/ObjectNameFilterTask.h \
            src/util/project/filter_tasks/SequenceAccFilterTask.h \
            src/util/project/filter_tasks/TextContentFilterTask.h \
@@ -141,6 +143,7 @@ FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/DownloadRemoteFileDialog.ui \
          src/util/EditQualifierDialog.ui \
          src/util/EditSequenceDialog.ui \
+         src/util/EditSettingsDialog.ui \
          src/util/ExportAnnotationsDialog.ui \
          src/util/ExportDocumentDialog.ui \
          src/util/ExportImageDialog.ui \
@@ -202,6 +205,7 @@ SOURCES += src/MainWindow.cpp \
            src/util/DownloadRemoteFileDialog.cpp \
            src/util/EditQualifierDialog.cpp \
            src/util/EditSequenceDialogController.cpp \
+           src/util/EditSettingsDialog.cpp \
            src/util/ExportAnnotations2CSVTask.cpp \
            src/util/ExportAnnotationsDialog.cpp \
            src/util/ExportDocumentDialogController.cpp \
@@ -240,6 +244,7 @@ SOURCES += src/MainWindow.cpp \
            src/util/ScriptHighlighter.cpp \
            src/util/SearchBox.cpp \
            src/util/SearchGenbankSequenceDialogController.cpp \
+           src/util/SelectionModificationHelper.cpp \
            src/util/SeqPasterWidgetController.cpp \
            src/util/SequenceTextEdit.cpp \
            src/util/SuggestCompleter.cpp \
@@ -254,8 +259,8 @@ SOURCES += src/MainWindow.cpp \
            src/util/ImportWidgets/ImportWidget.cpp \
            src/util/logview/LogView.cpp \
            src/util/project/filter_tasks/FeatureKeyFilterTask.cpp \
-           src/util/project/filter_tasks/MsaContentFilterTask.cpp \
-           src/util/project/filter_tasks/MsaSeqNameFilterTask.cpp \
+           src/util/project/filter_tasks/MaContentFilterTask.cpp \
+           src/util/project/filter_tasks/MaSeqNameFilterTask.cpp \
            src/util/project/filter_tasks/ObjectNameFilterTask.cpp \
            src/util/project/filter_tasks/SequenceAccFilterTask.cpp \
            src/util/project/filter_tasks/TextContentFilterTask.cpp \
@@ -283,5 +288,4 @@ SOURCES += src/MainWindow.cpp \
            src/util/webchannel/WebSocketTransport.cpp
 
 RESOURCES += U2Gui.qrc
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts

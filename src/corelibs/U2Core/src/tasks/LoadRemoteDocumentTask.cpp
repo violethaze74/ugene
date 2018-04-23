@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -182,16 +182,18 @@ void BaseLoadRemoteDocumentTask::createLoadedDocument(){
 //////////////////////////////////////////////////////////////////////////
 //LoadRemoteDocumentTask
 LoadRemoteDocumentTask::LoadRemoteDocumentTask( const GUrl& url )
-:BaseLoadRemoteDocumentTask()
+    : BaseLoadRemoteDocumentTask(),
+      loadDataFromEntrezTask(NULL)
 {
     fileUrl = url;
     GCOUNTER( cvar, tvar, "LoadRemoteDocumentTask" );
 }
 
 LoadRemoteDocumentTask::LoadRemoteDocumentTask( const QString & accId, const QString & dbName, const QString & fullPathDir, const QString& fileFormat, const QVariantMap &hints)
-:BaseLoadRemoteDocumentTask(fullPathDir, hints)
-,accNumber(accId)
-,dbName(dbName)
+    :BaseLoadRemoteDocumentTask(fullPathDir, hints),
+    loadDataFromEntrezTask(NULL),
+    accNumber(accId),
+    dbName(dbName)
 {
     GCOUNTER( cvar, tvar, "LoadRemoteDocumentTask" );
     format = fileFormat;
@@ -386,10 +388,17 @@ void BaseEntrezRequestTask::createLoopAndNetworkManager(const QString& queryStri
 
 //////////////////////////////////////////////////////////////////////////
 
-LoadDataFromEntrezTask::LoadDataFromEntrezTask( const QString& dbId, const QString& accNum,
-    const QString& retType, const QString& path )
-    : BaseEntrezRequestTask( "LoadDataFromEntrez"), db(dbId), accNumber(accNum), fullPath(path),
-    format(retType)
+LoadDataFromEntrezTask::LoadDataFromEntrezTask(const QString& dbId,
+                                               const QString& accNum,
+                                               const QString& retType,
+                                               const QString& path)
+    : BaseEntrezRequestTask( "LoadDataFromEntrez"),
+      searchReply(NULL),
+      downloadReply(NULL),
+      db(dbId),
+      accNumber(accNum),
+      fullPath(path),
+      format(retType)
 {
 
 }
@@ -406,7 +415,7 @@ void LoadDataFromEntrezTask::run( )
     createLoopAndNetworkManager(traceFetchUrl);
 
     ioLog.trace( traceFetchUrl );
-    QUrl requestUrl(EntrezUtils::NCBI_EFETCH_URL.arg(db).arg(accNumber).arg(format)); 
+    QUrl requestUrl(EntrezUtils::NCBI_EFETCH_URL.arg(db).arg(accNumber).arg(format));
     downloadReply = networkManager->get( QNetworkRequest( requestUrl ) );
     connect( downloadReply, SIGNAL( error( QNetworkReply::NetworkError ) ),
         this, SLOT( sl_onError( QNetworkReply::NetworkError ) ) );
@@ -469,7 +478,10 @@ void LoadDataFromEntrezTask::sl_replyFinished( QNetworkReply* reply )
 //////////////////////////////////////////////////////////////////////////
 
 EntrezQueryTask::EntrezQueryTask( QXmlDefaultHandler* rHandler, const QString& searchQuery )
-: BaseEntrezRequestTask( "EntrezQueryTask" ), resultHandler( rHandler ), query( searchQuery )
+    : BaseEntrezRequestTask("EntrezQueryTask"),
+      queryReply(NULL),
+      resultHandler(rHandler),
+      query(searchQuery)
 {
     SAFE_POINT( NULL != rHandler, "Invalid pointer encountered", );
 }
@@ -601,8 +613,8 @@ bool ESummaryResultHandler::endElement( const QString &namespaceURI, const QStri
 }
 
 ESummaryResultHandler::ESummaryResultHandler()
+    : QXmlDefaultHandler()
 {
-
     metESummaryResult = false;
 }
 

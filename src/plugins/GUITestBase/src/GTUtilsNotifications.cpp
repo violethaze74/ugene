@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -71,7 +71,7 @@ NotificationDialogFiller::NotificationDialogFiller(HI::GUITestOpStatus &os, cons
     Filler(os, "NotificationDialog"),
     message(message)
 {
-
+    settings.timeout = 350000;
 }
 
 #define GT_METHOD_NAME "commonScenario"

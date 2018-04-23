@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -132,10 +132,10 @@ U2CigarOp CalculateCoveragePerBaseOnRegionTask::nextCigarOp(const QVector<U2Ciga
     return cigarOp;
 }
 
-CalculateCoveragePerBaseTask::CalculateCoveragePerBaseTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId) :
+CalculateCoveragePerBaseTask::CalculateCoveragePerBaseTask(const U2DbiRef &_dbiRef, const U2DataId &_assemblyId) :
     Task(tr("Calculate coverage per base for assembly"), TaskFlags_NR_FOSE_COSC),
-    dbiRef(dbiRef),
-    assemblyId(assemblyId),
+    dbiRef(_dbiRef),
+    assemblyId(_assemblyId),
     getLengthTask(NULL)
 {
     SAFE_POINT_EXT(dbiRef.isValid(), setError(tr("Invalid database reference")), );

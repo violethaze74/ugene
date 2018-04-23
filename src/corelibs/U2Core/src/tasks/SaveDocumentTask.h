@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,7 +42,8 @@ enum SaveDocFlag {
     SaveDoc_DestroyAfter = 1 << 3,
     SaveDoc_DestroyButDontUnload = 1 << 4,
     SaveDoc_OpenAfter = 1 << 5,
-    SaveDoc_UnloadAfter = 1 << 6
+    SaveDoc_UnloadAfter = 1 << 6,
+    SaveDoc_ReduceLoggingLevel = 1 << 7
 };
 Q_DECLARE_FLAGS(SaveDocFlags, SaveDocFlag)
 

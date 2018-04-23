@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -181,7 +181,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008){
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 9000);
 
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
-    GTUtilsOptionPanelSequenceView::setSearchInLocation(os, "Selected Region");
+    GTUtilsOptionPanelSequenceView::setSearchInLocation(os, "Selected region");
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/2"), "Results string not match");
 }
 
@@ -196,7 +196,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009){
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/40"), "Results string not match");
 
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
-    GTUtilsOptionPanelSequenceView::setSearchInLocation(os, "Custom Region");
+    GTUtilsOptionPanelSequenceView::setSearchInLocation(os, "Custom region");
 
     QLineEdit *regLE = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "editEnd", NULL, GTGlobals::FindOptions(false)));
     CHECK_SET_ERR(regLE != NULL, "LineEdit is NULL");

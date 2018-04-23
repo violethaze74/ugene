@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -19,10 +19,12 @@
 * MA 02110-1301, USA.
 */
 
+#include <QApplication>
 #include <QMainWindow>
 #include <QStyleOptionSlider>
 
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTScrollBar.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
@@ -47,6 +49,7 @@
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsProjectTreeView.cpp"
 
 namespace U2 {
 using namespace HI;
@@ -100,6 +103,8 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
     GT_CHECK(mcaSeqArea->isInRange(globalMaPosition), "Position is out of range");
 
     scrollToPosition(os, globalMaPosition);
+    GTGlobals::sleep();
+
     const QPoint positionCenter(mcaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(globalMaPosition.x()),
         mcaSeqArea->getEditor()->getUI()->getRowHeightController()->getRowScreenRangeByNumber(globalMaPosition.y()).center());
     GT_CHECK(mcaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
@@ -114,38 +119,31 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMdi::activeWindow(os));
     GT_CHECK(NULL != mcaSeqArea, "MSA Editor sequence area is not found");
     GT_CHECK(mcaSeqArea->isInRange(position), "Position is out of range");
+    CHECK(!mcaSeqArea->isVisible(position, false), );
 
-    // scroll down
-    GScrollBar* vBar = GTWidget::findExactWidget<GScrollBar *>(os, "vertical_sequence_scroll", GTUtilsMdi::activeWindow(os));
-    GT_CHECK(NULL != vBar, "Vertical scroll bar is not found");
-
-    QStyleOptionSlider vScrollBarOptions;
-    vScrollBarOptions.initFrom(vBar);
-
-    while (!mcaSeqArea->isRowVisible(position.y(), false)) {
-        const QRect sliderSpaceRect = vBar->style()->subControlRect(QStyle::CC_ScrollBar, &vScrollBarOptions, QStyle::SC_ScrollBarGroove, vBar);
-        const QPoint bottomEdge(sliderSpaceRect.width() / 2, sliderSpaceRect.y() + sliderSpaceRect.height());
-
-        GTMouseDriver::moveTo(vBar->mapToGlobal(bottomEdge) - QPoint(0, 1));
-        GTMouseDriver::click();
+    if (GTUtilsProjectTreeView::isVisible(os)){
+        GTUtilsProjectTreeView::toggleView(os);
     }
 
-    // scroll right
-    GScrollBar* hBar = GTWidget::findExactWidget<GScrollBar *>(os, "horizontal_sequence_scroll", GTUtilsMdi::activeWindow(os));
-    GT_CHECK(NULL != hBar, "Horisontal scroll bar is not found");
-
-    QStyleOptionSlider hScrollBarOptions;
-    hScrollBarOptions.initFrom(hBar);
-
-    while (!mcaSeqArea->isPositionVisible(position.x(), false)) {
-        const QRect sliderSpaceRect = hBar->style()->subControlRect(QStyle::CC_ScrollBar, &hScrollBarOptions, QStyle::SC_ScrollBarGroove, hBar);
-        const QPoint rightEdge(sliderSpaceRect.x() + sliderSpaceRect.width(), sliderSpaceRect.height() / 2);
-
-        GTMouseDriver::moveTo(hBar->mapToGlobal(rightEdge) - QPoint(1, 0));
-        GTMouseDriver::click();
+    if (!mcaSeqArea->isRowVisible(position.y(), false)) {
+        GTUtilsMcaEditor::scrollToRead(os, position.y());
     }
 
-    SAFE_POINT(mcaSeqArea->isVisible(position, false), "The position is still invisible after scrolling", );
+    if (!mcaSeqArea->isPositionVisible(position.x(), false)) {
+        scrollToBase(os, position.x());
+    }
+
+    CHECK_SET_ERR(mcaSeqArea->isVisible(position, false), "The position is still invisible after scrolling");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "scrollToBase"
+void GTUtilsMcaEditorSequenceArea::scrollToBase(GUITestOpStatus &os, int position) {
+    const int scrollBarValue = GTUtilsMcaEditor::getEditorUi(os)->getBaseWidthController()->getBaseGlobalRange(position).center() -
+                               GTUtilsMcaEditor::getEditorUi(os)->getSequenceArea()->width() / 2;
+    GTScrollBar::moveSliderWithMouseToValue(os,
+                                            GTUtilsMcaEditor::getHorizontalScrollBar(os),
+                                            scrollBarValue);
 }
 #undef GT_METHOD_NAME
 
@@ -277,7 +275,7 @@ void GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(HI::GUIT
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "dragAndDrop"
-void GTUtilsMcaEditorSequenceArea::dragAndDrop(HI::GUITestOpStatus &os, const QPoint p) {
+void GTUtilsMcaEditorSequenceArea::dragAndDrop(HI::GUITestOpStatus & /*os*/, const QPoint p) {
     GTMouseDriver::click();
     GTGlobals::sleep(1000);
     GTMouseDriver::press(Qt::LeftButton);

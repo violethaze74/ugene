@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -104,10 +104,10 @@ void GTUtilsMSAEditorSequenceArea::selectArea(GUITestOpStatus &os, QPoint p1, QP
     GT_CHECK(sequenceArea != NULL, "MsaEditorSequenceArea not found");
 
     p1.rx() = (p1.x() == -1 ? sequenceArea->getNumVisibleBases() - 1 : p1.x());
-    p1.ry() = (p1.y() == -1 ? sequenceArea->getDisplayableRowsCount() - 1 : p1.y());
+    p1.ry() = (p1.y() == -1 ? sequenceArea->getNumDisplayableSequences() - 1 : p1.y());
 
     p2.rx() = (p2.x() == -1 ? sequenceArea->getNumVisibleBases() - 1 : p2.x());
-    p2.ry() = (p2.y() == -1 ? sequenceArea->getDisplayableRowsCount() - 1 : p2.y());
+    p2.ry() = (p2.y() == -1 ? sequenceArea->getNumDisplayableSequences() - 1 : p2.y());
 
     switch (method) {
     case GTGlobals::UseKey:
@@ -128,7 +128,7 @@ void GTUtilsMSAEditorSequenceArea::selectArea(GUITestOpStatus &os, QPoint p1, QP
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "cancelSelection"
-void GTUtilsMSAEditorSequenceArea::cancelSelection(GUITestOpStatus &os) {
+void GTUtilsMSAEditorSequenceArea::cancelSelection(GUITestOpStatus & /*os*/) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 #undef GT_METHOD_NAME
@@ -172,7 +172,14 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
         const QRect sliderSpaceRect = hBar->style()->subControlRect(QStyle::CC_ScrollBar, &hScrollBarOptions, QStyle::SC_ScrollBarGroove, hBar);
         const QPoint rightEdge(sliderSpaceRect.x() + sliderSpaceRect.width(), sliderSpaceRect.height() / 2);
 
-        GTMouseDriver::moveTo(hBar->mapToGlobal(rightEdge) - QPoint(1, 0));
+        int lastBase = msaSeqArea->getLastVisibleBase(true);
+        QPoint p;
+        if (position.x() == lastBase) {
+            p = hBar->mapToGlobal(rightEdge) + QPoint(3, 0);
+        } else {
+            p = hBar->mapToGlobal(rightEdge) - QPoint(1, 0);
+        }
+        GTMouseDriver::moveTo(p);
         GTMouseDriver::click();
     }
 
@@ -335,24 +342,29 @@ bool GTUtilsMSAEditorSequenceArea::collapsingMode(GUITestOpStatus &os){
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getLeftOffset"
-int GTUtilsMSAEditorSequenceArea::getLeftOffset(GUITestOpStatus &os)
+#define GT_METHOD_NAME "getFirstVisibleBase"
+int GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(GUITestOpStatus &os)
 {
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", -1);
 
-    return msaEditArea->getEditor()->getUI()->getScrollController()->getFirstVisibleBase(true) + 1; // тут не уверен, есть еще класс MSAEditorOffsetsViewWidget (файл MSAEditorOffsetsViewWidget.h)
-                                                   // мне кажется более правильно будет от туда офсет вытащить.
+    ScrollController* scrollController = msaEditArea->getEditor()->getUI()->getScrollController();
+    int clippedIdx = scrollController->getFirstVisibleBase(true);
+    int notClippedIdx = scrollController->getFirstVisibleBase(false);
+    return clippedIdx + (clippedIdx == notClippedIdx ? 0 : 1);
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getLeftOffset"
-int GTUtilsMSAEditorSequenceArea::getRightOffset(GUITestOpStatus &os)
+#define GT_METHOD_NAME "getLastVisibleBase"
+int GTUtilsMSAEditorSequenceArea::getLastVisibleBase(GUITestOpStatus &os)
 {
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", -1);
 
-    return msaEditArea->getEditor()->getUI()->getScrollController()->getLastVisibleBase(msaEditArea->width(), true) + 1; // тут такая же фигня как getLeftOffset()
+    ScrollController* scrollController = msaEditArea->getEditor()->getUI()->getScrollController();
+    int clippedIdx = scrollController->getLastVisibleBase(msaEditArea->width(), true);
+    int notClippedIdx = scrollController->getLastVisibleBase(msaEditArea->width(), false);
+    return clippedIdx + (clippedIdx == notClippedIdx ? 0 : 1);
 }
 #undef GT_METHOD_NAME
 
@@ -574,7 +586,7 @@ QString GTUtilsMSAEditorSequenceArea::getColor(GUITestOpStatus &os, QPoint p){
     GT_CHECK_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", "");
 
     QPoint global = convertCoordinates(os, p);
-    global.setY(global.y() + (getRowHeight(os, p.y())/2 - 1));
+    global.setY(global.y() + (getRowHeight(os, p.y())/2 - 2));
     QPoint local = msaEditArea->mapFromGlobal(global);
     QColor c = GTWidget::getColor(os, msaEditArea, local);
     QString name = c.name();
@@ -651,6 +663,114 @@ void GTUtilsMSAEditorSequenceArea::checkSelection(GUITestOpStatus &os, const QPo
     GT_CHECK(clipboardText == expected, QString("unexpected selection:\n%1").arg(clipboardText));
 }
 #undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isAlignmentLocked"
+bool GTUtilsMSAEditorSequenceArea::isAlignmentLocked(GUITestOpStatus &os) {
+    MSAEditorSequenceArea* msaSeqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    GT_CHECK_RESULT(msaSeqArea != NULL, "MsaEditorSequenceArea is not found", false);
+
+    return msaSeqArea->isAlignmentLocked();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "expandSelectedRegion"
+void GTUtilsMSAEditorSequenceArea::expandSelectedRegion(GUITestOpStatus &os, const int expandedBorder, const int symbolsToExpand) {
+    MsaEditorWgt* ui = GTUtilsMsaEditor::getEditorUi(os);
+    CHECK_SET_ERR(ui != NULL, "MsaEditorWgt not found");
+
+    const int height = ui->getRowHeightController()->getSequenceHeight();
+    const int width = ui->getBaseWidthController()->getBaseWidth();
+    const QRect selection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+
+    QPoint startPos;
+    switch (expandedBorder) {
+    case (0) :
+        startPos = QPoint(selection.center().x(), selection.top());
+        break;
+    case (1) :
+        startPos = QPoint(selection.right(), selection.center().y());
+        break;
+    case (2) :
+        startPos = QPoint(selection.center().x(), selection.bottom());
+        break;
+    case (3) :
+        startPos = QPoint(selection.left(), selection.center().y());
+        break;
+    case (4) :
+        startPos = selection.topRight();
+        break;
+    case (5) :
+        startPos = selection.bottomRight();
+        break;
+    case (6) :
+        startPos = selection.bottomLeft();
+        break;
+    case (7) :
+        startPos = selection.topLeft();
+        break;
+    default:
+        CHECK_SET_ERR(false, QString("Unexpected movable border"));
+    }
+
+    startPos = convertCoordinates(os, startPos);
+
+    switch (expandedBorder) {
+    case (0) :
+        startPos = QPoint(startPos.x(), startPos.y() - height / 2);
+        break;
+    case (1) :
+        startPos = QPoint(startPos.x() + width / 2, startPos.y());
+        break;
+    case (2) :
+        startPos = QPoint(startPos.x(), startPos.y() + height / 2);
+        break;
+    case (3) :
+        startPos = QPoint(startPos.x() - width / 2, startPos.y());
+        break;
+    case (4) :
+        startPos = QPoint(startPos.x() + width / 2, startPos.y() - height / 2);
+        break;
+    case (5) :
+        startPos = QPoint(startPos.x() + width / 2, startPos.y() + height / 2);
+        break;
+    case (6) :
+        startPos = QPoint(startPos.x() - width / 2, startPos.y() + height / 2);
+        break;
+    case (7) :
+        startPos = QPoint(startPos.x() - width / 2, startPos.y() - height / 2);
+        break;
+    }
+
+    GTMouseDriver::moveTo(startPos);
+    GTGlobals::sleep(500);
+    GTMouseDriver::press();
+
+    QPoint endPos;
+    switch (expandedBorder) {
+    case (0) :
+    case (2) :
+        endPos = QPoint(startPos.x(), startPos.y() + symbolsToExpand * height);
+        break;
+    case (1) :
+    case (3) :
+        endPos = QPoint(startPos.x() + symbolsToExpand * width, startPos.y());
+        break;
+    case (4) :
+    case (6) :
+        endPos = QPoint(startPos.x() + symbolsToExpand * width, startPos.y() - symbolsToExpand * height);
+        break;
+    case (5) :
+    case (7) :
+        endPos = QPoint(startPos.x() + symbolsToExpand * width, startPos.y() + symbolsToExpand * height);
+        break;
+    }
+
+    GTMouseDriver::moveTo(endPos);
+    GTMouseDriver::release();
+    GTGlobals::sleep(500);
+}
+#undef GT_METHOD_NAME
+
 
 #undef GT_CLASS_NAME
 

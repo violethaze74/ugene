@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,10 @@ BuildTreeDialogFiller::BuildTreeDialogFiller(HI::GUITestOpStatus &os, const QStr
     saveTree(saveTree),
     model(model),
     replicates(0),
+    seed(0),
     alpha(alpha),
+    fraction(0),
+    type(MAJORITYEXT),
     displayWithMsa(displayWithMsa)
 {
 
@@ -68,7 +71,8 @@ BuildTreeDialogFiller::BuildTreeDialogFiller(HI::GUITestOpStatus &os,
     seed(seed),
     alpha(0),
     fraction(fraction),
-    type(type)
+    type(type),
+    displayWithMsa(false)
 {
 
 }

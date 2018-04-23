@@ -479,17 +479,17 @@
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="67"/>
         <source>Inner</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутренний</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="68"/>
         <source>All intersected</source>
-        <translation type="unfinished"></translation>
+        <translation>Все пересечения</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="69"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Ни один</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="86"/>
@@ -522,7 +522,7 @@
     <message>
         <location filename="../src/InSilicoPcrProductsTable.cpp" line="78"/>
         <source>N/A</source>
-        <translation type="unfinished"></translation>
+        <translation>N/A</translation>
     </message>
 </context>
 <context>
@@ -555,7 +555,7 @@
     <message>
         <location filename="../src/InSilicoPcrTask.cpp" line="205"/>
         <source>Products found: %1. &lt;br&gt;&lt;br&gt;The detailed information about primers is not available as primers or sequence contain a character from the Extended DNA alphabet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Найдено продуктов: %1. &lt;br&gt;&lt;br&gt;Детальная информация о праймерах недоступна так как праймеры или продукты содержат символы из расширенного ДНК алфавита.</translation>
     </message>
 </context>
 <context>
@@ -563,7 +563,7 @@
     <message>
         <location filename="../src/InSilicoPcrWorkflowTask.cpp" line="27"/>
         <source>In silico PCR workflow task</source>
-        <translation type="unfinished"></translation>
+        <translation>In silico PCR workflow task</translation>
     </message>
 </context>
 <context>
@@ -753,27 +753,27 @@
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="100"/>
         <source>Extract annotations</source>
-        <translation type="unfinished">Извлечь аннотации</translation>
+        <translation>Извлечь аннотации</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="100"/>
         <source>Extract annotations within a product region.</source>
-        <translation type="unfinished"></translation>
+        <translation>Извлечь аннотации внутри региона.</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="133"/>
         <source>Inner</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутренний</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="134"/>
         <source>All intersected</source>
-        <translation type="unfinished"></translation>
+        <translation>Все пересечения</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="135"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Ни один</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="140"/>
@@ -803,7 +803,7 @@
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="199"/>
         <source>There is the odd number of primers in the file: </source>
-        <translation type="unfinished"></translation>
+        <translation>There is the odd number of primers in the file: </translation>
     </message>
     <message>
         <source>There is the odd number of primers int the file: </source>
@@ -817,12 +817,12 @@
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="286"/>
         <source>Wrong sequence objects count</source>
-        <translation type="unfinished"></translation>
+        <translation>Wrong sequence objects count</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="296"/>
         <source>Wrong annotations objects count</source>
-        <translation type="unfinished"></translation>
+        <translation>Wrong annotations objects count</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="326"/>
@@ -934,7 +934,7 @@
     <message>
         <location filename="../src/PrimerGroupBox.cpp" line="139"/>
         <source>N/A</source>
-        <translation type="unfinished"></translation>
+        <translation>N/A</translation>
     </message>
     <message>
         <location filename="../src/PrimerGroupBox.cpp" line="192"/>
@@ -1005,7 +1005,7 @@
         <location filename="../src/PrimerLibraryTable.cpp" line="134"/>
         <location filename="../src/PrimerLibraryTable.cpp" line="136"/>
         <source>N/A</source>
-        <translation type="unfinished"></translation>
+        <translation>N/A</translation>
     </message>
 </context>
 <context>
@@ -1059,17 +1059,17 @@ Use &quot;Tools -&gt; Primer -&gt; Primer Library&quot; for managing the library
     <message>
         <location filename="../src/PrimerStatistics.cpp" line="41"/>
         <source>The primers contain a character from the Extended DNA alphabet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Праймеры содержат символы из расширенного ДНК алфавита.</translation>
     </message>
     <message>
         <location filename="../src/PrimerStatistics.cpp" line="43"/>
         <source>The forward primer contains a character from the Extended DNA alphabet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Прямой праймер содержит символы из расширенного ДНК алфавита.</translation>
     </message>
     <message>
         <location filename="../src/PrimerStatistics.cpp" line="45"/>
         <source>The reverse primer contains a character from the Extended DNA alphabet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Обратный праймер содержит символы из расширенного ДНК алфавита.</translation>
     </message>
     <message>
         <location filename="../src/PrimerStatistics.cpp" line="216"/>

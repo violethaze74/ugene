@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,16 +24,20 @@
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DNATranslationImpl.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
-#include <U2Core/U2SafePoints.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GraphUtils.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/DetView.h>
+
+#include "ov_sequence/DetViewSequenceEditor.h"
+
 
 namespace U2 {
 
@@ -72,7 +76,14 @@ DetViewSingleLineRenderer::TranslationMetrics::TranslationMetrics(DetView* detVi
 }
 
 DetViewSingleLineRenderer::DetViewSingleLineRenderer(DetView *detView, SequenceObjectContext *ctx)
-    : DetViewRenderer(detView, ctx) {
+    : DetViewRenderer(detView, ctx),
+      numLines(0),
+      rulerLine(0),
+      directLine(0),
+      complementLine(0),
+      firstDirectTransLine(0),
+      firstComplTransLine(0)
+{
 
 }
 
@@ -119,9 +130,8 @@ U2Region DetViewSingleLineRenderer::getMirroredYRange(const U2Strand &mirroredSt
 }
 
 qint64 DetViewSingleLineRenderer::getMinimumHeight() const {
-    // 9: translations x6 + direct + complement + ruler
     // 5: indent??
-    return 9 * commonMetrics.lineHeight + 5;
+    return 5;
 }
 
 qint64 DetViewSingleLineRenderer::getOneLineHeight() const {
@@ -133,7 +143,10 @@ qint64 DetViewSingleLineRenderer::getLinesCount(const QSize& /*canvasSize*/) con
 }
 
 qint64 DetViewSingleLineRenderer::getContentIndentY(const QSize& canvasSize, const U2Region& /*visibleRange*/) const {
-   return (canvasSize.height() - getOneLineHeight()) / 2;
+    qint64 contentIndentY = (canvasSize.height() - getOneLineHeight()) / 2;
+    contentIndentY = qMax((qint64)0, contentIndentY);
+    contentIndentY -= detView->getVerticalScrollBarPosition() * commonMetrics.lineHeight;
+    return contentIndentY;
 }
 
 int DetViewSingleLineRenderer::getRowsInLineCount() const {
@@ -191,7 +204,7 @@ void DetViewSingleLineRenderer::drawAll(QPainter &p, const QSize &canvasSize, co
 void DetViewSingleLineRenderer::drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) {
     p.setPen(Qt::black);
 
-    qint64 hCenter = (canvasSize.height() - getOneLineHeight()) / 2;
+    qint64 hCenter = getContentIndentY(canvasSize, visibleRange);
     p.translate(0, hCenter);
 
     updateLines();
@@ -211,6 +224,32 @@ void DetViewSingleLineRenderer::drawSelection(QPainter &p, const QSize &canvasSi
     drawSequenceSelection(p, canvasSize, visibleRange);
 
     p.translate(0, -hCenter);
+}
+
+void DetViewSingleLineRenderer::drawCursor(QPainter &p, const QSize &canvasSize, const U2Region& visibleRange) {
+    CHECK(detView->isEditMode(), );
+    DetViewSequenceEditor* editor = detView->getEditor();
+    CHECK(editor != NULL, );
+    int pos = editor->getCursorPosition();
+    CHECK(visibleRange.contains(pos) || pos == visibleRange.endPos(), );
+
+    qint64 hCenter = getContentIndentY(canvasSize, visibleRange);
+    p.translate(0, hCenter);
+
+    int ymargin = commonMetrics.yCharOffset / 2;
+    int y = getLineY(directLine) - 2 * ymargin;
+    int height = commonMetrics.lineHeight + 4 * ymargin;
+    int x = posToXCoord(pos, canvasSize, visibleRange);
+
+    QPen pen(editor->getCursorColor());
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(2);
+    p.setPen(pen);
+    p.drawLine(x, y, x, y + height);
+    p.drawLine(x - ymargin, y, x + ymargin, y);
+    p.drawLine(x - ymargin, y + height, x + ymargin, y + height);
+
+    p.translate(0, - hCenter);
 }
 
 void DetViewSingleLineRenderer::update() {
@@ -262,6 +301,96 @@ static QByteArray translate(DNATranslation* t, const char* seq, qint64 seqLen) {
     return res;
 }
 
+static QByteArray translateSelection(const QVector<U2Region>& regions, DNATranslation* t, const char* seq, qint64 seqLen, qint64 offset, const U2Strand direction) {
+    QByteArray resultTranslation;
+
+    foreach(U2Region reg, regions) {
+        reg = U2Region(direction == U2Strand::Direct ? offset : 0, seqLen).intersect(reg);
+        const qint64 endPos = reg.endPos();
+        const qint64 endOfVisibleArea = offset + seqLen;
+
+        if (reg.length < 3 || (direction == U2Strand::Direct && (reg.startPos > endOfVisibleArea || endPos < offset)) || (direction == U2Strand::Complementary && (reg.startPos > seqLen))) {
+            continue;
+        }
+
+        int mod = reg.length % 3;
+        qint64 length = 0;
+        switch (mod) {
+        case 0:
+            if (reg.startPos % 3 == 2 && offset == 0) {
+                length = endPos - offset - 2;
+            } else {
+                length = endPos + 1;
+                if (direction == U2Strand::Direct) {
+                    length -= offset;
+                }
+            }
+            break;
+        case 1:
+            if (reg.startPos % 3 == 2 && offset == 0) {
+                length = endPos - offset - 3;
+            } else {
+                length = endPos;
+                if (direction == U2Strand::Direct) {
+                    length -= offset;
+                }
+            }
+            break;
+        case 2 :
+            if (reg.startPos % 3 == 2 && offset == 0) {
+                length = endPos - offset - 4;
+            } else {
+                length = endPos - 1;
+                if (direction == U2Strand::Direct) {
+                    length -= offset;
+                }
+            }
+            break;
+        }
+
+        QByteArray currentTranslation = translate(t, seq, length);
+
+        int translationSize = currentTranslation.size();
+
+        int selTranslationSize = 0;
+        switch (mod) {
+        case 0:
+            selTranslationSize = (reg.length + 1) / 3;
+            break;
+        case 1:
+            selTranslationSize = reg.length / 3;
+            break;
+        case 2:
+            selTranslationSize = (reg.length - 1) / 3;
+            break;
+        }
+
+        const int indent = translationSize - selTranslationSize - resultTranslation.size();
+        QByteArray gaps = QByteArray(indent, ' ');
+        currentTranslation = currentTranslation.right(selTranslationSize);
+        if (!currentTranslation.isEmpty()) {
+            resultTranslation += gaps;
+            resultTranslation += currentTranslation;
+        }
+    }
+    return resultTranslation;
+}
+
+static QByteArray translateComplSelection(const QVector<U2Region>& regions, DNATranslation* t, const char* seq, const qint64 seqLen, const U2Region& visibleRange) {
+    QVector<U2Region> revesedRegions;
+    foreach(const U2Region& reg, regions) {
+        const qint64 endPos = reg.endPos();
+        const qint64 startPos = (visibleRange.startPos + seqLen) - endPos;
+        const U2Region newReg(startPos, reg.length);
+        revesedRegions << newReg;
+    }
+    U2Region::reverse(revesedRegions);
+
+    QByteArray amino = translateSelection(revesedRegions, t, seq, seqLen, visibleRange.startPos, U2Strand::Complementary);
+
+    return amino;
+}
+
 static int correctLine(QVector<bool> visibleRows, int line) {
     int retLine = line;
     SAFE_POINT(visibleRows.size() == 6, "Count of translation rows is not equel to 6", -1);
@@ -274,7 +403,7 @@ static int correctLine(QVector<bool> visibleRows, int line) {
 }
 
 void DetViewSingleLineRenderer::drawTranslations(QPainter &p, const U2Region &visibleRange) {
-    CHECK(!(firstDirectTransLine < 0 && firstComplTransLine < 0), );
+    CHECK((!(firstDirectTransLine < 0 && firstComplTransLine < 0)), );
     p.setFont(commonMetrics.sequenceFont);
     // update translations metrics
     trMetrics = TranslationMetrics(detView, visibleRange, commonMetrics.sequenceFont);
@@ -292,7 +421,7 @@ void DetViewSingleLineRenderer::drawTranslations(QPainter &p, const U2Region &vi
     drawDirectTranslations(p, visibleRange, seqBlock, annotationsInRange);
 
     if (detView->hasComplementaryStrand()) {//reverse translations
-        drawComplementTransltations(p, visibleRange, seqBlock, annotationsInRange);
+        drawComplementTranslations(p, visibleRange, seqBlock, annotationsInRange);
     }
 
     p.setPen(Qt::black);
@@ -303,20 +432,59 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
                                                       const U2Region &visibleRange,
                                                       const char* seqBlock,
                                                       const QList<SharedAnnotationData>& annotationsInRange) {
-    for(int i = 0; i < 3; i++) {
+    bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection);
+    QVector<U2Region> regions;
+    QList<QVector<U2Region> > sortedRegions = QList<QVector<U2Region> >() << QVector<U2Region>() << QVector<U2Region>() << QVector<U2Region>();
+    if (isTranslateAnnotationOrSelection) {
+        regions = ctx->getSequenceSelection()->getSelectedRegions();
+        QList<int> mods;
+        for (int i = 0; i < 3; i++) {
+            trMetrics.visibleRows[i] = false;
+        }
+        foreach(const U2Region& reg, regions) {
+            const int mod = reg.startPos % 3;
+            trMetrics.visibleRows[mod] = true;
+
+            const int intersectedLength = visibleRange.intersect(reg).length;
+
+            if (intersectedLength > (reg.length % 3) + 1) {
+                sortedRegions[mod] << reg;
+                if (!mods.contains(mod)) {
+                    mods << mod;
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < 3; i++) {
         int indent = (visibleRange.startPos + i) % 3;
         qint64 seqStartPos = visibleRange.startPos + indent - 3;
         if (seqStartPos < trMetrics.minUsedPos) {
             seqStartPos += 3;
         }
         int line = seqStartPos % 3; // 0,1,2
-        if (trMetrics.visibleRows[line] == true){
+        if (trMetrics.visibleRows[line] == true) {
+            DNATranslation* translation = detView->getAminoTT();
+            CHECK(translation != NULL, );
+
             const char* seq  = seqBlock + (seqStartPos - trMetrics.minUsedPos);
-            QByteArray amino = translate(detView->getAminoTT(), seq, trMetrics.maxUsedPos - seqStartPos);
+            qint64 length = trMetrics.maxUsedPos - seqStartPos;
+
+            QByteArray amino;
+            if (isTranslateAnnotationOrSelection) {
+                qSort(sortedRegions[line].begin(), sortedRegions[line].end());
+                amino = translateSelection(sortedRegions[line], translation, seq, length, visibleRange.startPos, U2Strand::Direct);
+            } else {
+                amino = translate(translation, seq, length);
+            }
+
+            if (amino.isEmpty()) {
+                continue;
+            }
 
             int yOffset = 0;
-            for (int k = 0; k < line; k++){
-                yOffset += (trMetrics.visibleRows[k]== true ? 0 : 1);
+            for (int k = 0; k < line; k++) {
+                yOffset += (trMetrics.visibleRows[k] == true ? 0 : 1);
             }
             int y = getTextY(firstDirectTransLine + line - yOffset);
             int dx = seqStartPos - visibleRange.startPos; // -1, 0, 1, 2 (if startPos == 0)
@@ -339,17 +507,39 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter& p,
     }
 }
 
-void DetViewSingleLineRenderer::drawComplementTransltations(QPainter& p,
+void DetViewSingleLineRenderer::drawComplementTranslations(QPainter& p,
                                                            const U2Region &visibleRange,
                                                            const char* seqBlock,
                                                            const QList<SharedAnnotationData>& annotationsInRange) {
+    bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection);
+    QVector<U2Region> regions;
+    QList<QVector<U2Region> > sortedRegions = QList<QVector<U2Region> >() << QVector<U2Region>() << QVector<U2Region>() << QVector<U2Region>();
+    if (isTranslateAnnotationOrSelection) {
+        regions = ctx->getSequenceSelection()->getSelectedRegions();
+        QList<int> mods;
+        for (int i = 3; i < 6; i++) {
+            trMetrics.visibleRows[i] = false;
+        }
+        foreach(const U2Region& reg, regions) {
+            const qint64 startReversePos = ctx->getSequenceLength() - reg.endPos();
+            int mod = startReversePos % 3;
+            trMetrics.visibleRows[3 + mod] = true;
+
+            const int intersectedLength = visibleRange.intersect(reg).length;
+            if (intersectedLength > reg.length % 3 + 1) {
+                sortedRegions[mod] << reg;
+                if (!mods.contains(mod)) {
+                    mods << mod;
+                }
+            }
+        }
+    }
+
     DNATranslation* complTable = ctx->getComplementTT();
     SAFE_POINT(complTable != NULL, "Complement translation table is NULL", );
-
     QByteArray revComplDna(trMetrics.seqBlockRegion.length, 0);
     complTable->translate(seqBlock, trMetrics.seqBlockRegion.length, revComplDna.data(), trMetrics.seqBlockRegion.length);
     TextUtils::reverse(revComplDna.data(), revComplDna.size());
-    int complLine = 0;
     for (int i = 0; i < 3; i++) {
         int indent = (detView->getSequenceLength() - visibleRange.endPos() + i) % 3;
         qint64 revComplStartPos = visibleRange.endPos() - indent + 3; // start of the reverse complement sequence in direct coords
@@ -358,13 +548,30 @@ void DetViewSingleLineRenderer::drawComplementTransltations(QPainter& p,
         }
         qint64 revComplDnaOffset = trMetrics.maxUsedPos - revComplStartPos;
         SAFE_POINT(revComplDnaOffset >= 0, "Complement translations offset is negative", );
-        const char* revComplData = revComplDna.constData();
-        const char* seq = revComplData + revComplDnaOffset;
-        qint64 seqLen = revComplStartPos - trMetrics.minUsedPos;
-        QByteArray amino = translate(detView->getAminoTT(), seq, seqLen);
-        complLine = (detView->getSequenceLength() - revComplStartPos) % 3;
-        if (trMetrics.visibleRows[complLine + 3] == true){
+        int complLine = (detView->getSequenceLength() - revComplStartPos) % 3;
+
+        if (trMetrics.visibleRows[complLine + 3] == true) {
+            DNATranslation* translation = detView->getAminoTT();
+            CHECK(translation != NULL, );
+
+            const char* revComplData = revComplDna.constData();
+            const char* seq = revComplData + revComplDnaOffset;
+            qint64 seqLen = revComplStartPos - trMetrics.minUsedPos;
+
+            QByteArray amino;
+            if (isTranslateAnnotationOrSelection) {
+                qSort(sortedRegions[complLine].begin(), sortedRegions[complLine].end());
+                amino = translateComplSelection(sortedRegions[complLine], translation, seq, seqLen, visibleRange);
+            } else {
+                amino = translate(translation, seq, seqLen);
+            }
+
+            if (amino.isEmpty()) {
+                continue;
+            }
+
             complLine = correctLine(trMetrics.visibleRows, complLine);
+
             int y = getTextY(firstComplTransLine + complLine);
             int dx = visibleRange.endPos() - revComplStartPos;
             for(int j = 0, n = amino.length(); j < n ; j++, seq += 3) {
@@ -403,7 +610,8 @@ void DetViewSingleLineRenderer::drawSequenceSelection(QPainter &p, const QSize &
     QPen pen1(Qt::black, 1, Qt::DashLine);
     p.setPen(pen1);
 
-    foreach(const U2Region& reg, sel->getSelectedRegions()) {
+    const QVector<U2Region>& selectedRegions = sel->getSelectedRegions();
+    foreach(const U2Region& reg, selectedRegions) {
         U2Region r = reg.intersect(visibleRange);
         highlight(p, r, directLine, canvasSize, visibleRange);
         if (detView->hasComplementaryStrand()) {
@@ -490,9 +698,9 @@ void DetViewSingleLineRenderer::updateLines() {
         complementLine = 5;
         firstComplTransLine = 6;
         numLines = 9;
-        QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
 
-        for(int i = 0; i < 6; i++) {
+        QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
+        for (int i = 0; i < 6; i++) {
             if (!v[i]) {
                 if (i < 3) {
                     directLine--;
@@ -502,6 +710,14 @@ void DetViewSingleLineRenderer::updateLines() {
                 }
                 numLines--;
             }
+        }
+
+        if (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection && numLines == 3) {
+            directLine = 1;
+            rulerLine = 2;
+            complementLine = 3;
+            firstComplTransLine = 4;
+            numLines = 5;
         }
     } else if (detView->hasComplementaryStrand()) {
         directLine = 0;
@@ -513,14 +729,20 @@ void DetViewSingleLineRenderer::updateLines() {
         directLine = 3;
         rulerLine = 4;
         numLines = 5;
-        QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
 
+        QVector<bool> v = ctx->getTranslationRowsVisibleStatus();
         for (int i = 0; i < 3; i++) {
             if (!v[i]) {
                 directLine--;
                 rulerLine--;
                 numLines--;
             }
+        }
+
+        if (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection && numLines == 3) {
+            directLine = 1;
+            rulerLine = 2;
+            numLines = 3;
         }
     }
     SAFE_POINT(numLines > 0, "Nothing to render. Lines count is less then 1", );
@@ -614,11 +836,22 @@ void DetViewSingleLineRenderer::highlight(QPainter &p, const U2Region &regionToH
 
     int x = posToXCoord(regionToHighlight.startPos, canvasSize, visibleRange);
     int width = posToXCoord(regionToHighlight.endPos(), canvasSize, visibleRange) - x;
+    int y = getLineY(line);
+    int height = commonMetrics.lineHeight;
+    p.save();
 
-    int ymargin = commonMetrics.yCharOffset / 2;
-    int y = getLineY(line) + ymargin;
-    int height = commonMetrics.lineHeight - 2 * ymargin;
+    QPen pen = p.pen();
+    pen.setColor(Qt::gray);
+    pen.setWidth(2);
+    p.setPen(pen);
+    p.setBrush(Qt::NoBrush);
     p.drawRect(x, y, width, height);
+
+    p.setBrush(Qt::darkGray);
+    p.setCompositionMode(QPainter::CompositionMode_ColorBurn);
+    p.drawRect(x, y, width, height);
+
+    p.restore();
 }
 
 int DetViewSingleLineRenderer::posToDirectTransLine(int p) const {

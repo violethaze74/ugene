@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -254,7 +254,8 @@ void SQLiteMsaDbi::addRows(const U2DataId& msaId, QList<U2MsaRow>& rows, U2OpSta
     foreach (const U2MsaRow &row, rows) {
         maxLength = qMax(maxLength, row.length);
     }
-    if (maxLength > getMsaLength(msaId, os)) {
+    qint64 currentMsaLength = getMsaLength(msaId, os);
+    if (maxLength > currentMsaLength) {
         updateMsaLength(updateAction, msaId, maxLength, os);
         CHECK_OP(os, );
     }

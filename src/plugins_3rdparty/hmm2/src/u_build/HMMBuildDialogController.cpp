@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const Mul
       profileName(_pn),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20875099");
+    new HelpButton(this, buttonBox, "20880438");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Close"));
 
@@ -379,7 +379,7 @@ void HMMBuildTask::_run() {
     int atype = ma->getAlphabet()->isNucleic() ? hmmNUCLEIC :hmmAMINO;
     try {
         hmm = UHMMBuild::build(msa, atype, settings, stateInfo);
-    } catch (HMMException e) {
+    } catch (const HMMException &e) {
         stateInfo.setError(  e.error );
     }
     

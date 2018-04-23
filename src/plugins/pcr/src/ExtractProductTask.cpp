@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -190,7 +190,7 @@ void ExtractProductTask::addProductAnnotations(AnnotationTableObject *targetObje
     }
 }
 
-SharedAnnotationData ExtractProductTask::getPrimerAnnotation(const QByteArray &primer, int matchLengh, U2Strand::Direction strand, int sequenceLength) {
+SharedAnnotationData ExtractProductTask::getPrimerAnnotation(int matchLengh, U2Strand::Direction strand, int sequenceLength) {
     SharedAnnotationData result(new AnnotationData);
     U2Region region;
     if (U2Strand::Direct == strand) {
@@ -230,10 +230,8 @@ void ExtractProductTask::run() {
     U2SequenceObject *sequenceObject = new U2SequenceObject(productSequence.getName(), productRef);
     doc->addObject(sequenceObject);
     AnnotationTableObject *annotations = new AnnotationTableObject(productSequence.getName() + " features", dbiRef);
-    annotations->addAnnotations(QList<SharedAnnotationData>() << getPrimerAnnotation(product.forwardPrimer, product.forwardPrimerMatchLength,
-        U2Strand::Direct, productSequence.length()));
-    annotations->addAnnotations(QList<SharedAnnotationData>() << getPrimerAnnotation(product.reversePrimer, product.reversePrimerMatchLength,
-        U2Strand::Complementary, productSequence.length()));
+    annotations->addAnnotations(QList<SharedAnnotationData>() << getPrimerAnnotation(product.forwardPrimerMatchLength, U2Strand::Direct, productSequence.length()));
+    annotations->addAnnotations(QList<SharedAnnotationData>() << getPrimerAnnotation(product.reversePrimerMatchLength, U2Strand::Complementary, productSequence.length()));
     annotations->addObjectRelation(GObjectRelation(GObjectReference(sequenceObject), ObjectRole_Sequence));
     doc->addObject(annotations);
 

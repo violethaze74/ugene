@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,6 +55,7 @@ public:
 
 protected:
     void                                    mousePressEvent(QMouseEvent *e);
+    void                                    mouseDoubleClickEvent(QMouseEvent* me);
 
     virtual bool                            event(QEvent *e);
     virtual QString                         createToolTip(QHelpEvent *e);
@@ -71,7 +72,7 @@ protected slots:
     void                                    sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *);
     void                                    sl_onAnnotationsAdded(const QList<Annotation *> &);
     void                                    sl_onAnnotationsRemoved(const QList<Annotation *> &);
-    virtual void                            sl_onAnnotationsModified(const AnnotationModification &md);
+    virtual void                            sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications);
     virtual void                            sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &added,
                                                 const QList<Annotation *> &removed);
 

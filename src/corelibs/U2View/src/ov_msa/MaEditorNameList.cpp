@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,6 +29,7 @@
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GObjectTypes.h>
 
 #include <U2Gui/GUIUtils.h>
 
@@ -304,7 +305,10 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     switch(key) {
     case Qt::Key_Up: {
         bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect - 1);
-        U2Region sel = getSelection();
+        const U2Region sel = getSelection();
+        if (sel.isEmpty()) {
+            break;
+        }
         int selStart = sel.length != 0 ? getSelection().startPos : nextSequenceToSelect;
         if (isSeqInRange && isShiftPressed) {
             nextSequenceToSelect--;
@@ -325,7 +329,11 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     }
     case Qt::Key_Down: {
         bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect + 1);
-        int selEnd = getSelection().endPos() - 1;
+        const U2Region sel = getSelection();
+        if (sel.isEmpty()) {
+            break;
+        }
+        int selEnd = sel.endPos() - 1;
         int rowNum = ui->getSequenceArea()->getNumDisplayableSequences() - 1;
         if (isSeqInRange && isShiftPressed) {
             nextSequenceToSelect++;
@@ -434,7 +442,7 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
                 if (e->y() < selectionStartPoint.y()) {
                     startSelectingRowNumber = 0;
                 } else {
-                    startSelectingRowNumber = ui->getEditor()->getNumSequences() - 1;
+                    startSelectingRowNumber = seqArea->getNumDisplayableSequences() - 1;
                 }
             }
             rubberBand->setGeometry(QRect(selectionStartPoint, QSize()));
@@ -555,8 +563,8 @@ void MaEditorNameList::updateSelection(int newSeq) {
     CHECK(ui->getSequenceArea()->isSeqInRange(newSeq) || ui->getSequenceArea()->isSeqInRange(curRowNumber), );
 
     int start = qMin(curRowNumber, newSeq);
-    int count = qAbs(newSeq - curRowNumber) + 1;
-    setSelection(start, count);
+    int end = qMax(curRowNumber, newSeq);
+    setSelection(start, end - start + 1);
     int height = ui->getSequenceArea()->height();
     ui->getScrollController()->scrollToRowByNumber(newSeq, height);
 }
@@ -569,9 +577,6 @@ void MaEditorNameList::wheelEvent(QWheelEvent *we) {
 
 void MaEditorNameList::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev)
 {
-    Q_UNUSED(current);
-    Q_UNUSED(prev);
-
     if (current.y() == prev.y() && current.height() == prev.height()) {
         return;
     }
@@ -846,8 +851,11 @@ void MaEditorNameList::sl_editSequenceName() {
     CHECK(n >= 0, );
 
     QString curName =  maObj->getMultipleAlignment()->getRow(n)->getName();
-    QString newName = QInputDialog::getText(this, tr("Rename"),
-            tr("New sequence name:"), QLineEdit::Normal, curName, &ok);
+
+    bool isMca = this->editor->getMaObject()->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
+    QString title = isMca ? tr("Rename Read") : tr("Rename Sequence");
+    QString newName = QInputDialog::getText(ui, title, tr("New name:"), QLineEdit::Normal, curName, &ok);
+
     if (ok && !newName.isEmpty() && curName != newName) {
         emit si_sequenceNameChanged(curName, newName);
         maObj->renameRow(n,newName);

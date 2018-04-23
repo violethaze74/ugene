@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,34 +24,72 @@
 
 #include <QDialog>
 
-#include <U2Core/global.h>
+#include <U2Core/DocumentModel.h>
+
+#include <U2Gui/SaveDocumentController.h>
 
 class Ui_SaveSelectedSequenceFromMSADialog;
 
 namespace U2 {
 
-class SaveDocumentController;
+class SaveDocumentInFolderController;
 
 class SaveSelectedSequenceFromMSADialogController : public QDialog {
     Q_OBJECT
 public:
-    SaveSelectedSequenceFromMSADialogController(const QString& defaultDir, const QString& defaultFileName, QWidget* p);
+    SaveSelectedSequenceFromMSADialogController(const QString& defaultDir, QWidget* p, const QStringList& seqNames, const QString& defaultCustomFilename);
     ~SaveSelectedSequenceFromMSADialogController();
 
     virtual void accept();
 
-    QString             url;
-    QString             defaultDir;
-    QString             defaultFileName;
-    DocumentFormatId    format;
-    bool                trimGapsFlag;
-    bool                addToProjectFlag;
-
+    QString getUrl() const;
+    DocumentFormatId getFormat() const;
+    QString getCustomFileName() const;
+    bool getTrimGapsFlag() const;
+    bool getAddToProjectFlag() const;
 private:
     void initSaveController();
 
-    SaveDocumentController* saveController;
+    QString             url;
+    QString             defaultDir;
+    DocumentFormatId    format;
+    QStringList         seqNames;
+    QString             customFileName;
+    bool                trimGapsFlag;
+    bool                addToProjectFlag;
+    SaveDocumentInFolderController* saveController;
     Ui_SaveSelectedSequenceFromMSADialog* ui;
+};
+
+class SaveDocumentInFolderControllerConfig : public SaveDocumentControllerConfig {
+public:
+    SaveDocumentInFolderControllerConfig();
+
+    QLineEdit *folderLineEdit;
+};
+
+class SaveDocumentInFolderController : public QObject {
+    Q_OBJECT
+public:
+    SaveDocumentInFolderController(const SaveDocumentInFolderControllerConfig& config,
+                            const DocumentFormatConstraints& formatConstraints,
+                            QObject* parent);
+
+    QString getSaveDirName() const;
+signals:
+    void si_pathChanged(const QString &path);
+private slots:
+    void sl_fileDialogButtonClicked();
+private:
+    void init();
+    void setPath(const QString &path);
+    void initFormatComboBox();
+
+    SaveDocumentInFolderControllerConfig        conf;
+    SaveDocumentController::SimpleFormatsInfo   formatsInfo;
+    //QString                                     currentFormat;
+
+    static const QString HOME_DIR_IDENTIFIER;
 };
 
 }

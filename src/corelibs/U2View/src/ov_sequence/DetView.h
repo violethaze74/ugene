@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@
 #include <U2Core/U2Location.h>
 
 #include "GSequenceLineViewAnnotated.h"
+#include <U2View/SequenceObjectContext.h>
 
 
 class QActionGroup;
@@ -38,24 +39,28 @@ class Annotation;
 class DNATranslation;
 class DetViewRenderArea;
 class DetViewRenderer;
+class DetViewSequenceEditor;
 
 class U2VIEW_EXPORT DetView : public GSequenceLineViewAnnotated {
     Q_OBJECT
+    friend class DetViewSequenceEditor;
 public:
     DetView(QWidget* p, SequenceObjectContext* ctx);
+    ~DetView();
+    DetViewSequenceEditor* getEditor() { return editor; }
 
     DetViewRenderArea* getDetViewRenderArea() const;
 
     bool hasTranslations() const;
     bool hasComplementaryStrand() const;
     bool isWrapMode() const;
+    bool isEditMode() const;
 
     virtual void setStartPos(qint64 pos);
     virtual void setCenterPos(qint64 pos);
 
     DNATranslation* getComplementTT() const;
     DNATranslation* getAminoTT() const;
-    // for GUI tests
     int getSymbolsPerLine() const;
 
     void setShowComplement(bool t);
@@ -63,16 +68,25 @@ public:
 
     void setDisabledDetViewActions(bool t);
 
+    int getVerticalScrollBarPosition();
     int getShift() const;
+    void setSelectedTranslations();
+
+    void ensurePositionVisible(int pos);
 
 protected slots:
     virtual void sl_sequenceChanged();
+    void sl_onDNASelectionChanged(LRegionsSelection* thiz, const QVector<U2Region>& added, const QVector<U2Region>& removed);
     void sl_onAminoTTChanged();
     void sl_translationRowsChanged();
     void sl_showComplementToggle(bool v);
     void sl_showTranslationToggle(bool v);
     void sl_wrapSequenceToggle(bool v);
     void sl_verticalSrcollBarMoved(int position);
+    void sl_doNotTranslate();
+    void sl_translateAnnotationsOrSelection();
+    void sl_setUpFramesManually();
+    void sl_showAllFrames();
 
 protected:
     virtual void pack();
@@ -95,6 +109,12 @@ protected:
     QAction*        showComplementAction;
     QAction*        showTranslationAction;
     QAction*        wrapSequenceAction;
+    QAction*        doNotTranslateAction;
+    QAction*        translateAnnotationsOrSelectionAction;
+    QAction*        setUpFramesManuallyAction;
+    QAction*        showAllFramesAction;
+
+    DetViewSequenceEditor* editor;
 
     GScrollBar*     verticalScrollBar;
 
@@ -103,6 +123,15 @@ protected:
 
 private:
     void setupTranslationsMenu();
+    void setupGeneticCodeMenu();
+    QPoint getRenderAreaPointAfterAutoScroll(const QPoint& pos);
+    void moveBorder(const QPoint& p);
+    void setBorderCursor(const QPoint& p);
+
+    void uncheckAllTranslations();
+    void updateTranslationsState();
+    void updateTranslationsState(const U2Strand::Direction direction);
+    void updateSelectedTranslations(const SequenceObjectContext::TranslationState& state);
 };
 
 class DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
@@ -121,11 +150,27 @@ public:
 
     DetView* getDetView() const;
 
+    /**
+    *Quantity of symbols in one line
+    */
     int getSymbolsPerLine() const;
+    /**
+    *Quantity of visible lines in the view
+    */
     int getLinesCount() const;
+    /**
+    *Quantity of symbols in all lines (in case multi-line view)
+    */
     int getVisibleSymbolsCount() const;
+    int getDirectLine() const;
 
+    /**
+    *Quantity of shifts in one line
+    */
     int getShiftsCount() const;
+    /**
+    *Quantity of pixels in one shift
+    */
     int getShiftHeight() const;
 
     void updateSize();

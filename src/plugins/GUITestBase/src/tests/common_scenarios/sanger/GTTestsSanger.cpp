@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -475,6 +475,63 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     const int rowsCount = GTUtilsMcaEditor::getReadsCount(os);
     CHECK_SET_ERR(1 == rowsCount, QString("Unexpected rows count: expect 1, got %1").arg(rowsCount));
 }
+
+GUI_TEST_CLASS_DEFINITION(test_0007) {
+    GTLogTracer l;
+
+    AlignToReferenceBlastDialogFiller::Settings settings;
+    settings.referenceUrl = testDir + "_common_data/sanger/dataset5/Reference.fna";
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset5/187_260_V49595_10.ab1");
+    settings.outAlignment = QFileInfo(sandBoxDir + "sanger_test_0007").absoluteFilePath();
+
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    CHECK_SET_ERR(l.hasError(), "Alignment should fail");
+
+    settings.minIdentity = 70;
+
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const int rowsCount = GTUtilsMcaEditor::getReadsCount(os);
+    CHECK_SET_ERR(1 == rowsCount, QString("Unexpected rows count: expect 1, got %1").arg(rowsCount));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0008) {
+    GTLogTracer l;
+
+    AlignToReferenceBlastDialogFiller::Settings settings;
+    settings.referenceUrl = testDir + "_common_data/sanger/dataset4/reference.gb";
+
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset4/ab1/pFB7-CDK5RAP2_P1713799_009.ab1");
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset4/ab1/pFB7-CDK5RAP2_P1713799_010.ab1");
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset4/ab1/pFB7-CDK5RAP2_P1713799_025.ab1");
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset4/ab1/pFB7-CDK5RAP2_P1713799_026.ab1");
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset4/ab1/pFB7-CDK5RAP2_P1713799_041.ab1");
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset4/ab1/pFB7-CDK5RAP2_P1713799_043.ab1");
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset4/ab1/pFB7-CDK5RAP2_P1713799_044.ab1");
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset4/ab1/pFB7-CDK5RAP2_P1713799_059.ab1");
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset4/ab1/pFB7-CDK5RAP2_P1713799_060.ab1");
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset4/ab1/pFB7-CDK5RAP2_P1713799_075.ab1");
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset4/ab1/pFB7-CDK5RAP2_P1713799_076.ab1");
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset4/ab1/pFB7-CDK5RAP2_P1713799_091.ab1");
+    settings.readUrls << QString(testDir + "_common_data/sanger/dataset4/ab1/pFB7-CDK5RAP2_P1713799_092.ab1");
+
+    settings.outAlignment = QFileInfo(sandBoxDir + "sanger_test_0008").absoluteFilePath();
+
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Map reads to reference...");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(l.checkMessage("trimming was skipped"), "Could not find the message about skipped trimming");
+}
+
 
 }   // namespace GUITest_common_scenarios_sanger
 }   // namespace U2

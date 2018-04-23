@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@ protected:
 
     void updateLock();
     virtual void updateLineLabel();
-    void updatePositionLabel();
+    virtual void updatePositionLabel();
     void updateColumnLabel();
     void updateSelectionLabel();
 
@@ -86,6 +86,8 @@ protected:
     QLabel*                     lockLabel;
 
     static const QString NONE_MARK;
+    static const QString GAP_MARK;
+
 private:
     QString selectionPattern;
 };

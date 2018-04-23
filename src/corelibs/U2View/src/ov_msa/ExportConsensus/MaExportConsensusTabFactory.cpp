@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,8 +35,8 @@
 namespace U2 {
 
 const QString GROUP_ICON_STR = ":core/images/consensus.png";
-const QString GROUP_DOC_PAGE_MSA = "19766805";
-const QString GROUP_DOC_PAGE_MCA = "20873530";
+const QString GROUP_DOC_PAGE_MSA = "20880299";
+const QString GROUP_DOC_PAGE_MCA = "20880557";
 const QString MsaExportConsensusTabFactory::GROUP_ID = "OP_EXPORT_CONSENSUS";
 const QString McaExportConsensusTabFactory::GROUP_ID = "OP_CONSENSUS";
 

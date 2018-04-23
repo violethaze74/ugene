@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -375,38 +375,29 @@ void BlastPlusSupportContext::sl_showDialog() {
 
     if (dlg->result() == QDialog::Accepted) {
         BlastTaskSettings settings = dlg->getSettings();
-        //prepare query
-        DNASequenceSelection* s = seqCtx->getSequenceSelection();
-        QVector<U2Region> regions;
-        if (s->isEmpty()) {
-            regions.append(U2Region(0, seqCtx->getSequenceLength()));
-        } else {
-            regions = s->getSelectedRegions();
+        U2Region region = dlg->getSelectedRegion();
+        settings.querySequence = seqCtx->getSequenceData(region, os);
+        CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
+        settings.offsInGlobalSeq = region.startPos;
+        SAFE_POINT(seqCtx->getSequenceObject() != NULL, tr("Sequence object is NULL"), );
+        settings.isSequenceCircular = seqCtx->getSequenceObject()->isCircular();
+        settings.querySequenceObject = seqCtx->getSequenceObject();
+        Task * t=NULL;
+        if (settings.programName == "blastn"){
+            t = new BlastNPlusSupportTask(settings);
+        } else if(settings.programName == "blastp" || settings.programName == "gpu-blastp"){
+            t = new BlastPPlusSupportTask(settings);
+        } else if(settings.programName == "blastx"){
+            t = new BlastXPlusSupportTask(settings);
+        } else if(settings.programName == "tblastn"){
+            t = new TBlastNPlusSupportTask(settings);
+        } else if(settings.programName == "tblastx"){
+            t = new TBlastXPlusSupportTask(settings);
+        } else if(settings.programName == "rpsblast"){
+            t = new RPSBlastSupportTask(settings);
         }
-        foreach(const U2Region& r, regions) {
-            settings.querySequence = seqCtx->getSequenceData(r, os);
-            CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
-            settings.offsInGlobalSeq=r.startPos;
-            SAFE_POINT(seqCtx->getSequenceObject() != NULL, tr("Sequence object is NULL"), );
-            settings.isSequenceCircular = seqCtx->getSequenceObject()->isCircular();
-            settings.querySequenceObject = seqCtx->getSequenceObject();
-            Task * t=NULL;
-            if(settings.programName == "blastn"){
-                t = new BlastNPlusSupportTask(settings);
-            }else if(settings.programName == "blastp" || settings.programName == "gpu-blastp"){
-                t = new BlastPPlusSupportTask(settings);
-            }else if(settings.programName == "blastx"){
-                t = new BlastXPlusSupportTask(settings);
-            }else if(settings.programName == "tblastn"){
-                t = new TBlastNPlusSupportTask(settings);
-            }else if(settings.programName == "tblastx"){
-                t = new TBlastXPlusSupportTask(settings);
-            }else if(settings.programName == "rpsblast"){
-                t = new RPSBlastSupportTask(settings);
-            }
-            assert(t);
-            AppContext::getTaskScheduler()->registerTopLevelTask( t );
-        }
+        assert(t);
+        AppContext::getTaskScheduler()->registerTopLevelTask( t );
     }
 }
 

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,9 +57,9 @@ const float MaEditor::zoomMult = 1.25;
 MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObject *obj)
     : GObjectView(factoryId, viewName),
       ui(NULL),
-      cachedColumnWidth(0),
       resizeMode(ResizeMode_FontAndContent),
       zoomFactor(0),
+      cachedColumnWidth(0),
       exportHighlightedAction(NULL)
 {
     maObject = qobject_cast<MultipleAlignmentObject*>(obj);

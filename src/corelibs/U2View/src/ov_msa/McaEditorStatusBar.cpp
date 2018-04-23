@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -54,6 +54,7 @@ McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject* mobj,
     selectionLabel->hide();
 
     connect(nameList, SIGNAL(si_selectionChanged()), SLOT(sl_update()));
+    connect(refCharController, SIGNAL(si_cacheUpdated()), SLOT(sl_update()));
 
     updateLabels();
     setupLayout();
@@ -77,11 +78,11 @@ void McaEditorStatusBar::updateLabels() {
 
     QString ungappedRefLen = QString::number(refCharController->getUngappedLength());
     if (selection->isEmpty()) {
-        colomnLabel->update(MaEditorStatusBar::NONE_MARK, ungappedRefLen);
+        colomnLabel->update(NONE_MARK, ungappedRefLen);
     } else {
         int startSelection = selection->getSelectedRegions().first().startPos;
         int refPos = refCharController->getUngappedPosition(startSelection);
-        colomnLabel->update(refPos == -1 ? "gap" : QString::number(refPos + 1), ungappedRefLen);
+        colomnLabel->update(refPos == -1 ? GAP_MARK : QString::number(refPos + 1), ungappedRefLen);
     }
 }
 
@@ -89,6 +90,23 @@ void McaEditorStatusBar::updateLineLabel() {
     const U2Region selection = nameList->getSelection();
     lineLabel->update(selection.isEmpty() ? MaEditorStatusBar::NONE_MARK : QString::number(selection.startPos + 1),
                       QString::number(aliObj->getNumRows()));
+}
+
+void McaEditorStatusBar::updatePositionLabel() {
+    const MaEditorSelection selection = seqArea->getSelection();
+    QPair<QString, QString> positions = QPair<QString, QString>(NONE_MARK, NONE_MARK);
+    if (!selection.isEmpty()) {
+        positions = getGappedPositionInfo(selection.topLeft());
+    } else {
+        const U2Region rowsSelection = nameList->getSelection();
+        if (!rowsSelection.isEmpty()) {
+            const MultipleAlignmentRow row = seqArea->getEditor()->getMaObject()->getRow(rowsSelection.startPos);
+            const QString rowLength = QString::number(row->getUngappedLength());
+            positions = QPair<QString, QString>(NONE_MARK, rowLength);
+        }
+    }
+    positionLabel->update(positions.first, positions.second);
+    positionLabel->updateMinWidth(QString::number(aliObj->getLength()));
 }
 
 } // namespace

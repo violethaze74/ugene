@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -271,9 +271,8 @@ AnnotationGroup * AnnotationGroup::getSubgroup(const QString &path, bool create)
 AnnotationGroup * AnnotationGroup::addSubgroup(const U2Feature &feature) {
     SAFE_POINT(feature.hasValidId() && feature.featureClass == U2Feature::Group, "Unexpected feature provided", NULL);
 
-    AnnotationGroup *result = NULL;
     if (feature.parentFeatureId == id) {
-        result = new AnnotationGroup(feature.id, feature.name, this, parentObject);
+        AnnotationGroup *result = new AnnotationGroup(feature.id, feature.name, this, parentObject);
         subgroups.append(result);
         parentObject->emit_onGroupCreated(result);
         return result;
@@ -368,8 +367,9 @@ bool registerAnnotationGroupMeta() {
     qRegisterMetaType<AnnotationGroup>("AnnotationGroup");
     return true;
 }
-static const bool annotationGroupMetaRegistered = registerAnnotationGroupMeta();
 
 }
+
+const bool AnnotationGroup::annotationGroupMetaRegistered = registerAnnotationGroupMeta();
 
 } // namespace U2

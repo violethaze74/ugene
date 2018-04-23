@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,6 @@
 
 #include <U2Gui/GScrollBar.h>
 #include <U2Gui/OrderedToolbar.h>
-
 #include <U2Gui/ObjectViewModel.h>
 
 #include <QApplication>
@@ -50,8 +49,10 @@ GSequenceLineView::GSequenceLineView(QWidget* p, SequenceObjectContext* _ctx)
       featureFlags(GSLV_FF_SupportsCustomRange),
       frameView(NULL),
       coherentRangeView(NULL),
+      movableBorder(SelectionModificationHelper::NoMovableBorder),
       ignoreMouseSelectionEvents(false),
-      singleBaseSelection(false)
+      singleBaseSelection(false),
+      isSelectionResizing(false)
 {
     GCOUNTER( cvar, tvar, "SequenceLineView" );
     seqLen = ctx->getSequenceLength();
@@ -124,13 +125,15 @@ void GSequenceLineView::sl_onScrollBarMoved(int pos) {
     if (lastPressPos!=-1) {
         QAbstractSlider::SliderAction aAction = scrollBar->getRepeatAction();
         if (aAction == QAbstractSlider::SliderSingleStepAdd) {
-            qint64 selStart = qMin(lastPressPos, visibleRange.endPos());
-            qint64 selEnd = qMax(lastPressPos, visibleRange.endPos());
-            setSelection(U2Region(selStart, selEnd - selStart));
+            const qint64 selStart = qMin(lastPressPos, visibleRange.endPos());
+            const qint64 selEnd = qMax(lastPressPos, visibleRange.endPos());
+            const U2Region newSelection(selStart, selEnd - selStart);
+            changeSelectionOnScrollbarMoving(newSelection);
         } else if (aAction == QAbstractSlider::SliderSingleStepSub) {
-            qint64 selStart = qMin(lastPressPos, visibleRange.startPos);
-            qint64 selEnd = qMax(lastPressPos, visibleRange.startPos);
-            setSelection(U2Region(selStart, selEnd - selStart));
+            const qint64 selStart = qMin(lastPressPos, visibleRange.startPos);
+            const qint64 selEnd = qMax(lastPressPos, visibleRange.startPos);
+            const U2Region newSelection(selStart, selEnd - selStart);
+            changeSelectionOnScrollbarMoving(newSelection);
         }
     }
 }
@@ -157,11 +160,19 @@ void GSequenceLineView::removeSelection(const U2Region& r) {
 
 void GSequenceLineView::mousePressEvent(QMouseEvent* me) {
     setFocus();
+    isSelectionResizing = true;
 
     QPoint renderAreaPos = toRenderAreaPoint(me->pos());
     if (!renderArea->rect().contains(renderAreaPos)) {
         scrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
         lastPressPos = -1;
+        QWidget::mousePressEvent(me);
+        return;
+    }
+
+    Qt::CursorShape shape = cursor().shape();
+    if (shape != Qt::ArrowCursor) {
+        moveBorder(me->pos());
         QWidget::mousePressEvent(me);
         return;
     }
@@ -202,41 +213,37 @@ void GSequenceLineView::mouseReleaseEvent(QMouseEvent* me) {
         }
     }
 
-    scrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
+    cancelSelectionResizing();
     lastPressPos = -1;
+    resizableRegion = U2Region();
+    overlappedRegions.clear();
+    movableBorder = SelectionModificationHelper::NoMovableBorder;
     QWidget::mouseReleaseEvent(me);
 }
 
 void GSequenceLineView::mouseMoveEvent(QMouseEvent* me) {
-    if (lastPressPos == -1) {
-        QWidget::mouseMoveEvent(me);
-        return;
+    if (!me->buttons()) {
+        setBorderCursor(me->pos());
     }
-    if (me->buttons() & Qt::LeftButton) {
-        QPoint areaPoint = toRenderAreaPoint(me->pos());
 
-        // manage scrollbar auto-scrolling
-        if (areaPoint.x() > width()) {
-            scrollBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd);
-        } else if (areaPoint.x() <= 0) {
-            scrollBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub);
-        } else {
-            scrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
+    if (isSelectionResizing) {
+        if (me->buttons() & Qt::LeftButton) {
+            Qt::CursorShape shape = cursor().shape();
+            if (shape != Qt::ArrowCursor) {
+                moveBorder(me->pos());
+                QWidget::mouseMoveEvent(me);
+                return;
+            }
         }
 
-        // compute selection
-        qint64 pos = renderArea->coordToPos(areaPoint);
-        qint64 selStart = qMin(lastPressPos, pos);
-        qint64 selLen = qAbs(pos - lastPressPos);
-        if (selStart<0) {
-            selLen+=selStart;
-            selStart=0;
-        } else if (selStart + selLen > seqLen) {
-            selLen = seqLen - selStart;
+        if (lastPressPos == -1) {
+            QWidget::mouseMoveEvent(me);
+            return;
         }
 
-        setSelection(U2Region(selStart, selLen));
-
+        if (me->buttons() & Qt::LeftButton) {
+            moveBorder(me->pos());
+        }
     }
     QWidget::mouseMoveEvent(me);
 }
@@ -287,6 +294,28 @@ void GSequenceLineView::keyPressEvent(QKeyEvent *e) {
     } else {
         QWidget::keyPressEvent(e);
     }
+}
+
+
+void GSequenceLineView::setBorderCursor(const QPoint &p) {
+    const QPoint areaPoint = toRenderAreaPoint(p);
+    const int sliderPos = scrollBar->isVisible() ? scrollBar->sliderPosition() : 0;
+    const double scale = renderArea->getCurrentScale();
+    const QPoint point(areaPoint.x() + (sliderPos * scale), areaPoint.y());
+
+    QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
+    Qt::CursorShape shape = Qt::ArrowCursor;
+    if (!regions.isEmpty()) {
+        for (int i = 0; i < regions.size(); i++) {
+            const QRect selection(QPoint(regions[i].startPos, 0), QPoint(regions[i].endPos() - 1, 1));
+            shape = SelectionModificationHelper::getCursorShape(point, selection, scale, height());
+            if (shape != Qt::ArrowCursor) {
+                shape = Qt::SizeHorCursor;
+                break;
+            }
+        }
+    }
+    setCursor(shape);
 }
 
 void GSequenceLineView::setCenterPos(qint64 centerPos) {
@@ -442,6 +471,11 @@ void GSequenceLineView::sl_onCoherentRangeViewRangeChanged() {
     setVisibleRange(newRange);
 }
 
+void GSequenceLineView::sl_onLocalCenteringRequest(qint64 pos) {
+    setCenterPos(pos);
+}
+
+
 void GSequenceLineView::setVisibleRange(const U2Region& newRange, bool signal) {
     SAFE_POINT(newRange.startPos >=0 && newRange.endPos() <= seqLen, "Failed to update visible range. Range is out of the sequence range!",);
 
@@ -471,6 +505,113 @@ void GSequenceLineView::sl_sequenceChanged(){
     completeUpdate();
 }
 
+void GSequenceLineView::moveBorder(const QPoint& p) {
+    QPoint areaPoint = toRenderAreaPoint(p);
+    autoScrolling(areaPoint);
+    resizeSelection(areaPoint);
+}
+
+void GSequenceLineView::autoScrolling(const QPoint& areaPoint) {
+    if (areaPoint.x() > width()) {
+        scrollBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd);
+    } else if (areaPoint.x() <= 0) {
+        scrollBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub);
+    } else {
+        scrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
+    }
+}
+
+void GSequenceLineView::cancelSelectionResizing() {
+    isSelectionResizing = false;
+    scrollBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
+}
+
+void GSequenceLineView::resizeSelection(const QPoint& areaPoint) {
+    qint64 pos = renderArea->coordToPos(areaPoint);
+    QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
+    qSort(regions.begin(), regions.end());
+
+    if (lastPressPos == -1) {
+        if (!regions.isEmpty()) {
+            qint64 diffToStart = qAbs(pos - regions[0].startPos);
+            qint64 diffToEnd = qAbs(pos - regions[0].endPos());
+            lastPressPos = diffToStart > diffToEnd ? regions[0].startPos : regions[0].endPos();
+            qint64 sizeToResizableRegion = qMin(diffToStart, diffToEnd);
+            resizableRegion = regions[0];
+            for (int i = 1; i < regions.size(); i++) {
+                diffToStart = qAbs(pos - regions[i].startPos);
+                diffToEnd = qAbs(pos - regions[i].endPos());
+                const qint64 currentSizeToResizableRegion = qMin(diffToStart, diffToEnd);
+                if (currentSizeToResizableRegion < sizeToResizableRegion) {
+                    const qint64 tempPressPos = diffToStart > diffToEnd ? regions[i].startPos : regions[i].endPos();
+                    lastPressPos = tempPressPos;
+                    sizeToResizableRegion = currentSizeToResizableRegion;
+                    resizableRegion = regions[i];
+                }
+            }
+        }
+    }
+    regions.removeOne(resizableRegion);
+
+    qint64 selStart = qMin(lastPressPos, pos);
+    qint64 selLen = qAbs(pos - lastPressPos);
+    if (selStart < 0) {
+        selLen += selStart;
+        selStart = 0;
+    } else if (selStart + selLen > seqLen) {
+            selLen = seqLen - selStart;
+    }
+    CHECK(selLen != 0, );
+
+    U2Region newSelection(selStart, selLen);
+
+    if (!resizableRegion.isEmpty()) {
+        foreach (const U2Region& reg, regions) {
+            if (!reg.intersect(newSelection).isEmpty()) {
+                newSelection = U2Region::join(QVector<U2Region>() << newSelection << reg).first();
+                if (!overlappedRegions.contains(reg)) {
+                    overlappedRegions << reg;
+                }
+                regions.removeOne(reg);
+            }
+        }
+    }
+
+    if (!overlappedRegions.isEmpty()) {
+        QVector<U2Region> overlappedSelection = overlappedRegions.toVector();
+        overlappedSelection << newSelection;
+        overlappedSelection = U2Region::join(overlappedSelection);
+        if (!overlappedSelection.isEmpty()) {
+            foreach(const U2Region& sel, overlappedSelection) {
+                if (sel.contains(newSelection)) {
+                    newSelection = sel;
+                } else {
+                    regions << sel;
+                }
+            }
+            foreach(const U2Region& reg, regions) {
+                if (overlappedRegions.contains(reg)) {
+                    overlappedRegions.removeOne(reg);
+                }
+            }
+        }
+    }
+
+    changeSelection(regions, newSelection);
+}
+
+void GSequenceLineView::changeSelectionOnScrollbarMoving(const U2Region& newSelection) {
+    QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
+    regions.removeOne(resizableRegion);
+    changeSelection(regions, newSelection);
+}
+
+void GSequenceLineView::changeSelection(QVector<U2Region>& regions, const U2Region& newSelection) {
+    resizableRegion = newSelection;
+    regions << newSelection;
+    qSort(regions.begin(), regions.end());
+    ctx->getSequenceSelection()->setSelectedRegions(regions);
+}
 
 //////////////////////////////////////////////////////////////////////////
 /// GSequenceLineViewRenderArea

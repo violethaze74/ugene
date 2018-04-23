@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -824,7 +824,7 @@ void QDResultGroup::buildGroupFromSingleResult(const QDResultUnit& ru, QList<QDR
 //AttributeValueMapper
 //////////////////////////////////////////////////////////////////////////
 
-const QMap<QString, bool> QDAttributeValueMapper::BOOLEAN_MAP(initBooleanMap());
+const QMap<QString, bool> QDAttributeValueMapper::BOOLEAN_MAP = initBooleanMap();
 
 QMap<QString, bool> QDAttributeValueMapper::initBooleanMap() {
     QMap<QString, bool> map;

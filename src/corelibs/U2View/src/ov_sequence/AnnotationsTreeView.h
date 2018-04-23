@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,23 +25,26 @@
 #include <QCloseEvent>
 #include <QFlags>
 #include <QLabel>
-#include <QQueue>
 #include <QPair>
+#include <QQueue>
 #include <QTimer>
 #include <QTreeWidget>
 
 #include <U2Core/Task.h>
+#include <U2Core/U2Region.h>
 
 #include <U2View/SearchQualifierDialog.h>
 
 namespace U2 {
 
+class ADVSequenceObjectContext;
 class AnnotatedDNAView;
 class Annotation;
 class AnnotationGroup;
 class AnnotationGroupSelection;
 class AnnotationModification;
 class AnnotationSelection;
+class AnnotationSelectionData;
 class AnnotationTableObject;
 class AVAnnotationItem;
 class AVGroupItem;
@@ -103,7 +106,7 @@ private slots:
 
     void sl_onAnnotationsAdded(const QList<Annotation *> &);
     void sl_onAnnotationsRemoved(const QList<Annotation *> &);
-    void sl_onAnnotationModified(const AnnotationModification &md);
+    void sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications);
     void sl_annotationObjectModifiedStateChanged();
 
     void sl_onGroupCreated(AnnotationGroup *);
@@ -134,10 +137,16 @@ private slots:
 
     void sl_itemEntered(QTreeWidgetItem *i, int column);
     void sl_itemClicked(QTreeWidgetItem *item, int column);
+    void sl_itemPressed(QTreeWidgetItem *item);
     void sl_itemDoubleClicked (QTreeWidgetItem *item, int column);
     void sl_itemExpanded(QTreeWidgetItem *);
 
     void sl_sortTree();
+    void sl_annotationClicked(AnnotationSelectionData* aad);
+    void sl_annotationDoubleClicked(AnnotationSelectionData* asd);
+    void sl_clearSelectedAnnotations();
+    void sl_sequenceAdded(ADVSequenceObjectContext* advContext);
+    void sl_sequenceRemoved(ADVSequenceObjectContext* advContext);
 
 protected:
     bool eventFilter(QObject *o, QEvent *e);
@@ -147,6 +156,8 @@ private:
     void editGroupItem(AVGroupItem *gi);
     void editQualifierItem(AVQualifierItem *qi);
     void editAnnotationItem(AVAnnotationItem *ai);
+    void expandItemRecursevly(QTreeWidgetItem* item);
+    QMap<AVAnnotationItem*, QList<U2Region> > sortAnnotationSelection(QList<AnnotationTableObject*> annotationObjects);
 
     QString renameDialogHelper(AVItem *i, const QString &defText, const QString &title);
     bool editQualifierDialogHelper(AVQualifierItem *i, bool ro, U2Qualifier &res);
@@ -164,6 +175,11 @@ private:
     AVAnnotationItem * findAnnotationItem(const AVGroupItem *gi, Annotation *a) const;
     // searches for annotation items that has not-null document added to the view
     QList<AVAnnotationItem *> findAnnotationItems(Annotation *a) const;
+    // searches all annotation items recursively in a group
+    QList<AVAnnotationItem *> findAnnotationItems(const AVGroupItem *gi) const;
+    void removeGroupAnnotationsFromCache(const AVGroupItem *groupItem);
+
+    void onSequenceAdded(ADVSequenceObjectContext* advContext);
 
     void connectAnnotationSelection();
     void connectAnnotationGroupSelection();
@@ -174,6 +190,9 @@ private:
     void resetDragAndDropData();
     bool initiateDragAndDrop(QMouseEvent* me);
     void finishDragAndDrop(Qt::DropAction dndAction);
+
+    void annotationClicked(AVAnnotationItem* item, QMap<AVAnnotationItem*, QList<U2Region> > selectedAnnotations, const U2Region selectedRegion = U2Region());
+    void annotationDoubleClicked(AVAnnotationItem* item, const U2Region& selectedRegion);
 
     AnnotationsTreeWidget* tree;
 
@@ -204,6 +223,7 @@ private:
     QTimer              sortTimer;
     QPoint              dragStartPos;
     QMenu*              highlightAutoAnnotationsMenu;
+    QMap<AVAnnotationItem*, QList<U2Region> > selectedAnnotation;
     // drag&drop related data
     bool                isDragging;
     bool                dndCopyOnly;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,21 +57,21 @@ void GTUtilsMdi::click(HI::GUITestOpStatus &os, GTGlobals::WindowAction action) 
 //    }
 
 #ifndef Q_OS_MAC
-	switch (action) {
-	case GTGlobals::Close: {
+    switch (action) {
+    case GTGlobals::Close: {
 #ifdef Q_OS_UNIX
         GTMenu::clickMainMenuItem(os, QStringList() << "Window" << "Close active view");
 #else
         GTKeyboardDriver::keyPress(Qt::Key_Control);
-		GTKeyboardDriver::keyClick(Qt::Key_F4);
-		GTKeyboardDriver::keyRelease(Qt::Key_Control);
+        GTKeyboardDriver::keyClick(Qt::Key_F4);
+        GTKeyboardDriver::keyRelease(Qt::Key_Control);
 #endif
-		break;
-	}
-	default:
-		GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
-		break;
-	}
+        break;
+    }
+    default:
+        GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
+        break;
+    }
 #else
     MWMDIWindow *mdiWindow = mw->getMDIManager()->getActiveWindow();
     GT_CHECK(mdiWindow != NULL, "MDIWindow == NULL");

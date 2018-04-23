@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -70,8 +70,6 @@ void AprImporterTask::prepare() {
 
     IOAdapterRegistry *ioar = AppContext::getIOAdapterRegistry();
     SAFE_POINT_EXT(NULL != ioar, stateInfo.setError(tr("Invalid I/O environment!")), );
-
-    IOAdapterFactory *iof = ioar->getIOAdapterFactoryById(IOAdapterUtils::url2io(dstUrl));
 
     QFileInfo fileInfo(dstUrl);
     QDir qDir = fileInfo.dir();

@@ -11,4 +11,4 @@ SOURCES += src/DistanceMatrixMSAProfileDialog.cpp \
            src/DNAStatMSAProfileDialog.cpp \
            src/DNAStatPlugin.cpp \
            src/DNAStatProfileTask.cpp
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

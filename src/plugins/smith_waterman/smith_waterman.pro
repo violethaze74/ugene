@@ -31,7 +31,7 @@ SOURCES += src/PairAlignSequences.cpp \
 
 RESOURCES += smith_waterman.qrc
 
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts
 
 FORMS += \
     src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui

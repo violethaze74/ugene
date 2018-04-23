@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,6 +40,7 @@ public:
 };
 
 class SearchQuery {
+    Q_DISABLE_COPY(SearchQuery)
 public:
     SearchQuery(const DNASequence *shortRead, SearchQuery *revCompl = NULL);
     SearchQuery(const U2AssemblyRead &shortRead, SearchQuery *revCompl = NULL);
@@ -92,7 +93,7 @@ public:
     ~SearchQueryContainer();
     void append(SearchQuery *qu);
     void clear();
-    quint64 size();
+    quint64 size() const;
     SearchQuery *at(quint64 pos);
 
 private:

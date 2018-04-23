@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,10 +28,15 @@
 #include <QMenu>
 #include <QSet>
 
+#include <U2View/CharOccurTask.h>
+#include <U2View/DinuclOccurTask.h>
+#include <U2View/DNAStatisticsTask.h>
+#include <U2View/StatisticsCache.h>
 
 namespace U2 {
 
 class AnnotatedDNAView;
+class AnnotationSelectionData;
 class U2SequenceObject;
 class DNAAlphabet;
 class DNATranslation;
@@ -65,12 +70,15 @@ public:
     QList<GObject*> getAnnotationGObjects() const;
 
     QMenu * createGeneticCodeMenu();
-    QMenu * createTranslationFramesMenu(QAction *showTranslationAction);
+    QMenu * createTranslationFramesMenu(QList<QAction*> menuActions);
     void setAminoTranslation(const QString& tid);
 
     void addAnnotationObject(AnnotationTableObject *obj);
     void addAutoAnnotationObject(AnnotationTableObject *obj);
     void removeAnnotationObject(AnnotationTableObject *obj);
+    void emitAnnotationSelection(AnnotationSelectionData* asd);
+    void emitAnnotationSequenceSelection(AnnotationSelectionData* asd);
+    void emitClearSelectedAnnotationRegions();
 
     // temporary virtual
     virtual AnnotationSelection * getAnnotationsSelection() const;
@@ -81,17 +89,38 @@ public:
 
     QList<Annotation *> selectRelatedAnnotations(const QList<Annotation *> &alist) const;
     QVector<bool> getTranslationRowsVisibleStatus();
-    void setTranslationsVisible(bool enable);
+    void setTranslationsVisible(bool visible);
+    void showComplementActions(bool show);
+    void showTranslationFrame(const int numOfAction, const bool setChecked);
+
+    enum TranslationState {
+        TS_DoNotTranslate,
+        TS_AnnotationsOrSelection,
+        TS_SetUpFramesManually,
+        TS_ShowAllFrames
+    };
+
+    void setTranslationState(const TranslationState state);
+    TranslationState getTranslationState() const;
+
+    StatisticsCache<DNAStatistics> *getCommonStatisticsCache();
+    StatisticsCache<CharactersOccurrence> *getCharactersOccurrenceCache();
+    StatisticsCache<DinucleotidesOccurrence> *getDinucleotidesOccurrenceCache();
+
 private slots:
     void sl_setAminoTranslation();
     void sl_toggleTranslations();
     void sl_showDirectOnly();
     void sl_showComplOnly();
     void sl_showShowAll();
+
 signals:
     void si_aminoTranslationChanged();
     void si_annotationObjectAdded(AnnotationTableObject *obj);
     void si_annotationObjectRemoved(AnnotationTableObject *obj);
+    void si_annotationSelection(AnnotationSelectionData* asd);
+    void si_annotationSequenceSelection(AnnotationSelectionData* asd);
+    void si_clearSelectedAnnotationRegions();
     void si_translationRowsChanged();
 
 protected slots:
@@ -106,12 +135,18 @@ protected:
     DNASequenceSelection*           selection;
     QActionGroup*                   translations;
     QActionGroup*                   visibleFrames;
+    QActionGroup*                   translationMenuActions;
     QVector<QAction*>               translationRowsStatus;
     QList<ADVSequenceWidget*>       seqWidgets;
     QSet<AnnotationTableObject *>   annotations;
     QSet<AnnotationTableObject *>   autoAnnotations;
     bool                            clarifyAminoTT;
     bool                            rowChoosed;
+
+    // Caches
+    StatisticsCache<DNAStatistics>              commonStatisticsCache;
+    StatisticsCache<CharactersOccurrence>       charactersOccurrenceCache;
+    StatisticsCache<DinucleotidesOccurrence>    dinucleotidesOccurrenceCache;
 
     // SANGER_TODO:
     AnnotationSelection* annSelection;

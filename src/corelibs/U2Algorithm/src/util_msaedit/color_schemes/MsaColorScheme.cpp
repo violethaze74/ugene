@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -222,7 +222,7 @@ void MsaColorSchemeRegistry::sl_onCustomSettingsChanged() {
         MsaColorSchemeCustomFactory *customSchemeFactory = getCustomSchemeFactoryById(scheme.name);
         if (NULL == customSchemeFactory) {
             addCustomScheme(scheme);
-            schemesListChanged |= true;
+            schemesListChanged = true;
         } else {
             customSchemeFactory->setScheme(scheme);
             factoriesToRemove.removeOne(customSchemeFactory);
@@ -306,7 +306,19 @@ void addUgeneSangerNucleotide(QVector<QColor> &colorsPerChar) {
     SET_C('G', "#DADADA");
     SET_C('T', "#FE7276");
     SET_C('N', Qt::magenta);
-    SET_C(U2Msa::GAP_CHAR, "#FF9700");
+    SET_C('M', Qt::magenta);
+    SET_C('R', Qt::magenta);
+    SET_C('W', Qt::magenta);
+    SET_C('S', Qt::magenta);
+    SET_C('Y', Qt::magenta);
+    SET_C('K', Qt::magenta);
+    SET_C('V', Qt::magenta);
+    SET_C('H', Qt::magenta);
+    SET_C('D', Qt::magenta);
+    SET_C('B', Qt::magenta);
+    SET_C('X', Qt::magenta);
+
+    colorsPerChar[U2Msa::GAP_CHAR] = "#FF9700";
 }
 
 void addZappoAmino(QVector<QColor> &colorsPerChar) {

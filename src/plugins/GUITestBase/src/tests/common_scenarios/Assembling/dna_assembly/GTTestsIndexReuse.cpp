@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -93,7 +93,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-	GTGlobals::sleep(1000);
+    GTGlobals::sleep(1000);
 //    Expected state: index is built
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".1.ebwt"), "index1 not found");
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".2.ebwt"), "index2 not found");
@@ -185,7 +185,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003){
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-	GTGlobals::sleep(1000);
+    GTGlobals::sleep(1000);
 //    2. Delete one of the indes files
     QFile f(sandBoxDir + refName + ".3.ebwt");
     CHECK_SET_ERR(f.exists(), "index not built");

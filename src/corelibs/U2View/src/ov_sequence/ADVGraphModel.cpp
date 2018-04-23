@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,9 +56,17 @@ const QByteArray & GSequenceGraphAlgorithm::getSequenceData(U2SequenceObject *se
     return lastSeqData;
 }
 
-GSequenceGraphData::GSequenceGraphData(const QString& _graphName) : graphName(_graphName), ga(NULL)
+GSequenceGraphData::GSequenceGraphData(const QString& _graphName)
+    : graphName(_graphName),
+      ga(NULL),
+      cachedFrom(0),
+      cachedLen(0),
+      cachedW(0),
+      cachedS(0),
+      alignedFC(0),
+      alignedLC(0)
 {
-    cachedFrom = cachedLen = cachedW = cachedS = 0;
+
 }
 
 GSequenceGraphData::~GSequenceGraphData() {
@@ -449,8 +457,6 @@ void GSequenceGraphDrawer::selectExtremumPoints(const QSharedPointer<GSequenceGr
     qint64 sequenceLength = view->getSequenceLength();
     int startPos = visibleRange.startPos;
     int endPos = visibleRange.endPos();
-    int maxValue, minValue;
-    int posOfMax, posOfMin;
 
     PairVector points;
     if(sequenceLength <= 0) {
@@ -462,10 +468,10 @@ void GSequenceGraphDrawer::selectExtremumPoints(const QSharedPointer<GSequenceGr
     QVector<float> &firstPoints = points.firstPoints;
     endPos = qMin(endPos, firstPoints.size() - 1);
     while(pos < endPos) {
-        maxValue = firstPoints.at(pos);
-        minValue = globalMax * 2;
-        posOfMax = pos;
-        posOfMin = 0;
+        int maxValue = firstPoints.at(pos);
+        int minValue = globalMax * 2;
+        int posOfMax = pos;
+        int posOfMin = 0;
         for(int i = 0; i < windowSize; i++, pos++) {
             if (pos >= endPos)
                 break;

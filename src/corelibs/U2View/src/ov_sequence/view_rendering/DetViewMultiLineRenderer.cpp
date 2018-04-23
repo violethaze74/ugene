@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,7 +53,7 @@ qint64 DetViewMultiLineRenderer::coordToPos(const QPoint &p, const QSize &canvas
     return qMin( ctx->getSequenceLength(), posOnFirstLine + line * symbolsPerLine);
 }
 
-float DetViewMultiLineRenderer::posToXCoordF(qint64 p, const QSize &canvasSize, const U2Region &visibleRange) const {
+float DetViewMultiLineRenderer::posToXCoordF(const qint64 p, const QSize &canvasSize, const U2Region &visibleRange) const {
     CHECK(visibleRange.contains(p), -1);
 
     qint64 symbolsPerLine = getSymbolsPerLine(canvasSize.width());
@@ -118,6 +118,10 @@ qint64 DetViewMultiLineRenderer::getContentIndentY(const QSize& , const U2Region
     return 0;
 }
 
+int DetViewMultiLineRenderer::getDirectLine() const {
+    return singleLinePainter->getDirectLine();
+}
+
 int DetViewMultiLineRenderer::getRowsInLineCount() const {
     return singleLinePainter->getRowsInLineCount() + 2;
 }
@@ -178,6 +182,30 @@ void DetViewMultiLineRenderer::drawSelection(QPainter &p, const QSize &canvasSiz
         oneLineRegion.length = qMin(visibleRange.endPos() - oneLineRegion.startPos, oneLineRegion.length);
 
         singleLinePainter->drawSelection(p,
+                                   QSize(canvasSize.width(), getOneLineHeight()),
+                                   oneLineRegion);
+
+        p.translate(0, getOneLineHeight());
+        indentCounter += getOneLineHeight();
+
+        oneLineRegion.startPos += symbolsPerLine;
+
+    } while (oneLineRegion.startPos < visibleRange.endPos());
+
+    // move painter back to [0, 0] position
+    p.translate(0, - indentCounter);
+}
+
+void DetViewMultiLineRenderer::drawCursor(QPainter &p, const QSize &canvasSize, const U2Region& visibleRange) {
+    CHECK(detView->isEditMode(), );
+
+    int symbolsPerLine = getSymbolsPerLine(canvasSize.width());
+    U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
+    int indentCounter = 0;
+    do {
+        // cut the extra space at the end of the sequence
+        oneLineRegion.length = qMin(visibleRange.endPos() - oneLineRegion.startPos, oneLineRegion.length);
+        singleLinePainter->drawCursor(p,
                                    QSize(canvasSize.width(), getOneLineHeight()),
                                    oneLineRegion);
 

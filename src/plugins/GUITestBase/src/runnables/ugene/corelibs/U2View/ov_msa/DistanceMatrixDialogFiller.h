@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,8 +33,8 @@ public:
         NONE
     };
 
-    DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, bool _hamming=true, bool _counts=true, bool _excludeGaps=true);
-    DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, SaveFormat _format,QString _path);
+    DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, bool hamming = true, bool counts = true, bool excludeGaps = true);
+    DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, SaveFormat format, QString path);
     DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, CustomScenario* c);
 
     virtual void commonScenario();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,6 +41,8 @@ namespace {
     const int BUFFER_SIZE = 4*1024*1024;
 
     class DbiHelper {
+        Q_DISABLE_COPY(DbiHelper)
+
         DbiConnection *con;
     public:
         DbiHelper(const U2DbiRef &dbiRef, U2OpStatus &os)

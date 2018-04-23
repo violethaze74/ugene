@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,6 +37,7 @@
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MaGraphOverview.h>
 #include <U2View/MaSimpleOverview.h>
+#include <U2View/RowHeightController.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
@@ -152,9 +153,8 @@ QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, int rowNumber) 
     MaEditorNameList *nameList = getNameListArea(os);
     GT_CHECK_RESULT(NULL != nameList, "MSAEditorNameList not found", QRect());
 
-    const int rowHeight = GTUtilsMSAEditorSequenceArea::getRowHeight(os, rowNumber);
-
-    return QRect(nameList->mapToGlobal(QPoint(0, rowHeight * rowNumber)), nameList->mapToGlobal(QPoint(nameList->width(), rowHeight * (rowNumber + 1))));
+    const U2Region rowScreenRange = getEditorUi(os)->getRowHeightController()->getRowScreenRangeByNumber(rowNumber);
+    return QRect(nameList->mapToGlobal(QPoint(0, rowScreenRange.startPos)), nameList->mapToGlobal(QPoint(nameList->width(), rowScreenRange.endPos())));
 }
 #undef GT_METHOD_NAME
 
@@ -379,6 +379,18 @@ void GTUtilsMsaEditor::undo(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "redo"
 void GTUtilsMsaEditor::redo(GUITestOpStatus &os) {
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isUndoEnabled"
+bool GTUtilsMsaEditor::isUndoEnabled(GUITestOpStatus &os) {
+    return GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo")->isEnabled();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "isRedoEnabled"
+bool GTUtilsMsaEditor::isRedoEnabled(GUITestOpStatus &os) {
+    return GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo")->isEnabled();
 }
 #undef GT_METHOD_NAME
 

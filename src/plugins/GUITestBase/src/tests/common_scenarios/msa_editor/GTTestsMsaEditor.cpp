@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -97,11 +97,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
     CHECK_SET_ERR(length == 14, "Wrong length");
 
-    int leftOffest = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(leftOffest == 1, "Wrong left offset");
+    int firstBaseIdx = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstBaseIdx == 0, "Wrong first base idx");
 
-    int rightOffest = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    CHECK_SET_ERR(rightOffest == 14, "Wrong right offset");
+    int lastBaseIdx = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(lastBaseIdx == 13, "Wrong last base idx");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_1) {
@@ -113,11 +113,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
     CHECK_SET_ERR(length == 12, "Wrong length");
 
-    int leftOffest = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(leftOffest == 1, "Wrong left offset");
+    int firstBaseIdx = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstBaseIdx == 0, "Wrong first base idx");
 
-    int rightOffest = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    CHECK_SET_ERR(rightOffest == 12, "Wrong right offset");
+    int lastBaseIdx = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(lastBaseIdx == 11, "Wrong last base idx");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_2) {
@@ -132,11 +132,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
     CHECK_SET_ERR(length == 14, "Wrong length");
 
-    int leftOffest = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(leftOffest == 1, "Wrong left offset");
+    int firstBaseIdx = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstBaseIdx == 0, "Wrong first base idx");
 
-    int rightOffest = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    CHECK_SET_ERR(rightOffest == 14, "Wrong right offset");
+    int lastBaseIdx = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(lastBaseIdx == 13, "Wrong last base idx");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_3) {
@@ -151,11 +151,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001_3) {
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
     CHECK_SET_ERR(length == 6, "Wrong length");
 
-    int leftOffest = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(leftOffest == 1, "Wrong left offset");
+    int firstBaseIdx = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstBaseIdx == 0, "Wrong first base idx");
 
-    int rightOffest = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    CHECK_SET_ERR(rightOffest == 6, "Wrong right offset");
+    int lastBaseIdx = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(lastBaseIdx == 5, "Wrong last base idx");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_4) {
@@ -170,11 +170,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001_4) {
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
     CHECK_SET_ERR(length == 3, "Wrong length");
 
-    int leftOffest = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(leftOffest == 1, "Wrong left offset");
+    int firstBaseIdx = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstBaseIdx == 0, "Wrong first base idx");
 
-    int rightOffest = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    CHECK_SET_ERR(rightOffest == 3, "Wrong right offset");
+    int lastBaseIdx = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(lastBaseIdx == 2, "Wrong last base idx");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -507,8 +507,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 // Expected state: Alignment length 14, left offset 1, right offset 14
     GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong length");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLeftOffset(os) == 1, "Wrong left offset");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getRightOffset(os) == 14, "Wrong right offset");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os) == 0, "Wrong first base idx");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os) == 13, "Wrong last base idx");
 
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
     CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
@@ -520,20 +520,20 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
 // 2. Put cursor in 5th symbol for Tettigonia_virdissima sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
-// Expected state: coordinates in status bar Ln 4/10 Col 5/14
-    CHECK_SET_ERR(line->text() == "Ln 4 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 4/10 Col 5/14
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 5 / 14", "Column is " + column->text());
 
 // 3. Put cursor in 2nd symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(1, 8));
-// Expected state: coordinates in status bar Ln 9/10 Col 2/14
-    CHECK_SET_ERR(line->text() == "Ln 9 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 9/10 Col 2/14
+    CHECK_SET_ERR(line->text() == "Seq 9 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 2 / 14", "Column is " + column->text());
 
 // 4. Select area from 8th symbol for Tettigonia_virdissima sequence(top left corner) to 13th symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
-// Expected state: coordinates in status bar Ln 4/10 Col 8/14
-    CHECK_SET_ERR(line->text() == "Ln 4 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 4/10 Col 8/14
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 8 / 14", "Column is " + column->text());
 }
 
@@ -547,8 +547,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
 // Expected state: Alignment length 14, left offset 1, right offset 14
     GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong length");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLeftOffset(os) == 1, "Wrong left offset");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getRightOffset(os) == 14, "Wrong right offset");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os) == 0, "Wrong first base idx");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os) == 13, "Wrong last base idx");
 
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
     CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
@@ -561,20 +561,20 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
 // CHANGES: click order changed
 // 3. Put cursor in 2nd symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(1, 8));
-// Expected state: coordinates in status bar Ln 9/10 Col 2/14
-    CHECK_SET_ERR(line->text() == "Ln 9 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 9/10 Col 2/14
+    CHECK_SET_ERR(line->text() == "Seq 9 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 2 / 14", "Column is " + column->text());
 
 // 2. Put cursor in 5th symbol for Tettigonia_virdissima sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
-// Expected state: coordinates in status bar Ln 4/10 Col 5/14
-    CHECK_SET_ERR(line->text() == "Ln 4 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 4/10 Col 5/14
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 5 / 14", "Column is " + column->text());
 
 // 4. Select area from 8th symbol for Tettigonia_virdissima sequence(top left corner) to 13th symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
-// Expected state: coordinates in status bar Ln 4/10 Col 8/14
-    CHECK_SET_ERR(line->text() == "Ln 4 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 4/10 Col 8/14
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 8 / 14", "Column is " + column->text());
 }
 
@@ -588,8 +588,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
 // Expected state: Alignment length 14, left offset 1, right offset 14
     GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong length");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLeftOffset(os) == 1, "Wrong left offset");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getRightOffset(os) == 14, "Wrong right offset");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os) == 0, "Wrong first base idx");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os) == 13, "Wrong last base idx");
 
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
     CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
@@ -601,8 +601,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
 
 // 2. Put cursor in 5th symbol for Tettigonia_virdissima sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
-// Expected state: coordinates in status bar Ln 4/10 Col 5/14
-    CHECK_SET_ERR(line->text() == "Ln 4 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 4/10 Col 5/14
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 5 / 14", "Column is " + column->text());
 
 // CHANGES: close and open MDI window, hide projectTreeView
@@ -626,14 +626,14 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
 
 // 3. Put cursor in 2nd symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(1, 8));
-// Expected state: coordinates in status bar Ln 9/10 Col 2/14
-    CHECK_SET_ERR(line->text() == "Ln 9 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 9/10 Col 2/14
+    CHECK_SET_ERR(line->text() == "Seq 9 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 2 / 14", "Column is " + column->text());
 
 // 4. Select area from 8th symbol for Tettigonia_virdissima sequence(top left corner) to 13th symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
-// Expected state: coordinates in status bar Ln 4/10 Col 8/14
-    CHECK_SET_ERR(line->text() == "Ln 4 / 10", "Line is " + line->text());
+// Expected state: coordinates in status bar Seq 4/10 Col 8/14
+    CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 8 / 14", "Column is " + column->text());
 }
 
@@ -648,8 +648,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     // Expected state: Aligniment length 14, left offset 1, right offset 14
     GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong length");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLeftOffset(os) == 1, "Wrong left offset");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getRightOffset(os) == 14, "Wrong right offset");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os) == 0, "Wrong first base idx");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os) == 13, "Wrong last base idx");
 
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
     CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
@@ -688,8 +688,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     // Expected state: Aligniment length 14, left offset 1, right offset 14
     GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong length");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLeftOffset(os) == 1, "Wrong left offset");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getRightOffset(os) == 14, "Wrong right offset");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os) == 0, "Wrong first base idx");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os) == 13, "Wrong last base idx");
 
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
     CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
@@ -732,8 +732,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     // Expected state: Aligniment length 14, left offset 1, right offset 14
     GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong length");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLeftOffset(os) == 1, "Wrong left offset");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getRightOffset(os) == 14, "Wrong right offset");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os) == 0, "Wrong first base idx");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os) == 13, "Wrong last base idx");
 
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
     CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
@@ -976,8 +976,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 //     2. Create bookmark. Rename "New bookmark" to "start bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "start bookmark");
 
-    const int startRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int startLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int startRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    const int startLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 300));
@@ -990,8 +990,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "middle bookmark");
 
-    const int midRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int midLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
@@ -1003,33 +1002,31 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "end bookmark");
 
-    const int endRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int endLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     Expected state: clicking on each bookmark will recall corresponding MSA position
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "start bookmark");
     GTGlobals::sleep(500);
 
-    int RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    int LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    int RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    int LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
     CHECK_SET_ERR(startRO == RO && startLO == LO, "start bookmark offsets aren't equal to the expected");
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "middle bookmark");
     GTGlobals::sleep(500);
 
-    RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(midRO == RO && midLO == LO, "middle bookmark offsets aren't equal to the expected");
-
+    RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(midLO == LO, QString("middle bookmark offsets aren't equal to the expected: midLO=%1 LO=%2").arg(midLO).arg(LO));
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "end bookmark");
     GTGlobals::sleep(500);
 
-    RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(endRO == RO && endLO == LO, "end bookmark offsets aren't equal to the expected");
-
+    RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    //CHECK_SET_ERR(endRO == RO && endLO == LO, "end bookmark offsets aren't equal to the expected");
+    CHECK_SET_ERR(endLO == LO, QString("end bookmark offsets aren't equal to the expected: endLO=%3 LO=%4").arg(endLO).arg(LO));
 //     7. Delete Start bookmark
-    GTUtilsBookmarksTreeView::deleteBookmark(os, "end bookmark");
+    GTUtilsBookmarksTreeView::deleteBookmark(os, "start bookmark");
 
 //     Expected state: start bookmark isn't present
     QTreeWidgetItem *startBookmark = GTUtilsBookmarksTreeView::findItem(os, "start bookmark", GTGlobals::FindOptions(false));
@@ -1045,8 +1042,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  //CHANGES: default names used
 //     2. Create bookmark. Do not rename the new bookmark.
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI");
 
-    const int startRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int startLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int startRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    const int startLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 300));
@@ -1059,8 +1056,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  //CHANGES: default names used
 //     4. Create bookmark. Do not rename the new bookmark.
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI");
 
-    const int midRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int midLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
@@ -1072,30 +1068,29 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  //CHANGES: default names used
 //     6. Create bookmark. Do not rename the new bookmark.
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI");
 
-    const int endRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int endLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     Expected state: clicking on each bookmark will recall corresponding MSA position
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "New bookmark");
     GTGlobals::sleep(500);
 
-    int RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    int LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    int RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    int LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
     CHECK_SET_ERR(startRO == RO && startLO == LO, "start bookmark offsets aren't equal to the expected");
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "New bookmark 2");
     GTGlobals::sleep(500);
 
-    RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(midRO == RO && midLO == LO, "middle bookmark offsets aren't equal to the expected");
+    RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(midLO == LO, QString("middle bookmark offsets aren't equal to the expected: midLO=%1 LO=%2").arg(midLO).arg(LO));
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "New bookmark 3");
     GTGlobals::sleep(500);
 
-    RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(endRO == RO && endLO == LO, "end bookmark offsets aren't equal to the expected");
+    RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(endLO == LO,  QString("end bookmark offsets aren't equal to the expected: endLO=%1 LO=%2").arg(endLO).arg(LO));
 
 //     7. Delete Start bookmark
     GTUtilsBookmarksTreeView::deleteBookmark(os, "New bookmark");
@@ -1114,8 +1109,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
 //     2. Create bookmark. Rename "New bookmark" to "start bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "start bookmark");
 
-    const int startRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int startLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int startRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    const int startLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 200));
@@ -1128,8 +1123,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
 //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "middle bookmark");
 
-    const int midRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int midLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 510));
@@ -1141,30 +1135,29 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
 //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "end bookmark");
 
-    const int endRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int endLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     Expected state: clicking on each bookmark will recall corresponding MSA position
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "start bookmark");
     GTGlobals::sleep(500);
 
-    int RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    int LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    int RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    int LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
     CHECK_SET_ERR(startRO == RO && startLO == LO, "start bookmark offsets aren't equal to the expected");
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "middle bookmark");
     GTGlobals::sleep(500);
 
-    RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(midRO == RO && midLO == LO, "middle bookmark offsets aren't equal to the expected");
+    RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(midLO == LO, QString("middle bookmark offsets aren't equal to the expected: midLO=%1 LO=%2").arg(midLO).arg(LO));
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "end bookmark");
     GTGlobals::sleep(500);
 
-    RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(endRO == RO && endLO == LO, "end bookmark offsets aren't equal to the expected");
+    RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(endLO == LO, QString("end bookmark offsets aren't equal to the expected: endLO=%1 LO=%2").arg(endLO).arg(LO));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008_3) {
@@ -1176,8 +1169,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_3) {
 //     2. Create bookmark. Rename "New bookmark" to "start bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [m] HIV-1", "start bookmark");
 
-    const int startRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int startLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int startPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 600));
@@ -1190,8 +1182,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_3) {
 //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [m] HIV-1", "middle bookmark");
 
-    const int midRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int midLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int midPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1000));
@@ -1203,30 +1194,26 @@ GUI_TEST_CLASS_DEFINITION(test_0008_3) {
 //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [m] HIV-1", "end bookmark");
 
-    const int endRO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    const int endLO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
+    const int endPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
 //     Expected state: clicking on each bookmark will recall corresponding MSA position
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "start bookmark");
     GTGlobals::sleep(500);
 
-    int RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    int LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(startRO == RO && startLO == LO, "start bookmark offsets aren't equal to the expected");
+    int pos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(startPos == pos, "start bookmark offsets aren't equal to the expected");
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "middle bookmark");
     GTGlobals::sleep(500);
 
-    RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(midRO == RO && midLO == LO, "middle bookmark offsets aren't equal to the expected");
+    pos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(midPos == pos, "middle bookmark offsets aren't equal to the expected");
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "end bookmark");
     GTGlobals::sleep(500);
 
-    RO = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
-    LO = GTUtilsMSAEditorSequenceArea::getLeftOffset(os);
-    CHECK_SET_ERR(endRO == RO && endLO == LO, "end bookmark offsets aren't equal to the expected");
+    pos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(endPos == pos, "end bookmark offsets aren't equal to the expected");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
@@ -2324,10 +2311,10 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) { //DIFFERENCE: Line label is tested
 //2. Select the thirs character in "Phaneroptera_falcata"(G)
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 0));
 
-//Expected state: Statistics "Ln" in right bottom is "Ln 1 / 10"
+//Expected state: Statistics "Seq" in right bottom is "Seq 1 / 10"
     QLabel* lineLabel = GTWidget::findExactWidget<QLabel *>(os, "Line");
     CHECK_SET_ERR(lineLabel, "Line label not found");
-    CHECK_SET_ERR(lineLabel->text() == "Ln 1 / 10", "Expected text: Ln 1 / 10. Found: " + lineLabel->text());
+    CHECK_SET_ERR(lineLabel->text() == "Seq 1 / 10", "Expected text: Seq 1 / 10. Found: " + lineLabel->text());
 
 //3. Select and delete 5 lines
     GTUtilsMsaEditor::selectRows(os, 3, 7);
@@ -2335,8 +2322,8 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) { //DIFFERENCE: Line label is tested
 
 //4. Select char at 4 position in "Phaneroptera_falcata"(A)
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(3, 0));
-//Expected state: Gaps are inserted, statistics "Ln" in right bottom is "Ln 1 / 5"
-    CHECK_SET_ERR(lineLabel->text() == "Ln 1 / 5", "Expected text: Ln 1 / 5. Found: " + lineLabel->text());
+//Expected state: Gaps are inserted, statistics "Seq" in right bottom is "Seq 1 / 5"
+    CHECK_SET_ERR(lineLabel->text() == "Seq 1 / 5", "Expected text: Seq 1 / 5. Found: " + lineLabel->text());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0023){
@@ -2365,12 +2352,12 @@ GUI_TEST_CLASS_DEFINITION(test_0024){
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0,0));
     GTMouseDriver::click();
 //3. press toolbar button "zoom to selection"
-    int initOffset  = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
+    int initOffset  = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     //offsets are used to check zooming
     QAbstractButton* zoom_to_sel = GTAction::button(os,"Zoom To Selection");
     GTWidget::click(os,zoom_to_sel);
 
-    int finOffset  = GTUtilsMSAEditorSequenceArea::getRightOffset(os);
+    int finOffset  = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     CHECK_SET_ERR(initOffset>=(finOffset*2-8), "inital offset: " + QString().setNum(initOffset) + " final offset: " + QString().setNum(finOffset));
 //Expected state: MSA is zoomed
 
@@ -2379,7 +2366,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024){
     QAbstractButton* reset_zoom = GTAction::button(os,"Reset Zoom");
     GTWidget::click(os,reset_zoom);
     GTGlobals::sleep(500);
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getRightOffset(os)==initOffset, "MSA is not zoomed back");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os)==initOffset, "MSA is not zoomed back");
 //Expected state: MSA is zoomed back
 
 }
@@ -2497,7 +2484,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2_linux){
     qint64 smallSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
 
 //    CHECK_SET_ERR(bigSize==4785325 && smallSize>914000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
-	  CHECK_SET_ERR(bigSize == 5098695 && smallSize>997000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
+      CHECK_SET_ERR(bigSize == 5098695 && smallSize>996000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
 //    Expected state: image is exported
 }
 
@@ -2601,15 +2588,14 @@ GUI_TEST_CLASS_DEFINITION(test_0029){
     //    2. Select first sequence
         GTUtilsMSAEditorSequenceArea::click(os,QPoint(0,0));
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<MSAE_MENU_EXPORT<<"Save sequence",GTGlobals::UseKey));
-        Runnable* r = new ExportSelectedSequenceFromAlignment(os,testDir + "_common_data/scenarios/sandbox/export.fasta",ExportSelectedSequenceFromAlignment::FASTA,true);
+        Runnable* r = new ExportSelectedSequenceFromAlignment(os,testDir + "_common_data/scenarios/sandbox/",ExportSelectedSequenceFromAlignment::FASTA,true);
         GTUtilsDialog::waitForDialog(os, r);
 
         GTMenu::showContextMenu(os,GTUtilsMdi::activeWindow(os));
         GTGlobals::sleep();
         GTUtilsTaskTreeView::waitTaskFinished(os);
-        //GTMouseDriver::click(os,Qt::RightButton);
 
-        GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"export.fasta"));
+        GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"Phaneroptera_falcata.fa"));
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"Phaneroptera_falcata"));
         GTGlobals::sleep();
 
@@ -2642,12 +2628,12 @@ GUI_TEST_CLASS_DEFINITION(test_0029_1){//DIFFERENCE:gaps are trimmed, FASTQ form
 //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os,QPoint(0,2));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<MSAE_MENU_EXPORT<<"Save sequence",GTGlobals::UseKey));
-    Runnable* r = new ExportSelectedSequenceFromAlignment(os,testDir + "_common_data/scenarios/sandbox/export.fasta",ExportSelectedSequenceFromAlignment::FASTQ,false);
+    Runnable* r = new ExportSelectedSequenceFromAlignment(os,testDir + "_common_data/scenarios/sandbox/",ExportSelectedSequenceFromAlignment::FASTQ,false);
     GTUtilsDialog::waitForDialog(os, r);
 
     GTMouseDriver::click(Qt::RightButton);
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"export.fastq"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"Bicolorana_bicolor_EF540830.fastq"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"Bicolorana_bicolor_EF540830"));
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
@@ -2678,12 +2664,12 @@ GUI_TEST_CLASS_DEFINITION(test_0029_2){
 //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os,QPoint(0,2));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<MSAE_MENU_EXPORT<<"Save sequence",GTGlobals::UseKey));
-    Runnable* r = new ExportSelectedSequenceFromAlignment(os,testDir + "_common_data/scenarios/sandbox/export.fasta",ExportSelectedSequenceFromAlignment::Genbank,true,false);
+    Runnable* r = new ExportSelectedSequenceFromAlignment(os,testDir + "_common_data/scenarios/sandbox/",ExportSelectedSequenceFromAlignment::Genbank,true,false);
     GTUtilsDialog::waitForDialog(os, r);
 
     GTMouseDriver::click(Qt::RightButton);
 
-    GTFileDialog::openFile(os,testDir + "_common_data/scenarios/sandbox/","export.gb");
+    GTFileDialog::openFile(os,testDir + "_common_data/scenarios/sandbox/","Bicolorana_bicolor_EF540830.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    3. use MSA area context menu->export->save sequence
 //    Exptcted state: Export sequence dialog appeared
@@ -3248,11 +3234,11 @@ void test_0039_function(HI::GUITestOpStatus &os, int comboNum, QString extention
     //    File format: CLUSTALW(use other formats too, check extension change)
     //    Amino translation: Standart genetic code
     //    Add document to project: checked
-	GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
-		<< "action_project__export_to_amino_action"));
-	GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, comboNum, UGUITest::testDir + "_common_data/scenarios/sandbox/COI_transl.aln"));
-	GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
+        << "action_project__export_to_amino_action"));
+    GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, comboNum, UGUITest::testDir + "_common_data/scenarios/sandbox/COI_transl.aln"));
+    GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: transl.aln appeared in project
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"COI_transl." + extention));
@@ -3997,7 +3983,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
                                                   << "export sequences as alignment"));
     GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    "Use Genbank "SOURCE" tags..." checkbox
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
@@ -4165,6 +4151,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
 //    Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    Open "Color schemes" dialog.
     class customAppSettingsFiller: public CustomScenario{
     public:
@@ -4172,7 +4159,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "", GTFileDialogUtils::Choose));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, QFileInfo(sandBoxDir).absoluteFilePath(), "", GTFileDialogUtils::Choose));
             GTWidget::click(os, GTWidget::findWidget(os, "colorsDirButton", dialog));
 
             GTGlobals::sleep(500);
@@ -4619,14 +4606,20 @@ GUI_TEST_CLASS_DEFINITION(test_0072){
         GTMouseDriver::scroll(-1);
         GTGlobals::sleep(100);
     }
-    CHECK_SET_ERR(hbar->value() == 3, QString("scroll down works wrong. Scrollbar has value: %1").arg(hbar->value()));
+
+    int scrollBarOffset = hbar->value();
+    int minCharWidth = 12;
+    int maxCharWidth = 24;
+    CHECK_SET_ERR(scrollBarOffset % 3 == 0 && scrollBarOffset >= 3 * minCharWidth && scrollBarOffset <= 3 * maxCharWidth,
+                  QString("scroll down works wrong. Scrollbar has value: %1").arg(hbar->value()));
     GTGlobals::sleep(500);
 
     for(int i = 0; i<2; i++){
         GTMouseDriver::scroll(1);
         GTGlobals::sleep(100);
     }
-    CHECK_SET_ERR(hbar->value() == 1, QString("scroll up works wrong. Scrollbar has value: %1").arg(hbar->value()));
+    scrollBarOffset = hbar->value();
+    CHECK_SET_ERR(scrollBarOffset >= minCharWidth && scrollBarOffset <= maxCharWidth, QString("scroll up works wrong. Scrollbar has value: %1").arg(hbar->value()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0073){

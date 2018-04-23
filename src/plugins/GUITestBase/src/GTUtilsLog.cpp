@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -102,7 +102,7 @@ void GTUtilsLog::checkContainsMessage(HI::GUITestOpStatus &os, const GTLogTracer
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getErrors"
-QStringList GTUtilsLog::getErrors(HI::GUITestOpStatus &os, const GTLogTracer &logTracer) {
+QStringList GTUtilsLog::getErrors(HI::GUITestOpStatus & /*os*/, const GTLogTracer &logTracer) {
     QStringList result;
     foreach (LogMessage *message, logTracer.getMessages()) {
         if (LogLevel_ERROR == message->level) {

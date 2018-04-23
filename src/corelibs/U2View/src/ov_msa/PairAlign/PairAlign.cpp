@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -99,10 +99,11 @@ PairAlign::PairAlign(MSAEditor* _msa)
 
     initLayout();
     initSaveController();
-    connectSignals();
     initParameters();
-
+    
     U2WidgetStateStorage::restoreWidgetState(savableTab);
+
+    connectSignals();
 
     checkState();
 }
@@ -122,7 +123,7 @@ bool PairAlign::isValidSequenceId(qint64 sequenceId) const {
 }
 
 void PairAlign::initParameters() {
-    if (2 == msa->getCurrentSelection().height()) {
+    if (msa->getCurrentSelection().height() == 2) {
         int selectionPos = msa->getCurrentSelection().y();
         qint64 firstRowId = msa->getRowByLineNumber(selectionPos)->getRowId();
         firstSeqSelectorWC->setSequenceId(firstRowId);
@@ -139,7 +140,12 @@ void PairAlign::initParameters() {
 
     inNewWindowCheckBox->setChecked(pairwiseAlignmentWidgetsSettings->inNewWindow);
 
-    outputFileLineEdit->setText(pairwiseAlignmentWidgetsSettings->resultFileName);
+    QString outputFileName = pairwiseAlignmentWidgetsSettings->resultFileName;
+    if (outputFileName.isEmpty()) {
+        saveController->setPath(getDefaultFilePath()); // controller will roll file name here
+    } else {
+        outputFileLineEdit->setText(outputFileName);
+    }
     outputFileLineEdit->setEnabled(inNewWindowCheckBox->isChecked());
     outputFileSelectButton->setEnabled(inNewWindowCheckBox->isChecked());
 
@@ -149,10 +155,17 @@ void PairAlign::initParameters() {
     SAFE_POINT(par != NULL, "AlignmentAlgorithmsRegistry is NULL.", );
     QStringList algList = par->getAvailableAlgorithmIds(PairwiseAlignment);
     algorithmListComboBox->addItems(algList);
-    int index = algorithmListComboBox->findText(pairwiseAlignmentWidgetsSettings->algorithmName);
-    if (index != -1) {
-        algorithmListComboBox->setCurrentIndex(index);
+    if (pairwiseAlignmentWidgetsSettings->algorithmName.isEmpty()) {
+        pairwiseAlignmentWidgetsSettings->algorithmName = algList[0];
+    } else {
+        int index = algorithmListComboBox->findText(pairwiseAlignmentWidgetsSettings->algorithmName);
+        if (index != -1) {
+            algorithmListComboBox->setCurrentIndex(index);
+        } else {
+            pairwiseAlignmentWidgetsSettings->algorithmName = algList[0];
+        }
     }
+    sl_algorithmSelected(pairwiseAlignmentWidgetsSettings->algorithmName);
 
     lblMessage->setStyleSheet(
         "color: " + L10N::errorColorLabelStr() + ";"
@@ -181,7 +194,6 @@ void PairAlign::updateWarningMessage(int type) {
 
 void PairAlign::initSaveController() {
     SaveDocumentControllerConfig config;
-    config.defaultFileName = getDefaultFilePath();
     config.defaultFormatId = BaseDocumentFormats::CLUSTAL_ALN;
     config.fileDialogButton = outputFileSelectButton;
     config.fileNameEdit = outputFileLineEdit;
@@ -191,6 +203,7 @@ void PairAlign::initSaveController() {
     const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::CLUSTAL_ALN;
 
     saveController = new SaveDocumentController(config, formats, this);
+    saveController->setPath(getDefaultFilePath()); // controller will roll file name here
 }
 
 QString PairAlign::getDefaultFilePath() {
@@ -220,19 +233,18 @@ void PairAlign::sl_checkState(){
 void PairAlign::sl_alignmentChanged() {
     const DNAAlphabet* dnaAlphabet = msa->getMaObject()->getAlphabet();
     SAFE_POINT(NULL != dnaAlphabet, "Alignment alphabet is not defined.", );
-    if(dnaAlphabet->getId() != pairwiseAlignmentWidgetsSettings->customSettings.value(PairwiseAlignmentTaskSettings::ALPHABET, "").toString()) {
-        pairwiseAlignmentWidgetsSettings->customSettings.insert("alphabet", dnaAlphabet->getId());
 
-        QString curAlgorithmId = pairwiseAlignmentWidgetsSettings->algorithmName;
-        AlignmentAlgorithm* alg = getAlgorithmById(curAlgorithmId);
-        SAFE_POINT(NULL != alg, QString("Algorithm %1 not found.").arg(curAlgorithmId), );
-        alphabetIsOk = alg->checkAlphabet(dnaAlphabet);
+    pairwiseAlignmentWidgetsSettings->customSettings.insert("alphabet", dnaAlphabet->getId());
 
-        if(NULL != settingsWidget) {
-            settingsWidget->updateWidget();
-        }
-        checkState();
+    QString curAlgorithmId = pairwiseAlignmentWidgetsSettings->algorithmName;
+    AlignmentAlgorithm* alg = getAlgorithmById(curAlgorithmId);
+    SAFE_POINT(NULL != alg, QString("Algorithm %1 not found.").arg(curAlgorithmId), );
+    alphabetIsOk = alg->checkAlphabet(dnaAlphabet);
+
+    if (settingsWidget != NULL) {
+        settingsWidget->updateWidget();
     }
+    checkState();
 }
 
 void PairAlign::checkState() {
@@ -366,13 +378,11 @@ void PairAlign::sl_alignButtonPressed() {
     DbiConnection con(msaRef.dbiRef, os);
     CHECK_OP(os, );
 
-    U2DataId firstSeqId = getSequenceIdByRowId(msa,
-        pairwiseAlignmentWidgetsSettings->firstSequenceId, os);
+    U2DataId firstSeqId = getSequenceIdByRowId(msa, pairwiseAlignmentWidgetsSettings->firstSequenceId, os);
     CHECK_OP(os, );
     U2EntityRef firstSequenceRef = U2EntityRef(msaRef.dbiRef, firstSeqId);
 
-    U2DataId secondSeqId = getSequenceIdByRowId(msa,
-        pairwiseAlignmentWidgetsSettings->secondSequenceId, os);
+    U2DataId secondSeqId = getSequenceIdByRowId(msa, pairwiseAlignmentWidgetsSettings->secondSequenceId, os);
     CHECK_OP(os, );
     U2EntityRef secondSequenceRef = U2EntityRef(msaRef.dbiRef, secondSeqId);
 

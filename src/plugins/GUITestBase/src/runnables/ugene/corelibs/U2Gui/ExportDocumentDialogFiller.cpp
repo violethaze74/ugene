@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,16 +49,17 @@ path(_path), name(_name), useMethod(method), format(_format), compressFile(compr
         path = QDir::toNativeSeparators(__path);
     }
 
-    comboBoxItems[Genbank] = "GenBank";
-    comboBoxItems[GFF] = "GFF";
-    comboBoxItems[CLUSTALW] = "CLUSTALW";
     comboBoxItems[BAM] = "BAM";
-    comboBoxItems[VCF] = "VCFv4";
-    comboBoxItems[TEXT] = "Plain text";
-    comboBoxItems[NWK] = "Newick Standard";
+    comboBoxItems[CLUSTALW] = "CLUSTALW";
     comboBoxItems[FASTA] = "FASTA";
-    comboBoxItems[VectorNTI] = "Vector NTI sequence";
+    comboBoxItems[GFF] = "GFF";
+    comboBoxItems[Genbank] = "GenBank";
+    comboBoxItems[MEGA] = "Mega";
+    comboBoxItems[NWK] = "Newick Standard";
+    comboBoxItems[TEXT] = "Plain text";
     comboBoxItems[UGENEDB] = "UGENE Database";
+    comboBoxItems[VCF] = "VCFv4";
+    comboBoxItems[VectorNTI] = "Vector NTI sequence";
 }
 
 #define GT_METHOD_NAME "commonScenario"

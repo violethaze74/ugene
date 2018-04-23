@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,6 +44,7 @@
 #include <U2Core/ReverseSequenceTask.h>
 #include <U2Core/SelectionUtils.h>
 #include <U2Core/SequenceUtils.h>
+#include <U2Core/Settings.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -53,6 +54,7 @@
 #include <U2Gui/CreateObjectRelationDialogController.h>
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/EditSequenceDialogController.h>
+#include <U2Gui/EditSettingsDialog.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
@@ -76,6 +78,8 @@
 #include "AnnotatedDNAViewTasks.h"
 #include "AnnotationsTreeView.h"
 #include "AutoAnnotationUtils.h"
+#include "DetView.h"
+#include "DetViewSequenceEditor.h"
 #include "GraphMenu.h"
 
 #ifdef max
@@ -132,6 +136,10 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     findPatternAction->setShortcutContext(Qt::WindowShortcut);
     connect(findPatternAction, SIGNAL(triggered()), SLOT(sl_onFindPatternClicked()));
 
+    editSettingsAction = new QAction(tr("Annotations settings on sequence editing..."), this);
+    editSettingsAction->setObjectName(ACTION_EDIT_SEQUENCE_SETTINGS);
+    connect(editSettingsAction, SIGNAL(triggered()), this, SLOT(sl_editSettings()));
+
     addSequencePart = new QAction(tr("Insert subsequence..."), this);
     addSequencePart->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_I));
     addSequencePart->setObjectName(ACTION_EDIT_INSERT_SUBSEQUENCE);
@@ -181,6 +189,7 @@ QWidget* AnnotatedDNAView::createWidget() {
     connect(mainSplitter, SIGNAL(splitterMoved(int, int)), SLOT(sl_splitterMoved(int, int)));
 
     mainSplitter->addWidget(codonTableView);
+    mainSplitter->setCollapsible(mainSplitter->indexOf(codonTableView), false);
 
     mainSplitter->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(mainSplitter, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested()));
@@ -585,6 +594,7 @@ void AnnotatedDNAView::addEditMenu(QMenu* m) {
         rm->addAction(annotationsView->editAction);
     }
 
+    rm->addAction(editSettingsAction);
     rm->addAction(addSequencePart);
     rm->addAction(replaceSequencePart);
     sl_selectionChanged();
@@ -1018,6 +1028,7 @@ void AnnotatedDNAView::addGraphs(ADVSequenceObjectContext* seqCtx)
     foreach (ADVSequenceWidget* seqWidget, seqCtx->getSequenceWidgets())
     {
         ADVSingleSequenceWidget* singleSeqWidget = qobject_cast<ADVSingleSequenceWidget*>(seqWidget);
+        SAFE_POINT(NULL != singleSeqWidget, "singleSeqWidget is NULL", );
         GraphMenuAction* graphMenuAction = new GraphMenuAction(singleSeqWidget->getSequenceObject()->getAlphabet());
         if (singleSeqWidget != NULL) {
             singleSeqWidget->addADVSequenceWidgetActionToViewsToolbar(graphMenuAction);
@@ -1142,6 +1153,26 @@ void AnnotatedDNAView::updateState(const AnnotatedDNAViewState& s) {
     }
 
     annotationsView->updateState(s.stateData);
+}
+
+void AnnotatedDNAView::sl_editSettings() {
+    Settings* s = AppContext::getSettings();
+    SAFE_POINT(s != NULL, L10N::nullPointerError("AppContext::settings"), );
+    EditSettings settings;
+    settings.annotationStrategy =
+                (U1AnnotationUtils::AnnotationStrategyForResize)s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
+                            U1AnnotationUtils::AnnotationStrategyForResize_Resize).toInt();
+    settings.recalculateQualifiers = s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool();
+
+    QObjectScopedPointer<EditSettingsDialog> dlg = new EditSettingsDialog(settings, getSequenceWidgetInFocus());
+    int res = dlg->exec();
+    SAFE_POINT(!dlg.isNull(), "EditSettingsDialog is null!", );
+
+    if (res == QDialog::Accepted) {
+        const EditSettings& newSettings = dlg->getSettings();
+        s->setValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY, newSettings.annotationStrategy);
+        s->setValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, newSettings.recalculateQualifiers);
+    }
 }
 
 void AnnotatedDNAView::sl_addSequencePart() {
@@ -1306,6 +1337,24 @@ void AnnotatedDNAView::sl_sequenceModifyTaskStateChanged() {
                 }
             }
         }
+
+        ModifySequenceContentTask* modifyContentTask = qobject_cast<ModifySequenceContentTask*>(t);
+        if (modifyContentTask != NULL) {
+            qint64 seqSizeDelta = modifyContentTask->getSequenceLengthDelta();
+            if (seqSizeDelta > 0) { // try keeping all maximized zooms in max state
+                U2Region newMaxRange(0, modifyContentTask->getSequenceObject()->getSequenceLength());
+                U2Region oldMaxRange(0,  newMaxRange.length - seqSizeDelta);
+                foreach (ADVSequenceObjectContext * seqCtx, seqContexts) {
+                    if (seqCtx->getSequenceGObject() == modifyContentTask->getSequenceObject()) {
+                        foreach (ADVSequenceWidget *w, seqCtx->getSequenceWidgets()) {
+                            if (w->getVisibleRange() == oldMaxRange) {
+                                w->setVisibleRange(newMaxRange);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         updateMultiViewActions();
         emit si_sequenceModified(seqCtx);
     }
@@ -1316,11 +1365,18 @@ void AnnotatedDNAView::sl_paste(){
     SAFE_POINT(pasteFactory != NULL, "adFactory is null", );
 
     bool focus = false;
+    int pastePoint = -1;
     ADVSingleSequenceWidget *wgt = qobject_cast<ADVSingleSequenceWidget*> (focusedWidget);
     if (wgt != NULL) {
         QList<GSequenceLineView*> views = wgt->getLineViews();
         foreach (GSequenceLineView* v, views) {
             if (v->hasFocus()) {
+                if (qobject_cast<DetView*>(v) != NULL) {
+                    DetView* detView = qobject_cast<DetView*>(v);
+                    if (detView->isEditMode()) {
+                        pastePoint = detView->getEditor()->getCursorPosition();
+                    }
+                }
                 focus = true;
                 break;
             }
@@ -1333,14 +1389,15 @@ void AnnotatedDNAView::sl_paste(){
     }
     ADVSequenceObjectContext *seqCtx = getSequenceInFocus();
     SAFE_POINT(seqCtx != NULL, tr("No sequence in focus"), );
-    pasteQueue.insert(task, seqCtx);
+    pasteQueue.insert(task, PasteLocation(pastePoint, seqCtx));
 
 
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
 void AnnotatedDNAView::sl_pasteFinished(Task* _pasteTask){
-    ADVSequenceObjectContext *seqCtx = pasteQueue.take(_pasteTask);
+    PasteLocation loc = pasteQueue.take(_pasteTask);
+    ADVSequenceObjectContext *seqCtx = loc.seqCtx;
     if (seqCtx == NULL){
         return;
     }
@@ -1372,8 +1429,8 @@ void AnnotatedDNAView::sl_pasteFinished(Task* _pasteTask){
             seq.seq.append(dnaObj.seq);
         }
     }
-
-    Task *t = new ModifySequenceContentTask(BaseDocumentFormats::FASTA, obj, U2Region(obj->getSequenceLength(), 0), seq);
+    Task *t = new ModifySequenceContentTask(BaseDocumentFormats::FASTA, obj,
+                                            U2Region(loc.pastePos != -1 ? loc.pastePos : obj->getSequenceLength(), 0), seq);
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_sequenceModifyTaskStateChanged()));
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
     seqCtx->getSequenceSelection()->clear();

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -58,9 +58,8 @@ bool SequenceAreaRenderer::drawContent(QPainter &painter, const U2Region &region
     //Use dots to draw regions, which are similar to reference sequence
     highlightingScheme->setUseDots(seqAreaWgt->getUseDotsCheckedState());
 
-    int rowHeight = 0;
     foreach (const int rowIndex, seqIdx) {
-        rowHeight = drawRow(painter, ma, rowIndex, region, xStart, yStart);
+        drawRow(painter, ma, rowIndex, region, xStart, yStart);
         yStart += ui->getRowHeightController()->getRowHeight(rowIndex);
     }
 

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -49,6 +49,7 @@ public:
     void init(GScrollBar *hScrollBar, GScrollBar *vScrollBar);
 
     QPoint getScreenPosition() const;       // in pixels
+    QPoint getGlobalMousePosition(const QPoint& mousePos) const;
 
     void updateHorizontalScrollBar();
     void updateVerticalScrollBar();
