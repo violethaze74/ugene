@@ -29,6 +29,7 @@
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ClipboardController.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
@@ -36,6 +37,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/ModifySequenceObjectTask.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2Msa.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -236,7 +238,7 @@ void DetViewSequenceEditor::insertChar(int character) {
         r = ctx->getSequenceSelection()->getSelectedRegions().first();
         ctx->getSequenceSelection()->clear();
     }
-    runModifySeqTask(seqObj, r, seq);
+    modifySequence(seqObj, r, seq);
 
     setCursor(r.startPos + 1);
 }
@@ -257,7 +259,7 @@ void DetViewSequenceEditor::deleteChar(int key) {
             qSort(regions);
             for (int i = 0; i < regions.size(); i++) {
                 // can cause problems
-                runModifySeqTask(seqObj, regions[i], DNASequence());
+                modifySequence(seqObj, regions[i], DNASequence());
             }
             return;
         } else {
@@ -292,10 +294,10 @@ void DetViewSequenceEditor::deleteChar(int key) {
         return;
     }
     CHECK(!regionToRemove.isEmpty(), );
-    runModifySeqTask(seqObj, regionToRemove, DNASequence());
+    modifySequence(seqObj, regionToRemove, DNASequence());
 }
 
-void DetViewSequenceEditor::runModifySeqTask(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence) {
+void DetViewSequenceEditor::modifySequence(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence) {
     Settings* s = AppContext::getSettings();
     U1AnnotationUtils::AnnotationStrategyForResize strategy =
                 (U1AnnotationUtils::AnnotationStrategyForResize)s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
@@ -346,6 +348,38 @@ void DetViewSequenceEditor::sl_changeCursorColor() {
 
 void DetViewSequenceEditor::sl_objectLockStateChanged() {
     editAction->setDisabled(!isEditMode() && view->getSequenceObject()->isStateLocked());
+}
+
+void DetViewSequenceEditor::sl_paste(Task* task) {
+    PasteTask* pasteTask = qobject_cast<PasteTask*>(task);
+    CHECK(pasteTask != NULL && !pasteTask->isCanceled(), );
+
+    const QList<Document*>& docs = pasteTask->getDocuments();
+    CHECK(docs.length() != 0, );
+
+    U2OpStatusImpl os;
+    const QList<DNASequence>& sequences = PasteUtils::getSequences(docs, os);
+    DNASequence seq;
+    foreach(const DNASequence& dnaObj, sequences) {
+        if (seq.alphabet == NULL){
+            seq.alphabet = dnaObj.alphabet;
+        }
+        const DNAAlphabet* newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(dnaObj.alphabet, seq.alphabet);
+        if (newAlphabet != NULL) {
+            seq.alphabet = newAlphabet;
+            seq.seq.append(dnaObj.seq);
+        }
+    }
+    U2SequenceObject* seqObj = view->getSequenceObject();
+    SAFE_POINT(seqObj != NULL, "SeqObject is NULL", );
+    if (seqObj->getAlphabet()->getId() != seq.alphabet->getId()) {
+        coreLog.error(tr("The sequence & clipboard content have different alphabet"));
+        return;
+    }
+
+    modifySequence(seqObj, U2Region(cursor, 0), seq);
+
+    setCursor(cursor + seq.length());
 }
 
 } // namespace
