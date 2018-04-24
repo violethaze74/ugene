@@ -52,6 +52,8 @@ public:
 
     void addCopyMenu(QMenu* m);
 
+    void connectSequence(ADVSequenceObjectContext* s);
+
     static QAction* createPasteSequenceAction(QObject *parent);
 
 public slots:
@@ -70,7 +72,6 @@ public slots:
     ADVSequenceObjectContext* getSequenceContext() const;
 
 private:
-    void connectSequence(ADVSequenceObjectContext* s);
     void updateActions();
     void copySequenceSelection(bool complement, bool amino);
     void putIntoClipboard(const QString& data);
