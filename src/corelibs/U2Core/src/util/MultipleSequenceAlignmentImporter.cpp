@@ -54,12 +54,12 @@ MultipleSequenceAlignmentObject * MultipleSequenceAlignmentImporter::createAlign
     TmpDbiObjects objs(dbiRef, os); // remove the MSA object if opStatus is incorrect
 
     // MSA object and info
-    U2DataId msaId = createEmptyMsaObject(con, folder, al->getName(), al->getAlphabet(), os);
-    CHECK_OP(os, NULL);
-    
+    U2DataId msaId = importMsaObject(con, folder, al, os).id;
     objs.objects << msaId;
-    
-    importMsaInfo(con, msaId, al->getInfo(), os);
+
+    CHECK_OP(os, NULL);
+
+    importMsaInfo(con, msaId, al, os);
     CHECK_OP(os, NULL);
 
     // MSA rows
@@ -82,11 +82,6 @@ MultipleSequenceAlignmentObject * MultipleSequenceAlignmentImporter::createAlign
     QList<U2MsaRow> rows = importRows(con, al, msaId, sequences, gapModel, os);
     CHECK_OP(os, NULL);
     SAFE_POINT_EXT(rows.size() == al->getNumRows(), os.setError(QObject::tr("Unexpected error on MSA rows import")), NULL);
-    
-    // As the result of importRows length of MSA may be updated -> reload it
-    qint64 len = con.dbi->getMsaDbi()->getMsaLength(msaId, os);
-    CHECK_OP(os, NULL);
-    al->setLength(len);
 
     for (int i = 0, n = al->getNumRows(); i < n; ++i) {
         al->getMsaRow(i)->setRowDbInfo(rows.at(i));
@@ -106,27 +101,33 @@ void MultipleSequenceAlignmentImporter::setChildRankForSequences(const DbiConnec
     }
 }
 
-U2DataId MultipleSequenceAlignmentImporter::createEmptyMsaObject(const DbiConnection& con, const QString& folder, const QString& name, const DNAAlphabet* alphabet, U2OpStatus& os) {
-    SAFE_POINT(alphabet != NULL, "The alignment alphabet is NULL during importing!", U2DataId());
+U2Msa MultipleSequenceAlignmentImporter::importMsaObject(const DbiConnection& con, const QString& folder, const MultipleSequenceAlignment& al, U2OpStatus& os) {
+    U2Msa msa;
+    const DNAAlphabet* alphabet = al->getAlphabet();
+    SAFE_POINT(NULL != alphabet, "The alignment alphabet is NULL during importing!", U2Msa());
 
-    QString visualName = name;
-    if (visualName.isEmpty()) {
+    msa.alphabet.id = alphabet->getId();
+    msa.length = al->getLength();
+    msa.visualName = al->getName();
+    if (msa.visualName.isEmpty()) {
         QDate date = QDate::currentDate();
         QString generatedName = "MSA" + date.toString();
         coreLog.trace(QString("A multiple alignment name was empty! Generated a new name %1").arg(generatedName));
-        visualName = generatedName;
+        msa.visualName = generatedName;
     }
 
     U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL MSA Dbi during importing an alignment!", U2DataId());
+    SAFE_POINT(NULL != msaDbi, "NULL MSA Dbi during importing an alignment!", U2Msa());
 
-    U2DataId id = msaDbi->createMsaObject(folder, visualName, alphabet->getId(), 0, os);
-    CHECK_OP(os, U2DataId());
+    msa.id = msaDbi->createMsaObject(folder, msa.visualName, msa.alphabet, msa.length, os);
+    CHECK_OP(os, U2Msa());
 
-    return id;
+    return msa;
 }
 
-void MultipleSequenceAlignmentImporter::importMsaInfo(const DbiConnection& con, const U2DataId& msaId, const QVariantMap& alInfo, U2OpStatus& os) {
+void MultipleSequenceAlignmentImporter::importMsaInfo(const DbiConnection& con, const U2DataId& msaId, const MultipleSequenceAlignment& al, U2OpStatus& os) {
+    QVariantMap alInfo = al->getInfo();
+
     U2AttributeDbi* attrDbi = con.dbi->getAttributeDbi();
     SAFE_POINT(NULL != attrDbi, "NULL Attribute Dbi during importing an alignment!",);
 
