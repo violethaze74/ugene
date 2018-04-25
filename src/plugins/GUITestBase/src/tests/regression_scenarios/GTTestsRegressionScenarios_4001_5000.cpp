@@ -5624,14 +5624,30 @@ GUI_TEST_CLASS_DEFINITION(test_4886) {
 
 GUI_TEST_CLASS_DEFINITION(test_4908) {
     //1. Open s file with multiple sequences
-    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "DNA.fa");
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "seq5.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "seq2.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QAction* editMode = GTAction::findActionByText(os, "Edit sequence", GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    GTWidget::click(os, GTAction::button(os, editMode));
+
+    GTUtilsProjectTreeView::click(os, "SEQUENCE_WITH_A_ENTRY_2", Qt::LeftButton);
+
+    MWMDIWindow *mdiWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
+    QPoint detPos = mdiWindow->mapToGlobal(mdiWindow->rect().center());
+
+    GTMouseDriver::dragAndDrop(GTMouseDriver::getMousePosition(), detPos);
+
+    GTGlobals::sleep();
 
     //2. Select the first sequence and add data to the clipboard
     ADVSingleSequenceWidget *firstSeqWidget = GTUtilsSequenceView::getSeqWidgetByNumber(os, 0);
     GTWidget::click(os, firstSeqWidget);
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
+
     GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
 
     //3. While the data is been pasted, select the second sequence
