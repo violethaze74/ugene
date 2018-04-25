@@ -34,8 +34,8 @@
 #include <U2View/AssemblyBrowserFactory.h>
 #include <U2View/MaEditorFactory.h>
 
+#include "GTGlobals.h"
 #include "GTTestsProject.h"
-#include "utils/GTUtilsApp.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -45,20 +45,21 @@
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsStartPage.h"
 #include "GTUtilsTaskTreeView.h"
-#include "utils/GTUtilsToolTip.h"
-#include <utils/GTThread.h>
+#include "primitives/GTMenu.h"
+#include "primitives/PopupChooser.h"
 #include "system/GTClipboard.h"
 #include "system/GTFile.h"
+#include "utils/GTUtilsApp.h"
+#include "utils/GTUtilsToolTip.h"
 #include <base_dialogs/GTFileDialog.h>
-#include "GTGlobals.h"
+#include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTLineEdit.h>
-#include "primitives/GTMenu.h"
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWebView.h>
-#include <base_dialogs/MessageBoxFiller.h>
-#include "primitives/PopupChooser.h"
+#include <utils/GTThread.h>
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
@@ -1136,6 +1137,10 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 2);
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
 
+    QAction* editMode = GTAction::findActionByText(os, "Edit sequence");
+    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    GTWidget::click(os, GTAction::button(os, editMode));
+
     GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1148,6 +1153,10 @@ GUI_TEST_CLASS_DEFINITION(test_0069) {
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 2);
     GTClipboard::setText(os, ">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n");
 
+    QAction* editMode = GTAction::findActionByText(os, "Edit sequence");
+    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    GTWidget::click(os, GTAction::button(os, editMode));
+
     GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1159,6 +1168,10 @@ GUI_TEST_CLASS_DEFINITION(test_0070) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 2);
     GTClipboard::setText(os, ">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n");
+
+    QAction* editMode = GTAction::findActionByText(os, "Edit sequence");
+    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    GTWidget::click(os, GTAction::button(os, editMode));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ADV_MENU_COPY<< "Paste sequence",GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os,"ADV_single_sequence_widget_0"));

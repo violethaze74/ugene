@@ -3617,7 +3617,7 @@ GUI_TEST_CLASS_DEFINITION(test_1324) {
     GTMouseDriver::click();
     QString val;
 
-#if defined(Q_OS_LINUX) || defined (Q_OS_WIN)
+#if defined(Q_OS_LINUX)
     val = "0.00010";
 #else
     val = "0,00010";
@@ -4569,14 +4569,14 @@ GUI_TEST_CLASS_DEFINITION(test_1455) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Dump Sequence Info");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Dump sequence info");
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Plain Text");
 
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"), GTUtilsWorkflowDesigner::getWorker(os, "Dump Sequence Info"));
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Dump Sequence Info"), GTUtilsWorkflowDesigner::getWorker(os, "Write Plain Text"));
 
     //2. Save it somewhere using the "Save as..." action
-    GTUtilsWorkflowDesigner::saveWorkflowAs(os, sandBoxDir + "dump_sequence.uwl", "Dump sequence info");
+    GTUtilsWorkflowDesigner::saveWorkflowAs(os, sandBoxDir + "dump_sequence.uwl", "Dump Sequence Info");
 
     //3. Close WD
     GTUtilsMdi::click( os, GTGlobals::Close );

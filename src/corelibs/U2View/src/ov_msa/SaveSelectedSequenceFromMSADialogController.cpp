@@ -73,7 +73,8 @@ SaveSelectedSequenceFromMSADialogController::~SaveSelectedSequenceFromMSADialogC
 
 void SaveSelectedSequenceFromMSADialogController::accept() {
     url = saveController->getSaveDirName();
-    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(ui->formatCombo->currentText());
+    formatId = ui->formatCombo->currentData().toString();
+    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
     CHECK(df != NULL, )
     QString extension = df->getSupportedDocumentFileExtensions().first();
     if (!ui->customFileNameEdit->isEnabled()) {
@@ -96,7 +97,6 @@ void SaveSelectedSequenceFromMSADialogController::accept() {
         }
 
     }
-    format = ui->formatCombo->currentText();
     trimGapsFlag = !ui->keepGapsBox->isChecked();
     addToProjectFlag = ui->addToProjectBox->isChecked();
     customFileName = ui->customFileNameEdit->isEnabled() ? ui->customFileNameEdit->text() : "";
@@ -111,7 +111,7 @@ QString SaveSelectedSequenceFromMSADialogController::getUrl() const {
 }
 
 DocumentFormatId SaveSelectedSequenceFromMSADialogController::getFormat() const {
-    return format;
+    return formatId;
 }
 
 QString SaveSelectedSequenceFromMSADialogController::getCustomFileName() const {
@@ -187,10 +187,13 @@ void SaveDocumentInFolderController::initFormatComboBox() {
     QString currentFormat = formatsInfo.getFormatNameById(conf.defaultFormatId);
     CHECK(conf.formatCombo != NULL, );
 
-    QStringList items = formatsInfo.getNames();
-    items.sort(Qt::CaseInsensitive);
-    conf.formatCombo->addItems(items);
-
+    QStringList sortedFormatNames = formatsInfo.getNames();
+    sortedFormatNames.sort(Qt::CaseInsensitive);
+    foreach (QString formatName, sortedFormatNames) {
+        QString formatId = formatsInfo.getIdByName(formatName);
+        conf.formatCombo->addItem(formatName, formatId);
+    }
+    
     if (currentFormat.isEmpty()) {
         currentFormat = conf.formatCombo->itemText(0);
     }
