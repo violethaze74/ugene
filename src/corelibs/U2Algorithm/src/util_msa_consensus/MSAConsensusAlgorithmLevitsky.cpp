@@ -164,4 +164,8 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
     return selectedChar;
 }
 
+MSAConsensusAlgorithmLevitsky* MSAConsensusAlgorithmLevitsky::clone() const {
+    return new MSAConsensusAlgorithmLevitsky(*this);
+}
+
 } //namespace

@@ -62,6 +62,8 @@ public:
 
     virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const;
 
+    virtual MSAConsensusAlgorithmLevitsky* clone() const;
+
 private:
     QVarLengthArray<int> globalFreqs;
 };
