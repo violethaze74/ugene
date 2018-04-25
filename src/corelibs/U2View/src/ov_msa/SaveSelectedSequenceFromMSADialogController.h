@@ -52,7 +52,7 @@ private:
 
     QString             url;
     QString             defaultDir;
-    DocumentFormatId    format;
+    DocumentFormatId    formatId;
     QStringList         seqNames;
     QString             customFileName;
     bool                trimGapsFlag;
