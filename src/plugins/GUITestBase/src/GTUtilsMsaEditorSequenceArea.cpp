@@ -144,7 +144,10 @@ void GTUtilsMSAEditorSequenceArea::click(GUITestOpStatus &os, const QPoint &scre
 void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const QPoint &position) {
     MSAEditorSequenceArea *msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea *>(os, "msa_editor_sequence_area", GTUtilsMdi::activeWindow(os));
     GT_CHECK(NULL != msaSeqArea, "MSA Editor sequence area is not found");
-    GT_CHECK(msaSeqArea->isInRange(position), "Position is out of range");
+    GT_CHECK(msaSeqArea->isInRange(position), 
+             QString("Position is out of range: [%1, %2], range: [%3, %4]")
+             .arg(position.x()).arg(position.y())
+             .arg(msaSeqArea->getEditor()->getAlignmentLen()).arg(msaSeqArea->getNumDisplayableSequences()));
 
     // scroll down
     GScrollBar* vBar = GTWidget::findExactWidget<GScrollBar *>(os, "vertical_sequence_scroll", GTUtilsMdi::activeWindow(os));
@@ -214,7 +217,11 @@ void GTUtilsMSAEditorSequenceArea::scrollToBottom(GUITestOpStatus &os) {
 void GTUtilsMSAEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QPoint &globalMaPosition) {
     MSAEditorSequenceArea *msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea *>(os, "msa_editor_sequence_area", GTUtilsMdi::activeWindow(os));
     GT_CHECK(NULL != msaSeqArea, "MSA Editor sequence area is not found");
-    GT_CHECK(msaSeqArea->isInRange(globalMaPosition), "Position is out of range");
+    GT_CHECK(msaSeqArea->isInRange(globalMaPosition), 
+             QString("Position is out of range: [%1, %2], range: [%3, %4]")
+             .arg(globalMaPosition.x()).arg(globalMaPosition.y())
+             .arg(msaSeqArea->getEditor()->getAlignmentLen()).arg(msaSeqArea->getNumDisplayableSequences()));
+    
 
     scrollToPosition(os, globalMaPosition);
     const QPoint positionCenter(msaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(globalMaPosition.x()),
