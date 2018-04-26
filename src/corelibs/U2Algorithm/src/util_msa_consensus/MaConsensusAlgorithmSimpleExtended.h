@@ -83,6 +83,8 @@ public:
 
     char getConsensusChar(const MultipleAlignment &ma, int column, QVector<int> seqIdx = QVector<int>()) const;
 
+    virtual MaConsensusAlgorithmSimpleExtended* clone() const;
+
     enum Character {
         None = 0,
         Gap = 1 << 0,
