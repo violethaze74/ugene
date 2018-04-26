@@ -57,7 +57,7 @@ CollocationsDialogController::CollocationsDialogController(QStringList _names, A
     task = NULL;
     qSort(allNames);
     setupUi(this);
-    new HelpButton(this, buttonBox, "20880396");
+    new HelpButton(this, buttonBox, "21433348");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

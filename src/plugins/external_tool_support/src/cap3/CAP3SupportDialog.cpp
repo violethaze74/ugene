@@ -40,7 +40,7 @@ CAP3SupportDialog::CAP3SupportDialog(CAP3SupportTaskSettings& s, QWidget* parent
       saveController(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20880459");
+    new HelpButton(this, buttonBox, "21433411");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

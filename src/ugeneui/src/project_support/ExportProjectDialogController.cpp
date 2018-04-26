@@ -49,7 +49,7 @@ ExportProjectDialogController::ExportProjectDialogController(QWidget *p, const Q
 : QDialog(p) 
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20880139");
+    new HelpButton(this, buttonBox, "21433094");
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     setModal(true);

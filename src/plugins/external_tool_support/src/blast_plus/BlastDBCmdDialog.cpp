@@ -38,7 +38,7 @@ BlastDBCmdDialog::BlastDBCmdDialog(BlastDBCmdSupportTaskSettings &_settings, QWi
     settings(_settings)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20880471");
+    new HelpButton(this, buttonBox, "21433423");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Fetch"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

@@ -52,7 +52,7 @@ PrimerLibraryWidget::PrimerLibraryWidget(QWidget *parent)
 : QWidget(parent), editPrimerButton(NULL), removePrimersButton(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20880492");
+    new HelpButton(this, buttonBox, "21433444");
 
     QPushButton *newPrimerButton = buttonBox->addButton(tr("New primer"), QDialogButtonBox::ActionRole);
     connect(newPrimerButton, SIGNAL(clicked()), SLOT(sl_newPrimer()));

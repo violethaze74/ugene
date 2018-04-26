@@ -104,7 +104,7 @@ AppSettingsGUIPageWidget* UserApplicationsSettingsPageController::createWidget(A
     return r;
 }
 
-const QString UserApplicationsSettingsPageController::helpPageId = QString("20880188");
+const QString UserApplicationsSettingsPageController::helpPageId = QString("21433142");
 
 UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserApplicationsSettingsPageController* ctrl) {
     setupUi(this);
