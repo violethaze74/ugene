@@ -130,4 +130,8 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment& ma,
     }
 }
 
+U2::MSAConsensusAlgorithmClustal* MSAConsensusAlgorithmClustal::clone() const {
+    return new MSAConsensusAlgorithmClustal(*this);
+}
+
 } //namespace

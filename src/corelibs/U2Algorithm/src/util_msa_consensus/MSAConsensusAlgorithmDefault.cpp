@@ -46,6 +46,10 @@ MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(cons
     return new MSAConsensusAlgorithmDefault(this, ignoreTrailingLeadingGaps, p);
 }
 
+U2::MSAConsensusAlgorithmDefault* MSAConsensusAlgorithmDefault::clone() const {
+    return new MSAConsensusAlgorithmDefault(*this);
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 

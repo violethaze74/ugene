@@ -68,4 +68,8 @@ char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleAlignment& ma, 
     return res;
 }
 
+MSAConsensusAlgorithmStrict* MSAConsensusAlgorithmStrict::clone() const {
+    return new MSAConsensusAlgorithmStrict(*this);
+}
+
 } //namespace

@@ -57,6 +57,8 @@ public:
         : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {}
 
     virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const;
+
+    MSAConsensusAlgorithmStrict* MSAConsensusAlgorithmStrict::clone() const;
 };
 
 
