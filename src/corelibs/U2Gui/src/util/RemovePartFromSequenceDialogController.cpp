@@ -55,7 +55,7 @@ RemovePartFromSequenceDialogController::RemovePartFromSequenceDialogController(U
       saveController(NULL)
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "20880226");
+    new HelpButton(this, ui->buttonBox, "21433179");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Remove"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
