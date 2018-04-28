@@ -282,7 +282,7 @@ ExportMaConsensusTask::ExportMaConsensusTask(const ExportMaConsensusTaskSettings
 }
 
 void ExportMaConsensusTask::prepare(){
-    extractConsensus = new ExtractConsensusTask(settings.keepGaps, settings.ma);
+    extractConsensus = new ExtractConsensusTask(settings.keepGaps, settings.ma, settings.algorithm);
     addSubTask(extractConsensus);
 }
 
@@ -331,12 +331,17 @@ Document *ExportMaConsensusTask::createDocument(){
     return doc.take();
 }
 
-ExtractConsensusTask::ExtractConsensusTask( bool keepGaps_, MaEditor* ma_ )
+ExtractConsensusTask::ExtractConsensusTask(bool keepGaps_, MaEditor* ma_, MSAConsensusAlgorithm*  algorithm_)
     : Task(tr("Extract consensus"), TaskFlags(TaskFlag_None)),
       keepGaps(keepGaps_),
-      ma(ma_) {
+      ma(ma_),
+      algorithm(algorithm_) {
     setVerboseLogMode(true);
     SAFE_POINT_EXT(ma != NULL, setError("Given ma pointer is NULL"), );
+}
+
+ExtractConsensusTask::~ExtractConsensusTask() {
+    delete algorithm;
 }
 
 void ExtractConsensusTask::run() {
@@ -344,7 +349,6 @@ void ExtractConsensusTask::run() {
     CHECK(ma->getUI()->getConsensusArea(), );
     CHECK(ma->getUI()->getConsensusArea()->getConsensusCache(),);
 
-    MSAConsensusAlgorithm *algorithm = ma->getUI()->getConsensusArea()->getConsensusAlgorithm();
     const MultipleAlignment alignment = ma->getMaObject()->getMultipleAlignmentCopy();
     for (int i = 0, n = alignment->getLength(); i < n; i++) {
         if (stateInfo.isCoR()) {
@@ -372,7 +376,8 @@ const QByteArray& ExtractConsensusTask::getExtractedConsensus() const {
 ExportMaConsensusTaskSettings::ExportMaConsensusTaskSettings()
     : keepGaps(true),
       ma(NULL),
-      format(BaseDocumentFormats::PLAIN_TEXT)
+      format(BaseDocumentFormats::PLAIN_TEXT),
+      algorithm(NULL)
 {}
 
 } // namespace

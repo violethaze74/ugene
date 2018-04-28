@@ -40,7 +40,7 @@ DotPlotFilesDialog::DotPlotFilesDialog(QWidget *parent)
 : QDialog(parent)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20880278");
+    new HelpButton(this, buttonBox, "21433231");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Next"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

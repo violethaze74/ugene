@@ -59,6 +59,13 @@ MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _fact
 
 }
 
+MSAConsensusAlgorithm::MSAConsensusAlgorithm(const MSAConsensusAlgorithm &algorithm) 
+    : QObject(algorithm.parent()), factory(algorithm.factory),
+    threshold(algorithm.threshold),
+    ignoreTrailingAndLeadingGaps(algorithm.ignoreTrailingAndLeadingGaps) {
+
+}
+
 char MSAConsensusAlgorithm::getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score,
                                                      QVector<int> seqIdx) const {
     char consensusChar = getConsensusChar(ma, column, seqIdx);

@@ -153,8 +153,8 @@ void MaEditorStatusBar::updateColumnLabel() {
     MaEditorSelection selection = seqArea->getSelection();
     const QPoint& pos = selection.topLeft();
 
-    colomnLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(pos.x() + 1),
-                        QString::number(aliObj->getLength()));
+    qint64 alignmentLen = aliObj->getLength();
+    colomnLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(pos.x() + 1), QString::number(alignmentLen));
 }
 
 void MaEditorStatusBar::updateSelectionLabel() {

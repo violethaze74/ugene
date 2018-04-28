@@ -55,7 +55,7 @@ namespace U2 {
 SecStructDialog::SecStructDialog( ADVSequenceObjectContext* _ctx, QWidget *p ) : QDialog(p), ctx(_ctx), task(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20880429");
+    new HelpButton(this, buttonBox, "21433381");
 
     sspr = AppContext::getSecStructPredictAlgRegistry();
     algorithmComboBox->addItems(sspr->getAlgNameList());

@@ -182,6 +182,10 @@ char MaConsensusAlgorithmSimpleExtended::getConsensusChar(const MultipleAlignmen
     return INVALID_CONS_CHAR;
 }
 
+U2::MaConsensusAlgorithmSimpleExtended* MaConsensusAlgorithmSimpleExtended::clone() const {
+    return new MaConsensusAlgorithmSimpleExtended(*this);
+}
+
 MaConsensusAlgorithmFactorySimpleExtended::MaConsensusAlgorithmFactorySimpleExtended(QObject *parent)
     : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO,
                                    ConsensusAlgorithmFlag_Nucleic | ConsensusAlgorithmFlag_SupportThreshold | ConsensusAlgorithmFlag_AvailableForChromatogram,
