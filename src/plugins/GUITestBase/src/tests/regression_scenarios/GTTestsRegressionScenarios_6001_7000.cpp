@@ -176,6 +176,28 @@ GUI_TEST_CLASS_DEFINITION(test_6066) {
 //    Expected state: UGENE doesn't crash.
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6071) {
+    //1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select 2-th CDS annotation in the Zoom view
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970);
+
+    //3. Scroll to the 3874 coordinate.
+    GTUtilsSequenceView::goToPosition(os, 3874);
+
+    DetView* dw = GTUtilsSequenceView::getDetViewByNumber(os);
+    const U2Region firstVisibleRange = dw->getVisibleRange();
+
+    //4. Click on 2-th CDS join annotation
+    GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 3412);
+
+    //Expected: visible range was not changed
+    const U2Region secondVisibleRange = dw->getVisibleRange();
+    CHECK_SET_ERR(firstVisibleRange == secondVisibleRange, "Visible range was changed after clicking on the annotation");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
