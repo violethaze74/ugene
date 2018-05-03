@@ -48,6 +48,8 @@
 #include <U2Formats/FastaFormat.h>
 #include <U2Formats/FastqFormat.h>
 
+#include <U2Gui/DialogUtils.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/ActorValidator.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -71,7 +73,7 @@ const QString ClassificationReportWorkerFactory::ACTOR_ID("classification-report
 
 static const QString INPUT_PORT("in");
 
-static const QString OUT_FILE("out-file");
+static const QString OUT_FILE("output-url");
 
 
 QString ClassificationReportPrompter::composeRichDoc() {
@@ -101,14 +103,15 @@ void ClassificationReportWorkerFactory::init() {
     {
         Descriptor outputDesc(OUT_FILE, ClassificationReportWorker::tr("Output file"),
             ClassificationReportWorker::tr("Specify the output text file name."));
-        a << new Attribute(outputDesc, BaseTypes::STRING_TYPE(), true, "input_file_name_report.txt");
+        a << new Attribute(outputDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
     }
 
     QMap<QString, PropertyDelegate*> delegates;
     {
         const URLDelegate::Options options = URLDelegate::SelectFileToSave;
         DelegateTags tags;
-        tags.set(DelegateTags::PLACEHOLDER_TEXT, L10N::required());
+        tags.set(DelegateTags::PLACEHOLDER_TEXT, ClassificationReportPrompter::tr("Auto"));
+        tags.set(DelegateTags::FILTER, DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT, true));
         delegates[OUT_FILE] = new URLDelegate(tags, "classify/report", options);
     }
 
@@ -132,7 +135,7 @@ void ClassificationReportWorkerFactory::cleanup() {
 /* ClassificationReportWorker */
 /************************************************************************/
 ClassificationReportWorker::ClassificationReportWorker(Actor *a)
-:BaseWorker(a, false), input(NULL), totalCount(0)
+:BaseWorker(a, false), input(NULL)
 {
 }
 
@@ -145,21 +148,34 @@ Task * ClassificationReportWorker::tick() {
     if (input->hasMessage()) {
         const Message message = getMessageAndSetupScriptValues(input);
 
+        QString outputFileUrl = getValue<QString>(OUT_FILE);
+        if (outputFileUrl.isEmpty()) {
+            const MessageMetadata metadata = context->getMetadataStorage().get(message.getMetadataId());
+            outputFileUrl = context->workingDir() + "/" + QFileInfo(metadata.getFileUrl()).completeBaseName() + "_report.txt";
+        }
+        outputFileUrl = GUrlUtils::rollFileName(QFileInfo(outputFileUrl).absoluteFilePath(), "_");
+
         QVariantMap m = message.getData().toMap();
         TaxonomyClassificationResult tax = m[TaxonomySupport::TAXONOMY_CLASSIFICATION_SLOT().getId()].value<U2::LocalWorkflow::TaxonomyClassificationResult>();
+
+        QMap<TaxID, uint> data;
         foreach (TaxID id, tax) {
             data[id]++;
         }
-        totalCount += tax.size();
+
+        U2OpStatusImpl os;
+        QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
+        tmpDir = GUrlUtils::createDirectory(tmpDir, "_", os);
+        CHECK_OP(os, NULL);
+
+        ClassificationReportTask *task = new ClassificationReportTask(data, tax.size(), outputFileUrl, tmpDir);
+        connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        return task;
     }
 
     if (input->isEnded()) {
-        ClassificationReportTask *task = new ClassificationReportTask(data, totalCount, getValue<QString>(OUT_FILE), context->workingDir());
-        connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
-
         setDone();
         algoLog.info("Report worker is done as input has ended");
-        return task;
     }
 
     return NULL;
@@ -242,8 +258,8 @@ struct ClassificationReportLine {
                 .append(QByteArray::number(class_tax_id)).append('\t').append(fmt(class_name)).append('\t').append(QByteArray::number(order_tax_id)).append('\t').append(fmt(order_name)).append('\t')
                 .append(QByteArray::number(family_tax_id)).append('\t').append(fmt(family_name)).append('\t').append(QByteArray::number(genus_tax_id)).append('\t').append(fmt(genus_name)).append('\t')
                 .append(QByteArray::number(species_tax_id)).append('\t').append(species_name).append('\t').append(QByteArray::number(directly_num)).append('\t')
-                .append(QByteArray::number(directly_proportion_all * 100, 'f', 0)).append('\t').append(QByteArray::number(directly_proportion_classified * 100, 'f', 0)).append('\t')
-                .append(QByteArray::number(clade_num)).append('\t').append(QByteArray::number(clade_proportion_all * 100, 'f', 0)).append('\t').append(QByteArray::number(clade_proportion_classified * 100, 'f', 0));
+                .append(QByteArray::number(directly_proportion_all * 100, 'f', 3)).append('\t').append(QByteArray::number(directly_proportion_classified * 100, 'f', 3)).append('\t')
+                .append(QByteArray::number(clade_num)).append('\t').append(QByteArray::number(clade_proportion_all * 100, 'f', 3)).append('\t').append(QByteArray::number(clade_proportion_classified * 100, 'f', 3));
     }
 };
 

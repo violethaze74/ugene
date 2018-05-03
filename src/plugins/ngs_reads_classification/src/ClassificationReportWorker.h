@@ -60,8 +60,6 @@ protected:
 
 private:
     IntegralBus *input;
-    QMap<TaxID,uint> data;
-    uint totalCount;
 
 private slots:
     void sl_taskFinished(Task *task);
