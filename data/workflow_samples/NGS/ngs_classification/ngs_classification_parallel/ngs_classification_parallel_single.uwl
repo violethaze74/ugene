@@ -53,20 +53,25 @@ workflow "Parallel classification for SE reads"{
         type:wevote-classify;
         name:WEVOTE;
     }
+    classification-report {
+        type:classification-report;
+        name:Report;
+    }
 
     .actor-bindings {
+        get-se-reads-list.out->fastqc-before.in-file
+        get-se-reads-list.out->casava-filter.in-file
         casava-filter.out-file->cut-adapt.in-file
-        clark-classify.out->ensemble-classification.tax-data2
-        kraken-classify.out->ensemble-classification.tax-data1
+        cut-adapt.out-file->quality-trim.in-file
         quality-trim.out-file->kraken-classify.in
         quality-trim.out-file->fastqc-after.in-file
         quality-trim.out-file->clark-classify.in
         quality-trim.out-file->diamond-classify.in
+        kraken-classify.out->ensemble-classification.tax-data1
+        clark-classify.out->ensemble-classification.tax-data2
         diamond-classify.out->ensemble-classification.tax-data3
         ensemble-classification.out->wevote-classify.in
-        cut-adapt.out-file->quality-trim.in-file
-        get-se-reads-list.out->fastqc-before.in-file
-        get-se-reads-list.out->casava-filter.in-file
+        wevote-classify.out->classification-report.in
     }
 
     get-se-reads-list.reads-url1->fastqc-before.in-file.url
@@ -81,39 +86,46 @@ workflow "Parallel classification for SE reads"{
     clark-classify.tax-data->ensemble-classification.tax-data2.in
     diamond-classify.tax-data->ensemble-classification.tax-data3.in
     ensemble-classification.url->wevote-classify.in.url
+    wevote-classify.tax-data->classification-report.in.tax-data
 
     .meta {
         visual {
             casava-filter {
-                pos:"-584 -645";
+                pos:"-570 -630";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             clark-classify {
-                pos:"-401 -449";
+                pos:"-390 -435";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:62.6501;
                 out.angle:272.862;
             }
+            classification-report {
+                pos:"45 -255";
+                style:simple;
+                bg-color-simple:"141 126 194 255";
+                in.angle:180;
+            }
             cut-adapt {
-                pos:"-390 -645";
+                pos:"-375 -630";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             diamond-classify {
-                pos:"-534 -446";
+                pos:"-525 -435";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:57.0948;
                 out.angle:288.925;
             }
             ensemble-classification {
-                pos:"-380 -266";
+                pos:"-360 -255";
                 style:simple;
                 bg-color-simple:"102 102 102 255";
                 out.angle:356.1;
@@ -122,39 +134,39 @@ workflow "Parallel classification for SE reads"{
                 tax-data3.angle:153.435;
             }
             fastqc-after {
-                pos:"-85 -557";
+                pos:"-75 -540";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:150.803;
             }
             fastqc-before {
-                pos:"-665 -565";
+                pos:"-645 -555";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:138.366;
             }
             get-se-reads-list {
-                pos:"-771 -646";
+                pos:"-750 -630";
                 style:simple;
                 bg-color-simple:"23 106 239 255";
                 out.angle:360;
             }
             kraken-classify {
-                pos:"-284 -446";
+                pos:"-270 -435";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:90;
                 out.angle:247.964;
             }
             quality-trim {
-                pos:"-195 -645";
+                pos:"-180 -630";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:272.437;
             }
             wevote-classify {
-                pos:"-163 -265";
+                pos:"-150 -255";
                 style:simple;
                 bg-color-simple:"0 106 0 255";
                 in.angle:180;
@@ -195,6 +207,9 @@ workflow "Parallel classification for SE reads"{
             }
             quality-trim.out-file->kraken-classify.in {
                 text-pos:"-10.3359 9";
+            }
+            wevote-classify.out->classification-report.in {
+                text-pos:"-45 -43";
             }
         }
         wizard {
@@ -381,6 +396,13 @@ workflow "Parallel classification for SE reads"{
                         }
                         wevote-classify.output-url {
                             label:"WEVOTE output file";
+                        }
+                    }
+                    group {
+                        title:"Classification reports";
+                        label-size:180;
+                        classification-report.output-url {
+                            label:"Report for WEVOTE classification"
                         }
                     }
                 }

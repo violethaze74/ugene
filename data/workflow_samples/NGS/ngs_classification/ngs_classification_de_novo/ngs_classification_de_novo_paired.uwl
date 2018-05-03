@@ -69,22 +69,27 @@ workflow "PE reads assembly and classification"{
         type:fastqc;
         name:"FastQC After 2";
     }
+    classification-report {
+        type:classification-report;
+        name:Report;
+    }
 
     .actor-bindings {
         cut-adapt-2.out-file->quality-trim-2.in-file
+        casava-filter-1.out-file->cut-adapt-1.in-file
+        quality-trim-2.out-file->multiplexer.input-data-2
+        quality-trim-2.out-file->fastqc-after-2.in-file
+        casava-filter-2.out-file->cut-adapt-2.in-file
+        multiplexer.output-data->spades.in-data
+        cut-adapt-1.out-file->quality-trim-1.in-file
+        quality-trim-1.out-file->fastqc-after-1.in-file
+        quality-trim-1.out-file->multiplexer.input-data-1
+        kraken-classify.out->classification-report.in
+        spades.out-data->kraken-classify.in
         get-pe-reads-list.out->casava-filter-1.in-file
         get-pe-reads-list.out->fastqc-before-1.in-file
         get-pe-reads-list.out->casava-filter-2.in-file
         get-pe-reads-list.out->fastqc-before-2.in-file
-        multiplexer.output-data->spades.in-data
-        spades.out-data->kraken-classify.in
-        casava-filter-1.out-file->cut-adapt-1.in-file
-        quality-trim-1.out-file->fastqc-after-1.in-file
-        quality-trim-1.out-file->multiplexer.input-data-1
-        cut-adapt-1.out-file->quality-trim-1.in-file
-        casava-filter-2.out-file->cut-adapt-2.in-file
-        quality-trim-2.out-file->multiplexer.input-data-2
-        quality-trim-2.out-file->fastqc-after-2.in-file
     }
 
     get-pe-reads-list.reads-url1->fastqc-before-1.in-file.url
@@ -100,76 +105,83 @@ workflow "PE reads assembly and classification"{
     get-pe-reads-list.reads-url2->casava-filter-2.in-file.url
     casava-filter-2.url->cut-adapt-2.in-file.url
     quality-trim-2.url->fastqc-after-2.in-file.url
+    kraken-classify.tax-data->classification-report.in.tax-data
 
     .meta {
         visual {
             casava-filter-1 {
-                pos:"-590 -645";
+                pos:"-570 -630";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             casava-filter-2 {
-                pos:"-726 -413";
+                pos:"-705 -405";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:103.134;
                 out-file.angle:360;
             }
+            classification-report {
+                pos:"-15 -75";
+                style:simple;
+                bg-color-simple:"141 126 194 255";
+                in.angle:90;
+            }
             cut-adapt-1 {
-                pos:"-398 -644";
+                pos:"-390 -630";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             cut-adapt-2 {
-                pos:"-532 -413";
+                pos:"-525 -405";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             fastqc-after-1 {
-                pos:"-29 -605";
+                pos:"0 -615";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:171.87;
             }
             fastqc-after-2 {
-                pos:"-302 -263";
+                pos:"-270 -270";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:90;
             }
             fastqc-before-1 {
-                pos:"-657 -730";
+                pos:"-645 -720";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:227.203;
             }
             fastqc-before-2 {
-                pos:"-812 -492";
+                pos:"-795 -480";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:85.7636;
             }
             get-pe-reads-list {
-                pos:"-808 -643";
+                pos:"-795 -630";
                 style:simple;
                 bg-color-simple:"23 106 239 255";
                 out.angle:360;
             }
             kraken-classify {
-                pos:"-101 -240";
+                pos:"-15 -225";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:90;
                 out.angle:268.977;
             }
             multiplexer {
-                pos:"-197 -490";
+                pos:"-180 -480";
                 style:simple;
                 bg-color-simple:"51 51 51 255";
                 input-data-1.angle:92.2906;
@@ -177,21 +189,21 @@ workflow "PE reads assembly and classification"{
                 output-data.angle:319.236;
             }
             quality-trim-1 {
-                pos:"-195 -645";
+                pos:"-180 -630";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:272.437;
             }
             quality-trim-2 {
-                pos:"-337 -413";
+                pos:"-330 -405";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:357.839;
             }
             spades {
-                pos:"-102 -385";
+                pos:"-15 -375";
                 style:simple;
                 bg-color-simple:"168 50 117 255";
                 in-data.angle:90;
@@ -220,6 +232,9 @@ workflow "PE reads assembly and classification"{
             }
             get-pe-reads-list.out->fastqc-before-2.in-file {
                 text-pos:"-77.3359 16";
+            }
+            kraken-classify.out->classification-report.in {
+                text-pos:"-22 -20";
             }
             multiplexer.output-data->spades.in-data {
                 text-pos:"-16 -36";
@@ -363,6 +378,13 @@ workflow "PE reads assembly and classification"{
                         label-size:180;
                         kraken-classify.output-url {
                             label:"Kraken output file";
+                        }
+                    }
+                    group {
+                        title:"Classification reports";
+                        label-size:180;
+                        classification-report.output-url {
+                            label:"Report for Kraken classification"
                         }
                     }
                 }

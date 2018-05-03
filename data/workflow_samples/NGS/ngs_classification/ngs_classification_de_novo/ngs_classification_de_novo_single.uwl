@@ -41,15 +41,20 @@ workflow "SE reads assembly and classification"{
         name:SPAdes;
         output-dir:spades_out;
     }
+    classification-report {
+        type:classification-report;
+        name:Report;
+    }
 
     .actor-bindings {
-        get-se-reads-list.out->fastqc-before.in-file
-        get-se-reads-list.out->casava-filter.in-file
-        quality-trim.out-file->fastqc-after.in-file
-        quality-trim.out-file->spades.in-data
         cut-adapt.out-file->quality-trim.in-file
         casava-filter.out-file->cut-adapt.in-file
+        get-se-reads-list.out->fastqc-before.in-file
+        get-se-reads-list.out->casava-filter.in-file
         spades.out-data->kraken-classify.in
+        quality-trim.out-file->fastqc-after.in-file
+        quality-trim.out-file->spades.in-data
+        kraken-classify.out->classification-report.in
     }
 
     get-se-reads-list.reads-url1->fastqc-before.in-file.url
@@ -59,57 +64,64 @@ workflow "SE reads assembly and classification"{
     quality-trim.url->fastqc-after.in-file.url
     spades.scaffolds-out->kraken-classify.in.reads-url1
     quality-trim.url->spades.in-data.readsurl
+    kraken-classify.tax-data->classification-report.in.tax-data
 
     .meta {
         visual {
             casava-filter {
-                pos:"-584 -645";
+                pos:"-570 -630";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:360;
             }
+            classification-report {
+                pos:"-375 -300";
+                style:simple;
+                bg-color-simple:"141 126 194 255";
+                in.angle:356.309;
+            }
             cut-adapt {
-                pos:"-390 -645";
+                pos:"-375 -630";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             fastqc-after {
-                pos:"-72 -541";
+                pos:"-60 -525";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:150.803;
             }
             fastqc-before {
-                pos:"-668 -545";
+                pos:"-660 -525";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:138.366;
             }
             get-se-reads-list {
-                pos:"-771 -646";
+                pos:"-750 -630";
                 style:simple;
                 bg-color-simple:"23 106 239 255";
                 out.angle:360;
             }
             kraken-classify {
-                pos:"-192 -312";
+                pos:"-180 -300";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:90;
-                out.angle:268.977;
+                out.angle:182.045;
             }
             quality-trim {
-                pos:"-195 -645";
+                pos:"-180 -630";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:272.437;
             }
             spades {
-                pos:"-193 -457";
+                pos:"-180 -450";
                 style:simple;
                 bg-color-simple:"168 50 117 255";
                 in-data.angle:90;
@@ -126,6 +138,9 @@ workflow "SE reads assembly and classification"{
             }
             get-se-reads-list.out->fastqc-before.in-file {
                 text-pos:"-29.3359 -10";
+            }
+            kraken-classify.out->classification-report.in {
+                text-pos:"-45 -43";
             }
             quality-trim.out-file->fastqc-after.in-file {
                 text-pos:"-22.3359 -17";
@@ -242,6 +257,13 @@ workflow "SE reads assembly and classification"{
                         label-size:180;
                         kraken-classify.output-url {
                             label:"Kraken output file";
+                        }
+                    }
+                    group {
+                        title:"Classification reports";
+                        label-size:180;
+                        classification-report.output-url {
+                            label:"Report for Kraken classification"
                         }
                     }
                 }

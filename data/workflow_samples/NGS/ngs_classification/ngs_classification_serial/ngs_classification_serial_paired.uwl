@@ -38,17 +38,12 @@ workflow "Serial classification for PE reads"{
     }
     classification-filter-1 {
         type:classification-filter;
-        name:"Filter by Classification 1";
+        name:"Filter by Classification";
         sequencing-reads:paired-end;
     }
     clark-classify {
         type:clark-classify;
         name:CLARK;
-        sequencing-reads:paired-end;
-    }
-    classification-filter-2 {
-        type:classification-filter;
-        name:"Filter by Classification 2";
         sequencing-reads:paired-end;
     }
     quality-trim-1 {
@@ -80,24 +75,33 @@ workflow "Serial classification for PE reads"{
         type:fastqc;
         name:"FastQC After 2";
     }
+    classification-report-1 {
+        type:classification-report;
+        name:"Report 1";
+    }
+    classification-report-2 {
+        type:classification-report;
+        name:"Report 2";
+    }
 
     .actor-bindings {
-        casava-filter-2.out-file->cut-adapt-2.in-file
-        kraken-classify.out->classification-filter-1.in
-        cut-adapt-2.out-file->quality-trim-2.in-file
-        classification-filter-1.out->clark-classify.in
-        clark-classify.out->classification-filter-2.in
-        quality-trim-2.out-file->multiplexer.input-data-1
-        quality-trim-2.out-file->fastqc-after-2.in-file
         get-pe-reads-list.out->casava-filter-2.in-file
         get-pe-reads-list.out->casava-filter-1.in-file
         get-pe-reads-list.out->fastqc-before-1.in-file
         get-pe-reads-list.out->fastqc-before-2.in-file
-        multiplexer.output-data->kraken-classify.in
-        casava-filter-1.out-file->cut-adapt-1.in-file
-        cut-adapt-1.out-file->quality-trim-1.in-file
+        casava-filter-2.out-file->cut-adapt-2.in-file
+        cut-adapt-2.out-file->quality-trim-2.in-file
+        quality-trim-2.out-file->multiplexer.input-data-1
+        quality-trim-2.out-file->fastqc-after-2.in-file
+        kraken-classify.out->classification-filter-1.in
+        kraken-classify.out->classification-report-1.in
+        classification-filter-1.out->clark-classify.in
+        clark-classify.out->classification-report-2.in
         quality-trim-1.out-file->multiplexer.input-data-2
         quality-trim-1.out-file->fastqc-after-1.in-file
+        cut-adapt-1.out-file->quality-trim-1.in-file
+        casava-filter-1.out-file->cut-adapt-1.in-file
+        multiplexer.output-data->kraken-classify.in
     }
 
     get-pe-reads-list.reads-url1->fastqc-before-1.in-file.url
@@ -111,121 +115,125 @@ workflow "Serial classification for PE reads"{
     kraken-classify.tax-data->classification-filter-1.in.tax-data
     classification-filter-1.reads-url1->clark-classify.in.reads-url1
     classification-filter-1.reads-url1->clark-classify.in.reads-url2
-    classification-filter-1.reads-url1->classification-filter-2.in.reads-url1
-    classification-filter-1.reads-url2->classification-filter-2.in.reads-url2
-    clark-classify.tax-data->classification-filter-2.in.tax-data
     cut-adapt-1.url->quality-trim-1.in-file.url
     casava-filter-1.url->cut-adapt-1.in-file.url
     get-pe-reads-list.reads-url1->casava-filter-1.in-file.url
     get-pe-reads-list.reads-url2->fastqc-before-2.in-file.url
     quality-trim-1.url->fastqc-after-1.in-file.url
     quality-trim-2.url->fastqc-after-2.in-file.url
+    kraken-classify.tax-data->classification-report-1.in.tax-data
+    clark-classify.tax-data->classification-report-2.in.tax-data
 
     .meta {
         visual {
             casava-filter-1 {
-                pos:"-429 -614";
+                pos:"-420 -600";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:357.064;
             }
             casava-filter-2 {
-                pos:"-510 -449";
+                pos:"-495 -435";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:143.973;
                 out-file.angle:360;
             }
             clark-classify {
-                pos:"-374 -225";
+                pos:"-360 -210";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:0;
                 out.angle:181.591;
             }
             classification-filter-1 {
-                pos:"-168 -227";
+                pos:"-150 -210";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in.angle:358.698;
                 out.angle:183.576;
             }
-            classification-filter-2 {
-                pos:"-579 -226";
+            classification-report-1 {
+                pos:"-15 -90";
                 style:simple;
-                bg-color-simple:"0 128 128 255";
-                in.angle:358.264;
-                out.angle:183.366;
+                bg-color-simple:"141 126 194 255";
+                in.angle:70.9065;
+            }
+            classification-report-2 {
+                pos:"-465 -90";
+                style:simple;
+                bg-color-simple:"141 126 194 255";
+                in.angle:54.6888;
             }
             cut-adapt-1 {
-                pos:"-207 -613";
+                pos:"-195 -600";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:358.531;
             }
             cut-adapt-2 {
-                pos:"-322 -448";
+                pos:"-315 -435";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             fastqc-after-1 {
-                pos:"168 -533";
+                pos:"165 -525";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:135;
             }
             fastqc-after-2 {
-                pos:"-47 -369";
+                pos:"-30 -360";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:123.69;
             }
             fastqc-before-1 {
-                pos:"-476 -710";
+                pos:"-465 -690";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:233.842;
             }
             fastqc-before-2 {
-                pos:"-637 -476";
+                pos:"-630 -465";
                 style:simple;
                 bg-color-simple:"81 120 78 255";
                 in-file.angle:81.1193;
             }
             get-pe-reads-list {
-                pos:"-629 -613";
+                pos:"-615 -600";
                 style:simple;
                 bg-color-simple:"23 106 239 255";
                 out.angle:1.50744;
             }
             kraken-classify {
-                pos:"75 -229";
+                pos:"75 -210";
                 style:simple;
                 bg-color-simple:"0 145 0 255";
                 in.angle:90;
                 out.angle:181.848;
             }
             multiplexer {
-                pos:"75 -440";
+                pos:"75 -435";
                 style:simple;
                 bg-color-simple:"51 51 51 255";
-                input-data-1.angle:167.905;
+                input-data-1.angle:183.576;
                 input-data-2.angle:91.9092;
                 output-data.angle:270;
             }
             quality-trim-1 {
-                pos:"74 -617";
+                pos:"75 -600";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:183.691;
                 out-file.angle:272.437;
             }
             quality-trim-2 {
-                pos:"-143 -446";
+                pos:"-135 -435";
                 style:simple;
                 bg-color-simple:"127 127 127 255";
                 in-file.angle:180;
@@ -237,8 +245,8 @@ workflow "Serial classification for PE reads"{
             casava-filter-2.out-file->cut-adapt-2.in-file {
                 text-pos:"-42.3359 -27";
             }
-            clark-classify.out->classification-filter-2.in {
-                text-pos:"-43 -44";
+            clark-classify.out->classification-report-2.in {
+                text-pos:"-67 -16";
             }
             classification-filter-1.out->clark-classify.in {
                 text-pos:"-41 -44";
@@ -263,6 +271,9 @@ workflow "Serial classification for PE reads"{
             }
             kraken-classify.out->classification-filter-1.in {
                 text-pos:"-45 -44";
+            }
+            kraken-classify.out->classification-report-1.in {
+                text-pos:"-63 -15";
             }
             multiplexer.output-data->kraken-classify.in {
                 text-pos:"-42 5";
@@ -415,6 +426,16 @@ workflow "Serial classification for PE reads"{
                         clark-classify.output-url {
                             label:"CLARK output file";
                         }
+                    }
+                    group {
+                        title:"Classification reports";
+                        label-size:180;
+                        classification-report-1.output-url {
+                            label:"Report for Kraken classification"
+                        }
+                        classification-report-2.output-url {
+                            label:"Report for CLARK classification"
+                        } 
                     }
                 }
             }
