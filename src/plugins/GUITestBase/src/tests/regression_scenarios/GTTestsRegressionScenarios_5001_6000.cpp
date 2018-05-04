@@ -4616,8 +4616,8 @@ GUI_TEST_CLASS_DEFINITION(test_5950) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5972_1) {
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);   
-    
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
     //1. Open file _common_data/regression/5972/5972_1.uwl
     GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/5972/5972_1.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);

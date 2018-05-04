@@ -5116,7 +5116,7 @@ GUI_TEST_CLASS_DEFINITION(test_2773) {
     // out: some/valid/path
     // 3. run sheme.
     // Expected state: UGENE doesn't crash, error message appears.
-    
+
     //need to copy enlement to data dir
     GTFile::copy(os, testDir + "_common_data/cmdline/_proto/translateTest.usa", dataDir + "/workflow_samples/users/translateTest.usa");
 
