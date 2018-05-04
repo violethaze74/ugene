@@ -100,16 +100,20 @@ U2Region DetViewSingleLineRenderer::getAnnotationYRange(Annotation *a, int regio
     const bool transl = detView->hasTranslations() && (aminoState == TriState_Yes);
     const int frame = U1AnnotationUtils::getRegionFrame(detView->getSequenceLength(), strand, aData->isOrder(), region, aData->getRegions());
 
+    const bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection);
+    //TODO: fix this crutch in UGENE-5912
+    const bool drawOnTranslations = transl && !isTranslateAnnotationOrSelection;
+
     int line = -1;
     if (complement) {
-        if (transl) {
+        if (drawOnTranslations) {
             line = getVisibleComplTransLine(frame);
             line = (-1 == line) ? complementLine : line;
         } else {
             line = complementLine;
         }
     } else {
-        if (transl) {
+        if (drawOnTranslations) {
             line = getVisibleDirectTransLine(frame);
             line = (-1 == line) ? directLine : line;
         } else {
