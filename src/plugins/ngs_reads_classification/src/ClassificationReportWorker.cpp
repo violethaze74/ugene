@@ -211,7 +211,7 @@ struct ClassificationReportLine {
         clade_proportion_all = 0.;
         clade_proportion_classified = 0.;
 
-        kingdom_tax_id = 0;
+        superkingdom_tax_id = 0;
         phylum_tax_id = 0;
         class_tax_id = 0;
         order_tax_id = 0;
@@ -224,8 +224,8 @@ struct ClassificationReportLine {
     QString tax_name;
     QString rank;
     QString lineage;
-    TaxID kingdom_tax_id;
-    QString kingdom_name;
+    TaxID superkingdom_tax_id;
+    QString superkingdom_name;
     TaxID phylum_tax_id;
     QString phylum_name;
     TaxID class_tax_id;
@@ -254,7 +254,7 @@ struct ClassificationReportLine {
         QByteArray line;
         line.reserve(400);
         return line.append(QByteArray::number(tax_id)).append('\t').append(tax_name).append('\t').append(rank).append('\t').append(lineage).append('\t')
-                .append(QByteArray::number(kingdom_tax_id)).append('\t').append(fmt(kingdom_name)).append('\t').append(QByteArray::number(phylum_tax_id)).append('\t').append(fmt(phylum_name)).append('\t')
+                .append(QByteArray::number(superkingdom_tax_id)).append('\t').append(fmt(superkingdom_name)).append('\t').append(QByteArray::number(phylum_tax_id)).append('\t').append(fmt(phylum_name)).append('\t')
                 .append(QByteArray::number(class_tax_id)).append('\t').append(fmt(class_name)).append('\t').append(QByteArray::number(order_tax_id)).append('\t').append(fmt(order_name)).append('\t')
                 .append(QByteArray::number(family_tax_id)).append('\t').append(fmt(family_name)).append('\t').append(QByteArray::number(genus_tax_id)).append('\t').append(fmt(genus_name)).append('\t')
                 .append(QByteArray::number(species_tax_id)).append('\t').append(species_name).append('\t').append(QByteArray::number(directly_num)).append('\t')
@@ -271,8 +271,8 @@ static const QString FAMILY("family");
 static const QString ORDER("order");
 static const QString CLASS("class");
 static const QString PHYLUM("phylum");
-static const QString KINGDOM("kingdom");
-static const QString header("tax_id\ttax_name\trank\tlineage\tkingdom_tax_id\tkingdom_name\tphylum_tax_id\tphylum_name\tclass_tax_id\tclass_name\torder_tax_id\torder_name\tfamily_tax_id\tfamily_name\tgenus_tax_id\tgenus_name\tspecies_tax_id\tspecies_name\tdirectly_num\tdirectly_proportion_all(%)\tdirectly_proportion_classified(%)\tclade_num\tclade_proportion_all(%)\tclade_proportion_classified(%)");
+static const QString SUPERKINGDOM("superkingdom");
+static const QString header("tax_id\ttax_name\trank\tlineage\tsuperkingdom_tax_id\tsuperkingdom_name\tphylum_tax_id\tphylum_name\tclass_tax_id\tclass_name\torder_tax_id\torder_name\tfamily_tax_id\tfamily_name\tgenus_tax_id\tgenus_name\tspecies_tax_id\tspecies_name\tdirectly_num\tdirectly_proportion_all(%)\tdirectly_proportion_classified(%)\tclade_num\tclade_proportion_all(%)\tclade_proportion_classified(%)");
 
 
 static void fill(ClassificationReportLine &line, QHash<TaxID, uint> &claded) {
@@ -303,21 +303,23 @@ static void fill(ClassificationReportLine &line, QHash<TaxID, uint> &claded) {
         } else if (PHYLUM.compare(rank) == 0) {
             line.phylum_tax_id = id;
             line.phylum_name = name;
-        } else if (KINGDOM.compare(rank) == 0) {
-            line.kingdom_tax_id = id;
-            line.kingdom_name = name;
+        } else if (SUPERKINGDOM.compare(rank) == 0) {
+            line.superkingdom_tax_id = id;
+            line.superkingdom_name = name;
         }
+
         id = tree->getParent(id);
         if (id <= 1) {
             break;
         }
+
         rank = tree->getRank(id);
         name = tree->getName(id);
-        line.lineage.append(name).append(';');
+        line.lineage.prepend(name).prepend(';');
     } while (1);
 
     if (!line.lineage.isEmpty()) {
-        line.lineage.chop(1);
+        line.lineage = line.lineage.mid(1);
     }
 }
 
