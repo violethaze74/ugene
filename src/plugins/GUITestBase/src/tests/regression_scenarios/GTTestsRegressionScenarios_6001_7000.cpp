@@ -26,6 +26,7 @@
 #include <U2View/DetView.h>
 
 #include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
 
 #include "GTTestsRegressionScenarios_6001_7000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -174,6 +175,19 @@ GUI_TEST_CLASS_DEFINITION(test_6066) {
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 3, 0, true);
 
 //    Expected state: UGENE doesn't crash.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6087) {
+    //1. Open  samples/MMDB/1CRN.prt
+    GTFileDialog::openFile(os, dataDir + "samples/MMDB/1CRN.prt");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Try to select a region.
+    GTUtilsSequenceView::selectSequenceRegion(os, 10, 20);
+
+    //Expected: ugene was not crashed
+    QVector<U2Region> regions = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(regions.size() == 1, "Unexpected selection");
 }
 
 } // namespace GUITest_regression_scenarios
