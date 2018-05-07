@@ -62,6 +62,8 @@ public:
     static U2EntityRef import(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const DNASequence &seq, const U2AlphabetId &alphabetId = U2AlphabetId());
 
     static void setQuality(const U2EntityRef& entityRef, const DNAQuality& quality);
+    static void setSequenceInfo(U2OpStatus &os, const U2EntityRef& entityRef, const QVariantMap& info);
+    static QVariantMap getSequenceInfo(U2OpStatus &os, const U2EntityRef& entityRef, const QString& name);
 
     static U2Sequence getSequenceDbInfo(U2SequenceObject *seqObj);
 };
