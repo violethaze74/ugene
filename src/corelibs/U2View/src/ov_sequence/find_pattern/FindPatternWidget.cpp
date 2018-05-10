@@ -800,7 +800,7 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
     if (hasNoErrors) {
         doNotHighlightBackground(textPattern);
     }
-    
+
 }
 
 void FindPatternWidget::sl_onSearchPatternChanged()
