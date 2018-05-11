@@ -74,6 +74,7 @@
 #include "tests/common_scenarios/repeat_finder/GTTestsRepeatFinder.h"
 #include "tests/common_scenarios/sanger/GTTestsSanger.h"
 #include "tests/common_scenarios/sequence_edit/GTTestsSequenceEdit.h"
+#include "tests/common_scenarios/sequence_edit/GTTestsSequenceEditMode.h"
 #include "tests/common_scenarios/sequence_selection/GTTestsSequenceSelection.h"
 #include "tests/common_scenarios/sequence_view/GTTestsSequenceView.h"
 #include "tests/common_scenarios/shared_database/GTTestsSharedDatabase.h"
@@ -1662,6 +1663,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0015_2_neg);
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0016_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0016_2);
+
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/sequence edit mode/
+    //////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::without_anns_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::without_anns_test_0002);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/sequence selection/

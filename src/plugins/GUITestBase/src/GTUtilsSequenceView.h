@@ -77,6 +77,10 @@ public:
       * The method sets the cursor before the @position (0-based) in the first sequence in the view
       **/
     static void setCursor(HI::GUITestOpStatus &os, qint64 position);
+
+    static qint64 getCursor(HI::GUITestOpStatus &os);
+
+    static QString getRegionAsString(HI::GUITestOpStatus &os, const U2Region& region);
 };
 
 } // namespace U2

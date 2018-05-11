@@ -48,6 +48,7 @@
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/DetView.h>
 #include <U2View/DetViewRenderer.h>
+#include <U2View/DetViewSequenceEditor.h>
 #include <U2View/GSequenceGraphView.h>
 #include <U2View/GSequenceLineViewAnnotated.h>
 #include <U2View/Overview.h>
@@ -590,10 +591,46 @@ void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position) {
     DetView *detView = getDetViewByNumber(os, 0);
     CHECK_SET_ERR(NULL != detView, "DetView is NULL");
 
+    const U2Region visibleRange = detView->getVisibleRange();
+    if (!visibleRange.contains(position)) {
+        GTUtilsSequenceView::goToPosition(os, position);
+        GTGlobals::sleep();
+    }
+
     SAFE_POINT_EXT(detView->getVisibleRange().contains(position), os.setError("scrolling is not implemented"), );
     const int coord = detView->getDetViewRenderArea()->getRenderer()->posToXCoord(position, detView->getRenderArea()->size(), detView->getVisibleRange());
     GTMouseDriver::moveTo(detView->getRenderArea()->mapToGlobal(QPoint(coord, 40)));    // TODO: replace the hardcoded value with method in renderer
     GTMouseDriver::click();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getCursor"
+qint64 GTUtilsSequenceView::getCursor(HI::GUITestOpStatus &os) {
+    DetView *detView = getDetViewByNumber(os, 0);
+    GT_CHECK_RESULT(NULL != detView, "DetView is NULL", -1);
+
+    DetViewSequenceEditor* dwSequenceEditor = detView->getEditor();
+    GT_CHECK_RESULT(dwSequenceEditor != NULL, "DetViewSequenceEditor is NULL", -1);
+
+    const bool isEditMode = detView->isEditMode();
+    GT_CHECK_RESULT(isEditMode, "Edit mode is disabled", -1);
+
+    const qint64 result = dwSequenceEditor->getCursorPosition();
+
+    return result;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getRegionAsString"
+QString GTUtilsSequenceView::getRegionAsString(HI::GUITestOpStatus &os, const U2Region& region) {
+    GTUtilsSequenceView::selectSequenceRegion(os, region.startPos, region.endPos() - 1);
+    GTGlobals::sleep();
+
+    GTKeyboardUtils::copy(os);
+
+    const QString result = GTClipboard::text(os);
+
+    return result;
 }
 #undef GT_METHOD_NAME
 
