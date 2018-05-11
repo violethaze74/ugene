@@ -2610,8 +2610,8 @@ GUI_TEST_CLASS_DEFINITION( test_2378_1 ) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Assembly");
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write Assembly"));
     GTMouseDriver::click();
-    //QString //absPath =
-    GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(testDir).absolutePath() + "_common_data/scenarios/sandbox/test_2378_1.bam", GTUtilsWorkflowDesigner::textValue);
+    QString path = QFileInfo(testDir + "_common_data/scenarios/sandbox/").absoluteFilePath();
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file", path+"/test_2378_1.bam", GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Assembly"), GTUtilsWorkflowDesigner::getWorker(os, "Write Assembly"));
 
