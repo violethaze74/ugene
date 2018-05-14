@@ -585,22 +585,55 @@ void GTUtilsSequenceView::enableEditingMode(GUITestOpStatus &os, bool enable, in
 
 #define GT_METHOD_NAME "setCursor"
 void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position) {
-    // Scrolling to make the position visible is not implemented
     // Multiline view is no supported correctly
 
     DetView *detView = getDetViewByNumber(os, 0);
     CHECK_SET_ERR(NULL != detView, "DetView is NULL");
 
-    const U2Region visibleRange = detView->getVisibleRange();
+    DetViewRenderArea* renderArea = detView->getDetViewRenderArea();
+    CHECK_SET_ERR(NULL != detView, "DetViewRenderArea is NULL");
+
+    U2Region visibleRange = detView->getVisibleRange();
     if (!visibleRange.contains(position)) {
         GTUtilsSequenceView::goToPosition(os, position);
         GTGlobals::sleep();
     }
+    SAFE_POINT_EXT(detView->getVisibleRange().contains(position), os.setError("Position is out of visible range"), );
 
-    SAFE_POINT_EXT(detView->getVisibleRange().contains(position), os.setError("scrolling is not implemented"), );
-    const int coord = detView->getDetViewRenderArea()->getRenderer()->posToXCoord(position, detView->getRenderArea()->size(), detView->getVisibleRange());
-    GTMouseDriver::moveTo(detView->getRenderArea()->mapToGlobal(QPoint(coord, 40)));    // TODO: replace the hardcoded value with method in renderer
-    GTMouseDriver::click();
+    const bool wrapMode = detView->isWrapMode();
+    if (!wrapMode) {
+        const int coord = renderArea->getRenderer()->posToXCoord(position, renderArea->size(), detView->getVisibleRange());
+        GTMouseDriver::moveTo(renderArea->mapToGlobal(QPoint(coord, 40)));    // TODO: replace the hardcoded value with method in renderer
+        GTMouseDriver::click();
+    } else {
+        GTUtilsSequenceView::goToPosition(os, position);
+        GTGlobals::sleep();
+
+        const int symbolsPerLine = renderArea->getSymbolsPerLine();
+        const int linesCount = renderArea->getLinesCount();
+        visibleRange = GTUtilsSequenceView::getVisibleRange(os);
+        int linesBeforePos = -1;
+        for (int i = 0; i < linesCount; i++) {
+            const U2Region line(visibleRange.startPos + i * symbolsPerLine, symbolsPerLine);
+            if (line.contains(position)) {
+                linesBeforePos = i;
+                break;
+            }
+        }
+        SAFE_POINT_EXT(linesBeforePos != -1, os.setError("Position not found"), );
+
+        const int shiftsCount = renderArea->getShiftsCount();
+        int middleShift = (int)(shiftsCount / 2) + 1;     //TODO: this calculation might consider the case then complementary is turned off or translations are drawn
+
+        const int shiftHeight = renderArea->getShiftHeight();
+        const int lineToClick = linesBeforePos * shiftsCount + middleShift;
+
+        const int yPos = (lineToClick * shiftHeight) - (shiftHeight / 2);
+
+        const int coord = renderArea->getRenderer()->posToXCoord(position, renderArea->size(), detView->getVisibleRange());
+        GTMouseDriver::moveTo(renderArea->mapToGlobal(QPoint(coord, yPos)));
+        GTMouseDriver::click();
+    }
 }
 #undef GT_METHOD_NAME
 
