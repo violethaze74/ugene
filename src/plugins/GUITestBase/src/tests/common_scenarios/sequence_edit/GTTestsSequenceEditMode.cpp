@@ -371,6 +371,69 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0001) {
         .arg(regionsBeforeInsert.last().length).arg(regionsAfterInsert.last().length));
     }
 
+GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
+    //1. Open murine.gb
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+
+    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //   Be sure that "Expand or crop affected annotations" option is selected.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Annotations settings on sequence editing..."));
+    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
+    GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
+
+    //3. Push "Edit sequence" button, sequence in the edit mode
+    GTUtilsSequenceView::enableEditingMode(os);
+
+    //4. Select CDS (1042, 2674)  and do double click on it
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
+
+    //5. Put cursor in position before "A" in position 1043
+    GTUtilsSequenceView::setCursor(os, 1043);
+
+    //6. Type "ACGTN-"
+    GTKeyboardDriver::keyClick('A');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('C');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('G');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('T');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('N');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTGlobals::sleep(100);
+
+    //Expected state : annotation starts with "AACGTN-"
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
+    const QList<U2Region> selectedAnnotationRegions = GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions(os);
+    CHECK_SET_ERR(selectedAnnotationRegions.size() == 1, QString("Unexpected annotation size, expected: 1, current: %1")
+        .arg(selectedAnnotationRegions.size()));
+    QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(selectedAnnotationRegions.first().startPos + 1, 7));
+    CHECK_SET_ERR(string == "AACGTN-",
+        QString("Unexpected string on the beginning of the first annotation, expected: AACGTN-, current: %1").arg(string));
+
+    //7. Put cursor in position before "A" in position 1043
+    GTUtilsSequenceView::setCursor(os, 1043);
+
+    //8. Type some forbiden symbols "QWER"
+    GTKeyboardDriver::keyClick('Q');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('W');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('E');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('R');
+    GTGlobals::sleep(100);
+
+    //Expected state: annotation starts with "AACGTN-"
+    string = GTUtilsSequenceView::getRegionAsString(os, U2Region(selectedAnnotationRegions.first().startPos + 1, 7));
+    CHECK_SET_ERR(string == "AACGTN-",
+        QString("Unexpected string on the beginning of the first annotation, expected: AACGTN-, current: %1").arg(string));
+}
+
 } // namespace
 
 } // namespace U2
