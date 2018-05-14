@@ -464,6 +464,45 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0003) {
     annotationRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
     CHECK_SET_ERR(!annotationRegions.contains(U2Region(1041, 1617)), QString("Annotation start pos: 1041, length: 1617 was not removed"));
 }
+GUI_TEST_CLASS_DEFINITION(with_anns_test_0004) {
+    //1. Open murine.gb
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //   Be sure that "Remove affected annotation" option is selected.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Annotations settings on sequence editing..."));
+    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::RemoveAffectedAnnotation, false));
+    GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
+
+    //3. Push "Edit sequence" button, sequence in the edit mode
+    GTUtilsSequenceView::enableEditingMode(os);
+
+    //4. Select CDS (1042, 2674)  and do double click on it
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
+
+    //5. Select 5 symbols at the annotation begin: "ATGGG"
+    GTUtilsSequenceView::selectSequenceRegion(os, 1042, 1047);
+
+    QList<U2Region> annotationRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
+    CHECK_SET_ERR(annotationRegions.contains(U2Region(1041, 1617)), QString("Annotation start pos: 1041, length: 1617 was removed"));
+
+    //6. Push "gap" sympol
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTGlobals::sleep(1000);
+
+    //Expected state : Annotation CDS(1043, 2674) was removed
+    annotationRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
+    CHECK_SET_ERR(!annotationRegions.contains(U2Region(1041, 1617)), QString("Annotation start pos: 1041, length: 1617 was not removed"));
+
+    //Symbol gap "-" in position 1042, "-CAGA" is placed in segment 1042 : 1045
+    const QString string =  GTUtilsSequenceView::getRegionAsString(os, U2Region(1042, 5));
+    CHECK_SET_ERR(string.size() == 5,
+        QString("Unexpected size of the selection, exprcted: 5, current: %1").arg(string.size()));
+    CHECK_SET_ERR(string == "-CAGA",
+        QString("Unexpected string, expected: -CAGA, current: %1").arg(string));
+}
+
 
 } // namespace
 
