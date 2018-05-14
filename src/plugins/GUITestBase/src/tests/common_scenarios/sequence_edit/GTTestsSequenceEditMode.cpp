@@ -376,7 +376,6 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-
     //2. Open "Edit->Annotation settings on sequence edditing" dialog.
     //   Be sure that "Expand or crop affected annotations" option is selected.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Annotations settings on sequence editing..."));
@@ -432,6 +431,38 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(selectedAnnotationRegions.first().startPos + 1, 7));
     CHECK_SET_ERR(string == "AACGTN-",
         QString("Unexpected string on the beginning of the first annotation, expected: AACGTN-, current: %1").arg(string));
+}
+
+GUI_TEST_CLASS_DEFINITION(with_anns_test_0003) {
+    //1. Open murine.gb
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //   Be sure that "Remove affected annotation" option is selected.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Annotations settings on sequence editing..."));
+    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::RemoveAffectedAnnotation, false));
+    GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
+
+    //3. Push "Edit sequence" button, sequence in the edit mode
+    GTUtilsSequenceView::enableEditingMode(os);
+
+    //4. Select CDS (1042, 2674)  and do double click on it
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
+
+    //5. Put cursor in position before "A" in position 1043 (annotation must be selected)
+    GTUtilsSequenceView::setCursor(os, 1043, true);
+
+    QList<U2Region> annotationRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
+    CHECK_SET_ERR(annotationRegions.contains(U2Region(1041, 1617)), QString("Annotation start pos: 1041, length: 1617 was removed"));
+
+    //6. Push "A" sympols
+    GTKeyboardDriver::keyClick('A');
+    GTGlobals::sleep(1000);
+
+    //Expected state: Annotation CDS (1043, 2674) was removed
+    annotationRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
+    CHECK_SET_ERR(!annotationRegions.contains(U2Region(1041, 1617)), QString("Annotation start pos: 1041, length: 1617 was not removed"));
 }
 
 } // namespace
