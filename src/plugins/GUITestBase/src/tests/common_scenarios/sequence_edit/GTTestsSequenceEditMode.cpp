@@ -168,6 +168,95 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0002) {
 
 }
 
+GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
+    //1. Open human_T1.fa
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Uncheck "Wrap sequence" and "Show compliment strans" button
+    QAction* wrapMode = GTAction::findActionByText(os, "Wrap sequence");
+    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    if (wrapMode->isChecked()) {
+        GTWidget::click(os, GTAction::button(os, wrapMode));
+    }
+
+    QAction* compStrand = GTAction::findActionByText(os, "Show complementary strand");
+    CHECK_SET_ERR(compStrand != NULL, "Cannot find Wrap sequence action");
+    if (compStrand->isChecked()) {
+        GTWidget::click(os, GTAction::button(os, compStrand));
+    }
+
+    //3. Check "Edit sequence" button
+    GTUtilsSequenceView::enableEditingMode(os);
+
+    //Expected state : Blinked cursor at the sequence  beggining
+    const qint64 pos = GTUtilsSequenceView::getCursor(os);
+    CHECK_SET_ERR(pos == 0, QString("Unexpected cursor pos, expected: 0, current %1").arg(pos));
+
+    //4. Print "-AAA" symbols
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('A');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('A');
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick('A');
+    GTGlobals::sleep(100);
+
+    //Expected state: Sequence starts with "-AAA"
+    QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
+    CHECK_SET_ERR(string == "-AAA", QString("Unexpected string, expected: -AAA, current: %1").arg(string));
+
+
+    //5. Put cursor after "AAA" and push Bàckspañå 3 times
+    GTUtilsSequenceView::setCursor(os, 3);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep(100);
+
+    //Expected state : Sequence ends with "-"
+    string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
+    CHECK_SET_ERR(string[0] == '-', QString("Unexpected symbol at the beginning, expected: -, current: %1").arg(string[0]));
+    CHECK_SET_ERR(string == "-TTG", QString("Unexpected string, expected: -TTG, current: %1").arg(string));
+
+    //6. Print "---" symbols at the beggining and put cursor before gap
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTGlobals::sleep(100);
+    GTUtilsSequenceView::setCursor(os, 0);
+
+    //7. Push Bàckspañå 3 times
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+    GTGlobals::sleep(100);
+
+    //Expected state : Nothing happens
+    string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
+    CHECK_SET_ERR(string == "----", QString("Unexpected string, expected: ----, current: %1").arg(string));
+
+    //8. Push Detete 3 times
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep(100);
+
+    //Expected state : 3 gaps are deleted
+    string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
+    CHECK_SET_ERR(string[0] == '-', QString("Unexpected symbol at the beginning, expected: -, current: %1").arg(string[0]));
+    CHECK_SET_ERR(string == "-TTG", QString("Unexpected string, expected: -TTG, current: %1").arg(string));
+}
+
 
 } // namespace
 
