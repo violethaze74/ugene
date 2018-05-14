@@ -7731,7 +7731,7 @@ GUI_TEST_CLASS_DEFINITION(test_1738){
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/Mycobacterium.fna");
 
     GTWidget::click(os,GTAction::button(os,"Run workflow"));
-    GTGlobals::sleep(3000);
+    GTGlobals::sleep(500);
 
     GTWidget::click(os,GTAction::button(os,"Stop workflow"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
