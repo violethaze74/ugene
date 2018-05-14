@@ -54,7 +54,11 @@
 #include <primitives/GTAction.h>
 #include <primitives/GTTreeWidget.h>
 
+#include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
+
 #include <U2Core/U2IdTypes.h>
+
+#include <U2View/DetView.h>
 
 
 namespace U2{
@@ -313,6 +317,59 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0004) {
     CHECK_SET_ERR(string == "ACGTN-", QString("Unexpected string in the ending of the sequence, expected: ACGTN-, current: %1").arg(string));
 }
 
+GUI_TEST_CLASS_DEFINITION(with_anns_test_0001) {
+    //1. Open murine.gb
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+
+    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //   Be sure that "Expand or crop affected annotations" option is selected.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Annotations settings on sequence editing..."));
+    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
+    GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
+
+    //3. Push "Edit sequence" button, sequence in the edit mode
+    GTUtilsSequenceView::enableEditingMode(os);
+
+    //4. Select CDS with join (2970..3413,3412..3873) and do double click on it
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970, 0, true);
+    const QList<U2Region> regionsBeforeInsert = GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions(os);
+    CHECK_SET_ERR(regionsBeforeInsert.size() == 2, QString("Unexpected annotation selection before insert, expected: 2, current %1")
+                  .arg(regionsBeforeInsert.size()));
+
+    //5. Vertical scroll sequence until position 3874
+    GTUtilsSequenceView::goToPosition(os, 3874);
+
+    //6. Do mouse click in position before last "A" symbol in sequence (in position 3873)
+    GTUtilsSequenceView::setCursor(os, 3873);
+    GTGlobals::sleep(1000);
+    const U2Region visibleAreaBeforeInsert = GTUtilsSequenceView::getVisibleRange(os);
+    GTKeyboardDriver::keyClick('A');
+    GTGlobals::sleep(100);
+
+    //Expected state : Visible area was not changed
+    const U2Region visibleAreaAfterInsert = GTUtilsSequenceView::getVisibleRange(os);
+    CHECK_SET_ERR(visibleAreaBeforeInsert == visibleAreaAfterInsert,
+                  QString("Visible area was changed, area before insert - start: %1, length: %2, after insert - start: %3, length: %4")
+                  .arg(visibleAreaBeforeInsert.startPos).arg(visibleAreaBeforeInsert.length).arg(visibleAreaAfterInsert.startPos)
+                  .arg(visibleAreaAfterInsert.length));
+    //Expected state : Annotation was expanded
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970, 0, true);
+    const QList<U2Region> regionsAfterInsert = GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions(os);
+    CHECK_SET_ERR(regionsAfterInsert.size() == 2, QString("Unexpected annotation selection after insert, expected: 2, current %1")
+                  .arg(regionsAfterInsert.size()));
+    CHECK_SET_ERR(regionsBeforeInsert.first() == regionsAfterInsert.first(),
+        QString("Unexpected changing os the first part of join annotation, before insert - start: %1, length: %2, after insert - start: %3, length %4")
+        .arg(regionsBeforeInsert.first().startPos).arg(regionsBeforeInsert.first().length).arg(regionsAfterInsert.first().startPos)
+        .arg(regionsAfterInsert.first().length));
+    CHECK_SET_ERR(regionsBeforeInsert.last().startPos == regionsAfterInsert.last().startPos,
+        QString("Start pos of the second part of join annotation unexpectedly was changed, before insert: %1, after insert: %2")
+        .arg(regionsBeforeInsert.last().startPos).arg(regionsAfterInsert.last().startPos));
+    CHECK_SET_ERR(regionsBeforeInsert.last().length + 1 == regionsAfterInsert.last().length,
+        QString("Length of the second part of join annotation should have been expanded for symbol, before insert: %1, after insert: %2")
+        .arg(regionsBeforeInsert.last().length).arg(regionsAfterInsert.last().length));
+    }
 
 } // namespace
 
