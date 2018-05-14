@@ -33,6 +33,7 @@ namespace GUITest_common_scenarios_sequence_edit_mode {
 GUI_TEST_CLASS_DECLARATION(without_anns_test_0001)
 GUI_TEST_CLASS_DECLARATION(without_anns_test_0002)
 GUI_TEST_CLASS_DECLARATION(without_anns_test_0003)
+GUI_TEST_CLASS_DECLARATION(without_anns_test_0004)
 
 #undef GUI_TEST_SUITE
 }
