@@ -584,7 +584,7 @@ void GTUtilsSequenceView::enableEditingMode(GUITestOpStatus &os, bool enable, in
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setCursor"
-void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position) {
+void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position, bool clickOnDirectLine, bool doubleClick) {
     // Multiline view is no supported correctly
 
     DetView *detView = getDetViewByNumber(os, 0);
@@ -604,7 +604,6 @@ void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position) {
     if (!wrapMode) {
         const int coord = renderArea->getRenderer()->posToXCoord(position, renderArea->size(), detView->getVisibleRange());
         GTMouseDriver::moveTo(renderArea->mapToGlobal(QPoint(coord, 40)));    // TODO: replace the hardcoded value with method in renderer
-        GTMouseDriver::click();
     } else {
         GTUtilsSequenceView::goToPosition(os, position);
         GTGlobals::sleep();
@@ -624,6 +623,9 @@ void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position) {
 
         const int shiftsCount = renderArea->getShiftsCount();
         int middleShift = (int)(shiftsCount / 2) + 1;     //TODO: this calculation might consider the case then complementary is turned off or translations are drawn
+        if (clickOnDirectLine) {
+            middleShift--;
+        }
 
         const int shiftHeight = renderArea->getShiftHeight();
         const int lineToClick = linesBeforePos * shiftsCount + middleShift;
@@ -632,6 +634,10 @@ void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position) {
 
         const int coord = renderArea->getRenderer()->posToXCoord(position, renderArea->size(), detView->getVisibleRange());
         GTMouseDriver::moveTo(renderArea->mapToGlobal(QPoint(coord, yPos)));
+    }
+    if (doubleClick) {
+        GTMouseDriver::doubleClick();
+    } else {
         GTMouseDriver::click();
     }
 }

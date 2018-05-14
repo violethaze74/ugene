@@ -77,7 +77,7 @@ public:
       * The method sets the cursor before the @position (0-based) in the first sequence in the view
       The case with translations and turned off complementary supported bad, let's try to avoid this situation now
       **/
-    static void setCursor(HI::GUITestOpStatus &os, qint64 position);
+    static void setCursor(HI::GUITestOpStatus &os, qint64 position, bool clickOnDirectLine = false, bool doubleClick = false);
 
     static qint64 getCursor(HI::GUITestOpStatus &os);
 
