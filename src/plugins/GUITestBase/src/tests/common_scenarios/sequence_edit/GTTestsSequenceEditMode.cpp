@@ -464,6 +464,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0003) {
     annotationRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
     CHECK_SET_ERR(!annotationRegions.contains(U2Region(1041, 1617)), QString("Annotation start pos: 1041, length: 1617 was not removed"));
 }
+
 GUI_TEST_CLASS_DEFINITION(with_anns_test_0004) {
     //1. Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
@@ -503,6 +504,45 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0004) {
         QString("Unexpected string, expected: -CAGA, current: %1").arg(string));
 }
 
+GUI_TEST_CLASS_DEFINITION(with_anns_test_0005) {
+    //1. Open murine.gb
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //   Be sure that "Split (join annitations parts)" option is selected.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Annotations settings on sequence editing..."));
+    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitJoinAnnotationParts, false));
+    GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
+
+    //3. Push "Edit sequence" button, sequence in the edit mode
+    GTUtilsSequenceView::enableEditingMode(os);
+
+    //4. Select CDS (1042, 2674)  and do double click on it
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
+
+    //5. Select 1200 position
+    GTUtilsSequenceView::setCursor(os, 1200);
+
+    //6. Push "gap" sympol
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTGlobals::sleep(1000);
+
+    //Expected state : Annotation CDS(1042..1199, 1201..2661 appeared
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
+    const QList<U2Region> annotatedRegions = GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions(os);
+    CHECK_SET_ERR(annotatedRegions.size() == 2, QString("Unexpected annotation size, expected: 2, current: %1").arg(annotatedRegions.size()));
+    CHECK_SET_ERR(annotatedRegions.first() == U2Region(1041, 158),
+        QString("Unexpected first annotated region, expected - start: 1041, length: 158, current: start: %1, length: %2")
+        .arg(annotatedRegions.first().startPos).arg(annotatedRegions.first().length));
+    CHECK_SET_ERR(annotatedRegions.last() == U2Region(1200, 1459),
+        QString("Unexpected first annotated region, expected - start: 1200, length: 1459, current: start: %1, length: %2")
+        .arg(annotatedRegions.last().startPos).arg(annotatedRegions.last().length));
+
+    //Symbol gap "-" in position 1200, "GA-CG" is placed in segment 1198:1202
+    const QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1198, 5));
+    CHECK_SET_ERR(string == "GA-CG", QString("Unexpected string, expected: GA-CG, current %1").arg(string));
+}
 
 } // namespace
 
