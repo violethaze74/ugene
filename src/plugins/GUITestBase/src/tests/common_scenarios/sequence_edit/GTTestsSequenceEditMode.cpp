@@ -588,6 +588,59 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0006) {
     CHECK_SET_ERR(string == "GA-CG", QString("Unexpected string, expected: GA-CG, current %1").arg(string));
 }
 
+GUI_TEST_CLASS_DEFINITION(with_anns_test_0007) {
+    //1. Open murine.gb
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open "Edit->Annotation settings on sequence edditing" dialog.
+    //   Be sure that "Split (join annitations parts)" option is selected.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit" << "Annotations settings on sequence editing..."));
+    GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
+    GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
+
+    //3. Select CDS (1042, 2674)  and do double click on it
+    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
+
+    //4. Select Add->Qualifier from context menu
+    //5. In "Add new qualifier" dialog add Òame "Test" and Value : "1500..2000"  and save
+    GTUtilsAnnotationsTreeView::createQualifier(os, "Test", "1500..2000", "CDS");
+
+    //   Be sure thar new qualifier "Test" appears
+    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
+    QList<QTreeWidgetItem*> selectedItem = GTUtilsAnnotationsTreeView::getAllSelectedItems(os);
+    CHECK_SET_ERR(selectedItem.size() == 1, QString("Unexpected selected items, expected: 1 item, current: %1 item").arg(selectedItem.size()));
+
+    QString qualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Test", selectedItem.first());
+    CHECK_SET_ERR(qualValue == "1500..2000", QString("Unexpected qualifire value, expected: 1500..2000, current: %1").arg(qualValue));
+
+    //6. Push "Edit sequence" button, sequence in the edit mode
+    GTUtilsSequenceView::enableEditingMode(os);
+
+    //7. Select 1505 position
+    GTUtilsSequenceView::setCursor(os, 1505);
+
+    //8. Add 3 gaps
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTGlobals::sleep(100);
+
+    //Symbol gap "-" in position 1505 - 1507
+    const QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1505, 3));
+    CHECK_SET_ERR(string == "---", QString("Unexpected selection, expected: ---, current: %1").arg(string));
+
+    //Expected state : Values for qualifier "Test" is not changed, "1500..2000"
+    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
+    selectedItem = GTUtilsAnnotationsTreeView::getAllSelectedItems(os);
+    CHECK_SET_ERR(selectedItem.size() == 1, QString("Unexpected selected items, expected: 1 item, current: %1 item").arg(selectedItem.size()));
+
+    qualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Test", selectedItem.first());
+    CHECK_SET_ERR(qualValue == "1500..2000", QString("Unexpected qualifire value, expected: 1500..2000, current: %1").arg(qualValue));
+}
+
 } // namespace
 
 } // namespace U2
