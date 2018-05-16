@@ -126,7 +126,7 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0001) {
     GTGlobals::sleep(100);
 
     //Expected state : Sequence ends with "A,C, G,T,N,gap"
-    string = GTUtilsSequenceView::getRegionAsString(os, U2Region(199939, 6));
+    string = GTUtilsSequenceView::getRegionAsString(os, U2Region(199940, 6));
     CHECK_SET_ERR(string == "ACGTN-", QString("Unexpected string in the ending of the sequence, expected: ACGTN-, current: %1").arg(string));
 }
 
@@ -213,7 +213,7 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
 
 
     //5. Put cursor after "AAA" and push Bàckspañå 3 times
-    GTUtilsSequenceView::selectSequenceRegion(os, 40, 50);
+    GTUtilsSequenceView::clickOnDetView(os);
     GTUtilsSequenceView::setCursor(os, 1);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(100);
@@ -228,6 +228,8 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
     CHECK_SET_ERR(string == "-TTG", QString("Unexpected string, expected: -TTG, current: %1").arg(string));
 
     //6. Print "---" symbols at the beggining and put cursor before gap
+    GTUtilsSequenceView::clickOnDetView(os);    
+    GTUtilsSequenceView::setCursor(os, 0);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
@@ -249,6 +251,7 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
     CHECK_SET_ERR(string == "----", QString("Unexpected string, expected: ----, current: %1").arg(string));
 
     //8. Push Detete 3 times
+    GTUtilsSequenceView::setCursor(os, 0);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -314,7 +317,7 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0004) {
     GTKeyboardUtils::paste(os);
 
     //Expected state : Sequence ends with "A,C, G,T,N,gap"
-    string = GTUtilsSequenceView::getRegionAsString(os, U2Region(199939, 6));
+    string = GTUtilsSequenceView::getRegionAsString(os, U2Region(199940, 6));
     CHECK_SET_ERR(string == "ACGTN-", QString("Unexpected string in the ending of the sequence, expected: ACGTN-, current: %1").arg(string));
 }
 
@@ -343,7 +346,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0001) {
     GTUtilsSequenceView::goToPosition(os, 3874);
 
     //6. Do mouse click in position before last "A" symbol in sequence (in position 3873)
-    GTUtilsSequenceView::setCursor(os, 3873);
+    GTUtilsSequenceView::setCursor(os, 3872);
     GTGlobals::sleep(1000);
     const U2Region visibleAreaBeforeInsert = GTUtilsSequenceView::getVisibleRange(os);
     GTKeyboardDriver::keyClick('A');
@@ -390,7 +393,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
 
     //5. Put cursor in position before "A" in position 1043
-    GTUtilsSequenceView::setCursor(os, 1043);
+    GTUtilsSequenceView::setCursor(os, 1042);
 
     //6. Type "ACGTN-"
     GTKeyboardDriver::keyClick('A');
@@ -413,12 +416,13 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
         .arg(selectedAnnotationRegions.size()));
     QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(selectedAnnotationRegions.first().startPos + 1, 7));
     CHECK_SET_ERR(string == "AACGTN-",
-        QString("Unexpected string on the beginning of the first annotation, expected: AACGTN-, current: %1").arg(string));
+        QString("Unexpected string at the beginning of the first annotation, expected: AACGTN-, current: %1").arg(string));
 
     //7. Put cursor in position before "A" in position 1043
     GTUtilsSequenceView::setCursor(os, 1043);
 
     //8. Type some forbiden symbols "QWER"
+    GTUtilsSequenceView::setCursor(os, 1042);
     GTKeyboardDriver::keyClick('Q');
     GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('W');
@@ -431,7 +435,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
     //Expected state: annotation starts with "AACGTN-"
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(selectedAnnotationRegions.first().startPos + 1, 7));
     CHECK_SET_ERR(string == "AACGTN-",
-        QString("Unexpected string on the beginning of the first annotation, expected: AACGTN-, current: %1").arg(string));
+        QString("Unexpected string at the end of the first annotation, expected: AACGTN-, current: %1").arg(string));
 }
 
 GUI_TEST_CLASS_DEFINITION(with_anns_test_0003) {
@@ -523,7 +527,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0005) {
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
 
     //5. Select 1200 position
-    GTUtilsSequenceView::setCursor(os, 1200);
+    GTUtilsSequenceView::setCursor(os, 1199);
 
     //6. Push "gap" sympol
     GTKeyboardDriver::keyClick(Qt::Key_Space);
@@ -563,7 +567,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0006) {
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
 
     //5. Select 1200 position
-    GTUtilsSequenceView::setCursor(os, 1200);
+    GTUtilsSequenceView::setCursor(os, 1199);
 
     //6. Push "gap" sympol
     GTKeyboardDriver::keyClick(Qt::Key_Space);
@@ -620,7 +624,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0007) {
     GTUtilsSequenceView::enableEditingMode(os);
 
     //7. Select 1505 position
-    GTUtilsSequenceView::setCursor(os, 1505);
+    GTUtilsSequenceView::setCursor(os, 1504);
 
     //8. Add 3 gaps
     GTKeyboardDriver::keyClick(Qt::Key_Space);
@@ -674,7 +678,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0008) {
     GTUtilsSequenceView::enableEditingMode(os);
 
     //7. Select 1505 position
-    GTUtilsSequenceView::setCursor(os, 1505);
+    GTUtilsSequenceView::setCursor(os, 1504);
 
     //8. Add 3 gaps
     GTKeyboardDriver::keyClick(Qt::Key_Space);

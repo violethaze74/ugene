@@ -82,6 +82,8 @@ public:
     static qint64 getCursor(HI::GUITestOpStatus &os);
 
     static QString getRegionAsString(HI::GUITestOpStatus &os, const U2Region& region);
+
+    static void clickOnDetView(HI::GUITestOpStatus &os);
 };
 
 } // namespace U2

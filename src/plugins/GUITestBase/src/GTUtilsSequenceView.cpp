@@ -600,6 +600,7 @@ void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position, bool c
     if (!visibleRange.contains(position)) {
         GTUtilsSequenceView::goToPosition(os, position);
         GTGlobals::sleep();
+        visibleRange = detView->getVisibleRange();
     }
     SAFE_POINT_EXT(visibleRange.contains(position), os.setError("Position is out of visible range"), );
 
@@ -677,6 +678,19 @@ QString GTUtilsSequenceView::getRegionAsString(HI::GUITestOpStatus &os, const U2
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "clickOnDetView"
+void GTUtilsSequenceView::clickOnDetView(HI::GUITestOpStatus &os) {
+    MainWindow* mw = AppContext::getMainWindow();
+    GT_CHECK(mw != NULL, "MainWindow == NULL");
+
+    MWMDIWindow *mdiWindow = mw->getMDIManager()->getActiveWindow();
+    GT_CHECK(mdiWindow != NULL, "MDI window == NULL");
+
+    GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
+    GTMouseDriver::click();
+
+    GTGlobals::sleep(500);
+}
 #undef MIN_ANNOTATION_WIDTH
 
 #undef GT_CLASS_NAME
