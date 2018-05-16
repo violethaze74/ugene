@@ -1246,13 +1246,14 @@ GUI_TEST_CLASS_DEFINITION( test_2144 )
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.fa");
 
-//    4. Chose "Estimate" option in tool bar.
+//    4. Choose "Estimate" option in tool bar.
 //       "Estimate" option is available only for NGS samples (except "Extract transcript sequence").
 //    Expected state: Estimation dialog appears and provides information about approximate time of workflow run.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os,
                                                                 QMessageBox::Close,
                                                                 "Approximate estimation time of the workflow run is" ));
     GTWidget::click(os, GTAction::button(os, "Estimate workflow"));
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2150 ){
