@@ -5118,7 +5118,11 @@ GUI_TEST_CLASS_DEFINITION(test_2773) {
     // Expected state: UGENE doesn't crash, error message appears.
 
     //need to copy enlement to data dir
+#ifdef Q_OS_LINUX
+    QFile::copy(testDir + "_common_data/cmdline/_proto/translateTest.usa", "../../data/workflow_samples/users/translateTest.usa");
+#else
     GTFile::copy(os, testDir + "_common_data/cmdline/_proto/translateTest.usa", dataDir + "/workflow_samples/users/translateTest.usa");
+#endif
 
     GTLogTracer l;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
