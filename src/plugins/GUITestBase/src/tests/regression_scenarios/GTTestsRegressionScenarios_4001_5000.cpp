@@ -3797,10 +3797,6 @@ GUI_TEST_CLASS_DEFINITION(test_4624) {
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "extended_dna.ace.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view" << "Open new view: Assembly Browser" ));
-    GTUtilsProjectTreeView::click(os, "extended_dna.ace.ugenedb", Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
     QList<ExportCoverageDialogFiller::Action> actions;
 
     //2. Export coverage with bases quantity info
@@ -3809,10 +3805,9 @@ GUI_TEST_CLASS_DEFINITION(test_4624) {
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::SetExportBasesQuantity, QVariant(true));
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, QVariant());
 
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os, GTUtilsAssemblyBrowser::Overview);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
+    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));  
+    GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
+ 
     //3. Check the coverage
     QString templateCoverage = getFileContent(testDir + "_common_data/scenarios/_regression/4624/4624.txt");
     QString resCoverage = getFileContent(sandBoxDir + "test_4624.txt");
