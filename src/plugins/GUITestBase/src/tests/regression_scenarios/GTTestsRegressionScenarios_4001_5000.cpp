@@ -727,10 +727,11 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/fungal - all.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
+    GTGlobals::sleep(1000);
     hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll");
-    CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area");
-    CHECK_SET_ERR(hNameScroll->isVisible(), "Scroll bar at the botton of name list area is not visible");
+    CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area for fungal-all.aln");
+    CHECK_SET_ERR(hNameScroll->isVisible(), "Scroll bar at the bottom of name list area is not visible for fungal-all.aln");
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4084) {
