@@ -213,7 +213,8 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
 
 
     //5. Put cursor after "AAA" and push Bàckspañå 3 times
-    GTUtilsSequenceView::setCursor(os, 3);
+    GTUtilsSequenceView::selectSequenceRegion(os, 40, 50);
+    GTUtilsSequenceView::setCursor(os, 1);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);

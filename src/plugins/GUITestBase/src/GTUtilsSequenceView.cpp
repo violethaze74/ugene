@@ -591,18 +591,23 @@ void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position, bool c
     CHECK_SET_ERR(NULL != detView, "DetView is NULL");
 
     DetViewRenderArea* renderArea = detView->getDetViewRenderArea();
-    CHECK_SET_ERR(NULL != detView, "DetViewRenderArea is NULL");
+    CHECK_SET_ERR(NULL != renderArea, "DetViewRenderArea is NULL");
+
+    DetViewRenderer* renderer = renderArea->getRenderer();
+    CHECK_SET_ERR(NULL != renderer, "DetViewRenderer is NULL");
 
     U2Region visibleRange = detView->getVisibleRange();
     if (!visibleRange.contains(position)) {
         GTUtilsSequenceView::goToPosition(os, position);
         GTGlobals::sleep();
     }
-    SAFE_POINT_EXT(detView->getVisibleRange().contains(position), os.setError("Position is out of visible range"), );
+    SAFE_POINT_EXT(visibleRange.contains(position), os.setError("Position is out of visible range"), );
+
+    const double scale = renderer->getCurrentScale();
+    const int coord = renderer->posToXCoord(position, renderArea->size(), visibleRange) + (int)(scale / 2);
 
     const bool wrapMode = detView->isWrapMode();
     if (!wrapMode) {
-        const int coord = renderArea->getRenderer()->posToXCoord(position, renderArea->size(), detView->getVisibleRange());
         GTMouseDriver::moveTo(renderArea->mapToGlobal(QPoint(coord, 40)));    // TODO: replace the hardcoded value with method in renderer
     } else {
         GTUtilsSequenceView::goToPosition(os, position);
@@ -632,7 +637,6 @@ void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position, bool c
 
         const int yPos = (lineToClick * shiftHeight) - (shiftHeight / 2);
 
-        const int coord = renderArea->getRenderer()->posToXCoord(position, renderArea->size(), detView->getVisibleRange());
         GTMouseDriver::moveTo(renderArea->mapToGlobal(QPoint(coord, yPos)));
     }
     if (doubleClick) {
