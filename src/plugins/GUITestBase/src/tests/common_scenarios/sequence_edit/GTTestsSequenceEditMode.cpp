@@ -494,6 +494,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0004) {
     CHECK_SET_ERR(annotationRegions.contains(U2Region(1041, 1617)), QString("Annotation start pos: 1041, length: 1617 was removed"));
 
     //6. Push "gap" sympol
+    GTUtilsSequenceView::setCursor(os, 1047);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     GTGlobals::sleep(1000);
 
@@ -502,7 +503,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0004) {
     CHECK_SET_ERR(!annotationRegions.contains(U2Region(1041, 1617)), QString("Annotation start pos: 1041, length: 1617 was not removed"));
 
     //Symbol gap "-" in position 1042, "-CAGA" is placed in segment 1042 : 1045
-    const QString string =  GTUtilsSequenceView::getRegionAsString(os, U2Region(1042, 5));
+    const QString string =  GTUtilsSequenceView::getRegionAsString(os, U2Region(1048, 5));
     CHECK_SET_ERR(string.size() == 5,
         QString("Unexpected size of the selection, exprcted: 5, current: %1").arg(string.size()));
     CHECK_SET_ERR(string == "-CAGA",
