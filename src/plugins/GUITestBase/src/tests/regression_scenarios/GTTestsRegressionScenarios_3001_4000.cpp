@@ -5934,7 +5934,7 @@ GUI_TEST_CLASS_DEFINITION(test_3938) {
     GTUtilsWorkflowDesigner::addInputFile(os, "Input Variations File", testDir + "_common_data/vcf/valid.vcf");
 
     GTUtilsWorkflowDesigner::click(os, "Annotate and Predict Effects with SnpEff");
-    GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "hg19"));
+    GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "ebola_zaire"));
     GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
