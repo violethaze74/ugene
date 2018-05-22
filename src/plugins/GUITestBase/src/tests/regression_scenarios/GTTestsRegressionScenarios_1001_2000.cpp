@@ -8109,17 +8109,14 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isWorkerExtended(os, "Read alignment"), "\"Read alignment\" unexpectedly has simple style");
 
     // 2) Save the schema.
-    const QString workflowOutputDirPath(testDir + "_common_data/scenarios/sandbox");
-    QDir workflowOutputDir(workflowOutputDirPath);
-
-    GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, workflowOutputDir.absolutePath() + "/" + "test.uwl", "Workflow"));
+    GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, sandBoxDir + "test.uwl", "Workflow"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Save workflow", GTGlobals::UseKey);
 
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTMouseDriver::click();
 
     // 3) Reopen UGENE WD.
-    GTFileDialog::openFile(os, workflowOutputDirPath, "test.uwl");
+    GTFileDialog::openFile(os, sandBoxDir, "test.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: the state is saved.
