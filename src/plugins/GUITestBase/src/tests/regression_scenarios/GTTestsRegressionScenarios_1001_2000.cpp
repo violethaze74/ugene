@@ -1774,10 +1774,12 @@ GUI_TEST_CLASS_DEFINITION(test_1133) {
     QString patttern = "ATGAA    GGAAAAA\nA T G CTA AG GG\nCAGC    CAGAG AGAGGTCA GGT";
     GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, patttern));
     GTWidget::click(os, GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find pattern [Smith-Waterman]"));
-    GTGlobals::sleep();
-
-    GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 1)");
+    GTGlobals::sleep(500);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 1)");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item)); 
 }
+
 GUI_TEST_CLASS_DEFINITION(test_1152) {
     // 1. Open human_t1.fa
     // 2. Open Find Pattern bar on the Options Pannel
@@ -5391,7 +5393,7 @@ GUI_TEST_CLASS_DEFINITION(test_1533){
     f.remove();
     //CHECK_SET_ERR(f.remove(), "file not removed");
     GTFile::copy(os, dataDir+"samples/FASTA/human_T1.fa", testDir + "_common_data/scenarios/sandbox/COI.aln");
-    GTGlobals::sleep(5000);
+    GTGlobals::sleep(10000);
 //    4. Confirm to reload the file in UGENE
 //    => Unloaded file is shown, "Alignment is empty" error occurs when it is opened. This error doesn't appear if the file is just opened in UGENE.
     GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
@@ -8095,7 +8097,6 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     // 1) Create a schema with shrunk elements state.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
-    GTGlobals::sleep();
     GTThread::waitForMainThread();
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Align with MUSCLE"));
@@ -8114,6 +8115,7 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
 
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTMouseDriver::click();
+    GTGlobals::sleep(2000);
 
     // 3) Reopen UGENE WD.
     GTFileDialog::openFile(os, sandBoxDir, "test.uwl");
