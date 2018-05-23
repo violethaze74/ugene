@@ -5393,7 +5393,7 @@ GUI_TEST_CLASS_DEFINITION(test_1533){
     f.remove();
     //CHECK_SET_ERR(f.remove(), "file not removed");
     GTFile::copy(os, dataDir+"samples/FASTA/human_T1.fa", testDir + "_common_data/scenarios/sandbox/COI.aln");
-    GTGlobals::sleep(5000);
+    GTGlobals::sleep(10000);
 //    4. Confirm to reload the file in UGENE
 //    => Unloaded file is shown, "Alignment is empty" error occurs when it is opened. This error doesn't appear if the file is just opened in UGENE.
     GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
