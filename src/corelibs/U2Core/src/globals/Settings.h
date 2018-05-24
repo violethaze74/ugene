@@ -33,6 +33,7 @@ class U2CORE_EXPORT Settings : public QObject {
     Q_OBJECT
 public:
     virtual QStringList getAllKeys(const QString& path) const  = 0;
+    virtual QStringList getChildGroups(const QString& path) const  = 0;
     virtual void cleanSection(const QString& path) = 0;
 
     virtual bool contains(const QString& key) const = 0;
