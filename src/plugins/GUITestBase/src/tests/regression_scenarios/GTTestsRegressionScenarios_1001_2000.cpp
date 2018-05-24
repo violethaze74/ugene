@@ -5203,7 +5203,7 @@ GUI_TEST_CLASS_DEFINITION(test_1514){
 //    2. Build a new tree or append the existing tree to this alignment.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk", 0, 0, true));
     GTWidget::click(os,GTAction::button(os,"Build Tree"));
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: there are the MSA Editor with the Tree view inside it.
 
 //    3. Zoom out the tree to its minimum size.
@@ -5229,20 +5229,21 @@ GUI_TEST_CLASS_DEFINITION(test_1514){
         QImage finalImg = pixmap.toImage();
         uiLog.trace(QString("Easy to find. are images equal: %1 at step %2").arg(initImg==finalImg).arg(i));
         if(i==0){
-            CHECK_SET_ERR(!(initImg==finalImg), "images are unexpectidly equal at first step")
+            CHECK_SET_ERR(!(initImg==finalImg), "Images are unexpectidly equal at first step 1")
         }else{
             equalStepFound = (initImg==finalImg);
         }
         i++;
     }
-    CHECK_SET_ERR(equalStepFound, "tree changed it's size up to the end");
+    GTGlobals::sleep(200);
+    CHECK_SET_ERR(equalStepFound, "Tree changed it's size up to the end");
 //    5. Click the "Reset zoom" button on the toolbar.
     GTWidget::click(os, resetZoom);
     GTGlobals::sleep(1000);
     pixmap = GTWidget::getPixmap(os, treeView);
     QImage finalImg = pixmap.toImage();
 //    Expected state: sizes of the tree and alignment reset.
-    CHECK_SET_ERR(initImg==finalImg, "reset zoom action workes wrong")
+    CHECK_SET_ERR(initImg==finalImg, "Reset zoom action workes wrong")
 //    6. Click the "Zoom in" button in the toolbar until alignment and tree sizes stop change.
     while(zoomIn->isEnabled()){
         QPixmap pixmap = GTWidget::getPixmap(os, treeView);
@@ -5252,7 +5253,7 @@ GUI_TEST_CLASS_DEFINITION(test_1514){
         QImage finalImg = pixmap.toImage();
         uiLog.trace(QString("Easy to find. are images equal: %1 at step %2").arg(initImg==finalImg).arg(i));
         if (i != 12) {
-            CHECK_SET_ERR(!(initImg == finalImg), "images are unexpectidly equal at first step")
+            CHECK_SET_ERR(!(initImg == finalImg), "Images are unexpectidly equal at first step 2")
         }
         i++;
     }
