@@ -274,9 +274,10 @@ GObject* GObjectUtils::selectObjectByReference(const GObjectReference& r, Unload
 }
 
 GObject* GObjectUtils::selectObjectByReference(const GObjectReference& r, const QList<GObject*>& fromObjects, UnloadedObjectFilter f) {
+    GObject* firstMatchedByName = NULL;
     foreach(GObject* o, fromObjects) {
         Document *parentDoc = o->getDocument();
-        if (r.entityRef.isValid() && !(r.entityRef == o->getEntityRef()) && (NULL == parentDoc || parentDoc->isDatabaseConnection())) {
+        if (r.entityRef.isValid() && !(r.entityRef == o->getEntityRef()) && (parentDoc == NULL || parentDoc->isDatabaseConnection())) {
             continue;
         }
         if (o->getGObjectName() != r.objName) {
@@ -293,9 +294,14 @@ GObject* GObjectUtils::selectObjectByReference(const GObjectReference& r, const 
                 continue;
             }
         }
-        return o;
+        if (r.entityRef.isValid() && r.entityRef == o->getEntityRef()) {
+            return o; // matched by entityRef
+        } else if (firstMatchedByName != NULL) {
+            firstMatchedByName = o;
+        }
     }
-    return NULL;
+    
+    return firstMatchedByName;
 }
 
 DNATranslation* GObjectUtils::findComplementTT(const DNAAlphabet* al) {
