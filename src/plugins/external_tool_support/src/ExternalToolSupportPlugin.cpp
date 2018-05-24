@@ -138,6 +138,7 @@
 #include "spades/SpadesWorker.h"
 #include "spidey/SpideySupport.h"
 #include "spidey/SpideySupportTask.h"
+#include "stringtie/StringTieSupport.h"
 #include "tcoffee/TCoffeeSupport.h"
 #include "tcoffee/TCoffeeWorker.h"
 #include "tophat/TopHatSupport.h"
@@ -247,8 +248,8 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     JavaSupport *javaSupport = new JavaSupport(ET_JAVA);
     etRegistry->registerEntry(javaSupport);
 
-    //Fill ExternalToolRegistry with supported tools   
-    
+    //Fill ExternalToolRegistry with supported tools
+
     //ClustalW
     ClustalWSupport* clustalWTool=new ClustalWSupport(ET_CLUSTAL);
     etRegistry->registerEntry(clustalWTool);
@@ -444,6 +445,10 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     //FastQC
     FastQCSupport *fastqc = new FastQCSupport(ET_FASTQC);
     etRegistry->registerEntry(fastqc);
+
+    // StringTie
+    StringTieSupport *stringTie = new StringTieSupport(ET_STRINGTIE);
+    etRegistry->registerEntry(stringTie);
 
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::BUILD_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::SEARCH_TOOL));
