@@ -4571,19 +4571,20 @@ GUI_TEST_CLASS_DEFINITION(test_1455) {
     //"Read Sequence" -> "Dump Sequence Info" -> "Write Plain Text"
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Dump sequence info");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");   
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Dump sequence info");    
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Plain Text");
-
+    GTGlobals::sleep(100);
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"), GTUtilsWorkflowDesigner::getWorker(os, "Dump Sequence Info"));
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Dump Sequence Info"), GTUtilsWorkflowDesigner::getWorker(os, "Write Plain Text"));
 
     //2. Save it somewhere using the "Save as..." action
     GTUtilsWorkflowDesigner::saveWorkflowAs(os, sandBoxDir + "dump_sequence.uwl", "Dump Sequence Info");
-
+    GTGlobals::sleep();
     //3. Close WD
     GTUtilsMdi::click( os, GTGlobals::Close );
     GTMouseDriver::click();
+    GTGlobals::sleep();
     //4. Reopen the scheme's file
     //   Expected result: scheme is loaded completely without any error messages in log
     GTFileDialog::openFile(os, sandBoxDir + "dump_sequence.uwl");
