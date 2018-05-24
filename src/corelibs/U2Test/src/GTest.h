@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -100,7 +100,7 @@ class GTestSuite;
 class U2TEST_EXPORT GTestRef {
 public:
     GTestRef(const QString& _url, const QString& sName, const GTestFormatId f)
-        : url(_url), shortName(sName), formatId(f){}
+        : url(_url), shortName(sName), formatId(f), suite(NULL) {}
 
     const QString& getURL() const {return url;}
 

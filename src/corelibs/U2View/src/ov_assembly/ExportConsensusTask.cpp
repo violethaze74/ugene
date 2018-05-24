@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,9 @@
 namespace U2 {
 
 ExportConsensusTask::ExportConsensusTask(const ExportConsensusTaskSettings &settings_)
-    : DocumentProviderTask("", TaskFlags_NR_FOSE_COSC), settings(settings_)
+    : DocumentProviderTask("", TaskFlags_NR_FOSE_COSC),
+      settings(settings_),
+      consensusTask(NULL)
 {
     setTaskName(tr("Export consensus of assembly '%1' to '%2'")
                 .arg(settings.model->getAssembly().visualName)

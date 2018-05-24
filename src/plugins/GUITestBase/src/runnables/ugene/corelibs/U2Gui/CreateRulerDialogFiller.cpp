@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,6 +31,21 @@ namespace U2 {
 
 #define GT_CLASS_NAME "CreateRulerDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
+
+CreateRulerDialogFiller::CreateRulerDialogFiller(GUITestOpStatus &os, QString _rulerName, int _startPos)
+    : Filler(os, "CreateRulerDialog"),
+      rulerName(_rulerName),
+      startPos(_startPos)
+{
+
+}
+
+CreateRulerDialogFiller::CreateRulerDialogFiller(GUITestOpStatus &os, CustomScenario *c)
+    : Filler(os, "CreateRulerDialog", c),
+      startPos(0)
+{
+
+}
 
 void CreateRulerDialogFiller::commonScenario(){
     QWidget* dialog = QApplication::activeModalWidget();

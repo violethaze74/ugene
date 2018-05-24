@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,11 +39,15 @@ public:
     AppSettingsDialogFiller(HI::GUITestOpStatus &os, CustomScenario *customScenario);
     void commonScenario();
 
+    static void openTab(HI::GUITestOpStatus &os, Tabs tab);
+
     static void setExternalToolPath(HI::GUITestOpStatus &os, const QString& toolName, const QString& toolPath);
     static QString getExternalToolPath(HI::GUITestOpStatus &os, const QString& toolName);
-    static void openTab(HI::GUITestOpStatus &os, Tabs tab);
     static bool isExternalToolValid(HI::GUITestOpStatus &os, const QString& toolName);
     static void clearToolPath(HI::GUITestOpStatus &os, const QString& toolName);
+
+    static void setTemporaryDirPath(HI::GUITestOpStatus &os, const QString &path);
+
 private:
     style itemStyle;
     int r,g,b;
@@ -71,7 +75,7 @@ public:
 
     CreateAlignmentColorSchemeDialogFiller(HI::GUITestOpStatus &os, QString _schemeName, NewColorSchemeCreator::alphabet _al):
         Filler(os, "CreateMSAScheme"), schemeName(_schemeName), al(_al){}
-    CreateAlignmentColorSchemeDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c): Filler(os, "CreateMSAScheme", c){}
+    CreateAlignmentColorSchemeDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c): Filler(os, "CreateMSAScheme", c), al(NewColorSchemeCreator::nucl) {}
     virtual void commonScenario();
 private:
     QString schemeName;

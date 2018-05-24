@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -427,10 +427,9 @@ int GraphUtils::calculateChunk( qint64 start, qint64 end, qint64 len, const QPai
     //the width of the bigger number
     int N = cw * qMax(QString::number(start).length(), QString::number(end).length()) * 4 / 3;
     qint64 span = qMax(start, end) - qMin(start, end);
-    int dN = 0;
     int chunk = 1;
     while (span > 2 * chunk) {
-        dN = chunk > (1000 * 1000)? cw * 2 : (chunk > 1000 ?  cw * 2 : 0);
+        int dN = chunk > (1000 * 1000)? cw * 2 : (chunk > 1000 ?  cw * 2 : 0);
         qint64 reqLen = qint64((double(span) / chunk) * (N - dN));
         assert(reqLen > 0);
         if (reqLen < len) {

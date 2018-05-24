@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,9 +53,20 @@ using namespace Workflow;
 static const int KEY_COLUMN     = 0;
 static const int VALUE_COLUMN   = 1;
 
-MapDatatypeEditor::MapDatatypeEditor(Configuration* cfg, const QString& prop,
-    DataTypePtr from, DataTypePtr to) : cfg(cfg), propertyName(prop), from(from), to(to), table(NULL)
-{}
+MapDatatypeEditor::MapDatatypeEditor(Configuration* cfg,
+                                     const QString& prop,
+                                     DataTypePtr from,
+                                     DataTypePtr to)
+    : ConfigurationEditor(),
+      cfg(cfg),
+      propertyName(prop),
+      from(from),
+      to(to),
+      table(NULL),
+      doc(NULL)
+{
+
+}
 
 QWidget* MapDatatypeEditor::getWidget() {
     return createGUI(from, to);

@@ -22,4 +22,4 @@ SOURCES += src/AnnotatorPlugin.cpp \
            src/GeneByGeneReportTask.cpp \
            src/GeneByGeneReportWorker.cpp
 RESOURCES += annotator.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

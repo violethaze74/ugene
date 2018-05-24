@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -181,9 +181,10 @@ static void getPreNPost(const QString &originalUrl, QString &pre, QString &post,
         }
         idx = pre.lastIndexOf(rolledSuffix);
         if (idx != -1) {
-            QString possibleNumber = pre.mid(idx + rolledSuffix.length());
-            i = possibleNumber.toInt();
-            if (i > 0) {
+            QString possibleNumberString = pre.mid(idx + rolledSuffix.length());
+            int possibleNumber = possibleNumberString.toInt();
+            if (possibleNumber > 0 && QString::number(possibleNumber) == possibleNumberString) {
+                i = possibleNumber;
                 pre = pre.left(idx);
             }
         }

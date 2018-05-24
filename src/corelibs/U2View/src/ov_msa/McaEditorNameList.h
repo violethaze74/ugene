@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ public:
     U2Region getSelection() const;
 
 protected slots:
-    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& oldSelection);
+    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection &oldSelection);
 
 private slots:
     void sl_clearSelection();

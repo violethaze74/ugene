@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -335,8 +335,7 @@ void QueryScene::setRowsNumber(int count) {
         }
 
         descTxtItem->moveBy(0.0, dY);
-        qreal bottom = descTxtItem->mapRectToScene(descTxtItem->boundingRect()).bottom();
-        bottom = footnotesArea().bottom() + DESCRIPTION_TOP_PAD;
+        qreal bottom = footnotesArea().bottom() + DESCRIPTION_TOP_PAD;
         descTxtItem->setY(bottom);
         qreal newH = qMax(QueryScene::DEFAULT_SCENE_SIZE.height(),
             descTxtItem->mapRectToScene(descTxtItem->boundingRect()).bottom() + DESCRIPTION_BOTTOM_PAD);
@@ -1148,7 +1147,7 @@ AddConstraintDialog::AddConstraintDialog(QueryScene* _scene, QDDistanceType _kin
                                          QDElement* defSrc, QDElement* defDst)
 : scene(_scene), kind(_kind) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20874755");
+    new HelpButton(this, buttonBox, "21433047");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

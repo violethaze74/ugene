@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ qint64 McaReferenceAreaRenderer::getMinimumHeight() const {
     return commonMetrics.lineHeight;
 }
 
-float McaReferenceAreaRenderer::posToXCoordF(const qint64 position, const QSize &/*canvasSize*/, const U2Region &visibleRange) const {
+float McaReferenceAreaRenderer::posToXCoordF(const qint64 position, const QSize & /*canvasSize*/, const U2Region & /*visibleRange*/) const {
     const int baseCenterX = maEditor->getUI()->getBaseWidthController()->getBaseScreenRange(position).center();
     const int columnWidth = maEditor->getUI()->getBaseWidthController()->getBaseWidth();
     return baseCenterX - columnWidth / 2;

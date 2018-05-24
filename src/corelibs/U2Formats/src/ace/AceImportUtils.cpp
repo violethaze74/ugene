@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -319,8 +319,6 @@ void AceReader::parseAfTag(U2::IOAdapter *io, char *buff, int count, QMap<QByteA
     QByteArray readLine;
     QByteArray name;
     qint64 len = 0;
-    int readPos = 0;
-    int complStrand = 0;
 
     CHECK(0 < readsCount, );
 
@@ -357,9 +355,9 @@ void AceReader::parseAfTag(U2::IOAdapter *io, char *buff, int count, QMap<QByteA
         name = getName(afLine);
         CHECK_OP((*os), );
 
-        readPos = readsPos(afLine);
+        int readPos = readsPos(afLine);
         CHECK_OP((*os), );
-        complStrand = readsComplement(afLine);
+        int complStrand = readsComplement(afLine);
         CHECK_OP((*os), );
 
         posMap.insert(name, readPos);

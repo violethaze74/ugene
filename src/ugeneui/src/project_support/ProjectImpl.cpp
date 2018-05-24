@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -157,7 +157,7 @@ void ProjectImpl::removeDocument(Document* d, bool autodelete) {
             resourceTracker->release(resourceUsage[d->getName()]);
             resourceUsage.remove(d->getName());
         }
-        delete d;
+        d->deleteLater();
     }
     setModified(true);
 } 

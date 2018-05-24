@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ void Annotation::setName(const QString &name) {
 
     parentObject->setModified(true);
     AnnotationModification md(AnnotationModification_NameChanged, this);
-    parentObject->emit_onAnnotationModified(md);
+    parentObject->emit_onAnnotationsModified(md);
 }
 
 void Annotation::setType(U2FeatureType type) {
@@ -91,7 +91,7 @@ void Annotation::setType(U2FeatureType type) {
 
     parentObject->setModified(true);
     AnnotationModification md(AnnotationModification_TypeChanged, this);
-    parentObject->emit_onAnnotationModified(md);
+    parentObject->emit_onAnnotationsModified(md);
 }
 
 bool Annotation::isOrder() const {
@@ -124,7 +124,7 @@ void Annotation::setStrand(const U2Strand &strand) {
 
     parentObject->setModified(true);
     AnnotationModification md(AnnotationModification_LocationChanged, this);
-    parentObject->emit_onAnnotationModified(md);
+    parentObject->emit_onAnnotationsModified(md);
 }
 
 U2LocationOperator Annotation::getLocationOperator() const {
@@ -145,7 +145,7 @@ void Annotation::setLocationOperator(U2LocationOperator op) {
 
     parentObject->setModified(true);
     AnnotationModification md(AnnotationModification_LocationChanged, this);
-    parentObject->emit_onAnnotationModified(md);
+    parentObject->emit_onAnnotationsModified(md);
 }
 
 U2Location Annotation::getLocation() const {
@@ -163,7 +163,7 @@ void Annotation::setLocation(const U2Location &location) {
 
     parentObject->setModified(true);
     AnnotationModification md(AnnotationModification_LocationChanged, this);
-    parentObject->emit_onAnnotationModified(md);
+    parentObject->emit_onAnnotationsModified(md);
 }
 
 QVector<U2Region> Annotation::getRegions() const {
@@ -185,7 +185,7 @@ void Annotation::updateRegions(const QVector<U2Region> &regions) {
 
     parentObject->setModified(true);
     AnnotationModification md(AnnotationModification_LocationChanged, this);
-    parentObject->emit_onAnnotationModified(md);
+    parentObject->emit_onAnnotationsModified(md);
 }
 
 void Annotation::addLocationRegion(const U2Region &reg) {
@@ -203,7 +203,7 @@ void Annotation::addLocationRegion(const U2Region &reg) {
 
     parentObject->setModified(true);
     AnnotationModification md(AnnotationModification_LocationChanged, this);
-    parentObject->emit_onAnnotationModified(md);
+    parentObject->emit_onAnnotationsModified(md);
 }
 
 QVector<U2Qualifier> Annotation::getQualifiers() const {
@@ -221,7 +221,7 @@ void Annotation::addQualifier(const U2Qualifier &q) {
 
     parentObject->setModified(true);
     QualifierModification md(AnnotationModification_QualifierAdded, this, q);
-    parentObject->emit_onAnnotationModified(md);
+    parentObject->emit_onAnnotationsModified(md);
 }
 
 void Annotation::removeQualifier(const U2Qualifier &q) {
@@ -240,7 +240,7 @@ void Annotation::removeQualifier(const U2Qualifier &q) {
 
     parentObject->setModified(true);
     QualifierModification md(AnnotationModification_QualifierRemoved, this, q);
-    parentObject->emit_onAnnotationModified(md);
+    parentObject->emit_onAnnotationsModified(md);
 }
 
 bool Annotation::isCaseAnnotation() const {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,16 +45,13 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
     editor(NULL != ui ? ui->getEditor() : NULL),
     ui(ui),
     renderer(dynamic_cast<McaReferenceAreaRenderer *>(getRenderArea()->getRenderer())),
-    lastMouseReleasePos(-1),
-    selectionCountFromStartPos(1),
-    expandToTheRight(true)
+    firstPressedSelectionPosition(-1)
 {
     SAFE_POINT(NULL != renderer, "Renderer is NULL", );
 
     setObjectName("mca_editor_reference_area");
     singleBaseSelection = true;
     setLocalToolbarVisible(false);
-    isShiftPressed = false;
     settings->showMainRuler = false;
 
     scrollBar->hide();
@@ -75,8 +72,13 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
     connect(ui->getConsensusArea(), SIGNAL(si_mismatchRedrawRequired()), SLOT(completeUpdate()));
     connect(scrollBar, SIGNAL(valueChanged(int)), ui->getScrollController()->getHorizontalScrollBar(), SLOT(setValue(int)));
     connect(ui->getScrollController()->getHorizontalScrollBar(), SIGNAL(valueChanged(int)), scrollBar, SLOT(setValue(int)));
+    connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
+    connect(ui->getSequenceArea(), SIGNAL(si_clearReferenceSelection()),
+            SLOT(sl_clearSelection()));
+    connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection, MaEditorSelection)),
+            SLOT(sl_selectionChanged(MaEditorSelection, MaEditorSelection)));
 
-    connectSignalsAndSlots();
+    setMouseTracking(false);
 
     sl_fontChanged(editor->getFont());
 }
@@ -103,7 +105,6 @@ void McaEditorReferenceArea::sl_selectionChanged(const MaEditorSelection &curren
 
 void McaEditorReferenceArea::sl_clearSelection() {
     ctx->getSequenceSelection()->clear();
-    lastMouseReleasePos = -1;
 }
 
 void McaEditorReferenceArea::sl_fontChanged(const QFont &newFont) {
@@ -112,67 +113,30 @@ void McaEditorReferenceArea::sl_fontChanged(const QFont &newFont) {
 }
 
 void McaEditorReferenceArea::mousePressEvent(QMouseEvent* e) {
-    Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
-    isShiftPressed = km.testFlag(Qt::ShiftModifier);
-    bool accept = false;
-    if (e->button() == Qt::LeftButton) {
-        if (isShiftPressed) {
-            setReferenceSelection(e);
-            accept = true;
-        } else {
-            selectionCountFromStartPos = 1;
+    if (e->buttons() & Qt::LeftButton) {
+        Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
+        const bool isShiftPressed = km.testFlag(Qt::ShiftModifier);
+        if (!isShiftPressed) {
+            firstPressedSelectionPosition = -1;
+            emit ui->si_clearSelection();
         }
-        int value = lastMouseReleasePos;
-        disconnect(connectionUiClearSelection);
-        disconnect(connectionSequenceClearSelection);
-        disconnect(connectionSequenceChangeSelection);
-        emit ui->si_clearSelection();
-        connectSignalsAndSlots();
-
-        lastMouseReleasePos = value;
-    }
-
-    if (accept) {
-        e->accept();
     } else {
         PanView::mousePressEvent(e);
     }
 }
 
 void McaEditorReferenceArea::mouseMoveEvent(QMouseEvent* e) {
-    if (isShiftPressed) {
+    if (e->buttons() & Qt::LeftButton) {
         setReferenceSelection(e);
+        e->accept();
     } else {
-        QPoint areaPoint = toRenderAreaPoint(e->pos());
-        qint64 pos = renderArea->coordToPos(areaPoint);
-        qint64 selStart = qMin(lastPressPos, pos);
-        qint64 selLen = qAbs(pos - lastPressPos) + 1;
-        setSelection(U2Region(selStart, selLen));
+        PanView::mouseMoveEvent(e);
     }
-
-    e->accept();
 }
 
 void McaEditorReferenceArea::mouseReleaseEvent(QMouseEvent* e) {
-    bool accept = false;
-    if (e->button() == Qt::LeftButton){
-        if (isShiftPressed) {
-            expandToTheRight = true;
-            setReferenceSelection(e);
-            QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
-            if (!regions.isEmpty()) {
-                if (lastMouseReleasePos == -1) {
-                    lastMouseReleasePos = regions.first().startPos;
-                }
-                selectionCountFromStartPos = regions.first().length;
-            }
-            accept = true;
-        } else {
-            lastMouseReleasePos = lastPressPos;
-        }
-    }
-
-    if (accept) {
+    if (e->button() == Qt::LeftButton) {
+        setReferenceSelection(e);
         e->accept();
     } else {
         PanView::mouseReleaseEvent(e);
@@ -184,35 +148,32 @@ void McaEditorReferenceArea::keyPressEvent(QKeyEvent *event) {
     bool accepted = false;
     DNASequenceSelection * const selection = ctx->getSequenceSelection();
     U2Region selectedRegion = (NULL != selection && !selection->isEmpty() ? selection->getSelectedRegions().first() : U2Region());
+    const qint64 selectionEndPos = selectedRegion.endPos() - 1;
     Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
-    bool isShiftPressed = km.testFlag(Qt::ShiftModifier);
+    const bool isShiftPressed = km.testFlag(Qt::ShiftModifier);
+    qint64 baseToScroll = firstPressedSelectionPosition;
 
     switch(key) {
     case Qt::Key_Left:
         if (!selectedRegion.isEmpty() && selectedRegion.startPos > 0) {
             if (isShiftPressed) {
-                if (expandToTheRight) {
-                    selectionCountFromStartPos = (selectionCountFromStartPos - 1) != 0 ? (selectionCountFromStartPos - 1) : -1;
-                    if (selectionCountFromStartPos > 0) {
-                        selectedRegion.length--;
-                    } else {
-                        selectedRegion.startPos--;
-                        selectedRegion.length++;
-                    }
+                if (selectionEndPos == firstPressedSelectionPosition) {
+                    selectedRegion.startPos--;
+                    selectedRegion.length++;
+                    baseToScroll = selectedRegion.startPos;
+                } else if (selectedRegion.startPos == firstPressedSelectionPosition) {
+                    selectedRegion.length--;
+                    baseToScroll = selectionEndPos;
                 } else {
-                    selectionCountFromStartPos = (selectionCountFromStartPos + 1) != 0 ? (selectionCountFromStartPos + 1) : 1;
-                    if (selectionCountFromStartPos > 0) {
-                        selectedRegion.startPos--;
-                        selectedRegion.length++;
-                    } else {
-                        selectedRegion.length--;
-                    }
+                    assert(false);
                 }
             } else {
                 selectedRegion.startPos--;
+                firstPressedSelectionPosition--;
+                baseToScroll = selectedRegion.startPos;
             }
             ctx->getSequenceSelection()->setSelectedRegions(QVector<U2Region>() << selectedRegion);
-            ui->getScrollController()->scrollToBase(selectedRegion.startPos, width());
+            ui->getScrollController()->scrollToBase(baseToScroll, width());
         }
         accepted = true;
         break;
@@ -220,31 +181,25 @@ void McaEditorReferenceArea::keyPressEvent(QKeyEvent *event) {
         accepted = true;
         break;
     case Qt::Key_Right:
-        if (!selectedRegion.isEmpty() && selectedRegion.endPos() < ctx->getSequenceLength()) {
+        if (!selectedRegion.isEmpty() && selectionEndPos + 1 < ctx->getSequenceLength()) {
             if (isShiftPressed) {
-                expandToTheRight = selectionCountFromStartPos == 1 ? true : expandToTheRight;
-                if (expandToTheRight) {
-                    selectionCountFromStartPos++;
-                    if (selectionCountFromStartPos <= 0) {
-                        selectedRegion.startPos++;
-                        selectedRegion.length--;
-                    } else{
-                        selectedRegion.length = (selectionCountFromStartPos == 1 ? selectionCountFromStartPos += 1 : selectionCountFromStartPos);
-                    }
+                if (selectedRegion.startPos == firstPressedSelectionPosition) {
+                    selectedRegion.length++;
+                    baseToScroll = selectionEndPos;
+                } else if (selectionEndPos == firstPressedSelectionPosition) {
+                    selectedRegion.startPos++;
+                    selectedRegion.length--;
+                    baseToScroll = selectedRegion.startPos;
                 } else {
-                    selectionCountFromStartPos = (selectionCountFromStartPos - 1) != 0 ? (selectionCountFromStartPos - 1) : -1;
-                    if (selectionCountFromStartPos > 0) {
-                        selectedRegion.startPos++;
-                        selectedRegion.length--;
-                    } else {
-                        selectedRegion.length = qAbs(selectionCountFromStartPos == -1 ? selectionCountFromStartPos += 1 : selectionCountFromStartPos);
-                    }
+                    assert(false);
                 }
             } else {
                 selectedRegion.startPos++;
+                firstPressedSelectionPosition++;
+                baseToScroll = selectionEndPos + 1;
             }
             ctx->getSequenceSelection()->setSelectedRegions(QVector<U2Region>() << selectedRegion);
-            ui->getScrollController()->scrollToBase(selectedRegion.endPos() - 1, width());
+            ui->getScrollController()->scrollToBase(baseToScroll, width());
         }
         accepted = true;
         break;
@@ -283,11 +238,11 @@ void McaEditorReferenceArea::setReferenceSelection(QMouseEvent* e) {
     qint64 pos = renderArea->coordToPos(areaPoint);
     qint64 start = 0;
     qint64 count = 0;
-    if (lastMouseReleasePos != -1) {
-        start = qMin(pos, lastMouseReleasePos);
-        count = qAbs(pos - lastMouseReleasePos) + 1;
-        expandToTheRight = pos >= lastMouseReleasePos;
+    if (firstPressedSelectionPosition != -1) {
+        start = qMin(pos, firstPressedSelectionPosition);
+        count = qAbs(pos - firstPressedSelectionPosition) + 1;
     } else {
+        firstPressedSelectionPosition = pos;
         start = pos;
         count = 1;
     }
@@ -306,14 +261,6 @@ void McaEditorReferenceArea::updateScrollBar() {
     scrollBar->setSliderPosition(hScrollbar->value());
     scrollBar->setSingleStep(hScrollbar->singleStep());
     scrollBar->setPageStep(hScrollbar->pageStep());
-}
-
-void McaEditorReferenceArea::connectSignalsAndSlots() {
-    connectionUiClearSelection = connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
-    connectionSequenceClearSelection = connect(ui->getSequenceArea(), SIGNAL(si_clearReferenceSelection()),
-        SLOT(sl_clearSelection()));
-    connectionSequenceChangeSelection = connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection, MaEditorSelection)),
-        SLOT(sl_selectionChanged(MaEditorSelection, MaEditorSelection)));
 }
 
 void McaEditorReferenceArea::sl_onSelectionChanged(LRegionsSelection * /*selection*/, const QVector<U2Region> &addedRegions, const QVector<U2Region> &removedRegions) {

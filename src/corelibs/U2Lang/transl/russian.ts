@@ -759,7 +759,7 @@
     <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="486"/>
         <source>folder url definition: &apos;%1&apos; or &apos;%2&apos; are expected, &apos;%3&apos; is found</source>
-        <translation type="unfinished"></translation>
+        <translation>назначение папки: ожидается &apos;%1&apos; или &apos;%2&apos;, найдено &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="494"/>
@@ -1886,32 +1886,32 @@
         <translation>Неизвестное имя среды исполнения: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="229"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="228"/>
         <source>Failed to preprocess the workflow. Some of included files are broken</source>
         <translation>Не удалось предварительно обработать схему. Некоторые из включенных файлов некорректны</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="237"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="236"/>
         <source>Failed to create worker %1 %2 in domain %3</source>
         <translation>Не удалось создать процесс %1 %2 для среды исполнения %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="245"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="244"/>
         <source>Failed to create connection %1 %2 in domain %3</source>
         <translation>Не удалось создать соединение процессов %1 %2 для среды исполнения %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="258"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="257"/>
         <source>Failed to create a workflow context</source>
         <translation>Невозможно создать контекст схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="320"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="319"/>
         <source>No workers are ready, while not all workers are done. Workflow is broken?</source>
         <translation>Все процессы находятся в состоянии &quot;не готовы&quot; (обработали входные данные), но не все процессы находятся в состоянии &quot;завершил исполнение&quot;. Пожалуйста, проверьте схему?</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="264"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="263"/>
         <source>Failed to create scheduler in domain %1</source>
         <translation>Не удалось создать планировщик для среды исполнения %1</translation>
     </message>

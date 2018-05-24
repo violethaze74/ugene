@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -101,8 +101,9 @@ QList<SharedAnnotationData> FindTandemsToAnnotationsTask::importTandemAnnotation
             if (ad->location->isEmpty()){
                 continue;
             }
-            ad->qualifiers.append(U2Qualifier("repeat_len", QString::number(tan.repeatLen)));
-            ad->qualifiers.append(U2Qualifier("tandem_size", QString::number(tan.size)));
+            ad->qualifiers.append(U2Qualifier("num_of_repeats", QString::number(tan.size / tan.repeatLen)));
+            ad->qualifiers.append(U2Qualifier("repeat_length", QString::number(tan.repeatLen)));
+            ad->qualifiers.append(U2Qualifier("whole_length", QString::number(tan.size)));
             U1AnnotationUtils::addDescriptionQualifier(ad, annDescription);
             res.append(ad);
             offset++;
@@ -135,7 +136,7 @@ public:
 };
 
 void TandemFinder::prepare() {
-    Q_ASSERT(settings.minRepeatCount >= 3);
+    Q_ASSERT(settings.minRepeatCount >= 2);
     int chunkSize = 32*1024*1024; // optimized for 32Mb mem-chunk
     addSubTask(new SequenceWalkerTask(TF_WalkerConfig(sequence, settings.seqRegion.length, chunkSize), this, tr("Find tandems"), TaskFlags_NR_FOSCOE));
 }

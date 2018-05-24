@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,6 +46,7 @@ public:
     static QTreeWidgetItem * findFirstAnnotation(HI::GUITestOpStatus &os, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
     static QTreeWidgetItem * findItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
     static QTreeWidgetItem * findItem(HI::GUITestOpStatus &os, const QString &itemName, QTreeWidgetItem* parentItem, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static QTreeWidgetItem * findItemWithIndex(HI::GUITestOpStatus &os, const QString &itemName, const int index);
     static QList<QTreeWidgetItem*> findItems(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
 
     static QStringList getGroupNames(HI::GUITestOpStatus &os, const QString &annotationTableName = "");
@@ -63,6 +64,7 @@ public:
     static QString getQualifierValue(HI::GUITestOpStatus &os, const QString &qualifierName, QTreeWidgetItem *parentItem);
     static QString getQualifierValue(HI::GUITestOpStatus &os, const QString &qualName, const QString &parentName);
     static QList<U2Region> getAnnotatedRegions(HI::GUITestOpStatus &os);
+    static QList<U2Region> getSelectedAnnotatedRegions(HI::GUITestOpStatus &os);
     static QString getAnnotationRegionString(HI::GUITestOpStatus &os, const QString &annotationName);
     static QString getAnnotationType(HI::GUITestOpStatus &os, const QString &annotationName);
 
@@ -70,6 +72,8 @@ public:
 
     static void selectItems(HI::GUITestOpStatus &os, const QStringList& items);
     static void selectItems(HI::GUITestOpStatus &os, const QList<QTreeWidgetItem *> &items);
+
+    static void clickItem(HI::GUITestOpStatus &os, const QString &item, const int numOfItem, bool isDoubleClick);
 
     // location string format: 1..51
     static void createAnnotation(HI::GUITestOpStatus &os, const QString &groupName, const QString &annotationName, const QString &location, bool createNewTable = true, const QString &saveTo = "");

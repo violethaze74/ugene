@@ -23,7 +23,7 @@ void HMMCalibrateTask::run() {
     TaskLocalData::createHMMContext(getTaskId(), true);
     try {
         UHMMCalibrate::calibrate(hmm, settings, stateInfo);
-    } catch (HMMException e) {
+    } catch (const HMMException &e) {
         stateInfo.setError(e.error);
     }
     TaskLocalData::freeHMMContext(getTaskId());
@@ -73,7 +73,7 @@ void HMMCalibrateParallelTask::run() {
             hmm->mu     = hist->param[EVD_MU];
             hmm->lambda = hist->param[EVD_LAMBDA];
         }
-    } catch (HMMException e) {
+    } catch (const HMMException &e) {
         stateInfo.setError(e.error);
     }
     TaskLocalData::detachFromHMMContext();
@@ -103,7 +103,7 @@ void HMMCreateWPoolTask::run() {
     TaskLocalData::bindToHMMContext(pt->getTaskId());
     try {
         runUnsafe();
-    } catch (HMMException e) {
+    } catch (const HMMException &e) {
         stateInfo.setError(e.error);
     }
     TaskLocalData::detachFromHMMContext();
@@ -144,7 +144,7 @@ void HMMCalibrateParallelSubTask::run() {
     TaskLocalData::bindToHMMContext(pt->getTaskId());
     try {
         UHMMCalibrate::calibrateParallel(pt->getWorkPool(), stateInfo);
-    } catch (HMMException e) {
+    } catch (const HMMException &e) {
         stateInfo.setError(e.error);
     }
 

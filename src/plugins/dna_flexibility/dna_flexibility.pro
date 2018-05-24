@@ -24,4 +24,4 @@ SOURCES += src/DNAFlexDialog.cpp \
 
 RESOURCES += dna_flexibility.qrc
 
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

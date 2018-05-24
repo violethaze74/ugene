@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,8 +29,15 @@ namespace ProjectFilterNames {
 
 const QString OBJ_NAME_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Object name");
 const QString FEATURE_KEY_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Annotation feature key");
+
 const QString MSA_CONTENT_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Multiple alignment content");
 const QString MSA_SEQ_NAME_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Multiple alignment sequence name");
+
+const QString MCA_READ_NAME_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Sanger read name");
+const QString MCA_REFERENCE_NAME_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Sanger reference name");
+const QString MCA_READ_CONTENT_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Sanger read content");
+const QString MCA_REFERENCE_CONTENT_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Sanger reference content");
+
 const QString SEQUENCE_ACC_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Sequence accession number");
 const QString TEXT_CONTENT_FILTER_NAME = QApplication::translate("AbstractProjectFilterTask", "Text content");
 

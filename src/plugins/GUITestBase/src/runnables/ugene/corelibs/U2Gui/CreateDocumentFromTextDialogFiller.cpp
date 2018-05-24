@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,13 +41,27 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::createDocumentFiller"
-CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus &_os, const QString &_pasteDataHere, bool _customSettings = false, documentAlphabet _alphabet = StandardDNA,
-                                           bool _skipUnknownSymbols = true, bool _replaceUnknownSymbols = false, const QString _symbol = "", 
+CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus &_os,
+                                           const QString &_pasteDataHere,
+                                           bool _customSettings = false,
+                                           documentAlphabet _alphabet = StandardDNA,
+                                           bool _skipUnknownSymbols = true,
+                                           bool _replaceUnknownSymbols = false,
+                                           const QString _symbol = "",
                                            const QString &_documentLocation = QString(),
-                                           documentFormat _format = FASTA, const QString &_sequenceName = QString(), 
-                                           bool saveFile = false, GTGlobals::UseMethod method):
-Filler(_os, "CreateDocumentFromTextDialog"), customSettings(_customSettings), alphabet(_alphabet), skipUnknownSymbols(_skipUnknownSymbols), replaceUnknownSymbols(_replaceUnknownSymbols),
-  symbol(_symbol), format(_format), saveFile(saveFile), useMethod(method)
+                                           documentFormat _format = FASTA,
+                                           const QString &_sequenceName = QString(),
+                                           bool saveFile = false,
+                                           GTGlobals::UseMethod method)
+    : Filler(_os, "CreateDocumentFromTextDialog"),
+      customSettings(_customSettings),
+      alphabet(_alphabet),
+      skipUnknownSymbols(_skipUnknownSymbols),
+      replaceUnknownSymbols(_replaceUnknownSymbols),
+      symbol(_symbol),
+      format(_format),
+      saveFile(saveFile),
+      useMethod(method)
 {
     sequenceName = _sequenceName;
     pasteDataHere = _pasteDataHere;
@@ -64,7 +78,14 @@ Filler(_os, "CreateDocumentFromTextDialog"), customSettings(_customSettings), al
 }
 
 CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
-: Filler(os, "CreateDocumentFromTextDialog", scenario)
+    : Filler(os, "CreateDocumentFromTextDialog", scenario),
+      customSettings(false),
+      alphabet(StandardDNA),
+      skipUnknownSymbols(false),
+      replaceUnknownSymbols(false),
+      format(FASTA),
+      saveFile(false),
+      useMethod(GTGlobals::UseMouse)
 {
 
 }

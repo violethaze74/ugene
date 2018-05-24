@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -72,9 +72,8 @@ Handle<Value> launchSchemeWithScheduler( const Arguments &args ) {
     const String::Utf8Value workingDir( args[2]->ToString( ) );
     Handle<Value> result;
     initContext( *workingDir );
-    U2ErrorType error = U2_OK;
     SchemeHandle *scheme = NULL;
-    error = createScheme( *pathToScheme, scheme );
+    U2ErrorType error = createScheme( *pathToScheme, scheme );
     CHECK( U2_OK == error, scope.Close( Undefined( ) ) );
     result = scope.Close( Number::New( launchScheme( scheme ) ) );
     releaseContext( );

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ public:
     ~DetViewMultiLineRenderer();
 
     qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const;
-    float posToXCoordF(qint64 p, const QSize& canvasSize, const U2Region& visibleRange) const;
+    float posToXCoordF(const qint64 p, const QSize& canvasSize, const U2Region& visibleRange) const;
 
     U2Region getAnnotationYRange(Annotation *a, int r, const AnnotationSettings* as, const QSize& canvasSize, const U2Region& visibleRange) const;
     U2Region getMirroredYRange(const U2Strand &mStrand) const;
@@ -46,6 +46,8 @@ public:
     qint64 getOneLineHeight() const;
     qint64 getLinesCount(const QSize& canvasSize) const;
     qint64 getContentIndentY(const QSize& canvasSize, const U2Region& visibleRange) const;
+
+    int getDirectLine() const;
 
     int getRowsInLineCount() const;
 
@@ -56,6 +58,7 @@ public:
 
     void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
     void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
+    void drawCursor(QPainter &p, const QSize &canvasSize, const U2Region& visibleRange);
 
     void update();
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,6 +31,7 @@
 #include <U2Core/MultipleAlignment.h>
 
 #include <U2Gui/GScrollBar.h>
+#include <U2Gui/SelectionModificationHelper.h>
 
 #include "MaEditorSelection.h"
 #include "../MaEditor.h"
@@ -75,13 +76,14 @@ public:
     int getFirstVisibleBase() const;
     int getLastVisibleBase(bool countClipped) const;
     int getNumVisibleBases() const;
-    int getDisplayableRowsCount() const;
 
     /*
      * Returns count of sequences that are drawn on the widget by taking into account
      * collapsed rows.
      */
     int getNumDisplayableSequences() const;
+
+    int getRowIndex(const int num) const;
 
     bool isAlignmentEmpty() const;
 
@@ -186,6 +188,9 @@ private slots:
     void sl_hScrollBarActionPerfermed();
 
 private:
+    void setBorderCursor(const QPoint& p);
+    void moveBorder(const QPoint& p);
+
     int shiftRegion(int shift);
     QList<U2MsaGap> findRemovableGapColumns(int& shift);
     QList<U2MsaGap> findCommonGapColumns(int& numOfColumns);
@@ -319,6 +324,7 @@ protected:
     MaEditorSelection   baseSelection; // selection with rows indexes in absolute coordinates
 
     int                 maVersionBeforeShifting;
+    SelectionModificationHelper::MovableSide movableBorder;
 
     QList<U2MsaGap>     ctrlModeGapModel;
     bool                isCtrlPressed;

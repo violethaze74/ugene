@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
       ui(new Ui_ExportHighlightedDialog())
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "20874962");
+    new HelpButton(this, ui->buttonBox, "21433253");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -62,7 +62,7 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
 
     int startPos = -1;
     int endPos = -1;
-    if (selection.isNull()) {
+    if (selection.isNull() || selection.width() == 1) {
         startPos = 1;
         endPos = alignLength;
     } else {
@@ -70,16 +70,17 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
         endPos = selection.x() + selection.width();
     }
 
-    ui->startLineEdit->setMaximum(endPos);
-    ui->endLineEdit->setMaximum(alignLength);
-
     ui->startLineEdit->setMinimum(1);
-    ui->endLineEdit->setMinimum(2);
+    ui->endLineEdit->setMinimum(1);
+
+    ui->startLineEdit->setMaximum(alignLength);
+    ui->endLineEdit->setMaximum(alignLength);
 
     ui->startLineEdit->setValue(startPos);
     ui->endLineEdit->setValue(endPos);
-    
-    connect(ui->endLineEdit, SIGNAL(valueChanged(int)), SLOT(endPosValueChanged()));
+
+    connect(ui->startLineEdit, SIGNAL(valueChanged(int)), SLOT(sl_regionChanged()));
+    connect(ui->endLineEdit, SIGNAL(valueChanged(int)), SLOT(sl_regionChanged()));
 }
 
 ExportHighligtingDialogController::~ExportHighligtingDialogController(){
@@ -111,8 +112,17 @@ void ExportHighligtingDialogController::lockKeepGaps(){
     ui->keepGapsBox->setDisabled(true);
 }
 
-void ExportHighligtingDialogController::endPosValueChanged(){
-    ui->startLineEdit->setMaximum(ui->endLineEdit->value() - 1);
+void ExportHighligtingDialogController::sl_regionChanged(){
+    bool validRange = ui->endLineEdit->value() - ui->startLineEdit->value() >= 0;
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(validRange);
+
+    if (validRange) {
+        ui->startLineEdit->setStyleSheet("QSpinBox {}");
+        ui->endLineEdit->setStyleSheet("QSpinBox {}");
+    } else {
+        ui->startLineEdit->setStyleSheet("QSpinBox { background-color: rgb(255, 200, 200); }");
+        ui->endLineEdit->setStyleSheet("QSpinBox { background-color: rgb(255, 200, 200); }");
+    }
 }
 
 void ExportHighligtingDialogController::initSaveController() {

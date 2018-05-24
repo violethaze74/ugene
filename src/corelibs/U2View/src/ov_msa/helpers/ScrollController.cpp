@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,6 +60,10 @@ void ScrollController::init(GScrollBar *hScrollBar, GScrollBar *vScrollBar) {
 
 QPoint ScrollController::getScreenPosition() const {
     return QPoint(hScrollBar->value(), vScrollBar->value());
+}
+
+QPoint ScrollController::getGlobalMousePosition(const QPoint& mousePos) const {
+    return mousePos + getScreenPosition();
 }
 
 void ScrollController::updateHorizontalScrollBar() {
@@ -297,6 +301,9 @@ void ScrollController::scrollToMovedSelection(ScrollController::Direction direct
 }
 
 int ScrollController::getFirstVisibleBase(bool countClipped) const {
+    if (maEditor->getAlignmentLen() == 0) {
+        return 0;
+    }
     const bool removeClippedBase = !countClipped && (getAdditionalXOffset() != 0);
     const int firstVisibleBase = ui->getBaseWidthController()->globalXPositionToColumn(hScrollBar->value()) + (removeClippedBase ? 1 : 0);
     assert(firstVisibleBase < maEditor->getAlignmentLen());

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -262,6 +262,15 @@ void DistanceMatrix::calculateOutOfAlignment( const MultipleSequenceAlignment& m
             free(gnode);
         }
     }
+}
+
+DistanceMatrix::DistanceMatrix()
+    : rawdata(NULL),
+      size(),
+      malignment(NULL),
+      treedata(NULL)
+{
+
 }
 
 DistanceMatrix::~DistanceMatrix(){

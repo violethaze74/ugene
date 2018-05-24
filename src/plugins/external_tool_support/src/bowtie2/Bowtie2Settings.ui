@@ -254,9 +254,6 @@
             <property name="text">
              <string>Disallow gaps (--gbar)</string>
             </property>
-            <property name="shortcut">
-             <string notr="true"/>
-            </property>
            </widget>
           </item>
          </layout>

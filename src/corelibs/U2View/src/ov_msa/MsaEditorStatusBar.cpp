@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,6 +36,8 @@ namespace U2 {
 MsaEditorStatusBar::MsaEditorStatusBar(MultipleAlignmentObject* mobj, MaEditorSequenceArea* seqArea)
     : MaEditorStatusBar(mobj, seqArea) {
     setObjectName("msa_editor_status_bar");
+
+    lineLabel->setPatterns(tr("Seq %1 / %2"), tr("Sequence %1 of %2"));
 
     connect(mobj, SIGNAL(si_alphabetChanged(const MaModificationInfo&, const DNAAlphabet *)), SLOT(sl_alphabetChanged()));
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -73,7 +73,7 @@ class DistanceMatrixMSAProfileTaskSettings {
 public:
     DistanceMatrixMSAProfileTaskSettings();
 
-    QString                         algoName;    // selected algorithm
+    QString                         algoId;    // selected algorithm id
     QString                         profileName; // usually object name
     QString                         profileURL;  // document url
     MultipleSequenceAlignment                      ma;

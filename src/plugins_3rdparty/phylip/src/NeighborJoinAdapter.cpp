@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -43,11 +43,6 @@ QMutex NeighborJoinCalculateTreeTask::runLock;
 
 void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, double m, boolean njoin, node *start, PhyNode* root, int bootstrap_repl)
 {
-    /* used in fitch & neighbor */
-    long i=0;
-    naym* nayme = getNayme();
-    static int counter = 0;
-
     PhyNode* current = NULL;
 
     if (p == start) {
@@ -56,6 +51,7 @@ void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, d
         current = new PhyNode;
     }
     if(p){
+        static int counter = 0;
         if (p->tip) {
             if(bootstrap_repl != 0){
                 current->setName(QString::fromLatin1(p->nayme));
@@ -147,7 +143,6 @@ void NeighborJoinCalculateTreeTask::run(){
 
             stateInfo.setDescription("Calculating trees");
 
-            bool initial = true;
             for (int i = 0; i < settings.replicates; i++){
                 stateInfo.progress = (int)(i/(float)settings.replicates * 100);
 

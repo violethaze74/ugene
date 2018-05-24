@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,6 +65,7 @@ int ugene_printf(FILE *f, const char *format, ...) {
     int n = vsprintf(str, format, ArgList);
     assert(n>=0 && n < 1024);
     Q_UNUSED(n);
+    va_end(ArgList);
 
     FILEStub* s = static_cast<FILEStub*>(f);
     s->tsi.setDescription(QString::fromLatin1(str));

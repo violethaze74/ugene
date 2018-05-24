@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -73,7 +73,7 @@ ORFDialog::ORFDialog(ADVSequenceObjectContext* _ctx)
 : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), aaUpdateTask(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20875062");
+    new HelpButton(this, buttonBox, "21433353");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -306,9 +306,8 @@ void ORFDialog::importResults() {
     QList<ORFFindResult> newResults = task->popResults();
     if (!newResults.empty()) {
         resultsTree->setSortingEnabled(false);
-        ORFListItem* item = NULL;
         foreach(const ORFFindResult& r, newResults) {
-            item = NULL;//findItem(r, lbResult);
+            ORFListItem* item = NULL;//findItem(r, lbResult);
             if (item==NULL) {
                 item = new ORFListItem(r);
                 resultsTree->addTopLevelItem(item);

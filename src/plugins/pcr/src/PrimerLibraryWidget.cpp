@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ PrimerLibraryWidget::PrimerLibraryWidget(QWidget *parent)
 : QWidget(parent), editPrimerButton(NULL), removePrimersButton(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20875153");
+    new HelpButton(this, buttonBox, "21433444");
 
     QPushButton *newPrimerButton = buttonBox->addButton(tr("New primer"), QDialogButtonBox::ActionRole);
     connect(newPrimerButton, SIGNAL(clicked()), SLOT(sl_newPrimer()));

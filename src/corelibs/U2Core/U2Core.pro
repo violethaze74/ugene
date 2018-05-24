@@ -483,5 +483,4 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/U2SequenceUtils.cpp \
            src/util/U2VariationUtils.cpp
 
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
     while(!scheduller->getTopLevelTasks().isEmpty()){
         GTGlobals::sleep();
     }
-	GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+    GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
 }
 #define GT_CLASS_NAME "GTUtilsDialog::WizardFiller0002"
 #define GT_METHOD_NAME "run"

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,6 +41,45 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExtractSelectedAsMSADialogFiller"
 #define GT_METHOD_NAME "run"
+ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStatus &os,
+                                                                   QString _filepath,
+                                                                   QStringList _list,
+                                                                   int _from,
+                                                                   int _to,
+                                                                   bool _addToProj,
+                                                                   bool _invertButtonPress,
+                                                                   bool _allButtonPress,
+                                                                   bool _noneButtonPress,
+                                                                   bool _dontCheckFilepath,
+                                                                   QString format)
+    : Filler(os, "CreateSubalignmentDialog"),
+      filepath(_filepath),
+      format(format),
+      list(_list),
+      from(_from),
+      to(_to),
+      addToProj(_addToProj),
+      invertButtonPress(_invertButtonPress),
+      allButtonPress(_allButtonPress),
+      noneButtonPress(_noneButtonPress),
+      dontCheckFilepath(_dontCheckFilepath)
+{
+
+}
+
+ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStatus &os, CustomScenario *c)
+    : Filler(os, "CreateSubalignmentDialog", c),
+      from(0),
+      to(0),
+      addToProj(false),
+      invertButtonPress(false),
+      allButtonPress(false),
+      noneButtonPress(false),
+      dontCheckFilepath(false)
+{
+
+}
+
 void ExtractSelectedAsMSADialogFiller::commonScenario() {
 
     QWidget* dialog = QApplication::activeModalWidget();
@@ -49,13 +88,13 @@ void ExtractSelectedAsMSADialogFiller::commonScenario() {
     if(from){
         QLineEdit *fromSpin = dialog->findChild<QLineEdit*>("startLineEdit");
         GT_CHECK(fromSpin!=NULL, "fromSpin is NULL")
-        GTLineEdit::setText(os, fromSpin, QString::number(from));
+                GTLineEdit::setText(os, fromSpin, QString::number(from));
     }
 
     if(to){
         QLineEdit *toSpin = dialog->findChild<QLineEdit*>("endLineEdit");
         GT_CHECK(toSpin!=NULL, "toSpin is NULL")
-        GTLineEdit::setText(os,toSpin, QString::number(to));
+                GTLineEdit::setText(os,toSpin, QString::number(to));
     }
 
     QLineEdit *filepathEdit=dialog->findChild<QLineEdit*>("filepathEdit");

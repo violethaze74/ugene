@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -336,7 +336,15 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
+    QString name;
+    foreach(const QString& key, keys) {
+        if (key.startsWith("MyDocument")) {
+            name = key;
+            break;
+        }
+    }
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -649,12 +657,10 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     QFontComboBox* fontComboBox = qobject_cast<QFontComboBox*>(GTWidget::findWidget(os, "fontComboBox"));
     CHECK_SET_ERR( fontComboBox != NULL, "Font comboBox is NULL");
-
+#ifdef Q_OS_LINUX
     GTComboBox::setIndexWithText(os, fontComboBox, "Serif", false);
-#ifndef Q_OS_MAC
-    GTComboBox::setIndexWithText(os, fontComboBox, "Sans Serif", false);
 #else
-    GTComboBox::setIndexWithText(os, fontComboBox, "Microsoft Sans Serif");
+    GTComboBox::setIndexWithText(os, fontComboBox, "Verdana");
 #endif
 }
 

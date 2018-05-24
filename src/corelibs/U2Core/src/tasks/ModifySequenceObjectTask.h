@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@
 #include <U2Core/Task.h>
 #include <U2Core/U1AnnotationUtils.h>
 
+
 namespace U2 {
 
 class Document;
@@ -41,15 +42,12 @@ public:
     Task::ReportResult report();
     QString generateReport() const;
 
+    // Returns number of bases inserted into sequence. If sequence size is reduced the returned value is < 0
+    qint64 getSequenceLengthDelta() const;
+    U2SequenceObject* getSequenceObject() const {return seqObj;}
+
 private:
-    void fixAnnotations();
-    QMap<QString, QList<SharedAnnotationData> > fixAnnotation(Annotation *an, bool &annIsRemoved);
-    void fixAnnotationQualifiers(Annotation *an);
-    void fixTranslationQualifier(SharedAnnotationData &ad);
-    void fixTranslationQualifier(Annotation *an);
-    U2Qualifier getFixedTranslationQualifier(const SharedAnnotationData &ad);
     void cloneSequenceAndAnnotations();
-    bool isRegionValid(const U2Region &region) const;
 
     DocumentFormatId                                        resultFormatId;
     bool                                                    mergeAnnotations;

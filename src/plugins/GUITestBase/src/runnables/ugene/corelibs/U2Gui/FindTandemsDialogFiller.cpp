@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,6 +54,9 @@ void FindTandemsDialogFiller::commonScenario(){
         GTWidget::click(os, cancelButton);
         return;
     }
+
+    GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget"), 1);
+    GTGlobals::sleep(100);
 
     QLineEdit *resultLocationEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leNewTablePath", dialog));
     GT_CHECK(resultLocationEdit, "resultLocation is NULL");

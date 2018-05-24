@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,7 @@ QString DownloadRemoteFileDialog::defaultDB("");
 DownloadRemoteFileDialog::DownloadRemoteFileDialog(QWidget *p):QDialog(p), isQueryDB(false) {
     ui = new Ui_DownloadRemoteFileDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "20874848");
+    new HelpButton(this, ui->buttonBox, "21433140");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -93,7 +93,7 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog( const QString& id, const QSt
 {
     ui = new Ui_DownloadRemoteFileDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "20874860");
+    new HelpButton(this, ui->buttonBox, "21433152");
 
     ui->formatBox->addItem(GENBANK_FORMAT);
     ui->formatBox->addItem(FASTA_FORMAT);
@@ -205,16 +205,23 @@ void DownloadRemoteFileDialog::accept()
             addToProject = false;
         }
     }
+    bool hasLoadOnlyDocuments = false;
     foreach (const QString &resId, resIds) {
         LoadRemoteDocumentMode mode = LoadRemoteDocumentMode_LoadOnly;
         if (addToProject) {
             mode = taskCount < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS ? LoadRemoteDocumentMode_OpenView : LoadRemoteDocumentMode_AddToProject;
         }
+        hasLoadOnlyDocuments = hasLoadOnlyDocuments || mode == LoadRemoteDocumentMode_LoadOnly;
         tasks.append(new LoadRemoteDocumentAndAddToProjectTask(resId, dbId, fullPath, fileFormat, hints, mode));
         taskCount++;
     }
 
-    AppContext::getTaskScheduler()->registerTopLevelTask(new MultiTask(tr("Download remote documents"), tasks));
+    TaskFlags flags = TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported;
+    if (hasLoadOnlyDocuments) {
+        flags = flags | TaskFlag_ReportingIsEnabled;
+    }
+    Task* topLevelTask = new MultiTask(tr("Download remote documents"), tasks, false, flags);
+    AppContext::getTaskScheduler()->registerTopLevelTask(topLevelTask);
 
     QDialog::accept();
 }

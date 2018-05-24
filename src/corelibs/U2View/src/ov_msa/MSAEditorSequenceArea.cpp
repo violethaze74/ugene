@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,6 +47,7 @@
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
+#include <U2Core/MultiTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -77,6 +78,7 @@
 
 #include "ColorSchemaSettingsController.h"
 #include "CreateSubalignmentDialogController.h"
+#include "ExportSequencesTask.h"
 #include "MaEditorNameList.h"
 #include "MSAEditor.h"
 #include "MSAEditorSequenceArea.h"
@@ -125,7 +127,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     createSubaligniment->setObjectName("Save subalignment");
     connect(createSubaligniment, SIGNAL(triggered()), SLOT(sl_createSubaligniment()));
 
-    saveSequence = new QAction(tr("Save sequence..."), this);
+    saveSequence = new QAction(tr("Export selected sequence(s)..."), this);
     saveSequence->setObjectName("Save sequence");
     connect(saveSequence, SIGNAL(triggered()), SLOT(sl_saveSequence()));
 
@@ -193,6 +195,8 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
 
     connect(editor->getMaObject(), SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet*)),
         SLOT(sl_alphabetChanged(const MaModificationInfo &, const DNAAlphabet*)));
+
+    setMouseTracking(true);
 
     updateColorAndHighlightSchemes();
     sl_updateActions();
@@ -573,73 +577,29 @@ void MSAEditorSequenceArea::sl_createSubaligniment(){
 
 void MSAEditorSequenceArea::sl_saveSequence(){
     CHECK(getEditor() != NULL, );
-    int seqIndex = selection.y();
-
-    if(selection.height() > 1){
-        QMessageBox::critical(NULL, tr("Warning!"), tr("You must select only one sequence for export."));
-        return;
+    QStringList seqNames;
+    MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
+    QRect selection = editor->getCurrentSelection();
+    int startSeq = selection.y();
+    int endSeq = selection.y() + selection.height() - 1;
+    MSACollapsibleItemModel *model = editor->getUI()->getCollapseModel();
+    for (int i = startSeq; i <= endSeq; i++) {
+        seqNames.append(ma->getRow(model->mapToRow(i))->getName());
     }
 
-    QString seqName = editor->getMaObject()->getMultipleAlignment()->getRow(seqIndex)->getName();
     QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController(editor->getMaObject()->getDocument()->getURL().dirPath(),
-        GUrlUtils::fixFileName(seqName), (QWidget*)AppContext::getMainWindow()->getQMainWindow());
+        (QWidget*)AppContext::getMainWindow()->getQMainWindow(), seqNames, editor->getMaObject()->getGObjectName() + "_sequence");
     const int rc = d->exec();
     CHECK(!d.isNull(), );
 
     if (rc == QDialog::Rejected) {
         return;
     }
-    //TODO: OPTIMIZATION code below can be wrapped to task
-    DNASequence seq;
-    foreach(const DNASequence &s,  MSAUtils::ma2seq(getEditor()->getMaObject()->getMsa(), d->trimGapsFlag)){
-        if (s.getName() == seqName){
-            seq = s;
-            break;
-        }
-    }
+    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(d->getFormat());
+    SAFE_POINT(df != NULL, "Unknown document format", );
+    QString extension = df->getSupportedDocumentFileExtensions().first();
 
-    U2OpStatus2Log  os;
-    QString fullPath = GUrlUtils::prepareFileLocation(d->url, os);
-    CHECK_OP(os, );
-    GUrl url(fullPath);
-
-    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(d->url));
-    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(d->format);
-    Document *doc;
-    QList<GObject*> objs;
-    doc = df->createNewLoadedDocument(iof, fullPath, os);
-    CHECK_OP_EXT(os, delete doc, );
-    U2SequenceObject* seqObj = DocumentFormatUtils::addSequenceObjectDeprecated(doc->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, seq.getName(), objs, seq, os);
-    CHECK_OP_EXT(os, delete doc, );
-    doc->addObject(seqObj);
-    SaveDocumentTask *t = new SaveDocumentTask(doc, doc->getIOAdapterFactory(), doc->getURL());
-
-    if (d->addToProjectFlag){
-        Project *p = AppContext::getProject();
-        Document *loadedDoc=p->findDocumentByURL(url);
-        if (loadedDoc) {
-            coreLog.details("The document already in the project");
-            QMessageBox::warning(ui, tr("warning"), tr("The document already in the project"));
-            return;
-        }
-        p->addDocument(doc);
-
-        // Open view for created document
-        DocumentSelection ds;
-        ds.setSelection(QList<Document*>() <<doc);
-        MultiGSelection ms;
-        ms.addSelection(&ds);
-        foreach (GObjectViewFactory *f, AppContext::getObjectViewFactoryRegistry()->getAllFactories()) {
-            if (f->canCreateView(ms)) {
-                Task *tt = f->createViewTask(ms);
-                AppContext::getTaskScheduler()->registerTopLevelTask(tt);
-                break;
-            }
-        }
-    }else{
-        t->addFlag(SaveDoc_DestroyAfter);
-    }
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
+    AppContext::getTaskScheduler()->registerTopLevelTask(new ExportSequencesTask(getEditor()->getMaObject()->getMsa(), seqNames, d->getTrimGapsFlag(), d->getAddToProjectFlag(), d->getUrl(), d->getFormat(), extension, d->getCustomFileName()));
 }
 
 void MSAEditorSequenceArea::sl_modelChanged() {
@@ -722,7 +682,20 @@ void MSAEditorSequenceArea::sl_pasteFinished(Task* _pasteTask){
     const QList<Document*>& docs = pasteTask->getDocuments();
 
     AddSequencesFromDocumentsToAlignmentTask *task = new AddSequencesFromDocumentsToAlignmentTask(msaObject, docs);
+    task->setErrorNotificationSuppression(true); // we manually show warning message if needed when task is finished.
+    connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_addSequencesToAlignmentFinished(Task*)));
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
+}
+
+void MSAEditorSequenceArea::sl_addSequencesToAlignmentFinished(Task *task) {
+    AddSequencesFromDocumentsToAlignmentTask *addSeqTask = qobject_cast<AddSequencesFromDocumentsToAlignmentTask*>(task);
+    CHECK(addSeqTask != NULL, );
+    const MaModificationInfo& mi = addSeqTask->getMaModificationInfo();
+    if (!mi.rowListChanged) {
+        const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
+        CHECK(notificationStack != NULL,);
+        notificationStack->addNotification(tr("No new rows were inserted: selection contains no valid sequences."), Warning_Not);
+    }
 }
 
 void MSAEditorSequenceArea::sl_addSeqFromFile()

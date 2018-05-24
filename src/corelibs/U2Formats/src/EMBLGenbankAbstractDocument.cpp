@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@
 
 namespace U2 {
 
-const int ParserState::LOCAL_READ_BUFFER_SIZE = 40000;
+const int ParserState::LOCAL_READ_BUFFER_SIZE = 4 * 1024 * 1024;
 
 const QString EMBLGenbankAbstractDocument::REMOTE_ENTRY_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The file contains features of another remote GenBank file. These features have been skipped.");
 const QString EMBLGenbankAbstractDocument::JOIN_COMPLEMENT_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.");
@@ -119,7 +119,6 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
     int num_sequence = 0;
 
     qint64 sequenceStart = 0;
-    int sequenceSize = 0;
     int fullSequenceSize = 0;
     const int objectsCountLimit = fs.contains(DocumentReadingMode_MaxObjectsInDoc) ? fs[DocumentReadingMode_MaxObjectsInDoc].toInt() : -1;
 
@@ -141,7 +140,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
             CHECK_OP(os, );
         }
 
-        sequenceSize = 0;
+        int sequenceSize = 0;
         os.setDescription(tr("Reading entry header"));
         int offset = 0;
         if (merge && num_sequence > 0) {

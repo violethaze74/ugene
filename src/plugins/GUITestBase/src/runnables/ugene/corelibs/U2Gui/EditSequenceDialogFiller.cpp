@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -91,7 +91,7 @@ void InsertSequenceFiller::commonScenario() {
 
     QSpinBox *insertPositionSpin = dialog->findChild<QSpinBox*>("insertPositionSpin");
     GT_CHECK(insertPositionSpin != NULL, "insertPositionSpin not found");
-    GTSpinBox::setValue(os, insertPositionSpin, insertPosition, GTGlobals::UseKey);
+    GTSpinBox::setValue(os, insertPositionSpin, insertPosition, GTGlobals::UseKeyBoard);
 
     QGroupBox *checkButton = dialog->findChild<QGroupBox*>(QString::fromUtf8("saveToAnotherBox"));
     GT_CHECK(checkButton != NULL, "Check box not found");

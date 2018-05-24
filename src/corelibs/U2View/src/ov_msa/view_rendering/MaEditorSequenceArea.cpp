@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
  */
 
 #include <QApplication>
+#include <QCursor>
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QPainter>
@@ -85,6 +86,7 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
     selecting = false;
     shifting = false;
     editingEnabled = false;
+    movableBorder = SelectionModificationHelper::NoMovableBorder;
     isCtrlPressed = false;
     lengthOnMousePress = editor->getMaObject()->getLength();
 
@@ -156,15 +158,18 @@ int MaEditorSequenceArea::getNumVisibleBases() const {
     return ui->getDrawHelper()->getVisibleBasesCount(width());
 }
 
-int MaEditorSequenceArea::getDisplayableRowsCount() const {
-    return ui->getCollapseModel()->getDisplayableRowsCount();
-}
-
 int MaEditorSequenceArea::getNumDisplayableSequences() const {
     CHECK(!isAlignmentEmpty(), 0);
     MSACollapsibleItemModel *model = ui->getCollapseModel();
     SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
     return model->getDisplayableRowsCount();
+}
+
+int MaEditorSequenceArea::getRowIndex(const int num) const {
+    CHECK(!isAlignmentEmpty(), -1);
+    MSACollapsibleItemModel *model = ui->getCollapseModel();
+    SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
+    return model->mapToRow(num);
 }
 
 bool MaEditorSequenceArea::isAlignmentEmpty() const {
@@ -248,7 +253,6 @@ void MaEditorSequenceArea::updateSelection() {
     if (selectionHeight <= 1 && itemIndex >= 0) {
         const MSACollapsableItem& collapsibleItem = m->getItem(itemIndex);
         if(newEnd == collapsibleItem.row && !collapsibleItem.isCollapsed) {
-            newEnd = collapsibleItem.row ;
             selectionHeight = qMax(selectionHeight, endPos - newStart + collapsibleItem.numRows);
         }
     }
@@ -261,7 +265,7 @@ void MaEditorSequenceArea::updateSelection() {
 }
 
 void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHighlightSelection) {
-    CHECK(!isAlignmentEmpty(), );
+    CHECK(!isAlignmentEmpty() || s.isEmpty(), );
     // TODO: assert(isInRange(s));
     exitFromEditCharacterMode();
     if (highlightSelection != newHighlightSelection) {
@@ -1077,7 +1081,17 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
             }
         }
 
-        if (!shifting) {
+        Qt::CursorShape shape = cursor().shape();
+        if (shape != Qt::ArrowCursor) {
+            QPoint pos = e->pos();
+            changeTracker.finishTracking();
+            shifting = false;
+            QPoint globalMousePosition = ui->getScrollController()->getGlobalMousePosition(pos);
+            const double baseWidth = ui->getBaseWidthController()->getBaseWidth();
+            const double baseHeight = ui->getRowHeightController()->getSequenceHeight();
+            movableBorder = SelectionModificationHelper::getMovableSide(shape, globalMousePosition, selection.getRect(), QSize(baseWidth, baseHeight));
+            moveBorder(pos);
+        } else if (!shifting) {
             selecting = true;
             rubberBandOrigin = e->pos();
             rubberBand->setGeometry(QRect(rubberBandOrigin, QSize()));
@@ -1103,12 +1117,13 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
 
     if (shifting) {
         emit si_stopMaChanging(maVersionBeforeShifting != editor->getMaObject()->getModificationVersion());
-    } else if (Qt::LeftButton == e->button() && Qt::LeftButton == prevPressedButton) {
+    } else if (Qt::LeftButton == e->button() && Qt::LeftButton == prevPressedButton && movableBorder == SelectionModificationHelper::NoMovableBorder) {
         updateSelection(newCurPos);
     }
     shifting = false;
     selecting = false;
     maVersionBeforeShifting = -1;
+    movableBorder = SelectionModificationHelper::NoMovableBorder;
 
     if (ctrlModeGapModel.isEmpty() && isCtrlPressed) {
         MultipleAlignmentObject* maObj = editor->getMaObject();
@@ -1126,7 +1141,8 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
 
 void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
     if (event->buttons() & Qt::LeftButton) {
-        const QPoint newCurPos = ui->getScrollController()->getMaPointByScreenPoint(event->pos());
+        const QPoint p = event->pos();
+        const QPoint newCurPos = ui->getScrollController()->getMaPointByScreenPoint(p);
         if (isInRange(newCurPos)) {
             if (isVisible(newCurPos, false)) {
                 ui->getScrollController()->stopSmoothScrolling();
@@ -1147,14 +1163,49 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
             }
         }
 
-        if (shifting && editingEnabled) {
+        Qt::CursorShape shape = cursor().shape();
+        if (shape != Qt::ArrowCursor) {
+            moveBorder(p);
+        } else if (shifting && editingEnabled) {
             shiftSelectedRegion(newCurPos.x() - cursorPos.x());
         } else if (selecting) {
-            rubberBand->setGeometry(QRect(rubberBandOrigin, event->pos()).normalized());
+            rubberBand->setGeometry(QRect(rubberBandOrigin, p).normalized());
         }
+    } else {
+        setBorderCursor(event->pos());
     }
 
     QWidget::mouseMoveEvent(event);
+}
+
+void MaEditorSequenceArea::setBorderCursor(const QPoint& p) {
+    const QPoint globalMousePos = ui->getScrollController()->getGlobalMousePosition(p);
+    setCursor(SelectionModificationHelper::getCursorShape(globalMousePos, selection.getRect(), ui->getBaseWidthController()->getBaseWidth(), ui->getRowHeightController()->getSequenceHeight()));
+}
+
+void MaEditorSequenceArea::moveBorder(const QPoint& screenMousePos) {
+    CHECK(movableBorder != SelectionModificationHelper::NoMovableBorder, );
+
+    QPoint globalMousePos = ui->getScrollController()->getGlobalMousePosition(screenMousePos);
+    globalMousePos = QPoint(qMax(0, globalMousePos.x()), qMax(0, globalMousePos.y()));
+    const qreal baseWidth = ui->getBaseWidthController()->getBaseWidth();
+    const qreal baseHeight = ui->getRowHeightController()->getSequenceHeight();
+
+    QRect newSelection = SelectionModificationHelper::getNewSelection(movableBorder, globalMousePos, QSizeF(baseWidth, baseHeight), selection.getRect());
+
+    setCursor(SelectionModificationHelper::getCursorShape(movableBorder, cursor().shape()));
+
+    CHECK(!newSelection.isEmpty(), );
+    if (!isPosInRange(newSelection.right())) {
+        newSelection.setRight(selection.getRect().right());
+    }
+    if (!isSeqInRange(newSelection.bottom())) {
+        newSelection.setBottom(selection.bottom());
+    }
+
+    CHECK(isInRange(newSelection.bottomRight()), );
+    CHECK(isInRange(newSelection.topLeft()), );
+    setSelection(MaEditorSelection(newSelection.topLeft(), newSelection.bottomRight()));
 }
 
 void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {

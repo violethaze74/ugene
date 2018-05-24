@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,8 +50,8 @@ public:
     static bool isCollapsed(GUITestOpStatus &os, QString seqName);
     static bool collapsingMode(GUITestOpStatus &os);
 
-    static int getLeftOffset(GUITestOpStatus &os);
-    static int getRightOffset(GUITestOpStatus &os);
+    static int getFirstVisibleBase(GUITestOpStatus &os);
+    static int getLastVisibleBase(GUITestOpStatus &os);
 
     static int getLength(GUITestOpStatus &os);
     static int getNumVisibleBases(GUITestOpStatus &os);
@@ -96,6 +96,13 @@ public:
     static void deleteColorScheme(GUITestOpStatus &os, const QString& schemeName);
 
     static void checkSelection(GUITestOpStatus &os, const QPoint& start, const QPoint& end, const QString& expected);
+
+    static bool isAlignmentLocked(GUITestOpStatus &os);
+
+    /*
+    *expandedBorder: 0 - top, 1 - right, 2 - bottom, 3 - left, 4 - right top, 5 - right bottom, 6 - left bottom, 7 - left top
+    */
+    static void expandSelectedRegion(GUITestOpStatus &os, const int expandedBorder, const int symbolsToExpand);
 
     static const QString highlightningColorName;
 };

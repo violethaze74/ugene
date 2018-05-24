@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,6 +67,8 @@ public:
     qint64 getLinesCount(const QSize& canvasSize) const;
     qint64 getContentIndentY(const QSize& canvasSize, const U2Region& visibleRange) const;
 
+    int getDirectLine() const { return directLine; }
+
     int getRowsInLineCount() const;
 
     QSize getBaseCanvasSize(const U2Region &visibleRange) const;
@@ -76,6 +78,7 @@ public:
 
     virtual void drawAll(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange);
     virtual void drawSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange);
+    virtual void drawCursor(QPainter &p, const QSize &canvasSize, const U2Region& visibleRange);
 
     void update();
 
@@ -88,7 +91,7 @@ private:
                                 const U2Region& visibleRange,
                                 const char* seqBlock,
                                 const QList<SharedAnnotationData>& annotationsInRange);
-    void drawComplementTransltations(QPainter& p,
+    void drawComplementTranslations(QPainter& p,
                                      const U2Region& visibleRange,
                                      const char* seqBlock,
                                      const QList<SharedAnnotationData>& annotationsInRange);

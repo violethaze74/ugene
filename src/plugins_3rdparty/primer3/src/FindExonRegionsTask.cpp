@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -89,26 +89,26 @@ QList<Task *> FindExonRegionsTask::onSubTaskFinished(Task *subTask) {
 }
 
 Task::ReportResult FindExonRegionsTask::report() {
-    QList<GObject *> relAnns = GObjectUtils::findObjectsRelatedToObjectByRole(dnaObj, GObjectTypes::ANNOTATION_TABLE,
-        ObjectRole_Sequence, dnaObj->getDocument()->getObjects(), UOF_LoadedOnly);
+    QList<GObject*> allAnnotationObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE);
+    QList<GObject*> relAnns = GObjectUtils::findObjectsRelatedToObjectByRole(dnaObj, GObjectTypes::ANNOTATION_TABLE,
+        ObjectRole_Sequence, allAnnotationObjects, UOF_LoadedOnly);
 
-    AnnotationTableObject *att = relAnns.isEmpty() ? NULL : qobject_cast<AnnotationTableObject *>(relAnns.first());
-
-    if (NULL == att) {
+    if (relAnns.isEmpty()) {
         setError(tr("Failed to search for exon annotations. The sequence %1 doesn't have any related annotations.").arg(dnaObj->getSequenceName()));
         return ReportResult_Finished;
     }
-
-    const QList<Annotation *> anns = att->getAnnotations();
-
-    foreach (Annotation *ann, anns) {
-        if (ann->getName() == exonAnnName) {
-            foreach (const U2Region &r, ann->getRegions()) {
-                exonRegions.append(r);
+    
+    foreach (GObject* a, relAnns) {
+        AnnotationTableObject *att = qobject_cast<AnnotationTableObject *>(a);
+        const QList<Annotation *> anns = att->getAnnotations();
+        foreach (Annotation *ann, anns) {
+            if (ann->getName() == exonAnnName) {
+                foreach (const U2Region &r, ann->getRegions()) {
+                    exonRegions.append(r);
+                }
             }
         }
     }
-
     qSort(exonRegions);
     return ReportResult_Finished;
 }

@@ -34,5 +34,4 @@ SOURCES +=      src/CommonDbi.cpp \
 #                src/js/NodeApiUtils.cpp
 #}
 
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts

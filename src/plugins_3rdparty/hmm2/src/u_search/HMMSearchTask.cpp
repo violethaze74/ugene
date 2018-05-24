@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -103,7 +103,7 @@ void HMMSearchTask::onRegion(SequenceWalkerSubtask* t, TaskStateInfo& si)
     QList<UHMMSearchResult> sresults;
     try {
         sresults = UHMMSearch::search(hmm, localSeq, localSeqSize, settings, si);
-    } catch (HMMException e) {
+    } catch (const HMMException &e) {
         stateInfo.setError(e.error);
     }
     if (si.hasError()) {

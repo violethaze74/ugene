@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@
 namespace U2 {
 
 class ConnectionHelper {
+    Q_DISABLE_COPY(ConnectionHelper)
 public:
     ConnectionHelper(const U2DbiRef &dbiRef, U2OpStatus &os);
     ~ConnectionHelper();

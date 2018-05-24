@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget* p, AnnotationsTreeView *tr
     indexOfPrevResult(-1)
 {
      ui->setupUi(this);
-     new HelpButton(this, ui->buttonBox, "20874911");
+     new HelpButton(this, ui->buttonBox, "21433203");
      ui->buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Select all"));
      ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Next"));
      ui->buttonBox->button(QDialogButtonBox::Close)->setText(tr("Close"));

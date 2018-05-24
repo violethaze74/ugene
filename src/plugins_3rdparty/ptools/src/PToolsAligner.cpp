@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -126,7 +126,7 @@ StructuralAlignment PToolsAligner::align(const StructuralAlignmentTaskSettings &
             }
         }
     }
-    catch (std::exception e) {
+    catch (const std::exception &e) {
         error = QString("Internal ptools error: %1").arg(e.what());
     }
     catch (...) {

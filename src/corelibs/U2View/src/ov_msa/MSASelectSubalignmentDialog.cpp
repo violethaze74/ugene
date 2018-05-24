@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -119,7 +119,7 @@ void SelectSubalignmentDialog::init() {
     SAFE_POINT(editor != NULL, tr("Ma Editor is NULL"), );
 
     setupUi(this);
-    new HelpButton(this, buttonBox, "20874988");
+    new HelpButton(this, buttonBox, "21433279");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Select"));
 
     connect(allButton, SIGNAL(clicked()), SLOT(sl_allButtonClicked()));

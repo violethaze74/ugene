@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,6 +62,8 @@ public:
     static U2EntityRef import(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const DNASequence &seq, const U2AlphabetId &alphabetId = U2AlphabetId());
 
     static void setQuality(const U2EntityRef& entityRef, const DNAQuality& quality);
+    static void setSequenceInfo(U2OpStatus &os, const U2EntityRef& entityRef, const QVariantMap& info);
+    static QVariantMap getSequenceInfo(U2OpStatus &os, const U2EntityRef& entityRef, const QString& name);
 
     static U2Sequence getSequenceDbInfo(U2SequenceObject *seqObj);
 };

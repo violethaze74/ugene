@@ -24,12 +24,12 @@
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.ui" line="26"/>
         <source>Count</source>
-        <translation type="unfinished"></translation>
+        <translation>Число</translation>
     </message>
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.ui" line="36"/>
         <source>Percentage</source>
-        <translation type="unfinished"></translation>
+        <translation>Процент</translation>
     </message>
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.ui" line="46"/>
@@ -105,12 +105,12 @@
     <message>
         <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="40"/>
         <source>Count</source>
-        <translation type="unfinished"></translation>
+        <translation>Число</translation>
     </message>
     <message>
         <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="50"/>
         <source>Percentage</source>
-        <translation type="unfinished"></translation>
+        <translation>Процент</translation>
     </message>
     <message>
         <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="57"/>
@@ -157,7 +157,7 @@
     <message>
         <location filename="../src/DNAStatPlugin.cpp" line="71"/>
         <source>Generate grid profile...</source>
-        <translation type="unfinished"></translation>
+        <translation>Представить выравнивание в виде таблицы частот...</translation>
     </message>
 </context>
 <context>
@@ -173,17 +173,17 @@
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.cpp" line="54"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.cpp" line="55"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.cpp" line="87"/>
         <source>Save file</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить файл</translation>
     </message>
     <message>
         <source>Select file to save report to..</source>
@@ -251,17 +251,17 @@
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.cpp" line="293"/>
         <source>Task was finished with an error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Task was finished with an error: %1</translation>
     </message>
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.cpp" line="296"/>
         <source>Task was canceled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Task was canceled.</translation>
     </message>
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.cpp" line="300"/>
         <source>Grid profile for %1: &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Grid profile for %1: &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.cpp" line="314"/>
@@ -392,7 +392,7 @@
     <message>
         <location filename="../src/DNAStatPlugin.cpp" line="108"/>
         <source>Generate distance matrix...</source>
-        <translation type="unfinished"></translation>
+        <translation>Рассчитать матрицу расстояний...</translation>
     </message>
 </context>
 <context>
@@ -410,7 +410,7 @@
     <message>
         <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="94"/>
         <source>Save file</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить файл</translation>
     </message>
     <message>
         <source>CSV files</source>
@@ -492,12 +492,12 @@
     <message>
         <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="361"/>
         <source>Task was finished with an error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Task was finished with an error: %1</translation>
     </message>
     <message>
         <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="365"/>
         <source>Distanse matrix for %1: &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanse matrix for %1: &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="379"/>

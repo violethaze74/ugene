@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,8 @@ public:
               end(-1),
               pickRight(true),
               pickLeft(true),
-              shortRegion(false)
+              shortRegion(false),
+              rtPcrDesign(false)
         {}
 
         int resultsCount;
@@ -48,6 +49,7 @@ public:
         bool pickRight;
         bool pickLeft;
         bool shortRegion;
+        bool rtPcrDesign;
     };
 
     Primer3DialogFiller(HI::GUITestOpStatus &os, const Primer3Settings &settings = Primer3Settings());

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,9 +23,10 @@
 #define _U2_ADV_SINGLE_SEQ_WIDGET_H_
 
 #include "ADVSequenceWidget.h"
+#include "PanView.h"
+
 #include <U2Core/U2Region.h>
 #include <U2Core/GAutoDeleteList.h>
-#include "PanView.h"
 
 #include <QWidget>
 #include <QLabel>
@@ -42,19 +43,19 @@
 
 namespace U2 {
 
-class AnnotatedDNAView;
-class U2SequenceObject;
-class GSequenceLineView;
-class DetView;
-class PanView;
-class Overview;
-class GSingleSeqBlockState;
-class DNATranslation;
 class ADVSequenceObjectContext;
 class ADVSingleSequenceHeaderWidget;
+class AnnotatedDNAView;
 class Annotation;
 class AnnotationSelection;
+class DetView;
 class DNAAlphabet;
+class DNATranslation;
+class GSequenceLineView;
+class GSingleSeqBlockState;
+class Overview;
+class PanView;
+class U2SequenceObject;
 
 class U2VIEW_EXPORT ADVSingleSequenceWidget : public ADVSequenceWidget {
     Q_OBJECT
@@ -172,7 +173,6 @@ private:
     QToolButton* addButtonWithActionToToolbar(QAction * buttonAction, QToolBar * toolBar, int position = -1) const;
     void addRulersMenu(QMenu& m);
     void addSelectMenu(QMenu& m);
-    void setupGeneticCodeMenu(ADVSequenceObjectContext *seqCtx);
 
     /** Used by several other functions to set new selected region */
     void setSelectedRegion(const U2Region& region);
@@ -187,7 +187,7 @@ private:
     QList<GSequenceLineView*>       lineViews;
     QVBoxLayout*                    linesLayout;
     QSplitter*                      linesSplitter;
-    ADVSingleSequenceHeaderWidget   *headerWidget;
+    ADVSingleSequenceHeaderWidget*  headerWidget;
 
     QAction*        toggleViewAction;
     QAction*        togglePanViewAction;
@@ -202,8 +202,6 @@ private:
     QAction*        shotScreenAction;
     QAction*        closeViewAction;
 
-    QList<QMenu*>   tbMenues;
-    QToolButton*    ttButton;
     GAutoDeleteList<QAction> rulerActions;
     QList<QString> * buttonTabOrederedNames;
 

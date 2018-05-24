@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -118,6 +118,7 @@ public:
 
 template <typename T>
 class IndexedMapping3To1 {
+    Q_DISABLE_COPY(IndexedMapping3To1)
 public:
     IndexedMapping3To1(const QList<Mapping3To1<T> >& rawMapping, const T& defaultVal) {
         //init index;

@@ -215,5 +215,4 @@ SOURCES += src/ABIFormat.cpp \
            src/util/TabulatedFormatReader.cpp
 
 RESOURCES += U2Formats.qrc
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts

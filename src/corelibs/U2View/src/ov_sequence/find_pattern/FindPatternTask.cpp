@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,11 @@ namespace U2 {
 const float FindPatternTask::MAX_OVERLAP_K = 0.5F;
 
 FindPatternTask::FindPatternTask(const FindAlgorithmTaskSettings &settings, bool removeOverlaps)
-    : Task(tr("Searching a pattern in sequence task"), TaskFlags_NR_FOSE_COSC), settings(settings), removeOverlaps(removeOverlaps), noResults(false)
+    : Task(tr("Searching a pattern in sequence task"), TaskFlags_NR_FOSE_COSC),
+      settings(settings),
+      removeOverlaps(removeOverlaps),
+      findAlgorithmTask(NULL),
+      noResults(false)
 {
 
 }

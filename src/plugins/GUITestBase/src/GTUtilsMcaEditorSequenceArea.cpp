@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -49,6 +49,7 @@
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsProjectTreeView.cpp"
 
 namespace U2 {
 using namespace HI;
@@ -99,9 +100,14 @@ int GTUtilsMcaEditorSequenceArea::getRowHeight(GUITestOpStatus &os, int rowNumbe
 void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QPoint &globalMaPosition) {
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMdi::activeWindow(os));
     GT_CHECK(NULL != mcaSeqArea, "MCA Editor sequence area is not found");
-    GT_CHECK(mcaSeqArea->isInRange(globalMaPosition), "Position is out of range");
+    GT_CHECK(mcaSeqArea->isInRange(globalMaPosition),
+             QString("Position is out of range: [%1, %2], range: [%3, %4]")
+             .arg(globalMaPosition.x()).arg(globalMaPosition.y())
+             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getNumDisplayableSequences()));
 
     scrollToPosition(os, globalMaPosition);
+    GTGlobals::sleep();
+
     const QPoint positionCenter(mcaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(globalMaPosition.x()),
         mcaSeqArea->getEditor()->getUI()->getRowHeightController()->getRowScreenRangeByNumber(globalMaPosition.y()).center());
     GT_CHECK(mcaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
@@ -115,8 +121,16 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
 void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const QPoint &position) {
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMdi::activeWindow(os));
     GT_CHECK(NULL != mcaSeqArea, "MSA Editor sequence area is not found");
-    GT_CHECK(mcaSeqArea->isInRange(position), "Position is out of range");
+    GT_CHECK(mcaSeqArea->isInRange(position),
+             QString("Position is out of range: [%1, %2], range: [%3, %4]")
+             .arg(position.x()).arg(position.y())
+             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getNumDisplayableSequences()));
+
     CHECK(!mcaSeqArea->isVisible(position, false), );
+
+    if (GTUtilsProjectTreeView::isVisible(os)){
+        GTUtilsProjectTreeView::toggleView(os);
+    }
 
     if (!mcaSeqArea->isRowVisible(position.y(), false)) {
         GTUtilsMcaEditor::scrollToRead(os, position.y());
@@ -268,7 +282,7 @@ void GTUtilsMcaEditorSequenceArea::moveTheBorderBetweenAlignmentAndRead(HI::GUIT
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "dragAndDrop"
-void GTUtilsMcaEditorSequenceArea::dragAndDrop(HI::GUITestOpStatus &os, const QPoint p) {
+void GTUtilsMcaEditorSequenceArea::dragAndDrop(HI::GUITestOpStatus & /*os*/, const QPoint p) {
     GTMouseDriver::click();
     GTGlobals::sleep(1000);
     GTMouseDriver::press(Qt::LeftButton);
@@ -317,7 +331,11 @@ void GTUtilsMcaEditorSequenceArea::clickToReferencePosition(GUITestOpStatus &os,
     QPoint selectedPoint(num, 2);
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMdi::activeWindow(os));
     GT_CHECK(NULL != mcaSeqArea, "MCA Editor sequence area is not found");
-    GT_CHECK(mcaSeqArea->isInRange(selectedPoint), "Position is out of range");
+    GT_CHECK(mcaSeqArea->isInRange(selectedPoint),
+             QString("Position is out of range: [%1, %2], range: [%3, %4]")
+             .arg(selectedPoint.x()).arg(selectedPoint.y())
+             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getNumDisplayableSequences()));
+
 
     scrollToPosition(os, selectedPoint);
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -362,7 +362,7 @@ QList<Dataset> HRSchemaSerializer::parseUrlAttribute(const QString attrId, QList
             if (name.isEmpty()) {
                 throw ReadFailed(tr("Url definition does not contain dataset name"));
             }
-        } catch (ReadFailed ex) {
+        } catch (const ReadFailed &ex) {
             foreach (URLContainer *url, urls) {
                 delete url;
             }

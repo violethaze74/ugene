@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,8 +54,9 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
 }
 
 
-PsipredPlugin::PsipredPlugin() : Plugin(tr(PSIPRED_PLUGIN_NAME), tr("PsiPred protein secondary structure prediction"),false) {
-   
+PsipredPlugin::PsipredPlugin()
+    : Plugin(tr(PSIPRED_PLUGIN_NAME), tr("PsiPred protein secondary structure prediction"), false)
+{
     // Register PsiPred algorithm
     SecStructPredictAlgRegistry* registry = AppContext::getSecStructPredictAlgRegistry();
     SecStructPredictTaskFactory* taskFactory = new PsipredAlgTask::Factory;
@@ -67,14 +68,11 @@ PsipredPlugin::PsipredPlugin() : Plugin(tr(PSIPRED_PLUGIN_NAME), tr("PsiPred pro
     as->showNameQuals = true;
     as->nameQuals.append(BioStruct3D::SecStructTypeQualifierName);
     asr->changeSettings(QList<AnnotationSettings*>() << as, false);
-
-
 }
 
 PsipredPlugin::~PsipredPlugin() {
+
 }
-
-
 
 }//namespace
 

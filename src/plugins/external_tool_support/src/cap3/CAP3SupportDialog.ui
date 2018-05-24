@@ -20,7 +20,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -135,7 +135,7 @@ p, li { white-space: pre-wrap; }
           <item row="0" column="1">
            <widget class="QSpinBox" name="baseQualityClipCutoffBox">
             <property name="minimum">
-             <number>5</number>
+             <number>6</number>
             </property>
             <property name="value">
              <number>12</number>
@@ -155,7 +155,7 @@ p, li { white-space: pre-wrap; }
              <number>6</number>
             </property>
             <property name="maximum">
-             <number>1000</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>250</number>
@@ -181,10 +181,10 @@ p, li { white-space: pre-wrap; }
           <item row="0" column="2">
            <widget class="QSpinBox" name="overlapLengthCutoffBox">
             <property name="minimum">
-             <number>20</number>
+             <number>16</number>
             </property>
             <property name="maximum">
-             <number>100</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>40</number>
@@ -201,10 +201,10 @@ p, li { white-space: pre-wrap; }
           <item row="1" column="2">
            <widget class="QSpinBox" name="overlapPercentIdentityBox">
             <property name="minimum">
-             <number>65</number>
+             <number>66</number>
             </property>
             <property name="maximum">
-             <number>100</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>80</number>
@@ -230,7 +230,7 @@ p, li { white-space: pre-wrap; }
           <item row="0" column="1">
            <widget class="QSpinBox" name="baseQualityDiffCutoffBox">
             <property name="minimum">
-             <number>15</number>
+             <number>16</number>
             </property>
             <property name="value">
              <number>20</number>
@@ -240,10 +240,10 @@ p, li { white-space: pre-wrap; }
           <item row="1" column="1">
            <widget class="QSpinBox" name="maxQScoreDiffBox">
             <property name="minimum">
-             <number>20</number>
+             <number>21</number>
             </property>
             <property name="maximum">
-             <number>1000</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>200</number>
@@ -276,10 +276,10 @@ p, li { white-space: pre-wrap; }
           <item row="0" column="1">
            <widget class="QSpinBox" name="maxNumWordMatchesBox">
             <property name="minimum">
-             <number>30</number>
+             <number>31</number>
             </property>
             <property name="maximum">
-             <number>1000</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>300</number>
@@ -304,6 +304,9 @@ p, li { white-space: pre-wrap; }
             <property name="minimum">
              <number>10</number>
             </property>
+            <property name="maximum">
+             <number>2147483647</number>
+            </property>
             <property name="value">
              <number>20</number>
             </property>
@@ -319,10 +322,10 @@ p, li { white-space: pre-wrap; }
           <item row="2" column="1">
            <widget class="QSpinBox" name="maxGapLengthBox">
             <property name="minimum">
-             <number>1</number>
+             <number>2</number>
             </property>
             <property name="maximum">
-             <number>100</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>20</number>
@@ -371,7 +374,7 @@ p, li { white-space: pre-wrap; }
           <item row="1" column="1">
            <widget class="QSpinBox" name="mismatchScoreFactorBox">
             <property name="minimum">
-             <number>-100</number>
+             <number>-214748364</number>
             </property>
             <property name="maximum">
              <number>-1</number>
@@ -391,10 +394,10 @@ p, li { white-space: pre-wrap; }
           <item row="4" column="1">
            <widget class="QSpinBox" name="overlapSimilarityScoreCutoffBox">
             <property name="minimum">
-             <number>400</number>
+             <number>251</number>
             </property>
             <property name="maximum">
-             <number>1000</number>
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>900</number>
@@ -417,6 +420,12 @@ p, li { white-space: pre-wrap; }
           </item>
           <item row="3" column="1">
            <widget class="QSpinBox" name="gapPenaltyFactorBox">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>2147483647</number>
+            </property>
             <property name="value">
              <number>6</number>
             </property>
@@ -426,6 +435,9 @@ p, li { white-space: pre-wrap; }
            <widget class="QSpinBox" name="matchScoreFactorBox">
             <property name="minimum">
              <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>2147483647</number>
             </property>
             <property name="value">
              <number>2</number>

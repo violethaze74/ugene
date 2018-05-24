@@ -92,5 +92,4 @@ FORMS += src/BioStruct3DSubsetEditor.ui \
 
 RESOURCES += biostruct3d_view.qrc
 
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts

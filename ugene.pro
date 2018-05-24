@@ -45,6 +45,7 @@ SUBDIRS += \
           src/plugins_3rdparty/hmm2 \
           src/plugins_3rdparty/gor4 \
           src/plugins_3rdparty/psipred \
+          src/plugins_3rdparty/primer3 \
           src/plugins_3rdparty/phylip \
           src/plugins_3rdparty/kalign \
           src/plugins_3rdparty/ptools \
@@ -81,8 +82,7 @@ SUBDIRS += \
           src/plugins/test_runner \
           src/plugins/weight_matrix \
           src/plugins/wevote_support \
-          src/plugins/workflow_designer \
-          src/plugins_3rdparty/primer3
+          src/plugins/workflow_designer
 
 use_cuda() {
     SUBDIRS += src/plugins/cuda_support

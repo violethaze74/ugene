@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -71,8 +71,8 @@ private:
 };
 
 template <class Factory, class Registry>
-MsaSchemeComboBoxController<Factory, Registry>::MsaSchemeComboBoxController(MSAEditor *msa, Registry *registry, QWidget *parent /*= NULL*/)
-    : ComboBoxSignalHandler(parent), msa(msa), registry(registry) {
+MsaSchemeComboBoxController<Factory, Registry>::MsaSchemeComboBoxController(MSAEditor *_msa, Registry *_registry, QWidget *parent /*= NULL*/)
+    : ComboBoxSignalHandler(parent), msa(_msa), registry(_registry) {
     init();
 }
 

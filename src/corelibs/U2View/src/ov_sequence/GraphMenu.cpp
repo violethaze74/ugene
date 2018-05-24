@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -119,9 +119,9 @@ GraphMenuAction::GraphMenuAction(const DNAAlphabet* a) : ADVSequenceWidgetAction
     this->setIcon(QIcon(":core/images/graphs.png"));
     this->setMenu(menu);
     addToBar = true;
-    
+
     separator = menu->addSeparator();
-    
+
     QAction* closeAllAction = new QAction(GraphMenuAction::tr("Close all graphs"), this);
     menu->addAction(closeAllAction);
     connect(closeAllAction, SIGNAL(triggered()), this, SLOT(sl_closeAllGraphs()));
@@ -171,7 +171,7 @@ void GraphMenuAction::sl_closeAllGraphs() {
         if (graphAction != NULL && graphAction->isChecked()) {
             graphAction->trigger();
         }
-    }    
+    }
 }
 
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,6 +52,8 @@ public:
 
     void addCopyMenu(QMenu* m);
 
+    void connectSequence(ADVSequenceObjectContext* s);
+
     static QAction* createPasteSequenceAction(QObject *parent);
 
 public slots:
@@ -70,7 +72,6 @@ public slots:
     ADVSequenceObjectContext* getSequenceContext() const;
 
 private:
-    void connectSequence(ADVSequenceObjectContext* s);
     void updateActions();
     void copySequenceSelection(bool complement, bool amino);
     void putIntoClipboard(const QString& data);

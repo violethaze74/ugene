@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,7 +58,9 @@
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSequenceWidget.h>
+#include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
+#include <U2View/DetView.h>
 
 #include "FindPatternWidget.h"
 
@@ -535,15 +537,12 @@ void FindPatternWidget::sl_onRegionOptionChanged(int index)
 }
 
 
-void highlightBackground(QWidget* widget)
-{
-    widget->setStyleSheet(
-        "background-color: " + L10N::errorColorTextFieldStr() + ";");
+void highlightBackground(QWidget* widget) {
+    widget->setStyleSheet("background-color: " + L10N::errorColorTextFieldStr() + ";");
 }
 
 
-void doNotHighlightBackground(QWidget* widget)
-{
+void doNotHighlightBackground(QWidget* widget) {
     widget->setStyleSheet("background-color: white;");
 }
 
@@ -689,7 +688,6 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
 
     if (!messageFlags.isEmpty()) {
 
-
 #ifndef Q_OS_MAC
         const QString lineBreakShortcut = "Ctrl+Enter";
 #else
@@ -797,8 +795,12 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
     }
     else {
         lblErrorMessage->setText("");
+    }
+    bool hasNoErrors = messageFlags.isEmpty() || (messageFlags.size() == 1 && messageFlags.contains(UseMultiplePatternsTip));
+    if (hasNoErrors) {
         doNotHighlightBackground(textPattern);
     }
+
 }
 
 void FindPatternWidget::sl_onSearchPatternChanged()
@@ -1259,7 +1261,14 @@ void FindPatternWidget::sl_findPatrernTaskStateChanged() {
             getAnnotationsPushButton->setEnabled(true);
             checkState();
             correctSearchInCombo();
-            showCurrentResult();
+            ADVSingleSequenceWidget* seqWdgt = qobject_cast<ADVSingleSequenceWidget*>(annotatedDnaView->getSequenceWidgetInFocus());
+            if (seqWdgt != NULL) {
+                if (seqWdgt->getDetView() != NULL && !seqWdgt->getDetView()->isEditMode()) {
+                    showCurrentResult();
+                }
+            } else {
+                showCurrentResult();
+            }
         }
         disconnect(this, SLOT(sl_loadPatternTaskStateChanged()));
         searchTask = NULL;

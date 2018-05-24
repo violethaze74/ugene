@@ -172,12 +172,12 @@
         <translation>Дополнительные параметры</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="296"/>
+        <location filename="../src/FindTandemsDialog.ui" line="299"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="253"/>
+        <location filename="../src/FindTandemsDialog.ui" line="256"/>
         <source>Minimum tandem size</source>
         <translation>Минимальный размер тандема</translation>
     </message>
@@ -187,7 +187,7 @@
         <translation>Поиск тандемов</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="316"/>
+        <location filename="../src/FindTandemsDialog.ui" line="319"/>
         <source>Minimum repeat count</source>
         <translation>Минимальное число повторений</translation>
     </message>
@@ -197,7 +197,7 @@
         <translation>x</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="246"/>
+        <location filename="../src/FindTandemsDialog.ui" line="249"/>
         <source>Show overlapped tandems</source>
         <translation>Показать перекрывающиеся тандемы</translation>
     </message>

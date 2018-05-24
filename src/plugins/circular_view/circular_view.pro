@@ -24,4 +24,4 @@ SOURCES += src/CircularItems.cpp \
            src/SetSequenceOriginDialog.cpp \
            src/ShiftSequenceStartTask.cpp
 RESOURCES += circular_view.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,8 +40,10 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextObject.h>
+#include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2SequenceUtils.h>
 #include <U2Core/UnloadedObject.h>
 
 #include <U2Gui/OpenViewTask.h>
@@ -280,7 +282,7 @@ ExportMaConsensusTask::ExportMaConsensusTask(const ExportMaConsensusTaskSettings
 }
 
 void ExportMaConsensusTask::prepare(){
-    extractConsensus = new ExtractConsensusTask(settings.keepGaps, settings.ma);
+    extractConsensus = new ExtractConsensusTask(settings.keepGaps, settings.ma, settings.algorithm);
     addSubTask(extractConsensus);
 }
 
@@ -320,19 +322,26 @@ Document *ExportMaConsensusTask::createDocument(){
     if (df->getFormatId() == BaseDocumentFormats::PLAIN_TEXT){
         obj = TextObject::createInstance(filteredConsensus, settings.name, doc->getDbiRef(), stateInfo);
     }else{
-        obj = DocumentFormatUtils::addSequenceObject(doc->getDbiRef(), settings.name, filteredConsensus, false, QVariantMap(), stateInfo);
+        DNASequence dna(settings.name, filteredConsensus);
+        U2EntityRef ref = U2SequenceUtils::import(stateInfo, doc->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, dna, dna.alphabet->getId());
+        obj = new U2SequenceObject(dna.getName(), ref);
     }
     CHECK_OP(stateInfo, NULL);
     doc->addObject(obj);
     return doc.take();
 }
 
-ExtractConsensusTask::ExtractConsensusTask( bool keepGaps_, MaEditor* ma_ )
+ExtractConsensusTask::ExtractConsensusTask(bool keepGaps_, MaEditor* ma_, MSAConsensusAlgorithm*  algorithm_)
     : Task(tr("Extract consensus"), TaskFlags(TaskFlag_None)),
       keepGaps(keepGaps_),
-      ma(ma_) {
+      ma(ma_),
+      algorithm(algorithm_) {
     setVerboseLogMode(true);
     SAFE_POINT_EXT(ma != NULL, setError("Given ma pointer is NULL"), );
+}
+
+ExtractConsensusTask::~ExtractConsensusTask() {
+    delete algorithm;
 }
 
 void ExtractConsensusTask::run() {
@@ -340,7 +349,6 @@ void ExtractConsensusTask::run() {
     CHECK(ma->getUI()->getConsensusArea(), );
     CHECK(ma->getUI()->getConsensusArea()->getConsensusCache(),);
 
-    MSAConsensusAlgorithm *algorithm = ma->getUI()->getConsensusArea()->getConsensusAlgorithm();
     const MultipleAlignment alignment = ma->getMaObject()->getMultipleAlignmentCopy();
     for (int i = 0, n = alignment->getLength(); i < n; i++) {
         if (stateInfo.isCoR()) {
@@ -368,7 +376,8 @@ const QByteArray& ExtractConsensusTask::getExtractedConsensus() const {
 ExportMaConsensusTaskSettings::ExportMaConsensusTaskSettings()
     : keepGaps(true),
       ma(NULL),
-      format(BaseDocumentFormats::PLAIN_TEXT)
+      format(BaseDocumentFormats::PLAIN_TEXT),
+      algorithm(NULL)
 {}
 
 } // namespace

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ DotPlotFilesDialog::DotPlotFilesDialog(QWidget *parent)
 : QDialog(parent)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20874940");
+    new HelpButton(this, buttonBox, "21433231");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Next"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -145,30 +145,35 @@ void DotPlotFilesDialog::accept() {
         secondFileName = firstFileName;
     }
 
+    if (firstFileName.isEmpty() || secondFileName.isEmpty()) {
+        QString error = oneSequenceCheckBox->isChecked() ?
+                    tr("Select a file with a sequence to build dotplot!")
+                  : firstFileName.isEmpty()?
+                        tr("Select first file with a sequence to build dotplot!")
+                      : tr("Input the second sequence or check the 'Compare sequence against itself' option.");
+        QObjectScopedPointer<QMessageBox> mb = new QMessageBox(QMessageBox::Critical, tr("Select files"), error);
+        mb->exec();
+        return;
+    }
+
     FormatDetectionConfig conf;
     QList<FormatDetectionResult> results = DocumentUtils::detectFormat(firstFileName, conf);
     if (results.isEmpty()){
-        QObjectScopedPointer<QMessageBox> mb = new QMessageBox(QMessageBox::Critical, tr("Select files"), tr("Unable to detect file format %1.\r\nSelect valid file to build dotplot").arg(firstFileEdit->text()));
-        firstFileEdit->setText("");
+        QObjectScopedPointer<QMessageBox> mb = new QMessageBox(QMessageBox::Critical, tr("Select files"), tr("Unable to detect file format %1.").arg(firstFileName));
         mb->exec();
         return;
     }
 
-    results = DocumentUtils::detectFormat(secondFileName, conf);
-    if (results.isEmpty()){
-        QObjectScopedPointer<QMessageBox> mb = new QMessageBox(QMessageBox::Critical, tr("Select files"), tr("Unable to detect format of given file %1.\r\nSelect valid file to build dotplot").arg(secondFileEdit->text()));
-        firstFileEdit->setText("");
-        mb->exec();
-        return;
+    if (firstFileName != secondFileName) {
+        results = DocumentUtils::detectFormat(secondFileName, conf);
+        if (results.isEmpty()){
+            QObjectScopedPointer<QMessageBox> mb = new QMessageBox(QMessageBox::Critical, tr("Select files"), tr("Unable to detect file format %1.").arg(secondFileName));
+            mb->exec();
+            return;
+        }
     }
 
-    if (!firstFileName.isEmpty() && !secondFileName.isEmpty()) {
-        QDialog::accept();
-    }
-    else {
-        QObjectScopedPointer<QMessageBox> mb = new QMessageBox(QMessageBox::Critical, tr("Select files"), tr("Select files first to build dotplot"));
-        mb->exec();
-    }
+    QDialog::accept();
 }
 
 int DotPlotFilesDialog::getFirstGap() const {

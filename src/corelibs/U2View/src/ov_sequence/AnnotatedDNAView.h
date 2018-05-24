@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -64,6 +64,7 @@ class CodonTableAction;
 
 class U2VIEW_EXPORT AnnotatedDNAView : public GObjectView {
     Q_OBJECT
+    friend class DetViewSequenceEditor; // TODO_SVEDIT: remove this
 public:
     AnnotatedDNAView(const QString &viewName, const QList<U2SequenceObject *> &dnaObjects);
     ~AnnotatedDNAView();
@@ -201,6 +202,7 @@ private slots:
     void sl_splitterMoved(int, int);
     void sl_onSequenceWidgetTitleClicked(ADVSequenceWidget* seqWidget);
 
+    void sl_editSettings();
     void sl_addSequencePart();
     void sl_removeSequencePart();
     void sl_replaceSequencePart();
@@ -214,6 +216,7 @@ private slots:
     void sl_complementSequence();
     void sl_selectionChanged();
     void sl_aminoTranslationChanged();
+    void sl_updatePasteAction();
 
     virtual void sl_onDocumentAdded(Document*);
     virtual void sl_onDocumentLoadedStateChanged();
@@ -235,6 +238,8 @@ private:
 
     void reverseComplementSequence(bool reverse = true, bool complement = true);
 
+    static QAction* getEditActionFromSequenceWidget(ADVSequenceWidget* seqWgt);
+
     QAction * createPasteAction();
 
     QSplitter*          mainSplitter;
@@ -251,6 +256,7 @@ private:
     QAction*            posSelectorWidgetAction;
     QAction*            removeAnnsAndQsAction;
 
+    QAction*            editSettingsAction;
     QAction*            addSequencePart;
     QAction*            removeSequencePart;
     QAction*            replaceSequencePart;
@@ -284,7 +290,17 @@ private:
 
     int                         timerId;
 
-    QMap<Task*, ADVSequenceObjectContext*> pasteQueue;
+    struct PasteLocation {
+        PasteLocation()
+            : pastePos(-1), seqCtx(NULL) {}
+        PasteLocation(qint64 pos, ADVSequenceObjectContext* ctx)
+            : pastePos(pos),
+              seqCtx(ctx) {}
+
+        qint64                      pastePos;
+        ADVSequenceObjectContext*   seqCtx;
+    };
+    QMap<Task*, PasteLocation> pasteQueue;
 };
 
 } // namespace U2

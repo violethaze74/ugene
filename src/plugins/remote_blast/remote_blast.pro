@@ -20,4 +20,4 @@ SOURCES += src/RemoteBLASTPlugin.cpp \
 			src/RemoteBLASTWorker.cpp \
                         src/BlastQuery.cpp
 RESOURCES += remote_blast.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

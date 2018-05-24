@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,6 +44,9 @@ MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *pare
     colorsByRange[1] = QColor("#9999FF");
     colorsByRange[2] = QColor("#CCCCFF");
     colorsByRange[3] = QColor();
+
+    memset(tmpChars, 0, sizeof(char) * 4);
+    memset(tmpRanges, 0, sizeof(int) * 4);
 
     connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
 }

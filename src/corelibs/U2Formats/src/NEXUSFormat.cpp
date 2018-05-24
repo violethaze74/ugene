@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -410,8 +410,7 @@ bool NEXUSParser::readDataContents(Context &ctx) {
                 name.replace('_', ' ');
 
                 // Read value
-                QString value = "";
-                value = tz.readUntil(QRegExp("(;|\\n|\\r)"));
+                QString value = tz.readUntil(QRegExp("(;|\\n|\\r)"));
 
                 // Remove spaces
                 value.remove(QRegExp("\\s"));

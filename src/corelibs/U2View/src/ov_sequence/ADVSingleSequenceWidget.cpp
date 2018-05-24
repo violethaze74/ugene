@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -195,12 +195,6 @@ void ADVSingleSequenceWidget::init() {
     addButtonWithActionToToolbar(selectRangeAction1, hStandardBar);
     buttonTabOrederedNames->append(selectRangeAction1->objectName());
 
-    if (seqCtx->getAminoTT() != NULL) {
-        setupGeneticCodeMenu(seqCtx);
-    } else {
-        ttButton = NULL;
-    }
-
     QAction* shotScreenAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export image"), this);
     shotScreenAction->setObjectName("export_image");
     connect(shotScreenAction, SIGNAL(triggered()), this, SLOT(sl_saveScreenshot()));
@@ -242,10 +236,6 @@ void ADVSingleSequenceWidget::init() {
 
 
 ADVSingleSequenceWidget::~ADVSingleSequenceWidget() {
-    foreach(QMenu* m, tbMenues) {
-        delete m;
-    }
-
     delete buttonTabOrederedNames;
 }
 
@@ -328,9 +318,6 @@ void ADVSingleSequenceWidget::setPanViewCollapsed(bool v) {
 }
 
 void ADVSingleSequenceWidget::setDetViewCollapsed(bool v) {
-    if (ttButton != NULL) {
-        getSequenceContext()->setTranslationsVisible(!v);
-    }
     detView->setHidden(v);
     detView->setDisabledDetViewActions(v);
     toggleDetViewAction->setChecked(!v);
@@ -556,16 +543,6 @@ void ADVSingleSequenceWidget::addRulersMenu(QMenu& m) {
     m.insertSeparator(aBefore)->setObjectName("SECOND_SEP");
 }
 
-void ADVSingleSequenceWidget::setupGeneticCodeMenu(ADVSequenceObjectContext *seqCtx) {
-    QMenu *ttMenu = seqCtx->createGeneticCodeMenu();
-    CHECK(NULL != ttMenu, );
-    tbMenues.append(ttMenu);
-    QToolButton *button = detView->addActionToLocalToolbar(ttMenu->menuAction());
-    SAFE_POINT(button, QString("ToolButton for %1 is NULL").arg(ttMenu->menuAction()->objectName()), );
-    button->setPopupMode(QToolButton::InstantPopup);
-    button->setObjectName("AminoToolbarButton");
-}
-
 bool ADVSingleSequenceWidget::isWidgetOnlyObject(GObject* o) const {
     foreach(GSequenceLineView* v, lineViews) {
         SequenceObjectContext *ctx = v->getSequenceContext();
@@ -629,18 +606,18 @@ void ADVSingleSequenceWidget::sl_onSelectRange() {
     mrs->exec();
     CHECK(!mrs.isNull(), );
 
-    if (mrs->result() == QDialog::Accepted){
+    if (mrs->result() == QDialog::Accepted) {
         QVector<U2Region> curRegions = mrs->getSelectedRegions();
         if(curRegions.isEmpty()){
             return;
         }
-        if(curRegions.size() == 1){
+        if(curRegions.size() == 1) {
             U2Region r = curRegions.first();
             setSelectedRegion(r);
             if (!detView->getVisibleRange().intersects(r)) {
                 detView->setCenterPos(r.startPos);
             }
-        }else{
+        } else {
             getSequenceContext()->getSequenceSelection()->setSelectedRegions(curRegions);
         }
     }
@@ -652,10 +629,10 @@ QVector<U2Region> ADVSingleSequenceWidget::getSelectedAnnotationRegions(int max)
     const QSet<AnnotationTableObject *> myAnns = seqCtx->getAnnotationObjects(true);
 
     QVector<U2Region> res;
-    foreach (const AnnotationSelectionData& sd, selection) {
-        AnnotationTableObject *aObj = sd.annotation->getGObject();
+    foreach(const AnnotationSelectionData& sel, selection) {
+        AnnotationTableObject *aObj = sel.annotation->getGObject();
         if (myAnns.contains(aObj)) {
-            res << sd.getSelectedRegions();
+            res << U2Region::containingRegion(sel.getSelectedRegions());
             if (max > 0 && res.size() >= max) {
                 break;
             }
@@ -826,8 +803,7 @@ void ADVSingleSequenceWidget::saveState(QVariantMap& m) {
 }
 
 // QT 4.5.0 bug workaround
-void ADVSingleSequenceWidget::sl_closeView()
-{
+void ADVSingleSequenceWidget::sl_closeView() {
     closeView();
 }
 
@@ -899,14 +875,7 @@ void ADVSingleSequenceWidget::sl_removeCustomRuler() {
     panView->removeCustomRuler(rulerName);
 }
 
-void ADVSingleSequenceWidget::sl_onAnnotationSelectionChanged(AnnotationSelection *s, const QList<Annotation *> &, const QList<Annotation *> &) {
-    // make sequence selection to match external annotation bounds
-    const QSet<AnnotationTableObject *> objs = getSequenceContext()->getAnnotationObjects(true);
-    QVector<U2Region> annotatedRegions = s->getSelectedLocations(objs);
-    if (!annotatedRegions.isEmpty()) {
-        QVector<U2Region> joinedRegions = LRegionsSelection::cropSelection(getSequenceContext()->getSequenceLength(), U2Region::join(annotatedRegions));
-        getSequenceContext()->getSequenceSelection()->setSelectedRegions(joinedRegions);
-    }
+void ADVSingleSequenceWidget::sl_onAnnotationSelectionChanged(AnnotationSelection*, const QList<Annotation *>&, const QList<Annotation *>&) {
     updateSelectionActions();
 }
 
