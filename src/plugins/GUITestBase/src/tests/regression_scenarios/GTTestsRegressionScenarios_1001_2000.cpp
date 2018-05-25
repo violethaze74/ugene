@@ -5249,11 +5249,12 @@ GUI_TEST_CLASS_DEFINITION(test_1514){
         QPixmap pixmap = GTWidget::getPixmap(os, treeView);
         QImage initImg = pixmap.toImage();
         GTWidget::click(os, zoomIn);
+        GTGlobals::sleep();
         pixmap = GTWidget::getPixmap(os, treeView);
         QImage finalImg = pixmap.toImage();
         uiLog.trace(QString("Easy to find. are images equal: %1 at step %2").arg(initImg==finalImg).arg(i));
         if (i != 12) {
-            CHECK_SET_ERR(!(initImg == finalImg), "Images are unexpectidly equal at first step 2")
+            CHECK_SET_ERR(!(initImg == finalImg), QString("Images are unexpectidly equal at first step2 i=").arg(i));
         }
         i++;
     }
