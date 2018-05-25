@@ -173,6 +173,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/tophat/TopHatSupport.h \
            src/tophat/TopHatSupportTask.h \
            src/tophat/TopHatWorker.h \
+           src/trimmomatic/TrimmomaticSupport.h \
            src/utils/AlignMsaAction.h \
            src/utils/BaseShortReadsAlignerWorker.h \
            src/utils/BlastDBSelectorWidgetController.h \
@@ -386,6 +387,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/tophat/TopHatSupport.cpp \
            src/tophat/TopHatSupportTask.cpp \
            src/tophat/TopHatWorker.cpp \
+           src/trimmomatic/TrimmomaticSupport.cpp \
            src/utils/AlignMsaAction.cpp \
            src/utils/BlastDBSelectorWidgetController.cpp \
            src/utils/BaseShortReadsAlignerWorker.cpp \
