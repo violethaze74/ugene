@@ -8100,8 +8100,7 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     // 1) Create a schema with shrunk elements state.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
-    GTThread::waitForMainThread();
-
+   
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Align with MUSCLE"));
     GTMouseDriver::doubleClick();
 
@@ -8115,10 +8114,11 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     // 2) Save the schema.
     GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, sandBoxDir + "test.uwl", "Workflow"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Save workflow", GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTMouseDriver::click();
-    GTGlobals::sleep(2000);
+    GTGlobals::sleep(5000);
 
     // 3) Reopen UGENE WD.
     GTFileDialog::openFile(os, sandBoxDir, "test.uwl");
