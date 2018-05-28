@@ -25,11 +25,11 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
-class U2FORMATS_EXPORT RawDNASequenceFormat : public TextFormat {
+class U2FORMATS_EXPORT RawDNASequenceFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     RawDNASequenceFormat(QObject* p);

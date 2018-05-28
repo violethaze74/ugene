@@ -26,7 +26,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
@@ -35,7 +35,7 @@ class Annotation;
 class AnnotationTableObject;
 class U2SequenceObject;
 
-class U2FORMATS_EXPORT PDWFormat : public TextFormat {
+class U2FORMATS_EXPORT PDWFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
                                     PDWFormat(QObject *p);

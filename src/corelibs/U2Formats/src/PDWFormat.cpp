@@ -52,7 +52,7 @@ namespace U2 {
 #define PDW_CIRCULAR_TAG    "IScircular"
 
 PDWFormat::PDWFormat(QObject* p)
-: TextFormat(p, DocumentFormatFlag(DocumentFormatFlag_LockedIfNotCreatedByUGENE), QStringList()<<"pdw")
+: TextDocumentFormat(p, DocumentFormatFlag(DocumentFormatFlag_LockedIfNotCreatedByUGENE), QStringList()<<"pdw")
 {
     formatName = tr("pDRAW");
     formatDescription = tr("pDRAW is a sequence file format used by pDRAW software");

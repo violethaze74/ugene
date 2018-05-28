@@ -39,7 +39,7 @@ static const QString CHROMOSOME("chromosome");
 static const QString UNKNOWN_CHR("unknown");
 
 DifferentialFormat::DifferentialFormat(QObject *parent)
-: TextFormat(parent, DocumentFormatFlags_W1, QStringList()<<"diff")
+: TextDocumentFormat(parent, DocumentFormatFlags_W1, QStringList()<<"diff")
 {
     formatName = tr("Differential");
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;

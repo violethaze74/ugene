@@ -54,7 +54,7 @@ namespace U2 {
 
 const QByteArray ClustalWAlnFormat::CLUSTAL_HEADER = "CLUSTAL";
 
-ClustalWAlnFormat::ClustalWAlnFormat(QObject* p) : TextFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("aln"))
+ClustalWAlnFormat::ClustalWAlnFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("aln"))
 {
     formatName = tr("CLUSTALW");
     formatDescription = tr("Clustalw is a format for storing multiple sequence alignments");

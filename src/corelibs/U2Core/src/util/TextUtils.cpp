@@ -195,7 +195,11 @@ qint64 TextUtils::cutByteOrderMarks(char* data, qint64 buffLen) {
     QByteArray byteArrayData = buffLen != -1 ? QByteArray(data, buffLen) : QByteArray(data);
     QByteArray resByteArrayData = cutByteOrderMarks(byteArrayData);
     qint64 result = resByteArrayData.size();
+#ifdef Q_OS_LINUX // strcpy_s is not supported by GCC we use on Linux
+    strncpy(data, resByteArrayData.data(), result + 1);
+#else     
     strcpy_s(data, result + 1, resByteArrayData.data());
+#endif    
 
     return result;
 }

@@ -25,11 +25,11 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
-class U2FORMATS_EXPORT PlainTextFormat : public TextFormat {
+class U2FORMATS_EXPORT PlainTextFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     PlainTextFormat(QObject* p);

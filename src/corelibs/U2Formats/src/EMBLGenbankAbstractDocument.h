@@ -29,7 +29,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2SequenceUtils.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
@@ -38,7 +38,7 @@ class EMBLGenbankDataEntry;
 class IOAdapter;
 class ParserState;
 
-class U2FORMATS_EXPORT EMBLGenbankAbstractDocument : public TextFormat {
+class U2FORMATS_EXPORT EMBLGenbankAbstractDocument : public TextDocumentFormat {
     Q_OBJECT
 public:
     EMBLGenbankAbstractDocument(const DocumentFormatId& id, const QString& formatName,

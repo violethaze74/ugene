@@ -25,13 +25,13 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT ClustalWAlnFormat : public TextFormat {
+class U2FORMATS_EXPORT ClustalWAlnFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     static const QByteArray CLUSTAL_HEADER;

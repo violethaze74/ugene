@@ -27,13 +27,13 @@
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/DNASequenceObject.h>
 
-#include "TextFormat.h"
+#include "../TextDocumentFormat.h"
 
 namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT ACEFormat : public TextFormat {
+class U2FORMATS_EXPORT ACEFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     ACEFormat(QObject* p);

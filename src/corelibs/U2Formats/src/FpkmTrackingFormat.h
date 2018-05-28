@@ -27,7 +27,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2Region.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
@@ -103,7 +103,7 @@ enum FpkmTrackingLineFieldsIndeces {FPKM_TRACKING_ID_INDEX = 0, FPKM_CLASS_CODE_
  * Description of the format from the Cufflinks manual was used:
  * http://cufflinks.cbcb.umd.edu/manual.html#fpkm_tracking_format
  */
-class U2FORMATS_EXPORT FpkmTrackingFormat : public TextFormat
+class U2FORMATS_EXPORT FpkmTrackingFormat : public TextDocumentFormat
 {
     Q_OBJECT
 

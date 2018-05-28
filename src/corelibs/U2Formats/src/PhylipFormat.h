@@ -27,11 +27,11 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
-class U2FORMATS_EXPORT PhylipFormat : public TextFormat {
+class U2FORMATS_EXPORT PhylipFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     PhylipFormat(QObject *p);

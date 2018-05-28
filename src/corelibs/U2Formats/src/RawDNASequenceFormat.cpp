@@ -41,7 +41,7 @@ namespace U2 {
 /* TRANSLATOR U2::RawDNASequenceFormat */
 /* TRANSLATOR U2::IOAdapter */
 
-RawDNASequenceFormat::RawDNASequenceFormat(QObject* p) : TextFormat(p, DocumentFormatFlags_W1) {
+RawDNASequenceFormat::RawDNASequenceFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags_W1) {
     formatName = tr("Raw sequence");
     fileExtensions << "seq" << "txt";
     supportedObjectTypes+=GObjectTypes::SEQUENCE;

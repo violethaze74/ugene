@@ -27,7 +27,7 @@
 #include <U2Core/U2OpStatus.h>
 
 #include "ColumnDataParser.h"
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
@@ -36,7 +36,7 @@ namespace U2 {
  * expression, splicing, promoters and cds.
  * http://cufflinks.cbcb.umd.edu/manual.html
  */
-class U2FORMATS_EXPORT DifferentialFormat : public TextFormat {
+class U2FORMATS_EXPORT DifferentialFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     DifferentialFormat(QObject *parent);

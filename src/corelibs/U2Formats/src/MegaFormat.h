@@ -26,11 +26,11 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
-class U2FORMATS_EXPORT MegaFormat : public TextFormat {
+class U2FORMATS_EXPORT MegaFormat : public TextDocumentFormat {
 Q_OBJECT
 public:
     MegaFormat(QObject* p);

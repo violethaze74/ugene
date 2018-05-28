@@ -25,11 +25,11 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/VariantTrackObject.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
-class U2FORMATS_EXPORT AbstractVariationFormat : public TextFormat {
+class U2FORMATS_EXPORT AbstractVariationFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     enum ColumnRole {

@@ -46,7 +46,7 @@ const QString ACEFormat::AS = "AS";
 const QString ACEFormat::AF = "AF";
 const QString ACEFormat::BQ = "BQ";
 
-ACEFormat::ACEFormat(QObject* p) : TextFormat(p, DocumentFormatFlags(0), QStringList("ace")) {
+ACEFormat::ACEFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags(0), QStringList("ace")) {
     formatName = tr("ACE");
     formatDescription = tr("ACE is a format used for storing information about genomic confgurations");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;

@@ -49,7 +49,7 @@ const char MegaFormat::MEGA_INDEL='-';
 const char MegaFormat::MEGA_START_COMMENT='!';
 const char MegaFormat::MEGA_END_COMMENT=';';
 
-MegaFormat::MegaFormat(QObject* p) : TextFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("meg")) {
+MegaFormat::MegaFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("meg")) {
     formatName = tr("Mega");
     formatDescription = tr("Mega is a file format of native MEGA program");
     supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;

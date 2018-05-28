@@ -48,7 +48,7 @@ const DocumentFormatId QDDocFormat::FORMAT_ID = "QueryDocFormat";
 //Format
 //////////////////////////////////////////////////////////////////////////
 QDDocFormat::QDDocFormat(QObject* p)
-: TextFormat(p, DocumentFormatFlags_W1, QStringList(QUERY_SCHEME_EXTENSION)),
+: TextDocumentFormat(p, DocumentFormatFlags_W1, QStringList(QUERY_SCHEME_EXTENSION)),
 formatName(tr("Query Schema")) {
     formatDescription = tr("QDDoc is a format used for creating/editing/storing/retrieving"
         "query schema with the text file");

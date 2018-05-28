@@ -27,14 +27,14 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
 class IOAdapter;
 class DNASequence;
 
-class U2FORMATS_EXPORT FastqFormat : public TextFormat {
+class U2FORMATS_EXPORT FastqFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     FastqFormat(QObject* p);

@@ -35,7 +35,7 @@ namespace U2 {
 /* TRANSLATOR U2::IOAdapter */
 /* TRANSLATOR U2::NewickFormat */
 
-NewickFormat::NewickFormat(QObject* p) : TextFormat(p, DocumentFormatFlags_W1) {
+NewickFormat::NewickFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags_W1) {
     fileExtensions << "nwk" << "newick" << "nh" << "ph";
     formatName = tr("Newick Standard");
     formatDescription = tr("Newick is a simple format used to write out trees in a text file");

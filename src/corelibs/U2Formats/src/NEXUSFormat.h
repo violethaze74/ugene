@@ -30,14 +30,14 @@
 
 #include <cassert>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2
 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT NEXUSFormat : public TextFormat {
+class U2FORMATS_EXPORT NEXUSFormat : public TextDocumentFormat {
     Q_OBJECT
 
 public:

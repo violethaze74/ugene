@@ -23,34 +23,34 @@
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatus.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
-TextFormat::TextFormat(QObject* p, DocumentFormatFlags _flags, const QStringList& fileExts) : DocumentFormat(p, _flags, fileExts) {}
+TextDocumentFormat::TextDocumentFormat(QObject* p, DocumentFormatFlags _flags, const QStringList& fileExts) : DocumentFormat(p, _flags, fileExts) {}
 
-DNASequence* TextFormat::loadSequence(IOAdapter* io, U2OpStatus& ti) {
+DNASequence* TextDocumentFormat::loadSequence(IOAdapter* io, U2OpStatus& ti) {
     io->setFormatMode(IOAdapter::TextMode);
     DNASequence* seq = loadTextSequence(io, ti);
 
     return seq;
 }
 
-FormatCheckResult TextFormat::checkRawData(const QByteArray& rawData, const GUrl& url) const {
+FormatCheckResult TextDocumentFormat::checkRawData(const QByteArray& rawData, const GUrl& url) const {
     QByteArray cuttedRawData = TextUtils::cutByteOrderMarks(rawData);
     FormatCheckResult checkResult = checkRawTextData(cuttedRawData, url);
 
     return checkResult;
 }
 
-Document* TextFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
+Document* TextDocumentFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
     io->setFormatMode(IOAdapter::TextMode);
     Document* doc = loadTextDocument(io, dbiRef, fs, os);
 
     return doc;
 }
 
-DNASequence* TextFormat::loadTextSequence(IOAdapter* io, U2OpStatus& ti) {
+DNASequence* TextDocumentFormat::loadTextSequence(IOAdapter* io, U2OpStatus& ti) {
     ti.setError("This document format does not support streaming reading mode");
     return NULL;
 }

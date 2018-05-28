@@ -25,13 +25,13 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT FastaFormat : public TextFormat {
+class U2FORMATS_EXPORT FastaFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     FastaFormat(QObject* p);

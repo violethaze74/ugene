@@ -27,7 +27,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2Region.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
@@ -96,7 +96,7 @@ class IOAdapter;
  * Track lines (see http://genome.ucsc.edu/goldenPath/help/customTrack.html#TRACK)
  * are partially supported: only a name and a description of a track.
  */
-class U2FORMATS_EXPORT BedFormat : public TextFormat {
+class U2FORMATS_EXPORT BedFormat : public TextDocumentFormat {
     Q_OBJECT
 
 public:

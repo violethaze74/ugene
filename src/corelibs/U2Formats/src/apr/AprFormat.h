@@ -28,14 +28,14 @@
 #include <QTextStream>
 #include <QStack>
 
-#include "TextFormat.h"
+#include "../TextDocumentFormat.h"
 
 namespace U2 {
 
 class IOAdapter;
 class MultipleSequenceAlignment;
 
-class U2FORMATS_EXPORT AprFormat : public TextFormat {
+class U2FORMATS_EXPORT AprFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     AprFormat(QObject* p);

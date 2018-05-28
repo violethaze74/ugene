@@ -89,7 +89,7 @@ const QString FpkmTrackingFormat::COVERAGE_COLUMN = "coverage";
 
 
 FpkmTrackingFormat::FpkmTrackingFormat(QObject* parent)
-    : TextFormat(parent, DocumentFormatFlag_SupportWriting, QStringList("fpkm_tracking"))
+    : TextDocumentFormat(parent, DocumentFormatFlag_SupportWriting, QStringList("fpkm_tracking"))
 {
     formatDescription = tr("The FPKM (fragments per kilobase of exon model per million mapped fragments)"
         " Tracking Format is a native Cufflinks format to output estimated expression values.");

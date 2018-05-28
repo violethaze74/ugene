@@ -28,7 +28,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/BioStruct3D.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
@@ -39,7 +39,7 @@ class AtomData;
 typedef QSharedDataPointer<AtomData> SharedAtom;
 
 
-class U2FORMATS_EXPORT  PDBFormat : public TextFormat {
+class U2FORMATS_EXPORT  PDBFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     PDBFormat(QObject* p);

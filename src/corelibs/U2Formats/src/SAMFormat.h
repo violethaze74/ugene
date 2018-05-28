@@ -25,14 +25,14 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
-#include "TextFormat.h"
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
 class IOAdapter;
 class DNASequence;
 
-class U2FORMATS_EXPORT  SAMFormat : public TextFormat {
+class U2FORMATS_EXPORT  SAMFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     SAMFormat(QObject* p = NULL);

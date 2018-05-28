@@ -26,7 +26,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObject.h>
 
-#include <U2Formats/TextFormat.h>
+#include <U2Formats/TextDocumentFormat.h>
 
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/ObjectViewTasks.h>
@@ -39,7 +39,7 @@ namespace U2 {
 
 class WorkflowView;
 
-class WorkflowDocFormat : public TextFormat {
+class WorkflowDocFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     WorkflowDocFormat(QObject* p);
