@@ -19,40 +19,28 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_RAW_DNA_SEQUENCE_FORMAT_H_
-#define _U2_RAW_DNA_SEQUENCE_FORMAT_H_
+#ifndef _U2_TEXT_FORMAT_H_
+#define _U2_TEXT_FORMAT_H_
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
-#include "TextFormat.h"
-
 namespace U2 {
 
-class U2FORMATS_EXPORT RawDNASequenceFormat : public TextFormat {
-    Q_OBJECT
+class U2FORMATS_EXPORT TextFormat : public DocumentFormat {
 public:
-    RawDNASequenceFormat(QObject* p);
-
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::RAW_DNA_SEQUENCE;}
-
-    virtual const QString& getFormatName() const {return formatName;}
-
-    virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
-
-    virtual bool isStreamingSupport() {return true;}
-
-    virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
+    TextFormat(QObject* p, DocumentFormatFlags _flags, const QStringList& fileExts = QStringList());
+    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    virtual DNASequence* loadSequence(IOAdapter* io, U2OpStatus& ti);
+    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const = 0;
+    virtual DNASequence* loadTextSequence(IOAdapter* io, U2OpStatus& ti);
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) = 0;
 
-    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
-
-private:
-    QString formatName;
 };
 
-}//namespace
+}
 
 #endif

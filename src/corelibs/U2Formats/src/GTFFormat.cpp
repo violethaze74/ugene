@@ -97,7 +97,7 @@ const QString GTFFormat::TRANSCRIPT_ID_QUALIFIER_NAME = "transcript_id";
 
 
 GTFFormat::GTFFormat(QObject* parent)
-    : DocumentFormat(parent, DocumentFormatFlag_SupportWriting, QStringList("gtf"))
+    : TextFormat(parent, DocumentFormatFlag_SupportWriting, QStringList("gtf"))
 {
     formatDescription = tr("The Gene transfer format (GTF) is a file format used to hold"
         " information about gene structure.");
@@ -109,7 +109,7 @@ GTFFormat::GTFFormat(QObject* parent)
         << "exon" << "transcript" << "missing_data";
 }
 
-Document* GTFFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os)
+Document* GTFFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os)
 {
     CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
     QList<GObject*> objects;
@@ -319,7 +319,7 @@ void GTFFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &d
     }
 }
 
-FormatCheckResult GTFFormat::checkRawData(const QByteArray &rawData, const GUrl &) const {
+FormatCheckResult GTFFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
     const char* data = rawData.constData();
     int size = rawData.size();
 
