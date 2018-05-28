@@ -738,9 +738,9 @@ GUI_TEST_CLASS_DEFINITION(test_0598) {
         << "visual_properties_action"));
     QWidget* graphView = GTUtilsSequenceView::getGraphView(os);
     GTWidget::click(os, graphView, Qt::RightButton);
-    GTGlobals::sleep();
+    GTGlobals::sleep(600);
     const int taskcount = GTUtilsTaskTreeView::getTopLevelTasksCount(os);
-    CHECK_SET_ERR(1 == taskcount, QString("'Calculate graph points' task is not started. Òask count= %1").arg(taskcount));
+    CHECK_SET_ERR(1 == taskcount, QString("'Calculate graph points' task is not started. Task count= %1").arg(taskcount));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
