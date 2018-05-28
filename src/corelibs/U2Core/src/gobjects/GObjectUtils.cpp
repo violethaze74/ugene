@@ -290,13 +290,17 @@ GObject* GObjectUtils::selectObjectByReference(const GObjectReference& r, const 
             if (f != UOF_LoadedAndUnloaded) {
                 continue;
             }
-            if (o->getGObjectType()!=GObjectTypes::UNLOADED || r.objType != qobject_cast<UnloadedObject*>(o)->getLoadedObjectType()) {
+            if (o->getGObjectType() != GObjectTypes::UNLOADED) {
+                continue;
+            }
+            GObjectType oLoadedType = qobject_cast<UnloadedObject*>(o)->getLoadedObjectType();
+            if (r.objType != oLoadedType) {
                 continue;
             }
         }
         if (r.entityRef.isValid() && r.entityRef == o->getEntityRef()) {
             return o; // matched by entityRef
-        } else if (firstMatchedByName != NULL) {
+        } else if (firstMatchedByName == NULL) {
             firstMatchedByName = o;
         }
     }
