@@ -160,6 +160,7 @@ const QVector<GBFeatureKeyInfo>& GBFeatureUtils::allKeys() {
         assert(features[i].id != GBFeatureKey_UNKNOWN && features[i].id == i);
         assert(!features[i].text.isEmpty());
         assert(!features[i].desc.isEmpty());
+        assert(features[i].color.isValid());
     }
 #endif
 
