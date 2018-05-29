@@ -32,6 +32,7 @@
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/AttributeRelation.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BasePorts.h>
@@ -39,7 +40,6 @@
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
-
 
 #include <QThread>
 
@@ -371,7 +371,7 @@ void StringTieWorkerFactory::init() {
                              StringTieWorker::tr("Specify a folder for table files (*.ctab) that can be used as input to Ballgown."));
 
 
-        attributes << new Attribute(refAnnotations, BaseTypes::STRING_TYPE(), false);
+        attributes << new Attribute(refAnnotations, BaseTypes::STRING_TYPE(), false, "");
         attributes << new Attribute(readsOrientation, BaseTypes::STRING_TYPE(), false, "");
         attributes << new Attribute(label, BaseTypes::STRING_TYPE(), false, "STRG");
         attributes << new Attribute(minIsoformFraction, BaseTypes::NUM_TYPE(), false, 0.1);
@@ -385,19 +385,41 @@ void StringTieWorkerFactory::init() {
 
         attributes << new Attribute(multiHitFraction, BaseTypes::NUM_TYPE(), false, 0.95);
         attributes << new Attribute(skipSequences, BaseTypes::STRING_TYPE(), false);
-        attributes << new Attribute(refOnlyAbudance, BaseTypes::BOOL_TYPE(), false, false);
+
+        Attribute* refOnlyAbudanceAttr = new Attribute(refOnlyAbudance, BaseTypes::BOOL_TYPE(), false, false);
+        refOnlyAbudanceAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
+        attributes << refOnlyAbudanceAttr;
+
         attributes << new Attribute(multiMappingCorrection, BaseTypes::BOOL_TYPE(), false, true);
         attributes << new Attribute(verboseLog, BaseTypes::BOOL_TYPE(), false, false);
 
         attributes << new Attribute(threadNum, BaseTypes::NUM_TYPE(), false, 8); // get from cpu info
 
         attributes << new Attribute(primaryOutput, BaseTypes::STRING_TYPE(), true); // set default value logic
-        attributes << new Attribute(geneAbudanceOutput, BaseTypes::BOOL_TYPE(), false, false);
-        attributes << new Attribute(geneAbudanceOutputFile, BaseTypes::STRING_TYPE(), false);
-        attributes << new Attribute(coverageRefOutput, BaseTypes::BOOL_TYPE(), false, false);
-        attributes << new Attribute(coverageRefOutputFile, BaseTypes::STRING_TYPE(), false);
-        attributes << new Attribute(ballgownOutput, BaseTypes::BOOL_TYPE(), false, false);
-        attributes << new Attribute(ballgownOutputFolder, BaseTypes::STRING_TYPE(), false);
+
+        Attribute* geneAbudanceOutputAttr = new Attribute(geneAbudanceOutput, BaseTypes::BOOL_TYPE(), false, false);
+        geneAbudanceOutputAttr->addSlotRelation(SlotRelationDescriptor(OUT_PORT_ID, GENE_ABUND_OUT_SLOT_ID,
+                                                                       QVariantList() << true));
+        attributes << geneAbudanceOutputAttr;
+        Attribute* geneAbudanceOutputFileAttr = new Attribute(geneAbudanceOutputFile, BaseTypes::STRING_TYPE(), false);
+        geneAbudanceOutputFileAttr->addRelation(new VisibilityRelation(GENE_ABUDANCE_OUTPUT, true));
+        attributes << geneAbudanceOutputFileAttr;
+
+        Attribute* coverageRefOutputAttr = new Attribute(coverageRefOutput, BaseTypes::BOOL_TYPE(), false, false);
+        coverageRefOutputAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
+        attributes << coverageRefOutputAttr;
+        Attribute* coverageRefOutputFileAttr = new Attribute(coverageRefOutputFile, BaseTypes::STRING_TYPE(), false);
+        coverageRefOutputFileAttr->addRelation(new VisibilityRelation(COVERAGE_REF_OUTPUT, true));
+        coverageRefOutputFileAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
+        attributes << coverageRefOutputFileAttr;
+
+        Attribute* ballgawnOutputAttr = new Attribute(ballgownOutput, BaseTypes::BOOL_TYPE(), false, false);
+        ballgawnOutputAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
+        attributes << ballgawnOutputAttr;
+        Attribute* ballgownOutputFolderAttr = new Attribute(ballgownOutputFolder, BaseTypes::STRING_TYPE(), false);
+        ballgownOutputFolderAttr->addRelation(new VisibilityRelation(BALLGOWN_OUTPUT, true));
+        ballgownOutputFolderAttr->addRelation(new VisibilityRelation(REFERENCE_ANNOTATIONS, "", true));
+        attributes << ballgownOutputFolderAttr;
     }
 
      // Values range of parameters
@@ -470,6 +492,7 @@ void StringTieWorkerFactory::init() {
     }
 //    const QString SKIP_SEQUENCES("skip-sequences");
 //    const QString REF_ONLY_ABUDANCE("ref-only-abudance");
+    delegates[SKIP_SEQUENCES] = new ComboBoxWithBoolsDelegate();
     delegates[REF_ONLY_ABUDANCE] = new ComboBoxWithBoolsDelegate();
 
 //    const QString MULTI_MAPPING_CORRECTION("multi-mapping-correction");
@@ -492,17 +515,18 @@ void StringTieWorkerFactory::init() {
     }
 
 //    const QString PRIMARY_OUTPUT("primary-output");
-    {
-        delegates[PRIMARY_OUTPUT] = new URLDelegate("", "", false, false);
-    }
+    delegates[PRIMARY_OUTPUT] = new URLDelegate("", "", false, false);
 //    const QString GENE_ABUDANCE_OUTPUT("gene-abudance-output");
 //    const QString GENE_ABUDANCE_OUTPUT_FILE("gene-abudance-output-file");
+    delegates[GENE_ABUDANCE_OUTPUT] = new ComboBoxWithBoolsDelegate();
     delegates[GENE_ABUDANCE_OUTPUT_FILE] = new URLDelegate("", "", false, false);
 //    const QString COVERAGE_REF_OUTPUT("coverage-ref-output");
 //    const QString COVERAGE_REF_OUTPUT_FILE("coverage-ref-output-file");
+    delegates[COVERAGE_REF_OUTPUT] = new ComboBoxWithBoolsDelegate();
     delegates[COVERAGE_REF_OUTPUT_FILE] = new URLDelegate("", "", false, false);
 //    const QString BALLGOWN_OUTPUT("ballgown-output");
 //    const QString BALLGOWN_OUTPUT_FOLDER("ballgown-output-folder");
+    delegates[BALLGOWN_OUTPUT] = new ComboBoxWithBoolsDelegate();
     delegates[BALLGOWN_OUTPUT_FOLDER] = new URLDelegate("", "", false, true);
 
 
