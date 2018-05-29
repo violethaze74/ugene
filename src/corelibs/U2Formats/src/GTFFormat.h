@@ -27,6 +27,8 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2Region.h>
 
+#include "TextDocumentFormat.h"
+
 namespace U2 {
 
 /** Validates a line from a GTF file */
@@ -113,8 +115,7 @@ class IOAdapter;
  * The following GTF specification was used: http://mblab.wustl.edu/GTF22.html
  * Unlike GFF, we assume that there is no embedded sequence in a GTF file, only annotations (not joined)
  */
-class U2FORMATS_EXPORT GTFFormat : public DocumentFormat
-{
+class U2FORMATS_EXPORT GTFFormat : public TextDocumentFormat {
     Q_OBJECT
 
 public:
@@ -126,10 +127,10 @@ public:
 
     virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os);
 
 private:
     GTFLineData parseAndValidateLine(QString line, GTFLineValidateFlags& status) const;

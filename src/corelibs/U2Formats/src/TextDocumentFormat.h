@@ -19,36 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_NEWICK_FORMAT_H_
-#define _U2_NEWICK_FORMAT_H_
+#ifndef _U2_TEXT_FORMAT_H_
+#define _U2_TEXT_FORMAT_H_
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
-#include "TextDocumentFormat.h"
-
 namespace U2 {
 
-class U2FORMATS_EXPORT NewickFormat : public TextDocumentFormat {
-    Q_OBJECT
+/* Base class for all non binary document formats that can be opened in a usual text editor. */
+class U2FORMATS_EXPORT TextDocumentFormat : public DocumentFormat {
 public:
-    NewickFormat(QObject* p);
-
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::NEWICK;}
-
-    virtual const QString& getFormatName() const {return formatName;}
-
-    virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
+    TextDocumentFormat(QObject* p, DocumentFormatFlags _flags, const QStringList& fileExts = QStringList());
+    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    virtual DNASequence* loadSequence(IOAdapter* io, U2OpStatus& ti);
+    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const = 0;
+    virtual DNASequence* loadTextSequence(IOAdapter* io, U2OpStatus& ti);
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) = 0;
 
-    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
-
-private:
-    QString formatName;
 };
 
-}//namespace
+}
 
 #endif

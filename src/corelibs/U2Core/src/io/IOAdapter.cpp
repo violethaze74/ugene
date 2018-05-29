@@ -117,4 +117,13 @@ qint64 IOAdapter::readLine( char* buff, qint64 maxSize, bool* terminatorFound /*
     return len;
 }
 
+void IOAdapter::cutByteOrderMarks(char* data, qint64& length) {
+    QByteArray dataByteArray(data);
+    qint64 newCached = TextUtils::cutByteOrderMarks(data);
+    QByteArray newDatatByteArray(data);
+    if (dataByteArray != newDatatByteArray) {
+        length = newCached;
+    }
+}
+
 }//namespace

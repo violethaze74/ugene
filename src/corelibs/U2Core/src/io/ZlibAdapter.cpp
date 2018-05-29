@@ -21,6 +21,8 @@
 
 #include <qendian.h>
 
+#include <U2Core/TextUtils.h>
+
 #include "LocalFileAdapter.h"
 
 #include "ZlibAdapter.h"
@@ -259,6 +261,10 @@ ZlibAdapter::~ZlibAdapter() {
     delete io;
 }
 
+bool ZlibAdapter::isOpen() const {
+    return io->isOpen();
+}
+
 void ZlibAdapter::close() {
     delete z;
     z = NULL;
@@ -292,10 +298,13 @@ qint64 ZlibAdapter::readBlock(char* data, qint64 size)
         return false;
     }
     // first use data put back to buffer if any
-    int cached = 0;
+    qint64 cached = 0;
     if (rewinded != 0) {
         assert(rewinded > 0 && rewinded <= buf->length());
         cached = buf->read(data, size, buf->length() - rewinded);
+        if (formatMode == TextMode) {
+            cutByteOrderMarks(data, cached);
+        }
         if (cached == size) {
             rewinded -= size;
             return size;
@@ -303,7 +312,11 @@ qint64 ZlibAdapter::readBlock(char* data, qint64 size)
         assert(cached < size);
         rewinded = 0;
     }
+    qint64 someSize = size - cached;
     size = z->uncompress(data + cached, size - cached);
+    if (formatMode == TextMode) {
+        cutByteOrderMarks(data, size);
+    }
     if (size == -1) {
         return -1;
     }
@@ -351,6 +364,14 @@ bool ZlibAdapter::skip( const GZipIndexAccessPoint& point, qint64 offset ) {
         return false;
     }
     return z->skip( point, offset );
+}
+
+qint64 ZlibAdapter::left() const {
+    return -1;
+}
+
+int ZlibAdapter::getProgress() const {
+    return io->getProgress();
 }
 
 qint64 ZlibAdapter::bytesRead() const {
