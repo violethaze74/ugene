@@ -185,6 +185,7 @@ QString TextUtils::variate(const QString& prefix, const QString& sep, const QSet
 
 QByteArray TextUtils::cutByteOrderMarks(const QByteArray& data) {
     QTextStream textStream(data);
+    textStream.setGenerateByteOrderMark(false);
     QByteArray resultData = textStream.readAll().toLocal8Bit();
     return resultData;
 }
@@ -197,9 +198,9 @@ qint64 TextUtils::cutByteOrderMarks(char* data, qint64 buffLen) {
     qint64 result = resByteArrayData.size();
 #ifdef Q_OS_LINUX // strcpy_s is not supported by GCC we use on Linux
     strncpy(data, resByteArrayData.data(), result + 1);
-#else     
+#else
     strcpy_s(data, result + 1, resByteArrayData.data());
-#endif    
+#endif
 
     return result;
 }
