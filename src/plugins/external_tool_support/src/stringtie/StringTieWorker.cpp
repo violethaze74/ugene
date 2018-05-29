@@ -21,9 +21,13 @@
 
 #include "StringTieWorker.h"
 #include "StringTieSupport.h"
+#include "StringTieTask.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/FailTask.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
@@ -34,6 +38,8 @@
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowMonitor.h>
+
 
 #include <QThread>
 
@@ -87,21 +93,99 @@ const QString StringTieWorkerFactory::ACTOR_ID("stringtie-id");
 /* Worker */
 /************************************************************************/
 StringTieWorker::StringTieWorker(Actor *p)
-    : BaseWorker(p) {
+    : BaseWorker(p),
+      inputPort(NULL),
+      outputPort(NULL) {
 
 }
 
 void StringTieWorker::init() {
-
+    inputPort = ports.value(IN_PORT_ID);
+    outputPort = ports.value(OUT_PORT_ID);
 }
 
 Task* StringTieWorker::tick() {
+    if (inputPort->hasMessage()) {
+        const Message message = getMessageAndSetupScriptValues(inputPort);
+        QVariantMap data = message.getData().toMap();
+
+        StringTieTaskSettings settings = getSettings();
+        settings.inputBam = data[IN_URL_SLOT_ID].toString();
+
+        StringTieTask* task = new StringTieTask(settings);
+        task->addListeners(createLogListeners());
+        connect(task, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
+
+        return task;
+    } else if (inputPort->isEnded()) {
+        setDone();
+        outputPort->setEnded();
+    }
     return NULL;
 }
 
 void StringTieWorker::cleanup() {
 
 }
+
+void StringTieWorker::sl_taskFinished() {
+    StringTieTask *t = dynamic_cast<StringTieTask*>(sender());
+    if (!t->isFinished() || t->hasError() || t->isCanceled()) {
+        return;
+    }
+
+    QString outputPrimary = t->getSettings().primaryOutputFile;
+
+    QVariantMap data;
+    data[TRANSCRIPT_OUT_SLOT_ID] = qVariantFromValue<QString>(outputPrimary);
+    context->getMonitor()->addOutputFile(outputPrimary, getActor()->getId());
+
+    if (t->getSettings().geneAbundanceOutput) {
+        data[GENE_ABUND_OUT_SLOT_ID] = qVariantFromValue<QString>(t->getSettings().geneAbundanceOutputFile);
+        context->getMonitor()->addOutputFile(t->getSettings().geneAbundanceOutputFile, getActor()->getId());
+    }
+    outputPort->put(Message(outputPort->getBusType(), data));
+
+    if (inputPort->isEnded() && !inputPort->hasMessage()) {
+        setDone();
+        outputPort->setEnded();
+    }
+}
+
+StringTieTaskSettings StringTieWorker::getSettings() {
+    StringTieTaskSettings settings;
+
+    settings.referenceAnnotations = getValue<QString>(REFERENCE_ANNOTATIONS);
+    settings.readOrientation = getValue<QString>(READS_ORIENTATION);
+    settings.label = getValue<QString>(LABEL);
+    settings.minIsoformFraction = getValue<double>(MIN_ISOFORM_FRACTION);
+    settings.minTransciptLen = getValue<int>(MIN_TRANSCRIPT_LEN);
+
+    settings.minAnchorLen = getValue<int>(MIN_ANCHOR_LEN);
+    settings.minJunctionCoverage = getValue<int>(MIN_JUNCTION_COVERAGE);
+    settings.trimTranscript = getValue<bool>(TRIM_TRANSCRIPT);
+    settings.minCoverage = getValue<double>(MIN_COVERAGE);
+    settings.minLocusSeparation = getValue<int>(MIN_LOCUS_SEPARATION);
+
+    settings.multiHitFraction = getValue<double>(MULTI_HIT_FRACTION);
+    settings.skipSequences = getValue<QString>(SKIP_SEQUENCES);
+    settings.refOnlyAbudance = getValue<bool>(REF_ONLY_ABUDANCE);
+    settings.multiMappingCorrection = getValue<bool>(MULTI_MAPPING_CORRECTION);
+    settings.verboseLog = getValue<bool>(VERBOSE_LOG);
+
+    settings.threadNum = getValue<int>(THREAD_NUM);
+
+    settings.primaryOutputFile = getValue<QString>(PRIMARY_OUTPUT);
+    settings.geneAbundanceOutput = getValue<bool>(GENE_ABUDANCE_OUTPUT);
+    settings.geneAbundanceOutputFile = getValue<QString>(GENE_ABUDANCE_OUTPUT_FILE);
+    settings.coveredRefOutput = getValue<bool>(COVERAGE_REF_OUTPUT);
+    settings.coveredRefOutputFile = getValue<QString>(COVERAGE_REF_OUTPUT_FILE);
+    settings.ballgownOutput = getValue<bool>(BALLGOWN_OUTPUT);
+    settings.ballgowmOutputFolder = getValue<QString>(BALLGOWN_OUTPUT_FOLDER);
+
+    return settings;
+}
+
 
 //void StringTieWorker::sl_task
 
@@ -287,8 +371,8 @@ void StringTieWorkerFactory::init() {
                              StringTieWorker::tr("Specify a folder for table files (*.ctab) that can be used as input to Ballgown."));
 
 
-        attributes << new Attribute(refAnnotations, BaseTypes::STRING_TYPE(), true);
-        attributes << new Attribute(readsOrientation, BaseTypes::STRING_TYPE(), false, "Unstranded");
+        attributes << new Attribute(refAnnotations, BaseTypes::STRING_TYPE(), false);
+        attributes << new Attribute(readsOrientation, BaseTypes::STRING_TYPE(), false, "");
         attributes << new Attribute(label, BaseTypes::STRING_TYPE(), false, "STRG");
         attributes << new Attribute(minIsoformFraction, BaseTypes::NUM_TYPE(), false, 0.1);
         attributes << new Attribute(minTranscriptLen, BaseTypes::NUM_TYPE(), false, 200);
@@ -307,7 +391,7 @@ void StringTieWorkerFactory::init() {
 
         attributes << new Attribute(threadNum, BaseTypes::NUM_TYPE(), false, 8); // get from cpu info
 
-        attributes << new Attribute(primaryOutput, BaseTypes::STRING_TYPE(), false); // set default value logic
+        attributes << new Attribute(primaryOutput, BaseTypes::STRING_TYPE(), true); // set default value logic
         attributes << new Attribute(geneAbudanceOutput, BaseTypes::BOOL_TYPE(), false, false);
         attributes << new Attribute(geneAbudanceOutputFile, BaseTypes::STRING_TYPE(), false);
         attributes << new Attribute(coverageRefOutput, BaseTypes::BOOL_TYPE(), false, false);
@@ -325,8 +409,8 @@ void StringTieWorkerFactory::init() {
     {
         QVariantMap map;
         map["Unstranded"] = "";
-        map["Forward (FR)"] = "fr";
-        map["Reverse (RF)"] = "rf";
+        map["Forward (FR)"] = "--fr";
+        map["Reverse (RF)"] = "--rf";
         delegates[READS_ORIENTATION] = new ComboBoxDelegate(map);
     }
 //    const QString LABEL("label");
@@ -409,17 +493,17 @@ void StringTieWorkerFactory::init() {
 
 //    const QString PRIMARY_OUTPUT("primary-output");
     {
-        delegates[PRIMARY_OUTPUT] = new URLDelegate("", "", false, false, false);
+        delegates[PRIMARY_OUTPUT] = new URLDelegate("", "", false, false);
     }
 //    const QString GENE_ABUDANCE_OUTPUT("gene-abudance-output");
 //    const QString GENE_ABUDANCE_OUTPUT_FILE("gene-abudance-output-file");
-    delegates[GENE_ABUDANCE_OUTPUT_FILE] = new URLDelegate("", "", false, false, false);
+    delegates[GENE_ABUDANCE_OUTPUT_FILE] = new URLDelegate("", "", false, false);
 //    const QString COVERAGE_REF_OUTPUT("coverage-ref-output");
 //    const QString COVERAGE_REF_OUTPUT_FILE("coverage-ref-output-file");
-    delegates[COVERAGE_REF_OUTPUT_FILE] = new URLDelegate("", "", false, false, false);
+    delegates[COVERAGE_REF_OUTPUT_FILE] = new URLDelegate("", "", false, false);
 //    const QString BALLGOWN_OUTPUT("ballgown-output");
 //    const QString BALLGOWN_OUTPUT_FOLDER("ballgown-output-folder");
-    delegates[BALLGOWN_OUTPUT_FOLDER] = new URLDelegate("", "", false, true, false);
+    delegates[BALLGOWN_OUTPUT_FOLDER] = new URLDelegate("", "", false, true);
 
 
     // Description of the element

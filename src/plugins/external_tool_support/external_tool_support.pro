@@ -166,6 +166,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/spidey/SpideySupport.h \
            src/spidey/SpideySupportTask.h \
            src/stringtie/StringTieSupport.h \
+           src/stringtie/StringTieTask.h \
            src/stringtie/StringTieWorker.h \
            src/tcoffee/TCoffeeSupport.h \
            src/tcoffee/TCoffeeSupportRunDialog.h \
@@ -381,6 +382,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/spidey/SpideySupport.cpp \
            src/spidey/SpideySupportTask.cpp \
            src/stringtie/StringTieSupport.cpp \
+           src/stringtie/StringTieTask.cpp \
            src/stringtie/StringTieWorker.cpp \
            src/tcoffee/TCoffeeSupport.cpp \
            src/tcoffee/TCoffeeSupportRunDialog.cpp \

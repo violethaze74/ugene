@@ -27,6 +27,9 @@
 
 
 namespace U2 {
+
+class StringTieTaskSettings;
+
 namespace LocalWorkflow {
 
 class StringTieWorker : public BaseWorker {
@@ -37,6 +40,15 @@ public:
     virtual void init();
     virtual Task* tick();
     virtual void cleanup();
+private slots:
+    void sl_taskFinished();
+
+private:
+    IntegralBus *inputPort;
+    IntegralBus *outputPort;
+
+private:
+    StringTieTaskSettings getSettings();
 };
 
 class StringTiePrompter : public PrompterBase<StringTiePrompter> {
