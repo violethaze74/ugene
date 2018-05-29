@@ -139,6 +139,7 @@
 #include "spidey/SpideySupport.h"
 #include "spidey/SpideySupportTask.h"
 #include "stringtie/StringTieSupport.h"
+#include "stringtie/StringTieWorker.h"
 #include "tcoffee/TCoffeeSupport.h"
 #include "tcoffee/TCoffeeWorker.h"
 #include "tophat/TopHatSupport.h"
@@ -708,6 +709,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::BedtoolsIntersectWorkerFactory::init();
     LocalWorkflow::HmmerBuildWorkerFactory::init();
     LocalWorkflow::HmmerSearchWorkerFactory::init();
+    LocalWorkflow::StringTieWorkerFactory::init();
 }
 
 //////////////////////////////////////////////////////////////////////////
