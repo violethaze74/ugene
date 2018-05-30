@@ -282,6 +282,16 @@ void IntegralBusPort::replaceActor(Actor *oldActor, Actor *newActor, const QList
     setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(pathMap));
 }
 
+void IntegralBusPort::setVisibleSlot(const QString& slotId, const bool isVisible) {
+    PortDescriptor::setVisibleSlot(slotId, isVisible);
+
+    if (isVisible) {
+        restoreBusMapKey(slotId);
+    } else {
+        removeBusMapKey(slotId);
+    }
+}
+
 void IntegralBusPort::copyInput(IntegralBusPort *port, const PortMapping &mapping) {
     CHECK(isInput(), );
     CHECK(port->isInput(), );
@@ -326,6 +336,28 @@ void IntegralBusPort::setBusMapValue(const QString & slotId, const QString & val
         busMap[slotId] = busMap[slotId] + ";" + value;
     }
     setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
+}
+
+void IntegralBusPort::removeBusMapKey(const QString& slotId) {
+    CHECK(!removedBusMap.contains(slotId), );
+
+    StrStrMap attributeBusMap = getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
+    CHECK(attributeBusMap.contains(slotId), );
+
+    removedBusMap.insert(slotId, attributeBusMap[slotId]);
+    attributeBusMap.remove(slotId);
+    setParameter(BUS_MAP_ATTR_ID, QVariant::fromValue<StrStrMap>(attributeBusMap));
+}
+
+void IntegralBusPort::restoreBusMapKey(const QString& slotId) {
+    StrStrMap attributeBusMap = getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
+    CHECK(!attributeBusMap.contains(slotId), );
+
+    CHECK(removedBusMap.contains(slotId), );
+
+    attributeBusMap.insert(slotId, removedBusMap[slotId]);
+    removedBusMap.remove(slotId);
+    setParameter(BUS_MAP_ATTR_ID, QVariant::fromValue<StrStrMap>(attributeBusMap));
 }
 
 void IntegralBusPort::setupBusMap() {
