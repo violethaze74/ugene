@@ -24,12 +24,16 @@
 #include "StringTieTask.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
+
+#include <U2Gui/DialogUtils.h>
+
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/AttributeRelation.h>
@@ -109,9 +113,7 @@ Task* StringTieWorker::tick() {
         const Message message = getMessageAndSetupScriptValues(inputPort);
         QVariantMap data = message.getData().toMap();
 
-        StringTieTaskSettings settings = getSettings();
-        settings.inputBam = data[IN_URL_SLOT_ID].toString();
-
+        StringTieTaskSettings settings = getSettings(data[IN_URL_SLOT_ID].toString());
         StringTieTask* task = new StringTieTask(settings);
         task->addListeners(createLogListeners());
         connect(task, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -152,8 +154,9 @@ void StringTieWorker::sl_taskFinished() {
     }
 }
 
-StringTieTaskSettings StringTieWorker::getSettings() {
+StringTieTaskSettings StringTieWorker::getSettings(const QString& inputFile) {
     StringTieTaskSettings settings;
+    settings.inputBam = inputFile;
 
     settings.referenceAnnotations = getValue<QString>(REFERENCE_ANNOTATIONS);
     settings.readOrientation = getValue<QString>(READS_ORIENTATION);
@@ -178,8 +181,16 @@ StringTieTaskSettings StringTieWorker::getSettings() {
     settings.primaryOutputFile = getValue<QString>(PRIMARY_OUTPUT);
     settings.geneAbundanceOutput = getValue<bool>(GENE_ABUDANCE_OUTPUT);
     settings.geneAbundanceOutputFile = getValue<QString>(GENE_ABUDANCE_OUTPUT_FILE);
+    if (settings.geneAbundanceOutput && settings.geneAbundanceOutputFile.isEmpty()) {
+        QFileInfo src(inputFile);
+        settings.geneAbundanceOutputFile = src.absoluteDir().absolutePath() + QDir::separator() + src.baseName() + "_gene_abund.tab";
+    }
     settings.coveredRefOutput = getValue<bool>(COVERAGE_REF_OUTPUT);
     settings.coveredRefOutputFile = getValue<QString>(COVERAGE_REF_OUTPUT_FILE);
+    if (settings.coveredRefOutput && settings.coveredRefOutputFile.isEmpty()) {
+        QFileInfo src(inputFile);
+        settings.coveredRefOutputFile = src.absoluteDir().absolutePath() + QDir::separator() + src.baseName() + "_cov_refs.gtf";
+    }
     settings.ballgownOutput = getValue<bool>(BALLGOWN_OUTPUT);
     settings.ballgowmOutputFolder = getValue<QString>(BALLGOWN_OUTPUT_FOLDER);
 
@@ -422,12 +433,9 @@ void StringTieWorkerFactory::init() {
         attributes << ballgownOutputFolderAttr;
     }
 
-     // Values range of parameters
     QMap<QString, PropertyDelegate*> delegates;
 
-//    const QString REFERENCE_ANNOTATIONS("reference-annotations");
     delegates[REFERENCE_ANNOTATIONS] = new URLDelegate("", "", false, false);
-//    const QString READS_ORIENTATION("reads-orientation");
     {
         QVariantMap map;
         map["Unstranded"] = "";
@@ -435,8 +443,6 @@ void StringTieWorkerFactory::init() {
         map["Reverse (RF)"] = "--rf";
         delegates[READS_ORIENTATION] = new ComboBoxDelegate(map);
     }
-//    const QString LABEL("label");
-//    const QString MIN_ISOFORM_FRACTION("min-isoform-fraction");
     {
         QVariantMap map;
         map["minimum"] = 0.0;
@@ -445,19 +451,16 @@ void StringTieWorkerFactory::init() {
         map["decimals"] = 2;
         delegates[MIN_ISOFORM_FRACTION] = new DoubleSpinBoxDelegate(map);
     }
-//    const QString MIN_TRANSCRIPT_LEN("min-transcipr-len");
     {
         QVariantMap map;
         map["minimum"] = 30;
         delegates[MIN_TRANSCRIPT_LEN] = new SpinBoxDelegate(map);
     }
-//    const QString MIN_ANCHOR_LEN("min-anchor-len");
     {
         QVariantMap map;
         map["minimum"] = 0;
         delegates[MIN_ANCHOR_LEN] = new SpinBoxDelegate(map);
     }
-//    const QString MIN_JUNCTION_COVERAGE("min-junction-coverage");
     {
         QVariantMap map;
         map["minimum"] = 0.0;
@@ -465,48 +468,37 @@ void StringTieWorkerFactory::init() {
         map["decimals"] = 2;
         delegates[MIN_JUNCTION_COVERAGE] = new DoubleSpinBoxDelegate(map);
     }
-//    const QString TRIM_TRANSCRIPT("trim-transcripts");
     delegates[TRIM_TRANSCRIPT] = new ComboBoxWithBoolsDelegate();
-//    const QString MIN_COVERAGE("min-coverage");
     {
         QVariantMap map;
         map["minimum"] = 0.001;
-        map["singleStep"] = 0.1;// ???
+        map["singleStep"] = 0.1;
         map["decimals"] = 3;
         delegates[MIN_COVERAGE] = new DoubleSpinBoxDelegate(map);
     }
-//    const QString MIN_LOCUS_SEPARATION("min-locus-gap");
     {
         QVariantMap map;
         map["minimum"] = 0;
         delegates[MIN_LOCUS_SEPARATION] = new SpinBoxDelegate(map);
     }
 
-//    const QString MULTI_HIT_FRACTION("multi-hit-fraction");
     {
         QVariantMap map;
         map["minimum"] = 0.00;
-        map["singleStep"] = 0.01;// ???
+        map["singleStep"] = 0.01;
         map["decimals"] = 2;
         delegates[MULTI_HIT_FRACTION] = new DoubleSpinBoxDelegate(map);
     }
-//    const QString SKIP_SEQUENCES("skip-sequences");
-//    const QString REF_ONLY_ABUDANCE("ref-only-abudance");
     delegates[SKIP_SEQUENCES] = new ComboBoxWithBoolsDelegate();
     delegates[REF_ONLY_ABUDANCE] = new ComboBoxWithBoolsDelegate();
 
-//    const QString MULTI_MAPPING_CORRECTION("multi-mapping-correction");
     {
         QVariantMap map;
-        map["Enabled"] = true; // add tr
+        map["Enabled"] = true;
         map["Disabled"] = false;
         delegates[MULTI_MAPPING_CORRECTION] = new ComboBoxDelegate(map);
     }
-//    const QString VERBOSE_LOG("verbose-log");
     delegates[VERBOSE_LOG] = new ComboBoxWithBoolsDelegate();
-
-//    const QString THREAD_NUM("thread-num");
-//    QString::number(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount())
     {
         QVariantMap map;
         map["minimum"] = 1;
@@ -514,18 +506,18 @@ void StringTieWorkerFactory::init() {
         delegates[THREAD_NUM] = new SpinBoxDelegate(map);
     }
 
-//    const QString PRIMARY_OUTPUT("primary-output");
-    delegates[PRIMARY_OUTPUT] = new URLDelegate("", "", false, false);
-//    const QString GENE_ABUDANCE_OUTPUT("gene-abudance-output");
-//    const QString GENE_ABUDANCE_OUTPUT_FILE("gene-abudance-output-file");
+   delegates[PRIMARY_OUTPUT] = new URLDelegate("", "", false, false);
     delegates[GENE_ABUDANCE_OUTPUT] = new ComboBoxWithBoolsDelegate();
-    delegates[GENE_ABUDANCE_OUTPUT_FILE] = new URLDelegate("", "", false, false);
-//    const QString COVERAGE_REF_OUTPUT("coverage-ref-output");
-//    const QString COVERAGE_REF_OUTPUT_FILE("coverage-ref-output-file");
+
+    DelegateTags outputUrlTags;
+    outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "Auto");
+    outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT, true, QStringList()));
+    outputUrlTags.set(DelegateTags::FORMAT, BaseDocumentFormats::PLAIN_TEXT);
+    delegates[GENE_ABUDANCE_OUTPUT_FILE] = new URLDelegate(outputUrlTags, "stringtie/gene-abidance");
+
     delegates[COVERAGE_REF_OUTPUT] = new ComboBoxWithBoolsDelegate();
-    delegates[COVERAGE_REF_OUTPUT_FILE] = new URLDelegate("", "", false, false);
-//    const QString BALLGOWN_OUTPUT("ballgown-output");
-//    const QString BALLGOWN_OUTPUT_FOLDER("ballgown-output-folder");
+    delegates[COVERAGE_REF_OUTPUT_FILE] = new URLDelegate(outputUrlTags, "stringtie/coverage-output");
+
     delegates[BALLGOWN_OUTPUT] = new ComboBoxWithBoolsDelegate();
     delegates[BALLGOWN_OUTPUT_FOLDER] = new URLDelegate("", "", false, true);
 
