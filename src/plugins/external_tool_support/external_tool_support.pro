@@ -173,6 +173,9 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/tophat/TopHatSupport.h \
            src/tophat/TopHatSupportTask.h \
            src/tophat/TopHatWorker.h \
+           src/trimmomatic/TrimmomaticDelegate.h \
+           src/trimmomatic/TrimmomaticSettingsWidgets.h \
+           src/trimmomatic/TrimmomaticStepsFactory.h \
            src/trimmomatic/TrimmomaticSupport.h \
            src/utils/AlignMsaAction.h \
            src/utils/BaseShortReadsAlignerWorker.h \
@@ -212,6 +215,9 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/mrbayes/MrBayesDialog.ui \
          src/phyml/PhyMLDialog.ui \
          src/tcoffee/TCoffeeSupportRunDialog.ui \
+         src/trimmomatic/step_settings_forms/Default.ui \
+         src/trimmomatic/step_settings_forms/IlluminaClip.ui \
+         src/trimmomatic/TrimmomaticPropertyDialog.ui \
          src/snpeff/SnpEffDatabaseDialog.ui \
          src/spades/SpadesSettings.ui \
          src/utils/BlastAllSupportDialog.ui \
@@ -387,6 +393,9 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/tophat/TopHatSupport.cpp \
            src/tophat/TopHatSupportTask.cpp \
            src/tophat/TopHatWorker.cpp \
+           src/trimmomatic/TrimmomaticDelegate.cpp \
+           src/trimmomatic/TrimmomaticSettingsWidgets.cpp \
+           src/trimmomatic/TrimmomaticStepsFactory.cpp \
            src/trimmomatic/TrimmomaticSupport.cpp \
            src/utils/AlignMsaAction.cpp \
            src/utils/BlastDBSelectorWidgetController.cpp \
