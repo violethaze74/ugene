@@ -8116,11 +8116,10 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Save workflow", GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMdi::click(os, GTGlobals::Close);
-    GTMouseDriver::click();
-    GTGlobals::sleep(5000);
+    GTMenu::clickMainMenuItem(os, QStringList() << "Window" << "Close all windows", GTGlobals::UseKey);  
+    GTGlobals::sleep();
 
-    // 3) Reopen UGENE WD.
+    // 3) Reopen UGENE WD. 
     GTFileDialog::openFile(os, sandBoxDir, "test.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
