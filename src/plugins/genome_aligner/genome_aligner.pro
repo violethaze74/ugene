@@ -42,4 +42,4 @@ SOURCES += src/BuildSArraySettingsWidget.cpp \
            src/WriteAlignedReadsSubTask.cpp \
            src/DataBunch.cpp
 
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -227,7 +227,7 @@ void GSequenceGraphView::buildPopupMenu(QMenu& menu)
     graphMenu->menuAction()->setObjectName("Graph");
 
     addActionsToGraphMenu(graphMenu);
-    
+
 
     // Inserting the Graphs menu at the top
     QAction *menuBeginning = *(menu.actions().begin());
@@ -309,7 +309,10 @@ void GSequenceGraphView::onVisibleRangeChanged(bool signal) {
 
 //////////////////////////////////////////////////////////////////////////
 // RA
-GSequenceGraphViewRA::GSequenceGraphViewRA(GSequenceGraphView* g) : GSequenceLineViewRenderArea(g) {
+GSequenceGraphViewRA::GSequenceGraphViewRA(GSequenceGraphView* g)
+    : GSequenceLineViewRenderArea(g),
+      gd(NULL)
+{
     setObjectName( "GSequenceGraphViewRenderArea" );
     headerFont=  new QFont("Courier", 10);
     headerHeight = 20;

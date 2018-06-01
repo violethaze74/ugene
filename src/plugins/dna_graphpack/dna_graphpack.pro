@@ -16,4 +16,4 @@ SOURCES += src/BaseContentGraph.cpp \
            src/GCFramePlot.cpp \
            src/KarlinSignatureDifferenceGraph.cpp
 RESOURCES += dna_graphpack.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

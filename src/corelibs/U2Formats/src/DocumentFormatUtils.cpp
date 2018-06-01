@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,32 +51,6 @@ static int getIntSettings(const QVariantMap& fs, const char* sName, int defVal) 
     }
     return v.toInt();
 }
-
-U2SequenceObject * DocumentFormatUtils::addSequenceObject(const U2DbiRef& dbiRef,
-                                                          const QString& name,
-                                                          const QByteArray& seq,
-                                                          bool circular,
-                                                          const QVariantMap& hints,
-                                                          U2OpStatus& os)
-{
-    U2SequenceImporter importer;
-
-    const QString folder = hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    importer.startSequence(os, dbiRef, folder, name, circular);
-    CHECK_OP(os, NULL);
-
-    importer.addBlock(seq.constData(), seq.length(), os);
-    CHECK_OP(os, NULL);
-
-    U2Sequence sequence = importer.finalizeSequenceAndValidate(os);
-    TmpDbiObjects dbiObjects(dbiRef, os);
-    dbiObjects.objects << sequence.id;
-    CHECK_OP(os, NULL);
-
-    U2SequenceObject* so = new U2SequenceObject(name, U2EntityRef(dbiRef, sequence.id));
-    return so;
-}
-
 
 AnnotationTableObject * DocumentFormatUtils::addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
                                                                                const U2DbiRef& dbiRef,
@@ -210,110 +184,6 @@ void DocumentFormatUtils::updateFormatHints(QList<GObject*>& objects, QVariantMa
         int len = so->getSequenceLength();
         fs[DocumentReadingMode_SequenceMergingFinalSizeHint] = len;
     }
-}
-
-
-U2SequenceObject* DocumentFormatUtils::addSequenceObjectDeprecated(const U2DbiRef& dbiRef,
-                                                                   const QString& folder,
-                                                                   const QString& seqObjName,
-                                                                   QList<GObject*>& objects,
-                                                                   DNASequence& sequence,
-                                                                   U2OpStatus& os)
-{
-#ifdef _DEBUG
-    foreach(GObject* obj, objects) {
-        const QString& name = obj->getGObjectName();
-        assert(name != seqObjName);
-    }
-#endif
-
-    if (sequence.alphabet== NULL) {
-        sequence.alphabet = U2AlphabetUtils::findBestAlphabet(sequence.seq);
-        CHECK_EXT(sequence.alphabet != NULL, os.setError(tr("Undefined sequence alphabet")), NULL);
-    }
-
-    if (!sequence.alphabet->isCaseSensitive()) {
-        TextUtils::translate(TextUtils::UPPER_CASE_MAP, const_cast<char*>(sequence.seq.constData()), sequence.seq.length());
-    }
-
-    U2SequenceImporter importer;
-    importer.startSequence(os, dbiRef, folder, sequence.getName(), sequence.circular);
-    CHECK_OP(os, NULL);
-    importer.addBlock(sequence.seq.constData(), sequence.seq.length(), os);
-    CHECK_OP(os, NULL);
-    U2Sequence u2seq = importer.finalizeSequenceAndValidate(os);
-    TmpDbiObjects dbiObjects(dbiRef, os);
-    dbiObjects.objects << u2seq.id;
-    CHECK_OP(os, NULL);
-
-    U2SequenceObject* so = new U2SequenceObject(seqObjName, U2EntityRef(dbiRef, u2seq.id));
-    so->setSequenceInfo(sequence.info);
-    so->setCircular(sequence.circular);
-    so->setQuality(sequence.quality);
-    objects << so;
-    return so;
-}
-
-
-U2SequenceObject* DocumentFormatUtils::addMergedSequenceObjectDeprecated(const U2DbiRef& dbiRef,
-                                                                         const QString& folder,
-                                                                         QList<GObject*>& objects,
-                                                                         const GUrl& docUrl,
-                                                                         const QStringList& contigNames,
-                                                                         QByteArray& mergedSequence,
-                                                                         const QVector<U2Region>& mergedMapping,
-                                                                         U2OpStatus& os)
-{
-    if (contigNames.size() == 1) {
-        const DNAAlphabet* al = U2AlphabetUtils::findBestAlphabet(mergedSequence);
-        const QString& name = contigNames.first();
-        DNASequence seq(name, mergedSequence, al);
-        return DocumentFormatUtils::addSequenceObjectDeprecated(dbiRef, folder, name, objects, seq, os);
-    }
-
-    assert(contigNames.size() >= 2);
-    assert(contigNames.size() == mergedMapping.size());
-
-    const DNAAlphabet* al = U2AlphabetUtils::findBestAlphabet(mergedSequence, mergedMapping);
-    char defSym = al->getDefaultSymbol();
-    //fill gaps with defSym
-    for (int i = 1; i < mergedMapping.size(); i++) {
-        const U2Region& prev = mergedMapping[i-1];
-        const U2Region& next = mergedMapping[i];
-        int gapSize = next.startPos - prev.endPos();
-        assert(gapSize >= 0);
-        if (gapSize > 0) {
-            memset(mergedSequence.data() + prev.endPos(), defSym, (size_t)gapSize);
-        }
-    }
-    ;
-    DNASequence seq("Sequence", mergedSequence, al);
-    U2SequenceObject* so = addSequenceObjectDeprecated(dbiRef, folder, "Sequence", objects, seq, os);
-    CHECK_OP(os, NULL);
-    SAFE_POINT(so != NULL, "DocumentFormatUtils::addSequenceObject returned NULL but didn't set error", NULL);
-
-    QVariantMap hints;
-    hints.insert(DocumentFormat::DBI_FOLDER_HINT, folder);
-    AnnotationTableObject *ao = new AnnotationTableObject("Annotations", dbiRef, hints);
-
-    //save relation if docUrl is not empty
-    if (!docUrl.isEmpty()) {
-        GObjectReference r(docUrl.getURLString(), so->getGObjectName(), GObjectTypes::SEQUENCE);
-        ao->addObjectRelation(GObjectRelation(r, ObjectRole_Sequence));
-    }
-
-    QList<SharedAnnotationData> annList;
-    //save mapping info as annotations
-    for (int i = 0; i < contigNames.size(); i++) {
-        SharedAnnotationData d(new AnnotationData);
-        d->name = "contig";
-        d->location->regions << mergedMapping[i];
-        annList.append(d);
-    }
-    ao->addAnnotations(annList);
-
-    objects.append(ao);
-    return so;
 }
 
 QString DocumentFormatUtils::getFormatNameById(const DocumentFormatId &formatId) {

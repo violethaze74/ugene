@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ class Task;
 class SimilarityStatisticsSettings : public UpdatedWidgetSettings {
 public:
     SimilarityStatisticsSettings() : usePercents(false), excludeGaps(false){}
-    QString                         algoName;// selected algorithm
+    QString                         algoId;// selected algorithm
     bool                            usePercents;
     bool                            excludeGaps;
 };
@@ -55,9 +55,9 @@ public:
     virtual ~MsaEditorSimilarityColumn();
 
     void setSettings(const UpdatedWidgetSettings* _settings);
-    
+
     void cancelPendingTasks();
-    
+
     const UpdatedWidgetSettings& getSettings() const {return curSettings;}
     QWidget* getWidget(){return this;}
     void updateWidget(){updateDistanceMatrix();}

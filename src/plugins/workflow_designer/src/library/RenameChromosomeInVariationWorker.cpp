@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -74,8 +74,10 @@ const QString RenameChomosomeInVariationWorkerFactory::ACTOR_ID("rename-chromoso
 /* Worker */
 /************************************************************************/
 
-RenameChomosomeInVariationWorker::RenameChomosomeInVariationWorker(Actor *actor) :
-    BaseThroughWorker(actor, INPUT_PORT, OUTPUT_PORT)
+RenameChomosomeInVariationWorker::RenameChomosomeInVariationWorker(Actor *actor)
+    : BaseThroughWorker(actor, INPUT_PORT, OUTPUT_PORT),
+      inputUrlPort(NULL),
+      outputUrlPort(NULL)
 {
 
 }

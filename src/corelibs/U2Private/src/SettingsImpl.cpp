@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -177,12 +177,22 @@ QString SettingsImpl::toMinorVersionKey(const QString& key) const {
     return key + VERSION_KEY_SUFFIX;
 }
 
-QStringList SettingsImpl::getAllKeys(const QString& path) const{
+QStringList SettingsImpl::getAllKeys(const QString& path) const {
     QMutexLocker lock(&threadSafityLock);
 
     QString key = preparePath(path);
     settings->beginGroup(key);
     QStringList allKeys = settings->allKeys();
+    settings->endGroup();
+    return allKeys;
+}
+
+QStringList SettingsImpl::getChildGroups(const QString& path) const {
+    QMutexLocker lock(&threadSafityLock);
+
+    QString key = preparePath(path);
+    settings->beginGroup(key);
+    QStringList allKeys = settings->childGroups();
     settings->endGroup();
     return allKeys;
 }

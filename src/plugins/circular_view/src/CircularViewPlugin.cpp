@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -278,8 +278,8 @@ void CircularViewContext::toggleViews(AnnotatedDNAView *av) {
 
 void CircularViewContext::sl_showCircular() {
     CircularViewAction* a = qobject_cast<CircularViewAction*>(sender());
-    ADVSingleSequenceWidget* sw = qobject_cast<ADVSingleSequenceWidget*>(a->seqWidget);
     SAFE_POINT(NULL != a, "Invalid CV action", );
+    ADVSingleSequenceWidget* sw = qobject_cast<ADVSingleSequenceWidget*>(a->seqWidget);
     if (a->isChecked()) {
         a->setText(tr("Remove circular view"));
         assert(a->view == NULL);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -205,6 +205,30 @@ QTreeWidgetItem * GTUtilsAnnotationsTreeView::findItem(HI::GUITestOpStatus &os, 
     return NULL;
 }
 #undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "findItem"
+QTreeWidgetItem* GTUtilsAnnotationsTreeView::findItemWithIndex(HI::GUITestOpStatus &os, const QString &itemName, const int index) {
+    GT_CHECK_RESULT(itemName.isEmpty() == false, "Item name is empty", NULL);
+
+    QTreeWidget *treeWidget = getTreeWidget(os);
+    GT_CHECK_RESULT(treeWidget != NULL, "Tree widget is NULL", NULL);
+
+    QList<QTreeWidgetItem*> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
+    int i = 0;
+    foreach (QTreeWidgetItem* item, treeItems) {
+        QString treeItemName = item->text(0);
+        if (treeItemName == itemName) {
+            i++;
+            if (i == index) {
+                return item;
+            }
+        }
+    }
+
+    return NULL;
+}
+#undef GT_METHOD_NAME
+
 
 #define GT_METHOD_NAME "findItem"
 QTreeWidgetItem * GTUtilsAnnotationsTreeView::findItem(HI::GUITestOpStatus &os, const QString &itemName, QTreeWidgetItem* parentItem, const GTGlobals::FindOptions& options) {
@@ -449,6 +473,24 @@ void GTUtilsAnnotationsTreeView::selectItems(HI::GUITestOpStatus &os, const QLis
         }
     }
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickItem"
+void GTUtilsAnnotationsTreeView::clickItem(HI::GUITestOpStatus &os, const QString &item, const int numOfItem, bool isDoubleClick) {
+    GT_CHECK_RESULT(!item.isEmpty(), "Empty item name", );
+
+    QTreeWidgetItem* wgtItem = findItemWithIndex(os, item, numOfItem);
+    GT_CHECK_RESULT(wgtItem != NULL, "Item " + item + " is NULL", );
+
+    QPoint p = GTTreeWidget::getItemCenter(os, wgtItem);
+    GTMouseDriver::moveTo(p);
+    if (isDoubleClick) {
+        GTMouseDriver::doubleClick();
+    } else {
+        GTMouseDriver::click();
+    }
+    GTGlobals::sleep();
 }
 #undef GT_METHOD_NAME
 

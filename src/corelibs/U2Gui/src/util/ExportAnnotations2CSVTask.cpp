@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -34,6 +34,8 @@
 #include "ExportAnnotations2CSVTask.h"
 
 namespace U2 {
+
+const QString ExportAnnotations2CSVTask::SEQUENCE_NAME = "sequence_name";
 
 ExportAnnotations2CSVTask::ExportAnnotations2CSVTask(const QList<Annotation *> &annotations, const QByteArray &sequence, const QString &_seqName,
     const DNATranslation *complementTranslation, bool exportSequence, bool _exportSeqName, const QString &url, bool apnd, const QString &sep)
@@ -96,9 +98,14 @@ void ExportAnnotations2CSVTask::run() {
         columnNames << tr("Sequence");
     }
 
+    bool hasSequenceNameQualifier = false;
     foreach (Annotation *annotation, annotations) {
         foreach(const U2Qualifier &qualifier, annotation->getQualifiers()) {
             const QString &qName = qualifier.name;
+            if (qName == SEQUENCE_NAME) {
+                hasSequenceNameQualifier = true;
+                continue;
+            }
             if (!columnIndices.contains(qName)) {
                 columnIndices.insert(qName, columnNames.size());
                 columnNames.append(qName);
@@ -122,7 +129,15 @@ void ExportAnnotations2CSVTask::run() {
             values << ((isComplementary) ? tr("yes") : tr("no"));
 
             if (exportSequenceName) {
-                values << seqName.toLatin1();
+                if (!seqName.isEmpty()) {
+                    values << seqName.toLatin1();
+                } else if (hasSequenceNameQualifier) {
+                    foreach(const U2Qualifier& qf, annotation->getQualifiers()) {
+                        if (qf.name == SEQUENCE_NAME) {
+                            values << qf.value;
+                        }
+                    }
+                }
             }
             if (exportSequence) {
                 QByteArray sequencePart = sequence.mid(region.startPos, region.length);
@@ -144,6 +159,10 @@ void ExportAnnotations2CSVTask::run() {
             }
 
             foreach (const U2Qualifier& qualifier, annotation->getQualifiers()) {
+                if (qualifier.name == SEQUENCE_NAME) {
+                    continue;
+                }
+
                 int qualifiedIndex = columnIndices[qualifier.name];
                 SAFE_POINT(qualifiedIndex > 0 && qualifiedIndex < values.length(), "Invalid qualifier index",);
                 values[qualifiedIndex] = qualifier.value;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,6 +37,7 @@
 #include <primitives/GTSlider.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
+#include <drivers/GTMouseDriver.h>
 #include <system/GTFile.h>
 
 #include <U2Core/AppContext.h>
@@ -860,9 +861,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006){
             .arg("UGENE").arg(currentScheme));
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "UGENE", PopupChecker::IsChecked));
-    GTUtilsMSAEditorSequenceArea::callContextMenu(os);	
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-	GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::Highlighting);
 }
 
 namespace {
@@ -883,22 +884,24 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0007){
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
 //    4. Check no highlighting
     setHighlightingType(os, "No highlighting");
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
-    GTGlobals::sleep();
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#a0a0a4");
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 2));
-    GTGlobals::sleep();
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,2), "#ff99b1");
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(2, 0));
-    GTGlobals::sleep();
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2,0), "#4eade1");
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(4, 0));
-    GTGlobals::sleep();
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4,0), "#a0a0a4");
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(4, 2));
-    GTGlobals::sleep();
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4,2), "#ffffff");
+    QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 0));
+    QString t = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 2));
+    QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2, 0));
+    QString c = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(4, 0));
+    QString gap = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(4, 2));
+    CHECK_SET_ERR(a == "#fcff92", QString("a has color %1").arg(a));
+    CHECK_SET_ERR(t == "#ff99b1", QString("t has color %1").arg(t));
+    CHECK_SET_ERR(g == "#4eade1", QString("g has color %1").arg(g));
+    CHECK_SET_ERR(c == "#70f970", QString("c has color %1").arg(c));
+    CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
+ /* GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#fcff92");//yellow
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,2), "#ff99b1");//red
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2,0),"#4eade1"); //blue
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4,0), "#70f970");//green
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4,2), "#ffffff");//white
+*/
 }
+
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0007_1){
 //    1. Open file test/_common_data/scenarios/msa/ty3.aln.gz
@@ -916,20 +919,33 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0007_1){
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0008){
-//    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
+    //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-//    2. Open highlighting option panel tab
+    //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
-//    3. Select Phaneroptera_falcata as reference.
+    //    3. Select Phaneroptera_falcata as reference.
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
-//    4. Check Agreements highlighting type
+    //    4. Check Agreements highlighting type
     setHighlightingType(os, "Agreements");
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#a0a0a4");
+
+    QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 0));
+    QString gap1 = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 2));
+    QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2, 0));
+    QString gap2 = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(3, 1));
+    QString gap3 = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(4, 2));
+    CHECK_SET_ERR(a == "#fcff92", QString("a has color %1 intead of %2").arg(a).arg("#fcff92"));
+    CHECK_SET_ERR(gap1 == "#ffffff", QString("gap1 has color %1 intead of %2").arg(gap1).arg("#ffffff"));
+    CHECK_SET_ERR(g == "#4eade1", QString("g has color %1 intead of %2").arg(g).arg("#4eade1"));
+    CHECK_SET_ERR(gap2 == "#ffffff", QString("gap2 has color%1 intead of %2").arg(gap2).arg("#ffffff"));
+    CHECK_SET_ERR(gap3 == "#ffffff", QString("gap3 has color %1 intead of %2").arg(gap3).arg("#ffffff"));
+    /*
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#fcff92");
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,2), "#ffffff");
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(2,0), "#4eade1");
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(3,1), "#ffffff");
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4,2), "#ffffff");
+    */
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0008_1){
@@ -1155,8 +1171,8 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0004){
     CHECK_SET_ERR(line2 != NULL, "lineEdit 2 not found");
     GTLineEdit::setText(os, line2, "wrong name");
     CHECK_SET_ERR(GTBaseCompleter::isEmpty(os), "Completer is not empty");
-	GTKeyboardDriver::keyClick(Qt::Key_Escape);
-	GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: empty popup helper appeared
 }
 
@@ -1196,18 +1212,20 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0005_1){
     CHECK_SET_ERR(lblMessage->text() == "Pairwise alignment is not available for alignments with \"Raw\" alphabet.",
                   QString("wrong label text: %1").arg(lblMessage->text()));
 //    3. Add two sequences to PA line edits
-    GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "seq7");
-    GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "seq7_1");
+    GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "seq7_1");
+    GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "seq7");
 //    Expected state: sequenseq added
     QLineEdit* line1 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 1);
     QLineEdit* line2 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 2);
     CHECK_SET_ERR(line1 != NULL, "line edit1 not found");
     CHECK_SET_ERR(line2 != NULL, "line edit2 not found");
-    CHECK_SET_ERR(line1->text() == "seq7", QString("wrong text in line edit1: %1").arg(line1->text()));
-    CHECK_SET_ERR(line2->text() == "seq7_1", QString("wrong text in line edit2: %1").arg(line2->text()));
+    CHECK_SET_ERR(line1->text() == "seq7_1", QString("wrong text in line edit1: %1").arg(line1->text()));
+    CHECK_SET_ERR(line2->text() == "seq7", QString("wrong text in line edit2: %1").arg(line2->text()));
 //    4. Remove sequenses
-    GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 1));
+    GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 1));		
     GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 2));
+	GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 1));
+	
 //    Expected state: sequences removed
     CHECK_SET_ERR(line1->text().isEmpty(), QString("wrong text in line edit1: %1").arg(line1->text()));
     CHECK_SET_ERR(line2->text().isEmpty(), QString("wrong text in line edit2: %1").arg(line2->text()));
@@ -1410,7 +1428,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0008){
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
     GTLogTracer l;
     const QString fileName = "pairwise_alignment_test_0009.aln";
-	const QString dirName = "pairwise_alignment_test_0009";
+    const QString dirName = "pairwise_alignment_test_0009";
 //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1432,7 +1450,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
     f.close();
     GTFile::setReadOnly(os, s);
 
-	setOutputPath(os, sandBoxDir + dirName, fileName);
+    setOutputPath(os, sandBoxDir + dirName, fileName);
     align(os);
     GTGlobals::sleep(500);
 //    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'pairwise_alignment_test_0009.aln' file.
@@ -1494,11 +1512,11 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0011){
     GTWidget::click(os, outputFileLineEdit);
     GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
     GTGlobals::sleep(300);
-    GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(300);
     QString finalText = outputFileLineEdit->text();
 //Expected state: empty path can not be set
-    CHECK_SET_ERR(initialText == finalText, QString("wrong text: %1").arg(finalText));
+    CHECK_SET_ERR(initialText == finalText, QString("wrong text! expected: '%1', actual: '%2'").arg(initialText).arg(finalText));
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0001){
@@ -1526,7 +1544,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0002){
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
-    
+
 //    4. Fill build tree dialog with defaulb values
 //    Expected state: tree built.
     GTWidget::findWidget(os, "treeView");
@@ -1638,7 +1656,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005){
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
-    
+
     QCheckBox* showNamesCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showNamesCheck"));
     CHECK_SET_ERR(showNamesCheck != NULL, "showNamesCheck not found");
     QCheckBox* showDistancesCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showDistancesCheck"));
@@ -2124,7 +2142,7 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0002){
 //    5. Check identity algorithm
     QComboBox* algoComboBox = GTWidget::findExactWidget<QComboBox*>(os, "algoComboBox");
     GTComboBox::setIndexWithText(os, algoComboBox, "Similarity");
-	/*
+    /*
     QString s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     CHECK_SET_ERR(s0 == "100%", QString("Unexpected similarity at line 1: %1").arg(s0));
     QString s1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);
@@ -2137,7 +2155,7 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0002){
     CHECK_SET_ERR(s0 == "604", QString("Unexpected similarity at line 1: %1").arg(s0));
     s1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);
     CHECK_SET_ERR(s1 == "498", QString("Unexpected similarity at line 2: %1").arg(s1));
-	*/
+    */
 }
 GUI_TEST_CLASS_DEFINITION(statistics_test_0003){
 //    1. Open data/samples/CLUSTALW/COI.aln
@@ -2338,7 +2356,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003_1){//
 
     //setValues
     GTComboBox::setIndexWithText(os, algorithmVersion, "SW_classic");
-    GTComboBox::setIndexWithText(os, scoringMatrix, "nuc", false);
+    GTComboBox::setIndexWithText(os, scoringMatrix, "dna", false);
     GTSpinBox::setValue(os, gapOpen, 5);
     GTSpinBox::setValue(os, gapExtd, 5);
 
@@ -2361,7 +2379,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003_1){//
     CHECK_SET_ERR(l2->text() == "Isophya_altaica_EF540820", QString("unexpected seq2: %1").arg(l2->text()));
     CHECK_SET_ERR(algorithmListComboBox->currentText() == "Smith-Waterman", QString("unexpected current text").arg(algorithmListComboBox->currentText()));
     CHECK_SET_ERR(algorithmVersion->currentText() == "SW_classic", QString("unexpected algorithm: %1").arg(algorithmVersion->currentText()));
-    CHECK_SET_ERR(scoringMatrix->currentText().contains("nuc"), QString("unexpected scoring matrix").arg(scoringMatrix->currentText()));
+    CHECK_SET_ERR(scoringMatrix->currentText().contains("dna"), QString("unexpected scoring matrix").arg(scoringMatrix->currentText()));
     CHECK_SET_ERR(gapOpen->value() == 5, QString("unexpected gap open value: %1").arg(gapOpen->value()));
     CHECK_SET_ERR(gapExtd->value() == 5, QString("unexpected gap ext value: %1").arg(gapExtd->value()));
 }

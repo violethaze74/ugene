@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -129,9 +129,9 @@ private:
     void setBorderCursor(const QPoint& p);
 
     void uncheckAllTranslations();
-    void updateTranslationsState(const U2Region& visibleRange);
-    void updateTranslationsState(const U2Region& visibleRange, const U2Strand::Direction direction);
-    void updateSelectedTranslations(const SequenceObjectContext::TranslationState state);
+    void updateTranslationsState();
+    void updateTranslationsState(const U2Strand::Direction direction);
+    void updateSelectedTranslations(const SequenceObjectContext::TranslationState& state);
 };
 
 class DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {

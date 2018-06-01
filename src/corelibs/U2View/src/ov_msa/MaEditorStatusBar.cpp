@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -136,9 +136,9 @@ void MaEditorStatusBar::updateLock() {
 
 void MaEditorStatusBar::updateLineLabel() {
     MaEditorSelection selection = seqArea->getSelection();
-    int firstSelected = selection.y();
-    int totalVisible = seqArea->getNumDisplayableSequences();
-    lineLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(firstSelected + 1),
+    const int firstSelected = seqArea->getRowIndex(selection.y());
+    const int totalVisible = aliObj->getNumRows();
+    lineLabel->update(selection.isEmpty() || firstSelected == -1 ? NONE_MARK : QString::number(firstSelected + 1),
                       QString::number(totalVisible));
 }
 
@@ -153,8 +153,8 @@ void MaEditorStatusBar::updateColumnLabel() {
     MaEditorSelection selection = seqArea->getSelection();
     const QPoint& pos = selection.topLeft();
 
-    colomnLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(pos.x() + 1),
-                        QString::number(aliObj->getLength()));
+    qint64 alignmentLen = aliObj->getLength();
+    colomnLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(pos.x() + 1), QString::number(alignmentLen));
 }
 
 void MaEditorStatusBar::updateSelectionLabel() {

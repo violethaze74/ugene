@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ Primer3Dialog::Primer3Dialog(const Primer3TaskSettings &defaultSettings, ADVSequ
         context(context)
 {
     ui.setupUi(this);
-    new HelpButton(this, ui.helpButton, "20880463");
+    new HelpButton(this, ui.helpButton, "21433415");
 
     QPushButton* pbPick = ui.pickPrimersButton;
     QPushButton* pbReset = ui.resetButton;
@@ -792,6 +792,9 @@ void Primer3Dialog::sl_loadSettings()
 {
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(this, tr("Load settings"), lod.dir, "Text files (*.txt)");
+    if (lod.url.isNull()) { // user clicked 'Cancel' button
+        return; 
+    }
 
     QSettings diagSettings(lod.url, QSettings::IniFormat);
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -629,10 +629,10 @@ QVector<U2Region> ADVSingleSequenceWidget::getSelectedAnnotationRegions(int max)
     const QSet<AnnotationTableObject *> myAnns = seqCtx->getAnnotationObjects(true);
 
     QVector<U2Region> res;
-    foreach (const AnnotationSelectionData& sd, selection) {
-        AnnotationTableObject *aObj = sd.annotation->getGObject();
+    foreach(const AnnotationSelectionData& sel, selection) {
+        AnnotationTableObject *aObj = sel.annotation->getGObject();
         if (myAnns.contains(aObj)) {
-            res << sd.getSelectedRegions();
+            res << U2Region::containingRegion(sel.getSelectedRegions());
             if (max > 0 && res.size() >= max) {
                 break;
             }
@@ -803,8 +803,7 @@ void ADVSingleSequenceWidget::saveState(QVariantMap& m) {
 }
 
 // QT 4.5.0 bug workaround
-void ADVSingleSequenceWidget::sl_closeView()
-{
+void ADVSingleSequenceWidget::sl_closeView() {
     closeView();
 }
 
@@ -876,14 +875,7 @@ void ADVSingleSequenceWidget::sl_removeCustomRuler() {
     panView->removeCustomRuler(rulerName);
 }
 
-void ADVSingleSequenceWidget::sl_onAnnotationSelectionChanged(AnnotationSelection *s, const QList<Annotation *> &, const QList<Annotation *> &) {
-    // make sequence selection to match external annotation bounds
-    const QSet<AnnotationTableObject *> objs = getSequenceContext()->getAnnotationObjects(true);
-    QVector<U2Region> annotatedRegions = s->getSelectedLocations(objs);
-    if (!annotatedRegions.isEmpty()) {
-        QVector<U2Region> joinedRegions = LRegionsSelection::cropSelection(getSequenceContext()->getSequenceLength(), U2Region::join(annotatedRegions));
-        getSequenceContext()->getSequenceSelection()->setSelectedRegions(joinedRegions);
-    }
+void ADVSingleSequenceWidget::sl_onAnnotationSelectionChanged(AnnotationSelection*, const QList<Annotation *>&, const QList<Annotation *>&) {
     updateSelectionActions();
 }
 

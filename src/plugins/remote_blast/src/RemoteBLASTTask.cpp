@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -69,13 +69,13 @@ QList<Task*> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task* subTask) {
         stateInfo.setError( tr("The object was removed\n"));
         return res;
     }
-    
+
     if (subTask != queryTask) {
         return res;
     }
 
     // Query was finished
-    
+
     RemoteBLASTTask * rrTask = qobject_cast<RemoteBLASTTask *>(queryTask);
     SAFE_POINT(NULL != rrTask, "Invalid remote BLAST task!", res);
     QList<SharedAnnotationData> anns = rrTask->getResultedAnnotations();
@@ -97,7 +97,7 @@ QList<Task*> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task* subTask) {
             return res;
         }
     }
-    
+
     // Add annotations to aobj: shift annotations according to offset first
     QList<SharedAnnotationData> annotations;
     for (QMutableListIterator<SharedAnnotationData> it_ad(anns); it_ad.hasNext();) {
@@ -156,8 +156,10 @@ const QList<SharedAnnotationData> & RemoteBLASTTask::getResultedAnnotations() co
 
 RemoteBlastHttpRequestTask::RemoteBlastHttpRequestTask(const RemoteBLASTTaskSettings& cfg)
     : Task(tr("Http Blast requests task"), TaskFlags_FOSE_COSC),
-      cfg(cfg)
+      cfg(cfg),
+      timeout(false)
 {
+
 }
 
 void RemoteBlastHttpRequestTask::prepare() {

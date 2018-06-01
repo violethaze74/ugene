@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -209,13 +209,13 @@ private slots:
     void sl_sequenceModifyTaskStateChanged();
 
     void sl_paste();
-    void sl_pasteFinished(Task* pasteTask);
 
     void sl_reverseComplementSequence();
     void sl_reverseSequence();
     void sl_complementSequence();
     void sl_selectionChanged();
     void sl_aminoTranslationChanged();
+    void sl_updatePasteAction();
 
     virtual void sl_onDocumentAdded(Document*);
     virtual void sl_onDocumentLoadedStateChanged();
@@ -236,6 +236,8 @@ private:
     void createCodonTableAction();
 
     void reverseComplementSequence(bool reverse = true, bool complement = true);
+
+    static QAction* getEditActionFromSequenceWidget(ADVSequenceWidget* seqWgt);
 
     QAction * createPasteAction();
 
@@ -286,18 +288,6 @@ private:
     ADVSequenceWidget*          replacedSeqWidget;     // not NULL when any sequence widget is dragging to the new place.
 
     int                         timerId;
-
-    struct PasteLocation {
-        PasteLocation()
-            : pastePos(-1), seqCtx(NULL) {}
-        PasteLocation(qint64 pos, ADVSequenceObjectContext* ctx)
-            : pastePos(pos),
-              seqCtx(ctx) {}
-
-        qint64                      pastePos;
-        ADVSequenceObjectContext*   seqCtx;
-    };
-    QMap<Task*, PasteLocation> pasteQueue;
 };
 
 } // namespace U2

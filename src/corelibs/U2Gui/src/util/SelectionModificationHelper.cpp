@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -100,7 +100,7 @@ SelectionModificationHelper::MovableSide SelectionModificationHelper::getMovable
 }
 
 
-SelectionModificationHelper::MovableSide SelectionModificationHelper::getMovableSide(const double arcsinCurrent, const int startBase, const int endBase, const double rotationDegree, const int sequenceLength) {
+SelectionModificationHelper::MovableSide SelectionModificationHelper::getMovableSide(const double arcsinCurrent, const int startBase, const int endBase, const int sequenceLength) {
     double asinStart = 0;
     double asinEnd = 0;
     int selectionSize = endBase - startBase;
@@ -158,13 +158,24 @@ Qt::CursorShape SelectionModificationHelper::getCursorShape(const SelectionModif
     case LeftTopCorner:
         newShape = Qt::SizeFDiagCursor;
         break;
+    case LeftBorder:
+    case RightBorder:
+        newShape = Qt::SizeHorCursor;
+        break;
+    case TopBorder:
+    case BottomBorder:
+        newShape = Qt::SizeVerCursor;
+        break;
+    default:
+        newShape = Qt::ArrowCursor;
+        break;
     }
 
     return newShape;
 }
 
-Qt::CursorShape SelectionModificationHelper::getCursorShape(const double arcsinCurrent, const int startBase, const int endBase, const double rotationDegree, const int sequenceLength) {
-    if (getMovableSide(arcsinCurrent, startBase, endBase, rotationDegree, sequenceLength) != NoMovableBorder) {
+Qt::CursorShape SelectionModificationHelper::getCursorShape(const double arcsinCurrent, const int startBase, const int endBase, const int sequenceLength) {
+    if (getMovableSide(arcsinCurrent, startBase, endBase, sequenceLength) != NoMovableBorder) {
         return getCursorShape(arcsinCurrent);
     }
 
@@ -301,7 +312,7 @@ QRect SelectionModificationHelper::getNewSelectionForCornerMoving(MovableSide& c
     return resultSelection;
 }
 
-QList<U2Region> SelectionModificationHelper::getNewSelection(MovableSide& board, const double mouseAngle, const double rotationDegree, const int sequenceLength, const int startBase, const int endBase, bool& isTwoRegions, const bool isTwoPartsLastSelecton) {
+QList<U2Region> SelectionModificationHelper::getNewSelection(MovableSide& board, const double mouseAngle, const double rotationDegree, const int sequenceLength, const int startBase, const int endBase, bool& isTwoRegions) {
     double currentAngle = 180 * GRADUATION * mouseAngle / PI;
     currentAngle -= rotationDegree * GRADUATION;
     if (currentAngle < 0) {

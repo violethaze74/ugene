@@ -2017,7 +2017,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::FindExonRegionsTask</name>
     <message>
-        <location filename="../src/FindExonRegionsTask.cpp" line="98"/>
+        <location filename="../src/FindExonRegionsTask.cpp" line="97"/>
         <source>Failed to search for exon annotations. The sequence %1 doesn&apos;t have any related annotations.</source>
         <translation>Failed to search for exon annotations. The sequence %1 doesn&apos;t have any related annotations.</translation>
     </message>
@@ -2249,7 +2249,7 @@ p, li { white-space: pre-wrap; }
         <translation>Загрузить настройки</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="804"/>
+        <location filename="../src/Primer3Dialog.cpp" line="807"/>
         <source>Can not load settings file: invalid format.</source>
         <translation>Невозможно загрузить настройки: неверный формат.</translation>
     </message>

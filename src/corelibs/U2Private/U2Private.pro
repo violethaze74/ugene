@@ -37,8 +37,7 @@ SOURCES += src/AppContextImpl.cpp \
            src/crash_handler/CrashLogCache.cpp \
            src/crash_handler/StackWalker.cpp
 
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts
 
 win32 {
     HEADERS += src/crash_handler/CrashHandlerPrivateWin.h

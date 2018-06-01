@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,7 +61,6 @@ void DNAFlexGraphAlgorithm::calculate(
 
     // Variables
     int windowLeft = region.startPos;
-    float windowThreshold = 0.0;
 
     // Getting the number of steps
     int stepsNumber = GSequenceGraphUtils::getNumSteps(region, windowData->window, windowData->step);
@@ -84,7 +83,7 @@ void DNAFlexGraphAlgorithm::calculate(
     for (int i = 0; i < stepsNumber; ++i)
     {
         // Calculating the threshold in the current window
-        windowThreshold = 0;
+        float windowThreshold = 0;
         for (int j = windowLeft; j < windowLeft + windowSize - 1; ++j)
         {
             CHECK_OP(os, );

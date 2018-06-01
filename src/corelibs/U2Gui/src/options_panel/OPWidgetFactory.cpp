@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,10 +42,16 @@ bool OPFactoryFilterVisitor::atLeastOneAlphabetPass(DNAAlphabetType factoryAlpha
     return false;
 }
 
-OPWidgetFactory::OPWidgetFactory() {
+OPWidgetFactory::OPWidgetFactory()
+    : QObject(),
+      objView(NULL),
+      objectViewOfWidget(ObjViewType_SequenceView)
+{
+
 }
 
 OPWidgetFactory::~OPWidgetFactory() {
+
 }
 
 bool OPWidgetFactory::passFiltration( OPFactoryFilterVisitorInterface* filter ){

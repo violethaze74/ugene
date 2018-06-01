@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,10 +65,12 @@ void test_1(HI::GUITestOpStatus &os,int i, QString expectedSec, int j = 0) {
 
     GTGlobals::sleep(500);
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0,1));
+    if (j == 0)
+        GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, i), QPoint(14, i));
+    else
+        GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, i), QPoint(13, i));
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,i), QPoint(14, i));
     GTKeyboardDriver::keyClick( 'c',Qt::ControlModifier);
-
     GTGlobals::sleep(500);
     QString clipboardTest = GTClipboard::text(os);
 
@@ -100,8 +102,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2){
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    test_1(os,6,"TAGCT-TATTAA---",5);
-//DIFFERENCE:Select first symbol for Conocephalus_percaudata sequence. Press "space".
+    test_1(os,6,"TAGCT-TATTAA--",5);
+//DIFFERENCE:Select fifth symbol for Conocephalus_percaudata sequence. Press "space".
 //Expected state: Conocephalus_percaudata TAGCT-TATTAA--, sequence length 14, right offset 14
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -73,7 +73,7 @@ GUITestRunner::GUITestRunner(UGUITestBase* _guiTestBase, QWidget *parent) :
     delTextAction = new QAction(this);
     delTextAction->setShortcut(QKeySequence(tr("Esc")));
     filter->addAction(delTextAction);
-    
+
     QString lastUsedFilter = AppContext::getSettings()->getValue(LAST_FILTER_SETTING_NAME, "").toString();
     filter->setText(lastUsedFilter);
 
@@ -88,7 +88,7 @@ GUITestRunner::GUITestRunner(UGUITestBase* _guiTestBase, QWidget *parent) :
 
     show();
     filter->setFocus();
-    
+
     revisible(filter->text());
 }
 

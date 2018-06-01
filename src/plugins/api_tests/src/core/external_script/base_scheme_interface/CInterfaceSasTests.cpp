@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -201,7 +201,7 @@ IMPLEMENT_TEST( CInterfaceSasTests, basic_align_sas ) {
     error = getActorDisplayName( "write-msa", writerName );
     CHECK_U2_ERROR( error );
     gauto_array<wchar_t> wWriterName( toDisposableWString( writerName ) );
-    error = setSchemeElementAttribute( scheme, wWriterName.get( ), L"document-format", L"Stockholm" );
+    error = setSchemeElementAttribute( scheme, wWriterName.get( ), L"document-format", L"stockholm" );
     CHECK_U2_ERROR( error );
 
     U2OpStatusImpl stateInfo;
@@ -278,7 +278,7 @@ IMPLEMENT_TEST( CInterfaceSasTests, faqual2fastq_sas ) {
     error = getActorDisplayName( "write-sequence", readerName );
     CHECK_U2_ERROR( error );
     gauto_array<wchar_t> wReaderName( toDisposableWString( readerName ) );
-    error = setSchemeElementAttribute( scheme, wReaderName.get( ), L"document-format", L"FASTQ" );
+    error = setSchemeElementAttribute( scheme, wReaderName.get( ), L"document-format", L"fastq" );
     CHECK_U2_ERROR( error );
 
     U2OpStatusImpl stateInfo;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -180,6 +180,10 @@ char MaConsensusAlgorithmSimpleExtended::getConsensusChar(const MultipleAlignmen
     }
 
     return INVALID_CONS_CHAR;
+}
+
+U2::MaConsensusAlgorithmSimpleExtended* MaConsensusAlgorithmSimpleExtended::clone() const {
+    return new MaConsensusAlgorithmSimpleExtended(*this);
 }
 
 MaConsensusAlgorithmFactorySimpleExtended::MaConsensusAlgorithmFactorySimpleExtended(QObject *parent)

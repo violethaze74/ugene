@@ -227,5 +227,4 @@ SOURCES += src/library/BaseActorCategories.cpp \
            src/support/serialize/Tokenizer.cpp \
            src/support/serialize/Utils.cpp
 RESOURCES += U2Lang.qrc
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts

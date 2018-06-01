@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -694,7 +694,10 @@ GUI_TEST_CLASS_DEFINITION(test_1022) {
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep();
 
-    GTGlobals::sleep(5000);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Dotplot" << "Remove"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1029) {
@@ -1204,9 +1207,9 @@ GUI_TEST_CLASS_DEFINITION(test_1065_1) {
 //    1. Select "Tools->Align to reference->Build index" from the main menu.
 //    Expected state: the "Build index" dialog appeared.
 //    2. Fill the dialog with the next values:
-//        {Align short reads method}	Bowtie
-//        {reference sequence}		_common_data/scenarios/_regression/1065/e_coli_1000.fa
-//        {Index file name}		_tmp/e_coli_1000
+//        {Align short reads method}    Bowtie
+//        {reference sequence}        _common_data/scenarios/_regression/1065/e_coli_1000.fa
+//        {Index file name}        _tmp/e_coli_1000
 //    Click the "Start" button.
 //    Expected state: task completes successfully, there are six files in the _tmp folder:
 //    e_coli_1000.1.ebwt
@@ -1236,11 +1239,11 @@ GUI_TEST_CLASS_DEFINITION(test_1065_2) {
 //    1. Select {Tools->Align to reference->Align short reads} in the main menu.
 //    Expected state: the "Align sequencing reads" dialog appeared.
 //    2. Fill the dialog with next values:
-//        {Alignmnet method}	Bowtie
-//        {Reference sequence}	_common_data/scenarios/_regression/1065/index/e_coli_100
-//        {Result file name}	_tmp/e_coli_1000.sam
-//        {Prebuild index}	checked
-//        {Short reads}		_common_data/scanarios/_regression/1065/e_coli_1000.fq
+//        {Alignmnet method}    Bowtie
+//        {Reference sequence}    _common_data/scenarios/_regression/1065/index/e_coli_100
+//        {Result file name}    _tmp/e_coli_1000.sam
+//        {Prebuild index}    checked
+//        {Short reads}        _common_data/scanarios/_regression/1065/e_coli_1000.fq
 //    And click the "Start" button.
 //    Expected state: the Bowtie task successfully completes, the "Import SAM file" dialog appeared.
 //    3. Set the {Destination URL} field with "_tmp/e_coli_1000.sam.ugenedb" value and click "Import" button.
@@ -1269,11 +1272,11 @@ GUI_TEST_CLASS_DEFINITION(test_1065_3) {
 //    1. Select {Tools->Align to reference->Align short reads} in the main menu.
 //    Expected state: the "Align sequencing reads" dialog appeared.
 //    2. Fill the dialog with next values:
-//        {Alignmnet method}	Bowtie
-//        {Reference sequence}	_common_data/scenarios/_regression/1065/e_coli_100.fa
-//        {Result file name}	_tmp/e_coli_1000.sam
-//        {Prebuild index}	unchecked
-//        {Short reads}		_common_data/scanarios/_regression/1065/e_coli_1000.fq
+//        {Alignmnet method}    Bowtie
+//        {Reference sequence}    _common_data/scenarios/_regression/1065/e_coli_100.fa
+//        {Result file name}    _tmp/e_coli_1000.sam
+//        {Prebuild index}    unchecked
+//        {Short reads}        _common_data/scanarios/_regression/1065/e_coli_1000.fq
 //    And click the "Start" button.
 //    Expected state: the Bowtie task successfully completes, the "Import SAM file" dialog appeared.
 //    3. Set the {Destination URL} field with "_tmp/e_coli_1000.sam.ugenedb" value and click "Import" button.
@@ -1533,16 +1536,13 @@ GUI_TEST_CLASS_DEFINITION(test_1113){//commit AboutDialogController.cpp
 
             QWidget* dialog = QApplication::activeModalWidget();
 //getting an info string
-            QWidget *w = new QWidget();
-            w=dialog->findChild<QWidget*>("about_widget");
+            QWidget *w=dialog->findChild<QWidget*>("about_widget");
             CHECK_SET_ERR(w!=NULL, "aboutWidget not found");
 
-            QObject *parent = new QObject();
-            parent= w->findChild<QObject*>("parent");
+            QObject *parent= w->findChild<QObject*>("parent");
             CHECK_SET_ERR(parent!=NULL, "parentObject not found");
 
-            QObject *child = new QObject();
-            child=parent->findChild<QObject*>();
+            QObject *child=parent->findChild<QObject*>();
             CHECK_SET_ERR(child!=NULL, "childObject not found");
 
             QString text = child->objectName();
@@ -1585,16 +1585,13 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1){//commit AboutDialogController.cpp
 #endif
             QWidget* dialog = QApplication::activeModalWidget();
 //getting an info string
-            QWidget *w = new QWidget();
-            w=dialog->findChild<QWidget*>("about_widget");
+            QWidget *w=dialog->findChild<QWidget*>("about_widget");
             CHECK_SET_ERR(w!=NULL, "aboutWidget not found");
 
-            QObject *parent = new QObject();
-            parent= w->findChild<QObject*>("parent");
+            QObject *parent= w->findChild<QObject*>("parent");
             CHECK_SET_ERR(parent!=NULL, "parentObject not found");
 
-            QObject *child = new QObject();
-            child=parent->findChild<QObject*>();
+            QObject *child=parent->findChild<QObject*>();
             CHECK_SET_ERR(child!=NULL, "childObject not found");
 
             QString text = child->objectName();
@@ -1682,14 +1679,14 @@ GUI_TEST_CLASS_DEFINITION(test_1122){
 //    Expected state: Result is the same as in the step 4.
 
     GTLogTracer l;
-	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/scenarios/CAP3/xyz.fa"
                                                                  << testDir + "_common_data/scenarios/CAP3/xyz.qual",
                                                                  sandBoxDir + "test_1122_1"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads de novo assembly (with CAP3)...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTUtilsDialog::waitForDialog(os, new CAP3SupportDialogFiller(os, QStringList() << testDir + "_common_data/scenarios/CAP3/xyz.fastq",
                                                                  sandBoxDir + "test_1122_2"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Sanger data analysis" << "Reads de novo assembly (with CAP3)...");
@@ -1837,12 +1834,13 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/1155", "crash.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
-	GTGlobals::sleep(100);
-	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));   
-    GTUtilsWorkflowDesigner::runWorkflow(os);	
-	GTGlobals::sleep(500);   
+
+#ifdef Q_OS_WIN
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+#endif
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1154) {
@@ -2781,7 +2779,15 @@ GUI_TEST_CLASS_DEFINITION(test_1252){
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
 //    4. Delete created annotations document
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
+    QString name;
+    foreach(const QString& key, keys) {
+        if (key.startsWith("MyDocument")) {
+            name = key;
+            break;
+        }
+    }
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(500);
@@ -2797,7 +2803,7 @@ GUI_TEST_CLASS_DEFINITION(test_1252){
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 // delete annotations manually to cache MessageBox
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 //    Expected: pattern is found and annotation is stored in a new document
@@ -2822,7 +2828,15 @@ GUI_TEST_CLASS_DEFINITION(test_1252_1){
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
 //    4. Delete created annotations document
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
+    QString name;
+    foreach(const QString& key, keys) {
+        if (key.startsWith("MyDocument")) {
+            name = key;
+            break;
+        }
+    }
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep(500);
@@ -2837,7 +2851,7 @@ GUI_TEST_CLASS_DEFINITION(test_1252_1){
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 // delete annotations manually to cache MessageBox
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 //    Expected: pattern is found and annotation is stored in a new document
@@ -2978,7 +2992,15 @@ GUI_TEST_CLASS_DEFINITION(test_1262) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
 
     //3. Delete created annotations document
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
+    QString name;
+    foreach(const QString& key, keys) {
+        if (key.startsWith("MyDocument")) {
+            name = key;
+            break;
+        }
+    }
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTMouseDriver::click(Qt::RightButton);
     //4. Click search again
 
@@ -2993,7 +3015,7 @@ GUI_TEST_CLASS_DEFINITION(test_1262) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ACTION_PROJECT__REMOVE_SELECTED));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTMouseDriver::click(Qt::RightButton);
 }
 
@@ -3596,7 +3618,7 @@ GUI_TEST_CLASS_DEFINITION(test_1324) {
     GTMouseDriver::click();
     QString val;
 
-#if defined(Q_OS_LINUX) || defined (Q_OS_WIN)
+#if defined(Q_OS_LINUX)
     val = "0.00010";
 #else
     val = "0,00010";
@@ -4164,8 +4186,13 @@ GUI_TEST_CLASS_DEFINITION(test_1409){
 //    Expected state: sequence viewer had opened.
 
 //    2. Click on some annotation in the sequence view (not in the annotation tree).
-    GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 1042);
+    GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 1042, 0, true);
 //    Expected state: the clicked annotation is selected.
+
+    const QPoint pos = GTMouseDriver::getMousePosition();
+    GTMouseDriver::moveTo(QPoint(pos.x(), pos.y() - 100));
+    GTMouseDriver::click();
+    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
 
 //    3. Press F2 on the keyboard.
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, "CDS", "1042..2658"));
@@ -4188,10 +4215,10 @@ GUI_TEST_CLASS_DEFINITION(test_1420) {
 //    1. Select {Tools->ALign to reference->Align short reads} from the main menu.
 //    Expected state: the "Align sequencing reads" dialog appeared.
 //    2. Fill this dialog with:
-//        {Alignment method:}	BWA-SW
-//        {Reference sequence:}	_common_data/fasta/NC_008253.fna
-//        {Result file name:}	somewhere in the temp folder
-//        {Short reads:}		_common_data/reads/long_reads.fasta
+//        {Alignment method:}    BWA-SW
+//        {Reference sequence:}    _common_data/fasta/NC_008253.fna
+//        {Result file name:}    somewhere in the temp folder
+//        {Short reads:}        _common_data/reads/long_reads.fasta
 //        other options: default
 //    3. Press the "Start" button.
 //    Expected state: after the task's end the "Import SAM file" appeared.
@@ -4297,7 +4324,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
     GTUtilsMdi::click(os, GTGlobals::Close);
-	GTGlobals::sleep(500);
+    GTGlobals::sleep(500);
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read HMM2 Profile");
@@ -4479,7 +4506,7 @@ GUI_TEST_CLASS_DEFINITION(test_1434_2) {
     GTGlobals::sleep(200);
 
     //3. Use these settings :
-    //	search for:ATTCACCAAAGTTGAA*TGAAGGAAAAAATGCT
+    //    search for:ATTCACCAAAGTTGAA*TGAAGGAAAAAATGCT
     // ; comment
     //Algorithm : Regular expression
     //Region : custom region(1 - 1000)
@@ -4543,14 +4570,14 @@ GUI_TEST_CLASS_DEFINITION(test_1455) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Dump Sequence Info");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Dump sequence info");
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Plain Text");
 
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence"), GTUtilsWorkflowDesigner::getWorker(os, "Dump Sequence Info"));
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Dump Sequence Info"), GTUtilsWorkflowDesigner::getWorker(os, "Write Plain Text"));
 
     //2. Save it somewhere using the "Save as..." action
-    GTUtilsWorkflowDesigner::saveWorkflowAs(os, sandBoxDir + "dump_sequence.uwl", "Dump sequence info");
+    GTUtilsWorkflowDesigner::saveWorkflowAs(os, sandBoxDir + "dump_sequence.uwl", "Dump Sequence Info");
 
     //3. Close WD
     GTUtilsMdi::click( os, GTGlobals::Close );
@@ -6148,7 +6175,7 @@ GUI_TEST_CLASS_DEFINITION( test_1603 ) {
     QAbstractButton *tree = GTAction::button(os,"Build Tree");
     GTWidget::click(os, tree);
     GTGlobals::sleep();
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMdi::closeWindow(os, "COI [m] COI");
     QString docName = "1603.nwk";
@@ -6401,14 +6428,14 @@ GUI_TEST_CLASS_DEFINITION(test_1640) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(4, 3), QPoint(4, 3));
 
     //3. Press ESCAPE arrow to remove the selection.
-	GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //4. Press and hold a bit shift+right arrow.
     //Qt::Key_Shift
     for (int i=0; i<12; i++) {
         GTKeyboardDriver::keyClick( Qt::Key_Right, Qt::ShiftModifier);
     }
- 
+
     //Expected state: all sequences of each selected column are selected
     GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     QString chars = GTClipboard::text(os);
@@ -6719,7 +6746,7 @@ GUI_TEST_CLASS_DEFINITION(test_1668){
 //    7) Deactivate the PWA tab
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    8) Select some bunch of sequences (more than two) in the name list area
-	GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 2), QPoint(-5, 6), GTGlobals::UseMouse);
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 2), QPoint(-5, 6), GTGlobals::UseMouse);
 //    9) Activate the PWA tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: previosly chosen two sequences and their order are saved
@@ -6730,7 +6757,7 @@ GUI_TEST_CLASS_DEFINITION(test_1668){
 //    10) Deactivate the PWA tab
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    11) Select exactly two sequences in the name list area
-	GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 7), QPoint(-5, 8), GTGlobals::UseMouse);
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5, 7), QPoint(-5, 8), GTGlobals::UseMouse);
 //    12) Activate the PWA tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: last chosen two sequences has appeared on PWA tab
@@ -7704,7 +7731,7 @@ GUI_TEST_CLASS_DEFINITION(test_1738){
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/Mycobacterium.fna");
 
     GTWidget::click(os,GTAction::button(os,"Run workflow"));
-    GTGlobals::sleep(5000);
+    GTGlobals::sleep(3000);
 
     GTWidget::click(os,GTAction::button(os,"Stop workflow"));
     GTUtilsTaskTreeView::waitTaskFinished(os);

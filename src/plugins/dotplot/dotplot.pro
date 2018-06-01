@@ -26,4 +26,4 @@ SOURCES += src/DotPlotClasses.cpp \
            src/DotPlotWidget.cpp
 
 RESOURCES += dotplot.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

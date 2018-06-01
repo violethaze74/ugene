@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -626,7 +626,7 @@ void GTUtilsProjectTreeView::dragAndDropSeveralElements(HI::GUITestOpStatus &os,
 }
 #undef GT_METHOD_NAME
 
-void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus &os, const QPoint &enterPos, const QPoint &dropPos) {
+void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus & /*os*/, const QPoint &enterPos, const QPoint &dropPos) {
     GTMouseDriver::dragAndDrop(enterPos, dropPos);
     GTGlobals::sleep(1000);
 }

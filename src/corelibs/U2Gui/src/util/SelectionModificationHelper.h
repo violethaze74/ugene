@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,13 +43,13 @@ public:
     };
 
     static MovableSide getMovableSide(const Qt::CursorShape shape, const QPoint& globalMousePos, const QRect& selection, const QSizeF& baseSize);
-    static MovableSide getMovableSide(const double arcsinCurrent, const int startBase, const int endBase, const double rotationDegree, const int sequenceLength);
+    static MovableSide getMovableSide(const double arcsinCurrent, const int startBase, const int endBase, const int sequenceLength);
     static Qt::CursorShape getCursorShape(const QPoint& globalMousePos, const QRect& selection, const double baseWidth, const double baseHeight);
     static Qt::CursorShape getCursorShape(const MovableSide border, const Qt::CursorShape currentShape);
-    static Qt::CursorShape getCursorShape(const double arcsinCurrent, const int startBase, const int endBase, const double rotationDegree, const int sequenceLength);
+    static Qt::CursorShape getCursorShape(const double arcsinCurrent, const int startBase, const int endBase, const int sequenceLength);
     static Qt::CursorShape getCursorShape(const double arcsinCurrent);
     static QRect getNewSelection(MovableSide& movableSide, const QPoint& globalMousePos, const QSizeF& baseSize, const QRect& currentSelection);
-    static QList<U2Region> getNewSelection(MovableSide& border, const double mouseAngle, const double rotation, const int sequenceLength, const int startBase, const int endBase, bool& isTwoRegions, const bool isTwoPartsLastSelecton);
+    static QList<U2Region> getNewSelection(MovableSide& border, const double mouseAngle, const double rotation, const int sequenceLength, const int startBase, const int endBase, bool& isTwoRegions);
 
 private:
     static MovableSide getMovableSide(const int globalMousePos, const int selectionPos, const int selectionSize, const double baseSize);

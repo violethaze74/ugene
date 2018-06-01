@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ namespace U2 {
 
 class U2CORE_EXPORT DBXRefInfo {
 public:
-    DBXRefInfo(){};
+    DBXRefInfo(){}
     DBXRefInfo(const QString& _name, const QString& _url,
                const QString& _fileUrl, const QString& _comment)
                : name(_name), url(_url), fileUrl(_fileUrl), comment(_comment){}

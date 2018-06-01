@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,8 +54,6 @@ namespace Workflow {
 /************************************************************************/
 /* GenericReadDocProto */
 /************************************************************************/
-#define ICOLOR QColor(85,85,255)
-
 GenericReadDocProto::GenericReadDocProto(const Descriptor &desc)
     : ReadDbObjActorPrototype(desc)
 {
@@ -67,7 +65,7 @@ GenericReadDocProto::GenericReadDocProto(const Descriptor &desc)
     setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
 
     if(AppContext::isGUIMode()) {
-        setIcon( GUIUtils::createRoundIcon(ICOLOR, 22) );
+        setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
     }
 
     setValidator(new DatasetValidator());
@@ -163,7 +161,7 @@ GenericMAActorProto::GenericMAActorProto() : GenericReadDocProto(CoreLibConstant
     setPrompter(new ReadDocPrompter(U2::Workflow::CoreLib::tr("Reads MSA(s) from <u>%1</u>.")));
 
     if( AppContext::isGUIMode() ) {
-        setIcon( GUIUtils::createRoundIcon(ICOLOR, 22) );
+        setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
     }
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,7 +52,6 @@ private slots:
 
 private:
     void setReferenceSelection(QMouseEvent* e);
-    void connectSignalsAndSlots();
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void mouseReleaseEvent(QMouseEvent* e);
@@ -62,13 +61,7 @@ private:
     McaEditor* editor;
     McaEditorWgt* ui;
     McaReferenceAreaRenderer *renderer;
-    QMetaObject::Connection connectionUiClearSelection;
-    QMetaObject::Connection connectionSequenceClearSelection;
-    QMetaObject::Connection connectionSequenceChangeSelection;
-    qint64 lastMouseReleasePos;
-    qint64 selectionCountFromStartPos;
-    bool isShiftPressed;
-    bool expandToTheRight;
+    qint64 firstPressedSelectionPosition;
 };
 
 class McaEditorReferenceRenderArea : public PanViewRenderArea {

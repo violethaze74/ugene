@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -93,6 +93,14 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
     }
     annSelection = new AnnotationSelection(this);
     translationMenuActions = new QActionGroup(this);
+
+    connect(seqObj, SIGNAL(si_sequenceChanged()), &commonStatisticsCache, SLOT(sl_invalidate()));
+    connect(seqObj, SIGNAL(si_sequenceChanged()), &charactersOccurrenceCache, SLOT(sl_invalidate()));
+    connect(seqObj, SIGNAL(si_sequenceChanged()), &dinucleotidesOccurrenceCache, SLOT(sl_invalidate()));
+
+    connect(selection, SIGNAL(si_onSelectionChanged(GSelection *)), &commonStatisticsCache, SLOT(sl_invalidate()));
+    connect(selection, SIGNAL(si_onSelectionChanged(GSelection *)), &charactersOccurrenceCache, SLOT(sl_invalidate()));
+    connect(selection, SIGNAL(si_onSelectionChanged(GSelection *)), &dinucleotidesOccurrenceCache, SLOT(sl_invalidate()));
 }
 
 void SequenceObjectContext::guessAminoTT(const AnnotationTableObject *ao) {
@@ -214,13 +222,13 @@ void SequenceObjectContext::sl_showShowAll() {
 void SequenceObjectContext::setTranslationState(const SequenceObjectContext::TranslationState state) {
     bool needUpdate = false;
 
-    const bool enableActions = state == SequenceObjectContext::SetUpFramesManually;
+    const bool enableActions = state == SequenceObjectContext::TS_SetUpFramesManually;
     foreach(QAction* a, visibleFrames->actions()) {
         a->setEnabled(enableActions);
         bool isActionCheck = false;
         if (enableActions) {
             isActionCheck = translationRowsStatus.contains(a);
-        } else if (state == SequenceObjectContext::ShowAllFrames) {
+        } else if (state == SequenceObjectContext::TS_ShowAllFrames) {
             isActionCheck = true;
         }
 
@@ -236,8 +244,20 @@ void SequenceObjectContext::setTranslationState(const SequenceObjectContext::Tra
 }
 
 SequenceObjectContext::TranslationState SequenceObjectContext::getTranslationState() const {
-    CHECK(translationMenuActions->actions().size() == 4, SequenceObjectContext::DoNotTranslate);
+    CHECK(translationMenuActions->actions().size() == 4, SequenceObjectContext::TS_DoNotTranslate);
     return (SequenceObjectContext::TranslationState)translationMenuActions->checkedAction()->data().toInt();
+}
+
+StatisticsCache<DNAStatistics> *SequenceObjectContext::getCommonStatisticsCache() {
+    return &commonStatisticsCache;
+}
+
+StatisticsCache<CharactersOccurrence> *SequenceObjectContext::getCharactersOccurrenceCache() {
+    return &charactersOccurrenceCache;
+}
+
+StatisticsCache<DinucleotidesOccurrence> *SequenceObjectContext::getDinucleotidesOccurrenceCache() {
+    return &dinucleotidesOccurrenceCache;
 }
 
 void SequenceObjectContext::sl_onAnnotationRelationChange() {
@@ -336,6 +356,18 @@ void SequenceObjectContext::removeAnnotationObject(AnnotationTableObject *obj) {
     SAFE_POINT(annotations.contains(obj), "Unexpected annotation table!",);
     annotations.remove(obj);
     emit si_annotationObjectRemoved(obj);
+}
+
+void SequenceObjectContext::emitAnnotationSelection(AnnotationSelectionData* asd) {
+    emit si_annotationSelection(asd);
+}
+
+void SequenceObjectContext::emitAnnotationSequenceSelection(AnnotationSelectionData* asd) {
+    emit si_annotationSequenceSelection(asd);
+}
+
+void SequenceObjectContext::emitClearSelectedAnnotationRegions() {
+    emit si_clearSelectedAnnotationRegions();
 }
 
 QList<Annotation *> SequenceObjectContext::selectRelatedAnnotations(const QList<Annotation *> &alist) const {

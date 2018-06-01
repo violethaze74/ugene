@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -272,18 +272,18 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
-    
+
     //    1.  File->Access remote database...
     //    2.  Fill    "Resource ID": 1ezg
     //                "Database": PDB
     //                "Add to project": true
     //        Open.
-    //    3.  Expected state: 1ezg appears in a project view. 
+    //    3.  Expected state: 1ezg appears in a project view.
 
         GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, true, true, false,
                                                                             sandBoxDir));
         GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
-        
+
         GTUtilsTaskTreeView::waitTaskFinished(os);
         GTGlobals::sleep(20000);
         GTUtilsDocument::isDocumentLoaded(os, "1ezg.pdb");
@@ -296,11 +296,11 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     //                "Database": PDB
     //                "Add to project": false
     //        Open.
-    //    3.  Expected state: 1ezg doesn't appear in a project view. 
+    //    3.  Expected state: 1ezg doesn't appear in a project view.
 
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, false, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
-    
+
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1CRN", 3, true, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Access remote database...", GTGlobals::UseKey);
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,6 +29,7 @@
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ClipboardController.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
@@ -36,6 +37,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/ModifySequenceObjectTask.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2Msa.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -50,9 +52,7 @@ namespace U2 {
 DetViewSequenceEditor::DetViewSequenceEditor(DetView* view)
     : cursorColor(Qt::black),
       animationTimer(this),
-      view(view),
-      task(NULL),
-      block(false)
+      view(view)
 {
     editAction = new QAction(tr("Edit sequence"), this);
     editAction->setIcon(QIcon(":core/images/edit.png"));
@@ -65,7 +65,6 @@ DetViewSequenceEditor::DetViewSequenceEditor(DetView* view)
     reset();
     connect(&animationTimer, SIGNAL(timeout()), SLOT(sl_changeCursorColor()));
     setParent(view);
-    connect(this, SIGNAL(si_blockStatusChanged()), view, SLOT(completeUpdate()));
 }
 
 DetViewSequenceEditor::~DetViewSequenceEditor() {
@@ -83,7 +82,6 @@ bool DetViewSequenceEditor::isEditMode() const {
 }
 
 bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
-    CHECK(!block, false);
     CHECK(!view->getSequenceObject()->isStateLocked(), false)
 
     SequenceObjectContext* ctx = view->getSequenceContext();
@@ -240,7 +238,7 @@ void DetViewSequenceEditor::insertChar(int character) {
         r = ctx->getSequenceSelection()->getSelectedRegions().first();
         ctx->getSequenceSelection()->clear();
     }
-    runModifySeqTask(seqObj, r, seq);
+    modifySequence(seqObj, r, seq);
 
     setCursor(r.startPos + 1);
 }
@@ -261,7 +259,7 @@ void DetViewSequenceEditor::deleteChar(int key) {
             qSort(regions);
             for (int i = 0; i < regions.size(); i++) {
                 // can cause problems
-                runModifySeqTask(seqObj, regions[i], DNASequence());
+                modifySequence(seqObj, regions[i], DNASequence());
             }
             return;
         } else {
@@ -296,22 +294,23 @@ void DetViewSequenceEditor::deleteChar(int key) {
         return;
     }
     CHECK(!regionToRemove.isEmpty(), );
-    runModifySeqTask(seqObj, regionToRemove, DNASequence());
+    modifySequence(seqObj, regionToRemove, DNASequence());
 }
 
-void DetViewSequenceEditor::runModifySeqTask(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence) {
+void DetViewSequenceEditor::modifySequence(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence) {
     Settings* s = AppContext::getSettings();
     U1AnnotationUtils::AnnotationStrategyForResize strategy =
                 (U1AnnotationUtils::AnnotationStrategyForResize)s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
                             U1AnnotationUtils::AnnotationStrategyForResize_Resize).toInt();
 
-    task = new ModifySequenceContentTask(seqObj->getDocument()->getDocumentFormatId(), seqObj,
-                                            region, sequence,
-                                            s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(),
-                                            strategy, seqObj->getDocument()->getURL());
-    connect(task, SIGNAL(si_stateChanged()), SLOT(sl_unblock()));
-    block = true;
-    AppContext::getTaskScheduler()->registerTopLevelTask(task);
+    U2OpStatusImpl os;
+    seqObj->replaceRegion(region, sequence, os);
+    FixAnnotationsUtils::fixAnnotations(&os, seqObj, region,
+                                    sequence, s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(), strategy);
+    SAFE_POINT_OP(os, );
+    ADVSequenceObjectContext* context = qobject_cast<ADVSequenceObjectContext*>(view->getSequenceContext());
+    SAFE_POINT(context != NULL, L10N::nullPointerError("ADVSequenceObjectContext"), );
+    context->getAnnotatedDNAView()->updateAutoAnnotations();
 }
 
 void DetViewSequenceEditor::cancelSelectionResizing() {
@@ -347,20 +346,40 @@ void DetViewSequenceEditor::sl_changeCursorColor() {
     view->update();
 }
 
-void DetViewSequenceEditor::sl_unblock() {
-    CHECK(task != NULL, );
-    if (task->isFinished()) {
-        block = false;
-        task = NULL;
-
-        ADVSequenceObjectContext *context = qobject_cast<ADVSequenceObjectContext *>(view->getSequenceContext());
-        SAFE_POINT(NULL != context, L10N::nullPointerError("ADVSequenceObjectContext"), );
-        context->getAnnotatedDNAView()->updateAutoAnnotations();
-    }
-}
-
 void DetViewSequenceEditor::sl_objectLockStateChanged() {
     editAction->setDisabled(!isEditMode() && view->getSequenceObject()->isStateLocked());
+}
+
+void DetViewSequenceEditor::sl_paste(Task* task) {
+    PasteTask* pasteTask = qobject_cast<PasteTask*>(task);
+    CHECK(pasteTask != NULL && !pasteTask->isCanceled(), );
+
+    const QList<Document*>& docs = pasteTask->getDocuments();
+    CHECK(docs.length() != 0, );
+
+    U2OpStatusImpl os;
+    const QList<DNASequence>& sequences = PasteUtils::getSequences(docs, os);
+    DNASequence seq;
+    foreach(const DNASequence& dnaObj, sequences) {
+        if (seq.alphabet == NULL){
+            seq.alphabet = dnaObj.alphabet;
+        }
+        const DNAAlphabet* newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(dnaObj.alphabet, seq.alphabet);
+        if (newAlphabet != NULL) {
+            seq.alphabet = newAlphabet;
+            seq.seq.append(dnaObj.seq);
+        }
+    }
+    U2SequenceObject* seqObj = view->getSequenceObject();
+    SAFE_POINT(seqObj != NULL, "SeqObject is NULL", );
+    if (seqObj->getAlphabet()->getId() != seq.alphabet->getId()) {
+        coreLog.error(tr("The sequence & clipboard content have different alphabet"));
+        return;
+    }
+
+    modifySequence(seqObj, U2Region(cursor, 0), seq);
+
+    setCursor(cursor + seq.length());
 }
 
 } // namespace

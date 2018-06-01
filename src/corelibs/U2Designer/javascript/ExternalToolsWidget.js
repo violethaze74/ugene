@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@ function collapseNode(element) {
         }
 };
 
-function lwAddTreeNode(nodeName, activeTabName, activeTabId, content, contentType) {
+function lwAddTreeNode(nodeName, activeTabName, activeTabId, content, nodeNum, contentType) {
     var actorTab = document.getElementById(activeTabName);
     if(actorTab === null) {
         var root = document.getElementById("treeRoot");
@@ -80,7 +80,7 @@ function lwAddTreeNode(nodeName, activeTabName, activeTabId, content, contentTyp
 
     var launchNodeId = activeTabName + nodeName + "_l";
     var launchNode = document.getElementById(launchNodeId);
-    var idBase = activeTabId + nodeName;
+    var idBase = activeTabId + nodeName + "_" + nodeNum;
     var isLaunchNodeCreated = false;
     if(null === launchNode) {
         isLaunchNodeCreated = true;
@@ -115,26 +115,35 @@ function lwAddTreeNode(nodeName, activeTabName, activeTabId, content, contentTyp
         return;
     }
 
-    var infoNode;
-    infoNode = document.getElementById(launchNodeId + '_info');
+    var infoNode = document.getElementById(launchNodeId + '_info_' + nodeNum);
     var launchSpan = document.getElementById(launchNodeId + '_span');
     switch(contentType) {
         case "error":
-                addContent(launchNode, 'Error log', idBase + '_er', 'badge badge-important', content);
-                launchSpan.className = 'badge badge-important';
+            addContent(launchNode, 'Error log', idBase + '_er', 'badge badge-important', content);
+            launchSpan.className = 'badge badge-important';
             break;
         case "output":
             addContent(launchNode, 'Output log', idBase + '_out', 'badge badge-info', content);
             break;
         case "program":
-            if(null === infoNode) {
-                infoNode = addInfoNode(launchNode);
+            if (null === infoNode) {
+                infoNode = addInfoNode(launchNode, nodeNum);
+                if (nodeNum > 1) {
+                    var outNode = document.getElementById(activeTabId + nodeName + '_0_out_label');
+                    if (outNode !== null) {
+                        infoNode.parentNode.parentNode.insertBefore(infoNode.parentNode, outNode.parentNode);
+                    }
+                }
             }
             addContent(infoNode, 'Executable file', idBase + '_program', 'badge program-path', content);
             break;
         case "arguments":
             if(null === infoNode) {
-                infoNode = addInfoNode(launchNode);
+                infoNode = addInfoNode(launchNode, nodeNum);
+                var outNode = document.getElementById(activeTabId + nodeName + '_0_out_label');
+                if (outNode !== null) {
+                    infoNode.parentNode.parentNode.insertBefore(infoNode.parentNode, outNode.parentNode);
+                }
             }
             addContent(infoNode, 'Arguments', idBase + '_args', 'badge tool-args', content);
             break;
@@ -157,13 +166,14 @@ function onButtonReleased(element, event) {
     return false;
 }
 
-function addInfoNode(launchNode) {
+function addInfoNode(launchNode, nodeNum) {
     if(null === launchNode) {
         return null;
     }
     var launchNodeId = launchNode.id;
-    infoNode = addChildrenNode(launchNode, 'Run info', launchNodeId + '_info_span', 'badge run-info');
-    infoNode.id = launchNodeId + '_info';
+    var nodeContent = 'Run info ' + nodeNum;
+    var infoNode = addChildrenNode(launchNode, nodeContent, launchNodeId + '_info_span', 'badge run-info');
+    infoNode.id = launchNodeId + '_info_' + nodeNum;
 
     var launchSpan = document.getElementById(launchNodeId + '_span');
     if(null === launchSpan) {
@@ -178,7 +188,7 @@ function addInfoNode(launchNode) {
 function addContent(parentNode, contentHead, nodeId, contentType, content) {
     var node = document.getElementById(nodeId);
 
-    if(node !== null) {
+    if (node !== null) {
         node.innerHTML += content;
     } else if(content) {
         node = addChildrenNode(parentNode, contentHead, nodeId + '_label', contentType);

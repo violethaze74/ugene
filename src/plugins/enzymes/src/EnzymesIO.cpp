@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -200,7 +200,7 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFacto
                     seq = strandInfo.left(cutIdx).trimmed();
                     QByteArray cutStr = strandInfo.mid(cutIdx+1).trimmed();
                     bool ok = true;
-                    cutPos = cutStr.length() == 1 && cutStr[0] == '?' ? ENZYME_CUT_UNKNOWN : cutStr.toInt(&ok);
+                    cutPos = (cutStr.length() == 1 && cutStr[0] == '?') ? ENZYME_CUT_UNKNOWN : cutStr.toInt(&ok);
                     if (!ok) {
                         ioLog.error(tr("Restriction enzymes: Illegal cut pos: %1, line %2").arg(QString(cutStr)).arg(line));
                         break;

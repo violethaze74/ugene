@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -102,10 +102,19 @@ static int getNumber(QString string, int startPos, U2OpStatus& os) {
 static QString getRowName(QString string, int sequenceLength) {
     string = string.simplified();
     int sequenceLengthSize = QString::number(sequenceLength).size();
-    int stringLength = string.length();
     int namePos = SIZE_BEFORE_NUMBER_SEQUENCE_LENGTH + sequenceLengthSize + sequenceLength + 2;
-    int nameSize = stringLength - namePos;
-    QString name = string.mid(namePos, nameSize);
+    QString name = string.mid(namePos);
+    if (name.startsWith("\\")) {
+        const int colonNumber = name.indexOf(':');
+        if (colonNumber != -1) {
+            bool lengthToInt = false;
+            const int nameLength = name.mid(1, colonNumber - 1).toInt(&lengthToInt);
+            const QString newName = name.right(name.size() - colonNumber - 1);
+            if (lengthToInt && newName.size() == nameLength) {
+                name = newName;
+            }
+        }
+    }
     return name;
 }
 
@@ -114,7 +123,7 @@ static QByteArray getSequenceContent(QString string, int sequenceLength) {
     int sequenceLengthSize = QString::number(sequenceLength).size();
     int infoPos = SIZE_BEFORE_NUMBER_SEQUENCE_LENGTH + sequenceLengthSize + 1;
     QString info = string.mid(infoPos, sequenceLength);
-    QByteArray byteArrayInfo = info.toLocal8Bit();
+    QByteArray byteArrayInfo = info.toUtf8();
     return byteArrayInfo;
 }
 
@@ -188,7 +197,7 @@ void AprFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     QString bufferString(buff);
     QTextStream bufferStream(&bufferString);
     QString header = bufferStream.readLine();
-    QByteArray mainHeader = header.toLocal8Bit();
+    QByteArray mainHeader = header.toUtf8();
     if (!lineOk || !readBuffer.startsWith(mainHeader)) {
         os.setError(AprFormat::tr("Illegal header line"));
         return;

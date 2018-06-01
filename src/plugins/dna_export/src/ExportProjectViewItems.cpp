@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -441,7 +441,7 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
     GObject* obj = set.first();
     MultipleSequenceAlignmentObject* maObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     const MultipleSequenceAlignment msa = maObject->getMultipleAlignment();
-    
+
     QObjectScopedPointer<ExportMSA2SequencesDialog> d = new ExportMSA2SequencesDialog(obj->getDocument()->getURL().dirPath(), GUrlUtils::fixFileName(obj->getGObjectName()), AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
     CHECK(!d.isNull(), );

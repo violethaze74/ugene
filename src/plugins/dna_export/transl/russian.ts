@@ -170,32 +170,32 @@
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.ui" line="221"/>
         <source>Base content (%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Состав (%)</translation>
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.ui" line="245"/>
         <source>A</source>
-        <translation type="unfinished">A</translation>
+        <translation>A</translation>
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.ui" line="295"/>
         <source>C</source>
-        <translation type="unfinished">C</translation>
+        <translation>C</translation>
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.ui" line="342"/>
         <source>G</source>
-        <translation type="unfinished">G</translation>
+        <translation>G</translation>
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.ui" line="389"/>
         <source>T</source>
-        <translation type="unfinished">T</translation>
+        <translation>T</translation>
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.ui" line="426"/>
         <source>GC Skew</source>
-        <translation type="unfinished">GC смещение</translation>
+        <translation>GC смещение</translation>
     </message>
     <message>
         <source>Manual</source>
@@ -639,7 +639,7 @@
     <message>
         <location filename="../src/ExportTasks.cpp" line="80"/>
         <source>Can&apos;t create load task</source>
-        <translation type="unfinished"></translation>
+        <translation>Can&apos;t create load task</translation>
     </message>
 </context>
 <context>
@@ -666,12 +666,12 @@
     <message>
         <location filename="../src/CSVColumnConfigurationDialog.cpp" line="38"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/CSVColumnConfigurationDialog.cpp" line="39"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/CSVColumnConfigurationDialog.cpp" line="96"/>
@@ -785,38 +785,38 @@
         <location filename="../src/DNASequenceGeneratorDialog.cpp" line="177"/>
         <location filename="../src/DNASequenceGeneratorDialog.cpp" line="202"/>
         <source>Base content</source>
-        <translation type="unfinished">Основной состав</translation>
+        <translation>Состав</translation>
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.cpp" line="177"/>
         <source>Total percentage must be 100%</source>
-        <translation type="unfinished"></translation>
+        <translation>Суммарный состав должен быть 100%</translation>
     </message>
     <message>
         <location filename="../src/DNASequenceGeneratorDialog.cpp" line="202"/>
         <source>Incorrect GC Skew value</source>
-        <translation type="unfinished">Некорректное значение GC смещения</translation>
+        <translation>Некорректное значение GC смещения</translation>
     </message>
 </context>
 <context>
     <name>U2::DNASequenceGeneratorTask</name>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="165"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="166"/>
         <source>Reference for sequence generator has to be a sequence or an alignment</source>
         <translation>Референс для генератора последовательности должен быть послдовательностью или выравниванием</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="170"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="171"/>
         <source>Generate sequence task</source>
         <translation>Generate sequence task</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="194"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="200"/>
         <source>Incorrect reference file</source>
         <translation>Incorrect reference file</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="306"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="312"/>
         <source>Generated MSA</source>
         <translation>Сгенерированное выравнивание</translation>
     </message>
@@ -824,12 +824,12 @@
 <context>
     <name>U2::EvaluateBaseContentTask</name>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="378"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="384"/>
         <source>Evaluate base content task</source>
         <translation>Evaluate base content task</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="391"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="397"/>
         <source>Base content can be evaluated for sequence or sequence alignment</source>
         <translation>Base content can be evaluated for sequence or sequence alignment</translation>
     </message>
@@ -1092,7 +1092,7 @@
     <message>
         <location filename="../src/tasks/ExportMca2MsaTask.cpp" line="37"/>
         <source>Export Sanger reads task</source>
-        <translation type="unfinished">Export Sanger reads task</translation>
+        <translation>Export Sanger reads task</translation>
     </message>
 </context>
 <context>
@@ -1198,7 +1198,7 @@
     <message>
         <location filename="../src/ExportProjectViewItems.cpp" line="466"/>
         <source>Select one chromatogram alignment object to export</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите одну хроматограмму для экспорта</translation>
     </message>
     <message>
         <location filename="../src/ExportProjectViewItems.cpp" line="529"/>
@@ -1455,7 +1455,7 @@
     <message>
         <location filename="../src/ExportSequencesDialog.cpp" line="242"/>
         <source>File name is too long!</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя файла слишком длинное!</translation>
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.cpp" line="247"/>
@@ -1468,7 +1468,7 @@
     <message>
         <location filename="../src/ExportUtils.cpp" line="97"/>
         <source>A problem occurred during export MCA to MSA. The MCA is no more available.</source>
-        <translation type="unfinished"></translation>
+        <translation>A problem occurred during export MCA to MSA. The MCA is no more available.</translation>
     </message>
 </context>
 <context>
@@ -1543,7 +1543,7 @@
 <context>
     <name>U2::GenerateDNASequenceTask</name>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="398"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="404"/>
         <source>Generate DNA sequence task</source>
         <translation>Generate DNA sequence task</translation>
     </message>
@@ -1553,12 +1553,12 @@
     <message>
         <location filename="../src/GetSequenceByIdDialog.cpp" line="40"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.cpp" line="41"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.cpp" line="53"/>
@@ -2157,7 +2157,7 @@ NCBI Genbank by their GI identifier
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="48"/>
         <source>Save to directory:</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить в:</translation>
     </message>
     <message>
         <source>Save to folder:</source>

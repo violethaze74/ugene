@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -369,7 +369,7 @@ void RemoteDBFetcherFactory::init()
     proto->setPrompter(new RemoteDBFetcherPrompter());
 
     if(AppContext::isGUIMode()) {
-        proto->setIcon(GUIUtils::createRoundIcon(ICOLOR, 22));
+        proto->setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
     }
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
@@ -584,7 +584,7 @@ void FetchSequenceByIdFromAnnotationFactory::init()
     proto->setPrompter(new FetchSequenceByIdFromAnnotationPrompter());
 
     if(AppContext::isGUIMode()) {
-        proto->setIcon(GUIUtils::createRoundIcon(ICOLOR, 22));
+        proto->setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
     }
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);

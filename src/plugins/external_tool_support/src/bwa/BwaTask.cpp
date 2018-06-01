@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -87,13 +87,17 @@ void cleanupTempDir(const QStringList &tempDirFiles) {
     }
 }
 
-BwaAlignTask::BwaAlignTask(const QString &indexPath, const QList<ShortReadSet>& shortReadSets, const QString &resultPath, const DnaAssemblyToRefTaskSettings &settings):
-    ExternalToolSupportTask("Bwa reads assembly", TaskFlags_NR_FOSCOE),
-    indexPath(indexPath),
-    readSets(shortReadSets),
-    resultPath(resultPath),
-    settings(settings)
+BwaAlignTask::BwaAlignTask(const QString &indexPath, const QList<ShortReadSet>& shortReadSets, const QString &resultPath, const DnaAssemblyToRefTaskSettings &settings)
+    : ExternalToolSupportTask("Bwa reads assembly", TaskFlags_NR_FOSCOE),
+      samMultiTask(NULL),
+      alignMultiTask(NULL),
+      mergeTask(NULL),
+      indexPath(indexPath),
+      readSets(shortReadSets),
+      resultPath(resultPath),
+      settings(settings)
 {
+
 }
 
 QString BwaAlignTask::getSAIPath(const QString& shortReadsUrl) {
@@ -303,12 +307,15 @@ void BwaAlignTask::LogParser::parseErrOutput(const QString &partOfLog) {
 
 // BwaMemAlignTask
 
-BwaMemAlignTask::BwaMemAlignTask(const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings):
-    ExternalToolSupportTask("BWA MEM reads assembly", TaskFlags_NR_FOSCOE),
-    indexPath(indexPath),
-    resultPath(settings.resultFileName.getURLString()),
-    settings(settings)
+BwaMemAlignTask::BwaMemAlignTask(const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings)
+    : ExternalToolSupportTask("BWA MEM reads assembly", TaskFlags_NR_FOSCOE),
+      alignMultiTask(NULL),
+      mergeTask(NULL),
+      indexPath(indexPath),
+      resultPath(settings.resultFileName.getURLString()),
+      settings(settings)
 {
+
 }
 
 void BwaMemAlignTask::prepare() {

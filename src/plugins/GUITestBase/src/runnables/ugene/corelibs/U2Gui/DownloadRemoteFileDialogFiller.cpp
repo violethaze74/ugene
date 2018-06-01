@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,8 +47,12 @@ DownloadRemoteFileDialogFiller::DownloadRemoteFileDialogFiller(HI::GUITestOpStat
 {
 }
 
-DownloadRemoteFileDialogFiller::DownloadRemoteFileDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c):
-    Filler(os, "DownloadRemoteFileDialog", c){}
+DownloadRemoteFileDialogFiller::DownloadRemoteFileDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
+    : Filler(os, "DownloadRemoteFileDialog", c),
+      dialog(NULL)
+{
+
+}
 
 #define GT_METHOD_NAME "commonScenario"
 void DownloadRemoteFileDialogFiller::commonScenario() {

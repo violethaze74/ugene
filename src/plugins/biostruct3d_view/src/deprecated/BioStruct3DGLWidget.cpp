@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -981,7 +981,7 @@ void BioStruct3DGLWidget::sl_settings()
 void BioStruct3DGLWidget::sl_exportImage()
 {
     BioStruct3DImageExportController factory(this);
-    
+
     QString fileName = GUrlUtils::fixFileName(getBioStruct3DObjectName());
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::MolView,
                              fileName, ExportImageDialog::SupportScaling, this);

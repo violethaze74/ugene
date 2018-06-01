@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,24 +37,26 @@ class SaveDocumentInFolderController;
 class SaveSelectedSequenceFromMSADialogController : public QDialog {
     Q_OBJECT
 public:
-    SaveSelectedSequenceFromMSADialogController(const QString& defaultDir, QWidget* p, const QStringList& seqNames);
+    SaveSelectedSequenceFromMSADialogController(const QString& defaultDir, QWidget* p, const QStringList& seqNames, const QString& defaultCustomFilename);
     ~SaveSelectedSequenceFromMSADialogController();
 
     virtual void accept();
 
+    QString getUrl() const;
+    DocumentFormatId getFormat() const;
+    QString getCustomFileName() const;
+    bool getTrimGapsFlag() const;
+    bool getAddToProjectFlag() const;
+private:
+    void initSaveController();
+
     QString             url;
     QString             defaultDir;
-    DocumentFormatId    format;
+    DocumentFormatId    formatId;
     QStringList         seqNames;
     QString             customFileName;
     bool                trimGapsFlag;
     bool                addToProjectFlag;
-
-private slots:
-    void sl_nameCBIndexChanged(int index);
-private:
-    void initSaveController();
-
     SaveDocumentInFolderController* saveController;
     Ui_SaveSelectedSequenceFromMSADialog* ui;
 };
@@ -72,9 +74,8 @@ public:
     SaveDocumentInFolderController(const SaveDocumentInFolderControllerConfig& config,
                             const DocumentFormatConstraints& formatConstraints,
                             QObject* parent);
-    
+
     QString getSaveDirName() const;
-    //DocumentFormatId getFormatIdToSave() const;
 signals:
     void si_pathChanged(const QString &path);
 private slots:

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -160,6 +160,7 @@ const QVector<GBFeatureKeyInfo>& GBFeatureUtils::allKeys() {
         assert(features[i].id != GBFeatureKey_UNKNOWN && features[i].id == i);
         assert(!features[i].text.isEmpty());
         assert(!features[i].desc.isEmpty());
+        assert(features[i].color.isValid());
     }
 #endif
 

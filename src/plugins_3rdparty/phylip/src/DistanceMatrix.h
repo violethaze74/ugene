@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,10 +49,12 @@ private:
     QString errorMessage;
 
 public:
+    DistanceMatrix();
+    ~DistanceMatrix();
+
     matrix rawMatrix;
     bool isValid();
     void calculateOutOfAlignment(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings);
-    ~DistanceMatrix();
     const QString& getErrorMessage() {return errorMessage;}
     void freeMemory(void*& allocatedMemory){free(allocatedMemory);}
 

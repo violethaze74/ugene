@@ -67,12 +67,12 @@ this merge sequence slot:</source>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="14"/>
         <source>Create a directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать директорию</translation>
     </message>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="43"/>
         <source>Parent directory:</source>
-        <translation type="unfinished"></translation>
+        <translation>Родительская директория:</translation>
     </message>
     <message>
         <location filename="../src/CreateDirectoryDialog.ui" line="63"/>
@@ -99,7 +99,7 @@ this merge sequence slot:</source>
     <message>
         <location filename="../src/DatasetWidget.ui" line="62"/>
         <source>Add directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить директорию</translation>
     </message>
     <message>
         <location filename="../src/DatasetWidget.ui" line="84"/>
@@ -464,12 +464,12 @@ this merge sequence slot:</source>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="14"/>
         <source>Save file/directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить файл/директорию</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="31"/>
         <source>Create directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать директорию</translation>
     </message>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="63"/>
@@ -480,7 +480,7 @@ this merge sequence slot:</source>
     <message>
         <location filename="../src/OutputFileDialog.ui" line="126"/>
         <source>Directory:</source>
-        <translation type="unfinished"></translation>
+        <translation>Директория:</translation>
     </message>
     <message>
         <source>Folder:</source>
@@ -598,7 +598,9 @@ Set up the folder:</source>
         <source>The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer. A separate subdirectory of the folder is created for each run of a workflow.
 
 Set up the folder:</source>
-        <translation type="unfinished"></translation>
+        <translation>Выходная директория для схемы это общая директория, которая используется для сохранения всех выходных файлов в дизайнере вычислительных схем. Для каждого запуска схемы будет создана отдельная директория.
+
+Установить директорию:</translation>
     </message>
 </context>
 <context>

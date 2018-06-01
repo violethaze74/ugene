@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -304,36 +304,51 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     bool isShiftPressed = e->modifiers().testFlag(Qt::ShiftModifier);
     switch(key) {
     case Qt::Key_Up: {
-        U2Region sel = getSelection();
-        if (sel.length == 0 || sel.startPos == 0) {
-            break; // no selection or can't move up
+        bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect - 1);
+        const U2Region sel = getSelection();
+        if (sel.isEmpty()) {
+            break;
         }
-        curRowNumber = startSelectingRowNumber = sel.startPos - 1;
-        if (isShiftPressed) { // expanding selection up
-            nextSequenceToSelect = curRowNumber + sel.length;
+        int selStart = sel.length != 0 ? getSelection().startPos : nextSequenceToSelect;
+        if (isSeqInRange && isShiftPressed) {
+            nextSequenceToSelect--;
             moveSelection(0);
             int seqAreaHeight = ui->getSequenceArea()->height();
             ui->getScrollController()->scrollToRowByNumber(nextSequenceToSelect, seqAreaHeight);
-        } else { // moving selection up
-            nextSequenceToSelect = curRowNumber + sel.length - 1;
+        } else if (!isShiftPressed && selStart > 0) {
+            if (0 <= curRowNumber - 1) {
+                curRowNumber--;
+            }
+            if (0 <= startSelectingRowNumber - 1) {
+                startSelectingRowNumber--;
+            }
+            nextSequenceToSelect--;
             moveSelection(-1);
         }
         break;
     }
     case Qt::Key_Down: {
-        U2Region sel = getSelection();
-        int numRows = ui->getSequenceArea()->getNumDisplayableSequences();
-        if (sel.length == 0 || sel.endPos() == numRows) {
-            break; // no selection or can't move down
+        bool isSeqInRange = ui->getSequenceArea()->isSeqInRange(nextSequenceToSelect + 1);
+        const U2Region sel = getSelection();
+        if (sel.isEmpty()) {
+            break;
         }
-        curRowNumber = startSelectingRowNumber = sel.endPos();
-        if (isShiftPressed) { // expanding selection down
-            nextSequenceToSelect = sel.startPos;
+        int selEnd = sel.endPos() - 1;
+        int rowNum = ui->getSequenceArea()->getNumDisplayableSequences() - 1;
+        if (isSeqInRange && isShiftPressed) {
+            nextSequenceToSelect++;
             moveSelection(0);
             int seqAreaHeight = ui->getSequenceArea()->height();
             ui->getScrollController()->scrollToRowByNumber(nextSequenceToSelect, seqAreaHeight);
-        } else { // moving selection down
-            nextSequenceToSelect = sel.startPos + 1;
+        } else if (!isShiftPressed && selEnd < rowNum) {
+            int numDisplayableSequences = ui->getSequenceArea()->getNumDisplayableSequences();
+            if (numDisplayableSequences > curRowNumber + 1) {
+                curRowNumber++;
+            }
+            if (numDisplayableSequences > startSelectingRowNumber + 1) {
+                startSelectingRowNumber++;
+            }
+            nextSequenceToSelect++;
             moveSelection(1);
         }
         break;
@@ -562,9 +577,6 @@ void MaEditorNameList::wheelEvent(QWheelEvent *we) {
 
 void MaEditorNameList::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev)
 {
-    Q_UNUSED(current);
-    Q_UNUSED(prev);
-
     if (current.y() == prev.y() && current.height() == prev.height()) {
         return;
     }
@@ -839,11 +851,11 @@ void MaEditorNameList::sl_editSequenceName() {
     CHECK(n >= 0, );
 
     QString curName =  maObj->getMultipleAlignment()->getRow(n)->getName();
-    
+
     bool isMca = this->editor->getMaObject()->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
     QString title = isMca ? tr("Rename Read") : tr("Rename Sequence");
     QString newName = QInputDialog::getText(ui, title, tr("New name:"), QLineEdit::Normal, curName, &ok);
-        
+
     if (ok && !newName.isEmpty() && curName != newName) {
         emit si_sequenceNameChanged(curName, newName);
         maObj->renameRow(n,newName);

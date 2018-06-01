@@ -7,4 +7,4 @@ HEADERS += src/OpenCLSupportPlugin.h \
 SOURCES += src/OpenCLSupportPlugin.cpp \
            src/OpenCLSupportSettingsController.cpp \
            
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

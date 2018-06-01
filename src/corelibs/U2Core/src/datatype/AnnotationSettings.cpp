@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -104,16 +104,23 @@ AnnotationSettings* AnnotationSettingsRegistry::getAnnotationSettings(const QStr
 void AnnotationSettingsRegistry::read() {
 
     Settings* s = AppContext::getSettings();
-    QStringList keys = s->getAllKeys(SETTINGS_ROOT);
+    QStringList annotations = s->getChildGroups(SETTINGS_ROOT);
     QList<AnnotationSettings*> list;
-    foreach(const QString& key, keys) {
-        QString name = key.split('/').first();
+    foreach(const QString& name, annotations) {
         AnnotationSettings* as = transientMap.value(name);
         if (as == NULL) {
             as = new AnnotationSettings();
             as->name = name;
         }
-        as->color = s->getValue(SETTINGS_ROOT + as->name + "/color", FeatureColors::genLightColor(as->name)).value<QColor>();
+        QVariant color = s->getValue(SETTINGS_ROOT + as->name + "/color", FeatureColors::genLightColor(as->name).name());
+        as->color = QColor(color.toString());
+        if (!as->color.isValid()) {
+            // previously color was stored as QColor, not by name
+            as->color = color.value<QColor>();
+            if (!as->color.isValid()) { // if still invalid - get the default value
+                as->color = FeatureColors::genLightColor(as->name);
+            }
+        }
         as->visible = s->getValue(SETTINGS_ROOT + as->name + "/visible", true).toBool();
         as->amino = s->getValue(SETTINGS_ROOT + as->name + "/amino", true).toBool();
         as->showNameQuals = s->getValue(SETTINGS_ROOT + as->name + "/show_quals", false).toBool();
@@ -130,7 +137,7 @@ void AnnotationSettingsRegistry::save() {
     Settings* s = AppContext::getSettings();
     QStringList keys = s->getAllKeys(SETTINGS_ROOT);
     foreach(const AnnotationSettings* as, persistentMap.values()) {
-        s->setValue(SETTINGS_ROOT + as->name + "/color", as->color);
+        s->setValue(SETTINGS_ROOT + as->name + "/color", as->color.name());
         s->setValue(SETTINGS_ROOT + as->name + "/visible", as->visible);
         s->setValue(SETTINGS_ROOT + as->name + "/amino", as->amino);
         s->setValue(SETTINGS_ROOT + as->name + "/show_quals", as->showNameQuals);
@@ -147,7 +154,11 @@ AnnotationSettings::AnnotationSettings() {
 }
 
 AnnotationSettings::AnnotationSettings(const QString& _name, bool _amino, const QColor& _color, bool _visible)
-: name(_name), color(_color), amino(_amino), visible(_visible)
+    : name(_name),
+      color(_color),
+      amino(_amino),
+      visible(_visible),
+      showNameQuals(false)
 {
 }
 

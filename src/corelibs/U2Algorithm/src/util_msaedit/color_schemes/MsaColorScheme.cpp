@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -222,7 +222,7 @@ void MsaColorSchemeRegistry::sl_onCustomSettingsChanged() {
         MsaColorSchemeCustomFactory *customSchemeFactory = getCustomSchemeFactoryById(scheme.name);
         if (NULL == customSchemeFactory) {
             addCustomScheme(scheme);
-            schemesListChanged |= true;
+            schemesListChanged = true;
         } else {
             customSchemeFactory->setScheme(scheme);
             factoriesToRemove.removeOne(customSchemeFactory);

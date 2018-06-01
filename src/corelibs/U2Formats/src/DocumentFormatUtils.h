@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,31 +59,12 @@ public:
 
     static void updateFormatHints(QList<GObject*>& objects, QVariantMap& fs);
 
-    static U2SequenceObject* addSequenceObject(const U2DbiRef& dbiRef, const QString& name, const QByteArray& seq, bool circular, const QVariantMap& hints, U2OpStatus& os);
-
     /** Doc URL here is used to set up sequence<->annotation relations */
     static AnnotationTableObject * addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
                                                                      const U2DbiRef& dbiRef,
                                                                      const QStringList& contigs,
                                                                      const QVector<U2Region>& mergedMapping,
                                                                      const QVariantMap &hints);
-
-    static U2SequenceObject* addSequenceObjectDeprecated(const U2DbiRef& dbiRef,
-                                                         const QString &folder,
-                                                         const QString& seqObjName,
-                                                         QList<GObject*>& objects,
-                                                         DNASequence& seq,
-                                                         U2OpStatus& os);
-
-    /** if no docURL provided -> relations are not set*/
-    static U2SequenceObject* addMergedSequenceObjectDeprecated(const U2DbiRef& dbiRef,
-                                                               const QString &folder,
-                                                               QList<GObject*>& objects,
-                                                               const GUrl& docUrl,
-                                                               const QStringList& contigs,
-                                                               QByteArray& mergedSequence,
-                                                               const QVector<U2Region>& mergedMapping,
-                                                               U2OpStatus& os);
 
     static QString getFormatNameById(const DocumentFormatId &formatId);
 };

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "~/";
 const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "%UserProfile%/";
 #endif
 
-SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(const QString &defaultDir, QWidget* p, const QStringList& _seqNames)
+SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(const QString &defaultDir, QWidget* p, const QStringList& _seqNames, const QString& defaultCustomFilename)
     : QDialog(p),
       defaultDir(defaultDir),
       seqNames(_seqNames),
@@ -55,17 +55,12 @@ SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogCo
       ui(new Ui_SaveSelectedSequenceFromMSADialog())
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "20880328");
+    new HelpButton(this, ui->buttonBox, "21433280");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    ui->fileNameCombo->addItem(tr("Sequence name"), QVariant(false));
-    ui->fileNameCombo->addItem(tr("Custom"), QVariant(true));
-    ui->fileNameCombo->setCurrentIndex(0);
-
     ui->customFileNameEdit->setDisabled(true);
-
-    connect(ui->fileNameCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_nameCBIndexChanged(int)));
+    ui->customFileNameEdit->setText(defaultCustomFilename);
 
     trimGapsFlag = false;
     addToProjectFlag = true;
@@ -78,7 +73,8 @@ SaveSelectedSequenceFromMSADialogController::~SaveSelectedSequenceFromMSADialogC
 
 void SaveSelectedSequenceFromMSADialogController::accept() {
     url = saveController->getSaveDirName();
-    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(ui->formatCombo->currentText());
+    formatId = ui->formatCombo->currentData().toString();
+    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
     CHECK(df != NULL, )
     QString extension = df->getSupportedDocumentFileExtensions().first();
     if (!ui->customFileNameEdit->isEnabled()) {
@@ -101,7 +97,6 @@ void SaveSelectedSequenceFromMSADialogController::accept() {
         }
 
     }
-    format = ui->formatCombo->currentText();
     trimGapsFlag = !ui->keepGapsBox->isChecked();
     addToProjectFlag = ui->addToProjectBox->isChecked();
     customFileName = ui->customFileNameEdit->isEnabled() ? ui->customFileNameEdit->text() : "";
@@ -109,8 +104,26 @@ void SaveSelectedSequenceFromMSADialogController::accept() {
     QDialog::accept();
 }
 
-void SaveSelectedSequenceFromMSADialogController::sl_nameCBIndexChanged(int index) {
-    ui->customFileNameEdit->setEnabled(ui->fileNameCombo->itemData(index).toBool());
+
+
+QString SaveSelectedSequenceFromMSADialogController::getUrl() const {
+    return url;
+}
+
+DocumentFormatId SaveSelectedSequenceFromMSADialogController::getFormat() const {
+    return formatId;
+}
+
+QString SaveSelectedSequenceFromMSADialogController::getCustomFileName() const {
+    return customFileName;
+}
+
+bool SaveSelectedSequenceFromMSADialogController::getTrimGapsFlag() const {
+    return trimGapsFlag;
+}
+
+bool SaveSelectedSequenceFromMSADialogController::getAddToProjectFlag() const {
+    return addToProjectFlag;
 }
 
 void SaveSelectedSequenceFromMSADialogController::initSaveController() {
@@ -131,12 +144,12 @@ void SaveSelectedSequenceFromMSADialogController::initSaveController() {
     saveController = new SaveDocumentInFolderController(config, formatConstraints, this);
 }
 
-SaveDocumentInFolderControllerConfig::SaveDocumentInFolderControllerConfig() : 
+SaveDocumentInFolderControllerConfig::SaveDocumentInFolderControllerConfig() :
     SaveDocumentControllerConfig(),
     folderLineEdit(NULL) {
 }
 
-SaveDocumentInFolderController::SaveDocumentInFolderController(const SaveDocumentInFolderControllerConfig& config, const DocumentFormatConstraints& formatConstraints, QObject* parent) 
+SaveDocumentInFolderController::SaveDocumentInFolderController(const SaveDocumentInFolderControllerConfig& config, const DocumentFormatConstraints& formatConstraints, QObject* parent)
     : QObject(parent),
     conf(config) {
     DocumentFormatConstraints fc(formatConstraints);
@@ -174,10 +187,13 @@ void SaveDocumentInFolderController::initFormatComboBox() {
     QString currentFormat = formatsInfo.getFormatNameById(conf.defaultFormatId);
     CHECK(conf.formatCombo != NULL, );
 
-    QStringList items = formatsInfo.getNames();
-    items.sort(Qt::CaseInsensitive);
-    conf.formatCombo->addItems(items);
-
+    QStringList sortedFormatNames = formatsInfo.getNames();
+    sortedFormatNames.sort(Qt::CaseInsensitive);
+    foreach (QString formatName, sortedFormatNames) {
+        QString formatId = formatsInfo.getIdByName(formatName);
+        conf.formatCombo->addItem(formatName, formatId);
+    }
+    
     if (currentFormat.isEmpty()) {
         currentFormat = conf.formatCombo->itemText(0);
     }
@@ -206,11 +222,5 @@ QString SaveDocumentInFolderController::getSaveDirName() const {
     }
     return filePath;
 }
-/*
-DocumentFormatId SaveDocumentInFolderController::getFormatIdToSave() const {
-    const QString currentFormat = (conf.formatCombo->currentData()).toString();
-    SAFE_POINT(!currentFormat.isEmpty(), "Current format is not set", DocumentFormatId::null);
-    return formatsInfo.getIdByName(currentFormat);
-}
-*/
+
 }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,17 +44,35 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportAnnotationsToCsvFiller"
 
-ImportAnnotationsToCsvFiller::ImportAnnotationsToCsvFiller(HI::GUITestOpStatus &_os, const QString &_fileToRead, const QString &_resultFile,
-        ImportAnnotationsToCsvFiller::fileFormat _format, bool _addResultFileToProject,
-        bool _columnSeparator, const QString &_separator, int _numberOfLines,
-        const QString &_skipAllLinesStartsWith, bool _interpretMultipleAsSingle,
-        bool _removeQuotesButton, const QString &_defaultAnnotationName, const RoleParameters& _roleParameters, GTGlobals::UseMethod method):
-Filler(_os, "ImportAnnotationsFromCSVDialog"), fileToRead(_fileToRead), resultFile(QDir::toNativeSeparators(_resultFile)), format(_format),
-       addResultFileToProject(_addResultFileToProject), columnSeparator(_columnSeparator),
-       numberOfLines(_numberOfLines), separator(_separator),
-       skipAllLinesStartsWith(_skipAllLinesStartsWith), interpretMultipleAsSingle(_interpretMultipleAsSingle),
-       removeQuotesButton(_removeQuotesButton), defaultAnnotationName(_defaultAnnotationName), roleParameters(_roleParameters), useMethod(method) {
-
+ImportAnnotationsToCsvFiller::ImportAnnotationsToCsvFiller(HI::GUITestOpStatus &_os,
+                                                           const QString &_fileToRead,
+                                                           const QString &_resultFile,
+                                                           ImportAnnotationsToCsvFiller::fileFormat _format,
+                                                           bool _addResultFileToProject,
+                                                           bool _columnSeparator,
+                                                           const QString &_separator,
+                                                           int _numberOfLines,
+                                                           const QString &_skipAllLinesStartsWith,
+                                                           bool _interpretMultipleAsSingle,
+                                                           bool _removeQuotesButton,
+                                                           const QString &_defaultAnnotationName,
+                                                           const RoleParameters& _roleParameters,
+                                                           GTGlobals::UseMethod method)
+    : Filler(_os, "ImportAnnotationsFromCSVDialog"),
+      fileToRead(_fileToRead),
+      resultFile(QDir::toNativeSeparators(_resultFile)),
+      format(_format),
+      addResultFileToProject(_addResultFileToProject),
+      columnSeparator(_columnSeparator),
+      numberOfLines(_numberOfLines),
+      separator(_separator),
+      skipAllLinesStartsWith(_skipAllLinesStartsWith),
+      interpretMultipleAsSingle(_interpretMultipleAsSingle),
+      removeQuotesButton(_removeQuotesButton),
+      defaultAnnotationName(_defaultAnnotationName),
+      roleParameters(_roleParameters),
+      useMethod(method)
+{
     comboBoxItems[BED] = "BED";
     comboBoxItems[EMBL] = "EMBL";
     comboBoxItems[FPKM] = "FPKM";
@@ -63,6 +81,20 @@ Filler(_os, "ImportAnnotationsFromCSVDialog"), fileToRead(_fileToRead), resultFi
     comboBoxItems[Genbank] = "GenBank";
     comboBoxItems[Swiss_Prot] = "Swiss_Prot";
 }
+
+ImportAnnotationsToCsvFiller::ImportAnnotationsToCsvFiller(GUITestOpStatus &_os, CustomScenario *c)
+    : Filler(_os, "ImportAnnotationsFromCSVDialog", c),
+      format(BED),
+      addResultFileToProject(false),
+      columnSeparator(false),
+      numberOfLines(0),
+      interpretMultipleAsSingle(false),
+      removeQuotesButton(false),
+      useMethod(GTGlobals::UseKey)
+{
+
+}
+
 #define GT_METHOD_NAME "run"
 void RoleFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();

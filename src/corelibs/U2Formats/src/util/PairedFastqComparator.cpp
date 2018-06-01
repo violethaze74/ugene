@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -120,7 +120,7 @@ void PairedFastqComparator::compare(U2OpStatus &os) {
     out_2->close();
 }
 
-void PairedFastqComparator::dropUntilItem(U2OpStatus& os, QList<FastqSequenceInfo>& list, const FastqSequenceInfo& untilItem) {
+void PairedFastqComparator::dropUntilItem(U2OpStatus& /*os*/, QList<FastqSequenceInfo>& list, const FastqSequenceInfo& untilItem) {
     CHECK(!list.isEmpty(), );
 
     FastqSequenceInfo item;

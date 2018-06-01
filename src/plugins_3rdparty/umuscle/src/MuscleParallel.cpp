@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,11 +40,6 @@
 #include "muscle/scorehistory.h"
 
 namespace U2 {
-
-struct Range {
-    unsigned m_uBestColLeft;
-    unsigned m_uBestColRight;
-};
 
 /////////////////////////////////////////////////////////////////////
 
@@ -251,15 +246,13 @@ void MusclePrepareTask::alignPrepareUnsafe()
     }
 #endif
 
-    Task *progAlignTask, *refineTreeTask, *refineTask;
-
-    progAlignTask = new ProgressiveAlignTask(workpool);
+    Task *progAlignTask = new ProgressiveAlignTask(workpool);
     res << progAlignTask;
     if (workpool->ctx->params.g_uMaxIters == 1) {
         progAlignTask->setSubtaskProgressWeight(0.9f);
     } else {
-        refineTreeTask = new RefineTreeTask(workpool);
-        refineTask = new RefineTask(workpool);
+        Task *refineTreeTask = new RefineTreeTask(workpool);
+        Task *refineTask = new RefineTask(workpool);
         progAlignTask->setSubtaskProgressWeight(0.3f);
         refineTreeTask->setSubtaskProgressWeight(0.1f);
         refineTask->setSubtaskProgressWeight(0.5f);

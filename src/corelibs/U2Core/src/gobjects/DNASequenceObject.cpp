@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -295,83 +295,16 @@ DNAQuality U2SequenceObject::getQuality() const {
 
 void U2SequenceObject::setSequenceInfo(const QVariantMap& info) {
     U2OpStatus2Log os;
-    DbiConnection con(entityRef.dbiRef, os);
-    CHECK_OP(os, );
-    QList<U2DataId> chainIdList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId,DNAInfo::CHAIN_ID,os);
-    CHECK_OP(os, );
-    if(!chainIdList.isEmpty()){
-        con.dbi->getAttributeDbi()->removeObjectAttributes(chainIdList.first(),os);
-        CHECK_OP(os, );
-    }
-    QList<U2DataId> commentList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId,DNAInfo::COMMENT,os);
-    CHECK_OP(os, );
-    if(!commentList.isEmpty()){
-        con.dbi->getAttributeDbi()->removeObjectAttributes(commentList.first(),os);
-        CHECK_OP(os, );
-    }
-    QList<U2DataId> definitionList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId,DNAInfo::DEFINITION,os);
-    CHECK_OP(os, );
-    if(!definitionList.isEmpty()){
-        con.dbi->getAttributeDbi()->removeObjectAttributes(definitionList.first(),os);
-        CHECK_OP(os, );
-    }
-    U2StringAttribute chainID(entityRef.entityId, DNAInfo::CHAIN_ID, info.value(DNAInfo::CHAIN_ID).toString());
-    U2StringAttribute comment(entityRef.entityId, DNAInfo::COMMENT, info.value(DNAInfo::COMMENT).toString());
-    U2StringAttribute definition(entityRef.entityId, DNAInfo::DEFINITION, info.value(DNAInfo::DEFINITION).toString());
-    con.dbi->getAttributeDbi()->createStringAttribute(chainID, os);
-    CHECK_OP(os, );
-    con.dbi->getAttributeDbi()->createStringAttribute(comment, os);
-    CHECK_OP(os, );
-    con.dbi->getAttributeDbi()->createStringAttribute(definition, os);
+    U2SequenceUtils::setSequenceInfo(os, entityRef, info);
     CHECK_OP(os, );
 }
 
 QVariantMap U2SequenceObject::getSequenceInfo() const {
     U2OpStatus2Log os;
-    QVariantMap resultingInfo;
-    DbiConnection con(entityRef.dbiRef, os);
-    QList<U2DataId> chainIdList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId,DNAInfo::CHAIN_ID,os);
-    CHECK_OP(os, resultingInfo);
-    QList<U2DataId> commentList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId,DNAInfo::COMMENT,os);
-    CHECK_OP(os, resultingInfo);
-    QList<U2DataId> definitionList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId,DNAInfo::DEFINITION,os);
-    CHECK_OP(os, resultingInfo);
-    if(!chainIdList.isEmpty() && !commentList.isEmpty() && !definitionList.isEmpty()) {
-        resultingInfo.insert(DNAInfo::CHAIN_ID, con.dbi->getAttributeDbi()->getStringAttribute(chainIdList.first(),os).value);
-        CHECK_OP(os, QVariantMap());
-        resultingInfo.insert(DNAInfo::COMMENT, con.dbi->getAttributeDbi()->getStringAttribute(commentList.first(),os).value);
-        CHECK_OP(os, QVariantMap());
-        resultingInfo.insert(DNAInfo::DEFINITION, con.dbi->getAttributeDbi()->getStringAttribute(definitionList.first(),os).value);
-        CHECK_OP(os, QVariantMap());
-    }
-    U2StringAttribute attr = U2AttributeUtils::findStringAttribute(con.dbi->getAttributeDbi(), entityRef.entityId, DNAInfo::GENBANK_HEADER, os);
-    if(attr.hasValidId()) {
-        resultingInfo.insert(DNAInfo::GENBANK_HEADER, attr.value);
-        CHECK_OP(os, QVariantMap());
-    }
+    QVariantMap variantMap = U2SequenceUtils::getSequenceInfo(os, entityRef, getSequenceName());
+    CHECK_OP(os, QVariantMap());
 
-    attr = U2AttributeUtils::findStringAttribute(con.dbi->getAttributeDbi(), entityRef.entityId, DNAInfo::SOURCE, os);
-    if(attr.hasValidId()) {
-        resultingInfo.insert(DNAInfo::SOURCE, attr.value);
-        CHECK_OP(os, QVariantMap());
-    }
-
-    attr = U2AttributeUtils::findStringAttribute(con.dbi->getAttributeDbi(), entityRef.entityId, DNAInfo::ACCESSION, os);
-    if(attr.hasValidId()) {
-        resultingInfo.insert(DNAInfo::ACCESSION, attr.value);
-        CHECK_OP(os, QVariantMap());
-    }
-    attr = U2AttributeUtils::findStringAttribute(con.dbi->getAttributeDbi(), entityRef.entityId, Translation_Table_Id_Attribute, os);
-    if(attr.hasValidId()) {
-        resultingInfo.insert(Translation_Table_Id_Attribute, attr.value);
-        CHECK_OP(os, QVariantMap());
-    }
-
-    QString name = this->getSequenceName();
-    if (!name.isEmpty()) {
-        resultingInfo.insert(DNAInfo::ID,name);
-    }
-    return resultingInfo;
+    return variantMap;
 }
 
 QString U2SequenceObject::getStringAttribute(const QString& seqAttr) const {

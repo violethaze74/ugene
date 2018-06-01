@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,6 +56,13 @@ MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _fact
     : QObject(p), factory(_factory),
       threshold(0),
       ignoreTrailingAndLeadingGaps(ignoreTrailingLeadingGaps) {
+
+}
+
+MSAConsensusAlgorithm::MSAConsensusAlgorithm(const MSAConsensusAlgorithm &algorithm) 
+    : QObject(algorithm.parent()), factory(algorithm.factory),
+    threshold(algorithm.threshold),
+    ignoreTrailingAndLeadingGaps(algorithm.ignoreTrailingAndLeadingGaps) {
 
 }
 

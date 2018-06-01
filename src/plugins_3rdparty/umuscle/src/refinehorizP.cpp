@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -164,7 +164,6 @@ namespace U2 {
 
     void RefineWorker::_run() {
 
-        unsigned i = 0;
 #if TRACE
         algoLog.trace(QString("Worker %1 start. Wait...").arg(QString::number(workerID)));
 #endif
@@ -177,7 +176,7 @@ namespace U2 {
         {
             MSA msaIn;
             
-            i = workpool->refineGetJob(&msaIn, workerID);
+            unsigned i = workpool->refineGetJob(&msaIn, workerID);
 
             MuscleContext *ctx = workpool->ctx;
 //            unsigned &g_uTreeSplitNode1 = ctx->muscle.g_uTreeSplitNode1;

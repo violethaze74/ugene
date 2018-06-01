@@ -295,28 +295,36 @@
         <translation>Открыть второй файл</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="151"/>
-        <source>Unable to detect file format %1.
-Select valid file to build dotplot</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="150"/>
+        <source>Select a file with a sequence to build dotplot!</source>
+        <translation>Выберите файл с последовательностью!</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="159"/>
-        <source>Unable to detect format of given file %1.
-Select valid file to build dotplot</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="152"/>
+        <source>Select first file with a sequence to build dotplot!</source>
+        <translation>Выберите первый файл с последовательностью!</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="151"/>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="159"/>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="169"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="153"/>
+        <source>Input the second sequence or check the &apos;Compare sequence against itself&apos; option.</source>
+        <translation>Выберите вторую последовательность или выберите опцию &apos;Сравнить последовательность саму с собой&apos;.</translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="162"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="170"/>
+        <source>Unable to detect file format %1.</source>
+        <translation>Невозможно определить формат файла %1.</translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="154"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="162"/>
+        <location filename="../src/DotPlotFilesDialog.cpp" line="170"/>
         <source>Select files</source>
         <translation>Выберите файлы</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilesDialog.cpp" line="169"/>
         <source>Select files first to build dotplot</source>
-        <translation>Выберите файлы, чтобы посмотрить dotplot</translation>
+        <translation type="vanished">Выберите файлы, чтобы посмотрить dotplot</translation>
     </message>
 </context>
 <context>
@@ -608,7 +616,7 @@ Select valid file to build dotplot</source>
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="1004"/>
         <source>Dotplot is calculating...</source>
-        <translation type="unfinished"></translation>
+        <translation>Выполняется расчёт...</translation>
     </message>
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="1052"/>

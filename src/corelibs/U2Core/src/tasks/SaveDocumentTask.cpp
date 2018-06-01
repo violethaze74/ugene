@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -97,7 +97,12 @@ void SaveDocumentTask::run() {
         return;
     }
 
-    coreLog.info(tr("Saving document %1\n").arg(url.getURLString()));
+    const QString message = tr("Saving document %1\n").arg(url.getURLString());
+    if (flags.testFlag(SaveDoc_ReduceLoggingLevel)) {
+        coreLog.details(message);
+    } else {
+        coreLog.info(message);
+    }
     DocumentFormat* df = doc->getDocumentFormat();
 
     QString originalFilePath = url.getURLString();

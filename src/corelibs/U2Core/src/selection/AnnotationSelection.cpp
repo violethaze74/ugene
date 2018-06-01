@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -132,11 +132,8 @@ int AnnotationSelectionData::getSelectedRegionsLen() const {
     return len;
 }
 
-AnnotationSelection::AnnotationSelection(QObject *p)
-    : GSelection(GSelectionTypes::ANNOTATIONS, p)
-{
-    connect(this, SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)),
-        SLOT(sl_selectionChanged()));
+AnnotationSelection::AnnotationSelection(QObject *p) : GSelection(GSelectionTypes::ANNOTATIONS, p) {
+    connect(this, SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)), SLOT(sl_selectionChanged()));
 }
 
 const QList<AnnotationSelectionData> & AnnotationSelection::getSelection() const {

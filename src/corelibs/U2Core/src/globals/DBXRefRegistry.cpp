@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ QScriptValue DBXRefRegistry::toScriptValue(QScriptEngine *engine, DBXRefRegistry
 { return engine->newQObject(in); }
 
 void DBXRefRegistry::fromScriptValue(const QScriptValue &object, DBXRefRegistry* &out)
-{ out = (DBXRefRegistry*)(object.toQObject()); }
+{ out = qobject_cast<DBXRefRegistry *>(object.toQObject()); }
 
 void DBXRefRegistry::setupToEngine(QScriptEngine *engine){
     DBXRefInfo::setupToEngine(engine);
@@ -74,8 +74,10 @@ QScriptValue DBXRefInfo::toScriptValue(QScriptEngine *engine, DBXRefInfo const &
     return res;
 }
 
-void DBXRefInfo::fromScriptValue(const QScriptValue &object, DBXRefInfo &out)
-{ out = *((DBXRefInfo*)(object.toQObject())); }
+void DBXRefInfo::fromScriptValue(const QScriptValue &object, DBXRefInfo &out) {
+    DBXRefInfo *info = dynamic_cast<DBXRefInfo *>(object.toQObject());
+    out = NULL != info ? *info : DBXRefInfo();
+}
 
 void DBXRefInfo::setupToEngine(QScriptEngine *engine){
     qScriptRegisterMetaType(engine, toScriptValue, fromScriptValue);

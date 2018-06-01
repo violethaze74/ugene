@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -146,7 +146,7 @@ QStringList DelegateTags::getStringList(const DelegateTags *tags, const QString 
     return tags->get(name).toStringList();
 }
 
-const DelegateTags &DelegateTags::operator =(const DelegateTags &other) {
+DelegateTags &DelegateTags::operator =(const DelegateTags &other) {
     tags = other.tags;
     return *this;
 }

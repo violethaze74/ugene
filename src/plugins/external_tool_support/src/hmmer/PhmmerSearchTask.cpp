@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,6 +49,7 @@ const QString PhmmerSearchTask::PER_DOMAIN_HITS_FILENAME = "per_domain_hits.txt"
 PhmmerSearchTask::PhmmerSearchTask(const PhmmerSearchSettings &settings)
     : ExternalToolSupportTask(tr("Search with phmmer"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
+      saveSequenceTask(NULL),
       phmmerTask(NULL),
       parseTask(NULL),
       removeWorkingDir(false)
@@ -175,7 +176,7 @@ QStringList PhmmerSearchTask::getArguments() const {
         arguments << "--domT" << QString::number(settings.domT);
     } else if (PhmmerSearchSettings::OPTION_NOT_SET != settings.domE) {
         arguments << "--domE" << QString::number(settings.domE);
-    }    
+    }
 
     if (PhmmerSearchSettings::OPTION_NOT_SET != settings.domZ) {
         arguments << "--domZ" << QString::number(settings.domZ);

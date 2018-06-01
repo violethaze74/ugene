@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -66,6 +66,10 @@ char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleAlignment& ma, 
     int topFreq = freqsByChar[topChar];
     char res = topFreq < cntToUseGap ? U2Msa::GAP_CHAR : (char)topChar;
     return res;
+}
+
+MSAConsensusAlgorithmStrict* MSAConsensusAlgorithmStrict::clone() const {
+    return new MSAConsensusAlgorithmStrict(*this);
 }
 
 } //namespace

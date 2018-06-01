@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1222,29 +1222,6 @@ GUI_TEST_CLASS_DEFINITION(test_0703) {
     //Expected state : UGENE not crashes
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0729){
-//    1) Open WD
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-//    2) Put "Read Sequence" worker on the scheme
-    WorkflowProcessItem* item = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
-//    3) Click on "unset"
-    GTUtilsWorkflowDesigner::click(os, item);
-//    Expected state: Dataset view opened
-	GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/FASTA/*");
-//    4) Click "Add folder", select data/samples/FASTA
-//    QListWidget* itemsArea = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea");
-//    GTListWidget::click(os, itemsArea, "FASTA", Qt::RightButton);
-//    5) Click on appeared item in the file list
-//    Expected state:
-//        the following widgets appears:
-//            Include mask, Exclude mask lineedits;
-//            Recursive checkbox
- //   GTWidget::findWidget(os, "includeMaskEdit");
- //   GTWidget::findWidget(os, "excludeMaskEdit");
- //   GTWidget::findWidget(os, "recursiveBox");
- //   GTWidget::click(os, GTUtilsMdi::activeWindow(os));
-
-}
 
 GUI_TEST_CLASS_DEFINITION(test_0733) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -1307,7 +1284,7 @@ GUI_TEST_CLASS_DEFINITION(test_0746) {
     GTWidget::click(os, toggleViewButton);
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "translation_action", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "do_not_translate_radiobutton", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
     GTGlobals::sleep();
     QAbstractButton* complement = GTAction::button(os, "complement_action");
@@ -1353,7 +1330,7 @@ GUI_TEST_CLASS_DEFINITION(test_0762) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new FindTandemsDialogFiller(os, sandBoxDir + "test_0762.gb"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find tandems");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find tandem repeats");
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -1587,7 +1564,7 @@ GUI_TEST_CLASS_DEFINITION(test_0782){
     QWidget* graphView = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea");
     GTWidget::click(os, graphView);
     QImage init = GTWidget::getImage(os, graphView);
-    init.save("/home/vmalin/init", "BMP");
+    //init.save("/home/vmalin/init", "BMP");
     class custom: public CustomScenario{
     public:
         void run(HI::GUITestOpStatus &os){
@@ -1600,10 +1577,11 @@ GUI_TEST_CLASS_DEFINITION(test_0782){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Graph"<<"visual_properties_action"));
     GTWidget::click(os, graphView, Qt::RightButton);
 //    4. In "Graph Settings" dialog change graph's color, then press "Cancel".
-
+    GTWidget::click(os, graphView);
 //    Expected result: Graph's color didn't change.
     QImage final = GTWidget::getImage(os, graphView);
-    final.save("/home/vmalin/final", "BMP");
+    //final.save("/home/vmalin/final", "BMP");
+
     CHECK_SET_ERR(final == init, "graph view changed");
 //    5. Repeat the third step, then check "Cutoff for minimum and maximum values".
 
@@ -1640,9 +1618,15 @@ GUI_TEST_CLASS_DEFINITION(test_0792) {
 //    2) Put "Read Sequence" worker on the scheme
     GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
 //    Expected state: Dataset view opened
-	
+
 //    3) Click "Add folder", select data/samples/Genbank
-    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dataDir + "samples/Genbank/*");
+    QString dir;
+#ifdef Q_OS_WIN
+    dir = dataDir + "samples/Genbank/*";
+#else
+    dir = dataDir + "samples/Genbank";
+#endif
+    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, dir);
 //    4) Click on appeared item in the file list
     QWidget* datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
     QListWidget* items = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea", datasetWidget);
@@ -2143,6 +2127,7 @@ GUI_TEST_CLASS_DEFINITION(test_0840) {
     //4. Select this annotation.
     CHECK_SET_ERR(1 == GTUtilsAnnotationsTreeView::findItems(os, "EcoRV").size(), "Unexpected annotation count");
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "EcoRV");
+    GTMouseDriver::doubleClick();
 
     //5. Select "New annotation" in context menu.
     //6. Fill fields with: "Group name" - "enzyme", "Annotation name" - "EcoRV".
@@ -2237,22 +2222,22 @@ GUI_TEST_CLASS_DEFINITION(test_0844) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
+            QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "algoComboBox"));
+            CHECK_SET_ERR(combo != NULL, "algoComboBox not found!");
+            GTComboBox::setIndexWithText(os, combo, "Suffix array");
+
             QLineEdit* pathEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leNewTablePath"));
             pathEdit->setText(sandBoxDir + "test_0844.gb");
             GTGlobals::sleep();
 
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget"), 1);
 
-            QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "algoComboBox"));
-            CHECK_SET_ERR(combo != NULL, "algoComboBox not found!");
-            GTComboBox::setIndexWithText(os, combo , "Suffix array");
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
     GTUtilsDialog::waitForDialog(os, new FindTandemsDialogFiller(os, new Scenario));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find tandems");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find tandem repeats");
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -2264,7 +2249,7 @@ GUI_TEST_CLASS_DEFINITION(test_0846) {
 
 //    2. Add any annotations;
     GTUtilsAnnotationsTreeView::createAnnotation(os, "", "", "1..100");
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    3. Use popup menu {Export->Export annotations}
 //    4. Chose "csv" in combobox "File format"
@@ -2578,10 +2563,10 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTGlobals::sleep(1000);
 
     QStringList errors = GTUtilsLog::getErrors(os, l1);
-	CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1");
-  	
+    CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1");
+
     GTUtilsProjectTreeView::click(os, "Gene.fa");
-	GTGlobals::sleep();
+    GTGlobals::sleep();
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
 
     GTLogTracer l2;
@@ -2589,7 +2574,7 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-	GTGlobals::sleep(1000);
+    GTGlobals::sleep(1000);
     errors = GTUtilsLog::getErrors(os, l2);
     CHECK_SET_ERR(errors.size() == 2, "Wrong errors count 2");
     GTGlobals::sleep();
@@ -3490,8 +3475,9 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
             GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), algorithm);
 
 //    3. Fill fields "Range start" and "Range end" with values "1" and "2" respectively.
-            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "rangeStartSpinBox", dialog), 1, GTGlobals::UseKeyBoard);
-            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "rangeEndSpinBox", dialog), 2, GTGlobals::UseKeyBoard);
+
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "start_edit_line", dialog), "1");
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "end_edit_line", dialog), "2");
 
 //    4. Press "Start prediction".
             GTGlobals::sleep();
@@ -3535,16 +3521,19 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
     };
 
 //    Expected state: Error notification appears.
+    GTLogTracer lt1;
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze" << "Predict secondary structure..."));
     GTUtilsDialog::waitForDialog(os, new PredictSecondaryStructureDialogFiller(os, new Scenario("GORIV")));
-    GTUtilsNotifications::waitForNotification(os, true, "'Secondary structure predict' task failed: The size of sequence is less then minimal allowed size (5 residues).");
+    //GTUtilsNotifications::waitForNotification(os, true, "'Secondary structure predict' task failed: The size of sequence is less then minimal allowed size (5 residues).");
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 
     GTGlobals::sleep();
+    GTUtilsLog::checkContainsError(os, lt1, QString("Task {Secondary structure predict} finished with error: The size of sequence is less then minimal allowed size (5 residues)"));
 
 //    5. Repeat steps 2, 3, then choose another algorithm in dialog.
 //    6. Press "Start prediction".
 //    Expected state: Error notification appears.
+    GTLogTracer lt2;
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze" << "Predict secondary structure..."));
     GTUtilsDialog::waitForDialog(os, new PredictSecondaryStructureDialogFiller(os, new DodgeLicenceDialogScenario("PsiPred")));
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
@@ -3552,9 +3541,11 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze" << "Predict secondary structure..."));
     GTUtilsDialog::waitForDialog(os, new PredictSecondaryStructureDialogFiller(os, new Scenario("PsiPred")));
-    GTUtilsNotifications::waitForNotification(os, true, "'Secondary structure predict' task failed: The size of sequence is less then minimal allowed size (5 residues).");
+    //GTUtilsNotifications::waitForNotification(os, true, "'Secondary structure predict' task failed: The size of sequence is less then minimal allowed size (5 residues).");
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os), Qt::RightButton);
 
+    GTGlobals::sleep();
+    GTUtilsLog::checkContainsError(os, lt2, QString("Task {Secondary structure predict} finished with error: The size of sequence is less then minimal allowed size (5 residues)"));
     GTGlobals::sleep();
 }
 

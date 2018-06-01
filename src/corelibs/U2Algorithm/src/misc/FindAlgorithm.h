@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,9 +37,9 @@ public:
     static const int NOT_ENOUGH_MEMORY_ERROR;
 
 public:
-    FindAlgorithmResult() : err(0) {}
+    FindAlgorithmResult() : translation(false), err(0) {}
     FindAlgorithmResult(const int _err)
-        : err(_err){}
+        : translation(false), err(_err){}
     FindAlgorithmResult(const U2Region& _r, bool t, U2Strand s, int _err)
         : region(_r), translation(t), strand(s), err(_err){}
 

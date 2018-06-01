@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -117,21 +117,22 @@ static void setDoubleOption(double& num, const QDomElement& el, const QString& o
     num = ret;
 }
 
-static void setUseBitCutoffsOption(int& ret, const QDomElement& el, const QString& opName, TaskStateInfo& si) {
-    if (si.hasError()) {
-        return;
-    }
-    QString str = el.attribute(opName).toLower();
-    if ("ga" == str) {
-        ret = HmmerSearchSettings::p7H_GA;
-    } else if ("nc" == str) {
-        ret = HmmerSearchSettings::p7H_NC;
-    } else if ("tc" == str) {
-        ret = HmmerSearchSettings::p7H_TC;
-    } else if (!str.isEmpty()) {
-        si.setError(QString("unrecognized_value_in %1 option").arg(opName));
-    }
-}
+// An unused function. Commneted to suppress the warning
+//static void setUseBitCutoffsOption(int& ret, const QDomElement& el, const QString& opName, TaskStateInfo& si) {
+//    if (si.hasError()) {
+//        return;
+//    }
+//    QString str = el.attribute(opName).toLower();
+//    if ("ga" == str) {
+//        ret = HmmerSearchSettings::p7H_GA;
+//    } else if ("nc" == str) {
+//        ret = HmmerSearchSettings::p7H_NC;
+//    } else if ("tc" == str) {
+//        ret = HmmerSearchSettings::p7H_TC;
+//    } else if (!str.isEmpty()) {
+//        si.setError(QString("unrecognized_value_in %1 option").arg(opName));
+//    }
+//}
 
 static void setBooleanOption(bool&ret, const QDomElement& el, const QString& opName, TaskStateInfo& si) {
     if (si.hasError()) {

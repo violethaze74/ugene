@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -72,6 +72,7 @@ private:
     bool isSameNode(const LogEntry& prev, const LogEntry& cur) const;
 
     int lastEntryIndex;
+    QMap <QString, int> taskCount;
     const ExternalToolsWidgetController* ctrl;
 
     static const QString LINE_BREAK;
