@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,9 +30,9 @@ using namespace HI;
 class CreateRulerDialogFiller: public Filler
 {
 public:
-    CreateRulerDialogFiller(HI::GUITestOpStatus &os, QString _rulerName, int _startPos): Filler(os, "CreateRulerDialog"),
-    rulerName(_rulerName), startPos(_startPos){}
-    CreateRulerDialogFiller(HI::GUITestOpStatus &os, CustomScenario* c): Filler(os, "CreateRulerDialog", c){}
+    CreateRulerDialogFiller(HI::GUITestOpStatus &os, QString _rulerName, int _startPos);
+    CreateRulerDialogFiller(HI::GUITestOpStatus &os, CustomScenario* c);
+
     virtual void commonScenario();
 private:
     QString rulerName;

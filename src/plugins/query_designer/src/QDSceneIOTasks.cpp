@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -231,10 +231,10 @@ bool QDSceneSerializer::doc2scheme(const QList<QDDocument*>& docs, QMap<QDElemen
         if (grpStmt->getId()==QDDocument::GROUPS_SECTION) {
             continue;
         }
-        QDElementStatement* actualStmt = NULL;
         const QString& definedIn = grpStmt->definedIn();
         QString group;
         if (!definedIn.isEmpty()) {
+            QDElementStatement* actualStmt = NULL;
             foreach(QDDocument* importedDoc, docs) {
                 if (importedDoc->getName()==definedIn) {
                     actualStmt = importedDoc->getElement(grpStmt->getId());

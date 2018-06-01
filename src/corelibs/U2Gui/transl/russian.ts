@@ -14,22 +14,42 @@
         <translation>Аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectFilterNames.cpp" line="32"/>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="33"/>
         <source>Multiple alignment content</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectFilterNames.cpp" line="33"/>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="34"/>
         <source>Multiple alignment sequence name</source>
         <translation>Имя множественного выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectFilterNames.cpp" line="34"/>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="36"/>
+        <source>Sanger read name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="37"/>
+        <source>Sanger reference name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="38"/>
+        <source>Sanger read content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="39"/>
+        <source>Sanger reference content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="41"/>
         <source>Sequence accession number</source>
         <translation>Порядковый номер последовательности</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectFilterNames.cpp" line="35"/>
+        <location filename="../src/util/project/ProjectFilterNames.cpp" line="42"/>
         <source>Text content</source>
         <translation>Текст</translation>
     </message>
@@ -109,17 +129,17 @@
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="63"/>
         <source>Save to fiie</source>
-        <translation type="unfinished">Сохранить в файл</translation>
+        <translation>Сохранить в файл</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="70"/>
         <source>File format</source>
-        <translation type="unfinished">Формат файла</translation>
+        <translation>Формат файла</translation>
     </message>
     <message>
         <location filename="../src/util/ImportWidgets/AprImportWidget.ui" line="87"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -580,7 +600,7 @@
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="79"/>
         <source>Save to directory:</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить в директорию:</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="104"/>
@@ -595,7 +615,7 @@
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="135"/>
         <source>Add to project</source>
-        <translation type="unfinished">Добавить в проект</translation>
+        <translation>Добавить в проект</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.ui" line="145"/>
@@ -953,7 +973,7 @@
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="40"/>
         <source>Process directories recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>Обработать директории рекурсивно</translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="47"/>
@@ -1015,7 +1035,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="148"/>
         <source>Number of unknown symbols (N - for nucleic or X - for amino) between parts:</source>
-        <translation type="unfinished"></translation>
+        <translation>Число неизвестных символов (N - для нуклеотидных или X - для амино) между частями:</translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="193"/>
@@ -1230,19 +1250,16 @@ The items cannot be recovered once deleted.</source>
         <translation>Невозможно экспортировать изображение %1.</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="50"/>
         <source>Author</source>
-        <translation>Автор</translation>
+        <translation type="vanished">Автор</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="50"/>
         <source>Gene name</source>
-        <translation>Имя гена</translation>
+        <translation type="vanished">Имя гена</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="50"/>
         <source>Organism</source>
-        <translation>Организм</translation>
+        <translation type="vanished">Организм</translation>
     </message>
 </context>
 <context>
@@ -1498,37 +1515,36 @@ The items cannot be recovered once deleted.</source>
         <translation>Поисковый запрос:</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="102"/>
         <source>History...</source>
-        <translation>История...</translation>
+        <translation type="vanished">История...</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="111"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="87"/>
         <source>Results:</source>
         <translation>Результаты:</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="128"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="104"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="133"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="109"/>
         <source>Desc</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="138"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="114"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="148"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="124"/>
         <source>Result limit:</source>
         <translation>Количество результатов:</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="181"/>
+        <location filename="../src/util/SearchGenbankSequenceDialog.ui" line="157"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
@@ -1657,30 +1673,30 @@ To append data to existing file press &apos;Append&apos;.</source>
     <message>
         <location filename="../src/util/ImportWidgets/AceImportWidget.cpp" line="60"/>
         <source>Destination UGENEDB file</source>
-        <translation type="unfinished">Место назначения UGENEDB файла</translation>
+        <translation>Место назначения UGENEDB файла</translation>
     </message>
 </context>
 <context>
     <name>U2::AddDocumentAndOpenViewTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="340"/>
-        <location filename="../src/OpenViewTask.cpp" line="354"/>
+        <location filename="../src/OpenViewTask.cpp" line="357"/>
+        <location filename="../src/OpenViewTask.cpp" line="371"/>
         <source>Opening view for document: &apos;NONAME&apos;</source>
         <translation>Открытие документа: &apos;NONAME&apos;</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="344"/>
-        <location filename="../src/OpenViewTask.cpp" line="357"/>
+        <location filename="../src/OpenViewTask.cpp" line="361"/>
+        <location filename="../src/OpenViewTask.cpp" line="374"/>
         <source>Opening view for document: %1</source>
         <translation>Открытие документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="346"/>
+        <location filename="../src/OpenViewTask.cpp" line="363"/>
         <source>Provided document is NULL</source>
         <translation>Provided document is NULL</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="359"/>
+        <location filename="../src/OpenViewTask.cpp" line="376"/>
         <source>Document provider is NULL</source>
         <translation>Document provider is NULL</translation>
     </message>
@@ -1978,40 +1994,40 @@ complement(5..15)</translation>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="199"/>
         <source>There are more than 100 files found for download.
 Are you sure you want to open all of them?</source>
-        <translation type="unfinished"></translation>
+        <translation>Найдено более 100 файлов для скачивания. Открыть их все?</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="200"/>
         <source>Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>Предупреждение</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="201"/>
         <source>Open anyway</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть</translation>
     </message>
     <message>
         <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="201"/>
         <source>Don&apos;t open</source>
-        <translation type="unfinished"></translation>
+        <translation>Не открывать</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="217"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="223"/>
         <source>Download remote documents</source>
         <translation>Скачать удаленные документы</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="257"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="264"/>
         <source>Hint: </source>
         <translation>Подсказка: </translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="258"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="265"/>
         <source>Use database unique identifier.</source>
         <translation>Использовать уникальный идентификатор базы данных.</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="260"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="267"/>
         <source>You can download multiple items by separating IDs with space or semicolon.</source>
         <translation>Вы можете скачать несколько элементов разделяя идентификаторы при помощи пробела или точки с запятой.</translation>
     </message>
@@ -2223,7 +2239,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/util/ExportAnnotationsDialog.ui" line="58"/>
         <source>Add to project</source>
-        <translation type="unfinished">Добавить в проект</translation>
+        <translation>Добавить в проект</translation>
     </message>
     <message>
         <location filename="../src/util/ExportAnnotationsDialog.ui" line="68"/>
@@ -2385,7 +2401,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/options_panel/GroupOptionsWidget.cpp" line="67"/>
         <source>Help</source>
-        <translation type="unfinished">Помощь</translation>
+        <translation>Помощь</translation>
     </message>
 </context>
 <context>
@@ -2589,9 +2605,24 @@ Are you sure you want to open all of them?</source>
         <translation>Load remote document and add to project</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="291"/>
+        <location filename="../src/OpenViewTask.cpp" line="250"/>
+        <source>Load remote document</source>
+        <translation>Load remote document</translation>
+    </message>
+    <message>
+        <location filename="../src/OpenViewTask.cpp" line="296"/>
         <source>Cannot find %1 in %2 database</source>
         <translation>Невозможно найти %1 в базе данных %2</translation>
+    </message>
+    <message>
+        <location filename="../src/OpenViewTask.cpp" line="346"/>
+        <source>Failed to download %1 from %2. Error: %3</source>
+        <translation>Невозможно скачать %1 из %2. Ошибка: %3</translation>
+    </message>
+    <message>
+        <location filename="../src/OpenViewTask.cpp" line="352"/>
+        <source>Document was successfully downloaded: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;</source>
+        <translation>Документ был успешно загружен: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -2616,7 +2647,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/util/logview/LogView.cpp" line="72"/>
         <source>Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки...</translation>
     </message>
     <message>
         <location filename="../src/util/logview/LogView.cpp" line="76"/>

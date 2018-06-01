@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -300,15 +300,17 @@ void PanView::sl_onRowBarMoved(int v) {
     update();
 }
 
-void PanView::sl_onAnnotationsModified(const AnnotationModification& md) {
+void PanView::sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications) {
     QList<Annotation *> modified;
-    modified << md.annotation;
+    foreach (const AnnotationModification &annotationModification, annotationModifications) {
+        modified << annotationModification.annotation;
+    }
     unregisterAnnotations(modified);
     registerAnnotations(modified);
 
     addUpdateFlags(GSLV_UF_AnnotationsChanged);
     update();
-    GSequenceLineViewAnnotated::sl_onAnnotationsModified(md);
+    GSequenceLineViewAnnotated::sl_onAnnotationsModified(annotationModifications);
 }
 
 void PanView::sl_onAnnotationSettingsChanged(const QStringList& changedSettings) {
@@ -390,13 +392,10 @@ void PanView::updateActions() {
 
 void PanView::sl_zoomInAction() {
     assert(visibleRange.length >= minNuclsPerScreen);
-    DNASequenceSelection* sel = getSequenceContext()->getSequenceSelection();
-    if (!sel->isEmpty()) {
-        const U2Region& selRange = sel->getSelectedRegions().first();
-        if (selRange.length >= minNuclsPerScreen && visibleRange.contains(selRange) && visibleRange != selRange) {
-            sl_zoomToSelection();
-            return;
-        }
+    const U2Region selRange = getRegionToZoom();
+    if (!selRange.isEmpty() && selRange.length >= minNuclsPerScreen && visibleRange.contains(selRange) && visibleRange != selRange) {
+        sl_zoomToSelection();
+        return;
     }
     U2Region newVisibleRange = visibleRange;
     newVisibleRange.length = qMax((visibleRange.length + 1) / 2, (qint64)minNuclsPerScreen);
@@ -423,15 +422,14 @@ void PanView::sl_onDNASelectionChanged(LRegionsSelection* s, const QVector<U2Reg
 }
 
 void PanView::sl_zoomToSelection() {
-    const QVector<U2Region>& sel = ctx->getSequenceSelection()->getSelectedRegions();
-    if (sel.isEmpty()) {
+    const U2Region selRegion = getRegionToZoom();
+    if (selRegion.isEmpty()) {
         return;
     }
-    U2Region selRegion = sel.first();
     if (selRegion.length < minNuclsPerScreen) {
         return;
     }
-    if (visibleRange==selRegion) {
+    if (visibleRange == selRegion) {
         return;
     }
     SAFE_POINT(U2Region(0, ctx->getSequenceObject()->getSequenceLength()).contains(selRegion), "Invalid selection region",);
@@ -454,7 +452,6 @@ void PanView::setVisibleRange(const U2Region& newRange, bool signal) {
     }
     GSequenceLineView::setVisibleRange(newRange, signal);
 }
-
 
 void PanView::ensureVisible(Annotation *a, int locationIdx) {
     AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
@@ -589,6 +586,19 @@ void PanView::showEvent(QShowEvent *ev){
 
 void PanView::sl_updateRows(){
     updateRows();
+}
+
+const U2Region PanView::getRegionToZoom() const {
+    const QVector<U2Region>& sel = ctx->getSequenceSelection()->getSelectedRegions();
+    const QList<AnnotationSelectionData> annotationSel = getSequenceContext()->getAnnotationsSelection()->getSelection();
+    U2Region selRegion;
+    if (!sel.isEmpty()) {
+        selRegion = sel.first();
+    } else if (!annotationSel.isEmpty()) {
+        selRegion = U2Region::containingRegion(annotationSel.first().annotation->getRegions());
+    }
+
+    return selRegion;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,8 @@ ExternalToolValidateTask::ExternalToolValidateTask(const QString& _toolName, Tas
 
 ExternalToolJustValidateTask::ExternalToolJustValidateTask(const QString& _toolName, const QString& path) :
     ExternalToolValidateTask(_toolName, TaskFlag_None),
-    externalToolProcess(NULL)
+    externalToolProcess(NULL),
+    tool(NULL)
 {
     toolPath = path;
     SAFE_POINT_EXT(!toolPath.isEmpty(), setError(tr("Tool's path is empty")), );

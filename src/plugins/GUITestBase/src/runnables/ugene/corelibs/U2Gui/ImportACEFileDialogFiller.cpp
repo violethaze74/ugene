@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,9 @@ ImportACEFileFiller::ImportACEFileFiller(HI::GUITestOpStatus &os,
 }
 
 ImportACEFileFiller::ImportACEFileFiller(HI::GUITestOpStatus &os, CustomScenario* _c)
-  : Filler(os, "Select Document Format", _c) {
+  : Filler(os, "Select Document Format", _c),
+    isReadOnly(false)
+{
     settings.timeout = 120000;
 }
 

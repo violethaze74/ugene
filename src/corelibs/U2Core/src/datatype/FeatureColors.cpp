@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,15 +27,15 @@ static QList<QColor> prepareColors() {
     QList<QColor> colors;
     QString mustHave = "FF";
     QStringList optional;
-    optional<<"FF"<<"CC"<<"99"<<"66"<<"33"<<"00";
+    optional << "FF" << "CC" << "99" << "66" << "33" << "00";
     for(int i = 0; i < 3; i++) {
-        for(int j=0; j < optional.size(); j++) {
-            for(int k=1; k < optional.size(); k++) { //todo: avoid duplicates
+        for(int j = 0; j < optional.size(); j++) {
+            for(int k = 1; k < optional.size(); k++) { //todo: avoid duplicates
                 QString colorName =
                     i == 0 ? mustHave + optional[j] + optional[k] :
                     i == 1 ? optional[j] + mustHave + optional[k] :
                     optional[j] + optional[k] + mustHave;
-                QColor c("#"+colorName);
+                QColor c("#" + colorName);
                 assert(c.isValid());
                 colors.append(c);
             }
@@ -49,8 +49,8 @@ QColor FeatureColors::genLightColor(const QString& name) {
 
     int hash = 0;
     QByteArray a = name.toLatin1();
-    for (int i=0;i<a.size(); i++) {
-        hash+=a[i];
+    for (int i = 0; i < a.size(); i++) {
+        hash += a[i];
     }
     QColor c = colors.at((hash*hash)%colors.size());
     return c;

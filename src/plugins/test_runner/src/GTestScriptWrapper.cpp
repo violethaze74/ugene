@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -140,7 +140,7 @@ QScriptValue GTestScriptWrapper::qtestMouseMoveE(QScriptContext *ctx, QScriptEng
                     result="correctly";
                     break;
                 case 3:
-                    QTest::mouseMove(widget,ctx->argument(1).toVariant().toPoint(),ctx->argument(2).toInteger());                   result=true;
+                    QTest::mouseMove(widget,ctx->argument(1).toVariant().toPoint(),ctx->argument(2).toInteger());
                     //result=true;
                     result="correctly";
                     break;

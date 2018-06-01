@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -471,6 +471,11 @@ void GSequenceLineView::sl_onCoherentRangeViewRangeChanged() {
     setVisibleRange(newRange);
 }
 
+void GSequenceLineView::sl_onLocalCenteringRequest(qint64 pos) {
+    setCenterPos(pos);
+}
+
+
 void GSequenceLineView::setVisibleRange(const U2Region& newRange, bool signal) {
     SAFE_POINT(newRange.startPos >=0 && newRange.endPos() <= seqLen, "Failed to update visible range. Range is out of the sequence range!",);
 
@@ -556,6 +561,8 @@ void GSequenceLineView::resizeSelection(const QPoint& areaPoint) {
     } else if (selStart + selLen > seqLen) {
             selLen = seqLen - selStart;
     }
+    CHECK(selLen != 0, );
+
     U2Region newSelection(selStart, selLen);
 
     if (!resizableRegion.isEmpty()) {

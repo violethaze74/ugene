@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -73,6 +73,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef,  QList<GObject*>& object
 
     QBitArray ALPHAS = TextUtils::ALPHA_NUMS;
     ALPHAS['-'] = true;
+    ALPHAS['*'] = true;
 
     QByteArray seq;
     QString seqName(io->getURL().baseFileName());
@@ -81,7 +82,6 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef,  QList<GObject*>& object
     writer.open(QIODevice::WriteOnly);
     TmpDbiObjects dbiObjects(dbiRef, os);
     bool ok = true;
-    int len = 0;
     bool isStarted = false;
     int sequenceCounter = 0;
     bool terminatorFound = false;
@@ -89,7 +89,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef,  QList<GObject*>& object
 
 
     while (ok && !io->isEof()) {
-        len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE, &terminatorFound);
+        int len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE, &terminatorFound);
         if (len <= 0){
             continue;
         }
@@ -147,7 +147,7 @@ Document* RawDNASequenceFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiR
 FormatCheckResult RawDNASequenceFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
     const char* data = rawData.constData();
     int size = rawData.size();
-    if(QRegExp("[a-zA-Z\r\n-]*").exactMatch(rawData)) {
+    if (QRegExp("[a-zA-Z\r\n\\*-]*").exactMatch(rawData)) {
         return FormatDetection_VeryHighSimilarity;
     }
     bool hasBinaryData = TextUtils::contains(TextUtils::BINARY, data, size);

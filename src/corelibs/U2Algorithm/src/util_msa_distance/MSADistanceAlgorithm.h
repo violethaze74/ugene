@@ -1,6 +1,6 @@
 ﻿/**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -106,7 +106,7 @@ public:
     int getSimilarity(int row1, int row2, bool usePercents);
 
     const MSADistanceMatrix& getMatrix() const;
-        
+
     virtual QString getDescription() const {return factory->getDescription();}
 
     virtual QString getName() const {return factory->getName();}

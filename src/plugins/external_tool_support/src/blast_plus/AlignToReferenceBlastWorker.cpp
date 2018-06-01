@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -314,7 +314,7 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
 }
 
 Task::ReportResult AlignToReferenceBlastTask::report() {
-    if (NULL != formatDbSubTask) {
+    if (NULL != formatDbSubTask && !formatDbSubTask->getResultPath().isEmpty()) {
         QFileInfo(formatDbSubTask->getResultPath()).dir().removeRecursively();
     }
     return ReportResult_Finished;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -141,7 +141,11 @@ TLSContext* KalignTask::createContextInstance()
 // KalignGObjectTask
 
 KalignGObjectTask::KalignGObjectTask(MultipleSequenceAlignmentObject* _obj, const KalignTaskSettings& _config)
-: AlignGObjectTask("", TaskFlags_NR_FOSCOE, _obj), lock(NULL), kalignTask(NULL), config(_config)
+    : AlignGObjectTask("", TaskFlags_NR_FOSCOE, _obj),
+      lock(NULL),
+      kalignTask(NULL),
+      config(_config),
+      loadDocumentTask(NULL)
 {
     QString aliName = obj->getDocument()->getName();
     QString tn;

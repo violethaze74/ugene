@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -406,9 +406,7 @@ bool parseTrackLine(const QString& trackLine, QString& trackName, QString& track
     SAFE_POINT(trackLine.startsWith("track "), "Internal error while parsing track header line of a BED file:"
         " the line doesn't starts with 'track'!", false);
 
-    bool attrFormatStatus = true; // Correct, by default
-
-    attrFormatStatus = getAttributeValue(trackLine, "name", trackName);
+    bool attrFormatStatus = getAttributeValue(trackLine, "name", trackName);
     if (!attrFormatStatus) {
         return false;
     }

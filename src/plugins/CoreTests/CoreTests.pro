@@ -17,6 +17,7 @@ HEADERS += src/AnnotationTableObjectTest.h \
            src/GUrlTests.h \
            src/LoadRemoteDocumentTests.h \
            src/McaObjectTests.h \
+           src/MsaObjectTests.h \
            src/PWMatrixTests.h \
            src/PhyTreeObjectTests.h \
            src/SMatrixTests.h \
@@ -43,6 +44,7 @@ SOURCES += src/AnnotationTableObjectTest.cpp \
            src/GUrlTests.cpp \
            src/LoadRemoteDocumentTests.cpp \
            src/McaObjectTests.cpp \
+           src/MsaObjectTests.cpp \
            src/PWMatrixTests.cpp \
            src/PhyTreeObjectTests.cpp \
            src/SMatrixTests.cpp \

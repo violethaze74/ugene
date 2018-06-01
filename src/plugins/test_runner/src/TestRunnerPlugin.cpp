@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -235,6 +235,7 @@ void TestRunnerService::addTestSuite(GTestSuite *ts) {
         }
     }
     readEnvForKeys(tsEnvResultedKeys);
+    saveSuites();
 
     emit si_testSuiteAdded(ts);
 }
@@ -245,10 +246,10 @@ void TestRunnerService::removeTestSuite(GTestSuite* ts) {
 
     //todo: cleanup vars, but leave built-in
     saveEnv();
+    saveSuites();
 
     emit si_testSuiteRemoved(ts);
 }
-
 
 GTestSuite* TestRunnerService::findTestSuiteByURL(const QString& url) {
     foreach(GTestSuite* t, suites) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ FormatDBSupportRunDialog::FormatDBSupportRunDialog(const QString &_name, FormatD
         QDialog(_parent), name(_name), settings(_settings)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20880469");
+    new HelpButton(this, buttonBox, "21433421");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Format"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     formatButton = buttonBox->button(QDialogButtonBox::Ok);

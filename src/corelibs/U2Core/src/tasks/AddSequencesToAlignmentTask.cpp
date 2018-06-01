@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,6 +48,11 @@ AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSeq
       modStep(NULL)
 {
     entityRef = maObj->getEntityRef();
+
+    // reset modification inf.
+    mi.alignmentLengthChanged = false;
+    mi.rowContentChanged = false;
+    mi.rowListChanged = false;
 }
 
 void AddSequenceObjectsToAlignmentTask::prepare() {
@@ -77,7 +82,7 @@ void AddSequenceObjectsToAlignmentTask::run() {
     }
     QList<U2MsaRow> rows;
     qint64 maxLength = createRows(rows);
-    if (isCanceled() || hasError()) {
+    if (isCanceled() || hasError() || rows.isEmpty()) {
         return;
     }
     CHECK_OP(stateInfo, );
@@ -135,9 +140,15 @@ qint64 AddSequenceObjectsToAlignmentTask::createRows(QList<U2MsaRow> &rows) {
 }
 
 void AddSequenceObjectsToAlignmentTask::addRows(QList<U2MsaRow> &rows, qint64 maxLength) {
-    // Add rows
+    if (rows.isEmpty()) {
+        return;
+    }
+
     dbi->addRows(entityRef.entityId, rows, stateInfo);
     CHECK_OP(stateInfo, );
+
+    mi.rowListChanged = true;
+    mi.alignmentLengthChanged = true;
 
     if (maxLength > maObj->getLength()) {
         dbi->updateMsaLength(entityRef.entityId, maxLength, stateInfo);
@@ -228,6 +239,10 @@ AddSequencesFromDocumentsToAlignmentTask::AddSequencesFromDocumentsToAlignmentTa
 void AddSequencesFromDocumentsToAlignmentTask::prepare() {
     AddSequenceObjectsToAlignmentTask::prepare();
     seqList = PasteUtils::getSequences(docs, stateInfo);
+    if (seqList.isEmpty()) {
+        stateInfo.setError("No valid sequences found to add to the alignment.");
+        return;
+    }
     processObjectsAndSetResultingAlphabet();
 }
 

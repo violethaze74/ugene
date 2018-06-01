@@ -288,5 +288,4 @@ SOURCES += src/MainWindow.cpp \
            src/util/webchannel/WebSocketTransport.cpp
 
 RESOURCES += U2Gui.qrc
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts

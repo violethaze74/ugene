@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,8 +62,16 @@ DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, 
 
 }
 
-DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c):
-    Filler(os, "DistanceMatrixMSAProfileDialog", c){}
+DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
+    : Filler(os, "DistanceMatrixMSAProfileDialog", c),
+      hamming(false),
+      counts(false),
+      excludeGaps(false),
+      saveToFile(false),
+      format(NONE)
+{
+
+}
 
 #define GT_METHOD_NAME "run"
 void DistanceMatrixDialogFiller::commonScenario(){

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -647,11 +647,10 @@ static void findRegExp( FindAlgorithmResultsListener *rl,
     for ( int ci = conStart; ci < conEnd && !stopFlag; ++ci ) {
         QString substr;
         QByteArray tmp( range.length + 1, 0 );
-        char *complSeq = NULL;
         U2Strand resultStrand;
 
         if ( ci == 1 ) { // complementary
-            complSeq = tmp.data( );
+            char *complSeq = tmp.data( );
             TextUtils::translate( complTT->getOne2OneMapper( ), seq + range.startPos,
                                   qMin(range.length, seqLen - range.startPos),
                                   complSeq );

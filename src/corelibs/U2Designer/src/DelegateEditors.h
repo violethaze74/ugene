@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -435,7 +435,7 @@ class U2DESIGNER_EXPORT StringListDelegate : public PropertyDelegate {
     Q_OBJECT
 
 public:
-    StringListDelegate(QObject *parent = 0) : PropertyDelegate(parent) {}
+    StringListDelegate(QObject *parent = 0) : PropertyDelegate(parent), currentEditor(NULL) {}
     virtual ~StringListDelegate() {}
 
     virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
@@ -467,7 +467,7 @@ class U2DESIGNER_EXPORT StringSelectorDelegate: public PropertyDelegate {
     Q_OBJECT
 public:
     StringSelectorDelegate(const QString& _initValue, SelectorDialogHandler *_f, QObject *o = NULL):
-        PropertyDelegate(o), initValue(_initValue), f(_f) {}
+        PropertyDelegate(o), valueEdit(NULL), currentEditor(NULL), initValue(_initValue), multipleSelection(false), f(_f) {}
     virtual ~StringSelectorDelegate() {}
 
     virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,

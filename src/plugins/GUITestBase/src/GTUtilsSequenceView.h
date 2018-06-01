@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@
 namespace U2 {
 
 class ADVSingleSequenceWidget;
+class DetView;
 class PanView;
 class U2Region;
 class Overview;
@@ -45,6 +46,7 @@ public:
     static U2Region getVisibleRange(HI::GUITestOpStatus &os, int widgetNumber = 0);
     static void checkSequence(HI::GUITestOpStatus &os, const QString &expectedSequence);
     static void selectSequenceRegion(HI::GUITestOpStatus &os, int from, int to);
+    static void selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString multipleRangeString);
 
     static void openSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
     static void addSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
@@ -52,6 +54,7 @@ public:
     static void goToPosition(HI::GUITestOpStatus &os, int position);
 
     static ADVSingleSequenceWidget * getSeqWidgetByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static DetView * getDetViewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
     static PanView * getPanViewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
     static Overview* getOverviewByNumber(HI::GUITestOpStatus &os, int number = 0, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
     static int getSeqWidgetsNumber(HI::GUITestOpStatus &os);
@@ -60,13 +63,20 @@ public:
     static QString getSeqName(HI::GUITestOpStatus &os, ADVSingleSequenceWidget *seqWidget);
 
     //clicks on simple annotation on sequence view
-    static void clickAnnotationDet(HI::GUITestOpStatus &os, QString name, int startpos, int number = 0, Qt::MouseButton button = Qt::LeftButton);
-    static void clickAnnotationPan(HI::GUITestOpStatus &os, QString name, int startpos, int number = 0, Qt::MouseButton button = Qt::LeftButton);
+    static void clickAnnotationDet(HI::GUITestOpStatus &os, QString name, int startpos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
+    static void clickAnnotationPan(HI::GUITestOpStatus &os, QString name, int startpos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
 
     static GSequenceGraphView* getGraphView(HI::GUITestOpStatus &os);
     static QList<QVariant> getLabelPositions(HI::GUITestOpStatus &os, GSequenceGraphView* graph);
     static QList<TextLabel*> getGraphLabels(HI::GUITestOpStatus &os, GSequenceGraphView* graph);
     static QColor getGraphColor(HI::GUITestOpStatus &os, GSequenceGraphView* graph);
+
+    static void enableEditingMode(HI::GUITestOpStatus &os, bool enable = true, int sequenceNumber = 0);
+
+    /** It is supposed, that the editing mode is enabled and DetView is visible.
+      * The method sets the cursor before the @position (0-based) in the first sequence in the view
+      **/
+    static void setCursor(HI::GUITestOpStatus &os, qint64 position);
 };
 
 } // namespace U2

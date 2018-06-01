@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,6 +37,7 @@ namespace U2 {
 class DetView;
 class DNASequence;
 class ModifySequenceContentTask;
+class Task;
 class U2SequenceObject;
 
 class DetViewSequenceEditor : public QObject {
@@ -49,7 +50,6 @@ public:
     void reset();
     bool isEditMode() const;
     QAction* getEditAction() const { return editAction; }
-    bool getBlock() const { return block; }
 
     bool eventFilter(QObject *watched, QEvent *event);
 
@@ -63,23 +63,20 @@ private:
     void insertChar(int character);
     void deleteChar(int key);
 
-    void runModifySeqTask(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence);
+    void modifySequence(U2SequenceObject* seqObj, const U2Region &region, const DNASequence &sequence);
     void cancelSelectionResizing();
 
 private slots:
     void sl_editMode(bool active);
     void sl_changeCursorColor();
-    void sl_unblock();
     void sl_objectLockStateChanged();
+    void sl_paste(Task* pasteTask);
 
 private:
     int         cursor; // TODO_SVEDIT: can be separate class
     QColor      cursorColor;
     QTimer      animationTimer;
     DetView*    view;
-
-    ModifySequenceContentTask* task;
-    bool        block;
 
     QAction*    editAction;
 };

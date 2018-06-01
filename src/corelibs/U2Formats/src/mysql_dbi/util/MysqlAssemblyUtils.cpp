@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -195,7 +195,9 @@ void MysqlAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRead
         // aux
         int auxStart = pnextEnd + 1;
         int auxEnd = packedData.length();
-        read->aux = SamtoolsAdapter::string2aux(QByteArray(data + auxStart, auxEnd - auxStart));
+        if (auxStart < auxEnd) {
+            read->aux = SamtoolsAdapter::string2aux(QByteArray(data + auxStart, auxEnd - auxStart));
+        }
     }
 
     // parse cigar

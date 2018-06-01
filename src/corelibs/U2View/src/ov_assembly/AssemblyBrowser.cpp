@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -789,9 +789,8 @@ void AssemblyBrowser::updateZoomingActions() {
 
     // decide if on next zoom cellWidth will increase max width
     {
-        bool enableZoomIn = false;
         double curZoomFactor = zoomFactor;
-        enableZoomIn = !(zoomInFromSize(getCellWidth()) > MAX_CELL_WIDTH);
+        bool enableZoomIn = !(zoomInFromSize(getCellWidth()) > MAX_CELL_WIDTH);
         zoomFactor = curZoomFactor;
         zoomInAction->setEnabled(enableZoomIn);
     }

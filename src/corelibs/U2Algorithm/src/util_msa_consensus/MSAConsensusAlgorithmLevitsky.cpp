@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -162,6 +162,10 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma
         }
     }
     return selectedChar;
+}
+
+MSAConsensusAlgorithmLevitsky* MSAConsensusAlgorithmLevitsky::clone() const {
+    return new MSAConsensusAlgorithmLevitsky(*this);
 }
 
 } //namespace

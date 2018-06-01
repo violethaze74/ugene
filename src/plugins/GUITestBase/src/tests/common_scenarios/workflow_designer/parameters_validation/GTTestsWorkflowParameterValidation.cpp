@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -131,7 +131,7 @@ GUI_TEST_CLASS_DEFINITION( test_0002 ) {
     QPoint readAlignmentCenter = GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment");
     GTMouseDriver::moveTo(readAlignmentCenter);
     GTMouseDriver::click();
-	GTUtilsWorkflowDesigner::setDatasetInputFolder(os, outputDir.absolutePath());
+    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, outputDir.absolutePath());
     GTGlobals::sleep(2000);
     GTWidget::click(os, activeWindow);
 

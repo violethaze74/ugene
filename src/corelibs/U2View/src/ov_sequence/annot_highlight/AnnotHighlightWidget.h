@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -69,7 +69,7 @@ private slots:
     void sl_onSequenceModified(ADVSequenceObjectContext *);
     void sl_onAnnotationsAdded(const QList<Annotation *> &);
     void sl_onAnnotationsRemoved(const QList<Annotation *> &);
-    void sl_onAnnotationModified(const AnnotationModification &annotModifs);
+    void sl_onAnnotationsModified();
     void sl_onAnnotationObjectAdded(AnnotationTableObject *);
     void sl_onAnnotationObjectRemoved(AnnotationTableObject *);
     void sl_onNextAnnotationClick();

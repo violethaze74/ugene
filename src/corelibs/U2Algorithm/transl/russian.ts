@@ -53,7 +53,7 @@
         <translation>Найдены ошибки в библиотеке: %1</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusUtils.cpp" line="108"/>
+        <location filename="../src/util_msa_consensus/MSAConsensusUtils.cpp" line="111"/>
         <source>Gaps:</source>
         <translation>Пробелы:</translation>
     </message>
@@ -343,7 +343,7 @@ For every column selects the most rare symbol in the whole alignment with percen
     </message>
     <message>
         <location filename="../src/util_msa_distance/MSADistanceAlgorithmSimilarity.cpp" line="40"/>
-        <source>Simple identity</source>
+        <source>Similarity</source>
         <translation>Простое сходство</translation>
     </message>
 </context>
@@ -360,7 +360,7 @@ For every column selects the most rare symbol in the whole alignment with percen
     <message>
         <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="198"/>
         <source>The algorithm selects the best character from the extended DNA alphabet. Only bases with frequences which are greater than a threshold value are taken into account.</source>
-        <translation type="unfinished"></translation>
+        <translation>Алгоритм выбирает лучший символ из расширенного ДНК алфавита. Учитываются только символы с частотой, превышающей пороговое значение.</translation>
     </message>
     <message>
         <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="203"/>
@@ -397,7 +397,8 @@ For every column selects the most rare symbol in the whole alignment with percen
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="553"/>
         <source>UGENE Sanger</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>UGENE Sanger</translatorcomment>
+        <translation>UGENE Sanger</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="557"/>

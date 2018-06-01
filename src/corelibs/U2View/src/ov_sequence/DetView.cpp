@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -64,7 +64,7 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
 {
     editor = new DetViewSequenceEditor(this);
 
-    showComplementAction = new QAction(tr("Show complement strand"), this);
+    showComplementAction = new QAction(tr("Show complementary strand"), this);
     showComplementAction->setIcon(QIcon(":core/images/show_compl.png"));
     showComplementAction->setObjectName("complement_action");
     connect(showComplementAction, SIGNAL(triggered(bool)), SLOT(sl_showComplementToggle(bool)));
@@ -74,23 +74,26 @@ DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     connect(showTranslationAction, SIGNAL(triggered(bool)), SLOT(sl_showTranslationToggle(bool)));
 
     doNotTranslateAction = new QAction(tr("Do not translate"), this);
-    doNotTranslateAction->setData(SequenceObjectContext::DoNotTranslate);
+    doNotTranslateAction->setObjectName("do_not_translate_radiobutton");
+    doNotTranslateAction->setData(SequenceObjectContext::TS_DoNotTranslate);
     connect(doNotTranslateAction, SIGNAL(triggered(bool)), SLOT(sl_doNotTranslate()));
     doNotTranslateAction->setCheckable(true);
     doNotTranslateAction->setChecked(true);
 
     translateAnnotationsOrSelectionAction = new QAction(tr("Translate selection"), this);
-    translateAnnotationsOrSelectionAction->setData(SequenceObjectContext::TranslateAnnotationsOrSelection);
+    translateAnnotationsOrSelectionAction->setData(SequenceObjectContext::TS_AnnotationsOrSelection);
     connect(translateAnnotationsOrSelectionAction, SIGNAL(triggered(bool)), SLOT(sl_translateAnnotationsOrSelection()));
     translateAnnotationsOrSelectionAction->setCheckable(true);
 
     setUpFramesManuallyAction = new QAction(tr("Set up frames manually"), this);
-    setUpFramesManuallyAction->setData(SequenceObjectContext::SetUpFramesManually);
+    setUpFramesManuallyAction->setObjectName("set_up_frames_manuallt_radiobutton");
+    setUpFramesManuallyAction->setData(SequenceObjectContext::TS_SetUpFramesManually);
     connect(setUpFramesManuallyAction, SIGNAL(triggered(bool)), SLOT(sl_setUpFramesManually()));
     setUpFramesManuallyAction->setCheckable(true);
 
     showAllFramesAction = new QAction(tr("Show all frames"), this);
-    showAllFramesAction->setData(SequenceObjectContext::ShowAllFrames);
+    showAllFramesAction->setObjectName("show_all_frames_radiobutton");
+    showAllFramesAction->setData(SequenceObjectContext::TS_ShowAllFrames);
     connect(showAllFramesAction, SIGNAL(triggered(bool)), SLOT(sl_showAllFrames()));
     showAllFramesAction->setCheckable(true);
 
@@ -374,22 +377,22 @@ void DetView::sl_showTranslationToggle(bool v) {
 }
 
 void DetView::sl_doNotTranslate() {
-    updateSelectedTranslations(SequenceObjectContext::DoNotTranslate);
+    updateSelectedTranslations(SequenceObjectContext::TS_DoNotTranslate);
 }
 
 void DetView::sl_translateAnnotationsOrSelection() {
-    updateSelectedTranslations(SequenceObjectContext::TranslateAnnotationsOrSelection);
+    updateSelectedTranslations(SequenceObjectContext::TS_AnnotationsOrSelection);
 }
 
 void DetView::sl_setUpFramesManually() {
-    updateSelectedTranslations(SequenceObjectContext::SetUpFramesManually);
+    updateSelectedTranslations(SequenceObjectContext::TS_SetUpFramesManually);
 }
 
 void DetView::sl_showAllFrames() {
-    updateSelectedTranslations(SequenceObjectContext::ShowAllFrames);
+    updateSelectedTranslations(SequenceObjectContext::TS_ShowAllFrames);
 }
 
-void DetView::updateSelectedTranslations(const SequenceObjectContext::TranslationState state) {
+void DetView::updateSelectedTranslations(const SequenceObjectContext::TranslationState& state) {
     ctx->setTranslationState(state);
     setSelectedTranslations();
 }
@@ -464,15 +467,9 @@ void DetView::uncheckAllTranslations() {
 }
 
 void DetView::setSelectedTranslations() {
-    if ((ctx->getTranslationState() == SequenceObjectContext::TranslateAnnotationsOrSelection)) {
-        int symbolsPerLine = getSymbolsPerLine();
-        U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
-
+    if ((ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection)) {
         uncheckAllTranslations();
-        do {
-            updateTranslationsState(oneLineRegion);
-            oneLineRegion.startPos += symbolsPerLine;
-        } while (oneLineRegion.startPos < visibleRange.endPos());
+        updateTranslationsState();
     }
 
     getDetViewRenderArea()->getRenderer()->update();
@@ -481,12 +478,12 @@ void DetView::setSelectedTranslations() {
     completeUpdate();
 }
 
-void DetView::updateTranslationsState(const U2Region& visibleRange) {
-    updateTranslationsState(visibleRange, U2Strand::Direct);
-    updateTranslationsState(visibleRange, U2Strand::Complementary);
+void DetView::updateTranslationsState() {
+    updateTranslationsState(U2Strand::Direct);
+    updateTranslationsState(U2Strand::Complementary);
 }
 
-void DetView::updateTranslationsState(const U2Region& visibleRange, const U2Strand::Direction direction) {
+void DetView::updateTranslationsState(const U2Strand::Direction direction) {
     QVector<U2Region> selectedRegions = ctx->getSequenceSelection()->getSelectedRegions();
     QList<bool> lineState = QList<bool>() << false << false << false;
     foreach(const U2Region& reg, selectedRegions) {
@@ -726,7 +723,8 @@ void DetView::updateVerticalScrollBar() {
             verticalScrollBar->setSliderPosition(newSliderPos);
         }
     } else {
-        return;
+        maximum = 0;
+        numShiftsInOneLine = 0;
     }
 
     verticalScrollBar->setMinimum(0);
@@ -890,10 +888,6 @@ void DetViewRenderArea::drawAll(QPaintDevice* pd) {
 
     if (view->hasFocus()) {
         drawFocus(p);
-    }
-
-    if (getDetView()->getEditor()->getBlock()) {
-        p.fillRect(QRect(QPoint(0, 0), canvasSize), QBrush(QColor(215, 214, 213, 64)));
     }
 }
 

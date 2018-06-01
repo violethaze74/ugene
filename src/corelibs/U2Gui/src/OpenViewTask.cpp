@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -243,7 +243,12 @@ LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(con
     : Task(tr("Load remote document and add to project"), TaskFlags_NR_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
     accNumber(accId), databaseName(dbName), fileFormat(format), fullpath(fp), hints(hints), mode(mode), loadRemoteDocTask(NULL)
 {
-
+    
+    if (mode == LoadRemoteDocumentMode_LoadOnly) {
+        setReportingSupported(true);
+        setReportingEnabled(true);
+        setTaskName(tr("Load remote document"));
+    }
 }
 
 void LoadRemoteDocumentAndAddToProjectTask::prepare()
@@ -335,6 +340,18 @@ QList<Task*> LoadRemoteDocumentAndAddToProjectTask::onSubTaskFinished( Task* sub
     return subTasks;
 }
 
+QString LoadRemoteDocumentAndAddToProjectTask::generateReport() const {
+    // Note: reporting is enabled only for db + accession mode.
+    if (hasError()) {
+        return tr("Failed to download %1 from %2. Error: %3").arg(accNumber).arg(databaseName).arg(getError());
+    }
+    if (isCanceled()) {
+        return QString();
+    }
+    QString url = loadRemoteDocTask->getLocalUrl();
+    return tr("Document was successfully downloaded: [%1, %2] -> <a href='%3'>%4</a>")
+            .arg(databaseName).arg(accNumber).arg(url).arg(url);
+}
 
 AddDocumentAndOpenViewTask::AddDocumentAndOpenViewTask( Document* doc, const AddDocumentTaskConfig& conf)
 :Task(tr("Opening view for document: 'NONAME'"), TaskFlags_NR_FOSE_COSC | TaskFlag_CollectChildrenWarnings)

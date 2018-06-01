@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -149,21 +149,15 @@ void KarlinGraphAlgorithm::calculateRelativeAbundance (const char* seq, int leng
     int base_counts[4]={0, 0, 0 ,0};
     int dinucleotide_base_counts[16]={0, 0, 0 ,0,  0, 0, 0 ,0,  0, 0, 0 ,0,  0, 0, 0 ,0,};
 
-    char this_f_base = 0;
-    char next_f_base = 0;
-    char this_r_base = 0;
-    char next_r_base = 0;
-    int this_f_base_index = 0;
     int next_f_base_index = 0;
-    int this_r_base_index = 0;
     int next_r_base_index = 0;
 
     for (int i = 0 ; i < length - 1; ++i) {
         CHECK_OP(os, );
-        this_f_base = seq[i];
-        next_f_base = seq[i + 1];
+        char this_f_base = seq[i];
+        char next_f_base = seq[i + 1];
 
-        this_f_base_index = getIndex(this_f_base);
+        int this_f_base_index = getIndex(this_f_base);
         next_f_base_index = getIndex(next_f_base);
 
         if (this_f_base_index >= 0 && next_f_base_index >= 0) {
@@ -171,10 +165,10 @@ void KarlinGraphAlgorithm::calculateRelativeAbundance (const char* seq, int leng
             ++dinucleotide_base_counts[IDX(this_f_base_index, next_f_base_index)];
         }
 
-        this_r_base = mapTrans.at(this_f_base);
-        next_r_base = mapTrans.at(next_f_base);
+        char this_r_base = mapTrans.at(this_f_base);
+        char next_r_base = mapTrans.at(next_f_base);
 
-        this_r_base_index = getIndex(this_r_base);
+        int this_r_base_index = getIndex(this_r_base);
         next_r_base_index = getIndex(next_r_base);
 
         if (this_r_base_index >= 0 && next_r_base_index >= 0) {

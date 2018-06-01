@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -75,7 +75,7 @@ public:
 
     CreateAlignmentColorSchemeDialogFiller(HI::GUITestOpStatus &os, QString _schemeName, NewColorSchemeCreator::alphabet _al):
         Filler(os, "CreateMSAScheme"), schemeName(_schemeName), al(_al){}
-    CreateAlignmentColorSchemeDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c): Filler(os, "CreateMSAScheme", c){}
+    CreateAlignmentColorSchemeDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c): Filler(os, "CreateMSAScheme", c), al(NewColorSchemeCreator::nucl) {}
     virtual void commonScenario();
 private:
     QString schemeName;

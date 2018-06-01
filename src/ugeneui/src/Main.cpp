@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -289,9 +289,13 @@ static void initProjectFilterTaskRegistry() {
     ProjectFilterTaskRegistry *registry = AppContext::getProjectFilterTaskRegistry();
 
     registry->registerTaskFactory(new ObjectNameFilterTaskFactory);
-    registry->registerTaskFactory(new MaSeqNameFilterTaskFactory);
+    registry->registerTaskFactory(new MsaSeqNameFilterTaskFactory);
+    registry->registerTaskFactory(new MsaContentFilterTaskFactory);
+    registry->registerTaskFactory(new McaReadNameFilterTaskFactory);
+    registry->registerTaskFactory(new McaReferenceNameFilterTaskFactory);
+    registry->registerTaskFactory(new McaReadContentFilterTaskFactory);
+    registry->registerTaskFactory(new McaReferenceContentFilterTaskFactory);
     registry->registerTaskFactory(new SequenceContentFilterTaskFactory);
-    registry->registerTaskFactory(new MaContentFilterTaskFactory);
     registry->registerTaskFactory(new TextContentFilterTaskFactory);
     registry->registerTaskFactory(new SequenceAccFilterTaskFactory);
     registry->registerTaskFactory(new FeatureKeyFilterTaskFactory);
@@ -351,6 +355,10 @@ int main(int argc, char **argv)
 {
     if (CrashHandler::isEnabled()) {
         CrashHandler::setupHandler();
+    }
+
+    if (qgetenv(ENV_SEND_CRASH_REPORTS) == "0") {
+        CrashHandler::setSendCrashReports(false);
     }
 
     QT_REQUIRE_VERSION( argc, argv, QT_VERSION_STR );

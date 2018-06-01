@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -216,7 +216,7 @@ QList<Task*> GenomeAlignerTask::onSubTaskFinished( Task* subTask ) {
         } else {
             try {
                 seqWriter = new GenomeAlignerDbiWriter(settings.resultFileName.getURLString(), index->getSeqName(), index->getSeqLength());
-            } catch (QString exeptionMessage) {
+            } catch (const QString &exeptionMessage) {
                 setError(exeptionMessage);
                 if (NULL != pWriteTask) {
                     pWriteTask->setFinished();
@@ -349,12 +349,11 @@ Task::ReportResult GenomeAlignerTask::report() {
 int GenomeAlignerTask::calculateWindowSize(bool absMismatches, int nMismatches, int ptMismatches, int minReadLength, int maxReadLength) {
     int CMAX = nMismatches;
     int windowSize = MAX_BIT_MASK_LENGTH;
-    int q = 0;
     for (int len = minReadLength; len <= maxReadLength; len++) {
         if (!absMismatches) {
             CMAX = len*ptMismatches/MAX_PERCENTAGE;
         }
-        q = len/(CMAX + 1);
+        int q = len/(CMAX + 1);
         if (windowSize > q) {
             windowSize = q;
         }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -335,7 +335,7 @@ const QList<QAction* > BioStruct3DSplitter::getSettingsMenuActions() const
     return actions;
 }
 
-QList<BioStruct3DGLWidget*> BioStruct3DSplitter::getChildWidgets()
+QList<BioStruct3DGLWidget*> BioStruct3DSplitter::getChildWidgets() const
 {
     return biostrucViewMap.values();
 }

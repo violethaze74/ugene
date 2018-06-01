@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -73,7 +73,7 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
     clearedByRepitSel(false)
 {
     textSpace = w = h = 0; // values are used and will be initialized in drawAll.
-    
+
     dpDirectResultListener = new DotPlotResultsListener();
     dpRevComplResultsListener = new DotPlotRevComplResultsListener();
     dpFilteredResults = QSharedPointer<QList<DotPlotResults> >( new QList<DotPlotResults>() );
@@ -359,7 +359,7 @@ void DotPlotWidget::sl_timer(){
 }
 
 void DotPlotWidget::sl_taskStateChanged() {
-    if (!dotPlotTask || (dotPlotTask && dotPlotTask->getState() != Task::State_Finished)) {
+    if (!dotPlotTask || dotPlotTask->getState() != Task::State_Finished) {
         return;
     }
     dotPlotTask = NULL;
@@ -370,7 +370,7 @@ void DotPlotWidget::sl_taskStateChanged() {
 }
 
 void DotPlotWidget::sl_filteringTaskStateChanged() {
-    if (!dotPlotTask || (dotPlotTask && dotPlotTask->getState() != Task::State_Finished)) {
+    if (!dotPlotTask || dotPlotTask->getState() != Task::State_Finished) {
         return;
     }
     dotPlotTask = NULL;
@@ -382,7 +382,7 @@ void DotPlotWidget::sl_filteringTaskStateChanged() {
 
 void DotPlotWidget::sl_buildDotplotTaskStateChanged() {
 
-    if (!dotPlotTask || (dotPlotTask && dotPlotTask->getState() != Task::State_Finished)) {
+    if (!dotPlotTask || dotPlotTask->getState() != Task::State_Finished) {
         return;
     }
 
@@ -994,12 +994,12 @@ void DotPlotWidget::drawAll(QPainter& p, qreal rulerFontScale, bool _drawFocus,
     }
 
     QFontMetrics fm = p.fontMetrics();
-    // min textSpace is 4 characters: this is important for sequence name labels 
+    // min textSpace is 4 characters: this is important for sequence name labels
     textSpace = fm.width("0") * qMax(4, qRound(1 + log10(sequenceX->getSequenceLength())));
     // border around view
     w = width() - 2 * textSpace;
     h = height() - 2 * textSpace;
-    
+
     if (dotPlotIsCalculating) {
         GUIUtils::showMessage(this, p, tr("Dotplot is calculating..."));
     } else {
@@ -1164,7 +1164,7 @@ void DotPlotWidget::drawRulers(QPainter &p, qreal fontScale) const{
 
         extraLen = QPoint(0.5*ratioX, 0.5*ratioY);
     }
-    
+
     GraphUtils::drawRuler(p, QPoint(textSpace + extraLen.x(), textSpace), w - 2*extraLen.x(), startX+1, endX, rulerFont, rConf);
 
     rConf.direction = GraphUtils::TopToBottom;

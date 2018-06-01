@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -216,9 +216,7 @@ void GUIUtils::setMutedLnF( QTreeWidgetItem* item, bool enableMute, bool recursi
         int childCount = item->childCount();
         for (int i = 0; i < childCount; ++i) {
             QTreeWidgetItem* childItem = item->child(i);
-            if (!isMutedLnF(childItem)) {
-                setMutedLnF(childItem, enableMute, recursive);
-            }
+            setMutedLnF(childItem, enableMute, recursive);
         }
     }
 }

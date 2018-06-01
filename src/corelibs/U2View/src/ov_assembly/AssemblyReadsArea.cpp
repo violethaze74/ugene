@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -776,14 +776,14 @@ void AssemblyReadsArea::keyPressEvent(QKeyEvent * e) {
     int k = e->key();
     if(browser->getCellWidth() != 0 && (k == Qt::Key_Left || k == Qt::Key_Right)) {
         if(hBar->isEnabled()) {
-            int step = e->modifiers() & Qt::ControlModifier ? hBar->pageStep() : hBar->singleStep();
+            int step = (e->modifiers() & Qt::ControlModifier) ? hBar->pageStep() : hBar->singleStep();
             step = k == Qt::Key_Left ? -step : step;
             hBar->setValue(hBar->value() + step);
             e->accept();
         }
     } else if(k == Qt::Key_Up || k == Qt::Key_Down) {
         if(vBar->isEnabled()) {
-            int step = e->modifiers() & Qt::ControlModifier ? vBar->pageStep() : vBar->singleStep();
+            int step = (e->modifiers() & Qt::ControlModifier) ? vBar->pageStep() : vBar->singleStep();
             step = k == Qt::Key_Up ? -step : step;
             vBar->setValue(vBar->value() + step);
             e->accept();

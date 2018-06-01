@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,14 +52,17 @@ public:
         as = NULL;
         tf = NULL;
         dbxr = NULL;
+        swmarntr = NULL;
         asg = NULL;
         smr = NULL;
         swar = NULL;
         msfr = NULL;
         swrfr = NULL;
         mcsr = NULL;
+        mhsr = NULL;
         secStructPredictRegistry = NULL;
         cgr = NULL;
+        oclgr = NULL;
         rdc = NULL;
         protocolInfoRegistry = NULL;
         remoteMachineMonitor = NULL;
@@ -68,6 +71,7 @@ public:
         instance = this;
         msaConsensusAlgoRegistry = NULL;
         msaDistanceAlgoRegistry = NULL;
+        assemblyConsensusAlgoRegistry = NULL;
         pwmConversionAlgoRegistry = NULL;
         dnaAssemblyAlgRegistry = NULL;
         genomeAssemblyAlgRegistry = NULL;

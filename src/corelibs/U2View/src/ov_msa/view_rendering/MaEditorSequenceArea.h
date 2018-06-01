@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -76,13 +76,14 @@ public:
     int getFirstVisibleBase() const;
     int getLastVisibleBase(bool countClipped) const;
     int getNumVisibleBases() const;
-    int getDisplayableRowsCount() const;
 
     /*
      * Returns count of sequences that are drawn on the widget by taking into account
      * collapsed rows.
      */
     int getNumDisplayableSequences() const;
+
+    int getRowIndex(const int num) const;
 
     bool isAlignmentEmpty() const;
 
@@ -188,7 +189,7 @@ private slots:
 
 private:
     void setBorderCursor(const QPoint& p);
-    void moveBorder(const Qt::CursorShape shape, const QPoint& p);
+    void moveBorder(const QPoint& p);
 
     int shiftRegion(int shift);
     QList<U2MsaGap> findRemovableGapColumns(int& shift);

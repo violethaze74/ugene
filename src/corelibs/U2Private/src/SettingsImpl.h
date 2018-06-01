@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,6 +36,7 @@ public:
     ~SettingsImpl();
 
     QStringList getAllKeys(const QString& path) const;
+    QStringList getChildGroups(const QString& path) const;
     void cleanSection(const QString& path);
 
     virtual bool contains(const QString& key) const;

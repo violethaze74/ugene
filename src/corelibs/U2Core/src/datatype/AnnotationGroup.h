@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,8 @@
 
 #ifndef _U2_ANNOTATION_GROUP_H_
 #define _U2_ANNOTATION_GROUP_H_
+
+#include <QMetaType>
 
 namespace U2 {
 
@@ -117,8 +119,13 @@ private:
     QList<AnnotationGroup *>        subgroups;
     QList<Annotation *>             annotations;
     QHash<U2DataId, Annotation *>   annotationById;
+
+    static const bool annotationGroupMetaRegistered;
 };
 
 } // namespace U2
+
+Q_DECLARE_METATYPE(U2::AnnotationGroup)
+Q_DECLARE_METATYPE(U2::AnnotationGroup *)
 
 #endif //

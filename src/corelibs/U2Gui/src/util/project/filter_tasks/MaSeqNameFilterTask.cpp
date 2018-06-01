@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,31 +34,45 @@ namespace U2 {
 /// MaSeqNameFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-MaSeqNameFilterTask::MaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs)
-    : AbstractProjectFilterTask(settings, ProjectFilterNames::MA_SEQ_NAME_FILTER_NAME, docs)
-{
-
-}
-
-bool MaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
-    MultipleAlignmentObject *maObj = qobject_cast<MultipleAlignmentObject *>(obj);
+static bool isFilteredByMASequenceName(const MultipleAlignmentObject* maObj, const ProjectTreeControllerModeSettings &settings) {
     CHECK(NULL != maObj, false);
-
     for (int i = 0, n = maObj->getNumRows(); i < n; ++i) {
         if (settings.nameFilterAcceptsString(maObj->getRow(i)->getName())) {
             return true;
         }
     }
+    return false;
+}
 
-    // if this is MCA -> check reference sequence name too.
-    MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(maObj);
-    if (mcaObj != NULL) {
-        U2SequenceObject* refObj = mcaObj->getReferenceObj();
-        if (refObj != NULL && settings.nameFilterAcceptsString(refObj->getSequenceName())) {
-            return true;
-        }
+MsaSeqNameFilterTask::MsaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs) 
+    : AbstractProjectFilterTask(settings, ProjectFilterNames::MSA_SEQ_NAME_FILTER_NAME, docs) {
+}
+
+bool MsaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
+    return isFilteredByMASequenceName(qobject_cast<MultipleSequenceAlignmentObject *>(obj), settings);
+}
+
+McaReadNameFilterTask::McaReadNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs) 
+    : AbstractProjectFilterTask(settings, ProjectFilterNames::MCA_READ_NAME_FILTER_NAME, docs) {
+}
+
+
+bool McaReadNameFilterTask::filterAcceptsObject(GObject *obj) {
+    return isFilteredByMASequenceName(qobject_cast<MultipleChromatogramAlignmentObject *>(obj), settings);
+}
+
+McaReferenceNameFilterTask::McaReferenceNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs)
+    : AbstractProjectFilterTask(settings, ProjectFilterNames::MCA_REFERENCE_NAME_FILTER_NAME, docs)
+{
+}
+
+bool McaReferenceNameFilterTask::filterAcceptsObject(GObject *obj) {
+    MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
+    CHECK(NULL != mcaObj, false);
+    U2SequenceObject* refObj = mcaObj->getReferenceObj();
+    if (refObj != NULL && settings.nameFilterAcceptsString(refObj->getSequenceName())) {
+        return true;
     }
-
     return false;
 }
 
@@ -66,10 +80,22 @@ bool MaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
 /// MaSeqNameFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-AbstractProjectFilterTask * MaSeqNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
+AbstractProjectFilterTask * MsaSeqNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
     const QList<QPointer<Document> > &docs) const
 {
-    return new MaSeqNameFilterTask(settings, docs);
+    return new MsaSeqNameFilterTask(settings, docs);
+}
+
+AbstractProjectFilterTask * McaReadNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
+    const QList<QPointer<Document> > &docs) const
+{
+    return new McaReadNameFilterTask(settings, docs);
+}
+
+AbstractProjectFilterTask * McaReferenceNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
+    const QList<QPointer<Document> > &docs) const
+{
+    return new McaReferenceNameFilterTask(settings, docs);
 }
 
 

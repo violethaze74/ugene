@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -158,15 +158,18 @@ int MaEditorSequenceArea::getNumVisibleBases() const {
     return ui->getDrawHelper()->getVisibleBasesCount(width());
 }
 
-int MaEditorSequenceArea::getDisplayableRowsCount() const {
-    return ui->getCollapseModel()->getDisplayableRowsCount();
-}
-
 int MaEditorSequenceArea::getNumDisplayableSequences() const {
     CHECK(!isAlignmentEmpty(), 0);
     MSACollapsibleItemModel *model = ui->getCollapseModel();
     SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
     return model->getDisplayableRowsCount();
+}
+
+int MaEditorSequenceArea::getRowIndex(const int num) const {
+    CHECK(!isAlignmentEmpty(), -1);
+    MSACollapsibleItemModel *model = ui->getCollapseModel();
+    SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
+    return model->mapToRow(num);
 }
 
 bool MaEditorSequenceArea::isAlignmentEmpty() const {
@@ -250,7 +253,6 @@ void MaEditorSequenceArea::updateSelection() {
     if (selectionHeight <= 1 && itemIndex >= 0) {
         const MSACollapsableItem& collapsibleItem = m->getItem(itemIndex);
         if(newEnd == collapsibleItem.row && !collapsibleItem.isCollapsed) {
-            newEnd = collapsibleItem.row ;
             selectionHeight = qMax(selectionHeight, endPos - newStart + collapsibleItem.numRows);
         }
     }
@@ -263,7 +265,7 @@ void MaEditorSequenceArea::updateSelection() {
 }
 
 void MaEditorSequenceArea::setSelection(const MaEditorSelection& s, bool newHighlightSelection) {
-    CHECK(!isAlignmentEmpty(), );
+    CHECK(!isAlignmentEmpty() || s.isEmpty(), );
     // TODO: assert(isInRange(s));
     exitFromEditCharacterMode();
     if (highlightSelection != newHighlightSelection) {
@@ -1088,7 +1090,7 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
             const double baseWidth = ui->getBaseWidthController()->getBaseWidth();
             const double baseHeight = ui->getRowHeightController()->getSequenceHeight();
             movableBorder = SelectionModificationHelper::getMovableSide(shape, globalMousePosition, selection.getRect(), QSize(baseWidth, baseHeight));
-            moveBorder(shape, pos);
+            moveBorder(pos);
         } else if (!shifting) {
             selecting = true;
             rubberBandOrigin = e->pos();
@@ -1163,7 +1165,7 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
 
         Qt::CursorShape shape = cursor().shape();
         if (shape != Qt::ArrowCursor) {
-            moveBorder(shape, p);
+            moveBorder(p);
         } else if (shifting && editingEnabled) {
             shiftSelectedRegion(newCurPos.x() - cursorPos.x());
         } else if (selecting) {
@@ -1181,7 +1183,7 @@ void MaEditorSequenceArea::setBorderCursor(const QPoint& p) {
     setCursor(SelectionModificationHelper::getCursorShape(globalMousePos, selection.getRect(), ui->getBaseWidthController()->getBaseWidth(), ui->getRowHeightController()->getSequenceHeight()));
 }
 
-void MaEditorSequenceArea::moveBorder(const Qt::CursorShape shape, const QPoint& screenMousePos) {
+void MaEditorSequenceArea::moveBorder(const QPoint& screenMousePos) {
     CHECK(movableBorder != SelectionModificationHelper::NoMovableBorder, );
 
     QPoint globalMousePos = ui->getScrollController()->getGlobalMousePosition(screenMousePos);

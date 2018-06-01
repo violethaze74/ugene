@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -213,7 +213,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
 //    5. Replace any symbol in the MSA to amino acid specific symbols, e.g. to 'Q'.
     GTUtilsMSAEditorSequenceArea::replaceSymbol(os, QPoint(0, 0), 'q');
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    Expected state: the alignment alphabet is changed to Raw, highlighting scheme options are the same.
     const bool isAlphabetRaw = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isRaw();

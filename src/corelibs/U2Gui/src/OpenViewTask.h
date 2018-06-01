@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,6 +67,7 @@ public:
                                       LoadRemoteDocumentMode mode = LoadRemoteDocumentMode_OpenView);
     LoadRemoteDocumentAndAddToProjectTask(const GUrl& url);
     virtual void prepare();
+    virtual QString generateReport() const;
 protected:
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:

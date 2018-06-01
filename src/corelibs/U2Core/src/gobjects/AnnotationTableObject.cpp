@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 
 #include <QCoreApplication>
 
+#include <U2Core/AnnotationModification.h>
 #include <U2Core/AnnotationTableObjectConstraints.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
@@ -236,8 +237,12 @@ void AnnotationTableObject::emit_onAnnotationsAdded(const QList<Annotation *> &l
     emit si_onAnnotationsAdded(l);
 }
 
-void AnnotationTableObject::emit_onAnnotationModified(const AnnotationModification &md) {
-    emit si_onAnnotationModified(md);
+void AnnotationTableObject::emit_onAnnotationsModified(const AnnotationModification &annotationModification) {
+    emit_onAnnotationsModified(QList<AnnotationModification>() << annotationModification);
+}
+
+void AnnotationTableObject::emit_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications) {
+    emit si_onAnnotationsModified(annotationModifications);
 }
 
 void AnnotationTableObject::emit_onAnnotationsRemoved(const QList<Annotation *> &a) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -156,7 +156,7 @@ void SmithWatermanDialogFiller::commonScenario() {
         GTComboBox::setCurrentIndex(os, comboRealization, swRealizationIndex);
 
         QComboBox * comboResultFilter = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "comboResultFilter", dialog));
-		GTComboBox::setIndexWithText(os, comboResultFilter, "filter-intersections");
+        GTComboBox::setIndexWithText(os, comboResultFilter, "filter-intersections");
 
         QSpinBox * spinScorePercent = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "spinScorePercent", dialog));
         GTSpinBox::setValue(os, spinScorePercent, RESULT_SCORE_PERCENTAGE, GTGlobals::UseKeyBoard);

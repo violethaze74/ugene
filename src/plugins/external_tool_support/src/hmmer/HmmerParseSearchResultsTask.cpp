@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,6 +58,7 @@ void HmmerParseSearchResultsTask::run() {
     while (!ioAdapter->isEof()) {
         qint64 bytesRead = ioAdapter->readLine(buff.data(), BUFF_SIZE);
         assert(bytesRead < BUFF_SIZE);
+        Q_UNUSED(bytesRead);
 
         QString readData(buff.data());
 

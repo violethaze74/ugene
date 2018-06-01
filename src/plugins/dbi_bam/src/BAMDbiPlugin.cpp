@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -132,7 +132,8 @@ BAMImporterTask::BAMImporterTask(const GUrl& url, bool _useGui, const QVariantMa
     useGui(_useGui),
     sam(hints.value(SAM_HINT, false).toBool()),
     hints(hints),
-    hintedDbiRef(hints.value(DocumentFormat::DBI_REF_HINT).value<U2DbiRef>())
+    hintedDbiRef(hints.value(DocumentFormat::DBI_REF_HINT).value<U2DbiRef>()),
+    startTime(0)
 {
     documentDescription = url.fileName();
     loadInfoTask = new LoadInfoTask( url, sam );

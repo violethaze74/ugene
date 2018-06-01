@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -156,13 +156,13 @@ void HMMIO::writeHMM2(IOAdapterFactory* iof, const QString& url, TaskStateInfo& 
         if (hmm->flags & PLAN7_MAP) res+=QString().sprintf("%5d", hmm->map[k]);
         res+="\n";
         /* Line 2: RF and insert emissions */
-        res+=QString().sprintf(" %5c ", hmm->flags & PLAN7_RF ? hmm->rf[k] : '-');
+        res+=QString().sprintf(" %5c ", (hmm->flags & PLAN7_RF) ? hmm->rf[k] : '-');
         for (int x = 0; x < al.Alphabet_size; x++)  {
             res+=QString().sprintf("%6s ", (k < hmm->M) ? prob2ascii(hmm->ins[k][x], hmm->null[x]) : "*");
         }
         res+="\n";
         /* Line 3: CS and transition probs */
-        res+=QString().sprintf(" %5c ", hmm->flags & PLAN7_CS ? hmm->cs[k] : '-');
+        res+=QString().sprintf(" %5c ", (hmm->flags & PLAN7_CS) ? hmm->cs[k] : '-');
         for (int ts = 0; ts < 7; ts++) {
             res+=QString().sprintf("%6s ", (k < hmm->M) ? prob2ascii(hmm->t[k][ts], 1.0) : "*"); 
         }

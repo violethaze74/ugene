@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -63,7 +63,7 @@ class U2CORE_EXPORT PWMatrix {
     friend class WMatrixSerializer;
 public:
     //create empty matrix
-    PWMatrix() : data(QVarLengthArray<float>()), length(0), type(PWM_MONONUCLEOTIDE) {};
+    PWMatrix();
 
     //create matrix from pre-counted data
     PWMatrix(const QVarLengthArray<float> &matrix, const PWMatrixType& type);
@@ -114,7 +114,8 @@ private:
     QVarLengthArray<float> data;
     int length;
     PWMatrixType type;
-    float minSum, maxSum;
+    float minSum;
+    float maxSum;
     UniprobeInfo info;
 
 };

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,12 @@
 namespace U2 {
 
 DnaAssemblyToReferenceTask::DnaAssemblyToReferenceTask(const DnaAssemblyToRefTaskSettings &settings, TaskFlags flags, bool justBuildIndex)
-: ExternalToolSupportTask(tr("Align short reads"), flags), settings(settings), justBuildIndex(justBuildIndex) {
+    : ExternalToolSupportTask(tr("Align short reads"), flags),
+      settings(settings),
+      justBuildIndex(justBuildIndex),
+      hasResults(false)
+{
+
 }
 
 void DnaAssemblyToReferenceTask::setUpIndexBuilding(const QStringList &indexSuffixes) {
@@ -110,7 +115,7 @@ QList<GUrl> DnaAssemblyToRefTaskSettings::getShortReadUrls() const
     return res;
 }
 
-DnaAssemblyToRefTaskSettings::DnaAssemblyToRefTaskSettings() 
+DnaAssemblyToRefTaskSettings::DnaAssemblyToRefTaskSettings()
     : pairedReads(false),
     filterUnpaired(false),
     prebuiltIndex(false),

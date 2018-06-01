@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,12 +56,14 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
       ctx(_c),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "20880342");
+    new HelpButton(this, buttonBox, "21433294");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Generate"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    QStringList algo = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds();
-    algoCombo->addItems(algo);
+    QList<MSADistanceAlgorithmFactory*> algos = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactories();
+    foreach(MSADistanceAlgorithmFactory* a, algos) {
+        algoCombo->addItem(a->getName(), a->getId());
+    }
 
     MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj != NULL) {
@@ -92,7 +94,7 @@ void DistanceMatrixMSAProfileDialog::initSaveController() {
     config.fileNameEdit = fileEdit;
     config.parentWidget = this;
     config.saveTitle = tr("Save file");
-    
+
     SaveDocumentController::SimpleFormatsInfo formats;
     formats.addFormat(HTML, HTML.toUpper(), QStringList() << HTML);
     formats.addFormat(CSV, CSV.toUpper(), QStringList() << CSV);
@@ -113,7 +115,7 @@ void DistanceMatrixMSAProfileDialog::accept() {
     s.profileName = msaObj->getGObjectName();
     s.profileURL = msaObj->getDocument()->getURLString();
     s.usePercents = percentsRB->isChecked();
-    s.algoName = algoCombo->currentText();
+    s.algoId = algoCombo->currentData().toString();
     s.ma = msaObj->getMsaCopy();
     s.excludeGaps = checkBox->isChecked();
     s.showGroupStatistic = groupStatisticsCheck->isChecked();
@@ -154,7 +156,7 @@ DistanceMatrixMSAProfileTask::DistanceMatrixMSAProfileTask(const DistanceMatrixM
 }
 
 void DistanceMatrixMSAProfileTask::prepare() {
-    MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoName);
+    MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
     if(s.excludeGaps){
         factory->setFlag(DistanceAlgorithmFlag_ExcludeGaps);
     }else{

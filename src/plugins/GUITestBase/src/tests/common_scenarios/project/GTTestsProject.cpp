@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,8 +34,8 @@
 #include <U2View/AssemblyBrowserFactory.h>
 #include <U2View/MaEditorFactory.h>
 
+#include "GTGlobals.h"
 #include "GTTestsProject.h"
-#include "utils/GTUtilsApp.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -45,20 +45,21 @@
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsStartPage.h"
 #include "GTUtilsTaskTreeView.h"
-#include "utils/GTUtilsToolTip.h"
-#include <utils/GTThread.h>
+#include "primitives/GTMenu.h"
+#include "primitives/PopupChooser.h"
 #include "system/GTClipboard.h"
 #include "system/GTFile.h"
+#include "utils/GTUtilsApp.h"
+#include "utils/GTUtilsToolTip.h"
 #include <base_dialogs/GTFileDialog.h>
-#include "GTGlobals.h"
+#include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTLineEdit.h>
-#include "primitives/GTMenu.h"
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWebView.h>
-#include <base_dialogs/MessageBoxFiller.h>
-#include "primitives/PopupChooser.h"
+#include <utils/GTThread.h>
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
@@ -301,7 +302,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "murine.gb"));
     GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, testDir + "_common_data/genbank/.dir/", "murine_copy1.gb",
                                                    ExportDocumentDialogFiller::Genbank, false, true, GTGlobals::UseMouse));
-    
+
     GTMouseDriver::click(Qt::RightButton);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "murine_copy1.gb"));
@@ -391,7 +392,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     font = GTUtilsProjectTreeView::getFont(os, item);
     CHECK_SET_ERR(font.bold(), "se2 item font is not a bold_1");
 
-	GTUtilsMdi::closeActiveWindow(os);
+    GTUtilsMdi::closeActiveWindow(os);
     GTGlobals::sleep(1000);
     item = GTUtilsProjectTreeView::findIndex(os, "se1");
     font = GTUtilsProjectTreeView::getFont(os, item);
@@ -418,9 +419,17 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025) {
-    GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
+    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    const QString fileName = "proj4.uprj";
+    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    const QString firstAnnFileName = "1.gb";
+    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    const QString secondAnnFaleName = "2.gb";
 
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj4.uprj");
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_load_selected_documents", GTGlobals::UseMouse));
@@ -433,11 +442,10 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
-	GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
 
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026) {
@@ -504,7 +512,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
 //    2. Select "Open as multiple sequence alignment" item, accept the dialog.
 //    Expected state: file opens, document contains two malignment objects, the MSA Editor is shown.
-	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -518,8 +526,8 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
 //    4. Select "Open as assembly" item, accept the dialog.
 //    Expected state: file opens, document contains two assembly objects and two sequence objects, the Assembly Browser is shown.
-	GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "project_test_0033.ugenedb"));
-	//GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, false, sandBoxDir + "project_test_0033.ugenedb"));
+    //GTUtilsDialog::waitForDialog(os, new DocumentProviderSelectorDialogFiller(os, DocumentProviderSelectorDialogFiller::AssemblyBrowser));
     //GTUtilsDialog::waitForDialog(os, new ConvertAceToSqliteDialogFiller(os, sandBoxDir + "project_test_0033.ugenedb"));
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_2.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -600,7 +608,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038){
 
     //reopening windows z
     while(GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != NULL){
-		GTUtilsMdi::closeActiveWindow(os);
+        GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "action_open_view"));
     GTUtilsProjectTreeView::click(os, "BL060C3.ace", Qt::RightButton);
@@ -636,7 +644,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1){
 
     //reopening windows
     while(GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != NULL){
-		GTUtilsMdi::closeActiveWindow(os);
+        GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "action_open_view"));
     GTUtilsProjectTreeView::click(os, "test_3637_1.ugenedb", Qt::RightButton);
@@ -1129,6 +1137,10 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 2);
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
 
+    QAction* editMode = GTAction::findActionByText(os, "Edit sequence");
+    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    GTWidget::click(os, GTAction::button(os, editMode));
+
     GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1141,6 +1153,10 @@ GUI_TEST_CLASS_DEFINITION(test_0069) {
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 2);
     GTClipboard::setText(os, ">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n");
 
+    QAction* editMode = GTAction::findActionByText(os, "Edit sequence");
+    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    GTWidget::click(os, GTAction::button(os, editMode));
+
     GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1152,6 +1168,10 @@ GUI_TEST_CLASS_DEFINITION(test_0070) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 2);
     GTClipboard::setText(os, ">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n");
+
+    QAction* editMode = GTAction::findActionByText(os, "Edit sequence");
+    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    GTWidget::click(os, GTAction::button(os, editMode));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ADV_MENU_COPY<< "Paste sequence",GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os,"ADV_single_sequence_widget_0"));

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -159,6 +159,13 @@ public:
 
     bool isTest() const {return type == TVItem_Test;}
 
+    bool operator<(const QTreeWidgetItem &other) const {
+        if (type != dynamic_cast<const TVItem &>(other).type) {
+            return type == TVItem_TestSuite;
+        }
+        return text(0) < other.text(0);
+    }
+
 };
 
 class TVTSItem : public  TVItem {
@@ -166,7 +173,6 @@ public:
     TVTSItem(GTestSuite* ts);
 
     TVTSItem(const QString& _name);
-
 
     virtual void updateVisual();
 

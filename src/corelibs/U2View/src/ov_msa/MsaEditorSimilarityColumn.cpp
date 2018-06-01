@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,9 +46,10 @@ const QString MsaEditorAlignmentDependentWidget::DataIsBeingUpdatedMessage(QStri
 MsaEditorSimilarityColumn::MsaEditorSimilarityColumn(MsaEditorWgt* ui, QScrollBar* nhBar, const SimilarityStatisticsSettings* _settings)
     : MaEditorNameList(ui, nhBar),
       matrix(NULL),
+      newSettings(*_settings),
+      curSettings(*_settings),
       autoUpdate(true)
 {
-    newSettings = curSettings = *_settings;
     updateDistanceMatrix();
     setObjectName("msa_editor_similarity_column");
 }
@@ -72,7 +73,7 @@ QString MsaEditorSimilarityColumn::getTextForRow( int s ) {
     U2OpStatusImpl os;
     const int refSequenceIndex = ma->getRowIndexByRowId(referenceRowId, os);
     CHECK_OP(os, QString());
-    
+
     int sim = matrix->getSimilarity(refSequenceIndex, s);
     CHECK(-1 != sim, tr("-"));
     const QString units = matrix->isPercentSimilarity() ? "%" : "";
@@ -92,7 +93,7 @@ void MsaEditorSimilarityColumn::setSettings(const UpdatedWidgetSettings* _settin
     const SimilarityStatisticsSettings* set= static_cast<const SimilarityStatisticsSettings*>(_settings);
     CHECK(NULL != set,);
     autoUpdate = set->autoUpdate;
-    if(curSettings.algoName != set->algoName) {
+    if (curSettings.algoId != set->algoId) {
         state = DataIsOutdated;
     }
     if(curSettings.excludeGaps != set->excludeGaps) {
@@ -175,7 +176,7 @@ CreateDistanceMatrixTask::CreateDistanceMatrixTask(const SimilarityStatisticsSet
 }
 
 void CreateDistanceMatrixTask::prepare() {
-    MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoName);
+    MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
     CHECK(NULL != factory,);
     if(s.excludeGaps){
         factory->setFlag(DistanceAlgorithmFlag_ExcludeGaps);

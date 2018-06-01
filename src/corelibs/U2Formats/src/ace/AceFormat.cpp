@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -264,9 +264,6 @@ static inline void parseAFTag(U2::IOAdapter *io, U2OpStatus &ti, char* buff, int
     QString readLine;
     QString name;
     qint64 len = 0;
-    int readPos = 0;
-    int complStrand = 0;
-    int paddedStart = 0;
     while (!ti.isCoR() && count1>0) {
         do{
             skipBreaks(io, ti, buff, &len);
@@ -282,14 +279,14 @@ static inline void parseAFTag(U2::IOAdapter *io, U2OpStatus &ti, char* buff, int
             return ;
         }
 
-        readPos = readsPos(readLine);
-        complStrand = readsComplement(readLine);
+        int readPos = readsPos(readLine);
+        int complStrand = readsComplement(readLine);
         if((INT_MAX == readPos) ||  (-1 == complStrand) ){
             ti.setError(ACEFormat::tr("Bad AF note"));
             return ;
         }
 
-        paddedStart = paddedStartCons(readLine);
+        int paddedStart = paddedStartCons(readLine);
         if(INT_MAX == paddedStart){
             ti.setError(ACEFormat::tr("Bad AF note"));
             return ;
@@ -406,7 +403,6 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
     QByteArray readBuff(READ_BUFF_SIZE+1, 0);
     char* buff = readBuff.data();
     qint64 len = 0;
-    int count = 0;
 
     QByteArray sequence;
     QSet<QString> names;
@@ -452,7 +448,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
                 headerLine = QString(QByteArray(buff, len)).trimmed();
             }while (!headerLine.startsWith(CO));
         }
-        count = readsCount(headerLine);
+        int count = readsCount(headerLine);
         if(-1 == count){
             os.setError(ACEFormat::tr("There is no note about reads count"));
             return ;

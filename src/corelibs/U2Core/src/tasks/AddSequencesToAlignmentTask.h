@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,6 +44,9 @@ public:
     virtual void prepare();
     virtual void run();
     ReportResult report();
+
+    const MaModificationInfo& getMaModificationInfo() const {return mi;}
+
 protected:
     void processObjectsAndSetResultingAlphabet();
 
@@ -58,7 +61,7 @@ private:
     U2MsaDbi*                   dbi;
     U2EntityRef                 entityRef;
     U2UseCommonUserModStep*     modStep;
-    MaModificationInfo           mi;
+    MaModificationInfo          mi;
 
     static const int maxErrorListSize;
     /** Returns the max length of the rows including trailing gaps */

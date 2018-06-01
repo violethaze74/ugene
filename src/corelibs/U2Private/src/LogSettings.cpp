@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,8 +40,15 @@ void LogCategories::init() {
     localizedLevelNames[LogLevel_ERROR]   = tr("ERROR");
 }
 
-LogSettings::LogSettings() {
+LogSettings::LogSettings() :
+    showDate(false),
+    showLevel(false),
+    showCategory(false),
+    enableColor(false),
+    toFile(false)
+{
     //created in not inited state
+    memset(activeLevelGlobalFlag, 0, sizeof(bool) * LogLevel_NumLevels);
 }
 
 const LoggerSettings& LogSettings::getLoggerSettings(const QString& cName) {

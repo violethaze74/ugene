@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ public:
     /** Validate the subset.
       * @returns "" on 0k, error message on fail
       */
-    QString validate();
+    QString validate() const;
 
     /** Fill and @return choosen subset */
     BioStruct3DReference getSubset();
@@ -65,7 +65,7 @@ public:
 
 private:
     /** Convert text from region Edit to U2Region */
-    U2Region getRegion();
+    U2Region getRegion() const;
 
     /** Set text in region Edit from U2Region */
     void setRegion(const U2Region &region);

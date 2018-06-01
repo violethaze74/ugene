@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -293,13 +293,12 @@ Task::ReportResult GTest_DNAcompareSequencesNamesInTwoObjects::report() {
     const QList<GObject*>& objs = doc->getObjects();
     const QList<GObject*>& objs2 = doc2->getObjects();
     GObject*obj=NULL;
-    GObject*obj2=NULL;
-    U2SequenceObject * mySequence;
-    U2SequenceObject * mySequence2;
+    U2SequenceObject * mySequence = NULL;
+    U2SequenceObject * mySequence2 = NULL;
 
     for(int i=0;(i!=objs.size())&&(i!=objs2.size());i++){
         obj = objs.at(i);
-        obj2 = objs2.at(i);
+        GObject *obj2 = objs2.at(i);
 
         if((obj->getGObjectType()== GObjectTypes::SEQUENCE)&&(obj2->getGObjectType() == GObjectTypes::SEQUENCE)){
             mySequence = qobject_cast<U2SequenceObject*>(obj);
@@ -366,13 +365,12 @@ Task::ReportResult GTest_DNAcompareSequencesInTwoObjects::report() {
     const QList<GObject*>& objs = doc->getObjects();
     const QList<GObject*>& objs2 = doc2->getObjects();
     GObject*obj=NULL;
-    GObject*obj2=NULL;
-    U2SequenceObject * mySequence;
-    U2SequenceObject * mySequence2;
+    U2SequenceObject * mySequence = NULL;
+    U2SequenceObject * mySequence2 = NULL;
 
     for(int i=0;(i!=objs.size())&&(i!=objs2.size());i++){
         obj = objs.at(i);
-        obj2 = objs2.at(i);
+        GObject *obj2 = objs2.at(i);
 
         if((obj->getGObjectType()== GObjectTypes::SEQUENCE)&&(obj2->getGObjectType()== GObjectTypes::SEQUENCE)){
             mySequence = qobject_cast<U2SequenceObject*>(obj);
@@ -440,13 +438,12 @@ Task::ReportResult GTest_DNAcompareSequencesAlphabetsInTwoObjects::report() {
     const QList<GObject*>& objs = doc->getObjects();
     const QList<GObject*>& objs2 = doc2->getObjects();
     GObject*obj=NULL;
-    GObject*obj2=NULL;
-    U2SequenceObject * mySequence;
-    U2SequenceObject * mySequence2;
+    U2SequenceObject * mySequence = NULL;
+    U2SequenceObject * mySequence2 = NULL;
 
     for(int i=0;(i!=objs.size())&&(i!=objs2.size());i++){
         obj = objs.at(i);
-        obj2 = objs2.at(i);
+        GObject *obj2 = objs2.at(i);
 
         if((obj->getGObjectType()== GObjectTypes::SEQUENCE)&&(obj2->getGObjectType()== GObjectTypes::SEQUENCE)){
             mySequence = qobject_cast<U2SequenceObject*>(obj);
@@ -772,14 +769,12 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
 
     const QList<GObject*>& objs = doc->getObjects();
     const QList<GObject*>& objs2 = doc2->getObjects();
-    GObject*obj=NULL;
-    GObject*obj2=NULL;
     MultipleSequenceAlignmentObject * myMSequence = 0;
     MultipleSequenceAlignmentObject * myMSequence2 = 0;
 
     for(int i=0;(i!=objs.size())&&(i!=objs2.size());i++){
-        obj = objs.at(i);
-        obj2 = objs2.at(i);
+        GObject *obj = objs.at(i);
+        GObject *obj2 = objs2.at(i);
 
         if(obj->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
             myMSequence = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
@@ -1120,13 +1115,12 @@ Task::ReportResult GTest_DNAcompareMulSequencesAlphabetIdInTwoObjects::report() 
     const QList<GObject*>& objs = doc->getObjects();
     const QList<GObject*>& objs2 = doc2->getObjects();
     GObject*obj=NULL;
-    GObject*obj2=NULL;
     MultipleSequenceAlignmentObject * myMSequence = 0;
     MultipleSequenceAlignmentObject * myMSequence2 = 0;
 
     for(int i=0;(i!=objs.size())&&(i!=objs2.size());i++){
         obj = objs.at(i);
-        obj2 = objs2.at(i);
+        GObject *obj2 = objs2.at(i);
 
         if(obj->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
             myMSequence = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
