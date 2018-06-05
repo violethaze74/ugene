@@ -52,9 +52,6 @@ DiamondSupportPlugin::DiamondSupportPlugin()
 }
 
 DiamondSupportPlugin::~DiamondSupportPlugin() {
-    LocalWorkflow::DiamondBuildWorkerFactory::cleanup();
-    LocalWorkflow::DiamondClassifyWorkerFactory::cleanup();
-
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
     etRegistry->unregisterEntry(DiamondSupport::TOOL_NAME);

@@ -115,11 +115,6 @@ NgsReadsClassificationPlugin::~NgsReadsClassificationPlugin() {
     CandidatesSplitterRegistry::instance()->unregisterSplitter(LocalWorkflow::SeReadsListSplitter::ID);
     CandidatesSplitterRegistry::instance()->unregisterSplitter(LocalWorkflow::PeReadsListSplitter::ID);
 
-    LocalWorkflow::EnsembleClassificationWorkerFactory::cleanup();
-    LocalWorkflow::GetReadsListWorkerFactory::cleanup();
-    LocalWorkflow::ClassificationFilterWorkerFactory::cleanup();
-    LocalWorkflow::ClassificationReportWorkerFactory::cleanup();
-
     foreach (const QString &dataId, registeredData) {
         unregisterData(dataId);
     }

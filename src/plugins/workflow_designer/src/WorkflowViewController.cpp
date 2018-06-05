@@ -2745,6 +2745,7 @@ void WorkflowScene::sl_reset() {
 
 void WorkflowScene::setModified(bool b) {
     modified = b;
+    update();
 }
 
 void WorkflowScene::setModified() {

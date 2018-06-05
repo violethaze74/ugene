@@ -209,7 +209,6 @@ private slots:
     void sl_sequenceModifyTaskStateChanged();
 
     void sl_paste();
-    void sl_pasteFinished(Task* pasteTask);
 
     void sl_reverseComplementSequence();
     void sl_reverseSequence();
@@ -289,18 +288,6 @@ private:
     ADVSequenceWidget*          replacedSeqWidget;     // not NULL when any sequence widget is dragging to the new place.
 
     int                         timerId;
-
-    struct PasteLocation {
-        PasteLocation()
-            : pastePos(-1), seqCtx(NULL) {}
-        PasteLocation(qint64 pos, ADVSequenceObjectContext* ctx)
-            : pastePos(pos),
-              seqCtx(ctx) {}
-
-        qint64                      pastePos;
-        ADVSequenceObjectContext*   seqCtx;
-    };
-    QMap<Task*, PasteLocation> pasteQueue;
 };
 
 } // namespace U2

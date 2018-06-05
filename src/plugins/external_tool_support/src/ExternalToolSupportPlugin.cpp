@@ -144,6 +144,7 @@
 #include "tcoffee/TCoffeeWorker.h"
 #include "tophat/TopHatSupport.h"
 #include "tophat/TopHatWorker.h"
+#include "trimmomatic/TrimmomaticSupport.h"
 #include "utils/ExternalToolSupportAction.h"
 #include "utils/ExternalToolValidateTask.h"
 #include "vcftools/VcfConsensusSupport.h"
@@ -394,7 +395,6 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     BigWigSupport* bigwigSupport = new BigWigSupport(ET_BIGWIG);
     etRegistry->registerEntry(bigwigSupport);
 
-
     // TopHat
     TopHatSupport* tophatTool = new TopHatSupport(ET_TOPHAT);
     etRegistry->registerEntry(tophatTool);
@@ -451,9 +451,14 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     StringTieSupport *stringTie = new StringTieSupport(ET_STRINGTIE);
     etRegistry->registerEntry(stringTie);
 
+    //HMMER
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::BUILD_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::SEARCH_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::PHMMER_TOOL));
+
+    //Trimmomatic
+    TrimmomaticSupport *trimmomaticSupport = new TrimmomaticSupport(ET_TRIMMOMATIC);
+    etRegistry->registerEntry(trimmomaticSupport);
 
     if (AppContext::getMainWindow()) {
 

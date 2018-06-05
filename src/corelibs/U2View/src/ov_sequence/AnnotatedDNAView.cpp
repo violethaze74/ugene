@@ -1389,79 +1389,18 @@ void AnnotatedDNAView::sl_paste(){
     PasteFactory* pasteFactory = AppContext::getPasteFactory();
     SAFE_POINT(pasteFactory != NULL, "adFactory is null", );
 
-    bool focus = false;
-    int pastePoint = -1;
     ADVSingleSequenceWidget *wgt = qobject_cast<ADVSingleSequenceWidget*> (focusedWidget);
+    CHECK(wgt != NULL, );
 
-    if (wgt != NULL) {
-        CHECK(wgt->getDetView()->getEditor()->isEditMode(), );
+    DetView* detView = wgt->getDetView();
+    SAFE_POINT(detView, "DetView is unexpectedly NULL", );
+    CHECK(detView->hasFocus(), );
+    SAFE_POINT(detView->getEditor(), "DetViewEditor is NULL", );
+    CHECK(detView->getEditor()->isEditMode(), );
 
-        QList<GSequenceLineView*> views = wgt->getLineViews();
-        foreach (GSequenceLineView* v, views) {
-            if (v->hasFocus()) {
-                if (qobject_cast<DetView*>(v) != NULL) {
-                    DetView* detView = qobject_cast<DetView*>(v);
-                    if (detView->isEditMode()) {
-                        pastePoint = detView->getEditor()->getCursorPosition();
-                    }
-                }
-                focus = true;
-                break;
-            }
-        }
-    }
-
-    PasteTask* task = pasteFactory->pasteTask(!focus);
-    if (focus){
-        connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_pasteFinished(Task*)));
-    }
-    ADVSequenceObjectContext *seqCtx = getSequenceInFocus();
-    SAFE_POINT(seqCtx != NULL, tr("No sequence in focus"), );
-    pasteQueue.insert(task, PasteLocation(pastePoint, seqCtx));
-
-
+    PasteTask* task = pasteFactory->pasteTask(false);
+    connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), detView->getEditor(), SLOT(sl_paste(Task*)));
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
-}
-
-void AnnotatedDNAView::sl_pasteFinished(Task* _pasteTask){
-    PasteLocation loc = pasteQueue.take(_pasteTask);
-    ADVSequenceObjectContext *seqCtx = loc.seqCtx;
-    if (seqCtx == NULL){
-        return;
-    }
-
-    U2SequenceObject* obj = seqCtx->getSequenceObject();
-    if (obj->isStateLocked()) {
-        return;
-    }
-
-    PasteTask* pasteTask = qobject_cast<PasteTask*>(_pasteTask);
-    if(NULL == pasteTask || pasteTask->isCanceled()) {
-        return;
-    }
-    const QList<Document*>& docs = pasteTask->getDocuments();
-    if (docs.length() == 0){
-        return;
-    }
-
-    U2OpStatusImpl os;
-    const QList<DNASequence>& sequences = PasteUtils::getSequences(docs, os);
-    DNASequence seq;
-    foreach(const DNASequence& dnaObj, sequences) {
-        if (seq.alphabet == NULL){
-            seq.alphabet = dnaObj.alphabet;
-        }
-        const DNAAlphabet* newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(dnaObj.alphabet, seq.alphabet);
-        if (newAlphabet != NULL) {
-            seq.alphabet = newAlphabet;
-            seq.seq.append(dnaObj.seq);
-        }
-    }
-    Task *t = new ModifySequenceContentTask(BaseDocumentFormats::FASTA, obj,
-                                            U2Region(loc.pastePos != -1 ? loc.pastePos : obj->getSequenceLength(), 0), seq);
-    connect(t, SIGNAL(si_stateChanged()), SLOT(sl_sequenceModifyTaskStateChanged()));
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
-    seqCtx->getSequenceSelection()->clear();
 }
 
 void AnnotatedDNAView::onObjectRenamed(GObject* obj, const QString& oldName) {
