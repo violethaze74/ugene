@@ -22,8 +22,6 @@
 #ifndef _U2_GET_READ_LIST_WORKER_H_
 #define _U2_GET_READ_LIST_WORKER_H_
 
-#include "NgsReadsClassificationPlugin.h"
-
 #include <U2Lang/IntegralBusUtils.h>
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -60,7 +58,7 @@ private:
 
 };
 
-class U2NGS_READS_CLASSIFICATION_EXPORT GetReadsListWorkerFactory : public DomainFactory {
+class GetReadsListWorkerFactory : public DomainFactory {
 public:
     static const QString SE_ACTOR_ID;
     static const QString PE_ACTOR_ID;

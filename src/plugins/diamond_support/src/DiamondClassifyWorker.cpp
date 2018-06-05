@@ -35,7 +35,6 @@
 #include "DiamondClassifyWorker.h"
 #include "DiamondClassifyWorkerFactory.h"
 #include "DiamondSupport.h"
-#include "../../ngs_reads_classification/src/GetReadListWorker.h"
 #include "../../ngs_reads_classification/src/NgsReadsClassificationUtils.h"
 
 namespace U2 {
@@ -175,7 +174,7 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
     settings.databaseUrl = getValue<QString>(DiamondClassifyWorkerFactory::DATABASE_ATTR_ID);
 
     const Message message = getMessageAndSetupScriptValues(input);
-    settings.readsUrl = message.getData().toMap()[GetReadsListWorkerFactory::SE_SLOT().getId()].toString();
+    settings.readsUrl = message.getData().toMap()[DiamondClassifyWorkerFactory::INPUT_SLOT].toString();
 
     QString tmpDir = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
     tmpDir = GUrlUtils::createDirectory(tmpDir + DIAMOND_DIR , "_", os);
@@ -197,17 +196,6 @@ DiamondClassifyTaskSettings DiamondClassifyWorker::getSettings(U2OpStatus &os) {
     settings.gap_extend = getValue<int>(DiamondClassifyWorkerFactory::GE_PEN_ATTR_ID);
     settings.index_chunks = getValue<int>(DiamondClassifyWorkerFactory::CHUNKS_ATTR_ID);
     settings.num_threads = getValue<int>(DiamondClassifyWorkerFactory::THREADS_ATTR_ID);
-
-
-//    if (pairedReadsInput) {
-//        settings.pairedReads = true;
-//        const Message pairedMessage = getMessageAndSetupScriptValues(pairedInput);
-//        settings.pairedReadsUrl = pairedMessage.getData().toMap()[GetReadsListWorkerFactory::PE_SLOT().getId()].toString();
-//        settings.pairedClassificationUrl = tmpDir + "/" + getClassificationFileName(pairedMessage);
-//        if (settings.classificationUrl == settings.pairedClassificationUrl) {
-//            settings.pairedClassificationUrl = GUrlUtils::rollFileName(settings.pairedClassificationUrl, QSet<QString>() << settings.classificationUrl);
-//        }
-//    }
 
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
     SAFE_POINT_EXT(NULL != dataPathRegistry, os.setError("U2DataPathRegistry is NULL"), settings);

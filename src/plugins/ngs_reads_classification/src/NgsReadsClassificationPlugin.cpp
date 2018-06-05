@@ -27,7 +27,6 @@
 #include "ClassificationFilterWorker.h"
 #include "ClassificationReportWorker.h"
 #include "EnsembleClassificationWorker.h"
-#include "GetReadListWorker.h"
 
 namespace U2 {
 
@@ -99,11 +98,7 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
 
     LocalWorkflow::ClassificationFilterWorkerFactory::init();
     LocalWorkflow::ClassificationReportWorkerFactory::init();
-    LocalWorkflow::GetReadsListWorkerFactory::init();
     LocalWorkflow::EnsembleClassificationWorkerFactory::init();
-
-    CandidatesSplitterRegistry::instance()->registerSplitter(new LocalWorkflow::SeReadsListSplitter());
-    CandidatesSplitterRegistry::instance()->registerSplitter(new LocalWorkflow::PeReadsListSplitter());
 
     // Pre-load taxonomy data
     TaskScheduler *scheduler = AppContext::getTaskScheduler();
@@ -112,14 +107,6 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
 }
 
 NgsReadsClassificationPlugin::~NgsReadsClassificationPlugin() {
-    CandidatesSplitterRegistry::instance()->unregisterSplitter(LocalWorkflow::SeReadsListSplitter::ID);
-    CandidatesSplitterRegistry::instance()->unregisterSplitter(LocalWorkflow::PeReadsListSplitter::ID);
-
-    LocalWorkflow::EnsembleClassificationWorkerFactory::cleanup();
-    LocalWorkflow::GetReadsListWorkerFactory::cleanup();
-    LocalWorkflow::ClassificationFilterWorkerFactory::cleanup();
-    LocalWorkflow::ClassificationReportWorkerFactory::cleanup();
-
     foreach (const QString &dataId, registeredData) {
         unregisterData(dataId);
     }

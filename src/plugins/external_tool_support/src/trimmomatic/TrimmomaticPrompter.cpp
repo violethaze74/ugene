@@ -19,27 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#include <QFileInfo>
-
-#include <U2Core/AppContext.h>
-
-#include "TrimmomaticSupport.h"
-#include "java/JavaSupport.h"
+#include "TrimmomaticPrompter.h"
 
 namespace U2 {
+namespace LocalWorkflow {
 
-TrimmomaticSupport::TrimmomaticSupport(const QString &name, const QString &path)
-    : ExternalTool(name, path)
+TrimmomaticPrompter::TrimmomaticPrompter(Actor *actor)
+    : PrompterBase<TrimmomaticPrompter>(actor)
 {
-    toolKitName = "Trimmomatic";
-    description = tr("<i>Trimmomatic</i> is a flexible read trimming tool for Illumina NGS data.");
 
-    executableFileName = "trimmomatic.jar";
-    validationArguments << "-h";
-    validMessage = "PE \\[-version\\] \\[-threads <threads>\\] \\[-phred33|-phred64\\] \\[-trimlog <trimLogFile>\\]";
-
-    toolRunnerProgramm = ET_JAVA;
-    dependencies << ET_JAVA;
 }
 
+QString TrimmomaticPrompter::composeRichDoc() {
+    return tr("Trim, crop and/or remove adapters for input Illumina FASTQ data.");
+}
+
+} // namespace LocalWorkflow
 } // namespace U2

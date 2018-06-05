@@ -50,9 +50,6 @@ ClarkSupportPlugin::ClarkSupportPlugin()
 }
 
 ClarkSupportPlugin::~ClarkSupportPlugin() {
-    LocalWorkflow::ClarkBuildWorkerFactory::cleanup();
-    LocalWorkflow::ClarkClassifyWorkerFactory::cleanup();
-
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
     ClarkSupport::unregisterTools(etRegistry);

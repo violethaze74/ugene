@@ -44,7 +44,6 @@
 #include "KrakenClassifyPrompter.h"
 #include "KrakenSupport.h"
 #include "../../ngs_reads_classification/src/DatabaseDelegate.h"
-#include "../../ngs_reads_classification/src/GetReadListWorker.h"
 #include "../../ngs_reads_classification/src/NgsReadsClassificationPlugin.h"
 
 namespace U2 {
@@ -54,6 +53,10 @@ const QString KrakenClassifyWorkerFactory::ACTOR_ID = "kraken-classify";
 
 const QString KrakenClassifyWorkerFactory::INPUT_PORT_ID = "in";
 const QString KrakenClassifyWorkerFactory::OUTPUT_PORT_ID = "out";
+
+// Slots should be the same as in GetReadsListWorkerFactory
+const QString KrakenClassifyWorkerFactory::INPUT_SLOT = "reads-url1";
+const QString KrakenClassifyWorkerFactory::PAIRED_INPUT_SLOT = "reads-url2";
 
 const QString KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID = "input-data";
 const QString KrakenClassifyWorkerFactory::DATABASE_ATTR_ID = "database";
@@ -79,11 +82,11 @@ Worker *KrakenClassifyWorkerFactory::createWorker(Actor *actor) {
 void KrakenClassifyWorkerFactory::init() {
     QList<PortDescriptor *> ports;
     {
-        const Descriptor inSlotDesc(GetReadsListWorkerFactory::SE_SLOT().getId(),
+        const Descriptor inSlotDesc(INPUT_SLOT,
                                        KrakenClassifyPrompter::tr("Input URL 1"),
                                        KrakenClassifyPrompter::tr("Input URL 1."));
 
-        const Descriptor inPairedSlotDesc(GetReadsListWorkerFactory::PE_SLOT().getId(),
+        const Descriptor inPairedSlotDesc(PAIRED_INPUT_SLOT,
                                           KrakenClassifyPrompter::tr("Input URL 2"),
                                           KrakenClassifyPrompter::tr("Input URL 2."));
 
@@ -137,7 +140,7 @@ void KrakenClassifyWorkerFactory::init() {
                                                                         "The other option to improve the speed is to store the database on ramdisk. Set this parameter to \"False\" in this case."));
 
         Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, KrakenClassifyTaskSettings::SINGLE_END);
-        inputDataAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT_ID, GetReadsListWorkerFactory::PE_SLOT().getId(), QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
+        inputDataAttribute->addSlotRelation(SlotRelationDescriptor(INPUT_PORT_ID, PAIRED_INPUT_SLOT, QVariantList() << KrakenClassifyTaskSettings::PAIRED_END));
         attributes << inputDataAttribute;
 
         QString minikrakenPath;

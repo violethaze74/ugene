@@ -22,7 +22,6 @@
 #include "DiamondClassifyPrompter.h"
 #include "DiamondClassifyTask.h"
 #include "DiamondClassifyWorkerFactory.h"
-#include "../../ngs_reads_classification/src/GetReadListWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -34,7 +33,7 @@ DiamondClassifyPrompter::DiamondClassifyPrompter(Actor *actor)
 }
 
 QString DiamondClassifyPrompter::composeRichDoc() {
-    const QString readsProducerName = getProducersOrUnset(DiamondClassifyWorkerFactory::INPUT_PORT_ID, GetReadsListWorkerFactory::SE_SLOT().getId());
+    const QString readsProducerName = getProducersOrUnset(DiamondClassifyWorkerFactory::INPUT_PORT_ID, DiamondClassifyWorkerFactory::INPUT_SLOT);
     const QString databaseUrl = getHyperlink(DiamondClassifyWorkerFactory::DATABASE_ATTR_ID, getURL(DiamondClassifyWorkerFactory::DATABASE_ATTR_ID));
 
     if (true || DiamondClassifyTaskSettings::SINGLE_END == getParameter(DiamondClassifyWorkerFactory::INPUT_DATA_ATTR_ID).toString()) {

@@ -19,27 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#include <QFileInfo>
-
-#include <U2Core/AppContext.h>
-
-#include "TrimmomaticSupport.h"
-#include "java/JavaSupport.h"
+#include "TrimmomaticLogParser.h"
 
 namespace U2 {
 
-TrimmomaticSupport::TrimmomaticSupport(const QString &name, const QString &path)
-    : ExternalTool(name, path)
+const QStringList TrimmomaticLogParser::wellKnownErrors = QStringList()
+        << "Exception"
+        << "Unable to determine input files"
+        << "Unable to determine output files"
+        << "Unknown option";
+
+TrimmomaticLogParser::TrimmomaticLogParser()
+    : ExternalToolLogParser()
 {
-    toolKitName = "Trimmomatic";
-    description = tr("<i>Trimmomatic</i> is a flexible read trimming tool for Illumina NGS data.");
 
-    executableFileName = "trimmomatic.jar";
-    validationArguments << "-h";
-    validMessage = "PE \\[-version\\] \\[-threads <threads>\\] \\[-phred33|-phred64\\] \\[-trimlog <trimLogFile>\\]";
+}
 
-    toolRunnerProgramm = ET_JAVA;
-    dependencies << ET_JAVA;
+bool TrimmomaticLogParser::isError(const QString &line) const {
+    foreach (const QString &wellKnownErrors, wellKnownErrors) {
+        if (line.contains(wellKnownErrors)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 } // namespace U2

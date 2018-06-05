@@ -191,6 +191,10 @@ void WorkflowDesignerPlugin::sl_initWorkers() {
     Workflow::CoreLib::initIncludedWorkers();
 }
 
+WorkflowDesignerPlugin::~WorkflowDesignerPlugin() {
+    Workflow::CoreLib::cleanup();
+}
+
 class CloseDesignerTask : public Task {
 public:
     CloseDesignerTask(WorkflowDesignerService* s) :

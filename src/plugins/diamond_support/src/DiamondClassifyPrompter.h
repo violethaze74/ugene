@@ -31,7 +31,6 @@ class DiamondClassifyPrompter : public PrompterBase<DiamondClassifyPrompter> {
     Q_OBJECT
 public:
     DiamondClassifyPrompter(Actor *actor);
-
 private:
     QString composeRichDoc();
 };

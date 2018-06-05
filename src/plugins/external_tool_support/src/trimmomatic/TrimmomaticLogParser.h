@@ -19,27 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#include <QFileInfo>
+#ifndef _U2_TRIMMOMATIC_LOG_PARSER_H_
+#define _U2_TRIMMOMATIC_LOG_PARSER_H_
 
-#include <U2Core/AppContext.h>
-
-#include "TrimmomaticSupport.h"
-#include "java/JavaSupport.h"
+#include <U2Core/ExternalToolRunTask.h>
 
 namespace U2 {
 
-TrimmomaticSupport::TrimmomaticSupport(const QString &name, const QString &path)
-    : ExternalTool(name, path)
-{
-    toolKitName = "Trimmomatic";
-    description = tr("<i>Trimmomatic</i> is a flexible read trimming tool for Illumina NGS data.");
+class TrimmomaticLogParser : public ExternalToolLogParser {
+public:
+    TrimmomaticLogParser();
 
-    executableFileName = "trimmomatic.jar";
-    validationArguments << "-h";
-    validMessage = "PE \\[-version\\] \\[-threads <threads>\\] \\[-phred33|-phred64\\] \\[-trimlog <trimLogFile>\\]";
+private:
+    bool isError(const QString &line) const;
 
-    toolRunnerProgramm = ET_JAVA;
-    dependencies << ET_JAVA;
-}
+    static const QStringList wellKnownErrors;
+};
 
 } // namespace U2
+
+#endif // _U2_TRIMMOMATIC_LOG_PARSER_H_

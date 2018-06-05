@@ -52,9 +52,6 @@ KrakenSupportPlugin::KrakenSupportPlugin()
 }
 
 KrakenSupportPlugin::~KrakenSupportPlugin() {
-    LocalWorkflow::KrakenBuildWorkerFactory::cleanup();
-    LocalWorkflow::KrakenClassifyWorkerFactory::cleanup();
-
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
     etRegistry->unregisterEntry(KrakenSupport::BUILD_TOOL);

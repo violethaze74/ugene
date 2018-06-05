@@ -24,7 +24,6 @@
 #include "KrakenClassifyPrompter.h"
 #include "KrakenClassifyTask.h"
 #include "KrakenClassifyWorkerFactory.h"
-#include "../ngs_reads_classification/src/GetReadListWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -36,7 +35,7 @@ KrakenClassifyPrompter::KrakenClassifyPrompter(Actor *actor)
 }
 
 QString KrakenClassifyPrompter::composeRichDoc() {
-    const QString readsProducerName = getProducersOrUnset(KrakenClassifyWorkerFactory::INPUT_PORT_ID, GetReadsListWorkerFactory::SE_SLOT_ID);
+    const QString readsProducerName = getProducersOrUnset(KrakenClassifyWorkerFactory::INPUT_PORT_ID, KrakenClassifyWorkerFactory::INPUT_SLOT);
     const QString databaseUrl = getHyperlink(KrakenClassifyWorkerFactory::DATABASE_ATTR_ID, getURL(KrakenClassifyWorkerFactory::DATABASE_ATTR_ID));
 
     if (KrakenClassifyTaskSettings::SINGLE_END == getParameter(KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID).toString()) {

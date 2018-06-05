@@ -19,27 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#include <QFileInfo>
+#ifndef _U2_TRIMMOMATIC_PROMPTER_H_
+#define _U2_TRIMMOMATIC_PROMPTER_H_
 
-#include <U2Core/AppContext.h>
+#include <QCoreApplication>
 
-#include "TrimmomaticSupport.h"
-#include "java/JavaSupport.h"
+#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
+namespace LocalWorkflow {
 
-TrimmomaticSupport::TrimmomaticSupport(const QString &name, const QString &path)
-    : ExternalTool(name, path)
-{
-    toolKitName = "Trimmomatic";
-    description = tr("<i>Trimmomatic</i> is a flexible read trimming tool for Illumina NGS data.");
+class TrimmomaticPrompter : public PrompterBase<TrimmomaticPrompter> {
+    Q_DECLARE_TR_FUNCTIONS(TrimmomaticPrompter)
+public:
+    TrimmomaticPrompter(Actor *actor = NULL);
 
-    executableFileName = "trimmomatic.jar";
-    validationArguments << "-h";
-    validMessage = "PE \\[-version\\] \\[-threads <threads>\\] \\[-phred33|-phred64\\] \\[-trimlog <trimLogFile>\\]";
+private:
+    QString composeRichDoc();
+};
 
-    toolRunnerProgramm = ET_JAVA;
-    dependencies << ET_JAVA;
-}
+}   // namespace LocalWorkflow
+}   // namespace U2
 
-} // namespace U2
+#endif // _U2_TRIMMOMATIC_PROMPTER_H_
