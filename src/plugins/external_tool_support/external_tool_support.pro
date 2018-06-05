@@ -138,7 +138,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/peak2gene/Peak2GeneSupport.h \
            src/peak2gene/Peak2GeneTask.h \
            src/peak2gene/Peak2GeneWorker.h \
-           src/peak2gene/TabulatedFormatReader.h \
            src/perl/PerlSupport.h \
            src/phyml/PhyMLDialogWidget.h \
            src/phyml/PhyMLSupport.h \
@@ -174,6 +173,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/tophat/TopHatSupport.h \
            src/tophat/TopHatSupportTask.h \
            src/tophat/TopHatWorker.h \
+           src/trimmomatic/TrimmomaticSupport.h \
            src/utils/AlignMsaAction.h \
            src/utils/BaseShortReadsAlignerWorker.h \
            src/utils/BlastDBSelectorWidgetController.h \
@@ -352,7 +352,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/peak2gene/Peak2GeneSupport.cpp \
            src/peak2gene/Peak2GeneTask.cpp \
            src/peak2gene/Peak2GeneWorker.cpp \
-           src/peak2gene/TabulatedFormatReader.cpp \
            src/perl/PerlSupport.cpp \
            src/phyml/PhyMLDialogWidget.cpp \
            src/phyml/PhyMLSupport.cpp \
@@ -388,6 +387,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/tophat/TopHatSupport.cpp \
            src/tophat/TopHatSupportTask.cpp \
            src/tophat/TopHatWorker.cpp \
+           src/trimmomatic/TrimmomaticSupport.cpp \
            src/utils/AlignMsaAction.cpp \
            src/utils/BlastDBSelectorWidgetController.cpp \
            src/utils/BaseShortReadsAlignerWorker.cpp \

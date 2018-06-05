@@ -227,7 +227,7 @@ QList<Port*> Actor::getEnabledOutputPorts() const {
 
 void Actor::setParameter(const QString& name, const QVariant& val) {
     Configuration::setParameter(name, val);
-    updatePortsAvailability(getParameter(name));
+    updateItemsAvailability(getParameter(name));
     emit si_modified();
 }
 
@@ -397,19 +397,26 @@ void Actor::updateDelegateTags() {
     }
 }
 
-void Actor::updatePortsAvailability() {
+void Actor::updateItemsAvailability() {
     foreach (Attribute *influencing, getAttributes()) {
-        updatePortsAvailability(influencing);
+        updateItemsAvailability(influencing);
     }
 }
 
-void Actor::updatePortsAvailability(const Attribute* influencingAttribute) {
-    foreach (const PortRelationDescriptor& rel, influencingAttribute->getPortRelations()) {
+void Actor::updateItemsAvailability(const Attribute* influencingAttribute) {
+    foreach(const PortRelationDescriptor& rel, influencingAttribute->getPortRelations()) {
         Port* dependentPort = getPort(rel.portId);
-        if(NULL == dependentPort) {
-            continue;
-        }
+        CHECK_CONTINUE(dependentPort != NULL);
+
         dependentPort->setEnabled(rel.isPortEnabled(influencingAttribute->getAttributePureValue()));
+    }
+
+    foreach(const SlotRelationDescriptor& rel, influencingAttribute->getSlotRelations()) {
+        Port* dependentPort = getPort(rel.portId);
+        CHECK_CONTINUE(dependentPort != NULL);
+
+        const bool isEnabled = rel.isSlotEnabled(influencingAttribute->getAttributePureValue().toString());
+        dependentPort->setVisibleSlot(rel.slotId, isEnabled);
     }
 }
 

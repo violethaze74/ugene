@@ -1,0 +1,474 @@
+#@UGENE_WORKFLOW
+
+
+
+workflow "Parallel classification for PE reads"{
+
+    get-pe-reads-list {
+        type:get-pe-reads-list;
+        name:"Read NGS PE Reads";
+        url1 {
+            dataset:"Dataset 1";
+        }
+        url2 {
+            dataset:"Dataset 1";
+        }
+    }
+    fastqc-before-1 {
+        type:fastqc;
+        name:"FastQC Before 1";
+    }
+    casava-filter-2 {
+        type:CASAVAFilter;
+        name:"CASAVA Filter 2";
+    }
+    cut-adapt-2 {
+        type:CutAdaptFastq;
+        name:"Cut Adapter 2";
+        adapters-url:"";
+    }
+    quality-trim-2 {
+        type:QualityTrim;
+        name:"Trim by Quality 2";
+    }
+    kraken-classify {
+        type:kraken-classify;
+        name:Kraken;
+        input-data:paired-end;
+    }
+    clark-classify {
+        type:clark-classify;
+        name:CLARK;
+        sequencing-reads:paired-end;
+    }
+    quality-trim-1 {
+        type:QualityTrim;
+        name:"Trim by Quality 1";
+    }
+    cut-adapt-1 {
+        type:CutAdaptFastq;
+        name:"Cut Adapter 1";
+        adapters-url:"";
+    }
+    casava-filter-1 {
+        type:CASAVAFilter;
+        name:"CASAVA Filter 1";
+    }
+    multiplexer {
+        type:multiplexer;
+        name:Multiplexer;
+    }
+    fastqc-before-2 {
+        type:fastqc;
+        name:"FastQC Before 2";
+    }
+    fastqc-after-1 {
+        type:fastqc;
+        name:"FastQC After 1";
+    }
+    fastqc-after-2 {
+        type:fastqc;
+        name:"FastQC After 2";
+    }
+    ensemble-classification {
+        type:ensemble-classification;
+        name:Ensemble;
+    }
+    wevote-classify {
+        type:wevote-classify;
+        name:WEVOTE;
+    }
+    classification-report {
+        type:classification-report;
+        name:Report;
+    }
+
+    .actor-bindings {
+        wevote-classify.out->classification-report.in
+        ensemble-classification.out->wevote-classify.in
+        quality-trim-2.out-file->multiplexer.input-data-1
+        quality-trim-2.out-file->fastqc-after-2.in-file
+        cut-adapt-2.out-file->quality-trim-2.in-file
+        clark-classify.out->ensemble-classification.tax-data2
+        quality-trim-1.out-file->multiplexer.input-data-2
+        quality-trim-1.out-file->fastqc-after-1.in-file
+        multiplexer.output-data->kraken-classify.in
+        multiplexer.output-data->clark-classify.in
+        casava-filter-2.out-file->cut-adapt-2.in-file
+        kraken-classify.out->ensemble-classification.tax-data1
+        casava-filter-1.out-file->cut-adapt-1.in-file
+        get-pe-reads-list.out->casava-filter-2.in-file
+        get-pe-reads-list.out->casava-filter-1.in-file
+        get-pe-reads-list.out->fastqc-before-1.in-file
+        get-pe-reads-list.out->fastqc-before-2.in-file
+        cut-adapt-1.out-file->quality-trim-1.in-file
+    }
+
+    get-pe-reads-list.reads-url1->fastqc-before-1.in-file.url
+    get-pe-reads-list.reads-url2->casava-filter-2.in-file.url
+    casava-filter-2.url->cut-adapt-2.in-file.url
+    cut-adapt-2.url->quality-trim-2.in-file.url
+    quality-trim-1.url->kraken-classify.in.reads-url1
+    quality-trim-2.url->kraken-classify.in.reads-url2
+    quality-trim-1.url->clark-classify.in.reads-url1
+    quality-trim-2.url->clark-classify.in.reads-url2
+    cut-adapt-1.url->quality-trim-1.in-file.url
+    casava-filter-1.url->cut-adapt-1.in-file.url
+    get-pe-reads-list.reads-url1->casava-filter-1.in-file.url
+    get-pe-reads-list.reads-url2->fastqc-before-2.in-file.url
+    quality-trim-1.url->fastqc-after-1.in-file.url
+    quality-trim-2.url->fastqc-after-2.in-file.url
+    kraken-classify.tax-data->ensemble-classification.tax-data1.in
+    clark-classify.tax-data->ensemble-classification.tax-data2.in
+    ensemble-classification.url->wevote-classify.in.url
+    wevote-classify.tax-data->classification-report.in.tax-data
+
+    .meta {
+        visual {
+            casava-filter-1 {
+                pos:"-420 -600";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in-file.angle:180;
+                out-file.angle:357.064;
+            }
+            casava-filter-2 {
+                pos:"-495 -435";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in-file.angle:143.973;
+                out-file.angle:360;
+            }
+            clark-classify {
+                pos:"45 -240";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:84.6442;
+                out.angle:305.91;
+            }
+            classification-report {
+                pos:"-315 -90";
+                style:simple;
+                bg-color-simple:"141 126 194 255";
+                in.angle:345.964;
+            }
+            cut-adapt-1 {
+                pos:"-195 -600";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in-file.angle:180;
+                out-file.angle:358.531;
+            }
+            cut-adapt-2 {
+                pos:"-315 -435";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in-file.angle:180;
+                out-file.angle:360;
+            }
+            ensemble-classification {
+                pos:"135 -90";
+                style:simple;
+                bg-color-simple:"102 102 102 255";
+                out.angle:186.911;
+                tax-data1.angle:53.427;
+                tax-data2.angle:128.66;
+                tax-data3.angle:225;
+            }
+            fastqc-after-1 {
+                pos:"165 -525";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:135;
+            }
+            fastqc-after-2 {
+                pos:"-30 -360";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:123.69;
+            }
+            fastqc-before-1 {
+                pos:"-465 -690";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:233.842;
+            }
+            fastqc-before-2 {
+                pos:"-630 -465";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:81.1193;
+            }
+            get-pe-reads-list {
+                pos:"-615 -600";
+                style:simple;
+                bg-color-simple:"23 106 239 255";
+                out.angle:1.50744;
+            }
+            kraken-classify {
+                pos:"210 -240";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:90;
+                out.angle:244.179;
+            }
+            multiplexer {
+                pos:"75 -435";
+                style:simple;
+                bg-color-simple:"51 51 51 255";
+                input-data-1.angle:180;
+                input-data-2.angle:91.9092;
+                output-data.angle:270;
+            }
+            quality-trim-1 {
+                pos:"75 -600";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in-file.angle:183.691;
+                out-file.angle:272.437;
+            }
+            quality-trim-2 {
+                pos:"-135 -435";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in-file.angle:180;
+                out-file.angle:1.4688;
+            }
+            wevote-classify {
+                pos:"-90 -90";
+                style:simple;
+                bg-color-simple:"0 106 0 255";
+                in.angle:349.046;
+                out.angle:187.696;
+            }
+            casava-filter-1.out-file->cut-adapt-1.in-file {
+                text-pos:"-36.3359 4";
+            }
+            casava-filter-2.out-file->cut-adapt-2.in-file {
+                text-pos:"-42.3359 -27";
+            }
+            clark-classify.out->ensemble-classification.tax-data2 {
+                text-pos:"-59 -22";
+            }
+            cut-adapt-1.out-file->quality-trim-1.in-file {
+                text-pos:"-37.3359 4";
+            }
+            cut-adapt-2.out-file->quality-trim-2.in-file {
+                text-pos:"-42.3359 -27";
+            }
+            ensemble-classification.out->wevote-classify.in {
+                text-pos:"-44 3";
+            }
+            get-pe-reads-list.out->casava-filter-1.in-file {
+                text-pos:"-32.3359 2";
+            }
+            get-pe-reads-list.out->casava-filter-2.in-file {
+                text-pos:"-21.3359 18";
+            }
+            get-pe-reads-list.out->fastqc-before-1.in-file {
+                text-pos:"-40.3359 -26";
+            }
+            get-pe-reads-list.out->fastqc-before-2.in-file {
+                text-pos:"-65.3359 15";
+            }
+            kraken-classify.out->ensemble-classification.tax-data1 {
+                text-pos:"-31 -26";
+            }
+            multiplexer.output-data->clark-classify.in {
+                text-pos:"-36 -2";
+            }
+            multiplexer.output-data->kraken-classify.in {
+                text-pos:"-17 -1";
+            }
+            quality-trim-1.out-file->fastqc-after-1.in-file {
+                text-pos:"-11.3359 -22";
+            }
+            quality-trim-1.out-file->multiplexer.input-data-2 {
+                text-pos:"-29.3359 -11";
+            }
+            quality-trim-2.out-file->fastqc-after-2.in-file {
+                text-pos:"-19.3359 -14";
+            }
+            quality-trim-2.out-file->multiplexer.input-data-1 {
+                text-pos:"-37.3359 -27";
+            }
+            wevote-classify.out->classification-report.in {
+                text-pos:"-48 4";
+            }
+        }
+        wizard {
+            name:"PE Reads Parallel Classification Wizard";
+            page {
+                id:1;
+                next:2;
+                title:"Input data";
+                parameters-area {
+                    group {
+                        title:"Paired-end reads";
+                        label-size:120;
+                        get-pe-reads-list.url1 {
+                            label:"FASTQ file(s) 1";
+                        }
+                        get-pe-reads-list.url2 {
+                            label:"FASTQ file(s) 2";
+                        }
+                    }
+                }
+            }
+            page {
+                id:2;
+                next:3;
+                title:Pre-proccessing;
+                parameters-area {
+                    group {
+                        title:"Reads filtration 1";
+                        label-size:120;
+                        quality-trim-1.qual-id {
+                        }
+                        quality-trim-1.len-id {
+                            label:"Min length";
+                        }
+                        cut-adapt-1.front-url {
+                            label:"5’ adapters";
+                        }
+                        cut-adapt-1.adapters-url {
+                            label:"3’ adapters";
+                        }
+                        cut-adapt-1.anywhere-url {
+                            label:"5’ and 3’ adapters";
+                        }
+                    }
+                    group {
+                        title:"Reads filtration 2";
+                        label-size:120;
+                        quality-trim-2.qual-id {
+                        }
+                        quality-trim-2.len-id {
+                            label:"Min length";
+                        }
+                        cut-adapt-2.front-url {
+                            label:"5’ adapters";
+                        }
+                        cut-adapt-2.adapters-url {
+                            label:"3’ adapters";
+                        }
+                        cut-adapt-2.anywhere-url {
+                            label:"5’ and 3’ adapters";
+                        }
+                    }
+                }
+            }
+            page {
+                id:3;
+                next:4;
+                title:"Kraken settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        kraken-classify.database {
+                        }
+                        kraken-classify.quick-operation {
+                        }
+                        kraken-classify.min-hits {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        kraken-classify.preload {
+                        }
+                        kraken-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:4;
+                next:5;
+                title:"CLARK settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        clark-classify.database {
+                        }
+                        clark-classify.k-length {
+                        }
+                        clark-classify.k-min-freq {
+                        }
+                        clark-classify.mode {
+                        }
+                        clark-classify.extend-out {
+                        }
+                        clark-classify.factor {
+                        }
+                        clark-classify.gap {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        clark-classify.preload {
+                        }
+                        clark-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:5;
+                next:6;
+                title:"WEVOTE settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        wevote-classify.penalty {
+                        }
+                        wevote-classify.number-of-agreed-tools {
+                        }
+                        wevote-classify.score-threshold {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        wevote-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:6;
+                title:"Output data";
+                parameters-area {
+                    group {
+                        title:"Classification output";
+                        label-size:180;
+                        kraken-classify.output-url {
+                            label:"Kraken output file";
+                        }
+                        clark-classify.output-url {
+                            label:"CLARK output file";
+                        }
+                        wevote-classify.output-url {
+                            label:"WEVOTE output file";
+                        }
+                    }
+                    group {
+                        title:"Classification reports";
+                        label-size:180;
+                        classification-report.output-url {
+                            label:"Report for WEVOTE classification"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

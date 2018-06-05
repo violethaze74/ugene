@@ -143,6 +143,8 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
         table->setItem(i, VALUE_COLUMN, valueItem);
     }
 
+    table->sortItems(KEY_COLUMN);
+
     QWidget* widget = new QWidget();
     QSizePolicy sizePolicy1(QSizePolicy::Ignored, QSizePolicy::Preferred);
     sizePolicy1.setHorizontalStretch(0);

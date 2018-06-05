@@ -426,7 +426,7 @@ void AddPluginTask::prepare() {
 
     //check that plugin we depends on is already loaded
     foreach (const DependsInfo& di, desc.dependsList) {
-        PluginRef* ref = ps->findRefById(desc.id);
+        PluginRef* ref = ps->findRefById(di.id);
         if (ref == NULL) {
             stateInfo.setError(  tr("Plugin %1 depends on %2 which is not loaded").arg(desc.id).arg(di.id) );
             return;
@@ -444,6 +444,7 @@ void AddPluginTask::prepare() {
 
     if (!loadOk) {
         stateInfo.setError(  tr("Plugin loading error: %1, Error string %2").arg(libUrl).arg(lib->errorString()) );
+        coreLog.error(stateInfo.getError());
         return;
     }
 

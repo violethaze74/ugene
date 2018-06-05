@@ -40,6 +40,7 @@
 #include <U2Lang/WorkflowScriptEngine.h>
 
 #include "PortRelation.h"
+#include "SlotRelation.h"
 
 namespace U2 {
 
@@ -88,11 +89,22 @@ enum AttributeGroup {
  */
 class U2LANG_EXPORT Attribute : public Descriptor {
 public:
-    Attribute(const Descriptor& d, const DataTypePtr type, bool required = false, const QVariant & defaultValue = QVariant());
+    enum Flag {
+        None,
+        CanBeEmpty,     // it has meaning only for required attributes, allows the required attribute to be empty
+        Required        // values of required attributes cannot be empty, if the appropriate flag is not set
+    };
+    Q_DECLARE_FLAGS(Flags, Flag)
+
+    Attribute(const Descriptor& descriptor, const DataTypePtr type, const Flags flags = None, const QVariant & defaultValue = QVariant());
+    Attribute(const Descriptor& d, const DataTypePtr type, bool required, const QVariant & defaultValue = QVariant());
+    ~Attribute();
 
     // getters/setters
     const DataTypePtr getAttributeType()const;
     bool isRequiredAttribute() const;
+    bool canBeEmpty() const;
+    Flags getFlags() const;
 
     virtual void setAttributeValue(const QVariant & newVal);
     // attribute value is kept in qvariant
@@ -126,8 +138,10 @@ public:
     QVector<const AttributeRelation*> &getRelations();
 
     void addPortRelation(const PortRelationDescriptor& relationDesc);
-
     const QList<PortRelationDescriptor>& getPortRelations() const;
+
+    void addSlotRelation(const SlotRelationDescriptor& relationDesc);
+    const QList<SlotRelationDescriptor>& getSlotRelations() const;
 
     virtual bool isEmpty() const;
     virtual Attribute *clone();
@@ -141,17 +155,18 @@ public:
 
     virtual bool validate(ProblemList &problemList);
 
-
 private:
     void debugCheckAttributeId() const;
+    void copy(const Attribute &other);
 
 protected:
+    Attribute(const Attribute &other);
+    Attribute &operator =(const Attribute &other);
+
     // type of value
-    const DataTypePtr   type;
-    // attribute can be required or not
-    // values of required attributes cannot be empty
-    // used in configuration validations
-    const bool          required;
+    DataTypePtr   type;
+    // Different additional options
+    Flags         flags;
     // pure value and default pure value. if script exists, value should be processed throw it
     QVariant            value;
     QVariant            defaultValue;
@@ -161,9 +176,9 @@ protected:
 
     QVector<const AttributeRelation*> relations;
     QList<PortRelationDescriptor>     portRelations;
+    QList<SlotRelationDescriptor>     slotRelations;
 
 }; // Attribute
-
 
 // getAttributeValue function realizations with scripting support
 template<>
@@ -237,5 +252,6 @@ inline int Attribute::getAttributeValue(Workflow::WorkflowContext *ctx) const {
 } // U2 namespace
 
 Q_DECLARE_METATYPE(U2::AttributeScript)
+Q_DECLARE_OPERATORS_FOR_FLAGS(U2::Attribute::Flags)
 
 #endif

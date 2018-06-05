@@ -44,6 +44,7 @@ HEADERS += src/library/BaseActorCategories.h \
            src/model/Schema.h \
            src/model/SchemaActorsRegistry.h \
            src/model/SchemaConfig.h \
+           src/model/SlotRelation.h \
            src/model/WorkflowContext.h \
            src/model/WorkflowEnv.h \
            src/model/WorkflowManager.h \

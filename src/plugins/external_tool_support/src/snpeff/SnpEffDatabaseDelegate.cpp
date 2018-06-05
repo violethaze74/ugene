@@ -135,8 +135,9 @@ void SnpEffDatabasePropertyWidget::sl_showDialog() {
         return;
     }
 
-    SnpEffDatabaseDialog* dlg = new SnpEffDatabaseDialog(this);
+    QObjectScopedPointer<SnpEffDatabaseDialog> dlg(new SnpEffDatabaseDialog(this));
     if (dlg->exec() == QDialog::Accepted) {
+        CHECK(!dlg.isNull(), );
         lineEdit->setText(dlg->getDatabase());
         emit si_valueChanged(lineEdit->text());
     }

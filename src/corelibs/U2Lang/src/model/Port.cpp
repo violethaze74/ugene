@@ -31,6 +31,7 @@ namespace Workflow {
 PortDescriptor::PortDescriptor(const Descriptor& desc, DataTypePtr t, bool input, bool multi, uint f )
     : Descriptor(desc), type(t), input(input), multi(multi), flags(f) {
     assert(type->isMap());
+    defaultType = type;
     if(input) {
         assert(!multi && "currently wd model cannot handle multi input ports");
     }
@@ -74,6 +75,26 @@ QMap<Descriptor, DataTypePtr> PortDescriptor::getOwnTypeMap() const {
 
         return result;
     }
+}
+
+void PortDescriptor::setVisibleSlot(const QString& slotId, const bool isVisible) {
+    QMap<Descriptor, DataTypePtr> newMap = type->getDatatypesMap();
+    if (isVisible) {
+        QMap<Descriptor, DataTypePtr> defaultMap = defaultType->getDatatypesMap();
+        foreach(const Descriptor& desc, defaultMap.keys()) {
+            if (slotId == desc.getId()) {
+                newMap[desc] = defaultMap[desc];
+            }
+        }
+    } else {
+        foreach(const Descriptor& desc, newMap.keys()) {
+            if (slotId == desc.getId()) {
+                newMap.remove(desc);
+            }
+        }
+    }
+    const QString id = type.data()->getId();
+    type = DataTypePtr(new MapDataType(id, newMap));
 }
 
 /**************************

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2018 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,44 +19,35 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TABULATED_FORMAT_READER_H_
-#define _U2_TABULATED_FORMAT_READER_H_
+#ifndef _U2_KRAKEN_SUPPORT_H_
+#define _U2_KRAKEN_SUPPORT_H_
 
-#include <QObject>
-#include <QStringList>
+#include <U2Core/ExternalToolRegistry.h>
 
 namespace U2 {
 
-class IOAdapter;
-class U2OpStatus;
+#define ET_KRAKEN_CLASSIFY KrakenSupport::CLASSIFY_TOOL
+#define ET_KRAKEN_BUILD KrakenSupport::BUILD_TOOL
+#define ET_KRAKEN_TRANSLATE KrakenSupport::TRANSLATE_TOOL
 
-class TabulatedFormatReader : public QObject {
+class KrakenSupport : public ExternalTool {
     Q_OBJECT
 public:
-    TabulatedFormatReader(U2OpStatus &os, IOAdapter *ioAdapter);
+    KrakenSupport(const QString &name);
 
-    bool hasNextLine() const;
-    QStringList getNextLine();
-    qint64 getCurrentLineNumber() const;
+    QStringList getAdditionalPaths() const;
 
-    const QStringList &getComments() const;
+    static const QString GROUP_NAME;
+    static const QString BUILD_TOOL;
+    static const QString CLASSIFY_TOOL;
+    static const QString TRANSLATE_TOOL;
 
 private:
-    void readNextLine();
-    QString read();
-    static bool isComment(const QString &line);
-    void storeLine(const QString &line);
-
-    IOAdapter *ioAdapter;
-
-    QStringList storedLine;
-    QStringList comments;
-
-    static const int BUFFER_SIZE = 4096;
-    char buffer[BUFFER_SIZE];
-    qint64 currentLine;
+    void initBuild();
+    void initClassify();
+    void initTranslate();
 };
 
 }   // namespace U2
 
-#endif // _U2_TABULATED_FORMAT_READER_H_
+#endif // _U2_KRAKEN_SUPPORT_H_

@@ -45,6 +45,11 @@ CheckUpdatesTask::CheckUpdatesTask(bool startUp)
     runOnStartup = startUp;
     setVerboseLogMode(true);
     startError = false;
+
+    // FIXME: The task is disabled for the virogenesis branch. It MUST be reenabled on the branches mergeing.
+    if (startUp) {
+        cancel();
+    }
 }
 
 #define SITE_URL  QString("ugene.net")

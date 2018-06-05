@@ -55,6 +55,10 @@ QVariant VisibilityRelation::getAffectResult(const QVariant &influencingValue, c
     return false;
 }
 
+VisibilityRelation *VisibilityRelation::clone() const {
+    return new VisibilityRelation(*this);
+}
+
 QVariant FileExtensionRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
     DelegateTags * /*infTags*/, DelegateTags *depTags) const {
 
@@ -138,11 +142,15 @@ void FileExtensionRelation::updateDelegateTags(const QVariant &influencingValue,
     }
 }
 
+FileExtensionRelation *FileExtensionRelation::clone() const {
+    return new FileExtensionRelation(*this);
+}
+
 QVariant ValuesRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
                                          DelegateTags * /*infTags*/, DelegateTags *depTags) const {
     updateDelegateTags(influencingValue, depTags);
     QVariantMap items = dependencies.value(influencingValue.toString()).toMap();
-    if (items != QVariant()) {
+    if (!items.isEmpty()) {
         return items.value(items.keys().first());
     }
     return dependentValue;
@@ -150,9 +158,13 @@ QVariant ValuesRelation::getAffectResult(const QVariant &influencingValue, const
 
 void ValuesRelation::updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const {
     QVariantMap items = dependencies.value(influencingValue.toString()).toMap();
-    if (items != QVariant()) {
+    if (!items.isEmpty()) {
         dependentTags->set("AvailableValues", items);
     }
+}
+
+ValuesRelation *ValuesRelation::clone() const {
+    return new ValuesRelation(*this);
 }
 
 } // U2

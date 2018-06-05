@@ -155,9 +155,11 @@ private:
 class BowtieFilesRelation : public AttributeRelation {
 public:
     BowtieFilesRelation(const QString &indexNameAttrId);
+
     QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
         DelegateTags *infTags, DelegateTags *depTags) const;
     RelationType getType() const;
+    BowtieFilesRelation *clone() const;
 
     static QString getBowtie1IndexName(const QString &dir, const QString &fileName);
     static QString getBowtie2IndexName(const QString &dir, const QString &fileName);
@@ -166,9 +168,11 @@ public:
 class BowtieVersionRelation : public AttributeRelation {
 public:
     BowtieVersionRelation(const QString &bwtVersionAttrId);
+
     QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
         DelegateTags *infTags, DelegateTags *depTags) const;
     RelationType getType() const;
+    BowtieVersionRelation *clone() const;
 };
 
 } // namespace LocalWorkflow
