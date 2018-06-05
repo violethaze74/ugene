@@ -49,8 +49,6 @@ WevoteSupportPlugin::WevoteSupportPlugin()
 }
 
 WevoteSupportPlugin::~WevoteSupportPlugin() {
-    LocalWorkflow::WevoteWorkerFactory::cleanup();
-
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
     etRegistry->unregisterEntry(WevoteSupport::TOOL_NAME);
